@@ -16,11 +16,7 @@ class OrcidAccountsController < ApplicationController
   private
 
   def orcid_account
-    @orcid_account ||= begin
-      oa = OrcidAccount.find(params[:id])
-      oa.oauth_authorize_url = oauth_authorize_url
-      oa
-    end
+    @orcid_account ||= OrcidAccount.find(params[:id])
   end
 
   def oauth_authorize_url

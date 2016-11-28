@@ -251,6 +251,15 @@ export default Mixin.create({
     return errorFound;
   },
 
+  /**
+    List all validation errors. Helpful for debugging
+    For example, when a Task refuses to mark as complete
+    but no errors are displaying on the screen
+
+    @method currentValidationErrors
+    @return {Array} errors
+  */
+
   currentValidationErrors() {
     const errors = this.get('validationErrors');
 

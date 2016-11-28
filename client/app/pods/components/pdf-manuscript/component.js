@@ -17,7 +17,10 @@ export default Ember.Component.extend({
       console.log('PDFJS-viewer loaded');
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
 
-      PDFJS.workerSrc = '/assets/pdfjsviewer-worker.js';
+      var pdfjscdn = '//bowercdn.net/c/pdf.js-viewer-0.3.3/';
+      PDFJS.workerSrc = pdfjscdn + 'pdf.worker.js';
+      PDFJS.imageResourcesPath = pdfjscdn + 'images/';
+      PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
       var download = this.get('paper.id') + '/download.pdf';
       PDFJS.webViewerLoad(download);
     });

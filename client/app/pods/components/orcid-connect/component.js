@@ -6,10 +6,11 @@ export default Ember.Component.extend({
   orcidAccount: null, // of these in
   store: Ember.inject.service(),
   can: Ember.inject.service('can'),
-  canRemoveOrcid: null,
   journal: null,
 
-   // function to use for asking the user to confirm an action
+  canRemoveOrcid: null,
+
+  // function to use for asking the user to confirm an action
   confirm: window.confirm,
 
   didInsertElement() {
@@ -20,21 +21,23 @@ export default Ember.Component.extend({
         this.set('orcidAccount', account);
       });
     }
-    if (this.get('journal') !== null) {
-      this.setCanRemoveOrcid();
+    this.get('store').findAll('journal').then(this.setCanRemoveOrcid.bind(this));
+
+    // if we don't have a journal (profile page) we need to find one to
+    // display a contact email
+    var that = this;
+    if (this.get('journal') === null) {
+      this.get('store').findAll('journal').then(function(journals) {
+        that.set('journal', journals.get('firstObject'));
+      });
     }
   },
 
-  setCanRemoveOrcid() {
-    var that = this;
-    var journal = this.get('journal');
-    that.get('can').can('remove_orcid', journal).then( (value) =>
-      Ember.run(function() {
-        if (value) {
-          that.set('canRemoveOrcid', true);
-        }
-      })
-    );
+  setCanRemoveOrcid(journals) {
+    let can = this.get('can');
+    let promises = journals.map(j => can.can('remove_orcid', j));
+    Ember.RSVP.all(promises)
+    .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
   },
 
   willDestroyElement() {

@@ -8,7 +8,7 @@
       {{#if canRemoveOrcid}}
         <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
       {{else}}
-        <br />Please contact {{journal.staff_email}} to remove this ORCID account.<br />
+        <br />Please contact <a href="mailto:{{journal.staffEmail}}">{{journal.staffEmail}}</a> to remove this ORCID account.<br />
       {{/if}}
     </div>
     {{#if accessTokenExpired}}

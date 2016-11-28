@@ -20,7 +20,6 @@ moduleForComponent(
       $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
         institutional_accounts: []
       }});
-      
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');

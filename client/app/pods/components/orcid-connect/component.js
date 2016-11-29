@@ -13,6 +13,15 @@ export default Ember.Component.extend({
   // function to use for asking the user to confirm an action
   confirm: window.confirm,
 
+  setCanRemoveOrcidDelegate: function() {
+    let can = this.get('can');
+    this.get('store').findAll('journal').then((journals) => {
+      let promises = journals.map(j => can.can('remove_orcid', j));
+      Ember.RSVP.all(promises)
+      .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
+    });
+  },
+
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
@@ -21,7 +30,9 @@ export default Ember.Component.extend({
         this.set('orcidAccount', account);
       });
     }
-    this.get('store').findAll('journal').then(this.setCanRemoveOrcid.bind(this));
+
+    let setCanRemoveOrcid = this.get('setCanRemoveOrdidDelegate');
+    setCanRemoveOrcid;
 
     // if we don't have a journal (profile page) we need to find one to
     // display a contact email
@@ -31,13 +42,6 @@ export default Ember.Component.extend({
         that.set('journal', journals.get('firstObject'));
       });
     }
-  },
-
-  setCanRemoveOrcid(journals) {
-    let can = this.get('can');
-    let promises = journals.map(j => can.can('remove_orcid', j));
-    Ember.RSVP.all(promises)
-    .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
   },
 
   willDestroyElement() {

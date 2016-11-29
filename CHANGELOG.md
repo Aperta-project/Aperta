@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- Do not sync paper data with salesforce if the paper has not been submitted.
 ### Security
 
 ## [1.30.0] - {2016-11-18}

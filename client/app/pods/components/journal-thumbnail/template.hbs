@@ -60,6 +60,34 @@
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
 
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>DOI Journal Prefix</label>
+      </div>
+      {{textarea value=journal.doiJournalPrefix
+                 class="journal-doi-journal-prefix-edit inset-form-control-input"
+                 placeholder="journal.yetipub"}}
+    </div>
+
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>DOI Publisher Prefix</label>
+      </div>
+      {{textarea value=journal.doiPublisherPrefix
+                 class="journal-doi-publisher-prefix-edit inset-form-control-input"
+                 placeholder="yetipub"}}
+    </div>
+
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>Last DOI Issued</label>
+      </div>
+      {{textarea value=journal.lastDoiIssued
+                 class="journal-last-doi-edit inset-form-control-input"
+                 placeholder="1000001"}}
+    </div>
+
+
     <div class="journal-edit-buttons">
       <a href="#" class="button-link button--white" {{action "cancel"}}>cancel</a>
       <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>

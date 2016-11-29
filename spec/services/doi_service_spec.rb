@@ -122,23 +122,5 @@ describe DoiService do
         expect(doi_service.next_doi!).to eq journal_doi
       end
     end
-
-    context "when doi assignment fails" do
-      context "when the publisher prefix is not set" do
-        it "returns nil" do
-          journal.update_attributes(doi_publisher_prefix: nil)
-          expect(doi_service.next_doi!).to eq nil
-        end
-      end
-
-      context "when the journal prefix is not set" do
-        it "returns nil" do
-          journal.update_attributes(doi_journal_prefix: nil)
-          expect(doi_service.next_doi!).to eq nil
-        end
-      end
-    end
-
   end
-
 end

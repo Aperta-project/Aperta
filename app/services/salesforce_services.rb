@@ -6,7 +6,7 @@ module SalesforceServices
   # Only send data to Salesforce if the author is
   # requesting publication fee assistance.
   def self.sync_paper!(paper, logger: Rails.logger)
-    if paper.major_version
+    if paper.latest_submitted_version
       SalesforceServices::PaperSync.sync!(paper: paper)
       logger.info "Salesforce: Paper #{paper.id} sync'd successfully"
 

@@ -5,12 +5,18 @@ describe SalesforceServices do
     subject(:sync_paper!) do
       SalesforceServices.sync_paper!(paper, logger: logger)
     end
-    let(:paper) { instance_double(Paper, id: 99, major_version: 0) }
+    let(:paper) do
+      instance_double(
+        Paper,
+        id: 99,
+        latest_submitted_version: double("a submitted version")
+      )
+    end
     let(:logger) { Logger.new(StringIO.new) }
 
-    context "when the paper has no major_version" do
+    context "when the paper has never been submitted" do
       before do
-        allow(paper).to receive(:major_version).and_return nil
+        allow(paper).to receive(:latest_submitted_version).and_return nil
       end
 
       it "doesn't sync the paper or its billing information" do

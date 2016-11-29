@@ -847,7 +847,7 @@ class DashboardPage(AuthenticatedPage):
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
     upload_btn = self._get(self._upload_btn)
     doc2upload = random.choice(docs)
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    fn = os.path.join(os.getcwd(), doc2upload)
     logging.info('Sending document: {0}'.format(fn))
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)

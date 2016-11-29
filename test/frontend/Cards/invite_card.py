@@ -118,16 +118,17 @@ class InviteCard(BaseCard):
 
     # APERTA-8305 Currently QA lacks a method to attach a file to the invite cards.
     # Attach a file
-    # sample_files = docs + pdfs + figures + supporting_info_files
-    # file_1, file_2 = random.sample(sample_files, 2)
-    # logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
-    # fn = os.path.join(os.getcwd(), file_1)
-    # self.attach_file(fn)
-    # # look for file name and replace attachment link
-    # self._wait_for_element(self._get(self._replace_attachment))
-    # attachments = self.get_attached_file_names()
-    # fn = fn.split('/')[-1].replace(' ', '+')
-    # assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+    sample_files = docs + pdfs + figures + supporting_info_files
+    file_1, file_2 = random.sample(sample_files, 2)
+    logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
+    fn = os.path.join(os.getcwd(), file_1)
+    logging.info(fn)
+    self.attach_file(fn)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._get(self._replace_attachment))
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
 
     # Attach a second file
 

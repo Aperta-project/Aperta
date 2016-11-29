@@ -19,6 +19,7 @@ export default Component.extend({
   authorProxy: null,
   isNewAuthor: false,
   validationErrors: alias('authorProxy.validationErrors'),
+  canRemoveOrcid: null,
 
   init() {
     this._super(...arguments);

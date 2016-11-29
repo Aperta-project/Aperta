@@ -127,7 +127,7 @@ module('Integration: adding an author', {
     server.respondWith('POST', '/api/authors', [
       200, {
         'Content-Type': 'application/json'
-      }, JSON.stringify({authors: [{id: 5, first_name: 'James', paper_id: paperId}]})
+      }, JSON.stringify({authors: [{id: 5, first_name: 'James', paper_id: paperId, user_id: 1}]})
     ]);
 
     server.respondWith('GET', '/api/countries', [
@@ -162,6 +162,10 @@ test('validation works', function(assert) {
   click('.author-form-buttons .button-secondary:contains("done")');
 
   andThen(function() {
+    assert.elementFound(
+      '.orcid-connect.error',
+      'orcid connect error'
+    );
     assert.elementFound(
       '[data-test-id="author-last-name"].error',
       'presence error on last name'

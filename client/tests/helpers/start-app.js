@@ -34,6 +34,10 @@ export default function startApp(attrs) {
     location: 'none'
   });
 
+  let orcidAccount = Factory.createRecord('OrcidAccount', {
+    id: 1
+  });
+
   let currentUser = Factory.createRecord('User', {
     id: 1,
     fullName: 'Fake User',
@@ -41,7 +45,10 @@ export default function startApp(attrs) {
     email: 'fakeuser@example.com'
   });
 
-  window.currentUserData = {user: currentUser};
+  window.currentUserData = {
+    user: currentUser,
+    orcid_accounts: [orcidAccount]
+  };
 
   window.eventStreamConfig = {
     key: 'fakeAppKey123456',

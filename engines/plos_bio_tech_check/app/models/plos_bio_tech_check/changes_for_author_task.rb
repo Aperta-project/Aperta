@@ -31,7 +31,6 @@ module PlosBioTechCheck
       complete!
       if paper.submit_minor_check!(submitted_by)
         increment_initial_tech_check_round!
-        notify_tech_fixed
         Activity.tech_check_fixed!(paper, user: submitted_by)
         true
       else
@@ -47,15 +46,6 @@ module PlosBioTechCheck
     end
 
     private
-
-    def notify_tech_fixed
-      paper.journal.staff_admins.each do |admin|
-        PlosBioTechCheck::ChangesForAuthorMailer.delay.notify_paper_tech_fixed(
-          admin_id: admin.id,
-          paper_id: paper.id
-        )
-      end
-    end
 
     def initial_tech_check_tasks
       paper.tasks.of_type(InitialTechCheckTask)

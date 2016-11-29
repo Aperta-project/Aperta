@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+- do not send journal staff admins emails for paper submission, editor invite accepted, tech check fixed events, or salesforce sync'ing errors
 ### Security
 
 ## [1.30.0] - {2016-11-18}

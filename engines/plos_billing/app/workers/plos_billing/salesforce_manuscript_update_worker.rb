@@ -32,7 +32,8 @@ module PlosBilling
     rescue SalesforceServices::SyncInvalid => ex
       message = sync_invalid_error_message(ex, paper_id: paper_id)
       logger.error message
-      self.class.email_admin_error(paper_id, message)
+      # TODO: disabled as part of APERTA-8454, will reify another day
+      # self.class.email_admin_error(paper_id, message)
     end
 
     private

@@ -1,15 +1,12 @@
-import Ember from 'ember';
-import { module } from 'qunit';
 import { test } from 'ember-qunit';
 import TestHelper, { mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
 import Factory from '../helpers/factory';
-import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import {
   paperWithTask, addUserAsParticipant, addNestedQuestionToTask
 } from '../helpers/setups';
 
-let App      = null;
 let fakeUser = null;
 let server   = null;
 let paperId  = null;
@@ -20,15 +17,15 @@ const openNewAuthorForm = function() {
   click('#add-new-individual-author-link');
 };
 
-module('Integration: adding an author', {
+moduleForAcceptance('Integration: adding an author', {
   afterEach() {
+    window.RailsEnv.orcidConnectEnabled = false;
     server.restore();
     mockTeardown();
-    Ember.run(App, 'destroy');
   },
 
   beforeEach() {
-    App      = startApp();
+    window.RailsEnv.orcidConnectEnabled = false;
     fakeUser = window.currentUserData.user;
     server   = setupMockServer();
 
@@ -155,6 +152,7 @@ test('can add a new author', function(assert) {
 });
 
 test('validation works', function(assert) {
+  window.RailsEnv.orcidConnectEnabled = true;
   visit(`/papers/${paperId}/tasks/${taskId}`);
   openNewAuthorForm();
   click('.author-form-buttons .button-secondary:contains("done")');
@@ -185,6 +183,22 @@ test('validation works', function(assert) {
     assert.elementFound(
       '[data-test-id="author-government"] .error-message:visible',
       'presence error on government'
+    );
+  });
+});
+
+test('orcid validation does not fire', function(assert) {
+  window.RailsEnv.orcidConnectEnabled = false;
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  click('.author-form-buttons .button-secondary:contains("done")');
+  click('.author-task-item-view-text');
+  click('.author-form-buttons .button-secondary:contains("done")');
+
+  andThen(function() {
+    assert.elementNotFound(
+      '.orcid-connect.error',
+      'orcid connect error'
     );
   });
 });

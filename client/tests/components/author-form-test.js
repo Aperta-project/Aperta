@@ -20,18 +20,26 @@ moduleForComponent(
       $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
         institutional_accounts: []
       }});
+      $.mockjax({url: '/api/journals', status: 200, responseText: {
+        journals: [1]
+      }});
+
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');
       let author = FactoryGuy.make('author', { user: user });
+      let paper = FactoryGuy.make('paper');
 
       this.set('author', author);
+      this.set('author.paper', paper);
+      this.set('author.paper.journal', 1);
       this.set('isNotEditable', false);
       this.set('model', Ember.ObjectProxy.create({object: author}));
       this.set('task', task);
 
       this.set("toggleEditForm", () => {});
       this.set("validateField", () => {});
+      this.set("canRemoveOrcid", true);
 
       createQuestionWithAnswer(author, 'author--published_as_corresponding_author', true);
       createQuestionWithAnswer(author, 'author--deceased', false);
@@ -62,6 +70,7 @@ var template = hbs`
       hideAuthorForm="toggleEditForm"
       isNotEditable=isNotEditable
       saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
   }}`;
 
 test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){

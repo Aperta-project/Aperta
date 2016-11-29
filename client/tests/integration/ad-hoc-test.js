@@ -16,6 +16,7 @@ const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
 };
 
+let journal;
 moduleForAcceptance('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
@@ -24,6 +25,8 @@ moduleForAcceptance('Integration: AdHoc Card', {
 
   beforeEach() {
     server   = setupMockServer();
+
+    $.mockjax.clear();
 
     server.respondWith('PUT', /\/api\/tasks\/\d+/, [
       204, {
@@ -43,13 +46,14 @@ moduleForAcceptance('Integration: AdHoc Card', {
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
-    server.respondWith('GET', '/api/journals', [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
-
     $.mockjax({
       url: '/api/countries',
       status: 200,
       responseText: []
     });
+    journal = make('journal');
+    mockFind('journal').returns({ model: journal});
+    TestHelper.mockFindAll('journal').returns({models: [journal]});
   }
 });
 
@@ -60,7 +64,6 @@ test('Changing the title on an AdHoc Task', function(assert) {
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
-
   visit(paperTaskURL(paper, task));
 
   page.setTitle('Shazam!');
@@ -73,6 +76,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
 test('AdHoc Task text block', function(assert) {
   let paper = make('paper');
   let task  = make('ad-hoc-task', { paper: paper, body: [] });
+
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   mockFind('paper').returns({ model: paper });

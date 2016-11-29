@@ -116,13 +116,12 @@ class InviteCard(BaseCard):
     else:
       assert 'Abstract is not available' in invite_text, invite_text
 
-    # APERTA-8305 Currently QA lacks a method to attach a file to the invite cards.
     # Attach a file
     sample_files = docs + pdfs + figures + supporting_info_files
     file_1, file_2 = random.sample(sample_files, 2)
     logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
     fn = os.path.join(os.getcwd(), file_1)
-    logging.info(fn)
+    logging.info('Attaching file: {0}'.format(fn))
     self.attach_file(fn)
     # look for file name and replace attachment link
     self._wait_for_element(self._get(self._replace_attachment))
@@ -131,6 +130,17 @@ class InviteCard(BaseCard):
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
 
     # Attach a second file
+    fn = os.path.join(os.getcwd(), file_2)
+    logging.info('Attaching file: {0}'.format(fn))
+    self.attach_file(fn)
+    # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
+    #   will get an index out of range error. I feel dirty.
+    time.sleep(5)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._gets(self._replace_attachment)[1])
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
 
     self._get(self._edit_add_to_queue_btn).click()
     invitees = self._gets(self._invitee_listing)

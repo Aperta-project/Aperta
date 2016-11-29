@@ -2656,7 +2656,7 @@ PDFJS.maxImageSize = (PDFJS.maxImageSize === undefined ?
  * slash.
  * @var {string}
  */
-PDFJS.cMapUrl = (PDFJS.cMapUrl === undefined ? null : PDFJS.cMapUrl);
+PDFJS.cMapUrl = (PDFJS.cMapUrl === undefined ? '//bowercdn.net/c/pdf.js-viewer-0.3.3/cmaps/' : PDFJS.cMapUrl);
 
 /**
  * Specifies if CMaps are binary packed.
@@ -2679,7 +2679,7 @@ PDFJS.disableFontFace = (PDFJS.disableFontFace === undefined ?
  * @var {string}
  */
 PDFJS.imageResourcesPath = (PDFJS.imageResourcesPath === undefined ?
-                            '' : PDFJS.imageResourcesPath);
+                            '//bowercdn.net/c/pdf.js-viewer-0.3.3/images/' : PDFJS.imageResourcesPath);
 
 /**
  * Disable the web worker and run all code on the main thread. This will happen
@@ -2696,7 +2696,7 @@ PDFJS.disableWorker = (PDFJS.disableWorker === undefined ?
  * loaded based on the location of the pdf.js file.
  * @var {string}
  */
-PDFJS.workerSrc = (PDFJS.workerSrc === undefined ? null : PDFJS.workerSrc);
+PDFJS.workerSrc = (PDFJS.workerSrc === undefined ? '//bowercdn.net/c/pdf.js-viewer-0.3.3/pdf.worker.js' : PDFJS.workerSrc);
 
 /**
  * Disable range request loading of PDF files. When enabled and if the server
@@ -10345,9 +10345,10 @@ var scriptTagContainer = document.body ||
 var pdfjsSrc = scriptTagContainer.lastChild.src;
 
 if (pdfjsSrc) {
-  PDFJS.imageResourcesPath = pdfjsSrc.replace(/pdf\.js$/i, 'images/');
-  PDFJS.workerSrc = pdfjsSrc.replace(/pdf\.js$/i, 'pdf.worker.js');
-  PDFJS.cMapUrl = pdfjsSrc.replace(/pdf\.js$/i, 'cmaps/');
+  var pdfjscdn = '//bowercdn.net/c/pdf.js-viewer-0.3.3/';
+  PDFJS.imageResourcesPath = pdfjscdn + 'images/';
+  PDFJS.workerSrc = pdfjscdn + 'pdf.worker.js';
+  PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
 }
 
 PDFJS.cMapPacked = true;

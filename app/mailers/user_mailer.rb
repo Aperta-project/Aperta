@@ -102,16 +102,6 @@ class UserMailer < ActionMailer::Base
       subject: "Thank you for submitting your manuscript to #{@journal.name}")
   end
 
-  def notify_admin_of_paper_submission(paper_id, user_id)
-    @paper = Paper.find paper_id
-    @journal = @paper.journal
-    @admin = User.find user_id
-
-    mail(
-      to: @admin.email,
-      subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
-  end
-
   def notify_creator_of_initial_submission(paper_id)
     @paper = Paper.find(paper_id)
     @author = @paper.creator

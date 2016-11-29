@@ -187,32 +187,6 @@ describe UserMailer, redis: true do
     end
   end
 
-  describe '#notify_admin_of_paper_submission' do
-    let(:admin) { FactoryGirl.create(:user) }
-    let(:paper) do
-      FactoryGirl.create(
-        :paper,
-        :with_creator,
-        :submitted
-      )
-    end
-    let(:author) { paper.creator }
-    let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
-
-    it "send email to the paper's admin with the correct subject" do
-      expect(email.to).to contain_exactly(admin.email)
-      expect(email.subject).to eq "New manuscript submitted to PLOS #{paper.journal.name}: \"#{paper.display_title}\""
-    end
-
-    it "tells admin that paper has been submitted" do
-      expect(email.body).to include "Hello #{admin.first_name}"
-      expect(email.body).to include "A new version has been submitted"
-      expect(email.body).to include paper.abstract
-      expect(email.body).to include client_paper_url(paper)
-      expect(email.body).to include paper.journal.name
-    end
-  end
-
   describe '#notify_staff_of_paper_withdrawal' do
     include EmailSpec::Helpers
     include EmailSpec::Matchers

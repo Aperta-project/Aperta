@@ -31,6 +31,14 @@ class SITask(BaseTask):
     self._si_error_message = (By.CLASS_NAME, 'error-message')
 
    # POM Actions
+
+  def validate_styles(self):
+    """
+    """
+    self.validate_common_elements_styles()
+
+
+
   def validate_filename_style(self, attached_filename):
     """
     """
@@ -44,9 +52,15 @@ class SITask(BaseTask):
         attached_filename.value_of_css_property('line-height')
     assert attached_filename.value_of_css_property('color') == aperta_green, \
         attached_filename.value_of_css_property('color')
-
-
     return None
+
+
+
+    #upload_ms_btn = self._get(self._upload_manuscript_btn)
+    #assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT'
+    #self.validate_primary_big_green_button_style(upload_ms_btn)
+
+
 
   def add_file(self, file_name):
     """

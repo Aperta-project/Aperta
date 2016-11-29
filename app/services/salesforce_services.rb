@@ -3,8 +3,9 @@ module SalesforceServices
   class Error < ::StandardError; end
   class SyncInvalid < Error; end
 
-  # Only send data to Salesforce if the author is
-  # requesting publication fee assistance.
+  # Only sends paper data to Salesforce is the paper has been submitted at least
+  # once and only sends billing data to Salesforce if the author is requesting
+  # publicationn fee assistance.
   def self.sync_paper!(paper, logger: Rails.logger)
     if paper.latest_submitted_version
       SalesforceServices::PaperSync.sync!(paper: paper)

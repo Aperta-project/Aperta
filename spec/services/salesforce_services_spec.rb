@@ -5,8 +5,20 @@ describe SalesforceServices do
     subject(:sync_paper!) do
       SalesforceServices.sync_paper!(paper, logger: logger)
     end
-    let(:paper) { instance_double(Paper, id: 99) }
+    let(:paper) { instance_double(Paper, id: 99, major_version: 0) }
     let(:logger) { Logger.new(StringIO.new) }
+
+    context "when the paper has no major_version" do
+      before do
+        allow(paper).to receive(:major_version).and_return nil
+      end
+
+      it "doesn't sync the paper or its billing information" do
+        expect(SalesforceServices::PaperSync).to_not receive(:sync!)
+        expect(SalesforceServices::BillingSync).to_not receive(:sync!)
+        sync_paper!
+      end
+    end
 
     context "when the paper's billing payment method is PFA" do
       before do

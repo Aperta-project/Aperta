@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 - do not send journal staff admins emails for paper submission, editor invite accepted, tech check fixed events, or salesforce sync'ing errors
+- Do not sync paper data with salesforce if the paper has not been submitted.
 ### Security
 
 ## [1.30.0] - {2016-11-18}

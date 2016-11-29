@@ -41,7 +41,27 @@ class SICardTest(CommonTest):
     paper_id = manuscript_page.get_paper_id_from_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     manuscript_page.complete_task('Supporting Info')
-    import pdb; pdb.set_trace()
+
+    #assert self._get(self._si_filename).text in file_name
+    #assert self._get(self._si_pencil_icon)
+    #assert self._get(self._si_trash_icon)
+
+    '''
+        assert attached_filename.text in file_name
+        self.validate_filename_style
+
+        assert self._get(self._si_pencil_icon)
+        assert self._get(self._si_trash_icon)
+
+
+        import pdb; pdb.set_trace()
+        self.validate_styles()
+    '''
+
+
+
+
+    #import pdb; pdb.set_trace()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

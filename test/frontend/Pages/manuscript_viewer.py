@@ -631,7 +631,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
       doc2upload = random.choice(docs)
       fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
       supporting_info = SITask(self._driver)
-      supporting_info.add_file(fn)
+      attached_filename = supporting_info.add_file(fn)
+      assert attached_filename.text in fn
+      supporting_info.validate_filename_style(attached_filename)
+      
+
+
       # complete task
       if not base_task.completed_state():
         base_task.click_completion_button()

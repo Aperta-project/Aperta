@@ -8,43 +8,47 @@
   {{/if}}
 
   {{rescind-decision
-    decision=latestRegisteredDecision
+    decision=paper.latestRegisteredDecision
     isEditable=isEditable
     busyWhile=(action busyWhile)}}
 
-  {{#if (eq paper.publishingState 'unsubmitted')}}
+  {{#if (not paper.isReadyForDecision)}}
     <div class="alert alert-warning">
-      A decision cannot be registered at this time. The manuscript is
-      unsubmitted.
+      A decision cannot be registered at this time. The manuscript is {{humanize paper.publishingState}}.
     </div>
+  {{else}}
+
+    <div class="decision-selections">
+      {{#each verdicts as |verdict|}}
+        <label class="decision-label">
+          {{radio-button
+            value=verdict
+            selection=draftDecision.verdict
+            disabled=nonPublishable
+            name="decision"
+            action=(action "updateVerdict")}}
+          {{humanize verdict}}
+        </label>
+      {{/each}}
+    </div>
+
+    {{error-message message=validationErrors.errors}}
+
+    {{#if draftDecision.verdict}}
+      {{letter-template disabled=nonPublishableOrUnselected
+        letterValue=draftDecision.letter
+        class='letter-template-placeholder'
+        toField=toField
+        subjectLine=subjectLine
+        task=task
+        templateDecision=draftDecision.verdict
+        updateTemplate=(action 'updateTemplate')
+        registerDecision=(action 'registerDecision')
+      }}
+    {{else}}
+      <p>No decision has been registered.</p>
+    {{/if}}
   {{/if}}
-
-  <div class="decision-selections">
-    {{#each verdicts as |verdict|}}
-      <label class="decision-label">
-        {{radio-button
-          value=verdict
-          selection=latestDecision.verdict
-          disabled=nonPublishable
-          name="decision"
-          action=(action "setDecisionTemplate")}}
-        {{humanize verdict}}
-      </label>
-    {{/each}}
-  </div>
-
-  {{error-message message=validationErrors.errors}}
-
-  {{letter-template disabled=nonPublishableOrUnselected
-                    letterValue=latestDecision.letter
-                    class='letter-template-placeholder'
-                    toField=toField
-                    subjectLine=subjectLine
-                    task=task
-                    templateDecision=latestDecision.verdict
-                    templateSelected=(action 'templateSelected')
-                    registerDecision=(action 'registerDecision')
-  }}
 
   {{#if previousDecisions}}
     <hr>

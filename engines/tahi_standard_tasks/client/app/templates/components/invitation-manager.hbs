@@ -10,7 +10,7 @@
                       ) as |i| }}
 
     {{#if groupByDecision}}
-      {{i.group invitations=latestDecisionInvitations}}
+      {{i.group invitations=draftDecisionInvitations}}
     {{else}}
       {{i.group invitations=persistedInvitations}}
     {{/if}}

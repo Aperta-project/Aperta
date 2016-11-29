@@ -33,7 +33,7 @@ describe TahiStandardTasks::InitialDecisionMailer do
       expect(email.subject).to eq "A decision has been registered on the manuscript, \"Paper Title\""
     end
 
-    it "email body is paper.decision_letter" do
+    it "email body is the decisions's letter" do
       expect(email.body.raw_source).to match(decision.letter)
     end
   end

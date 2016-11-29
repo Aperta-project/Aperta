@@ -57,7 +57,6 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     # Revision 1
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
@@ -70,7 +69,6 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     # Revision 2
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
@@ -84,7 +82,6 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)

@@ -15731,7 +15731,7 @@ var PDFThumbnailView = (function PDFThumbnailViewClosure() {
 
     var div = document.createElement('div');
     div.id = 'thumbnailContainer' + id;
-    div.className = 'thumbnail';
+    div.className = 'pdfthumbnail';
     this.div = div;
 
     if (id === 1) {
@@ -15743,8 +15743,8 @@ var PDFThumbnailView = (function PDFThumbnailViewClosure() {
     var ring = document.createElement('div');
     ring.className = 'thumbnailSelectionRing';
     var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
-    ring.style.width = this.canvasWidth + borderAdjustment + 'px';
-    ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+    //ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+    //ring.style.height = this.canvasHeight + borderAdjustment + 'px';
     this.ring = ring;
 
     div.appendChild(ring);
@@ -15783,8 +15783,8 @@ var PDFThumbnailView = (function PDFThumbnailViewClosure() {
         ring.removeChild(childNodes[i]);
       }
       var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
-      ring.style.width = this.canvasWidth + borderAdjustment + 'px';
-      ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+      // ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+      // ring.style.height = this.canvasHeight + borderAdjustment + 'px';
 
       if (this.canvas) {
         // Zeroing the width and height causes Firefox to release graphics
@@ -16002,7 +16002,7 @@ var PDFThumbnailViewer = (function PDFThumbnailViewerClosure() {
 
     scrollThumbnailIntoView:
         function PDFThumbnailViewer_scrollThumbnailIntoView(page) {
-      var selected = document.querySelector('.thumbnail.selected');
+      var selected = document.querySelector('.pdfthumbnail.selected');
       if (selected) {
         selected.classList.remove('selected');
       }

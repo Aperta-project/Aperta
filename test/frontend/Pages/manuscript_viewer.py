@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
+from Base.Resources import users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
@@ -628,13 +628,32 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       time.sleep(1)
     elif task_name == 'Supporting Info':
-      doc2upload = random.choice(docs)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+      #doc2upload = random.choice(docs)
+      #fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()
-      attached_filename = supporting_info.add_file(fn)
-      assert attached_filename.text in fn
-      supporting_info.validate_filename_style(attached_filename)
+      if data and 'file_name' in data:
+        attached_filename = supporting_info.add_file(data['file_name'])
+        ## wait for new elements attach to the DOM
+        ##time.sleep(3)
+        supporting_info.validate_filename_style(attached_filename)
+        assert attached_filename.text in data['file_name'], (attached_filename.text,
+          data['file_name'])
+        edit_btn = self._get(supporting_info._si_pencil_icon)
+        assert edit_btn
+        assert self._get(supporting_info._si_trash_icon)
+        edit_btn.click()
+        supporting_info.validate_filename_form_style()
+        # check cancel button
+        cancel_btn = self._get(supporting_info._si_file_cancel_btn)
+        cancel_btn.click()
+        time.sleep(5)
+        assert self._get(supporting_info._si_trash_icon)
+        edit_btn = self._get(supporting_info._si_pencil_icon)
+        edit_btn.click()
+        supporting_info.complete_filename_form(data)
+        # XXXXX
+
 
 
       # complete task

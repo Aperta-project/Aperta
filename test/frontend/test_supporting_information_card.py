@@ -12,25 +12,27 @@ import random
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import users, editorial_users
+from Base.Resources import docs, users, editorial_users
 from frontend.common_test import CommonTest
+from frontend.Tasks.supporting_information_task import SITask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
+
 
 __author__ = 'sbassi@plos.org'
 
 @MultiBrowserFixture
-class SICardTest(CommonTest):
+class SITaskTest(CommonTest):
   """
   Validate the elements, styles, functions of the Revision Tech Check card
   """
 
-  def test_si_card(self):
+  def test_si_task(self):
     """
     test_si_card: Validates the elements, styles, and functions of RTC Card
     :return: void function
     """
-    logging.info('Test SICard')
+    logging.info('Test SITask')
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -40,7 +42,28 @@ class SICardTest(CommonTest):
     manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    manuscript_page.complete_task('Supporting Info')
+
+    doc2upload = random.choice(docs)
+    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    #supporting_info = SITask(self._driver)
+    #supporting_info.validate_styles()
+    #attached_filename = supporting_info.add_file(fn)
+    #assert attached_filename.text in fn
+    data = {}
+    data['file_name'] = fn
+    file_type = random.choice(['Table', 'Data', 'Text', 'Figure', 'Other'])
+    logging.info(file_type)
+    data['type'] = file_type
+    data['title'] = 'random text'
+    data['caption'] = 'random text 2'
+
+    manuscript_page.complete_task('Supporting Info', data=data)
+
+
+
+
+
+
 
     #assert self._get(self._si_filename).text in file_name
     #assert self._get(self._si_pencil_icon)

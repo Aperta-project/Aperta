@@ -8,6 +8,7 @@ class OrcidAccountsController < ApplicationController
   end
 
   def clear
+    requires_user_can(:remove_orcid, Journal)
     orcid_account.reset!
     render json: orcid_account
   end

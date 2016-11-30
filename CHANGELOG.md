@@ -23,6 +23,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Caching of unsaved Discussion responses
 - Ad-hoc cards have editing and managing permissions
 - ORCID IDs are included in the metadata export to Apex
+- ORCID IDs can only be removed by PLOS staff
 ### Changed
 ### Deprecated
 ### Removed

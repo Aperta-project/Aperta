@@ -6,5 +6,9 @@ module TahiStandardTasks
     def is_submitted
       object.submitted?
     end
+
+    def decisions
+      object.paper.decisions
+    end
   end
 end

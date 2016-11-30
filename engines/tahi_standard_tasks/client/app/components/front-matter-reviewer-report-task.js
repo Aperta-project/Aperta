@@ -2,11 +2,9 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
 export default TaskComponent.extend({
-  latestDecision: Ember.computed.alias('task.paper.latestDecision'),
+  draftDecision: Ember.computed.alias('task.paper.draftDecision'),
 
-  previousDecisions: Ember.computed('task.paper.decisions', function() {
-    return this.get('task.previousDecisions');
-  }),
+  previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
 
   actions: {
     confirmSubmission() {

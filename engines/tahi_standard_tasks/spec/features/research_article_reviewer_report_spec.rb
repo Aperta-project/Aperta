@@ -61,7 +61,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     # Revision 1
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}",
@@ -76,7 +75,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     # Revision 2
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
@@ -91,7 +89,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
     visit "/papers/#{paper.id}"
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)

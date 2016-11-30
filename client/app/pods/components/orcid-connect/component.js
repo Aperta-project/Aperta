@@ -18,12 +18,11 @@ export default Ember.Component.extend({
   // in the context of a journal, so we need to dig through all of them to
   // see if the user can remove the link.
   setCanRemoveOrcid: function() {
-    let that = this;
     let can = this.get('can');
     this.get('store').findAll('journal').then((journals) => {
       let promises = journals.map(j => can.can('remove_orcid', j));
       Ember.RSVP.all(promises)
-      .then(permissions => that.set('canRemoveOrcid', _.any(permissions)));
+      .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
     });
   },
 
@@ -41,10 +40,9 @@ export default Ember.Component.extend({
     }
     // if we don't have a journal (profile page) we need to find one to
     // display a contact email
-    var that = this;
     if (this.get('journal') === null) {
-      this.get('store').findAll('journal').then(function(journals) {
-        that.set('journal', journals.get('firstObject'));
+      this.get('store').findAll('journal').then((journals) => {
+        this.set('journal', journals.get('firstObject'));
       });
     }
   },

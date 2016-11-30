@@ -3,7 +3,8 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 const {
-  computed
+  computed,
+  isEqual
 } = Ember;
 
 const acknowledgementIdents = [
@@ -64,6 +65,11 @@ const authorValidations = {
     type: 'presence',
     skipCheck() {
       if(!window.RailsEnv.orcidConnectEnabled) { return true; }
+
+      const author = this.get('object.user.content'); // <- Promise
+      const paperCreator = this.get('object.paper.creator');
+      const authorIsNotPaperCreator = !isEqual(author, paperCreator);
+      if(authorIsNotPaperCreator) { return true; }
     }
   }],
   'contributions': [{

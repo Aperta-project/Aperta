@@ -4,6 +4,7 @@ const {
   Component,
   computed,
   inject: { service },
+  isEqual,
   String: { htmlSafe }
 } = Ember;
 
@@ -69,7 +70,11 @@ export default Component.extend({
     }
   },
 
-  orcidConnectEnabled: Ember.computed.reads('orcidAccount'),
+  orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
+    const user = this.get('user');
+    const currentUser = this.get('currentUserd');
+    return this.get('orcidAccount') && isEqual(user, currentUser);
+  }),
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }

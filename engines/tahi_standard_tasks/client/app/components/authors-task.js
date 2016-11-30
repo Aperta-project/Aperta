@@ -4,7 +4,6 @@ import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-erro
 
 const {
   computed,
-  isEqual
 } = Ember;
 
 const acknowledgementIdents = [
@@ -27,63 +26,6 @@ const taskValidations = {
   }]
 };
 
-export const contributionIdents = [
-  'author--contributions--conceptualization',
-  'author--contributions--investigation',
-  'author--contributions--visualization',
-  'author--contributions--methodology',
-  'author--contributions--resources',
-  'author--contributions--supervision',
-  'author--contributions--software',
-  'author--contributions--data-curation',
-  'author--contributions--project-administration',
-  'author--contributions--validation',
-  'author--contributions--writing-original-draft',
-  'author--contributions--writing-review-and-editing',
-  'author--contributions--funding-acquisition',
-  'author--contributions--formal-analysis',
-];
-
-const authorValidations = {
-  'firstName': ['presence'],
-  'lastName': ['presence'],
-  'authorInitial': ['presence'],
-  'email': ['presence', 'email'],
-  'affiliation': ['presence'],
-  'government': [{
-    type: 'presence',
-    message: 'A selection must be made',
-    validation() {
-      const answer = this.get('object') // <- author
-                         .answerForQuestion('author--government-employee')
-                         .get('value');
-
-      return answer === true || answer === false;
-    }
-  }],
-  'orcidIdentifier': [{
-    type: 'presence',
-    skipCheck() {
-      if(!window.RailsEnv.orcidConnectEnabled) { return true; }
-
-      const author = this.get('object.user.content'); // <- Promise
-      const paperCreator = this.get('object.paper.creator');
-      const authorIsNotPaperCreator = !isEqual(author, paperCreator);
-      if(authorIsNotPaperCreator) { return true; }
-    }
-  }],
-  'contributions': [{
-    type: 'presence',
-    message: 'One must be selected',
-    validation() {
-      const author = this.get('object');
-
-      return _.some(contributionIdents, (ident) => {
-        return author.answerForQuestion(ident).get('value');
-      });
-    }
-  }]
-};
 
 export default TaskComponent.extend({
   validations: taskValidations,
@@ -121,7 +63,7 @@ export default TaskComponent.extend({
       return this.get('task.paper.allAuthors').map(function(a) {
         return ObjectProxyWithErrors.create({
           object: a,
-          validations: authorValidations
+          validations: a.validations
         });
       });
     }

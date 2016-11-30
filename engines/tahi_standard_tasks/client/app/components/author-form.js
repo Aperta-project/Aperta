@@ -6,7 +6,8 @@ const {
   Component,
   computed,
   computed: { alias },
-  inject: { service }
+  inject: { service },
+  isEqual
 } = Ember;
 
 export default Component.extend({
@@ -31,6 +32,12 @@ export default Component.extend({
       });
     }
   },
+
+  authorIsNotCurrentUser: computed('currentUser', 'author.user', function() {
+    const currentUser = this.get('currentUser');
+    const author = this.get('author.user.content'); // <- promise
+    return !isEqual(currentUser, author);
+  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){

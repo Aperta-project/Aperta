@@ -8,6 +8,7 @@ class ProcessManuscriptWorker
 
   def perform(manuscript_attachment_id)
     manuscript_attachment = ManuscriptAttachment.find(manuscript_attachment_id)
+    set_kind(manuscript_attachment)
     paper = manuscript_attachment.paper
     epub_stream = get_epub(paper)
 
@@ -20,6 +21,10 @@ class ProcessManuscriptWorker
   end
 
   private
+
+  def set_kind(manuscript_attachment)
+    manuscript_attachment.update_column(:kind, manuscript_attachment.file.file.extension)
+  end
 
   def get_epub(paper)
     converter = EpubConverter.new(

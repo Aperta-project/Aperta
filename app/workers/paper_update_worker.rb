@@ -12,10 +12,12 @@ class PaperUpdateWorker
   sidekiq_options :retry => false
 
   def perform(ihat_job_params)
-    job_response = IhatJobResponse.new(ihat_job_params.with_indifferent_access)
+    params = ihat_job_params.with_indifferent_access
+    job_response = IhatJobResponse.new(params)
     @paper = Paper.find(job_response.paper_id)
+    @pdf = params[:outputs].first[:file_type] == 'pdf'
     if job_response.completed?
-      @epub_stream = Faraday.get(job_response.format_url(:epub)).body
+      @epub_stream = Faraday.get(job_response.format_url(:epub)).body unless @pdf
       sync!
     end
     Notifier.notify(event: "paper:data_extracted", data: { record: job_response })

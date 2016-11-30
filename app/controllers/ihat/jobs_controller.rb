@@ -6,13 +6,7 @@ module Ihat
     rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
     def create
-      if file_type == 'pdf'
-        # This is where we can put in a worker specific to pdfs to process any pdf epubs
-        response = IhatJobResponse.new(safe_params)
-        Notifier.notify(event: "paper:data_extracted", data: { record: response })
-      else
-        PaperUpdateWorker.perform_async(safe_params)
-      end
+      PaperUpdateWorker.perform_async(safe_params)
       head :ok
     end
 

@@ -10,6 +10,9 @@ class Journal < ActiveRecord::Base
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
   validates :name, presence: { message: 'Please include a journal name' }
+  validates :doi_journal_prefix, presence: { message: 'Please include a DOI Journal Prefix' }
+  validates :doi_publisher_prefix, presence: { message: 'Please include a DOI Publisher Prefix' }
+  validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
   validates :doi_journal_prefix, uniqueness: {
     scope: [:doi_publisher_prefix],
     if: proc do |journal|

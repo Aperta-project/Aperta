@@ -46,9 +46,9 @@ class UploadManuscriptTask(BaseTask):
     """
     if doc == 'random':
       doc2upload = random.choice(docs)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
+      fn = os.path.join(os.getcwd(), doc2upload)
     else:
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc)
+      fn = os.path.join(os.getcwd(), doc)
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)

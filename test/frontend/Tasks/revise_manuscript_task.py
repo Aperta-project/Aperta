@@ -71,7 +71,7 @@ class ReviseManuscriptTask(BaseTask):
     data = data or {}
     if data and 'attach' in data and data['attach']:
       doc2upload = random.choice(docs)
-      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{0}'.format(doc2upload))
+      fn = os.path.join(os.getcwd(), doc2upload)
       logging.info('Sending documents: {0}'.format(fn))
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672

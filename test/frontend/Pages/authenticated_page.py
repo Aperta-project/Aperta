@@ -200,11 +200,7 @@ class AuthenticatedPage(PlosPage):
     # The following element is inside a hidden div so must use iget()
     attach_input = self._iget(self._file_attach_input)
     logging.info('Sending filename to input field')
-    attach_input.send_keys(file_name + Keys.ENTER)
-    # As soon as we send the file to the input field, the attach button becomes disabled
-    # APERTA-8305
-    # logging.info('About to click attach button')
-    # attach_button.click()
+    attach_input.send_keys(file_name)
     return None
 
   def delete_attach_file(self, file_name):

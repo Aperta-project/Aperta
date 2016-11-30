@@ -20,10 +20,9 @@ moduleForComponent(
       $.mockjax({url: '/api/institutional_accounts', status: 200, responseText: {
         institutional_accounts: []
       }});
-      $.mockjax({url: '/api/journals', status: 200, responseText: {
-        journals: [1]
-      }});
 
+      let journal = FactoryGuy.make('journal');
+      TestHelper.mockFind('journal').returns({model: journal});
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');

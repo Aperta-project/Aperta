@@ -2,7 +2,7 @@ import { module } from 'qunit';
 import Ember from 'ember';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
-import FactoryGuy, {mockSetup, mockTeardown} from 'ember-data-factory-guy';
+import {mockSetup, mockTeardown} from 'ember-data-factory-guy';
 
 const { RSVP: { Promise } } = Ember;
 

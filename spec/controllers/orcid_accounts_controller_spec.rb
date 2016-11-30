@@ -128,7 +128,7 @@ describe OrcidAccountsController do
       end
     end
 
-    context 'qwhen the user does not have remove_orcid permission' do
+    context 'when the user does not have remove_orcid permission' do
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?).with(:remove_orcid, Journal).and_return(false)

@@ -12,7 +12,6 @@ moduleForComponent('orcid-connect',
                     beforeEach: function() {
                       manualSetup(this.container);
                       this.set('confirm', (message)=>{});
-                      this.set('canRemoveOrcid', true);
                     }});
 
 var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;

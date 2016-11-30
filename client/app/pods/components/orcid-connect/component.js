@@ -13,6 +13,10 @@ export default Ember.Component.extend({
   // function to use for asking the user to confirm an action
   confirm: window.confirm,
 
+  // Searching for the permission on any journal because the ORCID account
+  // appears on the user's profile page.  The profile page doesn't exist
+  // in the context of a journal, so we need to dig through all of them to
+  // see if the user can remove the link.
   setCanRemoveOrcid: function() {
     let that = this;
     let can = this.get('can');
@@ -62,9 +66,7 @@ export default Ember.Component.extend({
 
   // Returns true when the user has an orcidAccount and the given user is
   // the same as the currently logged in user. Otherwise, return false.
-  orcidConnectEnabled: Ember.computed('orcidAccount', function(){
-    return this.get('orcidAccount');
-  }),
+  orcidConnectEnabled: Ember.computed.reads('orcidAccount'),
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }

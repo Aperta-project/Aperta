@@ -16,7 +16,6 @@ const paperTaskURL = function paperTaskURL(paper, task) {
   return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
 };
 
-let journal;
 moduleForAcceptance('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
@@ -25,8 +24,6 @@ moduleForAcceptance('Integration: AdHoc Card', {
 
   beforeEach() {
     server   = setupMockServer();
-
-    $.mockjax.clear();
 
     server.respondWith('PUT', /\/api\/tasks\/\d+/, [
       204, {
@@ -51,7 +48,7 @@ moduleForAcceptance('Integration: AdHoc Card', {
       status: 200,
       responseText: []
     });
-    journal = make('journal');
+    let journal = make('journal');
     mockFind('journal').returns({ model: journal});
     TestHelper.mockFindAll('journal').returns({models: [journal]});
   }

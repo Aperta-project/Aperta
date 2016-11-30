@@ -4,7 +4,7 @@
 <p class="user-name">Hello <%= @assigner.first_name %></p>
 
 <p>
-  <%= @reviewer.full_name %> has accepted your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
+  <%= @reviewer_name %> has accepted your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
 </p>
 
 <%= render partial: 'email/button', locals: {

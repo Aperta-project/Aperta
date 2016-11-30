@@ -15,20 +15,11 @@ module TahiStandardTasks
         originating_task: self,
         assignee_id: invitation.invitee_id
       ).process
-      ReviewerMailer.delay.reviewer_accepted(
-        invite_reviewer_task_id: id,
-        assigner_id: invitation.inviter_id,
-        reviewer_id: invitation.invitee_id
-      )
+      ReviewerMailer.delay.reviewer_accepted(invitation_id: invitation.id)
     end
 
     def invitation_declined(invitation)
-      ReviewerMailer.delay.reviewer_declined(
-        invite_reviewer_task_id: id,
-        invitation_id: invitation.id,
-        assigner_id: invitation.inviter_id,
-        reviewer_id: invitation.invitee_id
-      )
+      ReviewerMailer.delay.reviewer_declined(invitation_id: invitation.id)
     end
 
     def invitation_rescinded(invitation)

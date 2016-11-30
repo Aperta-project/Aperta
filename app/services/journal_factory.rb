@@ -172,6 +172,7 @@ class JournalFactory
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
@@ -322,6 +323,7 @@ class JournalFactory
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
@@ -367,6 +369,7 @@ class JournalFactory
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
       # Journals
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)

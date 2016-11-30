@@ -43,13 +43,14 @@ moduleForAcceptance('Integration: AdHoc Card', {
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
-    server.respondWith('GET', '/api/journals', [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
-
     $.mockjax({
       url: '/api/countries',
       status: 200,
       responseText: []
     });
+    let journal = make('journal');
+    mockFind('journal').returns({ model: journal});
+    TestHelper.mockFindAll('journal').returns({models: [journal]});
   }
 });
 
@@ -60,7 +61,6 @@ test('Changing the title on an AdHoc Task', function(assert) {
 
   mockFind('paper').returns({ model: paper });
   mockFind('task').returns({ model: task });
-
   visit(paperTaskURL(paper, task));
 
   page.setTitle('Shazam!');
@@ -73,6 +73,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
 test('AdHoc Task text block', function(assert) {
   let paper = make('paper');
   let task  = make('ad-hoc-task', { paper: paper, body: [] });
+
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
   mockFind('paper').returns({ model: paper });

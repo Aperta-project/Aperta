@@ -19,3 +19,19 @@
     background: $aperta-green;
   }
 }
+
+.orcid-wrapper {
+  min-width: 100%;
+}
+
+.orcid-linked {
+  display: block;
+  min-width: 100%;
+  float: left;
+  clear: both;
+}
+
+.orcid-expired {
+  float:left;
+  clear: both;
+}

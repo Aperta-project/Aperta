@@ -66,11 +66,10 @@ describe PlosBioTechCheck::ChangesForAuthorTask do
         end.to change { initial_tech_check_task.reload.round }.by(1)
       end
 
-      it <<-DESC.strip_heredoc do
-        queues up emails to notify admins that the author have responded
-        to tech check
-      DESC
-        skip "Paper#admins implementation is wrong"
+      it 'does not queue up any emails' do
+        expect do
+          submit_tech_check
+        end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.length }
       end
 
       it 'creates an Activity feed item' do

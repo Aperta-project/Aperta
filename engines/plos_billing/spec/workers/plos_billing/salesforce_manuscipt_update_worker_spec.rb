@@ -70,14 +70,10 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
           match(/Couldn't do it/)
       end
 
-      it 'queues up an email notifying journal admins of the error' do
-        expect(PlosBilling::BillingSalesforceMailer).to receive_message_chain(
-          'delay.notify_journal_admin_sfdc_error'
-        ) do |paper_id, message|
-          expect(paper_id).to eq(paper.id)
-          expect(message).to match(/Couldn't do it/)
-        end
-        perform
+      it 'does not queue up any emails' do
+        expect do
+          perform
+        end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.length }
       end
     end
   end

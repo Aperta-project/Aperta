@@ -5,9 +5,26 @@ export default Ember.Component.extend({
   user: null,         // pass one
   orcidAccount: null, // of these in
   store: Ember.inject.service(),
+  can: Ember.inject.service('can'),
+  journal: null,
 
-   // function to use for asking the user to confirm an action
+  canRemoveOrcid: null,
+
+  // function to use for asking the user to confirm an action
   confirm: window.confirm,
+
+  // Searching for the permission on any journal because the ORCID account
+  // appears on the user's profile page.  The profile page doesn't exist
+  // in the context of a journal, so we need to dig through all of them to
+  // see if the user can remove the link.
+  setCanRemoveOrcid: function() {
+    let can = this.get('can');
+    this.get('store').findAll('journal').then((journals) => {
+      let promises = journals.map(j => can.can('remove_orcid', j));
+      Ember.RSVP.all(promises)
+      .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
+    });
+  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -15,6 +32,17 @@ export default Ember.Component.extend({
     if(this.get('user')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
+      });
+    }
+
+    if (this.get('canRemoveOrcid') === null) {
+      this.setCanRemoveOrcid();
+    }
+    // if we don't have a journal (profile page) we need to find one to
+    // display a contact email
+    if (this.get('journal') === null) {
+      this.get('store').findAll('journal').then((journals) => {
+        this.set('journal', journals.get('firstObject'));
       });
     }
   },
@@ -36,11 +64,7 @@ export default Ember.Component.extend({
 
   // Returns true when the user has an orcidAccount and the given user is
   // the same as the currently logged in user. Otherwise, return false.
-  orcidConnectEnabled: Ember.computed('orcidAccount', 'user.id', 'currentUser.id', function(){
-    const userId = this.get('user.id'),
-      currentUserId = this.get('currentUser.id');
-    return this.get('orcidAccount') && Ember.isEqual(userId, currentUserId);
-  }),
+  orcidConnectEnabled: Ember.computed.reads('orcidAccount'),
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }

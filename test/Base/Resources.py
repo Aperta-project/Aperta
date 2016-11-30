@@ -866,8 +866,7 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
         'frontend/assets/docs/Abnormal_Contextual_Modulation_of_Visual_Contour_Detection_in_Patients_with_.docx',
         'frontend/assets/docs/Abundance_of_commercially_important_reef_fish_indicates_different_levels_of_.docx',
-        # APERTA-8176
-        # 'Actin_turnover_in_lamellipodial_fragments.DOCX',
+        'frontend/assets/docs/Actin_turnover_in_lamellipodial_fragments.DOCX',
         'frontend/assets/docs/Acupuncture_and_Counselling_for_Depression_in_Primary_Care_a_Randomised_Controlled.docx',
         'frontend/assets/docs/Adaptation_to_Temporally_Fluctuating_Environments_by_the_Evolution_of_Maternal_.docx',
         'frontend/assets/docs/Aedes_hensilli_as_a_Potential_Vector_of_Chikungunya_and_Zika_Viruses.doc',
@@ -1256,7 +1255,7 @@ figures = [# 'frontend/assets/imgs/FIG1.TIF',
            ]
 
 supporting_info_files = [
-                                                  'frontend/assets/supportingInfo/S10_data.xlsx',
+                         'frontend/assets/supportingInfo/S10_data.xlsx',
                          'frontend/assets/supportingInfo/S10_figure.TIF',
                          'frontend/assets/supportingInfo/S10_other.tiff',
                          'frontend/assets/supportingInfo/S10_table.DOC',

@@ -178,6 +178,19 @@ describe EpubConverter do
           entries = read_epub_stream(converter.epub_stream)
           expect(entries.map(&:name)).to include('input/source.doc')
         end
+
+        context 'when the file is named something.DOC' do
+          before do
+            path = Pathname.new(file.path.gsub(/doc$/, 'DOC'))
+            allow(converter).to receive(:_manuscript_source_path)
+              .and_return(path)
+          end
+
+          it "downcases the extension name" do
+            entries = read_epub_stream(converter.epub_stream)
+            expect(entries.map(&:name)).to include('input/source.doc')
+          end
+        end
       end
 
       context 'when source is not requested' do

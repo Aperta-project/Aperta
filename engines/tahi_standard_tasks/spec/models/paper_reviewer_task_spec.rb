@@ -48,9 +48,12 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
 
       it "queues the email" do
-        expect { task.invitation_accepted invitation }.to change {
-          Sidekiq::Extensions::DelayedMailer.jobs.length
-        }.by(1)
+        task.invitation_accepted invitation
+        expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
+          TahiStandardTasks::ReviewerMailer,
+          :reviewer_accepted,
+          [{ invitation_id: invitation.id }]
+        )
       end
     end
 
@@ -61,9 +64,12 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
 
       it "queues the email" do
-        expect { task.invitation_accepted invitation }.to change {
-          Sidekiq::Extensions::DelayedMailer.jobs.length
-        }.by(1)
+        task.invitation_accepted invitation
+        expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
+          TahiStandardTasks::ReviewerMailer,
+          :reviewer_accepted,
+          [{ invitation_id: invitation.id }]
+        )
       end
     end
   end
@@ -73,9 +79,12 @@ describe TahiStandardTasks::PaperReviewerTask do
 
     context "with a paper editor" do
       it "queues the email" do
-        expect { task.invitation_declined invitation }.to change {
-          Sidekiq::Extensions::DelayedMailer.jobs.length
-        }.by(1)
+        task.invitation_declined invitation
+        expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
+          TahiStandardTasks::ReviewerMailer,
+          :reviewer_declined,
+          [{ invitation_id: invitation.id }]
+        )
       end
     end
 
@@ -86,9 +95,12 @@ describe TahiStandardTasks::PaperReviewerTask do
       end
 
       it "queues the email" do
-        expect { task.invitation_declined invitation }.to change {
-          Sidekiq::Extensions::DelayedMailer.jobs.length
-        }.by(1)
+        task.invitation_declined invitation
+        expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
+          TahiStandardTasks::ReviewerMailer,
+          :reviewer_declined,
+          [{ invitation_id: invitation.id }]
+        )
       end
     end
   end

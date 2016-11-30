@@ -2,7 +2,17 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## ## [1.30.1] - {2016-11-29}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- do not send journal staff admins emails for paper submission, editor invite accepted, tech check fixed events, or salesforce sync'ing errors
+- Do not sync paper data with salesforce if the paper has not been submitted.
+### Security
+
+## [1.30.0] - {2016-11-18}
 ### Added
 - Early Article Posting cards have been added to workflows, to allow authors to opt into
   allowing manuscripts to be published before all proofreading and copyediting is done.

@@ -48,6 +48,12 @@ describe TahiStandardTasks::PaperEditorTask do
       invitation.accept!
       expect(paper.academic_editors).to include(invitation.invitee)
     end
+
+    it 'does not queue up any emails' do
+      expect do
+        invitation.accept!
+      end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.count }
+    end
   end
 
   describe "PaperEditorTask.task_added_to_paper" do

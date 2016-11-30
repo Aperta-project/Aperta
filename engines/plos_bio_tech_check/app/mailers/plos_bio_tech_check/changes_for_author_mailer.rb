@@ -16,13 +16,5 @@ module PlosBioTechCheck
       mail(to: @author.email,
            subject: "Changes needed on your Manuscript in #{@journal.name}")
     end
-
-    def notify_paper_tech_fixed admin_id:, paper_id:
-      @admin = User.find admin_id
-      @paper = Paper.find paper_id
-
-      mail(to: @admin.email,
-           subject: 'Author has submitted tech check fixes')
-    end
   end
 end

@@ -18,10 +18,9 @@ module PlosBilling
     end
 
     def self.email_admin_error(paper_id, error_message)
-      # TODO: disabled as part of APERTA-8454, will reify another day
-      # BillingSalesforceMailer
-      #   .delay
-      #   .notify_journal_admin_sfdc_error(paper_id, error_message)
+      BillingSalesforceMailer
+        .delay
+        .notify_site_admins_of_syncing_error(paper_id, error_message)
     end
 
     def perform(paper_id)

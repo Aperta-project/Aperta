@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
+import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 
 const { computed } = Ember;
 
@@ -32,14 +33,15 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     fileAdded(file){
+      let check = checkType(file.name, '.doc, .docx, .pdf');
+      this.set('paper.fileType', check['acceptedFileType'])
+      debugger;
       this.set('isSaving', true);
     },
 
-    addingFileFailed(reason, {fileName, acceptedFileTypes}) {
+    addingFileFailed(reason, message, {fileName, acceptedFileTypes}) {
       this.set('isSaving', false);
-      let msg = `We're sorry, '${fileName}' is not a valid file type.
-      Please upload a Microsoft Word file (.docx or .doc).`
-      this.get('flash').displayMessage('error', msg);
+      this.get('flash').displayMessage('error', message);
     },
 
     uploadFinished(s3Url){

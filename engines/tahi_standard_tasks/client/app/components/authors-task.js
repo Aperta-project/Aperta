@@ -3,7 +3,7 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 const {
-  computed
+  computed,
 } = Ember;
 
 const acknowledgementIdents = [
@@ -25,6 +25,7 @@ const taskValidations = {
     }
   }]
 };
+
 
 export default TaskComponent.extend({
   validations: taskValidations,

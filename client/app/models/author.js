@@ -3,6 +3,11 @@ import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 
 const { attr, belongsTo } = DS;
+const {
+  computed,
+  computed: { alias },
+  isEqual
+} = Ember;
 
 export const contributionIdents = [
   'author--contributions--conceptualization',
@@ -21,11 +26,59 @@ export const contributionIdents = [
   'author--contributions--formal-analysis',
 ];
 
+const validations = {
+  firstName: ['presence'],
+  lastName: ['presence'],
+  authorInitial: ['presence'],
+  email: ['presence', 'email'],
+  affiliation: ['presence'],
+  government: [{
+    type: 'presence',
+    message: 'A selection must be made',
+    validation() {
+      const answer = this.get('object') // <- author
+                         .answerForQuestion('author--government-employee')
+                         .get('value');
+
+      return answer === true || answer === false;
+    }
+  }],
+  orcidIdentifier: [{
+    type: 'presence',
+    message() {
+      const currentUser = this.get('object.currentUser');
+      const author = this.get('object.user.content'); // <- promise
+      const same = 'This field is required';
+      const not  = 'This author needs to provide an ORCID ID before this card can be completed. Please contact the author.';
+      return isEqual(currentUser, author) ? same : not;
+    },
+    skipCheck() {
+      if(!window.RailsEnv.orcidConnectEnabled) { return true; }
+
+      const author = this.get('object.user.content'); // <- Promise
+      const paperCreator = this.get('object.paper.creator');
+      const authorIsNotPaperCreator = !isEqual(author, paperCreator);
+      if(authorIsNotPaperCreator) { return true; }
+    }
+  }],
+  contributions: [{
+    type: 'presence',
+    message: 'One must be selected',
+    validation() {
+      const author = this.get('object');
+      return _.some(contributionIdents, (ident) => {
+        return author.answerForQuestion(ident).get('value');
+      });
+    }
+  }]
+};
+
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
   user: belongsTo('user'),
 
-  orcidAccount: Ember.computed.alias('user.orcidAccount'),
+  orcidAccount: alias('user.orcidAccount'),
+  orcidIdentifier: alias('user.orcidAccount.identifier'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),
@@ -52,37 +105,9 @@ export default NestedQuestionOwner.extend({
   corresponding: attr('boolean'),
   deceased: attr('boolean'),
 
-  validations: {
-    'firstName': ['presence'],
-    'lastName': ['presence'],
-    'authorInitial': ['presence'],
-    'email': ['presence', 'email'],
-    'affiliation': ['presence'],
-    'government': [{
-      type: 'presence',
-      message: 'A selection must be made',
-      validation() {
-        const author = this.get('object');
-        const answer = author.answerForQuestion('author--government-employee')
-                             .get('value');
+  validations: validations,
 
-        return answer === true || answer === false;
-      }
-    }],
-    'contributions': [{
-      type: 'presence',
-      message: 'One must be selected',
-      validation() {
-        const author = this.get('object');
-
-        return _.some(contributionIdents, (ident) => {
-          return author.answerForQuestion(ident).get('value');
-        });
-      }
-    }]
-  },
-
-  displayName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
+  displayName: computed('firstName', 'middleInitial', 'lastName', function() {
     return [
       this.get('firstName'),
       this.get('middleInitial'),

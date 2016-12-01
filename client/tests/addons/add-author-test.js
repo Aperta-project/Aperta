@@ -1,15 +1,12 @@
-import Ember from 'ember';
-import { module } from 'qunit';
 import { test } from 'ember-qunit';
-import TestHelper, { mockTeardown } from 'ember-data-factory-guy/factory-guy-test-helper';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import Factory from '../helpers/factory';
-import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import {
   paperWithTask, addUserAsParticipant, addNestedQuestionToTask
 } from '../helpers/setups';
 
-let App      = null;
 let fakeUser = null;
 let server   = null;
 let paperId  = null;
@@ -20,15 +17,15 @@ const openNewAuthorForm = function() {
   click('#add-new-individual-author-link');
 };
 
-module('Integration: adding an author', {
+moduleForAcceptance('Integration: adding an author', {
   afterEach() {
+    window.RailsEnv.orcidConnectEnabled = false;
     server.restore();
-    mockTeardown();
-    Ember.run(App, 'destroy');
+    fakeUser = null;
   },
 
   beforeEach() {
-    App      = startApp();
+    window.RailsEnv.orcidConnectEnabled = false;
     fakeUser = window.currentUserData.user;
     server   = setupMockServer();
 
@@ -36,15 +33,41 @@ module('Integration: adding an author', {
       id: taskId
     });
 
+    const authorResponse = {
+      nested_questions: [
+        {id: 1,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--published_as_corresponding_author' },
+        {id: 2,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--deceased' },
+        {id: 3,  text: 'C', owner: { id: null, type: 'Author' }, value_type: 'question-set', ident: 'author--contributions' },
+        {id: 4,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--conceptualization', owner_id: '3' },
+        {id: 5,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--investigation', owner_id: '3' },
+        {id: 6,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--visualization', owner_id: '3' },
+        {id: 7,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--methodology', owner_id: '3' },
+        {id: 8,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--resources', owner_id: '3' },
+        {id: 9,  text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--supervision', owner_id: '3' },
+        {id: 10, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--software', owner_id: '3' },
+        {id: 11, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--data-curation', owner_id: '3' },
+        {id: 12, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--project-administration', owner_id: '3' },
+        {id: 13, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--validation', owner_id: '3' },
+        {id: 14, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--writing-original-draft', owner_id: '3' },
+        {id: 15, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--writing-review-and-editing', owner_id: '3' },
+        {id: 16, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--funding-acquisition', owner_id: '3' },
+        {id: 17, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--contributions--formal-analysis', owner_id: '3' },
+        {id: 18, text: 'Q', owner: { id: null, type: 'Author' }, value_type: 'boolean',      ident: 'author--government-employee' }
+      ]
+    };
+
     Factory.createPermission('AuthorsTask', taskId, ['edit']);
     TestHelper.mockFindAll('discussion-topic', 1);
 
-    const task = records[1];
+    const task = records.findBy('_rootKey', 'task');
 
     // -- Paper Setup
 
     const paperPayload = Factory.createPayload('paper');
-    let paper = paperPayload.createRecord('Paper', {id: 1});
+    let paper = records[0];
+    paper.author_ids = [fakeUser.id];
+    paper.creator_id = fakeUser.id;
+
     paperId = paper.id;
     paperPayload.addRecords(records.concat([fakeUser]));
     const paperResponse = paperPayload.toJSON();
@@ -60,37 +83,22 @@ module('Integration: adding an author', {
 
     const taskPayload = Factory.createPayload('task');
     taskPayload.addRecords([task, fakeUser]);
+    const taskResponse = taskPayload.toJSON();
+    taskResponse.nested_questions = [];
+    taskResponse.nested_questions.pushObjects(authorResponse.nested_questions);
+    taskResponse.authors = [];
+    const taskAuthor = _.clone(fakeUser);
+    taskAuthor.nested_question_ids = _.map(authorResponse.nested_questions, (q)=> { return q.id; });
+    taskAuthor.user_id = fakeUser.id;
+    taskResponse.authors.pushObject(taskAuthor);
 
     server.respondWith('GET', '/api/tasks/' + taskId, [
       200, {
         'Content-Type': 'application/json'
-      }, JSON.stringify(taskPayload.toJSON())
+      }, JSON.stringify(taskResponse)
     ]);
 
     // -- Nested Question Setup
-
-    const authorResponse = {
-      nested_questions: [
-        {id: 1,  text: 'Q', value_type: 'boolean',      ident: 'author--published_as_corresponding_author' },
-        {id: 2,  text: 'Q', value_type: 'boolean',      ident: 'author--deceased' },
-        {id: 3,  text: 'C', value_type: 'question-set', ident: 'author--contributions' },
-        {id: 4,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--conceptualization' },
-        {id: 5,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--investigation' },
-        {id: 6,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--visualization' },
-        {id: 7,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--methodology' },
-        {id: 8,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--resources' },
-        {id: 9,  text: 'Q', value_type: 'boolean',      ident: 'author--contributions--supervision' },
-        {id: 10, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--software' },
-        {id: 11, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--data-curation' },
-        {id: 12, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--project-administration' },
-        {id: 13, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--validation' },
-        {id: 14, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--writing-original-draft' },
-        {id: 15, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--writing-review-and-editing' },
-        {id: 16, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--funding-acquisition' },
-        {id: 17, text: 'Q', value_type: 'boolean',      ident: 'author--contributions--formal-analysis' },
-        {id: 18, text: 'Q', value_type: 'boolean',      ident: 'author--government-employee' }
-      ]
-    };
 
     server.respondWith('GET', '/api/nested_questions?type=Author', [
       200, { 'Content-Type': 'application/json' }, JSON.stringify(authorResponse)
@@ -127,7 +135,11 @@ module('Integration: adding an author', {
     server.respondWith('POST', '/api/authors', [
       200, {
         'Content-Type': 'application/json'
-      }, JSON.stringify({authors: [{id: 5, first_name: 'James', paper_id: paperId}]})
+      }, JSON.stringify({authors: [{
+        id: 5,
+        first_name: 'James',
+        paper_id: paperId
+      }]})
     ]);
 
     server.respondWith('GET', '/api/countries', [
@@ -154,25 +166,19 @@ test('can add a new author', function(assert) {
   });
 });
 
-test('validation works', function(assert) {
+test('validation works for currentUser/paper creator', function(assert) {
+  window.RailsEnv.orcidConnectEnabled = true;
   visit(`/papers/${paperId}/tasks/${taskId}`);
-  openNewAuthorForm();
-  click('.author-form-buttons .button-secondary:contains("done")');
-  click('.author-task-item-view-text');
-  click('.author-form-buttons .button-secondary:contains("done")');
+  click('.task-completed');
 
   andThen(function() {
     assert.elementFound(
-      '[data-test-id="author-last-name"].error',
-      'presence error on last name'
+      '.orcid-connect.error',
+      'orcid connect error'
     );
     assert.elementFound(
       '[data-test-id="author-initial"].error',
       'presence error on initial'
-    );
-    assert.elementFound(
-      '[data-test-id="author-email"].error',
-      'presence error on email'
     );
     assert.elementFound(
       '[data-test-id="author-affiliation"].error',
@@ -181,6 +187,59 @@ test('validation works', function(assert) {
     assert.elementFound(
       '[data-test-id="author-government"] .error-message:visible',
       'presence error on government'
+    );
+  });
+});
+
+test('validation works for non currentUser/paper creator', function(assert) {
+  const authorItem = '.author-task-item:not(.author-task-item-current-user) ';
+  window.RailsEnv.orcidConnectEnabled = true;
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  click('.author-form-buttons .button-secondary:contains("done")');
+  click(authorItem + '.author-task-item-view-text');
+  click('.author-form-buttons .button-secondary:contains("done")');
+
+  andThen(function() {
+    assert.elementNotFound(
+      authorItem + '.orcid-connect.error',
+      'orcid connect error'
+    );
+    assert.elementFound(
+       authorItem + '[data-test-id="author-last-name"].error',
+      'presence error on last name'
+    );
+    assert.elementFound(
+       authorItem + '[data-test-id="author-initial"].error',
+      'presence error on initial'
+    );
+    assert.elementFound(
+       authorItem + '[data-test-id="author-email"].error',
+      'presence error on email'
+    );
+    assert.elementFound(
+       authorItem + '[data-test-id="author-affiliation"].error',
+      'presence error on affiliation'
+    );
+    assert.elementFound(
+       authorItem + '[data-test-id="author-government"] .error-message:visible',
+      'presence error on government'
+    );
+  });
+});
+
+test('orcid validation does not fire', function(assert) {
+  window.RailsEnv.orcidConnectEnabled = false;
+  visit(`/papers/${paperId}/tasks/${taskId}`);
+  openNewAuthorForm();
+  click('.author-form-buttons .button-secondary:contains("done")');
+  click('.author-task-item-view-text');
+  click('.author-form-buttons .button-secondary:contains("done")');
+
+  andThen(function() {
+    assert.elementNotFound(
+      '.orcid-connect.error',
+      'orcid connect error'
     );
   });
 });

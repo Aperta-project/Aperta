@@ -202,4 +202,45 @@ describe OrcidAccount do
       expect(orcid_account.status).to eq(:access_token_expired)
     end
   end
+
+  describe 'oauth_authorize_url' do
+    context 'FORCE_SSL env variable is not set' do
+      before { ENV.delete('FORCE_SSL') }
+
+      let!(:orcid_account) do
+        FactoryGirl.build_stubbed(:orcid_account)
+      end
+
+      let(:redirect_uri) { 'https://test.host/api/orcid/oauth' }
+      let(:url) { orcid_account.oauth_authorize_url }
+
+      it "hits the ORCID server" do
+        expect(url).to match(/#{TahiEnv.orcid_site_host}/)
+      end
+
+      it "hits /oauth/authorize" do
+        expect(url).to match(%r{/oauth/authorize})
+      end
+
+      it "contains the ORCID_KEY" do
+        expect(url).to match(/#{TahiEnv.orcid_key}/)
+      end
+
+      it "passes a response_type of 'code'" do
+        expect(url).to match(/response_type=code/)
+      end
+
+      it "requests a scope of '/read-limited'" do
+        expect(url).to match(%r{scope=/read-limited})
+      end
+
+      it "requests only one scope" do
+        expect(url).not_to match(%r{scope=/[\w-]*%20/})
+      end
+
+      it "passes in a redirect uri" do
+        expect(url).to match(/redirect_uri=#{redirect_uri}/)
+      end
+    end
+  end
 end

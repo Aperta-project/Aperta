@@ -45,7 +45,7 @@ export default DS.Model.extend({
   body: attr('string'),
   coverEditors: attr(),
   createdAt: attr('date'),
-  creator: belongsTo('user', { async: true }),
+  creator: belongsTo('user', { async: false }),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),

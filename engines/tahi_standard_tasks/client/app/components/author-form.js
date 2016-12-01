@@ -6,7 +6,8 @@ const {
   Component,
   computed,
   computed: { alias },
-  inject: { service }
+  inject: { service },
+  isEqual
 } = Ember;
 
 export default Component.extend({
@@ -31,6 +32,12 @@ export default Component.extend({
       });
     }
   },
+
+  authorIsNotCurrentUser: computed('currentUser', 'author.user', function() {
+    const currentUser = this.get('currentUser');
+    const author = this.get('author.user.content'); // <- promise
+    return !isEqual(currentUser, author);
+  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
@@ -103,7 +110,7 @@ export default Component.extend({
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
     this.get('author').save().then(() => {
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
 
@@ -118,9 +125,16 @@ export default Component.extend({
         }
       });
 
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
+
+  validateOrcid: Ember.observer('author.orcidAccount.identifier', function() {
+    const ident = this.get('author.orcidAccount.identifier');
+    if(ident) {
+      this.send('validateField', 'orcidIdentifier', ident);
+    }
+  }),
 
   actions: {
     cancelEdit() {
@@ -174,8 +188,8 @@ export default Component.extend({
     },
 
     validateField(key, value) {
-      if(this.attrs.validateField) {
-        this.attrs.validateField(key, value);
+      if(this.get('validateField')) {
+        this.get('validateField')(key, value);
       }
     }
   }

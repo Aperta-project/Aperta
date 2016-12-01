@@ -11,7 +11,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
 * Recipients can be properly removed from adhoc emails.
 
-
 ## ## [1.30.1] - {2016-11-29}
 ### Added
 ### Changed

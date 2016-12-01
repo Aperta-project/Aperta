@@ -3299,7 +3299,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/1
     - ManuscriptAttachment
     - '1'
@@ -3323,7 +3323,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/2
     - ManuscriptAttachment
     - '2'
@@ -3347,7 +3347,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/3
     - ManuscriptAttachment
     - '3'
@@ -3371,7 +3371,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/4
     - ManuscriptAttachment
     - '4'
@@ -3395,7 +3395,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/8
     - ManuscriptAttachment
     - '8'
@@ -3419,7 +3419,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/9
     - ManuscriptAttachment
     - '9'
@@ -3443,7 +3443,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/10
     - ManuscriptAttachment
     - '10'
@@ -3467,7 +3467,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/17
     - ManuscriptAttachment
     - '17'
@@ -3491,7 +3491,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/18
     - ManuscriptAttachment
     - '18'

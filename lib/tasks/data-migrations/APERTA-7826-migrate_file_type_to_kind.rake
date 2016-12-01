@@ -15,11 +15,18 @@ namespace :data do
           if paper.processing && paper.withdrawn?
             messages << "Skipped #{paper.id} because it is stuck in processing"
           else
-            fail "Unexpected error for paper #{paper.id} not having a uploaded filetype"
+            if !Rails.env.development?
+              fail "Unexpected error for paper #{paper.id} not having a uploaded filetype"
+            else
+              # Assume a filetype of docx for the papers in development before this point
+              paper.file.update_column(:kind, 'docx')
+              messages << "Updating paper #{paper.id} to docx filetype in development"
+            end
           end
         end
       end
-      STDOUT.puts(messages[0])
+
+      messages.each { |msg| STDOUT.puts(msg) }
       STDOUT.puts('Data migration completed')
     end
   end

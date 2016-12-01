@@ -99,6 +99,7 @@ class Attachment < ActiveRecord::Base
 
     # Store off the url in case of any failures
     update_column :pending_url, url
+    update_column :uploaded_by_id, uploaded_by.try(:id)
 
     Attachment.transaction do
       @downloading = true

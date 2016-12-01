@@ -68,16 +68,22 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   def density_arguments
     return [] unless image.details['Total ink density']
     ['-density', image.details['Total ink density']]
+  rescue NoMethodError
+    # See https://github.com/minimagick/minimagick/issues/379
+    []
   end
 
   def colorspace_arguments
     return [] unless image.details['Colorspace']
     ['-colorspace', image.details['Colorspace']]
+  rescue NoMethodError
+    # See https://github.com/minimagick/minimagick/issues/379
+    []
   end
 
   def format
-    fail 'Cannot identify image format' unless image.details['Base filename']
-    image.details['Base filename'].split('.').last
+    raise 'Cannot identify image format' unless image['%[base]']
+    image['%[base]'].split('.').last
   end
 
   def needs_transcoding?(file)

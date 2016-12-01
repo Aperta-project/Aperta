@@ -1,12 +1,21 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-  classNames: ['orcid-connect', 'profile-section'],
+const {
+  Component,
+  computed,
+  inject: { service },
+  isEmpty,
+  isEqual,
+  String: { htmlSafe }
+} = Ember;
+
+export default Component.extend({
+  classNameBindings: [':orcid-connect', ':profile-section', 'errors:error'],
   user: null,         // pass one
   orcidAccount: null, // of these in
-  store: Ember.inject.service(),
-  can: Ember.inject.service('can'),
+  can: service('can'),
   journal: null,
+  store: service(),
 
   canRemoveOrcid: null,
 
@@ -62,9 +71,11 @@ export default Ember.Component.extend({
     }
   },
 
-  // Returns true when the user has an orcidAccount and the given user is
-  // the same as the currently logged in user. Otherwise, return false.
-  orcidConnectEnabled: Ember.computed.reads('orcidAccount'),
+  orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
+    const user = this.get('user.content'); // <-- promise
+    const currentUser = this.get('currentUser');
+    return this.get('orcidAccount') && isEqual(user, currentUser);
+  }),
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }
@@ -76,7 +87,7 @@ export default Ember.Component.extend({
 
   oauthInProgress: false,
 
-  buttonDisabled: Ember.computed('oauthInProgress',
+  buttonDisabled: computed('oauthInProgress',
                                  'orcidOauthResult',
                                  'orcid.identifier',
                                  'orcidAccount.isLoaded',
@@ -84,29 +95,24 @@ export default Ember.Component.extend({
     return this.get('oauthInProgress') ||
       !this.get('orcidAccount.isLoaded') ||
       (this.get('orcidOauthResult') === 'success' &&
-        Ember.isEmpty(this.get('orcid.identifier')));
+        isEmpty(this.get('orcid.identifier')));
   }),
 
-  buttonText: Ember.computed('oauthInProgress', 'orcidOauthResult', function() {
+  buttonText: computed('oauthInProgress', 'orcidOauthResult', function() {
     if (this.get('oauthInProgress')) {
       if (this.get('orcidOauthResult') === null){
         return 'Connecting to ORCID...';
-
       } else if (this.get('orcidOauthResult') === 'success') {
         return 'Retrieving ORCID ID...';
-
-      } else if (this.get('orcidOauthResult') === 'failure') {
-
-        return 'Connect or create your ORCID ID';
       }
-    } else {
-      return 'Connect or create your ORCID ID';
     }
+
+    return htmlSafe('Connect or create your ORCID ID <span class="orcid-connect-required">*</span>');
   }),
 
   orcidOauthResult: null,
 
-  accessTokenExpired: Ember.computed.equal('orcidAccount.status', 'access_token_expired'),
+  accessTokenExpired: computed.equal('orcidAccount.status', 'access_token_expired'),
 
   actions: {
     removeOrcidAccount(orcidAccount) {

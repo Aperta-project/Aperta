@@ -35,7 +35,6 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     fileAdded(file){
       let check = checkType(file.name, '.doc, .docx, .pdf');
       this.set('paper.fileType', check['acceptedFileType'])
-      debugger;
       this.set('isSaving', true);
     },
 

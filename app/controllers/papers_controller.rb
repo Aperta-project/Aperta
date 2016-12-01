@@ -34,8 +34,6 @@ class PapersController < ApplicationController
 
       url = params.dig(:paper, :url)
       if url
-        paper.file_type = params.dig(:paper, :file_type)
-        paper.save
         DownloadManuscriptWorker.download_manuscript(
           paper,
           url,

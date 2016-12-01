@@ -32,7 +32,7 @@ describe PaperConversionsController, type: :controller do
           .and_return true
       end
 
-      context 'with a paper that needs conversion' do
+      context 'with a docx paper that needs conversion' do
         subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
             get :export, id: paper.id, export_format: 'docx', format: :json
@@ -42,6 +42,7 @@ describe PaperConversionsController, type: :controller do
         before do
           # no source URL, needs conversion
           allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'docx'
           expect(paper.file.url).to be(nil)
 
           allow(PaperConverter).to receive(:export)
@@ -71,6 +72,7 @@ describe PaperConversionsController, type: :controller do
 
         before do
           allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'docx'
         end
 
         it 'returns a url to check later' do

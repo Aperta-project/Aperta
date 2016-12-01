@@ -18,6 +18,7 @@ from frontend.Tasks.supporting_information_task import SITask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
+from loremipsum import generate_paragraph
 
 __author__ = 'sbassi@plos.org'
 
@@ -42,49 +43,36 @@ class SITaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-
     doc2upload = random.choice(docs)
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
-    #supporting_info = SITask(self._driver)
-    #supporting_info.validate_styles()
-    #attached_filename = supporting_info.add_file(fn)
-    #assert attached_filename.text in fn
     data = {}
     data['file_name'] = fn
+    data['figure'] = 'S1'
     file_type = random.choice(['Table', 'Data', 'Text', 'Figure', 'Other'])
     logging.info(file_type)
     data['type'] = file_type
-    data['title'] = 'random text'
-    data['caption'] = 'random text 2'
-
+    data['title'] = generate_paragraph()[2][:15]
+    data['caption'] = generate_paragraph()[2][:35]
     manuscript_page.complete_task('Supporting Info', data=data)
+    # check for data
+    manuscript_page.click_task('Supporting Info')
+    # locate elements
+    supporting_info = SITask(self._driver)
+    figure_data = supporting_info._get(supporting_info._si_file_title_display)
+    figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
+    assert figure_line == figure_data.text, (figure_line, figure_data.text)
+    caption_data = supporting_info._get(supporting_info._si_file_caption_display)
+    assert data['caption'] == caption_data.text, (data['caption'], caption_data.text)
+    # Try delete it
+    # press make change to task
+    supporting_info.click_completion_button()
 
+    del_icon = supporting_info._get(supporting_info._si_trash_icon)
+    del_icon.click()
+    del_button = supporting_info._get(supporting_info._si_file_del_btn)
+    assert del_button.text == 'DELETE FOREVER', del_button.text
+    del_button.click()
 
-
-
-
-
-
-    #assert self._get(self._si_filename).text in file_name
-    #assert self._get(self._si_pencil_icon)
-    #assert self._get(self._si_trash_icon)
-
-    '''
-        assert attached_filename.text in file_name
-        self.validate_filename_style
-
-        assert self._get(self._si_pencil_icon)
-        assert self._get(self._si_trash_icon)
-
-
-        import pdb; pdb.set_trace()
-        self.validate_styles()
-    '''
-
-
-
-
-    #import pdb; pdb.set_trace()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

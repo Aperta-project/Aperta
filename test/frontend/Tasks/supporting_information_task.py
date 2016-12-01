@@ -35,6 +35,12 @@ class SITask(BaseTask):
     self._si_file_error_msg = (By.CLASS_NAME, 'error-message')
     self._si_file_cancel_btn = (By.CLASS_NAME, 'si-file-cancel-edit-button')
     self._si_file_save_btn = (By.CLASS_NAME, 'si-file-save-edit-button')
+    self._si_file_title_caption_fields = (By.CLASS_NAME, 'format-input-field')
+
+    self._si_file_title_display = (By.CLASS_NAME, 'si-file-title')
+    self._si_file_caption_display = (By.CLASS_NAME, 'si-file-caption')
+
+    self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
 
 
    # POM Actions
@@ -169,32 +175,30 @@ class SITask(BaseTask):
     return None
 
 
-  def complete_filename_form(self, data=None):
+  def complete_filename_form(self, data):
     """
     """
     label_field = self._get(self._si_file_label_field)
-    label_field.send_keys('S1' + Keys.ENTER)
+    label_field.send_keys(data['figure'] + Keys.ENTER)
     dropdown = self._get(self._si_file_select_category)
     dropdown.click()
-
-
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
-
-    # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == data['type']:
         item.click()
         time.sleep(1)
         break
-
     title = self._get(self._si_file_title_input)
-    title.send_keys(data['title'])
+    title_field = title.find_element_by_tag_name('div')
+    title_field.click()
+    title_field.send_keys(data['title'])
+
     caption = self._get(self._si_file_caption)
-    caption.send_keys(data['caption'])
+    caption_field = caption.find_element_by_tag_name('div')
+    caption_field.click()
+    caption_field.send_keys(data['caption'])
     save_btn = self._get(self._si_file_save_btn)
     save_btn.click()
-
-
 
 
   def validate_filename_style(self, attached_filename):

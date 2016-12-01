@@ -546,13 +546,26 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Check if a task is available in the task list
     :param task_name: The name of the task to validate
-    return True if task is present and False otherwise
+    :return: True if task is present and False otherwise
     """
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task.text == task_name:
         return True
     return False
+
+  def click_task(self, task_name):
+    """
+    Click a task title
+    :param task_name: The name of the task to click
+    :return: None
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task_name in task.text:
+        self.click_covered_element(task)
+        break
+    return None
 
   def complete_task(self, task_name, click_override=False, data=None):
     """
@@ -628,8 +641,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       time.sleep(1)
     elif task_name == 'Supporting Info':
-      #doc2upload = random.choice(docs)
-      #fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()
       if data and 'file_name' in data:
@@ -652,10 +663,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         edit_btn = self._get(supporting_info._si_pencil_icon)
         edit_btn.click()
         supporting_info.complete_filename_form(data)
-        # XXXXX
-
-
-
       # complete task
       if not base_task.completed_state():
         base_task.click_completion_button()

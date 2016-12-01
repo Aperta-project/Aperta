@@ -13,6 +13,9 @@ describe Paper::DataExtracted::NotifyUser do
   let(:user) { paper.creator }
   let(:successful_response) do
     IhatJobResponse.new(state: 'completed',
+                        outputs: [{
+                          file_type: 'docx'
+                        }],
                         options: {
                           metadata: {
                             paper_id: upload_task.paper.id,
@@ -22,6 +25,9 @@ describe Paper::DataExtracted::NotifyUser do
   end
   let(:errored_response) do
     IhatJobResponse.new(state: 'errored',
+                        outputs: [{
+                          file_type: 'docx'
+                        }],
                         options: {
                           metadata: {
                             paper_id: upload_task.paper.id,

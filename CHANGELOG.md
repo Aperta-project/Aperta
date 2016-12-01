@@ -31,6 +31,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
 - Ad-hoc cards have editing and managing permissions
+- ORCID validation on the Authors Task
 - ORCID IDs are included in the metadata export to Apex
 - ORCID IDs can only be removed by PLOS staff
 ### Changed

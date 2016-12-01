@@ -8,7 +8,10 @@ const {
 } = Ember;
 
 export default Component.extend(DragNDrop.DraggableMixin, {
-  classNames: ['author-task-item'],
+  classNameBindings: [
+    ':author-task-item',
+    'isAuthorCurrentUser:author-task-item-current-user'
+  ],
   deleteState: false,
   author: alias('model.object'),
   componentName: computed('model', function() {

@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
+* Add back missing attachment blocks for many ad hoc tasks
 
 
 ## ## [1.30.1] - {2016-11-29}

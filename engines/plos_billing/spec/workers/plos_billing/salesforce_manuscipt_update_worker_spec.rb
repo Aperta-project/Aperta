@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe PlosBilling::SalesforceManuscriptUpdateWorker do
+  describe 'sidekiq_retries_exhausted_block' do
+    it 'does not queue up any emails' do
+      expect do
+        msg = {
+          'class' => 'FooBar',
+          'args' => [],
+          'error_message' => 'something bad happened'
+        }
+        described_class.sidekiq_retries_exhausted_block.call(msg)
+      end.to_not change { Sidekiq::Extensions::DelayedMailer.jobs.length }
+    end
+  end
+
   describe '.email_admin_on_sidekiq_error' do
     let(:dbl) { double }
     let(:msg) do
@@ -14,10 +27,8 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
       "Failed #{msg['class']} with #{msg['args']}: #{msg['error_message']}"
     end
 
-    it 'calls BillingSalesforceMailer' do
-      expect(PlosBilling::BillingSalesforceMailer).to \
-        receive_message_chain('delay.notify_journal_admin_sfdc_error')
-        .with(4, error_message)
+    it 'does not call BillingSalesforceMailer' do
+      expect(PlosBilling::BillingSalesforceMailer).to_not receive(:delay)
       described_class.email_admin_on_sidekiq_error(msg)
     end
   end

@@ -91,4 +91,52 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       expect(task.submitted?).to be(false)
     end
   end
+
+  describe "#on_completion" do
+    let(:task) { FactoryGirl.create(factory, paper: paper, completed: completed, body: body) }
+    context "the task is complete" do
+      let(:completed) { true }
+      context "the task has a reviewer number" do
+        let(:body) { { "reviewer_number" => 2 } }
+        it "does not change the existing number" do
+          task.on_completion
+          expect(task.reload.body).to eq(body)
+          expect(task.reload.reviewer_number).to eq(2)
+        end
+      end
+      context "the task does not have a reviewer number" do
+        let(:body) { { "submitted" => false } }
+        context "other reviewer report tasks for the paper exist" do
+          before do
+            FactoryGirl.create(factory, paper: paper, completed: false)
+            FactoryGirl.create(factory, paper: paper, completed: true, body: { "reviewer_number" => 1 })
+            FactoryGirl.create(factory, paper: paper, completed: false, body: { "reviewer_number" => 2 })
+          end
+          it "sets the reviewer number to be one higher than the max of the other tasks" do
+            task.on_completion
+            expect(task.reload.reviewer_number).to eq(3)
+            expect(task.body).to eq("reviewer_number" => 3, "submitted" => false)
+          end
+        end
+        context "it's the only completed reviewer report task for the paper" do
+          before do
+            FactoryGirl.create(factory, paper: paper, completed: false)
+          end
+          it "sets the reviewer number to be one 1" do
+            task.on_completion
+            expect(task.reload.reviewer_number).to eq(1)
+            expect(task.body).to eq("reviewer_number" => 1, "submitted" => false)
+          end
+        end
+      end
+    end
+    context "the task is not complete" do
+      let(:completed) { false }
+      let(:body) { { "submitted" => false } }
+      it "does not change the task body" do
+        task.on_completion
+        expect(task.reload.body).to eq(body)
+      end
+    end
+  end
 end

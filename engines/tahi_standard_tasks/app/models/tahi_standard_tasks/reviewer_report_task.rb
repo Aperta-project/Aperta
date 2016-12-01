@@ -51,6 +51,7 @@ module TahiStandardTasks
       !submitted?
     end
 
+    # overriden to remove the 'submitted' flag from body
     def incomplete!
       update!(
         completed: false,
@@ -60,6 +61,30 @@ module TahiStandardTasks
 
     def submitted?
       !!body["submitted"]
+    end
+
+    def reviewer_number
+      body["reviewer_number"]
+    end
+
+    # before save we want to update the reviewer number if neccessary
+    def on_completion
+      set_reviewer_number if completed? && reviewer_number.blank?
+      super
+    end
+
+    def set_reviewer_number
+      max_existing = paper.tasks
+        .where(type: "TahiStandardTasks::ReviewerReportTask")
+        .all
+        .map(&:reviewer_number)
+        .compact
+        .max
+
+      new_number = max_existing ? max_existing + 1 : 1
+
+      body["reviewer_number"] = new_number
+      save!
     end
 
     private

@@ -10,7 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
 * Add back missing attachment blocks for many ad hoc tasks
-
+* Recipients can be properly removed from adhoc emails.
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added
@@ -32,6 +32,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
 - Ad-hoc cards have editing and managing permissions
+- ORCID validation on the Authors Task
 - ORCID IDs are included in the metadata export to Apex
 - ORCID IDs can only be removed by PLOS staff
 ### Changed

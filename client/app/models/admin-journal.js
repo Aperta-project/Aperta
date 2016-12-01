@@ -13,5 +13,6 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   paperCount: DS.attr('number'),
   paperTypes: DS.attr(),
-  pdfCss: DS.attr('string')
+  pdfCss: DS.attr('string'),
+  pdfAllowed: DS.attr('boolean')
 });

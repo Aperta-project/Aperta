@@ -5761,6 +5761,7 @@ journals:
   - staff_email
   - reviewer_email_bcc
   - editor_email_bcc
+  - pdf_allowed
   records: 
   - - '1'
     - PLOS Yeti
@@ -5777,6 +5778,7 @@ journals:
     - plos-yeti-staff@example.com
     - 
     - 
+    - false
 
 ---
 letter_templates:

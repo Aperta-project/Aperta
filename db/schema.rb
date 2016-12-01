@@ -342,6 +342,7 @@ ActiveRecord::Schema.define(version: 20161202162713) do
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
+    t.boolean  "pdf_allowed",          default: false
   end
 
   add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree

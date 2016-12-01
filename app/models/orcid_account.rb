@@ -1,5 +1,6 @@
 class OrcidAccount < ActiveRecord::Base
   include EventStream::Notifiable
+  include UrlBuilder
 
   belongs_to :user
   attr_accessor :oauth_authorize_url
@@ -78,8 +79,6 @@ class OrcidAccount < ActiveRecord::Base
     + "&scope=/read-limited"\
     + "&redirect_uri=#{redirect_uri}"
   end
-
-  include UrlBuilder
 
   def redirect_uri(use_ssl=TahiEnv.force_ssl?)
     protocol = use_ssl ? 'https' : 'http'

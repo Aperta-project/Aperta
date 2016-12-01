@@ -102,17 +102,12 @@ export default Component.extend({
     if (this.get('oauthInProgress')) {
       if (this.get('orcidOauthResult') === null){
         return 'Connecting to ORCID...';
-
       } else if (this.get('orcidOauthResult') === 'success') {
         return 'Retrieving ORCID ID...';
-
-      } else if (this.get('orcidOauthResult') === 'failure') {
-
-        return htmlSafe('Connect or create your ORCID ID <span class="orcid-connect-required">*</span>');
       }
-    } else {
-      return htmlSafe('Connect or create your ORCID ID <span class="orcid-connect-required">*</span>');
     }
+
+    return htmlSafe('Connect or create your ORCID ID <span class="orcid-connect-required">*</span>');
   }),
 
   orcidOauthResult: null,

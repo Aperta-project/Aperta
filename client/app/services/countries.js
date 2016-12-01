@@ -34,6 +34,7 @@ export default Service.extend({
     this._didStartLoading();
 
     this.get('restless').get('/api/countries').then((response)=> {
+      if(this.get('isDestroying')) { return; }
       this.set('_data', response.countries);
       this._didLoad();
     }, ()=> {

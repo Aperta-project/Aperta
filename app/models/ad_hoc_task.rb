@@ -5,4 +5,9 @@ class AdHocTask < Task
   # Avoid resetting adhoc task title and role
   def self.restore_defaults
   end
+
+  # type can be "attachments", "text", "email", "h1"
+  def blocks(type)
+    body.select { |b| b[0]["type"] == type }
+  end
 end

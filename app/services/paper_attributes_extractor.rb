@@ -10,7 +10,7 @@ class PaperAttributesExtractor
   end
 
   def sync!(paper)
-    if paper.file.kind == 'pdf'
+    if paper.file_type == 'pdf'
       # This is where any pdf related abstract extraction can occur
       paper.update!(
         body: nil,

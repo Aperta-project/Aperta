@@ -79,6 +79,10 @@ class Paper < ActiveRecord::Base
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
 
+  def file_type
+    file.try(:kind)
+  end
+
   def manuscript_id
     journal_prefix_and_number = doi.split('/').last.split('.') if doi
     journal_prefix_and_number.try(:shift) # Remove 'journal' text

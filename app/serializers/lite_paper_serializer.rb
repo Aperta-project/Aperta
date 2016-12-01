@@ -1,7 +1,7 @@
 class LitePaperSerializer < ActiveModel::Serializer
   attributes :active, :created_at, :editable, :id, :journal_id, :manuscript_id, :roles,
              :short_doi, :processing, :publishing_state, :related_at_date, :title,
-             :updated_at
+             :updated_at, :file_type
 
   def related_at_date
     return unless scoped_user.present?

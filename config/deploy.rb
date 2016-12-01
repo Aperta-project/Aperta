@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'tahi'
-set :assets_roles, [:web]
+set :assets_roles, [:web, :app, :worker]
 set :chruby_exec, '/usr/bin/chruby-exec'
 set :chruby_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__)).strip
 set :linked_dirs, ['log', 'tmp/pids', 'tmp/cache', 'tmp/sockets',

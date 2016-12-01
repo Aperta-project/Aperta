@@ -40,6 +40,8 @@ export default function startApp(attrs) {
 
   let currentUser = Factory.createRecord('User', {
     id: 1,
+    first_name: 'Fake',
+    last_name: 'User',
     fullName: 'Fake User',
     username: 'fakeuser',
     email: 'fakeuser@example.com'

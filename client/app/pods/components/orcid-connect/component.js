@@ -4,6 +4,7 @@ const {
   Component,
   computed,
   inject: { service },
+  isEmpty,
   isEqual,
   String: { htmlSafe }
 } = Ember;
@@ -12,7 +13,7 @@ export default Component.extend({
   classNameBindings: [':orcid-connect', ':profile-section', 'errors:error'],
   user: null,         // pass one
   orcidAccount: null, // of these in
-  can: Ember.inject.service('can'),
+  can: service('can'),
   journal: null,
   store: service(),
 
@@ -71,8 +72,8 @@ export default Component.extend({
   },
 
   orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
-    const user = this.get('user');
-    const currentUser = this.get('currentUserd');
+    const user = this.get('user.content'); // <-- promise
+    const currentUser = this.get('currentUser');
     return this.get('orcidAccount') && isEqual(user, currentUser);
   }),
 
@@ -94,7 +95,7 @@ export default Component.extend({
     return this.get('oauthInProgress') ||
       !this.get('orcidAccount.isLoaded') ||
       (this.get('orcidOauthResult') === 'success' &&
-        Ember.isEmpty(this.get('orcid.identifier')));
+        isEmpty(this.get('orcid.identifier')));
   }),
 
   buttonText: computed('oauthInProgress', 'orcidOauthResult', function() {

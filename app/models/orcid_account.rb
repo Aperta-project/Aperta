@@ -68,6 +68,24 @@ class OrcidAccount < ActiveRecord::Base
     )
   end
 
+  def oauth_authorize_url(
+    orcid_site_host: TahiEnv.orcid_site_host,
+    orcid_key: TahiEnv.orcid_key
+  )
+    "https://#{orcid_site_host}/oauth/authorize"\
+    + "?client_id=#{orcid_key}"\
+    + "&response_type=code"\
+    + "&scope=/read-limited"\
+    + "&redirect_uri=#{redirect_uri}"
+  end
+
+  include UrlBuilder
+
+  def redirect_uri(use_ssl=TahiEnv.force_ssl?)
+    protocol = use_ssl ? 'https' : 'http'
+    url_helpers.orcid_oauth_url(protocol: protocol)
+  end
+
   private
 
   def oauth_authorize(code)

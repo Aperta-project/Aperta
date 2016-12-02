@@ -9,8 +9,14 @@ namespace :attachments do
     limit = args.fetch(:limit, 40)
     q = Attachment.processing.limit(limit)
     puts "Starting #{q.count} image processing jobs"
-    q.each do |attachment|
-      DownloadAttachmentWorker.reprocess(attachment)
-    end
+    q.each { |attachment| DownloadAttachmentWorker.reprocess(attachment) }
+  end
+
+  desc 'Batch reprocess attachments that errored in groups of LIMIT (default 40)'
+  task :batch_reprocess_errored, [:limit] => [:environment] do |_, args|
+    limit = args.fetch(:limit, 40)
+    q = Attachment.error.where.not(pending_url: nil).limit(limit)
+    puts "Starting #{q.count} image processing jobs"
+    q.each { |attachment| DownloadAttachmentWorker.reprocess(attachment) }
   end
 end

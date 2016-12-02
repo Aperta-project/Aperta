@@ -971,6 +971,15 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/docs/Uncovering_Treatment_Burden_As_A_Key_Concept_For_Stroke_Care_A_Systematic_Review_of_.docx',
         'frontend/assets/docs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_Proteins_.doc',
         'frontend/assets/docs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_WordArt.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Text_Box.docx',
+        # APERTA-8505
+        # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelWorksheet.docx',
+        # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelChart.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Object_Equation.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_File_Movie.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_File_Audio.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Equation.docx',
         ]
 
 # Resources for future needs - we will be supporting pdf ingestion at some point
@@ -1089,6 +1098,15 @@ pdfs = ['frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/pdfs/Uncovering_Treatment_Burden_As_A_Key_Concept_For_Stroke_Care_A_Systematic_Review_of_.pdf',
         'frontend/assets/pdfs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_Proteins_.pdf',
         'frontend/assets/pdfs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_WordArt.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Text_Box.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_ExcelWorksheet.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_ExcelChart.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_Equation.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Photo.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Movie.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Audio.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Equation.pdf',
         ]
 
 # Generally, a random choice is made from among these figures when we create a new figure in

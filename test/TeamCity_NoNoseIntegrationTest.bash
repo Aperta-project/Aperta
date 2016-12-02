@@ -53,6 +53,7 @@ python -m frontend.test_bdd_create_to_submit
 python -m frontend.test_changes_for_author
 python -m frontend.test_dashboard
 python -m frontend.test_discussion_forum
+python -m frontend.test_early_article_posting
 python -m frontend.test_figure_task
 python -m frontend.test_final_tech_check
 python -m frontend.test_initial_decision_card

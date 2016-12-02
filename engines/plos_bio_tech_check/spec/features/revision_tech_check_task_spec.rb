@@ -32,7 +32,7 @@ feature 'Revision Tech Check', js: true do
     overlay.dismiss
 
     # creator cannot access revision tech check task
-    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    Page.view_task task
     expect(page).to have_content("You don't have access to that content")
   end
 

@@ -7,6 +7,7 @@ class DoiService
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/journal#{SUFFIX_FORMAT})\z}
+  SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
 
   attr_reader :journal
 

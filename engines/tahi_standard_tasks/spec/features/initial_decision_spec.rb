@@ -14,7 +14,7 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
 
   background do
     login_as(admin, scope: :user)
-    visit "/papers/#{paper.id}/tasks/#{paper.tasks.first.id}"
+    Page.view_task paper.tasks.first
   end
 
   context 'with a non-submitted Paper' do

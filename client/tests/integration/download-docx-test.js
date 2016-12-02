@@ -54,7 +54,7 @@ test('show download links on control bar', function(assert) {
     paperResponse = paperPayload.toJSON();
     jobId = '232134-324-1234-1234';
     exportUrl = "/api/papers/" + currentPaper.id + "/export?export_format=docx";
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
@@ -86,13 +86,15 @@ test('show download links on control bar', function(assert) {
       })
     ]);
     mock = void 0;
-    visit("/papers/" + currentPaper.id);
+    visit("/papers/" + currentPaper.shortDoi);
     andThen(function() {
       return assert.ok(true);
     });
     andThen(function() {
       mock = sinon.mock(win);
-      return mock.expects("location").withArgs("/api/papers/" + currentPaper.id + "/download.docx").returns(true);
+      return mock.expects("location").withArgs(
+        "/api/papers/" + currentPaper.id + "/download.docx"
+      ).returns(true);
     });
     click('#nav-downloads').then(function() {
       return click('.docx');

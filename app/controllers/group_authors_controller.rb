@@ -10,7 +10,8 @@ class GroupAuthorsController < ApplicationController
   end
 
   def create
-    requires_user_can :edit_authors, Paper.find(group_author_params[:paper_id])
+    requires_user_can :edit_authors,
+      Paper.find_by_id_or_short_doi(group_author_params[:paper_id])
     group_author = GroupAuthor.new(group_author_params)
     group_author.save!
     group_author.author_list_item.move_to_bottom

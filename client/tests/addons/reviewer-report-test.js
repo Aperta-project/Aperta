@@ -93,12 +93,12 @@ module('Integration: Reviewer Report', {
       }, JSON.stringify({})
     ]);
 
-    server.respondWith('GET', '/api/papers/' + currentPaper.id,
+    server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi,
       [ 200, { 'Content-Type': 'application/json' },
         JSON.stringify(paperResponse) ]
     );
 
-    server.respondWith('GET', '/api/papers/' + currentPaper.id + '/tasks',
+    server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi + '/tasks',
       [ 200, { 'Content-Type': 'application/json' },
       JSON.stringify(tasksPayload.toJSON()) ]
     );
@@ -128,7 +128,7 @@ module('Integration: Reviewer Report', {
 });
 
 test('Viewing the card', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   return visit(url).then(function() {
     assert.equal(
       find('.overlay-body-title').text().trim(),
@@ -138,7 +138,7 @@ test('Viewing the card', function(assert) {
 });
 
 test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   Factory.createPermission('ReviewerReportTask', taskId, ['view']);
   return visit(url).then(function() {
     assert.notOk(find('input[name*=reviewer_report--decision_term][type=radio][value=accept]').length, 'User cannot provide an accept for publication recommendation');
@@ -162,7 +162,7 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
 
 
 test('Edit mode: Providing reviewer feedback', function(assert) {
-  const url = '/papers/' + currentPaper.id + '/tasks/' + taskId;
+  const url = '/papers/' + currentPaper.shortDoi + '/tasks/' + taskId;
   Factory.createPermission('ReviewerReportTask', taskId, ['edit']);
   return visit(url).then(function() {
     assert.ok(find('input[name*=reviewer_report--decision_term][type=radio][value=accept]').length == 1, 'User can provide an accept for publication recommendation');

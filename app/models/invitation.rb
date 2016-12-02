@@ -177,7 +177,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def set_access_token
-    self.access_token = generate_token
+    self.token = generate_token
   end
 
   def generate_token

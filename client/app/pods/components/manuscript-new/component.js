@@ -10,6 +10,11 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   journals: null,
   paper: null,
   isSaving: false,
+  pdfEnabled: computed('paper.journal', function() {
+    if (this.get('paper.journal')) {
+      return this.get('paper.journal.pdfAllowed');
+    }
+  }),
   journalEmpty: computed.empty('paper.journal.content'),
   hasTitle: computed.notEmpty('paper.title'),
 

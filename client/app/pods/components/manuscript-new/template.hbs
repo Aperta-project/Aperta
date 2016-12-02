@@ -73,7 +73,7 @@
   <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
     {{fa-icon icon="upload"}} Upload Document
     {{s3-file-uploader elementId="upload-files"
-                       accept=".docx,.doc,.pdf"
+                       accept=(if pdfEnabled '.doc,.docx,.pdf' '.doc, .docx')
                        validateFileTypes=true
                        filePath="paper/manuscript"
                        fileAdded=(action "fileAdded")
@@ -81,5 +81,9 @@
                        uploadFinished=(action "uploadFinished")
                        uploadFailed=(action "uploadFailed")}}
   </span>
-  <p>Microsoft Word files only (.docx or .doc)</p>
+  {{#if pdfEnabled }}
+    <p>Microsoft Word files(.docx or .doc) or pdfs only</p>
+  {{else}}
+    <p>Microsoft Word files only (.docx or .doc)</p>
+  {{/if}}
 </div>

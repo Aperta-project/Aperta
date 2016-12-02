@@ -9,6 +9,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
 import logging
 import os
 import random
+import time
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
@@ -49,7 +50,7 @@ class SITaskTest(CommonTest):
     data['file_name'] = fn
     data['figure'] = 'S1'
     file_type = random.choice(['Table', 'Data', 'Text', 'Figure', 'Other'])
-    logging.info(file_type)
+    logging.info('Selected file type: {0}'.format(file_type))
     data['type'] = file_type
     data['title'] = generate_paragraph()[2][:15]
     data['caption'] = generate_paragraph()[2][:35]
@@ -59,19 +60,29 @@ class SITaskTest(CommonTest):
     # locate elements
     supporting_info = SITask(self._driver)
     figure_data = supporting_info._get(supporting_info._si_file_title_display)
+    #import pdb; pdb.set_trace()
     figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
     assert figure_line == figure_data.text, (figure_line, figure_data.text)
     caption_data = supporting_info._get(supporting_info._si_file_caption_display)
-    assert data['caption'] == caption_data.text, (data['caption'], caption_data.text)
+    assert data['caption'].strip() == caption_data.text, (data['caption'], caption_data.text)
     # Try delete it
     # press make change to task
     supporting_info.click_completion_button()
-
     del_icon = supporting_info._get(supporting_info._si_trash_icon)
     del_icon.click()
     del_button = supporting_info._get(supporting_info._si_file_del_btn)
     assert del_button.text == 'DELETE FOREVER', del_button.text
+    supporting_info.delete_forever_btn_style_validation(del_button)
     del_button.click()
+    time.sleep(2)
+    # Check that is deleted
+    supporting_info.set_timeout(2)
+    try:
+      supporting_info._get(supporting_info._si_trash_icon)
+      raise(StandardError, 'Item not deleted')
+    except ElementDoesNotExistAssertionError:
+      pass
+    supporting_info.restore_timeout()
 
 
 if __name__ == '__main__':

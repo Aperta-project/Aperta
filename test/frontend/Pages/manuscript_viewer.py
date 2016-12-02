@@ -853,7 +853,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param user: user
     :return: None
     """
-    print(user['name'])
+    logging.info(user['name'])
     self._get(self._tb_collaborators_link).click()
     self._get(self._tb_add_collaborators_label).click()
     time.sleep(2)
@@ -876,9 +876,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._add_collaborators_modal_save).click()
 
   def get_submission_status_initial_submission_todo(self):
-    """
-      Extract the submission status text from the page
-      """
+    """Extract the submission status text from the page"""
     return self._get(self._status_info_initial_submit_todo).text
 
   def get_submission_status_ready2submit_text(self):

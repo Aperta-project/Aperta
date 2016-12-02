@@ -7,12 +7,12 @@ module PlosBilling
 
     default from: Rails.configuration.from_email
 
-    def notify_journal_admin_sfdc_error(paper_id, message)
+    def notify_site_admins_of_syncing_error(paper_id, message)
       @paper = ::Paper.find(paper_id)
-      journal_admin_emails = @paper.journal.staff_admins.map(&:email).compact
+      site_admin_emails = Role.site_admin_role.users.uniq.map(&:email).compact
       @message = message
 
-      mail(to: journal_admin_emails, subject: <<-SUBJECT.strip_heredoc)
+      mail(to: site_admin_emails, subject: <<-SUBJECT.strip_heredoc)
         Action Required: Transmission to SalesForce failed for #{@paper.doi}
       SUBJECT
     end

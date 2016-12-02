@@ -17,10 +17,9 @@ module Ihat
     end
 
     def safe_params
-      params_safe =
-        params.require(:job).permit(:id, :state, outputs: [:file_type, :url], options: [:callback_url, :metadata])
-      params_safe[:options][:metadata] = Verifier.new(params_safe[:options][:metadata]).decrypt
-      params_safe
+      params.require(:job).permit(:id, :state, outputs: [:file_type, :url], options: [:callback_url, :metadata]).tap do |safe|
+        safe[:options][:metadata] = Verifier.new(safe[:options][:metadata]).decrypt
+      end
     end
 
     def render_invalid_params(e)

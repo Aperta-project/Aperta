@@ -21,13 +21,13 @@ class PaperConversionsController < ApplicationController
     export_format = params[:export_format]
 
     job_id = if export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
-                # This is already available for download, and does not
-                # need background processing.
-                'source'
+               # This is already available for download, and does not
+               # need background processing.
+               'source'
              elsif export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
-                'source'
+               'source'
              elsif export_format == 'docx' && paper.file_type == 'docx'
-                PaperConverter.export(paper, export_format, current_user).job_id
+               PaperConverter.export(paper, export_format, current_user).job_id
              end
 
     render json: { url: url_for(controller: :paper_conversions, action: :status,

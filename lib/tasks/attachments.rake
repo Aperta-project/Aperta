@@ -7,7 +7,7 @@ namespace :attachments do
   desc 'Batch reprocess attachments that are currently stuck in the `processing` state in groups of LIMIT (default 40)'
   task :batch_reprocess, [:limit] => [:environment] do |_, args|
     limit = args.fetch(:limit, 40)
-    q = Attachment.processing.where.not(pending_url: nil).limit(limit)
+    q = Attachment.processing.limit(limit)
     puts "Starting #{q.count} image processing jobs"
     q.each do |attachment|
       DownloadAttachmentWorker.reprocess(attachment)

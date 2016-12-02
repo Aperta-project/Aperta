@@ -18,6 +18,10 @@ class Attachment < ActiveRecord::Base
 
   class_attribute :public_resource
 
+  scope :processing, -> { where(status: STATUS_PROCESSING) }
+  scope :error, -> { where(status: STATUS_ERROR) }
+  scope :done, -> { where(status: STATUS_DONE) }
+
   def public_resource
     value = @public_resource
     value = self.class.public_resource if @public_resource.nil?

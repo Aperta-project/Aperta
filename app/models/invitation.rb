@@ -12,6 +12,7 @@ class Invitation < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
+  before_create :set_access_token
 
   scope :where_email_matches,
     ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
@@ -55,7 +56,7 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, after: [:generate_token, :set_invitee, :set_invited_at],
+    event(:invite, after: [:set_invitee, :set_invited_at],
                    after_commit: :notify_invitation_invited) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
@@ -175,8 +176,15 @@ class Invitation < ActiveRecord::Base
     update!(rescinded_at: Time.current.utc)
   end
 
+  def set_access_token
+    self.access_token = generate_token
+  end
+
   def generate_token
-    self.token ||= SecureRandom.hex(10)
+    loop do
+      token ||= SecureRandom.hex(10)
+      break token unless Invitation.where(token: token).exists?
+    end
   end
 
   def invite_allowed?

@@ -1214,7 +1214,10 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def delete_forever_btn_style_validation(button):
     """
-    APERTA-8504
+    Ensure consistency in rendering page and overlay large slide-in green-backed, white text
+    buttons across the application. This style is not in the styleguide: APERTA-8504
+    :param button: button to validate
+    :return: None
     """
     assert application_typeface in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
@@ -1230,11 +1233,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
     assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
-
-
-
-
-
 
   @staticmethod
   def validate_secondary_big_green_button_style(button):
@@ -1971,10 +1969,8 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('vertical-align') == 'baseline', label.value_of_css_property('vertical-align')
     assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
-    assert label.value_of_css_property('margin-right') == '0px', label.value_of_css_property('margin-right')
 
   # Navigation Styles ========================
   # There are currently no defined navigation styles in the style guide

@@ -563,7 +563,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task_name in task.text:
-        self.click_covered_element(task)
+        self._actions.move_to_element(task).perform()
+        task.click()
         break
     return None
 
@@ -645,8 +646,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       supporting_info.validate_styles()
       if data and 'file_name' in data:
         attached_filename = supporting_info.add_file(data['file_name'])
-        ## wait for new elements attach to the DOM
-        ##time.sleep(3)
         supporting_info.validate_filename_style(attached_filename)
         assert attached_filename.text in data['file_name'], (attached_filename.text,
           data['file_name'])

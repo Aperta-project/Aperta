@@ -26,7 +26,7 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class SITaskTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Revision Tech Check card
+  Validate the elements, styles, functions of the Revision Tech Check task
   """
 
   def test_si_task(self):
@@ -49,7 +49,8 @@ class SITaskTest(CommonTest):
     data = {}
     data['file_name'] = fn
     data['figure'] = 'S1'
-    file_type = random.choice(['Table', 'Data', 'Text', 'Figure', 'Other'])
+    choices = ('Table', 'Data', 'Text', 'Figure', 'Other')
+    file_type = random.choice(choices)
     logging.info('Selected file type: {0}'.format(file_type))
     data['type'] = file_type
     data['title'] = generate_paragraph()[2][:15]
@@ -60,14 +61,32 @@ class SITaskTest(CommonTest):
     # locate elements
     supporting_info = SITask(self._driver)
     figure_data = supporting_info._get(supporting_info._si_file_title_display)
-    #import pdb; pdb.set_trace()
+    figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
+    assert figure_line == figure_data.text, (figure_line, figure_data.text)
+    caption_data = supporting_info._get(supporting_info._si_file_caption_display)
+    assert data['caption'].strip() == caption_data.text, (data['caption'], caption_data.text)
+    # press make change to task
+    supporting_info.click_completion_button()
+    # Edit description
+    time.sleep(2)
+    edit_icon = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_icon.click()
+    # new data
+    data['figure'] = 'S2'
+    choices = ('Table', 'Data', 'Text', 'Figure', 'Other')
+    file_type = random.choice(choices)
+    logging.info('Selected file type: {0}'.format(file_type))
+    data['type'] = file_type
+    data['title'] = generate_paragraph()[2][:15]
+    data['caption'] = generate_paragraph()[2][:35]
+    supporting_info.complete_filename_form(data)
+    supporting_info = SITask(self._driver)
+    figure_data = supporting_info._get(supporting_info._si_file_title_display)
     figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
     assert figure_line == figure_data.text, (figure_line, figure_data.text)
     caption_data = supporting_info._get(supporting_info._si_file_caption_display)
     assert data['caption'].strip() == caption_data.text, (data['caption'], caption_data.text)
     # Try delete it
-    # press make change to task
-    supporting_info.click_completion_button()
     del_icon = supporting_info._get(supporting_info._si_trash_icon)
     del_icon.click()
     del_button = supporting_info._get(supporting_info._si_file_del_btn)
@@ -83,7 +102,6 @@ class SITaskTest(CommonTest):
     except ElementDoesNotExistAssertionError:
       pass
     supporting_info.restore_timeout()
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

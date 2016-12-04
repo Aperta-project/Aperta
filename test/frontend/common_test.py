@@ -125,7 +125,6 @@ class CommonTest(FrontEndTest):
     #   directory, catch and abort - no good will follow
     assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
                                    'incorrect value, aborting: {0}'.format(current_path)
-    logging.info(document)
     if document:
       fn = os.path.join(current_path, '{0}'.format(document))
     else:

@@ -59,7 +59,7 @@ class ReviewerReportTest(CommonTest):
     # Abbreviate the timeout for conversion success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_id_from_url()
+    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
     # Need to complete cards here
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors')
@@ -158,7 +158,7 @@ class ReviewerReportTest(CommonTest):
     # Abbreviate the timeout for conversion success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_id_from_url()
+    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()

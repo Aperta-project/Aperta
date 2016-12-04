@@ -135,8 +135,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     manuscript_page.page_ready()
     manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)
     # Outputting the title allows us to validate update following conversion
-    db_id = manuscript_page.get_paper_id_from_url()
-    logging.info('Paper database id is: {0}'.format(db_id))
+    manuscript_page.get_paper_short_doi_from_url()
     title = manuscript_page.get_paper_title_from_page()
     logging.info(u'Paper page title is: {0}'.format(title))
 

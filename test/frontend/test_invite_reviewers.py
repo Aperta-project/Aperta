@@ -48,7 +48,7 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    paper_id = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()

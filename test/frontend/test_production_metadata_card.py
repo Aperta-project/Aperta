@@ -50,7 +50,7 @@ class ProductionMetadataCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=60)
     paper_url = manuscript_page.get_current_url()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    paper_id = manuscript_page.get_paper_short_doi_from_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

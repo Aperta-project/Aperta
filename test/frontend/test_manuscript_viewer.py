@@ -94,7 +94,8 @@ class ManuscriptViewerTest(CommonTest):
         manuscript_viewer._get(manuscript_viewer._paper_title)
         journal_id = manuscript_viewer.get_journal_id()
         uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
-        paper_id = manuscript_viewer.get_paper_id_from_url()
+        short_doi = manuscript_viewer.get_paper_short_doi_from_url()
+        paper_id = manuscript_viewer.get_paper_id_from_short_doi(short_doi)
         journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
                                             ' from assignments where ((assigned_to_id = %s and '
                                             'assigned_to_type = \'Journal\' and user_id = %s)));',
@@ -273,16 +274,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer.page_ready_post_create()
 
     # Need to wait for url to update
-    count = 0
-    paper_id = manuscript_viewer.get_current_url().split('/')[-1]
-    while not paper_id:
-      if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
-      time.sleep(1)
-      paper_id = manuscript_viewer.get_current_url().split('/')[-1]
-      count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    manuscript_viewer.get_short_doi()
     manuscript_viewer.validate_download_btn_actions()
 
 if __name__ == '__main__':

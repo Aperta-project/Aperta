@@ -106,14 +106,15 @@ class TitleAbstractCard(BaseCard):
     finally:
       self.restore_timeout()
 
-  def check_initial_population(self, paper_id):
+  def check_initial_population(self, short_doi):
     """
     Verify that the values populated in the form are those ihat initially extracted
+    :param short_doi: The paper.short_doi of the relevant manuscript
     :return: void function
     """
     db_title, db_abstract = PgSQL().query('SELECT title, abstract '
                                           'FROM papers '
-                                          'WHERE id=%s;', (paper_id,))[0]
+                                          'WHERE short_doi=%s;', (short_doi,))[0]
 
     extracted_title = self._get(self._title_input).text
     extracted_abstract = self._get(self._abstract_input).text

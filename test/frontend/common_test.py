@@ -101,7 +101,7 @@ class CommonTest(FrontEndTest):
 
   def create_article(self, title='', journal='', type_='', document='', random_bit=False):
     """
-    Create a new article.
+    Create a new article. Assumes you have already launched the Create New Submission overlay.
     :param title: Title of the article.
     :param journal: Journal name of the article.
     :param type_: Type of article

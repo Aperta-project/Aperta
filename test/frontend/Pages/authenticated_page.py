@@ -368,16 +368,16 @@ class AuthenticatedPage(PlosPage):
     """
     self._get(self._sheet_close_x).click()
 
-  def go_to_manuscript(self, manuscript_id):
+  def go_to_manuscript(self, short_doi):
     """
-    Navigate to the manuscript viewer page of the provided paper id
-    :param manuscript_id: papers.id of the requested paper
+    Navigate to the manuscript viewer page of the provided short doi
+    :param short_doi: papers.short_doi of the requested paper
     :return: void function
     """
     time.sleep(5)
     url = self._driver.current_url
-    id_url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(manuscript_id)
-    self._driver.get(id_url)
+    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(short_doi)
+    self._driver.get(url)
 
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
     """

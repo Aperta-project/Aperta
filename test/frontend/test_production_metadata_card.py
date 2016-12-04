@@ -40,18 +40,15 @@ class ProductionMetadataCardTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='full submit', journal='PLOS Wombat', type_='OnlyInitialDecisionCard',
                         random_bit=True)
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=60)
+    manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
-    paper_id = manuscript_page.get_paper_short_doi_from_url()
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -60,22 +57,22 @@ class ProductionMetadataCardTest(CommonTest):
     manuscript_page.close_modal()
     # logout and enter as editor
     manuscript_page.logout()
+
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
     paper_workflow_url = '{0}/workflow'.format(paper_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    # otherwise failures
-    time.sleep(4)
+    workflow_page.page_ready()
     # Check if card is there
     if not workflow_page.is_card('Production Metadata'):
       workflow_page.add_card('Production Metadata')
     # click on invite academic editor
     workflow_page.click_production_metadata_card()
     product_metadata_card = ProductionMedataCard(self.getDriver())
-    product_metadata_card.check_style(paper_id)
+    product_metadata_card.check_style(short_doi)
     # test content, it should be saved
     # Due to bug APERTA-6843, I have to refresh
     product_metadata_card.refresh()

@@ -37,8 +37,7 @@ class TitleAbstractTest(CommonTest):
     journal = 'PLOS Wombat'
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     # Create paper
     dashboard_page.click_create_new_submission_button()
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
@@ -47,35 +46,23 @@ class TitleAbstractTest(CommonTest):
     self.create_article(title='Testing Title and Abstract Card', journal=journal, type_=paper_type,
                         random_bit=True)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=45)
-    # Need to wait for url to update
-    count = 0
-    short_doi = paper_viewer.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = paper_viewer.get_current_url().split('/')[-1]
-      count += 1
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
-    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    paper_viewer.page_ready()
+    short_doi = paper_viewer.get_short_doi()
     paper_viewer.logout()
 
     # log as editor - validate T&A Card
     staff_user = random.choice(editorial_users)
     logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('title_and_abstract')
     title_abstract = TitleAbstractCard(self.getDriver())
     title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))

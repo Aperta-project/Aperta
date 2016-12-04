@@ -56,7 +56,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
 
     # login as privileged user to validate the presentation of the data on the RC Card
     staff_user = random.choice(editorial_users)
-    logging.info('Logging in as user: {0}'.format(['name']))
+    logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(paper_id)

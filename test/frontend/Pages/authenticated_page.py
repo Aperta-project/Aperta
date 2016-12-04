@@ -1911,7 +1911,7 @@ class AuthenticatedPage(PlosPage):
     assert checkbox.value_of_css_property('font-size') == '12px', checkbox.value_of_css_property('font-size')
     assert checkbox.value_of_css_property('font-weight') == '400', checkbox.value_of_css_property('font-weight')
     assert checkbox.value_of_css_property('font-style') == 'normal', checkbox.value_of_css_property('font-style')
-    assert checkbox.value_of_css_property('color') == black, checkbox.value_of_css_property('color')
+    assert checkbox.value_of_css_property('color') == aperta-black, checkbox.value_of_css_property('color')
     assert checkbox.value_of_css_property('line-height') == '20px', checkbox.value_of_css_property('line-height')
 
   @staticmethod

@@ -43,32 +43,31 @@ class EarlyArticlePostingTask(BaseTask):
     opt_in_label = self._get(self._accman_consent_label)
     self.validate_checkbox_label(opt_in_label)
 
-  def complete_form(self, selected=''):
+  def complete_form(self, choice=''):
     """
     Fill out the single item EAP form with supplied data or random data if none provided
-    :param selected: If supplied, will fill out the form accordingly, else, will make a random
-      choice. A boolean
-    :returns choice: the selection to opt in or opt out, a boolean (Yes=Opt in; No=Opt out)
+    :param choice: If supplied, will fill out the form accordingly, else, will make a random
+      choice. A boolean.
+    :returns choice: the selection to opt in or opt out, a boolean. (True=Opt in; False=Opt out)
     """
-    choice = True
+    choices = [True, False]
     already_deselected = False
     opt_in_checkbox = self._get(self._accman_consent_checkbox)
-    if selected:
-      assert choice in (True, False), 'Selected can only be True or False. Supplied: ' \
-                                      '{0}'.format(selected)
-      choice = selected
+    if choice:
+      assert choice in choices, 'Selected can only be True or False. Supplied: ' \
+                                      '{0}'.format(choice)
     else:
-      choices = [True, False]
       choice = random.choice(choices)
+    logging.info('Early Article Posting selection is: {0}'.format(choice))
     if choice:
       try:
-        opt_in_checkbox.is_selected()
-      except:
+        assert opt_in_checkbox.is_selected()
+      except AssertionError:
         opt_in_checkbox.click()
     else:
       try:
-        opt_in_checkbox.is_selected()
-      except:
+        assert opt_in_checkbox.is_selected()
+      except AssertionError:
         already_deselected = True
       if not already_deselected:
         opt_in_checkbox.click()

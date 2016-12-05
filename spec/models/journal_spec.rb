@@ -6,6 +6,62 @@ describe Journal do
     expect(journal).to be_valid
   end
 
+  describe "validations" do
+    subject(:journal) do
+      FactoryGirl.build(
+        :journal,
+        doi_publisher_prefix: 'a-doi-publisher-prefix',
+        doi_journal_prefix: 'journal.foobar',
+        last_doi_issued: '1234'
+      )
+    end
+    let!(:existing_journal) { FactoryGirl.create(:journal) }
+
+    it { is_expected.to be_valid }
+
+    it 'requires a doi_publisher_prefix' do
+      journal.doi_publisher_prefix = nil
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('Please include a DOI Publisher Prefix')
+    end
+
+    it 'requires a unique doi_publisher_prefix' do
+      journal.doi_publisher_prefix = existing_journal.doi_publisher_prefix
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('The DOI Publisher Prefix has already been taken')
+    end
+
+    it 'requires a valid doi_publisher_prefix' do
+      journal.doi_publisher_prefix = '@'
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('The DOI Publisher Prefix is not valid')
+    end
+
+    it 'requires a doi_journal_prefix' do
+      journal.doi_journal_prefix = nil
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_journal_prefix]).to contain_exactly('Please include a DOI Journal Prefix')
+    end
+
+    it 'requires a unique doi_journal_prefix' do
+      journal.doi_journal_prefix = existing_journal.doi_journal_prefix
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_journal_prefix]).to contain_exactly('The DOI Publisher Prefix has already been taken')
+    end
+
+    it 'requires a valid doi_journal_prefix' do
+      journal.doi_journal_prefix = 'not-valid'
+      expect(journal).to_not be_valid
+      expect(journal.errors[:doi_journal_prefix]).to contain_exactly('The DOI Journal Prefix is not valid')
+    end
+
+    it 'requires a last_doi_issued' do
+      journal.last_doi_issued = nil
+      expect(journal).to_not be_valid
+      expect(journal.errors[:last_doi_issued]).to contain_exactly('Please include a Last DOI Issued')
+    end
+  end
+
   context "that has DOI information" do
     before do
       @journal = build(:journal)

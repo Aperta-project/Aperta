@@ -9,16 +9,16 @@ class Journal < ActiveRecord::Base
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
-  validates :name, presence: { message: 'Please include a journal name' }
-  validates :doi_journal_prefix, presence: { message: 'Please include a DOI Journal Prefix' }
-  validates :doi_publisher_prefix, presence: { message: 'Please include a DOI Publisher Prefix' }
+  validates :name, presence: { message: 'Please include a journal name' }, uniqueness: true
+  validates :doi_publisher_prefix,
+    presence: { message: 'Please include a DOI Publisher Prefix' },
+    format: { with: DoiService::PUBLISHER_PREFIX_FORMAT, message: 'The DOI Publisher Prefix is not valid', if: proc { |journal| journal.doi_publisher_prefix.present? } },
+    uniqueness: { message: 'The DOI Publisher Prefix has already been taken' }
+  validates :doi_journal_prefix,
+    presence: { message: 'Please include a DOI Journal Prefix' },
+    format: { with: DoiService::SUFFIX_FORMAT, message: 'The DOI Journal Prefix is not valid', if: proc { |journal| journal.doi_journal_prefix.present? } },
+    uniqueness: { message: 'The DOI Publisher Prefix has already been taken' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
-  validates :doi_journal_prefix, uniqueness: {
-    scope: [:doi_publisher_prefix],
-    if: proc do |journal|
-      journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
-    end
-  }
   validate :has_valid_doi_information?
 
   after_create :setup_defaults

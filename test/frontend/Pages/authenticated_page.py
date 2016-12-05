@@ -1799,7 +1799,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
 
-
   # Form Styles ==============================
   @staticmethod
   def validate_input_field_inside_label_style(label):

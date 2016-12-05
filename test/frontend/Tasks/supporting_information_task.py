@@ -46,7 +46,7 @@ class SITask(BaseTask):
 
   def validate_styles(self):
     """
-    Validate styles for elements in Supporting Information cards
+    Validate styles for elements in Supporting Information task
     """
     self.validate_common_elements_styles()
     # btn
@@ -120,11 +120,7 @@ class SITask(BaseTask):
     caption_field.send_keys(data['caption'])
     save_btn = self._get(self._si_file_save_btn)
     save_btn.click()
-
-  def edit_si(self, data):
-    """
-    """
-
+    return None
 
   def validate_filename_style(self, attached_filename):
     """

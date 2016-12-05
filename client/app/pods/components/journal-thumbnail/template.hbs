@@ -43,7 +43,7 @@
     <div class="inset-form-control required {{if validationErrors.name "error"}}">
       <div class="inset-form-control-text">
         <label>Journal Title</label>
-        {{error-message message=validationErrors.name}}
+        {{error-message message=validationErrors.name displayIcon=true}}
       </div>
       {{input type="text"
               value=journal.name
@@ -63,7 +63,7 @@
     <div class="inset-form-control required {{if validationErrors.doiJournalPrefix "error"}}">
       <div class="inset-form-control-text">
         <label>DOI Journal Prefix</label>
-        {{error-message message=validationErrors.doiJournalPrefix}}
+        {{error-message message=validationErrors.doiJournalPrefix displayIcon=true}}
       </div>
       {{textarea value=journal.doiJournalPrefix
                  class="journal-doi-journal-prefix-edit inset-form-control-input"
@@ -73,7 +73,7 @@
     <div class="inset-form-control required {{if validationErrors.doiPublisherPrefix "error"}}">
       <div class="inset-form-control-text">
         <label>DOI Publisher Prefix</label>
-        {{error-message message=validationErrors.doiPublisherPrefix}}
+        {{error-message message=validationErrors.doiPublisherPrefix displayIcon=true}}
       </div>
       {{textarea value=journal.doiPublisherPrefix
                  class="journal-doi-publisher-prefix-edit inset-form-control-input"
@@ -83,7 +83,7 @@
     <div class="inset-form-control required {{if validationErrors.lastDoiIssued "error"}}">
       <div class="inset-form-control-text">
         <label>Last DOI Issued</label>
-        {{error-message message=validationErrors.lastDoiIssued}}
+        {{error-message message=validationErrors.lastDoiIssued displayIcon=true}}
       </div>
       {{textarea value=journal.lastDoiIssued
                  class="journal-last-doi-edit inset-form-control-input"

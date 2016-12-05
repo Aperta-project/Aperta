@@ -1,4 +1,11 @@
 class Journal < ActiveRecord::Base
+  PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
+  SUFFIX_FORMAT           = %r{journal[^\/]+}
+  DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
+  SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
+
+  class InvalidDoiError < ::StandardError ; end
+
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal
@@ -13,7 +20,7 @@ class Journal < ActiveRecord::Base
   validates :doi_publisher_prefix,
     presence: { message: 'Please include a DOI Publisher Prefix' },
     format: {
-      with: DoiService::PUBLISHER_PREFIX_FORMAT,
+      with: PUBLISHER_PREFIX_FORMAT,
       message: 'The DOI Publisher Prefix is not valid. It can only contain word characters, numbers, -, and .',
       if: proc { |journal| journal.doi_publisher_prefix.present? }
     },
@@ -21,13 +28,12 @@ class Journal < ActiveRecord::Base
   validates :doi_journal_prefix,
     presence: { message: 'Please include a DOI Journal Prefix' },
     format: {
-      with: DoiService::SUFFIX_FORMAT,
-      message: 'The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /', 
+      with: SUFFIX_FORMAT,
+      message: 'The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /',
       if: proc { |journal| journal.doi_journal_prefix.present? }
     },
     uniqueness: { message: 'The DOI Publisher Prefix has already been taken' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
-  validate :has_valid_doi_information?
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
@@ -79,6 +85,10 @@ class Journal < ActiveRecord::Base
     all.flat_map(&:staff_admins)
   end
 
+  def self.valid_doi?(doi)
+    !!(doi =~ DOI_FORMAT)
+  end
+
   def staff_admins
     User.with_role(staff_admin_role, assigned_to: self)
   end
@@ -99,28 +109,28 @@ class Journal < ActiveRecord::Base
 
   # Try to block other services from directly updating last_doi_issued to avoid
   # issues where last_doi_issued gets out-of-sync.
-  # instead those services should call #next_doi_number!
+  # instead those services should call #next_doi!
   def last_doi_issued=(*args)
     return unless new_record?
     super(*args)
   end
 
-  def next_doi_number!
+  # Returns the next DOI string for this journal incrementing the
+  # last_doi_issued column in the process
+  def next_doi!
     with_lock do
-      last_doi_issued.succ.tap do |next_number|
+      next_number = last_doi_issued.succ
+      next_doi = "#{doi_publisher_prefix}/#{doi_journal_prefix}.#{next_number}"
+      if self.class.valid_doi?(next_doi)
         update_column :last_doi_issued, next_number
+        next_doi
+      else
+        raise InvalidDoiError, "Attempted to generate the next DOI, but it was in an invalid DOI format: #{next_doi}"
       end
     end
   end
 
   private
-
-  def has_valid_doi_information?
-    ds = DoiService.new(journal: self)
-    return unless ds.journal_has_doi_prefixes?
-    return if ds.journal_doi_info_valid?
-    errors.add(:doi, "The DOI you specified is not valid.")
-  end
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)

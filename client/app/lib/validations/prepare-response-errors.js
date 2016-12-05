@@ -42,7 +42,6 @@ export default function prepareResponseErrors(jsonApiErrors, options) {
 
   if (options && options.includeNames) {
     let humanize = options.includeNames === 'humanize';
-    console.log(options);
     Object.keys(errorsObject).forEach((key) =>{
       let keyName = formatKey(key, humanize);
       errorsObject[key] = `${keyName} ${errorsObject[key]}`;

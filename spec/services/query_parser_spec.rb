@@ -179,6 +179,17 @@ describe QueryParser do
         end
       end
 
+      it 'parses TASK x HAS BEEN COMPLETED <' do
+        now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
+        one_day_ago = now_time.days_ago(1).to_formatted_s(:db)
+        Timecop.freeze(now_time) do
+          parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED < 1'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" > '#{one_day_ago}'
+          SQL
+        end
+      end
+
       it 'parses TASK x HAS BEEN COMPLETED >' do
         now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
         one_day_ago = now_time.days_ago(1).to_formatted_s(:db)
@@ -186,6 +197,28 @@ describe QueryParser do
           parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED > 1'
           expect(parse.to_sql).to eq(<<-SQL.strip)
             "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{one_day_ago}'
+          SQL
+        end
+      end
+
+      it 'parses TASK x HAS BEEN COMPLETED <=' do
+        now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
+        five_days_ago = now_time.days_ago(5).to_formatted_s(:db)
+        Timecop.freeze(now_time) do
+          parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED <= 5'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" >= '#{five_days_ago}'
+          SQL
+        end
+      end
+
+      it 'parses TASK x HAS BEEN COMPLETED >=' do
+        now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
+        five_days_ago = now_time.days_ago(5).to_formatted_s(:db)
+        Timecop.freeze(now_time) do
+          parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED >= 5'
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" <= '#{five_days_ago}'
           SQL
         end
       end

@@ -111,10 +111,28 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(false))
   end
 
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>/) do |task, days_ago|
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \<\s/) do |task, days_ago|
+    table = join Task
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    table[:title].matches(task).and(table[:completed_at].gt(start_time))
+  end
+
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>\s/) do |task, days_ago|
     table = join Task
     start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
     table[:title].matches(task).and(table[:completed_at].lt(start_time))
+  end
+
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \<=/) do |task, days_ago|
+    table = join Task
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    table[:title].matches(task).and(table[:completed_at].gteq(start_time))
+  end
+
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>=/) do |task, days_ago|
+    table = join Task
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    table[:title].matches(task).and(table[:completed_at].lteq(start_time))
   end
 
   add_simple_expression('HAS TASK') do |task|

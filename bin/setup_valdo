@@ -36,7 +36,7 @@ vagrant plugin install vagrant-hostmanager
 vagrant plugin install vagrant-host-path
 
 cd "$VALDO_FOLDER_DIR"
-rm -f vbox.box && s3cmd -c .s3cfg get s3://opsbuild/vbox-java.box vbox.box
+rm -f vbox.box && s3cmd -c .s3cfg get s3://valdovm/vbox-java.box vbox.box
 vagrant box add -f vbox vbox.box
 
 scp aperta@aperta-frontend-201.sfo.plos.org:secrets/.ploprc "$HOME/.ploprc"

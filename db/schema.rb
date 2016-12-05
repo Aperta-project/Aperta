@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(version: 20161202162713) do
     t.string   "invitee_role",                             null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
-    t.string   "token"
+    t.string   "token",                                    null: false
     t.integer  "primary_id"
     t.datetime "invited_at"
     t.datetime "declined_at"

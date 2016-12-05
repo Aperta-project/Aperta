@@ -11,12 +11,8 @@ class PaperAttributesExtractor
 
   def sync!(paper)
     if paper.file_type == 'pdf'
-      # This is where any pdf related abstract extraction can occur
-      paper.update!(
-        body: nil,
-        abstract: nil,
-        title: paper.title
-      )
+      # Noop for now. Since there is no grobid integration right now, we are relying upon the url
+      # of the pdf that was originally uploaded
     else
       paper.update!(
         body: extract_file('body'),

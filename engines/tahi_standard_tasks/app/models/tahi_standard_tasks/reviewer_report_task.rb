@@ -8,9 +8,6 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
-    before_create :assign_to_draft_decision
-    has_many :decisions, -> { uniq }, through: :paper
-
     # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.
@@ -28,7 +25,7 @@ module TahiStandardTasks
     def find_or_build_answer_for(nested_question:, **_kwargs)
       super(
         nested_question: nested_question,
-        decision: decision
+        decision: paper.draft_decision
       )
     end
 
@@ -55,44 +52,10 @@ module TahiStandardTasks
     end
 
     def incomplete!
-      assign_to_draft_decision
       update!(
         completed: false,
         body: body.except("submitted")
       )
-    end
-
-    # +decision+ returns the _relevant_ decision to this task. This is so
-    # the appropriate questions and responses for this task can be determined.
-    #
-    # This is impacted by the concept of "latest decision" in the app as it's
-    # not always the latest rendered decision by an Academic Editor.
-    def decision
-      paper.decisions.find(body["decision_id"]) if body["decision_id"]
-    end
-
-    def decision=(new_decision)
-      previous_decision_ids = body["previous_decision_ids"] || []
-      current_decision_id = body["decision_id"]
-
-      previous_decision_ids.push current_decision_id if current_decision_id
-
-      update_body(
-        "decision_id" => new_decision.try(:id),
-        "previous_decision_ids" => previous_decision_ids
-      )
-    end
-
-    def previous_decision_ids
-      if body["previous_decision_ids"]
-        body["previous_decision_ids"]
-      else
-        []
-      end
-    end
-
-    def previous_decisions
-      paper.decisions.where(id: previous_decision_ids)
     end
 
     def submitted?
@@ -100,10 +63,6 @@ module TahiStandardTasks
     end
 
     private
-
-    def assign_to_draft_decision
-      self.decision = paper.draft_decision
-    end
 
     def update_body(hsh)
       self.body = body.merge(hsh)

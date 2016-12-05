@@ -5,16 +5,22 @@ describe TahiStandardTasks::ReviewerMailer do
   let(:paper) { reviewer_task.paper }
   let(:reviewer) { FactoryGirl.create(:user) }
   let(:reviewer_task) { FactoryGirl.create(:paper_reviewer_task) }
+  let(:invitation) do
+    FactoryGirl.create(
+      :invitation,
+      invitee: reviewer,
+      inviter: assigner,
+      email: reviewer.email,
+      task: reviewer_task
+    )
+  end
 
   describe ".reviewer_accepted" do
-    context "with an assigner" do
-      let(:email) do
-        described_class.reviewer_accepted(
-          invite_reviewer_task_id: reviewer_task.id,
-          reviewer_id: reviewer.id,
-          assigner_id: assigner.id)
-      end
+    subject(:email) do
+      described_class.reviewer_accepted(invitation_id: invitation.id)
+    end
 
+    context "with an assigner" do
       it "has correct subject line" do
         expect(email.subject).to eq "Reviewer invitation was accepted on the manuscript, \"#{paper.display_title}\""
       end
@@ -28,36 +34,53 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it "contains link to the task" do
-        expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{reviewer_task.id}})
+        expect(email.body).to match(%r{\/papers\/#{paper.short_doi}\/tasks\/#{reviewer_task.id}})
       end
     end
 
     context "without assigner" do
-      let(:email) do
-        described_class.reviewer_accepted(
-          invite_reviewer_task_id: reviewer_task.id,
-          reviewer_id: reviewer.id,
-          assigner_id: nil)
+      let(:invitation) do
+        FactoryGirl.create(
+          :invitation,
+          invitee: reviewer,
+          inviter: nil,
+          email: reviewer.email,
+          task: reviewer_task
+        )
       end
 
       it "does not send" do
         expect(email.message).to be_a(ActionMailer::Base::NullMail)
       end
     end
+
+    context "without reviewer existing in the system" do
+      let(:invitation) do
+        FactoryGirl.create(
+          :invitation,
+          invitee: nil,
+          inviter: assigner,
+          email: reviewer.email,
+          task: reviewer_task
+        )
+      end
+
+      it "does send" do
+        expect(email.message).to be_a(Mail::Message)
+      end
+
+      it "includes the reviewer's email that was invited in the body" do
+        expect(email.body).to match("#{invitation.email} has accepted")
+      end
+    end
   end
 
   describe ".reviewer_declined" do
-    let(:invitation) { FactoryGirl.create(:invitation) }
+    subject(:email) do
+      described_class.reviewer_declined(invitation_id: invitation.id)
+    end
 
     context "with an assigner" do
-      let(:email) do
-        described_class.reviewer_declined(
-          invite_reviewer_task_id: reviewer_task.id,
-          invitation_id: invitation.id,
-          reviewer_id: reviewer.id,
-          assigner_id: assigner.id)
-      end
-
       it "has correct subject line" do
         expect(email.subject).to eq "Reviewer invitation was declined on the manuscript, \"#{paper.display_title}\""
       end
@@ -71,7 +94,7 @@ describe TahiStandardTasks::ReviewerMailer do
       end
 
       it "contains link to the task" do
-        expect(email.body).to match(%r{\/papers\/#{paper.id}\/tasks\/#{reviewer_task.id}})
+        expect(email.body).to match(%r{\/papers\/#{paper.short_doi}\/tasks\/#{reviewer_task.id}})
       end
 
       it "contains 'No feedback provided' for decline reason when not set" do
@@ -102,16 +125,38 @@ describe TahiStandardTasks::ReviewerMailer do
     end
 
     context "without assigner" do
-      let(:email) do
-        described_class.reviewer_declined(
-          invite_reviewer_task_id: reviewer_task.id,
-          invitation_id: invitation.id,
-          reviewer_id: reviewer.id,
-          assigner_id: nil)
+      let(:invitation) do
+        FactoryGirl.create(
+          :invitation,
+          invitee: reviewer,
+          inviter: nil,
+          email: reviewer.email,
+          task: reviewer_task
+        )
       end
 
       it "does not send" do
         expect(email.message).to be_a(ActionMailer::Base::NullMail)
+      end
+    end
+
+    context "without reviewer existing in the system" do
+      let(:invitation) do
+        FactoryGirl.create(
+          :invitation,
+          invitee: nil,
+          inviter: assigner,
+          email: reviewer.email,
+          task: reviewer_task
+        )
+      end
+
+      it "does send" do
+        expect(email.message).to be_a(Mail::Message)
+      end
+
+      it "includes the reviewer's email that was invited in the body" do
+        expect(email.body).to match("#{invitation.email} has declined")
       end
     end
   end

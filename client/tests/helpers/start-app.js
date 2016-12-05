@@ -34,14 +34,23 @@ export default function startApp(attrs) {
     location: 'none'
   });
 
+  let orcidAccount = Factory.createRecord('OrcidAccount', {
+    id: 1
+  });
+
   let currentUser = Factory.createRecord('User', {
     id: 1,
+    first_name: 'Fake',
+    last_name: 'User',
     fullName: 'Fake User',
     username: 'fakeuser',
     email: 'fakeuser@example.com'
   });
 
-  window.currentUserData = {user: currentUser};
+  window.currentUserData = {
+    user: currentUser,
+    orcid_accounts: [orcidAccount]
+  };
 
   window.eventStreamConfig = {
     key: 'fakeAppKey123456',
@@ -60,6 +69,12 @@ export default function startApp(attrs) {
       }
       responseJson[Ember.String.pluralize(modelName)] = json;
       return responseJson;
+    },
+    mockPaperQuery: function(paper) {
+      let mockedQuery = this.mockQuery('paper').returns({models: [paper]});
+      var shortDoi = Ember.get(paper, 'shortDoi');
+      mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
+      return mockedQuery;
     }
   });
 

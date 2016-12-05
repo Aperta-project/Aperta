@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118035507) do
+ActiveRecord::Schema.define(version: 20161201174447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -343,6 +343,8 @@ ActiveRecord::Schema.define(version: 20161118035507) do
     t.string   "editor_email_bcc"
   end
 
+  add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
+
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"
     t.string   "template_decision"
@@ -447,7 +449,6 @@ ActiveRecord::Schema.define(version: 20161118035507) do
     t.integer  "user_id"
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
-    t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
@@ -463,11 +464,13 @@ ActiveRecord::Schema.define(version: 20161118035507) do
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
+    t.string   "short_doi"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
+  add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "permission_requirements", force: :cascade do |t|

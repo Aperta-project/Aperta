@@ -2,7 +2,30 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## ## [x.x.x] - {yyyy-mm-dd}
+### Added
+### Changed
+* Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
+  by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
+### Deprecated
+### Removed
+### Fixed
+* Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
+* Add back missing attachment blocks for many ad hoc tasks
+* Recipients can be properly removed from adhoc emails.
+* Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
+  to email Site Admin(s) instead.
+## ## [1.30.1] - {2016-11-29}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- do not send journal staff admins emails for paper submission, editor invite accepted, tech check fixed events, or salesforce sync'ing errors
+- Do not sync paper data with salesforce if the paper has not been submitted.
+### Security
+
+## [1.30.0] - {2016-11-18}
 ### Added
 - Early Article Posting cards have been added to workflows, to allow authors to opt into
   allowing manuscripts to be published before all proofreading and copyediting is done.
@@ -12,7 +35,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Display of article type in invitations
 - Caching of unsaved Discussion responses
 - Ad-hoc cards have editing and managing permissions
+- ORCID validation on the Authors Task
 - ORCID IDs are included in the metadata export to Apex
+- ORCID IDs can only be removed by PLOS staff
 ### Changed
 ### Deprecated
 ### Removed

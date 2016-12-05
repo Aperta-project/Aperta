@@ -19,7 +19,8 @@ class IhatJobRequest
   end
 
   def self.recipe_name(from_format:, to_format:)
-    from, to = [from_format, to_format].map(&:to_sym)
+    # ihat recipe names are case insensitive, but let us be careful
+    from, to = [from_format, to_format].map(&:downcase).map(&:to_sym)
     case [from, to]
     when [:doc, :html]
       'doc_to_html'
@@ -34,21 +35,17 @@ class IhatJobRequest
 
   def self.request_for_epub(epub:, source_url:, metadata: {})
     callback_url = build_ihat_callback_url
+    from_format = Pathname.new(URI.parse(source_url).path).extname.delete('.')
 
     TahiEpub::Tempfile.create epub, delete: true do |file|
       request = IhatJobRequest.new(
         file: file,
-        recipe_name: ihat_recipe_name(source_url),
+        recipe_name: recipe_name(from_format: from_format, to_format: 'html'),
         callback_url: callback_url,
         content_type: 'application/epub+zip',
         metadata: metadata)
       PaperConverter.post_ihat_job(request)
     end
-  end
-
-  def self.ihat_recipe_name(url)
-    kind = Pathname.new(URI.parse(url).path).extname.delete(".")
-    IhatJobRequest.recipe_name(from_format: kind, to_format: 'html')
   end
 
   UrlHelpers = Rails.application.routes.url_helpers

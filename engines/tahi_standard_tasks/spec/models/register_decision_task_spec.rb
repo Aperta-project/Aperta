@@ -13,29 +13,13 @@ describe TahiStandardTasks::RegisterDecisionTask do
       :paper,
       :with_creator,
       :submitted_lite,
-      title: Faker::Lorem.paragraph,
-      decision_letter: "Foo bar baz"
+      title: Faker::Lorem.paragraph
     )
   end
   let(:decision) { paper.draft_decision }
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
-  end
-
-  describe "save and retrieve paper decision and decision letter" do
-    describe "#paper_decision_letter" do
-      it "returns paper's decision" do
-        expect(task.paper_decision_letter).to eq(paper.decision_letter)
-      end
-    end
-
-    describe "#paper_decision_letter=" do
-      it "returns paper's decision" do
-        task.paper_decision_letter = "Rejecting because I can"
-        expect(task.paper_decision_letter).to eq("Rejecting because I can")
-      end
-    end
   end
 
   describe "#after_register" do

@@ -56,7 +56,8 @@ export default Ember.Component.extend({
 
     },
 
-    removeRecipient: function(recipient) {
+    removeRecipient: function(recipientId) {
+      let recipient = this.get('recipients').findBy('id', recipientId);
       return this.get('recipients').removeObject(recipient);
     },
 

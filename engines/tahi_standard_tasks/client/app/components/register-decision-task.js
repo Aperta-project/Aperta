@@ -10,7 +10,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     this._super(...arguments);
     this.get('task.paper.decisions').reload();
   },
-  decidedDecision: null,
   restless: Ember.inject.service('restless'),
   paper: computed.alias('task.paper'),
   submitted: computed.equal('paper.publishingState', 'submitted'),
@@ -18,8 +17,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
   publishable: computed.and('submitted', 'uncompleted'),
   nonPublishable: computed.not('publishable'),
-  nonPublishableOrUnselected: computed('latestDecision.verdict', 'task.completed', function() {
-    return this.get('nonPublishable') || !this.get('latestDecision.verdict');
+  nonPublishableOrUnselected: computed('draftDecision.verdict', 'task.completed', function() {
+    return this.get('nonPublishable') || !this.get('draftDecision.verdict');
   }),
 
   toField: null,
@@ -28,12 +27,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
   revisionNumberDesc: ['revisionNumber:desc'],
 
   decisions: computed.sort('task.paper.decisions', 'revisionNumberDesc'),
-  // was `alias('decisions.firstObject')` but blows the call stack - Jerry (ember 2.0.2)
-  latestDecision: computed('decisions.[]', function() {
-    return this.get('decisions.firstObject');
-  }),
+  draftDecision: computed.alias('task.paper.draftDecision'),
   previousDecisions: computed.alias('paper.previousDecisions'),
-  latestRegisteredDecision: computed.alias('paper.latestRegisteredDecision'),
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 
@@ -46,21 +41,25 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 
-  onDecisionLetterUpdate: Ember.observer('latestDecision.letter', function() {
-    let latestDecision = this.get('latestDecision');
-    if (latestDecision && latestDecision.get('hasDirtyAttributes')) {
-      Ember.run.debounce(latestDecision, latestDecision.save, 500);
+  onDecisionLetterUpdate: Ember.observer('draftDecision.letter', function() {
+    let draftDecision = this.get('draftDecision');
+    if (draftDecision && draftDecision.get('hasDirtyAttributes')) {
+      Ember.run.debounce(draftDecision, draftDecision.save, 500);
     }
   }),
 
   actions: {
+    updateVerdict(verdict) {
+      const decision = this.get('draftDecision');
+      decision.set('verdict', verdict);
+      decision.save();
+    },
+
     registerDecision() {
       let task = this.get('task');
 
-      this.set('decidedDecision', this.get('latestDecision.verdict'));
-
       this.busyWhile(
-        this.get('latestDecision').register(task)
+        this.get('draftDecision').register(task)
           .then(() => {
             // reload to pick up completed flag on current task and possibly new
             // Revise Manuscript task
@@ -73,7 +72,18 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       );
     },
 
-    templateSelected(template) {
+    updateTemplate() {
+      const templates = this.get('task.letterTemplates')
+            .filterBy('templateDecision', this.get('draftDecision.verdict'));
+      let template;
+      if (templates.get('length') === 1) {
+        template = templates.get('firstObject').toJSON();
+      } else {
+        const selectedTemplate = this.get('task')
+              .findQuestion('register_decision_questions--selected-template')
+              .get('answers.firstObject.value');
+        template = templates.findBy('text', selectedTemplate).toJSON();
+      }
       const letter = this.applyTemplateReplacements(template.letter);
       const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
@@ -83,15 +93,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
-      this.get('latestDecision').set('verdict', template.templateDecision);
-      this.get('latestDecision').set('letter', letter); // will trigger save
-      return template;
-    },
-
-    setDecisionTemplate(decision) {
-      const templates = this.get(`task.${decision.camelize()}LetterTemplates`);
-      const template = templates.get('firstObject');
-      this.send('templateSelected', template.toJSON());
+      this.get('draftDecision').set('letter', letter); // will trigger save
     }
   }
 });

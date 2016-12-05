@@ -4,13 +4,30 @@ export default AuthorizedRoute.extend({
   channelName: null,
 
   model(params) {
-    return this.store.findRecord('paper', params.paper_id, { reload: true });
+    return this.store.query('paper', { shortDoi: params.paper_shortDoi })
+    .then((results) => {
+      return results.get('firstObject');
+    });
+  },
+
+  serialize(model) {
+    return { paper_shortDoi: model.get('shortDoi') };
   },
 
   setupController(controller, model) {
     this._super(...arguments);
     this.setupPusher(model);
     model.get('commentLooks');
+  },
+
+  redirect(model, transition) {
+    if (!transition.intent.url) {
+      return;
+    }
+    var url = transition.intent.url.replace(`/papers/${model.get('id')}`, `/papers/${model.get('shortDoi')}`);
+    if (url !== transition.intent.url) {
+      this.transitionTo(url);
+    }
   },
 
   setupPusher(model) {

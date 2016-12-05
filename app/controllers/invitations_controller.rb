@@ -4,7 +4,7 @@ class InvitationsController < ApplicationController
   respond_to :json
 
   def index
-    invitations = current_user.invitations_from_latest_revision
+    invitations = current_user.invitations_from_draft_decision
     respond_with(invitations, each_serializer: InvitationIndexSerializer)
   end
 

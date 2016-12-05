@@ -103,3 +103,22 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
     done();
   });
 });
+
+var noUserTemplate = hbs`{{orcid-connect confirm=confirm journal=1 canRemoveOrcid=true}}`;
+
+test("component works when user is a promise", function(assert) {
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    'status': 'access_token_expired',
+    'identifier': '0000-0000-0000-0000'
+  });
+
+  let user = FactoryGuy.make('user', {
+    id: '1'
+  });
+
+  this.render(template);
+  this.set('user', user);
+  this.set('currentUser', user);
+  this.set('orcidAccount', orcidAccount);
+  assert.elementFound('.orcid-wrapper');
+});

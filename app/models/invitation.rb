@@ -181,9 +181,13 @@ class Invitation < ActiveRecord::Base
   end
 
   def generate_token
+    max_tries = 5
+    tries = 0
     loop do
-      token ||= SecureRandom.hex(10)
+      token = SecureRandom.hex(10)
+      tries += 1
       break token unless Invitation.where(token: token).exists?
+      raise "Cannot generate invitation token" if tries > max_tries
     end
   end
 

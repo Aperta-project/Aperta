@@ -132,7 +132,7 @@ test('can not send or delete a pending invitation from a previous round', functi
     }});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Reviewers')");
+    click('.card-content:contains("Invite Reviewers")');
 
     andThen(function() {
       assert.elementNotFound('.active-invitations .invitation-item', 'no active invitations');

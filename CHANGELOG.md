@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 ### Deprecated

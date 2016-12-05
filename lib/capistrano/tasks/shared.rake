@@ -111,9 +111,17 @@ namespace :cleanup do
   desc "Cleanup database dump files"
   task :dumps do
     on release_roles(fetch(:assets_roles)) do
-      leave = 2
-      execute :ls, %W(-1t ~/aperta-????-??-??T??:??:??Z.dump | head -n -#{leave} | xargs -d '\n' rm -f --)
-      # if this doesn't work, try replacing ~ with $HOME
+      files_to_leave          = 2
+      acceptable_file_count   = 0..files_to_leave
+      acceptable_file_pattern = acceptable_file_count.to_a.join("|")
+      silent                  = '2> /dev/null'
+      file_pattern            = '~/aperta-????-??-??T??:??:??Z.dump'
+      execute :ls, %W(-1tr #{file_pattern} #{silent} | head -n -#{files_to_leave} | xargs -d '\n' rm -f --)
+      if test(:ls, %W(-1tr #{file_pattern} #{silent} | wc -l | grep -E '#{acceptable_file_pattern}'))
+        info "Cleaned up all but #{files_to_leave} dump files on node."
+      else
+        error "Clean up of database dump files appears to have failed.  Please investigate manually."
+      end
     end
   end
 end
@@ -184,3 +192,4 @@ after 'deploy:publishing', 'deploy:restart'
 after 'deploy:restart', 'deploy:check_statuses'
 
 after 'deploy:finished', 'cleanup:tmp'
+after 'deploy:finished', 'cleanup:dumps'

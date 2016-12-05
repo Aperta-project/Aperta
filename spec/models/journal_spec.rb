@@ -34,7 +34,7 @@ describe Journal do
     it 'requires a valid doi_publisher_prefix' do
       journal.doi_publisher_prefix = '@'
       expect(journal).to_not be_valid
-      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('The DOI Publisher Prefix is not valid')
+      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('The DOI Publisher Prefix is not valid. It can only contain word characters, numbers, -, and .')
     end
 
     it 'requires a doi_journal_prefix' do
@@ -52,7 +52,7 @@ describe Journal do
     it 'requires a valid doi_journal_prefix' do
       journal.doi_journal_prefix = 'not-valid'
       expect(journal).to_not be_valid
-      expect(journal.errors[:doi_journal_prefix]).to contain_exactly('The DOI Journal Prefix is not valid')
+      expect(journal.errors[:doi_journal_prefix]).to contain_exactly('The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /')
     end
 
     it 'requires a last_doi_issued' do

@@ -24,7 +24,7 @@ feature "Upload paper", js: true, sidekiq: :inline! do
 
     wait_for_ajax
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     edit_paper_page = PaperPage.new
 
     expect(edit_paper_page).to be_loading_paper

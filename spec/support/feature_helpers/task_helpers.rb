@@ -5,10 +5,10 @@ module FeatureHelpers
 
     login_as(user, scope: :user)
     visit '/'
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     expect(page).to have_no_css('.task-disclosure', text: task.title)
 
-    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    Page.view_task task
     expect(page).to have_content("You don't have access to that content")
   end
 end

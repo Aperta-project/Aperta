@@ -5,12 +5,16 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
+  by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 ### Deprecated
 ### Removed
 ### Fixed
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
-
-
+* Add back missing attachment blocks for many ad hoc tasks
+* Recipients can be properly removed from adhoc emails.
+* Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
+  to email Site Admin(s) instead.
 ## ## [1.30.1] - {2016-11-29}
 ### Added
 ### Changed

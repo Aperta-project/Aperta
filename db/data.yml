@@ -5773,7 +5773,7 @@ journals:
       for publication.
     - yetipub
     - journal.yetijour
-    - '1000002'
+    - '1000010'
     - plos-yeti-staff@example.com
     - 
     - 
@@ -11365,12 +11365,13 @@ papers:
   - state_updated_at
   - processing
   - uses_research_article_reviewer_report
+  - short_doi
   records: 
   - - '1'
     - 
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
     - '2015-10-29 20:16:37.363801'
-    - '2015-11-02 14:30:18.434152'
+    - '2016-11-16 05:16:10.679847'
     - '3'
     - Research
     - '1'
@@ -11389,11 +11390,12 @@ papers:
     - 
     - false
     - true
+    - devs.100001
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
     - '2015-10-30 19:43:28.468043'
-    - '2015-11-02 14:30:18.451006'
+    - '2016-11-16 05:16:10.687503'
     - '3'
     - Research
     - '1'
@@ -11412,11 +11414,12 @@ papers:
     - 
     - false
     - true
+    - devs.100002
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
     - '2015-11-02 14:04:02.867243'
-    - '2015-11-02 15:13:36.520339'
+    - '2016-11-16 05:16:10.692233'
     - '3'
     - Research
     - '1'
@@ -11435,11 +11438,12 @@ papers:
     - 
     - false
     - true
+    - devs.100003
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
     - '2015-11-02 14:46:23.765287'
-    - '2015-11-02 15:14:05.582372'
+    - '2016-11-16 05:16:10.696733'
     - '3'
     - Research
     - '1'
@@ -11458,11 +11462,12 @@ papers:
     - '2015-11-02 15:14:05.576249'
     - false
     - true
+    - devs.100004
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
     - '2015-11-03 22:59:20.931417'
-    - '2015-11-03 22:59:20.931417'
+    - '2016-11-16 05:16:10.701112'
     - '7'
     - Research
     - '1'
@@ -11481,11 +11486,12 @@ papers:
     - 
     - false
     - true
+    - devs.100008
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
     - '2015-11-03 23:02:06.790805'
-    - '2015-11-03 23:02:06.790805'
+    - '2016-11-16 05:16:10.709832'
     - '7'
     - Research
     - '1'
@@ -11504,11 +11510,12 @@ papers:
     - 
     - false
     - true
+    - devs.100009
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
     - '2015-11-10 22:27:27.12482'
-    - '2015-11-10 22:27:27.12482'
+    - '2016-11-16 05:16:10.714635'
     - '1'
     - Research
     - '1'
@@ -11527,6 +11534,7 @@ papers:
     - 
     - false
     - true
+    - devs.100010
   - - '12'
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
@@ -11542,7 +11550,7 @@ papers:
       ivory, which fuels illegal trade, must be dramatically reduced.</p>
     - "<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>"
     - '2016-04-12 18:43:34.640539'
-    - '2016-10-26 19:41:03.649118'
+    - '2016-11-16 05:16:10.722122'
     - 
     - Research
     - '1'
@@ -11561,11 +11569,12 @@ papers:
     - '2016-10-26 19:41:03.585529'
     - false
     - true
+    - yetijour.1000002
   - - '13'
     - ''
     - My non-research paper; reviewer invited
     - '2016-06-02 13:43:23.17536'
-    - '2016-06-02 13:48:15.405799'
+    - '2016-11-16 05:16:10.729582'
     - 
     - Non-Research
     - '1'
@@ -11584,6 +11593,7 @@ papers:
     - 
     - false
     - false
+    - yetijour.1000003
 
 ---
 permission_requirements:

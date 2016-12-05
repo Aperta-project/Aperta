@@ -104,9 +104,9 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
   });
 });
 
-var noUserTemplate = hbs`{{orcid-connect confirm=confirm journal=1 canRemoveOrcid=true}}`;
+var noUserTemplate = hbs`{{orcid-connect user=user currentUser=currentUser orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;
 
-test("component works when user is a promise", function(assert) {
+test("component works when user is not set and then set", function(assert) {
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'access_token_expired',
     'identifier': '0000-0000-0000-0000'
@@ -116,9 +116,11 @@ test("component works when user is a promise", function(assert) {
     id: '1'
   });
 
-  this.render(template);
-  this.set('user', user);
   this.set('currentUser', user);
   this.set('orcidAccount', orcidAccount);
+
+  this.render(noUserTemplate);
+  assert.elementNotFound('.orcid-wrapper');
+  this.set('user', user);
   assert.elementFound('.orcid-wrapper');
 });

@@ -12,10 +12,6 @@ module Ihat
 
     private
 
-    def file_type
-      safe_params[:outputs].first[:file_type]
-    end
-
     def safe_params
       params.require(:job).permit(:id, :state, outputs: [:file_type, :url], options: [:callback_url, :metadata]).tap do |safe|
         safe[:options][:metadata] = Verifier.new(safe[:options][:metadata]).decrypt

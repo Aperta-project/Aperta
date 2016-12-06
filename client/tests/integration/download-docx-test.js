@@ -81,7 +81,7 @@ test('show download links on control bar', function(assert) {
         });
 
     click('#nav-downloads').then(function() {
-          click('.docx');
+          click('.download-docx');
         });
 
     andThen(function() {

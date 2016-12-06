@@ -34,15 +34,10 @@ namespace :data do
   end
 
   desc <<-DESC
-      APERTA-7826: Stores file type with the paper, either pdf or Word instead of assuming
-      that all documents are Word files
-
-      This is intended to be run as part of a down migration that will undo the population of
+      APERTA-7826: This is intended to be run as part of a down migration that will undo the population of
       the 'kind' column on file.
   DESC
   task :migrate_kind_back_to_nil do
-    Paper.find_each do |paper|
-      paper.file.update_column(:kind, nil)
-    end
+    ManuscriptAttachment.update_all(kind: nil)
   end
 end

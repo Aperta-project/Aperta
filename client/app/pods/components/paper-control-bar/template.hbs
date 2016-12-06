@@ -104,7 +104,7 @@
         <div class="manuscript-download-links active animation-fade-in">
 
           {{#if (eq paper.fileType "docx")}}
-            <a href="#" {{action "exportDocument" 'docx'}} class="docx" title="Download docx">
+            <a href="#" {{action "exportDocument" 'docx'}} class="download-docx" title="Download docx">
               Word
               {{partial "svg/docx-icon"}}
             </a>
@@ -116,7 +116,7 @@
           {{/if}}
 
           {{#if (eq paper.fileType "pdf")}}
-            <a href="#" {{action "exportDocument" 'pdf'}} class="pdf" title="Download pdf">
+            <a href="#" {{action "exportDocument" 'pdf'}} class="download-pdf" title="Download pdf">
               Pdf
               {{partial "svg/pdf-icon"}}
             </a>

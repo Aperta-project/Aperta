@@ -59,6 +59,11 @@ class VersionedText < ActiveRecord::Base
     end
   end
 
+  def version_string
+    version = major_version.nil? ? "(draft)" : "R#{major_version}.#{minor_version}"
+    "#{version} - #{updated_at.strftime('%b %d, %Y')}"
+  end
+
   private
 
   def only_version_once

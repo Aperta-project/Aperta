@@ -13,17 +13,10 @@
     {{/link-to}}
   {{/if}}
 
-  {{#if versioningMode}}
-    {{#link-to "paper.index" paper class="control-bar-button" id="nav-exit-versions"}}
-      {{fa-icon icon="files-o"}}
-      Exit Versions
-    {{/link-to}}
-  {{else}}
-    {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
-      {{fa-icon icon="files-o"}}
-      Versions
-    {{/link-to}}
-  {{/if}}
+  {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
+    {{fa-icon icon="files-o"}}
+    Versions
+  {{/link-to}}
 
   <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     {{fa-icon icon="user"}}

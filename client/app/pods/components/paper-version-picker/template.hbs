@@ -1,24 +1,39 @@
-<div class="bar-item">
+{{#if versionsContainPDF}}
+  <p class="versioning-bar-pdf-message">
+    {{fa-icon icon="info-circle"}}
+    Visualized differences between document versions are only available when comparing two Word files. Differences between version metadata can always be viewed in the task cards below.
+  </p>
+{{/if}}
+
+<div class="versioning-bar-content">
   {{fa-icon icon="files-o"}}
+
+  <label class="bar-item paper-viewing-version">
+    Now viewing:
+    {{#power-select options=paper.versionedTexts
+                    selected=viewingVersion
+                    onchange=(action "setViewingVersion")
+                    searchEnabled=false
+                    triggerClass="aperta-select"
+                    as |version|}}
+      {{version.versionString}}
+    {{/power-select}}
+  </label>
+
+  <label class="bar-item paper-comparison-version">
+    Compare with:
+    {{#power-select options=paper.versionedTexts
+                    selected=comparisonVersion
+                    placeholder="-"
+                    onchange=(action "setComparisonVersion")
+                    searchEnabled=false
+                    triggerClass="aperta-select"
+                    as |version|}}
+      {{version.versionString}}
+    {{/power-select}}
+  </label>
 </div>
 
-<label class="bar-item">
-  Now viewing:
-  {{select-native name="view_version"
-                  content=paper.versionedTexts
-                  optionValuePath="id"
-                  optionLabelPath="versionString"
-                  selection=viewingVersion
-                  action=(action "setViewingVersion")}}
-</label>
-
-<label class="bar-item">
-  Compare With:
-  {{select-native name="compare_version"
-                  prompt="-"
-                  content=paper.versionedTexts
-                  optionValuePath="id"
-                  optionLabelPath="versionString"
-                  selection=comparisonVersion
-                  action=(action "setComparisonVersion")}}
-</label>
+{{#link-to "paper.index" paper class="versioning-bar-close"}}
+  &times;
+{{/link-to}}

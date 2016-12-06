@@ -9,6 +9,17 @@ describe VersionedText do
 
   it_behaves_like 'a thing with major and minor versions', :versioned_text
 
+  describe '#version_string' do
+    it 'contains draft text' do
+      expect(versioned_text.version_string.match('draft').to_a.any?).to be(true)
+    end
+
+    it 'contains major and minor' do
+      paper.draft.be_minor_version!
+      expect(versioned_text.version_string.match('0.0').to_a.any?).to be(true)
+    end
+  end
+
   context 'validation' do
     context 'versioned text is completed' do
       subject(:versioned_text) { FactoryGirl.build(:versioned_text) }

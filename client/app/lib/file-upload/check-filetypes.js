@@ -14,6 +14,6 @@ export default function(fileName, acceptString) {
       let types = acceptString.split(',').join(' or ');
       return {error: true, msg: `We're sorry, '${fileName}' is not a valid file type. Please upload an acceptable file (${types}).`};
     }
-    return {acceptedFileType: fileTypeMatches[0].substr(1), error: false, msg: `'${fileName}' is an accepted file type`};
+    return {acceptedFileType: fileTypeMatches[0].substr(1), error: false};
   }
 }

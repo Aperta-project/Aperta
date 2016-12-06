@@ -9,14 +9,16 @@ namespace :data do
       Paper.find_each do |paper|
         file_type = paper.file.file.file.try(:extension)
         if file_type
-          STDOUT.puts("Updating 'kind' column for paper #{paper.id}")
+          STDOUT.puts("Updating 'kind' column for paper #{paper.id} to #{file_type}")
           paper.file.update_column(:kind, file_type)
         else
+          api_paper_url = Rails.application.routes.url_helpers.paper_url(paper)
+          api_paper_url.slice!('api/')
           if paper.processing && paper.withdrawn?
-            messages << "Skipped #{paper.id} because it is stuck in processing"
+            messages << "Skipped #{api_paper_url} (paper id: #{paper.id}) because it is stuck in processing"
           else
             if !Rails.env.development?
-              fail "Unexpected error for paper #{paper.id} not having a uploaded filetype"
+              fail "Unexpected error for paper #{paper.id}, #{api_paper_url}, not having an uploaded filetype"
             else
               # Assume a filetype of docx for the papers in development before this point
               paper.file.update_column(:kind, 'docx')

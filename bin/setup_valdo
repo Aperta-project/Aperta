@@ -3,6 +3,12 @@
 # This script will set up valdo in a directory next to your tahi project called ops_valdo/
 # when it's done, you'll have to 'cap vagrant deploy:cold' from both tahi and ihat to have
 # a fully functional aperta.
+#
+# This file follows the setup steps outlined in the valdo README
+# https://github.com/PLOS/valdo/blob/master/README.md
+# The installation steps therein change periodically. So if this script suddenly breaks,
+# a good first step in debugging is to figure out if the valdo setup instructions have
+# changed.
 
 # exit immediately if any single command fails
 set -e

@@ -205,6 +205,8 @@ class FiguresTask(BaseTask):
       self._validate_processing(figure)
       self._driver.find_element_by_id('figure_attachment').clear()
       figure_candidates_list.remove(figure)
+      figure = figure.split('/')[-1]
+      logging.info(figure)
       chosen_figures_list.append(figure)
       logging.info('Figure List so far: {0}'.format(chosen_figures_list))
       self.check_for_flash_error()

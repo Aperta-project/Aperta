@@ -50,15 +50,15 @@ class FTCCardTest(CommonTest):
 
     # Need to wait for url to update
     count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    while not short_doi:
       if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      short_doi = manuscript_page.get_current_url().split('/')[-1]
       count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
@@ -75,7 +75,7 @@ class FTCCardTest(CommonTest):
     dashboard_page = self.cas_login(email=editorial_user['email'])
     dashboard_page._wait_for_element(
       dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
@@ -89,7 +89,7 @@ class FTCCardTest(CommonTest):
       workflow_page.add_card('Final Tech Check')
     ftc_card = FTCCard(self.getDriver())
     workflow_page.click_final_tech_check_card()
-    ftc_card.validate_styles(paper_id)
+    ftc_card.validate_styles(short_doi)
     data = ftc_card.complete_card()
     ftc_card.click_autogenerate_btn()
     time.sleep(2)

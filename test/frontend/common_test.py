@@ -101,7 +101,7 @@ class CommonTest(FrontEndTest):
 
   def create_article(self, title='', journal='', type_='', document='', random_bit=False):
     """
-    Create a new article.
+    Create a new article. Assumes you have already launched the Create New Submission overlay.
     :param title: Title of the article.
     :param journal: Journal name of the article.
     :param type_: Type of article
@@ -125,7 +125,6 @@ class CommonTest(FrontEndTest):
     #   directory, catch and abort - no good will follow
     assert current_path != '/tmp', 'WARN: Get current working directory returned ' \
                                    'incorrect value, aborting: {0}'.format(current_path)
-    logging.info(document)
     if document:
       fn = os.path.join(current_path, '{0}'.format(document))
     else:

@@ -49,13 +49,13 @@ class AssignTeamCard(BaseCard):
     self._assignee_revoke = (By.CSS_SELECTOR, 'span.assignment-remove')
 
   # POM Actions
-  def validate_card_elements_styles(self, paper_id):
+  def validate_card_elements_styles(self, short_doi):
     """
     This method validates the styles of the card elements including the common card elements
-    :param paper_id: ID of paper for passing through to validate_common_elements_styles()
+    :param short_doi: short_doi of paper for passing through to validate_common_elements_styles()
     :return void function
     """
-    self.validate_common_elements_styles(paper_id)
+    self.validate_common_elements_styles(short_doi)
     title = self._get(self._card_heading)
     assert 'Assign Team' in title.text, title.text
     # self.validate_card_header(title)

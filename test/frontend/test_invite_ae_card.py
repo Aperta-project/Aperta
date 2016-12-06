@@ -48,8 +48,8 @@ class InviteAECardTest(CommonTest):
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1]
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    short_doi = manuscript_page.get_short_doi()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -75,21 +75,22 @@ class InviteAECardTest(CommonTest):
     workflow_page.click_card('invite_academic_editor')
     invite_ae_card = InviteAECard(self.getDriver())
     invite_ae_card.card_ready()
-    invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', paper_id)
-    manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
+    invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', short_doi)
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
     manuscript_title = unicode(manuscript_title,
-                           encoding='utf-8',
-                           errors='strict')
+                              encoding='utf-8',
+                              errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite(academic_editor_login,
                                    manuscript_title,
                                    creator_user,
-                                   paper_id)
+                                   short_doi)
     # Invite a second user to delete
     invite_ae_card.validate_invite(pub_svcs_login,
                                    manuscript_title,
                                    creator_user,
-                                   paper_id)
+                                   short_doi)
     logging.info('Revoking invite for {0}'.format(pub_svcs_login['name']))
     invite_ae_card.revoke_invitee(pub_svcs_login, 'Academic Editor')
     time.sleep(.5)

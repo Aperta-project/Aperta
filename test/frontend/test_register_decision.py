@@ -60,7 +60,7 @@ class RegisterDecisionCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    paper_id = manuscript_page.get_paper_id_from_url()
+    paper_id = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -110,7 +110,7 @@ class RegisterDecisionCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_id_from_url()
+    paper_id = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page._wait_for_element(manuscript_page._get(
         manuscript_page._manuscript_viewer_status_area))
     # figures

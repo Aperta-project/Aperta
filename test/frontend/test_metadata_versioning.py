@@ -64,9 +64,9 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
-    paper_id = ms_viewer.get_current_url().split('/')[-1]
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = ms_viewer.get_current_url().split('/')[-1]
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
     ms_viewer.complete_task('Billing')
     ms_viewer.complete_task('Cover Letter')
     ms_viewer.complete_task('Figures')
@@ -89,7 +89,7 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page = self.cas_login(email=staff_admin_login['email'], password=login_valid_pw)
       # go to article
       time.sleep(5)
-      dashboard_page.go_to_manuscript(paper_id)
+      dashboard_page.go_to_manuscript(short_doi)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       # click register initial decision on task
       paper_viewer.click_workflow_link()
@@ -103,7 +103,7 @@ class MetadataVersioningTest(CommonTest):
                    'full submission')
       # Log in as a author to make first final submission
       dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
-      dashboard_page.go_to_manuscript(paper_id)
+      dashboard_page.go_to_manuscript(short_doi)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
       # submit article
@@ -117,7 +117,7 @@ class MetadataVersioningTest(CommonTest):
     # Log as editor to approve the manuscript with modifications
     dashboard_page = self.cas_login(email=internal_editor_login['email'], password=login_valid_pw)
     # go to article
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -130,7 +130,7 @@ class MetadataVersioningTest(CommonTest):
     logging.info('Logging in as creator to make changes')
     dashboard_page = self.cas_login(email=creator_login3['email'], password=login_valid_pw)
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     paper_viewer.complete_task('Additional Information',

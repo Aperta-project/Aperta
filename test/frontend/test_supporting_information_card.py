@@ -31,8 +31,8 @@ class SITaskTest(CommonTest):
 
   def test_si_task(self):
     """
-    test_si_card: Validates the elements, styles, and functions of RTC Card
-    :return: void function
+    test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
+    :return: None
     """
     logging.info('Test SITask')
     creator_user = random.choice(users)
@@ -43,6 +43,7 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_id_from_url()
+    paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     doc2upload = random.choice(docs)
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
@@ -102,6 +103,21 @@ class SITaskTest(CommonTest):
     except ElementDoesNotExistAssertionError:
       pass
     supporting_info.restore_timeout()
+    # logout
+    manuscript_page.logout()
+    # Log in as Editorial User
+    creator_user = random.choice(editorial_users)
+    logging.info(creator_user)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    self._driver.get(paper_url)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_dashboard_link()
+    import pdb; pdb.set_trace()
+
+
+
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

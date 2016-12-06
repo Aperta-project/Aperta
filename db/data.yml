@@ -5710,7 +5710,7 @@ journal_task_types:
     - reviewer
   - - '35'
     - '1'
-    - Ad-hoc
+    - Ad-hoc for Staff Only
     - AdHocTask
     - "{}"
     - false
@@ -5722,6 +5722,27 @@ journal_task_types:
     - "{}"
     - false
     - author
+  - - '37'
+    - '1'
+    - Ad-hoc for Authors
+    - AdHocForAuthorsTask
+    - "{}"
+    - false
+    - user
+  - - '38'
+    - '1'
+    - Ad-hoc for Editors
+    - AdHocForEditorsTask
+    - "{}"
+    - false
+    - user
+  - - '39'
+    - '1'
+    - Ad-hoc for Reviewers
+    - AdHocForReviewersTask
+    - "{}"
+    - false
+    - user
 
 ---
 journals:

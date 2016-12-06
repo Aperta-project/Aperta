@@ -18,15 +18,15 @@ class PaperConversionsController < ApplicationController
   # Returns 202 and a url to check for status.
   def export
     requires_user_can(:view, paper)
-    export_format = params[:export_format]
+    @export_format = params[:export_format]
 
-    job_id = if export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
+    job_id = if docx_file_type_and_docx_attached
                # This is already available for download, and does not
                # need background processing.
                'source'
-             elsif export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
+             elsif pdf_file_type_and_pdf_attached
                'source'
-             elsif export_format == 'docx' && paper.file_type == 'docx'
+             elsif docx_file_type_but_docx_not_attached
                PaperConverter.export(paper, export_format, current_user).job_id
              end
 
@@ -64,6 +64,18 @@ class PaperConversionsController < ApplicationController
   end
 
   private
+
+  def docx_file_type_and_docx_attached
+    @export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
+  end
+
+  def pdf_file_type_and_pdf_attached
+    @export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
+  end
+
+  def docx_file_type_but_docx_not_attached
+    @export_format == 'docx' && paper.file_type == 'docx'
+  end
 
   def paper
     @paper ||= Paper.find_by_id_or_short_doi(params[:id])

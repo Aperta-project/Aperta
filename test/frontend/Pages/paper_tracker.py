@@ -395,8 +395,9 @@ class PaperTrackerPage(AuthenticatedPage):
         # only on publication do we use the full manuscript id, until then we strip the front
         #   part: '10.1371/journal.' from the doi
         assert manid.text in db_ms_id, '{0} not found in {1} from db.'.format(manid.text, db_ms_id)
-
-        page_paper_id = manid.get_attribute('href').split('/')[-1]
+        page_short_doi = manid.get_attribute('href').split('/')[-1]
+        logging.info('Page short doi is {0}.'.format(page_short_doi))
+        page_paper_id = self.get_paper_id_from_short_doi(page_short_doi)
         assert '/papers/%s' % db_paper_id in title.get_attribute('href'), \
             (page_paper_id, title.get_attribute('href'))
         assert '/papers/%s' % db_paper_id in manid.get_attribute('href'), \
@@ -406,8 +407,8 @@ class PaperTrackerPage(AuthenticatedPage):
 
         paptype = self._get(self._paper_tracker_table_tbody_paptype)
         logging.debug('Page Article Type: {0}\n'
-                     'DB Article Type: {1}\n'
-                     'Paper Row Count: {2}'.format(paptype.text, db_papers[count][4], count + 1))
+                      'DB Article Type: {1}\n'
+                      'Paper Row Count: {2}'.format(paptype.text, db_papers[count][4], count + 1))
         assert paptype.text == db_papers[count][4], (paptype.text, db_papers[count])
 
         members = self._get(self._paper_tracker_table_tbody_members)

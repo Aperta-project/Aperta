@@ -74,7 +74,7 @@ class InviteCard(BaseCard):
       logging.error('Error fired on send invite.')
     self.click_close_button()
 
-  def validate_invite(self, invitee, title, creator, ms_id):
+  def validate_invite(self, invitee, title, creator, short_doi):
     """
     Invites the invitee that is passed as parameter, verifying the composed email.
       Makes function and style validations.
@@ -83,7 +83,7 @@ class InviteCard(BaseCard):
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
     :param attach: filename to attach to the invitation
-    :param ms_id: paper id of the manuscript
+    :param short_doi: paper short_doi of the manuscript
     :return void function
     """
     self._wait_for_element(self._get(self._recipient_field))
@@ -106,7 +106,7 @@ class InviteCard(BaseCard):
     creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
     main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
     assert main_author in invite_text, (main_author, invite_text)
-    abstract = PgSQL().query('SELECT abstract FROM papers WHERE id=%s;', (ms_id,))[0][0]
+    abstract = PgSQL().query('SELECT abstract FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
     if abstract is not None:
       # Always remember that our ember text always normalizes whitespaces down to one
       #  Painful lesson
@@ -116,20 +116,31 @@ class InviteCard(BaseCard):
     else:
       assert 'Abstract is not available' in invite_text, invite_text
 
-    # APERTA-8305 Currently QA lacks a method to attach a file to the invite cards.
     # Attach a file
-    # sample_files = docs + pdfs + figures + supporting_info_files
-    # file_1, file_2 = random.sample(sample_files, 2)
-    # logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
-    # fn = os.path.join(os.getcwd(), file_1)
-    # self.attach_file(fn)
-    # # look for file name and replace attachment link
-    # self._wait_for_element(self._get(self._replace_attachment))
-    # attachments = self.get_attached_file_names()
-    # fn = fn.split('/')[-1].replace(' ', '+')
-    # assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+    sample_files = docs + pdfs + figures + supporting_info_files
+    file_1, file_2 = random.sample(sample_files, 2)
+    logging.info('File 1 is {0}\nFile 2 is {1}'.format(file_1, file_2))
+    fn = os.path.join(os.getcwd(), file_1)
+    logging.info('Attaching file: {0}'.format(fn))
+    self.attach_file(fn)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._get(self._replace_attachment))
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
 
     # Attach a second file
+    fn = os.path.join(os.getcwd(), file_2)
+    logging.info('Attaching file: {0}'.format(fn))
+    self.attach_file(fn)
+    # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
+    #   will get an index out of range error. I feel dirty.
+    time.sleep(5)
+    # look for file name and replace attachment link
+    self._wait_for_element(self._gets(self._replace_attachment)[1])
+    attachments = self.get_attached_file_names()
+    fn = fn.split('/')[-1].replace(' ', '+')
+    assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
 
     self._get(self._edit_add_to_queue_btn).click()
     invitees = self._gets(self._invitee_listing)
@@ -179,13 +190,17 @@ class InviteCard(BaseCard):
       assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
                                                                          reason_suggestions)
 
-  def validate_card_elements_styles(self, user, card_type, paper_id):
+  def validate_card_elements_styles(self, user, card_type, short_doi):
     """
     Style check for the card
     :param user: User (AE or Reviewer) to send the invitation
+    :param card_type: One of either 'ae' or 'reviewer' to indicate the card type
+    :param short_doi: Used to pass through to validate_common_elements_styles
     :return None
     """
-    self.validate_common_elements_styles(paper_id)
+    assert card_type in ('ae', 'reviewer'), 'Invalid card tyoe passed to function ' \
+                                            'validate_card_elements_styles(): {0}'.format(card_type)
+    self.validate_common_elements_styles(short_doi)
     # There is no definition of this external label style in the style guide. APERTA-7311
     #   currently, a new style validator has been implemented to match this UI
     user_input = self._get(self._recipient_field)

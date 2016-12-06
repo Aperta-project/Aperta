@@ -66,7 +66,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(2)
-    paper_id = manuscript_page.get_paper_id_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
 
     keep_waiting = True
     while keep_waiting:
@@ -80,9 +80,9 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success(timeout=45)
-    paper_id = paper_viewer.get_current_url().split('/')[-1]
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = paper_viewer.get_current_url().split('/')[-1]
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')

@@ -87,7 +87,8 @@ class FiguresCard(BaseCard):
     page_fig_list = self._gets(self._populated_figure_dl_link)
     page_fig_name_list = []
     for page_fig_item in page_fig_list:
-      page_fig_name_list.append(page_fig_item.text)
+
+      page_fig_name_list.append(page_fig_item.text.split('/')[-1])
     logging.info(page_fig_name_list)
     for figure in fig_list:
       # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.

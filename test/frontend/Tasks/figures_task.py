@@ -192,10 +192,10 @@ class FiguresTask(BaseTask):
     for iteration in range(0, iterations):
       if figure2send == 'random':
         figure = random.choice(figure_candidates_list)
-        fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(figure))
+        fn = os.path.join(current_path, figure)
       else:
         figure = figure2send
-        fn = os.path.join(current_path, 'frontend/assets/imgs/', figure)
+        fn = os.path.join(current_path, figure)
       logging.info('Sending figure: {0}'.format(fn))
       time.sleep(1)
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
@@ -203,7 +203,7 @@ class FiguresTask(BaseTask):
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
       add_new_figures_btn.click()
       self._validate_processing(figure)
-
+      self._driver.find_element_by_id('figure_attachment').clear()
       figure_candidates_list.remove(figure)
       chosen_figures_list.append(figure)
       logging.info('Figure List so far: {0}'.format(chosen_figures_list))
@@ -230,7 +230,7 @@ class FiguresTask(BaseTask):
       new_figure = random.choice(remaining_figures)
     else:
       new_figure = replacement_figure
-    fn = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(new_figure))
+    fn = os.path.join(current_path, new_figure)
     logging.info('Replacing figure: {0}, with {1}'.format(figure2replace, new_figure))
     self._reset_position_to_conformance_question()
     figure_listings = self._gets(self._figure_listing)

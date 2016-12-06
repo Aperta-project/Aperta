@@ -73,7 +73,7 @@
   <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
     {{fa-icon icon="upload"}} Upload Document
     {{s3-file-uploader elementId="upload-files"
-                       accept=(if pdfEnabled '.doc,.docx,.pdf' '.doc, .docx')
+                       accept=fileTypes
                        validateFileTypes=true
                        filePath="paper/manuscript"
                        fileAdded=(action "fileAdded")

@@ -18,7 +18,6 @@ class PaperConversionsController < ApplicationController
   # Returns 202 and a url to check for status.
   def export
     requires_user_can(:view, paper)
-    @export_format = params[:export_format]
 
     job_id = if docx_file_type_and_docx_attached
                # This is already available for download, and does not
@@ -54,7 +53,7 @@ class PaperConversionsController < ApplicationController
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?
         render status: :ok, json: {
-          url: job.format_url(params[:export_format]) }
+          url: job.format_url(export_format) }
       elsif job.errored?
         render status: :server_error, nothing: true
       else
@@ -65,16 +64,20 @@ class PaperConversionsController < ApplicationController
 
   private
 
+  def export_format
+    export_format ||= params[:export_format]
+  end
+
   def docx_file_type_and_docx_attached
-    @export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
+    export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
   end
 
   def pdf_file_type_and_pdf_attached
-    @export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
+    export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
   end
 
   def docx_file_type_but_docx_not_attached
-    @export_format == 'docx' && paper.file_type == 'docx'
+    export_format == 'docx' && paper.file_type == 'docx'
   end
 
   def paper

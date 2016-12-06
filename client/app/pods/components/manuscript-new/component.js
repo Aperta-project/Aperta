@@ -5,6 +5,13 @@ import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 const { computed } = Ember;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
+  fileTypes: computed('pdfEnabled', function() {
+    if (this.get('pdfEnabled')) {
+      return '.doc,.docx,.pdf'
+    } else {
+      return '.doc,.docx'
+    }
+  }),
   restless: Ember.inject.service(),
   flash: Ember.inject.service(),
   journals: null,
@@ -34,9 +41,14 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     fileAdded(file){
-      let check = checkType(file.name, '.doc, .docx, .pdf');
-      this.set('paper.fileType', check['acceptedFileType'])
-      this.set('isSaving', true);
+      let check = checkType(file.name, this.get('fileTypes'));
+      if (!check.error) {
+        this.set('paper.fileType', check['acceptedFileType']);
+        this.set('isSaving', true);
+      } else {
+        this.set('isSaving', false);
+        this.get('flash').displayMessage(check.msg);
+      }
     },
 
     addingFileFailed(reason, message, {fileName, acceptedFileTypes}) {

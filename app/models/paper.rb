@@ -80,7 +80,7 @@ class Paper < ActiveRecord::Base
            to: :latest_version, allow_nil: true
 
   def file_type
-    file.try(:kind)
+    file.try(:file_type)
   end
 
   def manuscript_id

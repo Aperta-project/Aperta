@@ -52,17 +52,18 @@ class FigureTaskTest(CommonTest):
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
+    self.create_article(journal='PLOS Wombat',
+                        type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
     manuscript_page.click_task('figures')
-    paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1].split('?')[0]
+    manuscript_page.get_short_doi()
     figures_task = FiguresTask(self.getDriver())
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    figures_task.task_ready()
     # Need at least one figure in place to check all the styles
     figures_task.upload_figure()
     # It is necessary to provide a lengthy wait for upload and processing of the image
@@ -93,17 +94,17 @@ class FigureTaskTest(CommonTest):
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
+    manuscript_page.get_short_doi()
     manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1].split('?')[0]
     figures_task = FiguresTask(self.getDriver())
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.check_question()
     figures_list = figures_task.upload_figure(iterations=4)
     # It is necessary to provide a lengthy wait for upload and processing of the image
@@ -116,20 +117,17 @@ class FigureTaskTest(CommonTest):
     internal_staff = random.choice(editorial_users)
     logging.info(internal_staff['name'])
     dashboard_page = self.cas_login(email=internal_staff['email'])
+    dashboard_page.page_ready()
     self._driver.get(paper_url)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Give a little time for the page to draw
-    time.sleep(5)
+    manuscript_page.page_ready()
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(15)
+    workflow_page.page_ready()
     workflow_page.click_card('figures')
-    # It takes a bit for the images to attach to the DOM after drawing the overlay in CI
-    time.sleep(7)
     figures_card = FiguresCard(self.getDriver())
+    figures_card.card_ready()
     figures_card.validate_figure_presence(figures_list)
     figures_card.logout()
 
@@ -139,24 +137,19 @@ class FigureTaskTest(CommonTest):
     :return: void function
     """
     logging.info('Test Figures::replace')
-    current_path = os.getcwd()
-    logging.info(current_path)
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
+    manuscript_page.get_short_doi()
     manuscript_page.click_task('figures')
-    paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1].split('?')[0]
     figures_task = FiguresTask(self.getDriver())
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Need, apparently more time, at times for the figures card to open and populated enough to see
-    #   the completion button.
     figures_task.task_ready()
     figures_task.check_question()
     figures_task.upload_figure(figure2send='figure1_tiff_lzw.tiff')
@@ -167,7 +160,6 @@ class FigureTaskTest(CommonTest):
                                                replacement_figure='figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
-    time.sleep(5)
     figures_task.logout()
 
   def test_core_figures_task_delete(self):
@@ -181,20 +173,17 @@ class FigureTaskTest(CommonTest):
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
-    manuscript_page.click_task('figures')
     paper_url = manuscript_page.get_current_url()
-    paper_id = paper_url.split('/')[-1].split('?')[0]
+    manuscript_page.click_task('figures')
     figures_task = FiguresTask(self.getDriver())
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Need, apparently more time, at times for the figures card to opn and populated enough to see
-    #   the completion button.
-    time.sleep(5)
+    figures_task.task_ready()
     figures_task.check_question()
     figures_list = figures_task.upload_figure()
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
@@ -214,6 +203,7 @@ class FigureTaskTest(CommonTest):
     creator = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')

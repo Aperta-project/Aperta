@@ -203,7 +203,7 @@ class FiguresTask(BaseTask):
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
       add_new_figures_btn.click()
       self._validate_processing(figure)
-
+      self._driver.find_element_by_id('figure_attachment').clear()
       figure_candidates_list.remove(figure)
       chosen_figures_list.append(figure)
       logging.info('Figure List so far: {0}'.format(chosen_figures_list))

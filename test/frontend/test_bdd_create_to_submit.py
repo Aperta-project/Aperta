@@ -91,15 +91,15 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Need to wait for url to update
     count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    while not short_doi:
       if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      short_doi = manuscript_page.get_current_url().split('/')[-1]
       count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     count = 0
     while count < 60:
@@ -131,7 +131,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
-    sub_data = manuscript_page.get_db_submission_data(paper_id)
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
@@ -207,15 +207,15 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(5)
     # Need to wait for url to update
     count = 0
-    paper_id = manuscript_page.get_current_url().split('/')[-1]
-    while not paper_id:
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    while not short_doi:
       if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
-      paper_id = manuscript_page.get_current_url().split('/')[-1]
+      short_doi = manuscript_page.get_current_url().split('/')[-1]
       count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     count = 0
     while count < 60:
@@ -245,7 +245,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()
-    sub_data = manuscript_page.get_db_submission_data(paper_id)
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
@@ -256,7 +256,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     dashboard_page = self.cas_login(email=admin_user['email'])
     dashboard_page._wait_for_element(
       dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
@@ -270,7 +270,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     decision = id_card.execute_decision()
     logging.info('Decision: {0}'.format(decision))
     time.sleep(2)
-    sub_data = workflow_page.get_db_submission_data(paper_id)
+    sub_data = workflow_page.get_db_submission_data(short_doi)
     if decision == 'reject':
       assert sub_data[0][0] == 'rejected', sub_data[0][0]
       assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
@@ -289,7 +289,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     self.cas_login(email=creator_user['email'])
     dashboard_page._wait_for_element(
       dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
@@ -310,7 +310,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_so_overlay_elements_styles('congrats_is_full', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
-    sub_data = manuscript_page.get_db_submission_data(paper_id)
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]

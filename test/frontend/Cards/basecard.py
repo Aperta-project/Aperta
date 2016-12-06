@@ -132,15 +132,18 @@ class BaseCard(AuthenticatedPage):
     self._get(self._notepad_toggle_icon).click()
     return self
 
-  def validate_card_header(self, paper_id):
+  def validate_card_header(self, short_doi):
     """
     Validate the card heading header style
+    :param short_doi: The short doi for the paper under examination
+    :return: void function
     """
     paper_tuple = PgSQL().query('SELECT papers.journal_id, papers.doi, '
                                 'papers.paper_type, papers.publishing_state, papers.title '
-                                'FROM papers WHERE papers.id=%s;', (paper_id,))[0]
+                                'FROM papers WHERE papers.short_doi=%s;', (short_doi,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
                                                  paper_tuple[3], paper_tuple[4]
+    paper_id = self.get_paper_id_from_short_doi(short_doi)
     manuscript_id = doi.split('journal.')[1]
     status = status.replace('_', ' ').capitalize()
     role_id = PgSQL().query('SELECT id FROM roles '
@@ -204,15 +207,15 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert plus.text == '+', plus.text
 
-  def validate_common_elements_styles(self, paper_id):
+  def validate_common_elements_styles(self, short_doi):
     """
     Validate styles from elements common to all cards
-    :param paper_id: id of paper - needed to validate the card header elements
+    :param short_doi: short_doi of paper - needed to validate the card header elements
     :return void function
     """
     self._wait_for_element(self._get(self._header_title_link))
     self._get(self._header_title_link)
-    self.validate_card_header(paper_id)
+    self.validate_card_header(short_doi)
     # Close btn
     close_btn = self._get(self._close_button)
     self.validate_secondary_big_green_button_style(close_btn)

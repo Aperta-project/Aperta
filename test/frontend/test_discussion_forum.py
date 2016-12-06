@@ -71,32 +71,31 @@ class DiscussionForumTest(CommonTest):
     # check for flash message
     ms_viewer.page_ready_post_create()
     logging.info(ms_viewer.get_current_url())
-    paper_id = ms_viewer.get_paper_id_from_url()
-    logging.info(u'Assigned paper id: {0}'.format(paper_id))
+    short_doi = ms_viewer.get_paper_short_doi_from_url()
     ms_viewer.logout()
 
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     if web_page == 'manuscript viewer':
       # This is failing for Asian character set usernames of only two characters APERTA-7862
-      ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+      ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(short_doi),
                                     participants=[creator])
     elif web_page == 'workflow':
       ms_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page.page_ready()
-      workflow_page.post_new_discussion(topic='Testing discussion on paper {}'.format(paper_id),
+      workflow_page.post_new_discussion(topic='Testing discussion on paper {}'.format(short_doi),
                                         participants=[creator])
     ms_viewer.logout()
 
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer.page_ready()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
@@ -110,8 +109,8 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
     ms_viewer.click_discussion_link()
@@ -121,7 +120,7 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     # look for icon
     time.sleep(2)
@@ -179,23 +178,22 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
     logging.info(ms_viewer.get_current_url())
-    paper_id = ms_viewer.get_paper_id_from_url()
-    logging.info('Assigned paper id: {0}'.format(paper_id))
+    short_doi = ms_viewer.get_paper_short_doi_from_url()
+    logging.info('Assigned paper short doi: {0}'.format(short_doi))
     # Submit paper
     # reviewer1
     ms_viewer.click_submit_btn()
     ms_viewer.confirm_submit_btn()
     ms_viewer.close_modal()
-    # Creator logout
-    ms_viewer.logout()
 
     # Once the paper is created, add collaborator
     user_id = PgSQL().query('SELECT id FROM users where username = %s;',
         (collaborator_1['user'],))[0][0]
-    journal_id = PgSQL().query('SELECT journal_id FROM papers where id = %s;',
-        (paper_id,))[0][0]
-    role_id = PgSQL().query('SELECT id FROM roles where journal_id = %s '
-        'AND name = %s;', (journal_id, 'Collaborator'))[0][0]
+    journal_id = PgSQL().query('SELECT journal_id '
+                               'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
+    role_id = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s '
+                            'AND name = %s;', (journal_id, 'Collaborator'))[0][0]
+    paper_id = ms_viewer.get_paper_id_from_short_doi(short_doi)
     # Add collaborator
     PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
                    'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
@@ -205,6 +203,8 @@ class DiscussionForumTest(CommonTest):
     PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
                    'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
                    ' now(), now());', (user_id, role_id, paper_id))
+    # Creator logout
+    ms_viewer.logout()
 
     # Login as Staff user
     # This will fail when superadmin is chosen due to a app bug
@@ -212,19 +212,19 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
-    topic = 'Testing discussion on paper {0}'.format(paper_id)
+    topic = 'Testing discussion on paper {0}'.format(short_doi)
     # How to call the discussion section
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
         participants=[collaborator_1, collaborator_2])
     elif web_page == 'manuscript viewer':
-      dashboard_page.go_to_manuscript(paper_id)
+      dashboard_page.go_to_manuscript(short_doi)
       ms_viewer = ManuscriptViewerPage(self.getDriver())
       # Add Collaborator 1 and Collaborator 2
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
@@ -237,7 +237,7 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user Collaborator 1: {}'.format(collaborator_1))
     dashboard_page = self.cas_login(email=collaborator_1['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
@@ -245,9 +245,9 @@ class DiscussionForumTest(CommonTest):
     discussion_title = discussion_link.text
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
-    created, discussion_topic_id = PgSQL().query(
-      'SELECT created_at, id FROM discussion_topics WHERE paper_id = %s;',
-      (paper_id,))[0]
+    created, discussion_topic_id = PgSQL().query('SELECT created_at, id '
+                                                 'FROM discussion_topics '
+                                                 'WHERE paper_id = %s;', (paper_id,))[0]
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
     created = created.replace(tzinfo=from_zone)
@@ -260,10 +260,10 @@ class DiscussionForumTest(CommonTest):
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
     header_db = u'{0} posted {1}'.format(staff_user['name'], db_time_fe_format)
     assert header_fe == header_db, 'Header from the front end: {0} not the same as '\
-        'in DB: {1}'.format(header_fe, header_db)
+                                   'in DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
-         'front end: {1}'.format(msg_1, comment_body)
+                                  'front end: {1}'.format(msg_1, comment_body)
     msg_2 = generate_paragraph()[2]
     discussion_back_link = ms_viewer._get(ms_viewer._discussion_back_link)
     discussion_back_link.click()
@@ -281,8 +281,8 @@ class DiscussionForumTest(CommonTest):
     dashboard_page = self.cas_login(email=collaborator_2['email'])
     dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
@@ -290,8 +290,9 @@ class DiscussionForumTest(CommonTest):
     discussion_title = discussion_link.text
     assert topic in discussion_title, '{0} not in {1}'.format(topic, discussion_title)
     discussion_link.click()
-    created = PgSQL().query('SELECT created_at FROM discussion_replies WHERE '
-      'discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
+    created = PgSQL().query('SELECT created_at '
+                            'FROM discussion_replies '
+                            'WHERE discussion_topic_id = %s;', (discussion_topic_id,))[0][0]
     from_zone = tz.gettz('UTC')
     to_zone = tz.tzlocal()
     created = created.replace(tzinfo=from_zone)
@@ -304,7 +305,7 @@ class DiscussionForumTest(CommonTest):
     header_fe = u'{0} {1}'.format(comment_name, comment_date)
     header_db = u'{0} posted {1}'.format(collaborator_1['name'], db_time_fe_format)
     assert header_fe == header_db, 'Header from front end: {0}, is not the same as '\
-        'header from the DB: {1}'.format(header_fe, header_db)
+                                   'header from the DB: {1}'.format(header_fe, header_db)
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_2 in comment_body, 'Message sent: {0} is not in the front end {1}'\
         .format(msg_2, comment_body)
@@ -314,8 +315,8 @@ class DiscussionForumTest(CommonTest):
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     ms_viewer.click_discussion_link()
@@ -323,7 +324,8 @@ class DiscussionForumTest(CommonTest):
       discussion_link = ms_viewer._get(ms_viewer._first_discussion_lnk)
     except ElementDoesNotExistAssertionError:
       raise(ElementDoesNotExistAssertionError, 'This may be caused by the user {0} not being '
-        'able to see its own discussion (reported at APERTA-7902)'.format(staff_user))
+                                               'able to see its own discussion '
+                                               '(reported at APERTA-7902)'.format(staff_user))
     discussion_title = discussion_link.text
     assert topic in discussion_title, 'Sent topic: {0} is not in the front end: {1}'.format(
         topic, discussion_title)

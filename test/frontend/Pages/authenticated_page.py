@@ -370,16 +370,16 @@ class AuthenticatedPage(PlosPage):
     """
     self._get(self._sheet_close_x).click()
 
-  def go_to_manuscript(self, manuscript_id):
+  def go_to_manuscript(self, short_doi):
     """
-    Navigate to the manuscript viewer page of the provided paper id
-    :param manuscript_id: papers.id of the requested paper
+    Navigate to the manuscript viewer page of the provided short doi
+    :param short_doi: papers.short_doi of the requested paper
     :return: void function
     """
     time.sleep(5)
     url = self._driver.current_url
-    id_url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(manuscript_id)
-    self._driver.get(id_url)
+    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(short_doi)
+    self._driver.get(url)
 
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
     """
@@ -482,17 +482,44 @@ class AuthenticatedPage(PlosPage):
     self._wait_for_element(self._get(self._overlay_header_close))
     self._get(self._overlay_header_close).click()
 
+  def get_short_doi(self):
+    """
+    A method to extract the short doi from the current page url
+    :return: short doi, a string
+    """
+    count = 0
+    short_doi = self.get_current_url().split('/')[-1]
+    while not short_doi:
+      if count > 60:
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+      time.sleep(1)
+      short_doi = self.get_current_url().split('/')[-1]
+      count += 1
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    return short_doi
+
   @staticmethod
-  def get_db_submission_data(manu_id):
+  def get_paper_id_from_short_doi(short_doi):
+    """
+    A method to return the paper id from the database via a query on the short_doi
+    :param short_doi: The short doi available from the URL of a paper and also the short_url in db
+    :return: paper.id from db, an integer
+    """
+    paper_id = PgSQL().query('select id from papers where short_doi = %s;', (short_doi,))[0][0]
+    return paper_id
+
+  @staticmethod
+  def get_db_submission_data(short_doi):
     """
     Provided a manuscript ID, queries the database for current publishing_state, gradual_engagement
       state, and any submitted_at date/time object if present
-    :param manu_id: ID of paper to query
+    :param short_doi: short_doi of paper to query
     :return: a tuple of (publishing_state, gradual_engagement (boolean), submitted_at (date/time))
     """
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '
-                                    'WHERE id = %s;', (manu_id,))
+                                    'WHERE short_doi = %s;', (short_doi,))
     return submission_data
 
   def click_card(self, cardname):

@@ -52,7 +52,7 @@ class AssignTeamCardTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url_without_args()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
 
     # Giving just a little extra time here so the title on the paper gets updated
     # What I notice is that if we submit before iHat is done updating, the paper title
@@ -82,7 +82,7 @@ class AssignTeamCardTest(CommonTest):
     workflow_page.click_card('assign_team')
     assign_team = AssignTeamCard(self.getDriver())
     assign_team.card_ready()
-    assign_team.validate_card_elements_styles(paper_id)
+    assign_team.validate_card_elements_styles(short_doi)
     assign_team.assign_role(academic_editor_login, 'Academic Editor')
     assign_team.assign_role(cover_editor_login, 'Cover Editor')
     assign_team.assign_role(handling_editor_login, 'Handling Editor')

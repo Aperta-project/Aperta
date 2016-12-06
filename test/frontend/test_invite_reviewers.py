@@ -48,7 +48,8 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -70,9 +71,10 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.card_ready()
-    invite_reviewers.validate_card_elements_styles(reviewer_login, 'reviewer', paper_id)
+    invite_reviewers.validate_card_elements_styles(reviewer_login, 'reviewer', short_doi)
     logging.info('Paper id is: {0}.'.format(paper_id))
-    manuscript_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (paper_id,))[0][0]
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
     manuscript_title = unicode(manuscript_title,
                                encoding='utf-8',
                                errors='strict')
@@ -80,12 +82,12 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_invite(reviewer_login,
                                      manuscript_title,
                                      creator_user,
-                                     paper_id)
+                                     short_doi)
     # Invite a second user to invite then delete before acceptance
     invite_reviewers.validate_invite(prod_staff_login,
                                      manuscript_title,
                                      creator_user,
-                                     paper_id)
+                                     short_doi)
     logging.info('Revoking invite for {0}'.format(prod_staff_login['name']))
     invite_reviewers.revoke_invitee(prod_staff_login, 'Reviewer')
     invite_reviewers.click_close_button()

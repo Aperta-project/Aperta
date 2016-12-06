@@ -57,8 +57,8 @@ class ReviseManuscriptTest(CommonTest):
                         type_=paper_type, random_bit=True)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
-    paper_id = paper_viewer.get_paper_id_from_url()
-    logging.info("Assigned paper id: {0}".format(paper_id))
+    short_doi = paper_viewer.get_paper_short_doi_from_url()
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Billing')
     paper_viewer.complete_task('Cover Letter')
@@ -77,9 +77,9 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=staff_user['email'])
     if staff_user in (handling_editor_login, cover_editor_login):
       # Set up a handling editor, academic editor and cover editor for this paper
-      self.set_editors_in_db(paper_id)
-    # go to article id paper_id
-    dashboard_page.go_to_manuscript(paper_id)
+      self.set_editors_in_db(short_doi)
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # go to wf
     paper_viewer.click_workflow_link()
@@ -91,7 +91,7 @@ class ReviseManuscriptTest(CommonTest):
     # Login as user and complete Revise Manuscript
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     data = {'attach': 2}
     paper_viewer.complete_task('Revise Manuscript', data=data)

@@ -215,11 +215,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Retrieves journal id
     :return: Int with journal_id
     """
-    paper_id = self.get_paper_id_from_url()
-    logging.info(paper_id)
+    short_doi = self.get_paper_short_doi_from_url()
+    logging.info(short_doi)
     journal_id = PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
-                               'WHERE id = %s;', (paper_id,))[0][0]
+                               'WHERE short_doi = %s;', (short_doi,))[0][0]
     return journal_id
 
   def _check_collaborator(self):
@@ -739,22 +739,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     return self._get(self._title).text
 
-  def get_paper_id_from_url(self):
+  def get_paper_short_doi_from_url(self):
     """
-    Returns the database paper ID (not the Manuscript ID) from URL
+    Returns the database paper short doi from URL
     """
     # Need to wait for url to update
     count = 0
-    paper_id = self.get_current_url().split('/')[-1]
-    while not paper_id:
+    short_doi = self.get_current_url().split('/')[-1]
+    while not short_doi:
       if count > 60:
-        raise (StandardError, 'Paper id is not updated after a minute, aborting')
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
-      paper_id = self.get_current_url().split('/')[-1]
+      short_doi = self.get_current_url().split('/')[-1]
       count += 1
-    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    logging.info("Assigned paper id: {0}".format(paper_id))
-    return paper_id
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    return short_doi
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):
     """

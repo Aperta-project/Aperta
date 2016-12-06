@@ -2890,7 +2890,7 @@ attachments:
   - title
   - caption
   - status
-  - kind
+  - file_type
   - s3_dir
   - type
   - old_id

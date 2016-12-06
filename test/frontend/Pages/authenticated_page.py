@@ -376,7 +376,7 @@ class AuthenticatedPage(PlosPage):
     """
     time.sleep(5)
     url = self._driver.current_url
-    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(short_doi)
+    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + short_doi
     self._driver.get(url)
 
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):

@@ -3,8 +3,8 @@ import Ember from 'ember';
 // turns a comma separated list of filetypes into a regex that matches them all
 // ".js,.hbs,.txt" => /(js|hbs|txt)$/i
 export function filetypeRegex(list){
-  let types = list.replace(/\s+/g, '').replace(/,/g, '|');
-  return new RegExp("(" + types + ")$", 'i');
+  let types = list.replace(/\s+|\./g, '').replace(/,/g, '|');
+  return new RegExp("\.(" + types + ")$", 'i');
 }
 
 export default function(fileName, acceptString) {

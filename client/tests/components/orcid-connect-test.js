@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup }  from 'ember-data-factory-guy';
@@ -9,11 +10,11 @@ moduleForComponent('orcid-connect',
                    'Integration | Component | orcid connect',
                    {integration: true,
                     beforeEach: function() {
-                      manualSetup(this.container)
-                      this.set('confirm', (message)=>{})
+                      manualSetup(this.container);
+                      this.set('confirm', (message)=>{});
                     }});
 
-var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm}}`;
+var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account');

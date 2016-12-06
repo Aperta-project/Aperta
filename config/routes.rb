@@ -84,7 +84,8 @@ Tahi::Application.routes.draw do
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
-        get 'users/:paper_id', to: 'filtered_users#users'
+        get 'users/:paper_id', constraints: { paper_id: /(#{DoiService::SHORT_DOI_FORMAT})|\d+/ },
+          to: 'filtered_users#users'
       end
     end
     resources :formats, only: [:index]
@@ -104,12 +105,12 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
-    resources :papers, only: [:index, :create, :show, :update] do
+    resources :papers, param: :id, constraints: { id: /(#{DoiService::SHORT_DOI_FORMAT})|\d+/ }, \
+                       only: [:index, :create, :show, :update] do
       resources :roles, only: [], controller: 'paper_roles' do
         resources :eligible_users, only: [:index], controller: 'paper_role_eligible_users'
       end
       resource :editor, only: :destroy
-      resource :manuscript_manager, only: :show
       resources :figures, only: [:create, :index]
       resources :tables, only: :create
       resources :bibitems, only: :create
@@ -205,7 +206,7 @@ Tahi::Application.routes.draw do
 
   # epub/pdf paper download formats
   #
-  resources :papers, only: [] do
+  resources :papers, param: :id, constraints: { id: /(#{DoiService::SHORT_DOI_FORMAT})|\d+/ }, only: [] do
     get :download, on: :member
   end
 
@@ -246,6 +247,13 @@ Tahi::Application.routes.draw do
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
                                            as: :resource_proxy
+
+  scope constraints: lambda { |request| request.fullpath =~ DoiService::SHORT_DOI_FORMAT } do
+    get('/(*rest)', controller: "ember_cli/ember",
+                    action: "index",
+                    format: :html,
+                    defaults: { ember_app: :client })
+  end
 
   root to: 'ember_cli/ember#index'
   mount_ember_app :client, to: '/'

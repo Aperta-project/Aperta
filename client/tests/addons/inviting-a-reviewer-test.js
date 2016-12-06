@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
-import startApp from 'tahi/tests/helpers/start-app';
+import startApp from '../helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
@@ -22,7 +22,7 @@ module('Integration: Inviting a reviewer', {
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
-    TestHelper.mockFind('paper').returns({model: paper});
+    TestHelper.mockPaperQuery(paper);
     TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
@@ -53,7 +53,7 @@ module('Integration: Inviting a reviewer', {
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
     TestHelper.mockFind('task').returns({model: task});
-    visit(`/papers/${paper.id}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function(){
@@ -80,7 +80,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
 
 test('can delete a pending invitation', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', { latest: true });
+    let decision = FactoryGuy.make('decision', 'draft');
     task.set('decisions', [decision]);
 
     let invitation = FactoryGuy.make('invitation', {
@@ -95,7 +95,7 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockDelete('invitation', invitation.id);
     TestHelper.mockFind('decision').returns({model: decision});
 
-    visit(`/papers/${paper.id}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function() {
@@ -114,8 +114,8 @@ test('can delete a pending invitation', function(assert) {
 
 test('can not send or delete a pending invitation from a previous round', function(assert) {
   Ember.run(function() {
-    let decision = FactoryGuy.make('decision', { latest: true });
-    let oldDecision = FactoryGuy.make('decision', { latest: false });
+    let decision = FactoryGuy.make('decision', 'draft');
+    let oldDecision = FactoryGuy.make('decision');
     task.set('decisions', [decision, oldDecision]);
 
     let invitation = FactoryGuy.make('invitation', {
@@ -131,7 +131,7 @@ test('can not send or delete a pending invitation from a previous round', functi
       decision: $.extend({id: oldDecision.id}, oldDecision.toJSON())
     }});
 
-    visit(`/papers/${paper.id}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function() {

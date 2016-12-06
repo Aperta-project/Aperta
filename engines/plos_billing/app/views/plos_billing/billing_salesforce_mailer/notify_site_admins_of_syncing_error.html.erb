@@ -1,0 +1,29 @@
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  Billing information for <%= @paper.doi %> failed to send to SalesForce.
+</h1>
+
+<hr>
+
+<p class="paper-name">
+  <%= @paper.display_title(sanitized: false) %>
+</p>
+
+<p>
+  Warn your developers that this happened:
+  <tt>
+    <%= @message %>
+  </tt>
+</p>
+
+<p>
+  They are probably already hard at work on this issue.
+</p>
+
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Paper'
+} %>

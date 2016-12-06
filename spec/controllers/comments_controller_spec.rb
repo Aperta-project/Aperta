@@ -5,13 +5,20 @@ describe CommentsController do
     FactoryGirl.create(
       :paper,
       :with_tasks,
-      :with_integration_journal,
-      creator: user
+      creator: user,
+      journal: journal
     )
   end
   let(:user) { FactoryGirl.create(:user, tasks: []) }
 
-  let(:journal) { paper.journal }
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_collaborator_role,
+      :with_task_participant_role
+    )
+  end
   let(:journal_admin) { FactoryGirl.create(:user) }
 
   let(:task) do
@@ -24,9 +31,6 @@ describe CommentsController do
   end
 
   describe "#index" do
-    let!(:comment1) { FactoryGirl.create(:comment, task: task) }
-    let!(:comment2) { FactoryGirl.create(:comment, task: task) }
-
     subject(:do_request) do
       get :index, format: 'json',
                   task_id: task.to_param
@@ -35,6 +39,9 @@ describe CommentsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'when the user has access' do
+      let!(:comment1) { FactoryGirl.create(:comment, task: task) }
+      let!(:comment2) { FactoryGirl.create(:comment, task: task) }
+      
       before do
         stub_sign_in user
         allow(user).to receive(:can?)

@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe Admin::JournalsController, redis: true do
-  let(:journal) { create(:journal_with_roles_and_permissions) }
-  let(:site_admin) { create :user, :site_admin }
-  let(:journal_admin) do
-    ja = create :user
-    assign_journal_role(journal, ja, :admin)
-    ja
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_staff_admin_role
+    )
   end
-  let(:image_file) { fixture_file_upload 'yeti.jpg' }
+  let(:user) { FactoryGirl.build_stubbed :user }
 
   describe '#create' do
     subject(:do_request) do
@@ -21,11 +21,18 @@ describe Admin::JournalsController, redis: true do
 
     context 'when the user has access' do
       before do
-        stub_sign_in site_admin
+        stub_sign_in user
+        allow(user).to receive(:can?) do |action, object|
+          expect(action).to eq(:administer)
+          expect(object).to be_kind_of(Journal)
+          true
+        end
       end
 
       it 'creates a journal' do
-        do_request
+        expect do
+          do_request
+        end.to change { Journal.count }.by 1
         journal = Journal.last
         expect(journal.name).to eq 'new journal name'
         expect(journal.description).to eq 'new journal desc'
@@ -34,11 +41,13 @@ describe Admin::JournalsController, redis: true do
     end
 
     context "when the user does not have access" do
-      let(:journal_admin) { create :user }
-      before { assign_journal_role(journal, journal_admin, :admin) }
-
       before do
-        stub_sign_in journal_admin
+        stub_sign_in user
+        allow(user).to receive(:can?) do |action, object|
+          expect(action).to eq(:administer)
+          expect(object).to be_kind_of(Journal)
+          false
+        end
       end
 
       it "renders status 403" do
@@ -67,23 +76,31 @@ describe Admin::JournalsController, redis: true do
 
     context "when the user has access" do
       before do
-        stub_sign_in journal_admin
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:administer, journal)
+          .and_return true
       end
 
       it "renders status 2xx and the journal is updated successfully" do
-        with_aws_cassette('admin_journal_controller') do
+        expect do
           do_request
-        end
+        end.to change { Journal.pluck(:name) }.to contain_exactly 'new journal name'
         expect(response.status).to eq 204
       end
     end
 
     context "when the user does not have access" do
-      it "renders status 401" do
-        with_aws_cassette('admin_journal_controller') do
-          do_request
-        end
-        expect(response.status).to eq 401
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:administer, journal)
+          .and_return false
+      end
+
+      it "renders status 403" do
+        do_request
+        expect(response.status).to eq 403
       end
     end
   end

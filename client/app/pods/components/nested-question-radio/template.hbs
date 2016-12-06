@@ -1,6 +1,6 @@
 {{#if readOnly}}
   {{#if shouldDisplayQuestionText}}
-    <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
+    <div class="question-text {{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
   {{/if}}
 
   {{#if model.answer.wasAnswered}}
@@ -21,11 +21,11 @@
 
 {{else}}
   {{#if shouldDisplayQuestionText}}
-    <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
+    <div class="question-text {{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
   {{/if}}
 
   {{#if helpText}}
-    <ul class="question-help">{{{helpText}}}</ul>
+    <ul class="question-help {{concat ident "-help-text"}}">{{{helpText}}}</ul>
   {{/if}}
 
   {{#if unwrappedHelpText}}

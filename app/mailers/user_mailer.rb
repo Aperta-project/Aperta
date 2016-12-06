@@ -48,17 +48,6 @@ class UserMailer < ActionMailer::Base
       subject: "You've been invited to the editor discussion for the manuscript, \"#{@paper.display_title}\"")
   end
 
-  def assigned_editor(editor_id, paper_id)
-    @paper = Paper.find(paper_id)
-    user = User.find(editor_id)
-    @editor_name = display_name(user)
-    @journal = @paper.journal
-
-    mail(
-      to: user.try(:email),
-      subject: "You've been assigned as an editor for the manuscript, \"#{@paper.display_title}\"")
-  end
-
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
     @commenter = @comment.commenter

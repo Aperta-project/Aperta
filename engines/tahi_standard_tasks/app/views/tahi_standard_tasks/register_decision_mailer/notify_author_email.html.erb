@@ -1,19 +1,14 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      A Decision has been Registered on your Manuscript <%= @paper.display_title(sanitized: false) %>.
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="paper-abstract">
-      <%= simple_format @decision.letter %>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    <a class="button" href="<%= client_paper_url(@paper) %>" target="_blank">
-      View Paper
-    </a>
-  </div>
-</div>
+<h1>
+  A Decision has been Registered on your Manuscript <%= @paper.display_title(sanitized: false) %>.
+</h1>
+
+<hr>
+
+<%= simple_format @decision.letter %>
+
+<hr>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Paper'
+} %>

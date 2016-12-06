@@ -8,7 +8,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    paper = Paper.find(author_params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(author_params[:paper_id])
     requires_user_can :edit_authors, paper
     author = Author.new(author_params)
     author.save!

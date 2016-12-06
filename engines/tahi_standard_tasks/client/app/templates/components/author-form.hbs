@@ -1,6 +1,12 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Individual Author</legend>
+    {{#if authorIsNotCurrentUser}}
+      {{error-message message=validationErrors.orcidIdentifier
+                      displayIcon=true
+                      displayText=true}}
+      <br><br>
+    {{/if}}
 
     <div class="flex-group">
       <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}"
@@ -132,7 +138,10 @@
     {{#if author.orcidAccount}}
       <div class="flex-group">
         <div class="flex-element">
-            {{orcid-connect user=author.user}}
+           {{orcid-connect user=author.user
+                           journal=author.paper.journal
+                           canRemoveOrcid=canRemoveOrcid
+                           errors=validationErrors.orcidIdentifier}}
         </div>
       </div>
     {{/if}}

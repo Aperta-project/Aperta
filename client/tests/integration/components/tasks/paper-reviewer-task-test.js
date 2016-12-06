@@ -1,9 +1,8 @@
 import {moduleForComponent, test} from 'ember-qunit';
-import startApp from '../helpers/start-app';
+import startApp from '../../../helpers/start-app';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
-// Pretend like you're in client/tests
-import FakeCanService from '../helpers/fake-can-service';
+import FakeCanService from '../../../helpers/fake-can-service';
 
 let app;
 
@@ -24,7 +23,7 @@ moduleForComponent(
   }
 );
 
-let decision = Ember.Object.create({id: 2, latest: true, invitations: []});
+let decision = Ember.Object.create({id: 2, draft: true, invitations: []});
 
 test('User can add a new reviewer after tweaking the email of an exiting user',
   function(assert){
@@ -90,7 +89,8 @@ var newTask = function() {
     },
 
     paper: {
-      latestDecision: decision,
+      draftDecision: decision,
+      previousDecisions: [],
       decisions: {
         reload() {
           // noop

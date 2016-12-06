@@ -20,7 +20,7 @@ class AtMentionableUsersController < ApplicationController
   end
 
   def paper
-    @paper ||= Paper.find(paper_id)
+    @paper ||= Paper.find_by_id_or_short_doi(paper_id)
   end
 
   def paper_id

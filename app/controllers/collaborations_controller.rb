@@ -47,7 +47,7 @@ class CollaborationsController < ApplicationController
         Assignment.find(params[:id]).assigned_to
       elsif params[:collaboration]
         # during create all the params are present
-        Paper.find(collaborator_params[:paper_id])
+        Paper.find_by_id_or_short_doi(collaborator_params[:paper_id])
       end
     end
   end

@@ -127,7 +127,7 @@ end
 feature 'Viewing manuscript control bar', js: true do
   before do
     login_as(user, scope: :user)
-    visit "/papers/#{paper.id}/versions?majorVersion=0&minorVersion=0"
+    visit "/papers/#{paper.to_param}/versions?majorVersion=0&minorVersion=0"
   end
 
   context 'as an admin' do

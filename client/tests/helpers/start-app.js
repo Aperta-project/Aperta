@@ -69,6 +69,12 @@ export default function startApp(attrs) {
       }
       responseJson[Ember.String.pluralize(modelName)] = json;
       return responseJson;
+    },
+    mockPaperQuery: function(paper) {
+      let mockedQuery = this.mockQuery('paper').returns({models: [paper]});
+      var shortDoi = Ember.get(paper, 'shortDoi');
+      mockedQuery.getUrl = function() { return `/api/papers/${shortDoi}`; };
+      return mockedQuery;
     }
   });
 

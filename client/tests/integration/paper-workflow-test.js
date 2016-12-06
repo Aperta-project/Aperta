@@ -8,6 +8,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let app = null;
 let server = null;
+let paper = null;
 
 module('Integration: Paper Workflow page', {
   afterEach() {
@@ -32,13 +33,15 @@ module('Integration: Paper Workflow page', {
       }
     };
 
+    paper = paperWithParticipant();
+
     server.respondWith('GET', '/api/papers', [
       200, {
         'Content-Type': 'application/json'
       }, JSON.stringify({papers:[]})
     ]);
 
-    server.respondWith('GET', '/api/papers/1', [
+    server.respondWith('GET', '/api/papers/' + paper.shortDoi, [
       200, {
         'Content-Type': 'application/json'
       }, JSON.stringify(paperWithParticipant().toJSON())
@@ -51,6 +54,11 @@ module('Integration: Paper Workflow page', {
     ]);
 
     server.respondWith('DELETE', '/api/tasks/1', [
+      204, {
+        'Content-Type': 'application/json'
+      }, ''
+    ]);
+    server.respondWith('DELETE', '/api/tasks/2', [
       204, {
         'Content-Type': 'application/json'
       }, ''
@@ -81,7 +89,7 @@ test('transition to route without permission fails', function(assert){
   var store = getStore();
   Ember.run(() => store.peekAll('permission').invoke('unloadRecord'));
 
-  visit('/papers/1/workflow');
+  visit('/papers/' + paper.shortDoi + '/workflow');
   andThen(function(){
     assert.equal(
       currentPath(),
@@ -93,7 +101,7 @@ test('transition to route without permission fails', function(assert){
 
 test('transition to route with permission succeeds', function(assert){
   expect(1);
-  visit('/papers/1/workflow');
+  visit('/papers/' + paper.shortDoi + '/workflow');
 
   andThen(function(){
     assert.equal(
@@ -105,7 +113,7 @@ test('transition to route with permission succeeds', function(assert){
 });
 
 test('show delete confirmation overlay on deletion of a Task', function(assert) {
-  visit('/papers/1/workflow');
+  visit('/papers/' + paper.shortDoi + '/workflow');
   andThen(function() {
     $('.card .card-remove').show();
     click('.card .card-remove');
@@ -127,7 +135,7 @@ test('show delete confirmation overlay on deletion of a Task', function(assert) 
 });
 
 test('click delete confirmation overlay cancel button', function(assert) {
-  visit('/papers/1/workflow');
+  visit('/papers/' + paper.shortDoi + '/workflow');
 
   andThen(function() {
     assert.equal(find('.card-content').length, 1);
@@ -139,7 +147,7 @@ test('click delete confirmation overlay cancel button', function(assert) {
 });
 
 test('click delete confirmation overlay submit button', function(assert) {
-  visit('/papers/1/workflow');
+  visit('/papers/' + paper.shortDoi + '/workflow');
 
   andThen(function() {
     assert.equal(find('.card-content').length, 1, 'card exists');
@@ -153,7 +161,7 @@ test('click delete confirmation overlay submit button', function(assert) {
 
     const req = _.findWhere(server.requests, {
       method: 'DELETE',
-      url: '/api/tasks/1'
+      url: '/api/tasks/2'
     });
 
     assert.equal(req.status, 204, 'It sends DELETE request to the server');

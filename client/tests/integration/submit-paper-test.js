@@ -38,15 +38,15 @@ module('Integration: Submitting Paper', {
     });
     paper = FactoryGuy.make('paper', { journal: journal, phases: [phase], tasks: [task] });
 
-    TestHelper.mockFind('paper').returns({model: paper});
+    TestHelper.mockPaperQuery(paper);
 
     TestHelper.mockFindAll('discussion-topic', 1);
     TestHelper.mockFindAll('journal', 0);
 
     Factory.createPermission('Paper', paper.id, ['submit']);
-    $.mockjax({url: `/api/papers/${paper.id}`, type: 'put', status: 204 });
+    $.mockjax({url: `/api/papers/${paper.get('shortDoi')}`, type: 'put', status: 204 });
     $.mockjax({
-      url: `/api/papers/${paper.id}/submit`,
+      url: `/api/papers/${paper.get('shortDoi')}/submit`,
       type: 'put',
       status: 200,
       responseText: {papers: []}
@@ -55,19 +55,19 @@ module('Integration: Submitting Paper', {
 });
 
 test('User can submit a paper', function(assert) {
-  visit('/papers/' + paper.id);
+  visit('/papers/' + paper.get('shortDoi'));
   click('#sidebar-submit-paper');
   click('button.button-submit-paper');
   andThen(function() {
     assert.ok(_.findWhere($.mockjax.mockedAjaxCalls(), {
       type: 'PUT',
-      url: '/api/papers/' + paper.id + '/submit'
+      url: '/api/papers/' + paper.get('shortDoi') + '/submit'
     }), 'It posts to the server');
   });
 });
 
 test('Shows the feedback form after submitting', function(assert) {
-  visit('/papers/' + paper.id);
+  visit('/papers/' + paper.get('shortDoi'));
   click('#sidebar-submit-paper');
   click('button.button-submit-paper');
   andThen(function() {

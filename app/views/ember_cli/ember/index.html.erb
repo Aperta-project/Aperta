@@ -21,7 +21,7 @@
       <% if current_user %>
           window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user).to_json.html_safe %>;
       <% end %>
-      window.pdfviewerPath = "<%= asset_path('pdf.js') %>";
+      window.pdfviewerPath = "<%= asset_path('pdfviewer.js') %>";
     </script>
 
     <% if Rails.env.test? %>

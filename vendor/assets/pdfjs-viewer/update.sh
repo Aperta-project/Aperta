@@ -19,8 +19,8 @@ cp "$source/pdf.worker.js" pdf.worker.js
 echo "%I-Patching pdf.js with aperta.pdf.patch"
 patch -s pdf.js aperta.pdf.patch
 
-echo "%I-Copying viewer.css"
-cp "$source/viewer.css" viewer.css
+echo "%I-Copying css and fixing image urls"
+sed 's/url(images/url(pdfjsviewer\/images/g' "$source/viewer.css" > viewer.css
 
 if [[ ! -d "./pdfjsviewer" ]]; then
   echo "%I-Creating directory: pdfjsviewer"

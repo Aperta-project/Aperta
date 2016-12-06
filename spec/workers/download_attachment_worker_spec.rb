@@ -22,24 +22,14 @@ describe DownloadAttachmentWorker, redis: true do
       it "short circuits if `pending_url` is nil" do
         expect(attachment).to receive(:pending_url).and_return(nil)
         expect(described_class).not_to receive(:download_attachment)
-        described_class.reprocess(attachment)
+        described_class.reprocess(attachment, user)
       end
 
-      it "calls `download_attachment`" do
+      it "creates a download attachment process" do
         allow(attachment).to receive(:pending_url).and_return(url)
-        expect(attachment).to receive(:uploaded_by).and_return(user)
-        expect(described_class).to receive(:download_attachment)
-          .with(attachment, url, user)
-        described_class.reprocess(attachment)
-      end
-
-      it "uses the paper creator as user if `uploaded_by` not set" do
-        allow(attachment).to receive(:pending_url).and_return(url)
-        expect(attachment).to receive(:uploaded_by).and_return(nil)
-        allow(attachment).to receive_message_chain('paper.creator').and_return(user)
-        expect(described_class).to receive(:download_attachment)
-          .with(attachment, url, user)
-        described_class.reprocess(attachment)
+        expect(attachment).to receive(:update_attribute).with(:status, Attachment::STATUS_PROCESSING)
+        described_class.reprocess(attachment, user)
+        expect(DownloadAttachmentWorker).to have_queued_job(attachment.id, url, user.id)
       end
     end
 

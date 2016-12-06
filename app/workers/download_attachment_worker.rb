@@ -7,10 +7,9 @@ class DownloadAttachmentWorker
   # revert to a broken file after the error had been fixed
   sidekiq_options retry: false
 
-  def self.reprocess(attachment)
+  def self.reprocess(attachment, uploaded_by)
     return if attachment.pending_url.nil?
-    user = (attachment.uploaded_by || attachment.paper.creator)
-    download_attachment(attachment, attachment.pending_url, user)
+    download_attachment(attachment, attachment.pending_url, uploaded_by)
   end
 
   def self.download_attachment(attachment, url, uploaded_by_user)

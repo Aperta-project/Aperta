@@ -1,1 +1,1 @@
-//= require pdf
+//= require vendorpdf

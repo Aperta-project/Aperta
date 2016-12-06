@@ -1,0 +1,114 @@
+--- bower_components/pdf.js-viewer/pdf.js	2016-12-05 16:44:32.000000000 -0500
++++ pdf.js	2016-12-06 11:04:31.000000000 -0500
+@@ -10345,9 +10345,9 @@
+ var pdfjsSrc = scriptTagContainer.lastChild.src;
+ 
+ if (pdfjsSrc) {
+-  PDFJS.imageResourcesPath = pdfjsSrc.replace(/pdf\.js$/i, 'images/');
+-  PDFJS.workerSrc = pdfjsSrc.replace(/pdf\.js$/i, 'pdf.worker.js');
+-  PDFJS.cMapUrl = pdfjsSrc.replace(/pdf\.js$/i, 'cmaps/');
++  var pdfjsroot = '/assets/pdfjsviewer/';
++  PDFJS.imageResourcesPath = pdfjsroot + 'images/';
++  PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
+ }
+ 
+ PDFJS.cMapPacked = true;
+@@ -15730,7 +15730,7 @@
+ 
+     var div = document.createElement('div');
+     div.id = 'thumbnailContainer' + id;
+-    div.className = 'thumbnail';
++    div.className = 'pdfthumbnail';
+     this.div = div;
+ 
+     if (id === 1) {
+@@ -15742,8 +15742,8 @@
+     var ring = document.createElement('div');
+     ring.className = 'thumbnailSelectionRing';
+     var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
+-    ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+-    ring.style.height = this.canvasHeight + borderAdjustment + 'px';
++    //ring.style.width = this.canvasWidth + borderAdjustment + 'px';
++    //ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+     this.ring = ring;
+ 
+     div.appendChild(ring);
+@@ -15782,8 +15782,8 @@
+         ring.removeChild(childNodes[i]);
+       }
+       var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
+-      ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+-      ring.style.height = this.canvasHeight + borderAdjustment + 'px';
++      // ring.style.width = this.canvasWidth + borderAdjustment + 'px';
++      // ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+ 
+       if (this.canvas) {
+         // Zeroing the width and height causes Firefox to release graphics
+@@ -16001,7 +16001,7 @@
+ 
+     scrollThumbnailIntoView:
+         function PDFThumbnailViewer_scrollThumbnailIntoView(page) {
+-      var selected = document.querySelector('.thumbnail.selected');
++      var selected = document.querySelector('.pdfthumbnail.selected');
+       if (selected) {
+         selected.classList.remove('selected');
+       }
+@@ -16347,7 +16347,7 @@
+   preferencePdfBugEnabled: false,
+   preferenceShowPreviousViewOnLoad: true,
+   preferenceDefaultZoomValue: '',
+-  isViewerEmbedded: (window.parent !== window),
++  isViewerEmbedded: true /* (window.parent !== window)*/ ,
+   url: '',
+ 
+   // called once when the document is loaded
+@@ -17491,12 +17491,9 @@
+   document.getElementById('presentationMode').addEventListener('click',
+     SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
+ 
+-  document.getElementById('openFile').addEventListener('click',
+-    SecondaryToolbar.openFileClick.bind(SecondaryToolbar));
+-
+-  document.getElementById('print').addEventListener('click',
++  /* document.getElementById('print').addEventListener('click',
+     SecondaryToolbar.printClick.bind(SecondaryToolbar));
+-
++  */
+   document.getElementById('download').addEventListener('click',
+     SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
+ 
+@@ -17617,14 +17614,6 @@
+       // unable to write to storage
+     });
+   });
+-  var href =
+-    PDFViewerApplication.pdfLinkService.getAnchorUrl(location.pdfOpenParams);
+-  document.getElementById('viewBookmark').href = href;
+-  document.getElementById('secondaryViewBookmark').href = href;
+-
+-  // Update the current bookmark in the browsing history.
+-  PDFViewerApplication.pdfHistory.updateCurrentBookmark(location.pdfOpenParams,
+-                                                        location.pageNumber);
+ 
+   // Show/hide the loading indicator in the page number input element.
+   var pageNumberInput = document.getElementById('pageNumber');
+@@ -17638,7 +17627,7 @@
+   }
+ }, true);
+ 
+-window.addEventListener('resize', function webViewerResize(evt) {
++function webViewerResize(evt) {
+   if (PDFViewerApplication.initialized &&
+       (document.getElementById('pageAutoOption').selected ||
+        /* Note: the scale is constant for |pageActualOption|. */
+@@ -17651,7 +17640,9 @@
+ 
+   // Set the 'max-height' CSS property of the secondary toolbar.
+   SecondaryToolbar.setMaxHeight(document.getElementById('viewerContainer'));
+-});
++}
++
++window.addEventListener('resize', webViewerResize);
+ 
+ window.addEventListener('hashchange', function webViewerHashchange(evt) {
+   if (PDFViewerApplication.pdfHistory && PDFViewerApplication.pdfHistory.isHashChangeUnlocked) {

@@ -56,3 +56,5 @@ echo "Once you've done the cap deploys, you should see tahi running at http://ap
 
 echo "If you see an error about a key mismatch, try 'ssh-keygen -R aperta'"
 echo "If you're still having problems connecting to the vagrant, check your /etc/hosts file. You may need to run 'vagrant hostmanager' from ops_valdo/valdo/apps/aperta."
+echo "If you're unable to 'vagrant ssh' it might be because your local username doesn't match your PLOS username"
+echo "  try running 'VAGRANT_USER=yourplosusername vagrant ssh' instead"

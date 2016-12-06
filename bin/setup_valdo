@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 # This script will set up valdo in a directory next to your tahi project called ops_valdo/
 # when it's done, you'll have to 'cap vagrant deploy:cold' from both tahi and ihat to have

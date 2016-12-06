@@ -40,8 +40,6 @@ class SITask(BaseTask):
     self._si_file_caption_display = (By.CLASS_NAME, 'si-file-caption')
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
-
-
    # POM Actions
 
   def validate_styles(self):
@@ -99,6 +97,8 @@ class SITask(BaseTask):
     dropdown = self._get(self._si_file_select_category)
     dropdown.click()
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
+    #test the following after OTHER is selected in the first
+    #power-select-other
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == data['type'] and data['type'] != 'Other':
         #self._actions.move_to_element(item).click().perform()

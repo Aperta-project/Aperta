@@ -3,8 +3,8 @@
 """
 This test case validates style and function of the Supporting Information (SI) Card
 This test requires the following data:
-The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
-    frontend/assets/docs/
+The test document tarball from http://bighector.plos.org/aperta/testing_assets.tar.gz extracted into
+    frontend/assets/
 """
 import logging
 import os
@@ -42,11 +42,10 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_id = manuscript_page.get_paper_id_from_url()
     paper_url = manuscript_page.get_current_url()
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
     doc2upload = random.choice(docs)
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
     data['figure'] = 'S1'
@@ -106,15 +105,15 @@ class SITaskTest(CommonTest):
     # logout
     manuscript_page.logout()
     # Log in as Editorial User
-    creator_user = random.choice(editorial_users)
-    logging.info(creator_user)
-    dashboard_page = self.cas_login(email=creator_user['email'])
-    self._driver.get(paper_url)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.page_ready()
-    manuscript_page.click_dashboard_link()
+    editorial_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(editorial_user))
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    paper_workflow_url = '{0}/workflow'.format(paper_url)
+    self._driver.get(paper_workflow_url)
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
     import pdb; pdb.set_trace()
-
 
 
 

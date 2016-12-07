@@ -17493,9 +17493,9 @@ function webViewerInitialized() {
 
   /* document.getElementById('print').addEventListener('click',
     SecondaryToolbar.printClick.bind(SecondaryToolbar));
-  */
   document.getElementById('download').addEventListener('click',
     SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
+  */
 
 
   if (file && file.lastIndexOf('file:', 0) === 0) {

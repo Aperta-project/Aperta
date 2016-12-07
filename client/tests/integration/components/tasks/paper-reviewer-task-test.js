@@ -5,27 +5,28 @@ import Ember from 'ember';
 import FakeCanService from '../../../helpers/fake-can-service';
 
 let app;
+let decision;
 
 moduleForComponent(
   'paper-reviewer-task',
   'Integration | Components | Tasks | Paper Reviewer Task', {
     integration: true,
-    setup: function() {
+    setup() {
       //startApp is only here to give us access to the
       //async test helpers (fillIn, click, etc) that
       //we're used to having in the full-app acceptance tests
       app = startApp();
+      decision = Ember.Object.create({id: 2, draft: true, invitations: []});
     },
 
-    teardown: function() {
+    teardown() {
       Ember.run(app, app.destroy);
     }
   }
 );
 
-let decision = Ember.Object.create({id: 2, draft: true, invitations: []});
 
-test('User can add a new reviewer after tweaking the email of an exiting user',
+test('User can add a new reviewer after tweaking the email of an existing user',
   function(assert){
     const context = this;
     assert.expect(2);
@@ -53,16 +54,15 @@ test('User can add a new reviewer after tweaking the email of an exiting user',
 
     // Tweak the existing email, as per scenario in APERTA-6811
     andThen(function() {
-      let current = context.$('#invitation-recipient').val();
+      const current = context.$('#invitation-recipient').val();
       context.$('#invitation-recipient').val(current).keyup();
     });
 
     click('.invitation-email-entry-button');
-    click('.invitation-save-button');
   }
 );
 
-var newInvitation = function(email) {
+const newInvitation = function(email) {
   return Ember.Object.create({
     state: 'pending',
     email: email,
@@ -74,7 +74,7 @@ var newInvitation = function(email) {
 };
 
 
-var newTask = function() {
+const newTask = function() {
   return {
     id: 2,
     title: 'Paper Reviewer',
@@ -104,13 +104,13 @@ var newTask = function() {
   };
 };
 
-var stubStoreCreateRecord = function(fn, context) {
+const stubStoreCreateRecord = function(fn, context) {
   context.register('service:store', Ember.Object.extend({
     createRecord: fn
   }));
 };
 
-var stubAutocompleteUser = function(returnVal, context) {
+const stubAutocompleteUser = function(returnVal, context) {
   context.register('service:restless', Ember.Service.extend({
     get() {
       return new Ember.RSVP.Promise(function(resolve) {
@@ -121,11 +121,11 @@ var stubAutocompleteUser = function(returnVal, context) {
   context.inject.service('restless', { as: 'restless' });
 };
 
-var template = hbs`{{paper-reviewer-task task=task can=can container=container}}`;
+const template = hbs`{{paper-reviewer-task task=task can=can container=container}}`;
 
-var setupEditableTask = function(context, task) {
+const setupEditableTask = function(context, task) {
   task = task || newTask();
-  var can = FakeCanService.create();
+  const can = FakeCanService.create();
   can.allowPermission('edit', task);
 
   context.setProperties({

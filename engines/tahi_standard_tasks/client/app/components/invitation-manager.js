@@ -24,7 +24,7 @@ export default Ember.Component.extend({
   selectedUser: null,
   autoSuggestSelectedText: null,
 
-  isEditingInvitation: Ember.computed('activeInvitation', 'activeInvitationState', function() {
+  isEditingInvitation: computed('activeInvitation', 'activeInvitationState', function() {
     return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
   }),
 
@@ -84,9 +84,6 @@ export default Ember.Component.extend({
       yield invitation.save();
 
       this.setProperties({
-        activeInvitation: invitation,
-        activeInvitationState: 'edit',
-        composedInvitation: invitation,
         selectedUser: null,
         pendingInvitation: null,
         autoSuggestSelectedText: null
@@ -130,7 +127,7 @@ export default Ember.Component.extend({
 
   decisionSorting: ['id:desc'],
 
-  sortedPreviousDecisionsWithFilteredInvitations: Ember.computed.sort(
+  sortedPreviousDecisionsWithFilteredInvitations: computed.sort(
       'previousDecisionsWithFilteredInvitations', 'decisionSorting'),
 
   actions: {
@@ -143,7 +140,7 @@ export default Ember.Component.extend({
       this.get('changePosition').perform(newPosition, invitation);
     },
 
-    composeInvite() {
+    createInvitation() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
       this.get('createInvitation').perform({

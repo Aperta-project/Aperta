@@ -84,6 +84,9 @@ module TahiStandardTasks
       new_number = max_existing ? max_existing + 1 : 1
 
       body["reviewer_number"] = new_number
+
+      new_title = title + " (##{new_number})"
+      self.title = new_title
       save!
     end
 

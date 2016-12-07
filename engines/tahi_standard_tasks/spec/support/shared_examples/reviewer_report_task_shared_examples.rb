@@ -93,7 +93,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
   end
 
   describe "#on_completion" do
-    let(:task) { FactoryGirl.create(factory, paper: paper, completed: completed, body: body) }
+    let(:task) { FactoryGirl.create(factory, paper: paper, title: "Review by Steve", completed: completed, body: body) }
     context "the task is complete" do
       let(:completed) { true }
       context "the task has a reviewer number" do
@@ -102,6 +102,11 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
           task.on_completion
           expect(task.reload.body).to eq(body)
           expect(task.reload.reviewer_number).to eq(2)
+        end
+
+        it "does not update the title" do
+          task.on_completion
+          expect(task.reload.title).to eq("Review by Steve")
         end
       end
       context "the task does not have a reviewer number" do
@@ -117,6 +122,11 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
             expect(task.reload.reviewer_number).to eq(3)
             expect(task.body).to eq("reviewer_number" => 3, "submitted" => false)
           end
+
+          it "appends the reviewer number to the task title" do
+            task.on_completion
+            expect(task.reload.title).to eq("Review by Steve (#3)")
+          end
         end
         context "it's the only completed reviewer report task for the paper" do
           before do
@@ -126,6 +136,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
             task.on_completion
             expect(task.reload.reviewer_number).to eq(1)
             expect(task.body).to eq("reviewer_number" => 1, "submitted" => false)
+            expect(task.title).to eq("Review by Steve (#1)")
           end
         end
       end
@@ -136,6 +147,10 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       it "does not change the task body" do
         task.on_completion
         expect(task.reload.body).to eq(body)
+      end
+      it "does not update the title" do
+        task.on_completion
+        expect(task.reload.title).to eq("Review by Steve")
       end
     end
   end

@@ -36,6 +36,7 @@ describe Figure, redis: true do
     it_behaves_like 'attachment#download! sets the status'
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! sets the updated_at'
 
     it 'sets the title, status, and rank' do
       figure.download!(url)

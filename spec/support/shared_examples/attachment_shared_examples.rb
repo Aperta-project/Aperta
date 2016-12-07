@@ -123,6 +123,26 @@ RSpec.shared_examples_for 'attachment#download! sets the status' do
   end
 end
 
+RSpec.shared_examples_for 'attachment#download! sets the updated_at' do
+  describe 'setting the updated_at' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    it 'sets updated_at' do
+      Timecop.freeze(Time.now.utc + 10.days) do |t|
+        expect(subject.updated_at).not_to eq(t)
+        expect(subject.file).to receive(:download!).with(url)
+        allow(subject.file).to receive_message_chain('file.read').and_return('hello')
+        expect do
+          subject.download!(url)
+        end.to change { subject.reload.updated_at }.to(within_db_precision.of(t))
+      end
+    end
+  end
+end
+
 RSpec.shared_examples_for 'attachment#download! always keeps snapshotted files on s3' do
   describe 'previously uploaded s3 file' do
     let(:url_1) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }

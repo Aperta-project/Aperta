@@ -129,16 +129,6 @@ describe Attachment do
         expect(subject.errored_at).to eq(t)
       end
     end
-
-    it 'sets updated_at' do
-      Timecop.freeze(Time.now.utc + 10.days) do |t|
-        expect(attachment.updated_at).not_to eq(t)
-        expect(attachment.file).to receive(:download!).with(url)
-        allow(attachment.file).to receive_message_chain('file.read').and_return('hello')
-        attachment.download!(url)
-        expect(attachment.updated_at).to eq(t)
-      end
-    end
   end
 
   describe '#build_title' do

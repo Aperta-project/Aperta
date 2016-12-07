@@ -27,6 +27,7 @@ describe QuestionAttachment do
     it_behaves_like 'attachment#download! sets the status'
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! sets the updated_at'
   end
 
   describe '#paper' do

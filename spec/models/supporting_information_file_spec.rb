@@ -29,6 +29,7 @@ describe SupportingInformationFile, redis: true do
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'
     it_behaves_like 'attachment#download! sets the updated_at'
+    it_behaves_like 'attachment#download! sets the error fields'
   end
 
   describe '#filename' do

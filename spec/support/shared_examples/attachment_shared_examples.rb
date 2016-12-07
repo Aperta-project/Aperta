@@ -284,3 +284,27 @@ RSpec.shared_examples_for 'attachment#download! does not create resource tokens'
     end
   end
 end
+
+RSpec.shared_examples_for 'attachment#download! sets the error fields' do
+  context 'when the attachment#download! raises an exception' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    it 'should set the status to errored if there is an error even if the attachment does not validate' do
+      ex = Exception.new("Download failed!")
+      allow(subject.file).to receive(:download!).and_raise(ex)
+
+      expect(subject).to receive(:on_download_failed).with(ex)
+      subject.download!('bogus url')
+
+      # This happens in non-error cases too, but this is an easy place to test this.
+      expect(subject.pending_url).to eq('bogus url')
+      expect(subject.status).to eq(Attachment::STATUS_ERROR)
+      expect(subject.error_message).to eq("Download failed!")
+      expect(subject.error_backtrace).to be_present
+      expect(subject.errored_at).to be_present
+    end
+  end
+end

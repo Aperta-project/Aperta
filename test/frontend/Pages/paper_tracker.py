@@ -83,8 +83,8 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     journal_papers = []
     for journal in journal_ids:
-      journal_papers += PgSQL().query('SELECT id, title, doi, submitted_at, first_submitted_at, '
-                                     'paper_type, publishing_state '
+      journal_papers += PgSQL().query('SELECT short_doi, title, doi, submitted_at, '
+                                      'first_submitted_at, paper_type, publishing_state '
                                      'FROM papers '
                                      'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
                                      'AND submitted_at IS NOT NULL '
@@ -107,8 +107,8 @@ class PaperTrackerPage(AuthenticatedPage):
     # will fail until this defect is resolved and the test case updated as needed.
     withdrawn_papers = []
     for journal in journal_ids:
-      journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, first_submitted_at, '
-                                     'paper_type, publishing_state '
+      journal_papers = PgSQL().query('SELECT short_doi, title, doi, submitted_at, '
+                                     'first_submitted_at, paper_type, publishing_state '
                                      'FROM papers '
                                      'WHERE journal_id IN (%s) AND publishing_state = %s '
                                      'AND submitted_at IS NULL '
@@ -303,7 +303,7 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, paper_type, '
+        journal_papers = PgSQL().query('SELECT short_doi, title, doi, submitted_at, paper_type, '
                                        'publishing_state FROM papers '
                                        'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
                                        'AND submitted_at IS NOT NULL '
@@ -323,7 +323,7 @@ class PaperTrackerPage(AuthenticatedPage):
     withdrawn_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT id, title, doi, submitted_at, paper_type, '
+        journal_papers = PgSQL().query('SELECT short_doi, title, doi, submitted_at, paper_type, '
                                        'publishing_state FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state = %s '
                                        'AND submitted_at IS NULL '
@@ -381,27 +381,23 @@ class PaperTrackerPage(AuthenticatedPage):
             db_title = db_title.split()
             page_title = page_title.split()
             logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
-                                                                    page_title,
-                                                                    count + 1))
+                                                                     page_title,
+                                                                     count + 1))
             assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
                                                                                        page_title,
                                                                                        count + 1)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
-        db_ms_id = db_papers[count][2].split('/')[1]
-        db_paper_id = db_papers[count][0]
-        manid = self._get(self._paper_tracker_table_tbody_manid)
-        logging.debug('Page id: ' + manid.text + '\nDB id: ' + db_ms_id)
+        db_short_doi = db_papers[count][2].split('/')[1]
+        db_short_doi = db_papers[count][0]
+        page_short_doi = self._get(self._paper_tracker_table_tbody_manid)
+        logging.debug('Page id: ' + page_short_doi.text + '\nDB id: ' + db_short_doi)
         # only on publication do we use the full manuscript id, until then we strip the front
         #   part: '10.1371/journal.' from the doi
-        assert manid.text in db_ms_id, '{0} not found in {1} from db.'.format(manid.text, db_ms_id)
-        page_short_doi = manid.get_attribute('href').split('/')[-1]
-        logging.info('Page short doi is {0}.'.format(page_short_doi))
-        page_paper_id = self.get_paper_id_from_short_doi(page_short_doi)
-        assert '/papers/%s' % db_paper_id in title.get_attribute('href'), \
-            (page_paper_id, title.get_attribute('href'))
-        assert '/papers/%s' % db_paper_id in manid.get_attribute('href'), \
-            (page_paper_id, title.get_attribute('href'))
+        assert page_short_doi.text in db_short_doi, \
+            '{0} not found in {1} from db.'.format(page_short_doi.text, db_short_doi)
+        assert '/papers/%s' % db_short_doi in title.get_attribute('href'), \
+            (db_short_doi, title.get_attribute('href'))
 
         self._get(self._paper_tracker_table_tbody_subdate)
 
@@ -413,6 +409,7 @@ class PaperTrackerPage(AuthenticatedPage):
 
         members = self._get(self._paper_tracker_table_tbody_members)
         page_members_by_role = members.text.split('\n')
+        db_paper_id = self.get_paper_id_from_short_doi(db_short_doi)
         for role in page_members_by_role:
           if role.startswith('Creator'):
             role = role.split(': ')[1]
@@ -624,10 +621,11 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
       papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=False)
-      db_id = papers[0][0]
-      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
+      db_short_doi = papers[0][0]
+      assert pt_short_doi == db_short_doi, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi,
+                                                                                     db_short_doi)
       logging.info('Sorting by Submission Date DESC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
       date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
@@ -637,7 +635,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
       papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=True)
       db_id = papers[0][0]
       assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
@@ -652,7 +650,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
       papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=False)
       db_id = papers[0][0]
       assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
@@ -665,7 +663,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = int(paper_tracker_ms_id.get_attribute('href').split('/')[-1])
+      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
       papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=True)
       db_id = papers[0][0]
       assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)

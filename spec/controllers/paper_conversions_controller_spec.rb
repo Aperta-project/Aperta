@@ -72,6 +72,7 @@ describe PaperConversionsController, type: :controller do
 
         before do
           allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'pdf'
         end
 
         it 'returns a url to check later' do

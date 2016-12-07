@@ -111,28 +111,28 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(false))
   end
 
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \<\s/) do |task, days_ago|
-    table = join Task
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    table[:title].matches(task).and(table[:completed_at].gt(start_time))
-  end
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED?/) do |task, days_ago|
+    comparator = days_ago.match(/[<=>]{1,2}/).to_s
+    days_string_exists = days_ago.downcase.match(' days? ago')
+    if days_string_exists && comparator.present?
+      number_of_days = days_ago.match(/\d+/).to_s.to_i
+      days_ago_time = Time.zone.now.utc.days_ago(number_of_days).to_formatted_s(:db)
+      table = join Task
 
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>\s/) do |task, days_ago|
-    table = join Task
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    table[:title].matches(task).and(table[:completed_at].lt(start_time))
-  end
-
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \<=/) do |task, days_ago|
-    table = join Task
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    table[:title].matches(task).and(table[:completed_at].gteq(start_time))
-  end
-
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>=/) do |task, days_ago|
-    table = join Task
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    table[:title].matches(task).and(table[:completed_at].lteq(start_time))
+      table[:title].matches(task).and(
+        date_query(
+          parse_utc_date(days_ago_time),
+          field: table[:completed_at],
+          search_term: days_ago,
+          default_comparison: comparator
+        )
+      )
+    else
+      # Better to return no results than false results.  If the user is missing the comparator
+      # or did not include 'days ago' it will return no results.
+      # The following is an impossible condition in order to return no results
+      table[:completed].eq(false).and(table[:completed].eq(true))
+    end
   end
 
   add_simple_expression('HAS TASK') do |task|
@@ -167,57 +167,23 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression('VERSION DATE =') do |date_string|
+  add_simple_expression(/VERSION DATE?/) do |date_string|
+    comparator = date_string.match(/[<=>]{1,2}/).to_s
     date_query(
       parse_utc_date(date_string),
       field: paper_table[:submitted_at],
       search_term: date_string,
-      default_comparison: :eq
+      default_comparison: comparator
     )
   end
 
-  add_simple_expression('VERSION DATE >') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: :gt
-    )
-  end
-
-  add_simple_expression('VERSION DATE <') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: :lt
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE =') do |date_string|
+  add_simple_expression(/SUBMISSION DATE?/) do |date_string|
+    comparator = date_string.match(/[<=>]{1,2}/).to_s
     date_query(
       parse_utc_date(date_string),
       field: paper_table[:first_submitted_at],
       search_term: date_string,
-      default_comparison: :eq
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE >') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: :gt
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE <') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: :lt
+      default_comparison: comparator
     )
   end
 
@@ -276,7 +242,8 @@ class QueryParser < QueryLanguageParser
 
   # Parses the given string
   def parse_utc_date(str)
-    (Chronic.parse(str).try(:utc) || Time.now.utc).to_date
+    date_without_comparator = str.match(/(?![<=>]{1,2}\s+)[^\s].*/).to_s
+    (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
   end
 
   # Builds and adds a time query to the current query using the given arguments:
@@ -292,31 +259,43 @@ class QueryParser < QueryLanguageParser
   #    whereas "2016/09/01" indicates a normal search.
   #
   #  * default_comparison: the default comparison that the query should built \
-  #    for, e.g. :gt or :lt.
-  def date_query(date, field:, search_term:, default_comparison: :gt)
+  #    for, e.g. '>' or '<'.
+  def date_query(date, field:, search_term:, default_comparison: '>')
     beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
     end_of_day_date = date.end_of_day.to_formatted_s(:db)
 
     case default_comparison
-    when :gt
+    when '>'
       if search_term =~ /ago/i
         field.lt(beginning_of_day_date)
       else
         field.gt(end_of_day_date)
       end
-    when :lt
+    when '<'
       if search_term =~ /ago/i
         field.gt(end_of_day_date)
       else
         field.lt(beginning_of_day_date)
       end
-    when :eq
+    when '<='
+      if search_term =~ /ago/i
+        field.gteq(end_of_day_date)
+      else
+        field.lteq(beginning_of_day_date)
+      end
+    when '>='
+      if search_term =~ /ago/i
+        field.lteq(beginning_of_day_date)
+      else
+        field.gteq(end_of_day_date)
+      end
+    when '='
       # since the current fields are always datetime so we need to do a
       # BETWEEN check between the beginning and end of the day
       field.between(beginning_of_day_date..end_of_day_date)
     else
       fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
-        Expected :comparison to be :gt or :lt, but it was
+        Expected :comparison to be '>' or '<', but it was
         #{comparison.inspect}
       ERROR
     end

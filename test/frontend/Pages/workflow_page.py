@@ -120,6 +120,10 @@ class WorkflowPage(AuthenticatedPage):
     """Open the Initial Decision Card from the workflow page"""
     self._get(self._initial_decision_card).click()
 
+  def click_supporting_information_card(self):
+    """Open the Supporting Information Card from the workflow page"""
+    self._get(self._supporting_info_card).click()
+
   def click_initial_tech_check_card(self):
     """Open the Initial Tech Check Card from the workflow page"""
     self._get(self._initial_tech_check_card).click()

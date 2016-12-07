@@ -2296,3 +2296,19 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('color') == aperta_black, th.value_of_css_property('color')
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
+
+  @staticmethod
+  def validate_file_title_style(ft):
+    """
+    Ensure consistency in rendering the file title in SI Card
+    :param ft: File title to validate
+    """
+    assert application_typeface in ft.value_of_css_property('font-family'), \
+        ft.value_of_css_property('font-family')
+    assert ft.value_of_css_property('font-size') == '14px', ft.value_of_css_property('font-size')
+    assert ft.value_of_css_property('font-weight') == '700', \
+        ft.value_of_css_property('font-weight')
+    assert ft.value_of_css_property('line-height') == '20px', \
+        ft.value_of_css_property('line-height')
+    # This color is not represented in the tahi palette
+    assert ft.value_of_css_property('color') == aperta_black, ft.value_of_css_property('color')

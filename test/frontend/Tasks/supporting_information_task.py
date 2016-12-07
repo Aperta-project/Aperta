@@ -97,8 +97,6 @@ class SITask(BaseTask):
     dropdown = self._get(self._si_file_select_category)
     dropdown.click()
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
-    #test the following after OTHER is selected in the first
-    #power-select-other
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == data['type'] and data['type'] != 'Other':
         #self._actions.move_to_element(item).click().perform()
@@ -108,6 +106,7 @@ class SITask(BaseTask):
         item.click()
         self._get(self._si_file_other_input).send_keys('Other')
         time.sleep(1)
+        break
     title = self._get(self._si_file_title_input)
     title_field = title.find_element_by_tag_name('div')
     title_field.click()

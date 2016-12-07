@@ -108,7 +108,6 @@ class Attachment < ActiveRecord::Base
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
       self.uploaded_by = uploaded_by
-      self.updated_at = Time.zone.now
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes

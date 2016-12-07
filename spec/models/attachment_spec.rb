@@ -111,6 +111,11 @@ describe Attachment do
     # Many of the download examples are in attachment_shared_examples.rb
     # Look there for more
     subject(:attachment) { FactoryGirl.create(:attachment) }
+    let(:url) { Faker::Internet.url('example.com') }
+
+    before do
+      allow(subject).to receive(:public_resource).and_return(true)
+    end
 
     it 'stores the original uploaded url and error state on an exception' do
       allow(subject.file).to receive(:download!)
@@ -125,6 +130,16 @@ describe Attachment do
         expect(subject.error_message).to eq("Download failed!")
         expect(subject.error_backtrace).to be_present
         expect(subject.errored_at).to be_present
+      end
+    end
+
+    it 'sets updated_at' do
+      Timecop.freeze(Time.now.utc + 10.days) do |t|
+        expect(attachment.updated_at).not_to eq(t)
+        expect(attachment.file).to receive(:download!).with(url)
+        allow(attachment.file).to receive_message_chain('file.read').and_return('hello')
+        attachment.download!(url)
+        expect(attachment.updated_at).to eq(t)
       end
     end
   end

@@ -129,6 +129,20 @@ describe Attachment do
     end
   end
 
+  describe '#build_title' do
+    it 'should return the title if set' do
+      subject.title = Faker::Lorem.sentence
+      expect(subject.send(:build_title)).to eq(subject.title)
+    end
+
+    it 'should return the filename if not set' do
+      subject.title = nil
+      filename = Faker::Lorem.word
+      expect(subject.file).to receive(:filename).and_return(filename)
+      expect(subject.send(:build_title)).to eq(filename)
+    end
+  end
+
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }

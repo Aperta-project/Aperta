@@ -178,4 +178,38 @@ describe Figure, redis: true do
       end
     end
   end
+
+  describe '#build_title' do
+    it 'returns the title if it is set' do
+      figure.title = Faker::Lorem.word
+      expect(figure.send(:build_title)).to eq(figure.title)
+    end
+
+    it 'returns the results of title_from_filename' do
+      title = Faker::Lorem.word
+      expect(figure).to receive(:title_from_filename).and_return(title)
+      expect(figure.send(:build_title)).to eq(title)
+    end
+
+    it 'returns "Unlabeled" otherwise' do
+      expect(figure).to receive(:title_from_filename).and_return(nil)
+      expect(figure.send(:build_title)).to eq('Unlabeled')
+    end
+  end
+
+  describe '#title_from_filename' do
+    ["Figure 1.tiff", "figure 1.tiff", "fig. 1.tiff", "fig_1.tiff"].each do |filename|
+      it "returns 'Fig. 1' when file is named #{filename}" do
+        expect(figure.file).to receive(:filename).and_return(filename)
+        expect(figure.send(:title_from_filename)).to eq("Fig. 1")
+      end
+    end
+
+    ["1.tiff", "Figure.tiff", "Figure S1.tiff", "Figure ABC.tiff", "abc.tiff", "abc 1.tiff"].each do |filename|
+      it "returns nil when file is named #{filename}" do
+        expect(figure.file).to receive(:filename).and_return(filename)
+        expect(figure.send(:title_from_filename)).to be_nil
+      end
+    end
+  end
 end

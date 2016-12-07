@@ -132,9 +132,6 @@ RSpec.shared_examples_for 'attachment#download! sets the updated_at' do
 
     it 'sets updated_at' do
       Timecop.freeze(Time.now.utc + 10.days) do |t|
-        expect(subject.updated_at).not_to eq(t)
-        expect(subject.file).to receive(:download!).with(url)
-        allow(subject.file).to receive_message_chain('file.read').and_return('hello')
         expect do
           subject.download!(url)
         end.to change { subject.reload.updated_at }.to(within_db_precision.of(t))

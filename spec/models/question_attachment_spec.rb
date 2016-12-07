@@ -29,6 +29,7 @@ describe QuestionAttachment do
     it_behaves_like 'attachment#download! manages resource tokens'
     it_behaves_like 'attachment#download! sets the updated_at'
     it_behaves_like 'attachment#download! sets the error fields'
+    it_behaves_like 'attachment#download! when the attachment is invalid'
   end
 
   describe '#paper' do

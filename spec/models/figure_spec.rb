@@ -38,6 +38,7 @@ describe Figure, redis: true do
     it_behaves_like 'attachment#download! manages resource tokens'
     it_behaves_like 'attachment#download! sets the updated_at'
     it_behaves_like 'attachment#download! sets the error fields'
+    it_behaves_like 'attachment#download! when the attachment is invalid'
 
     it 'sets the title, status, and rank' do
       figure.download!(url)

@@ -308,3 +308,26 @@ RSpec.shared_examples_for 'attachment#download! sets the error fields' do
     end
   end
 end
+
+RSpec.shared_examples_for 'attachment#download! when the attachment is invalid' do
+  context 'when the attachment is not valid' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    before do
+      allow(subject).to receive(:valid?).and_return(false)
+    end
+
+    it_behaves_like 'attachment#download! raises exception when it fails'
+    it_behaves_like 'attachment#download! stores the file'
+    it_behaves_like 'attachment#download! caches the s3 store_dir'
+    it_behaves_like 'attachment#download! sets the file_hash'
+    it_behaves_like 'attachment#download! sets the status'
+    it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
+    it_behaves_like 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! sets the updated_at'
+    it_behaves_like 'attachment#download! sets the error fields'
+  end
+end

@@ -111,7 +111,7 @@ class Attachment < ActiveRecord::Base
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
-      save!
+      save!(validate: false)
       refresh_resource_token!(file) if public_resource
 
       # Do not mark as done until all of the steps that go into downloading a
@@ -124,12 +124,10 @@ class Attachment < ActiveRecord::Base
       on_download_complete
     end
   rescue Exception => ex
-    update_attributes!(
-      status: STATUS_ERROR,
-      error_message: ex.message,
-      error_backtrace: ex.backtrace.join("\n"),
-      errored_at: Time.zone.now
-    )
+    update_columns(status: STATUS_ERROR,
+                   error_message: ex.message,
+                   error_backtrace: ex.backtrace.join("\n"),
+                   errored_at: Time.zone.now)
     on_download_failed(ex)
   ensure
     @downloading = false

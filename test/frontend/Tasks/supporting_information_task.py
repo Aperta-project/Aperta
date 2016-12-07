@@ -132,7 +132,7 @@ class SITask(BaseTask):
 
   def add_file(self, file_name):
     """
-    This method completes the task Billing
+    This method completes the task Supporting Information
     :param file_name: A string with a filename
     :return: attached file name web element
     """

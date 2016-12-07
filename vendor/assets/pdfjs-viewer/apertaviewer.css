@@ -6,3 +6,5 @@
 
 .pdfjs .toolbar { z-index: 999; }
 .pdfjs .toolbarButtonSpacer { width: 10px; }
+
+.pdfjs #errorWrapper button { color: black; padding: 3px; }

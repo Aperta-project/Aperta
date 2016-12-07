@@ -68,10 +68,10 @@ Tahi::Application.configure do
 
   # NOTE: IHAT_CALLBACK_URL is being used because it has a reliable URL that indicates
   # if this environment expect HTTP or HTTPS URLs. See APERTA-8560 for more information.
-  uri = URI.parse ENV.fetch('IHAT_CALLBACK_URL')
+  uri = URI.parse ENV.fetch('IHAT_CALLBACK_URL', 'http://')
   routes.default_url_options = {
     host: ENV.fetch('DEFAULT_MAILER_URL'),
-    protocol: uri.scheme
+    protocol: uri.try(:scheme)
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

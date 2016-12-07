@@ -7,4 +7,4 @@ Rails.application.config.assets.precompile += %w(email.scss auth.scss)
 Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'stylesheets')
 Rails.application.config.assets.paths << Rails.root.join('vendor', 'assets', 'images')
 
-Rails.application.config.assets.precompile += %w(pdfviewer.js viewer.css)
+Rails.application.config.assets.precompile += %w(pdfviewer.js viewer.css apertaviewer.css)

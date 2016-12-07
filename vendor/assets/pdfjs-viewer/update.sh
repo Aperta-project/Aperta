@@ -1,9 +1,12 @@
 #!/bin/bash
 
 if [[ $# < 1 ]]; then
-  echo USAGE $0 SOURCE_PATH 1>&2
+  echo USAGE $0 PDFJSVIEWER_DIRECTORY 1>&2
   exit 1
 fi
+
+# Move to correct directory before copying
+cd $(dirname $0)
 
 source="$1"
 
@@ -20,7 +23,9 @@ echo "%I-Patching pdf.js with aperta.pdf.patch"
 patch -s pdf.js aperta.pdf.patch
 
 echo "%I-Copying css and fixing image urls"
-sed 's/url(images/url(pdfjsviewer\/images/g' "$source/viewer.css" > viewer.css
+perl -pe 's/url\(images/url(pdfjsviewer\/images/g; s/\.thumbnail\b/.pdfthumbnail/g' \
+  "$source/viewer.css" \
+   > viewer.css
 
 if [[ ! -d "./pdfjsviewer" ]]; then
   echo "%I-Creating directory: pdfjsviewer"

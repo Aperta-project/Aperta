@@ -152,12 +152,12 @@ class FigureTaskTest(CommonTest):
     figures_task = FiguresTask(self.getDriver())
     figures_task.task_ready()
     figures_task.check_question()
-    figures_task.upload_figure(figure2send='figure1_tiff_lzw.tiff')
+    figures_task.upload_figure(figure2send='frontend/assets/imgs/figure1_tiff_lzw.tiff')
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
     figures_list = figures_task.replace_figure(figure2replace='figure1_tiff_lzw.tiff',
-                                               replacement_figure='figure2_tiff_lzw.tiff')
+                                               replacement_figure='frontend/assets/imgs/figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
     figures_task.logout()
@@ -248,9 +248,9 @@ class FigureTaskTest(CommonTest):
     figures_task = FiguresTask(self.getDriver())
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
     figures_task.check_question()
-    figures_list = figures_task.upload_figure('ardea_herodias_lzw_sm.tiff')
+    figures_list = figures_task.upload_figure('frontend/assets/imgs/ardea_herodias_lzw_sm.tiff')
     # It is necessary to provide a lengthy wait for upload and processing of the image
-    next_figure = figures_task.upload_figure('figure2_tiff_lzw.tiff')
+    next_figure = figures_task.upload_figure('frontend/assets/imgs/figure2_tiff_lzw.tiff')
     figures_list.append(next_figure)
     logging.info(figures_list)
     figures_task.edit_figure(figures_list[0])

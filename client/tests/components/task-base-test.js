@@ -44,3 +44,20 @@ test('#isEditable: true when the task is not a metadata task', function(assert) 
   });
 });
 
+test('#toggleTaskCompletion action skips validations when making the task incomplete', function(assert) {
+  Ember.run(()=> {
+    this.task.set('completed', false);
+
+    // mark as complete
+    this.subject().actions.toggleTaskCompletion.apply(this.subject());
+    assert.equal(this.subject().get('skipValidations'), false, 'running validations');
+
+    // mark as incomplete
+    this.subject().actions.toggleTaskCompletion.apply(this.subject());
+    assert.equal(this.subject().get('skipValidations'), true, 'skipping validations');
+
+    // mark as complete again
+    this.subject().actions.toggleTaskCompletion.apply(this.subject());
+    assert.equal(this.subject().get('skipValidations'), false, 'running validations');
+  });
+});

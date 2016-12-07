@@ -13,10 +13,10 @@ class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
 
   def message
     if @event_data[:record].completed?
-      "Finished loading #{pdf_type? ? 'Pdf' : 'Word'} file. Any images that had been included" +
+      "Finished loading #{pdf_type? ? 'PDF' : 'Word'} file. Any images that had been included" +
       ' in the manuscript should be uploaded directly to the figures card.'
     elsif @event_data[:record].errored?
-      "There was an error loading your #{pdf_type? ? 'Pdf' : 'Word'} file."
+      "There was an error loading your #{pdf_type? ? 'PDF' : 'Word'} file."
     end
   end
 

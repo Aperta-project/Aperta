@@ -71,7 +71,7 @@ Tahi::Application.configure do
   uri = URI.parse ENV.fetch('IHAT_CALLBACK_URL', 'http://')
   routes.default_url_options = {
     host: ENV.fetch('DEFAULT_MAILER_URL'),
-    protocol: uri.try(:scheme)
+    protocol: uri.scheme
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

@@ -24,13 +24,13 @@ export default Ember.Component.extend({
   selectedUser: null,
   autoSuggestSelectedText: null,
 
-  isEditingInvitation: Ember.computed('activeInvitation', 'activeInvitationState', function() {
+  isEditingInvitation: computed('activeInvitation', 'activeInvitationState', function() {
     return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
   }),
 
   // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
-  latestDecision: computed.alias('task.paper.latestDecision'),
+  draftDecision: computed.alias('task.paper.draftDecision'),
 
   invitations: computed.alias('task.invitations'),
 
@@ -84,9 +84,6 @@ export default Ember.Component.extend({
       yield invitation.save();
 
       this.setProperties({
-        activeInvitation: invitation,
-        activeInvitationState: 'edit',
-        composedInvitation: invitation,
         selectedUser: null,
         pendingInvitation: null,
         autoSuggestSelectedText: null
@@ -102,18 +99,17 @@ export default Ember.Component.extend({
     return invitations.rejectBy('isNew');
   }),
 
-  latestDecisionInvitations: computed(
-    'latestDecision.invitations.@each.inviteeRole', function() {
+  draftDecisionInvitations: computed(
+    'draftDecision.invitations.@each.inviteeRole', function() {
       const type = this.get('inviteeRole');
-      if (this.get('latestDecision.invitations')) {
-        return this.get('latestDecision.invitations')
+      if (this.get('draftDecision.invitations')) {
+        return this.get('draftDecision.invitations')
                     .filterBy('inviteeRole', type);
       }
     }
   ),
-  previousDecisions: computed('decisions', function() {
-    return this.get('decisions').without(this.get('latestDecision'));
-  }),
+
+  previousDecisions: computed.alias('task.paper.previousDecisions'),
 
   previousDecisionsWithFilteredInvitations: computed(
     'previousDecisions.@each.inviteeRole', function() {
@@ -131,7 +127,7 @@ export default Ember.Component.extend({
 
   decisionSorting: ['id:desc'],
 
-  sortedPreviousDecisionsWithFilteredInvitations: Ember.computed.sort(
+  sortedPreviousDecisionsWithFilteredInvitations: computed.sort(
       'previousDecisionsWithFilteredInvitations', 'decisionSorting'),
 
   actions: {
@@ -144,7 +140,7 @@ export default Ember.Component.extend({
       this.get('changePosition').perform(newPosition, invitation);
     },
 
-    composeInvite() {
+    createInvitation() {
       if (isEmpty(this.get('selectedUser'))) { return; }
 
       this.get('createInvitation').perform({

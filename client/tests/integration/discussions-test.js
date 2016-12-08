@@ -34,6 +34,16 @@ module('Integration: Discussions', {
         users: [{id: 1, full_name: 'Charmander', email: 'fire@oak.edu'}]
       }
     });
+    var paperResponse = paper.toJSON();
+    paperResponse.id = 1;
+
+    $.mockjax({
+      url: '/api/papers/' + paperResponse.shortDoi,
+      status: 200, 
+      responseText: {
+        paper: paperResponse
+      }
+    });
 
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});

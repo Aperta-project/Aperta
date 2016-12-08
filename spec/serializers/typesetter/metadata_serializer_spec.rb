@@ -20,16 +20,17 @@ describe Typesetter::MetadataSerializer do
       short_title: 'my paper short'
     )
   end
+  let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
   let(:metadata_tasks) do
     [
       FactoryGirl.create(:competing_interests_task, paper: paper),
       FactoryGirl.create(:data_availability_task, paper: paper),
       FactoryGirl.create(:financial_disclosure_task, paper: paper),
       FactoryGirl.create(:production_metadata_task, paper: paper),
-      FactoryGirl.create(:publishing_related_questions_task, paper: paper)
+      FactoryGirl.create(:publishing_related_questions_task, paper: paper),
+      early_posting_task
     ]
   end
-
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
@@ -121,6 +122,33 @@ describe Typesetter::MetadataSerializer do
   it 'has abstract' do
     paper.abstract = 'here is the abstract'
     expect(output[:paper_abstract]).to eq('here is the abstract')
+  end
+
+  describe 'early_article_posting' do
+    context 'with an answer' do
+      let!(:answer) do
+        nested_question = NestedQuestion.where(ident: 'early-posting--consent').first
+        FactoryGirl.create(:nested_question_answer, nested_question: nested_question, owner: early_posting_task, value: answer_value, value_type: 'boolean')
+      end
+      context 'that is true' do
+        let(:answer_value) { true }
+        it 'has early_article_posting information' do
+          expect(output[:early_article_posting]).to eq(answer_value)
+        end
+      end
+      context 'that is false' do
+        let(:answer_value) { false }
+        it 'has early_article_posting information' do
+          expect(output[:early_article_posting]).to eq(answer_value)
+        end
+      end
+    end
+
+    context 'without an answer' do
+      it 'has early_article_posting information' do
+        expect(output[:early_article_posting]).to eq(false)
+      end
+    end
   end
 
   describe 'publication_date' do

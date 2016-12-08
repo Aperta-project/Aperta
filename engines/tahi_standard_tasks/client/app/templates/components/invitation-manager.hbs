@@ -10,7 +10,7 @@
                       ) as |i| }}
 
     {{#if groupByDecision}}
-      {{i.group invitations=latestDecisionInvitations}}
+      {{i.group invitations=draftDecisionInvitations}}
     {{else}}
       {{i.group invitations=persistedInvitations}}
     {{/if}}
@@ -31,8 +31,8 @@
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
         <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
-                {{action "composeInvite"}}>
-          Compose Invite
+                {{action "createInvitation"}}>
+          Add to Queue
         </button>
         {{#if createInvitation.isRunning}}
           <div class="invitation-email-entry-progress animation-fade-in">

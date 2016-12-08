@@ -23,7 +23,7 @@
   {{/if}}
 
   <div class="flex-group {{wrapperClass}}">
-    <label class="flex-element">
+    <label class="flex-element {{concat ident "-accept-label"}}">
       {{radio-button value="accept"
                      name=namePrefix
                      class=(concat ident "-accept")
@@ -32,7 +32,7 @@
       Accept
     </label>
 
-    <label class="flex-element">
+    <label class="flex-element {{concat ident "-reject-label"}}">
       {{radio-button value="reject"
                      name=namePrefix
                      class=(concat ident "-reject")
@@ -41,7 +41,7 @@
       Reject
     </label>
 
-    <label class="flex-element">
+    <label class="flex-element {{concat ident "-major-revision-label"}}">
       {{radio-button value="major_revision"
                      name=namePrefix
                      class=(concat ident "-major-revision")
@@ -50,7 +50,7 @@
       Major Revision
     </label>
 
-    <label class="flex-element">
+    <label class="flex-element {{concat ident "-minor-revision-label"}}">
       {{radio-button value="minor_revision"
                      name=namePrefix
                      class=(concat ident "-minor-revision")

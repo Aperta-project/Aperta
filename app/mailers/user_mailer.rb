@@ -48,17 +48,6 @@ class UserMailer < ActionMailer::Base
       subject: "You've been invited to the editor discussion for the manuscript, \"#{@paper.display_title}\"")
   end
 
-  def assigned_editor(editor_id, paper_id)
-    @paper = Paper.find(paper_id)
-    user = User.find(editor_id)
-    @editor_name = display_name(user)
-    @journal = @paper.journal
-
-    mail(
-      to: user.try(:email),
-      subject: "You've been assigned as an editor for the manuscript, \"#{@paper.display_title}\"")
-  end
-
   def mention_collaborator(comment_id, commentee_id)
     @comment = Comment.find(comment_id)
     @commenter = @comment.commenter
@@ -100,16 +89,6 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @author.try(:email),
       subject: "Thank you for submitting your manuscript to #{@journal.name}")
-  end
-
-  def notify_admin_of_paper_submission(paper_id, user_id)
-    @paper = Paper.find paper_id
-    @journal = @paper.journal
-    @admin = User.find user_id
-
-    mail(
-      to: @admin.email,
-      subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
   end
 
   def notify_creator_of_initial_submission(paper_id)

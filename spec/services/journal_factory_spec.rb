@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe JournalFactory, flaky: true do
   describe '.create' do
-    include AuthorizationSpecHelper
-
     let(:permissions_on_journal) do
       Permission.joins(:states).where(
         applies_to: 'Journal',
@@ -515,6 +513,7 @@ describe JournalFactory, flaky: true do
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
+             PlosBioTechCheck::ChangesForAuthorTask,
              TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
@@ -538,11 +537,29 @@ describe JournalFactory, flaky: true do
             end
           end
 
-          it 'can :edit and :view AdHocForEditorsTasks' do
-            [:edit, :view].each do |action|
+          it 'can :view all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
               expect(permissions).to include(
-                Permission.find_by(action: action, applies_to: AdHocForEditorsTask.name)
+                Permission.find_by(action: :view, applies_to: klass.name)
               )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :edit and :view AdHocForEditorsTask' do
+            ['edit', 'view'].each do |action|
+              permission = journal.academic_editor_role.permissions.includes(:states).where(
+                applies_to: 'AdHocForEditorsTask',
+                action: action,
+                permission_states: { name: PermissionState::WILDCARD }
+              ).first
+              expect(permission).to be
+              expect(permission.states.map(&:name)).to contain_exactly(PermissionState::WILDCARD)
             end
           end
 
@@ -745,10 +762,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.internal_editor_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -866,10 +887,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.production_staff_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -983,10 +1008,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.publishing_services_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -1124,6 +1153,43 @@ describe JournalFactory, flaky: true do
             ::Task.descendants - accessible_task_klasses
           end
 
+          it 'can :view all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :view_participants on all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(permissions).to include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :edit AdHocForReviewersTask' do
+            permission = journal.reviewer_role.permissions.find_by(
+              applies_to: 'AdHocForReviewersTask',
+              action: :edit
+            )
+            expect(permission).to be
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+          end
+
           it 'can do nothing on the PlosBilling::BillingTask' do
             billing_permissions = Permission.where(
               applies_to: 'PlosBilling::BillingTask'
@@ -1157,12 +1223,6 @@ describe JournalFactory, flaky: true do
               applies_to: 'PlosBilling::BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
-          end
-
-          it 'can :edit AdHocTasksForReviewers' do
-            permission = Permission.find_by(applies_to: 'AdHocForReviewersTask', action: :edit)
-            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
-            expect(journal.reviewer_role.permissions).to include permission
           end
 
           it 'can do nothing on the PlosBioTechCheck::ChangesForAuthorTask' do
@@ -1200,7 +1260,7 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.staff_admin_role.permissions }
 
         context 'has Journal permission to' do
-          let(:journal_actions) { ['administer', 'view_paper_tracker'] }
+          let(:journal_actions) { ['administer', 'view_paper_tracker', 'remove_orcid'] }
 
           it 'has journal permissions' do
             journal_actions.each do |action|

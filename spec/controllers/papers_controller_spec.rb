@@ -713,7 +713,7 @@ describe PapersController do
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
     before do
-      allow(Paper).to receive(:find)
+      allow(Paper).to receive(:find_by_id_or_short_doi)
         .with(paper.to_param)
         .and_return paper
     end
@@ -772,7 +772,7 @@ describe PapersController do
     let(:withdrawal_reason) { 'It was a whoopsie' }
 
     before do
-      allow(Paper).to receive(:find)
+      allow(Paper).to receive(:find_by_id_or_short_doi)
         .with(paper.to_param)
         .and_return paper
     end

@@ -32,6 +32,7 @@ feature "Invite Academic Editor", js: true do
 
     # Using the capybara-select2 helper here doesn't work because... not sure.
     # I think we are using select2 strangely here.
+    overlay.edit_invitation(editor2)
     within(".invitation-item--edit") do
       find('.link-alternate-select.select2-container').click
     end
@@ -77,7 +78,7 @@ feature "Invite Academic Editor", js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.add_to_queue(editor1)
     ActiveInvitation.for_user(editor1) do |invite|
-      invite.edit
+      invite.edit(editor1)
       invite.upload_attachment('yeti.jpg')
     end
     find('.invitation-save-button').click

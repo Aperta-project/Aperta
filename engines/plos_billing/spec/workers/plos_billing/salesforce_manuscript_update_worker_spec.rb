@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 describe PlosBilling::SalesforceManuscriptUpdateWorker do
+  describe 'sidekiq_retries_exhausted' do
+    it 'queues up an email to tell site admins there was a problem' do
+      msg = {
+        'class' => 'FooBar',
+        'args' => [99],
+        'error_message' => 'something bad happened'
+      }
+      expect(PlosBilling::BillingSalesforceMailer).to \
+        receive_message_chain('delay.notify_site_admins_of_syncing_error').
+        with(99, 'Failed FooBar with [99]: something bad happened')
+      described_class.sidekiq_retries_exhausted_block.call(msg)
+    end
+  end
+
   describe '.email_admin_on_sidekiq_error' do
     let(:dbl) { double }
     let(:msg) do
@@ -14,10 +28,10 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
       "Failed #{msg['class']} with #{msg['args']}: #{msg['error_message']}"
     end
 
-    it 'calls BillingSalesforceMailer' do
+    it 'queues up an email to tell site admins there was a problem' do
       expect(PlosBilling::BillingSalesforceMailer).to \
-        receive_message_chain('delay.notify_journal_admin_sfdc_error')
-        .with(4, error_message)
+        receive_message_chain('delay.notify_site_admins_of_syncing_error').
+        with(4, 'Failed SomeClass with [4]: some message')
       described_class.email_admin_on_sidekiq_error(msg)
     end
   end
@@ -70,13 +84,12 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
           match(/Couldn't do it/)
       end
 
-      it 'queues up an email notifying journal admins of the error' do
-        expect(PlosBilling::BillingSalesforceMailer).to receive_message_chain(
-          'delay.notify_journal_admin_sfdc_error'
-        ) do |paper_id, message|
-          expect(paper_id).to eq(paper.id)
-          expect(message).to match(/Couldn't do it/)
-        end
+      it 'queues up an email to tell site admins there was a problem' do
+        expect(PlosBilling::BillingSalesforceMailer).to \
+          receive_message_chain('delay.notify_site_admins_of_syncing_error') do |paper_id, message|
+            expect(paper_id).to eq(paper.id)
+            expect(message).to match(/PlosBilling::SalesforceManuscriptUpdateWorker#perform failed due to an SalesforceServices::SyncInvalid/)
+          end
         perform
       end
     end

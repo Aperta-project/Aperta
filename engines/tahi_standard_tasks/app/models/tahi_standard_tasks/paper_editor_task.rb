@@ -23,10 +23,6 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       add_invitee_as_academic_editor_on_paper!(invitation)
-      PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(
-        paper_id:  invitation.paper.id,
-        editor_id: invitation.invitee.id
-      )
     end
 
     def invitation_rescinded(invitation)

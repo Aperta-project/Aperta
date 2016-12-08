@@ -20,7 +20,7 @@ module PlosBilling
     def self.email_admin_error(paper_id, error_message)
       BillingSalesforceMailer
         .delay
-        .notify_journal_admin_sfdc_error(paper_id, error_message)
+        .notify_site_admins_of_syncing_error(paper_id, error_message)
     end
 
     def perform(paper_id)

@@ -4,7 +4,6 @@ class DecisionSerializer < ActiveModel::Serializer
              :draft?,
              :id,
              :initial,
-             :latest?,
              :latest_registered?,
              :letter,
              :major_version,

@@ -115,6 +115,7 @@ Select2Component = Ember.TextField.extend({
     this.$().off('select2-removing');
     this.$().off('select2-close');
     this.removeObserver('source', this, this.repaint);
+    this.$().select2('destroy');
     return this.removeObserver('enable', this, this.repaint);
   }).on('willDestroyElement')
 });

@@ -356,7 +356,18 @@ FactoryAttributes.User = {
   username: 'fakeuser',
   email: 'fakeuser@example.com',
   siteAdmin: false,
-  affiliation_ids: []
+  affiliation_ids: [],
+  orcid_account_id: 1
+};
+
+FactoryAttributes.OrcidAccount = {
+  _rootKey: 'orcid_account',
+  id: null,
+  identifier: null,
+  name: null,
+  oauth_authorize_url: null,
+  profile_url: null,
+  status: 'unauthenticated'
 };
 
 FactoryAttributes.Journal = {

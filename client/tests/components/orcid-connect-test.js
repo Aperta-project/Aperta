@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup }  from 'ember-data-factory-guy';
@@ -9,11 +10,11 @@ moduleForComponent('orcid-connect',
                    'Integration | Component | orcid connect',
                    {integration: true,
                     beforeEach: function() {
-                      manualSetup(this.container)
-                      this.set('confirm', (message)=>{})
+                      manualSetup(this.container);
+                      this.set('confirm', (message)=>{});
                     }});
 
-var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm}}`;
+var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account');
@@ -101,4 +102,25 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
     assert.textPresent('.orcid-not-linked > button', 'Connect or create your ORCID ID');
     done();
   });
+});
+
+var noUserTemplate = hbs`{{orcid-connect user=user currentUser=currentUser orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;
+
+test("component works when user is not set and then set", function(assert) {
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    'status': 'access_token_expired',
+    'identifier': '0000-0000-0000-0000'
+  });
+
+  let user = FactoryGuy.make('user', {
+    id: '1'
+  });
+
+  this.set('currentUser', user);
+  this.set('orcidAccount', orcidAccount);
+
+  this.render(noUserTemplate);
+  assert.elementNotFound('.orcid-wrapper');
+  this.set('user', user);
+  assert.elementFound('.orcid-wrapper');
 });

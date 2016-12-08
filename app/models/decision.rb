@@ -62,10 +62,6 @@ class Decision < ActiveRecord::Base
     end
   end
 
-  def latest?
-    self == paper.decisions.version_asc.last
-  end
-
   def latest_registered?
     self == paper.decisions.version_asc.completed.last
   end

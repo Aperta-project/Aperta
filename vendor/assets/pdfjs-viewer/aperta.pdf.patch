@@ -1,5 +1,5 @@
---- /Users/basketball/deleteme/pdf.js-viewer/pdf.js	2016-12-05 16:44:32.000000000 -0500
-+++ pdf.js	2016-12-07 14:22:33.000000000 -0500
+--- /Users/basketball/deleteme/bower_components/pdf.js-viewer/pdf.js	2016-12-05 16:44:32.000000000 -0500
++++ pdf.js	2016-12-08 16:08:10.000000000 -0500
 @@ -10345,9 +10345,9 @@
  var pdfjsSrc = scriptTagContainer.lastChild.src;
  
@@ -53,16 +53,17 @@
        if (selected) {
          selected.classList.remove('selected');
        }
-@@ -16347,7 +16347,7 @@
+@@ -16347,7 +16347,8 @@
    preferencePdfBugEnabled: false,
    preferenceShowPreviousViewOnLoad: true,
    preferenceDefaultZoomValue: '',
 -  isViewerEmbedded: (window.parent !== window),
-+  isViewerEmbedded: true /* (window.parent !== window)*/ ,
++  /* The automatic discovery of this failed and we are always embedded */
++  isViewerEmbedded: true,
    url: '',
  
    // called once when the document is loaded
-@@ -17491,14 +17491,11 @@
+@@ -17491,14 +17492,11 @@
    document.getElementById('presentationMode').addEventListener('click',
      SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
  
@@ -79,7 +80,7 @@
  
  
    if (file && file.lastIndexOf('file:', 0) === 0) {
-@@ -17617,14 +17614,6 @@
+@@ -17617,14 +17615,6 @@
        // unable to write to storage
      });
    });
@@ -94,7 +95,7 @@
  
    // Show/hide the loading indicator in the page number input element.
    var pageNumberInput = document.getElementById('pageNumber');
-@@ -17638,7 +17627,7 @@
+@@ -17638,7 +17628,7 @@
    }
  }, true);
  
@@ -103,7 +104,7 @@
    if (PDFViewerApplication.initialized &&
        (document.getElementById('pageAutoOption').selected ||
         /* Note: the scale is constant for |pageActualOption|. */
-@@ -17651,7 +17640,9 @@
+@@ -17651,7 +17641,9 @@
  
    // Set the 'max-height' CSS property of the secondary toolbar.
    SecondaryToolbar.setMaxHeight(document.getElementById('viewerContainer'));

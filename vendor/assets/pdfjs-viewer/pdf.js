@@ -16347,7 +16347,8 @@ var PDFViewerApplication = {
   preferencePdfBugEnabled: false,
   preferenceShowPreviousViewOnLoad: true,
   preferenceDefaultZoomValue: '',
-  isViewerEmbedded: true /* (window.parent !== window)*/ ,
+  /* The automatic discovery of this failed and we are always embedded */
+  isViewerEmbedded: true,
   url: '',
 
   // called once when the document is loaded

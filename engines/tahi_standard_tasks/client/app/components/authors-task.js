@@ -33,6 +33,7 @@ const taskValidations = {
 
 
 export default TaskComponent.extend({
+  classNames: ['authors-task'],
   validations: taskValidations,
   newAuthorFormVisible: false,
   newGroupAuthorFormVisible: false,
@@ -65,9 +66,10 @@ export default TaskComponent.extend({
       if (!this.get('task.paper.allAuthors')) {
         return;
       }
-      return this.get('task.paper.allAuthors').map(function(a) {
+      return this.get('task.paper.allAuthors').map( (a) => {
         return ObjectProxyWithErrors.create({
           object: a,
+          skipValidations: () => { return this.get('skipValidations') },
           validations: a.validations
         });
       });

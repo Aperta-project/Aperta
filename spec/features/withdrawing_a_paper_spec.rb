@@ -21,7 +21,7 @@ feature 'Withdrawing a paper', js: true do
   scenario 'User withdrawing their own paper' do
     login_as(creator, scope: :user)
 
-    visit "/papers/#{paper.id}"
+    visit "/papers/#{paper.to_param}"
     paper_page.withdraw_paper
 
     visit '/'
@@ -31,6 +31,7 @@ feature 'Withdrawing a paper', js: true do
     login_as(journal_admin, scope: :user)
 
     visit "/papers/#{paper.id}/workflow"
+    expect(page).to have_css('.withdrawal-banner')
     workflow_page.view_recent_activity
     workflow_page.expect_activity_item_with_text('Manuscript was withdrawn')
   end
@@ -40,14 +41,14 @@ feature 'Withdrawing a paper', js: true do
 
     login_as(journal_admin, scope: :user)
 
-    visit "/papers/#{paper.id}"
+    visit "/papers/#{paper.to_param}"
 
     page.find('.withdrawal-banner .reactivate').click
     expect(page).to_not have_css('.withdrawal-banner')
 
     expect(paper.reload.withdrawn?).to be(false)
 
-    visit "/papers/#{paper.id}/workflow"
+    visit "/papers/#{paper.to_param}/workflow"
     workflow_page.view_recent_activity
     workflow_page.expect_activity_item_with_text('Manuscript was reactivated')
   end

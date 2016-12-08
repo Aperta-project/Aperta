@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import random
+import time
 
 from selenium.webdriver.common.by import By
 
@@ -71,4 +72,7 @@ class EarlyArticlePostingTask(BaseTask):
         already_deselected = True
       if not already_deselected:
         opt_in_checkbox.click()
+      # Abe is, I beleive saying this click is not registered before we move on. So adding a dread
+      #   sleep.
+      time.sleep(.5)
     return choice

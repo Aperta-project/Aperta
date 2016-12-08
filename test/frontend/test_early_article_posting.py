@@ -45,7 +45,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
                         type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    short_doi = manuscript_page.get_short_doi()
     # figures
     manuscript_page.click_task('early_article_posting')
     eap_task = EarlyArticlePostingTask(self.getDriver())
@@ -59,7 +59,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
@@ -87,7 +87,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
                         type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_id = manuscript_page.get_paper_id_from_url()
+    short_doi = manuscript_page.get_short_doi()
     # figures
     manuscript_page.click_task('early_article_posting')
     eap_task = EarlyArticlePostingTask(self.getDriver())
@@ -101,7 +101,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(staff_user['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()

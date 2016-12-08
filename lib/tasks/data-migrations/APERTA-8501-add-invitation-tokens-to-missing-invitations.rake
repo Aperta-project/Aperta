@@ -7,6 +7,7 @@ namespace :data do
           max_retries = 5
           token = SecureRandom.hex(10)
           Invitation.where("token is null").each do |invitation|
+            invitation.notifications_enabled = false
             tries = 0
             loop do
               token = SecureRandom.hex(10)
@@ -16,6 +17,7 @@ namespace :data do
             end
             invitation.token = token
             invitation.save!
+            invitation.notifications_enabled = true
           end
         end
       end

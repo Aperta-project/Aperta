@@ -80,9 +80,8 @@ class OrcidAccount < ActiveRecord::Base
     + "&redirect_uri=#{redirect_uri}"
   end
 
-  def redirect_uri(use_ssl=TahiEnv.force_ssl?)
-    protocol = use_ssl ? 'https' : 'http'
-    url_helpers.orcid_oauth_url(protocol: protocol)
+  def redirect_uri
+    url_helpers.orcid_oauth_url
   end
 
   private

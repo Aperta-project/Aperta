@@ -131,10 +131,10 @@ RSpec.shared_examples_for 'attachment#download! sets the updated_at' do
     end
 
     it 'sets updated_at' do
-      Timecop.freeze(Time.now.utc + 10.days) do |t|
+      Timecop.freeze(Time.now.utc + 10.days) do |later_time|
         expect do
           subject.download!(url)
-        end.to change { subject.reload.updated_at }.to(within_db_precision.of(t))
+        end.to change { subject.reload.updated_at }.to(within_db_precision.of(later_time))
       end
     end
   end

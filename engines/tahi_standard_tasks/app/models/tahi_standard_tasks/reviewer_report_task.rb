@@ -88,12 +88,13 @@ module TahiStandardTasks
       max_existing + 1
     end
 
+    # this is meant to run in a `before_save` hook so don't
+    # call `save` in the method body
     def set_reviewer_number(new_number)
       body["reviewer_number"] = new_number
 
       new_title = title + " (##{new_number})"
       self.title = new_title
-      save!
     end
 
     private

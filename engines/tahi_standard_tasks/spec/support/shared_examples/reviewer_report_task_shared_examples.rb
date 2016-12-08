@@ -94,19 +94,22 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
 
   describe "#on_completion" do
     let(:task) { FactoryGirl.create(factory, paper: paper, title: "Review by Steve", completed: completed, body: body) }
+    let(:result) do
+      task.on_completion
+      task.save!
+      task.reload
+    end
     context "the task is complete" do
       let(:completed) { true }
       context "the task has a reviewer number" do
         let(:body) { { "reviewer_number" => 2 } }
         it "does not change the existing number" do
-          task.on_completion
-          expect(task.reload.body).to eq(body)
-          expect(task.reload.reviewer_number).to eq(2)
+          expect(result.body).to eq(body)
+          expect(result.reviewer_number).to eq(2)
         end
 
         it "does not update the title" do
-          task.on_completion
-          expect(task.reload.title).to eq("Review by Steve")
+          expect(result.title).to eq("Review by Steve")
         end
       end
       context "the task does not have a reviewer number" do
@@ -118,14 +121,12 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
             FactoryGirl.create(:front_matter_reviewer_report_task, paper: paper, completed: false, body: { "reviewer_number" => 2 })
           end
           it "sets the reviewer number to be one higher than the max of the other tasks" do
-            task.on_completion
-            expect(task.reload.reviewer_number).to eq(3)
+            expect(result.reviewer_number).to eq(3)
             expect(task.body).to eq("reviewer_number" => 3, "submitted" => false)
           end
 
           it "appends the reviewer number to the task title" do
-            task.on_completion
-            expect(task.reload.title).to eq("Review by Steve (#3)")
+            expect(result.title).to eq("Review by Steve (#3)")
           end
         end
         context "it's the only completed reviewer report task for the paper" do
@@ -133,8 +134,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
             FactoryGirl.create(factory, paper: paper, completed: false)
           end
           it "sets the reviewer number to be one 1" do
-            task.on_completion
-            expect(task.reload.reviewer_number).to eq(1)
+            expect(result.reviewer_number).to eq(1)
             expect(task.body).to eq("reviewer_number" => 1, "submitted" => false)
             expect(task.title).to eq("Review by Steve (#1)")
           end
@@ -145,12 +145,10 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       let(:completed) { false }
       let(:body) { { "submitted" => false } }
       it "does not change the task body" do
-        task.on_completion
-        expect(task.reload.body).to eq(body)
+        expect(result.body).to eq(body)
       end
       it "does not update the title" do
-        task.on_completion
-        expect(task.reload.title).to eq("Review by Steve")
+        expect(result.title).to eq("Review by Steve")
       end
     end
   end

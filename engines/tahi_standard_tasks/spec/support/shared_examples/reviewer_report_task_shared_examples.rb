@@ -111,11 +111,11 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       end
       context "the task does not have a reviewer number" do
         let(:body) { { "submitted" => false } }
-        context "other reviewer report tasks for the paper exist" do
+        context "other reviewer report task subclasses for the paper exist" do
           before do
             FactoryGirl.create(factory, paper: paper, completed: false)
             FactoryGirl.create(factory, paper: paper, completed: true, body: { "reviewer_number" => 1 })
-            FactoryGirl.create(factory, paper: paper, completed: false, body: { "reviewer_number" => 2 })
+            FactoryGirl.create(:front_matter_reviewer_report_task, paper: paper, completed: false, body: { "reviewer_number" => 2 })
           end
           it "sets the reviewer number to be one higher than the max of the other tasks" do
             task.on_completion

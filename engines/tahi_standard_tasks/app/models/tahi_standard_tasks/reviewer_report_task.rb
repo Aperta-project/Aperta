@@ -78,8 +78,8 @@ module TahiStandardTasks
     end
 
     def get_new_reviewer_number
-      max_existing = paper.tasks
-        .where(type: "TahiStandardTasks::ReviewerReportTask")
+      max_existing = TahiStandardTasks::ReviewerReportTask
+        .where(paper: paper)
         .all
         .map(&:reviewer_number)
         .compact

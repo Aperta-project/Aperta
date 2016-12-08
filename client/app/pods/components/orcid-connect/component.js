@@ -72,8 +72,8 @@ export default Component.extend({
   },
 
   orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
-    const user = this.get('user.content'); // <-- promise
-    const currentUser = this.get('currentUser');
+    const user = this.get('user.id'); // <-- promise
+    const currentUser = this.get('currentUser.id');
     return this.get('orcidAccount') && isEqual(user, currentUser);
   }),
 

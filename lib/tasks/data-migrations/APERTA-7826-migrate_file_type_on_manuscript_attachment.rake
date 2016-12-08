@@ -17,13 +17,9 @@ namespace :data do
           if paper.processing && paper.withdrawn?
             messages << "Skipped #{api_paper_url} (paper id: #{paper.id}) because it is stuck in processing"
           else
-            if !Rails.env.development?
-              fail "Unexpected error for paper #{paper.id}, #{api_paper_url}, not having an uploaded filetype"
-            else
-              # Assume a filetype of docx for the papers in development before this point
-              paper.file.update_column(:file_type, 'docx')
-              messages << "Updating paper #{paper.id} to docx filetype in development"
-            end
+            # Assume a filetype of docx for papers without an uploaded filetype run before this point
+            paper.file.update_column(:file_type, 'docx')
+            messages << "UNUPLOADED_PAPER: Updating paper #{paper.id} to docx filetype"
           end
         end
       end

@@ -69,20 +69,26 @@ module TahiStandardTasks
 
     # before save we want to update the reviewer number if neccessary
     def on_completion
-      set_reviewer_number if completed? && reviewer_number.blank?
+      assign_reviewer_number if completed? && reviewer_number.blank?
       super
     end
 
-    def set_reviewer_number
+    def assign_reviewer_number
+      set_reviewer_number(get_new_reviewer_number)
+    end
+
+    def get_new_reviewer_number
       max_existing = paper.tasks
         .where(type: "TahiStandardTasks::ReviewerReportTask")
         .all
         .map(&:reviewer_number)
         .compact
-        .max
+        .max || 0
 
-      new_number = max_existing ? max_existing + 1 : 1
+      max_existing + 1
+    end
 
+    def set_reviewer_number(new_number)
       body["reviewer_number"] = new_number
 
       new_title = title + " (##{new_number})"

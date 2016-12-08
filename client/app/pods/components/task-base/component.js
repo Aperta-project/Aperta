@@ -53,12 +53,14 @@ export default Component.extend(ValidationErrorsMixin, {
 
   save() {
     this.set('validationErrors.completed', '');
-    if(this.validateData) { this.validateData(); }
+    if(!this.get('skipValidations')) {
+      if(this.validateData) { this.validateData(); }
 
-    if(this.validationErrorsPresent()) {
-      this.set('task.completed', false);
-      this.set('validationErrors.completed', this.get('completedErrorText'));
-      return;
+      if(this.validationErrorsPresent()) {
+        this.set('task.completed', false);
+        this.set('validationErrors.completed', this.get('completedErrorText'));
+        return;
+      }
     }
 
     return this.get('saveTask').perform();

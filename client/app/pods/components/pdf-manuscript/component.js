@@ -21,7 +21,7 @@ export default Ember.Component.extend({
       PDFJS.workerSrc = pdfjscdn + 'pdf.worker.js';
       PDFJS.imageResourcesPath = pdfjscdn + 'images/';
       PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
-      var download = this.get('paper.id') + '/download.pdf';
+      var download = this.get('paper.id') + '/export?export_format=pdf';
       PDFJS.webViewerLoad(download);
     });
   },

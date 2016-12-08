@@ -608,7 +608,7 @@ class AuthenticatedPage(PlosPage):
     self.restore_timeout()
     return True
 
-  def click_task(self, taskname):
+  def _click_task(self, taskname):
     """
     Passed a task name, opens the relevant task
     :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, addl_info,
@@ -666,6 +666,21 @@ class AuthenticatedPage(PlosPage):
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
     return True
+
+  def click_task(self, task_name):
+    """
+    Click a task title
+    :param task_name: The name of the task to click
+    :return: None
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task_name in task.text:
+        self._actions.move_to_element(task).perform()
+        task.click()
+        return True
+    logging.info('Unknown Task')
+    return False
 
   def click_discussion_link(self):
     """

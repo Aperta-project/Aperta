@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import time
+import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -40,6 +41,7 @@ class SITask(BaseTask):
     self._si_file_caption_display = (By.CLASS_NAME, 'si-file-caption')
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
+    self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
    # POM Actions
 
   def validate_styles(self):
@@ -138,5 +140,22 @@ class SITask(BaseTask):
     """
     logging.info('Attach file called with {0}'.format(file_name))
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
-    attached_filename = self._get(self._si_filename)
-    return attached_filename
+    attached_element = self._get(self._si_filename)
+    return attached_element
+
+  def add_files(self, file_list):
+    """
+    """
+    attached_elements = []
+    for file_name in file_list:
+      attached_elements.append(self.add_file(file_name))
+      time.sleep(3)
+    return attached_elements
+
+  def validate_uploads(self, uploads):
+    """
+    """
+    site_uploads = self._gets(self._file_link)
+    site_uploads = [x.text for x in site_uploads]
+    uploads = [x.split(os.sep)[-1] for x in uploads]
+    assert uploads == site_uploads, (uploads, site_uploads)

@@ -133,5 +133,29 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
+  def test_multiple_si_uploads(self):
+    """
+    test_figure_task: Validates the upload function of the figures task
+    :return: void function
+    """
+    creator_user = random.choice(users)
+    logging.info(creator_user)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    paper_url = manuscript_page.get_current_url()
+    short_doi = manuscript_page.get_short_doi()
+    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
+    manuscript_page.click_task('Supporting Info')
+    # locate elements
+    supporting_info = SITask(self._driver)
+    doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(docs, 4)]
+    logging.info(doc2uploads)
+    supporting_info.add_files(doc2uploads)
+    supporting_info.validate_uploads(doc2uploads)
+    return None
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

@@ -554,20 +554,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
-  def click_task(self, task_name):
-    """
-    Click a task title
-    :param task_name: The name of the task to click
-    :return: None
-    """
-    tasks = self._gets(self._task_headings)
-    for task in tasks:
-      if task_name in task.text:
-        self._actions.move_to_element(task).perform()
-        task.click()
-        break
-    return None
-
   def complete_task(self, task_name, click_override=False, data=None):
     """
     On a given task, check complete and then close

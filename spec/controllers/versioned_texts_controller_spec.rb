@@ -35,6 +35,7 @@ describe VersionedTextsController do
           major_version
           minor_version
           version_string
+          file_type
         )
         expect(res_body['versioned_text'].keys).to eq(expected_keys)
       end

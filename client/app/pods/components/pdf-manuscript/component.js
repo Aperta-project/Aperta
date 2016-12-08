@@ -19,7 +19,6 @@ export default Ember.Component.extend({
 
   loadPdfJs: function() {
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
-      console.log('PDFJS-viewer loaded');
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
 
       var pdfjscdn = '//bowercdn.net/c/pdf.js-viewer-0.3.3/';

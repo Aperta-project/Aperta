@@ -6,5 +6,6 @@ export default DS.Model.extend({
   majorVersion: DS.attr(),
   minorVersion: DS.attr(),
   updatedAt: DS.attr('date'),
-  versionString: DS.attr('string')
+  versionString: DS.attr('string'),
+  fileType: DS.attr('string')
 });

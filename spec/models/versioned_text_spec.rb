@@ -3,13 +3,17 @@ require 'rails_helper'
 require 'models/concerns/versioned_thing_shared_examples'
 
 describe VersionedText do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :version_with_file_type }
   let(:user) { FactoryGirl.create :user }
   let(:versioned_text) { paper.latest_version }
 
   it_behaves_like 'a thing with major and minor versions', :versioned_text
 
   describe '#version_string' do
+    it 'contains file_type' do
+      expect(versioned_text.version_string.match('DOCX').to_a.any?).to be(true)
+    end
+
     it 'contains draft text' do
       expect(versioned_text.version_string.match('draft').to_a.any?).to be(true)
     end

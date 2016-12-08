@@ -5,8 +5,6 @@ export default Ember.Component.extend(PaperBase, {
   elementId: 'versioning-bar',
   classNames: ['versions', 'active'],
 
-  versionsContainPDF: false,
-
   actions: {
     setViewingVersion(version) {
       this.set('viewingVersion', version);

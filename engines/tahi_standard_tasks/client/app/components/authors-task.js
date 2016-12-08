@@ -20,7 +20,12 @@ const taskValidations = {
       const author = this.get('task');
 
       return _.every(acknowledgementIdents, (ident) => {
-        return author.answerForQuestion(ident).get('value');
+        let answer = author.answerForQuestion(ident);
+        if(!answer){
+          console.error(`Tried to find an answer for question with ident, ${ident}, but none was found`);
+        } else {
+          return answer.get('value');
+        }
       });
     }
   }]

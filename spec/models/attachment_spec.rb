@@ -129,6 +129,36 @@ describe Attachment do
     end
   end
 
+  describe 'image?' do
+    subject(:attachment) do
+      FactoryGirl.create(
+        :attachment,
+        file: File.open(Rails.root.join(path))
+      )
+    end
+
+    context "a jpg file" do
+      let(:path) { "spec/fixtures/bill_ted1.jpg" }
+      it 'returns true' do
+        expect(subject.image?).to eq(true)
+      end
+    end
+
+    context "a JPG file" do
+      let(:path) { "spec/fixtures/bill_ted2.JPG" }
+      it 'returns true' do
+        expect(subject.image?).to eq(true)
+      end
+    end
+
+    context "a non-image file" do
+      let(:path) { "spec/fixtures/about_turtles.docx" }
+      it 'returns true' do
+        expect(subject.image?).to eq(false)
+      end
+    end
+  end
+
   describe 'setting #paper' do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }

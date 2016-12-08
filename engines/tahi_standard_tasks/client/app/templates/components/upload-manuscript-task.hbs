@@ -25,7 +25,7 @@
       Select and upload manuscript
       {{file-uploader id="upload-files"
                       railsMethod="PUT"
-                      accept=".docx,.doc,.pdf"
+                      accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
                       start="uploadStarted"
                       progress="uploadProgress"
                       done="uploadFinished"
@@ -41,7 +41,11 @@
 
   {{#if uploadError}}
     <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
-    <p> Please upload a Microsoft Word file (.docx or .doc) or a PDF.</p>
+    {{#if pdfAllowed}}
+      <p> Please upload a Microsoft Word file (.docx or .doc) or a PDF.</p>
+    {{else}}
+      <p> Please upload a Microsoft Word file (.docx or .doc).</p>
+    {{/if}}
   {{/if}}
 
   {{#if isUploading}}

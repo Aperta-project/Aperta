@@ -32,7 +32,7 @@ describe PaperConversionsController, type: :controller do
           .and_return true
       end
 
-      context 'with a paper that needs conversion' do
+      context 'with a docx paper that needs conversion' do
         subject(:do_request) do
           VCR.use_cassette('convert_to_docx') do
             get :export, id: paper.id, export_format: 'docx', format: :json
@@ -42,6 +42,7 @@ describe PaperConversionsController, type: :controller do
         before do
           # no source URL, needs conversion
           allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'docx'
           expect(paper.file.url).to be(nil)
 
           allow(PaperConverter).to receive(:export)
@@ -64,6 +65,26 @@ describe PaperConversionsController, type: :controller do
         end
       end
 
+      context 'with a paper that is pdf' do
+        let(:manuscript_attachment) do
+          FactoryGirl.build_stubbed(:manuscript_attachment, :with_filename)
+        end
+
+        before do
+          allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'pdf'
+        end
+
+        it 'returns a url to check later' do
+          get :export, id: paper.id, export_format: 'pdf', format: :json
+          expect(response.status).to eq(202)
+
+          expect(res_body['url']).to(
+            eq(url_for(controller: :paper_conversions, action: :status,
+                       id: paper.id, job_id: 'source', export_format: 'pdf')))
+        end
+      end
+
       context 'with a docx that the user uploaded' do
         let(:manuscript_attachment) do
           FactoryGirl.build_stubbed(:manuscript_attachment, :with_filename)
@@ -71,6 +92,7 @@ describe PaperConversionsController, type: :controller do
 
         before do
           allow(paper).to receive(:file).and_return manuscript_attachment
+          allow(paper).to receive(:file_type).and_return 'docx'
         end
 
         it 'returns a url to check later' do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161202162713) do
+ActiveRecord::Schema.define(version: 20161206175332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20161202162713) do
     t.string   "title"
     t.string   "caption"
     t.string   "status",             default: "processing"
-    t.string   "kind"
+    t.string   "file_type"
     t.text     "s3_dir"
     t.string   "type"
     t.integer  "old_id"
@@ -342,6 +342,7 @@ ActiveRecord::Schema.define(version: 20161202162713) do
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
+    t.boolean  "pdf_allowed",          default: false
   end
 
   add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree

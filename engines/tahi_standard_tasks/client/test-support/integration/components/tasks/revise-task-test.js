@@ -12,6 +12,9 @@ moduleForComponent(
     manualSetup(this.container);
     this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
     Factory.createPermission('reviseTask', 1, ['edit', 'view']);
+  },
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -145,6 +148,7 @@ test('it lets you complete the task when there are no validation errors', functi
   let done = assert.async();
   wait().then(() => {
     assert.equal(testTask.get('completed'), true, 'task was completed');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     done();
   });
 });
@@ -166,12 +170,15 @@ test('it lets you uncomplete the task when it has validation errors', function(a
   let done = assert.async();
   wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
+    $.mockjax.clear();
 
     // make sure we cannot mark it as complete, to ensure it truly was invalid
     this.$('.revise-manuscript-task button.task-completed').click();
     wait().then(() => {
       assert.textPresent('.revise-manuscript-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not change completion status');
+      assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
       done();
     });
   });

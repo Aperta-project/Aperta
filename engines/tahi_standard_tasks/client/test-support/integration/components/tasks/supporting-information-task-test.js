@@ -33,6 +33,9 @@ moduleForComponent(
     this.registry.register('service:can', FakeCanService);
 
     emberContainer = this.container;
+  },
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -174,7 +177,7 @@ test("it does not allow completion when any of the files' statuses are not set t
   });
 });
 
-test("it does not allow completion when any of the files' statuses when label is not defined", function(assert) {
+test("it does not allow completion when any of the files' labels are not defined", function(assert) {
   let doneFile = make('supporting-information-file', { status: 'done', label: null });
   let testTask = createTaskWithFiles([doneFile]);
   allowPermissionOnTask('edit', testTask);
@@ -193,7 +196,7 @@ test("it does not allow completion when any of the files' statuses when label is
   });
 });
 
-test("it does not allow completion when any of the files' statuses when category is not defined", function(assert) {
+test("it does not allow completion when any of the files' categories is not defined", function(assert) {
   let doneFile = make('supporting-information-file', { status: 'done', category: null });
   let testTask = createTaskWithFiles([doneFile]);
   allowPermissionOnTask('edit', testTask);
@@ -233,10 +236,13 @@ test('it lets you uncomplete the task when it has validation errors', function(a
   let done = assert.async();
   wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
+    $.mockjax.clear();
 
     // make sure we cannot mark it as complete, to ensure it truly was invalid
     this.$('.supporting-information-task button.task-completed').click();
     wait().then(() => {
+      assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
       assert.textPresent('.supporting-information-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not change completion status');
       done();

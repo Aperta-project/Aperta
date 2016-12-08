@@ -15,6 +15,9 @@ moduleForComponent(
 
     // For any answers that will be sent to the server
     $.mockjax({url: /api\/nested_questions\/\d+\/answers/, status: 204});
+  },
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -183,6 +186,7 @@ test('it lets you complete the task when there are no validation errors', functi
   let done = assert.async();
   wait().then(() => {
     assert.equal(testTask.get('completed'), true, 'task was completed');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     done();
   });
 });
@@ -204,6 +208,8 @@ test('it lets you uncomplete the task when it and its authors have validation er
   let done = assert.async();
   wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
+    $.mockjax.clear();
 
     // ensure  a required answer is not provided
     this.$('.authors-task input[name="authors--persons_agreed_to_be_named"]').attr('checked', false);
@@ -212,6 +218,7 @@ test('it lets you uncomplete the task when it and its authors have validation er
     this.$('.authors-task button.task-completed').click();
 
     wait().then(() => {
+      assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
       assert.textPresent('.authors-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not change completion status');
       done();

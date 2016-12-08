@@ -129,6 +129,7 @@ class AuthenticatedPage(PlosPage):
     self._competing_ints_card = None
     self._cover_letter_card = None
     self._data_avail_card = None
+    self._early_article_posting_card = None
     self._ethics_statement_card = None
     self._figures_card = None
     self._fin_disclose_card = None
@@ -160,6 +161,7 @@ class AuthenticatedPage(PlosPage):
     self._cfa_task = None
     self._competing_ints_task = None
     self._cover_letter_task = None
+    self._early_article_posting_task = None
     self._data_avail_task = None
     self._ethics_statement_task = None
     self._figures_task = None
@@ -459,6 +461,7 @@ class AuthenticatedPage(PlosPage):
     """
     self.set_timeout(timeout)
     success_msg = self._get(self._flash_success_msg)
+    time.sleep(.5)
     self.close_flash_message()
     return success_msg.text
 
@@ -553,6 +556,8 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._billing_card)
     elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
+    elif cardname.lower() == 'early_article_posting':
+      card_title = self._get(self._early_article_posting_card)
     elif cardname.lower() == 'ethics_statement':
       card_title = self._get(self._ethics_statement_card)
     elif cardname.lower() == 'figures':
@@ -628,6 +633,8 @@ class AuthenticatedPage(PlosPage):
       task_title = self._get(self._billing_task)
     elif taskname.lower() == 'cover_letter':
       task_title = self._get(self._cover_letter_task)
+    elif taskname.lower() == 'early_article_posting':
+      task_title = self._get(self._early_article_posting_task)
     elif taskname.lower() == 'figures':
       task_title = self._get(self._figures_task)
     elif taskname.lower() == 'authors':
@@ -1928,14 +1935,11 @@ class AuthenticatedPage(PlosPage):
     :param checkbox: checkbox to validate
     """
     assert application_typeface in checkbox.value_of_css_property('font-family')
-    assert checkbox.value_of_css_property('font-size') == '14px', checkbox.value_of_css_property('font-size')
+    assert checkbox.value_of_css_property('font-size') == '12px', checkbox.value_of_css_property('font-size')
     assert checkbox.value_of_css_property('font-weight') == '400', checkbox.value_of_css_property('font-weight')
     assert checkbox.value_of_css_property('font-style') == 'normal', checkbox.value_of_css_property('font-style')
-    # This color is not represented in the style guide
-    assert checkbox.value_of_css_property('color') == aperta_black, checkbox.value_of_css_property('color')
+    assert checkbox.value_of_css_property('color') == aperta-black, checkbox.value_of_css_property('color')
     assert checkbox.value_of_css_property('line-height') == '20px', checkbox.value_of_css_property('line-height')
-    assert checkbox.value_of_css_property('margin-right') == '20px', checkbox.value_of_css_property('margin-right')
-    assert checkbox.value_of_css_property('margin-bottom') == '5px', checkbox.value_of_css_property('margin-bottom')
 
   @staticmethod
   def validate_checkbox_label(label):
@@ -1946,11 +1950,8 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('vertical-align') == 'middle', label.value_of_css_property('vertical-align')
-    # This color is not represented in the style guide
     assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
-    assert label.value_of_css_property('margin-right') == '20px', label.value_of_css_property('margin-right')
 
   # Navigation Styles ========================
   # There are currently no defined navigation styles in the style guide

@@ -2,25 +2,30 @@
 
 <div class="task-main-content">
   {{#if taskStateToggleable}}
-  <p>
-    You may upload a manuscript in either Microsoft Word (.docx or .doc) or
-    PDF format. You can upload a replacement manuscript file at any time before
-    you submit.
-  </p>
-  <p>
-    <b>Microsoft Word format:</b> Manuscripts uploaded in this format are
-    suitable for production, and can take advantage of automatic inline figure
-    placement and visual version comparison features.
-  </p>
-  <p>
-    <b>PDF format:</b> Manuscripts uploaded in this format are suitable for
-    review only and will need to be accompanied by a supplemental upload of your
-    source document. PDF format should be used for LaTeX submissions. Additional
-    checks may be required if your manuscript is accepted. If your manuscript is
-    available in Microsoft Word format, please upload the original file and not a
-    PDF, in order to make use of automated figure placement and version
-    comparison features.
-  </p>
+    {{#if pdfAllowed}}
+      <p>
+        You may upload a manuscript in either Microsoft Word (.docx or .doc) or
+        PDF format. You can upload a replacement manuscript file at any time before
+        you submit.
+      </p>
+      <p>
+        <b>Microsoft Word format:</b> Manuscripts uploaded in this format are
+        suitable for production, and can take advantage of automatic inline figure
+        placement and visual version comparison features.
+      </p>
+      <p>
+        <b>PDF format:</b> Manuscripts uploaded in this format are suitable for
+        review only and will need to be accompanied by a supplemental upload of your
+        source document. PDF format should be used for LaTeX submissions. Additional
+        checks may be required if your manuscript is accepted. If your manuscript is
+        available in Microsoft Word format, please upload the original file and not a
+        PDF, in order to make use of automated figure placement and version
+        comparison features.
+      </p>
+    {{else}}
+     You can upload a replacement manuscript file at any time before you
+     submit.
+    {{/if}}
     <span id="upload-manuscript" class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
       Select and upload manuscript
       {{file-uploader id="upload-files"
@@ -42,7 +47,7 @@
   {{#if uploadError}}
     <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
     {{#if pdfAllowed}}
-      <p> Please upload a Microsoft Word file (.docx or .doc) or a PDF.</p>
+      <p> Please upload a Microsoft Word file (.docx or .doc) or PDF.</p>
     {{else}}
       <p> Please upload a Microsoft Word file (.docx or .doc).</p>
     {{/if}}

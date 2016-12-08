@@ -554,6 +554,27 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
+  def click_task(self, task_name):
+    """
+    Click a task title
+    NOTE: this covers only the author facing tasks, with the exception of initial_decision
+    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
+        workflow page
+    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
+        and workflow contexts while we transition.
+    :param task_name: A string with the name of the task to click, like 'Cover Letter'
+        or 'Billing'
+    :return: True or False, if taskname is unknown.
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task_name.lower() in task.text.lower():
+        self._actions.move_to_element(task).perform()
+        task.click()
+        return True
+    logging.info('Unknown Task')
+    return False
+
   def complete_task(self, task_name, click_override=False, data=None):
     """
     On a given task, check complete and then close

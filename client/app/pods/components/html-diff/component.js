@@ -206,10 +206,6 @@ export default Ember.Component.extend({
     });
   },
 
-  loadPdfJs: function() {
-    LazyLoader.loadScripts([ENV.pdfjs.url]);
-  },
-
   refreshEquations:  function() {
     if (!window.MathJax) { this.loadMathJax(); return; }
     else if (!window.MathJax.Hub) { return; }

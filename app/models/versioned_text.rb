@@ -23,14 +23,18 @@ class VersionedText < ActiveRecord::Base
   def be_major_version!
     update!(
       major_version: (paper.major_version || -1) + 1,
-      minor_version: 0)
+      minor_version: 0,
+      file_type: paper.file_type
+    )
   end
 
   # Give the text a new MINOR version
   def be_minor_version!
     update!(
       major_version: (paper.major_version || 0),
-      minor_version: (paper.minor_version || -1) + 1)
+      minor_version: (paper.minor_version || -1) + 1,
+      file_type: paper.file_type
+    )
   end
 
   def submitted?
@@ -55,7 +59,9 @@ class VersionedText < ActiveRecord::Base
       d.update!(
         major_version: nil,
         minor_version: nil,
-        submitting_user: nil) # makes duplicate of S3 file
+        submitting_user: nil,
+        file_type: paper.file_type
+      ) # makes duplicate of S3 file
     end
   end
 

@@ -29,6 +29,14 @@ export default ActiveModelAdapter.extend({
     return this._super(...arguments);
   },
 
+  // buildURLForModel is a custom hook added by Aperta. It's so the URL
+  // for a given model/instance can be generated and overriden. See
+  // adapters/paper.js for an example.
+  buildURLForModel(model){
+    let id = model ? Ember.get(model, 'id') : null;
+    let type = model.constructor.modelName
+    return this.buildURL(type, id);
+  },
 
   // These hooks are described in the ember data 1.13 release post
   // http://emberjs.com/blog/2015/06/18/ember-data-1-13-released.html#toc_new-adapter-hooks-for-better-caching

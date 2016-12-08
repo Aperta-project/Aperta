@@ -55,12 +55,12 @@ module('Integration: PaperIndex', {
         info: "testroles2, collaborator"
       }
     ];
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
     ]);
-    server.respondWith('GET', "/api/papers/" + currentPaper.id + "/tasks", [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi + "/tasks", [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(tasksPayload.toJSON())
@@ -117,12 +117,12 @@ test('on paper.index as a participant on a task but not author of paper', functi
   paperPayload.addRecords(records.concat([fakeUser]));
   paperResponse = paperPayload.toJSON();
   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
-  server.respondWith('GET', '/api/papers/' + currentPaper.id, [
+  server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi, [
     200, {
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit('/papers/' + currentPaper.id).then(function() {
+  return visit('/papers/' + currentPaper.shortDoi).then(function() {
     return assert.ok(!!find('.task-disclosure-heading:contains("ReviewMe")').length);
   });
 });
@@ -140,12 +140,12 @@ test('on paper.index as a participant on a task and author of paper', function(a
   paperResponse = paperPayload.toJSON();
   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
   paperResponse.collaborations = [addUserAsCollaborator(currentPaper, fakeUser)];
-  server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+  server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
     200, {
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit('/papers/' + currentPaper.id).then(function() {
+  return visit('/papers/' + currentPaper.shortDoi).then(function() {
     return assert.ok(!!find('.card-content:contains("Revise Task")'),
       'Participant task is displayed in the sidebar for author');
   });
@@ -153,7 +153,7 @@ test('on paper.index as a participant on a task and author of paper', function(a
 
 test('visiting /paper: Author completes all metadata cards', function(assert) {
   assert.expect(3);
-  visit('/papers/' + currentPaper.id).then(function() {
+  visit('/papers/' + currentPaper.shortDoi).then(function() {
     return assert.ok(!find('#paper-container.sidebar-empty').length, 'The sidebar should NOT be hidden');
   }).then(function() {
     const submitButton = find('button:contains("Submit")');
@@ -177,7 +177,7 @@ test('visiting /paper: Author completes all metadata cards', function(assert) {
 });
 
 test('visiting /paper: Gradual Engagement banner visible', function(assert) {
-  visit('/papers/' + currentPaper.id + '?firstView=true').then(function() {
+  visit('/papers/' + currentPaper.shortDoi + '?firstView=true').then(function() {
     assert.ok(find('#submission-process').length, 'The banner is visible');
   });
 

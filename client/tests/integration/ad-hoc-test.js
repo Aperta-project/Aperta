@@ -13,7 +13,7 @@ let server = null;
 const { mockFind } = TestHelper;
 
 const paperTaskURL = function paperTaskURL(paper, task) {
-  return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
+  return '/papers/' + paper.get('shortDoi') + '/tasks/' + task.get('id');
 };
 
 moduleForAcceptance('Integration: AdHoc Card', {
@@ -59,7 +59,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
   const task  = make('ad-hoc-task', { paper: paper, body: [], title: 'Custom title' });
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
-  mockFind('paper').returns({ model: paper });
+  TestHelper.mockPaperQuery(paper);
   mockFind('task').returns({ model: task });
   visit(paperTaskURL(paper, task));
 
@@ -76,7 +76,7 @@ test('AdHoc Task text block', function(assert) {
 
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
-  mockFind('paper').returns({ model: paper });
+  TestHelper.mockPaperQuery(paper);
   mockFind('task').returns({ model: task });
 
   visit(paperTaskURL(paper, task));
@@ -101,7 +101,7 @@ test('AdHoc Task list block', function(assert) {
   const task  = make('ad-hoc-task', { paper: paper, body: [] });
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'manage']);
 
-  mockFind('paper').returns({ model: paper });
+  TestHelper.mockPaperQuery(paper);
   mockFind('task').returns({ model: task });
 
   visit(paperTaskURL(paper, task));
@@ -129,7 +129,7 @@ test('AdHoc Task email block', function(assert) {
   const task  = make('ad-hoc-task', { paper: paper, body: [] });
   Factory.createPermission('AdHocTask', task.id, ['edit', 'view', 'add_email_participants', 'manage']);
 
-  mockFind('paper').returns({ model: paper });
+  TestHelper.mockPaperQuery(paper);
   mockFind('task').returns({ model: task });
 
   server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [

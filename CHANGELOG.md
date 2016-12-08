@@ -4,7 +4,12 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
+  the journal.
 ### Changed
+* Invitations no longer enter their edit state by default
+* Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
+  by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 ### Deprecated
 ### Removed
 ### Fixed
@@ -13,7 +18,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
-
 ## ## [1.30.1] - {2016-11-29}
 ### Added
 ### Changed

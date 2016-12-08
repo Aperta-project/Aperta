@@ -22,7 +22,7 @@ module('Integration: Inviting a reviewer', {
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     inviteeEmail = window.currentUserData.user.email;
 
-    TestHelper.mockFind('paper').returns({model: paper});
+    TestHelper.mockPaperQuery(paper);
     TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
@@ -53,7 +53,7 @@ module('Integration: Inviting a reviewer', {
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
     TestHelper.mockFind('task').returns({model: task});
-    visit(`/papers/${paper.id}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function(){
@@ -95,7 +95,7 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockDelete('invitation', invitation.id);
     TestHelper.mockFind('decision').returns({model: decision});
 
-    visit(`/papers/${paper.id}/workflow`);
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
     click(".card-content:contains('Invite Reviewers')");
 
     andThen(function() {
@@ -131,8 +131,8 @@ test('can not send or delete a pending invitation from a previous round', functi
       decision: $.extend({id: oldDecision.id}, oldDecision.toJSON())
     }});
 
-    visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Reviewers')");
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
+    click('.card-content:contains("Invite Reviewers")');
 
     andThen(function() {
       assert.elementNotFound('.active-invitations .invitation-item', 'no active invitations');

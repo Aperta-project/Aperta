@@ -17,7 +17,7 @@ class RelatedArticlesController < ApplicationController
   end
 
   def create
-    paper = Paper.find(related_article_params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(related_article_params[:paper_id])
     requires_user_can :edit_related_articles, paper
 
     related_article = RelatedArticle.new(related_article_params)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161201174447) do
+ActiveRecord::Schema.define(version: 20161206175332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20161201174447) do
     t.string   "title"
     t.string   "caption"
     t.string   "status",             default: "processing"
-    t.string   "kind"
+    t.string   "file_type"
     t.text     "s3_dir"
     t.string   "type"
     t.integer  "old_id"
@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(version: 20161201174447) do
     t.string   "invitee_role",                             null: false
     t.text     "decline_reason"
     t.text     "reviewer_suggestions"
-    t.string   "token"
+    t.string   "token",                                    null: false
     t.integer  "primary_id"
     t.datetime "invited_at"
     t.datetime "declined_at"
@@ -315,6 +315,7 @@ ActiveRecord::Schema.define(version: 20161201174447) do
   add_index "invitations", ["primary_id"], name: "index_invitations_on_primary_id", using: :btree
   add_index "invitations", ["state"], name: "index_invitations_on_state", using: :btree
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
+  add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
@@ -341,7 +342,10 @@ ActiveRecord::Schema.define(version: 20161201174447) do
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
+    t.boolean  "pdf_allowed",          default: false
   end
+
+  add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"
@@ -462,11 +466,13 @@ ActiveRecord::Schema.define(version: 20161201174447) do
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
+    t.string   "short_doi"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
+  add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "permission_requirements", force: :cascade do |t|

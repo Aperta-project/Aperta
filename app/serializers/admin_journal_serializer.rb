@@ -1,13 +1,14 @@
 class AdminJournalSerializer < ActiveModel::Serializer
   attributes :id,
-             :name,
-             :logo_url,
-             :paper_types,
-             :pdf_css,
-             :manuscript_css,
-             :description,
-             :paper_count,
-             :created_at
+    :name,
+    :logo_url,
+    :paper_types,
+    :pdf_css,
+    :manuscript_css,
+    :description,
+    :paper_count,
+    :created_at,
+    :pdf_allowed
   has_many :manuscript_manager_templates, embed: :ids, include: true
   has_many :admin_journal_roles, embed: :ids, include: true
   has_many :journal_task_types, embed: :ids, include: true

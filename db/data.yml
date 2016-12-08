@@ -2890,7 +2890,7 @@ attachments:
   - title
   - caption
   - status
-  - kind
+  - file_type
   - s3_dir
   - type
   - old_id
@@ -3299,7 +3299,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/1
     - ManuscriptAttachment
     - '1'
@@ -3323,7 +3323,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/2
     - ManuscriptAttachment
     - '2'
@@ -3347,7 +3347,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/3
     - ManuscriptAttachment
     - '3'
@@ -3371,7 +3371,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/4
     - ManuscriptAttachment
     - '4'
@@ -3395,7 +3395,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/8
     - ManuscriptAttachment
     - '8'
@@ -3419,7 +3419,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/9
     - ManuscriptAttachment
     - '9'
@@ -3443,7 +3443,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/10
     - ManuscriptAttachment
     - '10'
@@ -3467,7 +3467,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/17
     - ManuscriptAttachment
     - '17'
@@ -3491,7 +3491,7 @@ attachments:
     - 
     - 
     - processing
-    - 
+    - docx
     - uploads/versioned_text/18
     - ManuscriptAttachment
     - '18'
@@ -4354,7 +4354,7 @@ invitations:
     - 
     - invited
     - '2016-06-02 13:47:43.341436'
-    - '2016-10-26 17:24:28.982542'
+    - '2016-12-02 16:35:18.776188'
     - '22'
     - |-
       Here are the authors on the paper:
@@ -4389,7 +4389,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - d8c0e1855b210af3c927
     - 
     - '2016-06-02 13:47:43.341436'
     - 
@@ -4404,7 +4404,7 @@ invitations:
     - 
     - rescinded
     - '2016-06-13 13:33:37.292317'
-    - '2016-10-26 19:34:48.269307'
+    - '2016-12-02 16:35:18.782775'
     - '21'
     - |-
       Here are the authors on the paper:
@@ -4441,7 +4441,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - a20a4d09b7a759878bf9
     - 
     - '2016-06-13 13:33:37.292317'
     - 
@@ -4456,7 +4456,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 17:24:55.285772'
-    - '2016-10-26 17:25:23.516806'
+    - '2016-12-02 16:35:18.78637'
     - '21'
     - 
     - |+
@@ -4487,7 +4487,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 3ee8fa285e4a06d6aa0c
     - 
     - 
     - 
@@ -4502,7 +4502,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 17:25:03.580491'
-    - '2016-10-26 17:25:03.580491'
+    - '2016-12-02 16:35:18.790285'
     - '21'
     - 
     - |+
@@ -4533,7 +4533,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - b037169e0c53cb496d1a
     - 
     - 
     - 
@@ -4548,7 +4548,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 17:25:19.181351'
-    - '2016-10-26 17:25:23.534066'
+    - '2016-12-02 16:35:18.794257'
     - '21'
     - 
     - |+
@@ -4579,7 +4579,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - e7c8869850a2664575be
     - '3'
     - 
     - 
@@ -4738,7 +4738,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 17:27:10.025075'
-    - '2016-10-26 17:27:10.053862'
+    - '2016-12-02 16:35:18.798018'
     - '21'
     - 
     - |+
@@ -4769,7 +4769,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 0a89011bffc77e82d296
     - 
     - 
     - 
@@ -4784,7 +4784,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 18:51:30.378987'
-    - '2016-10-26 18:51:30.378987'
+    - '2016-12-02 16:35:18.801526'
     - '21'
     - 
     - |+
@@ -4815,7 +4815,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 4657ab1e266e6cfee5f4
     - 
     - 
     - 
@@ -4830,7 +4830,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:21:11.286696'
-    - '2016-10-27 21:31:58.0426'
+    - '2016-12-02 16:35:18.808965'
     - '21'
     - 
     - |+
@@ -4870,7 +4870,7 @@ invitations:
     - Academic Editor
     - 
     - 
-    - 
+    - 35be6c4f8bfa974e4c2f
     - 
     - 
     - 
@@ -4885,7 +4885,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:21:25.54058'
-    - '2016-10-27 21:31:58.07234'
+    - '2016-12-02 16:35:18.812514'
     - '21'
     - 
     - |+
@@ -4925,7 +4925,7 @@ invitations:
     - Academic Editor
     - 
     - 
-    - 
+    - 93dc23c2367fd53ca12d
     - '11'
     - 
     - 
@@ -4997,7 +4997,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:22:45.552366'
-    - '2016-10-27 21:31:58.101294'
+    - '2016-12-02 16:35:18.815599'
     - '21'
     - 
     - |+
@@ -5037,7 +5037,7 @@ invitations:
     - Academic Editor
     - 
     - 
-    - 
+    - 884d5bb97b3c6aca7076
     - 
     - 
     - 
@@ -5052,7 +5052,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:23:57.955306'
-    - '2016-10-27 21:31:58.113187'
+    - '2016-12-02 16:35:18.81866'
     - '21'
     - 
     - |+
@@ -5092,7 +5092,7 @@ invitations:
     - Academic Editor
     - 
     - 
-    - 
+    - a9f99b5edf928c039392
     - 
     - 
     - 
@@ -5155,7 +5155,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:42:00.631519'
-    - '2016-10-26 19:42:00.631519'
+    - '2016-12-02 16:35:18.822049'
     - '23'
     - 
     - |+
@@ -5186,7 +5186,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 97e0cff06ebadfbd5ae1
     - 
     - 
     - 
@@ -5201,7 +5201,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:47:12.114707'
-    - '2016-10-26 19:47:17.124579'
+    - '2016-12-02 16:35:18.825494'
     - '23'
     - 
     - |+
@@ -5232,7 +5232,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - be865508079cd3f2a4c9
     - '20'
     - 
     - 
@@ -5247,7 +5247,7 @@ invitations:
     - 
     - pending
     - '2016-10-26 19:47:28.685648'
-    - '2016-10-26 19:47:40.947449'
+    - '2016-12-02 16:35:18.829338'
     - '23'
     - 
     - |+
@@ -5278,7 +5278,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - b37ebafbc23d95e9fc07
     - '20'
     - 
     - 
@@ -5341,7 +5341,7 @@ invitations:
     - 
     - pending
     - '2016-10-27 21:33:14.76901'
-    - '2016-10-27 21:33:47.886973'
+    - '2016-12-02 16:35:18.832554'
     - '23'
     - 
     - |+
@@ -5372,7 +5372,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 49f783f96ec4a626413c
     - 
     - 
     - 
@@ -5387,7 +5387,7 @@ invitations:
     - 
     - pending
     - '2016-10-27 21:33:38.630913'
-    - '2016-10-27 21:33:48.131682'
+    - '2016-12-02 16:35:18.836127'
     - '23'
     - 
     - |+
@@ -5418,7 +5418,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 0e5580edf0d76d8161cf
     - '24'
     - 
     - 
@@ -5433,7 +5433,7 @@ invitations:
     - 
     - pending
     - '2016-10-27 21:35:50.683506'
-    - '2016-10-27 21:35:50.683506'
+    - '2016-12-02 16:35:18.839571'
     - '23'
     - 
     - |+
@@ -5464,7 +5464,7 @@ invitations:
     - Reviewer
     - 
     - 
-    - 
+    - 5a19906f72b48f6de04d
     - 
     - 
     - 
@@ -5710,7 +5710,7 @@ journal_task_types:
     - reviewer
   - - '35'
     - '1'
-    - Ad-hoc
+    - Ad-hoc for Staff Only
     - AdHocTask
     - "{}"
     - false
@@ -5722,6 +5722,27 @@ journal_task_types:
     - "{}"
     - false
     - author
+  - - '37'
+    - '1'
+    - Ad-hoc for Authors
+    - AdHocForAuthorsTask
+    - "{}"
+    - false
+    - user
+  - - '38'
+    - '1'
+    - Ad-hoc for Editors
+    - AdHocForEditorsTask
+    - "{}"
+    - false
+    - user
+  - - '39'
+    - '1'
+    - Ad-hoc for Reviewers
+    - AdHocForReviewersTask
+    - "{}"
+    - false
+    - user
 
 ---
 journals:
@@ -5740,6 +5761,7 @@ journals:
   - staff_email
   - reviewer_email_bcc
   - editor_email_bcc
+  - pdf_allowed
   records: 
   - - '1'
     - PLOS Yeti
@@ -5752,10 +5774,11 @@ journals:
       for publication.
     - yetipub
     - journal.yetijour
-    - '1000002'
+    - '1000010'
     - plos-yeti-staff@example.com
     - 
     - 
+    - false
 
 ---
 letter_templates:
@@ -11344,12 +11367,13 @@ papers:
   - state_updated_at
   - processing
   - uses_research_article_reviewer_report
+  - short_doi
   records: 
   - - '1'
     - 
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
     - '2015-10-29 20:16:37.363801'
-    - '2015-11-02 14:30:18.434152'
+    - '2016-11-16 05:16:10.679847'
     - '3'
     - Research
     - '1'
@@ -11368,11 +11392,12 @@ papers:
     - 
     - false
     - true
+    - devs.100001
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
     - '2015-10-30 19:43:28.468043'
-    - '2015-11-02 14:30:18.451006'
+    - '2016-11-16 05:16:10.687503'
     - '3'
     - Research
     - '1'
@@ -11391,11 +11416,12 @@ papers:
     - 
     - false
     - true
+    - devs.100002
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
     - '2015-11-02 14:04:02.867243'
-    - '2015-11-02 15:13:36.520339'
+    - '2016-11-16 05:16:10.692233'
     - '3'
     - Research
     - '1'
@@ -11414,11 +11440,12 @@ papers:
     - 
     - false
     - true
+    - devs.100003
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
     - '2015-11-02 14:46:23.765287'
-    - '2015-11-02 15:14:05.582372'
+    - '2016-11-16 05:16:10.696733'
     - '3'
     - Research
     - '1'
@@ -11437,11 +11464,12 @@ papers:
     - '2015-11-02 15:14:05.576249'
     - false
     - true
+    - devs.100004
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
     - '2015-11-03 22:59:20.931417'
-    - '2015-11-03 22:59:20.931417'
+    - '2016-11-16 05:16:10.701112'
     - '7'
     - Research
     - '1'
@@ -11460,11 +11488,12 @@ papers:
     - 
     - false
     - true
+    - devs.100008
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
     - '2015-11-03 23:02:06.790805'
-    - '2015-11-03 23:02:06.790805'
+    - '2016-11-16 05:16:10.709832'
     - '7'
     - Research
     - '1'
@@ -11483,11 +11512,12 @@ papers:
     - 
     - false
     - true
+    - devs.100009
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
     - '2015-11-10 22:27:27.12482'
-    - '2015-11-10 22:27:27.12482'
+    - '2016-11-16 05:16:10.714635'
     - '1'
     - Research
     - '1'
@@ -11506,6 +11536,7 @@ papers:
     - 
     - false
     - true
+    - devs.100010
   - - '12'
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
@@ -11521,7 +11552,7 @@ papers:
       ivory, which fuels illegal trade, must be dramatically reduced.</p>
     - "<b>Diffable Paper:</b> <em>Paper has versioned text and tasks</em>"
     - '2016-04-12 18:43:34.640539'
-    - '2016-10-26 19:41:03.649118'
+    - '2016-11-16 05:16:10.722122'
     - 
     - Research
     - '1'
@@ -11540,11 +11571,12 @@ papers:
     - '2016-10-26 19:41:03.585529'
     - false
     - true
+    - yetijour.1000002
   - - '13'
     - ''
     - My non-research paper; reviewer invited
     - '2016-06-02 13:43:23.17536'
-    - '2016-06-02 13:48:15.405799'
+    - '2016-11-16 05:16:10.729582'
     - 
     - Non-Research
     - '1'
@@ -11563,6 +11595,7 @@ papers:
     - 
     - false
     - false
+    - yetijour.1000003
 
 ---
 permission_requirements:

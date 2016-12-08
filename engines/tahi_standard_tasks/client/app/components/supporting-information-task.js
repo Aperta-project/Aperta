@@ -16,9 +16,6 @@ export default TaskComponent.extend(FileUploadMixin, {
   saveErrorText: 'Please edit to add label, category, and optional title and legend',
 
   validateData() {
-    if(this.get('skipValidations')){
-      return;
-    }
     const objs = this.get('filesWithErrors');
     objs.invoke('validateAll');
 

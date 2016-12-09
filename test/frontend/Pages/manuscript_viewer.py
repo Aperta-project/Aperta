@@ -580,7 +580,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
-    :param data:
+    :param data: A dictionary with the required data for each task.
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """

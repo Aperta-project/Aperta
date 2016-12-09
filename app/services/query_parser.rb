@@ -111,17 +111,12 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(false))
   end
 
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED?/) do |task, days_ago|
-    comparator = days_ago.match(/[<=>]{1,2}/).to_s
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED?/) do |task, search_term|
+    comparator = search_term.match(/[<=>]{1,2}/).to_s
     if comparator.present?
       table = join Task
       table[:title].matches(task).and(
-        date_query(
-          parse_utc_date(days_ago),
-          field: table[:completed_at],
-          search_term: days_ago,
-          default_comparison: comparator
-        )
+        date_query(search_term, field: table[:completed_at])
       )
     else
       # Better to return no results than false results.  If the user is missing the comparator
@@ -163,24 +158,12 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression(/VERSION DATE?/) do |date_string|
-    comparator = date_string.match(/[<=>]{1,2}/).to_s
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: comparator
-    )
+  add_simple_expression(/VERSION DATE?/) do |search_query|
+    date_query(search_query, field: paper_table[:submitted_at])
   end
 
-  add_simple_expression(/SUBMISSION DATE?/) do |date_string|
-    comparator = date_string.match(/[<=>]{1,2}/).to_s
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: comparator
-    )
+  add_simple_expression(/SUBMISSION DATE?/) do |search_query|
+    date_query(search_query, field: paper_table[:first_submitted_at])
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -262,11 +245,15 @@ class QueryParser < QueryLanguageParser
   #
   #  * default_comparison: the default comparison that the query should built \
   #    for, e.g. '>' or '<'.
-  def date_query(date, field:, search_term:, default_comparison: '>')
+  def date_query(search_query, field:)
+    comparator = search_query.match(/[<=>]{1,2}/).to_s
+    date = parse_utc_date(search_query)
+    search_term = search_query
+
     beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
     end_of_day_date = date.end_of_day.to_formatted_s(:db)
 
-    case default_comparison
+    case comparator
     when '>'
       if search_term =~ /ago/i
         field.lteq(beginning_of_day_date)

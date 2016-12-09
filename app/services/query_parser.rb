@@ -232,19 +232,14 @@ class QueryParser < QueryLanguageParser
   end
 
   # Builds and adds a time query to the current query using the given arguments:
-  #
-  #  * time - the time to be used in the query, e.g. Time.zone.now.utc
-  #
-  #  * field: the AREL table field that should be used in the query, e.g. \
-  #    Paper.arel_table[:submitted_at]
-  #
-  #  * search_term: the user-provided search term string, e.g. "3 days ago". \
+  #  * search_query: the user-provided search term string, e.g. "3 days ago". \
   #    This is used to see if the default comparison should be used or if its \
   #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
   #    whereas "2016/09/01" indicates a normal search.
+  #  * field: the AREL table field that should be used in the query, e.g. \
+  #    Paper.arel_table[:submitted_at]
   #
-  #  * default_comparison: the default comparison that the query should built \
-  #    for, e.g. '>' or '<'.
+
   def date_query(search_query, field:)
     comparator = search_query.match(/[<=>]{1,2}/).to_s
     date = parse_utc_date(search_query)
@@ -284,7 +279,7 @@ class QueryParser < QueryLanguageParser
       field.between(beginning_of_day_date..end_of_day_date)
     else
       fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
-        Expected :comparison to be '>' or '<', but it was
+        Expected :comparison to be '>', '>=', '<', '<=' or '=', but it was
         #{comparison.inspect}
       ERROR
     end

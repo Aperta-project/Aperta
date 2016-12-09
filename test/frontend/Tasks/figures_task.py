@@ -204,7 +204,12 @@ class FiguresTask(BaseTask):
       add_new_figures_btn.click()
       self._validate_processing(figure)
       self._driver.find_element_by_id('figure_attachment').clear()
+      if not figure.startswith('frontend/assets/imgs/'):
+        figure = 'frontend/assets/imgs/' + figure
+      logging.info(figure)
       figure_candidates_list.remove(figure)
+      figure = figure.split('/')[-1]
+      logging.info(figure)
       chosen_figures_list.append(figure)
       logging.info('Figure List so far: {0}'.format(chosen_figures_list))
       self.check_for_flash_error()
@@ -472,6 +477,8 @@ class FiguresTask(BaseTask):
       page_fig_name_list.append(page_fig_item.text)
     logging.info('Figures from the page: {0}'.format(page_fig_name_list))
     for figure in fig_list:
+      figure = figure.split('/')[-1]
+      logging.info(figure)
       # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
       assert urllib.quote_plus(figure) in page_fig_name_list, \
           '{0} not found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
@@ -505,6 +512,7 @@ class FiguresTask(BaseTask):
     # Redefining this down here to avoid a stale element reference due to the listing having
     #   been replaced, potentially, since lookup
     self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
+    self._wait_for_element(self._get(self._figure_listing))
     figure_blocks = self._gets(self._figure_listing)
     for figure_block in figure_blocks:
       page_fig_name = figure_block.find_element(*self._figure_dl_link)

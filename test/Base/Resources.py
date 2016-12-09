@@ -866,8 +866,7 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/docs/Abby_normal_Contextual_Modulation.docx',
         'frontend/assets/docs/Abnormal_Contextual_Modulation_of_Visual_Contour_Detection_in_Patients_with_.docx',
         'frontend/assets/docs/Abundance_of_commercially_important_reef_fish_indicates_different_levels_of_.docx',
-        # APERTA-8176
-        # 'Actin_turnover_in_lamellipodial_fragments.DOCX',
+        'frontend/assets/docs/Actin_turnover_in_lamellipodial_fragments.DOCX',
         'frontend/assets/docs/Acupuncture_and_Counselling_for_Depression_in_Primary_Care_a_Randomised_Controlled.docx',
         'frontend/assets/docs/Adaptation_to_Temporally_Fluctuating_Environments_by_the_Evolution_of_Maternal_.docx',
         'frontend/assets/docs/Aedes_hensilli_as_a_Potential_Vector_of_Chikungunya_and_Zika_Viruses.doc',
@@ -972,6 +971,15 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/docs/Uncovering_Treatment_Burden_As_A_Key_Concept_For_Stroke_Care_A_Systematic_Review_of_.docx',
         'frontend/assets/docs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_Proteins_.doc',
         'frontend/assets/docs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_WordArt.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Text_Box.docx',
+        # APERTA-8505
+        # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelWorksheet.docx',
+        # 'frontend/assets/docs/Word_Document_with_Inserted_Object_ExcelChart.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Object_Equation.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_File_Movie.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_File_Audio.docx',
+        'frontend/assets/docs/Word_Document_with_Inserted_Equation.docx',
         ]
 
 # Resources for future needs - we will be supporting pdf ingestion at some point
@@ -1090,6 +1098,15 @@ pdfs = ['frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/pdfs/Uncovering_Treatment_Burden_As_A_Key_Concept_For_Stroke_Care_A_Systematic_Review_of_.pdf',
         'frontend/assets/pdfs/Vaccinia_Virus_Protein_C6_is_a_Virulence_Factor_that_Binds_TBK-1_Adaptor_Proteins_.pdf',
         'frontend/assets/pdfs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_WordArt.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Text_Box.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_ExcelWorksheet.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_ExcelChart.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Object_Equation.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Photo.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Movie.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_File_Audio.pdf',
+        'frontend/assets/pdfs/Word_Document_with_Inserted_Equation.pdf',
         ]
 
 # Generally, a random choice is made from among these figures when we create a new figure in
@@ -1256,7 +1273,7 @@ figures = [# 'frontend/assets/imgs/FIG1.TIF',
            ]
 
 supporting_info_files = [
-                                                  'frontend/assets/supportingInfo/S10_data.xlsx',
+                         'frontend/assets/supportingInfo/S10_data.xlsx',
                          'frontend/assets/supportingInfo/S10_figure.TIF',
                          'frontend/assets/supportingInfo/S10_other.tiff',
                          'frontend/assets/supportingInfo/S10_table.DOC',

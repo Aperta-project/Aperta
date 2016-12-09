@@ -113,15 +113,11 @@ class QueryParser < QueryLanguageParser
 
   add_two_part_expression('TASK', /HAS BEEN COMPLETED?/) do |task, days_ago|
     comparator = days_ago.match(/[<=>]{1,2}/).to_s
-    days_string_exists = days_ago.downcase.match(' days? ago')
-    if days_string_exists && comparator.present?
-      number_of_days = days_ago.match(/\d+/).to_s.to_i
-      days_ago_time = Time.zone.now.utc.days_ago(number_of_days).to_formatted_s(:db)
+    if comparator.present?
       table = join Task
-
       table[:title].matches(task).and(
         date_query(
-          parse_utc_date(days_ago_time),
+          parse_utc_date(days_ago),
           field: table[:completed_at],
           search_term: days_ago,
           default_comparison: comparator
@@ -243,7 +239,13 @@ class QueryParser < QueryLanguageParser
   # Parses the given string
   def parse_utc_date(str)
     date_without_comparator = str.match(/(?![<=>]{1,2}\s+)[^\s].*/).to_s
-    (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
+    days_string_exists = date_without_comparator.downcase.match(' days? ago')
+    if days_string_exists
+      number_of_days = date_without_comparator.match(/\d+/).to_s.to_i
+      days_ago_time = Time.zone.now.utc.days_ago(number_of_days)
+    else
+      (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
+    end
   end
 
   # Builds and adds a time query to the current query using the given arguments:

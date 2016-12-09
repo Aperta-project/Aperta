@@ -82,7 +82,7 @@ class SITaskTest(CommonTest):
     data['type'] = file_type
     data['title'] = generate_paragraph()[2][:15]
     data['caption'] = generate_paragraph()[2][:35]
-    supporting_info.complete_filename_form(data)
+    supporting_info.complete_si_item_form(data)
     supporting_info = SITask(self._driver)
     figure_data = supporting_info._get(supporting_info._si_file_title_display)
     figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])

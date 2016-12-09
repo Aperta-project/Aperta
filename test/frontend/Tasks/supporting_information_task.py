@@ -59,7 +59,7 @@ class SITask(BaseTask):
     assert upload_button.text == 'ADD FILES', upload_button.text
     self.validate_primary_big_green_button_style(upload_button)
 
-  def validate_filename_form_style(self):
+  def validate_si_edit_form_style(self):
     """
     Validate styles for the elements in the edit SI file
     """
@@ -92,7 +92,7 @@ class SITask(BaseTask):
     self.validate_primary_error_button_style(save_btn)
     return None
 
-  def complete_filename_form(self, data):
+  def complete_si_item_form(self, data):
     """
     Complete the form associated with a file
     :param data: Dictionary with the following keys: figure, type, title and caption
@@ -128,18 +128,9 @@ class SITask(BaseTask):
     save_btn.click()
     return None
 
-  def validate_filename_style(self, attached_filename):
-    """
-    Validate styles for the uploaded file
-    :param attached_filename: Element to validate
-    :return: None
-    """
-    self.validate_default_link_style(attached_filename)
-    return None
-
   def add_file(self, file_name):
     """
-    This method completes the task Supporting Information
+    Completes the task Supporting Information
     :param file_name: A string with a filename
     :return: attached file name web element
     """
@@ -150,6 +141,9 @@ class SITask(BaseTask):
 
   def add_files(self, file_list):
     """
+    Add files to the SI task. This method calls add_file for each file it adds
+    :param file_name: A list with strings with a filename
+    :return: attached file web elements
     """
     attached_elements = []
     for file_name in file_list:
@@ -159,8 +153,12 @@ class SITask(BaseTask):
 
   def validate_uploads(self, uploads):
     """
+    Give a list of file, check if they are opened in the SI task
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
     """
     site_uploads = self._gets(self._file_link)
     site_uploads = [x.text for x in site_uploads]
     uploads = [x.split(os.sep)[-1] for x in uploads]
     assert uploads == site_uploads, (uploads, site_uploads)
+    return None

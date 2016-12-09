@@ -653,14 +653,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       supporting_info.validate_styles()
       if data and 'file_name' in data:
         attached_filename = supporting_info.add_file(data['file_name'])
-        supporting_info.validate_filename_style(attached_filename)
+        supporting_info.validate_default_link_style(attached_filename)
         assert attached_filename.text in data['file_name'], (attached_filename.text,
           data['file_name'])
         edit_btn = self._get(supporting_info._si_pencil_icon)
         assert edit_btn
         assert self._get(supporting_info._si_trash_icon)
         edit_btn.click()
-        supporting_info.validate_filename_form_style()
+        supporting_info.validate_si_edit_form_style()
         # check cancel button
         cancel_btn = self._get(supporting_info._si_file_cancel_btn)
         cancel_btn.click()
@@ -668,7 +668,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)
         edit_btn.click()
-        supporting_info.complete_filename_form(data)
+        supporting_info.complete_si_item_form(data)
       # complete task
       if not base_task.completed_state():
         base_task.click_completion_button()

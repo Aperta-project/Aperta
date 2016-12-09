@@ -222,13 +222,7 @@ class QueryParser < QueryLanguageParser
   # Parses the given string
   def parse_utc_date(str)
     date_without_comparator = str.match(/(?![<=>]{1,2}\s+)[^\s].*/).to_s
-    days_string_exists = date_without_comparator.downcase.match(' days? ago')
-    if days_string_exists
-      number_of_days = date_without_comparator.match(/\d+/).to_s.to_i
-      days_ago_time = Time.zone.now.utc.days_ago(number_of_days)
-    else
-      (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
-    end
+    (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
   end
 
   # Builds and adds a time query to the current query using the given arguments:

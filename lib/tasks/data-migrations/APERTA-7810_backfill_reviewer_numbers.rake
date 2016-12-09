@@ -1,6 +1,7 @@
 # Adds reviewer numbers to reviewer report tasks that were completed at some point
 module ReviewerNumberMigration
   def self.backfill_reviewer_numbers
+    raise StandardError "This migration only runs if there are no existing reviewer numbers" if existing_reviewer_numbers?
     log_strings = []
     paper_ids_with_reports.each do |id|
       log_strings << update_report_tasks(id)
@@ -9,6 +10,12 @@ module ReviewerNumberMigration
     all_logs = log_strings.flatten
     puts all_logs
     puts "@@@@@@@@@@@@ Added #{all_logs.count} reviewer numbers"
+  end
+
+  def self.existing_reviewer_numbers?
+    TahiStandardTasks::ReviewerReportTask
+      .where("(body -> 'reviewer_number') IS NOT NULL")
+      .exists?
   end
 
   def self.paper_ids_with_reports

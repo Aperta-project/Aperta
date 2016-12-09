@@ -41,6 +41,7 @@ class SITask(BaseTask):
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
+    self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
    # POM Actions
 
   def validate_styles(self):
@@ -48,7 +49,12 @@ class SITask(BaseTask):
     Validate styles for elements in Supporting Information task
     """
     self.validate_common_elements_styles()
-    # btn
+    task_main_content = self._get(self._si_task_main_content)
+    # Requested non positional locator at APERTA-8609
+    upload_msg = task_main_content.find_elements_by_tag_name('div')[2]
+    self.validate_application_ptext(upload_msg)
+    assert upload_msg.text == 'Please provide files in their native file formats, e.g. '\
+        'Word, Excel, WAV, MPEG, JPG, etc.', upload_msg.text
     upload_button = self._get(self._si_upload_btn)
     assert upload_button.text == 'ADD FILES', upload_button.text
     self.validate_primary_big_green_button_style(upload_button)
@@ -73,7 +79,7 @@ class SITask(BaseTask):
     publishable = self._get(self._si_file_publishable)
     self.validate_checkbox_label(publishable)
     assert publishable.text == 'For publication', publishable.text
-    error_msg = self._get(self._si_error_msg)
+    error_msg = self._get(self._si_error_message)
     assert error_msg.text == 'Please edit to add label, category, and optional title '\
         'and legend', error_msg.text
     # This will fail due to APERTA-8499

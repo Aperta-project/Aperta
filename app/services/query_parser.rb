@@ -281,15 +281,15 @@ class QueryParser < QueryLanguageParser
       end
     when '<='
       if search_term =~ /ago/i
-        field.gteq(end_of_day_date)
+        field.gteq(beginning_of_day_date)
       else
-        field.lteq(beginning_of_day_date)
+        field.lteq(end_of_day_date)
       end
     when '>='
       if search_term =~ /ago/i
-        field.lteq(beginning_of_day_date)
+        field.lteq(end_of_day_date)
       else
-        field.gteq(end_of_day_date)
+        field.gteq(beginning_of_day_date)
       end
     when '='
       # since the current fields are always datetime so we need to do a

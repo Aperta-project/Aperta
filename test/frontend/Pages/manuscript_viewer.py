@@ -859,7 +859,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param user: user
     :return: None
     """
-    logging.info(user['name'])
+    logging.info('Adding {0} as collaborator'.format(user['name']))
     self._get(self._tb_collaborators_link).click()
     self._get(self._tb_add_collaborators_label).click()
     time.sleep(2)

@@ -388,7 +388,6 @@ class PaperTrackerPage(AuthenticatedPage):
                                                                                        count + 1)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
-        db_short_doi = db_papers[count][2].split('/')[1]
         db_short_doi = db_papers[count][0]
         page_short_doi = self._get(self._paper_tracker_table_tbody_manid)
         logging.debug('Page id: ' + page_short_doi.text + '\nDB id: ' + db_short_doi)
@@ -618,28 +617,14 @@ class PaperTrackerPage(AuthenticatedPage):
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
-      papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=False)
-      db_short_doi = papers[0][0]
-      assert pt_short_doi == db_short_doi, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi,
-                                                                                     db_short_doi)
+      self._validate_current_sort(journal_ids, sort_by='first_submitted_at')
       logging.info('Sorting by Submission Date DESC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[5]')
       date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
-      papers = self._get_paper_list(journal_ids, sort_by='first_submitted_at', reverse=True)
-      db_id = papers[0][0]
-      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
-
+      self._validate_current_sort(journal_ids, sort_by='first_submitted_at', reverse=True)
 
       logging.info('Sorting by Version Date ASC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
@@ -647,53 +632,28 @@ class PaperTrackerPage(AuthenticatedPage):
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
-      papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=False)
-      db_id = papers[0][0]
-      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
+      self._validate_current_sort(journal_ids, sort_by='submitted_at')
       logging.info('Sorting by Version Date DESC')
       self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
       date_th = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
       date_th.click()
       time.sleep(2)
       # check order
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
-      pt_id = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
-      papers = self._get_paper_list(journal_ids, sort_by='submitted_at', reverse=True)
-      db_id = papers[0][0]
-      assert pt_id == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_id, db_id)
+      self._validate_current_sort(journal_ids, sort_by='submitted_at', reverse=True)
 
       logging.info('Sorting by Manuscript ID ASC')
       self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
-      papers = self._get_paper_list(journal_ids, sort_by='doi')
-      db_ms_id = papers[0][2].split('/')[-1]
-      # Until publication we only include the penultimate and ultimate dot separated parts of the
-      #   doi as manuscript id, stripping the '10.1371/journal.' part
-      assert paper_tracker_ms_id in db_ms_id, \
-          'ID in page: {0} not found in ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+      self._validate_current_sort(journal_ids, sort_by='doi')
+
       logging.info('Sorting by Manuscript ID DESC')
       self._paper_tracker_table_paper_id_th = (By.XPATH, '//th[3]')
       msid_th = self._get(self._paper_tracker_table_paper_id_th).find_element_by_tag_name('a')
       msid_th.click()
       time.sleep(1)
-      self._paper_tracker_table_tbody_manid = (
-          By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid).text
-      papers = self._get_paper_list(journal_ids, sort_by='doi', reverse=True)
-      db_ms_id = papers[0][2].split('/')[-1]
-      assert paper_tracker_ms_id in db_ms_id, \
-          'ID in page: {0} not found in ID in DB: {1}'.format(paper_tracker_ms_id, db_ms_id)
+      self._validate_current_sort(journal_ids, sort_by='doi', reverse=True)
 
       logging.info('Sorting by Title ASC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
@@ -732,6 +692,25 @@ class PaperTrackerPage(AuthenticatedPage):
             'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
         raise TypeError('Database title or Page title are not both unicode objects')
+
+  def _validate_current_sort(self, journal_ids, sort_by='', reverse=False):
+    """
+    Perform a validation of a sort of the paper tracker including documents in journal_ids, sorting
+      by sort_by, passing in whether the sort is DESC (True) or ASC (False)
+    :param journal_ids: journals for which the papers should be found (passed to _get_paper_list())
+    :param sort_by: attribute to sort by. Valid values include: 'id', 'title', 'doi',
+      'submitted_at', 'first_submitted_at', 'paper_type', and 'publishing_state'.
+      (passed to _get_paper_list())
+    :param reverse: Whether the sort is DESC (True) or ASC (False) (passed to _get_paper_list())
+    :return: void function
+    """
+    self._paper_tracker_table_tbody_manid = (
+      By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+    paper_tracker_ms_id = self._get(self._paper_tracker_table_tbody_manid)
+    pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
+    papers = self._get_paper_list(journal_ids, sort_by=sort_by, reverse=reverse)
+    db_id = papers[0][0]
+    assert pt_short_doi == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi, db_id)
 
   @staticmethod
   def _normalize_status(status):

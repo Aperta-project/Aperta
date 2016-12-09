@@ -158,11 +158,11 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression(/VERSION DATE?/) do |search_query|
+  add_simple_expression(/VERSION DATE/) do |search_query|
     date_query(search_query, field: paper_table[:submitted_at])
   end
 
-  add_simple_expression(/SUBMISSION DATE?/) do |search_query|
+  add_simple_expression(/SUBMISSION DATE/) do |search_query|
     date_query(search_query, field: paper_table[:first_submitted_at])
   end
 

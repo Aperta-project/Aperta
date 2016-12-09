@@ -174,7 +174,7 @@ describe QueryParser do
         Timecop.freeze(now_time) do
           parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED > 1 day ago'
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{one_day_ago}'
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" <= '#{one_day_ago}'
           SQL
         end
       end
@@ -185,7 +185,7 @@ describe QueryParser do
         Timecop.freeze(now_time) do
           parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED < 1 day ago'
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" > '#{one_day_ago}'
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" >= '#{one_day_ago}'
           SQL
         end
       end
@@ -299,7 +299,7 @@ describe QueryParser do
 
           parse = QueryParser.new.parse 'VERSION DATE > 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" < '#{start_time}'
+            "papers"."submitted_at" <= '#{start_time}'
           SQL
         end
       end
@@ -310,7 +310,7 @@ describe QueryParser do
 
           parse = QueryParser.new.parse 'VERSION DATE < 3 DAYS AGO'
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{start_time}'
+            "papers"."submitted_at" >= '#{start_time}'
           SQL
         end
       end
@@ -345,7 +345,7 @@ describe QueryParser do
 
           parse = QueryParser.new.parse "VERSION DATE < #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" < '#{search_date_db}'
+            "papers"."submitted_at" <= '#{search_date_db}'
           SQL
         end
       end
@@ -357,7 +357,7 @@ describe QueryParser do
 
           parse = QueryParser.new.parse "VERSION DATE > #{search_date}"
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{search_date_db}'
+            "papers"."submitted_at" >= '#{search_date_db}'
           SQL
         end
       end
@@ -392,7 +392,7 @@ describe QueryParser do
 
           parse = QueryParser.new.parse 'VERSION DATE > bad date'
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{start_time}'
+            "papers"."submitted_at" >= '#{start_time}'
           SQL
         end
       end
@@ -432,7 +432,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse 'SUBMISSION DATE > 3 DAYS AGO'
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{start_time}'
+              "papers"."first_submitted_at" <= '#{start_time}'
             SQL
           end
         end
@@ -443,7 +443,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse 'SUBMISSION DATE < 3 DAYS AGO'
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{start_time}'
+              "papers"."first_submitted_at" >= '#{start_time}'
             SQL
           end
         end
@@ -479,7 +479,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{search_date_db}'
+              "papers"."first_submitted_at" <= '#{search_date_db}'
             SQL
           end
         end
@@ -491,7 +491,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{search_date_db}'
+              "papers"."first_submitted_at" <= '#{search_date_db}'
             SQL
           end
         end
@@ -503,7 +503,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{search_date_db}'
+              "papers"."first_submitted_at" >= '#{search_date_db}'
             SQL
           end
         end
@@ -538,7 +538,7 @@ describe QueryParser do
 
             parse = QueryParser.new.parse 'SUBMISSION DATE > bad date'
             expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at\" > '#{start_time}'
+              "papers"."first_submitted_at\" >= '#{start_time}'
             SQL
           end
         end

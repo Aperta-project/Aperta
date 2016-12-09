@@ -269,15 +269,15 @@ class QueryParser < QueryLanguageParser
     case default_comparison
     when '>'
       if search_term =~ /ago/i
-        field.lt(beginning_of_day_date)
+        field.lteq(beginning_of_day_date)
       else
-        field.gt(end_of_day_date)
+        field.gteq(end_of_day_date)
       end
     when '<'
       if search_term =~ /ago/i
-        field.gt(end_of_day_date)
+        field.gteq(end_of_day_date)
       else
-        field.lt(beginning_of_day_date)
+        field.lteq(beginning_of_day_date)
       end
     when '<='
       if search_term =~ /ago/i

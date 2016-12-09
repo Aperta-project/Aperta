@@ -33,7 +33,6 @@ class SITask(BaseTask):
     self._si_file_title_input = (By.CLASS_NAME, 'si-file-title-input')
     self._si_file_caption = (By.CLASS_NAME, 'si-file-caption-textbox')
     self._si_file_publishable = (By.CLASS_NAME, 'si-file-publishable-checkbox')
-    self._si_file_error_msg = (By.CLASS_NAME, 'error-message')
     self._si_file_cancel_btn = (By.CLASS_NAME, 'si-file-cancel-edit-button')
     self._si_file_save_btn = (By.CLASS_NAME, 'si-file-save-edit-button')
     self._si_file_title_caption_fields = (By.CLASS_NAME, 'format-input-field')
@@ -74,7 +73,7 @@ class SITask(BaseTask):
     publishable = self._get(self._si_file_publishable)
     self.validate_checkbox_label(publishable)
     assert publishable.text == 'For publication', publishable.text
-    error_msg = self._get(self._si_file_error_msg)
+    error_msg = self._get(self._si_error_msg)
     assert error_msg.text == 'Please edit to add label, category, and optional title '\
         'and legend', error_msg.text
     # This will fail due to APERTA-8499

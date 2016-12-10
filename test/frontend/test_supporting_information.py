@@ -1,10 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case validates style and function of the Supporting Information (SI) Card
+This test case validates style and function of the Supporting Information (SI) Card and Task
 This test requires the following data:
-The test document tarball from http://bighector.plos.org/aperta/testing_assets.tar.gz extracted into
-    frontend/assets/
+The test document tarball from http://bighector.plos.org/aperta/testing_assets.tar.gz extracted
+    into frontend/assets/
 """
 import logging
 import os
@@ -27,7 +27,7 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class SITaskTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Revision Tech Check task
+  Validate the elements, styles, functions of the Supporting Information task
   """
 
   def test_si_task_and_card(self):

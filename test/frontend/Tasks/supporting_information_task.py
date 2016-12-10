@@ -112,7 +112,6 @@ class SITask(BaseTask):
       elif item.text == data['type'] and data['type'] == 'Other':
         item.click()
         self._get(self._si_file_other_input).send_keys('Other')
-        time.sleep(1)
         break
     title = self._get(self._si_file_title_input)
     title_field = title.find_element_by_tag_name('div')

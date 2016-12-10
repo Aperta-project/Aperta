@@ -71,6 +71,7 @@ class SITaskTest(CommonTest):
     # press make change to task
     supporting_info.click_completion_button()
     # Edit description
+    # Following sleep time is to avoid a Stale Element Reference Exception
     time.sleep(2)
     edit_icon = supporting_info._get(supporting_info._si_pencil_icon)
     edit_icon.click()

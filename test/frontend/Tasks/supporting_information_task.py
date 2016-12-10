@@ -147,6 +147,7 @@ class SITask(BaseTask):
     attached_elements = []
     for file_name in file_list:
       attached_elements.append(self.add_file(file_name))
+      # This sleep avoid a Stale Element Reference Exception
       time.sleep(3)
     return attached_elements
 

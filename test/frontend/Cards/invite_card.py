@@ -90,6 +90,8 @@ class InviteCard(BaseCard):
     self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
     time.sleep(2)
+    self._get(self._closed_invitee_listing).click()
+    self._get(self._invite_edit_invite_button).click()
     invite_headings = self._gets(self._edit_invite_heading)
     # Since the invitee is potentially off system, we can only validate email
     invite_headings_text = [x.text for x in invite_headings]
@@ -135,7 +137,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
     # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
     #   will get an index out of range error. I feel dirty.
-    time.sleep(5)
+    time.sleep(6)
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
     attachments = self.get_attached_file_names()
@@ -198,8 +200,9 @@ class InviteCard(BaseCard):
     :param short_doi: Used to pass through to validate_common_elements_styles
     :return None
     """
-    assert card_type in ('ae', 'reviewer'), 'Invalid card tyoe passed to function ' \
-                                            'validate_card_elements_styles(): {0}'.format(card_type)
+    assert card_type in ('ae', 'reviewer'), 'Invalid card type passed to function ' \
+                                                 'validate_card_elements_styles(): ' \
+                                                 '{0}'.format(card_type)
     self.validate_common_elements_styles(short_doi)
     # There is no definition of this external label style in the style guide. APERTA-7311
     #   currently, a new style validator has been implemented to match this UI
@@ -208,15 +211,15 @@ class InviteCard(BaseCard):
     if card_type == 'reviewer':
       assert card_title.text == 'Invite Reviewers', card_title.text
       assert user_input.get_attribute('placeholder') == 'Invite reviewer by name or email' ,\
-        user_input.get_attribute('placeholder')
+          user_input.get_attribute('placeholder')
     elif card_type == 'ae':
       assert card_title.text == 'Invite Academic Editor', card_title.text
-      assert user_input.get_attribute('placeholder') == 'Invite editor by name or email' ,\
-        user_input.get_attribute('placeholder')
+      assert user_input.get_attribute('placeholder') == 'Invite editor by name or email',\
+          user_input.get_attribute('placeholder')
     self.validate_application_title_style(card_title)
     # Button
     btn = self._get(self._compose_invitation_button)
-    assert btn.text == 'COMPOSE INVITE'
+    assert btn.text == 'ADD TO QUEUE', btn.text
     # Check disabled button
     # Style validation on disabled button is commented out due to APERTA-7684
     # self.validate_primary_big_disabled_button_style(btn)

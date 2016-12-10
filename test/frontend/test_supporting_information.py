@@ -35,10 +35,10 @@ class SITaskTest(CommonTest):
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
     """
-    logging.info('Test SITask')
     creator_user = random.choice(users)
-    logging.info(creator_user)
+    logging.info('Login as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

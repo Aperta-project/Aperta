@@ -10,8 +10,6 @@ class Attachment < ActiveRecord::Base
   include ProxyableResource
   include Snapshottable
 
-  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps).freeze
-
   STATUS_PROCESSING = 'processing'.freeze
   STATUS_ERROR = 'error'.freeze
   STATUS_DONE = 'done'.freeze
@@ -251,11 +249,9 @@ class Attachment < ActiveRecord::Base
   end
 
   def image?
-    if file.file
-      IMAGE_TYPES.include? file.file.extension.downcase
-    else
-      false
-    end
+    file_path = self['file']
+    return false if file_path.blank?
+    AttachmentUploader.image?(file_path)
   end
 
   protected

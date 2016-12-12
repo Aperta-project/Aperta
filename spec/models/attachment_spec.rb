@@ -130,6 +130,7 @@ describe Attachment do
   end
 
   describe 'image?' do
+    let(:path) { "spec/fixtures/bill_ted1.jpg" }
     subject(:attachment) do
       FactoryGirl.create(
         :attachment,
@@ -138,7 +139,6 @@ describe Attachment do
     end
 
     context "a jpg file" do
-      let(:path) { "spec/fixtures/bill_ted1.jpg" }
       it 'returns true' do
         expect(subject.image?).to eq(true)
       end
@@ -153,8 +153,15 @@ describe Attachment do
 
     context "a non-image file" do
       let(:path) { "spec/fixtures/about_turtles.docx" }
-      it 'returns true' do
+      it 'returns false' do
         expect(subject.image?).to eq(false)
+      end
+    end
+
+    context "no file" do
+      it 'returns false' do
+        subject.update_columns(file: nil)
+        expect(subject.reload.image?).to eq(false)
       end
     end
   end

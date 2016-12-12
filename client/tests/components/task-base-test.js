@@ -45,19 +45,26 @@ test('#isEditable: true when the task is not a metadata task', function(assert) 
 });
 
 test('#toggleTaskCompletion action skips validations when making the task incomplete', function(assert) {
+  let component = this.subject();
   Ember.run(()=> {
     this.task.set('completed', false);
 
-    // mark as complete
-    this.subject().actions.toggleTaskCompletion.apply(this.subject());
-    assert.equal(this.subject().get('skipValidations'), false, 'running validations');
+    // First: set up our component as having no validation errors
+    component.validationErrorsPresent = () => { return false; };
 
-    // mark as incomplete
-    this.subject().actions.toggleTaskCompletion.apply(this.subject());
-    assert.equal(this.subject().get('skipValidations'), true, 'skipping validations');
+    // try to mark as complete
+    component.actions.toggleTaskCompletion.apply(component);
+    assert.equal(component.get('task.completed'), true, 'toggle task was completed');
 
-    // mark as complete again
-    this.subject().actions.toggleTaskCompletion.apply(this.subject());
-    assert.equal(this.subject().get('skipValidations'), false, 'running validations');
+
+    // Second: set up our component has having validation errors
+    component.validationErrorsPresent = () => { return true; };
+
+    // try to mark as incomplete
+    component.actions.toggleTaskCompletion.apply(component);
+    assert.equal(component.get('task.completed'), false, 'task was toggled back to incomplete even though validation errors were present');
+
+    component.actions.toggleTaskCompletion.apply(component);
+    assert.equal(component.get('task.completed'), false, 'trying to complete again failed when validation errors were present');
   });
 });

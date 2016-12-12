@@ -119,11 +119,15 @@ export default Component.extend(ValidationErrorsMixin, {
     },
 
     toggleTaskCompletion() {
-      let isCompleted = this.toggleProperty('task.completed');
+      const currentSkipValidations = this.get('skipValidations');
+      const isCompleted = this.toggleProperty('task.completed');
 
       // if task is now incomplete skip validations
       this.set('skipValidations', !isCompleted);
       this.save();
+
+      // make sure we put skipValidations back its previous state
+      this.set('skipValidations', currentSkipValidations);
     }
   }
 });

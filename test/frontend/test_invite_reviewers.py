@@ -28,7 +28,7 @@ class InviteReviewersCardTest(CommonTest):
   Validate the elements, styles, functions of the Invite Reviewers card
   """
 
-  def rest_invite_reviewers_styles_elements(self):
+  def test_invite_reviewers_styles_elements(self):
     logging.info('Test Invite Reviewers::elements and styles')
     # Users logs in and make a submission
     creator_user = random.choice(users)
@@ -102,7 +102,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_card_header(short_doi)
     invite_reviewers.validate_card_elements_styles(creator_user, 'reviewer', short_doi)
 
-  def rest_core_invite_reviewers_actions(self):
+  def test_core_invite_reviewers_actions(self):
     """
     test_invite_reviewers_card: Validates the elements, styles, roles and functions of invite
       reviewers from new document creation through inviting reviewer, validation of the invite on
@@ -226,7 +226,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
                                        response_data[1])
 
-  def test_core_invite_rescind_reinvite(self):
+  def rest_core_invite_rescind_reinvite(self):
     """
     test_invite_reviewers_card: Validates the elements, styles, roles and functions of invite
       reviewers from new document creation through inviting reviewer, validation of the invite on

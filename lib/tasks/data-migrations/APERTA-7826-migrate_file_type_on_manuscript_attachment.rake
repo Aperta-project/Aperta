@@ -7,22 +7,23 @@ namespace :data do
     task migrate_file_type_on_manuscript_attachment: :environment do
       messages = []
       Paper.find_each do |paper|
-        file_type = paper.file.file.file.try(:extension)
+        file_type = paper.file.try(:file).try(:file).try(:extension)
         if file_type
           STDOUT.puts("Updating 'file_type' column for paper #{paper.id} to #{file_type}")
-          paper.file.update_column(:file_type, file_type)
+          paper.file.update_column(:file_type, file_type.downcase)
         else
-          api_paper_url = Rails.application.routes.url_helpers.paper_url(paper)
-          api_paper_url.slice!('api/')
+          paper_url = Rails.application.routes.url_helpers.paper_url(paper)
+          paper_url.slice!('api/')
+
           if paper.processing && paper.withdrawn?
-            messages << "Skipped #{api_paper_url} (paper id: #{paper.id}) because it is stuck in processing"
+            messages << "Skipped #{paper_url} (paper id: #{paper.id}) because it is stuck in processing"
           else
-            if !Rails.env.development?
-              fail "Unexpected error for paper #{paper.id}, #{api_paper_url}, not having an uploaded filetype"
-            else
-              # Assume a filetype of docx for the papers in development before this point
+            if paper.file
+              # Assume a filetype of docx for papers without an uploaded filetype run before this point
               paper.file.update_column(:file_type, 'docx')
-              messages << "Updating paper #{paper.id} to docx filetype in development"
+              messages << "UNUPLOADED_PAPER: Updating paper #{paper.id} to docx filetype"
+            else
+              messages << "UNUPLOADED_PAPER: Skipping paper #{paper.id} since there is no uploaded paper"
             end
           end
         end

@@ -20,7 +20,7 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       :journal
-    ).find(params[:id])
+    ).find_by_id_or_short_doi(params[:id])
     requires_user_can(:view, paper)
     respond_with(paper)
   end
@@ -199,6 +199,6 @@ class PapersController < ApplicationController
   end
 
   def paper
-    @paper ||= Paper.find(params[:id])
+    @paper ||= Paper.find_by_id_or_short_doi(params[:id])
   end
 end

@@ -762,10 +762,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.internal_editor_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -883,10 +887,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.production_staff_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -1000,10 +1008,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.publishing_services_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -1248,7 +1260,7 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.staff_admin_role.permissions }
 
         context 'has Journal permission to' do
-          let(:journal_actions) { ['administer', 'view_paper_tracker'] }
+          let(:journal_actions) { ['administer', 'view_paper_tracker', 'remove_orcid'] }
 
           it 'has journal permissions' do
             journal_actions.each do |action|

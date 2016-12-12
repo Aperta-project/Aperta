@@ -89,13 +89,13 @@ export default Ember.Component.extend({
       let file = addedFileData.files[0];
       let fileName = file.name;
       if (Ember.isPresent(acceptedFileTypes) && this.get('validateFileTypes')) {
+        let {error, msg} = checkType(fileName, acceptedFileTypes);
+        if (error) {
+          this.attrs.addingFileFailed(msg, {fileName, acceptedFileTypes});
+          return;
+        }
         Ember.assert('The addingFileFailed action must be defined if validateFileTypes is true',
                      !!this.attrs.addingFileFailed);
-      }
-      let {error, msg} = checkType(fileName, acceptedFileTypes);
-      if (error) {
-        this.attrs.addingFileFailed(msg, {fileName, acceptedFileTypes});
-        return;
       }
 
       // call action fileAdded if it's defined

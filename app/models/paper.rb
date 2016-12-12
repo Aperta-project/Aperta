@@ -79,10 +79,18 @@ class Paper < ActiveRecord::Base
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
 
+  def file_type
+    file.try(:file_type)
+  end
+
   def manuscript_id
     journal_prefix_and_number = doi.split('/').last.split('.') if doi
     journal_prefix_and_number.try(:shift) # Remove 'journal' text
     journal_prefix_and_number.try(:join, '.')
+  end
+
+  def to_param
+    short_doi
   end
 
   after_create :assign_doi!
@@ -265,6 +273,11 @@ class Paper < ActiveRecord::Base
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
       'assignments.assigned_to_type' => 'Paper')
+  end
+
+  def self.find_by_id_or_short_doi(id)
+    return find_by_short_doi(id) if id.to_s =~ DoiService::SHORT_DOI_FORMAT
+    return find(id)
   end
 
   def inactive?
@@ -575,7 +588,10 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi!
-    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+    raise "Invalid paper Journals are required for papers urls." unless journal
+    update!(doi: DoiService.new(journal: journal).next_doi!)
+    doi_parts = doi.split('.')
+    update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end
 
   def create_versioned_texts

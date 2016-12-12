@@ -4,14 +4,14 @@ class FiguresController < ApplicationController
 
   ## papers/:paper_id/figures
   def index
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     requires_user_can(:view, paper)
     respond_with paper.figures
   end
 
   ## papers/:paper_id/figures
   def create
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     requires_user_can(:edit, paper)
     figure = paper.figures.create!
     DownloadAttachmentWorker

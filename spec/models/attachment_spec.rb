@@ -144,7 +144,7 @@ describe Attachment do
       end
     end
 
-    context "a JPG file" do
+    context "is case insensitive with regard to the file extension" do
       let(:path) { "spec/fixtures/bill_ted2.JPG" }
       it 'returns true' do
         expect(subject.image?).to eq(true)

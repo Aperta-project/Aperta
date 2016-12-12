@@ -123,7 +123,7 @@ class Journal < ActiveRecord::Base
       next_doi = "#{doi_publisher_prefix}/#{doi_journal_prefix}.#{next_number}"
       if self.class.valid_doi?(next_doi)
         update_column :last_doi_issued, next_number
-        next_doi
+        return next_doi
       else
         raise InvalidDoiError, "Attempted to generate the next DOI, but it was in an invalid DOI format: #{next_doi}"
       end

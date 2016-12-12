@@ -168,41 +168,6 @@ describe QueryParser do
         SQL
       end
 
-
-
-      # it 'parses TASK x HAS BEEN COMPLETED <' do
-      #   now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
-      #   one_day_ago = now_time.days_ago(1).end_of_day.to_formatted_s(:db)
-      #   Timecop.freeze(now_time) do
-      #     parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED < 1 day ago'
-      #     expect(parse.to_sql).to eq(<<-SQL.strip)
-      #       "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" >= '#{one_day_ago}'
-      #     SQL
-      #   end
-      # end
-
-      # it 'parses TASK x HAS BEEN COMPLETED <=' do
-      #   now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
-      #   five_days_ago = now_time.days_ago(5).beginning_of_day.to_formatted_s(:db)
-      #   Timecop.freeze(now_time) do
-      #     parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED <= 5 days ago'
-      #     expect(parse.to_sql).to eq(<<-SQL.strip)
-      #       "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" >= '#{five_days_ago}'
-      #     SQL
-      #   end
-      # end
-
-      # it 'parses TASK x HAS BEEN COMPLETED >=' do
-      #   now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
-      #   five_days_ago = now_time.days_ago(5).end_of_day.to_formatted_s(:db)
-      #   Timecop.freeze(now_time) do
-      #     parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED >= 5 days ago'
-      #     expect(parse.to_sql).to eq(<<-SQL.strip)
-      #       "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" <= '#{five_days_ago}'
-      #     SQL
-      #   end
-      # end
-
       it 'parses ANDed TASK queries as multiple joins' do
         query = 'TASK anytask IS COMPLETE AND TASK someothertask IS INCOMPLETE'
         parse = QueryParser.new.parse query
@@ -392,7 +357,7 @@ describe QueryParser do
         parser = QueryParser.new
         parser.stub(:date_query)
         parser.parse 'TASK anytask HAS BEEN COMPLETED > 1 day ago'
-        expect(parser).to have_received(:date_query)
+        expect(parser).to have_received(:date_query).with('> 1 day ago', any_args)
       end
     end
 
@@ -401,7 +366,7 @@ describe QueryParser do
         parser = QueryParser.new
         parser.stub(:date_query)
         parser.parse 'VERSION DATE > 3 DAYS AGO'
-        expect(parser).to have_received(:date_query)
+        expect(parser).to have_received(:date_query).with('> 3 DAYS AGO', field: Paper.arel_table[:submitted_at])
       end
 
       it 'parses VERSION DATE >= n DAYS AGO' do
@@ -422,7 +387,9 @@ describe QueryParser do
         parser = QueryParser.new
         parser.stub(:date_query)
         parser.parse 'SUBMISSION DATE > 3 days ago'
-        expect(parser).to have_received(:date_query)
+        expect(parser).to have_received(:date_query).with(
+          '> 3 days ago',
+          field: Paper.arel_table[:first_submitted_at])
       end
 
       it 'parses SUBMISSION DATE >= n days ago' do

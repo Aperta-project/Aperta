@@ -21,6 +21,13 @@ feature "Invite Reviewer", js: true do
     visit "/"
   end
 
+  scenario "new invitation not in edit mode" do
+    overlay = Page.view_task_overlay(paper, task)
+
+    overlay.add_to_queue(reviewer2)
+    expect(overlay).to have_css('.invitation-item--closed')
+  end
+
   scenario "Editor can invite any user as a reviewer to a paper" do
     overlay = Page.view_task_overlay(paper, task)
     overlay.invited_users = [reviewer1]
@@ -59,6 +66,8 @@ feature "Invite Reviewer", js: true do
     overlay.fill_in 'invitation-recipient', with: reviewer2.email
     overlay.find('.invitation-email-entry-button').click
 
+    overlay.edit_invitation(reviewer2)
+
     overlay.select_first_alternate
     find('.invitation-save-button').click
     expect(page.find('.alternate-link-icon')).to be_present
@@ -68,7 +77,8 @@ feature "Invite Reviewer", js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.invited_users = [reviewer1]
     overlay.add_to_queue(reviewer2)
-    overlay.find('.invitation-item-action-edit').click
+
+    overlay.edit_invitation(reviewer2)
     overlay.select_first_alternate
     overlay.find('.invitation-save-button').click
 
@@ -82,23 +92,17 @@ feature "Invite Reviewer", js: true do
     overlay.invited_users = [reviewer1]
     # pending user
     overlay.add_to_queue(reviewer2)
-    overlay.find('.invitation-item-action-edit').click
+    overlay.edit_invitation(reviewer2)
     overlay.find('.invitation-save-button').click
 
-    header = find('.invitation-item-header', text: reviewer2.first_name)
+    header = overlay.find('.invitation-item-header', text: reviewer2.first_name)
     expect(header).to have_no_css('.invitation-item-action-send.invitation-item-action--disabled')
   end
 
   scenario "edits an invitation" do
     overlay = Page.view_task_overlay(paper, task)
     overlay.add_to_queue(reviewer1)
-
-    # Life is not lost by dying; life is lost minute by minute,
-    # day by dragging day, in all the thousand small uncaring ways.
-    overlay.find('.invitation-item-header').click
-    overlay.find('.invitation-item-header').click
-
-    overlay.find('.invitation-item-action-edit').click
+    overlay.edit_invitation(reviewer1)
     overlay.invitation_body = 'New body'
     overlay.find('.invitation-save-button').click
     expect(overlay.find('.invitation-show-body')).to have_text('New body')
@@ -115,6 +119,7 @@ feature "Invite Reviewer", js: true do
     # pending
     overlay.add_to_queue(reviewer2)
     header = find('.invitation-item-header', text: reviewer2.first_name)
+    header.click
     expect(header).to have_css('.invitation-item-action-delete')
     header.find('.invitation-item-action-delete').click
     expect(overlay).to have_no_css('.invitation-item-header', text: reviewer2.first_name)
@@ -124,7 +129,7 @@ feature "Invite Reviewer", js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.add_to_queue(reviewer1)
     ActiveInvitation.for_user(reviewer1) do |invite|
-      invite.edit
+      invite.edit(reviewer1)
       invite.upload_attachment('yeti.jpg')
     end
     find('.invitation-save-button').click

@@ -18,6 +18,21 @@ describe DownloadAttachmentWorker, redis: true do
       end
     end
 
+    describe ".reprocess" do
+      it "short circuits if `pending_url` is nil" do
+        expect(attachment).to receive(:pending_url).and_return(nil)
+        expect(described_class).not_to receive(:download_attachment)
+        described_class.reprocess(attachment, user)
+      end
+
+      it "creates a download attachment process" do
+        allow(attachment).to receive(:pending_url).and_return(url)
+        expect(attachment).to receive(:update_attribute).with(:status, Attachment::STATUS_PROCESSING)
+        described_class.reprocess(attachment, user)
+        expect(DownloadAttachmentWorker).to have_queued_job(attachment.id, url, user.id)
+      end
+    end
+
     context "with a user and attachment" do
       before do
         allow(User).to receive(:find)

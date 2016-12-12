@@ -65,6 +65,8 @@ const validations = {
     type: 'presence',
     message: 'One must be selected',
     validation() {
+      // NOTE: the validations for contributions is the same as in group-author.js. If you make changes
+      // here please also check to see if changes need to be made there.
       const author = this.get('object');
       return _.some(contributionIdents, (ident) => {
         let answer = author.answerForQuestion(ident);

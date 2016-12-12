@@ -54,7 +54,7 @@
 {{flash-messages}}
 
 {{#split-pane id="main-content" class="main-content" role="main" handleClass="manuscript-handle"}}
-  {{#if (and paper.journal.pdfAllowed (eq paper.fileType "pdf"))}}
+  {{#if showPdfManuscript}}
     {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
   {{else}}
     {{#split-pane-element class="manuscript-pane main-content-section"}}

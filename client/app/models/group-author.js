@@ -62,11 +62,8 @@ export default NestedQuestionOwner.extend({
 
         return _.some(contributionIdents, (ident) => {
           let answer = author.answerForQuestion(ident);
-          if(!answer){
-            console.error(`Tried to find an answer for question with ident, ${ident}, but none was found`);
-          } else {
-            return answer.get('value');
-          }
+          Ember.assert(`Tried to find an answer for question with ident, ${ident}, but none was found`, answer);
+          return answer.get('value');
         });
       }
     }]

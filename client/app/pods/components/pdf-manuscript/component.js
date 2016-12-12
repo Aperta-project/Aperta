@@ -17,6 +17,20 @@ export default Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', this, this.refreshPdf);
   },
 
+  loadPdfUrl(url, pdfjsViewerLoad) {
+    Ember.$.ajax({
+      url: url,
+      statusCode: {
+        200: (data)=>{
+          pdfjsViewerLoad(data.url);
+        },
+        500: ()=>{
+          alert('PDF retrieval failed');
+        }
+      }
+    });
+  },
+
   loadPdfJs: function() {
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
@@ -25,8 +39,13 @@ export default Ember.Component.extend({
       PDFJS.workerSrc = pdfjscdn + 'pdf.worker.js';
       PDFJS.imageResourcesPath = pdfjscdn + 'images/';
       PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
-      var download = this.get('paper.id') + '/export?export_format=pdf';
-      PDFJS.webViewerLoad(download);
+
+      var url = '/api/papers/'
+        + this.get('paper.id')
+        + '/status/'
+        + this.get('paper.id')
+        + '?export_format=pdf&job_id=source';
+      this.loadPdfUrl(url, PDFJS.webViewerLoad);
     });
   },
 

@@ -226,10 +226,11 @@ class QueryParser < QueryLanguageParser
   end
 
   # Builds and adds a time query to the current query using the given arguments:
-  #  * search_query: the user-provided search term string, e.g. "3 days ago". \
-  #    This is used to see if the default comparison should be used or if its \
+  #  * search_query: the user-provided search term string, e.g. "<= 3 days ago". \
+  #    The presence of 'day(s) ago' in the search string  will determine whether \
   #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
-  #    whereas "2016/09/01" indicates a normal search.
+  #    whereas "2016/09/01" indicates a normal search. The "<=" and ">=" comparator \
+  #    will be the results of the "<" and ">" comparators with the results of "=" included \
   #  * field: the AREL table field that should be used in the query, e.g. \
   #    Paper.arel_table[:submitted_at]
   #
@@ -244,25 +245,25 @@ class QueryParser < QueryLanguageParser
 
     case comparator
     when '>'
-      if search_term =~ /ago/i
+      if search_term =~ /days? ago/i
         field.lteq(beginning_of_day_date)
       else
         field.gteq(end_of_day_date)
       end
     when '<'
-      if search_term =~ /ago/i
+      if search_term =~ /days? ago/i
         field.gteq(end_of_day_date)
       else
         field.lteq(beginning_of_day_date)
       end
     when '<='
-      if search_term =~ /ago/i
+      if search_term =~ /days? ago/i
         field.gteq(beginning_of_day_date)
       else
         field.lteq(end_of_day_date)
       end
     when '>='
-      if search_term =~ /ago/i
+      if search_term =~ /days? ago/i
         field.lteq(end_of_day_date)
       else
         field.gteq(beginning_of_day_date)

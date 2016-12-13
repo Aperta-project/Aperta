@@ -47,14 +47,13 @@ namespace :db do
   end
 
   desc "Restores the database dump at LOCATION"
-  task :restore, [:location, :tar] => :environment do |t, args|
+  task :restore, [:location] => :environment do |t, args|
     location = args[:location]
-    tar = args[:tar]
     if location
       cmd = nil
       with_config do |app, host, db, user, password|
         ENV['PGPASSWORD'] = password.to_s
-        cmd = "pg_restore #{tar ? "--format=tar" : ""} --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
       end
       puts cmd
       system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)

@@ -134,7 +134,7 @@ class CFACardTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
-    manuscript_page.click_task('changes_for_author')
+    manuscript_page.click_task('Changes for Author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
@@ -242,7 +242,7 @@ class CFACardTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
-    manuscript_page.click_task('changes_for_author')
+    manuscript_page.click_task('Changes for Author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))
@@ -352,7 +352,7 @@ class CFACardTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
-    manuscript_page.click_task('changes_for_author')
+    manuscript_page.click_task('Changes for Author')
     cfa_task = ChangesForAuthorTask(self.getDriver())
     cfa_task.task_ready()
     cfa_task._wait_for_element(cfa_task._get(cfa_task._card_heading))

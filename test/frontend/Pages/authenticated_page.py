@@ -613,67 +613,6 @@ class AuthenticatedPage(PlosPage):
     self.restore_timeout()
     return True
 
-  def click_task(self, taskname):
-    """
-    Passed a task name, opens the relevant task
-    :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, addl_info,
-        reviewer_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
-        new_taxon, reporting_guidelines, changes_for_author
-    NOTE: this covers only the author facing tasks, with the exception of initial_decision
-    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
-        workflow page
-    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
-        and workflow contexts while we transition.
-
-    :return: True or False, if taskname is unknown.
-    """
-    if taskname.lower() == 'addl_info':
-      task_title = self._get(self._addl_info_task)
-    elif taskname.lower() == 'billing':
-      task_title = self._get(self._billing_task)
-    elif taskname.lower() == 'cover_letter':
-      task_title = self._get(self._cover_letter_task)
-    elif taskname.lower() == 'early_article_posting':
-      task_title = self._get(self._early_article_posting_task)
-    elif taskname.lower() == 'figures':
-      task_title = self._get(self._figures_task)
-    elif taskname.lower() == 'authors':
-      task_title = self._get(self._authors_task)
-    elif taskname.lower() == 'supporting_info':
-      task_title = self._get(self._supporting_info_task)
-    elif taskname.lower() == 'upload_manuscript':
-      task_title = self._get(self._upload_manu_task)
-    elif taskname.lower() == 'review_candidates':
-      task_title = self._get(self._review_cands_task)
-    elif taskname.lower() == 'revise_task':
-      task_title = self._get(self._revise_task)
-    elif taskname.lower() == 'competing_interests':
-      task_title = self._get(self._competing_ints_task)
-    elif taskname.lower() == 'data_availability':
-      task_title = self._get(self._data_avail_task)
-    elif taskname.lower() == 'ethics_statement':
-      task_title = self._get(self._ethics_statement_task)
-    elif taskname.lower() == 'financial_disclosure':
-      task_title = self._get(self._fin_disclose_task)
-    elif taskname.lower() == 'new_taxon':
-      task_title = self._get(self._new_taxon_task)
-    elif taskname.lower() == 'reporting_guidelines':
-      task_title = self._get(self._report_guide_task)
-    elif taskname.lower() == 'changes_for_author':
-      task_title = self._get(self._cfa_task)
-    elif taskname.lower() == 'initial_decision':
-      task_title = self._get(self._initial_decision_card)
-    elif taskname.lower() == 'research_reviewer_report':
-      task_title = self._get(self._research_reviewer_report_task)
-    elif taskname.lower() == 'front_matter_reviewer_report':
-      task_title = self._get(self._front_matter_reviewer_report_task)
-    else:
-      logging.info('Unknown Task')
-      return False
-    # For whatever reason, selenium can't grok a simple click() here
-    self._actions.click_and_hold(task_title).release().perform()
-    return True
-
   def click_discussion_link(self):
     """
     Click on discussion link
@@ -1242,6 +1181,29 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
 
   @staticmethod
+  def delete_forever_btn_style_validation(button):
+    """
+    Ensure consistency in rendering page and overlay large slide-in green-backed, white text
+    buttons across the application. This style is not in the styleguide: APERTA-8504
+    :param button: button to validate
+    :return: None
+    """
+    assert application_typeface in button.value_of_css_property('font-family'), \
+        button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == aperta_green, \
+        button.value_of_css_property('background-color')
+    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+
+  @staticmethod
   def validate_secondary_big_green_button_style(button):
     """
     Ensure consistency in rendering page and overlay big white-backed, green text buttons across
@@ -1784,6 +1746,28 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
 
+  @staticmethod
+  def validate_primary_error_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay validation failed white background buttons across the application
+    :param button: button to validate
+    """
+    assert application_typeface in button.value_of_css_property('font-family'), \
+        button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == aperta_error, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == white, \
+        button.value_of_css_property('background-color')
+    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+
   # Form Styles ==============================
   @staticmethod
   def validate_input_field_inside_label_style(label):
@@ -2255,3 +2239,19 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('color') == aperta_black, th.value_of_css_property('color')
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
+
+  @staticmethod
+  def validate_file_title_style(ft):
+    """
+    Ensure consistency in rendering the file title in SI Card
+    :param ft: File title to validate
+    """
+    assert application_typeface in ft.value_of_css_property('font-family'), \
+        ft.value_of_css_property('font-family')
+    assert ft.value_of_css_property('font-size') == '14px', ft.value_of_css_property('font-size')
+    assert ft.value_of_css_property('font-weight') == '700', \
+        ft.value_of_css_property('font-weight')
+    assert ft.value_of_css_property('line-height') == '20px', \
+        ft.value_of_css_property('line-height')
+    # This color is not represented in the tahi palette
+    assert ft.value_of_css_property('color') == aperta_black, ft.value_of_css_property('color')

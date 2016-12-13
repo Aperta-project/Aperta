@@ -10,12 +10,13 @@ import random
 import time
 from datetime import datetime
 
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
-    super_admin_login
+from Base.Resources import users, staff_admin_login, pub_svcs_login, \
+    internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
@@ -24,6 +25,7 @@ from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
+from frontend.Tasks.supporting_information_task import SITask
 
 __author__ = 'sbassi@plos.org'
 
@@ -154,6 +156,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: void function
     """
     self.check_for_flash_success(timeout=120)
+    self.close_flash_message()
     self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
@@ -544,7 +547,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Check if a task is available in the task list
     :param task_name: The name of the task to validate
-    return True if task is present and False otherwise
+    :return: True if task is present and False otherwise
     """
     tasks = self._gets(self._task_headings)
     for task in tasks:
@@ -552,12 +555,34 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None):
+  def click_task(self, task_name):
+    """
+    Click a task title
+    NOTE: this covers only the author facing tasks, with the exception of initial_decision
+    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
+        workflow page
+    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
+        and workflow contexts while we transition.
+    :param task_name: A string with the name of the task to click, like 'Cover Letter'
+        or 'Billing'
+    :return: True or False, if taskname is unknown.
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task_name.lower() in task.text.lower():
+        self._actions.move_to_element(task).perform()
+        task.click()
+        return True
+    logging.info('Unknown Task')
+    return False
+
+  def complete_task(self, task_name, click_override=False, data=None, style_check=False):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
-    :param data:
+    :param data: A dictionary with the required data for each task.
+    :param style_check: A boolean, when True will do style checking. Default False.
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """
@@ -625,7 +650,36 @@ class ManuscriptViewerPage(AuthenticatedPage):
         base_task.click_completion_button()
         task.click()
       time.sleep(1)
-    elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
+    elif task_name == 'Supporting Info':
+      supporting_info = SITask(self._driver)
+      supporting_info.validate_styles()
+      if data and 'file_name' in data:
+        attached_filename = supporting_info.add_file(data['file_name'])
+        if style_check:
+          supporting_info.validate_default_link_style(attached_filename)
+        assert attached_filename.text in data['file_name'], (attached_filename.text,
+          data['file_name'])
+        edit_btn = self._get(supporting_info._si_pencil_icon)
+        assert edit_btn
+        assert self._get(supporting_info._si_trash_icon)
+        edit_btn.click()
+        if style_check:
+          supporting_info.validate_si_edit_form_style()
+        # check cancel button
+        cancel_btn = self._get(supporting_info._si_file_cancel_btn)
+        cancel_btn.click()
+        time.sleep(5)
+        assert self._get(supporting_info._si_trash_icon)
+        edit_btn = self._get(supporting_info._si_pencil_icon)
+        edit_btn.click()
+        supporting_info.complete_si_item_form(data)
+      # complete task
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+        # close task
+        task.click()
+      time.sleep(1)
+    elif task_name in ('Cover Letter', 'Figures', 'Upload Manuscript',
                        'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
@@ -809,7 +863,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param user: user
     :return: None
     """
-    print(user['name'])
+    logging.info('Adding {0} as collaborator'.format(user['name']))
     self._get(self._tb_collaborators_link).click()
     self._get(self._tb_add_collaborators_label).click()
     time.sleep(2)
@@ -832,9 +886,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._add_collaborators_modal_save).click()
 
   def get_submission_status_initial_submission_todo(self):
-    """
-      Extract the submission status text from the page
-      """
+    """Extract the submission status text from the page"""
     return self._get(self._status_info_initial_submit_todo).text
 
   def get_submission_status_ready2submit_text(self):

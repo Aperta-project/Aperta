@@ -102,7 +102,7 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    assert manuscript_page.click_task('front_matter_reviewer_report')
+    assert manuscript_page.click_task('Reviewer Report')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)

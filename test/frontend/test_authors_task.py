@@ -42,7 +42,7 @@ class AuthorsTaskTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_task('authors')
+    manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.validate_styles()
 
@@ -62,15 +62,15 @@ class AuthorsTaskTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_task('authors')
+    manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_individual_author_task_action()
     authors_task.validate_delete_author()
     # The author task is large enough that the Completion button frequently scrolls to an a place
     #   place obscured by the task title. This two step boogaloo resets the view to the top of the
     #   task.
-    manuscript_page.click_task('authors')
-    manuscript_page.click_task('authors')
+    manuscript_page.click_task('Authors')
+    manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     time.sleep(3)
     authors_task.click_completion_button()
@@ -102,7 +102,7 @@ class AuthorsTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Need to allow time for tasks to attach to DOM, sadly
     time.sleep(3)
-    manuscript_page.click_task('authors')
+    manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_group_author_task_action()
     authors_task.validate_delete_author()

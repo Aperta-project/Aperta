@@ -118,7 +118,8 @@ class InviteCard(BaseCard):
         creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
         main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
         assert main_author in invite_text, (main_author, invite_text)
-        abstract = PgSQL().query('SELECT abstract FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
+        abstract = PgSQL().query('SELECT abstract '
+                                 'FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
         if abstract is not None:
           # Always remember that our ember text always normalizes whitespaces down to one
           #  Painful lesson

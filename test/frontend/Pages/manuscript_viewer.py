@@ -478,6 +478,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert close_icon_overlay.value_of_css_property('color') == aperta_grey_dark, \
           close_icon_overlay.value_of_css_property('color')
       close_icon_overlay.click()
+      # Need to allow the slightest time for the overlay to close to prevent covered element
+      #   syndrome
+      time.sleep(.5)
 
   def withdraw_manuscript(self):
     """

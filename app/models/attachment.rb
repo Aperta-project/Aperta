@@ -18,6 +18,10 @@ class Attachment < ActiveRecord::Base
 
   class_attribute :public_resource
 
+  scope :processing, -> { where(status: STATUS_PROCESSING) }
+  scope :error, -> { where(status: STATUS_ERROR) }
+  scope :done, -> { where(status: STATUS_DONE) }
+
   def public_resource
     value = @public_resource
     value = self.class.public_resource if @public_resource.nil?
@@ -97,8 +101,9 @@ class Attachment < ActiveRecord::Base
     # event isn't fired until the transaction completes and all of the work is
     # finished.
 
-    # Store off the url in case of any failures
+    # Store the url and uploaded_by now in case of any failures
     update_column :pending_url, url
+    update_column :uploaded_by_id, uploaded_by.try(:id)
 
     Attachment.transaction do
       @downloading = true
@@ -107,7 +112,6 @@ class Attachment < ActiveRecord::Base
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
-      self.uploaded_by = uploaded_by
       self.updated_at = Time.zone.now
 
       # Using save! instead of update_attributes because the above are not the

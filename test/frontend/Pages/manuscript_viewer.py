@@ -115,6 +115,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._addl_info_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._authors_task = (By.CLASS_NAME, 'authors-task')
     self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
+    self._early_article_posting_task = (By.CLASS_NAME, 'early-posting-task')
     self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
     self._ethics_statement_task = (By.CLASS_NAME, 'ethics-statement-task')
     self._figures_task = (By.CLASS_NAME, 'figure-task')

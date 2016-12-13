@@ -129,6 +129,7 @@ class AuthenticatedPage(PlosPage):
     self._competing_ints_card = None
     self._cover_letter_card = None
     self._data_avail_card = None
+    self._early_article_posting_card = None
     self._ethics_statement_card = None
     self._figures_card = None
     self._fin_disclose_card = None
@@ -160,6 +161,7 @@ class AuthenticatedPage(PlosPage):
     self._cfa_task = None
     self._competing_ints_task = None
     self._cover_letter_task = None
+    self._early_article_posting_task = None
     self._data_avail_task = None
     self._ethics_statement_task = None
     self._figures_task = None
@@ -376,7 +378,7 @@ class AuthenticatedPage(PlosPage):
     """
     time.sleep(5)
     url = self._driver.current_url
-    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + str(short_doi)
+    url = url.split('/')[0] + '//' + url.split('/')[2] + '/papers/' + short_doi
     self._driver.get(url)
 
   def validate_ihat_conversions_success(self, timeout=104, fail_on_missing=False):
@@ -459,6 +461,7 @@ class AuthenticatedPage(PlosPage):
     """
     self.set_timeout(timeout)
     success_msg = self._get(self._flash_success_msg)
+    time.sleep(.5)
     self.close_flash_message()
     return success_msg.text
 
@@ -553,6 +556,8 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._billing_card)
     elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
+    elif cardname.lower() == 'early_article_posting':
+      card_title = self._get(self._early_article_posting_card)
     elif cardname.lower() == 'ethics_statement':
       card_title = self._get(self._ethics_statement_card)
     elif cardname.lower() == 'figures':
@@ -1914,14 +1919,11 @@ class AuthenticatedPage(PlosPage):
     :param checkbox: checkbox to validate
     """
     assert application_typeface in checkbox.value_of_css_property('font-family')
-    assert checkbox.value_of_css_property('font-size') == '14px', checkbox.value_of_css_property('font-size')
+    assert checkbox.value_of_css_property('font-size') == '12px', checkbox.value_of_css_property('font-size')
     assert checkbox.value_of_css_property('font-weight') == '400', checkbox.value_of_css_property('font-weight')
     assert checkbox.value_of_css_property('font-style') == 'normal', checkbox.value_of_css_property('font-style')
-    # This color is not represented in the style guide
-    assert checkbox.value_of_css_property('color') == aperta_black, checkbox.value_of_css_property('color')
+    assert checkbox.value_of_css_property('color') == aperta-black, checkbox.value_of_css_property('color')
     assert checkbox.value_of_css_property('line-height') == '20px', checkbox.value_of_css_property('line-height')
-    assert checkbox.value_of_css_property('margin-right') == '20px', checkbox.value_of_css_property('margin-right')
-    assert checkbox.value_of_css_property('margin-bottom') == '5px', checkbox.value_of_css_property('margin-bottom')
 
   @staticmethod
   def validate_checkbox_label(label):

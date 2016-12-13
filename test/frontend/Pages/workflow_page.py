@@ -62,6 +62,7 @@ class WorkflowPage(AuthenticatedPage):
     self._competing_ints_card = (By.XPATH, "//a/div[contains(., 'Competing Interests')]")
     self._cover_letter_card = (By.XPATH, "//a/div[contains(., 'Cover Letter')]")
     self._data_avail_card = (By.XPATH, "//a/div[contains(., 'Data Availability')]")
+    self._early_article_posting_card = (By.XPATH, "//a/div[contains(., 'Early Article Posting')]")
     self._editor_discussion_card = (By.XPATH, "//a/div[contains(., 'Editor Discussion')]")
     self._ethics_statement_card = (By.XPATH, "//a/div[contains(., 'Ethics Statement')]")
     self._figures_card = (By.XPATH, "//a/div[contains(., 'Figures')]")

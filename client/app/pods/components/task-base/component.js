@@ -124,10 +124,13 @@ export default Component.extend(ValidationErrorsMixin, {
 
       // if task is now incomplete skip validations
       this.set('skipValidations', !isCompleted);
-      this.save();
 
-      // make sure we put skipValidations back its previous state
-      this.set('skipValidations', currentSkipValidations);
+      // Save returns an ember-concurrency Task since the actual saving
+      // is asynchronou. Only reset skipValidations when it's done.
+      this.save().finally( () => {
+        // make sure we put skipValidations back its previous state
+        this.set('skipValidations', currentSkipValidations);
+      });
     }
   }
 });

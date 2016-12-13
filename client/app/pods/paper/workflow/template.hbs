@@ -69,7 +69,9 @@
   </nav>
 {{/control-bar}}
 
-{{flash-messages classNames="flash-messages--below-control-bar"}}
+{{withdrawal-banner paper=model}}
+
+{{flash-messages}}
 
 <main id="main-content" class="main-content" role="main">
   {{#autosized-column-headers columns=sortedPhases}}

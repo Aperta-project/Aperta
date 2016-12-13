@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
   the journal.
+* Withdrawn banner now shows on workflow view.
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced

@@ -13,7 +13,7 @@ import time
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import docs, users, editorial_users
+from Base.Resources import docs, figures, supporting_info_files, users, editorial_users
 from frontend.common_test import CommonTest
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Cards.supporting_information_card import SICard
@@ -24,11 +24,39 @@ from loremipsum import generate_paragraph
 
 __author__ = 'sbassi@plos.org'
 
+
 @MultiBrowserFixture
 class SITaskTest(CommonTest):
   """
   Validate the elements, styles, functions of the Supporting Information task
   """
+
+  def test_si_task_styles(self):
+    """
+    test_si_card: Validates the elements, styles SI Task
+    :return: None
+    """
+    creator_user = random.choice(users)
+    logging.info('Login as {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    paper_url = manuscript_page.get_current_url()
+    short_doi = manuscript_page.get_short_doi()
+    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
+    doc2upload = 'frontend/assets/docs/test-math.docx'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    data = {}
+    data['file_name'] = fn
+    data['figure'] = 'S1'
+    data['type'] = 'Text'
+    data['title'] = 'Title'
+    data['caption'] = 'Caption'
+    manuscript_page.complete_task('Supporting Info', data=data, style_check=True)
+    return None
 
   def test_si_task_and_card(self):
     """
@@ -46,7 +74,8 @@ class SITaskTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = random.choice(docs)
+    si_files = docs + figures + supporting_info_files
+    doc2upload = random.choice(si_files)
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -97,8 +126,13 @@ class SITaskTest(CommonTest):
     logging.info('Logging in as {0}'.format(editorial_user))
     dashboard_page = self.cas_login(email=editorial_user['email'])
     dashboard_page.page_ready()
-    paper_workflow_url = '{0}/workflow'.format(paper_url.split('?')[0])
-    self._driver.get(paper_workflow_url)
+    # go to paper
+    self._driver.get(paper_url)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_workflow_link()
+    ##paper_workflow_url = '{0}/workflow'.format(paper_url.split('?')[0])
+    ##self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
@@ -124,6 +158,9 @@ class SITaskTest(CommonTest):
     assert del_button.text == 'DELETE FOREVER', del_button.text
     supporting_info.delete_forever_btn_style_validation(del_button)
     del_button.click()
+    # Following sleep accounts for waiting for an element to detach from the DOM, time is
+    # needed because next action is to check for item presence. If there is no wait, there
+    # will be a false positive
     time.sleep(3)
     # Check that is deleted
     supporting_info.set_timeout(2)
@@ -134,9 +171,9 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def test_multiple_si_uploads(self):
+  def _test_multiple_si_uploads(self):
     """
-    test_figure_task: Validates the upload function of the figures task
+    test_figure_task: Validates the upload function for miltiple files in SI task
     :return: void function
     """
     creator_user = random.choice(users)
@@ -147,12 +184,12 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
-    short_doi = manuscript_page.get_short_doi()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(docs, 4)]
+    si_files = docs + figures + supporting_info_files
+    doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
     logging.info(doc2uploads)
     supporting_info.add_files(doc2uploads)
     supporting_info.validate_uploads(doc2uploads)

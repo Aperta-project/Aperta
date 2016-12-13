@@ -1,9 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import time
-import urllib
-
 from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
@@ -29,6 +25,8 @@ class SICard(BaseCard):
   def validate_styles(self, short_doi):
     """
     Validate styles in SI Card
+    :param short_doi: String with the short DOI
+    :return: None
     """
     self.validate_common_elements_styles(short_doi)
     card_title = self._get(self._card_title)
@@ -41,7 +39,7 @@ class SICard(BaseCard):
         'WAV, MPEG, JPG, etc.', card_title.text
     self.validate_application_ptext(msg)
     add_new_files_btn = self._get(self._add_new_files_btn)
-    add_new_files_btn.text == "ADD FILES", add_new_files_btn.text
+    assert add_new_files_btn.text == 'ADD FILES', add_new_files_btn.text
     self.validate_primary_big_green_button_style(add_new_files_btn)
     # Style of card elements
     file_link = self._get(self._file_link)
@@ -54,6 +52,7 @@ class SICard(BaseCard):
   def check_si_item(self, data):
     """
     Check if a given item is present in this card
+    :param data: Dictionary with the following keys: file_name, figure, title, type and caption
     :return: None
     """
     file_link = self._get(self._file_link)

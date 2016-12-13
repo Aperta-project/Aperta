@@ -7,8 +7,6 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from frontend.Pages.authenticated_page import application_typeface, aperta_green, aperta_black
-from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
@@ -106,7 +104,6 @@ class SITask(BaseTask):
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == data['type'] and data['type'] != 'Other':
-        #self._actions.move_to_element(item).click().perform()
         item.click()
         break
       elif item.text == data['type'] and data['type'] == 'Other':
@@ -141,7 +138,7 @@ class SITask(BaseTask):
   def add_files(self, file_list):
     """
     Add files to the SI task. This method calls add_file for each file it adds
-    :param file_name: A list with strings with a filename
+    :param file_list: A list with strings with a filename
     :return: attached file web elements
     """
     attached_elements = []

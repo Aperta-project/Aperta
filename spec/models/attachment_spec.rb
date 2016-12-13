@@ -25,6 +25,27 @@ describe Attachment do
     end
   end
 
+  describe "#filename" do
+    subject(:attachment) { FactoryGirl.create(:attachment) }
+
+    it "returns the proper filename" do
+      attachment.update_attributes file: File.open('spec/fixtures/yeti.tiff')
+      expect(attachment.filename).to eq "yeti.tiff"
+    end
+  end
+
+  describe "validations" do
+    subject(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_task) }
+    it "is valid" do
+      expect(attachment.valid?).to be(true)
+    end
+
+    it "requires an :owner" do
+      attachment.owner = nil
+      expect(attachment.valid?).to be(false)
+    end
+  end
+
   describe '#did_file_change?' do
     subject(:attachment) { FactoryGirl.create(:attachment) }
 

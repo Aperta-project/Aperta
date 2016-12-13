@@ -1,14 +1,23 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
+import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 
 const { computed } = Ember;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
+  fileTypes: computed('pdfEnabled', function() {
+    if (this.get('pdfEnabled')) {
+      return '.doc,.docx,.pdf'
+    } else {
+      return '.doc,.docx'
+    }
+  }),
   restless: Ember.inject.service(),
   flash: Ember.inject.service(),
   journals: null,
   paper: null,
   isSaving: false,
+  pdfEnabled: computed.reads('paper.journal.pdfAllowed'),
   journalEmpty: computed.empty('paper.journal.content'),
   hasTitle: computed.notEmpty('paper.title'),
 
@@ -32,14 +41,19 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     fileAdded(file){
-      this.set('isSaving', true);
+      let check = checkType(file.name, this.get('fileTypes'));
+      if (!check.error) {
+        this.set('paper.fileType', check['acceptedFileType']);
+        this.set('isSaving', true);
+      } else {
+        this.set('isSaving', false);
+        this.get('flash').displayMessage(check.msg);
+      }
     },
 
-    addingFileFailed(reason, {fileName, acceptedFileTypes}) {
+    addingFileFailed(reason, message, {fileName, acceptedFileTypes}) {
       this.set('isSaving', false);
-      let msg = `We're sorry, '${fileName}' is not a valid file type.
-      Please upload a Microsoft Word file (.docx or .doc).`
-      this.get('flash').displayMessage('error', msg);
+      this.get('flash').displayMessage('error', message);
     },
 
     uploadFinished(s3Url){

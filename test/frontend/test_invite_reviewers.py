@@ -226,7 +226,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
                                        response_data[1])
 
-  def rest_core_invite_rescind_reinvite(self):
+  def test_core_invite_rescind_reinvite(self):
     """
     test_invite_reviewers_card: Validates the elements, styles, roles and functions of invite
       reviewers from new document creation through inviting reviewer, validation of the invite on

@@ -48,7 +48,7 @@ class InviteCard(BaseCard):
     #   the above, enclosing div
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
     self._invitee_updated_at = (By.CLASS_NAME, 'invitation-item-state-and-date')
-    self._invitee_state = (By.CSS_SELECTOR, 'div.invitation-item-status > span')
+    self._invitee_state = (By.CSS_SELECTOR, 'div.invitation-item-status')
     self._replace_attachment = (By.CLASS_NAME, 'replace-attachment')
 
 
@@ -90,36 +90,43 @@ class InviteCard(BaseCard):
     self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
     time.sleep(2)
-    closed_invite_listing = self._get(self._closed_invitee_listing)
-    # The following three lines need to differentiate the specific invite we are trying to validate
-    self._actions.move_to_element(closed_invite_listing).perform()
-    closed_invite_listing.click()
-    self._get(self._invite_edit_invite_button).click()
-    invite_headings = self._gets(self._edit_invite_heading)
-    # Since the invitee is potentially off system, we can only validate email
-    invite_headings_text = [x.text for x in invite_headings]
-    assert any(invitee['email'] in s for s in invite_headings_text), \
-        '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
-    invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
-    invite_text = invite_text.replace('&nbsp', ' ')
-    # Always remember that our ember text always normalizes whitespaces down to one
-    #  Painful lesson
-    title = self.normalize_spaces(title)
-    assert title in invite_text, title + '\nNot found in \n' + invite_text
-    assert 'PLOS Wombat' in invite_text, invite_text
-    assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
-    creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
-    main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
-    assert main_author in invite_text, (main_author, invite_text)
-    abstract = PgSQL().query('SELECT abstract FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
-    if abstract is not None:
-      # Always remember that our ember text always normalizes whitespaces down to one
-      #  Painful lesson
-      abstract = self.normalize_spaces(abstract)
-      invite_text = self.normalize_spaces(invite_text)
-      assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
-    else:
-      assert 'Abstract is not available' in invite_text, invite_text
+    invitations = self._gets(self._closed_invitee_listing)
+    for invite in invitations:
+      invite_state = invite.find_element(*self._invitee_state)
+      if 'Rescinded' in invite_state.text:
+        logging.info('Found rescinded invite, skipping...')
+        continue
+      else:
+        closed_invite_listing = self._get(self._closed_invitee_listing)
+        # The following three lines need to differentiate the specific invite we are trying to validate
+        self._actions.move_to_element(closed_invite_listing).perform()
+        invite.click()
+        self._get(self._invite_edit_invite_button).click()
+        invite_headings = self._gets(self._edit_invite_heading)
+        # Since the invitee is potentially off system, we can only validate email
+        invite_headings_text = [x.text for x in invite_headings]
+        assert any(invitee['email'] in s for s in invite_headings_text), \
+            '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
+        invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
+        invite_text = invite_text.replace('&nbsp', ' ')
+        # Always remember that our ember text always normalizes whitespaces down to one
+        #  Painful lesson
+        title = self.normalize_spaces(title)
+        assert title in invite_text, title + '\nNot found in \n' + invite_text
+        assert 'PLOS Wombat' in invite_text, invite_text
+        assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
+        creator_fn, creator_ln = creator['name'].split(' ')[0], creator['name'].split(' ')[1]
+        main_author = u'{0}, {1}'.format(creator_ln, creator_fn)
+        assert main_author in invite_text, (main_author, invite_text)
+        abstract = PgSQL().query('SELECT abstract FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
+        if abstract is not None:
+          # Always remember that our ember text always normalizes whitespaces down to one
+          #  Painful lesson
+          abstract = self.normalize_spaces(abstract)
+          invite_text = self.normalize_spaces(invite_text)
+          assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
+        else:
+          assert 'Abstract is not available' in invite_text, invite_text
 
     # Attach a file
     sample_files = docs + pdfs + figures + supporting_info_files
@@ -140,7 +147,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
     # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
     #   will get an index out of range error. I feel dirty.
-    time.sleep(6)
+    time.sleep(7)
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
     attachments = self.get_attached_file_names()
@@ -171,29 +178,36 @@ class InviteCard(BaseCard):
     :return void function
     """
     self._wait_for_element(self._get(self._invitee_listing))
-    invitee_element = self._get(self._invitee_listing)
-    pagefullname = False
-    count = 0
-    while not pagefullname:
-      pagefullname = invitee_element.find_element(*self._invitee_full_name)
-      count += 1
-      time.sleep(.5)
-      if count > 60:
-        raise(StandardError, 'Full name not present, aborting')
-    assert invitee['name'] in pagefullname.text
-    status = invitee_element.find_element(*self._invitee_state)
-    assert response in ['Accept', 'Decline'], response
-    if response == 'Accept':
-      assert 'Accepted' in status.text, status.text
-    elif response == 'Decline':
-      # Need to extend box to display text
-      assert 'Decline' in status.text, status.text
-      status.click()
-      reason_suggestions = self._get(self._reason_suggestions).text
-      reason_suggestions = self.normalize_spaces(reason_suggestions)
-      assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
-      assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
-                                                                         reason_suggestions)
+    # Skip over rescinded invites
+    invitations = self._gets(self._closed_invitee_listing)
+    for invite in invitations:
+      invite_state = invite.find_element(*self._invitee_state)
+      if 'Rescinded' in invite_state.text:
+        logging.info('Found rescinded invite, skipping...')
+        continue
+      else:
+        pagefullname = False
+        count = 0
+        while not pagefullname:
+          pagefullname = invite.find_element(*self._invitee_full_name)
+          count += 1
+          time.sleep(.5)
+          if count > 60:
+            raise(StandardError, 'Full name not present, aborting')
+        assert invitee['name'] in pagefullname.text
+        status = invite.find_element(*self._invitee_state)
+        assert response in ['Accept', 'Decline'], response
+        if response == 'Accept':
+          assert 'Accepted' in status.text, status.text
+        elif response == 'Decline':
+          # Need to extend box to display text
+          assert 'Decline' in status.text, status.text
+          status.click()
+          reason_suggestions = self._get(self._reason_suggestions).text
+          reason_suggestions = self.normalize_spaces(reason_suggestions)
+          assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
+          assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
+                                                                             reason_suggestions)
 
   def validate_card_elements_styles(self, user, card_type, short_doi):
     """

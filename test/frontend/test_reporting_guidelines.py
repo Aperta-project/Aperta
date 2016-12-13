@@ -10,6 +10,8 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
+from Cards.reporting_guidelines_card import ReportingGuidelinesCard
 from Tasks.reporting_guidelines_task import ReportingGuidelinesTask
 
 __author__ = 'achoe@plos.org'
@@ -41,7 +43,21 @@ class ReportingGuidelinesTaskTest(CommonTest):
     reporting_guidelines_task.logout()
 
     # login as a privileged user to validate the presentation of the Reporting Guidelines card.
-
+    staff_user = random.choice(editorial_users)
+    logging.info('logging in as user: {0}'.format(staff_user['name']))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to workflow
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('reporting_guidelines')
+    reporting_guidelines_card = ReportingGuidelinesCard(self.getDriver())
+    reporting_guidelines_card.card_ready()
+    reporting_guidelines_card.validate_styles()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

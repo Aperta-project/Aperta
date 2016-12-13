@@ -111,16 +111,11 @@ namespace :cleanup do
   desc "Cleanup database dump files"
   task :dumps do
     on release_roles(fetch(:assets_roles)) do
-      files_to_leave          = 2
-      acceptable_file_count   = 0..files_to_leave
-      acceptable_file_pattern = acceptable_file_count.to_a.join("|")
-      silent                  = '2> /dev/null'
-      file_pattern            = '~/aperta-????-??-??T??:??:??Z.dump'
-      execute :ls, %W(-1tr #{file_pattern} #{silent} | head -n -#{files_to_leave} | xargs -d '\n' rm -f --)
-      if test(:ls, %W(-1tr #{file_pattern} #{silent} | wc -l | grep -E '#{acceptable_file_pattern}'))
-        info "Cleaned up all but #{files_to_leave} dump files on node."
-      else
-        error "Clean up of database dump files appears to have failed.  Please investigate manually."
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:dump:cleanup"
+        end
+
       end
     end
   end

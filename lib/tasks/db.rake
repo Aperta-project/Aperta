@@ -46,6 +46,13 @@ namespace :db do
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
+  namespace :dump do
+    task cleanup: :environment do
+      require_relative '../../lib/garbage_man'
+      GarbageMan.pickup_db_dumps
+    end
+  end
+
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |t, args|
     location = args[:location]

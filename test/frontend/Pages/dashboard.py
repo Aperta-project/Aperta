@@ -52,7 +52,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_journal = (By.CSS_SELECTOR, 'td.active-paper-title span')
-    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
+    self._dash_active_short_doi = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
     self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
 
@@ -63,7 +63,7 @@ class DashboardPage(AuthenticatedPage):
                                      "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_journal = (By.CSS_SELECTOR, 'td.inactive-paper-title span')
-    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
+    self._dash_inactive_short_doi = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
     self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
 
@@ -354,7 +354,7 @@ class DashboardPage(AuthenticatedPage):
     # dashboard welcome message
     active_manuscript_list = []
     try:
-      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT papers.short_doi, '
                                                 'papers.updated_at '
                                                 'FROM assignments '
                                                 'JOIN roles ON assignments.role_id=roles.id '
@@ -369,7 +369,7 @@ class DashboardPage(AuthenticatedPage):
                                                 '\'in_revision\', \'invited_for_full_submission\') '
                                                 'ORDER BY papers.updated_at DESC;', (uid,))
       # APERTA-6352 We are not correctly sorting active submitted documents on the dashboard
-      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT papers.short_doi, '
                                                'assignments.created_at '
                                                'FROM assignments '
                                                'JOIN roles ON assignments.role_id=roles.id '
@@ -426,7 +426,7 @@ class DashboardPage(AuthenticatedPage):
     :param uid: uid of the user under test
     :param active_manuscript_count: integer representing the total number of active manuscripts for
       uid
-    :param active_manuscript_list: active_manuscript_list (paper.id ordered by
+    :param active_manuscript_list: active_manuscript_list (paper.short_doi ordered by
       assignments.created_at)
     :return: None
     """
@@ -534,7 +534,7 @@ class DashboardPage(AuthenticatedPage):
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
       journals = self._gets(self._dash_inactive_journal)
-      manu_ids = self._gets(self._dash_inactive_manu_id)
+      short_dois = self._gets(self._dash_inactive_short_doi)
       roles = self._gets(self._dash_inactive_role)
       statuses = self._gets(self._dash_inactive_status)
       db_papers_list = manuscript_list
@@ -542,15 +542,16 @@ class DashboardPage(AuthenticatedPage):
     else:
       papers = self._gets(self._dash_active_title)
       journals = self._gets(self._dash_active_journal)
-      manu_ids = self._gets(self._dash_active_manu_id)
+      short_dois = self._gets(self._dash_active_short_doi)
       roles = self._gets(self._dash_active_role)
       statuses = self._gets(self._dash_active_status)
       unsubmitted_list = []
       submitted_list = []
       for paper in manuscript_list:
+        logging.debug(paper)
         submitted_state = PgSQL().query('SELECT publishing_state '
                                         'FROM papers '
-                                        'WHERE id=%s;', (paper,))
+                                        'WHERE short_doi=%s;', (paper,))
         if submitted_state == 'unsubmitted':
           unsubmitted_list.append(paper)
         else:
@@ -577,35 +578,46 @@ class DashboardPage(AuthenticatedPage):
         paper_text = paper.text.split()
         logging.debug('db_title: {0}'.format(db_title))
         logging.debug('paper_text: {0}'.format(paper_text))
+        paper_id_from_db = PgSQL().query('SELECT id '
+                                         'FROM papers '
+                                         'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         if not title:
-          logging.info('Paper id: {0}'.format(db_papers_list[count]))
+          logging.info('Paper short doi: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
                            'Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
           assert db_title == paper_text, \
-              unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
+              unicode(title) + u' is not equal to ' + unicode(paper.text)
         else:
           raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
-        paper_roles = PgSQL().query('SELECT old_role FROM paper_roles '
-                                    'INNER JOIN papers ON papers.id = paper_roles.paper_id '
-                                    'WHERE paper_roles.paper_id = %s AND '
-                                    'paper_roles.user_id= %s '
-                                    'ORDER BY paper_roles.created_at DESC;', (db_papers_list[count],
+        paper_roles = PgSQL().query('SELECT roles.name FROM roles '
+                                    'INNER JOIN assignments on roles.id = assignments.role_id '
+                                    'INNER JOIN papers ON papers.id = assignments.assigned_to_id '
+                                    'WHERE assignments.assigned_to_type = \'Paper\' AND '
+                                    'assignments.assigned_to_id = %s AND '
+                                    'assignments.user_id= %s '
+                                    'ORDER BY assignments.created_at DESC;', (paper_id_from_db,
                                                                               uid))
         rolelist = []
         for role in paper_roles:
+          logging.debug(role[0])
           rolelist.append(role[0])
-        # print(db_papers_list[count])
+        # logging.debug(db_papers_list[count])
         paper_owner = PgSQL().query('SELECT user_id '
-                                    'FROM papers where id = %s;', (db_papers_list[count],))[0][0]
+                                    'FROM assignments '
+                                    'INNER JOIN roles ON roles.id = assignments.role_id '
+                                    'WHERE roles.name = \'Creator\' '
+                                    'AND assigned_to_type = \'Paper\' '
+                                    'AND assigned_to_id = %s;', (paper_id_from_db,))[0][0]
         if paper_owner == uid:
-          rolelist.append('my paper')
+          rolelist.append('Author')
 
         # Validate Status Display
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state '
-                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+                                 'FROM papers '
+                                 'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         # For display of status on the home page, we replace '_' with a space.
         transtab = string.maketrans('_', ' ')
         dbstatus = dbstatus.translate(transtab)
@@ -615,14 +627,15 @@ class DashboardPage(AuthenticatedPage):
             page_status.lower() + ' is not equal to: ' + dbstatus.lower()
 
         # Validate Manuscript ID display
-        dbmanuid = PgSQL().query('SELECT doi '
-                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        manu_id = manu_ids[count].text
-        manu_id = manu_id.split(': ')[1]
-        logging.debug(manu_id)
-        logging.debug(dbmanuid)
-        dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
-        assert manu_id in dbmanuid, '{0} not found in {1}'.format(manu_id, dbmanuid)
+        dbshortdoi = PgSQL().query('SELECT doi '
+                                   'FROM papers '
+                                   'WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        short_doi = short_dois[count].text
+        short_doi = short_doi.split(': ')[1]
+        logging.debug(short_doi)
+        logging.debug(dbshortdoi)
+        dbshort_doi = 'ID: {0}'.format(dbshortdoi.split('/')[1]) if dbshortdoi else 'ID:'
+        assert short_doi in dbshortdoi, '{0} not found in {1}'.format(short_doi, dbshortdoi)
         # Finally increment counter
         count += 1
 

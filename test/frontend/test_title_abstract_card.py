@@ -137,7 +137,7 @@ class TitleAbstractTest(CommonTest):
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._upload_manu_task))
-    paper_viewer.click_task('upload_manuscript')
+    paper_viewer.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()

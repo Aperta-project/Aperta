@@ -59,7 +59,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     paper_id = manuscript_page.get_paper_short_doi_from_url()
     time.sleep(2)
     # figures
-    manuscript_page.click_task('review_candidates')
+    manuscript_page.click_task('Reviewer Candidates')
     time.sleep(3)
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     time.sleep(1)
@@ -111,7 +111,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     paper_id = manuscript_page.get_paper_short_doi_from_url()
     time.sleep(2)
     # figures
-    manuscript_page.click_task('review_candidates')
+    manuscript_page.click_task('Reviewer Candidates')
     time.sleep(3)
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     time.sleep(2)
@@ -165,7 +165,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     paper_id = manuscript_page.get_paper_short_doi_from_url()
     time.sleep(2)
     # figures
-    manuscript_page.click_task('review_candidates')
+    manuscript_page.click_task('Reviewer Candidates')
     time.sleep(2)
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     time.sleep(1)
@@ -315,7 +315,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')
     assert rc_task
     logging.info('Reviewer Candidates task is present for AE')
-    paper_viewer.click_task('review_candidates')
+    paper_viewer.click_task('Reviewer Candidates')
     time.sleep(2)
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     time.sleep(1)

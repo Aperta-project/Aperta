@@ -69,11 +69,12 @@ module TahiStandardTasks
 
     # before save we want to update the reviewer number if neccessary
     def on_completion
-      assign_reviewer_number if completed? && reviewer_number.blank?
+      assign_reviewer_number if completed?
       super
     end
 
     def assign_reviewer_number
+      return if reviewer_number.present? || !paper.number_reviewer_reports
       set_reviewer_number(get_new_reviewer_number)
     end
 

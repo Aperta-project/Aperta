@@ -101,43 +101,55 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     end
     context "the task is complete" do
       let(:completed) { true }
-      context "the task has a reviewer number" do
-        let(:body) { { "reviewer_number" => 2 } }
-        it "does not change the existing number" do
-          expect(result.body).to eq(body)
-          expect(result.reviewer_number).to eq(2)
-        end
+      context "the task's paper has its number_reviewer_reports flag set to true" do
+        let(:paper) { create :paper, :submitted_lite, number_reviewer_reports: true }
+        context "the task has a reviewer number" do
+          let(:body) { { "reviewer_number" => 2 } }
+          it "does not change the existing number" do
+            expect(result.body).to eq(body)
+            expect(result.reviewer_number).to eq(2)
+          end
 
-        it "does not update the title" do
-          expect(result.title).to eq("Review by Steve")
+          it "does not update the title" do
+            expect(result.title).to eq("Review by Steve")
+          end
+        end
+        context "the task does not have a reviewer number" do
+          let(:body) { { "submitted" => false } }
+          context "other reviewer report task subclasses for the paper exist" do
+            before do
+              FactoryGirl.create(factory, paper: paper, completed: false)
+              FactoryGirl.create(factory, paper: paper, completed: true, body: { "reviewer_number" => 1 })
+              FactoryGirl.create(:front_matter_reviewer_report_task, paper: paper, completed: false, body: { "reviewer_number" => 2 })
+            end
+
+            it "sets the reviewer number to be one higher than the max of the other tasks" do
+              expect(result.reviewer_number).to eq(3)
+              expect(task.body).to eq("reviewer_number" => 3, "submitted" => false)
+            end
+
+            it "appends the reviewer number to the task title" do
+              expect(result.title).to eq("Review by Steve (#3)")
+            end
+          end
+          context "it's the only completed reviewer report task for the paper" do
+            before do
+              FactoryGirl.create(factory, paper: paper, completed: false)
+            end
+            it "sets the reviewer number to be one 1" do
+              expect(result.reviewer_number).to eq(1)
+              expect(task.body).to eq("reviewer_number" => 1, "submitted" => false)
+              expect(task.title).to eq("Review by Steve (#1)")
+            end
+          end
         end
       end
-      context "the task does not have a reviewer number" do
+      context "the task's paper has its number_reviewer_reports flag set to false" do
+        let(:paper) { create :paper, :submitted_lite, number_reviewer_reports: false }
         let(:body) { { "submitted" => false } }
-        context "other reviewer report task subclasses for the paper exist" do
-          before do
-            FactoryGirl.create(factory, paper: paper, completed: false)
-            FactoryGirl.create(factory, paper: paper, completed: true, body: { "reviewer_number" => 1 })
-            FactoryGirl.create(:front_matter_reviewer_report_task, paper: paper, completed: false, body: { "reviewer_number" => 2 })
-          end
-          it "sets the reviewer number to be one higher than the max of the other tasks" do
-            expect(result.reviewer_number).to eq(3)
-            expect(task.body).to eq("reviewer_number" => 3, "submitted" => false)
-          end
-
-          it "appends the reviewer number to the task title" do
-            expect(result.title).to eq("Review by Steve (#3)")
-          end
-        end
-        context "it's the only completed reviewer report task for the paper" do
-          before do
-            FactoryGirl.create(factory, paper: paper, completed: false)
-          end
-          it "sets the reviewer number to be one 1" do
-            expect(result.reviewer_number).to eq(1)
-            expect(task.body).to eq("reviewer_number" => 1, "submitted" => false)
-            expect(task.title).to eq("Review by Steve (#1)")
-          end
+        it "does not assign a number" do
+          expect(result.body).to eq(body)
+          expect(result.reviewer_number).to eq(nil)
         end
       end
     end

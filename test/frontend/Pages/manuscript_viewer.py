@@ -576,7 +576,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Unknown Task')
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, style_check=False):
+  def complete_task(self, task_name, click_override=False, data=None, style_check=False, author = ''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
@@ -696,7 +696,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
-      author_task.edit_author(affiliation)
+      author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
     elif 'Review by ' in task_name:

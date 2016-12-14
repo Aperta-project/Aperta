@@ -17,6 +17,14 @@ export default Ember.ObjectProxy.extend({
 
     this.set('content', this.get('nestedQuestion'));
     this.set('answer', this._loadAnswer());
+
+    // get 'answer.isDeleted' in order to have it be properly observed.
+    // https://guides.emberjs.com/v2.10.0/object-model/observers/#toc_unconsumed-computed-properties-do-not-trigger-observers
+    // this may be a subtlety with http://emberjs.com/blog/2015/09/02/ember-data-2-0-released.html#toc_unsaved-deleted-records,
+    // whereby records that are marked deleted are no longer automatically removed from DS.model relationships.
+    // it's possible that previously `.isDeleted` was consumed internally by those mechanics, but as of now that property on the
+    // answer is never consumed anywhere else so we have to do it here.
+    this.get('answer.isDeleted');
   },
 
   refreshAnswer: Ember.observer('answer.isDeleted', function(){

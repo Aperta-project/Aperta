@@ -153,6 +153,44 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#notify_coauthor_of_paper_submission' do
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_creator, :submitted)
+    end
+    let!(:author1) do
+      FactoryGirl.create(:author,
+        email: paper.creator.email,
+        first_name: paper.creator.first_name,
+        last_name: paper.creator.last_name,
+        paper: paper)
+    end
+    let!(:author2) do
+      FactoryGirl.create(:author,
+        email: Faker::Internet.email,
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        paper: paper)
+    end
+    let!(:author3) do
+      FactoryGirl.create(:author,
+        email: Faker::Internet.email,
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        paper: paper)
+    end
+    let(:email) do
+      UserMailer.notify_coauthor_of_paper_submission(paper.id, author2.id)
+    end
+
+    it "sends the email to the given coauthor and mentions other authors information" do
+      expect(email.to).to contain_exactly(author2.email)
+      expect(email.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email.body).to include(paper.title)
+      expect(email.body).to include(author1.full_name)
+      expect(email.body).to include(author3.full_name)
+    end
+  end
+
   describe '#notify_creator_of_initial_submission' do
     let(:paper) do
       FactoryGirl.create(:paper, :with_creator, :initially_submitted)

@@ -47,7 +47,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     # figures
-    manuscript_page.click_task('early_article_posting')
+    manuscript_page.click_task('Early Article Posting')
     eap_task = EarlyArticlePostingTask(self.getDriver())
     eap_task.task_ready()
     eap_task.validate_styles()
@@ -89,7 +89,7 @@ class EarlyArticlePostingTaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     # figures
-    manuscript_page.click_task('early_article_posting')
+    manuscript_page.click_task('Early Article Posting')
     eap_task = EarlyArticlePostingTask(self.getDriver())
     eap_task.task_ready()
     selection_state = eap_task.complete_form()

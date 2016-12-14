@@ -6,7 +6,6 @@ module TahiUtilities
     # - from_folder: the directory the files are being cleaned up from
     # - matching_glob: the globbing pattern used for matching files you want to clean up
     # - keeping_newest: the number of files you want to keep
-
     def self.remove_old_files(from_folder:, matching_glob:, keeping_newest:)
       # switch naming p.o.v. from parts of a sentence to developer-facing labels for data
       folder          = from_folder

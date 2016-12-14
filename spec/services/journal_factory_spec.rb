@@ -594,6 +594,12 @@ describe JournalFactory, flaky: true do
             expect(permissions).not_to include(*tech_check_permissions)
           end
         end
+
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
+        end
       end
 
       context 'Freelance Editor' do

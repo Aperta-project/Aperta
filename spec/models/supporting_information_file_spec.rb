@@ -30,12 +30,6 @@ describe SupportingInformationFile, redis: true do
     it_behaves_like 'attachment#download! manages resource tokens'
   end
 
-  describe '#filename' do
-    it 'returns the proper filename' do
-      expect(file.filename).to eq 'yeti.tiff'
-    end
-  end
-
   describe '#alt' do
     it 'returns a humanized alt name' do
       expect(file.alt).to eq 'Yeti'

@@ -28,6 +28,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     logging.info('Test Reporting Guidelines::styles')
     # User logs in and makes a submission:
     creator_user = random.choice(users)
+    logging.info('logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -73,6 +74,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     logging.info(current_path)
     # User logs in and submits a manuscript
     creator_user = random.choice(users)
+    logging.info('logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -86,7 +88,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     selected = reporting_guidelines_task.make_selections()
-    file = reporting_guidelines_task.upload_prisma_review_checklist()
+    file_ = reporting_guidelines_task.upload_prisma_review_checklist()
     reporting_guidelines_task.click_completion_button()
     reporting_guidelines_task.logout()
 
@@ -105,7 +107,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     workflow_page.click_card('reporting_guidelines')
     reporting_guidelines_card = ReportingGuidelinesCard(self.getDriver())
     reporting_guidelines_card.card_ready()
-    reporting_guidelines_card.check_selections(choices=selected, filename=file)
+    reporting_guidelines_card.check_selections(choices=selected, filename=file_)
 
   def test_core_reporting_guidelines_download_uploaded_prisma(self):
     """
@@ -117,6 +119,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     logging.info(current_path)
     # User logs in and submits a manuscript
     creator_user = random.choice(users)
+    logging.info('logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -143,6 +146,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     logging.info(current_path)
     # User logs in and submits a manuscript
     creator_user = random.choice(users)
+    logging.info('logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -169,6 +173,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     logging.info(current_path)
     # User logs in and submits a manuscript
     creator_user = random.choice(users)
+    logging.info('logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()

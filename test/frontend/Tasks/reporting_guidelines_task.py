@@ -82,14 +82,15 @@ class ReportingGuidelinesTask(BaseTask):
     prisma_files = ['frontend/assets/PRISMA_2009_checklist.doc', 'frontend/assets/PRISMA_2009_checklist.pdf']
     current_path = os.getcwd()
 
-    file = random.choice(prisma_files)
-    file_name = os.path.join(current_path, file)
+    file_ = random.choice(prisma_files)
+    logging.info('PRISMA file: {0}'.format(file_))
+    file_name = os.path.join(current_path, file_)
     logging.info('Sending file: {0}'.format(file_name))
     self._driver.find_element_by_class_name('add-new-attachment').send_keys(file_name)
     link_to_uploaded_file = self._get(self._prisma_uploaded_file_link)
-    assert link_to_uploaded_file.text == file.split('/')[-1], 'File {0} is not displayed' \
+    assert link_to_uploaded_file.text == os.path.basename(file_), 'File {0} is not displayed' \
                                                               ' on Reporting Guidelines task'.format(file_name)
-    return file
+    return file_
 
   def download_prisma_checklist(self):
     """
@@ -107,7 +108,8 @@ class ReportingGuidelinesTask(BaseTask):
     files = [os.path.join('/tmp', f) for f in files]
     files.sort(key=lambda x: os.path.getmtime(x))
     newest_file = files[-1]
-    assert uploaded_prisma_file.text == newest_file.split('/')[-1], \
+    os.chdir(current_path)
+    assert uploaded_prisma_file.text == os.path.basename(newest_file), \
       'Uploaded file: {0} | Downloaded file: {1}'.format(uploaded_prisma_file.text, newest_file)
 
   def replace_prisma_checklist(self):
@@ -128,8 +130,8 @@ class ReportingGuidelinesTask(BaseTask):
     self._driver.find_element_by_class_name('s3-file-uploader').send_keys(file_name)
     time.sleep(2)
     uploaded_prisma_file = self._get(self._prisma_uploaded_file_link)
-    assert uploaded_prisma_file.text == replacement_file.split('/')[-1], \
-      'Uploaded file: {0} | Replacement file: {1}'.format(uploaded_prisma_file.text, replacement_file.split('/')[-1])
+    assert uploaded_prisma_file.text == os.path.basename(replacement_file), \
+      'Uploaded file: {0} | Replacement file: {1}'.format(uploaded_prisma_file.text, os.path.basename(replacement_file))
 
   def delete_prisma_checklist(self):
     """
@@ -139,4 +141,4 @@ class ReportingGuidelinesTask(BaseTask):
     delete_link = self._get(self._file_delete)
     delete_link.click()
     upload_button = self._get(self._prisma_upload_button)
-    assert upload_button.text == 'UPLOAD REVIEW CHECKLIST', upload_button.text
+    assert upload_button.text in ['UPLOAD REVIEW CHECKLIST', 'UPLOAD PRISMA CHECKLIST'], upload_button.text

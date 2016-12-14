@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import os
 
 from selenium.webdriver.common.by import By
 
@@ -50,7 +51,7 @@ class ReportingGuidelinesCard(BaseCard):
     # All checkboxes should be unchecked by default:
     for item in selection_list_items:
       list_item = item.find_element_by_tag_name('input')
-      assert not list_item.is_selected, 'Item {0} is checked by default'.format(item.text)
+      assert not list_item.is_selected(), 'Item {0} is checked by default'.format(item.text)
 
   def check_selections(self, choices, filename=None):
     """
@@ -70,9 +71,9 @@ class ReportingGuidelinesCard(BaseCard):
 
     if filename:
       uploaded_prisma_file = self._get(self._prisma_uploaded_file_link)
-      assert filename.split('/')[-1] == uploaded_prisma_file.text, 'Uploaded file {0} is ' \
+      assert os.path.basename(filename) == uploaded_prisma_file.text, 'Uploaded file {0} is ' \
                                                                    'not displayed in the Reporting Guidelines ' \
-                                                                   'card'.format(filename.split('/')[-1])
+                                                                   'card'.format(os.path.basename(filename))
 
 
 

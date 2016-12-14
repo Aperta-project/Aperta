@@ -9,7 +9,6 @@ import wait from 'ember-test-helpers/wait';
 
 let createTaskWithFiles = function(files) {
   return make('supporting-information-task', {
-    id: 1,
     paper: {
       supportingInformationFiles: files
     }
@@ -22,16 +21,19 @@ moduleForComponent(
   integration: true,
   beforeEach() {
     manualSetup(this.container);
+    $.mockjax.clear();
+
+    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+    this.registry.register('service:can', FakeCanService);
   }
 });
 
 let template = hbs`{{supporting-information-task task=testTask}}`;
 let errorSelector = '.supporting-information-thumbnail .error-message:not(.error-message--hidden)'
 test('it renders the paper\'s SI files', function(assert) {
-  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-  this.registry.register('service:can', FakeCanService);
 
-  let testTask = createTaskWithFiles([{title: 'Supporting Info. 1', id: 1, status: 'done'}]);
+  let doneFile = make('supporting-information-file', { status: 'done' });
+  let testTask = createTaskWithFiles([doneFile]);
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', testTask);
 
@@ -41,23 +43,86 @@ test('it renders the paper\'s SI files', function(assert) {
 });
 
 test("it allows completion when all the files' statuses are 'done'", function(assert) {
-  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-  this.registry.register('service:can', FakeCanService);
-  let file = {title: 'Supporting Info. 1', id: 1, status: 'done', label: "test label", category: "test category"}
+  let file = make('supporting-information-file', { status: 'done' });
   let testTask = createTaskWithFiles([file]);
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', testTask);
 
   this.set('testTask', testTask);
-  $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
+  let testUrl = `/api/tasks/${testTask.id}`;
+  $.mockjax({url: testUrl, type: 'PUT', status: 204, responseText: '{}'});
 
   this.render(template);
 
   this.$('.task-completed').click();
   let done = assert.async();
   wait().then(() => {
-    assert.equal(testTask.get('completed'), false, 'task remained incomplete');
-    assert.mockjaxRequestMade('/api/tasks/1', 'PUT', 'it saves the task')
+    assert.equal(testTask.get('completed'), true, 'task is completed');
+    assert.mockjaxRequestMade(testUrl, 'PUT', 'it saves the task')
+    done();
+  });
+});
+
+test("it does not allow completion when any of the files' statuses are not set to 'done'", function(assert) {
+  let doneFile = make('supporting-information-file', { status: 'done' });
+  let processingFile = make('supporting-information-file', { status: 'processing' });
+  let testTask = createTaskWithFiles([doneFile, processingFile]);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', testTask);
+
+  this.set('testTask', testTask);
+  let testUrl = `/api/tasks/${testTask.id}`;
+  $.mockjax({url: testUrl, type: 'PUT', status: 204, responseText: '{}'});
+
+  this.render(template);
+
+  this.$('.task-completed').click();
+  let done = assert.async();
+  wait().then(() => {
+    assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
+    assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+    done();
+  });
+});
+
+test("it does not allow completion when any of the files' statuses when category is not defined", function(assert) {
+  let doneFile = make('supporting-information-file', { status: 'done', category: null });
+  let testTask = createTaskWithFiles([doneFile]);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', testTask);
+
+  this.set('testTask', testTask);
+  let testUrl = `/api/tasks/${testTask.id}`;
+  $.mockjax({url: testUrl, type: 'PUT', status: 204, responseText: '{}'});
+
+  this.render(template);
+
+  this.$('.task-completed').click();
+  let done = assert.async();
+  wait().then(() => {
+    assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
+    assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+    done();
+  });
+});
+
+test("it does not allow completion when any of the files' statuses when label is not defined", function(assert) {
+  let doneFile = make('supporting-information-file', { status: 'done', label: null });
+  let testTask = createTaskWithFiles([doneFile]);
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', testTask);
+
+  this.set('testTask', testTask);
+  let testUrl = `/api/tasks/${testTask.id}`;
+  $.mockjax({url: testUrl, type: 'PUT', status: 204, responseText: '{}'});
+
+  this.render(template);
+
+  this.$('.task-completed').click();
+  let done = assert.async();
+  wait().then(() => {
+    assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
+    assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
     done();
   });
 });

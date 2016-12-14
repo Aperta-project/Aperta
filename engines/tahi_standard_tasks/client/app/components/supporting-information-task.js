@@ -39,7 +39,7 @@ export default TaskComponent.extend(FileUploadMixin, {
             message: 'All files must be done processing to save.',
             validation() {
               const file = this.get('object');
-              return file.get('status') === 'finished';
+              return file.get('status') === 'done';
             }
           }],
           'label': ['presence'],

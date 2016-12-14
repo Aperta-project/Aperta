@@ -39,8 +39,9 @@ module TahiReports
       output
     end
 
+    # Excludes attachments that have been updated within the past 5 minutes
     def attachments_processing
-      @attachments_processing ||= attachment_klass.processing
+      @attachments_processing ||= attachment_klass.processing.where("updated_at < ?", 5.minutes.ago)
     end
 
     def attachments_done
@@ -93,20 +94,21 @@ module TahiReports
       output.puts "# of processing: #{processing_count}"
       output.puts "# of errored: #{errored_count}"
       output.puts "# of unknown: #{unknown_count}"
+      output.puts "NOTE: the above processing count does not include files updated within the past 5 minutes."
     end
 
     def print_attachments_stuck(attachments, state)
       attachments_stuck = {}
       TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
-        attachments_stuck[timeframe] = attachments.where(
-          created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
+        attachments_stuck[human_readable_timeframe] = attachments.where(
+          updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
         ).count
       end
 
       output.puts "#{attachment_klass.name}(s) stuck in #{state}"
       output.puts "-------------------------------------------"
-      attachments_stuck.each_pair do |timeframe, count|
-        output.puts "Count in #{state} state in the past #{timeframe.inspect}: #{count}"
+      attachments_stuck.each_pair do |human_readable_timeframe, count|
+        output.puts "Count in #{state} state #{human_readable_timeframe}: #{count}"
       end
     end
 
@@ -119,7 +121,7 @@ module TahiReports
         output.puts "Errors #{human_readable_timeframe}"
         if i == 0
           attachments_by_error = attachments_errored.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
+            updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
           ).each do |a|
             a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
           end
@@ -135,7 +137,7 @@ module TahiReports
           end
         else
           attachments_by_error = attachments_errored.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i-1].ago.end_of_day.utc)
+            updated_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i-1].ago.end_of_day.utc)
           ).each do |a|
             a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
           end

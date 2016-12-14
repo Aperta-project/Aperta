@@ -4,34 +4,37 @@ require 'tahi_reports/analyze_attachment_failures_report'
 
 describe TahiReports::AnalyzeAttachmentFailuresReport do
   describe 'running the report' do
-    subject(:run_report) do
+    # do not cache this value
+    def run_report
       described_class.run(output: output, attachment_klass: Attachment)
     end
 
-    let(:output) { StringIO.new }
+    # do not cache this value
     def report_contents
       output.tap(&:rewind).read
     end
 
-    let!(:processing_attachment_from_today) { FactoryGirl.create(:attachment, :processing, created_at: Date.today) }
-    let!(:processing_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :processing, created_at: 1.week.ago) }
-    let!(:processing_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :processing, created_at: 1.month.ago) }
-    let!(:processing_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :processing, created_at: 1.year.ago) }
+    let(:output) { StringIO.new }
 
-    let!(:errored_attachment_from_today) { FactoryGirl.create(:attachment, :errored, created_at: Date.today) }
-    let!(:errored_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :errored, created_at: 1.week.ago, error_message: "Failed because of A") }
-    let!(:errored_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :errored, created_at: 1.month.ago) }
-    let!(:errored_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :errored, created_at: 1.year.ago, error_message: "Failed because of B") }
+    let!(:processing_attachment_from_today) { FactoryGirl.create(:attachment, :processing, updated_at: 6.minutes.ago) }
+    let!(:processing_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :processing, updated_at: 1.week.ago) }
+    let!(:processing_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :processing, updated_at: 1.month.ago) }
+    let!(:processing_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :processing, updated_at: 1.year.ago) }
 
-    let!(:completed_attachment_from_today) { FactoryGirl.create(:attachment, :completed, created_at: Date.today) }
-    let!(:completed_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :completed, created_at: 1.week.ago) }
-    let!(:completed_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :completed, created_at: 1.month.ago) }
-    let!(:completed_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :completed, created_at: 1.year.ago) }
+    let!(:errored_attachment_from_today) { FactoryGirl.create(:attachment, :errored, updated_at: Date.today) }
+    let!(:errored_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.week.ago, error_message: "Failed because of A") }
+    let!(:errored_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.month.ago) }
+    let!(:errored_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.year.ago, error_message: "Failed because of B") }
 
-    let!(:unknown_state_attachment_from_today) { FactoryGirl.create(:attachment, :unknown_state, created_at: Date.today) }
-    let!(:unknown_state_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :unknown_state, created_at: 1.week.ago) }
-    let!(:unknown_state_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :unknown_state, created_at: 1.month.ago) }
-    let!(:unknown_state_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :unknown_state, created_at: 1.year.ago) }
+    let!(:completed_attachment_from_today) { FactoryGirl.create(:attachment, :completed, updated_at: Date.today) }
+    let!(:completed_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.week.ago) }
+    let!(:completed_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.month.ago) }
+    let!(:completed_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.year.ago) }
+
+    let!(:unknown_state_attachment_from_today) { FactoryGirl.create(:attachment, :unknown_state, updated_at: Date.today) }
+    let!(:unknown_state_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.week.ago) }
+    let!(:unknown_state_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.month.ago) }
+    let!(:unknown_state_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.year.ago) }
 
     it 'outputs to the given IO object' do
       run_report
@@ -69,13 +72,30 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       expect(report_contents).to include <<-STRING.strip_heredoc
         Attachment(s) stuck in processing
         -------------------------------------------
-        Count in processing state in the past 0 days: 1
-        Count in processing state in the past 1 day: 1
-        Count in processing state in the past 7 days: 2
-        Count in processing state in the past 14 days: 2
-        Count in processing state in the past 1 month: 3
-        Count in processing state in the past 1 year: 4
+        Count in processing state today: 1
+        Count in processing state since yesterday: 1
+        Count in processing state in the past week: 2
+        Count in processing state in the past two weeks: 2
+        Count in processing state in the past month: 3
+        Count in processing state in the past year: 4
       STRING
+    end
+
+    it 'does not include attachments that have been processing for less than 5 minutes' do
+      run_report
+      current_report = report_contents
+      expect(current_report).to include "Total count of Attachment(s): 16"
+      expect(current_report).to include "Count in processing state today: 1"
+
+      FactoryGirl.create(:attachment, :processing, updated_at: (4.minutes).ago)
+      run_report
+      current_report = report_contents
+
+      # see that total count goes up
+      expect(current_report).to include "Total count of Attachment(s): 17"
+
+      # see that the number of processing attachments does not
+      expect(current_report).to include "Count in processing state today: 1"
     end
 
     it 'prints how many attachments are stuck in an error state' do
@@ -83,12 +103,12 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       expect(report_contents).to include <<-STRING.strip_heredoc
         Attachment(s) stuck in error
         -------------------------------------------
-        Count in error state in the past 0 days: 1
-        Count in error state in the past 1 day: 1
-        Count in error state in the past 7 days: 2
-        Count in error state in the past 14 days: 2
-        Count in error state in the past 1 month: 3
-        Count in error state in the past 1 year: 4
+        Count in error state today: 1
+        Count in error state since yesterday: 1
+        Count in error state in the past week: 2
+        Count in error state in the past two weeks: 2
+        Count in error state in the past month: 3
+        Count in error state in the past year: 4
       STRING
     end
 

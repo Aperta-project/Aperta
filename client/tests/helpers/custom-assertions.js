@@ -1,11 +1,60 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
-import sinon from 'sinon';
 
 // disable line-length linting for this file.
 /* jshint -W101 */
 
 export default function() {
+  QUnit.assert.mockjaxRequestMade = function(url, type, message){
+    let actualDescription;
+    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+
+    if(!message){
+      message = `Request to server was made thru $.mockjax: ${expectedDescription}`;
+    }
+
+    let mockjaxCalls = $.mockjax.mockedAjaxCalls();
+    let requestFound = _.find(mockjaxCalls, {url: url, type: type});
+
+    if(!requestFound) {
+      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      });
+    }
+
+    return this.push(
+      requestFound,
+      actualDescription,
+      expectedDescription,
+      message
+    );
+  };
+
+  QUnit.assert.mockjaxRequestNotMade = function(url, type, message){
+    let actualDescription;
+    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+
+    if(!message){
+      message = `Request to server was not made thru $.mockjax: ${expectedDescription}`;
+    }
+
+    let mockjaxCalls = $.mockjax.mockedAjaxCalls();
+    let requestFound = _.find(mockjaxCalls, {url: url, type: type});
+
+    if(requestFound) {
+      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      });
+    }
+
+    return this.push(
+      !requestFound,
+      actualDescription,
+      expectedDescription,
+      message
+    );
+  };
+
   QUnit.assert.arrayContainsExactly = function(actualArray, expectedArray, message){
     if(!message){
       message = `Expected array to contain the contents, but did not`;
@@ -198,4 +247,4 @@ export default function() {
   QUnit.assert.selectorHasClasses = function() {
     return this.selectorAttibuteIncludes('class', ...arguments);
   };
-};
+}

@@ -40,6 +40,8 @@ class SITask(BaseTask):
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
+    self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
+    self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
    # POM Actions
 
   def validate_styles(self):

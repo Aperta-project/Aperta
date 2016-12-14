@@ -455,14 +455,13 @@ class AuthenticatedPage(PlosPage):
     """
     Check that any process (submit, save, send, etc) triggered a flash success message
     use where we are supposed to explicitly put up a success message - though not for
-    new manuscript creation - there is a custom method for that. Closes message, if found.
+    new manuscript creation - there is a custom method for that.
     :param timeout: a time in seconds to wait for the success message (optional, default 15s)
     :return: text of flash success message
     """
     self.set_timeout(timeout)
     success_msg = self._get(self._flash_success_msg)
     time.sleep(.5)
-    self.close_flash_message()
     return success_msg.text
 
   def close_flash_message(self):

@@ -47,7 +47,8 @@ class SITaskTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/docs/test-math.docx'
+    doc2upload = 'frontend/assets/docs/The_internal_organization_of_the_mycobacterial_'\
+        'partition_assembly_does_the_DNA_wrap_.docx'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -131,8 +132,6 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     manuscript_page.click_workflow_link()
-    ##paper_workflow_url = '{0}/workflow'.format(paper_url.split('?')[0])
-    ##self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
@@ -171,7 +170,46 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def _test_multiple_si_uploads(self):
+  def test_replace_si_upload(self):
+    """
+    test_figure_task: Validates reeplace function in SI task
+    :return: None
+    """
+    creator_user = random.choice(users)
+    logging.info('Login as {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    paper_url = manuscript_page.get_current_url()
+    short_doi = manuscript_page.get_short_doi()
+    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
+    doc2upload = 'frontend/assets/docs/The_internal_organization_of_the_mycobacterial_'\
+        'partition_assembly_does_the_DNA_wrap_.docx'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    manuscript_page.click_task('Supporting Info')
+    supporting_info = SITask(self._driver)
+    supporting_info.add_file(fn)
+    supporting_info.validate_uploads([fn])
+    # click edit
+    edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_btn.click()
+    # check for reeplace symbol
+    replace_div = supporting_info._get(supporting_info._si_replace_div)
+    replace_input = replace_div.find_element(*supporting_info._si_replace_input)
+    doc2upload = 'frontend/assets/docs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.docx'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    replace_input.send_keys(fn)
+    # Time for the file to upload and cancel button to attach
+    time.sleep(3)
+    cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
+    cancel_btn.click()
+    supporting_info.validate_uploads([fn])
+    return None
+
+  def test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     :return: void function

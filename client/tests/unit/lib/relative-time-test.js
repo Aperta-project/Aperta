@@ -5,6 +5,16 @@ module('RelativeTime');
 
 let now = 'September 13, 2016 13:17:56 UTC';
 
+test('1 day ago, beginning of day', function(assert) {
+  const startOfDay = moment(now).utc().startOf('day');
+  const endOfDay = moment(now).utc().endOf('day');
+
+  var date = new Date('September 12, 2016 00:00:09 UTC');
+
+  assert.equal(relativeTime(date, startOfDay), '1 day ago', 'returns a human readable string for how many days ago a date was');
+  assert.equal(relativeTime(date, endOfDay), '1 day ago', 'returns a human readable string for how many days ago a date was');
+});
+
 test('3 days ago, beginning of day', function(assert) {
   const startOfDay = moment(now).utc().startOf('day');
   const endOfDay = moment(now).utc().endOf('day');

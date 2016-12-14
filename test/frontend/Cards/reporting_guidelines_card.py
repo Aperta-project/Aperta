@@ -19,6 +19,7 @@ class ReportingGuidelinesCard(BaseCard):
     self._question_text = (By.CLASS_NAME, 'question-text')
     self._select_instruction = (By.CLASS_NAME, 'help')
     self._selection_list = (By.CLASS_NAME, 'list-unstyled')
+    self._prisma_uploaded_file_link = (By.CLASS_NAME, 'file-link')
 
   # POM Actions
 
@@ -46,4 +47,27 @@ class ReportingGuidelinesCard(BaseCard):
     for item in selection_list_items:
       assert item.find_element_by_tag_name('input').is_selected() is False, 'Item {0} is ' \
                                                                             'checked by default'.format(item.text)
+
+  def check_selections(self, choices, filename=None):
+    """
+    Validates that the selections in the card view match the selections from the task view
+    :param choices: The list of indices of the checkboxes that were selected in the task view
+    :param filename: The file name for the uploaded PRISMA checklist, if any
+    (e.g. frontend/assets/PRISMA_2009_checklist.doc)
+    """
+    selection_list = self._get(self._selection_list)
+    list_items = selection_list.find_elements_by_css_selector('li.item')
+    for choice in choices:
+      print list_items[choice].text
+      selected = list_items[choice].find_element_by_tag_name('input').is_selected()
+      assert selected is True, '{0} is checked on Reporting Guidelines task, but not' \
+                               ' on the card'.format(list_items[choice].text)
+
+    if filename:
+      uploaded_prisma_file = self._get(self._prisma_uploaded_file_link)
+      assert filename.split('/')[-1] == uploaded_prisma_file.text, 'Uploaded file {0} is ' \
+                                                                   'not displayed in the Reporting Guidelines ' \
+                                                                   'card'.format(filename.split('/')[-1])
+
+
 

@@ -1398,18 +1398,16 @@ describe JournalFactory, flaky: true do
           end
         end
 
-        describe 'permission to the paper tracker' do
-          it 'can :view the paper tracker' do
-            permission_strings = permissions.where(applies_to: Journal).pluck(:action)
-            expect(permission_strings).to contain_exactly('view_paper_tracker')
-          end
+        it 'has all paper tracker permissions' do
+          expect(permissions).to include(
+            permissions_on_journal.find_by(action: 'view_paper_tracker')
+          )
         end
 
-        describe 'permission to view Papers' do
-          it 'can :view papers' do
-            permission_strings = permissions.where(applies_to: Paper).pluck(:action)
-            expect(permission_strings).to contain_exactly('view')
-          end
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
         end
       end
     end

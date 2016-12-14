@@ -7,6 +7,11 @@ class DownloadAttachmentWorker
   # revert to a broken file after the error had been fixed
   sidekiq_options retry: false
 
+  def self.reprocess(attachment, uploaded_by)
+    return if attachment.pending_url.nil?
+    download_attachment(attachment, attachment.pending_url, uploaded_by)
+  end
+
   def self.download_attachment(attachment, url, uploaded_by_user)
     attachment.update_attribute(:status, Attachment::STATUS_PROCESSING)
     perform_async(attachment.id, url, uploaded_by_user.id)

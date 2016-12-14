@@ -65,7 +65,14 @@ Tahi::Application.configure do
   config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
 
   # Define how root_url should behave by default
-  routes.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
+
+  # NOTE: IHAT_CALLBACK_URL is being used because it has a reliable URL that indicates
+  # if this environment expect HTTP or HTTPS URLs. See APERTA-8560 for more information.
+  uri = URI.parse ENV.fetch('IHAT_CALLBACK_URL', 'http://')
+  routes.default_url_options = {
+    host: ENV.fetch('DEFAULT_MAILER_URL'),
+    protocol: uri.scheme
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

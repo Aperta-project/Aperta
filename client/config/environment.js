@@ -17,7 +17,8 @@ module.exports = function(environment) {
       // pusher configuration is set in initializers/pusher.js
 
       iHatExportFormats: [
-        { type: 'docx', display: 'word' }
+        { type: 'docx', display: 'word' },
+        { type: 'pdf', display: 'pdf'}
       ]
     },
 

@@ -39,6 +39,7 @@ describe PaperAttributesExtractor do
       let(:content) { "My abstract" }
 
       before do
+        allow(paper).to receive(:file_type).and_return 'docx'
         allow(extractor).to receive(:extract_file) do |filename|
           content if filename == "abstract"
         end
@@ -59,6 +60,7 @@ describe PaperAttributesExtractor do
         end
 
         before do
+          allow(paper).to receive(:file_type).and_return 'docx'
           allow(extractor).to receive(:extract_file) do |filename|
             content if filename == "abstract"
           end

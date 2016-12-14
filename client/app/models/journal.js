@@ -6,5 +6,6 @@ export default DS.Model.extend({
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),
   staffEmail: DS.attr('string'),
-  paperTypes: DS.attr()
+  paperTypes: DS.attr(),
+  pdfAllowed: DS.attr('boolean')
 });

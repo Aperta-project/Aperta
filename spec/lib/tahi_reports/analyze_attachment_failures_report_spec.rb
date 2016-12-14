@@ -69,19 +69,19 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       expect(report_contents).to include <<-STRING.strip_heredoc
         Attachment(s) stuck in processing
         -------------------------------------------
-        Count in processing in the past 0 days: 1
-        Count in processing in the past 1 day: 1
-        Count in processing in the past 7 days: 1
-        Count in processing in the past 14 days: 1
-        Count in processing in the past 1 month: 1
-        Count in processing in the past 1 year: 2
+        Count in processing state in the past 0 days: 1
+        Count in processing state in the past 1 day: 1
+        Count in processing state in the past 7 days: 1
+        Count in processing state in the past 14 days: 1
+        Count in processing state in the past 1 month: 1
+        Count in processing state in the past 1 year: 2
       STRING
     end
 
-    it 'prints how many attachments are stuck in an errored state' do
+    it 'prints how many attachments are stuck in an error state' do
       run_report
       expect(report_contents).to include <<-STRING.strip_heredoc
-        Attachment(s) that errored out
+        Attachment(s) stuck in error
         -------------------------------------------
         Count in error state in the past 0 days: 1
         Count in error state in the past 1 day: 1

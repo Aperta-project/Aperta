@@ -18,11 +18,11 @@ module TahiReports
       output.puts
       output.puts
 
-      print_attachments_stuck_in_processing
+      print_attachments_stuck(attachments_processing, 'processing')
       output.puts
       output.puts
 
-      print_attachments_stuck_in_errored
+      print_attachments_stuck(attachments_errored, 'error')
       output.puts
       output.puts
 
@@ -88,48 +88,24 @@ module TahiReports
       output.puts "# of unknown: #{unknown_count}"
     end
 
-    def print_attachments_stuck_in_processing
-      attachments_stuck_in_processing = {}
+    def print_attachments_stuck(attachments, state)
+      attachments_stuck = {}
       TIMEFRAMES.each_with_index do |timeframe, i|
         if i == 0
-          attachments_stuck_in_processing[timeframe] = attachments_processing.where(
+          attachments_stuck[timeframe] = attachments.where(
             created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
           ).count
         else
-          attachments_stuck_in_processing[timeframe] = attachments_processing.where(
+          attachments_stuck[timeframe] = attachments.where(
             created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES[i-1].ago.end_of_day.utc)
           ).count
         end
       end
 
-      output.puts "#{attachment_klass.name}(s) stuck in processing"
+      output.puts "#{attachment_klass.name}(s) stuck in #{state}"
       output.puts "-------------------------------------------"
-      attachments_stuck_in_processing.each_pair do |timeframe, count|
-        output.puts "Count in processing in the past #{timeframe.inspect}: #{count}"
-      end
-    end
-
-    def print_attachments_stuck_in_errored
-      attachments_stuck_in_errored = {}
-      TIMEFRAMES.each_with_index do |timeframe, i|
-        if i == 0
-          attachments_stuck_in_errored[timeframe] = attachments_errored.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
-          ).count
-        else
-          attachments_stuck_in_errored[timeframe] = attachments_errored.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES[i-1].ago.end_of_day.utc)
-          ).count
-        end
-      end
-      output.puts "#{attachment_klass.name}(s) that errored out"
-      output.puts "-------------------------------------------"
-      if attachments_stuck_in_errored.empty?
-        output.puts "  [none]"
-      else
-        attachments_stuck_in_errored.each_pair do |timeframe, count|
-          output.puts "Count in error state in the past #{timeframe.inspect}: #{count}"
-        end
+      attachments_stuck.each_pair do |timeframe, count|
+        output.puts "Count in #{state} state in the past #{timeframe.inspect}: #{count}"
       end
     end
 

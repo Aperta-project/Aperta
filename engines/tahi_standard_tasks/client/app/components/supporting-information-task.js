@@ -34,6 +34,14 @@ export default TaskComponent.extend(FileUploadMixin, {
         saveErrorText: this.get('saveErrorText'),
         object: f,
         validations: {
+          processed: [{
+            type: 'processingFinished',
+            message: 'All files must be done processing to save.',
+            validation() {
+              const file = this.get('object');
+              return file.get('status') === 'finished';
+            }
+          }],
           'label': ['presence'],
           'category': ['presence']
         }

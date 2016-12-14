@@ -7,7 +7,7 @@ FactoryGuy.define('supporting-information-file', {
     src: 'si-file-src',
     status: 'processing',
     title: 'Supporting Info Title',
-    category: null,
+    category: 'Image',
     label: 'Supporting Info Label',
     caption: 'SI caption',
     publishable: true,

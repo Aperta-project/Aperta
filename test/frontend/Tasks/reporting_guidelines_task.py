@@ -12,6 +12,7 @@ from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'achoe@plos.org'
 
+
 class ReportingGuidelinesTask(BaseTask):
   """
   Page Object for the Reporting Guidelines task
@@ -34,6 +35,7 @@ class ReportingGuidelinesTask(BaseTask):
   def validate_styles(self):
     """
     Validates styles in the Reporting Guidelines Task
+    :return: None
     """
     question_text = self._get(self._question_text)
     assert question_text.text == 'Authors should check the EQUATOR Network site for any reporting' \
@@ -55,6 +57,7 @@ class ReportingGuidelinesTask(BaseTask):
     """
     Selects checkboxes in the Reporting Guidelines task.
     :param prisma: If set to true, will select one of the two checkboxes that allows up upload of a PRISMA checklist
+    :return: selected_checkboxes - a list of indices that correspond with the checkboxes that were selected
     """
     selection_list = self._get(self._selection_list)
     selection_list_items = selection_list.find_elements_by_css_selector('li.item')
@@ -74,6 +77,7 @@ class ReportingGuidelinesTask(BaseTask):
   def upload_prisma_review_checklist(self):
     """
     Uploads one of the two PRISMA checklist files
+    :return: file - The PRISMA checklist file that was uploaded
     """
     prisma_files = ['frontend/assets/PRISMA_2009_checklist.doc', 'frontend/assets/PRISMA_2009_checklist.pdf']
     current_path = os.getcwd()
@@ -90,11 +94,13 @@ class ReportingGuidelinesTask(BaseTask):
   def download_prisma_checklist(self):
     """
     Downloads a prisma checklist file by clicking on the uploaded file link
+    :return: None
     """
     uploaded_prisma_file = self._get(self._prisma_uploaded_file_link)
     uploaded_prisma_file.click()
-    time.sleep(2) # Added sleep here to prevent this method from
+    # Added sleep here to prevent this method from
     # trying to get the downloaded file before the download has completed
+    time.sleep(2)
     current_path = os.getcwd()
     os.chdir('/tmp')
     files = filter(os.path.isfile, os.listdir('/tmp'))
@@ -103,11 +109,11 @@ class ReportingGuidelinesTask(BaseTask):
     newest_file = files[-1]
     assert uploaded_prisma_file.text == newest_file.split('/')[-1], \
       'Uploaded file: {0} | Downloaded file: {1}'.format(uploaded_prisma_file.text, newest_file)
-    return newest_file
 
   def replace_prisma_checklist(self):
     """
     Replaces a prisma checklist file
+    :return: None
     """
     current_path = os.getcwd()
     uploaded_prisma_file = self._get(self._prisma_uploaded_file_link)
@@ -128,8 +134,9 @@ class ReportingGuidelinesTask(BaseTask):
   def delete_prisma_checklist(self):
     """
     Deletes a prisma checklist file
+    :return: None
     """
     delete_link = self._get(self._file_delete)
     delete_link.click()
     upload_button = self._get(self._prisma_upload_button)
-    assert upload_button.text == 'UPLOAD REVIEW CHECKLIST', 'PRISMA file was not deleted'
+    assert upload_button.text == 'UPLOAD REVIEW CHECKLIST', upload_button.text

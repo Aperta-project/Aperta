@@ -1,11 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+import logging
+
 from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'achoe@plos.org'
+
 
 class ReportingGuidelinesCard(BaseCard):
   """
@@ -26,6 +29,7 @@ class ReportingGuidelinesCard(BaseCard):
   def validate_styles(self):
     """
     Validate styles in Reporting Guidelines card
+    :return: None
     """
     completed = self.completed_state()
     if completed:
@@ -45,8 +49,8 @@ class ReportingGuidelinesCard(BaseCard):
     selection_list_items = selection_list.find_elements_by_css_selector('li.item')
     # All checkboxes should be unchecked by default:
     for item in selection_list_items:
-      assert item.find_element_by_tag_name('input').is_selected() is False, 'Item {0} is ' \
-                                                                            'checked by default'.format(item.text)
+      list_item = item.find_element_by_tag_name('input')
+      assert not list_item.is_selected, 'Item {0} is checked by default'.format(item.text)
 
   def check_selections(self, choices, filename=None):
     """
@@ -54,11 +58,12 @@ class ReportingGuidelinesCard(BaseCard):
     :param choices: The list of indices of the checkboxes that were selected in the task view
     :param filename: The file name for the uploaded PRISMA checklist, if any
     (e.g. frontend/assets/PRISMA_2009_checklist.doc)
+    :return: None
     """
     selection_list = self._get(self._selection_list)
     list_items = selection_list.find_elements_by_css_selector('li.item')
     for choice in choices:
-      print list_items[choice].text
+      logging.info('Checking these selections: {0}'.format(list_items[choice].text))
       selected = list_items[choice].find_element_by_tag_name('input').is_selected()
       assert selected is True, '{0} is checked on Reporting Guidelines task, but not' \
                                ' on the card'.format(list_items[choice].text)

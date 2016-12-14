@@ -16,12 +16,14 @@ from Tasks.reporting_guidelines_task import ReportingGuidelinesTask
 
 __author__ = 'achoe@plos.org'
 
+
 @MultiBrowserFixture
 class ReportingGuidelinesTaskTest(CommonTest):
   def test_smoke_reporting_guidelines_styles(self):
     """
     test_reporting_guidelines: Validates the elements, styles of the Reporting Guidelines task and
     card from new document creation through workflow view
+    :return: None
     """
     logging.info('Test Reporting Guidelines::styles')
     # User logs in and makes a submission:
@@ -64,6 +66,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     Validates upload of PRISMA checklist. This applies only to the "Systematic Reviews" and "Meta-analyses" options
     on this task. Also validates style of the file upload widget, since this wasn't covered in style validation due
     to lack of entry.
+    :return: None
     """
     logging.info('Test Reporting Guidelines::upload_prisma')
     current_path = os.getcwd()
@@ -107,6 +110,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
   def test_core_reporting_guidelines_download_uploaded_prisma(self):
     """
     Validates download of a PRISMA checklist that has been uploaded
+    :return: None
     """
     logging.info('Test Reporting Guidelines::download_prisma')
     current_path = os.getcwd()
@@ -132,6 +136,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
   def test_core_reporting_guidelines_replace_uploaded_prisma(self):
     """
     Validates replacement of a PRISMA checklist that has been uploaded
+    :return: None
     """
     logging.info('Test Reporting Guidelines::replace_prisma')
     current_path = os.getcwd()
@@ -157,6 +162,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
   def test_core_reporting_guidelines_delete_uploaded_prisma(self):
     """
     Validates deletion of a PRISMA checklist that has been uploaded
+    :return: None
     """
     logging.info('Test Reporting Guidelines::delete_prisma')
     current_path = os.getcwd()
@@ -176,6 +182,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     reporting_guidelines_task.task_ready()
     reporting_guidelines_task.make_selections()
     reporting_guidelines_task.upload_prisma_review_checklist()
+    # Adding sleep here, as the delete is attempted before the upload completes
     time.sleep(1)
     reporting_guidelines_task.delete_prisma_checklist()
     reporting_guidelines_task.click_completion_button()

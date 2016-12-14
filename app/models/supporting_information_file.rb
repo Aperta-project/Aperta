@@ -16,11 +16,6 @@ class SupportingInformationFile < Attachment
 
   before_create :set_publishable
 
-  def ensure_striking_image_category_is_figure
-    self.striking_image = false unless category == 'Figure'
-    true
-  end
-
   def alt
     if file.present?
       filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
@@ -34,6 +29,11 @@ class SupportingInformationFile < Attachment
   # Default to true if unset
   def set_publishable
     self.publishable = true if publishable.nil?
+  end
+
+  def ensure_striking_image_category_is_figure
+    self.striking_image = false unless category == 'Figure'
+    true
   end
 
   def task_completed?

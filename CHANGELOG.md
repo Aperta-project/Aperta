@@ -19,6 +19,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
+* Deleting all the text for a question's answer will no longer cause an error on subsequent
+  changes to that that answer.
 ## ## [1.30.1] - {2016-11-29}
 ### Added
 ### Changed

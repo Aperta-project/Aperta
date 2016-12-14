@@ -99,26 +99,21 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_today.id}]
 
-
         Errors in the past 1 day
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_today.id}]
-
 
         Errors in the past 7 days
           1 failed with error: Failed because of A
           ids=[#{errored_attachment_from_a_week_ago.id}]
 
-
         Errors in the past 14 days
           1 failed with error: Failed because of A
           ids=[#{errored_attachment_from_a_week_ago.id}]
 
-
         Errors in the past 1 month
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_a_month_ago.id}]
-
 
         Errors in the past 1 year
           1 failed with error: Failed for some reason

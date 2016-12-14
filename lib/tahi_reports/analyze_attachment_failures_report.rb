@@ -126,10 +126,10 @@ module TahiReports
           if attachments_by_error.empty?
             output.puts "  [none]"
           else
-            attachments_by_error.group_by(&:error_message).each do |error_message, attachments|
+            attachments_by_error.group_by(&:error_message).each_with_index do |(error_message, attachments), j|
+              output.puts unless j == 0
               output.puts "  #{attachments.length} failed with error: #{error_message}"
               output.puts "  ids=#{attachments.map(&:id).inspect}"
-              output.puts
             end
           end
         else
@@ -142,10 +142,10 @@ module TahiReports
           if attachments_by_error.empty?
             output.puts "  [none]"
           else
-            attachments_by_error.group_by(&:error_message).each do |error_message, attachments|
+            attachments_by_error.group_by(&:error_message).each_with_index do |(error_message, attachments), j|
+              output.puts unless j == 0
               output.puts "  #{attachments.length} failed with error: #{error_message}"
               output.puts "  ids=#{attachments.map(&:id).inspect}"
-              output.puts
             end
           end
         end

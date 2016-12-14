@@ -74,15 +74,15 @@ class InviteCard(BaseCard):
       logging.error('Error fired on send invite.')
     self.click_close_button()
 
-  def validate_invite(self, invitee, title, creator, short_doi):
+  def validate_invite(self, invitee, mmt, title, creator, short_doi):
     """
     Invites the invitee that is passed as parameter, verifying the composed email.
       Makes function and style validations.
     :param invitee: user to invite specified as email, or, if in system, name,
         or username
+    :param mmt: the paper type of the paper to validate in invitation
     :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
     :param creator: user object of the creator of the manuscript
-    :param attach: filename to attach to the invitation
     :param short_doi: paper short_doi of the manuscript
     :return void function
     """
@@ -109,6 +109,7 @@ class InviteCard(BaseCard):
             '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
         invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
         invite_text = invite_text.replace('&nbsp', ' ')
+        assert mmt in invite.text, 'MMT: {0} is not found in\n {1}'.format(mmt, invite_text)
         # Always remember that our ember text always normalizes whitespaces down to one
         #  Painful lesson
         title = self.normalize_spaces(title)
@@ -148,7 +149,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
     # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
     #   will get an index out of range error. I feel dirty.
-    time.sleep(4)
+    time.sleep(10)
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
     attachments = self.get_attached_file_names()

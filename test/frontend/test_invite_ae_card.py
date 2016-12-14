@@ -36,14 +36,13 @@ class InviteAECardTest(CommonTest):
     :return: void function
     """
     logging.info('Test Invite AE')
-    current_path = os.getcwd()
-    logging.info(current_path)
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
@@ -83,11 +82,13 @@ class InviteAECardTest(CommonTest):
                               errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite(academic_editor_login,
+                                   mmt,
                                    manuscript_title,
                                    creator_user,
                                    short_doi)
     # Invite a second user to delete
     invite_ae_card.validate_invite(pub_svcs_login,
+                                   mmt,
                                    manuscript_title,
                                    creator_user,
                                    short_doi)

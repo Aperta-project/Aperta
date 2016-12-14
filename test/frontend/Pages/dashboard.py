@@ -106,6 +106,23 @@ class DashboardPage(AuthenticatedPage):
     self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
+    # The next sequence of 10 locators are all per invitation so should be used withing a
+    #   find_element()
+    self._invitation_type_and_date = (By.CLASS_NAME, 'invitation-metadata')
+    self._invitation_date = (By.CSS_SELECTOR, 'h2.invitation-metadata > span.date')
+    self._invitation_paper_type = (By.CLASS_NAME, 'invitation-paper-type')
+    self._invitation_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h3')
+    self._invitation_author_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4')
+    # The author listing includes an index, lastname, first, and optionally 'from' affiliation
+    #   IT seems like we *could* have multiple such lines.
+    self._invitation_author_listing = (By.CSS_SELECTOR, 'li.dashboard-paper-title > p')
+    # The following elements will only appear if we are able to extract an abstract or if one is
+    #   is set explicitly in the Title and Abstract Card.
+    self._invitation_abstract_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4')
+    self._invitation_abstract_text = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4 + p')
+    self._invitation_accept_button = (By.CSS_SELECTOR, 'button.invitation-accept')
+    self._invitation_decline_button = (By.CSS_SELECTOR, 'button.invitation-decline')
+
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
@@ -164,6 +181,45 @@ class DashboardPage(AuthenticatedPage):
     response = random.choice(['Accept', 'Decline'])
     title = self.normalize_spaces(title)
     logging.info(response)
+    invite_listings = self._gets(self._view_invites_invite_listing)
+    reasons = ''
+    suggestions = ''
+    for listing in invite_listings:
+      logging.info(u'Invitation title: {}'.format(listing.text))
+      if title in self.normalize_spaces(listing.text):
+        if response == 'Accept':
+          listing.find_element(*self._invite_yes_btn).click()
+          time.sleep(2)
+          return 'Accept', (reasons, suggestions)
+        else:
+          listing.find_element(*self._invite_no_btn).click()
+          time.sleep(1)
+          self.validate_reviewer_invitation_response_styles(title)
+          # Enter reason and suggestions
+          reasons = generate_paragraph()[2]
+          suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
+          self._get(self._rim_reasons).send_keys(reasons)
+          self._get(self._rim_suggestions).send_keys(suggestions)
+          time.sleep(1)
+          self._get(self._rim_send_fb_btn).click()
+          # Time to get sure information is sent
+          time.sleep(2)
+          return 'Decline', (reasons, suggestions)
+    # If flow reachs this point, there was an error
+    invite_listings_text = [x.text for x in invite_listings]
+    raise ValueError(u'{0} not in {1}'.format(title, invite_listings_text))
+
+  def validate_invitation_in_overlay(self, mmt, title, creator, short_doi):
+    """
+    Validates the content of an invitation in the invitation overlay.
+      Makes function and style validations.
+    :param mmt: the paper type of the paper to validate in invitation
+    :param title: title of the manuscript - for validation of invite content. Assumed to be unicode
+    :param creator: user object of the creator of the manuscript
+    :param short_doi: paper short_doi of the manuscript
+    :return void function
+    """
+    title = self.normalize_spaces(title)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''
     suggestions = ''
@@ -681,7 +737,8 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_type = self._gets(self._cns_paper_type_dd)
-    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type[0].text,
+                                                                    paper_type)
 
   def select_journal_get_types(self, journal):
     """

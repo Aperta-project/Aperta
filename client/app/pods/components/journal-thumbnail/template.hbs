@@ -93,7 +93,8 @@
 
     <div class="journal-edit-buttons">
       <a href="#" class="button-link button--white" {{action "cancel"}}>cancel</a>
-      <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
+      <a href="#" class="button-secondary button--blue knockout {{if journal.isSaving "hidden"}}" {{action "saveJournalDetails"}}>Save</a>
+      {{progress-spinner visible=journal.isSaving}}
     </div>
 
   </div>

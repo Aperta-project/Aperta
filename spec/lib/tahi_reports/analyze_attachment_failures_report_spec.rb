@@ -51,6 +51,19 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       STRING
     end
 
+    it 'tells the reader of this report the purpose of the report' do
+      run_report
+      expect(report_contents).to include <<-STRING.strip_heredoc
+        The goal of this email is to raise visibility of attachment processing issues before
+        they become widespread so we can improve the experience of Aperta for its users.
+        As issues arise it may be helpful to look for correlated errors in Bugsnag as well as
+        in the `error_message` column on the `attachments` table in the production database.
+
+        If an issue is found please create or update any related JIRA issues and communicate to
+        PO/PMs as your earliest convenience.
+      STRING
+    end
+
     it 'prints a how many attachments are stuck in a processing state' do
       run_report
       expect(report_contents).to include <<-STRING.strip_heredoc

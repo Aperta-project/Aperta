@@ -68,6 +68,14 @@ module TahiReports
         Below is the results of running the Attachment analysis report run on #{Date.today}.
 
         The information below contains information for all attachment types including: #{attachment_types.join(', ')}.
+
+        The goal of this email is to raise visibility of attachment processing issues before
+        they become widespread so we can improve the experience of Aperta for its users.
+        As issues arise it may be helpful to look for correlated errors in Bugsnag as well as
+        in the `error_message` column on the `attachments` table in the production database.
+
+        If an issue is found please create or update any related JIRA issues and communicate to
+        PO/PMs as your earliest convenience.
       MESSAGE
       output.puts
       output.puts

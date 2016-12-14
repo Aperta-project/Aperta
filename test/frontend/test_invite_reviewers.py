@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users
+from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users, test_journal
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -35,7 +35,7 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
+    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
@@ -117,7 +117,7 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
+    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
@@ -239,7 +239,7 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='OnlyInitialDecisionCard', random_bit=True)
+    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()

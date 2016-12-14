@@ -632,9 +632,7 @@ class DashboardPage(AuthenticatedPage):
                                    'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         short_doi = short_dois[count].text
         short_doi = short_doi.split(': ')[1]
-        logging.debug(short_doi)
-        logging.debug(dbshortdoi)
-        dbshort_doi = 'ID: {0}'.format(dbshortdoi.split('/')[1]) if dbshortdoi else 'ID:'
+        dbshortdoi = 'ID: {0}'.format(dbshortdoi.split('/')[1]) if dbshortdoi else 'ID:'
         assert short_doi in dbshortdoi, '{0} not found in {1}'.format(short_doi, dbshortdoi)
         # Finally increment counter
         count += 1

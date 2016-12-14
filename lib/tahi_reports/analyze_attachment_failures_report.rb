@@ -33,19 +33,19 @@ module TahiReports
     end
 
     def attachments_processing
-      @attachments_processing ||= attachment_klass.where(status: 'processing')
+      @attachments_processing ||= attachment_klass.processing
     end
 
     def attachments_done
-      @attachments_done ||= attachment_klass.where(status: 'done')
+      @attachments_done ||= attachment_klass.done
     end
 
     def attachments_errored
-      @attachments_errored ||= attachment_klass.where(status: 'error')
+      @attachments_errored ||= attachment_klass.error
     end
 
     def attachments_unknown
-      @attachments_unknown ||= attachment_klass.where.not(status: %w(processing error done))
+      @attachments_unknown ||= attachment_klass.unknown
     end
 
     private

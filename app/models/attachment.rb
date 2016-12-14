@@ -10,15 +10,23 @@ class Attachment < ActiveRecord::Base
   include ProxyableResource
   include Snapshottable
 
-  STATUS_PROCESSING = 'processing'.freeze
-  STATUS_ERROR = 'error'.freeze
-  STATUS_DONE = 'done'.freeze
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+
+  STATUSES = {
+    processing: 'processing'.freeze,
+    error: 'error'.freeze,
+    done: 'done'.freeze
+  }.freeze
+  STATUS_PROCESSING = STATUSES[:processing]
+  STATUS_ERROR = STATUSES[:error]
+  STATUS_DONE = STATUSES[:done]
 
   class_attribute :public_resource
 
   scope :processing, -> { where(status: STATUS_PROCESSING) }
   scope :error, -> { where(status: STATUS_ERROR) }
   scope :done, -> { where(status: STATUS_DONE) }
+  scope :unknown, -> { where.not(status: STATUSES.values) }
 
   def public_resource
     value = @public_resource

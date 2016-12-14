@@ -39,9 +39,8 @@ describe TahiUtilities::Sweeper do
     `rm -f #{temporary_directory}/*`
 
     # create fake files
-    dump_files.first(number_of_files).each do |file|
-      `touch #{temporary_directory}/#{file}`
-      sleep 1 # we need this delay to guarantee proper sorting!!!
+    dump_files.first(number_of_files).each_with_index do |file, index|
+      FileUtils.touch "#{temporary_directory}/#{file}", :mtime => (Time.now - 24.hours) + index.hours
     end
 
     @newest_file  = newest_file_in(temporary_directory)
@@ -56,7 +55,7 @@ describe TahiUtilities::Sweeper do
 
   describe ".remove_old_files" do
 
-    context "with a need to save 2 files" do
+    context "with a need to keep 2 files" do
       let(:files_to_leave) { 2 }
 
       context "when starting out with 10 dump files" do
@@ -120,7 +119,7 @@ describe TahiUtilities::Sweeper do
       end
     end
 
-    context "with a need to save 3 files" do
+    context "with a need to keep 3 files" do
       let(:files_to_leave) { 3 }
 
       context "when starting out with 10 dump files" do

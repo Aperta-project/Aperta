@@ -28,7 +28,7 @@ module TahiUtilities
         puts remaining_files.map{|path| ' * ' + path}
         puts "and #{dump_files.count} files have been removed."
       end
-      return { remaining_files: remaining_files, deleted_files: dump_files }
+      { remaining_files: remaining_files, deleted_files: dump_files }
     end
   end
 end

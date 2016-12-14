@@ -46,6 +46,7 @@ namespace :db do
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
+  desc "Cleans up the database dump files in ~, leaving the 2 newest"
   namespace :dump do
     task cleanup: :environment do
       require 'tahi_utilities/sweeper'

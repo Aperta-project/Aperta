@@ -172,7 +172,7 @@ class SITaskTest(CommonTest):
 
   def test_replace_si_upload(self):
     """
-    test_figure_task: Validates reeplace function in SI task
+    test_figure_task: Validates replace function in SI task
     :return: None
     """
     creator_user = random.choice(users)

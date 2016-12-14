@@ -48,8 +48,8 @@ namespace :db do
 
   namespace :dump do
     task cleanup: :environment do
-      require_relative '../../lib/garbage_man'
-      GarbageMan.pickup_db_dumps
+      require 'tahi_utilities/sweeper'
+      TahiUtilities::Sweeper.remove_old_files(from_folder: '~', matching_glob: 'aperta-????-??-??T??:??:??Z.dump', keeping_newest: 2)
     end
   end
 

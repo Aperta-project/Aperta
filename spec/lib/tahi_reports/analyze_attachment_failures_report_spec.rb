@@ -71,10 +71,10 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
         -------------------------------------------
         Count in processing state in the past 0 days: 1
         Count in processing state in the past 1 day: 1
-        Count in processing state in the past 7 days: 1
-        Count in processing state in the past 14 days: 1
-        Count in processing state in the past 1 month: 1
-        Count in processing state in the past 1 year: 2
+        Count in processing state in the past 7 days: 2
+        Count in processing state in the past 14 days: 2
+        Count in processing state in the past 1 month: 3
+        Count in processing state in the past 1 year: 4
       STRING
     end
 
@@ -85,37 +85,37 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
         -------------------------------------------
         Count in error state in the past 0 days: 1
         Count in error state in the past 1 day: 1
-        Count in error state in the past 7 days: 1
-        Count in error state in the past 14 days: 1
-        Count in error state in the past 1 month: 1
-        Count in error state in the past 1 year: 2
+        Count in error state in the past 7 days: 2
+        Count in error state in the past 14 days: 2
+        Count in error state in the past 1 month: 3
+        Count in error state in the past 1 year: 4
       STRING
     end
 
     it 'prints a number of attachments per error breakdown including the database ids for each attachment' do
       run_report
       expect(report_contents).to include <<-STRING.strip_heredoc
-        Errors in the past 0 days
+        Errors today
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_today.id}]
 
-        Errors in the past 1 day
+        Errors since yesterday
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_today.id}]
 
-        Errors in the past 7 days
+        Errors in the past week
           1 failed with error: Failed because of A
           ids=[#{errored_attachment_from_a_week_ago.id}]
 
-        Errors in the past 14 days
+        Errors in the past two weeks
           1 failed with error: Failed because of A
           ids=[#{errored_attachment_from_a_week_ago.id}]
 
-        Errors in the past 1 month
+        Errors in the past month
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_a_month_ago.id}]
 
-        Errors in the past 1 year
+        Errors in the past year
           1 failed with error: Failed for some reason
           ids=[#{errored_attachment_from_a_month_ago.id}]
 

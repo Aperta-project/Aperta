@@ -1,6 +1,13 @@
 module TahiReports
   class AnalyzeAttachmentFailuresReport
-    TIMEFRAMES = [0.days, 1.day, 1.week, 2.weeks, 1.month, 1.year]
+    TIMEFRAMES = {
+      'today': 0.days,
+      'since yesterday': 1.day,
+      'in the past week': 1.week,
+      'in the past two weeks': 2.weeks,
+      'in the past month': 1.month,
+      'in the past year': 1.year
+    }
 
     attr_reader :output, :attachment_klass
 
@@ -90,16 +97,10 @@ module TahiReports
 
     def print_attachments_stuck(attachments, state)
       attachments_stuck = {}
-      TIMEFRAMES.each_with_index do |timeframe, i|
-        if i == 0
-          attachments_stuck[timeframe] = attachments.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
-          ).count
-        else
-          attachments_stuck[timeframe] = attachments.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES[i-1].ago.end_of_day.utc)
-          ).count
-        end
+      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
+        attachments_stuck[timeframe] = attachments.where(
+          created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
+        ).count
       end
 
       output.puts "#{attachment_klass.name}(s) stuck in #{state}"
@@ -113,9 +114,9 @@ module TahiReports
       output.puts "Number of #{attachment_klass.name}(s) per error"
       output.puts "-------------------------------------------"
       attachments_stuck_in_errored = {}
-      TIMEFRAMES.each_with_index do |timeframe, i|
+      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
         output.puts unless i == 0
-        output.puts "Errors in the past #{timeframe.inspect}"
+        output.puts "Errors #{human_readable_timeframe}"
         if i == 0
           attachments_by_error = attachments_errored.where(
             created_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
@@ -134,7 +135,7 @@ module TahiReports
           end
         else
           attachments_by_error = attachments_errored.where(
-            created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES[i-1].ago.end_of_day.utc)
+            created_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i-1].ago.end_of_day.utc)
           ).each do |a|
             a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
           end

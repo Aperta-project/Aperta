@@ -42,6 +42,8 @@ class User < ActiveRecord::Base
 
   has_one :orcid_account
 
+  has_many :reviewer_numbers
+
   attr_accessor :login
 
   validates \

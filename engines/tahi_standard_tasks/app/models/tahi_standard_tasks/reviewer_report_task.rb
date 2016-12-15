@@ -14,6 +14,15 @@ module TahiStandardTasks
     def self.restore_defaults
     end
 
+    def reviewer
+      assignments.joins(:role)
+        .where(roles: {name: Role::REVIEWER_REPORT_OWNER_ROLE}).first.user
+    end
+
+    def reviewer_number
+      ReviewerNumber.number_for(reviewer, paper)
+    end
+
     # find_or_build_answer_for(...) will return the associated answer for this
     # task given :nested_question. For ReviewerReportTask this enforces the
     # lookup to be scoped to this task's current decision. Answers associated
@@ -63,10 +72,6 @@ module TahiStandardTasks
       !!body["submitted"]
     end
 
-    def reviewer_number
-      body["reviewer_number"]
-    end
-
     # before save we want to update the reviewer number if neccessary
     def on_completion
       assign_reviewer_number if completed?
@@ -75,25 +80,16 @@ module TahiStandardTasks
 
     def assign_reviewer_number
       return if reviewer_number.present? || !paper.number_reviewer_reports
-      set_reviewer_number(get_new_reviewer_number)
+      add_number_to_title(new_reviewer_number)
     end
 
-    def get_new_reviewer_number
-      max_existing = TahiStandardTasks::ReviewerReportTask
-        .where(paper: paper)
-        .all
-        .map(&:reviewer_number)
-        .compact
-        .max || 0
-
-      max_existing + 1
+    def new_reviewer_number
+      ReviewerNumber.get_new(reviewer, paper)
     end
 
     # this is meant to run in a `before_save` hook so don't
     # call `save` in the method body
-    def set_reviewer_number(new_number)
-      body["reviewer_number"] = new_number
-
+    def add_number_to_title(new_number)
       new_title = title + " (##{new_number})"
       self.title = new_title
     end

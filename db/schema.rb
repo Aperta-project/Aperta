@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161213162902) do
+ActiveRecord::Schema.define(version: 20161215205030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -575,6 +575,19 @@ ActiveRecord::Schema.define(version: 20161213162902) do
 
   add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
   add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
+
+  create_table "reviewer_numbers", force: :cascade do |t|
+    t.integer  "paper_id",   null: false
+    t.integer  "user_id",    null: false
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reviewer_numbers", ["paper_id", "number"], name: "index_reviewer_numbers_on_paper_id_and_number", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id", "user_id"], name: "index_reviewer_numbers_on_paper_id_and_user_id", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id"], name: "index_reviewer_numbers_on_paper_id", using: :btree
+  add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false

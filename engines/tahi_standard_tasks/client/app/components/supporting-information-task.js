@@ -6,6 +6,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
+  uploadPending: null, // passed-in
   classNames: ['supporting-information-task'],
   files: computed.alias('task.paper.supportingInformationFiles'),
   uploadUrl: computed('task', function() {
@@ -15,10 +16,14 @@ export default TaskComponent.extend(FileUploadMixin, {
   saveErrorText: 'Please edit to add label, category, and optional title and legend',
 
   validateData() {
+
     const objs = this.get('filesWithErrors');
     objs.invoke('validateAll');
 
-    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
+    if (this.get('uploadPending')) {
+      errors = true;
+    }
 
     if(errors) {
       this.set(
@@ -39,7 +44,7 @@ export default TaskComponent.extend(FileUploadMixin, {
             message: 'All files must be done processing to save.',
             validation() {
               const file = this.get('object');
-              return file.get('status') === 'done';
+              return file.get('status') === 'done' && !this.get('uploadPending');
             }
           }],
           'label': ['presence'],
@@ -50,7 +55,13 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   actions: {
+    uploadStarted(data, filename) {
+      this.set('uploadPending', true);
+      this.uploadStarted(data, filename);
+    },
+
     uploadFinished(data, filename) {
+      this.set('uploadPending', false);
       const id = data.supporting_information_file.id;
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);

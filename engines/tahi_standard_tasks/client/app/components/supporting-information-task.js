@@ -6,7 +6,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
-  uploadPending: null, // passed-in
+  uploadCount: null, // defined by component
   classNames: ['supporting-information-task'],
   files: computed.alias('task.paper.supportingInformationFiles'),
   uploadUrl: computed('task', function() {
@@ -21,7 +21,7 @@ export default TaskComponent.extend(FileUploadMixin, {
     objs.invoke('validateAll');
 
     let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
-    if (this.get('uploadPending')) {
+    if (this.get('uploadCount')) {
       errors = true;
     }
 
@@ -44,7 +44,7 @@ export default TaskComponent.extend(FileUploadMixin, {
             message: 'All files must be done processing to save.',
             validation() {
               const file = this.get('object');
-              return file.get('status') === 'done' && !this.get('uploadPending');
+              return file.get('status') === 'done';
             }
           }],
           'label': ['presence'],
@@ -56,12 +56,16 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   actions: {
     uploadStarted(data, filename) {
-      this.set('uploadPending', true);
+      if (this.get('uploadCount')) {
+        this.set('uploadCount', this.get('uploadCount') + 1);
+      } else {
+        this.set('uploadCount', 1);
+      }
       this.uploadStarted(data, filename);
     },
 
     uploadFinished(data, filename) {
-      this.set('uploadPending', false);
+      this.set('uploadCount', this.get('uploadCount') - 1);
       const id = data.supporting_information_file.id;
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);

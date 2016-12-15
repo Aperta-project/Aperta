@@ -19,7 +19,6 @@
 // Styleguide Columns
 
 .columns {
-  @include position(absolute, 135px 0px 0px 0px);
   overflow-y: hidden;
   overflow-x: auto;
   padding-top: 20px;

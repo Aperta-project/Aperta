@@ -174,7 +174,7 @@ describe Figure, redis: true do
     end
   end
 
-  describe '#file_exists?' do
+  describe '#file?' do
     context 'when the file is present' do
       it 'returns true' do
         expect(figure.file?).to eq true

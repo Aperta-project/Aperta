@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
   the journal.
 * Withdrawn banner now shows on workflow view.
@@ -20,6 +21,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
+* Attached images with capitalized filenames will now preview correctly
 ## ## [1.30.1] - {2016-11-29}
 ### Added
 ### Changed

@@ -605,6 +605,12 @@ describe JournalFactory, flaky: true do
             expect(permissions).not_to include(*tech_check_permissions)
           end
         end
+
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
+        end
       end
 
       context 'Freelance Editor' do
@@ -1407,6 +1413,18 @@ describe JournalFactory, flaky: true do
             permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
             expect(permission_strings).to contain_exactly('view', 'edit')
           end
+        end
+
+        it 'has all paper tracker permissions' do
+          expect(permissions).to include(
+            permissions_on_journal.find_by(action: 'view_paper_tracker')
+          )
+        end
+
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
         end
       end
     end

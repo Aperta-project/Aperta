@@ -42,7 +42,12 @@ test("component shows orcid id and trash can, and reauthorize option if accessTo
     'status': 'access_token_expired',
     'identifier': '0000-0000-0000-0000'
   });
+  let user = FactoryGuy.make('user', {
+    id: '1'
+  });
 
+  this.set('user', user);
+  this.set('currentUser', user);
   this.set('orcidAccount', orcidAccount);
   this.render(template);
   assert.elementFound('.orcid-access-expired');
@@ -117,10 +122,10 @@ test("component works when user is not set and then set", function(assert) {
   });
 
   this.set('currentUser', user);
-  this.set('orcidAccount', orcidAccount);
 
   this.render(noUserTemplate);
   assert.elementNotFound('.orcid-wrapper');
   this.set('user', user);
+  this.set('orcidAccount', orcidAccount);
   assert.elementFound('.orcid-wrapper');
 });

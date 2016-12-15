@@ -1,28 +1,30 @@
-{{#if orcidConnectEnabled}}
-  {{#if orcidAccount.identifier}}
-    <!-- orcid account linked -->
-    <div class="orcid-wrapper">
-    <div class="orcid-linked">
-      <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
-      ORCID ID: <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
-      {{#if canRemoveOrcid}}
-        <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
-      {{else}}
+{{#if orcidAccount.identifier}}
+  <!-- orcid account linked -->
+  <div class="orcid-wrapper">
+  <div class="orcid-linked">
+    <img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>
+    ORCID ID: <a href="{{orcidAccount.profile_url}}" target="_blank">{{orcidAccount.identifier}}</a>
+    {{#if canRemoveOrcid}}
+      <i {{action "removeOrcidAccount" orcidAccount}} class="fa fa-trash remove-orcid"></i>
+    {{else}}
+      {{#if canLinkOrcid}}
         <p class="staff-remove-orcid">Please contact <a href="mailto:{{journal.staffEmail}}">{{journal.staffEmail}}</a> to remove this ORCID account.</p>
       {{/if}}
-    </div>
-    {{#if accessTokenExpired}}
-      <div class="orcid-access-expired">
-      <a href="{{orcidAccount.oauthAuthorizeUrl}}"
-         class="button-secondary button--green"
-         target="_blank">
-         Reauthorize Expired ORCID Access
-      </a>
-      </div>
     {{/if}}
+  </div>
+  {{#if refreshAccessToken}}
+    <div class="orcid-access-expired">
+    <a href="{{orcidAccount.oauthAuthorizeUrl}}"
+       class="button-secondary button--green"
+       target="_blank">
+       Reauthorize Expired ORCID Access
+    </a>
     </div>
-  {{else}}
-    <!-- no orcid account linked -->
+  {{/if}}
+  </div>
+{{else}}
+  <!-- no orcid account linked -->
+  {{#if canLinkOrcid}}
     <div class="orcid-not-linked">
       <button
         class="button-secondary button--green display-while-disabled"
@@ -33,5 +35,7 @@
       </button>
     </div>
     <a href="https://plos.org/orcid" target="_blank" class="what-is-orcid">?</a>
+  {{else}}
+    No ORCID ID has been linked with this author.
   {{/if}}
 {{/if}}

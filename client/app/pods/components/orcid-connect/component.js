@@ -38,15 +38,15 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
-    if(this.get('user')) {
+    if(this.get('user') && this.get('user.orcidAccount')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
       });
+      if (this.get('canRemoveOrcid') === null) {
+        this.setCanRemoveOrcid();
+      }
     }
 
-    if (this.get('canRemoveOrcid') === null) {
-      this.setCanRemoveOrcid();
-    }
     // if we don't have a journal (profile page) we need to find one to
     // display a contact email
     if (this.get('journal') === null) {
@@ -71,7 +71,7 @@ export default Component.extend({
     }
   },
 
-  orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
+  canLinkOrcid: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
     const user = this.get('user.id'); // <-- promise
     const currentUser = this.get('currentUser.id');
     return this.get('orcidAccount') && isEqual(user, currentUser);
@@ -113,6 +113,7 @@ export default Component.extend({
   orcidOauthResult: null,
 
   accessTokenExpired: computed.equal('orcidAccount.status', 'access_token_expired'),
+  refreshAccessToken: computed.and('accessTokenExpired', 'canLinkOrcid'),
 
   actions: {
     removeOrcidAccount(orcidAccount) {

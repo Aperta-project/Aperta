@@ -8,11 +8,12 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       :with_creator,
       :submitted_lite,
       journal: journal,
-      uses_research_article_reviewer_report: false)
+      uses_research_article_reviewer_report: false
+    )
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
-  let(:paper_page){ PaperPage.new }
+  let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
   let!(:reviewer_report_task) do
     ReviewerReportTaskCreator.new(
@@ -37,12 +38,27 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
+    ident = 'front_matter_reviewer_report--competing_interests'
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'I have no competing interests with this work.'
+    answers = NestedQuestion.where(ident: ident).first.nested_question_answers
+    sentinel_proc = -> { answers.count }
+
+    # Recreating the error in APERTA-8647
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => 'Oops, this is the wrong value'
+    end
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => ''
+    end
+    no_compete = 'I have no competing interests with this work.'
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => no_compete
+    end
     t.submit_report
     t.confirm_submit_report
-
-    expect(page).to have_selector(".answer-text", text: 'I have no competing interests with this work.')
+    expect(page).to have_selector(".answer-text", text: no_compete)
+    expect(answers.count).to eq(1)
+    expect(answers.reload.first.value).to eq('I have no competing interests with this work.')
   end
 
   scenario 'A reviewer can see their previous rounds of review' do
@@ -75,8 +91,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']}
+      { title: 'Revision 0', answers: ['answer for round 0'] },
+      { title: 'Revision 1', answers: ['answer for round 1'] }
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
@@ -87,9 +103,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']},
-      {title: 'Revision 2', answers: ['answer for round 2']}
+      { title: 'Revision 0', answers: ['answer for round 0'] },
+      { title: 'Revision 1', answers: ['answer for round 1'] },
+      { title: 'Revision 2', answers: ['answer for round 2'] }
     )
   end
 end

@@ -27,12 +27,16 @@ export default Ember.ObjectProxy.extend({
     this.get('answer.isDeleted');
   },
 
-  refreshAnswer: Ember.observer('answer.isDeleted', function(){
+  refreshAnswerObserver: Ember.observer('answer.isDeleted', function(){
+    Ember.run.once(this, '_refreshAnswer');
+  }),
+
+  _refreshAnswer() {
     const answer = this.get('answer');
     if(answer && answer.get('isDeleted')){
       this.set('answer', this._loadAnswer());
     }
-  }),
+  },
 
   _loadAnswer: function(){
     const nestedQuestion = this.get('nestedQuestion');

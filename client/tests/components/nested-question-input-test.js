@@ -21,6 +21,10 @@ moduleForComponent('nested-question-input', 'Integration | Component | nested qu
   },
 });
 
+let setValue = ($input, newVal) => {
+  return $input.val(newVal).trigger('intput').trigger('change');
+};
+
 test('it puts a new answer in the store for unanswered questions, then saves on change', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
@@ -38,7 +42,7 @@ test('it puts a new answer in the store for unanswered questions, then saves on 
 
   $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
   let done = assert.async();
-  this.$('input').val('new value').trigger('change');
+  setValue(this.$('input'), 'new value');
   wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');
     done();
@@ -62,7 +66,7 @@ test('it saves an existing answer on change', function(assert) {
 
   $.mockjax({url: '/api/nested_questions/1/answers/1', type: 'PUT', status: 204, responseText: ''});
   let done = assert.async();
-  this.$('input').val('new value').trigger('change');
+  setValue(this.$('input'), 'new value');
   wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'PUT', 'it saves the new answer on change');
     done();
@@ -81,7 +85,7 @@ test('it deletes and replaces the existing answer on change if the answer is bla
 
   $.mockjax({url: '/api/nested_questions/1/answers/1', type: 'DELETE', status: 204, responseText: ''});
   let done = assert.async();
-  this.$('input').val('').trigger('change');
+  setValue(this.$('input'), '');
   wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'DELETE', 'deletes the blank answer');
     assert.equal(this.getAnswers().get('length'), 1, 'there is only one answer in the store');
@@ -91,7 +95,7 @@ test('it deletes and replaces the existing answer on change if the answer is bla
     $.mockjax.clear();
     $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
 
-    this.$('input').val('really new answer').trigger('change');
+    setValue(this.$('input'), 'really new answer');
   }).then(wait)
   .then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');

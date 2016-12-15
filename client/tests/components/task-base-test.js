@@ -16,7 +16,8 @@ moduleForComponent('task-base', 'Unit: components/task-base', {
 
     this.task = Ember.Object.create({
       isOnlyEditableIfPaperEditable: true,
-      paper: this.paper
+      paper: this.paper,
+      save: function() { }
     });
 
     this.register('service:can', FakeCanService);
@@ -44,3 +45,43 @@ test('#isEditable: true when the task is not a metadata task', function(assert) 
   });
 });
 
+test('#toggleTaskCompletion marks the task as completed when there are no validation errors', function(assert) {
+  let component = this.subject();
+  component.validationErrorsPresent = () => { return false; };
+
+  Ember.run(()=> {
+    component.set('task.completed', false);
+    // try to mark as incomplete
+    component.actions.toggleTaskCompletion.apply(component);
+  });
+  assert.equal(component.get('task.completed'), true, 'task was successfuly completed');
+});
+
+test('#toggleTaskCompletion action skips validations when toggling a complete task back to incomplete', function(assert) {
+  let component = this.subject();
+  component.validationErrorsPresent = () => { return true; };
+
+  Ember.run(()=> {
+    component.set('task.completed', true);
+    // try to mark as incomplete
+    component.actions.toggleTaskCompletion.apply(component);
+  });
+  assert.equal(component.get('task.completed'), false, 'task was successfully toggled back to incomplete even when validation errors were present');
+});
+
+test('#toggleTaskCompletion does not leave skipValidations in a bad state when toggling a complete task back to incomplete', function(assert) {
+  let component = this.subject();
+  component.validationErrorsPresent = () => { return true; };
+
+  // explicitly set skipValidations to false so we can ensure this is the
+  // state it's set back to.
+  component.set('skipValidations', false);
+
+  // mark the task as complete so toggling it back to incomplete
+  component.set('task.completed', true);
+
+  Ember.run(()=> {
+    component.actions.toggleTaskCompletion.apply(component);
+  });
+  assert.equal(component.get('skipValidations'), false, 'skipValidations was put back into its original state');
+});

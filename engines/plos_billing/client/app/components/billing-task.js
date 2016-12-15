@@ -9,6 +9,7 @@ const {
 } = Ember;
 
 export default TaskComponent.extend({
+  classNames: ['billing-task'],
   questionValidations: questionValidations,
   validateData() {
     this.validateQuestions();

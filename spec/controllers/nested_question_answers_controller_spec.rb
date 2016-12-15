@@ -214,9 +214,9 @@ describe NestedQuestionAnswersController do
         expect(nested_question_answer.deleted_at).to_not be_nil
       end
 
-      it "responds with 200 OK" do
+      it "responds with 204" do
         do_request
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(204)
       end
     end
 

@@ -6,6 +6,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
+  uploadCount: null, // defined by component
   classNames: ['supporting-information-task'],
   files: computed.alias('task.paper.supportingInformationFiles'),
   uploadUrl: computed('task', function() {
@@ -15,10 +16,14 @@ export default TaskComponent.extend(FileUploadMixin, {
   saveErrorText: 'Please edit to add label, category, and optional title and legend',
 
   validateData() {
+
     const objs = this.get('filesWithErrors');
     objs.invoke('validateAll');
 
-    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
+    if (this.get('uploadCount')) {
+      errors = true;
+    }
 
     if(errors) {
       this.set(
@@ -34,6 +39,14 @@ export default TaskComponent.extend(FileUploadMixin, {
         saveErrorText: this.get('saveErrorText'),
         object: f,
         validations: {
+          processed: [{
+            type: 'processingFinished',
+            message: 'All files must be done processing to save.',
+            validation() {
+              const file = this.get('object');
+              return file.get('status') === 'done';
+            }
+          }],
           'label': ['presence'],
           'category': ['presence']
         }
@@ -42,7 +55,17 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   actions: {
+    uploadStarted(data, filename) {
+      if (this.get('uploadCount')) {
+        this.set('uploadCount', this.get('uploadCount') + 1);
+      } else {
+        this.set('uploadCount', 1);
+      }
+      this.uploadStarted(data, filename);
+    },
+
     uploadFinished(data, filename) {
+      this.set('uploadCount', this.get('uploadCount') - 1);
       const id = data.supporting_information_file.id;
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);

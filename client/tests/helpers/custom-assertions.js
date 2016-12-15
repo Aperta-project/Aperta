@@ -14,7 +14,9 @@ export default function() {
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
-    let requestFound = _.find(mockjaxCalls, {url: url, type: type});
+    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
+      return mockjaxCall.url === url && mockjaxCall.type === type;
+    });
 
     if(!requestFound) {
       actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
@@ -39,7 +41,9 @@ export default function() {
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
-    let requestFound = _.find(mockjaxCalls, {url: url, type: type});
+    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
+      return mockjaxCall.url === url && mockjaxCall.type === type;
+    });
 
     if(requestFound) {
       actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {

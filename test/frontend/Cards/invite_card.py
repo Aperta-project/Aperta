@@ -216,7 +216,7 @@ class InviteCard(BaseCard):
     self.validate_application_title_style(card_title)
     # Button
     btn = self._get(self._compose_invitation_button)
-    assert btn.text == 'COMPOSE INVITE'
+    assert btn.text == 'ADD TO QUEUE', '{0} instead of ADD TO QUEUE'.format(btn.text)
     # Check disabled button
     # Style validation on disabled button is commented out due to APERTA-7684
     # self.validate_primary_big_disabled_button_style(btn)

@@ -72,6 +72,7 @@ class WorkflowPage(AuthenticatedPage):
     self._initial_tech_check_card = (By.XPATH, "//a/div[contains(., 'Initial Tech Check')]")
     self._invite_ae_card = (By.XPATH, "//a/div[contains(., 'Invite Academic Editor')]")
     self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
+    self._ah_author_card = (By.XPATH, "//a/div[contains(., 'Ad-hoc for Authors')]")
     self._new_taxon_card = (By.XPATH, "//a/div[contains(., 'New Taxon')]")
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
     self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
@@ -157,6 +158,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
     self._get(self._register_decision_card).click()
+
+  def click_ad_hoc_authors_card(self):
+    """Open the Ad Hoc author card"""
+    self._get(self._ah_author_card).click()
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""

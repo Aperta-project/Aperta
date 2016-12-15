@@ -14,6 +14,8 @@ class SupportingInformationFile < Attachment
 
   validates :category, :title, presence: true, if: :task_completed?
 
+  validates :status, acceptance: { accept: STATUS_DONE }, if: :task_completed?
+
   before_create :set_publishable
 
   def alt

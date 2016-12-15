@@ -9,6 +9,7 @@ module TahiStandardTasks
 
     validates_with AssociationValidator,
       association: :supporting_information_files,
+      before_each_validation: -> (task, si_file) { si_file.owner = task },
       fail: :set_completion_error,
       if: :completed?
 
@@ -23,7 +24,7 @@ module TahiStandardTasks
     private
 
     def set_completion_error
-      errors.add(:completed, 'Please fix validation errors above.')
+      errors.add(:completed, 'Please fix validation errors.')
     end
   end
 end

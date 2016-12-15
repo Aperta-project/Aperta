@@ -32,6 +32,7 @@ export default Ember.ObjectProxy.extend({
   }),
 
   _refreshAnswer() {
+    if (this.get('nestedQuestion.isDestroying')) { return; }
     const answer = this.get('answer');
     if(answer && answer.get('isDeleted')){
       this.set('answer', this._loadAnswer());

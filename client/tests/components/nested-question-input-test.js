@@ -11,7 +11,6 @@ moduleForComponent('nested-question-input', 'Integration | Component | nested qu
   beforeEach() {
     registerCustomAssertions();
     manualSetup(this.container);
-    $.mockjax.clear();
     this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
     this.registry.register('service:can', FakeCanService);
 
@@ -19,6 +18,10 @@ moduleForComponent('nested-question-input', 'Integration | Component | nested qu
       return this.container.lookup('service:store').peekAll('nested-question-answer');
     };
   },
+
+  afterEach() {
+    $.mockjax.clear();
+  }
 });
 
 let setValue = ($input, newVal) => {
@@ -41,11 +44,9 @@ test('it puts a new answer in the store for unanswered questions, then saves on 
   assert.equal(newAnswer.get('nestedQuestion.id'), question.id, 'the new answer belongs to the question');
 
   $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
-  let done = assert.async();
   setValue(this.$('input'), 'new value');
-  wait().then(() => {
+  return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');
-    done();
   });
 });
 
@@ -65,11 +66,9 @@ test('it saves an existing answer on change', function(assert) {
   assert.notOk(answer.get('isNew'), 'the answer is not new');
 
   $.mockjax({url: '/api/nested_questions/1/answers/1', type: 'PUT', status: 204, responseText: ''});
-  let done = assert.async();
   setValue(this.$('input'), 'new value');
-  wait().then(() => {
+  return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'PUT', 'it saves the new answer on change');
-    done();
   });
 });
 
@@ -84,9 +83,8 @@ test('it deletes and replaces the existing answer on change if the answer is bla
   `);
 
   $.mockjax({url: '/api/nested_questions/1/answers/1', type: 'DELETE', status: 204, responseText: ''});
-  let done = assert.async();
   setValue(this.$('input'), '');
-  wait().then(() => {
+  return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'DELETE', 'deletes the blank answer');
     assert.equal(this.getAnswers().get('length'), 1, 'there is only one answer in the store');
     let answer = this.getAnswers().get('firstObject');
@@ -99,6 +97,5 @@ test('it deletes and replaces the existing answer on change if the answer is bla
   }).then(wait)
   .then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');
-    done();
   });
 });

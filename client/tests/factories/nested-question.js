@@ -28,7 +28,8 @@ export function createQuestionWithAnswer(owner, ident, answerValue){
   });
 
   owner.get('nestedQuestions').addObject(question);
-};
+  return question;
+}
 
 export function createQuestion(owner, ident, text){
   let questionText = (text || `This is the question text for ${ident}`);
@@ -40,4 +41,5 @@ export function createQuestion(owner, ident, text){
   });
 
   owner.get('nestedQuestions').addObject(question);
-};
+  return question;
+}

@@ -112,12 +112,12 @@ class PageFragment
     end
   end
 
-  # wait_for_attachment_to_upload exists because feature specs run multiple
+  # wait_for_sentinel exists because feature specs run multiple
   # threads: a thread for running tests and another for running the app for
   # selenium, etc. Not knowing the order of execution between the threads
   # this is for providing ample time and opportunity for an Attachment
   # to be uploaded and created before moving on in a test.
-  def wait_for_attachment_to_upload(sentinel, seconds=10, &blk)
+  def wait_for_sentinel(sentinel, seconds = 10)
     Timeout.timeout(seconds) do
       original = sentinel.call
       yield
@@ -130,7 +130,7 @@ class PageFragment
 
   def upload_file(element_id:, file_name:, sentinel:, process_before_upload: false)
     file_path = Rails.root.join('spec', 'fixtures', file_name)
-    wait_for_attachment_to_upload(sentinel) do
+    wait_for_sentinel(sentinel) do
       # need to use Capybara.current_session here because
       # PageFragment doesn't include the Capybara::DSL
       Capybara.current_session.attach_file element_id, file_path, visible: false

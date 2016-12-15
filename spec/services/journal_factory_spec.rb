@@ -1,6 +1,17 @@
 require 'rails_helper'
 
-describe JournalFactory, flaky: true do
+describe JournalFactory do
+  # This is a helper method for removing anonymous classes from a list of
+  # classes. Usually this is not needed, but Aperta depends on the
+  # inheritance hierarchy of ::Task to do things and so does this test.
+  # To avoid seemingly intermittent errors based on the order of tests being
+  # run we use this helper method to strip them all away. If you see
+  # a direct call to ".descendants" in this file it should likely be wrapped
+  # using this helper method.
+  def without_anonymous_classes(klasses)
+    klasses.select { |klass| klass.name.present? }
+  end
+
   describe '.create' do
     let(:permissions_on_journal) do
       Permission.joins(:states).where(
@@ -45,18 +56,18 @@ describe JournalFactory, flaky: true do
     end
     let(:billing_task_klasses) do
       [PlosBilling::BillingTask] +
-        PlosBilling::BillingTask.descendants
+        without_anonymous_classes(PlosBilling::BillingTask.descendants)
     end
     let(:restricted_invite_klasses) do
       [TahiStandardTasks::PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
       [PlosBioTechCheck::ChangesForAuthorTask] +
-        PlosBioTechCheck::ChangesForAuthorTask.descendants
+        without_anonymous_classes(PlosBioTechCheck::ChangesForAuthorTask.descendants)
     end
     let(:reviewer_report_klasses) do
       [TahiStandardTasks::ReviewerReportTask] +
-        TahiStandardTasks::ReviewerReportTask.descendants
+        without_anonymous_classes(TahiStandardTasks::ReviewerReportTask.descendants)
     end
     let(:tech_check_klasses) do
       [
@@ -64,9 +75,11 @@ describe JournalFactory, flaky: true do
         PlosBioTechCheck::RevisionTechCheckTask,
         PlosBioTechCheck::FinalTechCheckTask
       ] +
-        PlosBioTechCheck::InitialTechCheckTask.descendants +
-        PlosBioTechCheck::RevisionTechCheckTask.descendants +
-        PlosBioTechCheck::FinalTechCheckTask.descendants
+        without_anonymous_classes(
+          PlosBioTechCheck::InitialTechCheckTask.descendants +
+          PlosBioTechCheck::RevisionTechCheckTask.descendants +
+          PlosBioTechCheck::FinalTechCheckTask.descendants
+        )
     end
 
     it 'creates a new journal with the given params' do
@@ -108,7 +121,7 @@ describe JournalFactory, flaky: true do
       end
     end
 
-    context 'creating the default roles and permission for the journal', flaky: true do
+    context 'creating the default roles and permission for the journal' do
       before(:all) do
         @journal = JournalFactory.create(name: 'Genetics Journal',
                                          doi_journal_prefix: 'journal.genetics',
@@ -167,10 +180,12 @@ describe JournalFactory, flaky: true do
         describe 'permissions on tasks' do
           let(:submission_task_klasses) { ::Task.submission_task_types }
           let(:inaccessible_task_klasses) do
-            ::Task.descendants -
-              submission_task_klasses -
-              changes_for_author_task_klasses -
-              [AdHocForAuthorsTask]
+            without_anonymous_classes(
+              ::Task.descendants -
+                submission_task_klasses -
+                changes_for_author_task_klasses -
+                [AdHocForAuthorsTask]
+            )
           end
 
           it <<-DESC.strip_heredoc do
@@ -290,13 +305,17 @@ describe JournalFactory, flaky: true do
               klass <=> SubmissionTask
             end
             accessible_for_role << AdHocForAuthorsTask
-            accessible_for_role - inaccessible_task_klasses
+            without_anonymous_classes(
+              accessible_for_role - inaccessible_task_klasses
+            )
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
           end
 
           it 'can :view and :edit all accessible_task_klasses' do
@@ -387,10 +406,12 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) do
-            ::Task.descendants -
-              billing_task_klasses -
-              changes_for_author_task_klasses -
-              restricted_invite_klasses
+            without_anonymous_classes(
+              ::Task.descendants -
+                billing_task_klasses -
+                changes_for_author_task_klasses -
+                restricted_invite_klasses
+            )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
@@ -528,7 +549,9 @@ describe JournalFactory, flaky: true do
              TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
           end
           let(:editable_state_ids) do
             PermissionState.where(name: Paper::EDITABLE_STATES).pluck(:id)
@@ -672,10 +695,12 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) do
-            ::Task.descendants -
-              billing_task_klasses -
-              changes_for_author_task_klasses -
-              restricted_invite_klasses
+            without_anonymous_classes(
+              ::Task.descendants -
+                billing_task_klasses -
+                changes_for_author_task_klasses -
+                restricted_invite_klasses
+              )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
@@ -1167,7 +1192,9 @@ describe JournalFactory, flaky: true do
             ]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
           end
 
           it 'can :view all accessible_task_klasses' do

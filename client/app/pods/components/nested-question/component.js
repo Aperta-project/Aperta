@@ -36,12 +36,16 @@ export default Component.extend({
     let cachedAnswer = this.get('_cachedAnswer');
     if (cachedAnswer && !cachedAnswer.get('isDeleted')) { return cachedAnswer; }
 
+    return this.resetAnswer();
+  }),
+
+  resetAnswer() {
     let question = this.get('question');
     if (!question) { return null; }
     let newAnswer =  this.get('question').answerForOwner(this.get('owner'), this.get('decision'));
     this.set('_cachedAnswer', newAnswer);
     return newAnswer;
-  }),
+  },
 
   decision: null,
 
@@ -96,7 +100,7 @@ export default Component.extend({
     } else if(answer.get('wasAnswered')){
       answer.save();
     } else {
-      answer.destroyRecord();
+      answer.destroyRecord().then(() => this.resetAnswer());
     }
   },
 

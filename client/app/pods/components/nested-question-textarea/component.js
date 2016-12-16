@@ -7,6 +7,10 @@ export default NestedQuestionComponent.extend({
   displayContent: true,
   inputClassNames: ['form-control'],
 
+  input() {
+    this.save();
+  },
+
   clearHiddenQuestions: Ember.observer('displayContent', 'disabled', function() {
     if (!this.get('disabled') && !this.get('displayContent')) {
       this.set('model.answer.value', '');

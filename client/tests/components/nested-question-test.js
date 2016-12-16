@@ -49,7 +49,7 @@ test('finds its question by ident and owner', function(assert) {
   this.render(template);
   assert.textPresent('.question-text', 'no question', 'question is null if owner is null');
   let task = make('ad-hoc-task');
-  let question = createQuestion(task, 'foo', 'test text');
+  let question = createQuestion(task, 'foo', 'question text');
 
   this.set('task', task);
   assert.textPresent('.question-text', 'question text', 'yields the question');
@@ -150,6 +150,10 @@ test(
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers/1', 'DELETE', 'it deletes the answer');
     assert.textPresent('.answer-is-new', 'true');
+    $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
+    this.$('.answer-value').val('new answer').change();
+  }).then(wait).then(() => {
+    assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer');
   });
 
 });

@@ -42,7 +42,7 @@ feature 'Comments on cards', js: true do
 
     scenario "breaks text at newlines" do
       page = TaskManagerPage.new
-      find('.card-content').click
+      find('.card-title').click
       # This is checking to see that there are indeed three seperate lines of text
       expect(page.find('.comment-body').native.text.split("\n").count).to eq 3
     end

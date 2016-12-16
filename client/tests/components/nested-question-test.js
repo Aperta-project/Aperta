@@ -52,7 +52,7 @@ test('finds its question by ident and owner', function(assert) {
   let question = createQuestion(task, 'foo', 'test text');
 
   this.set('task', task);
-  assert.textPresent('.question-text', 'test text', 'yields the question');
+  assert.textPresent('.question-text', 'question text', 'yields the question');
   this.set('additionalData', 'additional test data');
   assert.equal(
     question.get('additionalData'),
@@ -152,4 +152,106 @@ test(
     assert.textPresent('.answer-is-new', 'true');
   });
 
+});
+
+
+let questionTemplate = hbs`
+{{#nested-question
+  ident="foo"
+  displayQuestionText=displayQuestionText
+  displayQuestionAsPlaceholder=displayQuestionAsPlaceholder
+  owner=task as |q|}}
+  <span class="should-display">{{q.shouldDisplayQuestionText}}</span>
+{{/nested-question}}
+`;
+test('yields shouldDisplayQuestionText #1', function(assert) {
+  let task = make('ad-hoc-task');
+  let question = createQuestion(task, 'foo', 'question text');
+
+  this.setProperties({
+    task: task,
+    displayQuestionText: false,
+    displayQuestionAsPlaceholder: false
+  });
+  this.render(questionTemplate);
+  assert.textPresent('.should-display', 'false', 'aliases displayQuestionText');
+});
+
+test('yields shouldDisplayQuestionText #2', function(assert) {
+  let task = make('ad-hoc-task');
+  let question = createQuestion(task, 'foo', 'question text');
+
+  this.setProperties({
+    task: task,
+    displayQuestionText: true,
+    displayQuestionAsPlaceholder: false
+  });
+  this.render(questionTemplate);
+
+  assert.textPresent('.should-display', 'true',  'can be set directly by passing in displayQuestionText');
+
+});
+
+test('yields shouldDisplayQuestionText #3', function(assert) {
+  let task = make('ad-hoc-task');
+  let question = createQuestion(task, 'foo', 'question text');
+
+  this.setProperties({
+    task: task,
+    displayQuestionText: true,
+    displayQuestionAsPlaceholder: true
+  });
+
+  this.render(questionTemplate);
+  this.set('displayQuestionAsPlaceholder', true);
+  let done = assert.async();
+  wait().then(() => {
+    assert.textPresent('.should-display', 'false', 'false if displayQuestionAsPlaceholder is true, even if displayQuestionText is true');
+    done();
+  });
+
+});
+
+test('yields placeholder', function(assert) {
+  let task = make('ad-hoc-task');
+  let question = createQuestion(task, 'foo', 'question text');
+
+  this.set('task', task);
+  let template = hbs`
+  {{#nested-question
+    ident="foo"
+    placeholder="static text"
+    displayQuestionAsPlaceholder=displayQuestionAsPlaceholder
+    owner=task as |q|}}
+    <span class="placeholder">{{q.placeholder}}</span>
+  {{/nested-question}}
+  `;
+  this.setProperties({
+    displayQuestionAsPlaceholder: false
+  });
+  this.render(template);
+
+  assert.textPresent('.placeholder', 'static text', 'yields the provided placeholder');
+});
+
+test('yields question text as placeholder', function(assert) {
+  let task = make('ad-hoc-task');
+  let question = createQuestion(task, 'foo', 'question text');
+
+  this.set('task', task);
+  let template = hbs`
+  {{#nested-question
+    ident="foo"
+    placeholder="static text"
+    displayQuestionAsPlaceholder=displayQuestionAsPlaceholder
+    owner=task as |q|}}
+    <span class="placeholder">{{q.placeholder}}</span>
+  {{/nested-question}}
+  `;
+
+  this.setProperties({
+    displayQuestionAsPlaceholder: true
+  });
+  this.render(template);
+  assert.textPresent('.placeholder', 'question text', 'yields question text as placeholder if displayQuestionAsPlaceholder');
 });

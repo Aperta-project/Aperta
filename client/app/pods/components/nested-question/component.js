@@ -3,7 +3,6 @@ import Ember from 'ember';
 const { Component, computed } = Ember;
 
 export default Component.extend({
-  displayQuestionAsPlaceholder: false,
   inputClassNames: null,
   disabled: false,
   noResponseText: '[No response]',
@@ -49,6 +48,8 @@ export default Component.extend({
 
   decision: null,
 
+  displayQuestionAsPlaceholder: false,
+
   _displayQuestionText: true,
   displayQuestionText: Ember.computed('_displayQuestionText', 'displayQuestionAsPlaceholder', {
     get() {
@@ -56,6 +57,7 @@ export default Component.extend({
     },
     set(_, newVal) {
       this.set('_displayQuestionText', newVal);
+      return this.get('displayQuestionText');
     }
   }),
 
@@ -70,11 +72,14 @@ export default Component.extend({
     },
     set(_, newVal) {
       this.set('_placeholder', newVal);
+      return this.get('placeholder');
     }
   }),
 
   questionText: computed.reads('question.text'),
-  shouldDisplayQuestionText: computed.reads('displayQuestionText'),
+  shouldDisplayQuestionText: computed('displayQuestionText', function() {
+    return this.get('displayQuestionText');
+  }),
 
   errorPresent: computed('errors', function() {
     return !Ember.isEmpty(this.get('errors'));

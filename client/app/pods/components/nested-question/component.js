@@ -48,18 +48,14 @@ export default Component.extend({
 
   decision: null,
 
+  // displayQuestionText and displayQuestionAsPlaceholder are set externally.
+  // internally we should read shouldDisplayQuestionText
   displayQuestionAsPlaceholder: false,
+  displayQuestionText: true,
 
-  _displayQuestionText: true,
-  displayQuestionText: Ember.computed('_displayQuestionText', 'displayQuestionAsPlaceholder', {
-    get() {
-      return !this.get('displayQuestionAsPlaceholder') && this.get('_displayQuestionText');
-    },
-    set(_, newVal) {
-      this.set('_displayQuestionText', newVal);
-      return this.get('displayQuestionText');
-    }
-  }),
+  shouldDisplayQuestionText: Ember.computed('displayQuestionText', 'displayQuestionAsPlaceholder', function() {
+    return !this.get('displayQuestionAsPlaceholder') && this.get('displayQuestionText');
+  }).readOnly(),
 
   // placeholder is passed in, but all internal stuff should use placeholderText
   placeholder: '',
@@ -72,9 +68,6 @@ export default Component.extend({
   }).readOnly(),
 
   questionText: computed.reads('question.text'),
-  shouldDisplayQuestionText: computed('displayQuestionText', function() {
-    return this.get('displayQuestionText');
-  }),
 
   errorPresent: computed('errors', function() {
     return !Ember.isEmpty(this.get('errors'));

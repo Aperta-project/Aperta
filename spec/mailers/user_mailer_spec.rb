@@ -157,6 +157,7 @@ describe UserMailer, redis: true do
     let(:paper) do
       FactoryGirl.create(:paper, :with_creator, :submitted)
     end
+
     let!(:author1) do
       FactoryGirl.create(:author,
         email: paper.creator.email,
@@ -164,6 +165,7 @@ describe UserMailer, redis: true do
         last_name: paper.creator.last_name,
         paper: paper)
     end
+
     let!(:author2) do
       FactoryGirl.create(:author,
         email: Faker::Internet.email,
@@ -171,6 +173,7 @@ describe UserMailer, redis: true do
         last_name: Faker::Name.last_name,
         paper: paper)
     end
+
     let!(:author3) do
       FactoryGirl.create(:author,
         email: Faker::Internet.email,
@@ -178,6 +181,7 @@ describe UserMailer, redis: true do
         last_name: Faker::Name.last_name,
         paper: paper)
     end
+
     let(:email) do
       UserMailer.notify_coauthor_of_paper_submission(paper.id, author2.id)
     end
@@ -186,8 +190,7 @@ describe UserMailer, redis: true do
       expect(email.to).to contain_exactly(author2.email)
       expect(email.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
       expect(email.body).to include(paper.title)
-      expect(email.body).to include(author1.full_name)
-      expect(email.body).to include(author3.full_name)
+      expect(email.body).to include("#{author1.full_name}, #{author2.full_name}, #{author3.full_name}")
     end
   end
 

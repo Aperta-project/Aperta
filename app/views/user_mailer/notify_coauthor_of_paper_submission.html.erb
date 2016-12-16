@@ -1,0 +1,34 @@
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<p>Dear Dr <%= @coauthor.last_name %>,</p>
+
+<p>
+  We have recently received a manuscript entitled "<%= @paper.display_title(sanitized: false) %>", submitted to
+  <%= @journal.name %> by <%= @paper.creator.full_name %>, on which you are listed as an author.
+</p>
+<p>
+  Please confirm by return email that you are a contributing author on this paper according to the criteria listed below.
+  If you wish to decline authorship, or have any questions, then please reply to this email as soon as possible.
+  We look forward to hearing from you at your earliest convenience.
+</p>
+<p>
+  <%= @journal.name %> bases its criteria for authorship on those outlined in the Uniform Requirements for Manuscripts
+  Submitted to Biomedical Journals (http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html#two).
+  By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:
+</p>
+<ol>
+  <li>Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data; and</li>
+  <li>Drafting the article or revising it critically for important intellectual content; and</li>
+  <li>Final approval of the version to be published; and</li>
+  <li>Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or
+    integrity of any part of the work are appropriately investigated and resolved.</li>
+</ol>
+<p>
+  The full authorship list, as submitted, is:
+</p>
+<p>
+   <%= @authors.map { |author| author.full_name }.join(', ')%>
+</p>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

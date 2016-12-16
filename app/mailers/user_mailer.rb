@@ -96,7 +96,6 @@ class UserMailer < ActionMailer::Base
     @journal = @paper.journal
     @authors = @paper.authors
     @coauthor = Author.find(coauthor_id)
-    @other_authors = @paper.authors.where.not(email: @coauthor.email)
     mail(
       to: @coauthor.try(:email),
       subject: "Authorship Confirmation of Manuscript Submitted to #{@journal.name}")

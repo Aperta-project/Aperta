@@ -132,21 +132,37 @@ describe Attachment do
     # Many of the download examples are in attachment_shared_examples.rb
     # Look there for more
     subject(:attachment) { FactoryGirl.create(:attachment) }
+    let(:url) { Faker::Internet.url('example.com') }
+
+    before do
+      allow(subject).to receive(:public_resource).and_return(true)
+    end
 
     it 'stores the original uploaded url and error state on an exception' do
-      allow(subject.file).to receive(:download!)
-        .and_raise("Download failed!")
-
-      begin
-        subject.download!('bogus url')
-      rescue Exception
-        # This happens in non-error cases too, but this is an easy place to test this.
-        expect(subject.pending_url).to eq('bogus url')
+      ex = Exception.new("Download failed!")
+      allow(subject.file).to receive(:download!).and_raise(ex)
+      expect(subject).to receive(:on_download_failed).with(ex)
+      Timecop.freeze(Time.now.utc + 10.days) do |later_time|
+        subject.download!(url)
         expect(subject.status).to eq(Attachment::STATUS_ERROR)
-        expect(subject.error_message).to eq("Download failed!")
+        expect(subject.error_message).to eq(ex.message)
         expect(subject.error_backtrace).to be_present
-        expect(subject.errored_at).to be_present
+        expect(subject.errored_at).to eq(later_time)
       end
+    end
+  end
+
+  describe '#build_title' do
+    it 'should return the title if set' do
+      subject.title = Faker::Lorem.sentence
+      expect(subject.send(:build_title)).to eq(subject.title)
+    end
+
+    it 'should return the filename if not set' do
+      subject.title = nil
+      filename = Faker::Lorem.word
+      expect(subject.file).to receive(:filename).and_return(filename)
+      expect(subject.send(:build_title)).to eq(filename)
     end
   end
 

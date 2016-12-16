@@ -208,15 +208,12 @@ test('yields shouldDisplayQuestionText #3', function(assert) {
 
   this.render(questionTemplate);
   this.set('displayQuestionAsPlaceholder', true);
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.textPresent('.should-display', 'false', 'false if displayQuestionAsPlaceholder is true, even if displayQuestionText is true');
-    done();
   });
-
 });
 
-test('yields placeholder', function(assert) {
+test('yields placeholderText', function(assert) {
   let task = make('ad-hoc-task');
   let question = createQuestion(task, 'foo', 'question text');
 
@@ -238,7 +235,7 @@ test('yields placeholder', function(assert) {
   assert.textPresent('.placeholder-text', 'static text', 'yields the provided placeholder as placeholderText');
 });
 
-test('yields question text as placeholder', function(assert) {
+test('yields question text as placeholderText', function(assert) {
   let task = make('ad-hoc-task');
   let question = createQuestion(task, 'foo', 'question text');
 

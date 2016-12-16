@@ -86,7 +86,6 @@ export default Component.extend({
     return false;
   },
 
-  //TODO: test that this works
   _saveAnswer(answer){
     if(answer.get('owner.isNew')){
       // no-op

@@ -223,7 +223,7 @@ test('yields placeholder', function(assert) {
     placeholder="static text"
     displayQuestionAsPlaceholder=displayQuestionAsPlaceholder
     owner=task as |q|}}
-    <span class="placeholder">{{q.placeholder}}</span>
+    <span class="placeholder-text">{{q.placeholderText}}</span>
   {{/nested-question}}
   `;
   this.setProperties({
@@ -231,7 +231,7 @@ test('yields placeholder', function(assert) {
   });
   this.render(template);
 
-  assert.textPresent('.placeholder', 'static text', 'yields the provided placeholder');
+  assert.textPresent('.placeholder-text', 'static text', 'yields the provided placeholder as placeholderText');
 });
 
 test('yields question text as placeholder', function(assert) {
@@ -245,7 +245,7 @@ test('yields question text as placeholder', function(assert) {
     placeholder="static text"
     displayQuestionAsPlaceholder=displayQuestionAsPlaceholder
     owner=task as |q|}}
-    <span class="placeholder">{{q.placeholder}}</span>
+    <span class="placeholder-text">{{q.placeholderText}}</span>
   {{/nested-question}}
   `;
 
@@ -253,5 +253,5 @@ test('yields question text as placeholder', function(assert) {
     displayQuestionAsPlaceholder: true
   });
   this.render(template);
-  assert.textPresent('.placeholder', 'question text', 'yields question text as placeholder if displayQuestionAsPlaceholder');
+  assert.textPresent('.placeholder-text', 'question text', 'yields question text as placeholder if displayQuestionAsPlaceholder');
 });

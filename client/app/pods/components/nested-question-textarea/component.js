@@ -1,9 +1,9 @@
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import Ember from 'ember';
 
 export default NestedQuestionComponent.extend({
   helpText: null,
   unwrappedHelpText: null,
-  placeholder: null,
   displayContent: true,
   inputClassNames: ['form-control'],
 

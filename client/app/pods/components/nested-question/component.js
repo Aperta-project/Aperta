@@ -61,20 +61,15 @@ export default Component.extend({
     }
   }),
 
-  _placeholder: '',
-  placeholder: Ember.computed('displayQuestionAsPlaceholder', 'question.text', '_placeholder', {
-    get() {
-      if (this.get('displayQuestionAsPlaceholder')) {
-        return this.get('question.text');
-      } else {
-        return this.get('_placeholder');
-      }
-    },
-    set(_, newVal) {
-      this.set('_placeholder', newVal);
+  // placeholder is passed in, but all internal stuff should use placeholderText
+  placeholder: '',
+  placeholderText: Ember.computed('displayQuestionAsPlaceholder', 'questionText', 'placeholder', function() {
+    if (this.get('displayQuestionAsPlaceholder')) {
+      return this.get('questionText');
+    } else {
       return this.get('placeholder');
     }
-  }),
+  }).readOnly(),
 
   questionText: computed.reads('question.text'),
   shouldDisplayQuestionText: computed('displayQuestionText', function() {

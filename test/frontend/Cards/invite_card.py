@@ -149,7 +149,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
     # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
     #   will get an index out of range error. I feel dirty.
-    time.sleep(10)
+    time.sleep(15)
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
     attachments = self.get_attached_file_names()

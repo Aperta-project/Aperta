@@ -26,6 +26,7 @@ else:
 
 friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
+local_tz = 'US/Pacific'
 
 # Aperta native registration resources
 user_email = 'admin'

@@ -24,9 +24,10 @@ else:
   base_url = 'localhost:5000/'
 '''
 
-friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
+friendly_testhostname = 'http://ci.aperta.tech/'
 
 local_tz = 'US/Pacific'
+test_journal = 'PLOS Wombat'
 
 # Aperta native registration resources
 user_email = 'admin'

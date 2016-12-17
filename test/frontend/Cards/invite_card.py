@@ -186,7 +186,6 @@ class InviteCard(BaseCard):
       invite_state = invite.find_element(*self._invitee_state)
       if 'Rescinded' in invite_state.text:
         logging.info('Found rescinded invite, skipping...')
-        continue
       else:
         pagefullname = False
         count = 0

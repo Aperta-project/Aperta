@@ -25,6 +25,8 @@ class PaperConversionsController < ApplicationController
                'source'
              elsif pdf_file_type_and_pdf_attached
                'source'
+             elsif doc_file_type_and_doc_attached
+               'source'
              elsif docx_file_type_but_docx_not_attached
                PaperConverter.export(paper, export_format, current_user).job_id
              end
@@ -66,6 +68,10 @@ class PaperConversionsController < ApplicationController
 
   def export_format
     export_format ||= params[:export_format]
+  end
+
+  def doc_file_type_and_doc_attached
+    export_format == 'doc' && paper.file_type == 'doc' && paper.file.url.present?
   end
 
   def docx_file_type_and_docx_attached

@@ -103,8 +103,8 @@
       {{#if downloadsVisible}}
         <div class="manuscript-download-links active animation-fade-in">
 
-          {{#if (eq paper.fileType "docx")}}
-            <a href="#" {{action "exportDocument" 'docx'}} class="download-docx" title="Download docx">
+          {{#if (or (eq paper.fileType "docx") (eq paper.fileType "doc"))}}
+            <a href="#" {{action "exportDocument" paper.fileType}} class="download-docx" title="Download {{unbound paper.fileType}}">
               Word
               {{partial "svg/docx-icon"}}
             </a>

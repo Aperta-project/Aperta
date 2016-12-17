@@ -20,6 +20,15 @@ export default Ember.Route.extend({
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),
 
+  beforeModel() {
+    Ember.assert('Application name is required for proper display', window.appName);
+    this.store.findAll('journal').then( (journals) => {
+      let controller = this.controllerFor('application');
+      controller.set('journals', journals);
+      controller.setCanViewPaperTracker();
+    });
+  },
+
   setupController(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {

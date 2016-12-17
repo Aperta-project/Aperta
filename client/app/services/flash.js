@@ -55,6 +55,15 @@ import prepareResponseErrors from 'tahi/lib/validations/prepare-response-errors'
 
 export default Ember.Service.extend({
   /**
+   * Indicates that at least one flash-messages Ember component has rendered
+   *
+   @property messages
+   @type Bool
+   @default false
+   */
+  flashMessagesComponentRendered: false,
+
+  /**
     @property messages
     @type Array
     @default []

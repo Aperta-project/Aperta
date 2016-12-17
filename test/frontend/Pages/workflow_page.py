@@ -73,6 +73,9 @@ class WorkflowPage(AuthenticatedPage):
     self._invite_ae_card = (By.XPATH, "//a/div[contains(., 'Invite Academic Editor')]")
     self._invite_reviewers_card = (By.XPATH, "//a/div[contains(., 'Invite Reviewers')]")
     self._ah_author_card = (By.XPATH, "//a/div[contains(., 'Ad-hoc for Authors')]")
+    self._ah_reviewer_card = (By.XPATH, "//a/div[contains(., 'Ad-hoc for Reviewers')]")
+    self._ah_editor_card = (By.XPATH, "//a/div[contains(., 'Ad-hoc for Editors')]")
+    self._ah_staff_card = (By.XPATH, "//a/div[contains(., 'Ad-hoc for Staff Only')]")
     self._new_taxon_card = (By.XPATH, "//a/div[contains(., 'New Taxon')]")
     self._production_metadata_card = (By.XPATH, "//a/div[contains(., 'Production Metadata')]")
     self._register_decision_card = (By.XPATH, "//a/div[contains(., 'Register Decision')]")
@@ -125,6 +128,18 @@ class WorkflowPage(AuthenticatedPage):
   def click_supporting_information_card(self):
     """Open the Supporting Information Card from the workflow page"""
     self._get(self._supporting_info_card).click()
+
+  def click_ad_hoc_reviewer_card(self):
+    """Open Ad Hoc Reviewer Card from the workflow page"""
+    self._get(self._ah_reviewer_card).click()
+
+  def click_ad_hoc_editor_card(self):
+    """Open Ad Hoc Editor Card from the workflow page"""
+    self._get(self._ah_editor_card).click()
+
+  def click_ad_hoc_staff_card(self):
+    """Open Ad Hoc Reviewer Staff Only from the workflow page"""
+    self._get(self._ah_staff_card).click()
 
   def click_initial_tech_check_card(self):
     """Open the Initial Tech Check Card from the workflow page"""

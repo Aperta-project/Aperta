@@ -32,20 +32,20 @@ class AHCard(BaseCard):
     self._plus_icon = (By.CLASS_NAME, 'fa-plus')
 
   # POM Actions
-  def validate_card_elements_styles(self, user, short_doi):
+  def validate_card_elements_styles(self, short_doi, role):
     """
     Style check for the card
-    :param user: User (AE or Reviewer) to send the invitation
+    :param role: String with the role the card is made for
     :param short_doi: Used to pass through to validate_common_elements_styles
     :return None
     """
     self.validate_common_elements_styles(short_doi)
     title = self._get(self._card_title)
     self.validate_application_title_style(title)
-    assert title.text == 'Ad-hoc for Authors', title.text
+    assert title.text == 'Ad-hoc for {0}s'.format(role), title.text
     assert self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
-    assert subtitle.text == 'Corresponding Role Author', subtitle.text
+    assert subtitle.text == 'Corresponding Role {0}'.format(role), subtitle.text
     self.validate_application_ptext(subtitle)
     add_btn = self._get(self._add_btn)
     self.validate_primary_big_green_button_style(add_btn)

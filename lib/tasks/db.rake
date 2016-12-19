@@ -46,6 +46,14 @@ namespace :db do
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
+  desc "Cleans up the database dump files in ~, leaving the 2 newest"
+  namespace :dump do
+    task cleanup: :environment do
+      require 'tahi_utilities/sweeper'
+      TahiUtilities::Sweeper.remove_old_files(from_folder: '~', matching_glob: 'aperta-????-??-??T??:??:??Z.dump', keeping_newest: 2)
+    end
+  end
+
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |t, args|
     location = args[:location]

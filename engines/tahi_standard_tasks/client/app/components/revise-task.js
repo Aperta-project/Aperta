@@ -9,6 +9,7 @@ const {
 } = Ember;
 
 export default TaskComponent.extend({
+  classNames: ['revise-manuscript-task'],
   restless: service(),
   store: service(),
 

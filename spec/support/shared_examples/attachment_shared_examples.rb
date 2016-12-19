@@ -123,6 +123,23 @@ RSpec.shared_examples_for 'attachment#download! sets the status' do
   end
 end
 
+RSpec.shared_examples_for 'attachment#download! sets the updated_at' do
+  describe 'setting the updated_at' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    it 'sets updated_at' do
+      Timecop.freeze(Time.now.utc + 10.days) do |later_time|
+        expect do
+          subject.download!(url)
+        end.to change { subject.reload.updated_at }.to(within_db_precision.of(later_time))
+      end
+    end
+  end
+end
+
 RSpec.shared_examples_for 'attachment#download! always keeps snapshotted files on s3' do
   describe 'previously uploaded s3 file' do
     let(:url_1) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
@@ -262,5 +279,52 @@ RSpec.shared_examples_for 'attachment#download! does not create resource tokens'
         subject.download!(url)
       end.to_not change { subject.resource_tokens.count }
     end
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! sets the error fields' do
+  context 'when the attachment#download! raises an exception' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    it 'should set the status to errored if there is an error even if the attachment does not validate' do
+      ex = Exception.new("Download failed!")
+      allow(subject.file).to receive(:download!).and_raise(ex)
+
+      expect(subject).to receive(:on_download_failed).with(ex)
+      subject.download!('bogus url')
+
+      # This happens in non-error cases too, but this is an easy place to test this.
+      expect(subject.pending_url).to eq('bogus url')
+      expect(subject.status).to eq(Attachment::STATUS_ERROR)
+      expect(subject.error_message).to eq("Download failed!")
+      expect(subject.error_backtrace).to be_present
+      expect(subject.errored_at).to be_present
+    end
+  end
+end
+
+RSpec.shared_examples_for 'attachment#download! when the attachment is invalid' do
+  context 'when the attachment is not valid' do
+    before do
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
+    end
+
+    before do
+      allow(subject).to receive(:valid?).and_return(false)
+    end
+
+    it_behaves_like 'attachment#download! raises exception when it fails'
+    it_behaves_like 'attachment#download! stores the file'
+    it_behaves_like 'attachment#download! caches the s3 store_dir'
+    it_behaves_like 'attachment#download! sets the file_hash'
+    it_behaves_like 'attachment#download! sets the status'
+    it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
+    it_behaves_like 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! sets the updated_at'
+    it_behaves_like 'attachment#download! sets the error fields'
   end
 end

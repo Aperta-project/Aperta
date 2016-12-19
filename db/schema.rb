@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206175332) do
+ActiveRecord::Schema.define(version: 20161219214719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -346,7 +346,6 @@ ActiveRecord::Schema.define(version: 20161206175332) do
   end
 
   add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
-  add_index "journals", ["doi_publisher_prefix"], name: "index_journals_on_doi_publisher_prefix", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"

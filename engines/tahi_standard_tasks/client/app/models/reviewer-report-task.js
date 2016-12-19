@@ -6,7 +6,6 @@ export default Task.extend({
   paperReview: DS.belongsTo('paperReview'),
   decisions: DS.hasMany('decision'),
   isSubmitted: DS.attr('boolean'),
-  reviewerNumber: DS.attr('string'),
 
   previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
 

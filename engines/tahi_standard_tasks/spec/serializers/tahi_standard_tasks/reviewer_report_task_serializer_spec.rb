@@ -19,8 +19,7 @@ describe TahiStandardTasks::ReviewerReportTaskSerializer, serializer_test: true 
 
     expect(task_content).to match(hash_including(
       is_submitted: true,
-      decision_ids: [decision.id],
-      reviewer_number: 1
+      decision_ids: [decision.id]
     ))
 
     actual_decision_ids = decisions_content.map { |h| h[:id] }

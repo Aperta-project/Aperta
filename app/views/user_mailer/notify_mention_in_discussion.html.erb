@@ -2,16 +2,21 @@
 <br><br>
 
 <h1>
-  You've been mentioned on the manuscript, <%= @paper.display_title(sanitized: false) %>
+  You've been mentioned in a discussion about <%= @paper.short_doi %> for <%= @paper.journal.name %>
 </h1>
 
 <hr>
 
+<p>Manuscript ID: <%= @paper.short_doi %></p>
+<p>Title: <%= @paper.display_title(sanitized: false) %></p>
+<br>
 <p>Hello <%= @user.first_name %> <%= @user.last_name %>,</p>
 
 <p>
-  You've been mentioned on the topic <%= @topic.title %> for the manuscript
-  "<%= @paper.display_title(sanitized: false) %>"
+  You've been mentioned in a discussion about the above manuscript by
+  <%= "#{@reply.replier.first_name} #{@reply.replier.last_name}" %>.
+  The full discussion can be seen at <%= link_to client_discussion_url(@topic, @paper), client_discussion_url(@topic, @paper) %>.
+  Here's their message:
 </p>
 
 <% if @reply %>
@@ -24,3 +29,5 @@
   href: client_discussion_url(@topic, @paper),
   text: 'View Discussion'
 } %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

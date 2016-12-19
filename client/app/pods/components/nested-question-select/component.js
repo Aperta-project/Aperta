@@ -25,8 +25,8 @@ export default NestedQuestionComponent.extend({
       this.sendAction('selectionSelected', selection);
       this.save();
 
-      if(this.attrs.validate) {
-        this.attrs.validate(this.get('ident'), selection.id);
+      if(this.get('validate')) {
+        this.get('validate')(this.get('ident'), selection.id);
       }
     }
   }

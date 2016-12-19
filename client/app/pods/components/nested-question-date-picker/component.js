@@ -3,8 +3,7 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 export default NestedQuestionComponent.extend({
   actions: {
     dateChanged: function(newDate){
-      let answer = this.get('answer');
-      answer.set('value', newDate);
+      this.set('answer.value', newDate);
     }
   }
 });

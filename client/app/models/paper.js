@@ -108,6 +108,10 @@ export default DS.Model.extend({
 
   decisionsAscending: Ember.computed.sort('decisions', 'decisionsAscendingSorting'),
 
+  latestDecision: computed('decisionsAscending.[]', function() {
+    return this.get('decisionsAscending.lastObject');
+  }),
+
   latestRegisteredDecision: computed(
     'decisions.@each.latestRegistered',
     function() {

@@ -71,13 +71,21 @@ describe JournalFactory, flaky: true do
 
     it 'creates a new journal with the given params' do
       expect do
-        journal = JournalFactory.create(name: 'Journal of the Stars')
+        journal = JournalFactory.create(name: 'Journal of the Stars',
+                                        doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                                        doi_publisher_prefix: 'SHORTJPREFIX1',
+                                        last_doi_issued: '1000001')
         expect(journal.name).to eq('Journal of the Stars')
       end.to change(Journal, :count).by(1)
     end
 
     context 'role hints' do
-      let!(:journal) { JournalFactory.create(name: 'Journal of the Stars') }
+      let!(:journal) do
+        JournalFactory.create(name: 'Journal of the Stars',
+                              doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                              doi_publisher_prefix: 'SHORTJPREFIX1',
+                              last_doi_issued: '1000001')
+      end
 
       it 'assigns hints to discussion topic roles' do
         expect(Role::DISCUSSION_TOPIC_ROLES.sort).to \
@@ -102,7 +110,10 @@ describe JournalFactory, flaky: true do
 
     context 'creating the default roles and permission for the journal', flaky: true do
       before(:all) do
-        @journal = JournalFactory.create(name: 'Genetics Journal')
+        @journal = JournalFactory.create(name: 'Genetics Journal',
+                                         doi_journal_prefix: 'journal.genetics',
+                                         doi_publisher_prefix: 'genetics',
+                                         last_doi_issued: '100001')
       end
 
       after(:all) do

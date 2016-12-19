@@ -43,7 +43,7 @@
     <div class="inset-form-control required {{if validationErrors.name "error"}}">
       <div class="inset-form-control-text">
         <label>Journal Title</label>
-        {{error-message message=validationErrors.name}}
+        {{error-message message=validationErrors.name displayIcon=true}}
       </div>
       {{input type="text"
               value=journal.name
@@ -60,9 +60,41 @@
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
 
+    <div class="inset-form-control required {{if validationErrors.doiJournalPrefix "error"}}">
+      <div class="inset-form-control-text">
+        <label>DOI Journal Prefix</label>
+        {{error-message message=validationErrors.doiJournalPrefix displayIcon=true}}
+      </div>
+      {{textarea value=journal.doiJournalPrefix
+                 class="journal-doi-journal-prefix-edit inset-form-control-input"
+                 placeholder="journal.yetipub"}}
+    </div>
+
+    <div class="inset-form-control required {{if validationErrors.doiPublisherPrefix "error"}}">
+      <div class="inset-form-control-text">
+        <label>DOI Publisher Prefix</label>
+        {{error-message message=validationErrors.doiPublisherPrefix displayIcon=true}}
+      </div>
+      {{textarea value=journal.doiPublisherPrefix
+                 class="journal-doi-publisher-prefix-edit inset-form-control-input"
+                 placeholder="yetipub"}}
+    </div>
+
+    <div class="inset-form-control required {{if validationErrors.lastDoiIssued "error"}}">
+      <div class="inset-form-control-text">
+        <label>Last DOI Issued</label>
+        {{error-message message=validationErrors.lastDoiIssued displayIcon=true}}
+      </div>
+      {{textarea value=journal.lastDoiIssued
+                 class="journal-last-doi-edit inset-form-control-input"
+                 placeholder="1000001"}}
+    </div>
+
+
     <div class="journal-edit-buttons">
       <a href="#" class="button-link button--white" {{action "cancel"}}>cancel</a>
-      <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
+      <a href="#" class="button-secondary button--blue knockout {{if journal.isSaving "hidden"}}" {{action "saveJournalDetails"}}>Save</a>
+      {{progress-spinner visible=journal.isSaving}}
     </div>
 
   </div>

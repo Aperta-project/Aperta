@@ -14,7 +14,12 @@ describe Admin::JournalsController, redis: true do
     subject(:do_request) do
       post :create,
            format: 'json',
-           admin_journal: { name: 'new journal name', description: 'new journal desc' }
+           admin_journal: { name: 'new journal name',
+                            description: 'new journal desc',
+                            doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                            doi_publisher_prefix: 'SHORTJPREFIX1',
+                            last_doi_issued: '100001'
+                          }
     end
 
     it_behaves_like "an unauthenticated json request"

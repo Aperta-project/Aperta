@@ -10,7 +10,6 @@ class AssociationValidator < ActiveModel::Validator
       record.errors.set(association, association_errors)
       record.send(failure_callback) if failure_callback.present?
     end
-
     association_errors.empty?
   end
 
@@ -18,8 +17,13 @@ class AssociationValidator < ActiveModel::Validator
 
   def association_errors
     record.send(association).each_with_object({}) { |associated, errors|
+      run_before_each_validation(associated)
       errors[associated.id] = associated.errors if associated.invalid?
     }
+  end
+
+  def run_before_each_validation(associated)
+    options[:before_each_validation].try(:call, @record, associated)
   end
 
   def association

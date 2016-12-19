@@ -108,6 +108,17 @@ namespace :cleanup do
       execute :rm, '-rf', '/tmp/npm-*'
     end
   end
+  desc "Cleanup database dump files"
+  task :dumps do
+    on release_roles(fetch(:assets_roles)) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:dump:cleanup"
+        end
+
+      end
+    end
+  end
 end
 
 namespace :check_status do
@@ -176,3 +187,4 @@ after 'deploy:publishing', 'deploy:restart'
 after 'deploy:restart', 'deploy:check_statuses'
 
 after 'deploy:finished', 'cleanup:tmp'
+after 'deploy:finished', 'cleanup:dumps'

@@ -114,13 +114,14 @@ describe TasksController, redis: true do
     let(:task) do
       FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)
     end
+    let(:task_params) {  { completed: '1' } }
 
     subject(:do_request) do
       xhr(
         :patch,
         :update, format: 'json',
                  paper_id: paper.to_param,
-                 id: task.to_param, task: { completed: '1' }
+                 id: task.to_param, task: task_params
       )
     end
 
@@ -144,69 +145,57 @@ describe TasksController, redis: true do
         expect(response.status).to eq(200)
       end
 
-      context "when the task is assigned to the user" do
-        let(:new_assignee) { FactoryGirl.create(:user) }
-
-        before do
-          task.add_participant(user)
-        end
-
-        it "updates the task" do
-          do_request
-          expect(task.reload).to be_completed
-        end
+      it "does not raises an error" do
+        do_request
+        expect(response.body).not_to include "This paper cannot be edited at this time."
       end
 
-      context "when the user cannot edit the task" do
-        subject(:do_unauthorized_request) do
-          xhr :patch, :update, format: 'json',
-                               paper_id: paper.to_param,
-                               id: task.to_param,
-                               task: { completed: '1' }
-        end
-
+      context "and the task is marked as complete" do
         before do
-          allow(user).to receive(:can?)
-            .with(:edit, task)
-            .and_return false
+          task.update_column :completed, true
         end
 
-        describe "a submission card" do
-          it "returns a 403" do
-            do_unauthorized_request
-            expect(response.status).to eq 403
-          end
-
-          it "does not update the task" do
-            do_unauthorized_request
-            expect(task.reload).not_to be_completed
-          end
+        it "allows the task to be marked as incomplete" do
+          expect do
+            task_params.merge!(completed: '0', title: 'vernors')
+            do_request
+          end.to change { task.reload.completed }.from(true).to(false)
         end
 
-        describe "the user can edit the task" do
-          before do
-            allow_any_instance_of(User).to receive(:can?)
-              .with(:edit, task)
-              .and_return true
-          end
-
-          it "returns a 200" do
+        it "does not incomplete the task when the completed param is not a part of the request" do
+          expect do
+            task_params.merge!(title: 'vernors')
             do_request
-            expect(response.status).to eq 200
-          end
+          end.to_not change { task.reload.completed }
+        end
 
-          it "does update the task" do
+        it "does not update anything else on the task" do
+          expect do
             do_request
-            expect(task.reload).to be_completed
-          end
-
-          it "does not raises an error" do
-            do_request
-            expect(response.body).not_to include "This paper cannot be edited at this time."
-          end
+          end.to_not change { task.reload.title }
         end
       end
     end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to eq 403
+      end
+
+      it "does not update the task" do
+        do_request
+        expect(task.reload).not_to be_completed
+      end
+    end
+
   end
 
   describe "GET #show" do

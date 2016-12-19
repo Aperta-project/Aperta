@@ -20,12 +20,18 @@ class ReviewerNumber < ActiveRecord::Base
     where(paper: paper).maximum(:number) || 0
   end
 
-  def self.get_new(reviewer, paper)
+  def self.assign_new(reviewer, paper)
     # blow up if there's already a number for this reviewer/paper
     #
     # then try to create a new record
     # catch the ActiveRecord::RecordNotUnique and increment the new_number
-    new_number = max_number_for_paper(paper) + 1
-    record = create(paper: paper, user: reviewer, number: new_number)
+    begin
+      tries ||= 1
+      new_number = max_number_for_paper(paper) + tries
+      record = create!(paper: paper, user: reviewer, number: new_number)
+      new_number
+    rescue ActiveRecord::RecordNotUnique
+      retry if (retries +=1) < 5
+    end
   end
 end

@@ -74,8 +74,9 @@ module TahiStandardTasks
 
     # before save we want to update the reviewer number if neccessary
     def on_completion
-      assign_reviewer_number if completed?
       super
+      return unless persisted? # don't assign reviewer numbers to newly created tasks
+      assign_reviewer_number if completed?
     end
 
     def assign_reviewer_number
@@ -84,7 +85,7 @@ module TahiStandardTasks
     end
 
     def new_reviewer_number
-      ReviewerNumber.get_new(reviewer, paper)
+      ReviewerNumber.assign_new(reviewer, paper)
     end
 
     # this is meant to run in a `before_save` hook so don't

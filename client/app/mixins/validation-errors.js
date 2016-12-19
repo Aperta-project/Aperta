@@ -47,6 +47,19 @@ const {
 
 export default Mixin.create({
   /**
+    skipValidations indicates whether or not validations are to be skipped.
+    If set to true validations will be skipped.
+    If set to false validations will be run. Default.
+    If set to a function the function will be called to determine if
+    validations should be run. The function should return true or false.
+
+    @property skipValidations
+    @type Boolean or Function
+    @default false
+  */
+  skipValidations: false,
+
+  /**
     Create validationErrors property.
 
     @private
@@ -205,9 +218,15 @@ export default Mixin.create({
   */
 
   validate(key, value) {
-    const validations = this._getValidationsForKey(key);
-    const messages = validator.validate.call(this, key, value, validations);
-    this.displayValidationError(key, messages);
+    let skipValidations = this.get('skipValidations');
+    if(_.isFunction(skipValidations)){
+      skipValidations = skipValidations();
+    }
+    if(!skipValidations) {
+      const validations = this._getValidationsForKey(key);
+      const messages = validator.validate.call(this, key, value, validations);
+      this.displayValidationError(key, messages);
+    }
   },
 
   /**

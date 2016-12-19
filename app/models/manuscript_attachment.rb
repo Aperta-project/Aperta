@@ -3,6 +3,8 @@
 class ManuscriptAttachment < Attachment
   has_paper_trail
 
+  after_commit :notify
+
   self.public_resource = false
 
   # Never ever delete manuscripts, always keep them. Safe. Sound.

@@ -104,6 +104,10 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('draft', true);
   }),
 
+  decisionsAscendingSorting: ['draft', 'majorVersion', 'minorVersion'],
+
+  decisionsAscending: Ember.computed.sort('decisions', 'decisionsAscendingSorting'),
+
   latestRegisteredDecision: computed(
     'decisions.@each.latestRegistered',
     function() {

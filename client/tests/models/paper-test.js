@@ -71,7 +71,30 @@ test('simplifiedRelatedUsers contains no collaborators', function(assert) {
   assert.equal(remaining, 'Creator');
 });
 
+test('decisionsAscending', function(assert) {
+  const paper = FactoryGuy.make('paper', {
+    decisions: [
+      FactoryGuy.make('decision', { majorVersion: 1, minorVersion: 0, draft: false}),
+      FactoryGuy.make('decision', { majorVersion: 0, minorVersion: 0, draft: false}),
+      FactoryGuy.make('decision', { majorVersion: 0, minorVersion: 1, draft: false}),
+      FactoryGuy.make('decision', { majorVersion: null, minorVersion: null, draft: true}),
+      FactoryGuy.make('decision', { majorVersion: 1, minorVersion: 1, draft: false})
+    ]
+  });
 
+  const versions = paper.get('decisionsAscending').map(function(decision) {
+    return decision.getProperties('minorVersion', 'majorVersion', 'draft');
+  });
+  const expectedVersions = [
+    { majorVersion: 0, minorVersion: 0, draft: false},
+    { majorVersion: 0, minorVersion: 1, draft: false},
+    { majorVersion: 1, minorVersion: 0, draft: false},
+    { majorVersion: 1, minorVersion: 1, draft: false},
+    { majorVersion: null, minorVersion: null, draft: true}
+  ];
+
+  assert.deepEqual(versions, expectedVersions);
+});
 
 ['accepted',
   'in_revision',

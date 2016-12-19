@@ -38,7 +38,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
-    if(this.get('user') && this.get('user.orcidAccount')) {
+    if (this.get('user.orcidAccount')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
       });

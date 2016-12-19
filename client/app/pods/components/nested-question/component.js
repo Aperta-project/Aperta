@@ -35,15 +35,20 @@ export default Component.extend({
     let cachedAnswer = this.get('_cachedAnswer');
     if (cachedAnswer && !cachedAnswer.get('isDeleted')) { return cachedAnswer; }
 
-    return this.resetAnswer();
-  }),
-
-  resetAnswer() {
-    let question = this.get('question');
-    if (!question) { return null; }
-    let newAnswer =  this.get('question').answerForOwner(this.get('owner'), this.get('decision'));
+    let newAnswer = this.lookupAnswer();
     this.set('_cachedAnswer', newAnswer);
     return newAnswer;
+  }),
+
+  lookupAnswer() {
+    let question = this.get('question');
+    if (!question) { return null; }
+
+    return question.answerForOwner(this.get('owner'), this.get('decision'));
+  },
+
+  resetAnswer() {
+    this.set('_cachedAnswer', this.lookupAnswer());
   },
 
   decision: null,

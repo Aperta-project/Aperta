@@ -2,7 +2,7 @@
 <% recommendations_url = "http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html#two" %>
 <br><br>
 
-<p>Dear Dr <%= @coauthor.last_name %>,</p>
+<%= render partial: 'email/author_salutation', locals: {author: @coauthor} %>
 
 <p>
   We have recently received a manuscript entitled "<%= @paper.display_title(sanitized: false) %>", submitted to

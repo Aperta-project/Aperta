@@ -158,7 +158,7 @@ describe UserMailer, redis: true do
       FactoryGirl.create(:paper, :with_creator, :submitted)
     end
 
-    let!(:author1) do
+    let!(:author_1) do
       FactoryGirl.create(:author,
         email: paper.creator.email,
         first_name: paper.creator.first_name,
@@ -166,7 +166,12 @@ describe UserMailer, redis: true do
         paper: paper)
     end
 
-    let!(:author2) do
+    let!(:author_2) do
+      FactoryGirl.create(:group_author,
+        paper: paper)
+    end
+
+    let!(:author_3) do
       FactoryGirl.create(:author,
         email: Faker::Internet.email,
         first_name: Faker::Name.first_name,
@@ -174,23 +179,29 @@ describe UserMailer, redis: true do
         paper: paper)
     end
 
-    let!(:author3) do
-      FactoryGirl.create(:author,
-        email: Faker::Internet.email,
-        first_name: Faker::Name.first_name,
-        last_name: Faker::Name.last_name,
-        paper: paper)
+    let(:email_1) do
+      UserMailer.notify_coauthor_of_paper_submission(paper.id, author_2.id, "GroupAuthor")
     end
 
-    let(:email) do
-      UserMailer.notify_coauthor_of_paper_submission(paper.id, author2.id)
+    it "sends the email to a group coauthor and list all authors" do
+      expect(email_1.to).to contain_exactly(author_2.email)
+      expect(email_1.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email_1.body).to include(paper.title)
+      expect(email_1.body).to include "#{author_2.full_name},"
+      expect(email_1.body).not_to include "Dr #{author_2.full_name},"
+      expect(email_1.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
     end
 
-    it "sends the email to the given coauthor and mentions other authors information" do
-      expect(email.to).to contain_exactly(author2.email)
-      expect(email.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
-      expect(email.body).to include(paper.title)
-      expect(email.body).to include("#{author1.full_name}, #{author2.full_name}, #{author3.full_name}")
+    let(:email_2) do
+      UserMailer.notify_coauthor_of_paper_submission(paper.id, author_3.id, "Author")
+    end
+
+    it "sends the email to an individual coauthor and lists all the authors" do
+      expect(email_2.to).to contain_exactly(author_3.email)
+      expect(email_2.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email_2.body).to include(paper.title)
+      expect(email_2.body).to include "Dr #{author_3.last_name},"
+      expect(email_2.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
     end
   end
 

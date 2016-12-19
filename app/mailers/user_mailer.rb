@@ -91,11 +91,12 @@ class UserMailer < ActionMailer::Base
       subject: "Thank you for submitting your manuscript to #{@journal.name}")
   end
 
-  def notify_coauthor_of_paper_submission(paper_id, coauthor_id)
+  def notify_coauthor_of_paper_submission(paper_id, coauthor_id, coauthor_type)
     @paper = Paper.find(paper_id)
     @journal = @paper.journal
-    @authors = @paper.authors
-    @coauthor = Author.find(coauthor_id)
+    @authors = @paper.all_authors
+    @coauthor = coauthor_type.constantize.find(coauthor_id)
+
     mail(
       to: @coauthor.try(:email),
       subject: "Authorship Confirmation of Manuscript Submitted to #{@journal.name}")

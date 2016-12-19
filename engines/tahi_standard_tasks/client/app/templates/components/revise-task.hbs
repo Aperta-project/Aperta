@@ -15,19 +15,19 @@
       </span>
     </p>
 
-    <p class="preserve-line-breaks">
+    <p class="preserve-line-breaks letter">
       {{{latestRegisteredDecision.letter}}}
     </p>
   </div>
 
-  <div>
+  <div class="response-to-reviewers">
     <h3>Response to Reviewers:</h3>
     {{error-message message=validationErrors.response
                     displayIcon=true}}
 
     {{#if editingAuthorResponse}}
       {{content-editable value=latestRegisteredDecision.authorResponse
-                         class="revise-overlay-response-field"
+                         class="revise-overlay-response-field author-response"
                          placeholder="Please detail the changes you've made to your submission here"
                          editable=isEditable}}
 

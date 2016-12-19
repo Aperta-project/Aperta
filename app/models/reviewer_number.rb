@@ -30,8 +30,8 @@ class ReviewerNumber < ActiveRecord::Base
       new_number = max_number_for_paper(paper) + tries
       record = create!(paper: paper, user: reviewer, number: new_number)
       new_number
-    rescue ActiveRecord::RecordNotUnique
-      retry if (retries +=1) < 5
+    rescue ActiveRecord::RecordNotUnique  => e
+      retry if (tries +=1) < MAX_RETRIES
     end
   end
 end

@@ -8,7 +8,6 @@ describe TahiStandardTasks::ReviewerReportTaskSerializer, serializer_test: true 
   before do
     allow(reviewer_report_task.paper).to receive('decisions').and_return [decision]
     allow(reviewer_report_task).to receive(:submitted?).and_return true
-    allow(reviewer_report_task).to receive(:reviewer_number).and_return 1
   end
 
   let(:task_content) { deserialized_content[:task] }

@@ -44,10 +44,10 @@ export default Ember.Component.extend({
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
 
-      var pdfjscdn = '/assets/pdfjsviewer/';
-      window.PDFJS.workerSrc = 'pdf.worker.js';
-      window.PDFJS.imageResourcesPath = pdfjscdn + 'images/';
-      window.PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
+      var pdfjsroot = '/assets/pdfjsviewer/';
+      window.PDFJS.workerSrc = pdfjsroot + 'pdf.worker.js';
+      window.PDFJS.imageResourcesPath = pdfjsroot + 'images/';
+      window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
 
       this.loadPdf();
     });

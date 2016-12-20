@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
   the journal.
+* Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.

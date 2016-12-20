@@ -69,7 +69,10 @@ class Admin::JournalsController < ApplicationController
       :description,
       :manuscript_css,
       :name,
-      :pdf_css
+      :pdf_css,
+      :last_doi_issued,
+      :doi_journal_prefix,
+      :doi_publisher_prefix
     )
   end
 end

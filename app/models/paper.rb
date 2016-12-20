@@ -276,7 +276,7 @@ class Paper < ActiveRecord::Base
   end
 
   def self.find_by_id_or_short_doi(id)
-    return find_by_short_doi(id) if id.to_s =~ DoiService::SHORT_DOI_FORMAT
+    return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
     return find(id)
   end
 
@@ -593,7 +593,7 @@ class Paper < ActiveRecord::Base
 
   def assign_doi!
     raise "Invalid paper Journals are required for papers urls." unless journal
-    update!(doi: DoiService.new(journal: journal).next_doi!)
+    update!(doi: journal.next_doi!)
     doi_parts = doi.split('.')
     update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end

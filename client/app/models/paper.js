@@ -119,6 +119,10 @@ export default DS.Model.extend({
     }
   ),
 
+  registeredDecisionsAscending: computed('decisionsAscending.@each.draft', function() {
+    return this.get('decisionsAscending').rejectBy('draft');
+  }),
+
   previousDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions')
       .rejectBy('draft')

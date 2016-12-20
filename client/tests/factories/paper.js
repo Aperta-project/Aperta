@@ -23,5 +23,11 @@ FactoryGuy.define('paper', {
       discussionParticipants: []
     }],
     shortDoi: 'dev.dev10001'
+  },
+
+  traits: {
+    with_journal: {
+      journal: FactoryGuy.belongsTo('journal')
+    }
   }
 });

@@ -19,20 +19,23 @@
 // Styleguide Columns
 
 .columns {
-  overflow-y: hidden;
+  position: relative;
   overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
   padding-top: 20px;
-  text-align: center;
-  white-space: nowrap;
-  // override bootsrap:
-  margin-bottom: 0;
+  padding-left: 15px;
+  margin-bottom: 0; // override bootsrap
 }
 
 .column {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  display: inline-block;
+  flex-shrink: 0;
   width: 251px; // +1px for border
-  height: 100%;
   border-right: 1px solid $aperta-grey-light;
   text-align: left;
   vertical-align: top;
@@ -139,7 +142,6 @@
 }
 
 .column-content {
-  @include position(absolute, 56px 0px 0px 0px);
   overflow-y: auto;
   width: 235px;
   padding: 10px 0 0 15px;
@@ -228,8 +230,9 @@
   }
 
   &.first-add-column {
-    position: relative;
-    top: -24px;
-    left: 28px;
+    position: absolute;
+    top: 2px;
+    left: 20px;
   }
 }
+

@@ -264,6 +264,22 @@ ActiveRecord::Schema.define(version: 20170111191302) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "email_logs", force: :cascade do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "subject"
+    t.string   "message_id"
+    t.text     "raw_source"
+    t.string   "status"
+    t.string   "error_message"
+    t.datetime "errored_at"
+    t.datetime "sent_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
+
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"

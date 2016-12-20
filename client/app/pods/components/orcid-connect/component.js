@@ -18,6 +18,7 @@ export default Component.extend({
   store: service(),
 
   canRemoveOrcid: null,
+  notConnectedMessage: 'No ORCID ID has been linked with this author.',
 
   // function to use for asking the user to confirm an action
   confirm: window.confirm,

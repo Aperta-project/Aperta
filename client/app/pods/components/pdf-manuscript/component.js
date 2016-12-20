@@ -31,26 +31,31 @@ export default Ember.Component.extend({
     });
   },
 
-  loadPdfJs: function() {
-    LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
-      this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
-
-      var pdfjscdn = '/assets/pdfjsviewer/';
-      window.PDFJS.workerSrc = window.pdfviewerPath;
-      window.PDFJS.imageResourcesPath = pdfjscdn + 'images/';
-      window.PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
-    });
-  },
-
-  refreshPdf:  function() {
-    if(this.get('isDestroying')) { return; }
-    if (!window.PDFJS) { this.loadPdfJs(); }
-
+  loadPdf: function() {
     var url = '/api/papers/'
       + this.get('paper.id')
       + '/status/'
       + this.get('paper.id')
       + '?export_format=pdf&job_id=source';
     this.loadPdfUrl(url, window.PDFJS.webViewerLoad);
+  },
+
+  loadPdfJs: function() {
+    LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
+      this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
+
+      var pdfjscdn = '/assets/pdfjsviewer/';
+      window.PDFJS.workerSrc = 'pdf.worker.js';
+      window.PDFJS.imageResourcesPath = pdfjscdn + 'images/';
+      window.PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
+
+      this.loadPdf();
+    });
+  },
+
+  refreshPdf:  function() {
+    if(this.get('isDestroying')) { return; }
+    if (!window.PDFJS) { this.loadPdfJs(); }
+    else { this.loadPdf(); }
   }
 });

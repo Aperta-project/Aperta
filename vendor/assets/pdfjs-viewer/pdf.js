@@ -17924,6 +17924,7 @@ window.addEventListener('keydown', function keydown(evt) {
   // Some shortcuts should not get handled if a control/input element
   // is selected.
   var curElement = document.activeElement || document.querySelector(':focus');
+  if (curElement.isContentEditable) { return; } // skip any contenteditables
   var curElementTagName = curElement && curElement.tagName.toUpperCase();
   if (curElementTagName === 'INPUT' ||
       curElementTagName === 'TEXTAREA' ||

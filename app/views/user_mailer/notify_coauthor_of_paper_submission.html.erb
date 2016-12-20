@@ -15,6 +15,7 @@
 </p>
 <p>
   <%= @journal.name %> bases its criteria for authorship on those outlined in the Uniform Requirements for Manuscripts
+
   Submitted to Biomedical Journals (<a href="<%= recommendations_url %>"><%= recommendations_url %></a>).
   By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:
 </p>
@@ -27,7 +28,7 @@
 </ol>
 <p>
   The full authorship list, as submitted, is:
-  <%= @authors.map { |author| author.full_name }.join(', ')%>
+  <%= @authors.map(&:full_name).join(', ')%>
 </p>
 
 <%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

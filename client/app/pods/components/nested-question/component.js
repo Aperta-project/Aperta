@@ -13,6 +13,7 @@ export default Component.extend({
 
   placeholder: null,
   textClassNames: ['question-text'],
+  classNameBindings: ['identClass'],
 
   init(){
     this._super(...arguments);
@@ -77,6 +78,10 @@ export default Component.extend({
   change(){
     this.save();
   },
+
+  identClass: computed('ident', function() {
+    return `${this.get('ident')}-nested-question`;
+  }),
 
   save(){
     if(this.attrs.validate) {

@@ -2,35 +2,35 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{#if latestDecision.draft}}
-      {{#if task.body.submitted}}
+    <div class="most-recent-review">
+      {{#if latestDecision.draft}}
+        {{#if task.body.submitted}}
           {{reviewer-report-questions model=task decision=latestDecision readOnly=true}}
           <div class="reviewer-report-feedback">
-              {{fa-icon icon="check-circle"}}
-              This report has been submitted
+            {{fa-icon icon="check-circle"}}
+            This report has been submitted
           </div>
-      {{else}}
+        {{else}}
           <p><strong>Please refer to our
-              <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
-              guidelines for detailed instructions.</strong>
+            <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
+            guidelines for detailed instructions.</strong>
           </p>
           {{reviewer-report-questions model=task decision=latestDecision readOnly=isNotEditable}}
 
           <div class="reviewer-report-confirmation">
-              {{#if submissionConfirmed}}
-                  <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
-
-                  <button class="button-primary button--green reviewer-report-confirm-submit-button" {{action "submitReport"}}>Yes, I’m sure</button>
-                  <button class="button-secondary button--green reviewer-report-cancel-submit-button" {{action "cancelSubmission"}}>Nope</button>
-              {{else}}
-                  <button class="button-primary button--green reviewer-report-submit-button" {{action "confirmSubmission"}}>Submit this Report</button>
-              {{/if}}
+            {{#if submissionConfirmed}}
+              <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
+              <button class="button-primary button--green reviewer-report-confirm-submit-button" {{action "submitReport"}}>Yes, I’m sure</button>
+              <button class="button-secondary button--green reviewer-report-cancel-submit-button" {{action "cancelSubmission"}}>Nope</button>
+            {{else}}
+              <button class="button-primary button--green reviewer-report-submit-button" {{action "confirmSubmission"}}>Submit this Report</button>
+           {{/if}}
           </div>
+        {{/if}}
+      {{else}}
+          {{reviewer-report-questions model=task decision=latestDecision readOnly=true}}
       {{/if}}
-    {{else}}
-      {{reviewer-report-questions model=task decision=latestDecision readOnly=true}}
-    {{/if}}
-
+    </div>
     {{#if registeredDecisionsDescending}}
       <hr>
 

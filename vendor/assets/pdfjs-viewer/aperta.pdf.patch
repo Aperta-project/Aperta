@@ -1,5 +1,5 @@
---- /Users/basketball/deleteme/bower_components/pdf.js-viewer/pdf.js	2016-12-05 16:44:32.000000000 -0500
-+++ pdf.js	2016-12-08 16:08:10.000000000 -0500
+--- original/pdf.js
++++ pdf.js	2016-12-20 15:04:22.000000000 -0500
 @@ -10345,9 +10345,9 @@
  var pdfjsSrc = scriptTagContainer.lastChild.src;
  
@@ -115,3 +115,11 @@
  
  window.addEventListener('hashchange', function webViewerHashchange(evt) {
    if (PDFViewerApplication.pdfHistory && PDFViewerApplication.pdfHistory.isHashChangeUnlocked) {
+@@ -17932,6 +17924,7 @@
+   // Some shortcuts should not get handled if a control/input element
+   // is selected.
+   var curElement = document.activeElement || document.querySelector(':focus');
++  if (curElement.isContentEditable) { return; } // skip any contenteditables
+   var curElementTagName = curElement && curElement.tagName.toUpperCase();
+   if (curElementTagName === 'INPUT' ||
+       curElementTagName === 'TEXTAREA' ||

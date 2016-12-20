@@ -34,7 +34,7 @@ If you need to update `pdf.js` feel free to make the edits to that file
 directly. Then update the patch file so that any update of the underlying
 `pdfjs-viewer` can patch easily. Try the following command for patch generation
 
-    diff -u <PATH_TO_PDFJS> pdf.js > aperta.pdf.patch
+    diff -u --label original/pdf.js <PATH_TO_PDFJS> pdf.js > aperta.pdf.patch
 
 If an update of the `pdfjs-viewer` fails, you will have to resolve any issues
 and generate a new patch file.

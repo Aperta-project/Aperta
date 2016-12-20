@@ -28,7 +28,6 @@ RSpec::Matchers.define :have_queued_mailer_job do |*expected|
   end
 end
 
-
 RSpec::Matchers.define :have_queued_job do |*expected|
   match do |actual|
     actual.jobs.any? { |job| Array(expected) == job["args"] }
@@ -62,5 +61,27 @@ RSpec::Matchers.define :have_queued_job_at do |at,*expected|
 
   description do
     "have a job queued with #{expected} at time #{at}"
+  end
+end
+
+RSpec::Matchers.define :have_empty_queue do |_|
+  match do |actual|
+    actual.jobs.empty?
+  end
+
+  failure_message do |actual|
+    "expected that #{actual} would be empty, but had #{actual.jobs.count} jobs: \n #{actual.jobs.inspect}"
+  end
+
+  failure_message_when_negated do |actual|
+    "Please use :have_queued_job to test that your job was successfully queued"
+  end
+
+  match_when_negated do |actual|
+    false
+  end
+
+  description do
+    "have an empty queue"
   end
 end

@@ -17,7 +17,6 @@ fi
 
 echo "%I-Copying javascript files"
 cp "$source/pdf.js" pdf.js
-cp "$source/pdf.worker.js" pdf.worker.js
 
 echo "%I-Patching pdf.js with aperta.pdf.patch"
 patch -s pdf.js aperta.pdf.patch
@@ -34,3 +33,6 @@ fi
 
 echo "%I-Coyping asset directories (cmaps, images, locale)"
 cp -R "$source/cmaps" "$source/images" "$source/locale" ./pdfjsviewer/
+
+echo "%I-Copying working script into asset directory"
+cp "$source/pdf.worker.js" ./pdfjsviewer/

@@ -39,6 +39,7 @@ class SITask(BaseTask):
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
+    # Change followin markers when APERTA-8609 is addressed
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
     self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
@@ -71,7 +72,7 @@ class SITask(BaseTask):
     # This will fail due to APERTA-8499
     #self.validate_error_field_style(dropdown)
     title = self._get(self._si_file_title_input)
-    assert title.text == 'Enter a title (optional)', title.text
+    assert title.text == 'Enter a title', title.text
     self.validate_input_field_style(title)
     caption = self._get(self._si_file_caption)
     assert caption.text == 'Enter a legend (optional)', caption.text

@@ -44,11 +44,8 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
-    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/docs/The_internal_organization_of_the_mycobacterial_'\
-        'partition_assembly_does_the_DNA_wrap_.docx'
+    doc2upload = 'frontend/assets/supportingInfo/Figure S3 PLoS.tif'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -184,10 +181,8 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
-    short_doi = manuscript_page.get_short_doi()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/docs/The_internal_organization_of_the_mycobacterial_'\
-        'partition_assembly_does_the_DNA_wrap_.docx'
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
     fn = os.path.join(os.getcwd(), doc2upload)
     manuscript_page.click_task('Supporting Info')
     supporting_info = SITask(self._driver)
@@ -199,7 +194,7 @@ class SITaskTest(CommonTest):
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/docs/Why_Do_Cuckolded_Males_Provide_Paternal_Care.docx'
+    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach

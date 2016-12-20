@@ -657,8 +657,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         attached_filename = supporting_info.add_file(data['file_name'])
         if style_check:
           supporting_info.validate_default_link_style(attached_filename)
-        assert attached_filename.text in data['file_name'], (attached_filename.text,
-          data['file_name'])
+        assert attached_filename.text in data['file_name'].replace(' ', '+'), \
+            (attached_filename.text, data['file_name'].replace(' ', '+'))
         edit_btn = self._get(supporting_info._si_pencil_icon)
         assert edit_btn
         assert self._get(supporting_info._si_trash_icon)

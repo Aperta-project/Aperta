@@ -5,7 +5,6 @@ import pusherConcerns from 'tahi/mixins/controllers/pusher-concerns';
 export default Ember.Controller.extend(pusherConcerns, {
   can: Ember.inject.service('can'),
   delayedSave: false,
-  isLoading: false,
   isLoggedIn: Ember.computed.notEmpty('currentUser'),
   canViewAdminLinks: false,
   showOverlay: false,
@@ -24,7 +23,7 @@ export default Ember.Controller.extend(pusherConcerns, {
     if (this.pusher.get('isDisconnected')) {
       this.handlePusherConnectionFailure();
     }
-  }.observes('pusher.isDisconnected', 'flash.flashMessagesComponentRendered', 'isLoading').on('init'),
+  }.observes('pusher.isDisconnected').on('init'),
 
 
   setCanViewPaperTracker: function() {

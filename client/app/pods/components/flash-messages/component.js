@@ -5,15 +5,12 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['flash-messages'],
 
-  didInsertElement() {
-    if (this.get('flash')) {
-      this.get('flash').set('flashMessagesComponentRendered', true);
-    }
-  },
-
   actions: {
-    removeMessage(message) {
-      this.flash.removeMessage(message);
+    removeRouteMessage(message) {
+      this.flash.removeRouteLevelMessage(message);
+    },
+    removeSystemMessage(message) {
+      this.flash.removeSystemLevelMessage(message);
     }
   }
 });

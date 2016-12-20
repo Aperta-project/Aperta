@@ -130,7 +130,7 @@ export default Ember.Route.extend({
     },
 
     flashMessage(payload) {
-      this.flash.displayMessage(payload.messageType, payload.message);
+      this.flash.displayRouteLevelMessage(payload.messageType, payload.message);
     }
   },
 

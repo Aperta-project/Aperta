@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
     if (!this.get('debounceTimer')) {
       let debounce = Ember.run.debounce(this, function() {
         let message = this._pusherFailureMessage('unavailable');
-        this.get('flash').displayMessage('error', message);
+        this.get('flash').displaySystemLevelMessage('error', message);
       }, 10000);
       this.set('debounceTimer', debounce);
     }
@@ -29,7 +29,7 @@ export default Ember.Mixin.create({
   handlePusherConnectionFailure() {
     Ember.run.scheduleOnce('afterRender', this, () => {
       let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
-      this.get('flash').displayMessage('error', message);
+      this.get('flash').displaySystemLevelMessage('error', message);
     });
   },
 
@@ -52,7 +52,7 @@ export default Ember.Mixin.create({
             and we recommend you <a href="#" onclick="window.location.reload(false)">reload this page</a> 
             to attempt to re-establish the connection.`;
     case 'connecting':
-      return `Aperta is attempting to get a live connection.  Please standby`;
+      return `Aperta is attempting to acquire a live connection. Please wait until connection is established.`;
     default:
       return false;
     }

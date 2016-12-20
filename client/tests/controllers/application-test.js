@@ -10,7 +10,7 @@ moduleFor('controller:application', 'Unit | Controller | application', {
     pusherStub = {connection: { connection: { state: 'connecting' } }};
     pusherFailureMessageSpy = sinon.mock().returns('oh noes -.-');
     displayFlashMessageSpy = sinon.spy();
-    flashStub = Ember.Object.create({ displayMessage: displayFlashMessageSpy });
+    flashStub = Ember.Object.create({ displaySystemLevelMessage: displayFlashMessageSpy });
   }
 });
 
@@ -31,7 +31,7 @@ test('Slanger notifications - happy path', function(assert) {
     Ember.run.schedule('afterRender', () => {
       assert.ok(controller);
       assert.ok(pusherFailureMessageSpy.notCalled, '_pusherFailureMessage was NOT called');
-      assert.ok(displayFlashMessageSpy.notCalled, 'displayMessage was NOT called');
+      assert.ok(displayFlashMessageSpy.notCalled, 'displayRouteLevelMessage was NOT called');
       complete();
     });
   });
@@ -56,7 +56,7 @@ test('Slanger notifications - unable to connect', function(assert) {
     Ember.run.schedule('afterRender', () => {
       assert.ok(controller);
       assert.ok(pusherFailureMessageSpy.calledWith('unavailable'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayMessage was called');
+      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
       complete();
     });
 
@@ -81,7 +81,7 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
     Ember.run.schedule('afterRender', () => {
       assert.ok(controller);
       assert.ok(pusherFailureMessageSpy.calledWith('failed'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayMessage was called');
+      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
       complete();
     });
   });
@@ -104,7 +104,7 @@ test('Slanger notifications - user was disconnected by the application', functio
     Ember.run.schedule('afterRender', () => {
       assert.ok(controller);
       assert.ok(pusherFailureMessageSpy.calledWith('disconnected'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayMessage was called');
+      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
       complete();
     });
   });

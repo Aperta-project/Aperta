@@ -35,22 +35,22 @@ export default Ember.Component.extend({
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
 
-      var pdfjscdn = '//bowercdn.net/c/pdf.js-viewer-0.3.3/';
-      PDFJS.workerSrc = pdfjscdn + 'pdf.worker.js';
-      PDFJS.imageResourcesPath = pdfjscdn + 'images/';
-      PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
-
-      var url = '/api/papers/'
-        + this.get('paper.id')
-        + '/status/'
-        + this.get('paper.id')
-        + '?export_format=pdf&job_id=source';
-      this.loadPdfUrl(url, PDFJS.webViewerLoad);
+      var pdfjscdn = '/assets/pdfjsviewer/';
+      window.PDFJS.workerSrc = window.pdfviewerPath;
+      window.PDFJS.imageResourcesPath = pdfjscdn + 'images/';
+      window.PDFJS.cMapUrl = pdfjscdn + 'cmaps/';
     });
   },
 
   refreshPdf:  function() {
     if(this.get('isDestroying')) { return; }
     if (!window.PDFJS) { this.loadPdfJs(); }
+
+    var url = '/api/papers/'
+      + this.get('paper.id')
+      + '/status/'
+      + this.get('paper.id')
+      + '?export_format=pdf&job_id=source';
+    this.loadPdfUrl(url, window.PDFJS.webViewerLoad);
   }
 });

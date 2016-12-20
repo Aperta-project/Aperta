@@ -21,7 +21,7 @@ class OrcidAccount < ActiveRecord::Base
       'Content-Type' => "application/orcid+xml")
 
     update_attributes(
-      profile_xml: response.body,
+      profile_xml: response_ensure_utf8(response.body),
       profile_xml_updated_at: DateTime.now.utc
     )
   rescue RestClient::ExceptionWithResponse => ex
@@ -86,9 +86,24 @@ class OrcidAccount < ActiveRecord::Base
 
   private
 
+  def response_ensure_utf8(response)
+    body = response.body.dup
+    return body if body.encoding == Encoding::UTF_8
+
+    if body.encoding == Encoding::ASCII_8BIT &&
+        response.headers[:content_type].try(:match, /UTF-8/)
+      logger.warn "ORCID responded with content_type=UTF-8 but sent ASCII-8BIT. Assuming ISO-8859-1 and converting to UTF-8."
+      body.force_encoding("ISO-8859-1")
+    end
+    body.encode!(Encoding::UTF_8)
+  rescue Encoding => ex
+    logger.error "ORCID response failed to convert to UTF-8. Body:#{body}. Error: #{ex.message}"
+    raise raise OrcidAccount::APIError, ex.to_s
+  end
+
   def oauth_authorize(code)
     # client id and secret are Aperta's id and secret, NOT the end user's
-    response = JSON.parse RestClient.post(
+    raw_response = RestClient.post(
       "https://#{TahiEnv.orcid_site_host}/oauth/token", {
         'client_id' => TahiEnv.orcid_key,
         'client_secret' => TahiEnv.orcid_secret,
@@ -96,12 +111,18 @@ class OrcidAccount < ActiveRecord::Base
         'code' => code
       }, 'Accept' => 'application/json'
     )
+
+    logger.info "ORCID OAuth authorizing. Sent code:#{code} Response:#{raw_response}"
+
+    response = JSON.parse response_ensure_utf8 raw_response
+
     if response["errorDesc"] &&
         !response['errorDesc']['content'].empty?
       raise OrcidAccount::APIError, response['errorDesc']['content']
     end
     response
   rescue RestClient::ExceptionWithResponse => ex
+    logger.error "ORCID API failed OAuth authorize step with message #{ex.message}"
     raise OrcidAccount::APIError, ex.to_s
   end
 end

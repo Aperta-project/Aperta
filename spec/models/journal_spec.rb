@@ -25,10 +25,10 @@ describe Journal do
       expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('Please include a DOI Publisher Prefix')
     end
 
-    it 'requires a unique doi_publisher_prefix' do
+    it 'allows a duplicate doi_publisher_prefix' do
       journal.doi_publisher_prefix = existing_journal.doi_publisher_prefix
-      expect(journal).to_not be_valid
-      expect(journal.errors[:doi_publisher_prefix]).to contain_exactly('The DOI Publisher Prefix has already been taken')
+      expect(journal).to be_valid
+      expect(journal.errors[:doi_publisher_prefix]).to be_empty
     end
 
     it 'requires a valid doi_publisher_prefix' do

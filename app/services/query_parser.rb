@@ -122,7 +122,7 @@ class QueryParser < QueryLanguageParser
       # Better to return no results than false results.  If the user is missing the comparator
       # or did not include 'days ago' it will return no results.
       # The following is an impossible condition in order to return no results
-      table[:completed].eq(false).and(table[:completed].eq(true))
+      arel_table[:id].in([]) # this returns 1=0 in sql
     end
   end
 
@@ -197,6 +197,10 @@ class QueryParser < QueryLanguageParser
 
   private
 
+  def contains_days_ago?(query)
+    query =~ /days? ago/i
+  end
+
   def get_user_id(username)
     user = nil
 
@@ -234,41 +238,39 @@ class QueryParser < QueryLanguageParser
   #  * field: the AREL table field that should be used in the query, e.g. \
   #    Paper.arel_table[:submitted_at]
   #
-
   def date_query(search_query, field:)
     comparator = search_query.match(/[<=>]{1,2}/).to_s
     date = parse_utc_date(search_query)
-    search_term = search_query
 
     beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
     end_of_day_date = date.end_of_day.to_formatted_s(:db)
 
     case comparator
-    when '>'
-      if search_term =~ /days? ago/i
+    when '>' # query should return any time after that day (invert for "days ago")
+      if contains_days_ago?(search_query)
         field.lteq(beginning_of_day_date)
       else
         field.gteq(end_of_day_date)
       end
-    when '<'
-      if search_term =~ /days? ago/i
+    when '<' # query should return any time before that day (opposite for the invert)
+      if contains_days_ago?(search_query)
         field.gteq(end_of_day_date)
       else
         field.lteq(beginning_of_day_date)
       end
-    when '<='
-      if search_term =~ /days? ago/i
+    when '<=' # query should return any time before or within that day (opposite for the invert)
+      if contains_days_ago?(search_query)
         field.gteq(beginning_of_day_date)
       else
         field.lteq(end_of_day_date)
       end
-    when '>='
-      if search_term =~ /days? ago/i
+    when '>=' # query should return any time after or within that day (opposite for the invert)
+      if contains_days_ago?(search_query)
         field.lteq(end_of_day_date)
       else
         field.gteq(beginning_of_day_date)
       end
-    when '='
+    when '=' # query should return any time within that day.
       # since the current fields are always datetime so we need to do a
       # BETWEEN check between the beginning and end of the day
       field.between(beginning_of_day_date..end_of_day_date)

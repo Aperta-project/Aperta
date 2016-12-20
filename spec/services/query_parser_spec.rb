@@ -295,138 +295,22 @@ describe QueryParser do
       end
     end
 
-    shared_examples_for "a date query" do |term:, sql:|
-      it "parses '#{term} = mm/dd/yyyy'" do
-        start_time = '04/12/2016'.to_date.beginning_of_day.to_formatted_s(:db)
-        end_time = '04/12/2016'.to_date.end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} = 04/12/2016"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} BETWEEN '#{start_time}' AND '#{end_time}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} < mm/dd/yyyy'" do
-        start_time = '04/12/2016'.to_date.beginning_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} < 04/12/2016"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} <= '#{start_time}'
-          SQL
-        end
-      end
- 
-      it "parses '#{term} > mm/dd/yyyy'" do
-        end_time = '04/12/2016'.to_date.end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} > 04/12/2016"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} >= '#{end_time}'
-          SQL
-        end
-      end
- 
-      it "parses '#{term} <= mm/dd/yyyy'" do
-        end_time = '04/12/2016'.to_date.end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} <= 04/12/2016"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} <= '#{end_time}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} >= mm/dd/yyyy'" do
-        start_time = '04/12/2016'.to_date.beginning_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} >= 04/12/2016"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} >= '#{start_time}'
-          SQL
-        end
-      end
-
-      it "falls back to today's date when given a bad input date" do
-        today = Time.now.utc.end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} > bad date"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} >= '#{today}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} = n DAYS AGO'" do
-        start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-        end_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} = 3 days ago"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} BETWEEN '#{start_time}' AND '#{end_time}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} > n DAYS AGO'" do
-        start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} > 3 days ago"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} <= '#{start_time}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} < n DAYS AGO'" do
-        end_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} < 3 days ago"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} >= '#{end_time}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} >= n DAYS AGO'" do
-        # >= includes the day, just like how '=' works
-        three_days_ago_inclusive = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} >= 3 days ago"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} <= '#{three_days_ago_inclusive}'
-          SQL
-        end
-      end
-
-      it "parses '#{term} <= n DAYS AGO'" do
-        # >= includes the day, just like how '=' works
-        three_days_ago_inclusive = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-        Timecop.freeze do
-          parse = QueryParser.new.parse "#{term} <= 3 days ago"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            #{sql} >= '#{three_days_ago_inclusive}'
-          SQL
-        end
-      end
-    end
-
     context 'Date Queries' do
       describe 'task date queries' do
-        it_behaves_like "a date query",
-          term: "TASK anytask HAS BEEN COMPLETED",
+        it_behaves_like "a query parser date query",
+          query: "TASK anytask HAS BEEN COMPLETED",
           sql: '"tasks_0"."title" ILIKE \'anytask\' AND "tasks_0"."completed_at"'
       end
 
       describe 'VERSION DATE queries' do
-        it_behaves_like "a date query",
-          term: "VERSION DATE",
+        it_behaves_like "a query parser date query",
+          query: "VERSION DATE",
           sql: '"papers"."submitted_at"'
       end
 
       describe 'SUBMISSION DATE queries' do
-        it_behaves_like "a date query",
-          term: "SUBMISSION DATE",
+        it_behaves_like "a query parser date query",
+          query: "SUBMISSION DATE",
           sql: '"papers"."first_submitted_at"'
       end
     end

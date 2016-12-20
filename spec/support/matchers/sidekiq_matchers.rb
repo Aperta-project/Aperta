@@ -16,11 +16,19 @@ RSpec::Matchers.define :have_queued_mailer_job do |*expected|
   end
 
   failure_message do |actual|
-    "expected that #{actual} would have a mailer job queued with #{expected}"
+    <<-MESSAGE.strip_heredoc
+      expected that #{actual} would have a mailer job queued with #{expected}
+      Actual job queue contents:
+        #{actual.jobs.inspect}
+    MESSAGE
   end
 
   failure_message_when_negated do |actual|
-    "expected that #{actual} would not a have a mailer job queued with #{expected}"
+    <<-MESSAGE.strip_heredoc
+      expected that #{actual} would not a have a mailer job queued with #{expected}
+      Actual job queue contents:
+        #{actual.jobs.inspect}
+    MESSAGE
   end
 
   description do

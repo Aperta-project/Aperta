@@ -9,6 +9,7 @@ job_type :rake, "cd :path && chruby-exec #{RUBY_VERSION} -- "\
 every :day, at: '00:01' do
   rake 'plos_billing:daily_billing_log_export'
   rake 'clean:temp_files'
+  rake 'reports:analyze_attachments:send_email[apertadevteam@plos.org]'
 end
 
 every :day, at: '09:00' do

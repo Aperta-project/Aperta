@@ -27,6 +27,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Deleting all the text for a question's answer will no longer cause an error on subsequent
   changes to that that answer.
 * Attached images with capitalized filenames will now preview correctly
+* Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added

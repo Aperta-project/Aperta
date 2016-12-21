@@ -8,9 +8,13 @@ moduleFor('controller:application', 'Unit | Controller | application', {
   needs: ['model:journal'],
   beforeEach: function() {
     pusherStub = {connection: { connection: { state: 'connecting' } }};
-    pusherFailureMessageSpy = sinon.mock().returns('oh noes -.-');
+    pusherFailureMessageSpy = sinon.stub().returns('oh noes -.-');
     displayFlashMessageSpy = sinon.spy();
-    flashStub = Ember.Object.create({ displaySystemLevelMessage: displayFlashMessageSpy });
+    flashStub = Ember.Object.create({
+      displaySystemLevelMessage: displayFlashMessageSpy,
+      systemLevelMessages: Ember.A(),
+      removeSystemLevelMessage: sinon.spy()
+    });
   }
 });
 
@@ -28,12 +32,14 @@ test('Slanger notifications - happy path', function(assert) {
       _pusherFailureMessage: pusherFailureMessageSpy,
       flash: flashStub });
 
-    Ember.run.schedule('afterRender', () => {
-      assert.ok(controller);
-      assert.ok(pusherFailureMessageSpy.notCalled, '_pusherFailureMessage was NOT called');
-      assert.ok(displayFlashMessageSpy.notCalled, 'displayRouteLevelMessage was NOT called');
-      complete();
-    });
+    assert.ok(controller);
+
+    assert.ok(pusherFailureMessageSpy.calledWith('connecting'),
+      '_pusherFailureMessage was called with connecting');
+
+    assert.ok(displayFlashMessageSpy.notCalled, 'displaySystemLevelMessage was NOT called');
+    complete();
+
   });
 
 });
@@ -53,12 +59,10 @@ test('Slanger notifications - unable to connect', function(assert) {
       _pusherFailureMessage: pusherFailureMessageSpy,
       flash: flashStub });
 
-    Ember.run.schedule('afterRender', () => {
-      assert.ok(controller);
-      assert.ok(pusherFailureMessageSpy.calledWith('unavailable'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
-      complete();
-    });
+    assert.ok(controller);
+    assert.ok(pusherFailureMessageSpy.calledWith('unavailable'), '_pusherFailureMessage was called');
+    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
+    complete();
 
   });
 
@@ -78,12 +82,11 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
       _pusherFailureMessage: pusherFailureMessageSpy,
       flash: flashStub });
 
-    Ember.run.schedule('afterRender', () => {
-      assert.ok(controller);
-      assert.ok(pusherFailureMessageSpy.calledWith('failed'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
-      complete();
-    });
+    assert.ok(controller);
+    assert.ok(pusherFailureMessageSpy.calledWith('failed'), '_pusherFailureMessage was called');
+    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
+    complete();
+
   });
 
 });
@@ -101,11 +104,11 @@ test('Slanger notifications - user was disconnected by the application', functio
     let controller = this.subject({ pusher: pusherStub,
       _pusherFailureMessage: pusherFailureMessageSpy,
       flash: flashStub });
-    Ember.run.schedule('afterRender', () => {
-      assert.ok(controller);
-      assert.ok(pusherFailureMessageSpy.calledWith('disconnected'), '_pusherFailureMessage was called');
-      assert.ok(displayFlashMessageSpy.called, 'displayRouteLevelMessage was called');
-      complete();
-    });
+
+    assert.ok(controller);
+    assert.ok(pusherFailureMessageSpy.calledWith('disconnected'), '_pusherFailureMessage was called');
+    assert.ok(displayFlashMessageSpy.called, 'displaySystem LevelMessage was called');
+    complete();
+
   });
 });

@@ -10,7 +10,12 @@ export default Ember.Mixin.create({
   pusherConnecting: false,
 
   handlePusherConnectionSuccess() {
-    Ember.run.cancel(this.get('debounceTimer')); //
+    Ember.run.cancel(this.get('debounceTimer'));
+
+    // remove the connecting message on connecting -> connected transition
+    let messages = this.get('flash').get('systemLevelMessages');
+    let connectionMessage = messages.findBy('text', this._pusherFailureMessage('connecting'));
+    this.get('flash').removeSystemLevelMessage(connectionMessage);
     this.set('debounceTimer', null);
     this.set('pusherConnecting', false);
   },
@@ -27,10 +32,8 @@ export default Ember.Mixin.create({
   },
 
   handlePusherConnectionFailure() {
-    Ember.run.scheduleOnce('afterRender', this, () => {
-      let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
-      this.get('flash').displaySystemLevelMessage('error', message);
-    });
+    let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
+    this.get('flash').displaySystemLevelMessage('error', message);
   },
 
   _pusherFailureMessage(failureState) {

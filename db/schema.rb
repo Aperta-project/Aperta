@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206175332) do
+ActiveRecord::Schema.define(version: 20161216162547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,9 +336,9 @@ ActiveRecord::Schema.define(version: 20161206175332) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",               null: false
-    t.string   "doi_journal_prefix",                 null: false
-    t.string   "last_doi_issued",      default: "0", null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
@@ -746,13 +746,14 @@ ActiveRecord::Schema.define(version: 20161206175332) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
-    t.integer  "paper_id",                        null: false
+    t.integer  "paper_id",                            null: false
     t.integer  "major_version"
     t.integer  "minor_version"
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "original_text"
+    t.string   "file_type",          default: "docx"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

@@ -16,6 +16,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+  the parts.
 ### Deprecated
 ### Removed
 ### Fixed

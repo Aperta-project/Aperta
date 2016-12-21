@@ -9,6 +9,7 @@ import uuid
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -106,6 +107,23 @@ class DashboardPage(AuthenticatedPage):
     self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
+    # The next sequence of 10 locators are all per invitation so should be used withing a
+    #   find_element()
+    self._invitation_type_and_date = (By.CLASS_NAME, 'invitation-metadata')
+    self._invitation_date = (By.CSS_SELECTOR, 'h2.invitation-metadata > span.date')
+    self._invitation_paper_type = (By.CLASS_NAME, 'invitation-paper-type')
+    self._invitation_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h3')
+    self._invitation_author_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4')
+    # The author listing includes an index, lastname, first, and optionally 'from' affiliation
+    #   IT seems like we *could* have multiple such lines.
+    self._invitation_author_listing = (By.CSS_SELECTOR, 'li.dashboard-paper-title > p')
+    # The following elements will only appear if we are able to extract an abstract or if one is
+    #   is set explicitly in the Title and Abstract Card.
+    self._invitation_abstract_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4')
+    self._invitation_abstract_text = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4 + p')
+    self._invitation_accept_button = (By.CSS_SELECTOR, 'button.invitation-accept')
+    self._invitation_decline_button = (By.CSS_SELECTOR, 'button.invitation-decline')
+
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
@@ -191,6 +209,94 @@ class DashboardPage(AuthenticatedPage):
     # If flow reachs this point, there was an error
     invite_listings_text = [x.text for x in invite_listings]
     raise ValueError(u'{0} not in {1}'.format(title, invite_listings_text))
+
+  def validate_invitation_in_overlay(self, mmt, invitation_type, paper_id):
+    """
+    Validates the content of an invitation in the invitation overlay.
+      Makes function and style validations.
+    :param mmt: the paper type of the paper to validate in invitation
+    :param invitation_type: Whether invitation is an 'Academic Editor' or 'Reviewer' invitation
+    :param paper_id: papers.id of the manuscript
+    :return void function
+    """
+    # get some relevant data from the db:
+    # Get id(s) of the relevant task (invite_reviewer and invite_editors) tasks for paper
+    db_invitation_type = 'Invite ' + invitation_type
+    task_id = PgSQL().query('SELECT id '
+                            'FROM tasks '
+                            'WHERE paper_id = %s AND title = %s;',
+                            (paper_id, db_invitation_type))[0][0]
+    db_invite_tuple = PgSQL().query('SELECT invitee_role, created_at, information '
+                                    'FROM invitations '
+                                    'WHERE task_id=%s;', (task_id,))
+    db_invite_type, db_invite_date, db_author_information = db_invite_tuple[0]
+    db_article_tuple = PgSQL().query('SELECT title, abstract '
+                                     'FROM papers '
+                                     'WHERE id=%s;', (paper_id,))
+    db_title, db_abstract = db_article_tuple[0]
+    db_title = self.normalize_spaces(db_title)
+    page_invite_listings = self._gets(self._view_invites_invite_listing)
+    for page_listing in page_invite_listings:
+      logging.info(u'Validating Invitation: {0}'.format(page_listing.text))
+      if db_title in self.normalize_spaces(page_listing.text):
+        logging.info('Found Match on Title, validating...')
+        invite_type = page_listing.find_element(*self._invitation_type_and_date)
+        # check that the page matches the expectation
+        invitation_type = invitation_type.rstrip('s')
+        assert invitation_type in invite_type.text, 'invitation type: {0} not found in invite ' \
+                                                    'block metadata: {1}.'.format(invitation_type,
+                                                                                  invite_type.text)
+        # also check that the db matches the page
+        assert db_invite_type in invite_type.text, 'db invitation type: {0} not found in invite ' \
+                                                   'block metadata: {1}.'.format(db_invite_type,
+                                                                                 invite_type.text)
+        invite_date = page_listing.find_element(*self._invitation_date)
+        db_invite_date = self.utc_to_local_tz(db_invite_date)
+        assert db_invite_date.strftime('%B %d, %Y') in invite_date.text, \
+            'db invite date: {0} not found in invite block ' \
+            'metadata: {1}.'.format(db_invite_date.strftime('%B %d, %Y'), invite_date.text)
+        invite_paper_type = page_listing.find_element(*self._invitation_paper_type)
+        assert mmt in invite_paper_type.text, \
+            '{0} not found on page: {1}'.format(mmt, invite_paper_type.text)
+
+        auth_lbl = page_listing.find_element(*self._invitation_author_label)
+        assert auth_lbl.text == 'Authors'
+        # TODO: Add style validation for this label.
+        # The author listing includes an index, lastname, first, and optionally 'from' affiliation
+        #   IT seems like we *could* have multiple such lines.
+        creator_found = False
+        auth_listings = page_listing.find_elements(*self._invitation_author_listing)
+        tested_authors = []
+        for author in auth_listings:
+          logging.info('Testing page listed author: {0}'.format(author.text))
+          tested_authors.append(author.text)
+          if db_author_information in unicode(author.text):
+            logging.info('Found Creator in invitation listing...')
+            creator_found = True
+            break
+          else:
+            continue
+        assert creator_found, '{0} not found in invitation ' \
+                              'listed authors: {1}.'.format(db_author_information, tested_authors)
+        # The following elements will only appear if we are able to extract an abstract or if one is
+        #   is set explicitly in the Title and Abstract Card.
+        logging.info(db_abstract)
+        if db_abstract:
+          abst_lbl = page_listing.find_element(*self._invitation_abstract_label)
+          assert abst_lbl == 'Abstract'
+          # TODO: Add style validation for this label.
+          page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
+          assert db_abstract in page_abstract_text.text, \
+              'db abstract: {0}\nnot equal to invitation ' \
+              'abstract:\n{1}.'.format(db_abstract, page_abstract_text.text)
+        else:
+          logging.info('No Abstract listed in invitation...')
+        accept_btn = page_listing.find_element(*self._invitation_accept_button)
+        self.validate_primary_big_green_button_style(accept_btn)
+        decline_btn = page_listing.find_element(*self._invitation_decline_button)
+        self.validate_secondary_big_green_button_style(decline_btn)
+      else:
+        logging.info('These are not the droids you\'re looking for...')
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -692,7 +798,8 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_type = self._gets(self._cns_paper_type_dd)
-    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type[0].text,
+                                                                    paper_type)
 
   def select_journal_get_types(self, journal):
     """

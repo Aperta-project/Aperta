@@ -28,14 +28,15 @@ class InviteReviewersCardTest(CommonTest):
   Validate the elements, styles, functions of the Invite Reviewers card
   """
 
-  def test_invite_reviewers_styles_elements(self):
+  def test_smoke_invite_reviewers_styles_elements(self):
     logging.info('Test Invite Reviewers::elements and styles')
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
@@ -70,6 +71,7 @@ class InviteReviewersCardTest(CommonTest):
                                errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_reviewers.validate_invite(reviewer_login,
+                                     mmt,
                                      manuscript_title,
                                      creator_user,
                                      short_doi)
@@ -117,8 +119,8 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
-
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
@@ -152,11 +154,13 @@ class InviteReviewersCardTest(CommonTest):
                                errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_reviewers.validate_invite(reviewer_login,
+                                     mmt,
                                      manuscript_title,
                                      creator_user,
                                      short_doi)
     # Invite a second user to invite then delete before acceptance
     invite_reviewers.validate_invite(prod_staff_login,
+                                     mmt,
                                      manuscript_title,
                                      creator_user,
                                      short_doi)
@@ -169,6 +173,9 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.page_ready()
     dashboard_page.click_view_invites_button()
+    dashboard_page.validate_invitation_in_overlay(mmt=mmt,
+                                                  invitation_type='Reviewers',
+                                                  paper_id=paper_id)
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db
@@ -239,7 +246,8 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal=test_journal, type_='OnlyInitialDecisionCard', random_bit=True)
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
 
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
@@ -274,12 +282,14 @@ class InviteReviewersCardTest(CommonTest):
                                encoding='utf-8',
                                errors='strict')
     invite_reviewers.validate_invite(reviewer_login,
+                                     mmt,
                                      manuscript_title,
                                      creator_user,
                                      short_doi)
     logging.info('Revoking invite for {0}'.format(reviewer_login['name']))
     invite_reviewers.revoke_invitee(reviewer_login, 'Reviewer')
     invite_reviewers.validate_invite(reviewer_login,
+                                     mmt,
                                      manuscript_title,
                                      creator_user,
                                      short_doi)
@@ -290,6 +300,9 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.page_ready()
     dashboard_page.click_view_invites_button()
+    dashboard_page.validate_invitation_in_overlay(mmt=mmt,
+                                                  invitation_type='Reviewers',
+                                                  paper_id=paper_id)
     invite_response, response_data = dashboard_page.accept_or_reject_invitation(manuscript_title)
     logging.info('Invitees response to review request was {0}'.format(invite_response))
     # If accepted, validate new assignment in db

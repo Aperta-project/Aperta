@@ -1,9 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+import datetime
 import json
 import logging
 import platform
+import pytz
 import os
 import random
 import re
@@ -21,6 +23,7 @@ import requests
 
 from CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from LinkVerifier import LinkVerifier
+from Resources import local_tz
 import CustomExpectedConditions
 import Config as Config
 
@@ -349,3 +352,13 @@ class PlosPage(object):
     """
     return self._driver.execute_script(
         'return jQuery({0}).is(":animated");'.format(json.dumps(selector)))
+
+  @staticmethod
+  def utc_to_local_tz(utc_dto):
+    """
+    Takes a date time object in utc and converts it to the local timezone
+    :param utc_dto: utc date time object
+    :return: local_dto: converted local date time object
+    """
+    local_dto = utc_dto.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(local_tz))
+    return local_dto

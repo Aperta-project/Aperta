@@ -63,7 +63,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
-    self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
+    self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')

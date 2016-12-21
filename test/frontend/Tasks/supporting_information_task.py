@@ -150,10 +150,6 @@ class SITask(BaseTask):
     for file_name in file_list:
       new_element = self.add_file(file_name)
       attached_elements.append(new_element)
-      #try:
-        #self._wait_for_not_element(self._get(self._si_green_spinner),1)
-      #except ElementDoesNotExistAssertionError:
-        #pass
       # This sleep avoid a Stale Element Reference Exception
       time.sleep(3)
     return attached_elements
@@ -166,6 +162,13 @@ class SITask(BaseTask):
     :return: None
     """
     site_uploads = self._gets(self._file_link)
+    timeout = 15
+    counter = 0
+    while len(uploads) != len(site_uploads) or counter == timeout:
+      site_uploads = self._gets(self._file_link)
+      # give time for uploading file to end processing
+      time.sleep(1)
+      counter += 1
     site_uploads = set([x.text for x in site_uploads])
     uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)

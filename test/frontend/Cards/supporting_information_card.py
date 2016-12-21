@@ -79,10 +79,16 @@ class SICard(BaseCard):
     :return: None
     """
     site_uploads = self._gets(self._file_link)
+    timeout = 15
+    counter = 0
+    while len(uploads) != len(site_uploads) or counter == timeout:
+      site_uploads = self._gets(self._file_link)
+      # give time for uploading file to end processing
+      time.sleep(1)
+      counter += 1
     site_uploads = set([x.text for x in site_uploads])
-    uploads = set([x.split(os.sep)[-1] for x in uploads])
+    uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)
-    return None
 
   def add_file(self, file_name):
     """

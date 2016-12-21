@@ -31,7 +31,7 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def _test_si_task_styles(self):
+  def test_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
@@ -56,7 +56,7 @@ class SITaskTest(CommonTest):
     manuscript_page.complete_task('Supporting Info', data=data, style_check=True)
     return None
 
-  def _DONE_test_si_task_and_card(self):
+  def test_si_task_and_card(self):
     """
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
@@ -167,7 +167,7 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def _DONE_test_replace_si_upload(self):
+  def test_replace_si_upload(self):
     """
     test_figure_task: Validates replace function in SI task
     :return: None
@@ -257,7 +257,7 @@ class SITaskTest(CommonTest):
     logging.info(doc2uploads)
     supporting_info.add_files(doc2uploads)
     # Wait for all files to upload and process for testing for uploads
-    # Bug reported at APERTA-
+    # Bug reported at APERTA-8720
     time.sleep(5)
     supporting_info.validate_uploads(doc2uploads)
     manuscript_page.logout()
@@ -280,18 +280,12 @@ class SITaskTest(CommonTest):
     supporting_info_card.validate_uploads(doc2uploads)
     # upload multiple files in the card
     si_files = supporting_info_files
-    doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
-    logging.info(doc2uploads)
-    supporting_info_card.add_files(doc2uploads)
+    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
+    logging.info(doc2uploads_set2)
+    supporting_info_card.add_files(doc2uploads_set2)
     # Wait for all files to upload and process for testing for uploads
     time.sleep(2)
-    supporting_info_card.validate_uploads(doc2uploads)
-
-
-
-
-
-
+    supporting_info_card.validate_uploads(doc2uploads + doc2uploads_set2)
     return None
 
 if __name__ == '__main__':

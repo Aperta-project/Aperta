@@ -1,4 +1,6 @@
-# Register the MailLoggerObserver class
-ActionMailer::Base.register_observer(EmailLoggerObserver)
-ActionMailer::Base.register_interceptor(LogEmailsToDatabaseInterceptor)
-ActionMailer::Base.register_observer(LogEmailsToDatabaseObserver)
+# this should always come first as it initializers email headers
+# and such that may be consumed further on down the line
+MailLog::InitializeMessage.attach_handlers!
+
+MailLog::LogToRails.attach_handlers!
+MailLog::LogToDatabase.attach_handlers!

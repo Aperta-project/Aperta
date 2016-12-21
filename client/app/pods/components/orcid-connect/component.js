@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
@@ -27,25 +28,28 @@ export default Component.extend({
   // appears on the user's profile page.  The profile page doesn't exist
   // in the context of a journal, so we need to dig through all of them to
   // see if the user can remove the link.
-  setCanRemoveOrcid: function() {
+  setCanRemoveOrcid: concurrencyTask(function * () {
     let can = this.get('can');
-    this.get('store').findAll('journal').then((journals) => {
-      let promises = journals.map(j => can.can('remove_orcid', j));
-      Ember.RSVP.all(promises)
-      .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
-    });
-  },
+    let journals = yield this.get('store').findAll('journal');
+    let promises = journals.map(j => can.can('remove_orcid', j));
+    let permissions = yield Ember.RSVP.all(promises);
+    this.set('canRemoveOrcid', _.any(permissions));
+  }),
 
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
+
+    // For ease of testing we're making it so that orcid-connect can have it's
+    // orcidAccount set directly.  In that case the component is invoked with `user=null`
     if (this.get('user.orcidAccount')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
       });
-      if (this.get('canRemoveOrcid') === null) {
-        this.setCanRemoveOrcid();
-      }
+    }
+
+    if (this.get('canRemoveOrcid')=== null) {
+      this.get('setCanRemoveOrcid').perform();
     }
 
     // if we don't have a journal (profile page) we need to find one to

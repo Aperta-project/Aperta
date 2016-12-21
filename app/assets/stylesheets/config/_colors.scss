@@ -17,13 +17,12 @@ $aperta-blue-dark: #205e9c;
 /* GREY
 ----------------------------------------------------------------------------- */
 
-$grey-base: rgb(135,135,135);
-$aperta-black: darken($grey-base, 33%);
-$aperta-grey: $grey-base;
-$aperta-grey-dark: #878787;
-$aperta-grey-light: lighten($grey-base, 30%);
-$aperta-grey-lighter: lighten($grey-base, 37%);
-$aperta-grey-xlight: lighten($grey-base, 43%);
+$aperta-black: #333333;
+$aperta-grey: #878787;
+$aperta-grey-dark: #878787; // deprecated
+$aperta-grey-light: #d5d5d5;
+$aperta-grey-lighter: #e5e5e5;
+$aperta-grey-xlight: #f5f5f5;
 $aperta-white: #fff;
 
 

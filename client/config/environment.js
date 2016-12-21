@@ -30,6 +30,9 @@ module.exports = function(environment) {
     'mathjax': {
       url: '//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=MML_HTMLorMML-full'
     },
+    'pdfjs': {
+      url: '//cdnjs.cloudflare.com/ajax/libs/pdf.js/1.6.319/pdf.min.js'
+    },
 
     contentSecurityPolicy: {
       'default-src': "'none'",

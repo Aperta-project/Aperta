@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206175332) do
+ActiveRecord::Schema.define(version: 20161219214719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,16 +336,16 @@ ActiveRecord::Schema.define(version: 20161206175332) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix"
-    t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued",      default: "0"
+    t.string   "doi_publisher_prefix",               null: false
+    t.string   "doi_journal_prefix",                 null: false
+    t.string   "last_doi_issued",      default: "0", null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
     t.boolean  "pdf_allowed",          default: false
   end
 
-  add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
+  add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"

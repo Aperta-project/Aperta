@@ -4,7 +4,7 @@ import ENV from 'tahi/config/environment';
 const { getOwner } = Ember;
 
 export default Ember.Component.extend({
-  classNames: ['card'],
+  classNames: ['task-disclosure-heading', 'card'],
   classNameBindings: ['task.completed:card--completed', 'classComponentName'],
 
   classComponentName: Ember.computed.readOnly('task.componentName'),
@@ -14,6 +14,7 @@ export default Ember.Component.extend({
   }),
 
   task: null,
+  taskTemplate: false,
   canRemoveCard: false,
   version1: null,  // Will be a string like "1.2"
   version2: null,  // Will be a string like "1.2"

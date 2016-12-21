@@ -7,6 +7,7 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
@@ -43,6 +44,7 @@ class SITask(BaseTask):
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
     self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
+    self._si_green_spinner = (By.CLASS_NAME, 'progress-spinner--green')
    # POM Actions
 
   def validate_styles(self):
@@ -146,7 +148,12 @@ class SITask(BaseTask):
     """
     attached_elements = []
     for file_name in file_list:
-      attached_elements.append(self.add_file(file_name))
+      new_element = self.add_file(file_name)
+      attached_elements.append(new_element)
+      #try:
+        #self._wait_for_not_element(self._get(self._si_green_spinner),1)
+      #except ElementDoesNotExistAssertionError:
+        #pass
       # This sleep avoid a Stale Element Reference Exception
       time.sleep(3)
     return attached_elements
@@ -154,11 +161,12 @@ class SITask(BaseTask):
   def validate_uploads(self, uploads):
     """
     Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
     :param uploads: Iterable with string with the file name to check in SI task
     :return: None
     """
     site_uploads = self._gets(self._file_link)
-    site_uploads = [x.text for x in site_uploads]
-    uploads = [x.split(os.sep)[-1] for x in uploads]
+    site_uploads = set([x.text for x in site_uploads])
+    uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)
     return None

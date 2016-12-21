@@ -54,22 +54,25 @@
 {{flash-messages}}
 
 {{#split-pane id="main-content" class="main-content" role="main" handleClass="manuscript-handle"}}
-  {{#split-pane-element class="manuscript-pane main-content-section"}}
-    {{#rendered-manuscript paper=model}}
-      {{#if model.processing}}
-        {{#progress-spinner-message class="paper-index-progress-spinner"
-                                    visible=true
-                                    size="large"
-                                    align="middle"}}
-          Loading . . .
-        {{/progress-spinner-message}}
-      {{else}}
-        {{{model.body}}}
-      {{/if}}
-    {{/rendered-manuscript}}
-  {{/split-pane-element}}
-
-  {{#split-pane-element class="main-content-section"}}
+  {{#if showPdfManuscript}}
+    {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
+  {{else}}
+    {{#split-pane-element class="manuscript-pane main-content-section"}}
+      {{#rendered-manuscript paper=model}}
+        {{#if model.processing}}
+          {{#progress-spinner-message class="paper-index-progress-spinner"
+                                      visible=true
+                                      size="large"
+                                      align="middle"}}
+            Loading . . .
+          {{/progress-spinner-message}}
+        {{else}}
+          {{{model.body}}}
+        {{/if}}
+      {{/rendered-manuscript}}
+    {{/split-pane-element}}
+  {{/if}}
+  {{#split-pane-element class="main-content-section padded"}}
     {{paper-sidebar paper=model
                     user=currentUser
                     showPaperSubmitOverlay=(action "showPaperSubmitOverlay")

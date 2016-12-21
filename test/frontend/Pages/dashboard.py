@@ -9,6 +9,7 @@ import uuid
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -52,7 +53,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._dash_active_title = (By.CSS_SELECTOR, 'td.active-paper-title a')
     self._dash_active_journal = (By.CSS_SELECTOR, 'td.active-paper-title span')
-    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
+    self._dash_active_short_doi = (By.CSS_SELECTOR, 'td.active-paper-title span + span')
     self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
     self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
 
@@ -63,7 +64,7 @@ class DashboardPage(AuthenticatedPage):
                                      "//table[contains(@class,'table-borderless')][2]/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR, 'td.inactive-paper-title a')
     self._dash_inactive_journal = (By.CSS_SELECTOR, 'td.inactive-paper-title span')
-    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
+    self._dash_inactive_short_doi = (By.CSS_SELECTOR, 'td.inactive-paper-title span + span')
     self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
     self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
 
@@ -106,6 +107,23 @@ class DashboardPage(AuthenticatedPage):
     self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
+    # The next sequence of 10 locators are all per invitation so should be used withing a
+    #   find_element()
+    self._invitation_type_and_date = (By.CLASS_NAME, 'invitation-metadata')
+    self._invitation_date = (By.CSS_SELECTOR, 'h2.invitation-metadata > span.date')
+    self._invitation_paper_type = (By.CLASS_NAME, 'invitation-paper-type')
+    self._invitation_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h3')
+    self._invitation_author_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4')
+    # The author listing includes an index, lastname, first, and optionally 'from' affiliation
+    #   IT seems like we *could* have multiple such lines.
+    self._invitation_author_listing = (By.CSS_SELECTOR, 'li.dashboard-paper-title > p')
+    # The following elements will only appear if we are able to extract an abstract or if one is
+    #   is set explicitly in the Title and Abstract Card.
+    self._invitation_abstract_label = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4')
+    self._invitation_abstract_text = (By.CSS_SELECTOR, 'li.dashboard-paper-title > h4 + p + h4 + p')
+    self._invitation_accept_button = (By.CSS_SELECTOR, 'button.invitation-accept')
+    self._invitation_decline_button = (By.CSS_SELECTOR, 'button.invitation-decline')
+
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
@@ -191,6 +209,95 @@ class DashboardPage(AuthenticatedPage):
     # If flow reachs this point, there was an error
     invite_listings_text = [x.text for x in invite_listings]
     raise ValueError(u'{0} not in {1}'.format(title, invite_listings_text))
+
+  def validate_invitation_in_overlay(self, mmt, invitation_type, paper_id):
+    """
+    Validates the content of an invitation in the invitation overlay.
+      Makes function and style validations.
+    :param mmt: the paper type of the paper to validate in invitation
+    :param invitation_type: Whether invitation is an 'Academic Editor' or 'Reviewer' invitation
+    :param paper_id: papers.id of the manuscript
+    :return void function
+    """
+    # get some relevant data from the db:
+    # Get id(s) of the relevant task (invite_reviewer and invite_editors) tasks for paper
+    db_invitation_type = 'Invite ' + invitation_type
+    task_id = PgSQL().query('SELECT id '
+                            'FROM tasks '
+                            'WHERE paper_id = %s AND title = %s;',
+                            (paper_id, db_invitation_type))[0][0]
+    db_invite_tuple = PgSQL().query('SELECT invitee_role, created_at, information '
+                                    'FROM invitations '
+                                    'WHERE task_id=%s;', (task_id,))
+    db_invite_type, db_invite_date, db_author_information = db_invite_tuple[0]
+    db_article_tuple = PgSQL().query('SELECT title, abstract '
+                                     'FROM papers '
+                                     'WHERE id=%s;', (paper_id,))
+    db_title, db_abstract = db_article_tuple[0]
+    db_title = self.normalize_spaces(db_title)
+    page_invite_listings = self._gets(self._view_invites_invite_listing)
+    for page_listing in page_invite_listings:
+      logging.info(u'Validating Invitation: {0}'.format(page_listing.text))
+      if db_title in self.normalize_spaces(page_listing.text):
+        logging.info('Found Match on Title, validating...')
+        invite_type = page_listing.find_element(*self._invitation_type_and_date)
+        # check that the page matches the expectation
+        invitation_type = invitation_type.rstrip('s')
+        assert invitation_type in invite_type.text, 'invitation type: {0} not found in invite ' \
+                                                    'block metadata: {1}.'.format(invitation_type,
+                                                                                  invite_type.text)
+        # also check that the db matches the page
+        assert db_invite_type in invite_type.text, 'db invitation type: {0} not found in invite ' \
+                                                   'block metadata: {1}.'.format(db_invite_type,
+                                                                                 invite_type.text)
+        invite_date = page_listing.find_element(*self._invitation_date)
+        db_invite_date = self.utc_to_local_tz(db_invite_date)
+        assert db_invite_date.strftime('%B %d, %Y') in invite_date.text, \
+            'db invite date: {0} not found in invite block ' \
+            'metadata: {1}.'.format(db_invite_date.strftime('%B %d, %Y'), invite_date.text)
+        invite_paper_type = page_listing.find_element(*self._invitation_paper_type)
+        assert mmt in invite_paper_type.text, \
+            '{0} not found on page: {1}'.format(mmt, invite_paper_type.text)
+
+        auth_lbl = page_listing.find_element(*self._invitation_author_label)
+        assert auth_lbl.text == 'Authors'
+        # TODO: Add style validation for this label.
+        # The author listing includes an index, lastname, first, and optionally 'from' affiliation
+        #   IT seems like we *could* have multiple such lines.
+        creator_found = False
+        auth_listings = page_listing.find_elements(*self._invitation_author_listing)
+        tested_authors = []
+        for author in auth_listings:
+          logging.info('Testing page listed author: {0}'.format(author.text))
+          tested_authors.append(author.text)
+          if db_author_information in unicode(author.text):
+            logging.info('Found Creator in invitation listing...')
+            creator_found = True
+            break
+          else:
+            continue
+        assert creator_found, '{0} not found in invitation ' \
+                              'listed authors: {1}.'.format(db_author_information, tested_authors)
+        # The following elements will only appear if we are able to extract an abstract or if one is
+        #   is set explicitly in the Title and Abstract Card.
+        logging.info(db_abstract)
+        if db_abstract:
+          abst_lbl = page_listing.find_element(*self._invitation_abstract_label)
+          assert abst_lbl.text == 'Abstract', 'Abstract label is not the expected string ' \
+                                              '"Abstract", label found: {0}.'.format(abst_lbl.text)
+          # TODO: Add style validation for this label.
+          page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
+          assert db_abstract in page_abstract_text.text, \
+              'db abstract: {0}\nnot equal to invitation ' \
+              'abstract:\n{1}.'.format(db_abstract, page_abstract_text.text)
+        else:
+          logging.info('No Abstract listed in invitation...')
+        accept_btn = page_listing.find_element(*self._invitation_accept_button)
+        self.validate_primary_big_green_button_style(accept_btn)
+        decline_btn = page_listing.find_element(*self._invitation_decline_button)
+        self.validate_secondary_big_green_button_style(decline_btn)
+      else:
+        logging.info('These are not the droids you\'re looking for...')
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """
@@ -354,7 +461,7 @@ class DashboardPage(AuthenticatedPage):
     # dashboard welcome message
     active_manuscript_list = []
     try:
-      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+      activ_manu_unsbmtd_tuples = PgSQL().query('SELECT DISTINCT papers.short_doi, '
                                                 'papers.updated_at '
                                                 'FROM assignments '
                                                 'JOIN roles ON assignments.role_id=roles.id '
@@ -369,7 +476,7 @@ class DashboardPage(AuthenticatedPage):
                                                 '\'in_revision\', \'invited_for_full_submission\') '
                                                 'ORDER BY papers.updated_at DESC;', (uid,))
       # APERTA-6352 We are not correctly sorting active submitted documents on the dashboard
-      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT assignments.assigned_to_id, '
+      active_manu_sbmtd_tuples = PgSQL().query('SELECT DISTINCT papers.short_doi, '
                                                'assignments.created_at '
                                                'FROM assignments '
                                                'JOIN roles ON assignments.role_id=roles.id '
@@ -426,7 +533,7 @@ class DashboardPage(AuthenticatedPage):
     :param uid: uid of the user under test
     :param active_manuscript_count: integer representing the total number of active manuscripts for
       uid
-    :param active_manuscript_list: active_manuscript_list (paper.id ordered by
+    :param active_manuscript_list: active_manuscript_list (paper.short_doi ordered by
       assignments.created_at)
     :return: None
     """
@@ -534,7 +641,7 @@ class DashboardPage(AuthenticatedPage):
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
       journals = self._gets(self._dash_inactive_journal)
-      manu_ids = self._gets(self._dash_inactive_manu_id)
+      short_dois = self._gets(self._dash_inactive_short_doi)
       roles = self._gets(self._dash_inactive_role)
       statuses = self._gets(self._dash_inactive_status)
       db_papers_list = manuscript_list
@@ -542,15 +649,16 @@ class DashboardPage(AuthenticatedPage):
     else:
       papers = self._gets(self._dash_active_title)
       journals = self._gets(self._dash_active_journal)
-      manu_ids = self._gets(self._dash_active_manu_id)
+      short_dois = self._gets(self._dash_active_short_doi)
       roles = self._gets(self._dash_active_role)
       statuses = self._gets(self._dash_active_status)
       unsubmitted_list = []
       submitted_list = []
       for paper in manuscript_list:
+        logging.debug(paper)
         submitted_state = PgSQL().query('SELECT publishing_state '
                                         'FROM papers '
-                                        'WHERE id=%s;', (paper,))
+                                        'WHERE short_doi=%s;', (paper,))
         if submitted_state == 'unsubmitted':
           unsubmitted_list.append(paper)
         else:
@@ -577,35 +685,46 @@ class DashboardPage(AuthenticatedPage):
         paper_text = paper.text.split()
         logging.debug('db_title: {0}'.format(db_title))
         logging.debug('paper_text: {0}'.format(paper_text))
+        paper_id_from_db = PgSQL().query('SELECT id '
+                                         'FROM papers '
+                                         'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         if not title:
-          logging.info('Paper id: {0}'.format(db_papers_list[count]))
+          logging.info('Paper short doi: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
                            'Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
           assert db_title == paper_text, \
-              unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
+              unicode(title) + u' is not equal to ' + unicode(paper.text)
         else:
           raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
-        paper_roles = PgSQL().query('SELECT old_role FROM paper_roles '
-                                    'INNER JOIN papers ON papers.id = paper_roles.paper_id '
-                                    'WHERE paper_roles.paper_id = %s AND '
-                                    'paper_roles.user_id= %s '
-                                    'ORDER BY paper_roles.created_at DESC;', (db_papers_list[count],
+        paper_roles = PgSQL().query('SELECT roles.name FROM roles '
+                                    'INNER JOIN assignments on roles.id = assignments.role_id '
+                                    'INNER JOIN papers ON papers.id = assignments.assigned_to_id '
+                                    'WHERE assignments.assigned_to_type = \'Paper\' AND '
+                                    'assignments.assigned_to_id = %s AND '
+                                    'assignments.user_id= %s '
+                                    'ORDER BY assignments.created_at DESC;', (paper_id_from_db,
                                                                               uid))
         rolelist = []
         for role in paper_roles:
+          logging.debug(role[0])
           rolelist.append(role[0])
-        # print(db_papers_list[count])
+        # logging.debug(db_papers_list[count])
         paper_owner = PgSQL().query('SELECT user_id '
-                                    'FROM papers where id = %s;', (db_papers_list[count],))[0][0]
+                                    'FROM assignments '
+                                    'INNER JOIN roles ON roles.id = assignments.role_id '
+                                    'WHERE roles.name = \'Creator\' '
+                                    'AND assigned_to_type = \'Paper\' '
+                                    'AND assigned_to_id = %s;', (paper_id_from_db,))[0][0]
         if paper_owner == uid:
-          rolelist.append('my paper')
+          rolelist.append('Author')
 
         # Validate Status Display
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state '
-                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+                                 'FROM papers '
+                                 'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         # For display of status on the home page, we replace '_' with a space.
         transtab = string.maketrans('_', ' ')
         dbstatus = dbstatus.translate(transtab)
@@ -615,14 +734,13 @@ class DashboardPage(AuthenticatedPage):
             page_status.lower() + ' is not equal to: ' + dbstatus.lower()
 
         # Validate Manuscript ID display
-        dbmanuid = PgSQL().query('SELECT doi '
-                                 'FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        manu_id = manu_ids[count].text
-        manu_id = manu_id.split(': ')[1]
-        logging.debug(manu_id)
-        logging.debug(dbmanuid)
-        dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
-        assert manu_id in dbmanuid, '{0} not found in {1}'.format(manu_id, dbmanuid)
+        dbshortdoi = PgSQL().query('SELECT doi '
+                                   'FROM papers '
+                                   'WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        short_doi = short_dois[count].text
+        short_doi = short_doi.split(': ')[1]
+        dbshortdoi = 'ID: {0}'.format(dbshortdoi.split('/')[1]) if dbshortdoi else 'ID:'
+        assert short_doi in dbshortdoi, '{0} not found in {1}'.format(short_doi, dbshortdoi)
         # Finally increment counter
         count += 1
 
@@ -681,7 +799,8 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_type = self._gets(self._cns_paper_type_dd)
-    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type[0].text,
+                                                                    paper_type)
 
   def select_journal_get_types(self, journal):
     """

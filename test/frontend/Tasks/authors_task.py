@@ -578,9 +578,9 @@ class AuthorsTask(BaseTask):
       # Time to look for institutions to fill the drop down options
       time.sleep(5)
     title_input.clear()
-    title_input.send_keys(author_data['title'] + Keys.ENTER)
+    title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
-    department_input.send_keys(author_data['department'] + Keys.ENTER)
+    department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():

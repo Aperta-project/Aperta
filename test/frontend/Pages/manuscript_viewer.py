@@ -63,7 +63,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
-    self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
+    self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -478,6 +478,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert close_icon_overlay.value_of_css_property('color') == aperta_grey_dark, \
           close_icon_overlay.value_of_css_property('color')
       close_icon_overlay.click()
+      # Need to allow the slightest time for the overlay to close to prevent covered element
+      #   syndrome
+      time.sleep(.5)
 
   def withdraw_manuscript(self):
     """
@@ -576,7 +579,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Unknown Task')
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, style_check=False):
+  def complete_task(self, task_name, click_override=False, data=None, style_check=False, author = ''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
@@ -696,7 +699,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
-      author_task.edit_author(affiliation)
+      author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
     elif 'Review by ' in task_name:

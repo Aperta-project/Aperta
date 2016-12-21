@@ -26,14 +26,14 @@ __author__ = 'jgray@plos.org'
 
 
 @MultiBrowserFixture
-class WithdrawManuscriptTest(CommonTest):
+class ReactivateManuscriptTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Withdraw process
+  Validate the elements, styles, functions of the Reactivation process
   """
 
-  def test_withdraw_manuscript(self):
+  def test_reactivate_manuscript(self):
     """
-    test_withdraw_ms: Validates the elements, styles, roles and functions of the withdraw
+    test_reactivate_ms: Validates the elements, styles, roles and functions of the reactivate
     manuscript process and UI elements
     :return: void function
     """
@@ -43,26 +43,16 @@ class WithdrawManuscriptTest(CommonTest):
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     journal = 'PLOS Wombat'
     self.create_article(journal=journal, type_='NoCards', random_bit=True)
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # Note: Request title to make sure the required page is loaded
+    manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
-    paper_id = ''
-    while not paper_id:
-      time.sleep(5)
-      paper_id = paper_url.split('/')[-1].split('?')[0]
-    logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
-    # Giving just a little extra time here so the title on the paper gets updated
-    # What I notice is that if we submit before iHat is done updating, the paper title
-    # reverts to the temporary title specified on the CNS overlay (5s is too short)
-    # APERTA-6514
-    time.sleep(15)
+    short_doi = manuscript_page.get_short_doi()
+
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -74,14 +64,14 @@ class WithdrawManuscriptTest(CommonTest):
     manuscript_page._check_more_btn(user=creator_user)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
-                                                'WHERE id = %s;', (paper_id,))[0][0]
+                                                'WHERE short_doi = %s;', (short_doi,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.withdraw_manuscript()
     # Need a wee bit of time for the db to update
     time.sleep(2)
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
-                                                'WHERE id = %s;', (paper_id,))[0][0]
+                                                'WHERE short_doi = %s;', (short_doi,))[0][0]
     assert manuscript_publishing_state == 'withdrawn', manuscript_publishing_state
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     withdraw_banner = manuscript_page._get(self._withdraw_banner)
@@ -106,22 +96,20 @@ class WithdrawManuscriptTest(CommonTest):
     internal_staff = random.choice(editorial_users)
     logging.info(internal_staff['name'])
     dashboard_page = self.cas_login(email=internal_staff['email'])
+    dashboard_page.page_ready()
     self._driver.get(paper_url)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Give a little time for the page to draw
-    time.sleep(3)
+    manuscript_page.page_ready()
     manuscript_page.validate_reactivate_btn()
     manuscript_page.reactivate_manuscript()
     manuscript_publishing_state = PgSQL().query('SELECT publishing_state '
                                                 'FROM papers '
-                                                'WHERE id = %s;', (paper_id,))[0][0]
+                                                'WHERE short_doi = %s;', (short_doi,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    # Need to provide time for the workflow page to load and for the elements to attach to DOM,
-    #   otherwise failures
-    time.sleep(10)
+    workflow_page.page_ready()
     workflow_page.click_recent_activity_link()
     time.sleep(1)
     workflow_page.validate_recent_activity_entry('Manuscript was reactivated',

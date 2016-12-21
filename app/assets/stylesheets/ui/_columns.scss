@@ -61,6 +61,10 @@
   //opacity: 0.6;
 }
 
+.column .task-disclosure-heading {
+  margin-bottom: 1rem;
+}
+
 .column-header {
   position: relative;
   margin: 0 15px;
@@ -103,9 +107,8 @@
   left: 0;
   height: 0;
   background: #fff;
-  z-index: 1;
+  z-index: 2;
   opacity: 0;
-
   transition-property: opacity bottom;
   transition-duration: 0.1s;
 }
@@ -143,8 +146,7 @@
 
 .column-content {
   overflow-y: auto;
-  width: 235px;
-  padding: 10px 0 0 15px;
+  padding: 10px 15px 0 15px;
   white-space: normal; // IE needs this for some reason :-\
 
   > ul {

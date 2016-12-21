@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
@@ -15,13 +16,17 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
   the journal.
+* Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
 * Added cap cleanup:dumps & rake db:dump:cleanup
+* An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+  the parts.
 ### Deprecated
 ### Removed
 ### Fixed

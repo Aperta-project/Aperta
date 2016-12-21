@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="flex-group">
-      <div class="flex-element required si-file-label-input {{if model.validationErrors.label "error"}}">
+      <div class="flex-element si-file-label-input {{if model.validationErrors.label "error"}}">
         {{input class="form-control si-file-label-field"
                 placeholder="E.g. S1"
                 name="label"
@@ -45,7 +45,8 @@
     <div class="flex-group">
       <div class="flex-element">
         {{format-input class="form-control si-file-title-input"
-                       placeholder="Enter a title (optional)"
+                       placeholder="Enter a title"
+                       required=true
                        name="title"
                        value=file.title
                        displayBold=false}}

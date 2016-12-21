@@ -146,7 +146,7 @@ test('on paper.index as a participant on a task and author of paper', function(a
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.shortDoi).then(function() {
-    return assert.ok(!!find('.card-content:contains("Revise Task")'),
+    return assert.ok(!!find('.card-title:contains("Revise Task")'),
       'Participant task is displayed in the sidebar for author');
   });
 });
@@ -159,7 +159,7 @@ test('visiting /paper: Author completes all metadata cards', function(assert) {
     const submitButton = find('button:contains("Submit")');
     return assert.ok(!submitButton.length, 'Submit is disabled');
   }).then(function() {
-    const ref = find('#paper-submission-tasks .card-content');
+    const ref = find('#paper-submission-tasks .card');
     let results = [];
     let i, len;
     for (i = 0, len = ref.length; i < len; i++) {

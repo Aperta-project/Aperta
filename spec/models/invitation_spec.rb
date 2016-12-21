@@ -100,7 +100,7 @@ describe Invitation do
     end
 
     it "does not set the state to 'rescinded' from 'pending'" do
-      expect { invitation.rescind! }.to raise_exception
+      expect { invitation.rescind! }.to raise_error(AASM::InvalidTransition)
       expect(invitation.state).not_to eq('rescinded')
     end
 

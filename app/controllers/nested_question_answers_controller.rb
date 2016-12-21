@@ -16,7 +16,7 @@ class NestedQuestionAnswersController < ApplicationController
   def destroy
     answer = fetch_answer
     answer.destroy
-    render json: answer, serializer: NestedQuestionAnswerSerializer
+    respond_with answer
   end
 
   private

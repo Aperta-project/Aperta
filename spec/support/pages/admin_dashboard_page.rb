@@ -124,6 +124,18 @@ class EditJournalFragment < PageFragment
     find('.journal-description-edit').set description
   end
 
+  def journal_prefix=(journal_prefix)
+    find('.journal-doi-journal-prefix-edit').set journal_prefix
+  end
+
+  def publisher_prefix=(publisher_prefix)
+    find('.journal-doi-publisher-prefix-edit').set publisher_prefix
+  end
+
+  def last_doi_issued=(last_doi_issued)
+    find('.journal-last-doi-edit').set last_doi_issued
+  end
+
   def attach_cover_image(filename, journal_id)
     all('.journal-logo-upload').first.hover
     attach_file("journal-logo-#{journal_id}", Rails.root.join('spec', 'fixtures', filename), visible: false)

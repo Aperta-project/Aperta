@@ -336,9 +336,9 @@ ActiveRecord::Schema.define(version: 20161206175332) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix"
-    t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued",      default: "0"
+    t.string   "doi_publisher_prefix",               null: false
+    t.string   "doi_journal_prefix",                 null: false
+    t.string   "last_doi_issued",      default: "0", null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
@@ -346,6 +346,7 @@ ActiveRecord::Schema.define(version: 20161206175332) do
   end
 
   add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
+  add_index "journals", ["doi_publisher_prefix"], name: "index_journals_on_doi_publisher_prefix", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"

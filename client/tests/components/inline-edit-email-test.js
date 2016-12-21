@@ -93,9 +93,9 @@ test('can send email after selecting participants', function(assert){
 });
 
 test('can remove participants from email', function(assert){
-  assert.expect(6);
   this.registry.register('service:can', FakeCanService);
   let task = make('ad-hoc-task', {body: []});
+  assert.expect(5);
 
   let fake = this.container.lookup('service:can');
   fake.allowPermission('add_email_participants', task);
@@ -144,7 +144,6 @@ test('can remove participants from email', function(assert){
     this.$('.select2-search-choice-close').first().click();
   });
   assert.nElementsFound('.select2-search-choice', 1, 'selected recipient is removed from the DOM');
-  assert.equal(this.get('recipients.length'), 1, 'removes the recipient from the list');
 
   assert.elementFound('.send-email-action');
   this.$('.send-email-action').click();

@@ -283,7 +283,8 @@ class DashboardPage(AuthenticatedPage):
         logging.info(db_abstract)
         if db_abstract:
           abst_lbl = page_listing.find_element(*self._invitation_abstract_label)
-          assert abst_lbl == 'Abstract'
+          assert abst_lbl.text == 'Abstract', 'Abstract label is not the expected string ' \
+                                              '"Abstract", label found: {0}.'.format(abst_lbl.text)
           # TODO: Add style validation for this label.
           page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
           assert db_abstract in page_abstract_text.text, \

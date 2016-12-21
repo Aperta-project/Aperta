@@ -2,9 +2,10 @@ import { test, moduleForComponent } from 'ember-qunit';
 // import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import registerCustomAssertions from '../helpers/custom-assertions';
-import page from '../pages/ad-hoc-task';
-import FakeCanService from '../helpers/fake-can-service';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+import page from 'tahi/tests/pages/ad-hoc-task';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
+import Ember from 'ember';
 
 moduleForComponent('ad-hoc-body', 'Integration | Component | ad-hoc body', {
   integration: true,
@@ -97,19 +98,21 @@ test('canManage=true adding new blocks', function(assert) {
   assert.equal(savecount, 5, `expected number of times to call save`);
 });
 
-let taskWithBlocks = function() {
+let taskWithBlocks = function(blocks) {
   let checkBoxBlock = [{type: 'checkbox', value: 'foo', answer: 'true'}];
   let textBlock = [{type: 'text',  value: 'text value'}];
   let labelBlock = [{type: 'adhoc-label',  value: 'label text'}];
   let emailBlock = [{type: 'email',  subject: 'email subjet', value: 'label text', sent: ''}];
+  let defaultBlocks = [
+    checkBoxBlock,
+    textBlock,
+    labelBlock,
+    emailBlock ];
+
   return make(
     'task',
-    {body: [
-      checkBoxBlock,
-      textBlock,
-      labelBlock,
-      emailBlock ]
-    });
+    {body: (blocks || defaultBlocks)}
+  );
 };
 
 let cannotManageElement = function(assert, selector) {
@@ -212,6 +215,35 @@ test('canEdit=false users can send email with permission', function(assert) {
   this.render(template);
 
   assert.elementFound('.bodypart-display.email .email-send-participants',`emails can always be sent`);
+});
+
+test('email recipients are not shared between email blocks', function(assert) {
+  let task = taskWithBlocks([
+    [{type: 'email',  subject: 'Email 1', value: 'label text', sent: ''}],
+    [{type: 'email',  subject: 'Email 2', value: 'label text', sent: ''}]
+  ]);
+
+  Ember.run(() => {
+    task.set('participations', [
+      make('participation', {user: { fullName: 'User 1' }}),
+      make('participation', {user: { fullName: 'User 2' }}),
+    ]);
+  });
+
+  // Set the permissions such that the user can add participants
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('add_email_participants', task);
+  this.set('fakeSave', function() {});
+  this.set('canEdit', false);
+  this.set('canManage', false);
+  this.set('task', task);
+  this.render(template);
+
+  page.emails(0).send();
+  assert.equal(page.emails(0).recipients().count, 2, 'The first email block has two recipients');
+  page.emails(0).recipients(0).remove();
+  page.emails(1).send();
+  assert.equal(page.emails(1).recipients().count, 2, 'The second block still has two recipients');
 });
 
 test('canEdit=false all fields are disabled', function(assert) {

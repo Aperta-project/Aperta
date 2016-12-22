@@ -84,6 +84,10 @@ class WorkflowPage(AuthenticatedPage):
     self._supporting_info_card = (By.CSS_SELECTOR, 'div.supporting-information-task > a')
     self._title_abstract_card = (By.CSS_SELECTOR, 'div.title-and-abstract-task > a')
     self._upload_manu_card = (By.CSS_SELECTOR, 'div.upload-manuscript-task > a')
+    self._ad_hoc_editors_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Editors')]")
+    self._ad_hoc_reviewers_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Reviewers')]")
+    self._ad_hoc_authors_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Authors')]")
+    self._ad_hoc_staff_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Staff Only')]")
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
@@ -126,15 +130,15 @@ class WorkflowPage(AuthenticatedPage):
 
   def click_ad_hoc_reviewer_card(self):
     """Open Ad Hoc Reviewer Card from the workflow page"""
-    self._get(self._ah_reviewer_card).click()
+    self._get(self._ad_hoc_reviewers_card).click()
 
   def click_ad_hoc_editor_card(self):
     """Open Ad Hoc Editor Card from the workflow page"""
-    self._get(self._ah_editor_card).click()
+    self._get(self._ad_hoc_editors_card).click()
 
   def click_ad_hoc_staff_card(self):
     """Open Ad Hoc Reviewer Staff Only from the workflow page"""
-    self._get(self._ah_staff_card).click()
+    self._get(self._ad_hoc_staff_card).click()
 
   def click_initial_tech_check_card(self):
     """Open the Initial Tech Check Card from the workflow page"""
@@ -171,7 +175,7 @@ class WorkflowPage(AuthenticatedPage):
 
   def click_ad_hoc_authors_card(self):
     """Open the Ad Hoc author card"""
-    self._get(self._ah_author_card).click()
+    self._get(self._ad_hoc_authors_card).click()
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""
@@ -365,7 +369,7 @@ class WorkflowPage(AuthenticatedPage):
         card.click()
         break
     else:
-      raise ElementDoesNotExistAssertionError('No such card')
+      raise ElementDoesNotExistAssertionError('No such card: {0}'.format(card_title))
     div_buttons = self._get(self._div_buttons)
     div_buttons.find_element_by_class_name('button-primary').click()
     time.sleep(2)

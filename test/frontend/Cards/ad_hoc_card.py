@@ -30,6 +30,11 @@ class AHCard(BaseCard):
     self._subtitle = (By.CLASS_NAME, 'ad-hoc-corresponding-role')
     self._add_btn = (By.CSS_SELECTOR, 'div.adhoc-content-toolbar div.button--green')
     self._plus_icon = (By.CLASS_NAME, 'fa-plus')
+    self._tb_list = (By.CLASS_NAME, 'adhoc-toolbar-item--list')
+    self._tb_text = (By.CLASS_NAME, 'adhoc-toolbar-item--text')
+    self._tb_label = (By.CLASS_NAME, 'adhoc-toolbar-item--label')
+    self._tb_email = (By.CLASS_NAME, 'adhoc-toolbar-item--email')
+    self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
 
   # POM Actions
   def validate_card_elements_styles(self, short_doi, role):
@@ -42,10 +47,11 @@ class AHCard(BaseCard):
     self.validate_common_elements_styles(short_doi)
     title = self._get(self._card_title)
     self.validate_application_title_style(title)
-    assert title.text == 'Ad-hoc for {0}s'.format(role), title.text
+    role_title = 'Ad-hoc for {0}'.format(role)
+    assert title.text == role_title, (title.text, role_title)
     assert self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
-    assert subtitle.text == 'Corresponding Role {0}'.format(role), subtitle.text
+    assert subtitle.text in 'Corresponding Role {0}'.format(role), subtitle.text
     self.validate_application_ptext(subtitle)
     add_btn = self._get(self._add_btn)
     self.validate_primary_big_green_button_style(add_btn)

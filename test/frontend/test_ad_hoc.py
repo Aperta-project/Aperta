@@ -99,25 +99,24 @@ class AdHocCardAuthorTest(CommonTest):
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
-    ad_hoc_user = random.choice(('Author', 'Editor', 'Reviewer', 'Staff Only'))
+    ad_hoc_user = random.choice(('Authors', 'Editors', 'Reviewers', 'Staff Only'))
     logging.info('Ad Hoc card for: {0}'.format(ad_hoc_user))
-    if not workflow_page.is_card('Ad-hoc for {0}s'.format(ad_hoc_user)):
-      workflow_page.add_card('Ad-hoc for {0}s'.format(ad_hoc_user))
-    if ad_hoc_user == 'Author':
+    if not workflow_page.is_card('Ad-hoc for {0}'.format(ad_hoc_user)):
+      workflow_page.add_card('Ad-hoc for {0}'.format(ad_hoc_user))
+    if ad_hoc_user == 'Authors':
       workflow_page.click_ad_hoc_authors_card()
       ad_hoc_card = AHAuthorCard(self._driver)
-    elif ad_hoc_user == 'Editor':
+    elif ad_hoc_user == 'Editors':
       workflow_page.click_ad_hoc_editor_card()
       ad_hoc_card = AHEditorCard(self._driver)
-    elif ad_hoc_user == 'Reviewer':
+    elif ad_hoc_user == 'Reviewers':
       workflow_page.click_ad_hoc_reviewer_card()
       ad_hoc_card = AHReviewerCard(self._driver)
     elif ad_hoc_user == 'Staff Only':
       workflow_page.click_ad_hoc_staff_card()
       ad_hoc_card = AHAStaffCard(self._driver)
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
-
-
+    ad_hoc_card._get(ad_hoc_card._add_btn).click()
     return None
 
 

@@ -38,6 +38,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
+    this._popupClosedListener = Ember.run.bind(this, this.popupClosedListener);
     if(this.get('user')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
@@ -59,6 +60,7 @@ export default Component.extend({
   willDestroyElement() {
     this._super(...arguments);
     window.removeEventListener('storage', this._oauthListener, false);
+    this.removePopupClosedListener();
   },
 
   oauthListener(event) {
@@ -69,6 +71,19 @@ export default Component.extend({
       Ember.run.later(this, 'reloadIfNoResponse', 10000);
       window.removeEventListener('storage', this._oauthListener, false);
     }
+  },
+
+  removePopupClosedListener() {
+    if (this.get('popupTimeoutId')){
+      window.clearInterval(this.popupTimeoutId);
+      this.set('popupTimeoutId', null);
+    }
+  },
+
+  popupClosedListener(popupWindow) {
+    if (popupWindow.closed === false) { return; }
+    this.set('oauthInProgress', false);
+    this.removePopupClosedListener();
   },
 
   orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
@@ -86,6 +101,7 @@ export default Component.extend({
   },
 
   oauthInProgress: false,
+  popupTimeoutId: null,
 
   buttonText: computed('oauthInProgress', 'orcidOauthResult', function() {
     if (this.get('oauthInProgress')) {
@@ -115,13 +131,14 @@ export default Component.extend({
 
     openOrcid() {
       window.localStorage.removeItem('orcidOauthResult');
-      window.open(
+      var popupWindow = window.open(
         this.get('orcidAccount.oauthAuthorizeUrl'),
         '_blank',
         'toolbar=no, scrollbars=yes, width=500, height=630, top=500, left=500'
       );
       this.set('orcidOauthResult', null);
       this.set('oauthInProgress', true);
+      this.set('popupTimeoutId',  window.setInterval(this._popupClosedListener, 250, popupWindow));
       window.addEventListener('storage', this._oauthListener, false);
     }
   }

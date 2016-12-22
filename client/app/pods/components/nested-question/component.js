@@ -58,13 +58,13 @@ export default Component.extend({
   displayQuestionAsPlaceholder: false,
   displayQuestionText: true,
 
-  shouldDisplayQuestionText: Ember.computed('displayQuestionText', 'displayQuestionAsPlaceholder', function() {
+  shouldDisplayQuestionText: computed('displayQuestionText', 'displayQuestionAsPlaceholder', function() {
     return !this.get('displayQuestionAsPlaceholder') && this.get('displayQuestionText');
   }).readOnly(),
 
   // placeholder is passed in, but all internal stuff should use placeholderText
   placeholder: '',
-  placeholderText: Ember.computed('displayQuestionAsPlaceholder', 'questionText', 'placeholder', function() {
+  placeholderText: computed('displayQuestionAsPlaceholder', 'questionText', 'placeholder', function() {
     if (this.get('displayQuestionAsPlaceholder')) {
       return this.get('questionText');
     } else {

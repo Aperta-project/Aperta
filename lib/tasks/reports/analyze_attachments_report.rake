@@ -11,6 +11,22 @@ namespace :reports do
     end
 
     desc <<-DESCRIPTION.strip_heredoc
+      Runs the AnalyzeAttachmentFailuresReport and emails apertadevteam@plos.org.
+
+      Usage:
+        rake reports:analyze_attachments:send_email_to_aperta_dev_team
+
+      Note: this is workaround because the version of chruby deployed
+      incorrectly escapes square brackets and causes issues when executing
+      on ci, rc, production, etc.
+    DESCRIPTION
+    task send_email_to_aperta_dev_team: :environment do
+      task = Rake::Task['reports:analyze_attachments:send_email']
+      task.reenable
+      task.invoke('apertadevteam@plos.org')
+    end
+
+    desc <<-DESCRIPTION.strip_heredoc
       Runs the AnalyzeAttachmentFailuresReport and emails the team
 
       Usage:

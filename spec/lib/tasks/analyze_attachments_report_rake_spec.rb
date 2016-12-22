@@ -19,6 +19,30 @@ describe "reports:analyze_attachments" do
     end
   end
 
+  describe 'reports:analyze_attachments:send_email_to_aperta_dev_team' do
+    before do
+      Rake::Task['reports:analyze_attachments:send_email_to_aperta_dev_team'].reenable
+    end
+
+    it 'runs the report and queues up an email to notify the team of its output' do
+      expect(TahiReports::AnalyzeAttachmentFailuresReport)
+        .to receive(:run) do |**kwargs|
+          output = kwargs[:output]
+          output.print "report body here"
+        end
+      Rake.application.invoke_task 'reports:analyze_attachments:send_email_to_aperta_dev_team'
+      expect(Sidekiq::Extensions::DelayedMailer).to have_queued_mailer_job(
+        GenericMailer,
+        :send_email,
+        [{
+          to: "apertadevteam@plos.org",
+          subject: "Attachment Analysis Report for #{Date.today.to_s}",
+          body: "report body here"
+        }]
+      )
+    end
+  end
+
   describe 'reports:analyze_attachments:send_email' do
     before do
       Rake::Task['reports:analyze_attachments:run'].reenable

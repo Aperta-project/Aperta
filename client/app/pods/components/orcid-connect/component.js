@@ -103,6 +103,17 @@ export default Component.extend({
   oauthInProgress: false,
   popupTimeoutId: null,
 
+  buttonDisabled: computed('oauthInProgress',
+                                 'orcidOauthResult',
+                                 'orcid.identifier',
+                                 'orcidAccount.isLoaded',
+                                 function(){
+    return this.get('oauthInProgress') ||
+      !this.get('orcidAccount.isLoaded') ||
+      (this.get('orcidOauthResult') === 'success' &&
+        isEmpty(this.get('orcid.identifier')));
+  }),
+
   buttonText: computed('oauthInProgress', 'orcidOauthResult', function() {
     if (this.get('oauthInProgress')) {
       if (this.get('orcidOauthResult') === null){

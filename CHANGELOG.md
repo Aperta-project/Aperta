@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Withdrawn banner now shows on workflow view.
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced

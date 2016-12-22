@@ -4,10 +4,11 @@ export default Ember.Route.extend({
   can: Ember.inject.service('can'),
   restless: Ember.inject.service('restless'),
 
-  handleUnauthorizedRequest(transition) {
+  handleUnauthorizedRequest(transition, error) {
+    let errorMessage = error || "You don't have access to that content";
     transition.abort();
     this.transitionTo('dashboard').then(()=> {
-      this.flash.displayRouteLevelMessage('error', "You don't have access to that content");
+      this.flash.displayRouteLevelMessage('error', errorMessage);
     });
   },
 
@@ -21,7 +22,12 @@ export default Ember.Route.extend({
           this.handleUnauthorizedRequest(transition);
       }
       if (response.errors[0].status == 403) {
-        this.handleUnauthorizedRequest(transition);
+        let error_msg = response.errors[0].detail;
+        if (error_msg !== 'Forbidden') {
+          this.handleUnauthorizedRequest(transition, error_msg);
+        } else {
+          this.handleUnauthorizedRequest(transition);
+        }
       }
       return true;
     },

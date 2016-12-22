@@ -39,9 +39,7 @@ module Authorizations
     end
 
     def unaccepted_and_invited_to?(paper:)
-      if can?(:view, paper)
-        paper.decisions.last.invitations.where(state: 'invited').pluck(:invitee_id).include? id
-      end
+      paper.decisions.last.invitations.where(state: 'invited').pluck(:invitee_id).include? id
     end
 
     def filter_authorized(permission, target, participations_only: :default)

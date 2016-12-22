@@ -53,7 +53,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
   Ember.run(function(){
     TestHelper.mockFind('task').returns({ model: task });
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    click('.card-title:contains("Invite Editor")');
 
     andThen(function(){
       assert.elementFound(
@@ -85,7 +85,7 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockDelete('invitation', invitation.id);
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    click(".card-title:contains('Invite Editor')");
 
     andThen(function() {
       assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');
@@ -108,7 +108,7 @@ test('can not delete an invited invitation', function(assert) {
     TestHelper.mockFind('task').returns({model: task});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    click(".card-title:contains('Invite Editor')");
 
     andThen(function() {
       assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');

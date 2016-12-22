@@ -199,7 +199,7 @@ class SITaskTest(CommonTest):
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
-    time.sleep(3)
+    time.sleep(12)
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     supporting_info.validate_uploads([fn])
@@ -228,7 +228,7 @@ class SITaskTest(CommonTest):
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
-    time.sleep(3)
+    time.sleep(12)
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     supporting_info.validate_uploads([fn])
@@ -258,7 +258,7 @@ class SITaskTest(CommonTest):
     supporting_info.add_files(doc2uploads)
     # Wait for all files to upload and process for testing for uploads
     # Bug reported at APERTA-8720
-    time.sleep(5)
+    time.sleep(12)
     supporting_info.validate_uploads(doc2uploads)
     manuscript_page.logout()
     # check from the editor POV
@@ -284,7 +284,7 @@ class SITaskTest(CommonTest):
     logging.info(doc2uploads_set2)
     supporting_info_card.add_files(doc2uploads_set2)
     # Wait for all files to upload and process for testing for uploads
-    time.sleep(2)
+    time.sleep(12)
     supporting_info_card.validate_uploads(doc2uploads + doc2uploads_set2)
     return None
 

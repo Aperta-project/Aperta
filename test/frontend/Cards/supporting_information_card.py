@@ -112,5 +112,5 @@ class SICard(BaseCard):
       new_element = self.add_file(file_name)
       attached_elements.append(new_element)
       # This sleep avoid a Stale Element Reference Exception
-      time.sleep(3)
+      time.sleep(12)
     return attached_elements

@@ -240,10 +240,18 @@ test('email recipients are not shared between email blocks', function(assert) {
   this.render(template);
 
   page.emails(0).send();
-  assert.equal(page.emails(0).recipients().count, 2, 'The first email block has two recipients');
+  assert.equal(
+    page.emails(0).recipients().count,
+    2,
+    "The first email block has two recipients which are copied from the task's participants"
+  );
   page.emails(0).recipients(0).remove();
   page.emails(1).send();
-  assert.equal(page.emails(1).recipients().count, 2, 'The second block still has two recipients');
+  assert.equal(
+    page.emails(1).recipients().count,
+    2,
+    "Changing the first block's recipients doesn't mutate the original participants"
+  );
 });
 
 test('canEdit=false all fields are disabled', function(assert) {

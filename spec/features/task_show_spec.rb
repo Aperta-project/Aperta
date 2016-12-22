@@ -19,7 +19,7 @@ feature "Displaying task", js: true do
     visit "/"
     click_link paper.title
     click_link "Workflow"
-    find(".card-content", text: /#{task.title}/).click
+    find(".card-title", text: /#{task.title}/).click
   end
 
   scenario "User visits task's show page" do

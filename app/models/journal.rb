@@ -23,8 +23,7 @@ class Journal < ActiveRecord::Base
       with: PUBLISHER_PREFIX_FORMAT,
       message: 'The DOI Publisher Prefix is not valid. It can only contain word characters, numbers, -, and .',
       if: proc { |journal| journal.doi_publisher_prefix.present? }
-    },
-    uniqueness: { message: 'The DOI Publisher Prefix has already been taken' }
+    }
   validates :doi_journal_prefix,
     presence: { message: 'Please include a DOI Journal Prefix' },
     format: {
@@ -32,7 +31,8 @@ class Journal < ActiveRecord::Base
       message: 'The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /',
       if: proc { |journal| journal.doi_journal_prefix.present? }
     },
-    uniqueness: { message: 'The DOI Publisher Prefix has already been taken' }
+    uniqueness: { scope: :doi_publisher_prefix,
+                  message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
 
   after_create :setup_defaults

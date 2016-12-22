@@ -9,9 +9,9 @@ module MailLog
 
     # Creates a log message after the email has been delivered
     class DeliveredEmailObserver
-      def self.delivered_email(mail)
+      def self.delivered_email(mail, logger: Rails.logger)
         recipients = mail.to.join(', ')
-        Rails.logger.info "event=email to=#{recipients} from=#{mail.from.first} "\
+        logger.info "event=email to=#{recipients} from=#{mail.from.first} "\
                           "subject='#{mail.subject}' at=#{Time.current}"
       end
     end

@@ -10,7 +10,7 @@ module MailLog
 
     class DeliveringEmailInterceptor
       def self.delivering_email(message)
-        message.message_id = "<#{Mail.random_tag}@#{::Socket.gethostname}.mail>"
+        message.message_id ||= "<#{Mail.random_tag}@#{::Socket.gethostname}.mail>"
       end
     end
 

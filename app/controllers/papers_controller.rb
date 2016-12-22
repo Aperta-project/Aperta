@@ -21,6 +21,11 @@ class PapersController < ApplicationController
       :supporting_information_files,
       :journal
     ).find_by_id_or_short_doi(params[:id])
+
+    if current_user.unaccepted_and_invited_to?(paper: paper)
+      fail AuthorizationError
+    end
+
     requires_user_can(:view, paper)
     respond_with(paper)
   end

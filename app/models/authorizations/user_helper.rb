@@ -38,6 +38,12 @@ module Authorizations
       ).objects.empty?
     end
 
+    def unaccepted_and_invited_to?(paper:)
+      if can?(:view, paper)
+        paper.decisions.last.invitations.where(state: 'invited').pluck(:invitee_id).include? id
+      end
+    end
+
     def filter_authorized(permission, target, participations_only: :default)
       Authorizations::Query.new(
         permission: permission,

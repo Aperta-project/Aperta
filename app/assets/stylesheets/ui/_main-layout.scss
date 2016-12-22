@@ -36,8 +36,11 @@ body, html, #layout-container,
   #main-content .main-content-section {
     overflow: auto;
     flex: 1;
-    padding: 2rem;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .padded {
+    padding: 2rem;
   }
 }
 
@@ -65,9 +68,13 @@ body, html, #layout-container,
     overflow: auto;
     flex-grow: 1;
     // display: none;
-    padding: 2.0rem;
+
     -webkit-overflow-scrolling: touch;
 
     &.visible { display: block; }
+  }
+
+  .padded {
+    padding: 2rem;
   }
 }

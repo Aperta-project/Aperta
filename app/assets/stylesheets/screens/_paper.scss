@@ -7,7 +7,7 @@
 .manuscript-handle {
   &:before {
     content: '';
-    @include position(absolute, 0px auto 0px -10px);
+    @include position(absolute, 0px auto 0px 0px);
     width: 20px;
     background: #fff;
   }

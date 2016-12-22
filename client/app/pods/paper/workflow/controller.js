@@ -1,13 +1,24 @@
 import Ember from 'ember';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 
-export default Ember.Controller.extend({
-  restless: Ember.inject.service('restless'),
-  routing: Ember.inject.service('-routing'),
-  positionSort: ['position:asc'],
-  sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
+const {
+  Controller,
+  inject: { service },
+  computed: {
+    sort,
+    alias,
+    reads,
+    filterBy
+  }
+} = Ember;
 
-  paper: Ember.computed.alias('model'),
+export default Controller.extend({
+  restless: service('restless'),
+  routing: service('-routing'),
+  positionSort: ['position:asc'],
+  sortedPhases: sort('model.phases', 'positionSort'),
+
+  paper: alias('model'),
 
   activityIsLoading: false,
   showActivityOverlay: false,
@@ -18,8 +29,8 @@ export default Ember.Controller.extend({
 
   showChooseNewCardOverlay: false,
   addToPhase: null,
-  journalTaskTypes: Ember.computed.reads('model.paperTaskTypes'),
-  addableTaskTypes: Ember.computed.filterBy('journalTaskTypes', 'systemGenerated', false),
+  journalTaskTypes: reads('model.paperTaskTypes'),
+  addableTaskTypes: filterBy('journalTaskTypes', 'systemGenerated', false),
 
   taskToDisplay: null,
   showTaskOverlay: false,
@@ -56,10 +67,7 @@ export default Ember.Controller.extend({
     },
 
     showChooseNewCardOverlay(phase) {
-      this.setProperties({
-        addToPhase: phase
-      });
-
+      this.set('addToPhase', phase);
       this.set('showChooseNewCardOverlay', true);
     },
 
@@ -122,6 +130,13 @@ export default Ember.Controller.extend({
       phase.rollbackAttributes();
     },
 
+   /**
+    *  @method taskMovedWithinList
+    *  @param {Object} item DS.Model Task
+    *  @param {Number} oldIndex
+    *  @param {Number} newIndex
+    *  @param {Array}  itemList Array of DS.Model Task
+    **/
     taskMovedWithinList(item, oldIndex, newIndex, itemList) {
       itemList.removeAt(oldIndex);
       itemList.insertAt(newIndex, item);
@@ -129,10 +144,19 @@ export default Ember.Controller.extend({
       item.save();
     },
 
-    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+   /**
+    *  @method taskMovedBetweenList
+    *  @param {Object} item DS.Model Task
+    *  @param {Number} oldIndex
+    *  @param {Number} newIndex
+    *  @param {Object} newPhase DS.Model Phase
+    *  @param {Array}  sourceItems Array of DS.Model Task
+    *  @param {Array}  newItems Array of DS.Model Task
+    **/
+    taskMovedBetweenList(item, oldIndex, newIndex, newPhase, sourceItems, newItems) {
       sourceItems.removeAt(oldIndex);
       newItems.insertAt(newIndex, item);
-      item.set('phase', newList);
+      item.set('phase', newPhase);
 
       this.updateTaskPositions(sourceItems);
       this.updateTaskPositions(newItems);
@@ -151,19 +175,18 @@ export default Ember.Controller.extend({
     },
 
     toggleEditable() {
-      const model = this.get('model');
-      const url   = '/toggle_editable';
+      const url = '/toggle_editable';
 
-      this.get('restless').putUpdate(model, url).catch((arg) => {
-        let model   = arg.model;
-        let message = (function() {
+      this.get('restless').putUpdate(this.get('model'), url).catch((arg) => {
+        const model = arg.model;
+        const message = (function() {
           switch (arg.status) {
-            case 422:
-              return model.get('errors.messages') + ' You should probably reload.';
-            case 403:
-              return "You weren't authorized to do that";
-            default:
-              return 'There was a problem saving.  Please reload.';
+          case 422:
+            return model.get('errors.messages') + ' You should probably reload.';
+          case 403:
+            return "You weren't authorized to do that";
+          default:
+            return 'There was a problem saving. Please reload.';
           }
         })();
 

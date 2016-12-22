@@ -19,6 +19,10 @@ namespace :db do
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
 
     with_config do |app, host, db, user, password|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+
       drop_cmd = system("dropdb #{db} && createdb #{db}")
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 

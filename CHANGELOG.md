@@ -4,28 +4,44 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.32.0] - {2016-12-16}
+### Added
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
-  the journal.
+* Added the ability to upload pdfs via the manuscript upload task
+* Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
 * Added cap cleanup:dumps & rake db:dump:cleanup
+* An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+  the parts.
 ### Deprecated
 ### Removed
+### Fixed
+* Do not check validations in DownloadAttachmentWorker
+* Deleting all the text for a question's answer will no longer cause an error on subsequent
+  changes to that that answer.
+* Attached images with capitalized filenames will now preview correctly
+
+## ## [1.31.1] - {2016-12-7}
 ### Fixed
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
 * Add back missing attachment blocks for many ad hoc tasks
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
-* Do not check validations in DownloadAttachmentWorker
-* Deleting all the text for a question's answer will no longer cause an error on subsequent
-  changes to that that answer.
-* Attached images with capitalized filenames will now preview correctly
+
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added

@@ -29,4 +29,19 @@ feature "Upload paper", js: true, sidekiq: :inline! do
 
     expect(edit_paper_page).to be_loading_paper
   end
+
+  scenario "Author uploads paper in PDF format" do
+    paper.journal.update(pdf_allowed: true)
+    overlay = Page.view_task_overlay(paper, paper.tasks.first)
+    overlay.upload_pdf
+
+    wait_for_ajax
+
+    expect(overlay).to have_no_content('not a valid file type')
+
+    Page.view_paper paper
+    edit_paper_page = PaperPage.new
+
+    expect(edit_paper_page).to be_loading_paper
+  end
 end

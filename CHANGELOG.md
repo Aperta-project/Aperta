@@ -14,7 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
-  the journal.
+* Added the ability to upload pdfs via the manuscript upload task
 * Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
 * Added cap cleanup:dumps & rake db:dump:cleanup

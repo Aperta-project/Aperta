@@ -122,11 +122,12 @@ test('can remove participants from email', function(assert){
   assert.elementFound('.email-send-participants');
   this.$('.email-send-participants').click();
 
-  assert.nElementsFound('.select2-search-choice', 2, '2 recipients are rendered');
+  assert.nElementsFound('.participant-selector-user-name', 2, '2 recipients are rendered');
   Ember.run(() => {
-    this.$('.select2-search-choice-close').first().click();
+    this.$('.participant-selector-user-remove').first().click();
   });
-  assert.nElementsFound('.select2-search-choice', 1, 'selected recipient is removed from the DOM');
+  assert.nElementsFound('.participant-selector-user-name', 1, 'selected recipient is removed from the DOM');
+  assert.equal(this.get('recipients.length'), 1, 'removes the recipient from the list');
 
   assert.elementFound('.send-email-action');
   this.$('.send-email-action').click();

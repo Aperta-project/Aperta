@@ -5,6 +5,8 @@ export default Ember.Component.extend(Participants, {
   store: Ember.inject.service(),
   to: 'overlay-drop-zone',
 
+  searchingParticipant: false,
+
   /**
    *  Method called after out animation is complete.
    *  This should be set to an action.
@@ -41,6 +43,14 @@ export default Ember.Component.extend(Participants, {
         body: body,
         createdAt: new Date()
       }).save();
+    },
+
+    searchStarted() {
+      this.set('searchingParticipant', true);
+    },
+
+    searchFinished() {
+      this.set('searchingParticipant', false);
     }
   }
 });

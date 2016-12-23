@@ -2,22 +2,46 @@
   <span class="participant-selector-label">{{label}}</span>
 {{/if}}
 
-{{select-2-multiple value=""
-                    class="participant-select2"
-                    name="add_participant"
-                    selectionSelected="addParticipant"
-                    selectionRemoved="removeParticipant"
-                    dropdownClosed="dropdownClosed"
-                    selectedData=currentParticipants
-                    selectedTemplate=selectedTemplate
-                    resultsTemplate=resultsTemplate
-                    closeOnSelect=true
-                    allowClear=canManage
-                    minimumInputLength=3
-                    remoteSource=remoteSource
-                    dropdownClass="participant-dropdown"
-                    placeholder="Add People"}}
+{{#each currentParticipants as |p|}}
+  <span class="participant-selector-user">
+    <span class="participant-selector-user-name">{{p.fullName}}</span>
+    {{#if (or (and p.email displayEmails) canManage)}}
+      <div class="tooltip bottom animation-fade-in">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-inner">
+          {{if (and p.email displayEmails) p.email}}
+          {{#if canManage}}
+            <div class="participant-selector-user-remove" {{action "removeParticipant" p}}>
+              <b>{{fa-icon "times"}}</b>
+              Remove
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+  </span>
+{{/each}}
 
-{{#if canManage}}
-  <div class="add-participant-button" data-toggle="tooltip" title="Add Someone" {{action "activateDropdown"}}>+</div>
+{{#if (and canManage (not searching))}}
+  <div class="add-participant-button animation-fade-in"
+       {{action "toggleSearching" true}}
+       title="Add Someone">
+    +
+  </div>
+{{/if}}
+
+<br>
+
+{{#if searching}}
+  {{#power-select search=(perform searchUsersTask)
+                  placeholder="Please enter 3 or more characters"
+                  onchange=(action "addParticipant")
+                  onclose=(action "toggleSearching" false)
+                  oninput=(action "handleInput")
+                  triggerClass="aperta-select animation-fade-in"
+                  dropdownClass=dropdownClass
+                  as |user|}}
+    <strong>{{user.full_name}} @{{user.username}}</strong>
+    <div class="suggestion-sub-value">{{user.email}}</div>
+  {{/power-select}}
 {{/if}}

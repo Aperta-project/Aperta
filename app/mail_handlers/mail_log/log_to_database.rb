@@ -26,7 +26,10 @@ module MailLog
     class DeliveredEmailObserver
       def self.delivered_email(message)
         email_log = EmailLog.find_by!(message_id: message.message_id)
-        email_log.update_column :status, 'sent'
+        email_log.update_columns(
+          status: 'sent',
+          sent_at: Time.now
+        )
       end
     end
 
@@ -36,11 +39,14 @@ module MailLog
           yield
         rescue Exception => ex
           email_log = EmailLog.find_by!(message_id: message.message_id)
-          email_log.update_columns error_message: ex.message, status: 'failed'
+          email_log.update_columns(
+            error_message: ex.message,
+            errored_at: Time.now,
+            status: 'failed'
+          )
           raise ex
         end
       end
     end
-
   end
 end

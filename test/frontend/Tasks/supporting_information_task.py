@@ -7,6 +7,7 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
@@ -39,7 +40,11 @@ class SITask(BaseTask):
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
+    # Change followin markers when APERTA-8609 is addressed
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
+    self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
+    self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
+    self._si_green_spinner = (By.CLASS_NAME, 'progress-spinner--green')
    # POM Actions
 
   def validate_styles(self):
@@ -69,7 +74,7 @@ class SITask(BaseTask):
     # This will fail due to APERTA-8499
     #self.validate_error_field_style(dropdown)
     title = self._get(self._si_file_title_input)
-    assert title.text == 'Enter a title (optional)', title.text
+    assert title.text == 'Enter a title', title.text
     self.validate_input_field_style(title)
     caption = self._get(self._si_file_caption)
     assert caption.text == 'Enter a legend (optional)', caption.text
@@ -143,19 +148,28 @@ class SITask(BaseTask):
     """
     attached_elements = []
     for file_name in file_list:
-      attached_elements.append(self.add_file(file_name))
+      new_element = self.add_file(file_name)
+      attached_elements.append(new_element)
       # This sleep avoid a Stale Element Reference Exception
-      time.sleep(3)
+      time.sleep(12)
     return attached_elements
 
   def validate_uploads(self, uploads):
     """
     Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
     :param uploads: Iterable with string with the file name to check in SI task
     :return: None
     """
     site_uploads = self._gets(self._file_link)
-    site_uploads = [x.text for x in site_uploads]
-    uploads = [x.split(os.sep)[-1] for x in uploads]
+    timeout = 15
+    counter = 0
+    while len(uploads) != len(site_uploads) or counter == timeout:
+      site_uploads = self._gets(self._file_link)
+      # give time for uploading file to end processing
+      time.sleep(1)
+      counter += 1
+    site_uploads = set([x.text for x in site_uploads])
+    uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)
     return None

@@ -44,10 +44,8 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
-    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/docs/test-math.docx'
+    doc2upload = 'frontend/assets/supportingInfo/Figure S3 PLoS.tif'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -131,8 +129,6 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     manuscript_page.click_workflow_link()
-    ##paper_workflow_url = '{0}/workflow'.format(paper_url.split('?')[0])
-    ##self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
@@ -171,9 +167,77 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def _test_multiple_si_uploads(self):
+  def test_replace_si_upload(self):
+    """
+    test_figure_task: Validates replace function in SI task
+    :return: None
+    """
+    creator_user = random.choice(users)
+    logging.info('Login as {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    ##short_doi = manuscript_page.get_short_doi()
+    paper_url = manuscript_page.get_current_url()
+    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    manuscript_page.click_task('Supporting Info')
+    supporting_info = SITask(self._driver)
+    supporting_info.add_file(fn)
+    supporting_info.validate_uploads([fn])
+    # click edit
+    edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_btn.click()
+    # check for reeplace symbol
+    replace_div = supporting_info._get(supporting_info._si_replace_div)
+    replace_input = replace_div.find_element(*supporting_info._si_replace_input)
+    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    replace_input.send_keys(fn)
+    # Time for the file to upload and cancel button to attach
+    time.sleep(12)
+    cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
+    cancel_btn.click()
+    supporting_info.validate_uploads([fn])
+    manuscript_page.logout()
+    # Log in as Editorial User
+    editorial_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(editorial_user))
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    # go to paper
+    self._driver.get(paper_url)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_supporting_information_card()
+    supporting_info_card = SICard(self._driver)
+    supporting_info_card.validate_uploads([fn])
+    # make a replacement
+    edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
+    edit_btn.click()
+    replace_div = supporting_info._get(supporting_info._si_replace_div)
+    replace_input = replace_div.find_element(*supporting_info._si_replace_input)
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    fn = os.path.join(os.getcwd(), doc2upload)
+    replace_input.send_keys(fn)
+    # Time for the file to upload and cancel button to attach
+    time.sleep(12)
+    cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
+    cancel_btn.click()
+    supporting_info.validate_uploads([fn])
+    return None
+
+  def test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
+    and in SI Card
     :return: void function
     """
     creator_user = random.choice(users)
@@ -192,7 +256,36 @@ class SITaskTest(CommonTest):
     doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
     logging.info(doc2uploads)
     supporting_info.add_files(doc2uploads)
+    # Wait for all files to upload and process for testing for uploads
+    # Bug reported at APERTA-8720
+    time.sleep(12)
     supporting_info.validate_uploads(doc2uploads)
+    manuscript_page.logout()
+    # check from the editor POV
+    # see if all uploads are there
+    # Log in as Editorial User
+    editorial_user = random.choice(editorial_users)
+    logging.info('Logging in as {0}'.format(editorial_user))
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    # go to paper
+    self._driver.get(paper_url)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_supporting_information_card()
+    supporting_info_card = SICard(self._driver)
+    supporting_info_card.validate_uploads(doc2uploads)
+    # upload multiple files in the card
+    si_files = supporting_info_files
+    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
+    logging.info(doc2uploads_set2)
+    supporting_info_card.add_files(doc2uploads_set2)
+    # Wait for all files to upload and process for testing for uploads
+    time.sleep(12)
+    supporting_info_card.validate_uploads(doc2uploads + doc2uploads_set2)
     return None
 
 if __name__ == '__main__':

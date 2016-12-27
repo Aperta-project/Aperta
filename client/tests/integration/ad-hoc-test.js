@@ -1,12 +1,11 @@
 import Ember from 'ember';
 import { test } from 'qunit';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
-import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
 import { make } from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import page from 'tahi/tests/pages/ad-hoc-task';
-import Factory from '../helpers/factory';
+import Factory from 'tahi/tests/helpers/factory';
 
 let server = null;
 
@@ -25,23 +24,22 @@ moduleForAcceptance('Integration: AdHoc Card', {
   beforeEach() {
     server   = setupMockServer();
 
-    server.respondWith('PUT', /\/api\/tasks\/\d+/, [
-      204, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify({})
-    ]);
+    $.mockjax({type: 'PUT',
+      url: /\/api\/tasks\/\d+/,
+      status: 204
+    });
 
-    server.respondWith('GET', '/api/tasks/1/nested_questions', [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify({nested_questions: []})
-    ]);
+    $.mockjax({type: 'GET',
+      url: '/api/tasks/1/nested_questions',
+      status: 200,
+      responseText: {nested_questions: []}
+    });
 
-    server.respondWith('GET', '/api/tasks/1/nested_question_answers', [
-      200, {
-        'Content-Type': 'application/json'
-      }, JSON.stringify({nested_question_answers: []})
-    ]);
+    $.mockjax({type: 'GET',
+      url: '/api/tasks/1/nested_question_answers',
+      status: 200,
+      responseText: {nested_question_answers: []}
+    });
 
     $.mockjax({
       url: '/api/countries',
@@ -132,11 +130,10 @@ test('AdHoc Task email block', function(assert) {
   TestHelper.mockPaperQuery(paper);
   mockFind('task').returns({ model: task });
 
-  server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
-    204, {
-      'Content-Type': 'application/json'
-    }, JSON.stringify({})
-  ]);
+  $.mockjax({type: 'PUT',
+    url: /\/api\/tasks\/\d+\/send_message/,
+    status: 204
+  });
 
   visit(paperTaskURL(paper, task));
 

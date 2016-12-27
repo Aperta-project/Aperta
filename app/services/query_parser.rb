@@ -111,10 +111,19 @@ class QueryParser < QueryLanguageParser
     table[:title].matches(task).and(table[:completed].eq(false))
   end
 
-  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>/) do |task, days_ago|
-    table = join Task
-    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    table[:title].matches(task).and(table[:completed_at].lt(start_time))
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED?/) do |task, search_term|
+    comparator = search_term.match(/[<=>]{1,2}/).to_s
+    if comparator.present?
+      table = join Task
+      table[:title].matches(task).and(
+        date_query(search_term, field: table[:completed_at])
+      )
+    else
+      # Better to return no results than false results.  If the user is missing the comparator
+      # or did not include 'days ago' it will return no results.
+      # The following is an impossible condition in order to return no results
+      arel_table[:id].in([]) # this returns 1=0 in sql
+    end
   end
 
   add_simple_expression('HAS TASK') do |task|
@@ -149,58 +158,12 @@ class QueryParser < QueryLanguageParser
       .and(table[:completed].eq(false))
   end
 
-  add_simple_expression('VERSION DATE =') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: :eq
-    )
+  add_simple_expression(/VERSION DATE/) do |search_query|
+    date_query(search_query, field: paper_table[:submitted_at])
   end
 
-  add_simple_expression('VERSION DATE >') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: :gt
-    )
-  end
-
-  add_simple_expression('VERSION DATE <') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:submitted_at],
-      search_term: date_string,
-      default_comparison: :lt
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE =') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: :eq
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE >') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: :gt
-    )
-  end
-
-  add_simple_expression('SUBMISSION DATE <') do |date_string|
-    date_query(
-      parse_utc_date(date_string),
-      field: paper_table[:first_submitted_at],
-      search_term: date_string,
-      default_comparison: :lt
-    )
+  add_simple_expression(/SUBMISSION DATE/) do |search_query|
+    date_query(search_query, field: paper_table[:first_submitted_at])
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -234,6 +197,10 @@ class QueryParser < QueryLanguageParser
 
   private
 
+  def contains_days_ago?(query)
+    query =~ /days? ago/i
+  end
+
   def get_user_id(username)
     user = nil
 
@@ -258,47 +225,58 @@ class QueryParser < QueryLanguageParser
 
   # Parses the given string
   def parse_utc_date(str)
-    (Chronic.parse(str).try(:utc) || Time.now.utc).to_date
+    date_without_comparator = str.match(/(?![<=>]{1,2}\s+)[^\s].*/).to_s
+    (Chronic.parse(date_without_comparator).try(:utc) || Time.now.utc).to_date
   end
 
   # Builds and adds a time query to the current query using the given arguments:
-  #
-  #  * time - the time to be used in the query, e.g. Time.zone.now.utc
-  #
+  #  * search_query: the user-provided search term string, e.g. "<= 3 days ago". \
+  #    The presence of 'day(s) ago' in the search string  will determine whether \
+  #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
+  #    whereas "2016/09/01" indicates a normal search. The "<=" and ">=" comparator \
+  #    will be the results of the "<" and ">" comparators with the results of "=" included \
   #  * field: the AREL table field that should be used in the query, e.g. \
   #    Paper.arel_table[:submitted_at]
   #
-  #  * search_term: the user-provided search term string, e.g. "3 days ago". \
-  #    This is used to see if the default comparison should be used or if its \
-  #    inverse should be used, e.g. "3 DAYS AGO" indicates an inverse seach \
-  #    whereas "2016/09/01" indicates a normal search.
-  #
-  #  * default_comparison: the default comparison that the query should built \
-  #    for, e.g. :gt or :lt.
-  def date_query(date, field:, search_term:, default_comparison: :gt)
+  def date_query(search_query, field:)
+    comparator = search_query.match(/[<=>]{1,2}/).to_s
+    date = parse_utc_date(search_query)
+
     beginning_of_day_date = date.beginning_of_day.to_formatted_s(:db)
     end_of_day_date = date.end_of_day.to_formatted_s(:db)
 
-    case default_comparison
-    when :gt
-      if search_term =~ /ago/i
-        field.lt(beginning_of_day_date)
+    case comparator
+    when '>' # query should return any time after that day (invert for "days ago")
+      if contains_days_ago?(search_query)
+        field.lteq(beginning_of_day_date)
       else
-        field.gt(end_of_day_date)
+        field.gteq(end_of_day_date)
       end
-    when :lt
-      if search_term =~ /ago/i
-        field.gt(end_of_day_date)
+    when '<' # query should return any time before that day (opposite for the invert)
+      if contains_days_ago?(search_query)
+        field.gteq(end_of_day_date)
       else
-        field.lt(beginning_of_day_date)
+        field.lteq(beginning_of_day_date)
       end
-    when :eq
+    when '<=' # query should return any time before or within that day (opposite for the invert)
+      if contains_days_ago?(search_query)
+        field.gteq(beginning_of_day_date)
+      else
+        field.lteq(end_of_day_date)
+      end
+    when '>=' # query should return any time after or within that day (opposite for the invert)
+      if contains_days_ago?(search_query)
+        field.lteq(end_of_day_date)
+      else
+        field.gteq(beginning_of_day_date)
+      end
+    when '=' # query should return any time within that day.
       # since the current fields are always datetime so we need to do a
       # BETWEEN check between the beginning and end of the day
       field.between(beginning_of_day_date..end_of_day_date)
     else
       fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
-        Expected :comparison to be :gt or :lt, but it was
+        Expected :comparison to be '>', '>=', '<', '<=' or '=', but it was
         #{comparison.inspect}
       ERROR
     end

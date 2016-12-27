@@ -5,12 +5,12 @@
 {{#each currentParticipants as |p|}}
   <span class="participant-selector-user">
     <span class="participant-selector-user-name">{{p.fullName}}</span>
-    {{#if (or (and p.email displayEmails) canManage)}}
+    {{#if (or (and p.email displayEmails) canRemove)}}
       <div class="tooltip bottom animation-fade-in">
         <div class="tooltip-arrow"></div>
         <div class="tooltip-inner">
           {{if (and p.email displayEmails) p.email}}
-          {{#if canManage}}
+          {{#if canRemove}}
             <div class="participant-selector-user-remove" {{action "removeParticipant" p}}>
               <b>{{fa-icon "times"}}</b>
               Remove

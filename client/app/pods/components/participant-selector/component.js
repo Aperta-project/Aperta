@@ -55,6 +55,10 @@ export default Component.extend({
       filteredUsersPath(this.get('paperId'));
   }),
 
+  canRemove: computed('canManage', 'currentParticipants.[]', function() {
+    return this.get('canManage') && this.get('currentParticipants').length > 1;
+  }),
+
   sortByCollaboration(a, b) {
     if (a.full_name < b.full_name) {
       return -1;

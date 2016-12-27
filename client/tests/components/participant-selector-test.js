@@ -45,9 +45,43 @@ test('it renders currentParticipants', function(assert) {
 
   const thumb  = $('.participant-selector-user');
   const name   = thumb.find('.participant-selector-user-name');
-  const remove = thumb.find('.participant-selector-user-remove');
   assert.equal(name.text(), 'Bruce Wayne', 'full name is displayed');
-  assert.ok(remove.length,  'remove is available when canManage is true');
+});
+
+test('remove link', function(assert) {
+  this.get('currentParticipants').pushObject({
+    fullName: 'Barbara Gordon',
+    email: 'barbara@example.com'
+  });
+
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=false
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(remove.length, 'remove is available when canManage is true and there are more than one participants');
+
+  this.set('canManage', false);
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is false and there are more than one participants');
+
+  this.setProperties({
+    canManage: true,
+    currentParticipants: this.testUser
+  });
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is true and there is one participant');
 });
 
 test('it renders currentParticipants emails when available', function(assert) {

@@ -89,14 +89,12 @@ test('can remove participants from email', function(assert){
   let fakeUsers = [
     {
       id: 1,
-      full_name: 'Test User',
-      avatar_url: 'http://example.com/pic.jpg',
+      fullName: 'Test User',
       email: 'test.user@example.com'
     },
     {
       id: 2,
-      full_name: 'Test User2',
-      avatar_url: 'http://example.com/pic.jpg',
+      fullName: 'Test User2',
       email: 'test.user2@example.com'
     }
   ];
@@ -123,11 +121,8 @@ test('can remove participants from email', function(assert){
   this.$('.email-send-participants').click();
 
   assert.nElementsFound('.participant-selector-user-name', 2, '2 recipients are rendered');
-  Ember.run(() => {
-    this.$('.participant-selector-user-remove').first().click();
-  });
+  this.$('.participant-selector-user-remove').first().click();
   assert.nElementsFound('.participant-selector-user-name', 1, 'selected recipient is removed from the DOM');
-  assert.equal(this.get('recipients.length'), 1, 'removes the recipient from the list');
 
   assert.elementFound('.send-email-action');
   this.$('.send-email-action').click();

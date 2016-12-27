@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
 
   rescue_from AssertionError, with: :render_assertion_error
 
+  rescue_from ActionController::InvalidAuthenticityToken do
+    sign_out(current_user)
+    render status: 401, json: { errors: "invalid authenticity token" }
+  end
+
   protected
 
   def configure_permitted_parameters

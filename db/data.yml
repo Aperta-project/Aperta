@@ -25435,6 +25435,7 @@ versioned_texts:
   - created_at
   - updated_at
   - original_text
+  - file_type
   records: 
   - - '1'
     - 
@@ -25629,6 +25630,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '2'
     - 
     - '2'
@@ -25823,6 +25825,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '3'
     - 
     - '3'
@@ -26017,6 +26020,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '4'
     - '3'
     - '4'
@@ -26211,6 +26215,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '8'
     - 
     - '8'
@@ -26404,6 +26409,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '9'
     - 
     - '9'
@@ -26597,6 +26603,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '10'
     - 
     - '10'
@@ -26790,6 +26797,7 @@ versioned_texts:
       </div>
       </div>
       </div><!--TEI back-->
+    - docx
   - - '14'
     - '3'
     - '12'
@@ -26922,6 +26930,7 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+    - docx
   - - '15'
     - '3'
     - '12'
@@ -27054,6 +27063,7 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+    - docx
   - - '16'
     - '3'
     - '12'
@@ -27186,6 +27196,7 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+    - docx
   - - '17'
     - '3'
     - '12'
@@ -27318,6 +27329,7 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+    - docx
   - - '18'
     - 
     - '13'
@@ -27686,6 +27698,7 @@ versioned_texts:
       </div>
       </div><!--TEI back-->      <img class="paper-body-figure" data-figure-id="6" data-figure-rank="" src="/resource_proxy/figures/qt3FhbrR5Q4KNM1F35DXTHNx/detail">
             <img class="paper-body-figure" data-figure-id="7" data-figure-rank="" src="/resource_proxy/figures/2vM873Fqxyfm22GtB5VDqEND/detail">
+    - docx
   - - '19'
     - '1'
     - '12'
@@ -27818,6 +27831,7 @@ versioned_texts:
       </p><p class="SOM Text">
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
+    - docx
 
 ---
 versions:

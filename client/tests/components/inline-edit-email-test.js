@@ -11,6 +11,12 @@ moduleForComponent('inline-edit-email', 'Integration | Component | inline edit e
   beforeEach() {
     registerCustomAssertions();
     manualSetup(this.container);
+    this.registry.register('service:can', FakeCanService);
+    this.set('emailSentStates', []);
+    this.set('bodyPart', {} );
+    let task = make('ad-hoc-task', {body: []});
+    this.set('task', task);
+    this.fake = this.container.lookup('service:can');
   }
 
 });
@@ -22,15 +28,10 @@ let template = hbs`{{inline-edit-email
                           task=task}}`;
 
 test('canManage=true, canEdit=false, can add email participants', function(assert){
-  this.registry.register('service:can', FakeCanService);
-  let task = make('ad-hoc-task', {body: []});
 
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('add_email_participants', task);
+  this.fake.allowPermission('add_email_participants', this.task);
 
-  this.set('emailSentStates', []);
-  this.set('task', task);
-  this.set('canEdit', false);
+  this.set('canEdit', true);
   this.set('canManage', false);
   this.render(template);
 
@@ -38,11 +39,6 @@ test('canManage=true, canEdit=false, can add email participants', function(asser
 });
 
 test('canManage=true, canEdit=false, can not add email participants', function(assert){
-  this.registry.register('service:can', FakeCanService);
-  let task = make('ad-hoc-task', {body: []});
-
-  this.set('emailSentStates', []);
-  this.set('task', task);
   this.set('canEdit', false);
   this.set('canManage', false);
   this.render(template);
@@ -51,11 +47,7 @@ test('canManage=true, canEdit=false, can not add email participants', function(a
 });
 
 test('can send email after selecting participants', function(assert){
-  this.registry.register('service:can', FakeCanService);
-  let task = make('ad-hoc-task', {body: []});
-
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('add_email_participants', task);
+  this.fake.allowPermission('add_email_participants', this.task);
 
   let sendEmail = function() { assert.ok(true); };
   let fakeUser = { id: 1,
@@ -63,13 +55,10 @@ test('can send email after selecting participants', function(assert){
                    avatar_url: 'http://example.com/pic.jpg',
                    email: 'test.user@example.com'};
 
-  this.set('task', task);
   this.set('canEdit', true);
   this.set('canManage', false);
   this.set('recipients', [fakeUser]);
   this.set('sendEmail', sendEmail);
-  this.set('bodyPart', {} );
-  this.set('emailSentStates', []);
 
   let template = hbs`{{inline-edit-email
                             bodyPart=bodyPart
@@ -93,12 +82,9 @@ test('can send email after selecting participants', function(assert){
 });
 
 test('can remove participants from email', function(assert){
-  assert.expect(6);
-  this.registry.register('service:can', FakeCanService);
-  let task = make('ad-hoc-task', {body: []});
+  assert.expect(5);
 
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('add_email_participants', task);
+  this.fake.allowPermission('add_email_participants', this.task);
 
   let fakeUsers = [
     {
@@ -115,12 +101,9 @@ test('can remove participants from email', function(assert){
     }
   ];
 
-  this.set('task', task);
   this.set('canEdit', true);
   this.set('canManage', false);
   this.set('recipients', fakeUsers);
-  this.set('bodyPart', {} );
-  this.set('emailSentStates', []);
 
   let sendEmail = function({recipients}) {
     assert.equal(recipients.length, 1, 'email is only sent to 1 recipient');
@@ -144,10 +127,7 @@ test('can remove participants from email', function(assert){
     this.$('.select2-search-choice-close').first().click();
   });
   assert.nElementsFound('.select2-search-choice', 1, 'selected recipient is removed from the DOM');
-  assert.equal(this.get('recipients.length'), 1, 'removes the recipient from the list');
 
   assert.elementFound('.send-email-action');
   this.$('.send-email-action').click();
-
-
 });

@@ -6,3 +6,22 @@
 .power-select-other.error .power-select-other-input {
   border: 1px solid $aperta-red;
 }
+
+
+.aperta-select {
+  .ember-power-select-status-icon {
+    right: 0;
+    width: 21px;
+    height: auto;
+    border: none; // removes default triangle
+    background: #39a329;
+
+    &:before {
+      position: absolute;
+      left: 6px;
+      content: '\f107';
+      color: #fff;
+      font-family: FontAwesome;
+    }
+  }
+}

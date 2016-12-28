@@ -336,9 +336,9 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",               null: false
-    t.string   "doi_journal_prefix",                 null: false
-    t.string   "last_doi_issued",      default: "0", null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
@@ -766,6 +766,7 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "original_text"
+    t.string   "file_type"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

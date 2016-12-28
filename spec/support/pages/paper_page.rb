@@ -108,15 +108,11 @@ class PaperPage < Page
   end
 
   def select_viewing_version(version)
-    within "select[name='view_version']" do
-      find("option[value='#{version.id}']").click
-    end
+    power_select('.paper-viewing-version', version.version_string)
   end
 
   def select_comparison_version(version)
-    within "select[name='compare_version']" do
-      find("option[value='#{version.id}']").click
-    end
+    power_select('.paper-comparison-version', version.version_string)
   end
 
   def has_body_text?(text)

@@ -1,20 +1,52 @@
 #versioning-bar {
+  // cuts off extra line height overflow from .versioning-bar-close
+  overflow: hidden;
+
+  position: relative;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   width: 100%;
-  padding: 0 3rem;
+  padding: 1rem 2.25rem;
   font-size: 1.4rem;
 
+  .fa {
+    margin-right: 6px;
+  }
+
   .bar-item {
+    display: flex;
+    align-items: center;
     margin: 0 15px 0 0;
 
-    .fa {
-      color: $aperta-green;
-    }
-
+    .ember-basic-dropdown-trigger,
     select {
+      display: inline-block;
       margin-left: 5px;
       width: 225px;
     }
   }
+}
+
+.versioning-bar-content {
+  display: flex;
+  align-items: center;
+}
+
+.versioning-bar-close {
+  position: absolute;
+  top: -0.7rem;
+  right: 3rem;
+  color: $aperta-green;
+  font-size: 4rem;
+  font-weight: 300;
+
+  &:hover { // override default a
+    text-decoration: none;
+  }
+}
+
+.versioning-bar-pdf-message {
+  // don't allow text to overlap .versioning-bar-close
+  padding-right: 4rem;
 }

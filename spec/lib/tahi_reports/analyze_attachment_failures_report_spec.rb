@@ -14,6 +14,15 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       output.tap(&:rewind).read
     end
 
+    # Ensure that all of the examples below run with a consistent
+    # time that is on the same day. Otherwise, times may end up on different
+    # days based on timezone offsets.
+    around do |example|
+      Timecop.freeze Chronic.parse("today noon") do
+        example.run
+      end
+    end
+
     let(:output) { StringIO.new }
 
     let!(:processing_attachment_from_today) { FactoryGirl.create(:attachment, :processing, updated_at: 6.minutes.ago) }

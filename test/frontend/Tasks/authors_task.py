@@ -603,16 +603,14 @@ class AuthorsTask(BaseTask):
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
-      while not completed:
-        time.sleep(.5)
-        self.click_completion_button()
-        time.sleep(2)
-        completed = self.completed_state()
+      self.click_completion_button()
+      time.sleep(2)
+      # Need to validate that we aren't failing on validation within this loop else endlessness
       try:
         self.validate_completion_error()
       except ElementDoesNotExistAssertionError:
         logging.info('No validation errors completing Author Task')
-    time.sleep(2)
+    time.sleep(1)
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

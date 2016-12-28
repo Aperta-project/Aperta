@@ -9,6 +9,7 @@ import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.PostgreSQL import PgSQL
@@ -34,6 +35,11 @@ class InviteCard(BaseCard):
     self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-save-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
     self._invitation_items = (By.CLASS_NAME, 'active-invitations')
+    self._invitation_item_details = (By.CLASS_NAME, 'invitation-item-details')
+    self._invitation_email_editor = (By.CLASS_NAME, 'invitation-edit-body')
+    self._invitation_save_button = (By.CLASS_NAME, 'invitation-save-button')
+    self._invitation_email_body = (By.CLASS_NAME, 'invitation-show-body')
+    self._invitation_active_invitations = (By.CLASS_NAME, 'active-invitations')
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
@@ -333,6 +339,7 @@ class InviteCard(BaseCard):
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
+    # TODO: figure out how to wait - if we try to add another invitee, it's too fast
 
   def validate_email_template_edits(self):
     """
@@ -341,14 +348,37 @@ class InviteCard(BaseCard):
     :return: void function
     """
     invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
+    first_invitation_item = random.choice(invitation_items)
     if len(invitation_items) > 1:
-      first_invitation_item = random.choice(invitation_items)
       first_invitation_item.click()
       assert 'invitation-item--show' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
-      time.sleep(2)
+      # Verify that the invitation collapses when clicking the invitation item header
+      first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+      assert 'invitation-item--closed' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
       # Only one item at most should be expanded. Select a different invitation item, and check that only it is expanded
+      first_invitation_item.click()
       invitation_items.remove(first_invitation_item)
       second_invitation_item = random.choice(invitation_items)
       second_invitation_item.click()
-      time.sleep(2)
+      invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
+      expanded_items = filter(lambda item: 'invitation-item--show' in item.get_attribute('class'), invitation_items)
+      assert len(expanded_items) == 1, 'There is more than one expanded item: {0}'.format(expanded_items)
+
+    # Verify editable state when an invitation item is expanded
+    first_invitation_item.click()
+    invitation_details = self._get(self._invitation_item_details)
+    self._get(self._invite_edit_invite_button).click()
+    # When in edit mode, ability to collapse the invite item is disabled
+    first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+    assert 'invitation-item--edit' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
+    # Verify that edits to email template persist
+    email_template_editor = self._get(self._invitation_email_editor)
+    paragraph = generate_paragraph()[-1]
+    email_template_editor.send_keys(paragraph)
+    self._get(self._invitation_save_button).click()
+    # Collapse and re-expand this invitation item, and check that the paragraph is present
+    first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+    first_invitation_item.click()
+    email_body = self._get(self._invitation_email_body)
+    assert paragraph in email_body.text, '{0} is not in {1}'.format(paragraph, email_body.text)
 

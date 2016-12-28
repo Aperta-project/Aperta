@@ -403,7 +403,6 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.card_ready()
     invite_reviewers.add_invitee_to_queue(reviewer_login)
     invite_reviewers.add_invitee_to_queue(prod_staff_login)
-    time.sleep(2)
     invite_reviewers.validate_email_template_edits()
 
 if __name__ == '__main__':

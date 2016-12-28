@@ -391,7 +391,20 @@ class InviteReviewersCardTest(CommonTest):
     dashboard_page = self.cas_login(email=editorial_user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
     # go to workflow
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
+    invite_reviewers.add_invitee_to_queue(reviewer_login)
+    invite_reviewers.add_invitee_to_queue(prod_staff_login)
+    time.sleep(2)
+    invite_reviewers.validate_email_template_edits()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

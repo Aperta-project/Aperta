@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+* Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}
@@ -42,7 +43,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
-
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added

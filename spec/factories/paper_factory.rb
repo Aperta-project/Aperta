@@ -111,6 +111,23 @@ FactoryGirl.define do
       end
     end
 
+    trait(:version_with_file_type) do
+      after :create do |paper|
+        paper.file = FactoryGirl.create(
+          :manuscript_attachment,
+          paper: paper,
+          file_type: 'docx',
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+        )
+
+        paper.save!
+
+        paper.versioned_texts.first.update!(
+          file_type: 'docx'
+        )
+      end
+    end
+
     trait(:initially_submitted_lite) do
       submitted_lite
       publishing_state :initially_submitted

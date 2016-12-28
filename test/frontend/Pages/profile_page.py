@@ -183,7 +183,9 @@ class ProfilePage(AuthenticatedPage):
                                                          'link: {1}'\
           .format(oid_link.get_attribute('href'), oid_href)
 
-      self._get(self._profile_orcid_linked_delete_icon)
+      # The display of this delete icon is no longer available to the end user. Also, due to a bug
+      #   staff will only see it on their own profile - not that of other users (APERTA-8564).
+      # self._get(self._profile_orcid_linked_delete_icon)
 
     existing_affiliation = True
     # Validate common affiliation elements
@@ -460,7 +462,8 @@ class ProfilePage(AuthenticatedPage):
       affiliation_list.append('Nov. 16 2016')
     end_date_field.send_keys(Keys.ESCAPE)
     affiliation_email_field = self._get(self._add_affiliation_email_field)
-    affiliation_email_field.click()
+    # The ESC send above *should* clear the popup calendar, but it doesn't always succeed
+    self.click_covered_element(affiliation_email_field)
     if user['email']:
       affiliation_email_field.send_keys(user['email'])
       affiliation_list.append(user['email'])

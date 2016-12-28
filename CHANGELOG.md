@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added the ability to upload pdfs via the manuscript upload task
 * Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
+* Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
 ### Changed

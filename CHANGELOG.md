@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
 ### Deprecated
 ### Removed
 ### Fixed

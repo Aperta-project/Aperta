@@ -38,6 +38,11 @@ describe PaperFactory do
       end
     end
 
+    it "sets the paper's number_reviewer_reports attribute to true" do
+      new_paper = PaperFactory.create(paper_attrs, user)
+      expect(new_paper.number_reviewer_reports).to eq(true)
+    end
+
     it "makes the creator a collaborator on the paper" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.collaborators.first).to eq(user)

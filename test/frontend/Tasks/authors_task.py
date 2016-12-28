@@ -547,7 +547,9 @@ class AuthorsTask(BaseTask):
   def edit_author(self, author_data):
     """
     Edit the first author in the author task
-    :param author_data: data sourced from Resources.py used to fill out author card
+    :param author_data: data sourced from Resources.py used to fill out author card. NOTA BENE: You
+      must pass author data for an author that contains an ORCID id - otherwise we will fail on
+      validation errors
     return None
     """
     completed = self.completed_state()
@@ -581,6 +583,11 @@ class AuthorsTask(BaseTask):
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
     department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
+    # Deal with the ORCID element
+    # Test if connect button is present, if so, call to connect
+    # D
+    # Otherwise, verify that linked ORCID id is present.
+    # E
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():

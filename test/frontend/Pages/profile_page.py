@@ -34,17 +34,17 @@ class ProfilePage(AuthenticatedPage):
     self._profile_username = (By.XPATH, './/div[@id="profile-username"]/h2')
     self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
-    # ORCID Elements
-    self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
-    self._profile_orcid_logo = (By.ID, 'orcid-id-logo')
-    self._profile_orcid_unlinked_div = (By.CLASS_NAME, 'orcid-not-linked')
-    self._profile_orcid_unlinked_button = (By.CSS_SELECTOR, 'div.orcid-not-linked > button')
-    self._profile_orcid_unlinked_help_icon = (By.CLASS_NAME, 'what-is-orcid')
-
-    self._profile_orcid_linked_div = (By.CLASS_NAME, 'orcid-linked')
-    self._profile_orcid_linked_title = (By.CSS_SELECTOR, 'div.orcid-linked')
-    self._profile_orcid_linked_id_link = (By.CSS_SELECTOR, 'div.orcid-linked > a')
-    self._profile_orcid_linked_delete_icon = (By.CSS_SELECTOR, 'div.orcid-linked > i.fa-trash')
+    # # ORCID Elements
+    # self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
+    # self._profile_orcid_logo = (By.ID, 'orcid-id-logo')
+    # self._profile_orcid_unlinked_div = (By.CLASS_NAME, 'orcid-not-linked')
+    # self._profile_orcid_unlinked_button = (By.CSS_SELECTOR, 'div.orcid-not-linked > button')
+    # self._profile_orcid_unlinked_help_icon = (By.CLASS_NAME, 'what-is-orcid')
+    #
+    # self._profile_orcid_linked_div = (By.CLASS_NAME, 'orcid-linked')
+    # self._profile_orcid_linked_title = (By.CSS_SELECTOR, 'div.orcid-linked')
+    # self._profile_orcid_linked_id_link = (By.CSS_SELECTOR, 'div.orcid-linked > a')
+    # self._profile_orcid_linked_delete_icon = (By.CSS_SELECTOR, 'div.orcid-linked > i.fa-trash')
     # Affiliation Elements
     # View Mode
     self._profile_affiliation_form_title = (By.CSS_SELECTOR, 'div.user-affiliation > h1')

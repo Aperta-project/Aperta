@@ -324,7 +324,7 @@ creator_login21 = {'user'               : 'aauthor21',
                    'name'               : 'atest author21',
                    'initials'           : 'aa21',
                    'email'              : 'sealresq+1029@gmail.com',
-                   'orcidid'            : '0000-0003-0151-5105',
+                   'orcidid'            : '',
                    'profile_image'      : '',
                    'affiliation-name'   : '',
                    'affiliation-dept'   : '',
@@ -337,7 +337,7 @@ creator_login22 = {'user'               : 'aauthor22',
                    'name'               : 'atest author22',
                    'initials'           : 'aa22',
                    'email'              : 'sealresq+1030@gmail.com',
-                   'orcidid'            : '0000-0003-0151-5105',
+                   'orcidid'            : '',
                    'profile_image'      : '',
                    'affiliation-name'   : '',
                    'affiliation-dept'   : '',
@@ -792,12 +792,18 @@ users = [creator_login1,
          creator_login18,
          creator_login19,
          creator_login20,
-         creator_login21,
-         creator_login22,
          creator_login23,
          creator_login24,
          creator_login25,
          ]
+
+# In order to properly exercise the tests for orcid connectivity, we should include tests with users
+#   that lack an ORCID id. However, such users cannot be used in cases where the Author card needs
+#   to be completed - we end up in an endless loop. Therefore, use a different set of users for
+#   ORCID tests.
+non_orcid_users = [creator_login21,
+                   creator_login22,
+                   ]
 
 # This list is a, hopefully temporary, need based on bugs in the discussion forums being unable
 #   to handled non-ascii usernames in @mentions, and in floating links to discussions,

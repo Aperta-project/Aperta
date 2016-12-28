@@ -189,6 +189,17 @@ class AuthenticatedPage(PlosPage):
     # Add participant
     self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
     self._add_participant_list = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
+    # ORCID Elements - These are applicable to both the profile page and the author task/card
+    self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
+    self._profile_orcid_logo = (By.ID, 'orcid-id-logo')
+    self._profile_orcid_unlinked_div = (By.CLASS_NAME, 'orcid-not-linked')
+    self._profile_orcid_unlinked_button = (By.CSS_SELECTOR, 'div.orcid-not-linked > button')
+    self._profile_orcid_unlinked_help_icon = (By.CLASS_NAME, 'what-is-orcid')
+
+    self._profile_orcid_linked_div = (By.CLASS_NAME, 'orcid-linked')
+    self._profile_orcid_linked_title = (By.CSS_SELECTOR, 'div.orcid-linked')
+    self._profile_orcid_linked_id_link = (By.CSS_SELECTOR, 'div.orcid-linked > a')
+    self._profile_orcid_linked_delete_icon = (By.CSS_SELECTOR, 'div.orcid-linked > i.fa-trash')
 
   # POM Actions
   def attach_file(self, file_name):

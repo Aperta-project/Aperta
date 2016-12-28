@@ -137,6 +137,7 @@ class SITask(BaseTask):
     """
     logging.info('Attach file called with {0}'.format(file_name))
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
+    time.sleep(10)
     attached_element = self._get(self._si_filename)
     return attached_element
 

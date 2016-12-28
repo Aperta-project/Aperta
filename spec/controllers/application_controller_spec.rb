@@ -61,26 +61,4 @@ describe ApplicationController do
       end
     end
   end
-
-  describe 'handling an invalid CSRF token' do
-    let(:user) { FactoryGirl.build(:user) }
-
-    controller do
-      def create
-        raise ActionController::InvalidAuthenticityToken
-      end
-    end
-
-    before do
-      routes.draw { post 'create' => 'anonymous#create' }
-      stub_sign_in user
-    end
-
-    it 'returns a 401 error' do
-      post :create
-      expect(response.status).to eq 401
-      response_json = JSON.parse(response.body)
-      expect(response_json).to eq("errors" => "invalid authenticity token")
-    end
-  end
 end

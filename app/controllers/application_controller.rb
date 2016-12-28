@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :reset_session
 
   before_bugsnag_notify :add_user_info_to_bugsnag
 
@@ -32,11 +32,6 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from AssertionError, with: :render_assertion_error
-
-  rescue_from ActionController::InvalidAuthenticityToken do
-    sign_out(current_user)
-    render status: 401, json: { errors: "invalid authenticity token" }
-  end
 
   protected
 

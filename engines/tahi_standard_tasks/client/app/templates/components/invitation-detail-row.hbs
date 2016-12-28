@@ -35,10 +35,10 @@
     <div class="invitation-item-spacer"></div>
     <div class="invitation-item-actions">
       {{#if displayEditButton}}
-        <span class="invitation-item-action invitation-item-action-edit {{if disabled "invitation-item-action--disabled"}}"
+        <span class="invitation-item-action invitation-item-action-edit {{if editDisabled "invitation-item-action--disabled"}}"
               {{action "editInvitation" invitation bubbles=false}}>
           <span class="fa fa-pencil invite-edit"></span>
-          {{#unless disabled}}
+          {{#unless editDisabled}}
             <span class="invitation-item-action-text">Edit</span>
           {{/unless}}
         </span>

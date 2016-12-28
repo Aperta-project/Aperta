@@ -583,6 +583,7 @@ class AuthorsTask(BaseTask):
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
     department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
+    # TODO: The following will be filled in as part of the APERTA-8780 work
     # Deal with the ORCID element
     # Test if connect button is present, if so, call to connect
     # D

@@ -157,7 +157,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.delete_affiliation(affiliation_to_delete)
     profile_page.validate_no_affiliation(affiliation_to_delete)
 
-  def test_orcid(self):
+  def rest_orcid(self):
     """
     test_profile: validate adding an orcid connection
                   validate linking and oath process

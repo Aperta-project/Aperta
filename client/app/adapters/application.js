@@ -20,6 +20,11 @@ export default ActiveModelAdapter.extend({
     };
   }.property().volatile(),
 
+  handleResponse(status) {
+    if ( status === 401 ) {  return document.location.href = '/users/sign_in';  }
+    return this._super(...arguments);
+  },
+
   ajaxError: function(event, jqXHR, ajaxSettings, thrownError) {
     const status = jqXHR.status;
 

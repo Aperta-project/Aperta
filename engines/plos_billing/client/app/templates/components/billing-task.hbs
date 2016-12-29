@@ -47,10 +47,11 @@
     </div>
 
     <div class="flex-group flex-group--divider">
-      <div class="flex-element">
+      <div class="flex-element {{if validationErrors.plos_billing--affiliation1 "error"}}">
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
-                             placeholder="Affiliation"
+                             validate=(action "validateQuestion")
+                             placeholder="* Affiliation"
                              disabled=isNotEditable}}
       </div>
 

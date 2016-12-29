@@ -52,6 +52,7 @@ export default {
   'plos_billing--city':              ['presence'],
   'plos_billing--postal_code':       ['presence'],
   'plos_billing--payment_method':    ['presence'],
+  'plos_billing--affiliation1':      ['presence'],
 
   'plos_billing--pfa_question_1b':   [PFA_VALIDATION_WITH_SKIP],
   'plos_billing--pfa_question_2b':   [PFA_VALIDATION_WITH_SKIP],

@@ -6,7 +6,6 @@ export default Ember.Component.extend({
   bodyPartType: Ember.computed.alias('bodyPart.type'),
   isSendable: Ember.computed.notEmpty('recipients'),
   showChooseReceivers: false,
-  mailRecipients: [],
   recipients: null,
   overlayParticipants: null,
   emailSentStates: null,
@@ -16,7 +15,7 @@ export default Ember.Component.extend({
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients', this.get('overlayParticipants'));
+    this.set('recipients', this.get('overlayParticipants').slice());
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),

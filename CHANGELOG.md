@@ -5,9 +5,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
 ### Deprecated
 ### Removed
 ### Fixed
+* Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}
@@ -17,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added the ability to upload pdfs via the manuscript upload task
 * Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
+* Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
 ### Changed
@@ -41,7 +44,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
-
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added

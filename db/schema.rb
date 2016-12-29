@@ -336,9 +336,9 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",               null: false
-    t.string   "doi_journal_prefix",                 null: false
-    t.string   "last_doi_issued",      default: "0", null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
@@ -467,6 +467,7 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
+    t.boolean  "number_reviewer_reports",               default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -574,6 +575,19 @@ ActiveRecord::Schema.define(version: 20161219214719) do
 
   add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
   add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
+
+  create_table "reviewer_numbers", force: :cascade do |t|
+    t.integer  "paper_id",   null: false
+    t.integer  "user_id",    null: false
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reviewer_numbers", ["paper_id", "number"], name: "index_reviewer_numbers_on_paper_id_and_number", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id", "user_id"], name: "index_reviewer_numbers_on_paper_id_and_user_id", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id"], name: "index_reviewer_numbers_on_paper_id", using: :btree
+  add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
@@ -752,6 +766,7 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "original_text"
+    t.string   "file_type"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

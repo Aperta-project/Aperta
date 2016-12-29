@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
 
-  before_save :update_completed_at, if: :completed_changed?
+  before_save :on_completion, if: :completed_changed?
 
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
@@ -196,6 +196,12 @@ class Task < ActiveRecord::Base
   def after_update
   end
 
+  # This hook runs before the task saves. Note that this hook will run
+  # both when the task was just marked completed or uncompleted
+  def on_completion
+    update_completed_at
+  end
+
   def notify_new_participant(current_user, participation)
     UserMailer.delay.add_participant current_user.id, participation.user_id, id
   end
@@ -237,10 +243,6 @@ class Task < ActiveRecord::Base
   end
 
   private
-
-  def on_card_completion?
-    previous_changes['completed'] == [false, true]
-  end
 
   def update_completed_at
     self.completed_at = (Time.zone.now if completed)

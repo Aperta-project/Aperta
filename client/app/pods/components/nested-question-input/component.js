@@ -24,6 +24,14 @@ export default NestedQuestionComponent.extend({
     }
   }),
 
+  init() {
+    const allowedTypes = ['text', 'number'];
+    const type = this.get('type');
+    // restrict type due to the input event. Ironically, it seems that not all inputs emit it.
+    Ember.assert(`nested-question-input doesn't support type "${type}"`, allowedTypes.includes(type));
+    return this._super(...arguments);
+  },
+
   input() {
     this.save();
   },

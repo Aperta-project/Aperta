@@ -99,3 +99,16 @@ test('it deletes and replaces the existing answer on input if the answer is blan
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on change');
   });
 });
+
+test('it does not render when the type is invalid', function(assert) {
+  let task =  make('ad-hoc-task');
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('edit', task);
+  createQuestionWithAnswer(task, 'foo', 'Old Answer');
+  this.set('task', task);
+  return assert.throws(() => {
+    this.render(hbs`
+      {{nested-question-input ident="foo" owner=task type="radio"}}
+    `);
+  });
+});

@@ -197,8 +197,8 @@ class SITaskTest(CommonTest):
     ##short_doi = manuscript_page.get_short_doi()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
-    fn = os.path.join(os.getcwd(), doc2upload)
+    doc2upload_1 = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    fn = os.path.join(os.getcwd(), doc2upload_1)
     manuscript_page.click_task('Supporting Info')
     supporting_info = SITask(self._driver)
     supporting_info.add_file(fn)
@@ -209,13 +209,21 @@ class SITaskTest(CommonTest):
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
-    fn = os.path.join(os.getcwd(), doc2upload)
+    doc2upload_2 = 'frontend/assets/supportingInfo/S1_Text.pdf'
+    fn = os.path.join(os.getcwd(), doc2upload_2)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(12)
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
+    # Get current SI file name
+    file_link_text = supporting_info._get(supporting_info._file_link).text
+    timeout = 60
+    counter = 0
+    while file_link_text in doc2upload_1 or counter == timeout:
+      file_link_text = supporting_info._get(supporting_info._file_link).text
+      time.sleep(1)
+      counter += 1
     supporting_info.validate_uploads([fn])
     manuscript_page.logout()
     # Log in as Editorial User

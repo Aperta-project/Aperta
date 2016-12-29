@@ -154,6 +154,9 @@
     "ORCID_LOGIN_ENABLED": {
       "required": true
     },
+    "ORCID_CONNECT_ENABLED": {
+      "required": true
+    },
     "ORCID_KEY": {
       "required": true
     },

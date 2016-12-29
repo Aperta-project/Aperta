@@ -3,8 +3,8 @@
     <div class="question-text {{textClassNames}}">{{{questionText}}}</div>
   {{/if}}
 
-  {{#if model.answer.value}}
-    <div class="answer-text">{{humanize model.answer.value}}</div>
+  {{#if answer.value}}
+    <div class="answer-text">{{humanize answer.value}}</div>
   {{else}}
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
@@ -27,7 +27,7 @@
       {{radio-button value="accept"
                      name=namePrefix
                      class=(concat ident "-accept")
-                     selection=model.answer.value
+                     selection=answer.value
                      action=(action "setAnswer")}}
       Accept
     </label>
@@ -36,7 +36,7 @@
       {{radio-button value="reject"
                      name=namePrefix
                      class=(concat ident "-reject")
-                     selection=model.answer.value
+                     selection=answer.value
                      action=(action "setAnswer")}}
       Reject
     </label>
@@ -45,7 +45,7 @@
       {{radio-button value="major_revision"
                      name=namePrefix
                      class=(concat ident "-major-revision")
-                     selection=model.answer.value
+                     selection=answer.value
                      action=(action "setAnswer")}}
       Major Revision
     </label>
@@ -54,7 +54,7 @@
       {{radio-button value="minor_revision"
                      name=namePrefix
                      class=(concat ident "-minor-revision")
-                     selection=model.answer.value
+                     selection=answer.value
                      action=(action "setAnswer")}}
       Minor Revision
     </label>

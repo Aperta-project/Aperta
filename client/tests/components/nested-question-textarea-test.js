@@ -25,12 +25,7 @@ moduleForComponent('nested-question-textarea', 'Integration | Component | nested
   }
 });
 
-test('saves on input events in IE', function(assert) {
-  const FakeBrowserDetectorService = Ember.Object.create({
-    isIE11OrLess: true
-  });
-  this.registry.register('service:browser-detector', FakeBrowserDetectorService, {instantiate: false});
-
+test('saves on input events', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);

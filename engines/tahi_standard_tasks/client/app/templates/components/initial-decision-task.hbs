@@ -37,17 +37,23 @@
     </label>
   </div>
 
-  <p>Please write your decision letter in the area below</p>
+  {{#unless hasNoVerdict}}
+    <div class="letter-template animation-fade-in">
+      <p>Please write your decision letter in the area below:</p>
 
-  {{textarea onEvent="false"
-             class="decision-letter-field"
-             disabled=nonPublishable
-             value=initialDecision.letter}}
+      {{textarea onEvent="keyPress"
+                 action="letterChanged"
+                 class="decision-letter-field"
+                 disabled=nonPublishable
+                 value=initialDecision.letter}}
 
-  <button class="button-primary button--green send-email-action {{if cannotRegisterDecision "button--disabled"}}"
-          disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
-    Register Decision and Email the Author
-  </button>
+      <button class="button-primary button--green send-email-action {{if cannotRegisterDecision "button--disabled"}}"
+              disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
+        Register Decision and Email the Author
+      </button>
+    </div>
+  {{/unless}}
+
 
   {{#if initialDecisions}}
     <hr>

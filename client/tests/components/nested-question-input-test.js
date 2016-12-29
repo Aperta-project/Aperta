@@ -25,10 +25,10 @@ moduleForComponent('nested-question-input', 'Integration | Component | nested qu
 });
 
 let setValue = ($input, newVal) => {
-  return $input.val(newVal).trigger('intput').trigger('change');
+  return $input.val(newVal).trigger('input');
 };
 
-test('it puts a new answer in the store for unanswered questions, then saves on change', function(assert) {
+test('it puts a new answer in the store for unanswered questions, then saves on input', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);
@@ -50,7 +50,7 @@ test('it puts a new answer in the store for unanswered questions, then saves on 
   });
 });
 
-test('it saves an existing answer on change', function(assert) {
+test('it saves an existing answer on input', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);
@@ -72,7 +72,7 @@ test('it saves an existing answer on change', function(assert) {
   });
 });
 
-test('it deletes and replaces the existing answer on change if the answer is blank', function(assert) {
+test('it deletes and replaces the existing answer on input if the answer is blank', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);

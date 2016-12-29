@@ -22,5 +22,13 @@ export default NestedQuestionComponent.extend({
       this.set('answer.value', '');
       this.get('answer').save();
     }
-  })
+  }),
+
+  input() {
+    this.save();
+  },
+
+  change() {
+    return false; // no-op to override parent's behavior
+  }
 });

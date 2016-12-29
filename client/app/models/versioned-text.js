@@ -25,5 +25,6 @@ export default DS.Model.extend({
 
       return `${version} - ${date}`;
     }
-  )
+  ),
+  fileType: DS.attr('string')
 });

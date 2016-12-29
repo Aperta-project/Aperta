@@ -9,6 +9,15 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
   taskToDisplay: null,
   showTaskOverlay: false,
   previousURL: null,
+  showPdfManuscript: Ember.computed('model.fileType', 'viewingVersion.fileType',
+    function(){
+      if (this.get('viewingVersion.fileType') === undefined) {
+        return (this.get('model.fileType') === 'pdf');
+      } else {
+        return (this.get('viewingVersion.fileType') === 'pdf');
+      }
+    }
+  ),
 
   generateTaskVersionURL(task) {
     return this.get('routing.router.router').generate(

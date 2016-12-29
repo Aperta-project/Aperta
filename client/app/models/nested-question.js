@@ -2,10 +2,6 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  owner: Ember.computed('owner', function(){
-    return this.get('owner');
-  }),
-
   ident: DS.attr('string'),
   position: DS.attr('number'),
   value_type: DS.attr('string'),
@@ -54,5 +50,4 @@ export default DS.Model.extend({
       answer.rollbackAttributes();
     }
   }
-
 });

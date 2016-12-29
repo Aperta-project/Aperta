@@ -3,10 +3,15 @@
   {{#if shouldDisplayQuestionText}}
     <p class="{{textClassNames}}">{{{questionText}}}</p>
   {{else}}
-    {{yield textYieldValue}}
+    {{yield (hash checked=isChecked
+                  unchecked=(not isChecked)
+                  yieldingForText=true)}}
   {{/if}}
 </label>
 
 {{#if hasBlock}}
-  <div class="additional-data">{{yield additionalDataYieldValue}}</div>
+  <div class="additional-data">
+  {{yield (hash checked=isChecked
+                unchecked=(not isChecked)
+                yieldingForAdditionalData=true)}}</div>
 {{/if}}

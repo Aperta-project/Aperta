@@ -597,7 +597,8 @@ class Paper < ActiveRecord::Base
   def create_versioned_texts
     versioned_texts.create! major_version: nil,
                             minor_version: nil,
-                            original_text: (@new_body || '')
+                            original_text: (@new_body || ''),
+                            file_type: file_type
   end
 
   def state_changed?

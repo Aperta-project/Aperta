@@ -9,6 +9,24 @@ const {
   String: { htmlSafe }
 } = Ember;
 
+
+// The orcid-connect component will open a popup window from Orcid.org.
+//
+// While the popup window is open, we disable the orcid-connect button to
+// prevent the user from opening multiple popup windows.
+//
+// If the user closes the window before completing the Orcid OAuth flow, the
+// `popupClosedListener` will detect the popup.closed property is true, and set
+// the appropriate variable `oauthInProgress` to false which re-enables the
+// orcid-connect button.
+//
+// Once the user completes the OAuth flow and accepts, or denies authentication
+// with Orcid, Orcid redirects the popup back to Aperta.
+//
+// After redirect the popup is served minimal markup and javascript to
+// immediately close the popup. Once the user is redirected back to Aperta, we
+// re-enable the orcid-connect button and then proceed accordingly based on the
+// success of the OAuth response.
 export default Component.extend({
   classNameBindings: [':orcid-connect', ':profile-section', 'errors:error'],
   user: null,         // pass one
@@ -21,6 +39,9 @@ export default Component.extend({
 
   // function to use for asking the user to confirm an action
   confirm: window.confirm,
+
+  //function to open a popup window
+  open: window.open,
 
   // Searching for the permission on any journal because the ORCID account
   // appears on the user's profile page.  The profile page doesn't exist
@@ -38,6 +59,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
+    this._popupClosedListener = Ember.run.bind(this, this.popupClosedListener);
     if(this.get('user')) {
       this.get('user.orcidAccount').then( (account) => {
         this.set('orcidAccount', account);
@@ -59,6 +81,7 @@ export default Component.extend({
   willDestroyElement() {
     this._super(...arguments);
     window.removeEventListener('storage', this._oauthListener, false);
+    this.removePopupClosedListener();
   },
 
   oauthListener(event) {
@@ -69,6 +92,19 @@ export default Component.extend({
       Ember.run.later(this, 'reloadIfNoResponse', 10000);
       window.removeEventListener('storage', this._oauthListener, false);
     }
+  },
+
+  removePopupClosedListener() {
+    if (this.get('popupTimeoutId')){
+      window.clearInterval(this.popupTimeoutId);
+      this.set('popupTimeoutId', null);
+    }
+  },
+
+  popupClosedListener(popupWindow) {
+    if (popupWindow.closed === false) { return; }
+    this.set('oauthInProgress', false);
+    this.removePopupClosedListener();
   },
 
   orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
@@ -86,6 +122,7 @@ export default Component.extend({
   },
 
   oauthInProgress: false,
+  popupTimeoutId: null,
 
   buttonDisabled: computed('oauthInProgress',
                                  'orcidOauthResult',
@@ -125,14 +162,16 @@ export default Component.extend({
     },
 
     openOrcid() {
+      let open = this.get('open');
       window.localStorage.removeItem('orcidOauthResult');
-      window.open(
+      var popupWindow = open(
         this.get('orcidAccount.oauthAuthorizeUrl'),
         '_blank',
         'toolbar=no, scrollbars=yes, width=500, height=630, top=500, left=500'
       );
       this.set('orcidOauthResult', null);
       this.set('oauthInProgress', true);
+      this.set('popupTimeoutId',  window.setInterval(this._popupClosedListener, 250, popupWindow));
       window.addEventListener('storage', this._oauthListener, false);
     }
   }

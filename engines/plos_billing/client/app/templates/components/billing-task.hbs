@@ -47,7 +47,7 @@
     </div>
 
     <div class="flex-group flex-group--divider">
-      <div class="flex-element {{if validationErrors.plos_billing--affiliation1 "error"}}">
+      <div class="flex-element plos_billing--affiliation1 {{if validationErrors.plos_billing--affiliation1 "error"}}">
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
                              validate=(action "validateQuestion")

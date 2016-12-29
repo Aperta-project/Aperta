@@ -22,8 +22,8 @@ export default Ember.Route.extend({
           this.handleUnauthorizedRequest(transition);
       }
       if (response.errors[0].status == 403) {
-        let error_msg = response.errors[0].detail;
-        if (error_msg !== 'Forbidden') {
+        let errorMsg = response.errors[0].detail;
+        if (errorMsg !== 'Forbidden') {
           this.handleUnauthorizedRequest(transition, error_msg);
         } else {
           this.handleUnauthorizedRequest(transition);

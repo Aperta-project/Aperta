@@ -98,7 +98,7 @@ class OrcidAccount < ActiveRecord::Base
     body.encode!(Encoding::UTF_8)
   rescue Encoding => ex
     logger.error "ORCID response failed to convert to UTF-8. Body:#{body}. Error: #{ex.message}"
-    raise raise OrcidAccount::APIError, ex.to_s
+    raise OrcidAccount::APIError, ex.to_s
   end
 
   def oauth_authorize(code)

@@ -81,14 +81,43 @@ describe OrcidAccount do
       end
     end
 
-    it 'receives an access token' do
-      orcid_account.exchange_code_for_token(authorization_code)
-      expect(orcid_account.access_token).not_to be_empty
+    context 'user has name with "low-ascii" characters"' do
+      it 'receives an access token' do
+        orcid_account.exchange_code_for_token(authorization_code)
+        expect(orcid_account.access_token).not_to be_empty
+      end
+
+      it 'saves the orcid identifier' do
+        orcid_account.exchange_code_for_token(authorization_code)
+        expect(orcid_account.identifier).to eq(orcid_identifier)
+      end
     end
 
-    it 'saves the orcid identifier' do
-      orcid_account.exchange_code_for_token(authorization_code)
-      expect(orcid_account.identifier).to eq(orcid_identifier)
+    context 'user has name with "high-ascii" characters"' do
+      # Get this from after authorizing on orcid.org. Click on the oauth link, authorize aperta, and capture the authorization code from the callback.
+      let(:authorization_code) { 'XFi5Kw' }
+      let(:cassette) { 'orcid_authorization_high_ascii' }
+      it 'does not throw an exception while saving' do
+        expect do
+          orcid_account.exchange_code_for_token(authorization_code)
+          orcid_account.update_orcid_profile!
+        end.not_to raise_exception
+        expect(orcid_account.access_token).not_to be_empty
+      end
+    end
+
+    context 'user has name with unicode characters' do
+      # Get this from after authorizing on orcid.org. Click on the oauth link, authorize aperta, and capture the authorization code from the callback.
+      let(:authorization_code) { 'NdsTnH' }
+      let(:cassette) { 'orcid_authorization_unicode' }
+
+      it 'does not throw an exception while saving' do
+        expect do
+          orcid_account.exchange_code_for_token(authorization_code)
+          orcid_account.update_orcid_profile!
+        end.not_to raise_exception
+        expect(orcid_account.access_token).not_to be_empty
+      end
     end
   end
 

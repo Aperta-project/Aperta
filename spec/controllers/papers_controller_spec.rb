@@ -73,7 +73,7 @@ describe PapersController do
         do_request
       end
 
-      it { is_expected.to responds_with(403) }
+      it { is_expected.to responds_with(404) }
     end
   end
 

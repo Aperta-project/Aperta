@@ -220,6 +220,7 @@ class SITaskTest(CommonTest):
     file_link_text = supporting_info._get(supporting_info._file_link).text
     timeout = 60
     counter = 0
+    # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
     while file_link_text in doc2upload_1 or counter == timeout:
       file_link_text = supporting_info._get(supporting_info._file_link).text

@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+* ORCID-Connect works with users with accented letters in their names. 
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 ### Security
 

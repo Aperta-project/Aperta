@@ -22,26 +22,30 @@
   </span>
 {{/each}}
 
-{{#if (and canManage (not searching))}}
-  <div class="add-participant-button animation-fade-in"
-       {{action "toggleSearching" true}}
-       title="Add Someone">
-    +
-  </div>
-{{/if}}
+{{#if canManage}}
+  {{#if (not searching)}}
+    <div class="add-participant-button animation-fade-in"
+         {{action "toggleSearching" true}}
+         title="Add Someone">
+      +
+    </div>
+  {{/if}}
 
-<br>
+  <br>
 
-{{#if searching}}
-  {{#power-select search=(perform searchUsersTask)
-                  placeholder="Please enter 3 or more characters"
-                  onchange=(action "addParticipant")
-                  onclose=(action "toggleSearching" false)
-                  oninput=(action "handleInput")
-                  triggerClass="aperta-select animation-fade-in"
-                  dropdownClass=dropdownClass
-                  as |user|}}
-    <strong>{{user.full_name}} @{{user.username}}</strong>
-    <div class="suggestion-sub-value">{{user.email}}</div>
-  {{/power-select}}
+  {{#if searching}}
+    {{#power-select search=(perform searchUsersTask)
+                    placeholder="Please enter 3 or more characters"
+                    onchange=(action "addParticipant")
+                    onclose=(action "toggleSearching" false)
+                    oninput=(action "handleInput")
+                    dropdownClass=dropdownClass
+                    triggerClass="aperta-select animation-fade-in"
+                    afterOptionsComponent=afterOptionsComponent
+                    searchMessage=""
+                    as |user|}}
+      <strong>{{user.full_name}} @{{user.username}}</strong>
+      <div class="suggestion-sub-value">{{user.email}}</div>
+    {{/power-select}}
+  {{/if}}
 {{/if}}

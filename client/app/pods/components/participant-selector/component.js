@@ -20,6 +20,8 @@ export default Component.extend({
     label: PropTypes.string,
     searching: PropTypes.bool,
     dropdownClass: PropTypes.string,
+    // ember-power-select property
+    afterOptionsComponent: PropTypes.string,
 
     // url OR paperId is required
     url: PropTypes.string,

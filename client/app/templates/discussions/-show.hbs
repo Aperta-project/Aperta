@@ -19,16 +19,13 @@
                            url=discussionParticipantUrl
                            label="Participants:"
                            displayEmails=true
+                           afterOptionsComponent="discussions-participants-help-text"
                            canManage=(can "manage_participant" model)
                            onSelect=(action "saveNewParticipant")
                            onRemove=(action "removeParticipantByUserId")
                            searchStarted=(action "searchStarted")
                            searchFinished=(action "searchFinished")
                            searching=searchingParticipant}}
-
-    {{#if searchingParticipant}}
-      {{fa-icon "info-circle"}} All topic participants see the names of all other participants.
-    {{/if}}
   </div>
 
   <div class="discussions-show-form">

@@ -34,7 +34,7 @@
 }
 
 .add-participant-button {
-  @include size(25px 25px);
+  @include size(21px 21px);
   border: 1px solid $aperta-green;
   border-radius: 3px;
   color: $aperta-green;
@@ -42,7 +42,7 @@
   line-height: 20px;
   position: relative;
   display: inline-block;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
   cursor: pointer;

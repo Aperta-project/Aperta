@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* The first affiliate field on the billing task is now required
 ### Changed
 * ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
 ### Deprecated

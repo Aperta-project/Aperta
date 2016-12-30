@@ -206,6 +206,8 @@ class SITaskTest(CommonTest):
     # click edit
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
+    time.sleep(2)
+    self._driver.save_screenshot('Output/210.png')
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
@@ -214,6 +216,7 @@ class SITaskTest(CommonTest):
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(12)
+    self._driver.save_screenshot('Output/219.png')
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     # Get current SI file name
@@ -222,6 +225,7 @@ class SITaskTest(CommonTest):
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
+    self._driver.save_screenshot('Output/228.png')
     while file_link_text not in doc2upload:
       file_link_text = supporting_info._get(supporting_info._file_link).text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))

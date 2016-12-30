@@ -17,14 +17,17 @@ export default Ember.Route.extend({
       if (!response) {
         this.handleUnauthorizedRequest(transition);
       }
-      switch (response.status) {
-        case 403:
-          this.handleUnauthorizedRequest(transition);
-      }
-      let status = response.errors[0].status;
-      if ((status == 404) || (status == 403) ) {
-        let errorMsg = response.errors[0].detail;
-        this.handleUnauthorizedRequest(transition, errorMsg);
+      if (Ember.isArray(response.errors)) {
+        let status = response.errors[0].status;
+        if ((status == 404) || (status == 403) ) {
+          let errorMsg = response.errors[0].detail;
+          this.handleUnauthorizedRequest(transition, errorMsg);
+        }
+      } else {
+        switch (response.status) {
+          case 403:
+            this.handleUnauthorizedRequest(transition);
+        }
       }
       return true;
     },

@@ -229,6 +229,7 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
+    self._driver.save_screenshot('Output/before_validate_uploads.png')
     supporting_info.validate_uploads([fn])
     manuscript_page.logout()
     # Log in as Editorial User

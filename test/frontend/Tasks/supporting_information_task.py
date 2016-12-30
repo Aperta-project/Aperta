@@ -44,7 +44,7 @@ class SITask(BaseTask):
     # Change followin markers when APERTA-8609 is addressed
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
     self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
-    self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
+    self._si_replace_input = (By.TAG_NAME, 'input')
     self._si_green_spinner = (By.CLASS_NAME, 'progress-spinner--green')
    # POM Actions
 

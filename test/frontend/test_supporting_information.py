@@ -31,7 +31,7 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def test_si_task_styles(self):
+  def _test_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
@@ -212,19 +212,17 @@ class SITaskTest(CommonTest):
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
     time.sleep(2)
-    self._driver.save_screenshot('Output/215.png')
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
-    self._driver.save_screenshot('Output/218.png')
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    self._driver.save_screenshot('Output/220.png')
+    self._driver.save_screenshot('Output/218.png')
     doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
-    self._driver.save_screenshot('Output/224.png')
+    self._driver.save_screenshot('Output/222.png')
     # Time for the file to upload and cancel button to attach
-    time.sleep(12)
-    self._driver.save_screenshot('Output/227.png')
+    time.sleep(15)
+    self._driver.save_screenshot('Output/225.png')
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     # Get current SI file name
@@ -233,7 +231,7 @@ class SITaskTest(CommonTest):
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
-    self._driver.save_screenshot('Output/236.png')
+    self._driver.save_screenshot('Output/234.png')
     while file_link_text not in doc2upload:
       file_link_text = supporting_info._get(supporting_info._file_link).text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))
@@ -241,7 +239,7 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
-    self._driver.save_screenshot('Output/244.png')
+    self._driver.save_screenshot('Output/242.png')
     supporting_info.validate_uploads([fn])
     manuscript_page.logout()
     # Log in as Editorial User

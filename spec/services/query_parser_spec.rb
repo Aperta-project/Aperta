@@ -225,33 +225,37 @@ describe QueryParser do
     end
 
     describe 'people queries' do
-      let!(:president_role) { create(:role, name: 'president') }
-      let!(:user) { create(:user, username: 'someuser') }
+      let!(:role) do
+        create(:role, name: Faker::Name.title)
+      end
+      let!(:user) do
+        create(:user, username: Faker::Lorem.word)
+      end
 
-      it 'parses USER x HAS ROLE president' do
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+      it 'parses USER username HAS ROLE x' do
+        parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
-      it 'parses USER me HAS ROLE president' do
-        parse = QueryParser.new(current_user: user).parse 'USER me HAS ROLE president'
+      it 'parses USER me HAS ROLE x' do
+        parse = QueryParser.new(current_user: user).parse "USER me HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
-      it 'parses across multiple roles of same name for USER x HAS ROLE president' do
-        president_role2 = create(:role, name: 'president')
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+      it 'parses across multiple roles of same name for USER username HAS ROLE x' do
+        role2 = create(:role, name: role.name)
+        parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}, #{president_role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
-      it 'parses USER x HAS ANY ROLE' do
-        parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
+      it 'parses USER username HAS ANY ROLE' do
+        parse = QueryParser.new.parse "USER #{user.username} HAS ANY ROLE"
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
@@ -265,32 +269,32 @@ describe QueryParser do
       end
 
       it 'parses ANYONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'ANYONE HAS ROLE president'
+        parse = QueryParser.new.parse "ANYONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses NO ONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
+        parse = QueryParser.new.parse "NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
 
-      it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president' do
-        janitor_role = create(:role, name: 'janitor')
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE janitor AND NO ONE HAS ROLE president'
+      it 'parses USER username HAS ROLE x AND NO ONE HAS ROLE y' do
+        role2 = create(:role, name: Faker::Name.title)
+        parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role2.name} AND NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
 
-      it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president with extra whitespace' do
-        janitor_role = create(:role, name: 'janitor')
-        parse = QueryParser.new.parse "\tUSER someuser HAS   \n  ROLE   janitor   AND NO \rONE\t HAS ROLE  president  "
+      it 'parses USER username HAS ROLE x AND NO ONE HAS ROLE y with extra whitespace' do
+        role2 = create(:role, name: Faker::Name.title)
+        parse = QueryParser.new.parse "\tUSER #{user.username} HAS   \n  ROLE   #{role2.name}   AND NO \rONE\t HAS ROLE  #{role.name}  "
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
     end

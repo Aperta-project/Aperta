@@ -53,9 +53,12 @@ class SITaskTest(CommonTest):
     data['type'] = 'Text'
     data['title'] = 'Title'
     data['caption'] = 'Caption'
+    self._driver.save_screenshot('Output/56.png')
     manuscript_page.complete_task('Supporting Info', data=data)
+    self._driver.save_screenshot('Output/58.png')
     # get link
     manuscript_page.click_task('Supporting Info')
+    self._driver.save_screenshot('Output/61.png')
     #tasks = manuscript_page._gets(manuscript_page._task_headings)
     #for task in tasks:
     #  if 'Supporting Info' in task.text:
@@ -67,7 +70,9 @@ class SITaskTest(CommonTest):
     supporting_info.click_completion_button()
     time.sleep(2)
     file_link = supporting_info._get(supporting_info._file_link)
+    self._driver.save_screenshot('Output/73.png')
     supporting_info.validate_uploads_styles(file_link)
+    self._driver.save_screenshot('Output/75.png')
     return None
 
   def _test_si_task_and_card(self):
@@ -207,16 +212,19 @@ class SITaskTest(CommonTest):
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
     time.sleep(2)
-    self._driver.save_screenshot('Output/210.png')
+    self._driver.save_screenshot('Output/215.png')
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
+    self._driver.save_screenshot('Output/218.png')
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
+    self._driver.save_screenshot('Output/220.png')
     doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
+    self._driver.save_screenshot('Output/224.png')
     # Time for the file to upload and cancel button to attach
     time.sleep(12)
-    self._driver.save_screenshot('Output/219.png')
+    self._driver.save_screenshot('Output/227.png')
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     # Get current SI file name
@@ -225,7 +233,7 @@ class SITaskTest(CommonTest):
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
-    self._driver.save_screenshot('Output/228.png')
+    self._driver.save_screenshot('Output/236.png')
     while file_link_text not in doc2upload:
       file_link_text = supporting_info._get(supporting_info._file_link).text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))
@@ -233,7 +241,7 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
-    self._driver.save_screenshot('Output/before_validate_uploads.png')
+    self._driver.save_screenshot('Output/244.png')
     supporting_info.validate_uploads([fn])
     manuscript_page.logout()
     # Log in as Editorial User

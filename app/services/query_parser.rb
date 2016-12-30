@@ -48,22 +48,22 @@ class QueryParser < QueryLanguageParser
     paper_table[:doi].matches("%#{doi}%")
   end
 
-  add_two_part_expression('USER', 'HAS ROLE') do |username, role|
-    user_id = get_user_id(username)
+  add_two_part_expression('USER', 'HAS ROLE') do |user_query, role|
+    user_ids = get_user_ids(user_query)
     role_ids = Role.where('lower(name) = ?', role.downcase)
                    .pluck(:id).sort
 
     table = join(Assignment, 'assigned_to_id')
-    table['user_id'].eq(user_id)
+    table['user_id'].in(user_ids)
       .and(table['role_id'].in(role_ids))
       .and(table['assigned_to_type'].eq('Paper'))
   end
 
-  add_two_part_expression('USER', 'HAS ANY ROLE') do |username, _|
-    user_id = get_user_id(username)
+  add_two_part_expression('USER', 'HAS ANY ROLE') do |user_query, _|
+    user_ids = get_user_ids(user_query)
 
     table = join(Assignment, 'assigned_to_id')
-    table['user_id'].eq(user_id).and(table['assigned_to_type'].eq('Paper'))
+    table['user_id'].in(user_ids).and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|
@@ -201,16 +201,12 @@ class QueryParser < QueryLanguageParser
     query =~ /days? ago/i
   end
 
-  def get_user_id(username)
-    user = nil
-
-    if username == "me"
-      user = @current_user
+  def get_user_ids(user_query)
+    if user_query == "me"
+      [@current_user.id]
     else
-      user = User.find_by(username: username)
+      User.fuzzy_search(user_query).pluck(:id)
     end
-
-    user ? user.id : -1
   end
 
   def join(klass, id = "paper_id", join_id = "papers.id")

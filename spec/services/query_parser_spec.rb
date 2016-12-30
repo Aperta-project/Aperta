@@ -229,20 +229,35 @@ describe QueryParser do
         create(:role, name: Faker::Name.title)
       end
       let!(:user) do
-        create(:user, username: Faker::Lorem.word)
+        create(:user,
+          username: Faker::Lorem.word,
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name,
+          email: Faker::Internet.email)
+      end
+
+      before do
+        # Create some confounding data to ensure we are not succeeding by default
+        5.times do
+          create(:user,
+            username: Faker::Lorem.unique.word,
+            first_name: Faker::Name.unique.first_name,
+            last_name: Faker::Name.unique.last_name,
+            email: Faker::Internet.unique.email)
+        end
       end
 
       it 'parses USER username HAS ROLE x' do
         parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses USER me HAS ROLE x' do
         parse = QueryParser.new(current_user: user).parse "USER me HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
@@ -250,21 +265,42 @@ describe QueryParser do
         role2 = create(:role, name: role.name)
         parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses USER username HAS ANY ROLE' do
         parse = QueryParser.new.parse "USER #{user.username} HAS ANY ROLE"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses USER me HAS ANY ROLE' do
         parse = QueryParser.new(current_user: user).parse 'USER me HAS ANY ROLE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER first_name HAS ANY ROLE' do
+        parse = QueryParser.new.parse "USER #{user.first_name} HAS ANY ROLE"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER last_name HAS ANY ROLE' do
+        parse = QueryParser.new.parse "USER #{user.last_name} HAS ANY ROLE"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER email HAS ANY ROLE' do
+        parse = QueryParser.new.parse "USER #{user.email} HAS ANY ROLE"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
@@ -286,7 +322,7 @@ describe QueryParser do
         role2 = create(:role, name: Faker::Name.title)
         parse = QueryParser.new.parse "USER #{user.username} HAS ROLE #{role2.name} AND NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
 
@@ -294,7 +330,7 @@ describe QueryParser do
         role2 = create(:role, name: Faker::Name.title)
         parse = QueryParser.new.parse "\tUSER #{user.username} HAS   \n  ROLE   #{role2.name}   AND NO \rONE\t HAS ROLE  #{role.name}  "
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
     end

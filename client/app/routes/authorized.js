@@ -21,13 +21,10 @@ export default Ember.Route.extend({
         case 403:
           this.handleUnauthorizedRequest(transition);
       }
-      if (response.errors[0].status == 403) {
+      let status = response.errors[0].status;
+      if ((status == 404) || (status == 403) ) {
         let errorMsg = response.errors[0].detail;
-        if (errorMsg !== 'Forbidden') {
-          this.handleUnauthorizedRequest(transition, error_msg);
-        } else {
-          this.handleUnauthorizedRequest(transition);
-        }
+        this.handleUnauthorizedRequest(transition, errorMsg);
       }
       return true;
     },

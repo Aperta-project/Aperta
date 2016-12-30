@@ -185,6 +185,17 @@ class SITask(BaseTask):
     assert uploads == site_uploads, (uploads, site_uploads)
     return None
 
+  def validate_upload(self, upload):
+    """
+    Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
+    """
+    site_upload = self._get(self._si_filename).find_element(*(By.TAG_NAME, 'a')).text
+    assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
+    return None
+
   def validate_uploads_styles(self, attached_filename):
     """
     """

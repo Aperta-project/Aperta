@@ -221,17 +221,19 @@ class SITaskTest(CommonTest):
     replace_input.send_keys(fn)
     self._driver.save_screenshot('Output/222.png')
     # Time for the file to upload and cancel button to attach
-    time.sleep(60)
+    time.sleep(10)
     self._driver.save_screenshot('Output/225.png')
-    cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
-    cancel_btn.click()
+    ##cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
+    ##cancel_btn.click()
     # Get current SI file name
-    file_link_text = supporting_info._get(supporting_info._file_link).text
+    from selenium.webdriver.common.by import By
+    file_link_text = supporting_info._get(supporting_info._si_filename).find_element(*(By.TAG_NAME, 'a')).text
+    #file_link_text = supporting_info._get(supporting_info._file_link).text
     timeout = 60
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
-    self._driver.save_screenshot('Output/234.png')
+    self._driver.save_screenshot('Output/236.png')
     while file_link_text not in doc2upload:
       file_link_text = supporting_info._get(supporting_info._file_link).text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))
@@ -239,8 +241,8 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
-    self._driver.save_screenshot('Output/242.png')
-    supporting_info.validate_uploads([fn])
+    self._driver.save_screenshot('Output/244.png')
+    supporting_info.validate_upload(fn)
     manuscript_page.logout()
     # Log in as Editorial User
     editorial_user = random.choice(editorial_users)

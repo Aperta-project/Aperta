@@ -4,7 +4,6 @@ import Ember from 'ember';
 export default NestedQuestionComponent.extend({
   helpText: null,
   unwrappedHelpText: null,
-  placeholder: null,
   displayContent: true,
   inputClassNames: ['form-control'],
   browserDetector: Ember.inject.service(),
@@ -17,8 +16,8 @@ export default NestedQuestionComponent.extend({
 
   clearHiddenQuestions: Ember.observer('displayContent', 'disabled', function() {
     if (!this.get('disabled') && !this.get('displayContent')) {
-      this.set('model.answer.value', '');
-      this.get('model.answer').save();
+      this.set('answer.value', '');
+      this.get('answer').save();
     }
   })
 });

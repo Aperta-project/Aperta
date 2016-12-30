@@ -70,7 +70,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads_styles(file_link)
     return None
 
-  def test_si_task_and_card(self):
+  def _test_si_task_and_card(self):
     """
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
@@ -197,8 +197,8 @@ class SITaskTest(CommonTest):
     ##short_doi = manuscript_page.get_short_doi()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload_1 = 'frontend/assets/supportingInfo/S2_other.XSLX'
-    fn = os.path.join(os.getcwd(), doc2upload_1)
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    fn = os.path.join(os.getcwd(), doc2upload)
     manuscript_page.click_task('Supporting Info')
     supporting_info = SITask(self._driver)
     supporting_info.add_file(fn)
@@ -209,8 +209,8 @@ class SITaskTest(CommonTest):
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload_2 = 'frontend/assets/supportingInfo/S1_Text.pdf'
-    fn = os.path.join(os.getcwd(), doc2upload_2)
+    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
+    fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(12)
@@ -222,11 +222,13 @@ class SITaskTest(CommonTest):
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
-    while file_link_text in doc2upload_1 or counter <= timeout:
+    while file_link_text not in doc2upload:
       file_link_text = supporting_info._get(supporting_info._file_link).text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))
       time.sleep(1)
       counter += 1
+      if counter >= timeout:
+        break
     supporting_info.validate_uploads([fn])
     manuscript_page.logout()
     # Log in as Editorial User
@@ -259,7 +261,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def test_multiple_si_uploads(self):
+  def _test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card

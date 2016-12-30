@@ -221,7 +221,7 @@ class SITaskTest(CommonTest):
     replace_input.send_keys(fn)
     self._driver.save_screenshot('Output/222.png')
     # Time for the file to upload and cancel button to attach
-    time.sleep(15)
+    time.sleep(60)
     self._driver.save_screenshot('Output/225.png')
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()

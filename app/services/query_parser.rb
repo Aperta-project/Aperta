@@ -66,6 +66,13 @@ class QueryParser < QueryLanguageParser
     table['user_id'].in(user_ids).and(table['assigned_to_type'].eq('Paper'))
   end
 
+  add_simple_expression('AUTHOR IS') do |author_query|
+    author_ids = get_author_ids(author_query)
+
+    table = join(AuthorListItem, 'paper_id')
+    table['author_id'].in(author_ids)
+  end
+
   add_simple_expression('ANYONE HAS ROLE') do |role|
     role_ids = Role.where('lower(name) = ?', role.downcase)
                    .pluck(:id)
@@ -207,6 +214,10 @@ class QueryParser < QueryLanguageParser
     else
       User.fuzzy_search(user_query).pluck(:id)
     end
+  end
+
+  def get_author_ids(query)
+    Author.fuzzy_search(query).pluck(:id)
   end
 
   def join(klass, id = "paper_id", join_id = "papers.id")

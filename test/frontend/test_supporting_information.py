@@ -45,7 +45,6 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
-    ##doc2upload = 'frontend/assets/supportingInfo/ucsd_student_survey_data.csv'
     doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
@@ -54,26 +53,16 @@ class SITaskTest(CommonTest):
     data['type'] = 'Text'
     data['title'] = 'Title'
     data['caption'] = 'Caption'
-    self._driver.save_screenshot('Output/56.png')
     manuscript_page.complete_task('Supporting Info', data=data)
-    self._driver.save_screenshot('Output/58.png')
     # get link
     manuscript_page.click_task('Supporting Info')
-    self._driver.save_screenshot('Output/61.png')
-    #tasks = manuscript_page._gets(manuscript_page._task_headings)
-    #for task in tasks:
-    #  if 'Supporting Info' in task.text:
-    #    task.click()
-        #self.click_covered_element(task)
     # search for link
     supporting_info = SITask(self._driver)
     # task completed
     supporting_info.click_completion_button()
     time.sleep(2)
     file_link = supporting_info._get(supporting_info._file_link)
-    self._driver.save_screenshot('Output/73.png')
     supporting_info.validate_uploads_styles(file_link)
-    self._driver.save_screenshot('Output/75.png')
     return None
 
   def _test_si_task_and_card(self):

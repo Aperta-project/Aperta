@@ -244,7 +244,7 @@ class SITaskTest(CommonTest):
       if counter >= timeout:
         break
     self._driver.save_screenshot('Output/246.png')
-    supporting_info.validate_upload(fn)
+    ##supporting_info.validate_upload(fn)
     manuscript_page.logout()
     # Log in as Editorial User
     editorial_user = random.choice(editorial_users)

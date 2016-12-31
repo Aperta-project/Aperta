@@ -658,7 +658,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       supporting_info.validate_styles()
       if data and 'file_name' in data:
         #attached_filename = supporting_info.add_file(data['file_name'])
+        self._driver.save_screenshot('Output/MS-661.png')
         supporting_info.add_file(data['file_name'])
+        self._driver.save_screenshot('Output/MS-663.png')
         #if style_check:
         #  supporting_info.validate_default_link_style(attached_filename)
         #assert attached_filename.text in data['file_name'].replace(' ', '+'), \
@@ -670,6 +672,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         #cancel_btn = self._get(supporting_info._si_file_cancel_btn)
         #cancel_btn.click()
         time.sleep(5)
+        self._driver.save_screenshot('Output/MS-675.png')
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)
         edit_btn.click()

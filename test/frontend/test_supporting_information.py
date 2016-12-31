@@ -279,7 +279,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def _test_multiple_si_uploads(self):
+  def test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card
@@ -299,6 +299,7 @@ class SITaskTest(CommonTest):
     supporting_info = SITask(self._driver)
     si_files = docs + figures + supporting_info_files
     doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
+    logging.info('Add files: ')
     logging.info(doc2uploads)
     supporting_info.add_files(doc2uploads)
     # Wait for all files to upload and process for testing for uploads

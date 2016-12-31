@@ -135,7 +135,7 @@ class SITask(BaseTask):
     """
     Completes the task Supporting Information
     :param file_name: A string with a filename
-    :return: attached file name web element
+    :return: None
     """
     logging.info('Attach file called with {0}'.format(file_name))
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)

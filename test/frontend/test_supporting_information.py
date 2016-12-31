@@ -45,7 +45,8 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
-    doc2upload = 'frontend/assets/supportingInfo/ucsd_student_survey_data.csv'
+    ##doc2upload = 'frontend/assets/supportingInfo/ucsd_student_survey_data.csv'
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -279,7 +280,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def test_multiple_si_uploads(self):
+  def _test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card

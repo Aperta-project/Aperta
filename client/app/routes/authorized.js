@@ -19,7 +19,8 @@ export default Ember.Route.extend({
       }
       if (Ember.isArray(response.errors)) {
         let status = response.errors[0].status;
-        if ((status == 404) || (status == 403) ) {
+        // use == instead of === to coerce "404" into 404
+        if ( status == 404 || status == 403 ) {
           let errorMsg = response.errors[0].detail;
           this.handleUnauthorizedRequest(transition, errorMsg);
         }

@@ -31,7 +31,7 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def _test_si_task_styles(self):
+  def test_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
@@ -186,7 +186,7 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def test_replace_si_upload(self):
+  def _test_replace_si_upload(self):
     """
     test_figure_task: Validates replace function in SI task
     :return: None

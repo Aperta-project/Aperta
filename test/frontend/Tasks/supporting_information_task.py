@@ -46,6 +46,7 @@ class SITask(BaseTask):
     self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
     self._si_replace_input = (By.TAG_NAME, 'input')
     self._si_green_spinner = (By.CLASS_NAME, 'progress-spinner--green')
+    self._si_file_link = (By.TAG_NAME, 'a')
    # POM Actions
 
   def validate_styles(self):
@@ -185,12 +186,11 @@ class SITask(BaseTask):
 
   def validate_upload(self, upload):
     """
-    Give a list of file, check if they are opened in the SI task
-    Note that order may not be preserved so I compare an unordered set
-    :param uploads: Iterable with string with the file name to check in SI task
+    Given a file name, check if it is opened in the SI task
+    :param upload: String with the file name to check in SI task
     :return: None
     """
-    site_upload = self._get(self._si_filename).find_element(*(By.TAG_NAME, 'a')).text
+    site_upload = self._get(self._si_filename).find_element(*self._si_file_link).text
     assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
     return None
 

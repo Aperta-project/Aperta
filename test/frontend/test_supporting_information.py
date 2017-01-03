@@ -176,7 +176,7 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def _test_replace_si_upload(self):
+  def test_replace_si_upload(self):
     """
     test_figure_task: Validates replace function in SI task
     :return: None
@@ -189,7 +189,6 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    ##short_doi = manuscript_page.get_short_doi()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
     doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
@@ -210,21 +209,21 @@ class SITaskTest(CommonTest):
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(10)
-    ##cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
-    ##cancel_btn.click()
     # Get current SI file name
     from selenium.webdriver.common.by import By
-    file_link_text = supporting_info._get(supporting_info._si_filename).find_element(*(By.TAG_NAME, 'a')).text
+    file_link = supporting_info._si_file_link
+    file_link_div = supporting_info._get(supporting_info._si_filename)
+    file_link_text = file_link_div.find_element(*file_link).text
     #file_link_text = supporting_info._get(supporting_info._file_link).text
     timeout = 60
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
     while file_link_text not in doc2upload:
-      #file_link_text = supporting_info._get(supporting_info._file_link).text
-      file_link_text = supporting_info._get(supporting_info._si_filename).\
-        find_element(*(By.TAG_NAME, 'a')).text
-      logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(file_link_text, counter))
+      file_link_div = supporting_info._get(supporting_info._si_filename)
+      file_link_text = file_link_div.find_element(*file_link).text
+      logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(
+        file_link_text, counter))
       time.sleep(1)
       counter += 1
       if counter >= timeout:

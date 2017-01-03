@@ -65,7 +65,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads_styles(file_link)
     return None
 
-  def _test_si_task_and_card(self):
+  def test_si_task_and_card(self):
     """
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
@@ -205,14 +205,11 @@ class SITaskTest(CommonTest):
     # check for reeplace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    self._driver.save_screenshot('Output/218.png')
     doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
-    self._driver.save_screenshot('Output/222.png')
     # Time for the file to upload and cancel button to attach
     time.sleep(10)
-    self._driver.save_screenshot('Output/225.png')
     ##cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     ##cancel_btn.click()
     # Get current SI file name
@@ -223,7 +220,6 @@ class SITaskTest(CommonTest):
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
-    self._driver.save_screenshot('Output/236.png')
     while file_link_text not in doc2upload:
       #file_link_text = supporting_info._get(supporting_info._file_link).text
       file_link_text = supporting_info._get(supporting_info._si_filename).\
@@ -233,7 +229,6 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
-    self._driver.save_screenshot('Output/246.png')
     ##supporting_info.validate_upload(fn)
     manuscript_page.logout()
     # Log in as Editorial User
@@ -250,9 +245,7 @@ class SITaskTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
     supporting_info_card = SICard(self._driver)
-    self._driver.save_screenshot('Output/263.png')
     ##supporting_info_card.validate_upload(fn)
-    self._driver.save_screenshot('Output/265.png')
     # make a replacement
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
@@ -263,13 +256,12 @@ class SITaskTest(CommonTest):
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(12)
-    self._driver.save_screenshot('Output/276.png')
     cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
     cancel_btn.click()
     supporting_info.validate_uploads([fn])
     return None
 
-  def _test_multiple_si_uploads(self):
+  def test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card

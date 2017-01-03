@@ -139,9 +139,8 @@ class SITask(BaseTask):
     """
     logging.info('Attach file called with {0}'.format(file_name))
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
+    # Time needed for file upload
     time.sleep(5)
-    #attached_element = self._get(self._si_filename)
-    #return attached_element
 
   def add_files(self, file_list):
     """
@@ -149,20 +148,19 @@ class SITask(BaseTask):
     :param file_list: A list with strings with a filename
     :return: attached file web elements
     """
-    #attached_elements = []
     for file_name in file_list:
       self.add_file(file_name)
-      #new_element = self.add_file(file_name)
-      #attached_elements.append(new_element)
-      # This sleep avoid a Stale Element Reference Exception
+      # Sleep avoid a Stale Element Reference Exception
       time.sleep(5)
     file_names = self._gets(self._si_file_view)
     max_wait_time = 50
     wait_time = 0
-    while len(file_names) != len(file_list) or wait_time == max_wait_time:
+    while len(file_names) != len(file_list):
       file_names = self._gets(self._si_file_view)
       time.sleep(1)
       wait_time += 1
+      if wait_time == max_wait_time:
+        break
     return file_names
 
   def validate_uploads(self, uploads):
@@ -198,6 +196,10 @@ class SITask(BaseTask):
 
   def validate_uploads_styles(self, attached_filename):
     """
+    Validate the style of the upload elements in the SI task. Task must be opened
+    to run this method
+    :param uploads: File name to check styles
+    :return: None
     """
     self.validate_default_link_style(attached_filename)
     edit_btn = self._get(self._si_pencil_icon)

@@ -27,7 +27,7 @@ describe PapersController do
       it 'returns papers the user has access to' do
         expect(user).to receive(:filter_authorized).with(
           :view,
-          Paper.all.includes(:roles, jorunal: :creator_role)
+          Paper.all.includes(:roles, journal: :creator_role)
         ).and_return instance_double(
           'Authorizations::Query::Result',
           objects: papers

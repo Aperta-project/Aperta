@@ -41,8 +41,27 @@ vagrant plugin install vagrant-salt
 vagrant plugin install vagrant-hostmanager
 vagrant plugin install vagrant-host-path
 
+extract_md5 () {
+  echo $* | grep -o -E '[0-9a-f]{32}'
+}
+
+s3_url="s3://valdovm/vbox-aperta.box"
 cd "$VALDO_FOLDER_DIR"
-rm -f vbox.box && s3cmd -c .s3cfg get s3://valdovm/vbox-java.box vbox.box
+if [ -f vbox.box ] ; then
+  remoteMD5=$(extract_md5 $(s3cmd -c .s3cfg info ${s3_url} | grep MD5))
+  if command_exists md5sum; then
+    localMD5=$(extract_md5 $(md5sum vbox.box))
+  elif command_exists md5; then
+    localMD5=$(extract_md5 $(md5 vbox.box))
+  fi
+
+  if [ "$remoteMD5" != "$localMD5" ]; then
+    rm -f vbox.box
+  fi
+fi
+if ! [ -f vbox.box ] ; then
+    s3cmd -c .s3cfg get ${s3_url} vbox.box
+fi
 vagrant box add -f vbox vbox.box
 
 scp aperta@aperta-frontend-201.sfo.plos.org:secrets/.ploprc "$HOME/.ploprc"

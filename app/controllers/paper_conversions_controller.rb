@@ -50,7 +50,17 @@ class PaperConversionsController < ApplicationController
     requires_user_can(:view, paper)
     if params[:job_id] == 'source'
       # Direct download, redirect to download link.
-      render status: :ok, json: { url: paper.file.url }
+      if params[:versioned_text_id].nil?
+        render status: :ok, json: { url: paper.file.url }
+      else
+        ver = VersionedText.find(params[:versioned_text_id])
+        # Make sure the client-supplied version number is for the right paper
+        url = nil
+        if paper.id == ver.paper_id
+          url = Attachment.authenticated_url_for_key(ver.s3_dir + '/' + ver.file)
+        end
+        render status: :ok, json: { url: url }
+      end
     else
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?

@@ -24,7 +24,9 @@ class VersionedText < ActiveRecord::Base
     update!(
       major_version: (paper.major_version || -1) + 1,
       minor_version: 0,
-      file_type: paper.file_type
+      file_type: paper.file_type,
+      s3_dir: paper.file.s3_dir,
+      file: paper.file[:file]
     )
   end
 
@@ -60,7 +62,9 @@ class VersionedText < ActiveRecord::Base
         major_version: nil,
         minor_version: nil,
         submitting_user: nil,
-        file_type: paper.file_type
+        file_type: paper.file_type,
+        s3_dir: paper.file.s3_dir,
+        file: paper.file[:file]
       ) # makes duplicate of S3 file
     end
   end

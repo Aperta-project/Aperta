@@ -1,5 +1,9 @@
 .paper-tracker-screen {
-  padding-top: 8rem;
+  padding-top: 6rem;
+
+  .main-content-section {
+    padding-top: 1rem;
+  }
 }
 
 .paper-tracker-message {
@@ -21,6 +25,7 @@
 
 #paper-tracker-search-controls {
   margin: 0 0 2.0rem;
+  padding-right: 2rem;
 
   #clear-search {
     cursor: pointer;
@@ -76,6 +81,7 @@
 
 #main-content #paper-tracker-saved-searches {
   flex-grow: 1;
+  padding-left: 2rem;
 
   ul {
     list-style-type: none;
@@ -88,6 +94,7 @@
 }
 
 #main-content #paper-tracker-paper-list {
-  border-right: 1px solid $aperta-grey-light;
   flex-grow: 4;
+  border-right: 1px solid $aperta-grey-light;
+  padding-left: 2rem;
 }

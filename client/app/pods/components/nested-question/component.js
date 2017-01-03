@@ -5,7 +5,7 @@ const { Component, computed } = Ember;
 
 export default Component.extend({
   inputClassNames: null,
-  debounce: 200, // debounce time for save in ms
+  debouncePeriod: 200, // in ms
   disabled: false,
   noResponseText: '[No response]',
   additionalData: null,
@@ -92,7 +92,7 @@ export default Component.extend({
     if(this.attrs.validate) {
       this.attrs.validate(this.get('ident'), this.get('answer.value'));
     }
-    yield timeout(this.get('debounce'));
+    yield timeout(this.get('debouncePeriod'));
     return this.get('_throttledSave').perform();
   }).restartable(),
 

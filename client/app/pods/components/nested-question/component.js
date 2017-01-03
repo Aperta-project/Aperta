@@ -1,9 +1,11 @@
 import Ember from 'ember';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 const { Component, computed } = Ember;
 
 export default Component.extend({
   inputClassNames: null,
+  debounce: 200, // debounce time for save in ms
   disabled: false,
   noResponseText: '[No response]',
   additionalData: null,
@@ -83,21 +85,28 @@ export default Component.extend({
   },
 
   save(){
+    return this.get('_debouncedAndThrottledSave').perform();
+  },
+
+  _debouncedAndThrottledSave: concurrencyTask(function * () {
     if(this.attrs.validate) {
       this.attrs.validate(this.get('ident'), this.get('answer.value'));
     }
+    yield timeout(this.get('debounce'));
+    return this.get('_throttledSave').perform();
+  }).restartable(),
 
-    Ember.run.debounce(this, this._saveAnswer, this.get('answer'), 200);
-    return false;
-  },
+  _throttledSave: concurrencyTask(function * () {
+    return yield this._saveAnswer(this.get('answer'));
+  }).keepLatest(),
 
   _saveAnswer(answer){
     if(answer.get('owner.isNew')){
       // no-op
     } else if(answer.get('wasAnswered')){
-      answer.save();
+      return answer.save();
     } else {
-      answer.destroyRecord().then(() => this.resetAnswer());
+      return answer.destroyRecord().then(() => this.resetAnswer());
     }
   },
 

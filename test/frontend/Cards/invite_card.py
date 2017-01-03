@@ -39,7 +39,6 @@ class InviteCard(BaseCard):
     self._invitation_email_editor = (By.CLASS_NAME, 'invitation-edit-body')
     self._invitation_save_button = (By.CLASS_NAME, 'invitation-save-button')
     self._invitation_email_body = (By.CLASS_NAME, 'invitation-show-body')
-    self._invitation_active_invitations = (By.CLASS_NAME, 'active-invitations')
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
@@ -339,7 +338,9 @@ class InviteCard(BaseCard):
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
     self._get(self._compose_invitation_button).click()
-    # TODO: figure out how to wait - if we try to add another invitee, it's too fast
+    # In order to wait long enough for another invitee to be added, should this method be called multiple times,
+    # find the "ADD TO QUEUE" button element:
+    self._driver.find_element_by_class_name('button--disabled')
 
   def validate_email_template_edits(self):
     """
@@ -351,10 +352,12 @@ class InviteCard(BaseCard):
     first_invitation_item = random.choice(invitation_items)
     if len(invitation_items) > 1:
       first_invitation_item.click()
-      assert 'invitation-item--show' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
+      assert 'invitation-item--show' in first_invitation_item.get_attribute('class'), \
+        first_invitation_item.get_attribute('class')
       # Verify that the invitation collapses when clicking the invitation item header
       first_invitation_item.find_element_by_class_name('invitation-item-header').click()
-      assert 'invitation-item--closed' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
+      assert 'invitation-item--closed' in first_invitation_item.get_attribute('class'), \
+        first_invitation_item.get_attribute('class')
       # Only one item at most should be expanded. Select a different invitation item, and check that only it is expanded
       first_invitation_item.click()
       invitation_items.remove(first_invitation_item)
@@ -370,7 +373,8 @@ class InviteCard(BaseCard):
     self._get(self._invite_edit_invite_button).click()
     # When in edit mode, ability to collapse the invite item is disabled
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()
-    assert 'invitation-item--edit' in first_invitation_item.get_attribute('class'), first_invitation_item.get_attribute('class')
+    assert 'invitation-item--edit' in first_invitation_item.get_attribute('class'), \
+      first_invitation_item.get_attribute('class')
     # Verify that edits to email template persist
     email_template_editor = self._get(self._invitation_email_editor)
     paragraph = generate_paragraph()[-1]

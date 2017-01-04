@@ -16,20 +16,20 @@ moduleForComponent('reviewer-report-task', 'Integration | Component | reviewer r
   }
 });
 
-test('Reviewer report form when the decision is a draft', function(assert) {
+test('When the decision is a draft', function(assert) {
   Ember.run(() => {
     this.task.get('paper').set('decisions', [make('decision', { draft: true })]);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  assert.nElementsFound('textarea', 5);
+  assert.nElementsFound('textarea', 5, 'The report should be editable');
 });
 
-test('Reviewer report form when the decision is not a draft', function(assert) {
+test('When the decision is not a draft', function(assert) {
   Ember.run(() => {
     this.task.get('paper').set('decisions', [make('decision', { draft: false })]);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  assert.nElementsFound('textarea', 0);
+  assert.nElementsFound('textarea', 0, 'The report should not be editable');
 });
 
 test('History when there are completed decisions', function(assert) {
@@ -50,15 +50,16 @@ test('That there are the correct nested question answers when there is no draft 
     make('decision', { majorVersion: 0, minorVersion: 0, draft: false }),
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
+  const ident = 'reviewer_report--comments_for_author';
   const answers = [
     make('nested-question-answer', {
-      nestedQuestion: this.task.findQuestion('reviewer_report--comments_for_author'),
+      nestedQuestion: this.task.findQuestion(ident),
       value: 'The comments from my first review',
       owner: this.task,
       decision: decisions[0]
     }),
     make('nested-question-answer', {
-      nestedQuestion: this.task.findQuestion('reviewer_report--comments_for_author'),
+      nestedQuestion: this.task.findQuestion(ident),
       value: 'The comments from my second review',
       owner: this.task,
       decision: decisions[1]
@@ -68,7 +69,7 @@ test('That there are the correct nested question answers when there is no draft 
     this.task.get('paper').set('decisions', decisions);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  const answerSelector = '.most-recent-review .reviewer_report--comments_for_author-nested-question .answer-text';
+  const answerSelector = `.most-recent-review .${ident}-nested-question .answer-text`;
   assert.textPresent(answerSelector, answers[1].get('value'));
 });
 

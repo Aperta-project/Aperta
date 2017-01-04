@@ -60,4 +60,62 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
   assert.elementFound('textarea[name=front_matter_reviewer_report--identity]', 'User can provide their identity');
 });
 
+test('When the decision is a draft', function(assert) {
+  this.can.allowPermission('edit', this.task);
+  Ember.run(() => {
+    this.task.get('paper').set('decisions', [make('decision', { draft: true })]);
+  });
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
+  assert.nElementsFound('textarea', 5, 'The report should be editable');
+});
+
+test('When the decision is not a draft', function(assert) {
+  this.can.allowPermission('edit', this.task);
+  Ember.run(() => {
+    this.task.get('paper').set('decisions', [make('decision', { draft: false })]);
+  });
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
+  assert.nElementsFound('textarea', 0, 'The report should not be editable');
+});
+
+test('History when there are completed decisions', function(assert) {
+  const decisions = [
+    make('decision', { majorVersion: 0, minorVersion: 0, draft: false }),
+    make('decision', { majorVersion: 1, minorVersion: 0, draft: false }),
+    make('decision', { majorVersion: null, minorVersion: null, draft: true })
+  ];
+  Ember.run(() => {
+    this.task.get('paper').set('decisions', decisions);
+  });
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
+  assert.nElementsFound('.previous-decision', 2);
+});
+
+test('That there are the correct nested question answers when there is no draft decision', function(assert) {
+  const decisions = [
+    make('decision', { majorVersion: 0, minorVersion: 0, draft: false }),
+    make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
+  ];
+  const ident = 'front_matter_reviewer_report--suitable--comment';
+  const answers = [
+    make('nested-question-answer', {
+      nestedQuestion: this.task.findQuestion(ident),
+      value: 'The comments from my first review',
+      owner: this.task,
+      decision: decisions[0]
+    }),
+    make('nested-question-answer', {
+      nestedQuestion: this.task.findQuestion(ident),
+      value: 'The comments from my second review',
+      owner: this.task,
+      decision: decisions[1]
+    })
+  ];
+  Ember.run(() => {
+    this.task.get('paper').set('decisions', decisions);
+  });
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
+  const answerSelector = `.most-recent-review .${ident}-nested-question .answer-text`;
+  assert.textPresent(answerSelector, answers[1].get('value'));
+});
 

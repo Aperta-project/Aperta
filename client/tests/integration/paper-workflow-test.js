@@ -138,11 +138,11 @@ test('click delete confirmation overlay cancel button', function(assert) {
   visit('/papers/' + paper.shortDoi + '/workflow');
 
   andThen(function() {
-    assert.equal(find('.card-content').length, 1);
+    assert.equal(find('.card-title').length, 1);
     $('.card .card-remove').show();
     click('.card .card-remove');
     click('.overlay button:contains("cancel")');
-    assert.equal(find('.card-content').length, 1);
+    assert.equal(find('.card-title').length, 1);
   });
 });
 
@@ -150,14 +150,14 @@ test('click delete confirmation overlay submit button', function(assert) {
   visit('/papers/' + paper.shortDoi + '/workflow');
 
   andThen(function() {
-    assert.equal(find('.card-content').length, 1, 'card exists');
+    assert.equal(find('.card-title').length, 1, 'card exists');
     $('.card .card-remove').show();
     click('.card .card-remove');
     click('.overlay button:contains("Yes, Delete this Card")');
   });
 
   andThen(function() {
-    assert.equal(find('.card-content').length, 0, 'card deleted');
+    assert.equal(find('.card-title').length, 0, 'card deleted');
 
     const req = _.findWhere(server.requests, {
       method: 'DELETE',

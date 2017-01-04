@@ -54,7 +54,7 @@ test('disables the Compose Invite button until a user is selected', function(ass
   Ember.run(function(){
     TestHelper.mockFind('task').returns({model: task});
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Reviewers')");
+    click(".card-title:contains('Invite Reviewers')");
 
     andThen(function(){
       assert.elementFound(
@@ -96,7 +96,7 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockFind('decision').returns({model: decision});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click(".card-content:contains('Invite Reviewers')");
+    click(".card-title:contains('Invite Reviewers')");
 
     andThen(function() {
       let msgEl = find(`.invitation-item:contains('${invitation.get('email')}')`);
@@ -132,7 +132,7 @@ test('can not send or delete a pending invitation from a previous round', functi
     }});
 
     visit(`/papers/${paper.get('shortDoi')}/workflow`);
-    click('.card-content:contains("Invite Reviewers")');
+    click('.card-title:contains("Invite Reviewers")');
 
     andThen(function() {
       assert.elementNotFound('.active-invitations .invitation-item', 'no active invitations');

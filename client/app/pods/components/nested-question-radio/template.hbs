@@ -3,8 +3,8 @@
     <div class="question-text {{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
   {{/if}}
 
-  {{#if model.answer.wasAnswered}}
-    {{#if model.answer.value}}
+  {{#if answer.wasAnswered}}
+    {{#if answer.value}}
       <div class="answer-text">{{yesLabel}}</div>
     {{else}}
       <div class="answer-text">{{noLabel}}</div>
@@ -34,7 +34,7 @@
 
   <div class={{wrapperClass}}>
     {{binary-radio-button name=namePrefix
-                          selection=model.answer.value
+                          selection=answer.value
                           yesValue=yesValue
                           noValue=noValue
                           yesLabel=yesLabel

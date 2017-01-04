@@ -110,7 +110,13 @@ export default PageObject.create({
       cancel: clickable('.bodypart-overlay .button-link'),
       sendConfirm: clickable('.send-email-action'),
       sendConfirmVisible: isVisible('.send-email-action'),
-      sendConfirmDisabled: isVisible('.send-email-action.button--disabled')
+      sendConfirmDisabled: isVisible('.send-email-action.button--disabled'),
+      recipients: collection({
+        itemScope: '.participant-selector-user',
+        item: {
+          remove: clickable('.participant-selector-user-remove')
+        }
+      })
     }
   }),
 

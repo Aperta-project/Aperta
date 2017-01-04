@@ -1,40 +1,25 @@
 import Ember from 'ember';
-import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 const { Component, computed } = Ember;
 
 export default Component.extend({
-  displayQuestionText: true,
-  displayQuestionAsPlaceholder: false,
   inputClassNames: null,
+  debouncePeriod: 200, // in ms
   disabled: false,
   noResponseText: '[No response]',
   additionalData: null,
 
-  placeholder: null,
   textClassNames: ['question-text'],
   classNameBindings: ['identClass'],
 
-  init(){
-    this._super(...arguments);
-    this.setup();
-  },
-
-  setup: Ember.observer('owner', 'ident', function() {
-    const ident = this.get('ident');
-    const model = this.get('model');
-    Ember.assert(
-      'Expecting to be given an ident or a model, but wasn\'t given either',
-      (ident || model)
-    );
-
-    const owner = this.get('owner');
-    if (!owner) return;
-    Ember.assert('Expecting to be given a owner, but wasn\'t', owner);
-
-    const decision = this.get('decision');
-
-    const question = owner.findQuestion(ident);
+  owner: null,
+  question: computed('owner', 'ident', 'additionalData', function() {
+    let owner = this.get('owner');
+    if (!owner) return null;
+    let ident=this.get('ident');
+    Ember.assert('Expecting to be given a ident, but wasn\'t', this.get('ident'));
+    let question = owner.findQuestion(ident);
     Ember.assert(`Expecting to find question matching ident '${ident}' but
       didn't. Make sure the owner's questions are loaded before this
       initializer is called.`,
@@ -45,31 +30,52 @@ export default Component.extend({
       question.set('additionalData', this.get('additionalData'));
     }
 
-    this.set('model', NestedQuestionProxy.create({
-       nestedQuestion: question,
-       owner: owner,
-       decision: decision
-    }));
+    return question;
+  }),
 
-    if(this.get('displayQuestionAsPlaceholder')){
-      this.set('displayQuestionText', false);
-      this.set('placeholder', question.get('text'));
+  _cachedAnswer: null,
+  answer: computed('owner', 'question', 'decision', '_cachedAnswer.isDeleted', function() {
+    let cachedAnswer = this.get('_cachedAnswer');
+    if (cachedAnswer && !cachedAnswer.get('isDeleted')) { return cachedAnswer; }
+
+    let newAnswer = this.lookupAnswer();
+    this.set('_cachedAnswer', newAnswer);
+    return newAnswer;
+  }),
+
+  lookupAnswer() {
+    let question = this.get('question');
+    if (!question) { return null; }
+
+    return question.answerForOwner(this.get('owner'), this.get('decision'));
+  },
+
+  resetAnswer() {
+    this.set('_cachedAnswer', this.lookupAnswer());
+  },
+
+  decision: null,
+
+  // displayQuestionText and displayQuestionAsPlaceholder are set externally.
+  // internally we should read shouldDisplayQuestionText
+  displayQuestionAsPlaceholder: false,
+  displayQuestionText: true,
+
+  shouldDisplayQuestionText: computed('displayQuestionText', 'displayQuestionAsPlaceholder', function() {
+    return !this.get('displayQuestionAsPlaceholder') && this.get('displayQuestionText');
+  }).readOnly(),
+
+  // placeholder is passed in, but all internal stuff should use placeholderText
+  placeholder: '',
+  placeholderText: computed('displayQuestionAsPlaceholder', 'questionText', 'placeholder', function() {
+    if (this.get('displayQuestionAsPlaceholder')) {
+      return this.get('questionText');
+    } else {
+      return this.get('placeholder');
     }
-  }),
+  }).readOnly(),
 
-  ident: computed('model', function(){
-    return this.get('model.ident');
-  }),
-
-  questionText: computed('model', function(){
-    return this.get('model.text');
-  }),
-
-  shouldDisplayQuestionText: computed('model', 'displayQuestionText',
-    function(){
-      return this.get('model') && this.get('displayQuestionText');
-    }
-  ),
+  questionText: computed.reads('question.text'),
 
   errorPresent: computed('errors', function() {
     return !Ember.isEmpty(this.get('errors'));
@@ -84,21 +90,28 @@ export default Component.extend({
   }),
 
   save(){
-    if(this.attrs.validate) {
-      this.attrs.validate(this.get('ident'), this.get('model.answer.value'));
-    }
-
-    Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
-    return false;
+    return this.get('_debouncedAndThrottledSave').perform();
   },
+
+  _debouncedAndThrottledSave: concurrencyTask(function * () {
+    if(this.attrs.validate) {
+      this.attrs.validate(this.get('ident'), this.get('answer.value'));
+    }
+    yield timeout(this.get('debouncePeriod'));
+    return this.get('_throttledSave').perform();
+  }).restartable(),
+
+  _throttledSave: concurrencyTask(function * () {
+    return yield this._saveAnswer(this.get('answer'));
+  }).keepLatest(),
 
   _saveAnswer(answer){
     if(answer.get('owner.isNew')){
       // no-op
     } else if(answer.get('wasAnswered')){
-      answer.save();
+      return answer.save();
     } else {
-      answer.destroyRecord();
+      return answer.destroyRecord().then(() => this.resetAnswer());
     }
   },
 

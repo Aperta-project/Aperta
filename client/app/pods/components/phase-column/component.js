@@ -15,13 +15,14 @@ export default Ember.Component.extend({
     return this.get('phase.tasks').sortBy('position');
   }),
 
-  checkIfNewPhase: Ember.on('didInitAttrs', function() {
+  didInitAttrs() {
+    this._super(...arguments);
     if(this.get('phase.isNew')) {
       Ember.run.scheduleOnce('afterRender', this, function() {
         this.animateIn();
       });
     }
-  }),
+  },
 
   animateIn() {
     const beginProps    = { overflow: 'hidden', opacity: 0, width: '0px' };

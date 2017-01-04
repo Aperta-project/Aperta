@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Viewing Versions:', js: true do
-  let(:user) { FactoryGirl.create :user }
+  let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do
     let(:paper) do
@@ -10,7 +10,7 @@ feature 'Viewing Versions:', js: true do
                          :with_versions,
                          first_version_body:  '<p>OK first body</p>',
                          second_version_body: '<p>OK second body</p>',
-                         creator: user
+                         creator: creator
     end
     let(:task) do
       FactoryGirl.create :ethics_task,
@@ -20,11 +20,12 @@ feature 'Viewing Versions:', js: true do
     let(:version_0) { paper.versioned_texts.version_desc.last }
     let(:version_1) { paper.versioned_texts.version_desc.first }
 
+    let(:user) { creator }
+
     before do
       paper.reload
       login_as(user, scope: :user)
       visit '/'
-
       click_link(paper.title)
     end
 
@@ -89,7 +90,7 @@ feature 'Viewing Versions:', js: true do
     end
 
     context 'The user has limited access' do
-      let(:reviewer) { FactoryGirl.create :user }
+      let(:user) { FactoryGirl.create :user, first_name: 'reviewer' }
       let(:task) do
         FactoryGirl.create :cover_letter_task,
                            paper: paper,
@@ -98,8 +99,6 @@ feature 'Viewing Versions:', js: true do
 
       before do
         assign_reviewer_role(paper, reviewer)
-
-        login_as(reviewer, scope: :user)
       end
 
       scenario 'The user cannot see the cover letter task' do

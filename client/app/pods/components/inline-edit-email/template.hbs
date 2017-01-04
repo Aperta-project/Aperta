@@ -22,11 +22,14 @@
   <div class="bodypart-choose-receiver-overlay bodypart-overlay">
     <h4>Please choose who should receive this email.</h4>
     {{participant-selector currentParticipants=recipients
-                           onRemove=(action "removeRecipient")
-                           onSelect=(action "addRecipient")
-                           label="Recipients:"
                            paperId=paperId
-                           canManage=(can 'add_email_participants' task)}}
+                           label="Recipients:"
+                           canManage=(can 'add_email_participants' task)
+                           onSelect=(action "addRecipient")
+                           onRemove=(action "removeRecipient")
+                           searchStarted=(action "searchStarted")
+                           searchFinished=(action "searchFinished")
+                           searching=searchingParticipant}}
     <button class="button-link button--white" {{action "toggleChooseReceivers"}}>cancel</button>
     {{#if isSendable}}
       <button class="button-secondary button--green send-email-action" {{action "sendEmail"}}>Send Email</button>

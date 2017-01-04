@@ -110,8 +110,7 @@ export default function() {
   };
 
   QUnit.assert.elementFound = function(selector, message) {
-    const matches = $(selector).length;
-
+    const matches = $('#ember-testing ' + selector).length;
     return this.push(
       matches === 1,
       `found ${matches} '${selector}'s`,
@@ -120,8 +119,7 @@ export default function() {
   };
 
   QUnit.assert.nElementsFound = function(selector, n, message) {
-    const matches = $(selector).length;
-
+    const matches = $('#ember-testing ' + selector).length;
     return this.push(
       matches === n,
       `found ${matches} '${selector}'s`,

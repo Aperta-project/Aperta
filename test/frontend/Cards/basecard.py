@@ -198,13 +198,18 @@ class BaseCard(AuthenticatedPage):
     Ensure consistency in rendering the plus (+) section headings across the all cards
     # TODO: Validate with the result of #103123812
     """
-    assert application_typeface in plus.value_of_css_property('font-family')
-    assert plus.value_of_css_property('font-size') == '32px'
-    assert plus.value_of_css_property('height') == '25px'
-    assert plus.value_of_css_property('width') == '25px'
-    assert plus.value_of_css_property('line-height') == '20px'
-    assert plus.value_of_css_property('color') == aperta_green
-    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert application_typeface in plus.value_of_css_property('font-family'), \
+        plus.value_of_css_property('font-family')
+    # Nota Bene: The size of this element recently changed (20170104). Checked with SebT - OK
+    assert plus.value_of_css_property('font-size') == '24px', \
+        plus.value_of_css_property('font-size')
+    assert plus.value_of_css_property('height') == '21px', plus.value_of_css_property('height')
+    assert plus.value_of_css_property('width') == '21px', plus.value_of_css_property('width')
+    assert plus.value_of_css_property('line-height') == '20px', \
+        plus.value_of_css_property('line-height')
+    assert plus.value_of_css_property('color') == aperta_green, plus.value_of_css_property('color')
+    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', \
+        plus.value_of_css_property('background-color')
     assert plus.text == '+', plus.text
 
   def validate_common_elements_styles(self, short_doi):

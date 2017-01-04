@@ -59,6 +59,21 @@ class AdminPage(AuthenticatedPage):
                          '> div.inset-form-control-text > label')
     self._base_admin_journals_edit_desc_field = (
         By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control > textarea')
+    self._base_admin_journals_edit_doi_jrnl_prefix_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '> div.inset-form-control-text > label')
+    self._base_admin_journals_edit_doi_jrnl_prefix_field = (By.CLASS_NAME,
+                                                            'journal-doi-journal-prefix-edit')
+    self._base_admin_journals_edit_doi_publ_prefix_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '+ div.inset-form-control > div.inset-form-control-text > label')
+    self._base_admin_journals_edit_doi_publ_prefix_field = (By.CLASS_NAME,
+                                                            'journal-doi-publisher-prefix-edit')
+    self._base_admin_journals_edit_last_doi_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '+ div.inset-form-control + div.inset-form-control > '
+                         'div.inset-form-control-text > label')
+    self._base_admin_journals_edit_last_doi_field = (By.CLASS_NAME, 'journal-last-doi-edit')
     self._base_admin_journals_edit_cancel_link = (By.XPATH,
                                                   '//div[@class="journal-edit-buttons"]/a[1]')
     self._base_admin_journals_edit_save_button = (By.XPATH,
@@ -162,10 +177,8 @@ class AdminPage(AuthenticatedPage):
       assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
-  def validate_add_new_journal(self, username,
-                               journal_name='',
-                               journal_desc='',
-                               logo='',
+  def validate_add_new_journal(self, username, journal_name='', journal_desc='', logo='',
+                               doi_jrnl_prefix='', last_doi_issued=1000000, doi_publ_prefix='',
                                commit=False):
     """
     Note this currently doesn't actually create the journal, it merely calls the create form up and
@@ -173,6 +186,9 @@ class AdminPage(AuthenticatedPage):
     components of that form. Because we don't have a means of deleting a journal, even an empty one,
     it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
+    :param doi_jrnl_prefix:
+    :param last_doi_issued:
+    :param doi_publ_prefix:
     :param journal_name: An optional journal_name to create
     :param journal_desc: An optional description for the journal being created
     :param logo: A filename representing the journal logo - should be a valid file in assets/imgs/
@@ -264,6 +280,21 @@ class AdminPage(AuthenticatedPage):
           journal_desc_field.value_of_css_property('line-height')
       assert journal_desc_field.value_of_css_property('padding-left') == '12px', \
           journal_desc_field.value_of_css_property('padding-left')
+      doi_jrnl_prefix_label = self._get(self._base_admin_journals_edit_doi_jrnl_prefix_label)
+      assert doi_jrnl_prefix_label.text == 'DOI Journal Prefix', doi_jrnl_prefix_label.text
+      # APERTA-6829
+      # self.validate_input_field_inside_label_style(doi_jrnl_prefix_label)
+      doi_jrnl_prefix_field = self._get(self._base_admin_journals_edit_doi_jrnl_prefix_field)
+      doi_publ_prefix_label = self._get(self._base_admin_journals_edit_doi_publ_prefix_label)
+      assert doi_publ_prefix_label.text == 'DOI Publisher Prefix', doi_publ_prefix_label.text
+      # APERTA-6829
+      # self.validate_input_field_inside_label_style(doi_publ_prefix_label)
+      doi_publ_prefix_field = self._get(self._base_admin_journals_edit_doi_jrnl_prefix_field)
+      last_doi_issued_label = self._get(self._base_admin_journals_edit_last_doi_label)
+      assert last_doi_issued_label.text == 'Last DOI Issued', last_doi_issued_label.text
+      # APERTA-6829
+      # self.validate_input_field_inside_label_style(last_doi_issued_label)
+      last_doi_issued_field = self._get(self._base_admin_journals_edit_last_doi_field)
       save_button = self._get(self._base_admin_journals_edit_save_button)
       assert save_button.text == 'SAVE', save_button.text
       self.validate_blue_on_blue_button_style(save_button)
@@ -300,6 +331,9 @@ class AdminPage(AuthenticatedPage):
         logging.info('Committing new journal: {0}'.format(journal_name))
         journal_title_field.send_keys(journal_name)
         journal_desc_field.send_keys(journal_desc)
+        doi_jrnl_prefix_field.send_keys(doi_jrnl_prefix)
+        doi_publ_prefix_field.send_keys(doi_publ_prefix)
+        last_doi_issued_field.send_keys(last_doi_issued)
         logo_input = self._iget(self._base_admin_journals_edit_logo_input_field)
         current_path = os.getcwd()
         logo_path = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(logo))
@@ -308,11 +342,7 @@ class AdminPage(AuthenticatedPage):
         page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
         assert len(page_tertiary_journal_count) == db_initial_journal_count + 1, \
             db_initial_journal_count + 1
-        self._populate_journal_db_values(journal_name,
-                                         'apertadevteam@plos.org',
-                                         '10.1371',
-                                         'journal.pwom',
-                                         '1000000')
+        self._populate_journal_db_values(journal_name, 'apertadevteam@plos.org')
       else:
         self._actions.move_to_element(cancel_link).perform()
         cancel_link.click()
@@ -456,26 +486,15 @@ class AdminPage(AuthenticatedPage):
     self._driver.get(url)
 
   @staticmethod
-  def _populate_journal_db_values(jname,
-                                  staff_email,
-                                  doi_pub_prefix,
-                                  doi_journ_prefix,
-                                  last_doi_issued):
+  def _populate_journal_db_values(jname, staff_email):
     """
     A method to populate values into the journal table for journal named jname. There is no current
       interface to populated these in the GUI.
     :param jname: The name of the journal
     :param staff_email: The email address to populate staff_email in journal table for jname
-    :param doi_pub_prefix:  The doi_publisher_prefix to populate in journal table for jname
-    :param doi_journ_prefix: The doi_journal_prefix to populate in journal table for jname
-    :param last_doi_issued:  The last_doi_issued to populate in journal table for jname
     :return: void function
     """
-    if jname and staff_email and doi_pub_prefix and doi_journ_prefix and last_doi_issued:
-      PgSQL().modify('UPDATE journals SET  staff_email=%s, doi_publisher_prefix=%s, '
-                     'doi_journal_prefix=%s, last_doi_issued=%s '
-                     'WHERE name=%s;', (staff_email, doi_pub_prefix, doi_journ_prefix,
-                                        last_doi_issued, jname,))
+    if jname and staff_email:
+      PgSQL().modify('UPDATE journals SET  staff_email=%s WHERE name=%s;', (staff_email,))
     else:
-      raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email, '
-                        'doi_publisher_prefix, doi_journal_prefix and last_doi_issued,')
+      raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email')

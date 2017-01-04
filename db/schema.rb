@@ -609,6 +609,16 @@ ActiveRecord::Schema.define(version: 20170111191302) do
   add_index "reviewer_numbers", ["paper_id"], name: "index_reviewer_numbers_on_paper_id", using: :btree
   add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
+  create_table "reviewer_reports", force: :cascade do |t|
+    t.integer  "task_id",     null: false
+    t.integer  "decision_id", null: false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reviewer_reports", ["task_id"], name: "index_reviewer_reports_on_task_id", using: :btree
+
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
     t.integer  "journal_id"

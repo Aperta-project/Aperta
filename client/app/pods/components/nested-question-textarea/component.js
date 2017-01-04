@@ -6,12 +6,13 @@ export default NestedQuestionComponent.extend({
   unwrappedHelpText: null,
   displayContent: true,
   inputClassNames: ['form-control'],
-  browserDetector: Ember.inject.service(),
 
   input() {
-    if (this.get('browserDetector.isIE11OrLess')) {
-      this.save();
-    }
+    this.save();
+  },
+
+  change() {
+    return false; // no-op to override parent's behavior
   },
 
   clearHiddenQuestions: Ember.observer('displayContent', 'disabled', function() {

@@ -23,6 +23,6 @@ class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
   private
 
   def pdf_type?
-    @event_data[:record].outputs.first[:file_type] == 'pdf'
+    @event_data[:record].recipe_name == 'pdf_to_html'
   end
 end

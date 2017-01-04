@@ -5,7 +5,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* The Discussion participant list displays names in place of avatars
 * ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
 ### Deprecated
 ### Removed
 ### Fixed

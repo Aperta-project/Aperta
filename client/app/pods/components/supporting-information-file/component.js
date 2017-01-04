@@ -13,7 +13,7 @@ export default Component.extend({
   isEditable: false, // passed-in
   uiState: 'view', // view, edit, delete
   errorsPresent: alias('model.errorsPresent'),
-
+  isFileError: Ember.computed.equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
 
   categories: [
@@ -41,6 +41,12 @@ export default Component.extend({
     return ('/api/supporting_information_files/' +
             this.get('file.id') +
             '/update_attachment');
+  }),
+
+  uploadErrorMessage: Ember.computed('file.filename', function() {
+    const filename = this.get('file.filename') || 'your file';
+    return `There was an error while processing ${filename}. Please try again
+    or contact Aperta staff.`;
   }),
 
   actions: {

@@ -278,7 +278,7 @@ class SITaskTest(CommonTest):
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    si_files = filter(self._ext_upper, supporting_info_files)
+    si_files = filter(self._ext_lower, supporting_info_files)
     doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
     logging.info('Files to upload to SI task: {}'.format(doc2uploads))
     supporting_info.add_files(doc2uploads)
@@ -305,7 +305,7 @@ class SITaskTest(CommonTest):
     supporting_info_card = SICard(self._driver)
     supporting_info_card.validate_uploads(doc2uploads)
     # upload multiple files in the card
-    si_files = filter(self._ext_upper, supporting_info_files)
+    si_files = filter(self._ext_lower, supporting_info_files)
     doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
     logging.info('Files to upload to SI Card: {}'.format(doc2uploads_set2))
     supporting_info_card.add_files(doc2uploads_set2)

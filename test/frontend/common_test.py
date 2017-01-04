@@ -84,11 +84,11 @@ class CommonTest(FrontEndTest):
     user = random.choice(cas_users)
     return user
 
-  def _ext_upper(self, filename):
+  def _ext_lower(self, filename):
     """
     """
     ext = splitext(filename)[1]
-    return ext[1:].isupper()
+    return ext[1:].islower()
 
   def select_preexisting_article(self, title='Hendrik', first=False):
     """

@@ -250,7 +250,7 @@ class SITaskTest(CommonTest):
     edit_btn.click()
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    doc2upload = 'frontend/assets/supportingInfo/S2_table.xslx'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach

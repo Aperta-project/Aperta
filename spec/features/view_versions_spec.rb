@@ -12,7 +12,7 @@ feature 'Viewing Versions:', js: true do
                          second_version_body: '<p>OK second body</p>',
                          creator: user
     end
-    let(:task) do
+    let!(:task) do
       FactoryGirl.create :ethics_task,
                          paper: paper,
                          phase: paper.phases.first
@@ -90,7 +90,7 @@ feature 'Viewing Versions:', js: true do
 
     context 'The user has limited access' do
       let(:reviewer) { FactoryGirl.create :user }
-      let(:task) do
+      let!(:task) do
         FactoryGirl.create :cover_letter_task,
                            paper: paper,
                            phase: paper.phases.first

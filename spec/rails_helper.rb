@@ -121,7 +121,7 @@ RSpec.configure do |config|
     end
 
     Capybara.javascript_driver = :selenium
-    Capybara.default_max_wait_time = 10
+    Capybara.default_max_wait_time = 5
     Capybara.wait_on_first_by_default = true
 
     # Store screenshots in artifacts dir on circle

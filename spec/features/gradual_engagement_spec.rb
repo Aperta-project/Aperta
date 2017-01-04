@@ -9,15 +9,18 @@ feature 'Gradual Engagement', js: true do
 
   context 'when viewing the manuscript' do
     context 'as a non-collaborator, ie author, admin' do
+      let!(:paper) do
+        FactoryGirl.create :paper,
+                           :with_integration_journal,
+                           :gradual_engagement,
+                           creator: user
+      end
+
       context 'on the first paper view' do
         scenario 'submission process box is shown and contains proper journal
                   title in text on the first visit to the page after creation.
                   The submission process is not automatically shown on
                   subsequent page views' do
-          paper = FactoryGirl.create :paper,
-                                     :with_integration_journal,
-                                     :gradual_engagement,
-                                     creator: user
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
             .to have_content(paper.journal.name)
@@ -28,10 +31,6 @@ feature 'Gradual Engagement', js: true do
         end
 
         scenario 'the X in the submission process box closes the box' do
-          paper = FactoryGirl.create :paper,
-                                     :with_integration_journal,
-                                     :gradual_engagement,
-                                     creator: user
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
           find('#sp-close').click
@@ -108,14 +107,17 @@ feature 'Gradual Engagement', js: true do
 
     context 'and the paper is in revision and has incomplete submittable
       tasks' do
+      let!(:paper) do
+        FactoryGirl.create :paper,
+                           :with_integration_journal,
+                           :with_tasks,
+                           :gradual_engagement,
+                           creator: user,
+                           publishing_state: :in_revision
+      end
+
       scenario 'the sidebar submission text shows journal name and message to
                 fill out remaining tasks.' do
-        paper = FactoryGirl.create :paper,
-                                   :with_integration_journal,
-                                   :with_tasks,
-                                   :gradual_engagement,
-                                   creator: user,
-                                   publishing_state: :in_revision
         visit "/papers/#{paper.id}"
         expect(find('.gradual-engagement-presubmission-messaging'))
           .to have_content('Please provide the following information to submit
@@ -125,13 +127,16 @@ feature 'Gradual Engagement', js: true do
     end
 
     context 'and the paper is in revision and is ready for submission' do
+      let!(:paper) do
+        FactoryGirl.create :paper,
+                           :with_integration_journal,
+                           :gradual_engagement,
+                           creator: user,
+                           publishing_state: :in_revision
+      end
+
       scenario 'the sidebar submission text shows journal name and message to
                 fill out info FULL submission state information' do
-        paper = FactoryGirl.create :paper,
-                                   :with_integration_journal,
-                                   :gradual_engagement,
-                                   creator: user,
-                                   publishing_state: :in_revision
         visit "/papers/#{paper.id}"
         expect(find('.ready-to-submit'))
           .to have_content('Your manuscript is ready for Submission')
@@ -141,12 +146,14 @@ feature 'Gradual Engagement', js: true do
 
     context 'when viewing a gradual engagment paper in a pre full-submission
       state' do
+      let!(:paper) do
+        FactoryGirl.create :paper,
+                           :with_integration_journal,
+                           :gradual_engagement,
+                           creator: user
+      end
       scenario 'the circled ? toggles the visibility of the submission process
                 box' do
-        paper = FactoryGirl.create :paper,
-                                   :with_integration_journal,
-                                   :gradual_engagement,
-                                   creator: user
         visit "/papers/#{paper.id}"
         expect(page).not_to have_selector('#submission-process.show-process')
         find('#submission-process-toggle').click
@@ -160,7 +167,7 @@ feature 'Gradual Engagement', js: true do
   context 'when submitting' do
     context 'when a paper is in a gradual engagement workflow' do
       context 'On initial submission' do
-        let(:paper) do
+        let!(:paper) do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
@@ -180,7 +187,7 @@ feature 'Gradual Engagement', js: true do
       end
 
       context 'after invitation (on full submit) ' do
-        let(:paper) do
+        let!(:paper) do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
@@ -203,7 +210,7 @@ feature 'Gradual Engagement', js: true do
       end
 
       context 'when submitting after revision' do
-        let(:paper) do
+        let!(:paper) do
           FactoryGirl.create(
             :paper,
             :with_integration_journal,
@@ -225,7 +232,7 @@ feature 'Gradual Engagement', js: true do
     end
 
     context 'when a paper is NOT in a gradual engagement workflow' do
-      let(:paper) do
+      let!(:paper) do
         FactoryGirl.create(
           :paper,
           :with_integration_journal,

@@ -12,7 +12,7 @@ feature 'Viewing Versions:', js: true do
                          second_version_body: '<p>OK second body</p>',
                          creator: creator
     end
-    let(:task) do
+    let!(:task) do
       FactoryGirl.create :ethics_task,
                          paper: paper,
                          phase: paper.phases.first
@@ -23,7 +23,6 @@ feature 'Viewing Versions:', js: true do
     let(:user) { creator }
 
     before do
-      paper.reload
       login_as(user, scope: :user)
       visit '/'
       click_link(paper.title)
@@ -90,25 +89,26 @@ feature 'Viewing Versions:', js: true do
     end
 
     context 'The user has limited access' do
-      let(:user) { FactoryGirl.create :user, first_name: 'reviewer' }
-      let(:task) do
+      let(:user) do
+        FactoryGirl.create(:user, first_name: 'reviewer').tap do |u|
+          assign_reviewer_role(paper, u)
+        end
+      end
+
+      let!(:task) do
         FactoryGirl.create :cover_letter_task,
                            paper: paper,
                            phase: paper.phases.first
       end
 
-      before do
-        assign_reviewer_role(paper, reviewer)
-      end
-
       scenario 'The user cannot see the cover letter task' do
         ensure_user_does_not_have_access_to_task(
-          user: reviewer,
+          user: user,
           task: task
         )
       end
 
-      scenario 'The user cannot see cover letter task versions', flaky: true do
+      scenario 'The user cannot see cover letter task versions' do
         SnapshotService.new(paper).snapshot!(task)
         FactoryGirl.create(:snapshot,
                            major_version: 0,

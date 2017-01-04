@@ -150,12 +150,13 @@
       {{#if allowAttachments}}
         {{invitation-attachment-manager invitation=invitation}}
       {{/if}}
-       <div class="spacer"></div>
-       <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
-       <button class="button-secondary button--green invitation-save-button"
-               {{action "save" invitation}}>
-         {{if (eq invitation composedInvitation) "Add to Queue" "Save"}}
-       </button>
+      <div class="spacer"></div>
+      {{progress-spinner visible=rollback.isRunning size="small"}}
+      <button class="button-link button--green cancel" {{action "cancelEdit" invitation}}>cancel</button>
+      <button class="button-secondary button--green invitation-save-button"
+              {{action "save" invitation}}>
+        {{if (eq invitation composedInvitation) "Add to Queue" "Save"}}
+      </button>
     </div>
   </div>
 {{/if}}

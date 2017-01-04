@@ -133,6 +133,13 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     }
   }).drop(),
 
+  rollback: concurrencyTask(function * (invitation) {
+    yield invitation.reload();
+    invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
+    yield invitation.save();
+    this.get('setRowState')('show');
+  }),
+
   actions: {
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
@@ -143,6 +150,10 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     primarySelected(primary) {
+      if(primary === 'cleared') {
+        this.set('invitation.primary', null);
+      }
+
       this.set('potentialPrimary', primary);
     },
 
@@ -161,10 +172,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
         this.get('setRowState')('show');
         invitation.destroyRecord();
       } else {
-        invitation.rollbackAttributes();
-        invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
-        invitation.save();
-        this.get('setRowState')('show');
+        this.get('rollback').perform(invitation);
       }
     },
 

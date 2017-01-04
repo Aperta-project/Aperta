@@ -31,7 +31,7 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def test_si_task_styles(self):
+  def _test_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
@@ -65,7 +65,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads_styles(file_link)
     return None
 
-  def test_si_task_and_card(self):
+  def _test_si_task_and_card(self):
     """
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
@@ -278,7 +278,8 @@ class SITaskTest(CommonTest):
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    si_files = docs + figures + supporting_info_files
+    si_all_files = docs + figures + supporting_info_files
+    si_files = filter(self._ext_upper, si_all_files)
     doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
     logging.info('Add files: ')
     logging.info(doc2uploads)

@@ -10,17 +10,13 @@ feature 'Billing card', js: true do
       creator: author
     )
   end
-  let(:billing_task) do
+  let!(:billing_task) do
     ::PlosBilling::BillingTask.create!(
       completed: false,
       paper: paper,
       phase: paper.phases.first,
       title: "Billing"
     )
-  end
-
-  before do
-    paper.tasks.each { |t| t.add_participant(author) }
   end
 
   context 'As an author' do
@@ -32,8 +28,6 @@ feature 'Billing card', js: true do
       find_button('I am done with this task').click
 
       expect(page).to have_css('.error [name=plos_billing--first_name]')
-      expect(page).to have_css('.error [name=plos_billing--first_name]')
-      expect(page).to have_css('.error [name=plos_billing--first_name]')
       expect(page).to have_css('.error [name=plos_billing--last_name]')
       expect(page).to have_css('.error [name=plos_billing--department]')
       expect(page).to have_css('.error [name=plos_billing--phone_number]')
@@ -43,8 +37,6 @@ feature 'Billing card', js: true do
       expect(page).to have_css('.error [name=plos_billing--city]')
       expect(page).to have_css('.error [name=plos_billing--postal_code]')
 
-      find('[name=plos_billing--first_name]').send_keys('first')
-      find('[name=plos_billing--first_name]').send_keys('first')
       find('[name=plos_billing--first_name]').send_keys('first')
       find('[name=plos_billing--last_name]').send_keys('last')
       find('[name=plos_billing--department]').send_keys('department')

@@ -6,7 +6,6 @@ POM Definition for the Tests common to all (or most) pages
 
 import logging
 import os
-from os.path import splitext
 import random
 import time
 
@@ -83,12 +82,6 @@ class CommonTest(FrontEndTest):
     cas_users = (users + editorial_users + external_editorial_users)
     user = random.choice(cas_users)
     return user
-
-  def _ext_lower(self, filename):
-    """
-    """
-    ext = splitext(filename)[1]
-    return ext[1:].islower()
 
   def select_preexisting_article(self, title='Hendrik', first=False):
     """

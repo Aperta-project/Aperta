@@ -25,12 +25,7 @@ moduleForComponent('nested-question-textarea', 'Integration | Component | nested
   }
 });
 
-test('saves on input events in IE', function(assert) {
-  const FakeBrowserDetectorService = Ember.Object.create({
-    isIE11OrLess: true
-  });
-  this.registry.register('service:browser-detector', FakeBrowserDetectorService, {instantiate: false});
-
+test('saves on input events', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);
@@ -49,13 +44,7 @@ test('saves on input events in IE', function(assert) {
   });
 });
 
-
-test('Does not save on input events in IE', function(assert) {
-  const FakeBrowserDetectorService = Ember.Object.create({
-    isIE11OrLess: false
-  });
-  this.registry.register('service:browser-detector', FakeBrowserDetectorService, {instantiate: false});
-
+test('does not save on change events', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);
@@ -67,7 +56,7 @@ test('Does not save on input events in IE', function(assert) {
   `);
 
   $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
-  this.$('textarea').val('new comment').trigger('input');
+  this.$('textarea').val('new comment').trigger('change');
 
   return wait().then(() => {
     assert.mockjaxRequestNotMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on input');

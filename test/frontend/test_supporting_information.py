@@ -306,7 +306,7 @@ class SITaskTest(CommonTest):
     supporting_info_card.validate_uploads(doc2uploads)
     # upload multiple files in the card
     si_files = filter(self._ext_lower, supporting_info_files)
-    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
+    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 2)]
     logging.info('Files to upload to SI Card: {}'.format(doc2uploads_set2))
     supporting_info_card.add_files(doc2uploads_set2)
     # Wait for all files to upload and process for testing for uploads

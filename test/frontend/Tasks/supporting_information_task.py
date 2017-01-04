@@ -147,22 +147,12 @@ class SITask(BaseTask):
     """
     Add files to the SI task. This method calls add_file for each file it adds
     :param file_list: A list with strings with a filename
-    :return: attached file web elements
+    :return: None
     """
     for file_name in file_list:
       self.add_file(file_name)
       # Sleep avoid a Stale Element Reference Exception
       time.sleep(5)
-    file_names = self._gets(self._si_file_view)
-    max_wait_time = 50
-    wait_time = 0
-    while len(file_names) != len(file_list):
-      file_names = self._gets(self._si_file_view)
-      time.sleep(1)
-      wait_time += 1
-      if wait_time == max_wait_time:
-        break
-    return file_names
 
   def validate_uploads(self, uploads):
     """

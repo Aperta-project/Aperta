@@ -116,12 +116,10 @@ class SICard(BaseCard):
     """
     Add files to the SI card. This method calls add_file for each file it adds
     :param file_list: A list with strings with a filename
-    :return: attached file web elements
+    :return: None
     """
-    attached_elements = []
     for file_name in file_list:
       new_element = self.add_file(file_name)
-      attached_elements.append(new_element)
       # This sleep avoid a Stale Element Reference Exception
       time.sleep(12)
-    return attached_elements
+    return None

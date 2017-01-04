@@ -11,6 +11,7 @@ class ReviewerReportTaskCreator
     paper.transaction do
       assign_paper_role!
       find_or_create_related_task
+      create_reviewer_report
     end
   end
 
@@ -18,7 +19,7 @@ class ReviewerReportTaskCreator
 
   def find_or_create_related_task
     if existing_reviewer_report_task.blank?
-      task = reviewer_report_task_class.create!(
+      @task = reviewer_report_task_class.create!(
         paper: paper,
         phase: default_phase,
         title: "Review by #{assignee.full_name}"
@@ -30,12 +31,21 @@ class ReviewerReportTaskCreator
       TahiStandardTasks::ReviewerMailer
         .delay.welcome_reviewer(assignee_id: assignee.id,
                                 paper_id: paper.id)
-      task
+      @task
     else
       assignee.assign_to!(assigned_to: existing_reviewer_report_task,
                           role: paper.journal.task_participant_role)
       existing_reviewer_report_task.tap(&:incomplete!)
+      @task = existing_reviewer_report_task
     end
+  end
+
+  def create_reviewer_report
+    ReviewerReport.create(
+      task: @task,
+      decision: @paper.draft_decision,
+      user: assignee
+    )
   end
 
   def reviewer_report_task_class

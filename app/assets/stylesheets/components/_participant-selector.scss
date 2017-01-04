@@ -1,0 +1,61 @@
+.participant-selector {
+  .ember-power-select-status-icon {
+    display: none;
+  }
+}
+
+.participant-selector-label {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.participant-selector-user {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 0.3rem 0;
+  padding: 0 0.75rem 0.1rem 0.75rem;
+  color: #222;
+  font-weight: bold;
+  background: #e6e6e6;
+
+  .tooltip {
+    display: none;
+    margin-top: 0; // bootstrap override
+    font-size: 1.4rem;
+  }
+
+  .tooltip-inner div {
+    padding-top: 3px;
+    color: $aperta-green;
+    cursor: pointer;
+  }
+
+  &:hover .tooltip { display: block; }
+}
+
+.add-participant-button {
+  @include size(21px 21px);
+  border: 1px solid $aperta-green;
+  border-radius: 3px;
+  color: $aperta-green;
+  background: $aperta-white;
+  line-height: 20px;
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: top;
+  @include user-select(none);
+
+  &.searching {
+    display: none;
+  }
+
+  &:hover {
+    border: 1px solid #137300;
+    background: rgba($aperta-green, 0.5);
+    color: #137300;
+  }
+}

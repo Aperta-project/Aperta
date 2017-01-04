@@ -228,7 +228,7 @@ class SITaskTest(CommonTest):
       counter += 1
       if counter >= timeout:
         break
-    ##supporting_info.validate_upload(fn)
+    supporting_info.validate_upload(fn)
     manuscript_page.logout()
     # Log in as Editorial User
     editorial_user = random.choice(editorial_users)
@@ -244,7 +244,7 @@ class SITaskTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
     supporting_info_card = SICard(self._driver)
-    ##supporting_info_card.validate_upload(fn)
+    supporting_info_card.validate_upload(fn)
     # make a replacement
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
@@ -260,7 +260,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def test_multiple_si_uploads(self):
+  def _test_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card

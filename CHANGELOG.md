@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Reviewer report display no longer gets jumbled after a decision has been made.
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}

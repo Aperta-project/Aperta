@@ -191,30 +191,30 @@ class SITaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
-    fn = os.path.join(os.getcwd(), doc2upload)
+    # Add a supporting info file to the task - to be later replaced.
     manuscript_page.click_task('Supporting Info')
     supporting_info = SITask(self._driver)
+    doc2upload = 'frontend/assets/supportingInfo/S2_figure.tif'
+    fn = os.path.join(os.getcwd(), doc2upload)
     supporting_info.add_file(fn)
     supporting_info.validate_uploads([fn])
+    # Do the Replace
     # click edit
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
-    time.sleep(2)
-    # check for reeplace symbol
+    time.sleep(1)
+    # check for replace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
+    doc2upload = 'frontend/assets/supportingInfo/S4_other.doc'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
     time.sleep(10)
     # Get current SI file name
-    from selenium.webdriver.common.by import By
     file_link = supporting_info._si_file_link
     file_link_div = supporting_info._get(supporting_info._si_filename)
     file_link_text = file_link_div.find_element(*file_link).text
-    #file_link_text = supporting_info._get(supporting_info._file_link).text
     timeout = 60
     counter = 0
     # logging for CI debugging

@@ -189,7 +189,7 @@ class AuthenticatedPage(PlosPage):
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
     # Add participant
     self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
-    self._add_participant_list = (By.CSS_SELECTOR, 'ember-power-select-option')
+    self._add_participant_list = (By.CSS_SELECTOR, 'ember-power-select-options')
     # ORCID Elements - These are applicable to both the profile page and the author task/card
     self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
     self._profile_orcid_logo = (By.ID, 'orcid-id-logo')
@@ -668,7 +668,9 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     if participants:
       for participant in participants:
-        user_search_string = random.choice(['name', 'email', 'user'])
+        user_search_string = random.choice(['name',
+                                            #'email', APERTA-8243
+                                            'user'])
         logging.info('Participant key to retrieve user: {0}'.format(user_search_string))
         logging.info('Participant to add: {0}'.format(participant))
         try:
@@ -679,27 +681,9 @@ class AuthenticatedPage(PlosPage):
             ' Reported in APERTA-7862')
         time.sleep(.5)
         participant_field = self._get(self._participant_field)
-        participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
-        time.sleep(5)
-        add_participant_list = self._get(self._add_participant_list)
-        items = add_participant_list.find_elements_by_tag_name('li')
-        # Have to scan all items because of the fuzzy search it may return many results
-        for index, item in enumerate(items):
-          if participant[user_search_string] in item.text:
-            break
-        time.sleep(2)
-        # If is first match
-        if index == 0:
-          item.click()
-        else:
-          searching = True
-          while searching:
-            participant_field.send_keys(Keys.ARROW_DOWN)
-            for item in items:
-              if 'select2-highlighted' in item.get_attribute('class') and participant['email'] in item.text:
-                participant_field.send_keys(Keys.ENTER)
-                searching = False
-                break
+        participant_field.send_keys(participant[user_search_string])
+        time.sleep(.5)
+        participant_field.send_keys(Keys.ENTER)
     return None
 
   def post_discussion(self, msg='', mention=''):

@@ -81,16 +81,16 @@ test('validates numericality of a few fields', function(assert) {
   this.set('task', testTask);
   this.render(template);
 
-  // filling in a nested question's text input and firing change()
+  // filling in a nested question's text input and firing input()
   // will bubble up to the nested question radio, and both will save.
   $.mockjax({url: /\/api\/nested_questions/, type: 'PUT', status: 204});
   $.mockjax({url: /\/api\/nested_questions/, type: 'POST', status: 204});
 
   // Make the PFA questions invalid
-  this.$('input[name=plos_billing--pfa_question_1b]').val('not a number').change();
-  this.$('input[name=plos_billing--pfa_question_2b]').val('not a number').change();
-  this.$('input[name=plos_billing--pfa_question_3a]').val('not a number').change();
-  this.$('input[name=plos_billing--pfa_question_4a]').val('not a number').change();
+  this.$('input[name=plos_billing--pfa_question_1b]').val('not a number').trigger('input');
+  this.$('input[name=plos_billing--pfa_question_2b]').val('not a number').trigger('input');
+  this.$('input[name=plos_billing--pfa_question_3a]').val('not a number').trigger('input');
+  this.$('input[name=plos_billing--pfa_question_4a]').val('not a number').trigger('input');
 
   let done = assert.async();
   wait().then(() => {
@@ -172,7 +172,7 @@ test('it lets you uncomplete the task when it has validation errors', function(a
 
     wait().then(() => {
       assert.textPresent('.billing-task', 'Please fix all errors');
-      assert.equal(testTask.get('completed'), false, 'task did not change completion status');
+      assert.equal(testTask.get('completed'), false, 'task did not input completion status');
       assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
       done();
     });

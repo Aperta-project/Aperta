@@ -360,5 +360,49 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
                                        response_data[1])
 
+  def test_core_invite_email_template_edit(self):
+    """
+    Validates persistence of edits made to email templates in the invite card
+    :return: None
+    """
+    logging.info('Test Invite Reviewers::email templates')
+    current_path = os.getcwd()
+    # User log in and makes a submission
+    creator_user = random.choice(users)
+    logging.info('logging in as {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    manuscript_page.close_infobox()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_modal()
+    # logout and then login as editor
+    manuscript_page.logout()
+    editorial_user = random.choice(editorial_users)
+    logging.info('logging in as {0}'.format(editorial_user))
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to workflow
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
+    invite_reviewers.add_invitee_to_queue(reviewer_login)
+    invite_reviewers.add_invitee_to_queue(prod_staff_login)
+    invite_reviewers.validate_email_template_edits()
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

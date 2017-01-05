@@ -5,18 +5,18 @@ http_interactions:
     uri: https://sandbox.orcid.org/oauth/token
     body:
       encoding: UTF-8
-      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&grant_type=authorization_code&code=XFi5Kw
+      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=Lt5QOw&grant_type=authorization_code
     headers:
+      User-Agent:
+      - Faraday v0.9.1
       Accept:
       - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Content-Length:
-      - '123'
+      Accept-Charset:
+      - UTF-8
       Content-Type:
       - application/x-www-form-urlencoded
-      User-Agent:
-      - Ruby
+      Accept-Encoding:
+      - gzip,deflate
   response:
     status:
       code: 200
@@ -25,24 +25,24 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 29 Dec 2016 22:14:39 GMT
+      - Fri, 06 Jan 2017 15:49:35 GMT
       Content-Type:
       - application/json;charset=UTF-8
-      Content-Length:
-      - '229'
+      Transfer-Encoding:
+      - chunked
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        eyJhY2Nlc3NfdG9rZW4iOiJhZDU0MTMwMS04ZmI4LTQ4OGEtYTI3OC1lZDk5
-        Y2I2YzFiNGYiLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwicmVmcmVzaF90b2tl
-        biI6IjFiNDlkODc1LWYyMWQtNDQ0Yi1iYjYxLWQxZWU3ZjliOWQyMCIsImV4
+        eyJhY2Nlc3NfdG9rZW4iOiIzMjgyNDg0YS1lYTA4LTQyNzMtOTAyMi0zYWMw
+        NjUwMjBmMGQiLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwicmVmcmVzaF90b2tl
+        biI6ImRhNDZlNGY4LWJkMDEtNDEwZC1iMDE4LTAwZTY3OTc1YTJiYiIsImV4
         cGlyZXNfaW4iOjYzMTEzODUxOCwic2NvcGUiOiIvcmVhZC1saW1pdGVkIiwi
-        bmFtZSI6IkFuZHLpIFRlc3QiLCJvcmNpZCI6IjAwMDAtMDAwMy0yMTI4LTIz
-        N1gifQ==
+        bmFtZSI6IkFuZHLDqSBUZXN0Iiwib3JjaWQiOiIwMDAwLTAwMDMtMjEyOC0y
+        MzdYIn0=
     http_version: 
-  recorded_at: Thu, 29 Dec 2016 22:14:39 GMT
+  recorded_at: Fri, 06 Jan 2017 15:49:35 GMT
 - request:
     method: get
     uri: https://api.sandbox.orcid.org/v1.2/0000-0003-2128-237X/orcid-profile
@@ -50,16 +50,16 @@ http_interactions:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      Authorization:
-      - Bearer ad541301-8fb8-488a-a278-ed99cb6c1b4f
-      Content-Type:
-      - application/orcid+xml
       User-Agent:
-      - Ruby
+      - Faraday v0.9.1
+      Accept:
+      - application/json
+      Authorization:
+      - Bearer 3282484a-ea08-4273-9022-3ac065020f0d
+      Accept-Charset:
+      - UTF-8
+      Accept-Encoding:
+      - gzip,deflate
   response:
     status:
       code: 200
@@ -68,9 +68,9 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Fri, 30 Dec 2016 16:17:35 GMT
+      - Fri, 06 Jan 2017 15:49:36 GMT
       Content-Type:
-      - application/vnd.orcid+xml; qs=5;charset=UTF-8
+      - application/json;charset=UTF-8
       Transfer-Encoding:
       - chunked
       Connection:
@@ -82,17 +82,18 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA3VUwW6jMBC95ysQd+NgmmyKHFe99NZbVlrtzYmHYMnYyHaa
-        8kn7HftjOyVsEyBBAuGZ997MeMbmL5+NST7AB+3sNs2zZZqAPTil7XGb/ty9
-        kU2ahCitksZZ2KYdhPRFLLjzB61IAyHIIyQoYsM2rWNsS0rP53PW+/F7pDbQ
-        fpGKRYIPHzhkCCryjHE6NV6glyCtd5U2kMSuxQROAfwgdYPRCmzUlQZ/dfXu
-        k9diSCtgFXv3eZPaEh+Cb0FYzjaEFT9+cfrFGGu0MtbiLrb3jMG1C1HMQnHa
-        269p08d5f5cNFXhsBoRJCOMO0oAAy+nwO9O9Sx6Eax2i891E9OBBRtx67Gms
-        nRLv0OzBk17Hg+J0ChjTw2nf6PDVO6JkBMGW+ZrkjOSrHSvK5VPJ1tlmtfrN
-        6RQ5qU2GSBqcP9wTNZZizzvGyvypLJ6zdbFEqTvgSVFG6gaUiP4EWMGwGmNw
-        5C58aKQ2opImIHZifUBpvW6k7x5Qx95Zj2Z9GPqz1246gHgqnJWGKIgoNZmH
-        HnLUH2CJlXiQxKtV/u8fTm9tc0YlG2263i12ECKnt5ZxAvRxBv+r+c76OoL9
-        scW7go4uC7H4B6AEfi11BAAA
+        H4sIAAAAAAAAA3VTy47bMAz8F53rzWuzCXJrUe9te0hboLdCkWmbWFkyKDpd
+        Y9EP6nf0x0r5GSSpARswOTMcktK7qiAEXUByBgronTqo1cNafVCeDGZJTT5H
+        C+rw3gfUwTXWjtnbf3CMOQJFwlnbBkZAQyjSJXN9WCyCdtnJvz10LPkWi6U8
+        ibybZL1a75P1ZvdDPNSaS2HdT5Y+sCRvtNTv0U4GNYHRDFc2JZoDgTMQok/r
+        jY4tqvTLzC0xsKc25g2BZhlNUgGXXrTUS/ryKT3+PKbP6fGYfhYzxle1hQ6V
+        ScGxXmhOFYYwh6eprB73q/3jZvn0tN9uparVgZPKZ3F62R3wZrfa7Xbb/XIt
+        YGM1VrGrCcHUgCSCb8hM1TPQhvGsb2zJrvs6UGm0FzK5tiHqTICasNLU/h+I
+        AU9okdtee5rfCX2E13KqvNNWdsGi0M27wDO4xOmqH/+gqD66jP7+UXc1c12h
+        bTvOJeUbyBG4S5CdZcgDYdg9l0Bj2QEmLgvSddmOIIIAmkxENmTDGDbescxy
+        7qIPv0L7y1M2/cMbA8Vu54sQ5mVYKLpVTIfD+BquxtYtDBkhXN0s1yuPUW4j
+        VX3/mh5lAAX5pk762GDYoji4CE0V+v4SabSxPDsn8iTtBTPA/wGkh4ktGQQA
+        AA==
     http_version: 
-  recorded_at: Fri, 30 Dec 2016 16:17:35 GMT
+  recorded_at: Fri, 06 Jan 2017 15:49:36 GMT
 recorded_with: VCR 2.9.3

@@ -14,7 +14,7 @@ moduleForComponent('orcid-connect',
                       this.set('confirm', (message)=>{});
                     }});
 
-var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm journal=1 canRemoveOrcid=true}}`;
+var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm open=open journal=1 canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account');
@@ -23,6 +23,53 @@ test("component shows connect to orcid before a user connects to orcid", functio
   this.render(template);
 
   assert.textPresent('.orcid-not-linked > button', 'Connect or create your ORCID ID');
+});
+
+test('component disables button when popup is open, and enables button when it is closed', function(assert){
+  assert.expect(4);
+  const isDisabled = (selector)=>{
+    return this.$(selector).first().attr('disabled') === 'disabled';
+  };
+  const buttonSelector = '.orcid-not-linked > .connect-orcid';
+  let orcidAccount = FactoryGuy.make('orcid-account');
+
+  let openObject = {closed: false};
+  let open = sinon.stub().returns(openObject);
+  this.set('open', open);
+  this.set('openObject', openObject);
+
+  this.set('orcidAccount', orcidAccount);
+  this.render(template);
+
+  assert.ok(
+    isDisabled(buttonSelector) === false,
+    'Button is not disabled before clicking'
+  );
+
+  this.$(buttonSelector).click();
+  assert.spyCalled(open);
+
+  let done1 = assert.async();
+  Ember.run.later(this, ()=>{
+    assert.ok(
+      isDisabled(buttonSelector) === true,
+      'Button is disabled after clicking'
+    );
+    done1();
+  });
+
+  // simulate closing the popup window.
+  this.get('openObject')['closed'] = true;
+  let done2 = assert.async();
+  Ember.run.later(this, ()=>{
+    assert.ok(
+      isDisabled(buttonSelector) === false,
+      'Button is not disabled after popup is closed'
+    );
+    done2();
+    // Waiting 300ms to ensure we've given the orcid-connect component to test
+    // the `closed` property at least once.
+  }, 300);
 });
 
 test("component shows orcid id and trash can when a user is connected to orcid", function(assert){

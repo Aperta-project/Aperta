@@ -39,8 +39,8 @@ class BaseCard(AuthenticatedPage):
     self._card_heading = (By.CSS_SELECTOR, 'h1.overlay-body-title')
 
     self._notepad_textarea = (By.CSS_SELECTOR, 'textarea.notepad')
-    self._notepad_toggle_icon = (By.XPATH,
-      "//span[contains(text(), 'Your notepad')]/preceding-sibling::i")
+    self._notepad_toggle_icon = (
+        By.XPATH, '//span[contains(text(), "Your notepad")]/preceding-sibling::i')
 
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._add_comment = (By.CLASS_NAME, 'new-comment-field')
@@ -162,11 +162,11 @@ class BaseCard(AuthenticatedPage):
     assert author_match, '{0} != {1}'.format(html_header_author.text, full_name)
     html_header_msid = self._get(self._header_manuscript_id)
     assert html_header_msid.text == manuscript_id, u'{0} != {1}'.format(html_header_msid.text,
-                                                                       manuscript_id)
+                                                                        manuscript_id)
     html_header_paper_type = self._get(self._header_paper_type)
     assert html_header_paper_type.text == paper_type, u'{0} != ' \
                                                       u'{1}'.format(html_header_paper_type.text,
-                                                                   paper_type)
+                                                                    paper_type)
     html_header_state = self._get(self._header_paper_state)
     assert html_header_state.text == status, u'{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)

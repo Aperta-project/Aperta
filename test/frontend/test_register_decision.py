@@ -36,7 +36,7 @@ class RegisterDecisionCardTest(CommonTest):
           edits.
   """
 
-  def test_smoke_register_decision_style(self):
+  def _test_smoke_register_decision_style(self):
     """
     test_register_decision: Validate components and styles of the Register Decision card
     :return: void function
@@ -138,7 +138,8 @@ class RegisterDecisionCardTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._initial_decision_card))
     workflow_page.click_card('initial_decision')
     initial_decision = InitialDecisionCard(self.getDriver())
-    assert initial_decision._get(initial_decision._decision_letter_textarea).text == ''
+    assert initial_decision._check_for_absence_of_element(
+        initial_decision._decision_letter_textarea)
     initial_decision.execute_decision('invite')
     # Test that card is editable by author
     manuscript_page.logout()

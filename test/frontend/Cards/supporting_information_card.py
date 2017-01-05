@@ -101,7 +101,7 @@ class SICard(BaseCard):
     assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
     return None
 
-  def add_file(self, file_name):
+  def _add_file(self, file_name):
     """
     Add a file to the Supporting Information card
     :param file_name: A string with a filename
@@ -111,6 +111,32 @@ class SICard(BaseCard):
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     attached_element = self._get(self._si_filename)
     return attached_element
+
+  def add_file(self, file_name):
+    """
+    Add a file to the Supporting Information card
+    :param file_name: A string with a filename
+    :return: None
+    """
+    logging.info('Attach file called with {0}'.format(file_name))
+    sif = (By.CLASS_NAME, 'si-file-view')
+    ##import pdb; pdb.set_trace()
+    try:
+      sif_elements  = self._gets(sif)
+      sif_n = len(sif_elements)
+    except ElementDoesNotExistAssertionError:
+      sif_n = 0
+    self._driver.find_element_by_id('file_attachment').send_keys(file_name)
+    # Time needed for file upload
+    while True:
+      sif_elements  = self._gets(sif)
+      sif_n2 = len(sif_elements)
+      if sif_n2 > sif_n:
+        break
+      time.sleep(1)
+
+
+
 
   def add_files(self, file_list):
     """

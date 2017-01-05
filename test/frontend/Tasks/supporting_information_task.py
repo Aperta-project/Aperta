@@ -143,13 +143,28 @@ class SITask(BaseTask):
     :return: None
     """
     logging.info('Attach file called with {0}'.format(file_name))
+    sif = (By.CLASS_NAME, 'si-file-view')
+    ##import pdb; pdb.set_trace()
+    try:
+      sif_elements  = self._gets(sif)
+      sif_n = len(sif_elements)
+    except ElementDoesNotExistAssertionError:
+      sif_n = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     # Time needed for file upload
-    new_file_name = os.path.basename(file_name).replace(' ', '_')
-    new_link = (By.XPATH,
-                "//a[contains(@class, 'si-file-filename') and contains(., '{0}')]".\
-                format(new_file_name))
-    self._wait_for_element(self._get(new_link))
+    while True:
+      sif_elements  = self._gets(sif)
+      sif_n2 = len(sif_elements)
+      if sif_n2 > sif_n:
+        break
+      time.sleep(1)
+
+    #new_file_name = os.path.basename(file_name).replace(' ', '_')
+
+    #new_link = (By.XPATH,
+    #            "//a[contains(@class, 'si-file-filename') and contains(., '{0}')]".\
+    #            format(new_file_name))
+    #self._wait_for_element(self._get(new_link))
     #time.sleep(5)
 
   def add_files(self, file_list):
@@ -189,7 +204,7 @@ class SITask(BaseTask):
     :param upload: String with the file name to check in SI task
     :return: None
     """
-    site_upload = self._get(self._si_filename).find_element(*self._si_file_link).text
+    site_upload = self._get(self._si_filename).find_element_by_tag_name('a').text
     assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
     return None
 

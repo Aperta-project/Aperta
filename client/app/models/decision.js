@@ -18,11 +18,13 @@ export default DS.Model.extend({
   registeredAt: DS.attr('date'),
   rescindable: DS.attr('boolean'),
   rescinded: DS.attr('boolean'),
+  reviewerReport: DS.belongsTo('reviewerReport'),
   verdict: DS.attr('string'),
 
   terminal: Ember.computed.match('verdict', /^(accept|reject)$/),
 
   restless: Ember.inject.service('restless'),
+
   rescind() {
     return this.get('restless')
       .put(`/api/decisions/${this.get('id')}/rescind`)

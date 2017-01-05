@@ -8,6 +8,8 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
+    has_many :reviewer_reports, inverse_of: :task, foreign_key: :task_id
+
     # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.

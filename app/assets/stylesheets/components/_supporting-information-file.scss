@@ -13,6 +13,24 @@
     border-bottom: 2px solid $aperta-grey-light;
   }
 
+  .si-file-error {
+
+    background-color: $aperta-grey-xlight;
+    padding: 20px 30px 20px 20px;
+
+    .error-message {
+      font-size: 14px;
+    }
+    .acknowledge-error-button {
+      color: $aperta-green;
+      font-size: 30px;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+      text-decoration: none;
+    }
+  }
+
   .si-file-viewing {
     padding: 10px 15px;
 

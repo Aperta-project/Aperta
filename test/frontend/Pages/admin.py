@@ -186,9 +186,9 @@ class AdminPage(AuthenticatedPage):
     components of that form. Because we don't have a means of deleting a journal, even an empty one,
     it is prohibitive
     to test this in an automated fashion as we would end up with hundreds of journals over time.
-    :param doi_jrnl_prefix:
-    :param last_doi_issued:
-    :param doi_publ_prefix:
+    :param doi_jrnl_prefix: string, The DOI Journal prefix for the new Journal
+    :param last_doi_issued: integer, The most recently issued doi numeric. Defaults to 1000000
+    :param doi_publ_prefix: string, The DOI Publisher prefix for the publisher of the new journal
     :param journal_name: An optional journal_name to create
     :param journal_desc: An optional description for the journal being created
     :param logo: A filename representing the journal logo - should be a valid file in assets/imgs/

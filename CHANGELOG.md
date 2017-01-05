@@ -4,7 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
 ### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
 ### Deprecated
 ### Removed
 ### Fixed

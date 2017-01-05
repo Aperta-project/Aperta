@@ -660,7 +660,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if data and 'file_name' in data:
         supporting_info.add_file(data['file_name'])
         time.sleep(5)
-        self._driver.save_screenshot('Output/MS-675.png')
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)
         edit_btn.click()

@@ -44,14 +44,15 @@ class SITask(BaseTask):
     # Change followin markers when APERTA-8609 is addressed
     self._si_task_main_content = (By.CLASS_NAME, 'task-main-content')
     self._si_replace_div = (By.CSS_SELECTOR, 'div.fileinput-button')
-    self._si_replace_input = (By.TAG_NAME, 'input')
+    self._si_replace_input = (By.CSS_SELECTOR, 'input.ember-text-field')
     self._si_green_spinner = (By.CLASS_NAME, 'progress-spinner--green')
-    self._si_file_link = (By.TAG_NAME, 'a')
+    self._si_file_link = (By.CLASS_NAME, 'si-file-filename')
    # POM Actions
 
   def validate_styles(self):
     """
     Validate styles for elements in Supporting Information task
+    :return: None
     """
     self.validate_common_elements_styles()
     task_main_content = self._get(self._si_task_main_content)
@@ -67,6 +68,9 @@ class SITask(BaseTask):
   def validate_si_edit_form_style(self, empty=True):
     """
     Validate styles for the elements in the edit SI file
+    :param empty: Bool to tell if the form is empty before validation. The empty form
+        has prepopulated (placeholders) fields that have to be checked.
+    :return: None
     """
     label_field = self._get(self._si_file_label_field)
     # This will fail due to APERTA-8499
@@ -141,7 +145,12 @@ class SITask(BaseTask):
     logging.info('Attach file called with {0}'.format(file_name))
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     # Time needed for file upload
-    time.sleep(5)
+    new_file_name = os.path.basename(file_name).replace(' ', '_')
+    new_link = (By.XPATH,
+                "//a[contains(@class, 'si-file-filename') and contains(., '{0}')]".\
+                format(new_file_name))
+    self._wait_for_element(self._get(new_link))
+    #time.sleep(5)
 
   def add_files(self, file_list):
     """

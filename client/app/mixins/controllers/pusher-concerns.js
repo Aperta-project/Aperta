@@ -44,11 +44,9 @@ export default Ember.Mixin.create({
             <a href="#" onclick="window.location.reload(false)"> reload this page</a>
             to attempt to re-establish the connection`;
     case 'failed':
-      return `Aperta is having trouble establishing a live connection with your browser, 
-            due to lack of browser support for required software.
-            You may experience difficulty with live updates to the interface, 
-            and we recommend downloading the most recent version of your browser
-            or trying <a href="https://www.google.com/chrome/" target="_blank">Google Chrome.</a>`;
+      return `Aperta is having trouble establishing a live connection with your browser
+              due to lack of browser support for required software.
+              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`;
     case 'disconnected':
       return `Aperta\'s live connection with your browser has been dropped. 
             This could impact updates to the interface,

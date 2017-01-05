@@ -85,6 +85,7 @@ class AuthenticatedPage(PlosPage):
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar label.bar-item')
+    self._bar_item_selected_item = (By.CLASS_NAME, 'ember-power-select-selected-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')

@@ -216,13 +216,13 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
-    msg_1 = generate_paragraph()[2]
     # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(short_doi)
+    msg_1 = generate_paragraph()[2]
     # How to call the discussion section
     if web_page == 'workflow':
-      ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
-        participants=[collaborator_1, collaborator_2])
+      ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[collaborator_1,
+                                                                          collaborator_2])
     elif web_page == 'manuscript viewer':
       dashboard_page.go_to_manuscript(short_doi)
       ms_viewer = ManuscriptViewerPage(self.getDriver())

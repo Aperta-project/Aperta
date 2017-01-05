@@ -85,6 +85,7 @@ class AuthenticatedPage(PlosPage):
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar label.bar-item')
+    self._bar_item_selected_item = (By.CLASS_NAME, 'ember-power-select-selected-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.overlay-header-title')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
@@ -95,7 +96,7 @@ class AuthenticatedPage(PlosPage):
     self._topic_title_field = (By.ID, 'topic-title-field')
     self._create_topic = (By.CSS_SELECTOR, 'div.sheet-content button')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
-    self._participant_field = (By.CSS_SELECTOR, 'input.active')
+    self._participant_field = (By.CLASS_NAME, 'ember-power-select-search-input')
     self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
     self._message_body_field = (By.CSS_SELECTOR, 'textarea')
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
@@ -114,7 +115,8 @@ class AuthenticatedPage(PlosPage):
     self._comment_body = (By.CLASS_NAME, 'comment-body')
     self._mention = (By.CLASS_NAME, 'discussion-at-mention')
     # Flash Messages
-    self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
+    self._flash_success_msg = (By.CSS_SELECTOR,
+                               'div.flash-message--success div.flash-message-content')
     self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Task list id needed in task and manuscript page
@@ -188,7 +190,18 @@ class AuthenticatedPage(PlosPage):
     self._attachments = (By.CSS_SELECTOR, 'div.attachment-item')
     # Add participant
     self._discussion_panel = (By.CLASS_NAME, 'sheet--visible')
-    self._add_participant_list = (By.CSS_SELECTOR, 'div.select2-drop-multi ul.select2-results')
+    self._add_participant_list = (By.CSS_SELECTOR, 'ember-power-select-options')
+    # ORCID Elements - These are applicable to both the profile page and the author task/card
+    self._profile_orcid_div = (By.CLASS_NAME, 'orcid-connect')
+    self._profile_orcid_logo = (By.ID, 'orcid-id-logo')
+    self._profile_orcid_unlinked_div = (By.CLASS_NAME, 'orcid-not-linked')
+    self._profile_orcid_unlinked_button = (By.CSS_SELECTOR, 'div.orcid-not-linked > button')
+    self._profile_orcid_unlinked_help_icon = (By.CLASS_NAME, 'what-is-orcid')
+
+    self._profile_orcid_linked_div = (By.CLASS_NAME, 'orcid-linked')
+    self._profile_orcid_linked_title = (By.CSS_SELECTOR, 'div.orcid-linked')
+    self._profile_orcid_linked_id_link = (By.CSS_SELECTOR, 'div.orcid-linked > a')
+    self._profile_orcid_linked_delete_icon = (By.CSS_SELECTOR, 'div.orcid-linked > i.fa-trash')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -519,6 +532,8 @@ class AuthenticatedPage(PlosPage):
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '
                                     'WHERE short_doi = %s;', (short_doi,))
+    logging.info(type(submission_data))
+    logging.info(submission_data)
     return submission_data
 
   def click_card(self, cardname):
@@ -654,7 +669,9 @@ class AuthenticatedPage(PlosPage):
     time.sleep(1)
     if participants:
       for participant in participants:
-        user_search_string = random.choice(['name', 'email', 'user'])
+        user_search_string = random.choice(['name',
+                                            #'email', APERTA-8243
+                                            'user'])
         logging.info('Participant key to retrieve user: {0}'.format(user_search_string))
         logging.info('Participant to add: {0}'.format(participant))
         try:
@@ -665,27 +682,9 @@ class AuthenticatedPage(PlosPage):
             ' Reported in APERTA-7862')
         time.sleep(.5)
         participant_field = self._get(self._participant_field)
-        participant_field.send_keys(participant[user_search_string] + Keys.ENTER)
-        time.sleep(5)
-        add_participant_list = self._get(self._add_participant_list)
-        items = add_participant_list.find_elements_by_tag_name('li')
-        # Have to scan all items because of the fuzzy search it may return many results
-        for index, item in enumerate(items):
-          if participant[user_search_string] in item.text:
-            break
-        time.sleep(2)
-        # If is first match
-        if index == 0:
-          item.click()
-        else:
-          searching = True
-          while searching:
-            participant_field.send_keys(Keys.ARROW_DOWN)
-            for item in items:
-              if 'select2-highlighted' in item.get_attribute('class') and participant['email'] in item.text:
-                participant_field.send_keys(Keys.ENTER)
-                searching = False
-                break
+        participant_field.send_keys(participant[user_search_string])
+        time.sleep(.5)
+        participant_field.send_keys(Keys.ENTER)
     return None
 
   def post_discussion(self, msg='', mention=''):
@@ -1855,12 +1854,17 @@ class AuthenticatedPage(PlosPage):
     :param field: field to validate
     """
     assert application_typeface in field.value_of_css_property('font-family')
-    assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == aperta_black, field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '20px', field.value_of_css_property('line-height')
-    assert field.value_of_css_property('text-overflow') == 'ellipsis', field.value_of_css_property('text-overflow')
-    assert field.value_of_css_property('margin-right') == '26px', field.value_of_css_property('margin-right')
+    assert field.value_of_css_property('color') == aperta_black, \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('line-height') == '20px', \
+        field.value_of_css_property('line-height')
+    assert field.value_of_css_property('text-overflow') == 'ellipsis', \
+        field.value_of_css_property('text-overflow')
+    assert field.value_of_css_property('margin-right') == '26px', \
+        field.value_of_css_property('margin-right')
 
   @staticmethod
   def validate_textarea_style(field):
@@ -1869,17 +1873,27 @@ class AuthenticatedPage(PlosPage):
     :param field: field to validate
     """
     assert application_typeface in field.value_of_css_property('font-family')
-    assert field.value_of_css_property('font-size') == '14px', field.value_of_css_property('font-size')
-    assert field.value_of_css_property('font-weight') == '400', field.value_of_css_property('font-weight')
-    assert field.value_of_css_property('font-style') == 'normal', field.value_of_css_property('font-style')
+    assert field.value_of_css_property('font-size') == '14px', \
+        field.value_of_css_property('font-size')
+    assert field.value_of_css_property('font-weight') == '400', \
+        field.value_of_css_property('font-weight')
+    assert field.value_of_css_property('font-style') == 'normal', \
+        field.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', field.value_of_css_property('color')
-    assert field.value_of_css_property('line-height') == '20px', field.value_of_css_property('line-height')
-    assert field.value_of_css_property('background-color') == white, field.value_of_css_property('background-color')
-    assert field.value_of_css_property('padding-top') == '6px', field.value_of_css_property('padding-top')
-    assert field.value_of_css_property('padding-right') == '12px', field.value_of_css_property('padding-right')
-    assert field.value_of_css_property('padding-bottom') == '6px', field.value_of_css_property('padding-bottom')
-    assert field.value_of_css_property('padding-left') == '12px', field.value_of_css_property('padding-left')
+    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+        field.value_of_css_property('color')
+    assert field.value_of_css_property('line-height') == '20px', \
+        field.value_of_css_property('line-height')
+    assert field.value_of_css_property('background-color') == white, \
+        field.value_of_css_property('background-color')
+    assert field.value_of_css_property('padding-top') == '6px', \
+        field.value_of_css_property('padding-top')
+    assert field.value_of_css_property('padding-right') == '12px', \
+        field.value_of_css_property('padding-right')
+    assert field.value_of_css_property('padding-bottom') == '6px', \
+        field.value_of_css_property('padding-bottom')
+    assert field.value_of_css_property('padding-left') == '12px', \
+        field.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_radio_button(button):
@@ -1888,13 +1902,18 @@ class AuthenticatedPage(PlosPage):
     :param button: button to validate
     """
     assert application_typeface in button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('font-style') == 'normal', button.value_of_css_property('font-style')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('font-style') == 'normal', \
+        button.value_of_css_property('font-style')
     # This color is not represented in the style guide
     assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
-    assert button.value_of_css_property('line-height') == '18px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('margin-top') == '4px', button.value_of_css_property('margin-top')
+    assert button.value_of_css_property('line-height') == '18px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('margin-top') == '4px', \
+        button.value_of_css_property('margin-top')
 
   @staticmethod
   def validate_radio_button_label(label):
@@ -1903,12 +1922,17 @@ class AuthenticatedPage(PlosPage):
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
-    assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('font-style') == 'normal', label.value_of_css_property('font-style')
+    assert label.value_of_css_property('font-size') == '14px', \
+        label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', \
+        label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('font-style') == 'normal', \
+        label.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
+    assert label.value_of_css_property('color') == aperta_black, \
+        label.value_of_css_property('color')
+    assert label.value_of_css_property('line-height') == '20px', \
+        label.value_of_css_property('line-height')
 
 
   @staticmethod
@@ -1918,11 +1942,16 @@ class AuthenticatedPage(PlosPage):
     :param checkbox: checkbox to validate
     """
     assert application_typeface in checkbox.value_of_css_property('font-family')
-    assert checkbox.value_of_css_property('font-size') == '12px', checkbox.value_of_css_property('font-size')
-    assert checkbox.value_of_css_property('font-weight') == '400', checkbox.value_of_css_property('font-weight')
-    assert checkbox.value_of_css_property('font-style') == 'normal', checkbox.value_of_css_property('font-style')
-    assert checkbox.value_of_css_property('color') == aperta-black, checkbox.value_of_css_property('color')
-    assert checkbox.value_of_css_property('line-height') == '20px', checkbox.value_of_css_property('line-height')
+    assert checkbox.value_of_css_property('font-size') == '12px', \
+        checkbox.value_of_css_property('font-size')
+    assert checkbox.value_of_css_property('font-weight') == '400', \
+        checkbox.value_of_css_property('font-weight')
+    assert checkbox.value_of_css_property('font-style') == 'normal', \
+        checkbox.value_of_css_property('font-style')
+    assert checkbox.value_of_css_property('color') == aperta_black, \
+        checkbox.value_of_css_property('color')
+    assert checkbox.value_of_css_property('line-height') == '20px', \
+        checkbox.value_of_css_property('line-height')
 
   @staticmethod
   def validate_checkbox_label(label):
@@ -1931,10 +1960,14 @@ class AuthenticatedPage(PlosPage):
     :param label: label to validate
     """
     assert application_typeface in label.value_of_css_property('font-family')
-    assert label.value_of_css_property('font-size') == '14px', label.value_of_css_property('font-size')
-    assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
-    assert label.value_of_css_property('line-height') == '20px', label.value_of_css_property('line-height')
+    assert label.value_of_css_property('font-size') == '14px', \
+        label.value_of_css_property('font-size')
+    assert label.value_of_css_property('font-weight') == '400', \
+        label.value_of_css_property('font-weight')
+    assert label.value_of_css_property('color') == aperta_black, \
+        label.value_of_css_property('color')
+    assert label.value_of_css_property('line-height') == '20px', \
+        label.value_of_css_property('line-height')
 
   # Navigation Styles ========================
   # There are currently no defined navigation styles in the style guide
@@ -1946,14 +1979,19 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering informational alerts across the application
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
+    assert application_typeface in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
     assert msg.value_of_css_property('color') == aperta_black, msg.value_of_css_property('color')
-    assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
-    assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
-    assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
-    assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')
+    assert msg.value_of_css_property('line-height') == '20px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    assert msg.value_of_css_property('position') == 'relative', \
+        msg.value_of_css_property('position')
+    assert msg.value_of_css_property('display') == 'inline-block', \
+        msg.value_of_css_property('display')
 
   @staticmethod
   def validate_flash_error_style(msg):

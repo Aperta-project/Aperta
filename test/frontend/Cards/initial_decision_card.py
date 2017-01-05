@@ -23,7 +23,7 @@ class InitialDecisionCard(BaseCard):
     self._intro_text = (By.TAG_NAME, 'p')
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
-    self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
+    self._decision_letter_textarea = (By.CLASS_NAME, 'decision-letter-field')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
     self._decision_alert = (By.CLASS_NAME, 'rescind-decision-container')
     self._decision_verdict = (By.CLASS_NAME, 'rescind-decision-verdict')
@@ -54,7 +54,6 @@ class InitialDecisionCard(BaseCard):
     :return: selected choice
     """
     choices = ['reject', 'invite']
-    decision_letter_input = self._get(self._decision_letter_textarea)
     logging.info('Initial Decision Choice is: {0}'.format(choice))
     if choice == 'random':
       choice = random.choice(choices)
@@ -64,11 +63,19 @@ class InitialDecisionCard(BaseCard):
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
       time.sleep(1)
+      decision_letter_input = self._get(self._decision_letter_textarea)
+      # AC 2
+      assert decision_letter_input.text == '', 'Initial decision letter is ' \
+                                               'not blank: {0}'.format(decision_letter_input.text)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
       time.sleep(1)
+      decision_letter_input = self._get(self._decision_letter_textarea)
+      # AC 2
+      assert decision_letter_input.text == '', 'Initial decision letter is ' \
+                                               'not blank: {0}'.format(decision_letter_input.text)
       decision_letter_input.send_keys('Invited')
     # Time to allow the button to change to clickable state
     time.sleep(1)

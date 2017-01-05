@@ -69,6 +69,7 @@ python -m frontend.test_production_metadata_card
 python -m frontend.test_profile
 python -m frontend.test_reactivate_ms
 python -m frontend.test_register_decision
+python -m frontend.test_reporting_guidelines
 python -m frontend.test_reviewer_candidates
 python -m frontend.test_reviewer_report
 python -m frontend.test_revise_task

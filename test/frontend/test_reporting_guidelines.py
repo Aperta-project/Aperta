@@ -38,7 +38,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     # Reporting Guidelines
-    manuscript_page.click_task('reporting_guidelines')
+    manuscript_page.click_task('Reporting Guidelines')
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     reporting_guidelines_task.validate_styles()
@@ -84,7 +84,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     # Reporting Guidelines
-    manuscript_page.click_task('reporting_guidelines')
+    manuscript_page.click_task('Reporting Guidelines')
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     selected = reporting_guidelines_task.make_selections()
@@ -128,7 +128,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines
-    manuscript_page.click_task('reporting_guidelines')
+    manuscript_page.click_task('Reporting Guidelines')
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     reporting_guidelines_task.make_selections(prisma=True)
@@ -155,7 +155,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines
-    manuscript_page.click_task('reporting_guidelines')
+    manuscript_page.click_task('Reporting Guidelines')
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     reporting_guidelines_task.make_selections()
@@ -182,7 +182,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines
-    manuscript_page.click_task('reporting_guidelines')
+    manuscript_page.click_task('Reporting Guidelines')
     reporting_guidelines_task = ReportingGuidelinesTask(self.getDriver())
     reporting_guidelines_task.task_ready()
     reporting_guidelines_task.make_selections()

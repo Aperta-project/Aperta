@@ -90,6 +90,17 @@ class SICard(BaseCard):
     uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)
 
+  def validate_upload(self, upload):
+    """
+    Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
+    """
+    site_upload = self._get(self._file_link).text
+    assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
+    return None
+
   def add_file(self, file_name):
     """
     Add a file to the Supporting Information card
@@ -105,12 +116,10 @@ class SICard(BaseCard):
     """
     Add files to the SI card. This method calls add_file for each file it adds
     :param file_list: A list with strings with a filename
-    :return: attached file web elements
+    :return: None
     """
-    attached_elements = []
     for file_name in file_list:
       new_element = self.add_file(file_name)
-      attached_elements.append(new_element)
       # This sleep avoid a Stale Element Reference Exception
       time.sleep(12)
-    return attached_elements
+    return None

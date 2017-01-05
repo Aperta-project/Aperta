@@ -8,6 +8,7 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
 """
 import logging
 import os
+from os.path import splitext
 import random
 import time
 
@@ -45,7 +46,7 @@ class SITaskTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
-    doc2upload = 'frontend/assets/supportingInfo/Figure S3 PLoS.tif'
+    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
     data['file_name'] = fn
@@ -53,7 +54,16 @@ class SITaskTest(CommonTest):
     data['type'] = 'Text'
     data['title'] = 'Title'
     data['caption'] = 'Caption'
-    manuscript_page.complete_task('Supporting Info', data=data, style_check=True)
+    manuscript_page.complete_task('Supporting Info', data=data)
+    # get link
+    manuscript_page.click_task('Supporting Info')
+    # search for link
+    supporting_info = SITask(self._driver)
+    # task completed
+    supporting_info.click_completion_button()
+    time.sleep(2)
+    file_link = supporting_info._get(supporting_info._file_link)
+    supporting_info.validate_uploads_styles(file_link)
     return None
 
   def test_si_task_and_card(self):
@@ -180,29 +190,46 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    ##short_doi = manuscript_page.get_short_doi()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
-    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
-    fn = os.path.join(os.getcwd(), doc2upload)
+    # Add a supporting info file to the task - to be later replaced.
     manuscript_page.click_task('Supporting Info')
     supporting_info = SITask(self._driver)
+    doc2upload = 'frontend/assets/supportingInfo/S2_figure.tif'
+    fn = os.path.join(os.getcwd(), doc2upload)
     supporting_info.add_file(fn)
     supporting_info.validate_uploads([fn])
+    # Do the Replace
     # click edit
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
-    # check for reeplace symbol
+    time.sleep(1)
+    # check for replace symbol
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/supportingInfo/S1_Text.pdf'
+    doc2upload = 'frontend/assets/supportingInfo/S4_other.doc'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
-    time.sleep(12)
-    cancel_btn = supporting_info._get(supporting_info._si_file_cancel_btn)
-    cancel_btn.click()
-    supporting_info.validate_uploads([fn])
+    time.sleep(10)
+    # Get current SI file name
+    file_link = supporting_info._si_file_link
+    file_link_div = supporting_info._get(supporting_info._si_filename)
+    file_link_text = file_link_div.find_element(*file_link).text
+    timeout = 60
+    counter = 0
+    # logging for CI debugging
+    logging.info('file_link_text: {0}'.format(file_link_text))
+    while file_link_text not in doc2upload:
+      file_link_div = supporting_info._get(supporting_info._si_filename)
+      file_link_text = file_link_div.find_element(*file_link).text
+      logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(
+        file_link_text, counter))
+      time.sleep(1)
+      counter += 1
+      if counter >= timeout:
+        break
+    supporting_info.validate_upload(fn)
     manuscript_page.logout()
     # Log in as Editorial User
     editorial_user = random.choice(editorial_users)
@@ -218,13 +245,13 @@ class SITaskTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_supporting_information_card()
     supporting_info_card = SICard(self._driver)
-    supporting_info_card.validate_uploads([fn])
+    supporting_info_card.validate_upload(fn)
     # make a replacement
     edit_btn = supporting_info._get(supporting_info._si_pencil_icon)
     edit_btn.click()
     replace_div = supporting_info._get(supporting_info._si_replace_div)
     replace_input = replace_div.find_element(*supporting_info._si_replace_input)
-    doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
+    doc2upload = 'frontend/assets/supportingInfo/S2_table.xslx'
     fn = os.path.join(os.getcwd(), doc2upload)
     replace_input.send_keys(fn)
     # Time for the file to upload and cancel button to attach
@@ -252,9 +279,9 @@ class SITaskTest(CommonTest):
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    si_files = docs + figures + supporting_info_files
+    si_files = filter(lambda x: splitext(x)[1].islower(), supporting_info_files)
     doc2uploads = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
-    logging.info(doc2uploads)
+    logging.info('Files to upload to SI task: {}'.format(doc2uploads))
     supporting_info.add_files(doc2uploads)
     # Wait for all files to upload and process for testing for uploads
     # Bug reported at APERTA-8720
@@ -279,9 +306,10 @@ class SITaskTest(CommonTest):
     supporting_info_card = SICard(self._driver)
     supporting_info_card.validate_uploads(doc2uploads)
     # upload multiple files in the card
-    si_files = supporting_info_files
-    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 4)]
-    logging.info(doc2uploads_set2)
+    ##si_files = filter(self._ext_lower, supporting_info_files)
+    si_files = filter(lambda x: splitext(x)[1].islower(), supporting_info_files)
+    doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 2)]
+    logging.info('Files to upload to SI Card: {}'.format(doc2uploads_set2))
     supporting_info_card.add_files(doc2uploads_set2)
     # Wait for all files to upload and process for testing for uploads
     time.sleep(12)

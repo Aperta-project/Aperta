@@ -350,6 +350,7 @@ class InviteCard(BaseCard):
     """
     invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
     first_invitation_item = random.choice(invitation_items)
+    logging.info('First invitation item: {0}'.format(first_invitation_item))
     if len(invitation_items) > 1:
       first_invitation_item.click()
       assert 'invitation-item--show' in first_invitation_item.get_attribute('class'), \

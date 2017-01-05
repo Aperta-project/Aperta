@@ -363,11 +363,10 @@ class InviteReviewersCardTest(CommonTest):
   def test_core_invite_email_template_edit(self):
     """
     Validates persistence of edits made to email templates in the invite card
-    :return:
+    :return: None
     """
     logging.info('Test Invite Reviewers::email templates')
     current_path = os.getcwd()
-    logging.info(current_path)
     # User log in and makes a submission
     creator_user = random.choice(users)
     logging.info('logging in as {0}'.format(creator_user))

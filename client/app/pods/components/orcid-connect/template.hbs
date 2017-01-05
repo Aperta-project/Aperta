@@ -22,7 +22,7 @@
       </div>
     {{/if}}
   </div>
-{{else}}
+{{else if orcidAccount.orcidConnectEnabled}}
   <!-- no orcid account linked -->
   {{#if canLinkOrcid}}
     <div class="orcid-not-linked">

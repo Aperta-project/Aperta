@@ -17,7 +17,9 @@ moduleForComponent('orcid-connect',
 var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm open=open journal=1 canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
-  let orcidAccount = FactoryGuy.make('orcid-account');
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    orcidConnectEnabled: true
+  });
 
   this.set('orcidAccount', orcidAccount);
   this.render(template);
@@ -31,7 +33,9 @@ test('component disables button when popup is open, and enables button when it i
     return this.$(selector).first().attr('disabled') === 'disabled';
   };
   const buttonSelector = '.orcid-not-linked > .connect-orcid';
-  let orcidAccount = FactoryGuy.make('orcid-account');
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    orcidConnectEnabled: true
+  });
 
   let openObject = {closed: false};
   let open = sinon.stub().returns(openObject);
@@ -75,7 +79,8 @@ test('component disables button when popup is open, and enables button when it i
 test("component shows orcid id and trash can when a user is connected to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'authenticated',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
 
   this.set('orcidAccount', orcidAccount);
@@ -87,7 +92,8 @@ test("component shows orcid id and trash can when a user is connected to orcid",
 test("component shows orcid id and trash can, and reauthorize option if accessTokenExpired", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'access_token_expired',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
   let user = FactoryGuy.make('user');
 
@@ -135,7 +141,8 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
 
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'authenticated',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
 
   this.set('orcidAccount', orcidAccount);

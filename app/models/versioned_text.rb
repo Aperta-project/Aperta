@@ -70,13 +70,17 @@ class VersionedText < ActiveRecord::Base
   end
 
   def file?
-    !paper.file.nil?
+    paper.file.present?
   end
 
   def add_file_info
     self.file_type = paper.file_type
     self.s3_dir = paper.file.s3_dir
     self.file = paper.file[:file]
+  end
+
+  def s3_full_path
+    file? ? s3_dir + '/' + file : nil
   end
 
   private

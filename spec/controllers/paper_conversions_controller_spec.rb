@@ -177,7 +177,7 @@ describe PaperConversionsController, type: :controller do
         get :status, id: versioned_paper.id, job_id: 'source', format: :json,
           versioned_text_id: versioned_text.id
         expect(response.status).to eq(200)
-        quoted = Regexp.quote(versioned_text.s3_dir + '/' + versioned_text.file)
+        quoted = Regexp.quote(versioned_text.s3_full_path)
         expect(res_body['url']).to match(/#{quoted}.+Amz-SignedHeaders/)
       end
     end

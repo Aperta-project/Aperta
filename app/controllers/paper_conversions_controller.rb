@@ -57,7 +57,7 @@ class PaperConversionsController < ApplicationController
         # Make sure the client-supplied version number is for the right paper
         url = nil
         if paper.id == ver.paper_id
-          url = Attachment.authenticated_url_for_key(ver.s3_dir + '/' + ver.file)
+          url = Attachment.authenticated_url_for_key(ver.s3_full_path)
         end
         render status: :ok, json: { url: url }
       end

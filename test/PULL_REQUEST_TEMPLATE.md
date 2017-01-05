@@ -32,7 +32,7 @@ Reviewer tasks:
 - [ ] All functions, classes have docstrings with all params and returns specified
 - [ ] Does not rely on dynamic, or excessively positional locators (or bug filed)
 - [ ] Does not rely on explicit sleeps except where absolutely necessary or dictated by the 
-        complexity of working around such use.
+        complexity of working around such use. Comment why when used.
 - [ ] Follows first PLOS style guidelines for Python, then PEP-8
 
 #### After the Code Review:

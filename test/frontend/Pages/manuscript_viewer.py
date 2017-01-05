@@ -57,7 +57,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-    self._tb_versions_closer = (By.ID, 'nav-exit-versions')
+    self._tb_versions_closer = (By.CLASS_NAME, 'versioning-bar-close')
     self._tb_collaborators_link = (By.ID, 'nav-collaborators')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
@@ -209,7 +209,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # allow time for components to attach to DOM
     time.sleep(1)
     bar_items = self._gets(self._bar_items)
-    version_number = bar_items[1].text.split('\n')[2].split()[0]
+    version_number = bar_items[0].find_element(*self._bar_item_selected_item).text.split(' - ')[0]
+    logging.info(version_number)
     self._get(self._tb_versions_closer).click()
     return version_number
 

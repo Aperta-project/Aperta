@@ -96,13 +96,12 @@ class ApertaSeedJournalMMTTest(CommonTest):
     wombat_exists = adm_page.select_named_journal('PLOS Wombat', click=True)
     logging.info(wombat_exists)
     if not wombat_exists:
-      adm_page.validate_add_new_journal('asuperadm',
-                                        journal_name='PLOS Wombat',
+      adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS Wombat',
                                         journal_desc='Of, by and for the best marsupials',
-                                        logo='WombatPVC_web-01.jpg',
-                                        commit=True)
+                                        logo='WombatPVC_web-01.jpg', doi_jrnl_prefix='journal.pwom',
+                                        doi_publ_prefix='10.1371', commit=True)
       adm_page.select_named_journal('PLOS Wombat', click=True)
-      adm_page.populate_journal_db_values()
+      adm_page._populate_journal_db_values('PLOS Wombat', 'qa@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
     for mmt in all_mmts:

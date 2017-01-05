@@ -39,8 +39,8 @@ class BaseCard(AuthenticatedPage):
     self._card_heading = (By.CSS_SELECTOR, 'h1.overlay-body-title')
 
     self._notepad_textarea = (By.CSS_SELECTOR, 'textarea.notepad')
-    self._notepad_toggle_icon = (By.XPATH,
-      "//span[contains(text(), 'Your notepad')]/preceding-sibling::i")
+    self._notepad_toggle_icon = (
+        By.XPATH, '//span[contains(text(), "Your notepad")]/preceding-sibling::i')
 
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._add_comment = (By.CLASS_NAME, 'new-comment-field')
@@ -162,11 +162,11 @@ class BaseCard(AuthenticatedPage):
     assert author_match, '{0} != {1}'.format(html_header_author.text, full_name)
     html_header_msid = self._get(self._header_manuscript_id)
     assert html_header_msid.text == manuscript_id, u'{0} != {1}'.format(html_header_msid.text,
-                                                                       manuscript_id)
+                                                                        manuscript_id)
     html_header_paper_type = self._get(self._header_paper_type)
     assert html_header_paper_type.text == paper_type, u'{0} != ' \
                                                       u'{1}'.format(html_header_paper_type.text,
-                                                                   paper_type)
+                                                                    paper_type)
     html_header_state = self._get(self._header_paper_state)
     assert html_header_state.text == status, u'{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)
@@ -198,13 +198,18 @@ class BaseCard(AuthenticatedPage):
     Ensure consistency in rendering the plus (+) section headings across the all cards
     # TODO: Validate with the result of #103123812
     """
-    assert application_typeface in plus.value_of_css_property('font-family')
-    assert plus.value_of_css_property('font-size') == '32px'
-    assert plus.value_of_css_property('height') == '25px'
-    assert plus.value_of_css_property('width') == '25px'
-    assert plus.value_of_css_property('line-height') == '20px'
-    assert plus.value_of_css_property('color') == aperta_green
-    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert application_typeface in plus.value_of_css_property('font-family'), \
+        plus.value_of_css_property('font-family')
+    # Nota Bene: The size of this element recently changed (20170104). Checked with SebT - OK
+    assert plus.value_of_css_property('font-size') == '24px', \
+        plus.value_of_css_property('font-size')
+    assert plus.value_of_css_property('height') == '21px', plus.value_of_css_property('height')
+    assert plus.value_of_css_property('width') == '21px', plus.value_of_css_property('width')
+    assert plus.value_of_css_property('line-height') == '20px', \
+        plus.value_of_css_property('line-height')
+    assert plus.value_of_css_property('color') == aperta_green, plus.value_of_css_property('color')
+    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', \
+        plus.value_of_css_property('background-color')
     assert plus.text == '+', plus.text
 
   def validate_common_elements_styles(self, short_doi):

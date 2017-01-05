@@ -45,6 +45,7 @@ rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
 python -m frontend.test_supporting_information
+python -m frontend.test_register_decision
 exit
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin

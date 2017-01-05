@@ -78,7 +78,6 @@ describe PaperConversionsController, type: :controller do
         it 'returns a url to check later' do
           get :export, id: paper.id, export_format: 'pdf', format: :json
           expect(response.status).to eq(202)
-
           expect(res_body['url']).to(
             eq(url_for(controller: :paper_conversions, action: :status,
                        id: paper.id, job_id: 'source', export_format: 'pdf')))
@@ -154,6 +153,32 @@ describe PaperConversionsController, type: :controller do
         get :status, id: paper.id, job_id: 'source', export_format: 'docx', format: :json
         expect(response.status).to eq(200)
         expect(res_body['url']).to eq(manuscript_attachment.url)
+      end
+    end
+
+    context 'of a prior pdf version of a paper that is currently a docx' do
+      let(:versioned_paper) { FactoryGirl.create :paper, :version_with_file_type }
+      let(:versioned_text) do
+        FactoryGirl.create :versioned_text, paper_id: versioned_paper.id,
+          file_type: 'pdf', s3_dir: 'sample/path', file: 'name.pdf'
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, versioned_paper)
+          .and_return true
+        allow(Paper).to receive(:find)
+          .with(versioned_paper.id.to_s)
+          .and_return versioned_paper
+      end
+
+      it 'returns a signed S3 URL referencing a PDF file' do
+        get :status, id: versioned_paper.id, job_id: 'source', format: :json,
+          versioned_text_id: versioned_text.id
+        expect(response.status).to eq(200)
+        quoted = Regexp.quote(versioned_text.s3_dir + '/' + versioned_text.file)
+        expect(res_body['url']).to match(/#{quoted}.+Amz-SignedHeaders/)
       end
     end
 

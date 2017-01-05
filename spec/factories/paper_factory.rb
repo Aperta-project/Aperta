@@ -117,7 +117,8 @@ FactoryGirl.define do
           :manuscript_attachment,
           paper: paper,
           file_type: 'docx',
-          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
+          s3_dir: 'sample/dir'
         )
 
         paper.save!

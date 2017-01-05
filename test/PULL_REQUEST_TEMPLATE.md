@@ -28,6 +28,12 @@ Reviewer tasks:
 - [ ] I have found the tests to be sufficient and complete
 - [ ] I agree the code fulfills the Acceptance Criteria
 - [ ] I agree the author has fulfilled their tasks
+- [ ] All asserts output the failing attribute, ideally in context
+- [ ] All functions, classes have docstrings with all params and returns specified
+- [ ] Does not rely on dynamic, or excessively positional locators (or bug filed)
+- [ ] Does not rely on explicit sleeps except where absolutely necessary or dictated by the 
+        complexity of working around such use.
+- [ ] Follows first PLOS style guidelines for Python, then PEP-8
 
 #### After the Code Review:
 

@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import FakeCanService from '../../../helpers/fake-can-service';
 import hbs from 'htmlbars-inline-precompile';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import { make, manualSetup }  from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
 

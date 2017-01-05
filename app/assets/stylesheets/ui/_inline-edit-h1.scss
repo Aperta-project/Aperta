@@ -222,6 +222,11 @@
 .bodypart-choose-receiver-overlay {
   padding: 30px;
   text-align: center;
+
+  .participant-selector {
+    width: 500px;
+    margin: 0 auto;
+  }
 }
 
 .overlay-content .bodypart-email-sent-overlay {

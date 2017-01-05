@@ -4,7 +4,6 @@ import {
   test
 } from 'ember-qunit';
 
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import customAssertions from '../helpers/custom-assertions';
 
@@ -12,69 +11,112 @@ moduleForComponent('participant-selector', 'Integration | Component | participan
   integration: true,
   beforeEach() {
     customAssertions();
-    this.testUser = Ember.Object.create({
+    this.testUser = {
       fullName: 'Bruce Wayne',
-      avatarUrl: 'foo',
       email: 'batman@example.com'
-    });
+    };
 
     this.setProperties({
-      currentParticipants: [this.testUser]
+      currentParticipants: [this.testUser],
+      searchingParticipant: false,
+      canManage: true,
+      actions: {
+        onRemove() {},
+        onSelect() {},
+        searchStarted() {},
+        searchFinished() {}
+      }
     });
   }
 });
 
 test('it renders currentParticipants', function(assert) {
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=false
-    canManage=true}}`);
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=false
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('alt'), 'Bruce Wayne', 'alt is set to user\'s full name');
-  assert.equal(thumb.attr('src'), 'foo', 'src is set to the avatarUrl');
-  assert.equal(thumb.attr('data-toggle'), 'tooltip', 'data-toggle is set when canManage is true');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'title is set and then modified by jquery');
+  const thumb  = $('.participant-selector-user');
+  const name   = thumb.find('.participant-selector-user-name');
+  assert.equal(name.text(), 'Bruce Wayne', 'full name is displayed');
+});
 
+test('remove link', function(assert) {
+  this.get('currentParticipants').pushObject({
+    fullName: 'Barbara Gordon',
+    email: 'barbara@example.com'
+  });
+
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=false
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(remove.length, 'remove is available when canManage is true and there are more than one participants');
+
+  this.set('canManage', false);
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is false and there are more than one participants');
+
+  this.setProperties({
+    canManage: true,
+    currentParticipants: this.testUser
+  });
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is true and there is one participant');
 });
 
 test('it renders currentParticipants emails when available', function(assert) {
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=true}}`);
-
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne batman@example.com', 'renders name and email');
-
+  const tooltip = $('.participant-selector-user .tooltip-inner');
+  assert.ok(tooltip.text().match('batman@example.com'), 'renders email');
 });
 
-test('if email is blank it\'s not shown', function(assert) {
+test('it does not display remove link when canManage is false', function(assert) {
+  this.set('canManage', false);
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  this.testUser.set('email', null);
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=true}}`);
-
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'renders only name');
-
-});
-
-test('it doesn\'t add data-toggle when canManage is false', function(assert) {
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=false}}`);
-
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-toggle'), null, 'data-toggle is not set');
+  const remove = $('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is false');
 });
 
 

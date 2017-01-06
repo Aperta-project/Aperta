@@ -215,14 +215,14 @@ class SITaskTest(CommonTest):
     # Get current SI file name
     file_link = supporting_info._si_file_link
     file_link_div = supporting_info._get(supporting_info._si_filename)
-    file_link_text = file_link_div.find_element(*file_link).text
+    file_link_text = file_link_div.find_element_by_tag_name('a').text
     timeout = 60
     counter = 0
     # logging for CI debugging
     logging.info('file_link_text: {0}'.format(file_link_text))
     while file_link_text not in doc2upload:
       file_link_div = supporting_info._get(supporting_info._si_filename)
-      file_link_text = file_link_div.find_element(*file_link).text
+      file_link_text = file_link_div.find_element_by_tag_name('a').text
       logging.info('file_link_text after new retieve: {0}. Counter {1}'.format(
         file_link_text, counter))
       time.sleep(1)
@@ -306,7 +306,6 @@ class SITaskTest(CommonTest):
     supporting_info_card = SICard(self._driver)
     supporting_info_card.validate_uploads(doc2uploads)
     # upload multiple files in the card
-    ##si_files = filter(self._ext_lower, supporting_info_files)
     si_files = filter(lambda x: splitext(x)[1].islower(), supporting_info_files)
     doc2uploads_set2 = [os.path.join(os.getcwd(), x) for x in random.sample(si_files, 2)]
     logging.info('Files to upload to SI Card: {}'.format(doc2uploads_set2))

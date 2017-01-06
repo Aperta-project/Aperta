@@ -105,12 +105,24 @@ class SICard(BaseCard):
     """
     Add a file to the Supporting Information card
     :param file_name: A string with a filename
-    :return: attached file name web element
+    :return: None
     """
-    logging.info('Attach file called {0}'.format(file_name))
+    logging.info('Attach file called with {0}'.format(file_name))
+    sif = (By.CLASS_NAME, 'si-file-view')
+    try:
+      sif_before  = len(self._gets(sif))
+    except ElementDoesNotExistAssertionError:
+      sif_before = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
-    attached_element = self._get(self._si_filename)
-    return attached_element
+    # Time needed for file upload
+    counter = 0
+    sif_after = len(self._gets(sif))
+    while sif_after <= sif_before:
+      sif_after = len(self._gets(sif))
+      counter += 1
+      if counter > 60:
+        break
+      time.sleep(1)
 
   def add_files(self, file_list):
     """

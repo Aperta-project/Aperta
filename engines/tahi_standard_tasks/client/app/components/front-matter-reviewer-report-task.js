@@ -1,12 +1,9 @@
-import TaskComponent from 'tahi/pods/components/task-base/component';
+import DecisionOwner from 'tahi/mixins/decision-owner';
 import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
 
-export default TaskComponent.extend({
-  latestDecision: Ember.computed.alias('task.paper.latestDecision'),
-
-  registeredDecisionsDescending: Ember.computed('task.paper.registeredDecisionsAscending.[]', function() {
-    return this.get('task.paper.registeredDecisionsAscending').reverseObjects();
-  }),
+export default TaskComponent.extend(DecisionOwner, {
+  decisions: Ember.computed.reads('task.decisions'),
 
   actions: {
     confirmSubmission() {

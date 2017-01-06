@@ -62,6 +62,10 @@ export default Mixin.create({
     return this.get('decisionsAscending').rejectBy('draft');
   }),
 
+  registeredDecisionsDescending: computed('registeredDecisionsAscending.[]', function() {
+    return this.get('registeredDecisionsAscending').reverseObjects();
+  }),
+
   sortedDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions').sortBy('registeredAt');
   })

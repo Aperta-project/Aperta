@@ -13,10 +13,17 @@
     {{/link-to}}
   {{/if}}
 
-  {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
-    {{fa-icon icon="files-o"}}
-    Versions
-  {{/link-to}}
+  {{#if versioningMode}}
+    <div class="control-bar-button" {{action "showSubNav" "versions"}} id="nav-versions">
+      {{fa-icon icon="files-o"}}
+      Versions
+    </div>
+  {{else}}
+    {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
+      {{fa-icon icon="files-o"}}
+      Versions
+    {{/link-to}}
+  {{/if}}
 
   <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     {{fa-icon icon="user"}}

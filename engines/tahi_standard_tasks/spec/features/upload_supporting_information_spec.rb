@@ -75,4 +75,19 @@ feature "Upload Supporting Information", js: true do
 
     expect(task.error_message).to eq 'Please edit to add label, category, and optional title and legend'
   end
+
+  scenario "Author uploads a broken file and sees error" do
+    supporting_info_task = paper.tasks.first
+
+    # upload file
+    task = Page.view_task_overlay(paper, supporting_info_task)
+    task.attach_bad_supporting_information
+    expect(task).to have_no_content('Loading')
+    expect(task).to have_no_content('Upload Complete!')
+
+    expect(task.file_error_message).to eq 'There was an error while processing your file. Please try again or contact Aperta staff.'
+
+    task.dimiss_file_error
+    expect(task).to_not have_selector('.si-file-error')
+  end
 end

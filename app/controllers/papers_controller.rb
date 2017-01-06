@@ -23,7 +23,7 @@ class PapersController < ApplicationController
     ).find_by_id_or_short_doi(params[:id])
 
     if current_user.unaccepted_and_invited_to?(paper: paper)
-      return render status: 403, text: 'To access this manuscript, please accept the invitation below.'
+      return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
     end
 
     requires_user_can(:view, paper, not_found: true)

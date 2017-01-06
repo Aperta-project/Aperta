@@ -40,7 +40,7 @@ module Authorizations
 
     def unaccepted_and_invited_to?(paper:)
       return false if paper.blank? || paper.draft_decision.nil?
-      paper.draft_decision.try(:invitations).where(state: 'invited', invitee_id: 'id').exists?
+      paper.draft_decision.invitations.where(state: 'invited', invitee_id: 'id').exists?
     end
 
     def filter_authorized(permission, target, participations_only: :default)

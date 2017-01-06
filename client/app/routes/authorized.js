@@ -24,11 +24,8 @@ export default Ember.Route.extend({
           let errorMsg = response.errors[0].detail;
           this.handleUnauthorizedRequest(transition, errorMsg);
         }
-      } else {
-        switch (response.status) {
-          case 403:
-            this.handleUnauthorizedRequest(transition);
-        }
+      } else if (response.status == 403) {
+        this.handleUnauthorizedRequest(transition);
       }
       return true;
     },

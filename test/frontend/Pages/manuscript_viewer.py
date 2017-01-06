@@ -580,13 +580,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Unknown Task')
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, style_check=False, author = ''):
+  def complete_task(self,
+                    task_name,
+                    click_override=False,
+                    data=None,
+                    style_check=False,
+                    author=''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data: A dictionary with the required data for each task.
     :param style_check: A boolean, when True will do style checking. Default False.
+    :param author: Author to use in completing author task, if applicable - looks up values from
+      Base/Resources.py
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """

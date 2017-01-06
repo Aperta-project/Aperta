@@ -31,7 +31,7 @@ class InviteCard(BaseCard):
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
-    self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-save-button')
+    self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
@@ -61,7 +61,7 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
-    self._get(self._compose_invitation_button).click()
+    # self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_add_to_queue_btn))
     self._get(self._edit_add_to_queue_btn).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
@@ -73,6 +73,7 @@ class InviteCard(BaseCard):
     except NoSuchElementException:
       logging.error('Error fired on send invite.')
     self.click_close_button()
+    time.sleep(1)
 
   def validate_invite(self, invitee, mmt, title, creator, short_doi):
     """

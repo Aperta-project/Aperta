@@ -237,7 +237,7 @@ class BaseCard(AuthenticatedPage):
     time.sleep(1)
     discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')
-    assert post_btn.text == 'POST MESSAGE'
+    assert post_btn.text == 'POST MESSAGE', post_btn.text
     self.validate_secondary_big_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')
     assert cancel_lnk.text == 'Cancel', cancel_lnk.text
@@ -265,7 +265,8 @@ class BaseCard(AuthenticatedPage):
     :return: True if versioned view of card, False otherwise
     """
     if self.get(self._versioned_metadata_div):
-      assert self.get(self._versioned_metadata_div).text == 'Viewing', self.get(self._versioned_metadata_div).text
+      assert self.get(self._versioned_metadata_div).text == 'Viewing', \
+          self.get(self._versioned_metadata_div).text
       return True
     else:
       return False

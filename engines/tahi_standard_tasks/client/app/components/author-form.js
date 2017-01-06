@@ -39,6 +39,12 @@ export default Component.extend({
     return !isEqual(currentUser, author);
   }),
 
+  authorIsPaperCreator: computed('author.user', 'author.paper.creator', function() {
+    const author = this.get('author.user.content');
+    const creator = this.get('author.paper.creator');
+    return isEqual(author, creator);
+  }),
+
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };

@@ -1,7 +1,7 @@
 import { make, manualSetup }  from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import FakeCanService from '../../../helpers/fake-can-service';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 
 moduleForComponent('reviewer-report-task', 'Integration | Component | reviewer report task', {

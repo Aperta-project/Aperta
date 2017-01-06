@@ -17,7 +17,9 @@ moduleForComponent('orcid-connect',
 var template = hbs`{{orcid-connect orcidAccount=orcidAccount confirm=confirm open=open journal=1 canRemoveOrcid=true}}`;
 
 test("component shows connect to orcid before a user connects to orcid", function(assert){
-  let orcidAccount = FactoryGuy.make('orcid-account');
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    orcidConnectEnabled: true
+  });
 
   this.set('orcidAccount', orcidAccount);
   this.render(template);
@@ -31,7 +33,9 @@ test('component disables button when popup is open, and enables button when it i
     return this.$(selector).first().attr('disabled') === 'disabled';
   };
   const buttonSelector = '.orcid-not-linked > .connect-orcid';
-  let orcidAccount = FactoryGuy.make('orcid-account');
+  let orcidAccount = FactoryGuy.make('orcid-account', {
+    orcidConnectEnabled: true
+  });
 
   let openObject = {closed: false};
   let open = sinon.stub().returns(openObject);
@@ -75,7 +79,8 @@ test('component disables button when popup is open, and enables button when it i
 test("component shows orcid id and trash can when a user is connected to orcid", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'authenticated',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
 
   this.set('orcidAccount', orcidAccount);
@@ -87,9 +92,13 @@ test("component shows orcid id and trash can when a user is connected to orcid",
 test("component shows orcid id and trash can, and reauthorize option if accessTokenExpired", function(assert){
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'access_token_expired',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
+  let user = FactoryGuy.make('user');
 
+  this.set('user', user);
+  this.set('currentUser', user);
   this.set('orcidAccount', orcidAccount);
   this.render(template);
   assert.elementFound('.orcid-access-expired');
@@ -132,7 +141,8 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
 
   let orcidAccount = FactoryGuy.make('orcid-account', {
     'status': 'authenticated',
-    'identifier': '0000-0000-0000-0000'
+    'identifier': '0000-0000-0000-0000',
+    'orcidConnectEnabled': true
   });
 
   this.set('orcidAccount', orcidAccount);
@@ -164,10 +174,27 @@ test("component works when user is not set and then set", function(assert) {
   });
 
   this.set('currentUser', user);
-  this.set('orcidAccount', orcidAccount);
 
   this.render(noUserTemplate);
   assert.elementNotFound('.orcid-wrapper');
   this.set('user', user);
+  this.set('orcidAccount', orcidAccount);
   assert.elementFound('.orcid-wrapper');
+});
+
+test("users are only allowed to link their ORCID accounts", function(assert) {
+  let user = FactoryGuy.make('user', {
+    id: '1'
+  });
+
+  let viewer = FactoryGuy.make('user', {
+    id: '2'
+  });
+
+  this.set('currentUser', viewer);
+
+  this.render(noUserTemplate);
+  assert.elementNotFound('.orcid-wrapper');
+  this.set('user', user);
+  assert.elementNotFound('.orcid-wrapper');
 });

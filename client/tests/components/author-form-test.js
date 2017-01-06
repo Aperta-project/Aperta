@@ -70,6 +70,7 @@ var template = hbs`
       isNotEditable=isNotEditable
       saveSuccess=(action toggleEditForm)
       canRemoveOrcid=true
+      authorIsPaperCreator=true
   }}`;
 
 test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){
@@ -86,5 +87,5 @@ test("component does not display the orcid-connect component when the author doe
     this.get("author.user").set("orcidAccount", null);
   });
   this.render(template);
-  assert.elementNotFound(".orcid-connect");
+  assert.elementNotFound(".orcid-wrapper");
 });

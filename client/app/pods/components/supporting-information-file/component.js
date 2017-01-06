@@ -13,7 +13,7 @@ export default Component.extend({
   isEditable: false, // passed-in
   uiState: 'view', // view, edit, delete
   errorsPresent: alias('model.errorsPresent'),
-  isFileError: Ember.computed.equal('file.status', 'error'),
+  isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
 
   categories: [

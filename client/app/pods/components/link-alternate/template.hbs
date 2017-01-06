@@ -4,14 +4,16 @@
 
   {{select-2-single minimumResultsForSearch=10
                     class="link-alternate-select"
-                    allowClear=true
-                    placeholder='Select a candidate (optional)...'
-                    selectionCleared="selectionCleared"
+                    placeholder="Select a candidate (optional)..."
                     selectionSelected="selectionSelected"
                     source=alternateCandidates
-                    value=''
+                    value=""
                     class="link-alternate-select"
                     selectedData=selectedPrimary
                     width=250
                     enable=enable}}
+
+  {{#if selectedPrimary}}
+    <a href="#" class="invitation-link-alternate-unlink" {{action "selectionCleared"}}>Unlink Alternate</a>
+  {{/if}}
 {{/if}}

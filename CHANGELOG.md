@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
 ### Changed
 * The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
 ### Deprecated
@@ -34,6 +35,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced

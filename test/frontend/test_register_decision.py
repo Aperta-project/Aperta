@@ -36,7 +36,7 @@ class RegisterDecisionCardTest(CommonTest):
           edits.
   """
 
-  def _test_smoke_register_decision_style(self):
+  def test_smoke_register_decision_style(self):
     """
     test_register_decision: Validate components and styles of the Register Decision card
     :return: void function

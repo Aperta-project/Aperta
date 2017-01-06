@@ -138,34 +138,23 @@ class SITask(BaseTask):
 
   def add_file(self, file_name):
     """
-    Completes the task Supporting Information
+    Add a file to the Supporting Information task
     :param file_name: A string with a filename
     :return: None
     """
     logging.info('Attach file called with {0}'.format(file_name))
     sif = (By.CLASS_NAME, 'si-file-view')
-    ##import pdb; pdb.set_trace()
     try:
-      sif_elements  = self._gets(sif)
-      sif_n = len(sif_elements)
+      sif_before  = len(self._gets(sif))
     except ElementDoesNotExistAssertionError:
-      sif_n = 0
+      sif_before = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     # Time needed for file upload
     while True:
-      sif_elements  = self._gets(sif)
-      sif_n2 = len(sif_elements)
-      if sif_n2 > sif_n:
+      sif_after  = len(self._gets(sif))
+      if sif_after > sif_before:
         break
       time.sleep(1)
-
-    #new_file_name = os.path.basename(file_name).replace(' ', '_')
-
-    #new_link = (By.XPATH,
-    #            "//a[contains(@class, 'si-file-filename') and contains(., '{0}')]".\
-    #            format(new_file_name))
-    #self._wait_for_element(self._get(new_link))
-    #time.sleep(5)
 
   def add_files(self, file_list):
     """

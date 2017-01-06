@@ -128,6 +128,6 @@ class DiscussionsPage < Page
   end
 
   def user_name_in_comments(user, count)
-    within('.discussions-show-content') { expect(page).to have_content(user.full_name, count: count) }
+    within('.discussions-show-messages') { expect(page).to have_content(user.full_name, count: count) }
   end
 end

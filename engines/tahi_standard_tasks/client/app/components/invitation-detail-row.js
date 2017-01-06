@@ -6,7 +6,7 @@ import { task as concurrencyTask } from 'ember-concurrency';
 const {
   Component,
   computed,
-  computed: { equal, reads, and, or }
+  computed: { and, equal, not, or, reads }
 } = Ember;
 
 /*
@@ -30,6 +30,10 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   currentRound: computed.not('previousRound'),
   invitationsInFlight: false,
 
+  isActiveInvitation: computed('activeInvitation', 'invitation', function() {
+    return this.get('activeInvitation') === this.get('invitation');
+  }),
+
   draggable: computed('previousRound', 'invitation.canReposition', 'invitationsInFlight', function(){
     if (this.get('previousRound') || this.get('invitationsInFlight')) { return false; }
     return this.get('invitation.canReposition');
@@ -39,13 +43,15 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return 'invitation-item--' + this.get('uiState');
   }),
 
-  disabled: computed('activeInvitationState', 'invitation', 'activeInvitation', 'invitationGroupCantSendInvite', function(){
-    if ((this.get('activeInvitationState') === 'edit') && (this.get('activeInvitation') !== this.get('invitation'))) {
+  disabled: computed('activeInvitationState', 'isActiveInvitation', 'invitationGroupCantSendInvite', function(){
+    if ((this.get('activeInvitationState') === 'edit') && !this.get('isActiveInvitation')) {
       return true;
     } else {
       return this.get('invitationGroupCantSendInvite');
     }
   }),
+
+  editDisabled: not('isActiveInvitation'),
 
   primary: computed('invitation.primary', function(){
     return this.get('invitation.primary') || this.get('invitation');
@@ -127,6 +133,13 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     }
   }).drop(),
 
+  rollback: concurrencyTask(function * (invitation) {
+    yield invitation.reload();
+    invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
+    yield invitation.save();
+    this.get('setRowState')('show');
+  }),
+
   actions: {
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
@@ -137,11 +150,15 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     },
 
     primarySelected(primary) {
+      if(primary === 'cleared') {
+        this.set('invitation.primary', null);
+      }
+
       this.set('potentialPrimary', primary);
     },
 
     editInvitation(invitation) {
-      if (this.get('disabled')) { return; }
+      if (this.get('editDisabled')) { return; }
 
       this.setProperties({
         invitationBodyStateBeforeEdit: invitation.get('body')
@@ -155,10 +172,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
         this.get('setRowState')('show');
         invitation.destroyRecord();
       } else {
-        invitation.rollbackAttributes();
-        invitation.set('body', this.get('invitationBodyStateBeforeEdit'));
-        invitation.save();
-        this.get('setRowState')('show');
+        this.get('rollback').perform(invitation);
       }
     },
 

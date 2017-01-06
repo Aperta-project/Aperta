@@ -6,7 +6,17 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
 ### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
+### Changed
+* The Discussion participant list displays names in place of avatars
 * ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
 ### Deprecated
 ### Removed
 ### Fixed
@@ -23,6 +33,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced

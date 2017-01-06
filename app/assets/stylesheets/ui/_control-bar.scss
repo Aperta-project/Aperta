@@ -135,6 +135,7 @@ All properties are applied in a media query.
   @include position(absolute, $control-bar-height-large-screen 0 auto 0);
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   min-height: $control-bar-height-large-screen;
   border-bottom: 1px solid #ddd;
   font-size: 12px;

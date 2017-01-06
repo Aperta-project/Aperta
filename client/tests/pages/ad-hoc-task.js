@@ -112,9 +112,9 @@ export default PageObject.create({
       sendConfirmVisible: isVisible('.send-email-action'),
       sendConfirmDisabled: isVisible('.send-email-action.button--disabled'),
       recipients: collection({
-        itemScope: '.select2-search-choice',
+        itemScope: '.participant-selector-user',
         item: {
-          remove: clickable('.select2-search-choice-close')
+          remove: clickable('.participant-selector-user-remove')
         }
       })
     }

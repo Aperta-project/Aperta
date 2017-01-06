@@ -22,8 +22,10 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def destroy
+    title = query.title
     query.update(deleted: true)
-    Rails.logger.info("#{current_user.email} deleted query #{query.title}")
+    Rails.logger.info("#{current_user.email} deleted query #{title}")
+    head :no_content
   end
 
   private

@@ -15,6 +15,10 @@ moduleForComponent(
 
     // For any answers that will be sent to the server
     $.mockjax({url: /api\/nested_questions\/\d+\/answers/, status: 204});
+    $.mockjax({url: /api\/journals/, status: 200, responseText: {
+      journals: []
+    }
+    });
   },
   afterEach() {
     $.mockjax.clear();
@@ -200,6 +204,7 @@ test('it lets you uncomplete the task when it and its authors have validation er
   });
 
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
+  
   this.render(template);
 
   assert.equal(testTask.get('completed'), true, 'task was initially completed');
@@ -210,6 +215,9 @@ test('it lets you uncomplete the task when it and its authors have validation er
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     $.mockjax.clear();
+    $.mockjax({url: /api\/journals/, status: 200, responseText: {
+      journals: []
+    }});
 
     // ensure  a required answer is not provided
     this.$('.authors-task input[name="authors--persons_agreed_to_be_named"]').attr('checked', false);

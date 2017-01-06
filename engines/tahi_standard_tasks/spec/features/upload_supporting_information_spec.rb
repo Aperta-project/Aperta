@@ -85,9 +85,9 @@ feature "Upload Supporting Information", js: true do
     expect(task).to have_no_content('Loading')
     expect(task).to have_no_content('Upload Complete!')
 
-    expect(task.file_error_message).to eq 'There was an error while processing your file. Please try again or contact Aperta staff.'
+    expect(task.file_error_message).to have_content('There was an error while processing bad_yeti.tiff. Please try again or contact Aperta staff.')
 
-    task.dimiss_file_error
+    task.dismiss_file_error
     expect(task).to_not have_selector('.si-file-error')
   end
 end

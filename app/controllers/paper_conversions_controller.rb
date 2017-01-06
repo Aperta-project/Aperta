@@ -55,11 +55,14 @@ class PaperConversionsController < ApplicationController
       else
         ver = VersionedText.find(params[:versioned_text_id])
         # Make sure the client-supplied version number is for the right paper
-        url = nil
         if paper.id == ver.paper_id
           url = Attachment.authenticated_url_for_key(ver.s3_full_path)
+          render status: :ok, json: { url: url }
+        else
+          # If the paper's ID doesn't match the VersionedText paper_id, this is
+          # probably a hacking attempt, so we'll error with no explicit info.
+          render status: 400
         end
-        render status: :ok, json: { url: url }
       end
     else
       job = PaperConverter.check_status(params[:job_id])

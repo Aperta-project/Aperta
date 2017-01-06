@@ -23,13 +23,15 @@ export default Ember.Component.extend({
 
   sentenceDelimiter: /([.!?,;]\s*)/g,
 
-  manuscript: function() {
-    if (!this.get('comparisonText') || this.get('comparisonIsPdf')) {
-      return this.get('viewingText') || this.get('default');
-    } else {
-      return this.diff();
+  manuscript: Ember.computed('comparisonText', 'viewingText', 'comparisonIsPdf',
+    function() {
+      if (!this.get('comparisonText') || this.get('comparisonIsPdf')) {
+        return this.get('viewingText') || this.get('default');
+      } else {
+        return this.diff();
+      }
     }
-  }.property('comparisonText', 'viewingText', 'comparisonIsPdf'),
+  ),
 
   diff() {
     // Calculate the diff

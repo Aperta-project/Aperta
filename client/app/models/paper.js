@@ -23,7 +23,7 @@ export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
-  decisions: hasMany('decision', { async: true }),
+  decisions: hasMany('decision', { async: false }),
   discussionTopics: hasMany('discussion-topic', { async: true }),
   figures: hasMany('figure', { inverse: 'paper', async: true }),
   groupAuthors: hasMany('group-author', { async: false }),

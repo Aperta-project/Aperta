@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
 * The first affiliate field on the billing task is now required
 ### Changed
 ### Deprecated

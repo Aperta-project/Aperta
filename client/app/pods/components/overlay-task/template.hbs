@@ -22,11 +22,15 @@
           </div>
           <footer class="overlay-footer">
             {{participant-selector currentParticipants=participants
-                                   onRemove=(action "removeParticipant")
-                                   onSelect=(action "saveNewParticipant")
-                                   canManage=(can "manage_participant" task)
+                                   paperId=task.paper.id
                                    label="Following:"
-                                   paperId=task.paper.id}}
+                                   canManage=(can "manage_participant" task)
+                                   onSelect=(action "saveNewParticipant")
+                                   onRemove=(action "removeParticipant")
+                                   searchStarted=(action "searchStarted")
+                                   searchFinished=(action "searchFinished")
+                                   searching=searchingParticipant
+                                   dropdownClass="aperta-select task-following-dropdown"}}
             <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
           </footer>
         </div>

@@ -150,9 +150,12 @@ class SITask(BaseTask):
       sif_before = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     # Time needed for file upload
-    while True:
-      sif_after  = len(self._gets(sif))
-      if sif_after > sif_before:
+    counter = 0
+    sif_after = len(self._gets(sif))
+    while sif_after <= sif_before:
+      sif_after = len(self._gets(sif))
+      counter += 1
+      if counter > 60:
         break
       time.sleep(1)
 

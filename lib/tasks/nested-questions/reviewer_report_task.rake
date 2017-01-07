@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: 'reviewer_report--decision_term',
       value_type: 'text',
       text: 'Please provide your publication recommendation:',

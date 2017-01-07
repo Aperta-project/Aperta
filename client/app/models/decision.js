@@ -18,7 +18,7 @@ export default DS.Model.extend({
   registeredAt: DS.attr('date'),
   rescindable: DS.attr('boolean'),
   rescinded: DS.attr('boolean'),
-  reviewerReport: DS.belongsTo('reviewerReport'),
+  reviewerReport: DS.belongsTo('reviewerReport', { async: false }),
   verdict: DS.attr('string'),
 
   terminal: Ember.computed.match('verdict', /^(accept|reject)$/),

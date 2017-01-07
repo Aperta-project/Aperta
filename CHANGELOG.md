@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* The first affiliate field on the billing task is now required
 * Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
 ### Changed
 ### Deprecated

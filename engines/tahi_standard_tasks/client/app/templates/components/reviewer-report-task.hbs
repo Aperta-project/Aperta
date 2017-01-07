@@ -2,6 +2,11 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
+    {{nested-question-radio-decision ident="reviewer_report--decision_term"
+                                   owner=currentReviewerReport
+                                   decision=task.decision
+                                   readOnly=true}}
+
     {{#if task.body.submitted}}
     {{reviewer-report-questions model=task decision=task.decision readOnly=true}}
       <div class="reviewer-report-feedback">

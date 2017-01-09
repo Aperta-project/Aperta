@@ -16,7 +16,7 @@ class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay
     values.each_pair do |key, value|
       element_name = "#{key}"
       fill_in element_name, with: value
-      page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('change')"
+      page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('input')"
     end
   end
 

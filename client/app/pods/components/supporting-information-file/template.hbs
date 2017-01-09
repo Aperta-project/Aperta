@@ -3,6 +3,13 @@
                               size="small"}}
     Processing ...
   {{/progress-spinner-message}}
+{{else if isFileError}}
+  <div class="si-file-error">
+    <a class="acknowledge-error-button" {{action "deleteFile"}} title="Confirm file error">×</a>
+    {{error-message message=uploadErrorMessage
+                    displayIcon=true
+                    dislayText=true}}
+  </div>
 {{else if isEditing}}
   <div class="si-file-editor flex-form visible">
     <div class="si-file-filename">

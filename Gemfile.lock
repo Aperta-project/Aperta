@@ -130,6 +130,7 @@ GEM
     bourbon (4.2.4)
       sass (~> 3.4)
       thor (~> 0.19)
+    browser (2.3.0)
     bugsnag (5.0.1)
     builder (3.2.2)
     bullet (4.14.7)
@@ -709,6 +710,7 @@ DEPENDENCIES
   aws-sdk (~> 2)
   bootstrap-sass
   bourbon
+  browser
   bugsnag
   bullet
   capistrano-chruby
@@ -810,4 +812,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
@@ -36,6 +37,7 @@ export default Component.extend({
   store: service(),
 
   canRemoveOrcid: null,
+  notConnectedMessage: 'No ORCID ID has been linked with this author.',
 
   // function to use for asking the user to confirm an action
   confirm: window.confirm,
@@ -47,28 +49,32 @@ export default Component.extend({
   // appears on the user's profile page.  The profile page doesn't exist
   // in the context of a journal, so we need to dig through all of them to
   // see if the user can remove the link.
-  setCanRemoveOrcid: function() {
+  setCanRemoveOrcid: concurrencyTask(function * () {
     let can = this.get('can');
-    this.get('store').findAll('journal').then((journals) => {
-      let promises = journals.map(j => can.can('remove_orcid', j));
-      Ember.RSVP.all(promises)
-      .then(permissions => this.set('canRemoveOrcid', _.any(permissions)));
-    });
-  },
+    let journals = yield this.get('store').findAll('journal');
+    let promises = journals.map(j => can.can('remove_orcid', j));
+    let permissions = yield Ember.RSVP.all(promises);
+    this.set('canRemoveOrcid', _.any(permissions));
+  }),
 
   didInsertElement() {
     this._super(...arguments);
     this._oauthListener = Ember.run.bind(this, this.oauthListener);
     this._popupClosedListener = Ember.run.bind(this, this.popupClosedListener);
-    if(this.get('user')) {
-      this.get('user.orcidAccount').then( (account) => {
-        this.set('orcidAccount', account);
-      });
+    // For ease of testing we're making it so that orcid-connect can have it's
+    // orcidAccount set directly.  In that case the component is invoked with `user=null`
+    if (this.get('user.orcidAccount')) {  
+      if(this.get('user')) {
+        this.get('user.orcidAccount').then( (account) => {
+          this.set('orcidAccount', account);
+       });
+      }
+    }
+    
+    if (this.get('canRemoveOrcid')=== null) {
+      this.get('setCanRemoveOrcid').perform();
     }
 
-    if (this.get('canRemoveOrcid') === null) {
-      this.setCanRemoveOrcid();
-    }
     // if we don't have a journal (profile page) we need to find one to
     // display a contact email
     if (this.get('journal') === null) {
@@ -77,6 +83,12 @@ export default Component.extend({
       });
     }
   },
+  
+  canLinkOrcid: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
+    const user = this.get('user.id'); // <-- promise
+    const currentUser = this.get('currentUser.id');
+    return this.get('orcidAccount') && isEqual(user, currentUser);
+  }),
 
   willDestroyElement() {
     this._super(...arguments);
@@ -106,12 +118,6 @@ export default Component.extend({
     this.set('oauthInProgress', false);
     this.removePopupClosedListener();
   },
-
-  orcidConnectEnabled: computed('orcidAccount', 'user.id', 'currentUser.id', function() {
-    const user = this.get('user.id'); // <-- promise
-    const currentUser = this.get('currentUser.id');
-    return this.get('orcidAccount') && isEqual(user, currentUser);
-  }),
 
   reloadIfNoResponse(){
     if (this.get('isDestroyed')) { return; }
@@ -150,6 +156,7 @@ export default Component.extend({
   orcidOauthResult: null,
 
   accessTokenExpired: computed.equal('orcidAccount.status', 'access_token_expired'),
+  refreshAccessToken: computed.and('accessTokenExpired', 'canLinkOrcid'),
 
   actions: {
     removeOrcidAccount(orcidAccount) {

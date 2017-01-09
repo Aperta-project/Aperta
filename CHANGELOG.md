@@ -4,12 +4,26 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
 ### Changed
-* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
 ### Deprecated
 ### Removed
 ### Fixed
-* ORCID-Connect works with users with accented letters in their names. 
+* ORCID-Connect works with users with accented letters in their names.
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
+### Changed
+* The Discussion participant list displays names in place of avatars
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
+### Deprecated
+### Removed
+### Fixed
+* Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 ### Security
 
@@ -23,12 +37,13 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
-* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of
   the parts.
 ### Deprecated
 ### Removed

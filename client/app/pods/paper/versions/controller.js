@@ -17,6 +17,10 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
     }
   ),
   comparisonIsPdf: Ember.computed.equal('comparisonVersion.fileType', 'pdf'),
+  downloadsVisible: false,
+  downloadLink: Ember.computed('model.id', function() {
+    return '/papers/' + this.get('model.id') + '/download';
+  }),
 
   generateTaskVersionURL(task) {
     return this.get('routing.router.router').generate(
@@ -83,6 +87,10 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
 
     setQueryParam(key, value) {
       this.set(key, value);
+    },
+
+    toggleDownloads() {
+      this.toggleProperty('downloadsVisible');
     }
   }
 });

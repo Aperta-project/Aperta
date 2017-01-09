@@ -7,17 +7,11 @@ export default ControlBar.extend({
   paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
   contributorsVisible: false,
-  downloadsVisible: false,
   versionsVisible: false,
-
-  downloadLink: computed('paper.id', function() {
-    return '/papers/' + this.get('paper.id') + '/download';
-  }),
 
   resetSubmenuFlags() {
     this.setProperties({
       contributorsVisible: false,
-      downloadsVisible: false,
       versionsVisible: false
     });
   },
@@ -51,8 +45,8 @@ export default ControlBar.extend({
       this.sendAction('showActivity', activity);
     },
 
-    exportDocument(downloadType) {
-      this.sendAction('exportDocument', downloadType);
+    toggleDownloads() {
+      this.get('toggleDownloads')();
     },
 
     withdrawManuscript() {

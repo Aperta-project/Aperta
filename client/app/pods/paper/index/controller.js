@@ -11,6 +11,7 @@ const {
 export default Controller.extend(PaperBase, Discussions, {
   //sent by paper-new on creation, used to show submission process 1st view
   queryParams: ['firstView'],
+  downloadsVisible: false,
 
   isGradualEngagement: equal('model.gradualEngagement', true),
   renderEngagementBanner: computed('isGradualEngagement', 'model.isWithdrawn',
@@ -19,6 +20,10 @@ export default Controller.extend(PaperBase, Discussions, {
         !this.get('model.isWithdrawn');
     }
   ),
+
+  downloadLink: computed('model.id', function() {
+    return '/papers/' + this.get('model.id') + '/download';
+  }),
 
   showSubmissionProcess: computed('model', 'firstView', 'isGradualEngagement',
     function() {
@@ -57,6 +62,10 @@ export default Controller.extend(PaperBase, Discussions, {
 
     hidePaperSubmitOverlay() {
       this.set('showPaperSubmitOverlay', false);
+    },
+
+    toggleDownloads() {
+      this.toggleProperty('downloadsVisible');
     }
   }
 });

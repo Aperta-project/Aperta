@@ -36,8 +36,8 @@
 {{paper-control-bar paper=model
                     showActivity="showActivityOverlay"
                     addContributors="showCollaboratorsOverlay"
-                    exportDocument="exportDocument"
                     showWithdrawOverlay="showWithdrawOverlay"
+                    toggleDownloads=(action "toggleDownloads")
                     topicsIndexPath=topicsIndexPath
                     setViewingVersion=(action "setViewingVersion")
                     viewingVersion=viewingVersion
@@ -47,6 +47,10 @@
                     supportedDownloadFormats=supportedDownloadFormats
                     versioningMode=true
                     versionsVisible=true}}
+
+{{#if downloadsVisible}}
+  {{partial "paper/downloads"}}
+{{/if}}
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 

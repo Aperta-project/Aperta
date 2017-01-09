@@ -108,7 +108,7 @@ class OrcidAccount < ActiveRecord::Base
 
     if string.encoding == Encoding::ASCII_8BIT &&
         headers[:content_type].try(:match, /UTF-8/)
-      logger.warn "ORCID responded with content_type=UTF-8 but sent ASCII-8BIT. Assuming ISO-8859-1 and converting to UTF-8."
+      logger.warn "ORCID responded with charset=UTF-8 but sent ASCII-8BIT. Assuming ISO-8859-1 and converting to UTF-8."
       string.force_encoding("ISO-8859-1")
     end
     string.encode!(Encoding::UTF_8)

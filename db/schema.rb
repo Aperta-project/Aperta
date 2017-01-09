@@ -276,9 +276,15 @@ ActiveRecord::Schema.define(version: 20170111191302) do
     t.datetime "sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "task_id"
+    t.integer  "paper_id"
+    t.integer  "journal_id"
   end
 
+  add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
+  add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
+  add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
 
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"

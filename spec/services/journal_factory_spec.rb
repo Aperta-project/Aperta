@@ -882,10 +882,13 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
+            allowed_tasks.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1007,10 +1010,13 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
+            allowed_tasks.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1128,10 +1134,13 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
+            allowed_tasks.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1289,14 +1298,20 @@ describe JournalFactory do
       context 'Reviewer Report Owner' do
         describe 'has Task permission to' do
           it 'can :edit assigned ReviewerReportTasks' do
-            permission = Permission.includes(:states).find_by(
+            edit_permission = journal.reviewer_report_owner_role.permissions.where(
               applies_to: 'TahiStandardTasks::ReviewerReportTask',
               action: :edit
             )
-            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
-            expect(journal.reviewer_report_owner_role.permissions).to include(
-              permission
+            expect(edit_permission.count).to eq(1)
+            expect(edit_permission.first.states.map(&:name)).to \
+              contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+
+            view_permission = journal.reviewer_report_owner_role.permissions.where(
+              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              action: :view
             )
+            expect(view_permission.count).to eq(1)
+            expect(view_permission.first.states.map(&:name)).to contain_exactly('*')
           end
         end
       end
@@ -1385,18 +1400,22 @@ describe JournalFactory do
           end
 
           it <<-DESC do
-            can :add_email_participants on all Tasks
+            can :add_email_participants on all Tasks except billing tasks
             can :edit on all Tasks except billing tasks
-            can :manage on all Tasks
-            can :manage_invitations on all Tasks
-            can :manage_participant on all Tasks
-            can :view on all Tasks except billing tasks
-            can :view_participants  on all Tasks
+            can :manage on all Tasks except billing tasks
+            can :manage_invitations on all Tasks except billing tasks
+            can :manage_participant on all Tasks except billing tasks
+            can :view on all Tasks except billing tasks except billing tasks
+            can :view_participants  on all Tasks except billing tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            tasks = Task.descendants
+            tasks -= [PlosBilling::BillingTask]
+            tasks.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1453,6 +1472,25 @@ describe JournalFactory do
           expect(permissions).to include(
             permissions_on_paper.find_by(action: 'view')
           )
+        end
+      end
+
+      context 'Billing permission' do
+        describe 'billing task cannot be accessed through Task' do
+          # If a role gets Task class permissions they'll be able to see the billing task
+          it 'only site admins and participants on tasks get Task class permissions' do
+            not_allowed_roles = Role.where.not(name: [Role::TASK_PARTICIPANT_ROLE.to_s, Role::SITE_ADMIN_ROLE.to_s])
+            not_allowed_roles.each do |role|
+              expect(role.permissions.where(applies_to: 'Task')).to be_empty
+            end
+          end
+
+          it 'only authors and billing staff have any permission on the billing task' do
+            not_allowed_roles = Role.where.not(name: [Role::CREATOR_ROLE, Role::BILLING_ROLE])
+            not_allowed_roles.each do |role|
+              expect(role.permissions.where(applies_to: 'PlosBilling::BillingTask')).to be_empty
+            end
+          end
         end
       end
     end

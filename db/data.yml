@@ -11166,17 +11166,11 @@ orcid_accounts:
   - expires_at
   - name
   - scope
-  - authorization_code_response
-  - profile_xml
-  - profile_xml_updated_at
   - created_at
   - updated_at
   records: 
   - - '1'
     - '1'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11193,16 +11187,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '3'
     - '3'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11219,16 +11207,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '5'
     - '5'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11245,16 +11227,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '7'
     - '8'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11271,16 +11247,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '9'
     - '10'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11297,16 +11267,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '11'
     - '12'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11323,16 +11287,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '13'
     - '14'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11349,16 +11307,10 @@ orcid_accounts:
     - 
     - 
     - 
-    - 
-    - 
-    - 
     - '2016-10-27 13:04:08.573317'
     - '2016-10-27 13:04:08.573317'
   - - '15'
     - '16'
-    - 
-    - 
-    - 
     - 
     - 
     - 
@@ -11395,6 +11347,7 @@ papers:
   - processing
   - uses_research_article_reviewer_report
   - short_doi
+  - number_reviewer_reports
   records: 
   - - '1'
     - 
@@ -11420,6 +11373,7 @@ papers:
     - false
     - true
     - devs.100001
+    - false
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
@@ -11444,6 +11398,7 @@ papers:
     - false
     - true
     - devs.100002
+    - false
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -11468,6 +11423,7 @@ papers:
     - false
     - true
     - devs.100003
+    - false
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
@@ -11492,6 +11448,7 @@ papers:
     - false
     - true
     - devs.100004
+    - false
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -11516,6 +11473,7 @@ papers:
     - false
     - true
     - devs.100008
+    - false
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -11540,6 +11498,7 @@ papers:
     - false
     - true
     - devs.100009
+    - false
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
@@ -11564,6 +11523,7 @@ papers:
     - false
     - true
     - devs.100010
+    - false
   - - '12'
     - <p class="Body A">African forest elephants are being poached at accelerating
       rates, but we lack range-wide information on the repercussions. Analysis of
@@ -11599,6 +11559,7 @@ papers:
     - false
     - true
     - yetijour.1000002
+    - false
   - - '13'
     - ''
     - My non-research paper; reviewer invited
@@ -11623,6 +11584,7 @@ papers:
     - false
     - false
     - yetijour.1000003
+    - false
 
 ---
 permission_requirements:

@@ -25,6 +25,7 @@ Procfile.local
 .env.local
 .env.development
 .foreman
+/.idea
 
 # Testing
 coverage

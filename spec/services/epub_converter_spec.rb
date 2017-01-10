@@ -13,13 +13,15 @@ describe EpubConverter do
   let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:include_source) { false }
   let(:include_cover_image) { true }
+  let(:include_html) { true }
 
   let(:converter) do
     EpubConverter.new(
       paper,
       user,
       include_source: include_source,
-      include_cover_image: include_cover_image)
+      include_cover_image: include_cover_image,
+      include_html: include_html)
   end
 
   let(:doc) { Nokogiri::HTML(converter.epub_html) }
@@ -55,6 +57,13 @@ describe EpubConverter do
         end
       end
 
+      context 'when include_html is false' do
+        let(:include_html) { false }
+        it 'epub_html is an empty string' do
+          expect(converter.epub_html).to eq('')
+        end
+      end
+
       context 'when paper has supporting information files' do
         let(:file) do
           paper.supporting_information_files.create!(
@@ -64,7 +73,7 @@ describe EpubConverter do
           )
         end
 
-        it 'has have supporting information' do
+        it 'has supporting information' do
           expect(file)
           expect(paper.supporting_information_files.length).to be 1
           expect(doc.css('#si_header').count).to be 1
@@ -207,6 +216,13 @@ describe EpubConverter do
       context 'when downloader is not specified' do
         it 'does not error' do
           expect(converter.publishing_information_html).to be_a(String)
+        end
+      end
+
+      context 'when include_html is false' do
+        let(:include_html) { false }
+        it '#publishing_information_html is an empty string' do
+          expect(converter.publishing_information_html).to eq('')
         end
       end
     end

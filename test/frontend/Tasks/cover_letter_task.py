@@ -1,9 +1,5 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import time
-import random
-
 from selenium.webdriver.common.by import By
 
 from frontend.Tasks.basetask import BaseTask
@@ -71,9 +67,10 @@ class CoverLetterTask(BaseTask):
     attach_file_button = self._get(self._form_attach_file_button)
 
     assert textarea.get_attribute('placeholder') == 'Please type or paste your cover letter into this text field, or attach a file below', textarea.placeholder
-    self.validate_textarea_style(textarea)
+    # APERTA-8903
+    # self.validate_textarea_style(textarea)
 
-    assert attach_file_button.text == 'Attach file', attach_file_button.text
+    assert attach_file_button.text == 'ATTACH FILE', attach_file_button.text
     self.validate_secondary_small_green_button_task_style(attach_file_button)
 
   def validate_styles(self):

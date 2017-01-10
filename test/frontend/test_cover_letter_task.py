@@ -22,13 +22,11 @@ class CoverLetterTaskTest(CommonTest):
   """
   Self imposed AC:
      - validate tasks elements and styles
-     - validate adding and deleting an author
-     - validate trying to close a task without completing author profile
   """
 
   def test_smoke_validate_components_styles(self):
     """
-    test_cover_letter_task: Validates the elements, styles and functions for the cover letter task
+    test_smoke_validate_components_styles: Validates the elements, styles and functions for the cover letter task
     :return: void function
     """
     logging.info('Test Cover Letter Task::components_styles')

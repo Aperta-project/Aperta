@@ -12,6 +12,7 @@ class ReviewerReportTaskCreator
       assign_paper_role!
       find_or_create_related_task
       create_reviewer_report
+      @task
     end
   end
 
@@ -59,9 +60,9 @@ class ReviewerReportTaskCreator
   def existing_reviewer_report_task
     @existing_reviewer_report_task ||= begin
       reviewer_report_task_class.joins(assignments: :role).where(
-        paper_id: paper.id,
+        paper_id: @paper.id,
         assignments: {
-          role_id: paper.journal.reviewer_report_owner_role,
+          role_id: @paper.journal.reviewer_report_owner_role,
           user_id: assignee.id
         }
       ).first

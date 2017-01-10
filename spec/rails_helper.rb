@@ -89,7 +89,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions) }
+      except: %w(task_types nested_questions reviewer_reports) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature

@@ -6,4 +6,3 @@ export default NestedQuestionOwner.extend({
   task: DS.belongsTo('task'),
   user: DS.belongsTo('user')
 });
-

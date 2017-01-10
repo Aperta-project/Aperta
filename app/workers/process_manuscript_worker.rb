@@ -31,7 +31,8 @@ class ProcessManuscriptWorker
       paper,
       paper.creator,
       include_source: true,
-      include_cover_image: false)
+      include_cover_image: false,
+      include_html: false)
     converter.epub_stream.string
   end
 end

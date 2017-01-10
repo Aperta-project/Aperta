@@ -10,11 +10,13 @@ class EpubConverter
   def initialize(paper,
                  downloader = nil,
                  include_source: false,
-                 include_cover_image: true)
+                 include_cover_image: true,
+                 include_html: true)
     @paper = paper
     @downloader = downloader # a user
     @include_source = include_source
     @include_cover_image = include_cover_image
+    @include_html = include_html
   end
 
   def epub_stream
@@ -26,25 +28,33 @@ class EpubConverter
   end
 
   def epub_html
-    render('epub',
-           layout: nil,
-           locals: { paper: @paper,
-                     paper_body: paper_body,
-                     title: title,
-                     should_proxy_previews: true
-                   })
+    if @include_html
+      render('epub',
+             layout: nil,
+             locals: { paper: @paper,
+                       paper_body: paper_body,
+                       title: title,
+                       should_proxy_previews: true
+      })
+    else
+      ''
+    end
   end
 
   def publishing_information_html
-    render('epub_publishing_information',
-           layout: nil,
-           locals: {
-             paper: @paper,
-             paper_body: paper_body,
-             publishing_info_presenter:
+    if @include_html
+      render('epub_publishing_information',
+             layout: nil,
+             locals: {
+               paper: @paper,
+               paper_body: paper_body,
+               publishing_info_presenter:
                PublishingInformationPresenter.new(paper, downloader),
-             title: title
-           })
+               title: title
+             })
+    else
+      ''
+    end
   end
 
   # Yeah these methods that start with _ should be private

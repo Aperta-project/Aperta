@@ -19143,6 +19143,152 @@
           }
         }
       }
+    },
+    "ember-exam": {
+      "version": "0.6.0",
+      "dependencies": {
+        "chalk": {
+          "version": "1.1.3",
+          "dependencies": {
+            "ansi-styles": {
+              "version": "2.2.1"
+            },
+            "escape-string-regexp": {
+              "version": "1.0.5"
+            },
+            "has-ansi": {
+              "version": "2.0.0",
+              "dependencies": {
+                "ansi-regex": {
+                  "version": "2.0.0"
+                }
+              }
+            },
+            "strip-ansi": {
+              "version": "3.0.1",
+              "dependencies": {
+                "ansi-regex": {
+                  "version": "2.0.0"
+                }
+              }
+            },
+            "supports-color": {
+              "version": "2.0.0"
+            }
+          }
+        },
+        "cli-table2": {
+          "version": "0.2.0",
+          "dependencies": {
+            "lodash": {
+              "version": "3.10.1"
+            },
+            "string-width": {
+              "version": "1.0.2",
+              "dependencies": {
+                "code-point-at": {
+                  "version": "1.1.0"
+                },
+                "is-fullwidth-code-point": {
+                  "version": "1.0.0",
+                  "dependencies": {
+                    "number-is-nan": {
+                      "version": "1.0.1"
+                    }
+                  }
+                },
+                "strip-ansi": {
+                  "version": "3.0.1",
+                  "dependencies": {
+                    "ansi-regex": {
+                      "version": "2.0.0"
+                    }
+                  }
+                }
+              }
+            },
+            "colors": {
+              "version": "1.1.2"
+            }
+          }
+        },
+        "debug": {
+          "version": "2.3.3",
+          "dependencies": {
+            "ms": {
+              "version": "0.7.2"
+            }
+          }
+        },
+        "fs-extra": {
+          "version": "0.30.0",
+          "dependencies": {
+            "graceful-fs": {
+              "version": "4.1.11"
+            },
+            "jsonfile": {
+              "version": "2.4.0"
+            },
+            "klaw": {
+              "version": "1.3.1"
+            },
+            "path-is-absolute": {
+              "version": "1.0.1"
+            }
+          }
+        },
+        "rimraf": {
+          "version": "2.5.4",
+          "dependencies": {
+            "glob": {
+              "version": "7.1.1",
+              "dependencies": {
+                "fs.realpath": {
+                  "version": "1.0.0"
+                },
+                "inflight": {
+                  "version": "1.0.6",
+                  "dependencies": {
+                    "wrappy": {
+                      "version": "1.0.2"
+                    }
+                  }
+                },
+                "inherits": {
+                  "version": "2.0.3"
+                },
+                "minimatch": {
+                  "version": "3.0.3",
+                  "dependencies": {
+                    "brace-expansion": {
+                      "version": "1.1.6",
+                      "dependencies": {
+                        "balanced-match": {
+                          "version": "0.4.2"
+                        },
+                        "concat-map": {
+                          "version": "0.0.1"
+                        }
+                      }
+                    }
+                  }
+                },
+                "once": {
+                  "version": "1.4.0",
+                  "dependencies": {
+                    "wrappy": {
+                      "version": "1.0.2"
+                    }
+                  }
+                },
+                "path-is-absolute": {
+                  "version": "1.0.1"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

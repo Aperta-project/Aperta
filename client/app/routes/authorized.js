@@ -7,7 +7,7 @@ export default Ember.Route.extend({
   handleUnauthorizedRequest(transition) {
     transition.abort();
     this.transitionTo('dashboard').then(()=> {
-      this.flash.displayMessage('error', "You don't have access to that content");
+      this.flash.displayRouteLevelMessage('error', "You don't have access to that content");
     });
   },
 

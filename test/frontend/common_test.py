@@ -14,7 +14,7 @@ from selenium.common.exceptions import TimeoutException
 from Base.FrontEndTest import FrontEndTest
 from Base.PostgreSQL import PgSQL
 from Base.Resources import login_valid_pw, docs, users, editorial_users, external_editorial_users, \
-    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login
+    au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, pdfs
 from Pages.login_page import LoginPage
 from Pages.akita_login_page import AkitaLoginPage
 from Pages.dashboard import DashboardPage
@@ -99,13 +99,17 @@ class CommonTest(FrontEndTest):
     else:
       return dashboard_page.click_on_existing_manuscript_link_partial_title(title)
 
-  def create_article(self, title='', journal='', type_='', document='', random_bit=False):
+  def create_article(self, title='', journal='', type_='', document='', random_bit=False,
+                     format='word'):
     """
     Create a new article. Assumes you have already launched the Create New Submission overlay.
+    :param format:
     :param title: Title of the article.
     :param journal: Journal name of the article.
     :param type_: Type of article
     :param random_bit: If true, append some random string
+    :param format: string indicating whether to choose word or pdf upload or randomly choose.
+       Valid values: 'word' (default), pdf, any.
     :param document: Name of the document to upload. If blank will default to 'random', this will
     choose
       one of available papers
@@ -118,6 +122,14 @@ class CommonTest(FrontEndTest):
                  type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
+    # Validate that the selected journal supports pdf if format = pdf or any
+    if format in ('any', 'pdf'):
+      pdf_allowed = PgSQL().query('SELECT pdf_allowed '
+                                  'FROM journals '
+                                  'WHERE name = %s;', (journal,))[0][0]
+      if not pdf_allowed:
+        raise ValueError('You specified a potential pdf upload for a journal that does not '
+                      'support them: {0}'.format(journal))
     # This time helps to avoid random upload failures
     time.sleep(3)
     current_path = os.getcwd()
@@ -128,7 +140,12 @@ class CommonTest(FrontEndTest):
     if document:
       fn = os.path.join(current_path, '{0}'.format(document))
     else:
-      doc2upload = random.choice(docs)
+      if format == 'word':
+        doc2upload = random.choice(docs)
+      elif format == 'pdf':
+        doc2upload = random.choice(pdfs)
+      elif format == 'any':
+        doc2upload = random.choice(docs + pdfs)
       fn = os.path.join(current_path, '{0}'.format(doc2upload))
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)

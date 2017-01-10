@@ -532,8 +532,6 @@ class AuthenticatedPage(PlosPage):
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '
                                     'WHERE short_doi = %s;', (short_doi,))
-    logging.info(type(submission_data))
-    logging.info(submission_data)
     return submission_data
 
   def click_card(self, cardname):

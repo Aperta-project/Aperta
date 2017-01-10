@@ -140,8 +140,10 @@
   }
 }
 
-.paper-downloads-links {
-  text-align: right;
+.paper-downloads-link {
+  &:last-of-type {
+    text-align: right;
+  }
 
   a {
     margin-right: 2rem;
@@ -152,4 +154,8 @@
   a:last-of-type {
     margin-right: 0;
   }
+}
+
+.paper-downloads-version {
+  width: 67%;
 }

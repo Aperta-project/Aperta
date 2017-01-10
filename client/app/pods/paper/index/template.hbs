@@ -51,7 +51,8 @@
 {{/if}}
 
 {{#if downloadsVisible}}
-  {{partial "paper/downloads"}}
+  {{paper-downloads paper=model
+                    toggle=(action "toggleDownloads")}}
 {{/if}}
 
 {{withdrawal-banner paper=model}}

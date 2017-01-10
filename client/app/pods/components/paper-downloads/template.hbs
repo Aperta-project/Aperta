@@ -1,0 +1,52 @@
+<span class="sheet-close-x" {{action "toggle"}}>&times;</span>
+<div class="sheet-content">
+  <h1 class="sheet-title">Downloads</h1>
+  <br>
+  <table class="paper-downloads">
+    <tr class="paper-downloads-row">
+      <th>Manuscript Version</th>
+      <th colspan="2">Format</th>
+    </tr>
+    <tr class="paper-downloads-row">
+      <td class="paper-downloads-version">Draft</td>
+      {{#if (or (eq paper.fileType "docx") (eq paper.fileType "doc"))}}
+        <td class="paper-downloads-link paper-downloads-link--docx">
+          <a href="#" {{action "exportDocument" paper.fileType}} class="download-docx" title="Download {{unbound paper.fileType}}">
+            {{fa-icon "file-word-o"}} Word
+          </a>
+        </td>
+        <td class="paper-downloads-link paper-downloads-link--pdf">
+          {{#direct-download-link link=downloadLink extension=".pdf"}}
+            {{fa-icon "file-pdf-o"}} PDF
+          {{/direct-download-link}}
+        </td>
+      {{else}}
+        <td class="paper-downloads-version">&nbsp;</td>
+        <td class="paper-downloads-link paper-downloads-link--pdf">
+          {{#if (eq paper.fileType "pdf")}}
+            <a href="#" {{action "exportDocument" "pdf"}} class="download-pdf" title="Download PDF">
+              {{fa-icon "file-pdf-o"}} PDF
+            </a>
+          {{/if}}
+        </td>
+      {{/if}}
+    </tr>
+    {{#if fetchVersions.isIdle}}
+      {{#each versions as |version|}}
+        <tr class="paper-downloads-row animation-fade-in">
+          <td>v{{version.majorVersion}}.{{version.minorVersion}}</td>
+          <td class="paper-downloads-links">&nbsp;</td>
+          <td class="paper-downloads-links">&nbsp;</td>
+        </tr>
+      {{/each}}
+    {{else}}
+    <tr>
+      <td colspan="3">
+        {{progress-spinner visible=true
+                           align="middle"
+                           size="small"}}
+      </td>
+    </tr>
+    {{/if}}
+  </table>
+</div>

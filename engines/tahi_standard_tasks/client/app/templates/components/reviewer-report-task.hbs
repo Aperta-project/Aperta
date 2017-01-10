@@ -2,13 +2,8 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{nested-question-radio-decision ident="reviewer_report--decision_term"
-                                   owner=currentReviewerReport
-                                   decision=task.decision
-                                   readOnly=true}}
-
     {{#if task.body.submitted}}
-    {{reviewer-report-questions model=task decision=task.decision readOnly=true}}
+    {{reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=true}}
       <div class="reviewer-report-feedback">
         {{fa-icon icon="check-circle"}}
         This report has been submitted
@@ -18,7 +13,7 @@
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
         guidelines for detailed instructions.</strong>
       </p>
-      {{reviewer-report-questions model=task decision=task.decision readOnly=isNotEditable}}
+      {{reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=isNotEditable}}
 
       <div class="reviewer-report-confirmation">
         {{#if submissionConfirmed}}

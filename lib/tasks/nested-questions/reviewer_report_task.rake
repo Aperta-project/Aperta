@@ -13,7 +13,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: "reviewer_report--competing_interests",
       value_type: "boolean",
       text: "Do you have any potential or perceived competing interests that may influence your review?",
@@ -21,7 +21,7 @@ namespace 'nested-questions:seed' do
       children: [
         {
           owner_id: nil,
-          owner_type: TahiStandardTasks::ReviewerReportTask.name,
+          owner_type: ReviewerReport.name,
           ident: "reviewer_report--competing_interests--detail",
           value_type: "text",
           text: "Comment",
@@ -32,7 +32,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: "reviewer_report--identity",
       value_type: "text",
       text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
@@ -41,7 +41,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: "reviewer_report--comments_for_author",
       value_type: "text",
       text: "Add your comments to authors below.",
@@ -50,7 +50,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: "reviewer_report--additional_comments",
       value_type: "text",
       text: "(Optional) If you have any additional confidential comments to the editor, please add them below.",
@@ -59,7 +59,7 @@ namespace 'nested-questions:seed' do
 
     questions << {
       owner_id: nil,
-      owner_type: TahiStandardTasks::ReviewerReportTask.name,
+      owner_type: ReviewerReport.name,
       ident: "reviewer_report--suitable_for_another_journal",
       value_type: "boolean",
       text: "If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em> journal</a>?",
@@ -67,7 +67,7 @@ namespace 'nested-questions:seed' do
       children: [
         {
           owner_id: nil,
-          owner_type: TahiStandardTasks::ReviewerReportTask.name,
+          owner_type: ReviewerReport.name,
           ident: "reviewer_report--suitable_for_another_journal--journal",
           value_type: "text",
           text: "Other Journal",
@@ -77,7 +77,7 @@ namespace 'nested-questions:seed' do
     }
 
     NestedQuestion.where(
-      owner_type: TahiStandardTasks::ReviewerReportTask.name
+      owner_type: ReviewerReport.name
     ).update_all_exactly!(questions)
   end
 end

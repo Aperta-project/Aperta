@@ -136,6 +136,77 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
+  def test_validate_pdf_full_submit(self, init=True):
+    """
+    test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
+      pdf upload
+    :param init: Determine if login is needed
+    :return: void function
+    """
+    logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_full_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
+    # Temporary changing timeout
+    dashboard_page.click_create_new_submission_button()
+    dashboard_page.set_timeout(120)
+    # We recently became slow drawing this overlay (20151006)
+    time.sleep(.5)
+    self.create_article(title='full submit', journal='PLOS Wombat', type_='NoCards',
+                        random_bit=True, format='pdf')
+    dashboard_page.restore_timeout()
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(15)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    # Need to wait for url to update
+    count = 0
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    while not short_doi:
+      if count > 60:
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+      time.sleep(1)
+      short_doi = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+
+    count = 0
+    while count < 60:
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'full submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
+        continue
+      else:
+        break
+      logging.warning('Conversion never completed - still showing interim title')
+
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    # Allow time for submit button to attach to the DOM
+    time.sleep(3)
+    manuscript_page.click_submit_btn()
+    time.sleep(3)
+    manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
+    manuscript_page.confirm_submit_cancel()
+    # The overlay mush be cleared to interact with the submit button
+    # and it takes time
+    time.sleep(.5)
+    manuscript_page.click_submit_btn()
+    time.sleep(1)
+    manuscript_page.confirm_submit_btn()
+    # Now we get the submit confirmation overlay
+    # Sadly, we take time to switch the overlay
+
+    manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    assert sub_data[0][0] == 'submitted', sub_data[0][0]
+    assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][2], sub_data[0][2]
 
 @MultiBrowserFixture
 class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
@@ -266,6 +337,144 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
+    id_card.card_ready()
+    id_card.validate_styles()
+    decision = id_card.execute_decision()
+    logging.info('Decision: {0}'.format(decision))
+    time.sleep(2)
+    sub_data = workflow_page.get_db_submission_data(short_doi)
+    if decision == 'reject':
+      assert sub_data[0][0] == 'rejected', sub_data[0][0]
+      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][2], sub_data[0][2]
+      return True
+    elif decision == 'invite':
+      assert sub_data[0][0] == 'invited_for_full_submission', sub_data[0][0]
+      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][2], sub_data[0][2]
+    else:
+      print('ERROR: no initial decision rendered')
+      print(decision)
+      return False
+    workflow_page.logout()
+
+    self.cas_login(email=creator_user['email'])
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    time.sleep(1)
+    manuscript_page.click_submit_btn()
+    manuscript_page.validate_so_overlay_elements_styles('initial_submit_full',
+                                                        paper_title_from_page)
+    manuscript_page.confirm_submit_cancel()
+    # The overlay mush be cleared to interact with the submit button
+    # and it takes time
+    time.sleep(1)
+    manuscript_page.click_submit_btn()
+    time.sleep(1)
+    manuscript_page.confirm_submit_btn()
+    # Now we get the submit confirmation overlay
+    # Sadly, we take time to switch the overlay
+    time.sleep(1)
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is_full', paper_title_from_page)
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    assert sub_data[0][0] == 'submitted', sub_data[0][0]
+    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][2], sub_data[0][2]
+
+  def test_validate_pdf_initial_submit(self):
+    """
+    test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
+      bringing it through to full submission via pdf upload
+    :param init: Determine if login is needed
+    :return: void function
+    """
+    logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_initial_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    creator_user = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(creator_user))
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.click_create_new_submission_button()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(60)
+    # We recently became slow drawing this overlay (20151006)
+    time.sleep(.5)
+    self.create_article(title='initial submit', journal='PLOS Wombat',
+                        type_='OnlyInitialDecisionCard', random_bit=True, format='pdf')
+    dashboard_page.restore_timeout()
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(7)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    time.sleep(5)
+    # Need to wait for url to update
+    count = 0
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    while not short_doi:
+      if count > 60:
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+      time.sleep(1)
+      short_doi = manuscript_page.get_current_url().split('/')[-1]
+      count += 1
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+
+    count = 0
+    while count < 60:
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'initial submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
+        continue
+      else:
+        break
+      logging.warning('Conversion never completed - still showing interim title')
+
+    # Give a little time for the submit button to attach to the DOM
+    time.sleep(5)
+    manuscript_page.click_submit_btn()
+    manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
+    manuscript_page.confirm_submit_cancel()
+    # The overlay must be cleared to interact with the submit button
+    # and it takes time
+    time.sleep(2)
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    # Now we get the submit confirmation overlay
+    # Sadly, we take time to switch the overlay
+    time.sleep(3)
+    manuscript_page.check_for_flash_error()
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_initial_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
+    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][2], sub_data[0][2]
+    manuscript_page.logout()
+
+    admin_user = random.choice(admin_users)
+    logging.info('Logging in as {0}'.format(admin_user['name']))
+    dashboard_page = self.cas_login(email=admin_user['email'])
+    dashboard_page._wait_for_element(
+      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.click_card('initial_decision')
+    id_card = InitialDecisionCard(self.getDriver())
+    id_card.card_ready()
     id_card.validate_styles()
     decision = id_card.execute_decision()
     logging.info('Decision: {0}'.format(decision))

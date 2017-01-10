@@ -237,6 +237,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_task('Reviewer Candidates')
     reviewer = random.choice(users)
+    logging.info('Reviewer is: {0}'.format(reviewer['name']))
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     rev_cand_task.complete_reviewer_cand_form(reviewer)
     rev_cand_task.click_completion_button()

@@ -264,12 +264,14 @@ class BaseCard(AuthenticatedPage):
     Evaluate whether the card view is a versioned view
     :return: True if versioned view of card, False otherwise
     """
-    if self.get(self._versioned_metadata_div):
-      assert self.get(self._versioned_metadata_div).text == 'Viewing', \
-          self.get(self._versioned_metadata_div).text
-      return True
-    else:
+    try:
+      self.get(self._versioned_metadata_div)
+    except ElementDoesNotExistAssertionError:
+      logging.info('No versioned div found - not a versioned view')
       return False
+    assert self.get(self._versioned_metadata_div).text == 'Viewing', \
+          self.get(self._versioned_metadata_div).text
+    return True
 
   def extract_current_view_version(self):
     """

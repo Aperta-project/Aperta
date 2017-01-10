@@ -160,19 +160,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # Need to wait for url to update
-    count = 0
-    short_doi = manuscript_page.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
@@ -182,7 +172,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
         continue
       else:
         break
-      logging.warning('Conversion never completed - still showing interim title')
+      logging.warning('Conversion not completed - still showing interim title')
 
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     # Allow time for submit button to attach to the DOM
@@ -325,8 +315,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     admin_user = random.choice(admin_users)
     logging.info('Logging in as {0}'.format(admin_user['name']))
     dashboard_page = self.cas_login(email=admin_user['email'])
-    dashboard_page._wait_for_element(
-      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -471,7 +460,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
     id_card.card_ready()

@@ -170,11 +170,8 @@ class DiscussionForumTest(CommonTest):
     time.sleep(.5)
     paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
-    self.create_article(title='Testing Discussion Forum',
-                        journal=journal,
-                        type_=paper_type,
-                        random_bit=True,
-                        )
+    self.create_article(title='Testing Discussion Forum', journal=journal, type_=paper_type,
+                        random_bit=True)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
     logging.info(ms_viewer.get_current_url())

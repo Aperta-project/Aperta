@@ -39,7 +39,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Locators - Instance members
     # Main Viewer Div
-    self._paper_title = (By.ID, 'control-bar-paper-title')
+    self._paper_title = (By.CSS_SELECTOR, 'div#control-bar-paper-title > span')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')

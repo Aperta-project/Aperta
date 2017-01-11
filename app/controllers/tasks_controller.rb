@@ -30,15 +30,18 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
-    # if the task is completed the only thing that can be done to it is mark
-    # it as uncompleted
-    if task.completed?
-      attrs = params.require(:task).permit(:completed)
-      if attrs.has_key?(:completed)
-        task.update_attribute(:completed, attrs[:completed])
+    attrs = task_params(task.class)
+    if attrs[:completed] != task.completed
+      # Toggling task completed should not contain any other changes to the
+      # task, but should simply toggle the completed status
+      if task.completed?
+        # Skip validations
+        task.update_attribute(:completed, false)
+      else
+        task.update!(completed: true)
       end
     else
-      task.assign_attributes(task_params(task.class))
+      task.assign_attributes(attrs)
       task.save!
     end
 

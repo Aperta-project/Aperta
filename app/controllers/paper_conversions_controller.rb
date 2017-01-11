@@ -33,7 +33,8 @@ class PaperConversionsController < ApplicationController
 
     render json: { url: url_for(controller: :paper_conversions, action: :status,
                                 id: params[:id], job_id: job_id,
-                                export_format: export_format) },
+                                export_format: export_format,
+                                versioned_text_id: versioned_text_id) },
     status: :accepted
   end
 
@@ -81,6 +82,10 @@ class PaperConversionsController < ApplicationController
 
   def export_format
     export_format ||= params[:export_format]
+  end
+
+  def versioned_text_id
+    versioned_text_id ||= params[:versioned_text_id]
   end
 
   def doc_file_type_and_doc_attached

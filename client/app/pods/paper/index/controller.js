@@ -21,10 +21,6 @@ export default Controller.extend(PaperBase, Discussions, {
     }
   ),
 
-  downloadLink: computed('model.id', function() {
-    return '/papers/' + this.get('model.id') + '/download';
-  }),
-
   showSubmissionProcess: computed('model', 'firstView', 'isGradualEngagement',
     function() {
       if (!this.get('isGradualEngagement')) return false;

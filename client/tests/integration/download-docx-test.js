@@ -31,12 +31,15 @@ test('show download links on control bar', function(assert) {
 
   let mock = void 0;
   const currentPaper = records[0];
+  const versionedTextsURL = '/api/papers/' + currentPaper.shortDoi + '/versioned_texts';
+  const exportUrl = '/api/papers/' + currentPaper.id + '/export?export_format=docx';
   const paperPayload = Factory.createPayload('paper');
   paperPayload.addRecords(records.concat([fakeUser]));
   const paperResponse = paperPayload.toJSON();
   paperResponse.paper.file_type = 'docx';
+  paperResponse.paper.links = { versioned_texts: versionedTextsURL };
   const jobId = '232134-324-1234-1234';
-  const exportUrl = '/api/papers/' + currentPaper.id + '/export?export_format=docx';
+
 
   server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi, [
     200, { 'Content-Type': 'application/json' }, JSON.stringify(paperResponse)
@@ -64,21 +67,22 @@ test('show download links on control bar', function(assert) {
     })
   ]);
 
+  server.respondWith('GET', versionedTextsURL, [
+    200, { 'Content-Type': 'application/json' }, JSON.stringify({
+      versioned_texts: [{
+        id: 1,
+        paper_id: currentPaper.id,
+        file_type: 'docx',
+      }]
+    })
+  ]);
+
+  mock = sinon.mock(win);
+  mock.expects('location').withArgs('/api/papers/' + currentPaper.id + '/download.docx').returns(true);
+
   visit('/papers/' + currentPaper.shortDoi);
-
-  andThen(function() {
-    assert.ok(true);
-  });
-
-  andThen(function() {
-    mock = sinon.mock(win);
-    mock.expects('location').withArgs('/api/papers/' + currentPaper.id + '/download.docx').returns(true);
-  });
-
-  click('#nav-downloads').then(function() {
-    click('.download-docx');
-  });
-
+  click('#nav-downloads');
+  click('.download-docx');
   andThen(function() {
     assert.ok(_.findWhere(server.requests, {
       method: 'GET',

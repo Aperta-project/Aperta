@@ -7,36 +7,44 @@
       <th>Manuscript Version</th>
       <th colspan="2">Format</th>
     </tr>
-    <tr class="paper-downloads-row">
-      <td class="paper-downloads-version">Draft</td>
-      {{#if (or (eq paper.fileType "docx") (eq paper.fileType "doc"))}}
-        <td class="paper-downloads-link paper-downloads-link--docx">
-          <a href="#" {{action "exportDocument" paper.fileType}} class="download-docx" title="Download {{unbound paper.fileType}}">
-            {{fa-icon "file-word-o"}} Word
-          </a>
-        </td>
-        <td class="paper-downloads-link paper-downloads-link--pdf">
-          {{#direct-download-link link=downloadLink extension=".pdf"}}
-            {{fa-icon "file-pdf-o"}} PDF
-          {{/direct-download-link}}
-        </td>
-      {{else}}
-        <td class="paper-downloads-version">&nbsp;</td>
-        <td class="paper-downloads-link paper-downloads-link--pdf">
-          {{#if (eq paper.fileType "pdf")}}
-            <a href="#" {{action "exportDocument" "pdf"}} class="download-pdf" title="Download PDF">
-              {{fa-icon "file-pdf-o"}} PDF
-            </a>
-          {{/if}}
-        </td>
-      {{/if}}
-    </tr>
     {{#if fetchVersions.isIdle}}
       {{#each versions as |version|}}
         <tr class="paper-downloads-row animation-fade-in">
-          <td>v{{version.majorVersion}}.{{version.minorVersion}}</td>
-          <td class="paper-downloads-links">&nbsp;</td>
-          <td class="paper-downloads-links">&nbsp;</td>
+          <td>
+            {{#if version.isDraft}}
+              Draft
+            {{else}}
+              v{{version.majorVersion}}.{{version.minorVersion}}
+            {{/if}}
+          </td>
+          {{#if (or (eq version.fileType "docx") (eq version.fileType "doc"))}}
+            <td class="paper-downloads-link paper-downloads-link--docx">
+              <a href="#"
+                 class="download-docx"
+                 title="Download {{version.fileType}}"
+                 {{action "exportDocument" version}}>
+                {{fa-icon "file-word-o"}} Word
+              </a>
+            </td>
+            <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+              <a href={{concat pdfDownloadLink (if version.isDraft "" (concat "?version=" version.majorVersion "." version.minorVersion))}}
+                 class="download-pdf"
+                 title="Download PDF">
+                {{fa-icon "file-pdf-o"}} PDF
+              </a>
+            </td>
+          {{else if (eq version.fileType "pdf")}}
+            <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+              <a href="#"
+                 class="download-pdf"
+                 title="Download PDF"
+                 {{action "exportDocument" version}}>
+                {{fa-icon "file-pdf-o"}} PDF
+              </a>
+            </td>
+          {{else}}
+            <td colspan="2">Processing...</td>
+          {{/if}}
         </tr>
       {{/each}}
     {{else}}

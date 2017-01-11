@@ -16,6 +16,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * The first affiliate field on the billing task is now required
 * Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
 ### Changed
+* Users can download previous versions of a Manuscript
 * The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
 ### Deprecated
 ### Removed

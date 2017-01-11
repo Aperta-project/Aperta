@@ -26,7 +26,6 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
   assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=major_revision]', 'User cannot provide a major revision recommendation');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=minor_revision]', 'User cannot provide a minor revision recommendation');
   assert.elementNotFound('textarea[name=front_matter_reviewer_report--competing_interests]', 'User cannot provide their competing interests statement');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--competing_interests]', 'User cannot provide their competing interests statement');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=true]', 'User cannot provide yes response to biology suitability');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=false]', 'User cannot provide no response to biology suitability');
   assert.elementNotFound('textarea[name=front_matter_reviewer_report--suitable--comment]', 'User cannot provide their review of biology suitability');

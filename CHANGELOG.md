@@ -4,6 +4,18 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
+### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
 ### Changed
 * The Discussion participant list displays names in place of avatars
 * ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
@@ -11,7 +23,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+* Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
 * Reviewer report display no longer gets jumbled after a decision has been made.
 ### Security
 
@@ -25,6 +39,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced

@@ -23,7 +23,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     decline(invitation) {
       this.get('decline')(invitation).then(()=>{
-        this.get('flash').displayMessage('success', 'Thank you for your feedback!');
+        this.get('flash').displayRouteLevelMessage('success', 'Thank you for your feedback!');
         this.closeOverlayIfLast()});
     }
   }

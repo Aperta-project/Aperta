@@ -34,47 +34,75 @@ import prepareResponseErrors from 'tahi/lib/validations/prepare-response-errors'
   To set a message manually from Controller or Route:
 
   ```
-  this.flash.displayMessage('success', 'You win');
+  this.flash.displayRouteLevelMessage('success', 'You win');
   ```
 
   The messages will be cleared out on the next route transition or overlay close.
   If you need to clear them out manually:
 
   ```
-  this.flash.clearAllMessages();
+  this.flash.clearAllRouteLevelMessages();
   ```
 
   ## How it Works
 
   A service is created and injected into all Routes and Controllers
   from an Ember Initializer as the property `flash`.
-  When `displayMessage` or `displayErrorMessagesFromResponse` is called, all
+  When `displayRouteLevelMessage` or `displayErrorMessagesFromResponse` is called, all
   we're doing is pushing to an array of messages that are displayed in the templates.
   The `flash` object is also injected into the `flash-messages` component.
 */
 
 export default Ember.Service.extend({
   /**
-    @property messages
+   * Message queue for route level messages
+   *
+    @property routeLevelMessages
     @type Array
     @default []
   */
-  messages: [],
-
+  routeLevelMessages: Ember.A(),
   /**
-    Create a single message.
+   * Message queue for system wide level message (persist after route transitions)
+   *
+   @property messages
+   @type Array
+   @default []
+   */
+
+  systemLevelMessages: Ember.A(),
+  /**
+    Create a single route level message.
 
     ```
-    this.flash.displayMessage('error', 'Oh noes');
+    this.flash.displayRouteLevelMessage('error', 'Oh noes');
     ```
 
-    @method displayMessage
+    @method displayRouteLevelMessage
     @param {String} type    Used to generate final class. Example: `flash-message--success`
     @param {String} message Message displayed to user
   */
 
-  displayMessage(type, message) {
-    this.get('messages').pushObject({
+  displayRouteLevelMessage(type, message) {
+    this.get('routeLevelMessages').pushObject({
+      text: message,
+      type: type
+    });
+  },
+  /**
+   Create a single system wide message.
+
+   ```
+   this.flash.displaySystemLevelMessage('error', 'kaboom!');
+   ```
+
+   @method displaySystemLevelMessage
+   @param {String} type    Used to generate final class. Example: `flash-message--success`
+   @param {String} message Message displayed to user
+   */
+
+  displaySystemLevelMessage(type, message) {
+    this.get('systemLevelMessages').pushObject({
       text: message,
       type: type
     });
@@ -97,37 +125,52 @@ export default Ember.Service.extend({
   */
 
   displayErrorMessagesFromResponse(response) {
-    this.clearAllMessages();
+    this.clearAllRouteLevelMessages();
     let errors = prepareResponseErrors(response.errors, ({includeNames: 'humanize'}));
 
     Object.keys(errors).forEach((key) => {
       let msg = errors[key];
-      if(Ember.isPresent(msg)) { this.displayMessage('error', msg); }
+      if(Ember.isPresent(msg)) { this.displayRouteLevelMessage('error', msg); }
     });
   },
 
   /**
-    Remove flash message.
+    Remove Route Level flash message.
 
-    @method removeMessage
+    @method removeRouteLevelMessage
     @param {Object} message to be removed
   */
 
-  removeMessage(message) {
-    this.get('messages').removeObject(message);
+  removeRouteLevelMessage(message) {
+    this.get('routeLevelMessages').removeObject(message);
+  },
+
+  /**
+   Remove System Level flash message.
+
+   @method removeRouteLevelMessage
+   @param {Object} message to be removed
+   */
+
+  removeSystemLevelMessage(message) {
+    this.get('systemLevelMessages').removeObject(message);
   },
 
   /**
     Remove all flash messages in the application.
     Automatically called during route transitions and overlay close.
     ```
-    this.flash.clearAllMessages();
+    this.flash.clearAllRouteLevelMessages();
     ```
 
-    @method clearAllMessages
+    @method clearAllRouteLevelMessages
   */
 
-  clearAllMessages() {
-    this.set('messages', []);
+  clearAllRouteLevelMessages() {
+    this.set('routeLevelMessages', []);
+  },
+
+  clearAllSystemLevelMessages() {
+    this.set('systemLevelMessages', []);
   }
 });

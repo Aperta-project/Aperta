@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_core_rev_rep_non_research_actions(self):
+  def _test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.
@@ -158,7 +158,7 @@ class ReviewerReportTest(CommonTest):
     # Abbreviate the timeout for conversion success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -168,9 +168,8 @@ class ReviewerReportTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
@@ -180,7 +179,7 @@ class ReviewerReportTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info('Paper id is: {0}.'.format(research_paper_id))
+    logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
 
@@ -188,15 +187,17 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
 
+    # get if out of doi
+    research_paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
+
     ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (research_paper_id,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    dashboard_page._wait_for_element(dashboard_page._get(
-        dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    assert manuscript_page.click_task('research_reviewer_report')
+    assert manuscript_page.click_task('Review by ')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report_edit_mode()
@@ -213,9 +214,8 @@ class ReviewerReportTest(CommonTest):
       editorial_user = random.choice(editorial_users)
       logging.info(editorial_user)
       dashboard_page = self.cas_login(email=editorial_user['email'])
-      dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-      dashboard_page.go_to_manuscript(research_paper_id)
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))

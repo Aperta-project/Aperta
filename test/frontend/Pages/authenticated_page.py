@@ -1906,8 +1906,8 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-weight')
     assert button.value_of_css_property('font-style') == 'normal', \
         button.value_of_css_property('font-style')
-    # This color is not represented in the style guide
-    assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
+    # This color is not represented in the style guide. APERTA-8904
+    #assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', \
         button.value_of_css_property('line-height')
     assert button.value_of_css_property('margin-top') == '4px', \

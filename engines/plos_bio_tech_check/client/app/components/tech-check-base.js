@@ -22,7 +22,7 @@ export default TaskComponent.extend({
     this.set('task.body', data);
 
     this.get('task').save().then(()=> {
-      this.get('flash').displayMessage(
+      this.get('flash').displayRouteLevelMessage(
         'success', 'Author Changes Letter has been Saved'
       );
       callback();
@@ -53,7 +53,7 @@ export default TaskComponent.extend({
         this.get('restless').post(path);
 
         this.set('authoringMode', false);
-        this.get('flash').displayMessage('success', this.get('successText'));
+        this.get('flash').displayRouteLevelMessage('success', this.get('successText'));
       });
     },
 

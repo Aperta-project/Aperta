@@ -15,6 +15,7 @@ class VersionedText < ActiveRecord::Base
 
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
+  before_update :add_file_info, if: :file?
 
   validates :paper, presence: true
   validate :only_version_once
@@ -23,8 +24,7 @@ class VersionedText < ActiveRecord::Base
   def be_major_version!
     update!(
       major_version: (paper.major_version || -1) + 1,
-      minor_version: 0,
-      file_type: paper.file_type
+      minor_version: 0
     )
   end
 
@@ -32,8 +32,7 @@ class VersionedText < ActiveRecord::Base
   def be_minor_version!
     update!(
       major_version: (paper.major_version || 0),
-      minor_version: (paper.minor_version || -1) + 1,
-      file_type: paper.file_type
+      minor_version: (paper.minor_version || -1) + 1
     )
   end
 
@@ -59,8 +58,7 @@ class VersionedText < ActiveRecord::Base
       d.update!(
         major_version: nil,
         minor_version: nil,
-        submitting_user: nil,
-        file_type: paper.file_type
+        submitting_user: nil
       ) # makes duplicate of S3 file
     end
   end
@@ -69,6 +67,20 @@ class VersionedText < ActiveRecord::Base
     version = major_version.nil? ? "(draft)" : "R#{major_version}.#{minor_version}"
     type = file_type.nil? ? "" : " (#{file_type.upcase})"
     "#{version}#{type} - #{updated_at.strftime('%b %d, %Y')}"
+  end
+
+  def file?
+    paper.file.present?
+  end
+
+  def add_file_info
+    self.file_type = paper.file_type
+    self.s3_dir = paper.file.s3_dir
+    self.file = paper.file[:file]
+  end
+
+  def s3_full_path
+    file? ? s3_dir + '/' + file : nil
   end
 
   private

@@ -72,6 +72,17 @@ describe VersionedText do
 
       expect(paper.major_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_minor_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_minor_version!
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
   end
 
   describe "#be_major_version!" do
@@ -95,6 +106,17 @@ describe VersionedText do
 
       expect(paper.minor_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_major_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_major_version!
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
   end
 
   describe "#new_draft!" do
@@ -102,6 +124,19 @@ describe VersionedText do
 
     context "the versioned_text is a draft" do
       let(:versioned_text) { paper.draft }
+
+      it "has no submitting user" do
+        expect(versioned_text.submitting_user).to be_nil
+      end
+
+      it "has matching file and versioned_text s3 directories" do
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
 
       it "fails" do
         expect { new_draft! }.to raise_error(ActiveRecord::RecordInvalid)

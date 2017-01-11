@@ -20,6 +20,7 @@ export default DS.Model.extend({
   fullVersion: Ember.computed('majorVersion', 'minorVersion', function() {
     return `${this.get('majorVersion')}.${this.get('minorVersion')}`;
   }),
+  fileType: DS.attr('string'),
 
   createdAtOrNow: Ember.computed(
     'createdAt',

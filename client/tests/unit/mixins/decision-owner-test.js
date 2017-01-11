@@ -1,25 +1,12 @@
 import DecisionOwnerMixin from 'tahi/mixins/decision-owner';
 import Ember from 'ember';
-import startApp from 'tahi/tests/helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import { make } from 'ember-data-factory-guy';
-import { module, test } from 'qunit';
+import { test } from 'qunit';
+import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 const DecisionOwnerObject = Ember.Object.extend(DecisionOwnerMixin);
 
-module('Unit | Mixin | decision owner',{
-  beforeEach() {
-    this.App = startApp();
-    return TestHelper.setup(this.App);
-  },
-
-  afterEach() {
-    Ember.run(function() {
-      return TestHelper.teardown();
-    });
-    return Ember.run(this.App, 'destroy');
-  }
-});
+moduleForAcceptance('Unit | Mixin | decision owner');
 
 test('decisionsAscending with many decisions, including a draft decision', function(assert) {
   const decisionOwner = DecisionOwnerObject.create({

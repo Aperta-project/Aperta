@@ -3,7 +3,7 @@
 require_dependency 'tahi_epub'
 
 class EpubConverter
-  attr_reader :paper, :include_source, :downloader, :include_cover_image
+  attr_reader :paper, :include_source, :downloader
 
   include DownloadablePaper
 
@@ -11,18 +11,15 @@ class EpubConverter
   # * paper: The Paper in question
   # * downloader: The user who appears in the PDF conversion's footer
   # * include_source: whether or not to attach the manuscript document
-  # * include_cover_image: Unused.
   # * include_html: whether to render publishing info and paper body html \
   #     files, or include them just as 0 byte files.
   def initialize(paper,
                  downloader = nil,
                  include_source: false,
-                 include_cover_image: true,
                  include_html: true)
     @paper = paper
     @downloader = downloader # a user
     @include_source = include_source
-    @include_cover_image = include_cover_image
     @include_html = include_html
   end
 

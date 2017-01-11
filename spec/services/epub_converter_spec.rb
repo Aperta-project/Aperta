@@ -12,7 +12,6 @@ describe EpubConverter do
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:include_source) { false }
-  let(:include_cover_image) { true }
   let(:include_html) { true }
 
   let(:converter) do
@@ -20,7 +19,6 @@ describe EpubConverter do
       paper,
       user,
       include_source: include_source,
-      include_cover_image: include_cover_image,
       include_html: include_html)
   end
 

@@ -21,8 +21,8 @@ class InitialDecisionCard(BaseCard):
     # Locators - Instance members
     self._card_title = (By.TAG_NAME, 'h1')
     self._intro_text = (By.TAG_NAME, 'p')
-    self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
-    self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
+    self._reject_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label > input')
+    self._invite_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label + label > input')
     self._decision_letter_textarea = (By.CLASS_NAME, 'decision-letter-field')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
     self._decision_alert = (By.CLASS_NAME, 'rescind-decision-container')
@@ -37,9 +37,12 @@ class InitialDecisionCard(BaseCard):
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
     self.validate_application_title_style(card_title)
+    self._get(self._invite_radio_button).click()
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
-    assert intro_text.text == 'Please write your decision letter in the area below', intro_text.text
+    # APERTA-8902
+    # self.validate_application_ptext(intro_text)
+    assert intro_text.text == 'Please write your decision letter in the area below:', \
+        intro_text.text
     self._get(self._reject_radio_button)
     self._get(self._invite_radio_button)
     self._get(self._decision_letter_textarea)

@@ -39,7 +39,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Locators - Instance members
     # Main Viewer Div
-    self._paper_title = (By.ID, 'control-bar-paper-title')
+    self._paper_title = (By.CSS_SELECTOR, 'div#control-bar-paper-title > span')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
@@ -580,13 +580,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Unknown Task')
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, style_check=False, author = ''):
+  def complete_task(self,
+                    task_name,
+                    click_override=False,
+                    data=None,
+                    style_check=False,
+                    author=''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data: A dictionary with the required data for each task.
     :param style_check: A boolean, when True will do style checking. Default False.
+    :param author: Author to use in completing author task, if applicable - looks up values from
+      Base/Resources.py
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """
@@ -658,20 +665,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()
       if data and 'file_name' in data:
-        attached_filename = supporting_info.add_file(data['file_name'])
-        if style_check:
-          supporting_info.validate_default_link_style(attached_filename)
-        assert attached_filename.text in data['file_name'].replace(' ', '+'), \
-            (attached_filename.text, data['file_name'].replace(' ', '+'))
-        edit_btn = self._get(supporting_info._si_pencil_icon)
-        assert edit_btn
-        assert self._get(supporting_info._si_trash_icon)
-        edit_btn.click()
-        if style_check:
-          supporting_info.validate_si_edit_form_style()
-        # check cancel button
-        cancel_btn = self._get(supporting_info._si_file_cancel_btn)
-        cancel_btn.click()
+        supporting_info.add_file(data['file_name'])
         time.sleep(5)
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)

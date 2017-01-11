@@ -91,15 +91,16 @@ class BaseTask(AuthenticatedPage):
     """
     return self._get(self._versioned_metadata_version_string).text
 
-  def check_flash_messages(self, expected_msg, timeout=15):
+  def check_flash_messages(self, expected_msg='', timeout=15):
     """
     Used to check that a success message fired and that an error message did not. For the time
       being, only log a warning, do not fail the test.
+    :param expected_msg: A string in the flash message you expect to fire
+    :param timeout: the time to wait for a flash message to fire, before moving on
     :return:
     """
     self.set_timeout(timeout)
     all_success_messages = self.get_flash_success_messages()
-    success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
     for msg in all_success_messages:
       logging.info(msg.text)
       try:

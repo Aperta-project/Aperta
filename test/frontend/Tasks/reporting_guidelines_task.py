@@ -117,8 +117,9 @@ class ReportingGuidelinesTask(BaseTask):
     newest_file = os.path.basename(newest_file)
     os.remove(newest_file)
     os.chdir(current_path)
-    assert uploaded_prisma_file.text == os.path.basename(newest_file), \
-      'Uploaded file: {0} | Downloaded file: {1}'.format(uploaded_prisma_file.text, newest_file)
+    upload_filename = os.path.splitext(uploaded_prisma_file.text)[0]
+    assert upload_filename in os.path.basename(newest_file), \
+      'Uploaded file: {0} not in Downloaded file: {1}'.format(upload_filename, newest_file)
 
   def replace_prisma_checklist(self):
     """

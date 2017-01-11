@@ -90,27 +90,48 @@ class SICard(BaseCard):
     uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
     assert uploads == site_uploads, (uploads, site_uploads)
 
+  def validate_upload(self, upload):
+    """
+    Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
+    """
+    site_upload = self._get(self._file_link).text
+    assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
+    return None
+
   def add_file(self, file_name):
     """
     Add a file to the Supporting Information card
     :param file_name: A string with a filename
-    :return: attached file name web element
+    :return: None
     """
-    logging.info('Attach file called {0}'.format(file_name))
+    logging.info('Attach file called with {0}'.format(file_name))
+    sif = (By.CLASS_NAME, 'si-file-view')
+    try:
+      sif_before  = len(self._gets(sif))
+    except ElementDoesNotExistAssertionError:
+      sif_before = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
-    attached_element = self._get(self._si_filename)
-    return attached_element
+    # Time needed for file upload
+    counter = 0
+    sif_after = len(self._gets(sif))
+    while sif_after <= sif_before:
+      sif_after = len(self._gets(sif))
+      counter += 1
+      if counter > 60:
+        break
+      time.sleep(1)
 
   def add_files(self, file_list):
     """
     Add files to the SI card. This method calls add_file for each file it adds
     :param file_list: A list with strings with a filename
-    :return: attached file web elements
+    :return: None
     """
-    attached_elements = []
     for file_name in file_list:
       new_element = self.add_file(file_name)
-      attached_elements.append(new_element)
       # This sleep avoid a Stale Element Reference Exception
       time.sleep(12)
-    return attached_elements
+    return None

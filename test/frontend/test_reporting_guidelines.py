@@ -79,7 +79,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Reporting Guidelines test', journal='PLOS Wombat',
-                    type_='generateCompleteApexData', random_bit=True)
+                        type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
@@ -124,7 +124,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Reporting Guidelines test', journal='PLOS Wombat',
-                    type_='generateCompleteApexData', random_bit=True)
+                        type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines
@@ -151,7 +151,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Reporting Guidelines test', journal='PLOS Wombat',
-                    type_='generateCompleteApexData', random_bit=True)
+                        type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines
@@ -178,7 +178,7 @@ class ReportingGuidelinesTaskTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Reporting Guidelines test', journal='PLOS Wombat',
-                    type_='generateCompleteApexData', random_bit=True)
+                        type_='generateCompleteApexData', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Reporting Guidelines

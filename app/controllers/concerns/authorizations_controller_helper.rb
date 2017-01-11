@@ -31,6 +31,6 @@ module AuthorizationsControllerHelper
   end
 
   def not_found
-    head :not_found
+    render text: "Sorry, we're unable to find the page you requested.", status: 404
   end
 end

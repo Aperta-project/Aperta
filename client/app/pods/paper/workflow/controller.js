@@ -190,7 +190,7 @@ export default Controller.extend({
           }
         })();
 
-        this.flash.displayMessage('error', message);
+        this.flash.displayRouteLevelMessage('error', message);
       });
     }
   }

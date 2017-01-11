@@ -63,7 +63,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     Sorry, we didn't find a figure label in this filename.
     Please edit to add a label. `,
 
-
   figureUrl: Ember.computed('figure.id', function() {
     return `/api/figures/${this.get('figure.id')}/update_attachment`;
   }),

@@ -37,6 +37,8 @@ export default Ember.Component.extend({
       + '/status/'
       + this.get('paper.id')
       + '?export_format=pdf&job_id=source';
+    var versionedTextId = this.get('version.id');
+    if (Ember.isPresent(versionedTextId)) url += '&versioned_text_id=' + versionedTextId;
     this.loadPdfUrl(url, window.PDFJS.webViewerLoad);
   },
 

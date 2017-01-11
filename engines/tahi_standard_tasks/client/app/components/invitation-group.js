@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     try {
       return yield invitation.changePosition(newPosition);
     } catch (e) {
-      this.get('flash').displayMessage('error', errorText);
+      this.get('flash').displayRouteLevelMessage('error', errorText);
     }
   }).drop(),
 
@@ -36,7 +36,7 @@ export default Ember.Component.extend({
     },
 
     displayError() {
-      this.get('flash').displayMessage('error', errorText);
+      this.get('flash').displayRouteLevelMessage('error', errorText);
     }
   }
 });

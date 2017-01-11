@@ -28,6 +28,7 @@ class DownloadAttachmentWorker
     # No-op. This is a user canceling a processing job
 
   rescue Exception => ex
+    attachment.update_attribute :status, Attachment::STATUS_ERROR
     paper = attachment.paper
     tab_info = {
       attachment_temporary_url: url,

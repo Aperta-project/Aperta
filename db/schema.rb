@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219214719) do
+ActiveRecord::Schema.define(version: 20170103164447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -767,6 +767,8 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.datetime "updated_at"
     t.text     "original_text"
     t.string   "file_type"
+    t.string   "s3_dir"
+    t.string   "file"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

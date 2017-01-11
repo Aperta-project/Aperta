@@ -29,6 +29,7 @@ class InstitutionalAccountsManager
       { id: 'Leipzig University', text: 'Leipzig University', nav_customer_number: 'C01665' },
       { id: 'Lund University', text: 'Lund University', nav_customer_number: 'C00019' },
       { id: 'Macalester College', text: 'Macalester College', nav_customer_number: 'C01703' },
+      { id: 'Max Delbrück Center for Molecular Medicine (MDC)', text: 'Max Delbrück Center for Molecular Medicine (MDC)', nav_customer_number: 'C01890' },
       { id: 'Max Planck Institute', text: 'Max Planck Institute', nav_customer_number: 'C00018' },
       { id: 'Newcastle University', text: 'Newcastle University', nav_customer_number: 'C01129' },
       { id: 'Nottingham Trent University', text: 'Nottingham Trent University', nav_customer_number: 'C01474' },

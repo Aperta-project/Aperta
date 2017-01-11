@@ -7,6 +7,13 @@ class EpubConverter
 
   include DownloadablePaper
 
+  # == Constructor Arguments
+  # * paper: The Paper in question
+  # * downloader: The user who appears in the PDF conversion's footer
+  # * include_source: whether or not to attach the manuscript document
+  # * include_cover_image: Unused.
+  # * include_html: whether to render publishing info and paper body html \
+  #     files, or include them just as 0 byte files.
   def initialize(paper,
                  downloader = nil,
                  include_source: false,

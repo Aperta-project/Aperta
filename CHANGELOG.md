@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
 * Added warning notifications when browser clients are unable to establish a WebSocket connection
 * The first affiliate field on the billing task is now required
 * Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file

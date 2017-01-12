@@ -40,15 +40,18 @@ namespace :data do
       task reviewer_report_to_reviewer_report_task: :environment do
         # Not all Reviewer Report NestedQuestions are associated with a Reviewer Report
         NestedQuestion.where(owner_type: ReviewerReport.name).find_each do |question|
-          task = question.owner.task
           question.nested_question_answers.find_each do |answer|
-            answer.owner = task
+            answer.owner = answer.owner.task
             answer.save(validate: false)
           end
-          question.update!(owner_type: task.class.name)
+          if question.ident.start_with?("front")
+            question.update!(owner_type: 'TahiStandardTasks::FrontMatterReviewerReportTask')
+          else
+            question.update!(owner_type: 'TahiStandardTasks::ReviewerReportTask')
+          end
         end
 
-        ReviewerReport.each do |report|
+        ReviewerReport.find_each do |report|
           if report.nested_questions.empty?
             STDOUT.puts("Destroying ReviewerReport: #{report.id}")
             report.destroy!

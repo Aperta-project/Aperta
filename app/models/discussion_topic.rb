@@ -26,7 +26,6 @@ class DiscussionTopic < ActiveRecord::Base
       role: journal.discussion_participant_role
     )
 
-    discussion_participant.save
     discussion_participants.append(discussion_participant)
   end
 

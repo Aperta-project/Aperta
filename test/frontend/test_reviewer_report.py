@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def _test_core_rev_rep_non_research_actions(self):
+  def test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.
@@ -62,7 +62,7 @@ class ReviewerReportTest(CommonTest):
     research_paper_id = manuscript_page.get_paper_short_doi_from_url()
     # Need to complete cards here
     manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Authors')
+    manuscript_page.complete_task('Authors', author = creator_user)
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.click_submit_btn()
@@ -94,7 +94,7 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
 
-    ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (research_paper_id,))[0][0]
+    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;', (research_paper_id,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
     dashboard_page._wait_for_element(dashboard_page._get(
@@ -102,7 +102,8 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    assert manuscript_page.click_task('Reviewer Report')
+    # watch to insert time here
+    assert manuscript_page.click_task('Review by')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)
@@ -182,15 +183,10 @@ class ReviewerReportTest(CommonTest):
     logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
-
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
-
-    # get if out of doi
-    research_paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
-
-    ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (research_paper_id,))[0][0]
+    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;', (short_doi,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
     dashboard_page.page_ready()

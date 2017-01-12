@@ -574,9 +574,11 @@ class AuthorsTask(BaseTask):
     institutions = self._gets(self._institution_div)
     if len(institutions) == 2:
       institution_div = institutions[0]
-      institution_input = institution_div.find_element_by_tag_name('input')
-      institution_input.clear()
-      institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+      institution = institution_div.find_element_by_tag_name('input')
+      institution.clear()
+      if not author_data['affiliation-name']:
+        author_data['affiliation-name'] = 'Placeholder'
+      institution.send_keys(author_data['affiliation-name'] + Keys.ENTER)
       # Time to look for institutions to fill the drop down options
       time.sleep(5)
     title_input.clear()

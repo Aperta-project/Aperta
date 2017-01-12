@@ -694,6 +694,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
+      ##import pdb; pdb.set_trace()
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)

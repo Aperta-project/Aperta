@@ -764,6 +764,8 @@ ActiveRecord::Schema.define(version: 20170106164856) do
     t.datetime "updated_at"
     t.text     "original_text"
     t.string   "file_type"
+    t.string   "s3_dir"
+    t.string   "file"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

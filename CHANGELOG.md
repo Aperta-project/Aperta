@@ -4,8 +4,17 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
 * Added warning notifications when browser clients are unable to establish a WebSocket connection
 * The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
 ### Changed
 * The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
 ### Deprecated
@@ -25,6 +34,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 * Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}

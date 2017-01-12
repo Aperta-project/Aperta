@@ -20,8 +20,7 @@ class DiscussionTopicsController < ApplicationController
   def create
     requires_user_can :start_discussion, discussion_topic.paper
     discussion_topic.save
-    participant = discussion_topic.discussion_participants.create(user: current_user)
-    discussion_topic.add_discussion_participant(participant)
+    discussion_topic.add_discussion_participant(current_user)
     respond_with discussion_topic
   end
 

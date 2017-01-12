@@ -109,9 +109,11 @@ class ReportingGuidelinesTask(BaseTask):
     files.sort(key=lambda x: os.path.getmtime(x))
     try:
       newest_file = files[-1]
-    except:
-      raise (StandardError, 'Test was not run since the file was not found. Another process may have deleted files '
-                            'from /tmp')
+    except IndexError:
+      os.chdir(current_path)
+      logging.warning('Another process may deleted files from /tmp. While rare, '
+                              'this should not be considered a failure.')
+      return
     newest_file = os.path.basename(newest_file)
     os.remove(newest_file)
     os.chdir(current_path)

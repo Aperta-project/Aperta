@@ -111,7 +111,7 @@ class ReportingGuidelinesTask(BaseTask):
       newest_file = files[-1]
     except IndexError:
       os.chdir(current_path)
-      logging.warning('Another process may deleted files from /tmp. While rare, '
+      logging.warning('Another process may have deleted files from /tmp. While rare, '
                               'this should not be considered a failure.')
       return
     newest_file = os.path.basename(newest_file)

@@ -786,7 +786,8 @@ describe JournalFactory do
               'edit',
               'manage_participant',
               'reply',
-              'view'
+              'view',
+              'be_at_mentioned'
             ]
           end
 

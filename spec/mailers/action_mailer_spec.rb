@@ -3,7 +3,7 @@ require 'rails_helper'
 # SampleTestMailer is defined to show that the functionality tested later in
 # this spec applies to _all_ mailers. There is nothing a developer needs to
 # remember to add later if the below examples are working.
-class SampleTestMailer < ActionMailer::Base
+class SampleTestMailer < ApplicationMailer
   def send_email(to:, from:, subject:, body:)
     mail(to: to, from: from, subject: subject, body: body)
   end

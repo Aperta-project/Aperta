@@ -1,6 +1,6 @@
 module PlosBilling
   # Mailer related to SFDC transactions
-  class BillingSalesforceMailer < ActionMailer::Base
+  class BillingSalesforceMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
     layout "mailer"

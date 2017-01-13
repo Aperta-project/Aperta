@@ -15,9 +15,9 @@ module TahiStandardTasks
         attachments[attachment.filename] = attachment.file.read
       end
 
-      subject = "You have been invited as a reviewer for the manuscript, \"#{@paper.display_title}\""
+      @subject = "You have been invited as a reviewer for the manuscript, \"#{@paper.display_title}\""
       mail(to: @invitation.email,
-           subject: subject,
+           subject: @subject,
            bcc: @paper.journal.reviewer_email_bcc)
     end
   end

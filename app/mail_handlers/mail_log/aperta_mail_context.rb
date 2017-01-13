@@ -19,7 +19,7 @@ module MailLog
     end
 
     def paper
-      @paper ||= task.try(:paper)
+      @paper ||= task.try(:paper) || fallback_to_first_possible_paper_reference
     end
 
     def task
@@ -30,6 +30,16 @@ module MailLog
       model_hash.each_with_object({}) do |(key, model), safe_hash|
         safe_hash[key] = [model.model_name.name, model.id]
       end
+    end
+
+    private
+
+    # This should be called if you cannot find a paper through other means.
+    # It will look for a :paper method on all models in the @model_hash
+    # and return the first one with a value.
+    def fallback_to_first_possible_paper_reference
+      model = @model_hash.values.detect { |model| model.try(:paper) }
+      model.try(:paper)
     end
   end
 end

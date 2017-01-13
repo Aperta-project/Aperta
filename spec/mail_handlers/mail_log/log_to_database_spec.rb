@@ -67,9 +67,28 @@ module MailLog::LogToDatabase
             context_hash.delete('@paper')
           end
 
-          it "sets the EmailLog#paper to the task's paper" do
+          it "sets the EmailLog#paper to the task's paper when it's available" do
             perform_delivering_email
             expect(email_log.paper).to eq(task.paper)
+            expect(email_log.paper).to_not eq(paper)
+          end
+
+          it "sets the EmailLog#paper to the first Paper instance when the instance variable is named something other than /paper/" do
+            context_hash.delete('@task')
+            misnamed_paper = FactoryGirl.create(:paper)
+            context_hash['@misnamed'] = misnamed_paper
+            perform_delivering_email
+            expect(email_log.paper).to eq(misnamed_paper)
+            expect(email_log.paper).to_not eq(task.paper)
+            expect(email_log.paper).to_not eq(paper)
+          end
+
+          it "sets the EmailLog#paper to the first associated paper found when @task.paper and @paper are blank" do
+            context_hash.delete('@task')
+            attachment.paper = FactoryGirl.create(:paper)
+            perform_delivering_email
+            expect(email_log.paper).to eq(attachment.paper)
+            expect(email_log.paper).to_not eq(task.paper)
             expect(email_log.paper).to_not eq(paper)
           end
         end

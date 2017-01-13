@@ -2,7 +2,7 @@ class OrcidWorker
   include Sidekiq::Worker
   require 'active_support'
 
-  sidekiq_options retry: 5
+  sidekiq_options retry: 1
 
   def perform(user_id, authorization_code)
     orcid_account = OrcidAccount.find_by(user_id: user_id)

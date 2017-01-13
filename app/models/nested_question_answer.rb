@@ -73,6 +73,9 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   private
 
+  def value_raw
+    self[:value]
+  end
   def value_is_required?
     VALUE_REQUIRED_FOR_TYPES.include?(value_type) && value.nil?
   end
@@ -86,19 +89,19 @@ class NestedQuestionAnswer < ActiveRecord::Base
   end
 
   def attachment_value_type
-    self[:value]
+    value_raw
   end
 
   def boolean_value_type
-    return nil if self[:value].nil?
-    self[:value].match(TRUTHY_VALUES_RGX) ? true : false
+    return nil if value_raw.nil?
+    value_raw.match(TRUTHY_VALUES_RGX) ? true : false
   end
 
   def text_value_type
-    self[:value]
+    value_raw
   end
 
   def question_set_value_type
-    self[:value]
+    value_raw
   end
 end

@@ -131,11 +131,12 @@ class ReviewerReportTest(CommonTest):
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-      workflow_page.click_card('review_by', 'Review by atest reviewer (#1)')
+      card_title = 'Review by {0} (#1)'.format(reviewer_login['name'])
+      workflow_page.click_card('review_by', card_title)
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
-  def _test_core_rev_rep_research_actions(self):
+  def test_core_rev_rep_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the research
       reviewer report.

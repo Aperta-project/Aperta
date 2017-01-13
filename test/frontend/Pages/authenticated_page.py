@@ -589,9 +589,10 @@ class AuthenticatedPage(PlosPage):
           if title == card.text:
             card_title = card
             break
-        logging.info('Unknown Card')
-        self.restore_timeout()
-        return False
+        else:
+          logging.info('Reviewer card not found')
+          self.restore_timeout()
+          return False
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':

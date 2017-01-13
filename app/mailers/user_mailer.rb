@@ -1,4 +1,4 @@
-class UserMailer < ActionMailer::Base
+class UserMailer < ApplicationMailer
   include MailerHelper
   add_template_helper ClientRouteHelper
   add_template_helper TemplateHelper

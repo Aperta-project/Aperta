@@ -279,6 +279,7 @@ ActiveRecord::Schema.define(version: 20170111191302) do
     t.integer  "task_id"
     t.integer  "paper_id"
     t.integer  "journal_id"
+    t.json     "additional_context"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

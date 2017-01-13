@@ -26,7 +26,83 @@ module MailLog::LogToDatabase
         expect(email_log.status).to eq 'pending'
         expect(email_log.sent_at).to be nil
         expect(email_log.errored_at).to be nil
+        expect(email_log.journal).to be nil
+        expect(email_log.paper).to be nil
+        expect(email_log.task).to be nil
       end
+
+      context 'and additional context is provided for the email' do
+        subject(:perform_delivering_email) do
+          mail.aperta_mail_context = MailLog::ApertaMailContext.new(context_hash)
+          interceptor.delivering_email(mail)
+        end
+        let(:attachment) { FactoryGirl.create(:attachment) }
+        let(:task) { FactoryGirl.create(:ad_hoc_task) }
+        let(:paper) { FactoryGirl.create(:paper) }
+        let(:journal) { FactoryGirl.create(:journal) }
+        let(:email_log) { EmailLog.last }
+
+        let(:context_hash) do
+          {
+            '@task' => task,
+            '@paper' => paper,
+            '@journal' => journal,
+            '@attachment' => attachment,
+            '@not_activerecord_model' => Object.new
+          }
+        end
+
+        it 'sets the EmailLog#task to the first Task' do
+          perform_delivering_email
+          expect(email_log.task).to eq task
+        end
+
+        it 'sets the EmailLog#paper to the first Paper' do
+          perform_delivering_email
+          expect(email_log.paper).to eq paper
+        end
+
+        context 'and there is no Paper in the context' do
+          before do
+            context_hash.delete('@paper')
+          end
+
+          it "sets the EmailLog#paper to the task's paper" do
+            perform_delivering_email
+            expect(email_log.paper).to eq(task.paper)
+            expect(email_log.paper).to_not eq(paper)
+          end
+        end
+
+        it 'sets the EmailLog#journal to the first Journal' do
+          perform_delivering_email
+          expect(email_log.journal).to eq journal
+        end
+
+        context 'and there is no Journal in the context' do
+          before do
+            context_hash.delete('@journal')
+          end
+
+          it "sets the EmailLog#journal to the paper's journal" do
+            perform_delivering_email
+            expect(email_log.journal).to eq(paper.journal)
+            expect(email_log.journal).to_not eq(journal)
+          end
+        end
+
+        it 'sets EmailLog#additional_context to include all of the activerecord models in the mail context' do
+          perform_delivering_email
+          expect(email_log.additional_context).to eq({
+            "@task"=>["AdHocTask", task.id],
+            "@paper"=>["Paper", paper.id],
+            "@journal"=>["Journal", journal.id],
+            "@attachment"=>["Attachment", attachment.id]
+          })
+          expect(email_log.additional_context.keys).to_not include '@not_activerecord_model'
+        end
+      end
+
     end
   end
 

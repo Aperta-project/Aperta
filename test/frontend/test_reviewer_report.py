@@ -103,6 +103,9 @@ class ReviewerReportTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # watch to insert time here
+    time.sleep(5)
+    # screenshot
+    self._driver.save_screenshot('108.png')
     assert manuscript_page.click_task('Review by')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)

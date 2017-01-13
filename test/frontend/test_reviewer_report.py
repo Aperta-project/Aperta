@@ -107,10 +107,10 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)
-    manuscript_page.click_task('front_matter_reviewer_report')
     outdata = manuscript_page.complete_task('Review by', click_override=True)
     logging.debug(outdata)
     validate_view_in_place = manuscript_page.get_random_bool()
+    validate_view_in_place = False
     if validate_view_in_place:
       logging.info('Validating in task view')
       reviewer_report_task.validate_view_mode_report_in_task(outdata)
@@ -131,11 +131,11 @@ class ReviewerReportTest(CommonTest):
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-      workflow_page.click_card('review_by')
+      workflow_page.click_card('review_by', 'Review by atest reviewer (#1)')
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
-  def test_core_rev_rep_research_actions(self):
+  def _test_core_rev_rep_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the research
       reviewer report.

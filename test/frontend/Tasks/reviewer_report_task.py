@@ -295,6 +295,7 @@ class ReviewerReportTask(BaseTask):
       research_type = True
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    import pdb; pdb.set_trace()
     if research_type:
       recc_data, q2_bool_data, q2_data, q3_data, q4_data, q5_data, q6_bool_entry, q6_data = data
       recommendation = qb1.find_element(*self._res_q1_answer)

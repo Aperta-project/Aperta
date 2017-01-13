@@ -534,7 +534,7 @@ class AuthenticatedPage(PlosPage):
                                     'WHERE short_doi = %s;', (short_doi,))
     return submission_data
 
-  def click_card(self, cardname):
+  def click_card(self, cardname, title=''):
     """
     Passed a card name, opens the relevant card
     :param cardname: any one of: addl_info, authors, billing, changes_for_author,
@@ -543,6 +543,7 @@ class AuthenticatedPage(PlosPage):
       supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
       final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
       production_metadata, register_decision, reviewer_report, revision_tech_check or send_to_apex
+    :param title: String with card title to rule out when there are cards with the same name
     NOTE: this does not cover the ad hoc card
     NOTE also that the locators for these are specifically defined within the scope of the
         manuscript_viewer or workflow page
@@ -551,6 +552,7 @@ class AuthenticatedPage(PlosPage):
 
     :return: True or False, if cardname is unknown.
     """
+    ##import pdb; pdb.set_trace()
     # Must give cards time to load/attach to DOM
     self.set_timeout(15)
     # 'Author-type' cards
@@ -581,7 +583,15 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
     elif cardname.lower() == 'review_by':
-      card_title = self._get(self._reviewer_report_card)
+      if title:
+        cards = self._gets(self._reviewed_by_card)
+        for card in cards:
+          if title == card.text:
+            card_title = card
+            break
+        logging.info('Unknown Card')
+        self.restore_timeout()
+        return False
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':

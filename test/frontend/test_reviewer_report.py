@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def _test_core_rev_rep_non_research_actions(self):
+  def test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.
@@ -177,7 +177,6 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    ##paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
     paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
@@ -230,7 +229,6 @@ class ReviewerReportTest(CommonTest):
       dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
-      ##paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
       paper_viewer.page_ready()
       # go to wf
       paper_viewer.click_workflow_link()

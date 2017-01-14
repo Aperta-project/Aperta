@@ -571,7 +571,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         or 'Billing'
     :return: True or False, if taskname is unknown.
     """
-    ##import pdb; pdb.set_trace()
     tasks = self._gets(self._task_headings)
     for task in tasks:
       if task_name.lower() in task.text.lower():
@@ -695,7 +694,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       logging.info('Completing Author Task')
       author_task = AuthorsTask(self._driver)
-      ##import pdb; pdb.set_trace()
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)

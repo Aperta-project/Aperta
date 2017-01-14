@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_core_rev_rep_non_research_actions(self):
+  def _test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.
@@ -177,7 +177,8 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    ##paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -187,6 +188,7 @@ class ReviewerReportTest(CommonTest):
     logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
+
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
@@ -202,14 +204,24 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report_edit_mode()
     outdata = manuscript_page.complete_task('Review by', click_override=True)
+    validate_in = {True: 'task', False: 'card'}
     validate_view_in_place = manuscript_page.get_random_bool()
-    logging.info(validate_view_in_place)
+    logging.info('Validate in {}'.format(validate_in[validate_view_in_place]))
+    validate_view_in_place = True
+    dashboard_page.logout()
     if validate_view_in_place:
+      logging.info(reviewer_login)
+      dashboard_page = self.cas_login(email=reviewer_login['email'])
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
+      self._driver.navigated = True
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer.page_ready()
       logging.info('Validating in task view')
+      assert paper_viewer.click_task('Review by ')
       reviewer_report_task.validate_view_mode_report_in_task(outdata)
     else:
       logging.info('Validating in card view')
-      manuscript_page.logout()
       # Then login as staff user and validate report in card view
       editorial_user = random.choice(editorial_users)
       logging.info(editorial_user)
@@ -218,7 +230,8 @@ class ReviewerReportTest(CommonTest):
       dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
-      paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+      ##paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+      paper_viewer.page_ready()
       # go to wf
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())

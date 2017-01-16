@@ -552,7 +552,6 @@ class AuthenticatedPage(PlosPage):
 
     :return: True or False, if cardname is unknown.
     """
-    ##import pdb; pdb.set_trace()
     # Must give cards time to load/attach to DOM
     self.set_timeout(15)
     # 'Author-type' cards

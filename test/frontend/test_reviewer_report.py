@@ -94,7 +94,8 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
 
-    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;', (research_paper_id,))[0][0]
+    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;',
+      (research_paper_id,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
     dashboard_page._wait_for_element(dashboard_page._get(

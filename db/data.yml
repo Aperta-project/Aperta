@@ -1651,32 +1651,23 @@ activities:
     - '2016-10-26 21:04:53.691608'
     - '2016-10-26 21:04:53.691608'
   - - '183'
-    - manuscript
-    - '10'
+    - workflow
+    - '4'
     - Paper
-    - collaborator.added
-    - Edith Editor has been assigned as collaborator
+    - invitation.sent
+    - Reviewer User was invited as Reviewer
     - '1'
-    - '2017-01-24 15:44:00.828014'
-    - '2017-01-24 15:44:00.828014'
+    - '2017-01-16 21:40:20.787494'
+    - '2017-01-16 21:40:20.787494'
   - - '184'
-    - manuscript
-    - '10'
+    - workflow
+    - '4'
     - Paper
-    - collaborator.added
-    - Staff Admin has been assigned as collaborator
-    - '1'
-    - '2017-01-24 15:44:00.839149'
-    - '2017-01-24 15:44:00.839149'
-  - - '185'
-    - manuscript
-    - '10'
-    - Paper
-    - collaborator.added
-    - Arthur Author has been assigned as collaborator
-    - '1'
-    - '2017-01-24 15:44:00.884734'
-    - '2017-01-24 15:44:00.884734'
+    - invitation.accepted
+    - Reviewer User accepted invitation as Reviewer
+    - '5'
+    - '2017-01-16 21:40:54.072504'
+    - '2017-01-16 21:40:54.072504'
 
 ---
 affiliations:
@@ -2920,26 +2911,26 @@ assignments:
     - '2016-12-13 20:58:11.689392'
     - '2016-12-13 20:58:11.689392'
   - - '161'
+    - '5'
+    - '9'
     - '4'
-    - '14'
-    - '10'
     - Paper
-    - '2017-01-24 15:44:00.7638'
-    - '2017-01-24 15:44:00.7638'
+    - '2017-01-16 21:40:53.982864'
+    - '2017-01-16 21:40:53.982864'
   - - '162'
-    - '14'
-    - '14'
-    - '10'
-    - Paper
-    - '2017-01-24 15:44:00.787298'
-    - '2017-01-24 15:44:00.787298'
+    - '5'
+    - '16'
+    - '211'
+    - Task
+    - '2017-01-16 21:40:54.022262'
+    - '2017-01-16 21:40:54.022262'
   - - '163'
-    - '3'
-    - '14'
-    - '10'
-    - Paper
-    - '2017-01-24 15:44:00.822643'
-    - '2017-01-24 15:44:00.822643'
+    - '5'
+    - '23'
+    - '211'
+    - Task
+    - '2017-01-16 21:40:54.025924'
+    - '2017-01-16 21:40:54.025924'
 
 ---
 attachments:
@@ -5801,6 +5792,53 @@ invitations:
     - 
     - '7'
     - '14'
+  - - '27'
+    - reviewer@example.com
+    - '82'
+    - '5'
+    - '5'
+    - accepted
+    - '2017-01-16 21:40:19.208801'
+    - '2017-01-16 21:40:53.960199'
+    - '11'
+    - 1. Author, Arthur from Academy of Art University
+    - |+
+      You've been invited as a Reviewer on “<b>With Editors:</b> <i>Paper submitted, editors assigned</i>”, for PLOS Yeti.
+
+      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+      We look forward to hearing from you.
+
+      Sincerely,
+      PLOS Yeti Team
+
+      ***************** CONFIDENTIAL *****************
+
+      Research
+
+      Manuscript Title:
+      <b>With Editors:</b> <i>Paper submitted, editors assigned</i>
+
+      Authors:
+      1. Author, Arthur from Academy of Art University
+
+      Abstract:
+      Abstract is not available
+
+    - '1'
+    - Reviewer
+    - 
+    - 
+    - dba5710d0eecd64e6ce5
+    - 
+    - '2017-01-16 21:40:20.753145'
+    - 
+    - '2017-01-16 21:40:53.959079'
+    - 
+    - '1'
+    - '4'
 
 ---
 journal_task_types:
@@ -8527,84 +8565,84 @@ nested_question_answers:
     - 
   - - '236'
     - '182'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - major_revision
     - text
     - '2016-10-26 19:33:51.526922'
-    - '2016-10-26 19:33:51.526922'
+    - '2017-01-16 21:37:52.596341'
     - 
     - '21'
     - '12'
     - 
   - - '237'
     - '124'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - f
     - boolean
     - '2016-10-26 19:33:52.683479'
-    - '2016-10-26 19:33:52.683479'
+    - '2017-01-16 21:37:52.555311'
     - 
     - '21'
     - '12'
     - 
   - - '238'
     - '132'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - nah
     - text
     - '2016-10-26 19:33:56.49461'
-    - '2016-10-26 19:33:56.49461'
+    - '2017-01-16 21:37:52.584073'
     - 
     - '21'
     - '12'
     - 
   - - '239'
     - '261'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - hey
     - text
     - '2016-10-26 19:33:57.138531'
-    - '2016-10-26 19:33:57.138531'
+    - '2017-01-16 21:37:52.647461'
     - 
     - '21'
     - '12'
     - 
   - - '240'
     - '131'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - yo
     - text
     - '2016-10-26 19:33:58.40684'
-    - '2016-10-26 19:33:58.40684'
+    - '2017-01-16 21:37:52.571417'
     - 
     - '21'
     - '12'
     - 
   - - '241'
     - '263'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - t
     - boolean
     - '2016-10-26 19:34:00.940233'
-    - '2016-10-26 19:34:00.940233'
+    - '2017-01-16 21:37:52.671173'
     - 
     - '21'
     - '12'
     - 
   - - '242'
     - '262'
-    - '210'
-    - Task
+    - '1'
+    - ReviewerReport
     - whatever
     - text
     - '2016-10-26 19:34:04.068902'
-    - '2016-10-26 19:34:04.068902'
+    - '2017-01-16 21:37:52.65949'
     - 
     - '21'
     - '12'
@@ -9755,8 +9793,8 @@ nested_questions:
     - '204'
     - '2'
     - '2015-10-30 19:51:03.496382'
-    - '2016-06-23 16:58:01.130209'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.559939'
+    - ReviewerReport
     - 
     - 
   - - '131'
@@ -9769,8 +9807,8 @@ nested_questions:
     - '206'
     - '5'
     - '2015-10-30 19:51:03.531234'
-    - '2016-06-23 16:58:01.146664'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.574678'
+    - ReviewerReport
     - 
     - 
   - - '132'
@@ -9783,8 +9821,8 @@ nested_questions:
     - '208'
     - '3'
     - '2015-10-30 19:51:03.534949'
-    - '2016-06-23 16:58:01.136552'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.5863'
+    - ReviewerReport
     - 
     - 
   - - '133'
@@ -10347,8 +10385,8 @@ nested_questions:
     - '278'
     - '1'
     - '2015-12-23 17:34:57.06078'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.599034'
+    - ReviewerReport
     - 
     - 
   - - '183'
@@ -11288,8 +11326,8 @@ nested_questions:
     - '358'
     - '1'
     - '2016-06-06 20:37:56.611509'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.603032'
+    - ReviewerReport
     - 
     - 
   - - '253'
@@ -11302,8 +11340,8 @@ nested_questions:
     - '360'
     - '2'
     - '2016-06-06 20:37:56.61952'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.606877'
+    - ReviewerReport
     - 
     - 
   - - '254'
@@ -11315,8 +11353,8 @@ nested_questions:
     - '363'
     - '1'
     - '2016-06-06 20:37:56.625332'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.610865'
+    - ReviewerReport
     - 
     - 
   - - '255'
@@ -11329,8 +11367,8 @@ nested_questions:
     - '364'
     - '3'
     - '2016-06-06 20:37:56.634598'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.614912'
+    - ReviewerReport
     - 
     - 
   - - '256'
@@ -11342,8 +11380,8 @@ nested_questions:
     - '367'
     - '1'
     - '2016-06-06 20:37:56.652954'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.619838'
+    - ReviewerReport
     - 
     - 
   - - '257'
@@ -11356,8 +11394,8 @@ nested_questions:
     - '368'
     - '4'
     - '2016-06-06 20:37:56.66097'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.623701'
+    - ReviewerReport
     - 
     - 
   - - '258'
@@ -11369,8 +11407,8 @@ nested_questions:
     - '370'
     - '5'
     - '2016-06-06 20:37:56.67712'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.627615'
+    - ReviewerReport
     - 
     - 
   - - '259'
@@ -11383,8 +11421,8 @@ nested_questions:
     - '372'
     - '6'
     - '2016-06-06 20:37:56.682991'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::FrontMatterReviewerReportTask
+    - '2017-01-16 21:37:52.631399'
+    - ReviewerReport
     - 
     - 
   - - '260'
@@ -11396,8 +11434,8 @@ nested_questions:
     - '203'
     - '1'
     - '2016-06-23 16:58:01.107308'
-    - '2016-06-23 16:58:01.120896'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.636438'
+    - ReviewerReport
     - 
     - 
   - - '261'
@@ -11409,8 +11447,8 @@ nested_questions:
     - '374'
     - '4'
     - '2016-06-23 16:58:01.140458'
-    - '2016-06-23 16:58:01.140458'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.649794'
+    - ReviewerReport
     - 
     - 
   - - '262'
@@ -11422,8 +11460,8 @@ nested_questions:
     - '377'
     - '1'
     - '2016-06-23 16:58:01.150799'
-    - '2016-06-23 16:58:01.166221'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.662085'
+    - ReviewerReport
     - 
     - 
   - - '263'
@@ -11437,8 +11475,8 @@ nested_questions:
     - '378'
     - '6'
     - '2016-06-23 16:58:01.158079'
-    - '2016-06-23 16:58:01.166221'
-    - TahiStandardTasks::ReviewerReportTask
+    - '2017-01-16 21:37:52.673613'
+    - ReviewerReport
     - 
     - 
   - - '264'
@@ -11765,7 +11803,7 @@ papers:
     - false
   - - '4'
     - 
-    - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
+    - "<b>With Editors:</b> <i>Paper submitted, reviewer accepted, editors assigned</i>"
     - '2015-11-02 14:46:23.765287'
     - '2016-11-16 05:16:10.696733'
     - '3'
@@ -26347,6 +26385,29 @@ resource_tokens:
     - uploads/question/126/question_attachment/3/manuscript+_281_29.docx
 
 ---
+reviewer_reports:
+  columns:
+  - id
+  - task_id
+  - decision_id
+  - user_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - '210'
+    - '21'
+    - '1'
+    - '2017-01-16 21:37:52.552831'
+    - '2017-01-16 21:37:52.552831'
+  - - '2'
+    - '211'
+    - '11'
+    - '5'
+    - '2017-01-16 21:40:54.051284'
+    - '2017-01-16 21:40:54.051284'
+
+---
 roles:
   columns:
   - id
@@ -30288,6 +30349,17 @@ tasks:
     - '3'
     - '12'
     - '2016-10-26 19:34:04.991447'
+  - - '211'
+    - Review by Reviewer User
+    - TahiStandardTasks::ReviewerReportTask
+    - '19'
+    - false
+    - '2017-01-16 21:40:54.008489'
+    - '2017-01-16 21:40:54.008489'
+    - "[]"
+    - '3'
+    - '4'
+    - 
 
 ---
 users:

@@ -47,6 +47,7 @@ describe PapersController do
   describe 'GET show' do
     subject(:do_request) { get :show, id: paper.to_param, format: :json }
     let(:paper) { FactoryGirl.create(:paper) }
+    let!(:draft_decision) { paper.new_draft_decision! }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -74,6 +75,28 @@ describe PapersController do
       end
 
       it { is_expected.to responds_with(404) }
+    end
+
+    context "when the user is invited but has not accepted the invitation" do
+      let!(:invitation) do
+        FactoryGirl.create(:invitation, :invited, invitee: user)
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        draft_decision.invitations << invitation
+        draft_decision.save!
+        do_request
+      end
+
+      it "returns a message to accept the invitation first" do
+        expect(response.body).to eq("To access this manuscript, please accept the invitation below.")
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 

@@ -77,7 +77,8 @@ namespace 'nested-questions:seed' do
     }
 
     NestedQuestion.where(
-      owner_type: ReviewerReport.name
+      owner_type: ReviewerReport.name,
+      ident: "LIKE 'reviewer_report%'"
     ).update_all_exactly!(questions)
   end
 end

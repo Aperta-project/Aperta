@@ -46,8 +46,7 @@ describe PapersController do
 
   describe 'GET show' do
     subject(:do_request) { get :show, id: paper.to_param, format: :json }
-    let(:paper) { FactoryGirl.create(:paper) }
-    let!(:draft_decision) { paper.new_draft_decision! }
+    let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -87,6 +86,7 @@ describe PapersController do
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
+        draft_decision = paper.draft_decision
         draft_decision.invitations << invitation
         draft_decision.save!
         do_request

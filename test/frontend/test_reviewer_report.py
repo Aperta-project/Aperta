@@ -95,26 +95,23 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.click_view_invites_button()
 
     ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;',
-      (research_paper_id,))[0][0]
+        (research_paper_id,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    dashboard_page._wait_for_element(dashboard_page._get(
-      dashboard_page._dashboard_create_new_submission_btn))
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     # watch to insert time here
     time.sleep(5)
-    # screenshot
-    self._driver.save_screenshot('108.png')
     assert manuscript_page.click_task('Review by')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
+    reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)
     outdata = manuscript_page.complete_task('Review by', click_override=True)
     logging.debug(outdata)
     validate_view_in_place = manuscript_page.get_random_bool()
-    validate_view_in_place = False
     if validate_view_in_place:
       logging.info('Validating in task view')
       reviewer_report_task.validate_view_mode_report_in_task(outdata)
@@ -134,10 +131,11 @@ class ReviewerReportTest(CommonTest):
       # go to wf
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
-      workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+      workflow_page.page_ready()
       card_title = 'Review by {0} (#1)'.format(reviewer_login['name'])
       workflow_page.click_card('review_by', card_title)
       reviewer_report_card = ReviewerReportCard(self.getDriver())
+      reviewer_report_card.card_ready()
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
   def test_core_rev_rep_research_actions(self):

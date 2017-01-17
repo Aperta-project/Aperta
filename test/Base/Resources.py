@@ -1146,6 +1146,18 @@ pdfs = ['frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/pdfs/Word_Document_with_Inserted_Equation.pdf',
         ]
 
+cover_letters = ['frontend/assets/coverletters/2. User Test4_Cover Letter.docx',
+                 'frontend/assets/coverletters/2. User Testing3_Cover Letter 2.docx',
+                 'frontend/assets/coverletters/2. User Testing3_Cover Letter.docx',
+                 'frontend/assets/coverletters/Cover Letter R0.docx',
+                 'frontend/assets/coverletters/Cover Letter R2.doc',
+                 'frontend/assets/coverletters/Cover Letter R0 2.docx',
+                 'frontend/assets/coverletters/Cover Letter.docx',
+                 'frontend/assets/coverletters/Cover.letter.doc',
+                 'frontend/assets/coverletters/CoverLetter_Final.docx',
+                 'frontend/assets/coverletters/PONE_coverletter_v2.pdf',
+                ]
+
 # Generally, a random choice is made from among these figures when we create a new figure in
 #   the test suite.
 # Note that many of these are temporarily commented because of two defects: APERTA-8280, 8281

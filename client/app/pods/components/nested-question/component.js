@@ -46,7 +46,7 @@ export default Component.extend({
     let question = this.get('question');
     if (!question) { return null; }
 
-    return question.answerForOwner(this.get('owner'), this.get('decision'));
+    return question.answerForOwner(this.get('owner'));
   },
 
   resetAnswer() {

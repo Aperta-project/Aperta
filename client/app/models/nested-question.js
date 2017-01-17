@@ -20,14 +20,11 @@ export default DS.Model.extend({
     async: false , inverse: 'nestedQuestion'
   }),
 
-  answerForOwner(owner, decision){
+  answerForOwner(owner){
     let ownerId = owner.get('id');
     let answer = this.get('answers').toArray().find(function(answer){
       let answerOwnerId = answer.get('owner.id') || answer.get('data.owner.id');
       let matched = Ember.isEqual(parseInt(answerOwnerId), parseInt(ownerId));
-      if(decision){
-        matched = matched && Ember.isEqual(parseInt(answer.get('owner.decision.id')), parseInt(decision.get('id')));
-      }
 
       matched = matched && !answer.get('isDeleted');
       return matched;
@@ -37,7 +34,6 @@ export default DS.Model.extend({
       answer = this.store.createRecord('nested-question-answer', {
         nestedQuestion: this,
         owner: owner,
-        decision: decision
       });
     }
 

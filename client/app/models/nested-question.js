@@ -26,7 +26,7 @@ export default DS.Model.extend({
       let answerOwnerId = answer.get('owner.id') || answer.get('data.owner.id');
       let matched = Ember.isEqual(parseInt(answerOwnerId), parseInt(ownerId));
       if(decision){
-        matched = matched && Ember.isEqual(parseInt(answer.get('decision.id')), parseInt(decision.get('id')));
+        matched = matched && Ember.isEqual(parseInt(answer.get('owner.decision.id')), parseInt(decision.get('id')));
       }
 
       matched = matched && !answer.get('isDeleted');

@@ -13,7 +13,7 @@
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
         guidelines for detailed instructions.</strong>
       </p>
-      {{reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=isNotEditable}}
+      {{reviewer-report-questions model=currentReviewerReport decision=currentReviewerReport.decision readOnly=isNotEditable}}
 
       <div class="reviewer-report-confirmation">
         {{#if submissionConfirmed}}

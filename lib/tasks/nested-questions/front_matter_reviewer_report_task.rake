@@ -76,9 +76,7 @@ namespace 'nested-questions:seed' do
       position: 6
     }
 
-    NestedQuestion.where(
-      owner_type: ReviewerReport.name,
-      ident: "LIKE 'front_matter_reviewer_report%'"
-    ).update_all_exactly!(questions)
+    NestedQuestion.where(owner_type: ReviewerReport.name)
+                  .where('ident like ?', 'front_matter_reviewer_report%').update_all_exactly!(questions)
   end
 end

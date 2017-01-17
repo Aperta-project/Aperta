@@ -3,7 +3,6 @@ Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
 
 namespace :db do
-
   desc <<-DESC
     Dumps slightly older prod database from internal network into development environment
 
@@ -12,7 +11,7 @@ namespace :db do
     while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
     'dev_dump.tar.gz' exists in bighector.
   DESC
-  task :import_remote, [:env] => :environment do |t, args|
+  task :import_remote, [:env] => :environment do |_, args|
     ensure_dev
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
@@ -59,7 +58,7 @@ namespace :db do
   end
 
   desc "Restores the database dump at LOCATION"
-  task :restore, [:location] => :environment do |t, args|
+  task :restore, [:location] => :environment do |_, args|
     location = args[:location]
     if location
       cmd = nil
@@ -77,7 +76,7 @@ namespace :db do
   # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
-  task :import_heroku, [:source_db_name] => [:environment] do |t, args|
+  task :import_heroku, [:source_db_name] => [:environment] do |_, args|
     ensure_dev
     source_db = args[:source_db_name]
     unless source_db
@@ -96,7 +95,7 @@ namespace :db do
 
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
-  task :reset_passwords => [:environment] do |t, args|
+  task reset_passwords: [:environment] do |_, _|
     ensure_dev
     Journal.update_all(logo: nil)
     User.update_all(avatar: nil)

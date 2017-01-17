@@ -17,16 +17,17 @@ namespace :db do
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
 
-    with_config do |app, host, db, user, password|
+    with_config do |host, db, user|
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
 
-      drop_cmd = system("dropdb #{db} && createdb #{db}")
+      args = " -h #{host} -U #{user} "
+
+      drop_cmd = system("dropdb #{args} #{db} && createdb #{args} #{db}")
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 
-      ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner #{args} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)
       if result
         STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
@@ -40,13 +41,11 @@ namespace :db do
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
-    cmd = nil
-    with_config do |app, host, db, user, password|
-      ENV['PGPASSWORD'] = password.to_s
-      fail('Backup file already exists') if File.exist?(File.expand_path(location))
+    with_config do |host, db, user|
+      raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
+      system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
     end
-    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"
@@ -61,13 +60,11 @@ namespace :db do
   task :restore, [:location] => :environment do |_, args|
     location = args[:location]
     if location
-      cmd = nil
-      with_config do |app, host, db, user, password|
-        ENV['PGPASSWORD'] = password.to_s
+      with_config do |host, db, user|
         cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+        puts cmd
+        system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
       end
-      puts cmd
-      system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
     else
       STDERR.puts('Location argument is required.')
     end
@@ -107,15 +104,14 @@ namespace :db do
 
   private
 
-  def with_config
-    yield Rails.application.class.parent_name.underscore,
-      ActiveRecord::Base.connection_config[:host],
-      ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username],
-      ActiveRecord::Base.connection_config[:password]
-  end
-
   def ensure_dev
     raise "This can only be run in a development environment" unless Rails.env.development?
+  end
+
+  def with_config
+    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password].to_s
+    yield ActiveRecord::Base.connection_config[:host],
+          ActiveRecord::Base.connection_config[:database],
+          ActiveRecord::Base.connection_config[:username]
   end
 end

@@ -13,7 +13,7 @@ namespace :db do
     'dev_dump.tar.gz' exists in bighector.
   DESC
   task :import_remote, [:env] => :environment do |t, args|
-    return unless Rails.env.development?
+    ensure_dev
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
@@ -78,7 +78,7 @@ namespace :db do
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
   task :import_heroku, [:source_db_name] => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+    ensure_dev
     source_db = args[:source_db_name]
     unless source_db
       raise <<-MSG.strip_heredoc
@@ -97,7 +97,7 @@ namespace :db do
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
   task :reset_passwords => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+    ensure_dev
     Journal.update_all(logo: nil)
     User.update_all(avatar: nil)
     User.all.each do |u|
@@ -116,4 +116,7 @@ namespace :db do
       ActiveRecord::Base.connection_config[:password]
   end
 
+  def ensure_dev
+    raise "This can only be run in a development environment" unless Rails.env.development?
+  end
 end

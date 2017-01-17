@@ -78,7 +78,7 @@ describe PapersController do
 
     context "when the user is invited but has not accepted the invitation" do
       let!(:invitation) do
-        FactoryGirl.create(:invitation, :invited, invitee: user)
+        FactoryGirl.create(:invitation, :invited, invitee: user, paper: paper)
       end
 
       before do
@@ -86,9 +86,6 @@ describe PapersController do
         allow(user).to receive(:can?)
           .with(:view, paper)
           .and_return false
-        draft_decision = paper.draft_decision
-        draft_decision.invitations << invitation
-        draft_decision.save!
         do_request
       end
 

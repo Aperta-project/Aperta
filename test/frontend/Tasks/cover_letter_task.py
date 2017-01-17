@@ -153,7 +153,7 @@ class CoverLetterTask(BaseTask):
     logging.info('Replacing cover letter by: {0}'.format(fn))
 
     # Making file input visible, using JavaScript, to Selenium be able to interact with this.
-    # A ticket to front end fix is was filled: APERTA-XXXX
+    # A ticket to front end fix is was filled: APERTA-8960
     js_cmd = "$('<style>{0}{1} {{ display:block !important; }}</style>').appendTo('body');".format(self._task_body_base_locator, '.attachment-manager .s3-file-uploader')
     self._driver.execute_script(js_cmd)
     replace_button = uploaded_item.find_element_by_class_name('replace-attachment')

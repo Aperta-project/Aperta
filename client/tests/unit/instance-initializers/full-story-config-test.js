@@ -29,8 +29,11 @@ module('Unit | Instance Initializer | full story config', {
 });
 
 test('it does nothing when FS is not loaded', function(assert) {
+  const fs = window.FS;
+  delete window.FS;
   initialize(this.appInstance);
   assert.ok('things should not blow up');
+  window.FS = fs;
 });
 
 test('it calls FS.identify when FS is loaded', function(assert) {

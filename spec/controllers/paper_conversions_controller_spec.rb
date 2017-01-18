@@ -32,38 +32,9 @@ describe PaperConversionsController, type: :controller do
           .and_return true
       end
 
-      context 'with a docx paper that needs conversion' do
-        subject(:do_request) do
-          VCR.use_cassette('convert_to_docx') do
-            get :export, id: paper.id, export_format: 'docx', format: :json
-          end
-        end
-
-        before do
-          # no source URL, needs conversion
-          allow(paper).to receive(:file).and_return manuscript_attachment
-          allow(paper).to receive(:file_type).and_return 'docx'
-          expect(paper.file.url).to be(nil)
-
-          allow(PaperConverter).to receive(:export)
-            .and_return double('job', job_id: job_id)
-        end
-
-        it 'initiates converting the paper' do
-          expect(PaperConverter).to receive(:export)
-            .with(paper, 'docx', user)
-            .and_return double('job', job_id: job_id)
-          do_request
-        end
-
-        it 'returns a url to check later' do
-          do_request
-          expect(response.status).to eq(202)
-          expect(res_body['url']).to(
-            eq(url_for(controller: :paper_conversions, action: :status,
-                       id: paper.id, job_id: job_id, export_format: 'docx')))
-        end
-      end
+      # There was previously a test set here for converting from an HTML docx
+      # extraction into a real doxc file. That use case is no longer valid,
+      # and TAHI no longer has this export functionality.
 
       context 'with a paper that is pdf' do
         let(:manuscript_attachment) do

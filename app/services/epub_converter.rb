@@ -11,16 +11,12 @@ class EpubConverter
   # * paper: The Paper in question
   # * downloader: The user who appears in the PDF conversion's footer
   # * include_source: whether or not to attach the manuscript document
-  # * include_html: whether to render publishing info and paper body html \
-  #     files, or include them just as 0 byte files.
   def initialize(paper,
                  downloader = nil,
-                 include_source: false,
-                 include_html: true)
+                 include_source: false)
     @paper = paper
     @downloader = downloader # a user
     @include_source = include_source
-    @include_html = include_html
   end
 
   def epub_stream
@@ -32,33 +28,11 @@ class EpubConverter
   end
 
   def epub_html
-    if @include_html
-      render('epub',
-             layout: nil,
-             locals: { paper: @paper,
-                       paper_body: paper_body,
-                       title: title,
-                       should_proxy_previews: true
-      })
-    else
       ''
-    end
   end
 
   def publishing_information_html
-    if @include_html
-      render('epub_publishing_information',
-             layout: nil,
-             locals: {
-               paper: @paper,
-               paper_body: paper_body,
-               publishing_info_presenter:
-               PublishingInformationPresenter.new(paper, downloader),
-               title: title
-             })
-    else
       ''
-    end
   end
 
   # Yeah these methods that start with _ should be private

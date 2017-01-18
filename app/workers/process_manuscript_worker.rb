@@ -30,8 +30,7 @@ class ProcessManuscriptWorker
     converter = EpubConverter.new(
       paper,
       paper.creator,
-      include_source: true,
-      include_html: false)
+      include_source: true)
     converter.epub_stream.string
   end
 end

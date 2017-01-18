@@ -12,14 +12,12 @@ describe EpubConverter do
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:include_source) { false }
-  let(:include_html) { true }
 
   let(:converter) do
     EpubConverter.new(
       paper,
       user,
-      include_source: include_source,
-      include_html: include_html)
+      include_source: include_source)
   end
 
   let(:doc) { Nokogiri::HTML(converter.epub_html) }
@@ -34,66 +32,12 @@ describe EpubConverter do
     entries
   end
 
+  # These tests previously did some epub HTML DOM interrogation that in reality
+  # should only take place in IHAT. TAHI should no longer be including HTML
+  # content in epubs when sending manuscript content to IHAT
   describe '#epub_html' do
     context 'a paper' do
       after { expect(doc.errors.length).to be 0 }
-
-      it 'displays HTML in the papers title' do
-        paper.title = 'This <i>is</i> the Title'
-        epub_doc_title = doc.css('h1').inner_html.to_s
-        expect(epub_doc_title).to eq(paper.display_title(sanitized: false))
-      end
-
-      it 'includes the paper body as-is, unescaped' do
-        expect(converter.epub_html).to include(paper.body)
-      end
-
-      context 'when paper has no supporting information files' do
-        it 'doesnt have supporting information' do
-          expect(paper.supporting_information_files.empty?).to be true
-          expect(doc.css('#si_header').count).to be 0
-        end
-      end
-
-      context 'when include_html is false' do
-        let(:include_html) { false }
-        it 'epub_html is an empty string' do
-          expect(converter.epub_html).to eq('')
-        end
-      end
-
-      context 'when paper has supporting information files' do
-        let(:file) do
-          paper.supporting_information_files.create!(
-            resource_tokens: [ResourceToken.new],
-            owner: task,
-            file: ::File.open('spec/fixtures/yeti.tiff')
-          )
-        end
-
-        it 'has supporting information' do
-          expect(file)
-          expect(paper.supporting_information_files.length).to be 1
-          expect(doc.css('#si_header').count).to be 1
-          expect(doc.css("img#si_preview_#{file.id}").count).to be 1
-          expect(doc.css("a#si_link_#{file.id}").count).to be 1
-        end
-
-        it 'the si_preview urls are full-path non-expiring proxy urls' do
-          expect(file)
-          expect(doc.css('.si_preview').count).to be 1
-          expect(doc.css('.si_preview').first['src'])
-            .to eq(file.non_expiring_proxy_url(
-                     version: :preview, only_path: false))
-        end
-
-        it 'the si_link urls are full-path non-expiring proxy urls' do
-          expect(file)
-          expect(doc.css('.si_link').count).to be 1
-          expect(doc.css('.si_link').first['href'])
-            .to eq file.non_expiring_proxy_url(only_path: false)
-        end
-      end
 
       context 'when paper has figures' do
         let(:figure) { paper.figures.first }
@@ -217,11 +161,8 @@ describe EpubConverter do
         end
       end
 
-      context 'when include_html is false' do
-        let(:include_html) { false }
-        it '#publishing_information_html is an empty string' do
-          expect(converter.publishing_information_html).to eq('')
-        end
+      it '#publishing_information_html is an empty string' do
+        expect(converter.publishing_information_html).to eq('')
       end
     end
   end

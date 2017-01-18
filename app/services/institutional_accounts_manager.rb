@@ -5,6 +5,7 @@ class InstitutionalAccountsManager
   ITEMS =
     [
       { id: 'Bielefeld University', text: 'Bielefeld University', nav_customer_number: 'C01013' },
+      { id: 'Bill & Melinda Gates Foundation', text: 'Bill & Melinda Gates Foundation', nav_customer_number: 'C01888' },
       { id: 'Brunel University', text: 'Brunel University', nav_customer_number: 'C01035' },
       { id: 'CINVESTAV Unidad Irapuato', text: 'CINVESTAV Unidad Irapuato', nav_customer_number: 'C01212' },
       { id: 'Delft University of Technology', text: 'Delft University of Technology', nav_customer_number: 'C01240' },

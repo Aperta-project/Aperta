@@ -179,7 +179,7 @@ class ReviewerReportTest(CommonTest):
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     logging.info('Paper short DOI is: {0}.'.format(short_doi))
@@ -198,6 +198,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     assert manuscript_page.click_task('Review by ')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
+    reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report_edit_mode()
     outdata = manuscript_page.complete_task('Review by', click_override=True)

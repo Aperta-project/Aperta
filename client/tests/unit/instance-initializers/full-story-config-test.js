@@ -1,6 +1,7 @@
 import destroyApp from '../../helpers/destroy-app';
 import Ember from 'ember';
 import sinon from 'sinon';
+import startApp from 'tahi/tests/helpers/start-app';
 import { initialize } from 'tahi/instance-initializers/full-story-config';
 import { module, test } from 'qunit';
 
@@ -13,7 +14,7 @@ const currentUser = Ember.Object.create({
 module('Unit | Instance Initializer | full story config', {
   beforeEach() {
     Ember.run(() => {
-      this.application = Ember.Application.create();
+      this.application = startApp();
       this.appInstance = this.application.buildInstance();
       this.application.registry.register('user:current', currentUser, {
         instantiate: false

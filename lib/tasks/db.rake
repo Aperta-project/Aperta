@@ -3,7 +3,7 @@ Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
 
 namespace :db do
-  PG_RESTORE_ARGS = "--verbose --clean --no-acl --no-owner".freeze
+  PG_RESTORE_ARGS = "--verbose --clean --if-exists --no-acl --no-owner".freeze
 
   task :ensure_dev do
     raise "This can only be run in a development environment" unless Rails.env.development?

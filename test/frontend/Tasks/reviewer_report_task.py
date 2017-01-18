@@ -347,8 +347,8 @@ class ReviewerReportTask(BaseTask):
       assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text,
           q3_data)
       self.validate_application_ptext(q3_page_ans)
-      assert q3_page_ans.text == bool_text[q3_data], '{0} != {1}'.format(q3_page_ans.text,
-          bool_text[q3_data])
+      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text,
+          q3_data)
       q4_page_bool = qb4.find_element(*self._fm_q4_answer_bool)
       self.validate_application_ptext(q4_page_bool)
       q4_page_ans = qb4.find_element(*self._fm_q4_answer)

@@ -74,16 +74,15 @@ class ReviewerReportTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(research_paper_id)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     logging.info('Paper id is: {0}.'.format(research_paper_id))
@@ -114,7 +113,7 @@ class ReviewerReportTest(CommonTest):
     validate_view_in_place = manuscript_page.get_random_bool()
     if validate_view_in_place:
       logging.info('Validating in task view')
-      reviewer_report_task.validate_view_mode_report_in_task(outdata)
+      reviewer_report_task.validate_view_mode_report_in_task(outdata, False)
     else:
       logging.info('Validating in card view')
       manuscript_page.logout()

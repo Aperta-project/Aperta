@@ -3,6 +3,8 @@ Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
 
 namespace :db do
+  PG_RESTORE_ARGS = "--verbose --clean --no-acl --no-owner".freeze
+
   desc <<-DESC
     Dumps slightly older prod database from internal network into development environment
 
@@ -19,7 +21,7 @@ namespace :db do
     drop_db
     create_db
     with_config do |host, db, user|
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)
       if result
         STDERR.puts("Successfully restored #{env} database by running \n #{cmd}")
@@ -55,7 +57,7 @@ namespace :db do
       drop_db
       create_db
       with_config do |host, db, user|
-        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+        cmd = "pg_restore --host #{host} --username #{user} #{PG_RESTORE_ARGS} --dbname #{db} #{location}"
         puts cmd
         system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
       end

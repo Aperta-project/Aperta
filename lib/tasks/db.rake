@@ -17,17 +17,10 @@ namespace :db do
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
 
+    drop_db
+    create_db
     with_config do |host, db, user|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
-
-      args = " -h #{host} -U #{user} "
-
-      drop_cmd = system("dropdb #{args} #{db} && createdb #{args} #{db}")
-      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
-
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner #{args} -d #{db}) && rake db:reset_passwords"
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)
       if result
         STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
@@ -60,6 +53,8 @@ namespace :db do
   task :restore, [:location] => :environment do |_, args|
     location = args[:location]
     if location
+      drop_db
+      create_db
       with_config do |host, db, user|
         cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
         puts cmd
@@ -83,8 +78,8 @@ namespace :db do
       where SOURCEDB is the name of the heroku app. (ie. 'tahi-lean-workflow')
       MSG
     end
-    Rake::Task['db:drop'].invoke
     system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
+    drop_db
   end
 
   desc <<-DESC
@@ -113,5 +108,27 @@ namespace :db do
     yield ActiveRecord::Base.connection_config[:host],
           ActiveRecord::Base.connection_config[:database],
           ActiveRecord::Base.connection_config[:username]
+  end
+
+  def create_db
+    with_config do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("createdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m"
+      end
+    end
+  end
+
+  def drop_db
+    with_config do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("dropdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping database. Is #{db} in use?\e[0m"
+      end
+    end
   end
 end

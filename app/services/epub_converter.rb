@@ -3,20 +3,16 @@
 require_dependency 'tahi_epub'
 
 class EpubConverter
-  attr_reader :paper, :include_source, :downloader
+  attr_reader :paper, :downloader
 
   include DownloadablePaper
 
   # == Constructor Arguments
   # * paper: The Paper in question
   # * downloader: The user who appears in the PDF conversion's footer
-  # * include_source: whether or not to attach the manuscript document
-  def initialize(paper,
-                 downloader = nil,
-                 include_source: false)
+  def initialize(paper, downloader = nil)
     @paper = paper
     @downloader = downloader # a user
-    @include_source = include_source
   end
 
   def epub_stream
@@ -25,14 +21,6 @@ class EpubConverter
 
   def title
     CGI.escape_html(paper.short_title.to_s)
-  end
-
-  def epub_html
-      ''
-  end
-
-  def publishing_information_html
-      ''
   end
 
   # Yeah these methods that start with _ should be private
@@ -71,19 +59,12 @@ class EpubConverter
 
   def builder
     Dir.mktmpdir do |dir|
-      publishing_info_file_path = write_to_file dir,
-                                                publishing_information_html,
-                                                'publishing_information.html'
-
-      content_file_path = write_to_file dir,
-                                        epub_html,
-                                        'content.html'
-
-      generate_epub_builder publishing_info_file_path, content_file_path
+      content_file_path = write_to_file dir, '', 'content.html'
+      generate_epub_builder content_file_path
     end
   end
 
-  def generate_epub_builder(publishing_info_path, temp_paper_path)
+  def generate_epub_builder(temp_paper_path)
     workdir = File.dirname temp_paper_path
     this = self
 
@@ -93,15 +74,12 @@ class EpubConverter
       title this.paper.display_title
       creator this.paper.creator.full_name
       date Date.today.to_s
-      if this.include_source && this.paper.latest_version.present?
-        this._embed_source(workdir)
-        # keep same file extension as original file
-        ext = this._manuscript_source_path.extname.downcase
-        optional_file "input/source#{ext}" => this._path_to_source(workdir)
-      end
+      this._embed_source(workdir)
+      # keep same file extension as original file
+      ext = this._manuscript_source_path.extname.downcase
+      optional_file "input/source#{ext}" => this._path_to_source(workdir)
       resources(workdir: workdir) do
         ordered do
-          file "./#{File.basename publishing_info_path}"
           file "./#{File.basename temp_paper_path}"
           heading 'Main Content'
         end

@@ -11,13 +11,11 @@ describe EpubConverter do
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
-  let(:include_source) { false }
 
   let(:converter) do
     EpubConverter.new(
       paper,
-      user,
-      include_source: include_source)
+      user)
   end
 
   let(:doc) { Nokogiri::HTML(converter.epub_html) }
@@ -121,49 +119,26 @@ describe EpubConverter do
           .and_return(Pathname.new(file.path))
       end
 
-      context 'when source is requested' do
-        let(:include_source) { true }
-
-        it "includes the source file, calling it 'source' with same
+      it "includes the source file, calling it 'source' with same
           file extension" do
+        entries = read_epub_stream(converter.epub_stream)
+        expect(entries.map(&:name)).to include('input/source.doc')
+      end
+
+      context 'when the file is named something.DOC' do
+        before do
+          path = Pathname.new(file.path.gsub(/doc$/, 'DOC'))
+          allow(converter).to receive(:_manuscript_source_path)
+            .and_return(path)
+        end
+
+        it "downcases the extension name" do
           entries = read_epub_stream(converter.epub_stream)
           expect(entries.map(&:name)).to include('input/source.doc')
         end
-
-        context 'when the file is named something.DOC' do
-          before do
-            path = Pathname.new(file.path.gsub(/doc$/, 'DOC'))
-            allow(converter).to receive(:_manuscript_source_path)
-              .and_return(path)
-          end
-
-          it "downcases the extension name" do
-            entries = read_epub_stream(converter.epub_stream)
-            expect(entries.map(&:name)).to include('input/source.doc')
-          end
-        end
       end
 
-      context 'when source is not requested' do
-        let(:include_source) { false }
-
-        it 'does not include the source file' do
-          entries = read_epub_stream(converter.epub_stream)
-          expect(entries.map(&:name)).to_not include('input/source.doc')
-        end
-      end
     end
 
-    describe '#publishing_information_html' do
-      context 'when downloader is not specified' do
-        it 'does not error' do
-          expect(converter.publishing_information_html).to be_a(String)
-        end
-      end
-
-      it '#publishing_information_html is an empty string' do
-        expect(converter.publishing_information_html).to eq('')
-      end
-    end
   end
 end

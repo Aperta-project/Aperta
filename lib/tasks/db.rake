@@ -5,6 +5,10 @@ Rake::Task["db:load"].clear
 namespace :db do
   PG_RESTORE_ARGS = "--verbose --clean --no-acl --no-owner".freeze
 
+  task :ensure_dev do
+    raise "This can only be run in a development environment" unless Rails.env.development?
+  end
+
   desc <<-DESC
     Dumps slightly older prod database from internal network into development environment
 
@@ -13,8 +17,7 @@ namespace :db do
     while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
     'dev_dump.tar.gz' exists in bighector.
   DESC
-  task :import_remote, [:env] => :environment do |_, args|
-    ensure_dev
+  task :import_remote, [:env] => [:environment, :ensure_dev] do |_, args|
     env = (args[:env] || 'prod')
     location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
 
@@ -69,8 +72,7 @@ namespace :db do
   # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
-  task :import_heroku, [:source_db_name] => [:environment] do |_, args|
-    ensure_dev
+  task :import_heroku, [:source_db_name] => [:environment, :ensure_dev] do |_, args|
     source_db = args[:source_db_name]
     unless source_db
       raise <<-MSG.strip_heredoc
@@ -88,8 +90,7 @@ namespace :db do
 
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
-  task reset_passwords: [:environment] do |_, _|
-    ensure_dev
+  task reset_passwords: [:environment, :ensure_dev] do |_, _|
     Journal.update_all(logo: nil)
     User.update_all(avatar: nil)
     User.all.each do |u|
@@ -99,10 +100,6 @@ namespace :db do
   end
 
   private
-
-  def ensure_dev
-    raise "This can only be run in a development environment" unless Rails.env.development?
-  end
 
   def with_config
     ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password].to_s

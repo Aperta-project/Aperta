@@ -9,12 +9,11 @@ class InstitutionalAccountsManager
       { id: 'CINVESTAV Unidad Irapuato', text: 'CINVESTAV Unidad Irapuato', nav_customer_number: 'C01212' },
       { id: 'Delft University of Technology', text: 'Delft University of Technology', nav_customer_number: 'C01240' },
       { id: 'Dulbecco Telethon Institute (DTI)', text: 'Dulbecco Telethon Institute (DTI)', nav_customer_number: 'C00509' },
-      { id: 'École Polytechnique Fédérale de Lausanne', text: 'École Polytechnique Fédérale de Lausanne', nav_customer_number: 'C01564' },
       { id: 'ETH Zurich', text: 'ETH Zurich', nav_customer_number: 'C00643' },
       { id: 'Faculty of Humanities and Social Sciences Libraries - University of Zagreb', text: 'Faculty of Humanities and Social Sciences Libraries - University of Zagreb', nav_customer_number: 'C01284' },
-      { id: 'Francis Crick Institute', text: 'Francis Crick Institute', nav_customer_number: 'C01725' },
       { id: 'Fondazione Telethon Italy', text: 'Fondazione Telethon Italy', nav_customer_number: 'C00509' },
       { id: 'Forschungszentrum Jülich', text: 'Forschungszentrum Jülich', nav_customer_number: 'C01089' },
+      { id: 'Francis Crick Institute', text: 'Francis Crick Institute', nav_customer_number: 'C01725' },
       { id: 'Georg-August-Universitaet Goettingen', text: 'Georg-August-Universitaet Goettingen', nav_customer_number: 'C00812' },
       { id: 'George Mason University', text: 'George Mason University', nav_customer_number: 'C01050' },
       { id: 'Helmholtz Centre for Environmental Research – UFZ', text: 'Helmholtz Centre for Environmental Research – UFZ', nav_customer_number: 'C01086' },
@@ -35,8 +34,8 @@ class InstitutionalAccountsManager
       { id: 'Queen Mary University of London', text: 'Queen Mary University of London', nav_customer_number: 'C01123' },
       { id: 'Queen\'s University Belfast', text: 'Queen\'s University Belfast', nav_customer_number: 'C01128' },
       { id: 'Rollins College', text: 'Rollins College', nav_customer_number: 'C01563' },
-      { id: 'Ryerson University', text: 'Ryerson University', nav_customer_number: 'C01199' },
       { id: 'Ruhr University Bochum', text: 'Ruhr University Bochum', nav_customer_number: 'C01309' },
+      { id: 'Ryerson University', text: 'Ryerson University', nav_customer_number: 'C01199' },
       { id: 'San Raffaele- Telethon Institute of Gene Therapy (HSR- TIGET)', text: 'San Raffaele- Telethon Institute of Gene Therapy (HSR- TIGET)', nav_customer_number: 'C00509' },
       { id: 'Simon Fraser University', text: 'Simon Fraser University', nav_customer_number: 'C00046' },
       { id: 'Technische Universitaet Muenchen', text: 'Technische Universitaet Muenchen', nav_customer_number: 'C01173' },
@@ -61,7 +60,8 @@ class InstitutionalAccountsManager
       { id: 'University of Warwick', text: 'University of Warwick', nav_customer_number: 'C01397' },
       { id: 'University of Western Sydney', text: 'University of Western Sydney', nav_customer_number: 'C01598' },
       { id: 'University of York', text: 'University of York', nav_customer_number: 'C01575' },
-      { id: 'Victoria University', text: 'Victoria University', nav_customer_number: 'C01702' }
+      { id: 'Victoria University', text: 'Victoria University', nav_customer_number: 'C01702' },
+      { id: 'École Polytechnique Fédérale de Lausanne', text: 'École Polytechnique Fédérale de Lausanne', nav_customer_number: 'C01564' }
     ]
   # rubocop:enable Metrics/LineLength
 

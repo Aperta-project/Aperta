@@ -97,11 +97,15 @@ describe DiscussionTopicsController do
     it_behaves_like 'an unauthenticated json request'
 
     context "when the user has access" do
+      let(:role) { FactoryGirl.create(:role, name: 'DISCUSSION_PARTICIPANT_ROLE') }
+
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:start_discussion, paper)
           .and_return true
+        allow_any_instance_of(Journal).to receive(:discussion_participant_role)
+          .and_return(role)
       end
 
       it "creates a topic" do
@@ -112,6 +116,16 @@ describe DiscussionTopicsController do
         topic = json["discussion_topic"]
         expect(topic['title']).to eq(title)
         expect(topic['paper_id']).to eq(paper.id)
+      end
+
+      it "assigns the participant with the discussion_participant_role" do
+        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(0)
+
+        expect do
+          do_request
+        end.to change { Assignment.count }.by(1)
+
+        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(1)
       end
     end
 

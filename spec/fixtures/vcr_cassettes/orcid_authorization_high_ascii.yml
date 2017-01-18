@@ -1,0 +1,99 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://sandbox.orcid.org/oauth/token
+    body:
+      encoding: UTF-8
+      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=Lt5QOw&grant_type=authorization_code
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/json
+      Accept-Charset:
+      - UTF-8
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip,deflate
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Fri, 06 Jan 2017 15:49:35 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJhY2Nlc3NfdG9rZW4iOiIzMjgyNDg0YS1lYTA4LTQyNzMtOTAyMi0zYWMw
+        NjUwMjBmMGQiLCJ0b2tlbl90eXBlIjoiYmVhcmVyIiwicmVmcmVzaF90b2tl
+        biI6ImRhNDZlNGY4LWJkMDEtNDEwZC1iMDE4LTAwZTY3OTc1YTJiYiIsImV4
+        cGlyZXNfaW4iOjYzMTEzODUxOCwic2NvcGUiOiIvcmVhZC1saW1pdGVkIiwi
+        bmFtZSI6IkFuZHLDqSBUZXN0Iiwib3JjaWQiOiIwMDAwLTAwMDMtMjEyOC0y
+        MzdYIn0=
+    http_version: 
+  recorded_at: Fri, 06 Jan 2017 15:49:35 GMT
+- request:
+    method: get
+    uri: https://api.sandbox.orcid.org/v1.2/0000-0003-2128-237X/orcid-profile
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/json
+      Authorization:
+      - Bearer 3282484a-ea08-4273-9022-3ac065020f0d
+      Accept-Charset:
+      - UTF-8
+      Accept-Encoding:
+      - gzip,deflate
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Fri, 06 Jan 2017 15:49:36 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA3VTy47bMAz8F53rzWuzCXJrUe9te0hboLdCkWmbWFkyKDpd
+        Y9EP6nf0x0r5GSSpARswOTMcktK7qiAEXUByBgronTqo1cNafVCeDGZJTT5H
+        C+rw3gfUwTXWjtnbf3CMOQJFwlnbBkZAQyjSJXN9WCyCdtnJvz10LPkWi6U8
+        ibybZL1a75P1ZvdDPNSaS2HdT5Y+sCRvtNTv0U4GNYHRDFc2JZoDgTMQok/r
+        jY4tqvTLzC0xsKc25g2BZhlNUgGXXrTUS/ryKT3+PKbP6fGYfhYzxle1hQ6V
+        ScGxXmhOFYYwh6eprB73q/3jZvn0tN9uparVgZPKZ3F62R3wZrfa7Xbb/XIt
+        YGM1VrGrCcHUgCSCb8hM1TPQhvGsb2zJrvs6UGm0FzK5tiHqTICasNLU/h+I
+        AU9okdtee5rfCX2E13KqvNNWdsGi0M27wDO4xOmqH/+gqD66jP7+UXc1c12h
+        bTvOJeUbyBG4S5CdZcgDYdg9l0Bj2QEmLgvSddmOIIIAmkxENmTDGDbescxy
+        7qIPv0L7y1M2/cMbA8Vu54sQ5mVYKLpVTIfD+BquxtYtDBkhXN0s1yuPUW4j
+        VX3/mh5lAAX5pk762GDYoji4CE0V+v4SabSxPDsn8iTtBTPA/wGkh4ktGQQA
+        AA==
+    http_version: 
+  recorded_at: Fri, 06 Jan 2017 15:49:36 GMT
+recorded_with: VCR 2.9.3

@@ -318,6 +318,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|

@@ -113,7 +113,7 @@ class ReviewerReportTest(CommonTest):
     validate_view_in_place = manuscript_page.get_random_bool()
     if validate_view_in_place:
       logging.info('Validating in task view')
-      reviewer_report_task.validate_view_mode_report_in_task(outdata, False)
+      reviewer_report_task.validate_view_mode_report_in_task(outdata)
     else:
       logging.info('Validating in card view')
       manuscript_page.logout()

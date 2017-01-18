@@ -281,7 +281,7 @@ class ReviewerReportTask(BaseTask):
       assert qh6.text == u'Your name and review will not be published with the manuscript.', \
           qh6.text
 
-  def validate_view_mode_report_in_task(self, data, research_type=True):
+  def validate_view_mode_report_in_task(self, data):
     """
     Validate the elements, display and styles of the reviewer report in view mode (submitted state)
       in the task accordion.
@@ -291,10 +291,14 @@ class ReviewerReportTask(BaseTask):
       True uses research type reviewer report content
     :return: None
     """
+    research_type = False
     question_list = self._gets(self._questions)
     q1, q2, q3, q4, q5, q6 = question_list
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
+    if q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
+                  u'please include your name here.':
+      research_type = True
     if research_type:
       recc_data, q2_bool_data, q2_data, q3_data, q4_data, q5_data, q6_bool_entry, q6_data = data
       recommendation = qb1.find_element(*self._res_q1_answer)

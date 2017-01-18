@@ -13,9 +13,8 @@ namespace :db do
   DESC
   task :import_remote, [:env] => :environment do |_, args|
     ensure_dev
-    args[:env] = nil if args[:env] == 'prod'
-    env = args[:env]
-    location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
+    env = (args[:env] || 'prod')
+    location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
 
     drop_db
     create_db
@@ -23,9 +22,9 @@ namespace :db do
       cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       result = system(cmd)
       if result
-        STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
+        STDERR.puts("Successfully restored #{env} database by running \n #{cmd}")
       else
-        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
+        STDERR.puts("Restored #{env} with errors or warnings")
       end
     end
   end

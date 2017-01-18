@@ -13,10 +13,12 @@ class ReviewerReportsController < ApplicationController
   end
 
   def create
-    task = Task.find(params[:task_id])
+    task = Task.find(reviewer_report_params[:task_id])
     requires_user_can :edit, task
 
-    reviewer_report = ReviewerReport.new(reviewer_report_params)
+    reviewer_report = ReviewerReport.new(task: task,
+                                         decision: task.decision,
+                                         user: current_user)
     reviewer_report.save!
 
     render json: reviewer_report
@@ -44,6 +46,6 @@ class ReviewerReportsController < ApplicationController
 
   def reviewer_report_params
     params.require(:reviewer_report)
-          .permit(:task_id, :decision_id, :user_id)
+          .permit(:task_id)
   end
 end

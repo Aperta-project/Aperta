@@ -80,8 +80,11 @@ namespace :db do
       where SOURCEDB is the name of the heroku app. (ie. 'tahi-lean-workflow')
       MSG
     end
-    system("heroku pg:pull DATABASE_URL tahi_development --app #{source_db} && rake db:reset_passwords")
     drop_db
+    with_config do |host, db, user|
+      local_db = URI::Generic.new("postgres", user, host, nil, nil, "/#{db}", nil, nil, nil)
+      system("heroku pg:pull DATABASE_URL #{local_db} --app #{source_db} && rake db:reset_passwords")
+    end
   end
 
   desc <<-DESC

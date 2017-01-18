@@ -35,7 +35,7 @@ namespace :db do
 
     with_config do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
-      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
+      cmd = "pg_dump --host #{host} --username #{user} --verbose --format=c #{db} > #{location}"
       system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
     end
   end

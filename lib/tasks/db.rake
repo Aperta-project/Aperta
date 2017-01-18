@@ -25,8 +25,7 @@ namespace :db do
     create_db
     with_config do |host, db, user|
       cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
-      result = system(cmd)
-      if result
+      if system(cmd)
         STDERR.puts("Successfully restored #{env} database by running \n #{cmd}")
       else
         STDERR.puts("Restored #{env} with errors or warnings")
@@ -41,7 +40,7 @@ namespace :db do
     with_config do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --format=c #{db} > #{location}"
-      system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
+      system(cmd) || raise("Dump failed for \n #{cmd}")
     end
   end
 
@@ -62,7 +61,7 @@ namespace :db do
       with_config do |host, db, user|
         cmd = "pg_restore --host #{host} --username #{user} #{PG_RESTORE_ARGS} --dbname #{db} #{location}"
         puts cmd
-        system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
+        system(cmd) || raise("Restore failed for \n #{cmd}")
       end
     else
       STDERR.puts('Location argument is required.')
@@ -81,7 +80,7 @@ namespace :db do
       where SOURCEDB is the name of the heroku app. (ie. 'tahi-lean-workflow')
       MSG
     end
-    system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
+    system("heroku pg:pull DATABASE_URL tahi_development --app #{source_db} && rake db:reset_passwords")
     drop_db
   end
 

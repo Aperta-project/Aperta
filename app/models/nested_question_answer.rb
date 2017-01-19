@@ -23,6 +23,10 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   validate :verify_from_owner
 
+  has_one :parent_nested_question,
+    through: :nested_question,
+    source: :parent,
+    class_name: 'NestedQuestion'
   validate do
     if changed? && decision.present? && decision.completed?
       errors.add(:base, 'Cannot modify an answer for a registered decision.')

@@ -101,8 +101,6 @@ class ReviewerReportTest(CommonTest):
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
-    # watch to insert time here
-    time.sleep(5)
     assert manuscript_page.click_task('Review by')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.task_ready()
@@ -151,15 +149,10 @@ class ReviewerReportTest(CommonTest):
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_submit_btn()
@@ -182,7 +175,6 @@ class ReviewerReportTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
 

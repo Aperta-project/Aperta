@@ -697,13 +697,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
-    #elif 'Review by ' in task_name:
-    #  print('********************702')
-    #  import pdb; pdb.set_trace()
-    #  logging.info('Completing {0}'.format(task_name))
-    #  if not base_task.completed_state():
-    #    base_task.click_completion_button()
-    #  task.click()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

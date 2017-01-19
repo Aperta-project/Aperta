@@ -74,6 +74,13 @@ export function addNestedQuestionsToTask(nestedQuestions, task){
   return nestedQuestions;
 }
 
+export function addNestedQuestionsToReviewerReport(nestedQuestions, report){
+  nestedQuestions.forEach( (question) => {
+    question.owner = { owner_id: report.id, owner_type: 'ReviewerReport' };
+  });
+  return nestedQuestions;
+}
+
 export function addNestedQuestionToTask(nestedQuestion, task){
   const questions = addNestedQuestionsToTask([nestedQuestion], task);
   return questions[0];

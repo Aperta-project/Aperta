@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
-import { paperWithTask, addUserAsParticipant, addNestedQuestionsToTask }
+import { paperWithTask, addUserAsParticipant, addNestedQuestionsToReviewerReport }
   from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
@@ -39,6 +39,7 @@ module('Integration: Reviewer Report', {
 
     currentPaper = records[0];
     reviewerReportTask = records[1];
+    reviewerReport = Factory.createRecord('ReviewerReport');
     journal = records[2];
     phase = records[3];
 
@@ -78,7 +79,7 @@ module('Integration: Reviewer Report', {
       })
     ];
 
-    addNestedQuestionsToTask(nestedQuestions, reviewerReportTask);
+    addNestedQuestionsToReviewerReport(nestedQuestions, reviewerReport);
     var nestedQuestionsPayload = Factory.createPayload('nested_questions');
     nestedQuestionsPayload.addRecords(nestedQuestions);
     taskPayload.addRecords([reviewerReportTask, fakeUser]);

@@ -26,20 +26,21 @@ module('Integration: Reviewer Report', {
 
   setup: function() {
     var journal, mirrorCreateResponse, paperResponse,
-        phase, records, taskPayload;
+      phase, records, taskPayload, reviewerReport;
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
     TestHelper.mockFindAll('discussion-topic', 1);
 
+    let reviewerReportId = 42;
     records = paperWithTask('ReviewerReportTask', {
       id: taskId,
-      title: 'Reviewer Report by Bob Jones'
+      title: 'Reviewer Report by Bob Jones',
+      reviewer_report_ids: [reviewerReportId]
     });
 
     currentPaper = records[0];
     reviewerReportTask = records[1];
-    reviewerReport = Factory.createRecord('ReviewerReport');
     journal = records[2];
     phase = records[3];
 
@@ -79,10 +80,14 @@ module('Integration: Reviewer Report', {
       })
     ];
 
-    addNestedQuestionsToReviewerReport(nestedQuestions, reviewerReport);
+    reviewerReport = Factory.createRecord('ReviewerReport',
+                                          {id: reviewerReportId,
+                                            task_id: taskId,
+                                            nested_question_ids: nestedQuestions.mapBy('id') } );
+
     var nestedQuestionsPayload = Factory.createPayload('nested_questions');
     nestedQuestionsPayload.addRecords(nestedQuestions);
-    taskPayload.addRecords([reviewerReportTask, fakeUser]);
+    taskPayload.addRecords([reviewerReportTask, fakeUser, reviewerReport]);
     reviewerReportTask = taskPayload.toJSON();
 
     var tasksPayload = Factory.createPayload('tasks');

@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   readOnly: false,
 
   competingInterestsLink: Ember.computed(function() {
-    const journal = this.get('decision.paper.journal.name')
+    const journal = this.get('model.task.paper.journal.name')
                         .toLowerCase()
                         .replace(' ', '');
 

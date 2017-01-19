@@ -74,10 +74,12 @@ class EpubConverter
       title this.paper.display_title
       creator this.paper.creator.full_name
       date Date.today.to_s
-      this._embed_source(workdir)
-      # keep same file extension as original file
-      ext = this._manuscript_source_path.extname.downcase
-      optional_file "input/source#{ext}" => this._path_to_source(workdir)
+      if this.paper.latest_version.present?
+        this._embed_source(workdir)
+        # keep same file extension as original file
+        ext = this._manuscript_source_path.extname.downcase
+        optional_file "input/source#{ext}" => this._path_to_source(workdir)
+      end
       resources(workdir: workdir) do
         ordered do
           file "./#{File.basename temp_paper_path}"

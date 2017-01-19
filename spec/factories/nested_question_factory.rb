@@ -4,5 +4,13 @@ FactoryGirl.define do
     sequence(:ident) { |n| "ident_#{n}" }
     sequence(:position) { |n| n }
     value_type "text"
+
+    transient do
+      parent nil
+    end
+
+    after(:create) do |q, evaluator|
+      q.move_to_child_of(evaluator.parent) if evaluator.parent.present?
+    end
   end
 end

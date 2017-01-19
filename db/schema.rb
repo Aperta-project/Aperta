@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170111191302) do
+ActiveRecord::Schema.define(version: 20170112211700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,17 +385,20 @@ ActiveRecord::Schema.define(version: 20170111191302) do
 
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"
-    t.string   "value_type", null: false
-    t.string   "ident",      null: false
+    t.string   "value_type",           null: false
+    t.string   "ident",                null: false
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
+    t.integer  "lft",                  null: false
+    t.integer  "rgt",                  null: false
     t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.string   "owner_type"
     t.integer  "owner_id"
     t.datetime "deleted_at"
+    t.string   "ready_required_check"
+    t.string   "ready_children_check"
+    t.string   "ready_check"
   end
 
   add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree

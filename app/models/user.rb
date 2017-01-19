@@ -4,11 +4,18 @@ class User < ActiveRecord::Base
   include UserDevise
 
   include PgSearch
-  pg_search_scope \
-    :fuzzy_search,
-    against: [:first_name, :last_name, :email, :username],
-    ignoring: :accents,
-    using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
+  pg_search_scope :fuzzy_search, (lambda do |query|
+    if query =~ /\A([^@\s]+)@/
+      { against: [:email],
+        using: { tsearch: { prefix: true } },
+        query: query }
+    else
+      { against: [:first_name, :last_name, :email, :username],
+        ignoring: :accents,
+        using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } },
+        query: query }
+    end
+  end)
 
   has_many :affiliations, inverse_of: :user
 

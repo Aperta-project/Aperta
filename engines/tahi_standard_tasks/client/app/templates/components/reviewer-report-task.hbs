@@ -2,8 +2,8 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{#if task.body.submitted}}
-    {{reviewer-report-questions model=currentReviewerReport decision=currentReviewerReport.decision readOnly=true}}
+    {{#if task.completed}}
+      {{reviewer-report-questions model=currentReviewerReport decision=currentReviewerReport.decision readOnly=true}}
       <div class="reviewer-report-feedback">
         {{fa-icon icon="check-circle"}}
         This report has been submitted

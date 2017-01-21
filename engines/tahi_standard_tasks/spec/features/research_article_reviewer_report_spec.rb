@@ -59,11 +59,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 0'
 
-    # no history yet, since we only have the current round of review
-    t.ensure_no_review_history
-
     t.submit_report
     t.confirm_submit_report
+    # no history yet, since we only have the current round of review
+    t.ensure_no_review_history
 
     # Revision 1
     register_paper_decision(paper, "major_revision")

@@ -435,7 +435,6 @@ class DashboardPage(AuthenticatedPage):
         active_manuscript_list.append(amt[0])
       for amt in active_manu_sbmtd_tuples:
         active_manuscript_list.append(amt[0])
-      logging.info(active_manuscript_list)
     except DatabaseError:
       logging.error('Database access error.')
       raise

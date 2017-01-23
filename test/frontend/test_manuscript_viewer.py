@@ -86,12 +86,9 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.page_ready()
       if dashboard_page.get_dashboard_ms(user):
-        dashboard_page.restore_timeout()
         self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         manuscript_viewer.page_ready()
-        # Check if paper is loaded by calling an element in paper viewer
-        manuscript_viewer._get(manuscript_viewer._paper_title)
         journal_id = manuscript_viewer.get_journal_id()
         uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
         short_doi = manuscript_viewer.get_paper_short_doi_from_url()
@@ -110,8 +107,9 @@ class ManuscriptViewerTest(CommonTest):
         permissions = journal_permissions + paper_permissions + system_permissions
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
         logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
-                    .format(user, paper_id, permissions, max_elements))
-        manuscript_viewer.validate_roles(max_elements)
+                    .format(user['user'], short_doi, permissions, max_elements))
+        # NOTE: When covereditor is selected, the assert fails.
+        manuscript_viewer.validate_roles(max_elements, user['user'])
       else:
         logging.info('No manuscripts present for user: {0}'.format(user['user']))
       dashboard_page.logout()

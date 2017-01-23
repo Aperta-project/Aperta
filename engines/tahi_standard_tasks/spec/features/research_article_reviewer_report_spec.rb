@@ -14,9 +14,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   let(:paper_page){ PaperPage.new }
   let!(:reviewer) { create :user }
-  let!(:reviewer_report_task) do
-    create_reviewer_report_task
-  end
 
   def create_reviewer_report_task
     ReviewerReportTaskCreator.new(
@@ -30,10 +27,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     login_as(reviewer, scope: :user)
     visit "/"
-    Page.view_paper paper
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
+    reviewer_report_task = create_reviewer_report_task
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
       task: reviewer_report_task
@@ -41,6 +38,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
+    create_reviewer_report_task
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'I have no competing interests'
@@ -52,6 +51,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A review can see their previous rounds of review' do
+    create_reviewer_report_task
     # Revision 0
     Page.view_paper paper
 

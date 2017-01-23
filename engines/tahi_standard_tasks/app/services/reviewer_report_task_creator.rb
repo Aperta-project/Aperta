@@ -42,7 +42,7 @@ class ReviewerReportTaskCreator
   end
 
   def create_reviewer_report
-    ReviewerReport.create(
+    ReviewerReport.create!(
       task: @task,
       decision: @paper.draft_decision,
       user: assignee

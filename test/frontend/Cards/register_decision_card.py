@@ -88,6 +88,7 @@ class RegisterDecisionCard(BaseCard):
     decision_labels = self._gets(self._decision_labels)
     for label in decision_labels:
       assert label.text in expected_labels, label.text
+    import pdb; pdb.set_trace()
     letter_template = self._get(self._letter_template_placeholder_paragraph)
     # Initial state
     assert 'No decision has been registered.' in letter_template.text, letter_template.text

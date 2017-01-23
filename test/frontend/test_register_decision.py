@@ -88,7 +88,7 @@ class RegisterDecisionCardTest(CommonTest):
     regdec.validate_card_header(paper_id)
     regdec.validate_styles()
 
-  def test_core_register_decision_actions(self):
+  def _test_core_register_decision_actions(self):
     """
     test_register_decision: Validates the elements, styles and functions of the register decision
       card from new document creation through initial_decision, resubmission and then registering a

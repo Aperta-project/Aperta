@@ -19,6 +19,7 @@ const debug = function(description, obj) {
 export default Ember.Route.extend({
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),
+  fullStory: Ember.inject.service(),
 
   beforeModel() {
     Ember.assert('Application name is required for proper display', window.appName);
@@ -48,6 +49,8 @@ export default Ember.Route.extend({
         '/api/admin/journals/authorization',
         'canViewAdminLinks'
       );
+
+      this.get('fullStory').identify(this.currentUser);
     }
   },
 

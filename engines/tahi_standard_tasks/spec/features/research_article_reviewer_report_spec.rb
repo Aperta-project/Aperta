@@ -76,12 +76,12 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 1'
 
+    t.submit_report
+    t.confirm_submit_report
+
     t.ensure_review_history(
       title: 'Revision 0', answers: ['answer for round 0']
     )
-
-    t.submit_report
-    t.confirm_submit_report
 
     # Revision 2
     register_paper_decision(paper, "major_revision")
@@ -90,6 +90,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 2'
 

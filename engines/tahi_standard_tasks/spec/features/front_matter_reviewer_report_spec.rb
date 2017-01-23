@@ -16,6 +16,10 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
   let!(:reviewer_report_task) do
+    create_reviewer_report_task
+  end
+
+  def create_reviewer_report_task
     ReviewerReportTaskCreator.new(
       originating_task: task,
       assignee_id: reviewer.id
@@ -70,13 +74,23 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     # no history yet, since we only have the current round of review
     t.ensure_no_review_history
 
+    t.submit_report
+    t.confirm_submit_report
+
     # Revision 1
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
 
+    # Create new report with our reviewer
+    create_reviewer_report_task
+
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
+
+    t.submit_report
+    t.confirm_submit_report
 
     t.ensure_review_history(
       title: 'Revision 0', answers: ['answer for round 0']
@@ -85,6 +99,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     # Revision 2
     register_paper_decision(paper, "minor_revision")
     paper.submit! paper.creator
+
+    # Create new report with our reviewer
+    create_reviewer_report_task
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)

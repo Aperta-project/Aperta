@@ -31,8 +31,8 @@ test('show download links on control bar', function(assert) {
 
   let mock = void 0;
   const currentPaper = records[0];
-  const versionedTextsURL = '/api/papers/' + currentPaper.shortDoi + '/versioned_texts';
-  const exportUrl = '/api/papers/' + currentPaper.id + '/export?export_format=docx';
+  const versionedTextsURL = `/api/papers/${currentPaper.shortDoi}/versioned_texts`;
+  const exportUrl = `/api/papers/${currentPaper.id}/export?export_format=docx&versioned_text_id=1`;
   const paperPayload = Factory.createPayload('paper');
   paperPayload.addRecords(records.concat([fakeUser]));
   const paperResponse = paperPayload.toJSON();
@@ -40,20 +40,25 @@ test('show download links on control bar', function(assert) {
   paperResponse.paper.links = { versioned_texts: versionedTextsURL };
   const jobId = '232134-324-1234-1234';
 
-
-  server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi, [
+  server.respondWith('GET', `/api/papers/${currentPaper.shortDoi}`, [
     200, { 'Content-Type': 'application/json' }, JSON.stringify(paperResponse)
   ]);
 
   server.respondWith('GET', exportUrl, [
     202, { 'Content-Type': 'application/json' }, JSON.stringify({
-      url: '/api/papers/' + currentPaper.id + '/status/' + jobId
+      url: `/api/papers/${currentPaper.id}/status/${jobId}`
     })
   ]);
 
-  server.respondWith('GET', '/api/papers/' + currentPaper.id + '/status/' + jobId, [
+  server.respondWith('GET', `/api/papers/${currentPaper.id}/status/${jobId}`, [
+    200,
+    { 'Content-Type': 'application/json' },
+    JSON.stringify({ url: `/api/papers/${currentPaper.id}/download.docx` })
+  ]);
+
+  server.respondWith('GET', '/api/journals', [
     200, { 'Content-Type': 'application/json' }, JSON.stringify({
-      url: '/api/papers/' + currentPaper.id + '/download.docx'
+      url: `/api/papers/${currentPaper.id}/download.docx`
     })
   ]);
 
@@ -78,9 +83,9 @@ test('show download links on control bar', function(assert) {
   ]);
 
   mock = sinon.mock(win);
-  mock.expects('location').withArgs('/api/papers/' + currentPaper.id + '/download.docx').returns(true);
+  mock.expects('location').withArgs(`/api/papers/${currentPaper.id}/download.docx`).returns(true);
 
-  visit('/papers/' + currentPaper.shortDoi);
+  visit(`/papers/${currentPaper.shortDoi}`);
   click('#nav-downloads');
   click('.download-docx');
   andThen(function() {

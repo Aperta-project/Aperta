@@ -126,11 +126,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
         else DashboardPage(self.getDriver())
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(title='bdd_cns',
-                        journal='PLOS Wombat',
-                        type_='Research',
-                        random_bit=True
-                        )
+    self.create_article(title='bdd_cns', journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     manuscript_page.validate_ihat_conversions_success(fail_on_missing=True)

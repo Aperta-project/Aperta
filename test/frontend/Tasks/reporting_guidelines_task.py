@@ -107,10 +107,19 @@ class ReportingGuidelinesTask(BaseTask):
     files = filter(os.path.isfile, os.listdir('/tmp'))
     files = [os.path.join('/tmp', f) for f in files]
     files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
+    try:
+      newest_file = files[-1]
+    except IndexError:
+      os.chdir(current_path)
+      logging.warning('Another process may have deleted files from /tmp. While rare, '
+                              'this should not be considered a failure.')
+      return
+    newest_file = os.path.basename(newest_file)
+    os.remove(newest_file)
     os.chdir(current_path)
-    assert uploaded_prisma_file.text == os.path.basename(newest_file), \
-      'Uploaded file: {0} | Downloaded file: {1}'.format(uploaded_prisma_file.text, newest_file)
+    upload_filename = os.path.splitext(uploaded_prisma_file.text)[0]
+    assert upload_filename in os.path.basename(newest_file), \
+      'Uploaded file: {0} not in Downloaded file: {1}'.format(upload_filename, newest_file)
 
   def replace_prisma_checklist(self):
     """

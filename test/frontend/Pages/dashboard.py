@@ -252,9 +252,9 @@ class DashboardPage(AuthenticatedPage):
                                                                                  invite_type.text)
         invite_date = page_listing.find_element(*self._invitation_date)
         db_invite_date = self.utc_to_local_tz(db_invite_date)
-        assert db_invite_date.strftime('%B %d, %Y') in invite_date.text, \
+        assert db_invite_date.strftime('%B %-d, %Y') in invite_date.text, \
             'db invite date: {0} not found in invite block ' \
-            'metadata: {1}.'.format(db_invite_date.strftime('%B %d, %Y'), invite_date.text)
+            'metadata: {1}.'.format(db_invite_date.strftime('%B %-d, %Y'), invite_date.text)
         invite_paper_type = page_listing.find_element(*self._invitation_paper_type)
         assert mmt in invite_paper_type.text, \
             '{0} not found on page: {1}'.format(mmt, invite_paper_type.text)

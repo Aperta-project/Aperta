@@ -113,8 +113,6 @@ class InitialDecisionCardTest(CommonTest):
     workflow_page.click_card('initial_decision')
     # time.sleep(3)
     initial_decision = InitialDecisionCard(self.getDriver())
-    # AC 2
-    assert initial_decision._get(initial_decision._decision_letter_textarea).text == ''
     # AC 1 and 3
     initial_decision.execute_decision('invite')
     # Test that card is editable by author

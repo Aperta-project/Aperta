@@ -11,7 +11,7 @@ module ApertaSourceCodeVisitors
   #    puts visitor.class_definitions.inspect
   #
   class ClassDefinitionVisitor < BasicVisitor
-    DEFAULT_SUPERCLASS =  Class.new.superclass.name
+    DEFAULT_SUPERCLASS = Class.new.superclass.name
 
     attr_reader :class_definitions
 

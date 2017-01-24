@@ -3,7 +3,7 @@ class AddTaskPaperJournalColumnsToEmailLog < ActiveRecord::Migration
     add_column :email_logs, :task_id, :integer
     add_column :email_logs, :paper_id, :integer
     add_column :email_logs, :journal_id, :integer
-    add_column :email_logs, :additional_context, :json
+    add_column :email_logs, :additional_context, :jsonb
 
     add_index :email_logs, :task_id
     add_index :email_logs, :paper_id

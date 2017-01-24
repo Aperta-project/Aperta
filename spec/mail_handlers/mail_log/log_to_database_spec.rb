@@ -121,7 +121,6 @@ module MailLog::LogToDatabase
           expect(email_log.additional_context.keys).to_not include '@not_activerecord_model'
         end
       end
-
     end
   end
 

@@ -1,7 +1,7 @@
 module ApertaSourceCodeVisitors
   class BasicVisitor
     # This method is required
-    def visit(node, tail);
+    def visit(node, tail)
       # no-op for visiting any node
     end
 

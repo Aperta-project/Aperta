@@ -1650,6 +1650,33 @@ activities:
     - '1'
     - '2016-10-26 21:04:53.691608'
     - '2016-10-26 21:04:53.691608'
+  - - '183'
+    - manuscript
+    - '10'
+    - Paper
+    - collaborator.added
+    - Edith Editor has been assigned as collaborator
+    - '1'
+    - '2017-01-24 15:44:00.828014'
+    - '2017-01-24 15:44:00.828014'
+  - - '184'
+    - manuscript
+    - '10'
+    - Paper
+    - collaborator.added
+    - Staff Admin has been assigned as collaborator
+    - '1'
+    - '2017-01-24 15:44:00.839149'
+    - '2017-01-24 15:44:00.839149'
+  - - '185'
+    - manuscript
+    - '10'
+    - Paper
+    - collaborator.added
+    - Arthur Author has been assigned as collaborator
+    - '1'
+    - '2017-01-24 15:44:00.884734'
+    - '2017-01-24 15:44:00.884734'
 
 ---
 affiliations:
@@ -2892,6 +2919,27 @@ assignments:
     - Journal
     - '2016-12-13 20:58:11.689392'
     - '2016-12-13 20:58:11.689392'
+  - - '161'
+    - '4'
+    - '14'
+    - '10'
+    - Paper
+    - '2017-01-24 15:44:00.7638'
+    - '2017-01-24 15:44:00.7638'
+  - - '162'
+    - '14'
+    - '14'
+    - '10'
+    - Paper
+    - '2017-01-24 15:44:00.787298'
+    - '2017-01-24 15:44:00.787298'
+  - - '163'
+    - '3'
+    - '14'
+    - '10'
+    - Paper
+    - '2017-01-24 15:44:00.822643'
+    - '2017-01-24 15:44:00.822643'
 
 ---
 attachments:
@@ -4230,6 +4278,273 @@ decisions:
     - 
     - false
     - false
+
+---
+email_logs:
+  columns:
+  - id
+  - from
+  - to
+  - subject
+  - message_id
+  - raw_source
+  - status
+  - error_message
+  - errored_at
+  - sent_at
+  - created_at
+  - updated_at
+  - task_id
+  - paper_id
+  - journal_id
+  - additional_context
+  records: 
+  - - '1'
+    - no-reply@example.com
+    - editor@example.com
+    - You've been added as a collaborator to the manuscript, "The most scrumtrulescent
+      scientific paper of 2015."
+    - 5887764361eb2_6f293fe8ed20d06c738e3@curtis.local.mail
+    - "Date: Tue, 24 Jan 2017 10:44:03 -0500\r\nFrom: no-reply@example.com\r\nTo:
+      editor@example.com\r\nMessage-ID: <5887764361eb2_6f293fe8ed20d06c738e3@curtis.local.mail>\r\nSubject:
+      You've been added as a collaborator to the manuscript, \"The most\r\n scrumtrulescent
+      scientific paper of 2015.\"\r\nMime-Version: 1.0\r\nContent-Type: text/html;\r\n
+      charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE
+      html>\r\n<html>\r\n  <head>\r\n    <meta name=3D\"viewport\" content=3D\"width=3Ddevice-width\"
+      />\r\n    <meta http-equiv=3D\"Content-Type\" content=3D\"text/html; charset=3DUTF=\r\n-8\"
+      />\r\n    <link rel=3D\"stylesheet\" media=3D\"screen\" href=3D\"/assets/email-0cdc3=\r\ne434e94d5379656294f4fffe3375013f922ec62ec1b1590902bd61e31c2.css\"
+      />\r\n    <style>\r\n      /* Responsive : PRESERVE THESE STYLES IN THE HEAD\r\n
+      \     -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media only screen and (max-width: 620px) {\r\n        table[class=3Dbody]
+      h1 {\r\n          margin-bottom: 10px !important;\r\n          font-size: 21px
+      !important;\r\n        }\r\n\r\n        table[class=3Dbody] p,\r\n        table[class=3Dbody]
+      ul,\r\n        table[class=3Dbody] ol,\r\n        table[class=3Dbody] td,\r\n
+      \       table[class=3Dbody] span,\r\n        table[class=3Dbody] a {\r\n          font-size:
+      16px !important;\r\n        }\r\n\r\n        table[class=3Dbody] .wrapper {\r\n
+      \         padding: 20px !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .content {\r\n          padding: 0 !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .container {\r\n          width: 100% !important;\r\n          padding: 0 !important;\r\n
+      \       }\r\n\r\n        table[class=3Dbody] .main {\r\n          border-left-width:
+      0 !important;\r\n          border-radius: 0 !important;\r\n          border-right-width:
+      0 !important;\r\n        }\r\n\r\n        table[class=3Dbody] .btn table { width:
+      100% !important; }\r\n        table[class=3Dbody] .btn a { width: 100% !important;
+      }\r\n        table[class=3Dbody] .img-responsive {\r\n          width: auto
+      !important;\r\n          max-width: 100% !important;\r\n          height: auto
+      !important;\r\n        }\r\n      }\r\n\r\n\r\n      /* Outlook.com / Hotmail
+      / Apple specific\r\n         PRESERVE THESE STYLES IN THE HEAD\r\n      -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media all {\r\n        /* Outlook.com / Hotmail\r\n           Styles
+      present in the email are appended with .ExternalClass *=\r\n/\r\n        .ExternalClass
+      {\r\n          width: 100%;\r\n        }\r\n\r\n        .ExternalClass,\r\n
+      \       .ExternalClass p,\r\n        .ExternalClass span,\r\n        .ExternalClass
+      font,\r\n        .ExternalClass td,\r\n        .ExternalClass div {\r\n          line-height:
+      100%;\r\n        }\r\n\r\n        /* iOS : For auto formatted phone numbers,
+      addresses, and dates *=\r\n/\r\n        .apple-link a {\r\n          color:
+      inherit !important;\r\n          font-family: inherit !important;\r\n          font-size:
+      inherit !important;\r\n          font-weight: inherit !important;\r\n          line-height:
+      inherit !important;\r\n          text-decoration: none !important;\r\n        }\r\n
+      \     }\r\n    </style>\r\n  </head>\r\n  <body class=3D\"\">\r\n    <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"body=\r\n\">\r\n
+      \     <tr>\r\n        <td>&nbsp;</td>\r\n        <td class=3D\"container\">\r\n
+      \         <!-- START CENTERED WHITE CONTAINER -->\r\n          <div class=3D\"content\">\r\n
+      \           <!-- START MAIN CONTENT AREA -->\r\n            <table class=3D\"main\">\r\n
+      \             <tr>\r\n                <td class=3D\"wrapper\">\r\n                  <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\"=\r\n>\r\n                    <tr>\r\n
+      \                     <td>\r\n                          <img class=3D\"journal-logo\"
+      src=3D\"https://aper=\r\nta-tahi-prod-qa.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbna=\r\nil_images/no-journal-image.gif?X-Amz-Expires=3D518400&amp;X-Amz-Date=3D20=\r\n170124T154401Z&amp;X-Amz-Algorithm=3DAWS4-HMAC-SHA256&amp;X-Amz-Credentia=\r\nl=3DAKIAJK3UGUT3EFKMWXNA/20170124/us-west-1/s3/aws4_request&amp;X-Amz-Sig=\r\nnedHeaders=3Dhost&amp;X-Amz-Signature=3Dd23bb9c867396a165b79421744ae249ff=\r\n304843fc6bd22a00c7bba039ac5bfe6\">\r\n\r\n<br><br>\r\n\r\n<h1>\r\n
+      \ You have been added as a collaborator to a manuscript\r\n</h1>\r\n\r\n<hr>\r\n\r\n<p>Hello
+      Edith Editor,</p>\r\n\r\n<p>\r\n  Adam Administrator just added you as a collaborator
+      to a manuscript tit=\r\nled \"The most scrumtrulescent scientific paper of 2015..\"\r\n
+      \ Collaborator status does not denote authorship of the manuscript.\r\n  All
+      authors should be listed in the Authors card, and must meet PLOS Bi=\r\nology=E2=80=99s
+      authorship criteria.\r\n</p>\r\n\r\n<!-- START BUTTON -->\r\n<table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"btn btn-=\r\nprimary\">\r\n
+      \ <tbody>\r\n    <tr>\r\n      <td align=3D\"left\">\r\n        <table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\">\r\n          <tbody>\r\n            <tr>\r\n
+      \             <td> <a href=3D\"http://localhost:5000/papers/devs.100010/\" =\r\ntarget=3D\"_blank\">View
+      Manuscript</a> </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n
+      \     </td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n<!-- END BUTTON -->\r\n\r\n\r\n<p>\r\n
+      \ Kind regards,<br>\r\n  PLOS Yeti Team\r\n</p>\r\n\r\n\r\n<hr>\r\n\r\n<p>\r\n
+      \ Visit this link to view the manuscript:\r\n  <a href=3D\"http://localhost:5000/papers/devs.100010/\">http://localhost:=\r\n5000/papers/devs.100010/</a>\r\n</p>\r\n\r\n
+      \                     </td>\r\n                    </tr>\r\n                  </table>\r\n
+      \               </td>\r\n              </tr>\r\n            </table>\r\n            <!--
+      END MAIN CONTENT AREA -->\r\n          </div>\r\n          <!-- END CENTERED
+      WHITE CONTAINER -->\r\n        </td>\r\n        <td>&nbsp;</td>\r\n      </tr>\r\n
+      \   </table>\r\n  </body>\r\n</html>\r\n"
+    - sent
+    - 
+    - 
+    - '2017-01-24 15:44:03.70275'
+    - '2017-01-24 15:44:03.453087'
+    - '2017-01-24 15:44:03.453087'
+    - 
+    - '10'
+    - '1'
+    - '{"@paper": ["Paper", 10], "@invitee": ["User", 4], "@invitor": ["User", 1],
+      "@journal": ["Journal", 1]}'
+  - - '2'
+    - no-reply@example.com
+    - staff_admin@example.com
+    - You've been added as a collaborator to the manuscript, "The most scrumtrulescent
+      scientific paper of 2015."
+    - 5887764361b84_6f293fe8ed1fc5a0736dd@curtis.local.mail
+    - "Date: Tue, 24 Jan 2017 10:44:03 -0500\r\nFrom: no-reply@example.com\r\nTo:
+      staff_admin@example.com\r\nMessage-ID: <5887764361b84_6f293fe8ed1fc5a0736dd@curtis.local.mail>\r\nSubject:
+      You've been added as a collaborator to the manuscript, \"The most\r\n scrumtrulescent
+      scientific paper of 2015.\"\r\nMime-Version: 1.0\r\nContent-Type: text/html;\r\n
+      charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE
+      html>\r\n<html>\r\n  <head>\r\n    <meta name=3D\"viewport\" content=3D\"width=3Ddevice-width\"
+      />\r\n    <meta http-equiv=3D\"Content-Type\" content=3D\"text/html; charset=3DUTF=\r\n-8\"
+      />\r\n    <link rel=3D\"stylesheet\" media=3D\"screen\" href=3D\"/assets/email-0cdc3=\r\ne434e94d5379656294f4fffe3375013f922ec62ec1b1590902bd61e31c2.css\"
+      />\r\n    <style>\r\n      /* Responsive : PRESERVE THESE STYLES IN THE HEAD\r\n
+      \     -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media only screen and (max-width: 620px) {\r\n        table[class=3Dbody]
+      h1 {\r\n          margin-bottom: 10px !important;\r\n          font-size: 21px
+      !important;\r\n        }\r\n\r\n        table[class=3Dbody] p,\r\n        table[class=3Dbody]
+      ul,\r\n        table[class=3Dbody] ol,\r\n        table[class=3Dbody] td,\r\n
+      \       table[class=3Dbody] span,\r\n        table[class=3Dbody] a {\r\n          font-size:
+      16px !important;\r\n        }\r\n\r\n        table[class=3Dbody] .wrapper {\r\n
+      \         padding: 20px !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .content {\r\n          padding: 0 !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .container {\r\n          width: 100% !important;\r\n          padding: 0 !important;\r\n
+      \       }\r\n\r\n        table[class=3Dbody] .main {\r\n          border-left-width:
+      0 !important;\r\n          border-radius: 0 !important;\r\n          border-right-width:
+      0 !important;\r\n        }\r\n\r\n        table[class=3Dbody] .btn table { width:
+      100% !important; }\r\n        table[class=3Dbody] .btn a { width: 100% !important;
+      }\r\n        table[class=3Dbody] .img-responsive {\r\n          width: auto
+      !important;\r\n          max-width: 100% !important;\r\n          height: auto
+      !important;\r\n        }\r\n      }\r\n\r\n\r\n      /* Outlook.com / Hotmail
+      / Apple specific\r\n         PRESERVE THESE STYLES IN THE HEAD\r\n      -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media all {\r\n        /* Outlook.com / Hotmail\r\n           Styles
+      present in the email are appended with .ExternalClass *=\r\n/\r\n        .ExternalClass
+      {\r\n          width: 100%;\r\n        }\r\n\r\n        .ExternalClass,\r\n
+      \       .ExternalClass p,\r\n        .ExternalClass span,\r\n        .ExternalClass
+      font,\r\n        .ExternalClass td,\r\n        .ExternalClass div {\r\n          line-height:
+      100%;\r\n        }\r\n\r\n        /* iOS : For auto formatted phone numbers,
+      addresses, and dates *=\r\n/\r\n        .apple-link a {\r\n          color:
+      inherit !important;\r\n          font-family: inherit !important;\r\n          font-size:
+      inherit !important;\r\n          font-weight: inherit !important;\r\n          line-height:
+      inherit !important;\r\n          text-decoration: none !important;\r\n        }\r\n
+      \     }\r\n    </style>\r\n  </head>\r\n  <body class=3D\"\">\r\n    <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"body=\r\n\">\r\n
+      \     <tr>\r\n        <td>&nbsp;</td>\r\n        <td class=3D\"container\">\r\n
+      \         <!-- START CENTERED WHITE CONTAINER -->\r\n          <div class=3D\"content\">\r\n
+      \           <!-- START MAIN CONTENT AREA -->\r\n            <table class=3D\"main\">\r\n
+      \             <tr>\r\n                <td class=3D\"wrapper\">\r\n                  <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\"=\r\n>\r\n                    <tr>\r\n
+      \                     <td>\r\n                          <img class=3D\"journal-logo\"
+      src=3D\"https://aper=\r\nta-tahi-prod-qa.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbna=\r\nil_images/no-journal-image.gif?X-Amz-Expires=3D518400&amp;X-Amz-Date=3D20=\r\n170124T154401Z&amp;X-Amz-Algorithm=3DAWS4-HMAC-SHA256&amp;X-Amz-Credentia=\r\nl=3DAKIAJK3UGUT3EFKMWXNA/20170124/us-west-1/s3/aws4_request&amp;X-Amz-Sig=\r\nnedHeaders=3Dhost&amp;X-Amz-Signature=3Dd23bb9c867396a165b79421744ae249ff=\r\n304843fc6bd22a00c7bba039ac5bfe6\">\r\n\r\n<br><br>\r\n\r\n<h1>\r\n
+      \ You have been added as a collaborator to a manuscript\r\n</h1>\r\n\r\n<hr>\r\n\r\n<p>Hello
+      Staff Admin,</p>\r\n\r\n<p>\r\n  Adam Administrator just added you as a collaborator
+      to a manuscript tit=\r\nled \"The most scrumtrulescent scientific paper of 2015..\"\r\n
+      \ Collaborator status does not denote authorship of the manuscript.\r\n  All
+      authors should be listed in the Authors card, and must meet PLOS Bi=\r\nology=E2=80=99s
+      authorship criteria.\r\n</p>\r\n\r\n<!-- START BUTTON -->\r\n<table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"btn btn-=\r\nprimary\">\r\n
+      \ <tbody>\r\n    <tr>\r\n      <td align=3D\"left\">\r\n        <table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\">\r\n          <tbody>\r\n            <tr>\r\n
+      \             <td> <a href=3D\"http://localhost:5000/papers/devs.100010/\" =\r\ntarget=3D\"_blank\">View
+      Manuscript</a> </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n
+      \     </td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n<!-- END BUTTON -->\r\n\r\n\r\n<p>\r\n
+      \ With best wishes,<br>\r\n  PLOS Yeti Team\r\n</p>\r\n\r\n\r\n<hr>\r\n\r\n<p>\r\n
+      \ Visit this link to view the manuscript:\r\n  <a href=3D\"http://localhost:5000/papers/devs.100010/\">http://localhost:=\r\n5000/papers/devs.100010/</a>\r\n</p>\r\n\r\n
+      \                     </td>\r\n                    </tr>\r\n                  </table>\r\n
+      \               </td>\r\n              </tr>\r\n            </table>\r\n            <!--
+      END MAIN CONTENT AREA -->\r\n          </div>\r\n          <!-- END CENTERED
+      WHITE CONTAINER -->\r\n        </td>\r\n        <td>&nbsp;</td>\r\n      </tr>\r\n
+      \   </table>\r\n  </body>\r\n</html>\r\n"
+    - sent
+    - 
+    - 
+    - '2017-01-24 15:44:03.707259'
+    - '2017-01-24 15:44:03.454649'
+    - '2017-01-24 15:44:03.454649'
+    - 
+    - '10'
+    - '1'
+    - '{"@paper": ["Paper", 10], "@invitee": ["User", 14], "@invitor": ["User", 1],
+      "@journal": ["Journal", 1]}'
+  - - '3'
+    - no-reply@example.com
+    - author@example.com
+    - You've been added as a collaborator to the manuscript, "The most scrumtrulescent
+      scientific paper of 2015."
+    - 5887764361d59_6f293fe8ed1f4e4073746@curtis.local.mail
+    - "Date: Tue, 24 Jan 2017 10:44:03 -0500\r\nFrom: no-reply@example.com\r\nTo:
+      author@example.com\r\nMessage-ID: <5887764361d59_6f293fe8ed1f4e4073746@curtis.local.mail>\r\nSubject:
+      You've been added as a collaborator to the manuscript, \"The most\r\n scrumtrulescent
+      scientific paper of 2015.\"\r\nMime-Version: 1.0\r\nContent-Type: text/html;\r\n
+      charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE
+      html>\r\n<html>\r\n  <head>\r\n    <meta name=3D\"viewport\" content=3D\"width=3Ddevice-width\"
+      />\r\n    <meta http-equiv=3D\"Content-Type\" content=3D\"text/html; charset=3DUTF=\r\n-8\"
+      />\r\n    <link rel=3D\"stylesheet\" media=3D\"screen\" href=3D\"/assets/email-0cdc3=\r\ne434e94d5379656294f4fffe3375013f922ec62ec1b1590902bd61e31c2.css\"
+      />\r\n    <style>\r\n      /* Responsive : PRESERVE THESE STYLES IN THE HEAD\r\n
+      \     -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media only screen and (max-width: 620px) {\r\n        table[class=3Dbody]
+      h1 {\r\n          margin-bottom: 10px !important;\r\n          font-size: 21px
+      !important;\r\n        }\r\n\r\n        table[class=3Dbody] p,\r\n        table[class=3Dbody]
+      ul,\r\n        table[class=3Dbody] ol,\r\n        table[class=3Dbody] td,\r\n
+      \       table[class=3Dbody] span,\r\n        table[class=3Dbody] a {\r\n          font-size:
+      16px !important;\r\n        }\r\n\r\n        table[class=3Dbody] .wrapper {\r\n
+      \         padding: 20px !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .content {\r\n          padding: 0 !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .container {\r\n          width: 100% !important;\r\n          padding: 0 !important;\r\n
+      \       }\r\n\r\n        table[class=3Dbody] .main {\r\n          border-left-width:
+      0 !important;\r\n          border-radius: 0 !important;\r\n          border-right-width:
+      0 !important;\r\n        }\r\n\r\n        table[class=3Dbody] .btn table { width:
+      100% !important; }\r\n        table[class=3Dbody] .btn a { width: 100% !important;
+      }\r\n        table[class=3Dbody] .img-responsive {\r\n          width: auto
+      !important;\r\n          max-width: 100% !important;\r\n          height: auto
+      !important;\r\n        }\r\n      }\r\n\r\n\r\n      /* Outlook.com / Hotmail
+      / Apple specific\r\n         PRESERVE THESE STYLES IN THE HEAD\r\n      -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media all {\r\n        /* Outlook.com / Hotmail\r\n           Styles
+      present in the email are appended with .ExternalClass *=\r\n/\r\n        .ExternalClass
+      {\r\n          width: 100%;\r\n        }\r\n\r\n        .ExternalClass,\r\n
+      \       .ExternalClass p,\r\n        .ExternalClass span,\r\n        .ExternalClass
+      font,\r\n        .ExternalClass td,\r\n        .ExternalClass div {\r\n          line-height:
+      100%;\r\n        }\r\n\r\n        /* iOS : For auto formatted phone numbers,
+      addresses, and dates *=\r\n/\r\n        .apple-link a {\r\n          color:
+      inherit !important;\r\n          font-family: inherit !important;\r\n          font-size:
+      inherit !important;\r\n          font-weight: inherit !important;\r\n          line-height:
+      inherit !important;\r\n          text-decoration: none !important;\r\n        }\r\n
+      \     }\r\n    </style>\r\n  </head>\r\n  <body class=3D\"\">\r\n    <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"body=\r\n\">\r\n
+      \     <tr>\r\n        <td>&nbsp;</td>\r\n        <td class=3D\"container\">\r\n
+      \         <!-- START CENTERED WHITE CONTAINER -->\r\n          <div class=3D\"content\">\r\n
+      \           <!-- START MAIN CONTENT AREA -->\r\n            <table class=3D\"main\">\r\n
+      \             <tr>\r\n                <td class=3D\"wrapper\">\r\n                  <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\"=\r\n>\r\n                    <tr>\r\n
+      \                     <td>\r\n                          <img class=3D\"journal-logo\"
+      src=3D\"https://aper=\r\nta-tahi-prod-qa.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbna=\r\nil_images/no-journal-image.gif?X-Amz-Expires=3D518400&amp;X-Amz-Date=3D20=\r\n170124T154401Z&amp;X-Amz-Algorithm=3DAWS4-HMAC-SHA256&amp;X-Amz-Credentia=\r\nl=3DAKIAJK3UGUT3EFKMWXNA/20170124/us-west-1/s3/aws4_request&amp;X-Amz-Sig=\r\nnedHeaders=3Dhost&amp;X-Amz-Signature=3Dd23bb9c867396a165b79421744ae249ff=\r\n304843fc6bd22a00c7bba039ac5bfe6\">\r\n\r\n<br><br>\r\n\r\n<h1>\r\n
+      \ You have been added as a collaborator to a manuscript\r\n</h1>\r\n\r\n<hr>\r\n\r\n<p>Hello
+      Arthur Author,</p>\r\n\r\n<p>\r\n  Adam Administrator just added you as a collaborator
+      to a manuscript tit=\r\nled \"The most scrumtrulescent scientific paper of 2015..\"\r\n
+      \ Collaborator status does not denote authorship of the manuscript.\r\n  All
+      authors should be listed in the Authors card, and must meet PLOS Bi=\r\nology=E2=80=99s
+      authorship criteria.\r\n</p>\r\n\r\n<!-- START BUTTON -->\r\n<table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"btn btn-=\r\nprimary\">\r\n
+      \ <tbody>\r\n    <tr>\r\n      <td align=3D\"left\">\r\n        <table border=3D\"0\"
+      cellpadding=3D\"0\" cellspacing=3D\"0\">\r\n          <tbody>\r\n            <tr>\r\n
+      \             <td> <a href=3D\"http://localhost:5000/papers/devs.100010/\" =\r\ntarget=3D\"_blank\">View
+      Manuscript</a> </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n
+      \     </td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n<!-- END BUTTON -->\r\n\r\n\r\n<p>\r\n
+      \ Best regards,<br>\r\n  PLOS Yeti Team\r\n</p>\r\n\r\n\r\n<hr>\r\n\r\n<p>\r\n
+      \ Visit this link to view the manuscript:\r\n  <a href=3D\"http://localhost:5000/papers/devs.100010/\">http://localhost:=\r\n5000/papers/devs.100010/</a>\r\n</p>\r\n\r\n
+      \                     </td>\r\n                    </tr>\r\n                  </table>\r\n
+      \               </td>\r\n              </tr>\r\n            </table>\r\n            <!--
+      END MAIN CONTENT AREA -->\r\n          </div>\r\n          <!-- END CENTERED
+      WHITE CONTAINER -->\r\n        </td>\r\n        <td>&nbsp;</td>\r\n      </tr>\r\n
+      \   </table>\r\n  </body>\r\n</html>\r\n"
+    - sent
+    - 
+    - 
+    - '2017-01-24 15:44:03.712083'
+    - '2017-01-24 15:44:03.458988'
+    - '2017-01-24 15:44:03.458988'
+    - 
+    - '10'
+    - '1'
+    - '{"@paper": ["Paper", 10], "@invitee": ["User", 3], "@invitor": ["User", 1],
+      "@journal": ["Journal", 1]}'
 
 ---
 group_authors:
@@ -25127,13 +25442,13 @@ users:
     - 
     - 
     - 
-    - '11'
+    - '12'
+    - '2017-01-24 15:43:06.217142'
     - '2016-03-23 13:18:34.593535'
-    - '2016-01-26 21:41:00.622951'
-    - 10.43.0.68
     - 127.0.0.1
+    - 10.43.0.68
     - '2015-10-29 19:36:19.627844'
-    - '2016-03-23 13:18:34.594851'
+    - '2017-01-24 15:43:06.219966'
     - admin
     - 
     - '1001'

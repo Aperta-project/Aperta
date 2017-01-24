@@ -15,6 +15,5 @@ module MailLog
                           "subject='#{mail.subject}' at=#{Time.current}"
       end
     end
-
   end
 end

@@ -32,7 +32,7 @@ module MailLog
         email_log = EmailLog.find_by!(message_id: message.message_id)
         email_log.update_columns(
           status: 'sent',
-          sent_at: Time.now
+          sent_at: Time.now.utc
         )
       end
     end
@@ -45,7 +45,7 @@ module MailLog
           email_log = EmailLog.find_by!(message_id: message.message_id)
           email_log.update_columns(
             error_message: ex.message,
-            errored_at: Time.now,
+            errored_at: Time.now.utc,
             status: 'failed'
           )
           raise ex

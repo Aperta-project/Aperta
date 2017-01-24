@@ -13,6 +13,5 @@ module MailLog
         message.message_id ||= "<#{Mail.random_tag}@#{::Socket.gethostname}.mail>"
       end
     end
-
   end
 end

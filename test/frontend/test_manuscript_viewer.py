@@ -22,6 +22,10 @@ This test case validates the article editor page and its associated overlays.
 __author__ = 'sbassi@plos.org'
 
 
+# Note temporary removing user cover_editor_login from the pool of external users due
+# to APERTA-9007
+external_editorial_users = external_editorial_users[1:]
+
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
   """

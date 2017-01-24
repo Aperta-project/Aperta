@@ -546,13 +546,13 @@ class AuthenticatedPage(PlosPage):
     elif cardname.lower() == 'authors':
       card_title = self._get(self._authors_card)
     elif cardname.lower() == 'billing':
-      card_title = self._get(self._cover_letter_card)
+      card_title = self._get(self._billing_card)
     elif cardname.lower() == 'changes_for_author':
       card_title = self._get(self._cfa_card)
     elif cardname.lower() == 'competing_interests':
       card_title = self._get(self._competing_ints_card)
     elif cardname.lower() == 'cover_letter':
-      card_title = self._get(self._billing_card)
+      card_title = self._get(self._cover_letter_card)
     elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
     elif cardname.lower() == 'early_article_posting':

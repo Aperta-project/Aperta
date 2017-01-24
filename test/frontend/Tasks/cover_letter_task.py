@@ -4,14 +4,13 @@ import hashlib
 import os
 import random
 import logging
-
 import time
-
 import re
+import urllib
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Tasks.basetask import BaseTask
 from Base.Resources import cover_letters
 
@@ -20,7 +19,7 @@ __author__ = 'ivieira@plos.org'
 
 class CoverLetterTask(BaseTask):
   """
-  Page Object Model for Authors Task
+  Page Object Model for Cover Letter Task
   """
   def __init__(self, driver):
     super(CoverLetterTask, self).__init__(driver)
@@ -40,8 +39,18 @@ class CoverLetterTask(BaseTask):
     self._task_done_button = (By.CSS_SELECTOR, self._task_body_base_locator  + 'button.task-completed')
 
     self._last_uploaded_letter_file = None
+    self._textarea_sample_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis, nisl volutpat ' \
+                                 'dignissim tempus, urna risus semper lectus, non fermentum quam neque sed magna. Morbi in ' \
+                                 'velit ac arcu scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. Aenean ac ' \
+                                 'massa facilisis, pulvinar quam nec, volutpat enim. Sed at sem risus. Sed hendrerit, odio ' \
+                                 'vitae lobortis dapibus, turpis ipsum tristique elit, et bibendum urna magna in elit. ' \
+                                 'Aliquam in lacus diam. Aenean tellus lectus, commodo eget leo et, interdum hendrerit lectus.'
 
   def validate_cover_letter_task_styles(self):
+    """
+    validate_cover_letter_task_styles: Validates the elements, styles and texts for the cover letter task
+    :return: void function
+    """
     # Assert instructions text styling
     instructions_first_p = self._get(self._instructions_text_first_p)
     instructions_questions_ul = self._get(self._instructions_text_questions_ul)
@@ -96,24 +105,39 @@ class CoverLetterTask(BaseTask):
     self.validate_secondary_small_green_button_task_style(upload_cover_letter_button)
 
   def validate_styles(self):
+    """
+    validate_styles: Validates the elements, styles and texts for the cover letter task and the common elements styles
+    :return: void function
+    """
     self.validate_cover_letter_task_styles()
     self.validate_common_elements_styles()
     return self
 
+  def get_textarea_sample_text(self):
+    """
+    get_textarea_sample_text: Get the text used to fill the textarea
+    :return: String
+    """
+    return self._textarea_sample_text
+
   def validate_letter_textarea(self):
+    """
+    validate_letter_textarea: Validate the textarea filling and mark task as completed
+    :return: void function
+    """
     textarea = self._get(self._cover_letter_textarea)
-    sample_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis, nisl volutpat ' \
-                  'dignissim tempus, urna risus semper lectus, non fermentum quam neque sed magna. Morbi in ' \
-                  'velit ac arcu scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. Aenean ac ' \
-                  'massa facilisis, pulvinar quam nec, volutpat enim. Sed at sem risus. Sed hendrerit, odio ' \
-                  'vitae lobortis dapibus, turpis ipsum tristique elit, et bibendum urna magna in elit. ' \
-                  'Aliquam in lacus diam. Aenean tellus lectus, commodo eget leo et, interdum hendrerit lectus.'
+    sample_text = self.get_textarea_sample_text()
 
     textarea.send_keys(sample_text)
 
     self.click_completion_button()
 
   def upload_letter(self, letter='random'):
+    """
+    upload_letter: Upload the cover letter file
+    :param letter: The file to upload path. A string.
+    :return: void function
+    """
     if letter == 'random':
       letter2upload = random.choice(cover_letters)
       fn = os.path.join(os.getcwd(), letter2upload)
@@ -125,24 +149,37 @@ class CoverLetterTask(BaseTask):
     upload_cover_letter_button = self._get(self._upload_cover_letter_button)
     upload_cover_letter_button.click()
     self._last_uploaded_letter_file = fn
-    self._wait.until(EC.presence_of_element_located(self._uploaded_attachment_item))
+    formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
 
-  def _get_letter_attachment_element(self):
-    uploaded_item = None
+    # Wait until the uploaded item be loaded
+    self._wait_for_element(self._get(self._uploaded_attachment_item))
+    # Wait until the uploaded item link have the formatted name
+    self._wait.until(EC.text_to_be_present_in_element(self._uploaded_attachment_item_link, formatted_file_name))
 
-    try:
-      uploaded_item = self._get(self._uploaded_attachment_item)
-    except ElementDoesNotExistAssertionError:
-      pass
+  def _get_uploaded_item_element(self):
+    """
+    _get_uploaded_item_element: Get the current uploaded file element
+    :return: WebElement
+    """
 
-    if not uploaded_item:
-      self.upload_letter()
-      uploaded_item = self._get(self._uploaded_attachment_item)
+    uploaded_item = self._get(self._uploaded_attachment_item)
 
     return uploaded_item
 
+  def get_last_uploaded_letter_file(self):
+    """
+    _get_uploaded_item_element: Get the last uploaded file path
+    :return: String
+    """
+    return self._last_uploaded_letter_file
+
   def replace_letter(self, letter='random'):
-    uploaded_item = self._get_letter_attachment_element()
+    """
+    upload_letter: Replaces an uploaded cover letter file by another new one
+    :param letter: The new file path. A string.
+    :return: void function
+    """
+    uploaded_item = self._get_uploaded_item_element()
 
     if letter == 'random':
       letter2upload = random.choice(cover_letters)
@@ -156,31 +193,35 @@ class CoverLetterTask(BaseTask):
     # A ticket to front end fix is was filled: APERTA-8960
     js_cmd = "$('<style>{0}{1} {{ display:block !important; }}</style>').appendTo('body');".format(self._task_body_base_locator, '.attachment-manager .s3-file-uploader')
     self._driver.execute_script(js_cmd)
-    replace_button = uploaded_item.find_element_by_class_name('replace-attachment')
     replace_file_input = uploaded_item.find_element_by_class_name('s3-file-uploader')
     replace_file_input.send_keys(fn)
+    formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
 
-    # Wait until the file name get corrected formatted
-    time.sleep(5)
+    # Wait until the uploaded item link have the formatted name
+    self._wait.until(EC.text_to_be_present_in_element(self._uploaded_attachment_item_link, formatted_file_name))
 
-    # When uploaded the file name is formatted, replacing spaces by '+'
-    original_file_name = fn.split("/")[-1].replace(' ', '+')
     uploaded_file_name = self._get(self._uploaded_attachment_item_link).text
 
-    assert original_file_name == uploaded_file_name, "The uploaded file name: {0} is not the expected: {1}".format(original_file_name, uploaded_file_name)
+    assert formatted_file_name == uploaded_file_name, "The uploaded file name: {0} is not the expected: {1}".format(formatted_file_name, uploaded_file_name)
 
   def remove_letter(self):
-    uploaded_item = self._get_letter_attachment_element()
+    """
+    remove_letter: Removes an uploaded cover letter file
+    :return: void function
+    """
+    uploaded_item = self._get_uploaded_item_element()
     remove_button = uploaded_item.find_element_by_class_name('delete-attachment')
 
-    # Time to process the file name, this changes the position of the button.
-    time.sleep(5)
     remove_button.click()
 
     self._wait.until(EC.staleness_of(uploaded_item))
 
   def download_letter(self):
-    uploaded_item = self._get_letter_attachment_element()
+    """
+    remove_letter: Downloads an uploaded cover letter file and check if is the expected
+    :return: void function
+    """
+    uploaded_item = self._get_uploaded_item_element()
     download_button = uploaded_item.find_element_by_class_name('file-link')
     original_working_dir = os.getcwd()
 
@@ -191,14 +232,22 @@ class CoverLetterTask(BaseTask):
 
     # Get the newest file downloaded
     os.chdir('/tmp')
-    files = filter(os.path.isfile, os.listdir('/tmp'))
-    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-    files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
+
+    # Do operation inside try to avoid errors, preventing the chdir to don't return to the original one
+    try:
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+    except:
+      newest_file = None
+
+    # Move the working directory back to the original one
+    os.chdir(original_working_dir)
 
     # Get the last uploaded file, if available, or find the original file in resource list
-    if self._last_uploaded_letter_file:
-      original_file_path = self._last_uploaded_letter_file
+    if self.get_last_uploaded_letter_file():
+      original_file_path = self.get_last_uploaded_letter_file()
     else:
       # Find the original resource file name
       original_file_name = newest_file.split('/')[-1]
@@ -216,4 +265,4 @@ class CoverLetterTask(BaseTask):
     original_file_md5 = hashlib.md5(open(original_file_path, 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(open(newest_file, 'rb').read()).hexdigest()
 
-    assert original_file_md5 == downloaded_file_md5, 'The downloaded file MD5 hash do not match the uploaded'
+    assert original_file_md5 == downloaded_file_md5, 'The downloaded file MD5 hash ({0}) do not match the uploaded ({1})'.format(downloaded_file_md5, original_file_md5)

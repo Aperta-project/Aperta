@@ -58,6 +58,10 @@ export default Ember.Route.extend({
     return getOwner(this).lookup('serializer:application');
   }),
 
+  assignWindowLocation(location) {
+    window.location.assign(location);
+  },
+
   actions: {
     willTransition(transition) {
       let currentRouteController = this.controllerFor(
@@ -134,6 +138,11 @@ export default Ember.Route.extend({
 
     flashMessage(payload) {
       this.flash.displayRouteLevelMessage(payload.messageType, payload.message);
+    },
+
+    signOut() {
+      this.get('fullStory').clearSession();
+      this.assignWindowLocation('/users/sign_out');
     }
   },
 

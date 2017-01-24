@@ -35,8 +35,14 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         let rank = this.get('figure.rank');
         if (rank === 0) { return true; }
 
-        let count = this.get('figure.paper.figures').filterBy('rank', rank).get('length');
+        const figures = this.get('figure.paper.figures');
+        // Because `rankErrorMessage` is a computed property that fires
+        // when the figure count changes, this validation will be run when
+        // a figure is deleted. If there are no figures remaining, we should
+        // not call `filterBy` on undefined
+        if(!figures) { return true; }
 
+        let count = figures.filterBy('rank', rank).get('length');
         return count === 1;
       }
     }]

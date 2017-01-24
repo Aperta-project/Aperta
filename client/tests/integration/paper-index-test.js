@@ -187,3 +187,16 @@ test('visiting /paper: Gradual Engagement banner visible', function(assert) {
     assert.ok(!find('#submission-process').length, 'The banner is not visible');
   });
 });
+
+test('visiting /paper: Paper displays for a real url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + '?firstView=true').then(function() {
+    assert.ok(currentRouteName() == 'paper.index.index', 'The shortDoi path is not pointing to the paper.index.index Ember route');
+    assert.ok(find('.manuscript-pane').length, 'The manuscript pane is not visible');
+  });
+});
+
+test('visiting /paper: Redirects to dashboard for malformed url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + 'blah').then(function() {
+    assert.ok(currentRouteName() == 'dashboard.loading', 'The dashboard welcome message is not visible');
+  });
+});

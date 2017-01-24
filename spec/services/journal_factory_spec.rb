@@ -1486,7 +1486,7 @@ describe JournalFactory do
           end
 
           it 'only authors and billing staff have any permission on the billing task' do
-            not_allowed_roles = Role.where.not(name: [Role::CREATOR_ROLE, Role::BILLING_ROLE])
+            not_allowed_roles = Role.where.not(name: [Role::CREATOR_ROLE, Role::BILLING_ROLE, Role::SITE_ADMIN_ROLE])
             not_allowed_roles.each do |role|
               expect(role.permissions.where(applies_to: 'PlosBilling::BillingTask')).to be_empty
             end

@@ -14,7 +14,6 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import reviewer_login, users, editorial_users
-from Base.Resources import creator_login5, creator_login6, creator_login1  # DEBUG!!!
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Cards.reviewer_report_card import ReviewerReportCard
@@ -48,8 +47,6 @@ class ReviewerReportTest(CommonTest):
     logging.info('test_core_rev_rep_non_research_actions')
     # Create base data - new papers
     creator_user = random.choice(users)
-    # DEBUG
-    creator_user = creator_login5
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)

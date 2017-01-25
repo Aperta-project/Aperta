@@ -9,14 +9,14 @@ moduleForComponent('reviewer-report-task', 'Integration | Component | Reviewer R
 
   beforeEach: function () {
     manualSetup(this.container);
-    this.task = make('reviewer-report-task', 'with_questions', 'with_paper_and_journal');
-    const can = FakeCanService.create();
-    can.allowPermission('edit', this.task);
-    this.register('service:can', can.asService());
+    this.task = make('reviewer-report-task', 'with_paper_and_journal');
+    this.can = FakeCanService.create();
+    this.register('service:can', this.can.asService());
   }
 });
 
 test('When the decision is a draft', function(assert) {
+  this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
     let reviewerReport = make('reviewer-report', 'with_questions', { task: this.task, decision: decision });
@@ -45,8 +45,15 @@ test('History when there are completed decisions', function(assert) {
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false }),
     make('decision', { majorVersion: null, minorVersion: null, draft: true })
   ];
+
+  let task = this.task;
+  let reviewerReports = decisions.map((decision) => {
+    return make('reviewer-report', 'with_questions', { task: task, decision: decision });
+  });
+
   Ember.run(() => {
-    this.task.set('decisions', decisions);
+    this.task.get('paper').set('decisions', decisions);
+    this.task.set('reviewerReports', reviewerReports);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
   assert.nElementsFound('.previous-decision', 2);
@@ -57,25 +64,34 @@ test('That there are the correct nested question answers when there is no draft 
     make('decision', { majorVersion: 0, minorVersion: 0, draft: false }),
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
+  const reviewerReports = [
+    make('reviewer-report', 'with_questions', { task: this.task, decision: decisions[0] }),
+    make('reviewer-report', 'with_questions', { task: this.task, decision: decisions[1] })
+  ];
+
   const ident = 'reviewer_report--comments_for_author';
   const answers = [
     make('nested-question-answer', {
-      nestedQuestion: this.task.findQuestion(ident),
+      nestedQuestion: reviewerReports[0].findQuestion(ident),
       value: 'The comments from my first review',
-      owner: this.task,
+      owner: reviewerReports[0],
       decision: decisions[0]
     }),
     make('nested-question-answer', {
-      nestedQuestion: this.task.findQuestion(ident),
+      nestedQuestion: reviewerReports[1].findQuestion(ident),
       value: 'The comments from my second review',
-      owner: this.task,
+      owner: reviewerReports[1],
       decision: decisions[1]
     })
   ];
   Ember.run(() => {
+    this.task.get('paper').set('decisions', decisions);
+    this.task.set('reviewerReports', reviewerReports);
     this.task.set('decisions', decisions);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  const answerSelector = `.most-recent-review .${ident}-nested-question .answer-text`;
+  var decisionId = decisions[1].get('id');
+  //Answer for first round of review
+  const answerSelector = `#collapse-${decisionId} .question:nth(3) .answer-text`;
   assert.textPresent(answerSelector, answers[1].get('value'));
 });

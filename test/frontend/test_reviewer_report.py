@@ -49,7 +49,7 @@ class ReviewerReportTest(CommonTest):
     # Create base data - new papers
     creator_user = random.choice(users)
     # DEBUG
-    creator_user = creator_login5
+    creator_user = creator_login6
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)

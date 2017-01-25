@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 
-moduleForComponent('reviewer-report-task', 'Integration | Component | reviewer report task', {
+moduleForComponent('reviewer-report-task', 'Integration | Component | Reviewer Report Task', {
   integration: true,
 
   beforeEach: function () {
@@ -18,7 +18,10 @@ moduleForComponent('reviewer-report-task', 'Integration | Component | reviewer r
 
 test('When the decision is a draft', function(assert) {
   Ember.run(() => {
-    this.task.set('decisions', [make('decision', { draft: true })]);
+    let decision = make('decision', { draft: true });
+    let reviewerReport = make('reviewer-report', 'with_questions', { task: this.task, decision: decision });
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('decisions', [decision]);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
   assert.nElementsFound('textarea', 5, 'The report should be editable');
@@ -26,9 +29,13 @@ test('When the decision is a draft', function(assert) {
 
 test('When the decision is not a draft', function(assert) {
   Ember.run(() => {
-    this.task.set('decisions', [make('decision', { draft: false })]);
+    let decision = make('decision', { draft: false });
+    let reviewerReport = make('reviewer-report', 'with_questions', { task: this.task, decision: decision });
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('decisions', [decision]);
+    this.task.set('body', { submitted: true });
   });
-  this.render(hbs`{{reviewer-report-task task=task}}`);
+  this.render(hbs`{{reviewer-report-task task=task model=reviewerReport}}`);
   assert.nElementsFound('textarea', 0, 'The report should not be editable');
 });
 

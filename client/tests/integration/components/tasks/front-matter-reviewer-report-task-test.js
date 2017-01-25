@@ -73,7 +73,7 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
 test('When the decision is a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
-    let decision = make('decision', { draft: false });
+    let decision = make('decision', { draft: true });
     let reviewerReports = make('reviewer-report', 'with_front_matter_questions', { task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);

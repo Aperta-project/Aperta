@@ -148,7 +148,7 @@ test('That there are the correct nested question answers when there is no draft 
     this.task.set('decisions', decisions);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
-  var decisionId = 2;
+  var decisionId = decisions[1].get('id');
   //Answer for first round of review
   const answerSelector = `#collapse-${decisionId} .additional-data .answer-text`;
   assert.textPresent(answerSelector, answers[1].get('value'));

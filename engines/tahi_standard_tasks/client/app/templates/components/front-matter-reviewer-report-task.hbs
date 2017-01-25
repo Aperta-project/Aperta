@@ -3,13 +3,13 @@
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
     {{#if task.body.submitted}}
-      {{front-matter-reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=true}}
+      {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
       <div class="reviewer-report-feedback">
         {{fa-icon icon="check-circle"}}
         This report has been submitted
       </div>
     {{else}}
-      {{front-matter-reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=isNotEditable}}
+      {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 
       <div class="reviewer-report-confirmation">
         {{#if submissionConfirmed}}
@@ -41,7 +41,7 @@
             </div>
             <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
               <div class="panel-body">
-                {{front-matter-reviewer-report-questions model=decision.reviewerReports.firstObject decision=decision readOnly=true}}
+                {{front-matter-reviewer-report-questions model=decision.reviewerReports.firstObject readOnly=true}}
               </div>
             </div>
           </div>

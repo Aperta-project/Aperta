@@ -33,7 +33,7 @@ export default Component.extend({
   }),
 
   _cachedAnswer: null,
-  answer: computed('owner', 'question', 'decision', '_cachedAnswer.isDeleted', function() {
+  answer: computed('owner', 'question', '_cachedAnswer.isDeleted', function() {
     let cachedAnswer = this.get('_cachedAnswer');
     if (cachedAnswer && !cachedAnswer.get('isDeleted')) { return cachedAnswer; }
 
@@ -52,8 +52,6 @@ export default Component.extend({
   resetAnswer() {
     this.set('_cachedAnswer', this.lookupAnswer());
   },
-
-  decision: null,
 
   // displayQuestionText and displayQuestionAsPlaceholder are set externally.
   // internally we should read shouldDisplayQuestionText

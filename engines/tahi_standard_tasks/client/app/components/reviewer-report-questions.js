@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  decision: null,
   readOnly: false,
 
   competingInterestsLink: Ember.computed('model.task.paper.journal.name', function() {

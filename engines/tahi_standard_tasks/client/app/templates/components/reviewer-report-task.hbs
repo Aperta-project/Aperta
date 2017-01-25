@@ -2,8 +2,8 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{#if task.completed}}
-      {{reviewer-report-questions model=currentReviewerReport decision=currentReviewerReport.decision readOnly=true}}
+    {{#if task.body.submitted}}
+      {{reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=true}}
       <div class="reviewer-report-feedback">
         {{fa-icon icon="check-circle"}}
         This report has been submitted
@@ -13,7 +13,7 @@
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
         guidelines for detailed instructions.</strong>
       </p>
-      {{reviewer-report-questions model=currentReviewerReport decision=currentReviewerReport.decision readOnly=isNotEditable}}
+      {{reviewer-report-questions model=currentReviewerReport decision=task.decision readOnly=isNotEditable}}
 
       <div class="reviewer-report-confirmation">
         {{#if submissionConfirmed}}
@@ -35,7 +35,7 @@
       <div class="previous-decisions review-history">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
           {{#each previousDecisions as |decision|}}
-          <div class="panel panel-default decision">
+          <div class="panel panel-default previous-decision">
             <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
               <h4 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">

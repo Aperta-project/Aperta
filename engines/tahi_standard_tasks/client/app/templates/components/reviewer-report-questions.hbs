@@ -10,7 +10,10 @@
                             owner=model
                             decision=decision
                             displayContent=true
-                            helpText=(concat "Please review our <a href='" competingInterestsLink "'>Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.")
+                            helpText=(concat
+                                        "Please review our <a href='"
+                                        competingInterestsLink
+                                        "'>Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.")
                             readOnly=readOnly}}
 
     {{nested-question-textarea ident="reviewer_report--competing_interests--detail"

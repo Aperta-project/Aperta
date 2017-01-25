@@ -137,7 +137,7 @@ class ReviewerReportTest(CommonTest):
       reviewer_report_card.card_ready()
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
-  def _test_core_rev_rep_research_actions(self):
+  def test_core_rev_rep_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the research
       reviewer report.

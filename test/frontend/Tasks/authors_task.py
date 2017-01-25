@@ -606,6 +606,12 @@ class AuthorsTask(BaseTask):
     if not completed:
       self.click_completion_button()
       time.sleep(2)
+      # Following workaround is due to APERTA-XXXX
+      completed = self.completed_state()
+      logging.info('Author task is: {0}. Running workaround'.format(completed))
+      if not completed:
+        self.click_completion_button()
+        time.sleep(2)
       # Need to validate that we aren't failing on validation within this loop else endlessness
       try:
         self.validate_completion_error()

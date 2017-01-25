@@ -14,6 +14,7 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import reviewer_login, users, editorial_users
+from Base.Resources import creator_login5, creator_login6, creator_login1  # DEBUG!!!
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Cards.reviewer_report_card import ReviewerReportCard
@@ -47,6 +48,8 @@ class ReviewerReportTest(CommonTest):
     logging.info('test_core_rev_rep_non_research_actions')
     # Create base data - new papers
     creator_user = random.choice(users)
+    # DEBUG
+    creator_user = creator_login5
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.set_timeout(60)
@@ -59,12 +62,12 @@ class ReviewerReportTest(CommonTest):
     # Abbreviate the timeout for conversion success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     # Need to complete cards here
-    manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author = creator_user)
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Additional Information')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -75,7 +78,7 @@ class ReviewerReportTest(CommonTest):
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
     dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
@@ -85,7 +88,7 @@ class ReviewerReportTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info('Paper id is: {0}.'.format(research_paper_id))
+    logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
 
@@ -94,10 +97,10 @@ class ReviewerReportTest(CommonTest):
     dashboard_page.click_view_invites_button()
 
     ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;',
-        (research_paper_id,))[0][0]
+        (short_doi,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
@@ -119,9 +122,8 @@ class ReviewerReportTest(CommonTest):
       editorial_user = random.choice(editorial_users)
       logging.info(editorial_user)
       dashboard_page = self.cas_login(email=editorial_user['email'])
-      dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-      dashboard_page.go_to_manuscript(research_paper_id)
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
@@ -135,7 +137,7 @@ class ReviewerReportTest(CommonTest):
       reviewer_report_card.card_ready()
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
-  def test_core_rev_rep_research_actions(self):
+  def _test_core_rev_rep_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the research
       reviewer report.

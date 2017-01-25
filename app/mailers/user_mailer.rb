@@ -132,14 +132,14 @@ class UserMailer < ApplicationMailer
       subject: "Discussion on #{@paper.journal.name} manuscript #{@paper.short_doi}")
   end
 
-  def notify_added_to_topic(user_id, topic_id)
-    @user = User.find(user_id)
+  def notify_added_to_topic(invitee_id, invitor_id, topic_id)
+    @invitor = User.find(invitor_id)
+    @invitee = User.find(invitee_id)
     @topic = DiscussionTopic.find(topic_id)
     @paper = Paper.find(@topic.paper.id)
 
     mail(
-      to: @user.email,
-      subject: "You've been added to a conversation on the manuscript," \
-        "\"#{@paper.title}\"")
+      to: @invitee.email,
+      subject: "#{@paper.short_doi}: Added to discussion by #{@invitor.first_name} #{@invitor.last_name}")
   end
 end

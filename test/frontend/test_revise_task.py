@@ -10,19 +10,15 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, cover_editor_login, handling_editor_login
+from Base.Resources import users, editorial_users, admin_users, external_editorial_users, \
+     handling_editor_login, cover_editor_login
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
-               super_admin_login, handling_editor_login, cover_editor_login)
-users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
-
+staff_users = editorial_users + admin_users + external_editorial_users
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):

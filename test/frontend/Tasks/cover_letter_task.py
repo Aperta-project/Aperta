@@ -236,7 +236,7 @@ class CoverLetterTask(BaseTask):
 
     remove_button.click()
 
-    self._wait_for_not_element(self._uploaded_attachment_item)
+    self._wait_for_not_element(self._uploaded_attachment_item, 2)
 
   def download_letter(self):
     """

@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 ### Changed
 ### Deprecated
 ### Removed

@@ -1,11 +1,10 @@
-# Creates a log message after the email has been delivered
-class MailLoggerObserver
-  def self.delivered_email(mail)
-    recipients = mail.to.join(', ')
-    Rails.logger.info "event=email to=#{recipients} from=#{mail.from.first} "\
-                      "subject='#{mail.subject}' at=#{Time.current}"
-  end
-end
+# Ensure that emails are set up with the proper extensions for
+# logging emails
+MailLog.apply_mail_logging_extensions!
 
-# Register the MailLoggerObserver class
-ActionMailer::Base.register_observer(MailLoggerObserver)
+# this should always come first as it initializers email headers
+# and such that may be consumed further on down the line
+MailLog::InitializeMessage.attach_handlers!
+
+MailLog::LogToRails.attach_handlers!
+MailLog::LogToDatabase.attach_handlers!

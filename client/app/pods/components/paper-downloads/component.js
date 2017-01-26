@@ -1,8 +1,15 @@
 import Ember from 'ember';
 import { task } from 'ember-concurrency';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['sheet', 'sheet--visible'],
+
+  propTypes: {
+    // actions:
+    exportDocument: PropTypes.func.isRequired,
+    toggle: PropTypes.func.isRequired
+  },
 
   init() {
     this._super(...arguments);
@@ -15,11 +22,8 @@ export default Ember.Component.extend({
 
   versions: [],
   fetchVersions: task(function * () {
-    const promise = this.get('paper.versionedTexts');
-    yield promise;
-    promise.then((versions)=> {
-      this.set('versions', versions);
-    });
+    const versions = yield this.get('paper.versionedTexts');
+    this.set('versions', versions);
   }),
 
   actions: {

@@ -1,9 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
+import os
 import random
-
-import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
@@ -37,10 +36,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     manuscript_page.click_task('Cover Letter')
 
@@ -77,10 +75,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
@@ -114,10 +111,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.upload_letter()
@@ -132,10 +128,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.upload_letter()
@@ -150,10 +145,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.upload_letter()
@@ -168,10 +162,9 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
+    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())

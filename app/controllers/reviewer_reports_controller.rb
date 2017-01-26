@@ -1,7 +1,7 @@
 ##
 # Controller for handling reviewer reports
 #
-# A reviewer reports owns the nested question answers for a given review
+# A reviewer report owns the nested question answers for a given review
 #
 class ReviewerReportsController < ApplicationController
   before_action :authenticate_user!
@@ -17,7 +17,7 @@ class ReviewerReportsController < ApplicationController
     requires_user_can :edit, task
 
     reviewer_report = ReviewerReport.new(task: task,
-                                         decision: task.decision,
+                                         decision: task.paper.draft_decision,
                                          user: current_user)
     reviewer_report.save!
 

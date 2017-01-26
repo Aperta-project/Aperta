@@ -80,6 +80,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   model: computed.alias('invitation'),
   dragStart(e) {
+    if (!this.get('draggable')) { return; }
+    this.sendAction('startedDragging');
     e.dataTransfer.effectAllowed = 'move';
     DragNDrop.set('dragItem', this.get('invitation'));
     // REQUIRED for Firefox to let something drag

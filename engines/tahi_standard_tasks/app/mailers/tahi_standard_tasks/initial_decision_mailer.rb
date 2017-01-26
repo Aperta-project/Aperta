@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class InitialDecisionMailer < ActionMailer::Base
+  class InitialDecisionMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
     layout "mailer"

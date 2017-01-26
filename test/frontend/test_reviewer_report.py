@@ -59,12 +59,12 @@ class ReviewerReportTest(CommonTest):
     # Abbreviate the timeout for conversion success message
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     # Need to complete cards here
-    manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Authors')
+    manuscript_page.complete_task('Authors', author = creator_user)
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Additional Information')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -74,19 +74,18 @@ class ReviewerReportTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-      dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info('Paper id is: {0}.'.format(research_paper_id))
+    logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
 
@@ -94,19 +93,19 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
 
-    ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (research_paper_id,))[0][0]
+    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;',
+        (short_doi,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    dashboard_page._wait_for_element(dashboard_page._get(
-      dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    assert manuscript_page.click_task('Reviewer Report')
+    manuscript_page.page_ready()
+    assert manuscript_page.click_task('Review by')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
+    reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles(research_type=False)
     reviewer_report_task.validate_reviewer_report_edit_mode(research_type=False)
-    manuscript_page.click_task('front_matter_reviewer_report')
     outdata = manuscript_page.complete_task('Review by', click_override=True)
     logging.debug(outdata)
     validate_view_in_place = manuscript_page.get_random_bool()
@@ -120,18 +119,19 @@ class ReviewerReportTest(CommonTest):
       editorial_user = random.choice(editorial_users)
       logging.info(editorial_user)
       dashboard_page = self.cas_login(email=editorial_user['email'])
-      dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-      dashboard_page.go_to_manuscript(research_paper_id)
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
       # go to wf
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
-      workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-      workflow_page.click_card('review_by')
+      workflow_page.page_ready()
+      card_title = 'Review by {0} (#1)'.format(reviewer_login['name'])
+      workflow_page.click_card('review_by', card_title)
       reviewer_report_card = ReviewerReportCard(self.getDriver())
+      reviewer_report_card.card_ready()
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
 
   def test_core_rev_rep_research_actions(self):
@@ -148,17 +148,12 @@ class ReviewerReportTest(CommonTest):
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Abbreviate the timeout for conversion success message
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
-    research_paper_id = manuscript_page.get_paper_short_doi_from_url()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -168,57 +163,63 @@ class ReviewerReportTest(CommonTest):
     editorial_user = random.choice(editorial_users)
     logging.info(editorial_user)
     dashboard_page = self.cas_login(email=editorial_user['email'])
-    dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
-    logging.info('Paper id is: {0}.'.format(research_paper_id))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
-
-    ms_title = PgSQL().query('SELECT title from papers WHERE id = %s;', (research_paper_id,))[0][0]
+    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;', (short_doi,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
     dashboard_page.accept_invitation(ms_title)
-    dashboard_page._wait_for_element(dashboard_page._get(
-        dashboard_page._dashboard_create_new_submission_btn))
-    dashboard_page.go_to_manuscript(research_paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    assert manuscript_page.click_task('research_reviewer_report')
+    assert manuscript_page.click_task('Review by ')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
+    reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles()
     reviewer_report_task.validate_reviewer_report_edit_mode()
     outdata = manuscript_page.complete_task('Review by', click_override=True)
+    validate_in = {True: 'task', False: 'card'}
     validate_view_in_place = manuscript_page.get_random_bool()
-    logging.info(validate_view_in_place)
+    logging.info('Validate in {}'.format(validate_in[validate_view_in_place]))
+    validate_view_in_place = True
+    dashboard_page.logout()
     if validate_view_in_place:
+      logging.info(reviewer_login)
+      dashboard_page = self.cas_login(email=reviewer_login['email'])
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
+      self._driver.navigated = True
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer.page_ready()
       logging.info('Validating in task view')
+      assert paper_viewer.click_task('Review by ')
       reviewer_report_task.validate_view_mode_report_in_task(outdata)
     else:
       logging.info('Validating in card view')
-      manuscript_page.logout()
       # Then login as staff user and validate report in card view
       editorial_user = random.choice(editorial_users)
       logging.info(editorial_user)
       dashboard_page = self.cas_login(email=editorial_user['email'])
-      dashboard_page._wait_for_element(
-        dashboard_page._get(dashboard_page._dashboard_create_new_submission_btn))
-      dashboard_page.go_to_manuscript(research_paper_id)
+      dashboard_page.page_ready()
+      dashboard_page.go_to_manuscript(short_doi)
       self._driver.navigated = True
       paper_viewer = ManuscriptViewerPage(self.getDriver())
-      paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+      paper_viewer.page_ready()
       # go to wf
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())

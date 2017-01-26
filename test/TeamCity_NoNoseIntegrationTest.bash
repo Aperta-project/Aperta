@@ -37,7 +37,7 @@ rm $TESTING_ASSETS
 cd $SCRIPT_DIR
 
 # Reverses 'set -e'. Allows the script to continue through failures.
-set +e 
+set +e
 
 rm Output/*.png
 rm Base/*.pyc

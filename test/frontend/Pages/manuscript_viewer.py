@@ -629,7 +629,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # If the task is read only due to completion state, set read-write
       if base_task.completed_state():
         base_task.click_completion_button()
-      ai_task.complete_ai()
+      if data:
+        ai_task.complete_ai()
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()
@@ -697,11 +698,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
-    elif 'Review by ' in task_name:
-      logging.info('Completing {0}'.format(task_name))
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-      task.click()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

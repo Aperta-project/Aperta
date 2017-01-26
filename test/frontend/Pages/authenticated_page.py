@@ -536,7 +536,7 @@ class AuthenticatedPage(PlosPage):
                                     'WHERE short_doi = %s;', (short_doi,))
     return submission_data
 
-  def click_card(self, cardname):
+  def click_card(self, cardname, title=''):
     """
     Passed a card name, opens the relevant card
     :param cardname: any one of: addl_info, authors, billing, changes_for_author,
@@ -545,6 +545,7 @@ class AuthenticatedPage(PlosPage):
       supporting_info, upload_manuscript, assign_admin, assign_team, editor_discussion,
       final_tech_check, initial_decision, invite_academic_editor, invite_reviewers,
       production_metadata, register_decision, reviewer_report, revision_tech_check or send_to_apex
+    :param title: String with card title to rule out when there are cards with the same name
     NOTE: this does not cover the ad hoc card
     NOTE also that the locators for these are specifically defined within the scope of the
         manuscript_viewer or workflow page
@@ -582,8 +583,16 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._new_taxon_card)
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
-    elif cardname.lower() == 'review_by':
-      card_title = self._get(self._reviewer_report_card)
+    elif cardname.lower() == 'review_by' and title:
+      cards = self._gets(self._reviewed_by_card)
+      for card in cards:
+        if title == card.text:
+          card_title = card
+          break
+      else:
+        logging.info('Reviewer card not found')
+        self.restore_timeout()
+        return False
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':
@@ -1925,8 +1934,8 @@ class AuthenticatedPage(PlosPage):
         button.value_of_css_property('font-weight')
     assert button.value_of_css_property('font-style') == 'normal', \
         button.value_of_css_property('font-style')
-    # This color is not represented in the style guide
-    assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
+    # This color is not represented in the style guide. APERTA-8904
+    #assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', \
         button.value_of_css_property('line-height')
     assert button.value_of_css_property('margin-top') == '4px', \

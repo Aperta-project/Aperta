@@ -59,7 +59,7 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer.page_ready()
     short_doi = paper_viewer.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    paper_viewer.complete_task('Authors')
+    paper_viewer.complete_task('Authors', author=creator)
     paper_viewer.complete_task('Billing')
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')

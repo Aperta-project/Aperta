@@ -84,6 +84,7 @@ class WorkflowPage(AuthenticatedPage):
     self._supporting_info_card = (By.CSS_SELECTOR, 'div.supporting-information-task > a')
     self._title_abstract_card = (By.CSS_SELECTOR, 'div.title-and-abstract-task > a')
     self._upload_manu_card = (By.CSS_SELECTOR, 'div.upload-manuscript-task > a')
+    self._reviewed_by_card = (By.CSS_SELECTOR, 'div.front-matter-reviewer-report-task > a')
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')

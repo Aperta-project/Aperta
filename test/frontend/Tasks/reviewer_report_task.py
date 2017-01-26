@@ -285,16 +285,20 @@ class ReviewerReportTask(BaseTask):
     """
     Validate the elements, display and styles of the reviewer report in view mode (submitted state)
       in the task accordion.
+    :param data: A dictionary with the data used to complete the task, will be used to check that
+      the task is completed as expected
+    :param research_type: If set to False, validates content against Front-Matter type report; when
+      True uses research type reviewer report content
     :return: None
     """
     research_type = False
     question_list = self._gets(self._questions)
     q1, q2, q3, q4, q5, q6 = question_list
+    question_block_list = self._gets(self._question_block)
+    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
     if q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
                   u'please include your name here.':
       research_type = True
-    question_block_list = self._gets(self._question_block)
-    qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
     if research_type:
       recc_data, q2_bool_data, q2_data, q3_data, q4_data, q5_data, q6_bool_entry, q6_data = data
       recommendation = qb1.find_element(*self._res_q1_answer)
@@ -344,17 +348,17 @@ class ReviewerReportTask(BaseTask):
       else:
         assert q3_page_bool.text == 'No', q3_page_bool.text
       q3_page_ans = qb3.find_element(*self._fm_q3_answer)
+      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text,
+          q3_data)
       self.validate_application_ptext(q3_page_ans)
-      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text, q3_data)
+      assert q3_page_ans.text == q3_data, '{0} != {1}'.format(q3_page_ans.text,
+          q3_data)
       q4_page_bool = qb4.find_element(*self._fm_q4_answer_bool)
       self.validate_application_ptext(q4_page_bool)
-      if q4_bool_data:
-        assert q4_page_bool.text == 'Yes', q4_page_bool.text
-      else:
-        assert q4_page_bool.text == 'No', q4_page_bool.text
       q4_page_ans = qb4.find_element(*self._fm_q4_answer)
+      assert q4_page_ans.text == q4_data, '{0} != {1}'.format(q4_page_ans.text,
+          q4_data)
       self.validate_application_ptext(q4_page_ans)
-      assert q4_page_ans.text == q4_data, '{0} != {1}'.format(q4_page_ans.text, q4_data)
       q5_page_ans = qb5.find_element(*self._fm_q5_answer)
       self.validate_application_ptext(q5_page_ans)
       assert q5_page_ans.text == q5_data, '{0} != {1}'.format(q5_page_ans.text, q5_data)

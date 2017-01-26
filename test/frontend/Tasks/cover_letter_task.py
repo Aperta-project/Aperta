@@ -21,6 +21,7 @@ class CoverLetterTask(BaseTask):
   """
   Page Object Model for Cover Letter Task
   """
+
   def __init__(self, driver):
     super(CoverLetterTask, self).__init__(driver)
 
@@ -28,15 +29,22 @@ class CoverLetterTask(BaseTask):
 
     # The base CSS locator to the task body
     self._task_body_base_locator = '.cover-letter-task .task-disclosure-body .edit-cover-letter '
-    self._instructions_text_first_p = (By.CSS_SELECTOR, self._task_body_base_locator  + '> p:first-of-type')
-    self._instructions_text_last_p = (By.CSS_SELECTOR, self._task_body_base_locator  + '> p:last-of-type')
-    self._instructions_text_questions_ul = (By.CSS_SELECTOR, self._task_body_base_locator  + '> ul')
+    self._instructions_text_first_p = (
+    By.CSS_SELECTOR, self._task_body_base_locator + '> p:first-of-type')
+    self._instructions_text_last_p = (
+    By.CSS_SELECTOR, self._task_body_base_locator + '> p:last-of-type')
+    self._instructions_text_questions_ul = (
+    By.CSS_SELECTOR, self._task_body_base_locator + '> ul')
     self._cover_letter_textarea = (By.CLASS_NAME, 'cover-letter-field')
-    self._upload_cover_letter_button = (By.CSS_SELECTOR, self._task_body_base_locator  + '.attachment-manager .fileinput-button')
-    self._upload_cover_letter_input_selector = self._task_body_base_locator  + '.attachment-manager input.add-new-attachment'
-    self._uploaded_attachment_item = (By.CSS_SELECTOR, self._task_body_base_locator  + '.attachment-manager .attachment-item')
-    self._uploaded_attachment_item_link = (By.CSS_SELECTOR, self._task_body_base_locator  + '.attachment-manager .attachment-item a.file-link')
-    self._task_done_button = (By.CSS_SELECTOR, self._task_body_base_locator  + 'button.task-completed')
+    self._upload_cover_letter_button = (By.CSS_SELECTOR,
+                                        self._task_body_base_locator + '.attachment-manager .fileinput-button')
+    self._upload_cover_letter_input_selector = self._task_body_base_locator + '.attachment-manager input.add-new-attachment'
+    self._uploaded_attachment_item = (By.CSS_SELECTOR,
+                                      self._task_body_base_locator + '.attachment-manager .attachment-item')
+    self._uploaded_attachment_item_link = (By.CSS_SELECTOR,
+                                           self._task_body_base_locator + '.attachment-manager .attachment-item a.file-link')
+    self._task_done_button = (
+    By.CSS_SELECTOR, self._task_body_base_locator + 'button.task-completed')
 
     self._last_uploaded_letter_file = None
     self._textarea_sample_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis, nisl volutpat ' \
@@ -54,22 +62,25 @@ class CoverLetterTask(BaseTask):
     # Assert instructions text styling
     instructions_first_p = self._get(self._instructions_text_first_p)
     instructions_questions_ul = self._get(self._instructions_text_questions_ul)
-    instructions_questions = instructions_questions_ul.find_elements_by_tag_name('li')
+    instructions_questions = instructions_questions_ul.find_elements_by_tag_name(
+      'li')
     instructions_last_p = self._get(self._instructions_text_last_p)
 
     expected_instructions_first_p = 'To be of most use to editors, we suggest your letter could address the following questions:'
-    assert instructions_first_p.text == expected_instructions_first_p, 'The instructions text first paragraph: {0} is not the expected: {1}'.format(instructions_first_p.text, expected_instructions_first_p)
+    assert instructions_first_p.text == expected_instructions_first_p, 'The instructions text first paragraph: {0} is not the expected: {1}'.format(
+      instructions_first_p.text, expected_instructions_first_p)
 
     expected_instructions_last_p = 'In your cover letter, please list any scientists whom you request be excluded ' \
-                      'from the assessment process along with a justification. You may also suggest ' \
-                      'experts appropriate to be considered as Academic Editors for your manuscript. ' \
-                      'Please be aware that your cover letter may be seen by members of the ' \
-                      'Editorial Board. For Research articles, if our initial assessment is ' \
-                      'positive, we will request further information, including Reviewer Candidates ' \
-                      'and Competing Interests. For other submission types, if the Reviewer ' \
-                      'Candidate and Competing Interests cards are already visible to you, ' \
-                      'please complete them now with the relevant information.'
-    assert instructions_last_p.text == expected_instructions_last_p, 'The instructions text last paragraph: {0} is not the expected: {1}'.format(instructions_last_p.text, expected_instructions_last_p)
+                                   'from the assessment process along with a justification. You may also suggest ' \
+                                   'experts appropriate to be considered as Academic Editors for your manuscript. ' \
+                                   'Please be aware that your cover letter may be seen by members of the ' \
+                                   'Editorial Board. For Research articles, if our initial assessment is ' \
+                                   'positive, we will request further information, including Reviewer Candidates ' \
+                                   'and Competing Interests. For other submission types, if the Reviewer ' \
+                                   'Candidate and Competing Interests cards are already visible to you, ' \
+                                   'please complete them now with the relevant information.'
+    assert instructions_last_p.text == expected_instructions_last_p, 'The instructions text last paragraph: {0} is not the expected: {1}'.format(
+      instructions_last_p.text, expected_instructions_last_p)
 
     self.validate_application_ptext(instructions_first_p)
     self.validate_application_ptext(instructions_last_p)
@@ -85,10 +96,10 @@ class CoverLetterTask(BaseTask):
       'Is there additional information that we should take into account?'
     ]
 
-    assert len(expected_instructions_questions) == len(instructions_questions), 'The instructions text questions length: {0} is not the expected: {1}'.format(str(len(expected_instructions_questions)), str(len(instructions_questions)))
-
     for i, question in enumerate(instructions_questions):
-      assert question.text == expected_instructions_questions[i], 'The instructions question {0}: {1} is not the expected: {2}'.format(i, question.text, expected_instructions_questions[i])
+      assert question.text == expected_instructions_questions[
+        i], 'The instructions question {0}: {1} is not the expected: {2}'.format(
+        i, question.text, expected_instructions_questions[i])
       self.validate_application_ptext(question)
 
     # Assert form styling
@@ -96,13 +107,17 @@ class CoverLetterTask(BaseTask):
     upload_cover_letter_button = self._get(self._upload_cover_letter_button)
 
     expected_textarea_placeholder = 'Please type or paste your cover letter into this text field, or attach a file below'
-    assert textarea.get_attribute('placeholder') == expected_textarea_placeholder, 'The textarea placeholder: {0} is not the expected: {1}'.format(textarea.get_attribute('placeholder'), expected_textarea_placeholder)
+    assert textarea.get_attribute(
+      'placeholder') == expected_textarea_placeholder, 'The textarea placeholder: {0} is not the expected: {1}'.format(
+      textarea.get_attribute('placeholder'), expected_textarea_placeholder)
     # APERTA-8903
     # self.validate_textarea_style(textarea)
 
     expected_upload_button_text = 'ATTACH FILE'
-    assert upload_cover_letter_button.text == expected_upload_button_text, 'The upload button text: {0} is not the expected: {0}'.format(upload_cover_letter_button.text, expected_upload_button_text)
-    self.validate_secondary_small_green_button_task_style(upload_cover_letter_button)
+    assert upload_cover_letter_button.text == expected_upload_button_text, 'The upload button text: {0} is not the expected: {0}'.format(
+      upload_cover_letter_button.text, expected_upload_button_text)
+    self.validate_secondary_small_green_button_task_style(
+      upload_cover_letter_button)
 
   def validate_styles(self):
     """
@@ -135,7 +150,7 @@ class CoverLetterTask(BaseTask):
   def upload_letter(self, letter='random'):
     """
     upload_letter: Upload the cover letter file
-    :param letter: The file to upload path. A string.
+    :param letter: The full path and filename of the letter to upload. A string.
     :return: void function
     """
     if letter == 'random':
@@ -145,7 +160,8 @@ class CoverLetterTask(BaseTask):
       fn = os.path.join(os.getcwd(), letter)
 
     logging.info('Sending cover letter: {0}'.format(fn))
-    self._driver.find_element_by_css_selector(self._upload_cover_letter_input_selector).send_keys(fn)
+    self._driver.find_element_by_css_selector(
+      self._upload_cover_letter_input_selector).send_keys(fn)
     upload_cover_letter_button = self._get(self._upload_cover_letter_button)
     upload_cover_letter_button.click()
     self._last_uploaded_letter_file = fn
@@ -154,7 +170,8 @@ class CoverLetterTask(BaseTask):
     # Wait until the uploaded item be loaded
     self._wait_for_element(self._get(self._uploaded_attachment_item))
     # Wait until the uploaded item link have the formatted name
-    self._wait.until(EC.text_to_be_present_in_element(self._uploaded_attachment_item_link, formatted_file_name))
+    self._wait_for_text_be_present_in_element(
+      self._uploaded_attachment_item_link, formatted_file_name)
 
   def _get_uploaded_item_element(self):
     """
@@ -176,7 +193,7 @@ class CoverLetterTask(BaseTask):
   def replace_letter(self, letter='random'):
     """
     upload_letter: Replaces an uploaded cover letter file by another new one
-    :param letter: The new file path. A string.
+    :param letter: The new file full path and filename. A string.
     :return: void function
     """
     uploaded_item = self._get_uploaded_item_element()
@@ -190,19 +207,23 @@ class CoverLetterTask(BaseTask):
     logging.info('Replacing cover letter by: {0}'.format(fn))
 
     # Making file input visible, using JavaScript, to Selenium be able to interact with this.
-    # A ticket to front end fix is was filled: APERTA-8960
-    js_cmd = "$('<style>{0}{1} {{ display:block !important; }}</style>').appendTo('body');".format(self._task_body_base_locator, '.attachment-manager .s3-file-uploader')
+    # A ticket to front end fix is was filed: APERTA-8960
+    js_cmd = "$('<style>{0}.attachment-manager .s3-file-uploader {{ display:block !important; }}</style>').appendTo('body');".format(
+      self._task_body_base_locator)
     self._driver.execute_script(js_cmd)
-    replace_file_input = uploaded_item.find_element_by_class_name('s3-file-uploader')
+    replace_file_input = uploaded_item.find_element_by_class_name(
+      's3-file-uploader')
     replace_file_input.send_keys(fn)
     formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
 
     # Wait until the uploaded item link have the formatted name
-    self._wait.until(EC.text_to_be_present_in_element(self._uploaded_attachment_item_link, formatted_file_name))
+    self._wait_for_text_be_present_in_element(
+      self._uploaded_attachment_item_link, formatted_file_name)
 
     uploaded_file_name = self._get(self._uploaded_attachment_item_link).text
 
-    assert formatted_file_name == uploaded_file_name, "The uploaded file name: {0} is not the expected: {1}".format(formatted_file_name, uploaded_file_name)
+    assert formatted_file_name == uploaded_file_name, "The uploaded file name: {0} is not the expected: {1}".format(
+      formatted_file_name, uploaded_file_name)
 
   def remove_letter(self):
     """
@@ -210,11 +231,12 @@ class CoverLetterTask(BaseTask):
     :return: void function
     """
     uploaded_item = self._get_uploaded_item_element()
-    remove_button = uploaded_item.find_element_by_class_name('delete-attachment')
+    remove_button = uploaded_item.find_element_by_class_name(
+      'delete-attachment')
 
     remove_button.click()
 
-    self._wait.until(EC.staleness_of(uploaded_item))
+    self._wait_for_not_element(self._uploaded_attachment_item)
 
   def download_letter(self):
     """
@@ -227,7 +249,8 @@ class CoverLetterTask(BaseTask):
 
     download_button.click()
 
-    # Wait file to download
+    # Add a sleep to wait the file to download, as the resource files are
+    # small, 10 seconds are enough.
     time.sleep(10)
 
     # Get the newest file downloaded
@@ -239,11 +262,11 @@ class CoverLetterTask(BaseTask):
       files = [os.path.join('/tmp', f) for f in files]  # add path to each file
       files.sort(key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
-    except:
+    except IndexError:
       newest_file = None
-
-    # Move the working directory back to the original one
-    os.chdir(original_working_dir)
+    finally:
+      # Move the working directory back to the original one
+      os.chdir(original_working_dir)
 
     # Get the last uploaded file, if available, or find the original file in resource list
     if self.get_last_uploaded_letter_file():
@@ -258,11 +281,16 @@ class CoverLetterTask(BaseTask):
       original_file_name = original_file_name.replace("+", " ")
 
       # Filter the resource list to find a path with the file name
-      original_file_path = filter(lambda x: original_file_name in x, cover_letters)
-      original_file_path = os.path.join(original_working_dir, original_file_path[0])
+      original_file_path = filter(lambda x: original_file_name in x,
+                                  cover_letters)
+      original_file_path = os.path.join(original_working_dir,
+                                        original_file_path[0])
 
     # Generate MD5 hashes for original and downloaded file to compare if is the same
-    original_file_md5 = hashlib.md5(open(original_file_path, 'rb').read()).hexdigest()
-    downloaded_file_md5 = hashlib.md5(open(newest_file, 'rb').read()).hexdigest()
+    original_file_md5 = hashlib.md5(
+      open(original_file_path, 'rb').read()).hexdigest()
+    downloaded_file_md5 = hashlib.md5(
+      open(newest_file, 'rb').read()).hexdigest()
 
-    assert original_file_md5 == downloaded_file_md5, 'The downloaded file MD5 hash ({0}) do not match the uploaded ({1})'.format(downloaded_file_md5, original_file_md5)
+    assert original_file_md5 == downloaded_file_md5, 'The downloaded file MD5 hash ({0}) do not match the uploaded ({1})'.format(
+      downloaded_file_md5, original_file_md5)

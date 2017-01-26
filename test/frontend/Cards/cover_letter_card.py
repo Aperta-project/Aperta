@@ -11,18 +11,24 @@ from frontend.Cards.basecard import BaseCard
 
 __author__ = 'ivieira@plos.org'
 
+
 class CoverLetterCard(BaseCard):
   """
   Page Object Model for Cover Letter Card
   """
+
   def __init__(self, driver, url_suffix='/'):
     super(CoverLetterCard, self).__init__(driver)
     self._title = (By.CLASS_NAME, 'overlay-body-title')
-    self._instructions_text_first_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
-    self._instructions_text_last_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
-    self._instructions_text_questions_ul = (By.CSS_SELECTOR, '.edit-cover-letter > ul')
+    self._instructions_text_first_p = (
+    By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
+    self._instructions_text_last_p = (
+    By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
+    self._instructions_text_questions_ul = (
+    By.CSS_SELECTOR, '.edit-cover-letter > ul')
     self._cover_letter_textarea = (By.CLASS_NAME, 'cover-letter-field')
-    self._uploaded_attachment_item_link = (By.CSS_SELECTOR, '.edit-cover-letter .attachment-manager .attachment-item a.file-link')
+    self._uploaded_attachment_item_link = (By.CSS_SELECTOR,
+                                           '.edit-cover-letter .attachment-manager .attachment-item a.file-link')
 
   def validate_styles(self):
     """
@@ -33,13 +39,15 @@ class CoverLetterCard(BaseCard):
     card_title = self._get(self._title)
     expected_card_title = 'Cover Letter'
 
-    assert card_title.text == expected_card_title, 'The card title: {0} is not the expected: {1}'.format(card_title.text, expected_card_title)
+    assert card_title.text == expected_card_title, 'The card title: {0} is not the expected: {1}'.format(
+      card_title.text, expected_card_title)
     self.validate_application_title_style(card_title)
 
     # Assert instructions text styling
     instructions_first_p = self._get(self._instructions_text_first_p)
     instructions_questions_ul = self._get(self._instructions_text_questions_ul)
-    instructions_questions = instructions_questions_ul.find_elements_by_tag_name('li')
+    instructions_questions = instructions_questions_ul.find_elements_by_tag_name(
+      'li')
     instructions_last_p = self._get(self._instructions_text_last_p)
 
     expected_instructions_first_p = 'To be of most use to editors, we suggest your letter could address the following questions:'
@@ -72,14 +80,11 @@ class CoverLetterCard(BaseCard):
       'Is there additional information that we should take into account?'
     ]
 
-    assert len(expected_instructions_questions) == len(
-      instructions_questions), 'The instructions text questions length: {0} is not the expected: {1}'.format(
-      str(len(expected_instructions_questions)), str(len(instructions_questions)))
-
     for i, question in enumerate(instructions_questions):
       assert question.text == expected_instructions_questions[
-        i], 'The instructions question {0}: {1} is not the expected: {2}'.format(i, question.text,
-                                                                                 expected_instructions_questions[i])
+        i], 'The instructions question {0}: {1} is not the expected: {2}'.format(
+        i, question.text,
+        expected_instructions_questions[i])
       self.validate_application_ptext(question)
 
     # Validate textarea state
@@ -101,8 +106,9 @@ class CoverLetterCard(BaseCard):
 
     textarea = self._get(self._cover_letter_textarea)
 
-    assert textarea.get_attribute('value') == submitted_text, "The textarea text: {0} do not match the submitted: {1}".format(textarea.get_attribute('value'), submitted_text)
-
+    assert textarea.get_attribute(
+      'value') == submitted_text, "The textarea text: {0} do not match the submitted: {1}".format(
+      textarea.get_attribute('value'), submitted_text)
 
   def validate_textarea_text_editing(self):
     """
@@ -115,10 +121,11 @@ class CoverLetterCard(BaseCard):
 
     textarea = self._get(self._cover_letter_textarea)
     textarea_edited_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis, nisl volutpat ' \
-                          'dignissim tempus, urna risus semper lectus, non fermentum quam neque sed magna. Morbi in ' \
-                          'velit ac arcu scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. Aenean ac ' \
+                           'dignissim tempus, urna risus semper lectus, non fermentum quam neque sed magna. Morbi in ' \
+                           'velit ac arcu scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. Aenean ac '
 
-    assert textarea.is_enabled(), 'The textarea is not enabled when should be'
+    assert textarea.is_enabled(), 'The textarea is not enabled when it ' \
+                                  'should be'
 
     textarea.clear()
 
@@ -126,7 +133,9 @@ class CoverLetterCard(BaseCard):
 
     self.click_completion_button()
 
-    assert textarea.get_attribute('value') == textarea_edited_text, 'The edited text: {0} is not the expected: {1}'.format(textarea.get_attribute('value'), textarea_edited_text)
+    assert textarea.get_attribute(
+      'value') == textarea_edited_text, 'The edited text: {0} is not the expected: {1}'.format(
+      textarea.get_attribute('value'), textarea_edited_text)
 
   def validate_uploaded_file_download(self, uploaded_file):
     """
@@ -142,11 +151,13 @@ class CoverLetterCard(BaseCard):
     formatted_file_name = urllib.quote_plus(uploaded_file.split("/")[-1])
     original_working_dir = os.getcwd()
 
-    assert download_button.text == formatted_file_name, 'The formatted file name: {0} is not the expected: {1}'.format(download_button.text, formatted_file_name)
+    assert download_button.text == formatted_file_name, 'The formatted file name: {0} is not the expected: {1}'.format(
+      download_button.text, formatted_file_name)
 
     download_button.click()
 
-    # Wait file to download
+    # Add a sleep to wait the file to download, as the resource files are
+    # small, 10 seconds are enough.
     time.sleep(10)
 
     # Get the newest file downloaded
@@ -158,17 +169,21 @@ class CoverLetterCard(BaseCard):
       files = [os.path.join('/tmp', f) for f in files]  # add path to each file
       files.sort(key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
-    except:
+    except IndexError:
       newest_file = None
-
-    # Move the working directory back to the original one
-    os.chdir(original_working_dir)
+    finally:
+      # Move the working directory back to the original one
+      os.chdir(original_working_dir)
 
     # Generate MD5 hashes for original and downloaded file to compare if is the same
-    uploaded_file_md5 = hashlib.md5(open(uploaded_file, 'rb').read()).hexdigest()
-    downloaded_file_md5 = hashlib.md5(open(newest_file, 'rb').read()).hexdigest()
+    uploaded_file_md5 = hashlib.md5(
+      open(uploaded_file, 'rb').read()).hexdigest()
+    downloaded_file_md5 = hashlib.md5(
+      open(newest_file, 'rb').read()).hexdigest()
 
-    assert uploaded_file_md5 == downloaded_file_md5, 'The downloaded file MD5 hash ({0}) do not match the uploaded ({1})'.format(
+    assert uploaded_file_md5 == downloaded_file_md5, 'The downloaded file ' \
+                                                     'MD5 hash ({0}) does ' \
+                                                     'not match the uploaded ({1})'.format(
       downloaded_file_md5, uploaded_file_md5)
 
     self.click_completion_button()

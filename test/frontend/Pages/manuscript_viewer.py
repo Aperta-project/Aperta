@@ -631,7 +631,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # If the task is read only due to completion state, set read-write
       if base_task.completed_state():
         base_task.click_completion_button()
-      ai_task.complete_ai()
+      if data:
+        ai_task.complete_ai()
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()

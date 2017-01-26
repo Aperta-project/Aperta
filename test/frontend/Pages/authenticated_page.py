@@ -114,6 +114,8 @@ class AuthenticatedPage(PlosPage):
     self._comment_date = (By.CLASS_NAME, 'comment-date')
     self._comment_body = (By.CLASS_NAME, 'comment-body')
     self._mention = (By.CLASS_NAME, 'discussion-at-mention')
+    # Withdraw Banner
+    self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR,
                                'div.flash-message--success div.flash-message-content')
@@ -580,17 +582,16 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._new_taxon_card)
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
-    elif cardname.lower() == 'review_by':
-      if title:
-        cards = self._gets(self._reviewed_by_card)
-        for card in cards:
-          if title == card.text:
-            card_title = card
-            break
-        else:
-          logging.info('Reviewer card not found')
-          self.restore_timeout()
-          return False
+    elif cardname.lower() == 'review_by' and title:
+      cards = self._gets(self._reviewed_by_card)
+      for card in cards:
+        if title == card.text:
+          card_title = card
+          break
+      else:
+        logging.info('Reviewer card not found')
+        self.restore_timeout()
+        return False
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':
@@ -742,6 +743,23 @@ class AuthenticatedPage(PlosPage):
       if mention.text[1:] == user:
         return mention
     raise Exception(u'{0} not found'.format(user))
+
+  def validate_withdraw_banner(self, journal):
+    """
+    A method to validate the withdraw banner. Only valid in the context of either the paper_viewer
+      or the workflow page.
+    :param journal: The name of the journal from which the manuscript was withdrawn. A string.
+    :return: void function
+    """
+    withdraw_banner = self._get(self._withdraw_banner)
+    assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
+          withdraw_banner.text, 'Banner text is not correct: {0}'.format(withdraw_banner.text)
+    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
+        withdraw_banner.value_of_css_property('background-color')
+    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+        withdraw_banner.value_of_css_property('color')
+    assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
+        withdraw_banner.value_of_css_property('font-family')
 
   def scroll_element_into_view_below_toolbar(self, element):
     """

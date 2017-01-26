@@ -76,17 +76,15 @@ class AuthorsTask(BaseTask):
     self._author_other_lbl = (
         By.CSS_SELECTOR,
         'div.author-contributions div.flex-group + div.flex-group div.flex-element label')
-    self._designed_chkbx = (
-        By.XPATH,
-        ".//input[@name='author--contributions--conceptualization']/following-sibling::span")
+    self._designed_chkbx = (By.CSS_SELECTOR, 'input[name=author--contributions--conceptualization]')
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'fieldset.author-contributions legend.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.author-task-item-view')
     self._delete_author_div = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete')
     self._edit_author = (By.CSS_SELECTOR, 'div.author-name')
-    self._corresponding = (
-        By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
+    self._corresponding = (By.CSS_SELECTOR,
+        'input[name=author--published_as_corresponding_author]')
     self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
     self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
     self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
@@ -608,6 +606,12 @@ class AuthorsTask(BaseTask):
     if not completed:
       self.click_completion_button()
       time.sleep(2)
+      # Following workaround is due to APERTA-9019
+      completed = self.completed_state()
+      logging.info('Author task is: {0}. Running workaround'.format(completed))
+      if not completed:
+        self.click_completion_button()
+        time.sleep(2)
       # Need to validate that we aren't failing on validation within this loop else endlessness
       try:
         self.validate_completion_error()

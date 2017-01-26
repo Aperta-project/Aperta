@@ -744,12 +744,8 @@ class AuthenticatedPage(PlosPage):
     :return: void function
     """
     withdraw_banner = self._get(self._withdraw_banner)
-    # Wrapping the following in a try except due to a known issue: APERTA-6860
-    try:
-      assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
-          withdraw_banner.text
-    except AssertionError:
-      logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
+    assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
+          withdraw_banner.text, 'Banner text is not correct: {0}'.format(withdraw_banner.text)
     assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
         withdraw_banner.value_of_css_property('background-color')
     assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \

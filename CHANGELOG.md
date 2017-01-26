@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
+* Users can now select and copy text from invitation letters when there is more than one invitation.
 ### Security
 
 ## ## [1.34.0] - {2017-01-06}

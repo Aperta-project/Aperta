@@ -581,17 +581,16 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._new_taxon_card)
     elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
-    elif cardname.lower() == 'review_by':
-      if title:
-        cards = self._gets(self._reviewed_by_card)
-        for card in cards:
-          if title == card.text:
-            card_title = card
-            break
-        else:
-          logging.info('Reviewer card not found')
-          self.restore_timeout()
-          return False
+    elif cardname.lower() == 'review_by' and title:
+      cards = self._gets(self._reviewed_by_card)
+      for card in cards:
+        if title == card.text:
+          card_title = card
+          break
+      else:
+        logging.info('Reviewer card not found')
+        self.restore_timeout()
+        return False
     elif cardname.lower() == 'reviewer_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':

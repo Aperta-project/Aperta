@@ -172,6 +172,7 @@ class DashboardPage(AuthenticatedPage):
       if title in listing.text:
         yes_btn = listing.find_element(*self._invite_yes_btn)
         yes_btn.click()
+        break
     else:
       raise(ValueError, u'Title {0} not found'.format(title))
 

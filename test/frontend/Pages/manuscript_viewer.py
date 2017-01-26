@@ -195,7 +195,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
     assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
-    assert 'Compare With:' in bar_items[1].text, bar_items[1].text
+    assert 'Compare with:' in bar_items[1].text, bar_items[1].text
     self._get(self._tb_versions_closer).click()
 
   def get_ui_manuscript_version(self):
@@ -545,7 +545,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    import pdb; pdb.set_trace()
     assert self._get(self._tb_workflow_link) if user_buttons == 7 else (len(buttons) == 6), \
         'Found {0} buttons for {1}'.format(len(buttons), user)
 

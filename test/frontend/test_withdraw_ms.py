@@ -7,17 +7,13 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
     frontend/assets/
 """
 import logging
-import os
 import random
 import time
-
-from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Pages.authenticated_page import application_typeface
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
@@ -54,7 +50,7 @@ class WithdrawManuscriptTest(CommonTest):
     # Sadly, we take time to switch the overlay
     time.sleep(2)
     manuscript_page.close_modal()
-    time.sleep(1)
+    manuscript_page._wait_for_not_element(manuscript_page._overlay_header_close, 0.05)
     # Do some style and element validations
     manuscript_page._check_more_btn(user=creator_user)
 
@@ -62,7 +58,6 @@ class WithdrawManuscriptTest(CommonTest):
                                                 'FROM papers '
                                                 'WHERE short_doi = %s;', (short_doi,))[0][0]
     assert manuscript_publishing_state == 'submitted', manuscript_publishing_state
-    time.sleep(2)
     manuscript_page.withdraw_manuscript()
     # Need a wee bit of time for the db to update
     time.sleep(1)
@@ -70,22 +65,7 @@ class WithdrawManuscriptTest(CommonTest):
                                                 'FROM papers '
                                                 'WHERE short_doi = %s;', (short_doi,))[0][0]
     assert manuscript_publishing_state == 'withdrawn', manuscript_publishing_state
-    self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
-    withdraw_banner = manuscript_page._get(self._withdraw_banner)
-    # Wrapping the following in a try except due to a known issue: APERTA-6860
-    try:
-      assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
-          withdraw_banner.text
-    except AssertionError:
-      logging.warning('Banner text is not correct: {0}'.format(withdraw_banner.text))
-    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
-        withdraw_banner.value_of_css_property('background-color')
-    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
-        withdraw_banner.value_of_css_property('color')
-    assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
-        withdraw_banner.value_of_css_property('font-family')
-    # Pre-placing for the reactivate work
-    time.sleep(1)
+    manuscript_page.validate_withdraw_banner(journal)
     manuscript_page.logout()
 
     # Login as a privileged user to check the Recent Activity entry
@@ -102,8 +82,8 @@ class WithdrawManuscriptTest(CommonTest):
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
+    workflow_page.validate_withdraw_banner(journal)
     workflow_page.click_recent_activity_link()
-    time.sleep(1)
     workflow_page.validate_recent_activity_entry('Manuscript was withdrawn',
                                                  creator_user['name'])
 

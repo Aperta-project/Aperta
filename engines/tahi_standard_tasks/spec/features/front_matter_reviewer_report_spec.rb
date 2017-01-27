@@ -93,7 +93,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.confirm_submit_report
 
     t.ensure_review_history(
-      title: 'Revision 0', answers: ['answer for round 0']
+      title: 'v0.0 Completed', answers: ['answer for round 0']
     )
 
     # Revision 2
@@ -108,8 +108,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
     t.ensure_review_history(
-      { title: 'Revision 0', answers: ['answer for round 0'] },
-      { title: 'Revision 1', answers: ['answer for round 1'] }
+      { title: 'v0.0 Completed', answers: ['answer for round 0'] },
+      { title: 'v1.0 Completed', answers: ['answer for round 1'] }
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
@@ -120,9 +120,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
     t.ensure_review_history(
-      { title: 'Revision 0', answers: ['answer for round 0'] },
-      { title: 'Revision 1', answers: ['answer for round 1'] },
-      { title: 'Revision 2', answers: ['answer for round 2'] }
+      { title: 'v0.0 Completed', answers: ['answer for round 0'] },
+      { title: 'v1.0 Completed', answers: ['answer for round 1'] },
+      { title: 'v2.0 Completed', answers: ['answer for round 2'] }
     )
   end
 end

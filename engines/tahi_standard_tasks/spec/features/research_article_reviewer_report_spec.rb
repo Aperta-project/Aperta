@@ -80,7 +80,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.confirm_submit_report
 
     t.ensure_review_history(
-      title: 'Revision 0', answers: ['answer for round 0']
+      title: 'v0.0 Completed', answers: ['answer for round 0']
     )
 
     # Revision 2
@@ -95,8 +95,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       'answer for round 2'
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']}
+      {title: 'v0.0 Completed', answers: ['answer for round 0']},
+      {title: 'v1.0 Completed', answers: ['answer for round 1']}
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
@@ -108,9 +108,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']},
-      {title: 'Revision 2', answers: ['answer for round 2']}
+      {title: 'v0.0 Completed', answers: ['answer for round 0']},
+      {title: 'v1.0 Completed', answers: ['answer for round 1']},
+      {title: 'v2.0 Completed', answers: ['answer for round 2']}
     )
   end
 end

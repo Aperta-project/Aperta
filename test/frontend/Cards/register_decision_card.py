@@ -281,6 +281,7 @@ class RegisterDecisionCard(BaseCard):
       template_selector_input.send_keys(reject_selection + Keys.ENTER)
     else:
       self._get(self._template_selector_arrow).click()
+      # Time to make sure that the first item in the list is dynamically loaded
       time.sleep(.5)
       self._get(self._first_option).click()
     if commit:

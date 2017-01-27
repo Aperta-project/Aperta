@@ -162,8 +162,6 @@ class CoverLetterTask(BaseTask):
     logging.info('Sending cover letter: {0}'.format(fn))
     self._driver.find_element_by_css_selector(
       self._upload_cover_letter_input_selector).send_keys(fn)
-    upload_cover_letter_button = self._get(self._upload_cover_letter_button)
-    upload_cover_letter_button.click()
     self._last_uploaded_letter_file = fn
     formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
 

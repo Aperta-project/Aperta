@@ -25,6 +25,11 @@ export default Ember.Component.extend({
     }
   }).drop(),
 
+  invitationIsExpanded: Ember.computed('activeInvitationState', function() {
+    const state = this.get('activeInvitationState');
+    return (state === 'show' || state === 'edit');
+  }),
+
   actions: {
     changePosition(newPosition, invitation) {
 

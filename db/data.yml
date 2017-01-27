@@ -1651,23 +1651,32 @@ activities:
     - '2016-10-26 21:04:53.691608'
     - '2016-10-26 21:04:53.691608'
   - - '183'
-    - workflow
-    - '4'
+    - manuscript
+    - '10'
     - Paper
-    - invitation.sent
-    - Reviewer User was invited as Reviewer
+    - collaborator.added
+    - Edith Editor has been assigned as collaborator
     - '1'
-    - '2017-01-16 21:40:20.787494'
-    - '2017-01-16 21:40:20.787494'
+    - '2017-01-24 15:44:00.828014'
+    - '2017-01-24 15:44:00.828014'
   - - '184'
-    - workflow
-    - '4'
+    - manuscript
+    - '10'
     - Paper
-    - invitation.accepted
-    - Reviewer User accepted invitation as Reviewer
-    - '5'
-    - '2017-01-16 21:40:54.072504'
-    - '2017-01-16 21:40:54.072504'
+    - collaborator.added
+    - Staff Admin has been assigned as collaborator
+    - '1'
+    - '2017-01-24 15:44:00.839149'
+    - '2017-01-24 15:44:00.839149'
+  - - '185'
+    - manuscript
+    - '10'
+    - Paper
+    - collaborator.added
+    - Arthur Author has been assigned as collaborator
+    - '1'
+    - '2017-01-24 15:44:00.884734'
+    - '2017-01-24 15:44:00.884734'
 
 ---
 affiliations:
@@ -2911,26 +2920,26 @@ assignments:
     - '2016-12-13 20:58:11.689392'
     - '2016-12-13 20:58:11.689392'
   - - '161'
-    - '5'
-    - '9'
     - '4'
+    - '14'
+    - '10'
     - Paper
-    - '2017-01-16 21:40:53.982864'
-    - '2017-01-16 21:40:53.982864'
+    - '2017-01-24 15:44:00.7638'
+    - '2017-01-24 15:44:00.7638'
   - - '162'
-    - '5'
-    - '16'
-    - '211'
-    - Task
-    - '2017-01-16 21:40:54.022262'
-    - '2017-01-16 21:40:54.022262'
+    - '14'
+    - '14'
+    - '10'
+    - Paper
+    - '2017-01-24 15:44:00.787298'
+    - '2017-01-24 15:44:00.787298'
   - - '163'
-    - '5'
-    - '23'
-    - '211'
-    - Task
-    - '2017-01-16 21:40:54.025924'
-    - '2017-01-16 21:40:54.025924'
+    - '3'
+    - '14'
+    - '10'
+    - Paper
+    - '2017-01-24 15:44:00.822643'
+    - '2017-01-24 15:44:00.822643'
 
 ---
 attachments:
@@ -5792,53 +5801,6 @@ invitations:
     - 
     - '7'
     - '14'
-  - - '27'
-    - reviewer@example.com
-    - '82'
-    - '5'
-    - '5'
-    - accepted
-    - '2017-01-16 21:40:19.208801'
-    - '2017-01-16 21:40:53.960199'
-    - '11'
-    - 1. Author, Arthur from Academy of Art University
-    - |+
-      You've been invited as a Reviewer on “<b>With Editors:</b> <i>Paper submitted, editors assigned</i>”, for PLOS Yeti.
-
-      The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
-
-      Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
-
-      We look forward to hearing from you.
-
-      Sincerely,
-      PLOS Yeti Team
-
-      ***************** CONFIDENTIAL *****************
-
-      Research
-
-      Manuscript Title:
-      <b>With Editors:</b> <i>Paper submitted, editors assigned</i>
-
-      Authors:
-      1. Author, Arthur from Academy of Art University
-
-      Abstract:
-      Abstract is not available
-
-    - '1'
-    - Reviewer
-    - 
-    - 
-    - dba5710d0eecd64e6ce5
-    - 
-    - '2017-01-16 21:40:20.753145'
-    - 
-    - '2017-01-16 21:40:53.959079'
-    - 
-    - '1'
-    - '4'
 
 ---
 journal_task_types:
@@ -8570,7 +8532,7 @@ nested_question_answers:
     - major_revision
     - text
     - '2016-10-26 19:33:51.526922'
-    - '2017-01-16 21:37:52.596341'
+    - '2017-01-27 00:14:40.143986'
     - 
     - '21'
     - '12'
@@ -8582,7 +8544,7 @@ nested_question_answers:
     - f
     - boolean
     - '2016-10-26 19:33:52.683479'
-    - '2017-01-16 21:37:52.555311'
+    - '2017-01-27 00:14:40.105697'
     - 
     - '21'
     - '12'
@@ -8594,7 +8556,7 @@ nested_question_answers:
     - nah
     - text
     - '2016-10-26 19:33:56.49461'
-    - '2017-01-16 21:37:52.584073'
+    - '2017-01-27 00:14:40.131593'
     - 
     - '21'
     - '12'
@@ -8606,7 +8568,7 @@ nested_question_answers:
     - hey
     - text
     - '2016-10-26 19:33:57.138531'
-    - '2017-01-16 21:37:52.647461'
+    - '2017-01-27 00:14:40.190028'
     - 
     - '21'
     - '12'
@@ -8618,7 +8580,7 @@ nested_question_answers:
     - yo
     - text
     - '2016-10-26 19:33:58.40684'
-    - '2017-01-16 21:37:52.571417'
+    - '2017-01-27 00:14:40.120131'
     - 
     - '21'
     - '12'
@@ -8630,7 +8592,7 @@ nested_question_answers:
     - t
     - boolean
     - '2016-10-26 19:34:00.940233'
-    - '2017-01-16 21:37:52.671173'
+    - '2017-01-27 00:14:40.214342'
     - 
     - '21'
     - '12'
@@ -8642,7 +8604,7 @@ nested_question_answers:
     - whatever
     - text
     - '2016-10-26 19:34:04.068902'
-    - '2017-01-16 21:37:52.65949'
+    - '2017-01-27 00:14:40.202591'
     - 
     - '21'
     - '12'
@@ -9793,7 +9755,7 @@ nested_questions:
     - '204'
     - '2'
     - '2015-10-30 19:51:03.496382'
-    - '2017-01-16 21:37:52.559939'
+    - '2017-01-27 00:14:40.109748'
     - ReviewerReport
     - 
     - 
@@ -9807,7 +9769,7 @@ nested_questions:
     - '206'
     - '5'
     - '2015-10-30 19:51:03.531234'
-    - '2017-01-16 21:37:52.574678'
+    - '2017-01-27 00:14:40.12245'
     - ReviewerReport
     - 
     - 
@@ -9821,7 +9783,7 @@ nested_questions:
     - '208'
     - '3'
     - '2015-10-30 19:51:03.534949'
-    - '2017-01-16 21:37:52.5863'
+    - '2017-01-27 00:14:40.133811'
     - ReviewerReport
     - 
     - 
@@ -10385,7 +10347,7 @@ nested_questions:
     - '278'
     - '1'
     - '2015-12-23 17:34:57.06078'
-    - '2017-01-16 21:37:52.599034'
+    - '2017-01-27 00:14:40.146722'
     - ReviewerReport
     - 
     - 
@@ -11326,7 +11288,7 @@ nested_questions:
     - '358'
     - '1'
     - '2016-06-06 20:37:56.611509'
-    - '2017-01-16 21:37:52.603032'
+    - '2017-01-27 00:14:40.151001'
     - ReviewerReport
     - 
     - 
@@ -11340,7 +11302,7 @@ nested_questions:
     - '360'
     - '2'
     - '2016-06-06 20:37:56.61952'
-    - '2017-01-16 21:37:52.606877'
+    - '2017-01-27 00:14:40.156762'
     - ReviewerReport
     - 
     - 
@@ -11353,7 +11315,7 @@ nested_questions:
     - '363'
     - '1'
     - '2016-06-06 20:37:56.625332'
-    - '2017-01-16 21:37:52.610865'
+    - '2017-01-27 00:14:40.160307'
     - ReviewerReport
     - 
     - 
@@ -11367,7 +11329,7 @@ nested_questions:
     - '364'
     - '3'
     - '2016-06-06 20:37:56.634598'
-    - '2017-01-16 21:37:52.614912'
+    - '2017-01-27 00:14:40.163691'
     - ReviewerReport
     - 
     - 
@@ -11380,7 +11342,7 @@ nested_questions:
     - '367'
     - '1'
     - '2016-06-06 20:37:56.652954'
-    - '2017-01-16 21:37:52.619838'
+    - '2017-01-27 00:14:40.167359'
     - ReviewerReport
     - 
     - 
@@ -11394,7 +11356,7 @@ nested_questions:
     - '368'
     - '4'
     - '2016-06-06 20:37:56.66097'
-    - '2017-01-16 21:37:52.623701'
+    - '2017-01-27 00:14:40.171006'
     - ReviewerReport
     - 
     - 
@@ -11407,7 +11369,7 @@ nested_questions:
     - '370'
     - '5'
     - '2016-06-06 20:37:56.67712'
-    - '2017-01-16 21:37:52.627615'
+    - '2017-01-27 00:14:40.174555'
     - ReviewerReport
     - 
     - 
@@ -11421,7 +11383,7 @@ nested_questions:
     - '372'
     - '6'
     - '2016-06-06 20:37:56.682991'
-    - '2017-01-16 21:37:52.631399'
+    - '2017-01-27 00:14:40.177819'
     - ReviewerReport
     - 
     - 
@@ -11434,7 +11396,7 @@ nested_questions:
     - '203'
     - '1'
     - '2016-06-23 16:58:01.107308'
-    - '2017-01-16 21:37:52.636438'
+    - '2017-01-27 00:14:40.181061'
     - ReviewerReport
     - 
     - 
@@ -11447,7 +11409,7 @@ nested_questions:
     - '374'
     - '4'
     - '2016-06-23 16:58:01.140458'
-    - '2017-01-16 21:37:52.649794'
+    - '2017-01-27 00:14:40.193261'
     - ReviewerReport
     - 
     - 
@@ -11460,7 +11422,7 @@ nested_questions:
     - '377'
     - '1'
     - '2016-06-23 16:58:01.150799'
-    - '2017-01-16 21:37:52.662085'
+    - '2017-01-27 00:14:40.206543'
     - ReviewerReport
     - 
     - 
@@ -11475,7 +11437,7 @@ nested_questions:
     - '378'
     - '6'
     - '2016-06-23 16:58:01.158079'
-    - '2017-01-16 21:37:52.673613'
+    - '2017-01-27 00:14:40.216592'
     - ReviewerReport
     - 
     - 
@@ -11803,7 +11765,7 @@ papers:
     - false
   - - '4'
     - 
-    - "<b>With Editors:</b> <i>Paper submitted, reviewer accepted, editors assigned</i>"
+    - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
     - '2015-11-02 14:46:23.765287'
     - '2016-11-16 05:16:10.696733'
     - '3'
@@ -26398,14 +26360,8 @@ reviewer_reports:
     - '210'
     - '21'
     - '1'
-    - '2017-01-16 21:37:52.552831'
-    - '2017-01-16 21:37:52.552831'
-  - - '2'
-    - '211'
-    - '11'
-    - '5'
-    - '2017-01-16 21:40:54.051284'
-    - '2017-01-16 21:40:54.051284'
+    - '2017-01-27 00:14:40.103717'
+    - '2017-01-27 00:14:40.103717'
 
 ---
 roles:
@@ -30349,17 +30305,6 @@ tasks:
     - '3'
     - '12'
     - '2016-10-26 19:34:04.991447'
-  - - '211'
-    - Review by Reviewer User
-    - TahiStandardTasks::ReviewerReportTask
-    - '19'
-    - false
-    - '2017-01-16 21:40:54.008489'
-    - '2017-01-16 21:40:54.008489'
-    - "[]"
-    - '3'
-    - '4'
-    - 
 
 ---
 users:

@@ -57,3 +57,18 @@ class AHCard(BaseCard):
     self.validate_primary_big_green_button_style(add_btn)
     self._get(self._plus_icon)
     return None
+
+  def test_controller(self, control):
+    """
+    """
+    if control == 'list':
+      self._get(self._tb_list).click()
+    elif control == 'text':
+      self._get(self._tb_text).click()
+    elif control == 'label':
+      self._get(self._tb_label).click()
+    elif control == 'email':
+      self._get(self._tb_email).click()
+    elif control == 'image':
+      self._get(self._tb_image).click()
+    import pdb; pdb.set_trace()

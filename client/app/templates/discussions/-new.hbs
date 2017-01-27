@@ -9,6 +9,18 @@
     <h1 class="discussions-show-title">Create New Topic</h1>
   </div>
 
+  {{participant-selector currentParticipants=participants
+                         paperId=model.paperId
+                         label="Participants:"
+                         displayEmails=true
+                         afterOptionsComponent="discussions-participants-help-text"
+                         canManage=true
+                         onSelect=(action "addParticipant")
+                         onRemove=(action "removeParticipant")
+                         searchStarted=(action "searchStarted")
+                         searchFinished=(action "searchFinished")
+                         searching=searchingParticipant}}
+
   <div class="inset-form-control required {{if validationErrors.title "error"}}">
     <div class="inset-form-control-text">
       <label>Topic Title</label>

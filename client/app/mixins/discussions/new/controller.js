@@ -6,6 +6,8 @@ const { Mixin, isEmpty } = Ember;
 
 export default Mixin.create(DiscussionsRoutePathsMixin, {
   replyText: '',
+  participants: [],
+  searchingParticipant: false,
 
   topicCreation: task(function * (topic, replyText) {
     yield topic.save();
@@ -46,6 +48,25 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
       if(!this.titleIsValid()) { return; }
 
       this.get('topicCreation').perform(topic, replyText);
+    },
+
+    searchStarted() {
+      this.set('searchingParticipant', true);
+    },
+
+    searchFinished() {
+      this.set('searchingParticipant', false);
+    },
+
+    addParticipant(selection) {
+      this.store.find('user', selection.id).then((user) => {
+        this.get('participants').pushObject(user);
+      });
+    },
+
+    removeParticipant(userID) {
+      const userToRemove = this.get('participants').findBy('id', userID);
+      this.get('participants').removeObject(userToRemove);
     }
   }
 });

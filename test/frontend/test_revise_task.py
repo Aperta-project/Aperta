@@ -54,6 +54,7 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     short_doi = paper_viewer.get_paper_short_doi_from_url()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
     paper_viewer.click_submit_btn()
@@ -67,7 +68,7 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=staff_user['email'])
     if staff_user in (handling_editor_login, cover_editor_login):
       # Set up a handling editor, academic editor and cover editor for this paper
-      self.set_editors_in_db(short_doi)
+      self.set_editors_in_db(paper_id)
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())

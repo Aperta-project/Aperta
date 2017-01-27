@@ -32,7 +32,7 @@ class InviteCard(BaseCard):
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
-    self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-email-entry-button')
+    self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-save-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
     self._invitation_items = (By.CLASS_NAME, 'active-invitations')
     self._invitation_item_details = (By.CLASS_NAME, 'invitation-item-details')

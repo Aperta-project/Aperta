@@ -24,7 +24,7 @@ __author__ = 'sbassi@plos.org'
 
 # Note temporary redefining external editorial without cover_editor_login from the pool
 # of external users due to APERTA-9007
-external_editorial_users = (handling_editor_login, academic_editor_login)
+external_editorial_users = [handling_editor_login, academic_editor_login]
 
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
@@ -110,12 +110,12 @@ class ManuscriptViewerTest(CommonTest):
                                           '\'System\' and user_id = %s)));',(uid,))
         permissions = journal_permissions + paper_permissions + system_permissions
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
-        logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
+        logging.info(u'Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
                     .format(user['user'], short_doi, permissions, max_elements))
         # NOTE: When covereditor is selected, the assert fails.
         manuscript_viewer.validate_roles(max_elements, user['user'])
       else:
-        logging.info('No manuscripts present for user: {0}'.format(user['user']))
+        logging.info(u'No manuscripts present for user: {0}'.format(user['user']))
       dashboard_page.logout()
     return self
 

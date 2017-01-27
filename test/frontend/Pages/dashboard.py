@@ -160,6 +160,7 @@ class DashboardPage(AuthenticatedPage):
       yes_btn = listing.find_element(*self._invite_yes_btn)
       yes_btn.click()
 
+  # Note: Use DOI as parameter when this is available, see APERTA-9023
   def accept_invitation(self, title):
     """
     Accepts a given invitation
@@ -171,6 +172,9 @@ class DashboardPage(AuthenticatedPage):
       if title in listing.text:
         yes_btn = listing.find_element(*self._invite_yes_btn)
         yes_btn.click()
+        break
+    else:
+      raise(ValueError, u'Title {0} not found'.format(title))
 
   def accept_or_reject_invitation(self, title):
     """
@@ -252,9 +256,9 @@ class DashboardPage(AuthenticatedPage):
                                                                                  invite_type.text)
         invite_date = page_listing.find_element(*self._invitation_date)
         db_invite_date = self.utc_to_local_tz(db_invite_date)
-        assert db_invite_date.strftime('%B %d, %Y') in invite_date.text, \
+        assert db_invite_date.strftime('%B %-d, %Y') in invite_date.text, \
             'db invite date: {0} not found in invite block ' \
-            'metadata: {1}.'.format(db_invite_date.strftime('%B %d, %Y'), invite_date.text)
+            'metadata: {1}.'.format(db_invite_date.strftime('%B %-d, %Y'), invite_date.text)
         invite_paper_type = page_listing.find_element(*self._invitation_paper_type)
         assert mmt in invite_paper_type.text, \
             '{0} not found on page: {1}'.format(mmt, invite_paper_type.text)

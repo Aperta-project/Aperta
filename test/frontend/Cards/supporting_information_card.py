@@ -1,5 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+
+import logging
+import os
+import time
+
 from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
@@ -20,6 +25,7 @@ class SICard(BaseCard):
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
     self._file_title = (By.CSS_SELECTOR, 'div.si-file-title')
     self._file_caption = (By.CSS_SELECTOR, 'div.si-file-caption')
+    self._si_filename = (By.CLASS_NAME, 'si-file-filename')
    #POM Actions
 
   def validate_styles(self, short_doi):
@@ -64,3 +70,68 @@ class SICard(BaseCard):
     figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'].strip())
     file_title = self._get(self._file_title)
     assert figure_line == file_title.text, (figure_line, file_title.text)
+
+  def validate_uploads(self, uploads):
+    """
+    Give a list of file, check if they are opened in the SI card
+    Note that order may not be preserved so I compare an unordered set
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
+    """
+    site_uploads = self._gets(self._file_link)
+    timeout = 15
+    counter = 0
+    while len(uploads) != len(site_uploads) or counter == timeout:
+      site_uploads = self._gets(self._file_link)
+      # give time for uploading file to end processing
+      time.sleep(1)
+      counter += 1
+    site_uploads = set([x.text for x in site_uploads])
+    uploads = set([x.split(os.sep)[-1].replace(' ', '+') for x in uploads])
+    assert uploads == site_uploads, (uploads, site_uploads)
+
+  def validate_upload(self, upload):
+    """
+    Give a list of file, check if they are opened in the SI task
+    Note that order may not be preserved so I compare an unordered set
+    :param uploads: Iterable with string with the file name to check in SI task
+    :return: None
+    """
+    site_upload = self._get(self._file_link).text
+    assert site_upload.replace(' ', '+') in upload, (upload, site_upload.replace(' ', '+'))
+    return None
+
+  def add_file(self, file_name):
+    """
+    Add a file to the Supporting Information card
+    :param file_name: A string with a filename
+    :return: None
+    """
+    logging.info('Attach file called with {0}'.format(file_name))
+    sif = (By.CLASS_NAME, 'si-file-view')
+    try:
+      sif_before  = len(self._gets(sif))
+    except ElementDoesNotExistAssertionError:
+      sif_before = 0
+    self._driver.find_element_by_id('file_attachment').send_keys(file_name)
+    # Time needed for file upload
+    counter = 0
+    sif_after = len(self._gets(sif))
+    while sif_after <= sif_before:
+      sif_after = len(self._gets(sif))
+      counter += 1
+      if counter > 60:
+        break
+      time.sleep(1)
+
+  def add_files(self, file_list):
+    """
+    Add files to the SI card. This method calls add_file for each file it adds
+    :param file_list: A list with strings with a filename
+    :return: None
+    """
+    for file_name in file_list:
+      new_element = self.add_file(file_name)
+      # This sleep avoid a Stale Element Reference Exception
+      time.sleep(12)
+    return None

@@ -55,8 +55,7 @@ class FigureTaskTest(CommonTest):
     dashboard_page.page_ready()
     logging.info('Calling Create new Article')
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat',
-                        type_='Images+InitialDecision')
+    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()

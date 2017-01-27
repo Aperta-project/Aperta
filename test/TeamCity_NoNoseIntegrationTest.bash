@@ -37,7 +37,7 @@ rm $TESTING_ASSETS
 cd $SCRIPT_DIR
 
 # Reverses 'set -e'. Allows the script to continue through failures.
-set +e 
+set +e
 
 rm Output/*.png
 rm Base/*.pyc
@@ -69,10 +69,12 @@ python -m frontend.test_production_metadata_card
 python -m frontend.test_profile
 python -m frontend.test_reactivate_ms
 python -m frontend.test_register_decision
+python -m frontend.test_reporting_guidelines
 python -m frontend.test_reviewer_candidates
 python -m frontend.test_reviewer_report
 python -m frontend.test_revise_task
 python -m frontend.test_revision_tech_check
+python -m frontend.test_supporting_information
 python -m frontend.test_title_abstract_card
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow

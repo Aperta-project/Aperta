@@ -9,6 +9,7 @@ import random
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.PostgreSQL import PgSQL
@@ -33,6 +34,11 @@ class InviteCard(BaseCard):
     self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
     self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-save-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
+    self._invitation_items = (By.CLASS_NAME, 'active-invitations')
+    self._invitation_item_details = (By.CLASS_NAME, 'invitation-item-details')
+    self._invitation_email_editor = (By.CLASS_NAME, 'invitation-edit-body')
+    self._invitation_save_button = (By.CLASS_NAME, 'invitation-save-button')
+    self._invitation_email_body = (By.CLASS_NAME, 'invitation-show-body')
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
@@ -61,7 +67,7 @@ class InviteCard(BaseCard):
     """
     self._wait_for_element(self._get(self._recipient_field))
     self._get(self._recipient_field).send_keys(user['email'] + Keys.ENTER)
-    self._get(self._compose_invitation_button).click()
+    # self._get(self._compose_invitation_button).click()
     self._wait_for_element(self._get(self._edit_add_to_queue_btn))
     self._get(self._edit_add_to_queue_btn).click()
     self._wait_for_element(self._get(self._invite_send_invite_button))
@@ -73,6 +79,7 @@ class InviteCard(BaseCard):
     except NoSuchElementException:
       logging.error('Error fired on send invite.')
     self.click_close_button()
+    time.sleep(1)
 
   def validate_invite(self, invitee, mmt, title, creator, short_doi):
     """
@@ -322,3 +329,62 @@ class InviteCard(BaseCard):
         if 'Rescinded' not in state:
           raise ElementExistsAssertionError('Invitation for {0} and {1} - should have been '
                                             'Rescinded'.format(invitee['name'], role))
+
+  def add_invitee_to_queue(self, invitee):
+    """
+    Adds an invitee to the queue
+    :param invitee: person who will be added to the queue of invitees
+    :return: void function
+    """
+    self._wait_for_element(self._get(self._recipient_field))
+    self._get(self._recipient_field).send_keys(invitee['email'] + Keys.ENTER)
+    self._get(self._compose_invitation_button).click()
+    # In order to wait long enough for another invitee to be added, should this method be called multiple times,
+    # find the "ADD TO QUEUE" button element:
+    self._driver.find_element_by_class_name('button--disabled')
+
+  def validate_email_template_edits(self):
+    """
+    Validates ability to expand invitation items within the queue and edit the email template. Edits
+    to email templates should persist, to enable saving the template and sending at a later date.
+    :return: void function
+    """
+    invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
+    first_invitation_item = random.choice(invitation_items)
+    logging.info('First invitation item: {0}'.format(first_invitation_item))
+    if len(invitation_items) > 1:
+      first_invitation_item.click()
+      assert 'invitation-item--show' in first_invitation_item.get_attribute('class'), \
+        first_invitation_item.get_attribute('class')
+      # Verify that the invitation collapses when clicking the invitation item header
+      first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+      assert 'invitation-item--closed' in first_invitation_item.get_attribute('class'), \
+        first_invitation_item.get_attribute('class')
+      # Only one item at most should be expanded. Select a different invitation item, and check that only it is expanded
+      first_invitation_item.click()
+      invitation_items.remove(first_invitation_item)
+      second_invitation_item = random.choice(invitation_items)
+      second_invitation_item.click()
+      invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
+      expanded_items = filter(lambda item: 'invitation-item--show' in item.get_attribute('class'), invitation_items)
+      assert len(expanded_items) == 1, 'There is more than one expanded item: {0}'.format(expanded_items)
+
+    # Verify editable state when an invitation item is expanded
+    first_invitation_item.click()
+    invitation_details = self._get(self._invitation_item_details)
+    self._get(self._invite_edit_invite_button).click()
+    # When in edit mode, ability to collapse the invite item is disabled
+    first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+    assert 'invitation-item--edit' in first_invitation_item.get_attribute('class'), \
+      first_invitation_item.get_attribute('class')
+    # Verify that edits to email template persist
+    email_template_editor = self._get(self._invitation_email_editor)
+    paragraph = generate_paragraph()[-1]
+    email_template_editor.send_keys(paragraph)
+    self._get(self._invitation_save_button).click()
+    # Collapse and re-expand this invitation item, and check that the paragraph is present
+    first_invitation_item.find_element_by_class_name('invitation-item-header').click()
+    first_invitation_item.click()
+    email_body = self._get(self._invitation_email_body)
+    assert paragraph in email_body.text, '{0} is not in {1}'.format(paragraph, email_body.text)
+

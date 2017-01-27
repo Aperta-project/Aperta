@@ -39,7 +39,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Locators - Instance members
     # Main Viewer Div
-    self._paper_title = (By.ID, 'control-bar-paper-title')
+    self._paper_title = (By.CSS_SELECTOR, 'div#control-bar-paper-title > span')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
@@ -57,7 +57,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-    self._tb_versions_closer = (By.ID, 'nav-exit-versions')
+    self._tb_versions_closer = (By.CLASS_NAME, 'versioning-bar-close')
     self._tb_collaborators_link = (By.ID, 'nav-collaborators')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
@@ -209,7 +209,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # allow time for components to attach to DOM
     time.sleep(1)
     bar_items = self._gets(self._bar_items)
-    version_number = bar_items[1].text.split('\n')[2].split()[0]
+    version_number = bar_items[0].find_element(*self._bar_item_selected_item).text.split(' - ')[0]
+    logging.info(version_number)
     self._get(self._tb_versions_closer).click()
     return version_number
 
@@ -579,13 +580,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
     logging.info('Unknown Task')
     return False
 
-  def complete_task(self, task_name, click_override=False, data=None, style_check=False, author = ''):
+  def complete_task(self,
+                    task_name,
+                    click_override=False,
+                    data=None,
+                    style_check=False,
+                    author=''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data: A dictionary with the required data for each task.
     :param style_check: A boolean, when True will do style checking. Default False.
+    :param author: Author to use in completing author task, if applicable - looks up values from
+      Base/Resources.py
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """
@@ -621,7 +629,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # If the task is read only due to completion state, set read-write
       if base_task.completed_state():
         base_task.click_completion_button()
-      ai_task.complete_ai()
+      if data:
+        ai_task.complete_ai()
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()
@@ -657,20 +666,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()
       if data and 'file_name' in data:
-        attached_filename = supporting_info.add_file(data['file_name'])
-        if style_check:
-          supporting_info.validate_default_link_style(attached_filename)
-        assert attached_filename.text in data['file_name'], (attached_filename.text,
-          data['file_name'])
-        edit_btn = self._get(supporting_info._si_pencil_icon)
-        assert edit_btn
-        assert self._get(supporting_info._si_trash_icon)
-        edit_btn.click()
-        if style_check:
-          supporting_info.validate_si_edit_form_style()
-        # check cancel button
-        cancel_btn = self._get(supporting_info._si_file_cancel_btn)
-        cancel_btn.click()
+        supporting_info.add_file(data['file_name'])
         time.sleep(5)
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)
@@ -702,11 +698,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
-    elif 'Review by ' in task_name:
-      logging.info('Completing {0}'.format(task_name))
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-      task.click()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

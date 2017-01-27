@@ -76,17 +76,15 @@ class AuthorsTask(BaseTask):
     self._author_other_lbl = (
         By.CSS_SELECTOR,
         'div.author-contributions div.flex-group + div.flex-group div.flex-element label')
-    self._designed_chkbx = (
-        By.XPATH,
-        ".//input[@name='author--contributions--conceptualization']/following-sibling::span")
+    self._designed_chkbx = (By.CSS_SELECTOR, 'input[name=author--contributions--conceptualization]')
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'fieldset.author-contributions legend.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.author-task-item-view')
     self._delete_author_div = (By.CSS_SELECTOR, 'div.authors-overlay-item-delete')
     self._edit_author = (By.CSS_SELECTOR, 'div.author-name')
-    self._corresponding = (
-        By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
+    self._corresponding = (By.CSS_SELECTOR,
+        'input[name=author--published_as_corresponding_author]')
     self._govt_employee_div = (By.CSS_SELECTOR, 'div.author-government')
     self._govt_employee_question = (By.CSS_SELECTOR, 'div.question-text')
     self._govt_employee_help = (By.CSS_SELECTOR, 'ul.question-help')
@@ -547,7 +545,9 @@ class AuthorsTask(BaseTask):
   def edit_author(self, author_data):
     """
     Edit the first author in the author task
-    :param author_data: data sourced from Resources.py used to fill out author card
+    :param author_data: data sourced from Resources.py used to fill out author card. NOTA BENE: You
+      must pass author data for an author that contains an ORCID id - otherwise we will fail on
+      validation errors
     return None
     """
     completed = self.completed_state()
@@ -572,15 +572,23 @@ class AuthorsTask(BaseTask):
     institutions = self._gets(self._institution_div)
     if len(institutions) == 2:
       institution_div = institutions[0]
-      institution_input = institution_div.find_element_by_tag_name('input')
-      institution_input.clear()
-      institution_input.send_keys(author_data['institution'] + Keys.ENTER)
+      institution = institution_div.find_element_by_tag_name('input')
+      institution.clear()
+      if not author_data['affiliation-name']:
+        author_data['affiliation-name'] = 'Placeholder'
+      institution.send_keys(author_data['affiliation-name'] + Keys.ENTER)
       # Time to look for institutions to fill the drop down options
       time.sleep(5)
     title_input.clear()
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
     department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
+    # TODO: The following will be filled in as part of the APERTA-8780 work
+    # Deal with the ORCID element
+    # Test if connect button is present, if so, call to connect
+    # D
+    # Otherwise, verify that linked ORCID id is present.
+    # E
     # Author contributions
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
@@ -596,16 +604,20 @@ class AuthorsTask(BaseTask):
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
-      while not completed:
-        time.sleep(.5)
+      self.click_completion_button()
+      time.sleep(2)
+      # Following workaround is due to APERTA-9019
+      completed = self.completed_state()
+      logging.info('Author task is: {0}. Running workaround'.format(completed))
+      if not completed:
         self.click_completion_button()
         time.sleep(2)
-        completed = self.completed_state()
+      # Need to validate that we aren't failing on validation within this loop else endlessness
       try:
         self.validate_completion_error()
       except ElementDoesNotExistAssertionError:
         logging.info('No validation errors completing Author Task')
-    time.sleep(2)
+    time.sleep(1)
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

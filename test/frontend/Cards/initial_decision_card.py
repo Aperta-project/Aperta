@@ -21,9 +21,9 @@ class InitialDecisionCard(BaseCard):
     # Locators - Instance members
     self._card_title = (By.TAG_NAME, 'h1')
     self._intro_text = (By.TAG_NAME, 'p')
-    self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
-    self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
-    self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
+    self._reject_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label > input')
+    self._invite_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label + label > input')
+    self._decision_letter_textarea = (By.CLASS_NAME, 'decision-letter-field')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
     self._decision_alert = (By.CLASS_NAME, 'rescind-decision-container')
     self._decision_verdict = (By.CLASS_NAME, 'rescind-decision-verdict')
@@ -37,9 +37,12 @@ class InitialDecisionCard(BaseCard):
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
     self.validate_application_title_style(card_title)
+    self._get(self._invite_radio_button).click()
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
-    assert intro_text.text == 'Please write your decision letter in the area below', intro_text.text
+    # APERTA-8902
+    # self.validate_application_ptext(intro_text)
+    assert intro_text.text == 'Please write your decision letter in the area below:', \
+        intro_text.text
     self._get(self._reject_radio_button)
     self._get(self._invite_radio_button)
     self._get(self._decision_letter_textarea)
@@ -54,7 +57,6 @@ class InitialDecisionCard(BaseCard):
     :return: selected choice
     """
     choices = ['reject', 'invite']
-    decision_letter_input = self._get(self._decision_letter_textarea)
     logging.info('Initial Decision Choice is: {0}'.format(choice))
     if choice == 'random':
       choice = random.choice(choices)
@@ -64,11 +66,19 @@ class InitialDecisionCard(BaseCard):
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
       time.sleep(1)
+      decision_letter_input = self._get(self._decision_letter_textarea)
+      # AC 2
+      assert decision_letter_input.text == '', 'Initial decision letter is ' \
+                                               'not blank: {0}'.format(decision_letter_input.text)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
       time.sleep(1)
+      decision_letter_input = self._get(self._decision_letter_textarea)
+      # AC 2
+      assert decision_letter_input.text == '', 'Initial decision letter is ' \
+                                               'not blank: {0}'.format(decision_letter_input.text)
       decision_letter_input.send_keys('Invited')
     # Time to allow the button to change to clickable state
     time.sleep(1)

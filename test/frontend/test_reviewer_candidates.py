@@ -196,16 +196,16 @@ class ReviewerCandidatesTaskTest(CommonTest):
   def test_core_reviewer_candidates_permissions(self):
     """
     test_reviewer_candidates_task: Validates the access permissions for the reviewer candidates task
-      DONE a Reviewer will never ever see a reviewer recommendations card
-      DONE an AE will always be able to view the reviewer recommendations card
-      DONE inherently in previous two tests a paper Creator can view/edit the reviewer
+      a Reviewer will never ever see a reviewer recommendations card
+      an AE will always be able to view the reviewer recommendations card
+      inherently in previous two tests a paper Creator can view/edit the reviewer
         recommendations card
-      NOT DONE (collaborators are not currently enabled) a paper Collaborator can view/edit the
-        reviewer recommendations card
-      DONE inherently in the previous two tests Staff can view/edit the reviewer
+      inherently in the previous two tests Staff can view/edit the reviewer
         recommendations card
     :return: void function
     """
+    # TODO (collaborators are not currently enabled) a paper Collaborator can view/edit the
+    #   reviewer recommendations card.
     logging.info('Test Reviewer Candidates::permissions')
     current_path = os.getcwd()
     logging.info(current_path)
@@ -228,60 +228,54 @@ class ReviewerCandidatesTaskTest(CommonTest):
     creator_user = random.choice(users)
     logging.info('Logging in as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(title='Reviewer Candidates Test', journal='PLOS Wombat',
                         type_='OnlyReviewerCandidates', random_bit=True)
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    dashboard_page.restore_timeout()
-    time.sleep(25)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # Note: Request title to make sure the required page is loaded
-    paper_id = manuscript_page.get_paper_short_doi_from_url()
-    time.sleep(2)
-    # complete reviewer_candidates
-    manuscript_page.complete_task('Reviewer Candidates')
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.click_task('Reviewer Candidates')
+    reviewer = random.choice(users)
+    logging.info(u'Reviewer is: {0}'.format(reviewer['name']))
+    rev_cand_task = ReviewerCandidatesTask(self.getDriver())
+    rev_cand_task.complete_reviewer_cand_form(reviewer)
+    rev_cand_task.click_completion_button()
+    manuscript_page.check_for_flash_error()
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_submit_overlay()
-    time.sleep(2)
-    title = manuscript_page.get_paper_title_from_page()
+    manuscript_page.page_ready()
     manuscript_page.logout()
 
     # login as privileged user to invite an AE and a Reviewer
     staff_user = random.choice(editorial_users)
-    logging.info('Logging in as user: {0}'.format(['name']))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    time.sleep(3)
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(3)
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
-    time.sleep(2)
+    workflow_page.page_ready()
     workflow_page.click_card('invite_reviewers')
-    time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
     invite_reviewers.invite(reviewer_login)
-    # Need a break to give time to close card
-    time.sleep(2)
+    workflow_page.page_ready()
     workflow_page.click_invite_ae_card()
     invite_ae_card = InviteAECard(self.getDriver())
-    time.sleep(3)
+    invite_ae_card.card_ready()
     invite_ae_card.invite(academic_editor_login)
-    invite_ae_card.click_close_button()
-    time.sleep(2)
+    workflow_page.page_ready()
     # Now set the reviewer candidates card to incomplete and set the manuscript editable
     #   this is necessary to test the absence of edit permissions for the AE user.
     workflow_page.click_card('reviewer_candidates')
-    time.sleep(3)
     rev_cand_card = ReviewerCandidatesCard(self.getDriver())
-    time.sleep(1)
+    rev_cand_card.card_ready()
     rev_cand_card.click_completion_button()
-    time.sleep(2)
     rev_cand_card.click_close_button()
     rev_cand_card.check_for_flash_error()
     workflow_page.set_editable()
@@ -289,36 +283,35 @@ class ReviewerCandidatesTaskTest(CommonTest):
     workflow_page.logout()
 
     # Login as Reviewer and accept invitation
-    logging.info('Logging in as user: {0}'.format(reviewer_login['name']))
     dashboard_page = self.cas_login(email=reviewer_login['email'])
-    time.sleep(3)
+    dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(6)
+    paper_viewer.page_ready()
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')
     assert not rc_task
     paper_viewer.logout()
 
     # Login as AE and accept invitation
-    logging.info('Logging in as user: {0}'.format(academic_editor_login['name']))
     dashboard_page = self.cas_login(email=academic_editor_login['email'])
-    time.sleep(3)
+    dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
     dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(paper_id)
+    dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    time.sleep(15)
+    paper_viewer.page_ready()
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')
     assert rc_task
     logging.info('Reviewer Candidates task is present for AE')
     paper_viewer.click_task('Reviewer Candidates')
-    time.sleep(2)
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
-    time.sleep(1)
+    # Note that one cannot use the normal task ready method here because we suppress the completion
+    #   button when the editing permission is disabled. So the dread sleep...
+    time.sleep(2)
     editable = rev_cand_task.assert_add_new_cand_btn_present()
     assert not editable
 

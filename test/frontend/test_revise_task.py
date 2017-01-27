@@ -47,7 +47,7 @@ class ReviseManuscriptTest(CommonTest):
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'Research'
+    paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications', journal=journal,
                         type_=paper_type, random_bit=True)
@@ -55,12 +55,6 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer.page_ready()
     short_doi = paper_viewer.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    paper_viewer.complete_task('Authors', author=creator)
-    paper_viewer.complete_task('Billing')
-    paper_viewer.complete_task('Cover Letter')
-    paper_viewer.complete_task('Figures')
-    paper_viewer.complete_task('Supporting Info')
-    paper_viewer.complete_task('Financial Disclosure')
     # Complete cards
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()

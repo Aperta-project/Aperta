@@ -257,7 +257,6 @@ class AuthenticatedPage(PlosPage):
     """
     return self._gets(self._flash_success_msg)
 
-
   def validate_nav_toolbar_elements(self, permissions):
     """
     Validates the appearance of elements in the navigation menu for

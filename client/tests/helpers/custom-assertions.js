@@ -190,6 +190,10 @@ export default function() {
   };
 
   QUnit.assert.spyCalledWith = function(spy, args, message) {
+    if (!spy.called) {
+      return QUnit.assert.spyCalled(spy, message);
+    }
+
     return this.push(
       spy.calledWith(...args),
       spy.lastCall.args,

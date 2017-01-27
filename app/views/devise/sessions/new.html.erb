@@ -26,6 +26,15 @@
     <% end %>
   <% end %>
 
+  <% if unsupported_browser %>
+    <p class="auth-flash auth-flash--alert">
+      Aperta is having trouble establishing a live connection with your browser
+      due to lack of browser support for required software.
+      <a href="http://browsehappy.com/">Please update your browser to the current version</a>
+      <span onclick="this.parentElement.remove()">&times;</span>
+    </p>
+  <% end %>
+
   <div class="methods">
 
     <% if Rails.configuration.password_auth_enabled %>

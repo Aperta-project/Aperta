@@ -18,7 +18,7 @@ export default TaskController.extend({
     submitTechChanges() {
       if (this.get('isNotEditable')) { return; }
       if (!this.get('allSubmissionTasksCompleted')) {
-        this.flash.displayMessage('error', 'At least one required Task remains incomplete. Please complete all required Tasks.');
+        this.flash.displayRouteLevelMessage('error', 'At least one required Task remains incomplete. Please complete all required Tasks.');
       } else {
         this.set('isLoading', true);
         const taskId = this.get('model.id');
@@ -27,7 +27,7 @@ export default TaskController.extend({
         this.get('restless').post(path).then(()=> {
           this.set('model.completed', true);
           this.send('saveModel');
-          this.flash.displayMessage('success', this.successText());
+          this.flash.displayRouteLevelMessage('success', this.successText());
         });
       }
     }

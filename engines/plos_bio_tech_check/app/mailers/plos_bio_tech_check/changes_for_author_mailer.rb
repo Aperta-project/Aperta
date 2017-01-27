@@ -1,5 +1,5 @@
 module PlosBioTechCheck
-  class ChangesForAuthorMailer < ActionMailer::Base
+  class ChangesForAuthorMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     include MailerHelper
     add_template_helper ClientRouteHelper

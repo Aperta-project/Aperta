@@ -43,5 +43,15 @@ describe PaperTrackerQueriesController do
       delete :destroy, format: :json, id: query.id
       expect(query.reload.deleted).to eq(true)
     end
+
+    it "returns a 204 (no content) status" do
+      delete :destroy, format: :json, id: query.id
+      expect(response.status).to eq(204)
+    end
+
+    it "logs the deleted query" do
+      expect(Rails.logger).to receive(:info).with("#{user.email} deleted query #{query.title}")
+      delete :destroy, format: :json, id: query.id
+    end
   end
 end

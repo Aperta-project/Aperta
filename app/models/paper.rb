@@ -304,7 +304,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      latest_version.update(original_text: new_body)
+      latest_version.update(original_text: new_body, file_type: file_type)
       notify(action: "updated") unless changed?
     end
   end
@@ -580,7 +580,7 @@ class Paper < ActiveRecord::Base
 
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
-    Activity.state_changed! self, to: publishing_state
+    Activity.state_changed! self, to: aasm.to_state
   end
 
   def assign_submitting_user!(submitting_user)

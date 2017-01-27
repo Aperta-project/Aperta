@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219214719) do
+ActiveRecord::Schema.define(version: 20170111191302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,6 +264,29 @@ ActiveRecord::Schema.define(version: 20161219214719) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "email_logs", force: :cascade do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "subject"
+    t.string   "message_id"
+    t.text     "raw_source"
+    t.string   "status"
+    t.string   "error_message"
+    t.datetime "errored_at"
+    t.datetime "sent_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "task_id"
+    t.integer  "paper_id"
+    t.integer  "journal_id"
+    t.jsonb    "additional_context"
+  end
+
+  add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
+  add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
+  add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
+  add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
+
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
@@ -426,11 +449,8 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.datetime "expires_at"
     t.string   "name"
     t.string   "scope"
-    t.jsonb    "authorization_code_response"
-    t.text     "profile_xml"
-    t.datetime "profile_xml_updated_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "orcid_accounts", ["user_id"], name: "index_orcid_accounts_on_user_id", using: :btree
@@ -767,6 +787,8 @@ ActiveRecord::Schema.define(version: 20161219214719) do
     t.datetime "updated_at"
     t.text     "original_text"
     t.string   "file_type"
+    t.string   "s3_dir"
+    t.string   "file"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

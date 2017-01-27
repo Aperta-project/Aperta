@@ -27,7 +27,7 @@ describe PapersController do
       it 'returns papers the user has access to' do
         expect(user).to receive(:filter_authorized).with(
           :view,
-          Paper.all.includes(:roles, jorunal: :creator_role)
+          Paper.all.includes(:roles, journal: :creator_role)
         ).and_return instance_double(
           'Authorizations::Query::Result',
           objects: papers
@@ -46,7 +46,7 @@ describe PapersController do
 
   describe 'GET show' do
     subject(:do_request) { get :show, id: paper.to_param, format: :json }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -71,6 +71,26 @@ describe PapersController do
           .with(:view, paper)
           .and_return false
         do_request
+      end
+
+      it { is_expected.to responds_with(404) }
+    end
+
+    context "when the user is invited but has not accepted the invitation" do
+      let!(:invitation) do
+        FactoryGirl.create(:invitation, :invited, invitee: user, paper: paper)
+      end
+
+      before do
+        stub_sign_in(user)
+        allow(user).to receive(:can?)
+          .with(:view, paper)
+          .and_return false
+        do_request
+      end
+
+      it "returns a message to accept the invitation first" do
+        expect(response.body).to eq("To access this manuscript, please accept the invitation below.")
       end
 
       it { is_expected.to responds_with(403) }

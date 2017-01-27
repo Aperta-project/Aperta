@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class ReviewerMailer < ActionMailer::Base
+  class ReviewerMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     include MailerHelper
     add_template_helper ClientRouteHelper
@@ -45,11 +45,11 @@ module TahiStandardTasks
     def welcome_reviewer(assignee_id:, paper_id:)
       @paper = Paper.find(paper_id)
       @journal = @paper.journal
-      assignee = User.find_by(id: assignee_id)
-      @assignee_name = display_name(assignee)
+      @assignee = User.find_by(id: assignee_id)
+      @assignee_name = display_name(@assignee)
 
       mail(
-        to: assignee.try(:email),
+        to: @assignee.try(:email),
         subject: "Thank you for agreeing to review for #{@journal.name}")
     end
   end

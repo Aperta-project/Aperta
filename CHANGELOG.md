@@ -4,11 +4,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
-* The first affiliate field on the billing task is now required
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
+* Users can now select and copy text from invitation letters when there is more than one invitation.
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
+### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
+### Deprecated
+### Removed
+### Fixed
+* ORCID-Connect works with users with accented letters in their names.
 ### Security
 
 ## ## [1.33.0] - {2017-01-03}
@@ -22,6 +36,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 * Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}
@@ -40,7 +55,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
-* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of
   the parts.
 ### Deprecated
 ### Removed

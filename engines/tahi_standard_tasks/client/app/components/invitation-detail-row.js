@@ -34,10 +34,18 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     return this.get('activeInvitation') === this.get('invitation');
   }),
 
-  draggable: computed('previousRound', 'invitation.canReposition', 'invitationsInFlight', function(){
-    if (this.get('previousRound') || this.get('invitationsInFlight')) { return false; }
-    return this.get('invitation.canReposition');
-  }),
+  draggable: computed(
+    'previousRound',
+    'invitation.canReposition',
+    'invitationsInFlight',
+    'invitationIsExpanded',
+    function(){
+      if (this.get('previousRound') || this.get('invitationsInFlight') || this.get('invitationIsExpanded')) {
+        return false;
+      }
+      return this.get('invitation.canReposition');
+    }
+  ),
 
   uiStateClass: computed('uiState', function() {
     return 'invitation-item--' + this.get('uiState');
@@ -72,6 +80,8 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   model: computed.alias('invitation'),
   dragStart(e) {
+    if (!this.get('draggable')) { return; }
+    this.sendAction('startedDragging');
     e.dataTransfer.effectAllowed = 'move';
     DragNDrop.set('dragItem', this.get('invitation'));
     // REQUIRED for Firefox to let something drag

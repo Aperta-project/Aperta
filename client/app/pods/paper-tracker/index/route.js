@@ -37,7 +37,7 @@ export default AuthorizedRoute.extend({
       } else {
         // Have to add the flash message after the transition has finished.
         Ember.run.later(() => {
-            this.flash.displayMessage(
+          this.flash.displayRouteLevelMessage(
               'error',
               'Sorry, I don\'t understand how to perform that search');});
         return [];

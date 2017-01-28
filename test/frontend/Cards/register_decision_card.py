@@ -284,6 +284,8 @@ class RegisterDecisionCard(BaseCard):
       # Time to make sure that the first item in the list is dynamically loaded
       time.sleep(.5)
       self._get(self._first_option).click()
+      # Time to make sure that the decision is clicked and changes accepted
+      time.sleep(.5)
     if commit:
       # click on register decision and email the author
       self._get(self._register_decision_button).click()

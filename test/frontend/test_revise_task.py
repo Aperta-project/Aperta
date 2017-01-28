@@ -54,7 +54,7 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     short_doi = paper_viewer.get_paper_short_doi_from_url()
-    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
     paper_viewer.click_submit_btn()

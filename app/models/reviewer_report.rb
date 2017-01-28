@@ -1,4 +1,6 @@
 class ReviewerReport < ActiveRecord::Base
+  default_scope { order('decision_id DESC') }
+
   include NestedQuestionable
   belongs_to :task, foreign_key: :task_id
   belongs_to :user

@@ -2,8 +2,10 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
 export default TaskComponent.extend({
-  currentReviewerReport: Ember.computed.alias('task.reviewerReports.lastObject'),
-  previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
+  currentReviewerReport: Ember.computed.alias('task.reviewerReports.firstObject'),
+  previousReviewerReports: Ember.computed('task.reviewerReports', function(){
+    return this.get('task.reviewerReports').slice(1);
+  }),
 
   actions: {
     confirmSubmission() {

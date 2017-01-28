@@ -89,7 +89,8 @@ describe DiscussionTopicsController do
       {
         discussion_topic: {
           paper_id: paper.id,
-          title: title
+          title: title,
+          initial_discussion_participant_ids: [user.to_param]
         }
       }
     end
@@ -118,14 +119,23 @@ describe DiscussionTopicsController do
         expect(topic['paper_id']).to eq(paper.id)
       end
 
-      it "assigns the participant with the discussion_participant_role" do
-        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(0)
+      describe "initial discussion participant assignment" do
+        let!(:users_to_assign) { create_list :user, 3 }
+        let(:creation_params) do
+          {
+            discussion_topic: {
+              paper_id: paper.id,
+              title: title,
+              initial_discussion_participant_ids: users_to_assign.map(&:id)
+            }
+          }
+        end
 
-        expect do
-          do_request
-        end.to change { Assignment.count }.by(1)
-
-        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(1)
+        it "assigns all users in initial_discussion_participant_ids as participants" do
+          expect do
+            do_request
+          end.to change { DiscussionParticipant.count }.by(users_to_assign.length)
+        end
       end
     end
 

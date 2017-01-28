@@ -10,6 +10,7 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
   searchingParticipant: false,
 
   topicCreation: task(function * (topic, replyText) {
+    topic.set('initialDiscussionParticipantIDs', this.get('participants').mapBy('id'));
     yield topic.save();
     if(!isEmpty(replyText)) {
       yield this.createReply(replyText, topic);

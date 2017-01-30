@@ -8,12 +8,22 @@ Rake::Task["db:create"].clear
 namespace :db do
   PG_RESTORE_ARGS = "--verbose --clean --if-exists --no-acl --no-owner".freeze
 
+  # Lambda block to avoid polluting global namespace.
+  with_config = lambda do |&block|
+    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password].to_s
+    block.call(
+      ActiveRecord::Base.connection_config[:host],
+      ActiveRecord::Base.connection_config[:database],
+      ActiveRecord::Base.connection_config[:username]
+    )
+  end
+
   task :ensure_dev do
     raise "This can only be run in a development environment" unless Rails.env.development?
   end
 
   task :create do
-    with_config do |host, db, user|
+    with_config.call do |host, db, user|
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
@@ -24,7 +34,7 @@ namespace :db do
   end
 
   task :drop do
-    with_config do |host, db, user|
+    with_config.call do |host, db, user|
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
@@ -45,8 +55,8 @@ namespace :db do
   task :import_remote, [:env] => [:environment, :ensure_dev, :drop, :create] do |_, args|
     env = (args[:env] || 'prod')
     location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
-    with_config do |host, db, user|
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
+    with_config.call do |host, db, user|
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db})"
       if system(cmd)
         STDERR.puts("Successfully restored #{env} database by running \n #{cmd}")
       else
@@ -59,7 +69,7 @@ namespace :db do
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
-    with_config do |host, db, user|
+    with_config.call do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --format=c #{db} > #{location}"
       system(cmd) || raise("Dump failed for \n #{cmd}")
@@ -80,7 +90,7 @@ namespace :db do
     if location
       Rake::Task['db:drop'].invoke
       Rake::Task['db:create'].invoke
-      with_config do |host, db, user|
+      with_config.call do |host, db, user|
         cmd = "pg_restore --host #{host} --username #{user} #{PG_RESTORE_ARGS} --dbname #{db} #{location}"
         puts cmd
         system(cmd) || raise("Restore failed for \n #{cmd}")
@@ -103,9 +113,9 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    with_config do |host, db, user|
+    with_config.call do |host, db, user|
       local_db = URI::Generic.new("postgres", user, host, nil, nil, "/#{db}", nil, nil, nil)
-      system("heroku pg:pull DATABASE_URL #{local_db} --app #{source_db} && rake db:reset_passwords")
+      system("heroku pg:pull DATABASE_URL #{local_db} --app #{source_db}")
     end
   end
 
@@ -121,14 +131,5 @@ namespace :db do
       u.password = "password" # must be set explicitly
       u.save
     end
-  end
-
-  private
-
-  def with_config
-    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password].to_s
-    yield ActiveRecord::Base.connection_config[:host],
-          ActiveRecord::Base.connection_config[:database],
-          ActiveRecord::Base.connection_config[:username]
   end
 end

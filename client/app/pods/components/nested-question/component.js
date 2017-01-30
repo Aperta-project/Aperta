@@ -11,6 +11,7 @@ export default Component.extend({
   additionalData: null,
 
   textClassNames: ['question-text'],
+  classNameBindings: ['identClass'],
 
   owner: null,
   question: computed('owner', 'ident', 'additionalData', function() {
@@ -83,6 +84,10 @@ export default Component.extend({
   change(){
     this.save();
   },
+
+  identClass: computed('ident', function() {
+    return `${this.get('ident')}-nested-question`;
+  }),
 
   save(){
     return this.get('_debouncedAndThrottledSave').perform();

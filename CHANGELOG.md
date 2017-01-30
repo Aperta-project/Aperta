@@ -37,6 +37,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
 * Deleting a paper tracker query now updates the dashboard
+* Reviewer report display no longer gets jumbled after a decision has been made.
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}

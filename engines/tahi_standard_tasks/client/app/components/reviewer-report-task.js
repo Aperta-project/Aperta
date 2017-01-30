@@ -1,10 +1,9 @@
-import TaskComponent from 'tahi/pods/components/task-base/component';
+import DecisionOwner from 'tahi/mixins/decision-owner';
 import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
 
-export default TaskComponent.extend({
-  draftDecision: Ember.computed.alias('task.paper.draftDecision'),
-
-  previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
+export default TaskComponent.extend(DecisionOwner, {
+  decisions: Ember.computed.readOnly('task.decisions'),
 
   actions: {
     confirmSubmission() {

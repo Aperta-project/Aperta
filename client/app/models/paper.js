@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import DecisionOwner from 'tahi/mixins/decision-owner';
 
 const { computed } = Ember;
 const { attr, belongsTo, hasMany } = DS;
@@ -19,7 +20,7 @@ const PAPER_GRADUAL_ENGAGEMENT_STATES = [
   'invited_for_full_submission'
 ];
 
-export default DS.Model.extend({
+export default DS.Model.extend(DecisionOwner, {
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
@@ -99,24 +100,6 @@ export default DS.Model.extend({
 
   roleList: computed('roles.[]', function() {
     return this.get('roles').sort().join(', ');
-  }),
-
-  draftDecision: computed('decisions.@each.draft', function() {
-    return this.get('decisions').findBy('draft', true);
-  }),
-
-  latestRegisteredDecision: computed(
-    'decisions.@each.latestRegistered',
-    function() {
-      return this.get('decisions').findBy('latestRegistered', true);
-    }
-  ),
-
-  previousDecisions: computed('decisions.@each.registeredAt', function() {
-    return this.get('decisions')
-      .rejectBy('draft')
-      .sortBy('registeredAt')
-      .reverseObjects();
   }),
 
   textForVersion(versionString) {
@@ -204,39 +187,6 @@ export default DS.Model.extend({
     }
     return true;
   }),
-
-  sortedDecisions: computed('decisions.@each.registeredAt', function() {
-    return this.get('decisions').sortBy('registeredAt');
-  }),
-
-  initialDecision: computed(
-    'decisions.@each.registeredAt',
-    'decisions.@each.rescinded',
-    function() {
-      let decisions = this.get('sortedDecisions');
-      let latestInitial = this.get('decisions')
-                              .filterBy('initial')
-                              .filterBy('rescinded', false)
-                              .get('lastObject');
-      // If there's already been a full decision
-      // then just return the most recent initial decision.
-      let fullDecisions = decisions.filterBy('registeredAt')
-                                   .filterBy('initial', false);
-      if (fullDecisions.get('length') > 0) {
-        return latestInitial;
-      }
-
-      // If all other decisions have been rescinded,
-      // return the latest, unmade decision
-      let prevCount = decisions.filter((d) => {
-        return d.get('registeredAt') && !d.get('rescinded');
-      }).get('length');
-      if (prevCount === 0) {
-        return decisions.findBy('registeredAt', null);
-      }
-
-      return latestInitial;
-    }),
 
   restless: Ember.inject.service(),
 

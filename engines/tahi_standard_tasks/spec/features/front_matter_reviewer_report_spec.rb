@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do
-  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
-  let(:paper) do
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
       :with_creator,
@@ -11,7 +11,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       uses_research_article_reviewer_report: false
     )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let!(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }

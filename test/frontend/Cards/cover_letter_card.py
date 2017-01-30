@@ -181,9 +181,11 @@ class CoverLetterCard(BaseCard):
     downloaded_file_md5 = hashlib.md5(
       open(newest_file, 'rb').read()).hexdigest()
 
-    assert uploaded_file_md5 == downloaded_file_md5, 'The downloaded file ' \
-                                                     'MD5 hash ({0}) does ' \
-                                                     'not match the uploaded ({1})'.format(
-      downloaded_file_md5, uploaded_file_md5)
+    assert uploaded_file_md5 == downloaded_file_md5, 'The downloaded file ({0}) ' \
+                                                     'MD5 hash (Hash: {1}) ' \
+                                                     'does not match the ' \
+                                                     'uploaded file ({2}) ' \
+                                                     'MD5 hash (Hash: {3})'.format(
+      newest_file, downloaded_file_md5, uploaded_file, uploaded_file_md5)
 
     self.click_completion_button()

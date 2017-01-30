@@ -61,22 +61,12 @@ export default Component.extend({
     return this.get('canManage') && this.get('currentParticipants').length > 1;
   }),
 
-  sortByCollaboration(a, b) {
-    if (a.full_name < b.full_name) {
-      return -1;
-    } else if (a.full_name > b.full_name) {
-      return 1;
-    } else {
-      return 0;
-    }
-  },
-
   searchUsersTask: task(function* (term) {
     yield timeout(250);
     return this.get('ajax')
-               .request(this.get('participantUrl') + '?query=' + term)
+               .request(this.get('participantUrl') + '?query=' + window.encodeURIComponent(term))
                .then((response) => {
-                 return response.users.sort(this.sortByCollaboration);
+                 return response.users;
                });
   }),
 

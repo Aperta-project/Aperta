@@ -3,8 +3,12 @@ import Ember from 'ember';
 
 export default TaskComponent.extend({
   currentReviewerReport: Ember.computed.alias('task.reviewerReports.firstObject'),
-  previousReviewerReports: Ember.computed('task.reviewerReports', function(){
-    return this.get('task.reviewerReports').slice(1);
+  previousReviewerReports: Ember.computed('task.reviewerReports.@each.reviewerReport', 'task.paper.decision', function(){
+    if (this.get('currentReviewerReport.decision.draft')) {
+      return this.get('task.reviewerReports').slice(1);
+    } else {
+      return this.get('task.reviewerReports');
+    }
   }),
 
   actions: {

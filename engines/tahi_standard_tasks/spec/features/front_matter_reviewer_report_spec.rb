@@ -107,6 +107,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
+    t.submit_report
+    t.confirm_submit_report
+
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },
       { title: 'v1.0', answers: ['answer for round 1'] }

@@ -98,9 +98,9 @@ test('When the decision is not a draft', function(assert) {
 
 test('History when there are completed decisions', function(assert) {
   const decisions = [
+    make('decision', { majorVersion: null, minorVersion: null, draft: true }),
     make('decision', { majorVersion: 0, minorVersion: 0, draft: false }),
-    make('decision', { majorVersion: 1, minorVersion: 0, draft: false }),
-    make('decision', { majorVersion: null, minorVersion: null, draft: true })
+    make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
 
   let task = this.task;

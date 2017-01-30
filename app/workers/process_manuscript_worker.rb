@@ -29,9 +29,7 @@ class ProcessManuscriptWorker
   def get_epub(paper)
     converter = EpubConverter.new(
       paper,
-      paper.creator,
-      include_source: true,
-      include_cover_image: false)
+      paper.creator)
     converter.epub_stream.string
   end
 end

@@ -1,6 +1,7 @@
-import Ember from 'ember';
-import { task } from 'ember-concurrency';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
+import Ember from 'ember';
+import { newDiscussionUsersPath } from 'tahi/lib/api-path-helpers';
+import { task } from 'ember-concurrency';
 
 const { Mixin, isEmpty } = Ember;
 
@@ -39,6 +40,10 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     return !isEmpty(this.get('model.title'));
   },
 
+  participantSearchUrl: Ember.computed('model.paperId', function() {
+    return newDiscussionUsersPath(this.get('model.paperId'));
+  }),
+
   actions: {
     validateTitle() {
       this.validateTitle();
@@ -60,9 +65,8 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     },
 
     addParticipant(selection) {
-      this.store.find('user', selection.id).then((user) => {
-        this.get('participants').pushObject(user);
-      });
+      const user = this.store.findOrPush('user', selection);
+      this.get('participants').pushObject(user);
     },
 
     removeParticipant(userID) {

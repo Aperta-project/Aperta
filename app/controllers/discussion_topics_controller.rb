@@ -42,6 +42,16 @@ class DiscussionTopicsController < ApplicationController
     )
   end
 
+  def new_discussion_users
+    requires_user_can :start_discussion, paper
+    users = User.fuzzy_search params[:query]
+    respond_with(
+      users,
+      each_serializer: SensitiveInformationUserSerializer,
+      root: :users
+    )
+  end
+
   private
 
   def creation_params

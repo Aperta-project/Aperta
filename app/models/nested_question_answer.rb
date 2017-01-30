@@ -1,6 +1,7 @@
 class NestedQuestionAnswer < ActiveRecord::Base
+  include Readyable
+
   SUPPORTED_VALUE_TYPES = ::NestedQuestion::SUPPORTED_VALUE_TYPES
-  VALUE_REQUIRED_FOR_TYPES = ::NestedQuestion::VALUE_REQUIRED_FOR_TYPES
 
   TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
   YES = "Yes"
@@ -19,14 +20,60 @@ class NestedQuestionAnswer < ActiveRecord::Base
   has_many :attachments, -> { order('id ASC') }, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
 
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
-  validates :value, presence: true, if: :value_is_required?
 
   validate :verify_from_owner
+
+  has_one :parent_nested_question,
+    through: :nested_question,
+    source: :parent,
+    class_name: 'NestedQuestion'
+
+  # Readyable stuff
+  validates :value_raw,
+            on: :ready,
+            presence: true,
+            if: -> {
+    if nested_question.ready_required_check == 'required'
+      true
+    elsif nested_question.ready_required_check == 'if_parent_yes'
+      parent.try(:yes_no_value) == NestedQuestionAnswer::YES
+    end
+  }
+
+  validates :yes_no_value,
+            on: :ready,
+            if: -> { nested_question.ready_required_check == 'required' },
+            inclusion: { in: [YES, NO] }
+
+  # If you add a validation class here, be sure to add it to
+  # NestedQuestion::READY_CHECK_TYPES
+  validates :yes_no_value,
+            on: :ready,
+            if: -> { nested_question.ready_check == 'yes' },
+            inclusion: { in: [YES] }
+
+  validates :yes_no_value,
+            on: :ready,
+            if: -> { nested_question.ready_check == 'no' },
+            inclusion: { in: [NO] }
+
+  validates :value_raw,
+            on: :ready,
+            length: { minimum: 20 },
+            if: -> { nested_question.ready_check == 'long_string' }
 
   validate do
     if changed? && decision.present? && decision.completed?
       errors.add(:base, 'Cannot modify an answer for a registered decision.')
     end
+  end
+
+  def nested_question_parent
+    nested_question.parent
+  end
+
+  def parent
+    NestedQuestionAnswer.find_by(nested_question: parent_nested_question, owner: owner)
   end
 
   def self.find_or_build(nested_question:, decision: nil, value: nil)
@@ -73,8 +120,8 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   private
 
-  def value_is_required?
-    VALUE_REQUIRED_FOR_TYPES.include?(value_type) && value.nil?
+  def value_raw
+    self[:value]
   end
 
   def verify_from_owner
@@ -86,19 +133,19 @@ class NestedQuestionAnswer < ActiveRecord::Base
   end
 
   def attachment_value_type
-    self[:value]
+    value_raw
   end
 
   def boolean_value_type
-    return nil if self[:value].nil?
-    self[:value].match(TRUTHY_VALUES_RGX) ? true : false
+    return nil if value_raw.nil?
+    value_raw.match(TRUTHY_VALUES_RGX) ? true : false
   end
 
   def text_value_type
-    self[:value]
+    value_raw
   end
 
   def question_set_value_type
-    self[:value]
+    value_raw
   end
 end

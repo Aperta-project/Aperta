@@ -1,7 +1,179 @@
 require 'rails_helper'
 
 describe NestedQuestionAnswer do
-  subject(:nested_question_answer) { FactoryGirl.build(:nested_question_answer) }
+  let(:nested_question) { FactoryGirl.build(:nested_question) }
+  subject(:nested_question_answer) do
+    FactoryGirl.build(
+      :nested_question_answer,
+      nested_question: nested_question
+    )
+  end
+
+  describe "#ready?" do
+    context "when the question ready_required_check is required" do
+      let(:nested_question) do
+        FactoryGirl.build(
+          :nested_question,
+          ready_required_check: 'required')
+      end
+
+      it "is not ready if the value is empty" do
+        subject.value = nil
+        expect(subject).not_to be_ready
+      end
+
+      context "and the value_type is boolean" do
+        let(:nested_question) do
+          FactoryGirl.build(
+            :nested_question,
+            ready_required_check: 'required',
+            value_type: 'boolean'
+          )
+        end
+
+        it 'is ready if value is "Y"' do
+          allow(subject).to receive(:value_raw).and_return 'Y'
+          expect(subject).to be_ready
+        end
+
+        it 'is ready if value is "N"' do
+          allow(subject).to receive(:value_raw).and_return 'N'
+          expect(subject).to be_ready
+        end
+
+        it 'is not ready if value is ""' do
+          allow(subject).to receive(:value_raw).and_return ''
+          expect(subject).not_to be_ready
+        end
+
+        context "and the value_type is text" do
+          let(:nested_question) do
+            FactoryGirl.build(
+              :nested_question,
+              ready_required_check: 'required',
+              value_type: 'text'
+            )
+          end
+
+          it 'is ready if value is a word' do
+            allow(subject).to receive(:value_raw).and_return Faker::Lorem.word
+            expect(subject).to be_ready
+          end
+
+          it 'is not ready if value is ""' do
+            allow(subject).to receive(:value_raw).and_return ''
+            expect(subject).not_to be_ready
+          end
+        end
+      end
+    end
+  end
+
+  context "when the question ready_required_check is if_parent_yes" do
+    let(:parent) do
+      FactoryGirl.create(
+        :nested_question,
+        value_type: 'boolean'
+      )
+    end
+    let(:nested_question) do
+      FactoryGirl.create(
+        :nested_question,
+        value_type: 'text',
+        parent: parent,
+        ready_required_check: 'if_parent_yes'
+      )
+    end
+
+    context "and the parent is Yes" do
+      let!(:parent_answer) do
+        FactoryGirl.create(
+          :nested_question_answer,
+          nested_question: parent,
+          value: 'Yes'
+        )
+      end
+
+      it 'should not be ready if the value is nil' do
+        subject.value = nil
+        expect(subject).not_to be_ready
+      end
+
+      it 'should be ready if the value is set' do
+        subject.value = Faker::Lorem.word
+        expect(subject).to be_ready
+      end
+    end
+
+    context "when the question ready_check is long_string" do
+      let(:nested_question) do
+        FactoryGirl.build(
+          :nested_question,
+          value_type: 'text',
+          ready_check: 'long_string')
+      end
+
+      it "is not ready if the value is empty" do
+        subject.value = ''
+        expect(subject.ready?).to be false
+      end
+
+      it "is not ready if the string.size == 5" do
+        subject.value = 'abcde'
+        expect(subject.ready?).to be false
+      end
+    end
+
+    context "when the question ready_check is yes" do
+      let(:nested_question) do
+        FactoryGirl.build(
+          :nested_question,
+          value_type: 'boolean',
+          ready_check: 'yes'
+        )
+      end
+
+      it "is not ready if the value is empty" do
+        allow(subject).to receive(:value_raw).and_return(nil)
+        expect(subject).not_to be_ready
+      end
+
+      it "is not ready if the value is No" do
+        allow(subject).to receive(:yes_no_value).and_return('No')
+        expect(subject).not_to be_ready
+      end
+
+      it "is ready if the value is Yes" do
+        allow(subject).to receive(:yes_no_value).and_return('Yes')
+        expect(subject).to be_ready
+      end
+    end
+
+    context "when the question ready_check is no" do
+      let(:nested_question) do
+        FactoryGirl.build(
+          :nested_question,
+          value_type: 'boolean',
+          ready_check: 'no'
+        )
+      end
+
+      it "is not ready if the value is empty" do
+        allow(subject).to receive(:value_raw).and_return(nil)
+        expect(subject).not_to be_ready
+      end
+
+      it "is ready if the value is No" do
+        allow(subject).to receive(:yes_no_value).and_return('No')
+        expect(subject).to be_ready
+      end
+
+      it "is ready if the value is Yes" do
+        allow(subject).to receive(:yes_no_value).and_return('Yes')
+        expect(subject).not_to be_ready
+      end
+    end
+  end
 
   describe "validations" do
     it "is valid" do

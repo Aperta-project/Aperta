@@ -195,13 +195,7 @@ describe DiscussionTopicsController do
     end
   end
 
-  describe 'GET users' do
-    subject(:do_request) do
-      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
-    end
-
-    it_behaves_like 'an unauthenticated json request'
-
+  shared_examples_for 'a participant search endpoint' do
     context 'when the user is authorized' do
       let(:searchable_users) do
         [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
@@ -209,21 +203,32 @@ describe DiscussionTopicsController do
 
       before do
         stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_participant, topic_a)
-          .and_return true
-
         allow(User).to receive(:fuzzy_search)
           .with('Kangaroo')
           .and_return searchable_users
-        do_request
       end
 
       it 'returns any user who matches the query' do
+        do_request
         expect(res_body['users'].count).to eq(1)
         expect(res_body['users'][0]['email']).to eq('foo@example.com')
       end
     end
+  end
+
+  describe 'GET users' do
+    subject(:do_request) do
+      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
+    end
+
+    before do
+      allow(user).to receive(:can?)
+        .with(:manage_participant, topic_a)
+        .and_return true
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+    it_behaves_like 'a participant search endpoint'
   end
 
   describe 'GET new_discussion_users' do
@@ -231,27 +236,13 @@ describe DiscussionTopicsController do
       xhr :get, :new_discussion_users, format: :json, paper_id: paper.to_param, query: 'Kangaroo'
     end
 
-    it_behaves_like 'an unauthenticated json request'
-
-    let(:searchable_users) do
-      [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
-    end
-
     before do
-      stub_sign_in user
       allow(user).to receive(:can?)
         .with(:start_discussion, paper)
         .and_return true
-
-      allow(User).to receive(:fuzzy_search)
-        .with('Kangaroo')
-        .and_return searchable_users
-      do_request
     end
 
-    it 'returns any user who matches the query' do
-      expect(res_body['users'].count).to eq(1)
-      expect(res_body['users'][0]['email']).to eq('foo@example.com')
-    end
+    it_behaves_like 'an unauthenticated json request'
+    it_behaves_like 'a participant search endpoint'
   end
 end

@@ -1,12 +1,37 @@
 # yaml_db defines these, override them
 Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
+# We have our own versions of these
+Rake::Task["db:drop"].clear
+Rake::Task["db:create"].clear
 
 namespace :db do
   PG_RESTORE_ARGS = "--verbose --clean --if-exists --no-acl --no-owner".freeze
 
   task :ensure_dev do
     raise "This can only be run in a development environment" unless Rails.env.development?
+  end
+
+  task :create do
+    with_config do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("createdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m"
+      end
+    end
+  end
+
+  task :drop do
+    with_config do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("dropdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping database. Is #{db} in use?\e[0m"
+      end
+    end
   end
 
   desc <<-DESC
@@ -17,12 +42,9 @@ namespace :db do
     while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
     'dev_dump.tar.gz' exists in bighector.
   DESC
-  task :import_remote, [:env] => [:environment, :ensure_dev] do |_, args|
+  task :import_remote, [:env] => [:environment, :ensure_dev, :drop, :create] do |_, args|
     env = (args[:env] || 'prod')
     location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
-
-    drop_db
-    create_db
     with_config do |host, db, user|
       cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
       if system(cmd)
@@ -56,8 +78,8 @@ namespace :db do
   task :restore, [:location] => :environment do |_, args|
     location = args[:location]
     if location
-      drop_db
-      create_db
+      Rake::Task['db:drop'].invoke
+      Rake::Task['db:create'].invoke
       with_config do |host, db, user|
         cmd = "pg_restore --host #{host} --username #{user} #{PG_RESTORE_ARGS} --dbname #{db} #{location}"
         puts cmd
@@ -80,7 +102,7 @@ namespace :db do
       where SOURCEDB is the name of the heroku app. (ie. 'tahi-lean-workflow')
       MSG
     end
-    drop_db
+    Rake::Task['db:drop'].invoke
     with_config do |host, db, user|
       local_db = URI::Generic.new("postgres", user, host, nil, nil, "/#{db}", nil, nil, nil)
       system("heroku pg:pull DATABASE_URL #{local_db} --app #{source_db} && rake db:reset_passwords")
@@ -108,27 +130,5 @@ namespace :db do
     yield ActiveRecord::Base.connection_config[:host],
           ActiveRecord::Base.connection_config[:database],
           ActiveRecord::Base.connection_config[:username]
-  end
-
-  def create_db
-    with_config do |host, db, user|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
-      unless system("createdb -h #{host} -U #{user} #{db}")
-        raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m"
-      end
-    end
-  end
-
-  def drop_db
-    with_config do |host, db, user|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
-      unless system("dropdb -h #{host} -U #{user} #{db}")
-        raise "\e[31m Error dropping database. Is #{db} in use?\e[0m"
-      end
-    end
   end
 end

@@ -5,6 +5,8 @@ import os
 import random
 import time
 
+from selenium.webdriver.common.by import By
+
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -58,7 +60,9 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
     logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
-    self.create_article(title=title, journal='PLOS Wombat', type_=paper_type, random_bit=True)
+    # Create article with only word format to get around the PDF viewer bug
+    self.create_article(title=title, journal='PLOS Wombat',
+                        type_=paper_type, random_bit=True, format='word')
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
@@ -140,7 +144,13 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer._wait_for_element(paper_viewer._gets(paper_viewer._bar_items)[1])
     bar_items = paper_viewer._gets(paper_viewer._bar_items)
     # click on
-    bar_items[1].find_elements_by_tag_name('option')[1].click()
+    version_select = bar_items[1].find_element_by_class_name('ember-power-select-trigger')
+    version_select.click()
+    version_select_id = version_select.get_attribute('id')
+    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
+    items_holder = paper_viewer._get(items_holder_selector)
+    items_holder.find_elements_by_class_name('ember-power-select-option')[1].click()
+
     # Following command disabled due to bug APERTA-5849
     # paper_viewer.click_task('prq')
     return self

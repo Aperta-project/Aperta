@@ -12,11 +12,16 @@ namespace :data do
           STDOUT.puts("Processing Question #{question.id}")
           question.nested_question_answers.find_each do |answer|
             STDOUT.puts("Processing QuestionAnswer #{answer.id}")
+            decision = answer.decision
+            if decision.nil?
+              decision = Decision.find(answer.owner.body['decision_id'])
+              STDOUT.puts("DECISION MISSING: Setting decision for answer: #{answer.id} for decision #{decision.id}")
+            end
             task = answer.owner
             reviewer_report = ReviewerReport.where(
               task: task,
               user: task.reviewer,
-              decision: answer.decision
+              decision: decision
             ).first_or_create!
             answer.owner = reviewer_report
             unless reviewer_report_ids.include? reviewer_report.id

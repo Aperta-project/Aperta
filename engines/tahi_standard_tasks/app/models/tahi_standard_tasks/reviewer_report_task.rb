@@ -18,7 +18,7 @@ module TahiStandardTasks
 
     def reviewer
       assignments.joins(:role)
-        .where(roles: {name: Role::REVIEWER_REPORT_OWNER_ROLE}).first.user
+        .where(roles: {name: Role::REVIEWER_REPORT_OWNER_ROLE}).first.try(:user)
     end
 
     def reviewer_number

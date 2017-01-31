@@ -1,6 +1,7 @@
 class Invitation < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
+  include Tokenable
 
   belongs_to :task
   belongs_to :decision
@@ -12,7 +13,6 @@ class Invitation < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
-  before_create :set_access_token
 
   scope :where_email_matches,
     ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
@@ -174,21 +174,6 @@ class Invitation < ActiveRecord::Base
 
   def set_rescinded_at
     update!(rescinded_at: Time.current.utc)
-  end
-
-  def set_access_token
-    self.token = generate_token
-  end
-
-  def generate_token
-    max_tries = 5
-    tries = 0
-    loop do
-      token = SecureRandom.hex(10)
-      tries += 1
-      break token unless Invitation.where(token: token).exists?
-      raise "Cannot generate invitation token" if tries > max_tries
-    end
   end
 
   def invite_allowed?

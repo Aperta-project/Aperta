@@ -10,7 +10,7 @@
     {{#if fetchVersions.isIdle}}
       {{#each versions as |version|}}
         <tr class="paper-downloads-row animation-fade-in">
-          <td>
+          <td class="paper-downloads-version">
             {{#if version.isDraft}}
               Draft
             {{else}}

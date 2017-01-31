@@ -226,15 +226,31 @@ FactoryGirl.define do
       transient do
         first_version_body  'first body'
         second_version_body 'second body'
+        third_version_body 'third body'
       end
 
       after(:create) do |paper, evaluator|
+        # 0.0, 0.1, 0.2, 1.0, Draft
         paper.body = evaluator.first_version_body
+        paper.versioned_texts.destroy_all
+        paper.versioned_texts << VersionedText.new(file_type: 'pdf')
         paper.save!
-
         paper.submit! paper.creator
+
         paper.major_revision!
         paper.body = evaluator.second_version_body
+        paper.save!
+
+        paper.draft.be_minor_version!
+        paper.new_draft!
+        paper.draft.be_minor_version!
+        paper.save!
+
+        paper.new_draft!
+        paper.submit! paper.creator
+
+        paper.major_revision!
+        paper.body = evaluator.third_version_body
         paper.save!
       end
     end

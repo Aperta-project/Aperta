@@ -10196,7 +10196,7 @@ nested_question_answers:
     - '260'
     - '3'
     - ReviewerReport
-    - Jeffrey Rv 2.2
+    - Jeffrey Rv 0.2
     - text
     - '2017-01-30 22:48:42.315119'
     - '2017-01-30 22:48:48.841077'
@@ -10208,7 +10208,7 @@ nested_question_answers:
     - '132'
     - '3'
     - ReviewerReport
-    - Jeffrey Rv 2.3
+    - Jeffrey Rv 0.3
     - text
     - '2017-01-30 22:48:52.582719'
     - '2017-01-30 22:48:53.328251'
@@ -10220,7 +10220,7 @@ nested_question_answers:
     - '261'
     - '3'
     - ReviewerReport
-    - Jeffrey Rv 2.4
+    - Jeffrey Rv 0.4
     - text
     - '2017-01-30 22:48:56.370021'
     - '2017-01-30 22:48:57.253984'
@@ -10232,7 +10232,7 @@ nested_question_answers:
     - '131'
     - '3'
     - ReviewerReport
-    - Jeffrey Rv 2.5
+    - Jeffrey Rv 0.5
     - text
     - '2017-01-30 22:49:02.283336'
     - '2017-01-30 22:49:03.406355'
@@ -10256,7 +10256,7 @@ nested_question_answers:
     - '262'
     - '3'
     - ReviewerReport
-    - Jeffrey Rv 2.6, no
+    - Jeffrey Rv 0.6, no
     - text
     - '2017-01-30 22:49:08.046671'
     - '2017-01-30 22:49:10.507854'
@@ -10292,7 +10292,7 @@ nested_question_answers:
     - '260'
     - '2'
     - ReviewerReport
-    - reviewer 2.2
+    - reviewer 0.2
     - text
     - '2017-01-30 22:49:46.020629'
     - '2017-01-30 22:49:56.110942'
@@ -10304,7 +10304,7 @@ nested_question_answers:
     - '132'
     - '2'
     - ReviewerReport
-    - reviewer 2.3
+    - reviewer 0.3
     - text
     - '2017-01-30 22:49:59.688639'
     - '2017-01-30 22:50:01.425509'
@@ -10316,7 +10316,7 @@ nested_question_answers:
     - '261'
     - '2'
     - ReviewerReport
-    - reviewer 2.4
+    - reviewer 0.4
     - text
     - '2017-01-30 22:50:03.31224'
     - '2017-01-30 22:50:03.950469'
@@ -10328,7 +10328,7 @@ nested_question_answers:
     - '131'
     - '2'
     - ReviewerReport
-    - reviewer 2.5
+    - reviewer 0.5
     - text
     - '2017-01-30 22:50:06.335215'
     - '2017-01-30 22:50:07.539072'
@@ -10352,7 +10352,7 @@ nested_question_answers:
     - '262'
     - '2'
     - ReviewerReport
-    - reviewer 2.6, no
+    - reviewer 0.6, no
     - text
     - '2017-01-30 22:50:10.722004'
     - '2017-01-30 22:50:12.768658'

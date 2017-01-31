@@ -5,6 +5,12 @@ FactoryGuy.define('paper-reviewer-task', {
     title: 'Invite Reviewers',
     type: 'PaperReviewerTask',
     inviteeRole: 'Reviewer',
-    completed: false,
+    completed: false
+  },
+
+  traits: {
+    withInvitations: {
+      invitations: FactoryGuy.hasMany('invitation', 2)
+    }
   }
 });

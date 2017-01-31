@@ -21,7 +21,12 @@ class PapersController < ApplicationController
       :supporting_information_files,
       :journal
     ).find_by_id_or_short_doi(params[:id])
-    requires_user_can(:view, paper)
+
+    if current_user.unaccepted_and_invited_to?(paper: paper)
+      return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
+    end
+
+    requires_user_can(:view, paper, not_found: true)
     respond_with(paper)
   end
 

@@ -1,13 +1,4 @@
 class PaperConverter
-  def self.export(paper, format, current_user)
-    epub = EpubConverter.new(paper, current_user).epub_stream
-    epub.rewind
-    post_ihat_job(
-      IhatJobRequest.new(file: epub,
-                         recipe_name: 'html_to_docx',
-                         content_type: 'application/epub+zip'))
-  end
-
   def self.check_status(job_id)
     response = connection.get("/jobs/#{job_id}")
     IhatJobResponse.new(response.body.with_indifferent_access[:job])

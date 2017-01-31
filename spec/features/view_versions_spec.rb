@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Viewing Versions:', js: true do
+feature 'Viewing Versions:', js: true, flaky: true do
   let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do

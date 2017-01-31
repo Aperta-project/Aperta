@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170123212447) do
+ActiveRecord::Schema.define(version: 20170131190848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,8 +265,8 @@ ActiveRecord::Schema.define(version: 20170123212447) do
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
   create_table "email_logs", force: :cascade do |t|
-    t.string   "from"
-    t.string   "to"
+    t.string   "sender"
+    t.string   "recipients"
     t.string   "subject"
     t.string   "message_id"
     t.text     "raw_source"

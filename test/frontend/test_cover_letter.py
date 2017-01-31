@@ -1,7 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Cover Letter Task.
+"""
+
 import logging
-import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -12,9 +15,6 @@ from frontend.Tasks.cover_letter_task import CoverLetterTask
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
-"""
-This test case validates the Cover Letter Task.
-"""
 __author__ = 'ivieira@plos.org'
 
 
@@ -29,14 +29,15 @@ class CoverLetterTaskTest(CommonTest):
 
   def test_smoke_validate_components_styles(self):
     """
-    test_smoke_validate_components_styles: Validates the elements, styles and functions for the cover letter task and card
+    test_smoke_validate_components_styles: Validates the elements, styles and functions for the
+      cover letter task and card
     :return: void function
     """
     logging.info('Test Cover Letter Task::components_styles')
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
@@ -44,6 +45,7 @@ class CoverLetterTaskTest(CommonTest):
 
     # Test task styles
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.validate_styles()
     cover_letter_task.click_completion_button()
     cover_letter_task.logout()
@@ -68,7 +70,8 @@ class CoverLetterTaskTest(CommonTest):
 
   def test_cover_letter_file_submission(self):
     """
-    test_cover_letter_file_submission: Tests the cover letter file upload and the admin card file download
+    test_cover_letter_file_submission: Tests the cover letter file upload and the admin card file
+      download
     :return: void function
     """
     logging.info('Test Cover Letter Task::letter_file_upload')
@@ -81,6 +84,7 @@ class CoverLetterTaskTest(CommonTest):
     short_doi = manuscript_page.get_short_doi()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.upload_letter()
     cover_letter_task.click_completion_button()
     cover_letter_task.logout()
@@ -100,7 +104,8 @@ class CoverLetterTaskTest(CommonTest):
     workflow_page.click_card('cover_letter')
     cover_letter_card = CoverLetterCard(self.getDriver())
     cover_letter_card.card_ready()
-    cover_letter_card.validate_uploaded_file_download(cover_letter_task.get_last_uploaded_letter_file())
+    cover_letter_card.validate_uploaded_file_download(
+        cover_letter_task.get_last_uploaded_letter_file())
 
   def test_cover_letter_file_replace(self):
     """
@@ -111,11 +116,12 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.upload_letter()
     cover_letter_task.replace_letter()
 
@@ -128,11 +134,12 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.upload_letter()
     cover_letter_task.remove_letter()
 
@@ -145,11 +152,12 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.upload_letter()
     cover_letter_task.download_letter()
 
@@ -162,12 +170,13 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
     cover_letter_task.validate_letter_textarea()
     cover_letter_task.logout()
 

@@ -17,18 +17,14 @@ class CoverLetterCard(BaseCard):
   Page Object Model for Cover Letter Card
   """
 
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(CoverLetterCard, self).__init__(driver)
     self._title = (By.CLASS_NAME, 'overlay-body-title')
-    self._instructions_text_first_p = (
-    By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
-    self._instructions_text_last_p = (
-    By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
-    self._instructions_text_questions_ul = (
-    By.CSS_SELECTOR, '.edit-cover-letter > ul')
+    self._instructions_text_first_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
+    self._instructions_text_last_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
+    self._instructions_text_questions_ul = (By.CSS_SELECTOR, '.edit-cover-letter > ul')
     self._cover_letter_textarea = (By.CLASS_NAME, 'cover-letter-field')
-    self._uploaded_attachment_item_link = (By.CSS_SELECTOR,
-                                           '.edit-cover-letter .attachment-manager .attachment-item a.file-link')
+    self._uploaded_attachment_item_link = (By.CSS_SELECTOR, 'a.file-link')
 
   def validate_styles(self):
     """
@@ -39,8 +35,9 @@ class CoverLetterCard(BaseCard):
     card_title = self._get(self._title)
     expected_card_title = 'Cover Letter'
 
-    assert card_title.text == expected_card_title, 'The card title: {0} is not the expected: {1}'.format(
-      card_title.text, expected_card_title)
+    assert card_title.text == expected_card_title, 'The card title: {0} is not ' \
+                                                   'the expected: {1}'.format(card_title.text,
+                                                                              expected_card_title)
     self.validate_application_title_style(card_title)
 
     # Assert instructions text styling
@@ -50,21 +47,26 @@ class CoverLetterCard(BaseCard):
       'li')
     instructions_last_p = self._get(self._instructions_text_last_p)
 
-    expected_instructions_first_p = 'To be of most use to editors, we suggest your letter could address the following questions:'
-    assert instructions_first_p.text == expected_instructions_first_p, 'The instructions text first paragraph: {0} is not the expected: {1}'.format(
-      instructions_first_p.text, expected_instructions_first_p)
+    expected_instructions_first_p = 'To be of most use to editors, we suggest your letter could ' \
+                                    'address the following questions:'
+    assert instructions_first_p.text == expected_instructions_first_p, \
+        'The instructions text first paragraph: {0} is not the expected: ' \
+        '{1}'.format(instructions_first_p.text, expected_instructions_first_p)
 
-    expected_instructions_last_p = 'In your cover letter, please list any scientists whom you request be excluded ' \
-                                   'from the assessment process along with a justification. You may also suggest ' \
-                                   'experts appropriate to be considered as Academic Editors for your manuscript. ' \
-                                   'Please be aware that your cover letter may be seen by members of the ' \
-                                   'Editorial Board. For Research articles, if our initial assessment is ' \
-                                   'positive, we will request further information, including Reviewer Candidates ' \
-                                   'and Competing Interests. For other submission types, if the Reviewer ' \
-                                   'Candidate and Competing Interests cards are already visible to you, ' \
-                                   'please complete them now with the relevant information.'
-    assert instructions_last_p.text == expected_instructions_last_p, 'The instructions text last paragraph: {0} is not the expected: {1}'.format(
-      instructions_last_p.text, expected_instructions_last_p)
+    expected_instructions_last_p = 'In your cover letter, please list any scientists whom you ' \
+                                   'request be excluded from the assessment process along with a ' \
+                                   'justification. You may also suggest experts appropriate to ' \
+                                   'be considered as Academic Editors for your manuscript. ' \
+                                   'Please be aware that your cover letter may be seen by ' \
+                                   'members of the Editorial Board. For Research articles, if ' \
+                                   'our initial assessment is positive, we will request further ' \
+                                   'information, including Reviewer Candidates and Competing ' \
+                                   'Interests. For other submission types, if the Reviewer ' \
+                                   'Candidate and Competing Interests cards are already visible ' \
+                                   'to you, please complete them now with the relevant information.'
+    assert instructions_last_p.text == expected_instructions_last_p, \
+        'The instructions text last paragraph: {0} is not the expected: ' \
+        '{1}'.format(instructions_last_p.text, expected_instructions_last_p)
 
     self.validate_application_ptext(instructions_first_p)
     self.validate_application_ptext(instructions_last_p)
@@ -75,10 +77,11 @@ class CoverLetterCard(BaseCard):
       'What is the nature of the evidence you provide in support of your conclusion?',
       'What are the three most recently published articles that are relevant to this question?',
       'What significance do your results have for the field?',
-      'What significance do your results have for the broader community (of biologists and/or the public)?',
+      'What significance do your results have for the broader community (of biologists and/or '
+      'the public)?',
       'What other novel findings do you present?',
       'Is there additional information that we should take into account?'
-    ]
+      ]
 
     for i, question in enumerate(instructions_questions):
       assert question.text == expected_instructions_questions[
@@ -90,10 +93,11 @@ class CoverLetterCard(BaseCard):
     # Validate textarea state
     textarea = self._get(self._cover_letter_textarea)
 
-    expected_textarea_placeholder = 'Please type or paste your cover letter into this text field, or attach a file below'
-    assert textarea.get_attribute(
-      'placeholder') == expected_textarea_placeholder, 'The textarea placeholder: {0} is not the expected: {1}'.format(
-      textarea.get_attribute('placeholder'), expected_textarea_placeholder)
+    expected_textarea_placeholder = 'Please type or paste your cover letter into this text ' \
+                                    'field, or attach a file below'
+    assert textarea.get_attribute('placeholder') == expected_textarea_placeholder, \
+        'The textarea placeholder: {0} is not the expected: ' \
+        '{1}'.format(textarea.get_attribute('placeholder'), expected_textarea_placeholder)
     # APERTA-8903
     # self.validate_textarea_style(textarea)
 
@@ -106,9 +110,9 @@ class CoverLetterCard(BaseCard):
 
     textarea = self._get(self._cover_letter_textarea)
 
-    assert textarea.get_attribute(
-      'value') == submitted_text, "The textarea text: {0} do not match the submitted: {1}".format(
-      textarea.get_attribute('value'), submitted_text)
+    assert textarea.get_attribute('value') == submitted_text, \
+        'The textarea text: {0} do not match the submitted: ' \
+        '{1}'.format(textarea.get_attribute('value'), submitted_text)
 
   def validate_textarea_text_editing(self):
     """
@@ -120,9 +124,11 @@ class CoverLetterCard(BaseCard):
       self.click_completion_button()
 
     textarea = self._get(self._cover_letter_textarea)
-    textarea_edited_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis, nisl volutpat ' \
-                           'dignissim tempus, urna risus semper lectus, non fermentum quam neque sed magna. Morbi in ' \
-                           'velit ac arcu scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. Aenean ac '
+    textarea_edited_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ' \
+                           'iaculis, nisl volutpat dignissim tempus, urna risus semper lectus, ' \
+                           'non fermentum quam neque sed magna. Morbi in velit ac arcu ' \
+                           'scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. ' \
+                           'Aenean ac'
 
     assert textarea.is_enabled(), 'The textarea is not enabled when it ' \
                                   'should be'
@@ -133,13 +139,14 @@ class CoverLetterCard(BaseCard):
 
     self.click_completion_button()
 
-    assert textarea.get_attribute(
-      'value') == textarea_edited_text, 'The edited text: {0} is not the expected: {1}'.format(
-      textarea.get_attribute('value'), textarea_edited_text)
+    assert textarea.get_attribute('value') == textarea_edited_text, \
+        'The edited text: {0} is not the expected: {1}'.format(textarea.get_attribute('value'),
+                                                               textarea_edited_text)
 
   def validate_uploaded_file_download(self, uploaded_file):
     """
-    validate_uploaded_file_download: Validates the display of the uploaded file and check if is the same uploaded
+    validate_uploaded_file_download: Validates the display of the uploaded file and check if is
+      the same uploaded
     :param uploaded_file: The uploaded file path. A string.
     :return: void function
     """
@@ -151,8 +158,9 @@ class CoverLetterCard(BaseCard):
     formatted_file_name = urllib.quote_plus(uploaded_file.split("/")[-1])
     original_working_dir = os.getcwd()
 
-    assert download_button.text == formatted_file_name, 'The formatted file name: {0} is not the expected: {1}'.format(
-      download_button.text, formatted_file_name)
+    assert download_button.text == formatted_file_name, \
+        'The formatted file name: {0} is not the expected: {1}'.format(download_button.text,
+                                                                       formatted_file_name)
 
     download_button.click()
 
@@ -163,7 +171,8 @@ class CoverLetterCard(BaseCard):
     # Get the newest file downloaded
     os.chdir('/tmp')
 
-    # Do operation inside try to avoid errors, preventing the chdir to don't return to the original one
+    # Do operation inside try to avoid errors, preventing the chdir to don't return to the
+    # original one
     try:
       files = filter(os.path.isfile, os.listdir('/tmp'))
       files = [os.path.join('/tmp', f) for f in files]  # add path to each file
@@ -181,11 +190,11 @@ class CoverLetterCard(BaseCard):
     downloaded_file_md5 = hashlib.md5(
       open(newest_file, 'rb').read()).hexdigest()
 
-    assert uploaded_file_md5 == downloaded_file_md5, 'The downloaded file ({0}) ' \
-                                                     'MD5 hash (Hash: {1}) ' \
-                                                     'does not match the ' \
-                                                     'uploaded file ({2}) ' \
-                                                     'MD5 hash (Hash: {3})'.format(
-      newest_file, downloaded_file_md5, uploaded_file, uploaded_file_md5)
+    assert uploaded_file_md5 == downloaded_file_md5, \
+        'The downloaded file ({0}) MD5 hash (Hash: {1}) does not match the ' \
+        'uploaded file ({2}) MD5 hash (Hash: {3})'.format(newest_file,
+                                                          downloaded_file_md5,
+                                                          uploaded_file,
+                                                          uploaded_file_md5)
 
     self.click_completion_button()

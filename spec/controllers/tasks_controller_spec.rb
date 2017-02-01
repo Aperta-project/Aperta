@@ -71,7 +71,7 @@ describe TasksController, redis: true do
     subject(:do_request) do
       post :create, format: 'json',
                     task: {
-                      type: 'TahiStandardTasks::AuthorsTask',
+                      type: 'PlosBilling::BillingTask',
                       paper_id: paper.to_param,
                       phase_id: paper.phases.last.id,
                       title: 'Verify Signatures'
@@ -90,6 +90,11 @@ describe TasksController, redis: true do
 
       it "creates a task" do
         expect { do_request }.to change(Task, :count).by 1
+      end
+
+      it "does not create another billing task if a billing task already exists" do
+        FactoryGirl.create(:billing_task, paper: paper)
+        expect { do_request }.to change(Task, :count).by 0
       end
 
       it "uses the TaskFactory to create the new task" do

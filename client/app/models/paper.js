@@ -40,6 +40,14 @@ export default DS.Model.extend({
   }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
   versionedTexts: hasMany('versioned-text', { async: true }),
+  descendingVersionsSort: ['majorVersion:desc', 'minorVersion:desc'],
+  descendingVersions: Ember.computed.sort('versionedTexts', 'descendingVersionsSort'),
+  currentVersion: Ember.computed.reads('descendingVersions.firstObject'),
+  majorVersion: Ember.computed.reads('currentVersion.majorVersion'),
+  minorVersion: Ember.computed.reads('currentVersion.minorVersion'),
+  currentVersionString: Ember.computed('majorVersion', 'minorVersion', function() {
+    return `${this.get('majorVersion')}.${this.get('minorVersion')}`;
+  }),
 
   active: attr('boolean'),
   body: attr('string'),

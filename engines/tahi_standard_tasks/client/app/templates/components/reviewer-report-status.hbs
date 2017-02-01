@@ -1,0 +1,6 @@
+{{#if (eq report.status 'completed')}}
+<h3>v{{versionString}} Review<h3>
+    Completed {{statusDate}}
+{{else}}
+<strong>{{reviewerStatus}}:</strong> {{statusMessage}}
+{{/if}}

@@ -24,8 +24,9 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
-    return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
-    respond_with(task, location: task_url(task))
+    @task = TaskFactory.create(task_type, new_task_params)
+    #return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
+    respond_with(@task, location: task_url(@task))
     # if task.errors
     #   flash[:errors] = 'something first'
     #   respond_with(task, location: task_url(task))
@@ -105,8 +106,6 @@ class TasksController < ApplicationController
         Task.find(params[:id])
       elsif params[:task_id].present?
         Task.find(params[:task_id])
-      else
-        TaskFactory.create(task_type, new_task_params)
       end
     end
   end

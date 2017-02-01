@@ -4,7 +4,7 @@
 
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
-    <h1 class="discussions-show-title {{if validationErrors.title "error"}}">
+    <h1 class="sheet-title discussions-show-title {{if validationErrors.title "error"}}">
       {{#if (can "edit" model)}}
         {{error-message message=validationErrors.title
                         displayIcon=true

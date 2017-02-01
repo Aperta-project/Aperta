@@ -29,9 +29,8 @@ export default AuthorizedRoute.extend({
           type: task.get('kind'),
           paper: this.modelFor('paper'),
           title: task.get('title')
-        }).save().catch((errors, errors2) => {
-          debugger;
-          this.flash.displayRouteLevelMessage('error', 'sorry someting went wrong.');
+        }).save().catch((response) => {
+          this.flash.displayRouteLevelMessage('error', response.errors[0].detail);
         });
 
         promises.push(newTaskPromise);

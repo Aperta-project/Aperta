@@ -24,16 +24,13 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
-    @task = TaskFactory.create(task_type, new_task_params)
-    #return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
-    respond_with(@task, location: task_url(@task))
-    # if task.errors
-    #   flash[:errors] = 'something first'
-    #   respond_with(task, location: task_url(task))
-    # else
-    #   flash[:errors] = 'something'
-    #   respond_with(task.errors)
-    # end
+    if does_not_already_have_billing_task?
+      @task = TaskFactory.create(task_type, new_task_params)
+    else
+      return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
+    end
+
+    respond_with(task, location: task_url(task))
   end
 
   def update
@@ -98,6 +95,15 @@ class TasksController < ApplicationController
       paper_id = task.paper_id
     end
     @paper ||= Paper.find_by_id_or_short_doi(paper_id)
+  end
+
+  def does_not_already_have_billing_task?
+    billing_type_string = 'PlosBilling::BillingTask'
+    if task_type.to_s == billing_type_string
+      paper.tasks.where(type: billing_type_string).count.zero?
+    else
+      true
+    end
   end
 
   def task

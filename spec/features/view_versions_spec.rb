@@ -10,7 +10,6 @@ feature 'Viewing Versions:', js: true, flaky: true do
                          :with_versions,
                          first_version_body:  '<p>OK first body</p>',
                          second_version_body: '<p>OK second body</p>',
-                         third_version_body: '<p>OK third body</p>',
                          creator: creator
     end
     let!(:task) do
@@ -35,7 +34,7 @@ feature 'Viewing Versions:', js: true, flaky: true do
 
       page.select_viewing_version(version_1)
 
-      expect(page.versioned_body).to have_content('OK third body')
+      expect(page.versioned_body).to have_content('OK second body')
 
       page.select_viewing_version(version_0)
 
@@ -50,7 +49,7 @@ feature 'Viewing Versions:', js: true, flaky: true do
       page.select_comparison_version(version_1)
 
       expect(page.find('#paper-body .added')).to have_content 'first'
-      expect(page.find('#paper-body .removed')).to have_content 'third'
+      expect(page.find('#paper-body .removed')).to have_content 'second'
     end
 
     scenario 'The user views an old version of a task', selenium: true do

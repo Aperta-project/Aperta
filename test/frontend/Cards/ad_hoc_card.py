@@ -36,6 +36,11 @@ class AHCard(BaseCard):
     self._tb_email = (By.CLASS_NAME, 'adhoc-toolbar-item--email')
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
 
+    #list
+    self._list_item_remove = (By.CLASS_NAME, 'item-remove')
+    self._list_cancel_lnk = (By.CSS_SELECTOR, 'div.edit-actions div.button-link')
+    self._list_save_btn = (By.CSS_SELECTOR, 'div.edit-actions div.button-secondary')
+
   # POM Actions
   def validate_card_elements_styles(self, short_doi, role):
     """
@@ -63,6 +68,14 @@ class AHCard(BaseCard):
     """
     if control == 'list':
       self._get(self._tb_list).click()
+      self._get(self._list_item_remove)
+      cancel_lnk = self._get(self._list_cancel_lnk)
+      assert cancel_lnk.text == 'cancel', cancel_lnk.text
+      self.validate_link_big_green_button_style(cancel_lnk)
+      save_btn = self._get(self._list_save_btn)
+      assert save_btn.text == 'cancel', save_btn.text
+
+
     elif control == 'text':
       self._get(self._tb_text).click()
     elif control == 'label':
@@ -71,4 +84,3 @@ class AHCard(BaseCard):
       self._get(self._tb_email).click()
     elif control == 'image':
       self._get(self._tb_image).click()
-    import pdb; pdb.set_trace()

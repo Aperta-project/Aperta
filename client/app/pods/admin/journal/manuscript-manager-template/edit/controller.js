@@ -97,6 +97,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     addTaskType(phaseTemplate, taskTypeList) {
+      debugger;
       if (!taskTypeList) { return; }
       let hasAdHocType = false;
 

@@ -15,7 +15,10 @@ export default AuthorizedRoute.extend({
 
   actions: {
     addTaskTypeToPhase(phase, taskTypeList) {
-      if (!taskTypeList) { return; }
+      if (taskTypeList.length == 0) { 
+        this.flash.displayRouteLevelMessage('error', "you didn't select");
+        return;
+      }
 
       let promises = [];
 
@@ -26,7 +29,10 @@ export default AuthorizedRoute.extend({
           type: task.get('kind'),
           paper: this.modelFor('paper'),
           title: task.get('title')
-        }).save();
+        }).save().catch((errors, errors2) => {
+          debugger;
+          this.flash.displayRouteLevelMessage('error', 'sorry someting went wrong.');
+        });
 
         promises.push(newTaskPromise);
       });

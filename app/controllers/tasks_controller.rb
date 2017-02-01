@@ -24,7 +24,15 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
+    return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
     respond_with(task, location: task_url(task))
+    # if task.errors
+    #   flash[:errors] = 'something first'
+    #   respond_with(task, location: task_url(task))
+    # else
+    #   flash[:errors] = 'something'
+    #   respond_with(task.errors)
+    # end
   end
 
   def update

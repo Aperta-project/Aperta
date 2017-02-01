@@ -4,29 +4,34 @@ import {
   test
 } from 'ember-qunit';
 
-import hbs from 'htmlbars-inline-precompile';
 import customAssertions from '../helpers/custom-assertions';
+import Ember from 'ember';
+import hbs from 'htmlbars-inline-precompile';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('participant-selector', 'Integration | Component | participant selector', {
   integration: true,
   beforeEach() {
     customAssertions();
-    this.testUser = {
+    this.testUser = Ember.Object.create({
+      email: 'batman@example.com',
       fullName: 'Bruce Wayne',
-      email: 'batman@example.com'
-    };
+      id: 1
+    });
 
     this.setProperties({
       currentParticipants: [this.testUser],
       searchingParticipant: false,
       canManage: true,
-      actions: {
-        onRemove() {},
-        onSelect() {},
-        searchStarted() {},
-        searchFinished() {}
-      }
+      onRemove() {},
+      onSelect() {},
+      searchStarted() {},
+      searchFinished() {}
     });
+  },
+
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -49,10 +54,10 @@ test('it renders currentParticipants', function(assert) {
 });
 
 test('remove link', function(assert) {
-  this.get('currentParticipants').pushObject({
+  this.get('currentParticipants').pushObject(Ember.Object.create({
     fullName: 'Barbara Gordon',
     email: 'barbara@example.com'
-  });
+  }));
 
   this.render(hbs`
     {{participant-selector currentParticipants=currentParticipants
@@ -77,7 +82,7 @@ test('remove link', function(assert) {
 
   this.setProperties({
     canManage: true,
-    currentParticipants: this.testUser
+    currentParticipants: [this.testUser]
   });
   thumb  = $('.participant-selector-user:first');
   remove = thumb.find('.participant-selector-user-remove');
@@ -119,6 +124,59 @@ test('it does not display remove link when canManage is false', function(assert)
   assert.ok(!remove.length, 'remove is not available when canManage is false');
 });
 
+function withUserSuggestions(users, assert, ctx, callback) {
+  ctx.fakeURL = '/people';
+  ctx.searchStarted = () => { ctx.set('searchingParticipant', true); };
+  ctx.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url=fakeURL
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
+  $.mockjax({
+    url: `${ctx.fakeURL}?query=meow`,
+    status: 200,
+    responseText: { users }
+  });
+  ctx.$('.add-participant-button').click();
+  $('.ember-power-select-search-input').val('meow');
+  $('.ember-power-select-search-input').trigger('input');
+  const start = assert.async();
+  wait().then(function() {
+    callback.call();
+    start();
+  });
+}
+
+test('it shows suggestions', function(assert) {
+  const user = {
+    id: '2',
+    full_name: 'Pikachu Pokémon',
+    username: 'pikachu',
+    email: 'pikachu@oak.edu'
+  };
+  withUserSuggestions([user], assert, this, function() {
+    assert.elementFound($('.ember-power-select-option').length);
+    assert.textPresent('.ember-power-select-option .suggestion-sub-value', 'pokemon@oak.edu');
+  });
+});
+
+test('it does not suggest people who are already participants', function(assert) {
+  const user = {
+    id: '1',
+    full_name: 'Pikachu Pokémon',
+    username: 'pikachu',
+    email: 'pikachu@oak.edu'
+  };
+  withUserSuggestions([user], assert, this, function() {
+    assert.textPresent('.ember-power-select-option', 'No results found');
+  });
+});
 
 moduleFor('component:participant-selector', 'Unit | Component | participant selector');
 

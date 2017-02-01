@@ -59,10 +59,8 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
-    # Create article with only word format to get around the PDF viewer bug
     self.create_article(title=title, journal='PLOS Wombat',
-                        type_=paper_type, random_bit=True, format='word')
+                        type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
@@ -125,7 +123,6 @@ class MetadataVersioningTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
-    time.sleep(1)
     workflow_page.logout()
 
     # Log in as a author to make some changes
@@ -138,18 +135,8 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
                                data=new_prq)
-    # check versioning
-    version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
-    version_btn.click()
-    paper_viewer._wait_for_element(paper_viewer._gets(paper_viewer._bar_items)[1])
-    bar_items = paper_viewer._gets(paper_viewer._bar_items)
-    # click on
-    version_select = bar_items[1].find_element_by_class_name('ember-power-select-trigger')
-    version_select.click()
-    version_select_id = version_select.get_attribute('id')
-    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
-    items_holder = paper_viewer._get(items_holder_selector)
-    items_holder.find_elements_by_class_name('ember-power-select-option')[1].click()
+
+    paper_viewer.select_manuscript_version_item('compare', 1)
 
     # Following command disabled due to bug APERTA-5849
     # paper_viewer.click_task('prq')

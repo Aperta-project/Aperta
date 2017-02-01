@@ -10,19 +10,15 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, internal_editor_login, pub_svcs_login, \
-    super_admin_login, prod_staff_login, creator_login1, creator_login2, \
-    creator_login3, creator_login4, creator_login5, cover_editor_login, handling_editor_login
+from Base.Resources import users, editorial_users, admin_users, external_editorial_users, \
+     handling_editor_login, cover_editor_login
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-staff_users = (staff_admin_login, internal_editor_login, prod_staff_login, pub_svcs_login,
-               super_admin_login, handling_editor_login, cover_editor_login)
-users = (creator_login1, creator_login2, creator_login3, creator_login4, creator_login5)
-
+staff_users = editorial_users + admin_users + external_editorial_users
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
@@ -51,20 +47,15 @@ class ReviseManuscriptTest(CommonTest):
     # Create paper
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    paper_type = 'Research'
+    paper_type = 'NoCards'
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications', journal=journal,
                         type_=paper_type, random_bit=True)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     short_doi = paper_viewer.get_paper_short_doi_from_url()
+    paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    paper_viewer.complete_task('Authors', author=creator)
-    paper_viewer.complete_task('Billing')
-    paper_viewer.complete_task('Cover Letter')
-    paper_viewer.complete_task('Figures')
-    paper_viewer.complete_task('Supporting Info')
-    paper_viewer.complete_task('Financial Disclosure')
     # Complete cards
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
@@ -77,7 +68,7 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=staff_user['email'])
     if staff_user in (handling_editor_login, cover_editor_login):
       # Set up a handling editor, academic editor and cover editor for this paper
-      self.set_editors_in_db(short_doi)
+      self.set_editors_in_db(paper_id)
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())

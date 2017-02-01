@@ -24,6 +24,7 @@ class BillingTask(BaseTask):
     self._first_name = (By.NAME, 'plos_billing--first_name')
     self._last_name = (By.NAME, 'plos_billing--last_name')
     self._department = (By.NAME, 'plos_billing--department')
+    self._affiliation1 = (By.CSS_SELECTOR, 'div.plos_billing--affiliation1 input')
     self._phone = (By.NAME, 'plos_billing--phone_number')
     self._email = (By.NAME, 'plos_billing--email')
     self._department = (By.NAME, 'plos_billing--department')
@@ -47,6 +48,7 @@ class BillingTask(BaseTask):
       data['fist_name'] = bd['first']
       data['last_name'] = bd['first']
       data['department'] = bd['department']
+      data['affiliation'] = bd['affiliation']
       data['phone'] = bd['phone']
       data['email'] = bd['email']
       data['address1'] = bd['address1']
@@ -56,6 +58,7 @@ class BillingTask(BaseTask):
     self._get(self._first_name).send_keys(data['fist_name'])
     self._get(self._last_name).send_keys(data['last_name'])
     self._get(self._department).send_keys(data['department'])
+    self._get(self._affiliation1).send_keys(data['affiliation'])
     self._get(self._phone).send_keys(data['phone'])
     self._get(self._email).send_keys(data['email'])
     self._get(self._address1).send_keys(data['address1'])

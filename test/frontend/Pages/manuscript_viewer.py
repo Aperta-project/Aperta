@@ -195,7 +195,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
     assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
-    assert 'Compare With:' in bar_items[1].text, bar_items[1].text
+    assert 'Compare with:' in bar_items[1].text, bar_items[1].text
     self._get(self._tb_versions_closer).click()
 
   def get_ui_manuscript_version(self):
@@ -535,17 +535,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Disabling while APERTA-7062 is not closed
     # self.validate_secondary_big_grey_button_style(reactivate_button)
 
-  def validate_roles(self, user_buttons):
+  def validate_roles(self, user_buttons, user=''):
     """
     Given an amount of expected item, check if they are in the top menu.
     This can be expanded as needed.
     :param user_buttons: number of expected buttons
+    :param user: string with the user whose role is being validated
     """
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._tb_workflow_link) if user_buttons == 7 else (len(buttons) == 6), \
-        len(buttons)
+        'Found {0} buttons for {1}'.format(len(buttons), user)
 
   def is_task_present(self, task_name):
     """

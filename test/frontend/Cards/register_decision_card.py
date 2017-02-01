@@ -61,6 +61,10 @@ class RegisterDecisionCard(BaseCard):
     self._letter_template_subject_display_field = (By.CSS_SELECTOR, 'input.subject-field')
     self._letter_template_decision_letter_field = (By.CSS_SELECTOR,
                                                    'textarea.decision-letter-field')
+    self._letter_template_placeholder_p = (By.CSS_SELECTOR, 'div.task-main-content p')
+    self._template_selector_arrow = (By.CLASS_NAME, 'select2-arrow')
+    self._first_option = (By.CSS_SELECTOR, 'div.select2-result-label')
+
 
     # POM Actions
   def validate_styles(self):
@@ -88,10 +92,12 @@ class RegisterDecisionCard(BaseCard):
     decision_labels = self._gets(self._decision_labels)
     for label in decision_labels:
       assert label.text in expected_labels, label.text
-    letter_template = self._get(self._letter_template_placeholder_paragraph)
+    # there should not be a template when there is no decision
+    assert self._check_for_absence_of_element(self._letter_template_placeholder_paragraph)
     # Initial state
-    assert 'No decision has been registered.' in letter_template.text, letter_template.text
-    self.validate_application_ptext(letter_template)
+    letter_placeholder = self._get(self._letter_template_placeholder_p)
+    assert 'No decision has been registered.' in letter_placeholder.text, letter_placeholder.text
+    self.validate_application_ptext(letter_placeholder)
     # The decision history elements are conditional on their being a decision history
     self.set_timeout(1)
     try:
@@ -124,20 +130,23 @@ class RegisterDecisionCard(BaseCard):
         self.validate_application_ptext(decision_letter)
         previous_decision.click()
     decision, reject_selection = self.register_decision(decision=False, commit=False)
-    if decision == 'Reject':
-      letter_template = self._get(self._letter_template_placeholder_paragraph)
-      assert 'Please select the template letter and then edit further.' in letter_template.text, \
-          letter_template.text
+    template_sign = self._get(self._letter_template_placeholder_paragraph)
+    assert 'Please select the template letter and then edit further.' in template_sign.text, \
+          template_sign.text
+    # Following style commented out due to APERTA-9004
+    # self.validate_application_ptext(template_sign)
     to_label = self._get(self._letter_template_to_field_label)
     assert 'To:' in to_label.text, to_label.text
     self._letter_template_to_display_field = (By.CSS_SELECTOR, 'input.to-field')
     subject_label = self._get(self._letter_template_subject_field_label)
     assert 'Subject:' in subject_label.text, subject_label.text
     subject = self._get(self._letter_template_subject_display_field)
-    subject_text = subject.get_attribute('value')
-    assert 'Your PLOS Wombat submission' in subject_text, subject_text
+    subject_text = subject.get_attribute('placeholder')
+    # There is only placeholder information before selecting a template
+    assert 'Enter your subject here' in subject_text, subject_text
     letter = self._get(self._letter_template_decision_letter_field)
-    letter_text = letter.get_attribute('value')
+    letter_text = letter.get_attribute('placeholder')
+    assert 'A boilerplate decision letter will appear here' in letter_text, letter_text
     template_letters = {'Reject-ED-RAR': 'In this case, your article was also assessed by an '
                                          'Academic Editor with relevant expertise and several '
                                          'independent reviewers. Based on the reviews, I regret '
@@ -179,18 +188,26 @@ class RegisterDecisionCard(BaseCard):
                                   "AE'S NAME*], I am pleased to inform you that we will be "
                                   "delighted to publish your manuscript in PLOS Wombat."}
     if decision == 'Accept':
+      letter = self._get(self._letter_template_decision_letter_field)
+      letter_text = letter.get_attribute('value')
       assert template_letters['Accept'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['Accept'],
                                                                       letter_text)
     elif decision == 'Minor Revision':
+      letter = self._get(self._letter_template_decision_letter_field)
+      letter_text = letter.get_attribute('value')
       assert template_letters['MinorRev'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MinorRev'],
                                                                       letter_text)
     elif decision == 'Major Revision':
+      letter = self._get(self._letter_template_decision_letter_field)
+      letter_text = letter.get_attribute('value')
       assert template_letters['MajorRev'] in letter_text, \
         'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MajorRev'],
                                                                     letter_text)
     else:
+      letter = self._get(self._letter_template_decision_letter_field)
+      letter_text = letter.get_attribute('value')
       if reject_selection == 'Editor Decision - Reject After Review':
         assert template_letters['Reject-ED-RAR'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
@@ -212,21 +229,20 @@ class RegisterDecisionCard(BaseCard):
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
           template_letters['Reject-RARAR-ONE'], letter_text)
 
-  def register_decision(self, decision='', reject_template='', commit=True):
+  def register_decision(self, decision='', template='', commit=True):
     """
     Register decision on publishing manuscript
-    :param commit: boolean, default to True - determines whether to commit the decision by emailing
-      the author, if false, just selects a draft.
     :param decision: decision to mark, accepted values:
     'Accept', 'Reject', 'Major Revision' and 'Minor Revision' if no decision, will be generated
-    returns: decision (For the case where a random decision was specified) and reject_selection
-        (if decision == 'Reject')
-    :param reject_template: if you would like to specify an explicit template, pass it here.
+    :param template: if you would like to specify an explicit template, pass it here.
       Valid selections are: 'Editor Decision - Reject After Review',
                             'Editor Decision - Reject After Review CJs',
                             'Editor Decision - Reject After Review ONE',
                             'Reject After Review ONE',
                             'Reject After Revision and Re-review ONE'
+    :param commit: boolean, default to True - determines whether to commit the decision by emailing
+      the author, if false, just selects a draft.
+    :returns: string with decision and reject_selection if decision == 'Reject'
     """
     reject_selection = ''
     # APERTA-7502 This alert no longer exists, but it should
@@ -250,10 +266,7 @@ class RegisterDecisionCard(BaseCard):
     # adding sleep to give it time
     time.sleep(3)
     if decision == 'Reject':
-      default_selection = self._get(self._letter_template_reject_selected)
-      assert 'Editor Decision - Reject After Review' in default_selection.text, \
-          default_selection.text
-      if not reject_template:
+      if not template:
         reject_selection = random.choice(expected_reject_selections)
       else:
         reject_selection = reject_template
@@ -262,9 +275,17 @@ class RegisterDecisionCard(BaseCard):
       template_selector.click()
       reject_selections = self._gets(self._letter_template_reject_selection)
       for selection in reject_selections:
-          assert selection.text in expected_reject_selections, selection.text
+        assert selection.text in expected_reject_selections, '{0} not in {1}'.format(
+            selection.text, expected_reject_selections)
       template_selector_input = self._get(self._letter_template_reject_search_input)
       template_selector_input.send_keys(reject_selection + Keys.ENTER)
+    else:
+      self._get(self._template_selector_arrow).click()
+      # Time to make sure that the first item in the list is dynamically loaded
+      time.sleep(.5)
+      self._get(self._first_option).click()
+      # Time to make sure that the decision is clicked and changes accepted
+      time.sleep(.5)
     if commit:
       # click on register decision and email the author
       self._get(self._register_decision_button).click()

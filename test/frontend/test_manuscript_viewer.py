@@ -8,7 +8,7 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, editorial_users, external_editorial_users, \
-    admin_users, super_admin_login
+    admin_users, super_admin_login, handling_editor_login, academic_editor_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -21,6 +21,10 @@ This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
 
+
+# Note temporary redefining external editorial without cover_editor_login from the pool
+# of external users due to APERTA-9007
+external_editorial_users = [handling_editor_login, academic_editor_login]
 
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
@@ -86,12 +90,9 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.page_ready()
       if dashboard_page.get_dashboard_ms(user):
-        dashboard_page.restore_timeout()
         self.select_preexisting_article(first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         manuscript_viewer.page_ready()
-        # Check if paper is loaded by calling an element in paper viewer
-        manuscript_viewer._get(manuscript_viewer._paper_title)
         journal_id = manuscript_viewer.get_journal_id()
         uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
         short_doi = manuscript_viewer.get_paper_short_doi_from_url()
@@ -109,11 +110,12 @@ class ManuscriptViewerTest(CommonTest):
                                           '\'System\' and user_id = %s)));',(uid,))
         permissions = journal_permissions + paper_permissions + system_permissions
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
-        logging.info('Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
-                    .format(user, paper_id, permissions, max_elements))
-        manuscript_viewer.validate_roles(max_elements)
+        logging.info(u'Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
+                    .format(user['user'], short_doi, permissions, max_elements))
+        # NOTE: When covereditor is selected, the assert fails.
+        manuscript_viewer.validate_roles(max_elements, user['user'])
       else:
-        logging.info('No manuscripts present for user: {0}'.format(user['user']))
+        logging.info(u'No manuscripts present for user: {0}'.format(user['user']))
       dashboard_page.logout()
     return self
 

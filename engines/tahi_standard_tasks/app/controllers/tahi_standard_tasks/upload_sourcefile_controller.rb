@@ -1,8 +1,5 @@
 module TahiStandardTasks
-  # The UploadManuscriptController is responsible for uploading
-  # manuscripts (e.g. files that are doc, docx, etc) for the
-  # UploadManuscriptTask.
-  class UploadManuscriptController < ::ApplicationController
+  class UploadSourcefileController < ::ApplicationController
     before_action :authenticate_user!
     respond_to :json
 
@@ -10,16 +7,16 @@ module TahiStandardTasks
     # attached manuscript file from a browser. This is because it enforces
     # permissions at the UploadManuscriptTask-level rather than at the
     # paper-level.
-    def upload_manuscript
+    def upload_sourcefile
       requires_user_can :edit, task
+      # puts '***Upload sourcefile called'
+      # TODO: Figure out what to do here.
 
-      # TODO: Should we defer this if source file upload is required?
-      DownloadManuscriptWorker.download_manuscript(
+      DownloadSourcefileWorker.download(
         task.paper,
         params[:url],
         current_user
       )
-
       head 204
     end
 

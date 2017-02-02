@@ -486,6 +486,13 @@ FactoryAttributes.AdHocTask = {
   comment_ids: []
 };
 
+FactoryAttributes.ReviewerReport = {
+  _rootKey: 'reviewerReport',
+  id: null,
+  type: 'ReviewerReport',
+  task_id: null
+};
+
 FactoryAttributes.ReviewerReportTask = {
   _rootKey: 'task',
   id: null,
@@ -515,7 +522,8 @@ FactoryAttributes.FrontMatterReviewerReportTask = {
   lite_paper_id: null,
   assignee_ids: [],
   participant_ids: [],
-  comment_ids: []
+  comment_ids: [],
+  reviewer_report_ids: []
 };
 
 FactoryAttributes.ReviseTask = {
@@ -531,7 +539,8 @@ FactoryAttributes.ReviseTask = {
   lite_paper_id: null,
   assignee_ids: [],
   participant_ids: [],
-  comment_ids: []
+  comment_ids: [],
+  reviewer_report_ids: []
 };
 
 FactoryAttributes.BillingTask = {
@@ -737,8 +746,8 @@ FactoryAttributes.NestedQuestion = {
   _rootKey: 'nested_question',
   id: null,
   owner: {
-    owner_id: null,
-    owner_type: null
+    id: null,
+    type: null
   },
   ident: 'some_ident',
   parent_id: null,

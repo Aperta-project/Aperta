@@ -52,6 +52,9 @@ Subscriptions.configure do
   add 'invitation:updated', stream_to_paper_channel, Invitation::Updated::EventStream::NotifyInvitee
   add 'invitation:destroyed', stream_to_everyone
 
+  add 'versioned_text:created', stream_to_paper_channel
+  add 'versioned_text:updated', stream_to_paper_channel
+
   # Paper constituents that don't get 'updated':
 
   add 'comment:created', stream_to_paper_channel

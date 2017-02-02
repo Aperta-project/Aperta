@@ -6,5 +6,6 @@ export default NestedQuestionOwner.extend({
   task: DS.belongsTo('task'),
   user: DS.belongsTo('user'),
   status: DS.attr('string'),
+  revision: DS.attr('string'),
   createdAt: DS.attr('date')
 });

@@ -8,6 +8,7 @@ import subprocess
 
 modulelist = []
 err_list = []
+cd test
 dir = '/'.join([os.getcwd(), 'frontend'])
 for file in os.listdir( dir ):
   if re.search('^test_.*.py', file):

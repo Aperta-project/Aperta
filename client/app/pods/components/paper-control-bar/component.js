@@ -1,23 +1,33 @@
 import Ember from 'ember';
 import ControlBar from 'tahi/pods/components/control-bar/component';
+import { PropTypes } from 'ember-prop-types';
 
 const { computed } = Ember;
 
 export default ControlBar.extend({
-  paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
-  submenuVisible: false,
-  contributorsVisible: false,
-  downloadsVisible: false,
-  versionsVisible: false,
+  propTypes: {
+    contributorsVisible: PropTypes.bool,
+    versionsVisible: PropTypes.bool,
+    versioningMode: PropTypes.bool,
+    submenuVisible: PropTypes.bool,
+    // action:
+    toggleDownloads: PropTypes.func.isRequired
+  },
 
-  downloadLink: computed('paper.id', function() {
-    return '/papers/' + this.get('paper.id') + '/download';
-  }),
+  getDefaultProps() {
+    return {
+      contributorsVisible: false,
+      submenuVisible: false,
+      versionsVisible: false,
+      versioningMode: false
+    };
+  },
+
+  paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
 
   resetSubmenuFlags() {
     this.setProperties({
       contributorsVisible: false,
-      downloadsVisible: false,
       versionsVisible: false
     });
   },
@@ -51,8 +61,8 @@ export default ControlBar.extend({
       this.sendAction('showActivity', activity);
     },
 
-    exportDocument(downloadType) {
-      this.sendAction('exportDocument', downloadType);
+    toggleDownloads() {
+      this.get('toggleDownloads')();
     },
 
     withdrawManuscript() {

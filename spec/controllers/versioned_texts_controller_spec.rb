@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-require 'rails_helper'
-
 describe VersionedTextsController do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:user) { FactoryGirl.create(:user) }

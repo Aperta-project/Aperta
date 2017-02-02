@@ -2,30 +2,28 @@ import Ember from 'ember';
 import win from 'tahi/lib/window-location';
 
 export default Ember.Namespace.create({
-  initiate: function(paperId, downloadFormat) {
-    let self = this;
-
-    self.paperId = paperId;
-    self.downloadFormat = downloadFormat;
+  initiate(paperId, downloadFormat, versionId) {
+    const self = this;
 
     return Ember.$.ajax({
-      url: `/api/papers/${self.paperId}/export`,
+      url: `/api/papers/${paperId}/export`,
       data: {
-        export_format: self.downloadFormat
+        export_format: downloadFormat,
+        versioned_text_id: versionId
       },
-      success: (data)=> {
+      success(data) {
         // Returns a url to check later.
         self.checkJobState(data.url);
       },
       error() {
-        throw new Error('Could not download ' + self.downloadFormat);
+        throw new Error('Could not download ' + downloadFormat);
       }
     });
   },
 
-  checkJobState: function(url) {
-    let self = this;
-    let timeout = 2000;
+  checkJobState(url) {
+    const self = this;
+    const timeout = 2000;
 
     return Ember.$.ajax({
       url: url,

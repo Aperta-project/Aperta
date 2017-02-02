@@ -7,6 +7,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 * Aperta can now use the title, abstract, and body HTML extracted from PDFs.
 ### Changed
+* Users can download previous versions of a Manuscript
 ### Deprecated
 ### Removed
 ### Fixed

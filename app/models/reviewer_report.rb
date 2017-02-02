@@ -36,6 +36,8 @@ class ReviewerReport < ActiveRecord::Base
     case status
     when "completed"
       task.completed_at
+    when "pending"
+      invitation.accepted_at
     when "invitation_invited"
       invitation.invited_at
     when "invitation_accepted"

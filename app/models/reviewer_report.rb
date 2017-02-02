@@ -32,6 +32,21 @@ class ReviewerReport < ActiveRecord::Base
     end
   end
 
+  def status_date
+    case status
+    when "completed"
+      task.completed_at
+    when "invitation_invited"
+      invitation.invited_at
+    when "invitation_accepted"
+      invitation.accepted_at
+    when "invitation_declined"
+      invitation.declined_at
+    when "invitation_rescinded"
+      invitation.recinded_at
+    end
+  end
+
   def revision
     # if a decision has a revision, use it, otherwise, use paper's
     major_version = decision.major_version || task.paper.major_version

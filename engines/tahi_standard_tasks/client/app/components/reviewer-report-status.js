@@ -15,7 +15,11 @@ export default Ember.Component.extend({
     return output;
   }),
 
-  statusDate: Ember.computed.reads('report.statusDate'),
+  statusDate: Ember.computed('report.statusDate', function(){
+    const date = this.get('report.statusDate');
+    const format = 'MMMM D, YYYY';
+    return moment(date).format(format);
+  }),
 
   reviewerStatus: Ember.computed('report.status', function() {
     const status = this.get('report.status');

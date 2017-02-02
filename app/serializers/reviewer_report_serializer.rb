@@ -4,6 +4,7 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :user_id,
     :created_at,
     :status,
+    :status_date,
     :revision
   has_one :task
   has_many :nested_questions, embed: :ids, include: true

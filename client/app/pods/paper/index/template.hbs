@@ -39,8 +39,8 @@
 {{paper-control-bar paper=model
                     showActivity="showActivityOverlay"
                     addContributors="showCollaboratorsOverlay"
+                    exportDocument="exportDocument"
                     showWithdrawOverlay="showWithdrawOverlay"
-                    toggleDownloads=(action "toggleDownloads")
                     topicsIndexPath=topicsIndexPath
                     supportedDownloadFormats=supportedDownloadFormats
                     versioningMode=versioningMode
@@ -48,12 +48,6 @@
 
 {{#if (and renderEngagementBanner showSubmissionProcess)}}
   {{partial "paper/index/submission-process"}}
-{{/if}}
-
-{{#if downloadsVisible}}
-  {{paper-downloads paper=model
-                    toggle=(action "toggleDownloads")
-                    exportDocument=(action "exportDocument")}}
 {{/if}}
 
 {{withdrawal-banner paper=model}}

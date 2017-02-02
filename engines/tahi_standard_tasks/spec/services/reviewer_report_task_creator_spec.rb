@@ -4,12 +4,13 @@ describe ReviewerReportTaskCreator do
   let!(:journal) do
     FactoryGirl.create(
       :journal,
+      :with_creator_role,
       :with_task_participant_role,
       :with_reviewer_role,
       :with_reviewer_report_owner_role
     )
   end
-  let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let!(:paper) { FactoryGirl.create(:paper, :submitted, journal: journal) }
   let!(:originating_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
 

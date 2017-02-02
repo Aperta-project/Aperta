@@ -18,6 +18,7 @@ class Decision < ActiveRecord::Base
   has_many :invitations
   has_one :invitation_queue
   has_many :nested_question_answers
+  has_many :reviewer_reports
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 

@@ -1,4 +1,4 @@
-class GenericMailer < ActionMailer::Base
+class GenericMailer < ApplicationMailer
   include MailerHelper
   default from: Rails.configuration.from_email
   layout "mailer"

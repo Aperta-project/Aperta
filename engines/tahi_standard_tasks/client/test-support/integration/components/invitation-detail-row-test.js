@@ -1,6 +1,7 @@
-import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import sinon from 'sinon';
 import { manualSetup, make } from 'ember-data-factory-guy';
+import { moduleForComponent, test } from 'ember-qunit';
 
 moduleForComponent('invitation-detail-row', 'Integration | Component | invitation detail row', {
   integration: true,
@@ -217,4 +218,19 @@ test('displays decline feedback when declined', function(assert){
 
   assert.textPresent('.invitation-item-decline-info', 'No current availability');
   assert.textPresent('.invitation-item-decline-info', 'Jane McReviewer');
+});
+
+test('that dragging text does not trigger invite dragging when dragging is disabled', function(assert) {
+  const spy = sinon.spy();
+  this.set('startedDragging', spy);
+  this.set('invitationIsExpanded', true); // will disable dragging
+  const openTemplate = hbs`{{invitation-detail-row invitation=invitation
+                                                   uiState='show'
+                                                   invitationIsExpanded=invitationIsExpanded
+                                                   startedDragging=(action startedDragging)}}`;
+
+  this.render(openTemplate);
+  const invitationBody = this.$('.invitation-show-body');
+  invitationBody.trigger('dragstart', ['custom', 'shit']);
+  assert.spyNotCalled(spy, 'dragging should not have started');
 });

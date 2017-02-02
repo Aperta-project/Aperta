@@ -1,11 +1,16 @@
-<p>Hello <%= @user.first_name %> <%= @user.last_name %>,</p>
+<p><b>Manuscript ID:</b> <%= @paper.short_doi %></p>
+<p><b>Title:</b> <%= @paper.display_title(sanitized: false) %></p>
+
+<p>Hello <%= @invitee.first_name %> <%= @invitee.last_name %>,</p>
 
 <p>
-  You have been added to a conversation in Aperta
-  for the manuscript "<%= @paper.display_title(sanitized: false) %>"
+  You have been added to a discussion about the above manuscript by
+  <%= @invitor.first_name %> <%= @invitor.last_name %>.
 </p>
 
 <%= render partial: 'email/button', locals: {
   href: client_discussion_url(@topic, @paper),
-  text: 'View Conversation'
+  text: 'View Discussion'
 } %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

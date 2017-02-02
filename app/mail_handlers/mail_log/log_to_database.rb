@@ -13,8 +13,8 @@ module MailLog
         recipients = message.to.join(', ')
         mail_context = message.aperta_mail_context
         EmailLog.create!(
-          from: message.from.first,
-          to: recipients,
+          sender: message.from.first,
+          recipients: recipients,
           message_id: message.message_id,
           subject: message.subject,
           raw_source: message.to_s,

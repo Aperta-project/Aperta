@@ -19,8 +19,8 @@ module MailLog::LogToDatabase
           interceptor.delivering_email(mail)
         end.to change { EmailLog.count }.by +1
         email_log = EmailLog.last
-        expect(email_log.from).to eq 'apertian@plos.org'
-        expect(email_log.to).to eq 'curtis@example.com, zach@example.com'
+        expect(email_log.sender).to eq 'apertian@plos.org'
+        expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
         expect(email_log.raw_source).to eq mail.to_s
         expect(email_log.status).to eq 'pending'

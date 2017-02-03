@@ -9,6 +9,7 @@ export default Ember.Component.extend({
     const invitation_text = 'Invitation to ' + this.get('report.revision') + ' ';
     var output = '';
     switch(status) {
+    case 'invitation_pending':
     case 'not_invited':
       output = 'This candidate has not been invited to ' + this.get('report.revision');
       break;
@@ -41,6 +42,7 @@ export default Ember.Component.extend({
       'pending': 'Pending',
       'not_invited': 'Not yet invited',
       'completed': 'Completed',
+      'invitation_pending': 'Not yet invited',
       'invitation_invited': 'Invited',
       'invitation_accepted': 'Pending',
       'invitation_declined': 'Declined',

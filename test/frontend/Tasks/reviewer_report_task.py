@@ -245,7 +245,7 @@ class ReviewerReportTask(BaseTask):
       assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
           u' to continue there as reviewer. PLOS Wombat is committed to facilitate the transfer' \
           u' between journals of suitable manuscripts to reduce redundant review cycles, and we' \
-          u' appreciate your support.', qh6.text
+          u' appreciate your support.', qh6.text #FIX-CI
     else:
       assert u'Please refer to our referee guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text

@@ -6,7 +6,7 @@ export default Ember.Component.extend({
 
   statusMessage: Ember.computed('report.status', function() {
     const status = this.get('report.status');
-    const invitation_text = 'Invitation to ' + this.get('report.revision') + ' ';
+    const invitation_text = 'Invitation to review ' + this.get('report.revision') + ' ';
     var output = '';
     switch(status) {
     case 'invitation_pending':

@@ -242,10 +242,10 @@ class ReviewerReportTask(BaseTask):
       assert qh5.text == u'Additional comments may include concerns about dual publication, '\
           u'research or publication ethics.\n\nThese comments will not be transmitted to the '\
           u'authors.', qh5.text
-      assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
+      '''assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
           u' to continue there as reviewer. PLOS Wombat is committed to facilitate the transfer' \
           u' between journals of suitable manuscripts to reduce redundant review cycles, and we' \
-          u' appreciate your support.', qh6.text
+          u' appreciate your support.', qh6.text''' #Disabled due to APERTA-9101
     else:
       assert u'Please refer to our referee guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text

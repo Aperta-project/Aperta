@@ -465,10 +465,12 @@ class ReviewerReportTask(BaseTask):
       q6fmta.send_keys(q6response)
     submit_report_btn = self._get(self._submit_button)
     submit_report_btn.click()
-
     self._wait_for_element(self._get(self._submit_confirm_yes_btn))
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
+    # Note: Check for 'This report has been submitted' to make sure confirm is ACKed
+    report_submit_status = self._get(self._submitted_status)
+    assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
     if research_type:
       outdata = [recommendation,
                  q2radval,

@@ -20,6 +20,14 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     }
   }),
 
+  callAddTaskType() {
+    this.attrs.addTaskType(
+      this.get('phase'),
+      this.get('taskTypeList')
+    )
+    this.attrs.close();
+  },
+
   actions: {
     updateList(checkbox) {
       if (checkbox.get('checked')) {
@@ -29,13 +37,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       }
     },
 
-    addTaskType() {
-      this.attrs.addTaskType(
-        this.get('phase'),
-        this.get('taskTypeList')
-      );
-
-      this.attrs.close();
+    debouncedAddTaskType() {
+      Ember.run.debounce(this, this.get('callAddTaskType'), 500);
     },
 
     close() {

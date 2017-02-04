@@ -9,7 +9,9 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import super_admin_login, no_cards_mmt, gen_cmplt_apexdata, imgs_init_dec_mmt, \
-  resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt
+  resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt, \
+  bio_essay, bio_resart, bio_genres, bio_mystery, bio_commpage, bio_formcomm, bio_nwc, gen_resart, \
+  gen_persp
 from Pages.admin import AdminPage
 from Pages.journal_admin import JournalAdminPage
 
@@ -184,77 +186,16 @@ class ApertaSeedJournalMMTTest(CommonTest):
                         Invite Reviewers,
                         Register Decision,
                         Send to Apex, Related Articles, Production Metadata
-
             useresearchreviewerreport: True
-          - Genetics Research
-            usercards:  Additional Information, Authors, Billing, Competing Interests, Cover Letter,
-                        Data Availability, Ethics Statement, Figures, Financial Disclosure,
-                        Reporting Guidelines, Reveiwer Candidates, Supporting Info,
-                        Upload Manuscript
+          - Perspective
+            usercards:  Cover Letter, Upload Manuscript, Authors, Figures, Supporting Info,
+                        Competing Interests, Financial Disclosure, Additional Information
             staffcards: Initial Tech Check, Revision Tech Check, Final Tech Check,
                         Assign Team, Invite Academic Editor,
                         Invite Reviewers,
                         Register Decision,
-                        Send to Apex, Related Articles, Production Metadata
-            useresearchreviewerreport: True
-          - Unsolved Mystery
-            usercards:  Cover Letter, Upload Manuscript, Authors, Ethics Statement, Figures,
-                        Reviewer Candidates, Supporting Info, Competing Interests,
-                        Financial Disclosure, Additional Information
-            staffcards: Initial Tech Check, Revision Tech Check, Final Tech Check,
-                        Assign Team, Invite Academic Editor,
-                        Invite Reviewers,
-                        Register Decision,
-                        Send to Apex, Production Metadata
-            useresearchreviewerreport: True
-          - Community Page
-            usercards:  Cover Letter, Upload Manuscript, Authors, Ethics Statement, Figures,
-                        Reviewer Candidates, Supporting Info, Competing Interests,
-                        Financial Disclosure, Additional Information
-            staffcards: Initial Tech Check, Revision Tech Check, Final Tech Check,
-                        Invite Academic Editor,
-                        Invite Reviewers,
-                        Register Decision,
-                        Send to Apex, Production Metadata
-            useresearchreviewerreport: True
-          - Formal Comment
-            usercards:  Cover Letter, Upload Manuscript, Authors, Ethics Statement, Figures,
-                        Reviewer Candidates, Supporting Info, Competing Interests,
-                        Financial Disclosure, Additional Information
-            staffcards: Initial Tech Check, Revision Tech Check, Final Tech Check,
-                        Assign Team, Invite Academic Editor,
-                        Invite Reviewers,
-                        Register Decision,
-                        Send to Apex, Production Metadata
-            useresearchreviewerreport: True
-          - New Workflow Concept
-            usercards:  Upload Manuscript, Supporting Info, Cover Letter, Additional Information,
-                        Reviewer Candidates, Figures,
-                        Authors, Ethics Statement, Data Availability, Competing Interests,
-                        Financial Disclosure
-            staffcards: Assign Team, Initial Decision, Title And Abstract,
-                        Ad hoc (unknown type - named AE emails),
-                        Ad hoc (unknown type - named Author Emails),
-                        Inital Tech Check, Invite Reviewers,
-                        Ad hoc (unknown type - named Reviewer Tracking and Chasing),
-                        Ad hoc (unknown type - named Reviewer Email Templates),
-                        Ad hoc (unknown type - named Rev 1 Round 1),
-                        Ad hoc (unknown type - named Rev 2 Round 1),
-                        Ad hoc (unknown type - named Emails to Reviewers),
-                        Ad hoc (unknown type - named All new submission cards?),
-                        Register Decision, Revision Tech Check, Invite Reviewers,
-                        Ad hoc (unknown type - named Reviewer Emails),
-                        Ad hoc (unknown type - named Reviewer Tracking and Chasing)
-                        Ad hoc (unknown type - named Rev 1 Round 2),
-                        Ad hoc (unknown type - named Rev 2 Round 2),
-                        Ad hoc (unknown type - named All new submission cards?),
-                        Register Decision, Final Tech Check, Production Metadata, Send to Apex,
-                        Related Articles, Ad hoc (unknown type - named Proof Archive)
-            useresearchreviewerreport: True
-
-
-
-
+                        Production Metadata, Send to Apex
+            useresearchreviewerreport: False
   """
   def test_populate_base_mmts(self):
     """
@@ -262,7 +203,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     Add new Templates if they don't exist
     :return: void function
     """
-    all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
+    qa_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
                 no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
     logging.info('test_populate_base_mmts')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
@@ -282,7 +223,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
       adm_page._populate_journal_db_values('PLOS Wombat', 'qa@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
-    for mmt in all_mmts:
+    for mmt in qa_mmts:
       # test if present, if not add
       mmt_present = ja_page.is_mmt_present(mmt['name'])
       if not mmt_present:
@@ -302,8 +243,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     Add new Templates if they don't exist
     :return: void function
     """
-    all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
-                no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
+    bio_mmts = [bio_essay, bio_resart, bio_genres, bio_mystery, bio_formcomm, bio_commpage, bio_nwc]
     logging.info('test_populate_base_mmts')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
@@ -323,7 +263,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
       adm_page._populate_journal_db_values('PLOS Biology', 'noreply@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
-    for mmt in all_mmts:
+    for mmt in bio_mmts:
       # test if present, if not add
       mmt_present = ja_page.is_mmt_present(mmt['name'])
       if not mmt_present:
@@ -343,8 +283,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     Add new Templates if they don't exist
     :return: void function
     """
-    all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
-                no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
+    gen_mmts = [gen_resart, gen_persp]
     logging.info('test_populate_base_mmts')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
@@ -364,7 +303,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
       adm_page._populate_journal_db_values('PLOS Genetics', 'noreply@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
-    for mmt in all_mmts:
+    for mmt in gen_mmts:
       # test if present, if not add
       mmt_present = ja_page.is_mmt_present(mmt['name'])
       if not mmt_present:

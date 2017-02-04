@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_core_rev_rep_non_research_actions(self):
+  def _test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.
@@ -179,6 +179,7 @@ class ReviewerReportTest(CommonTest):
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
+    reviewer_name = reviewer_login['name']
     dashboard_page.click_view_invites_button()
     ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;', (short_doi,))[0][0]
     ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
@@ -196,7 +197,6 @@ class ReviewerReportTest(CommonTest):
     validate_in = {True: 'task', False: 'card'}
     validate_view_in_place = manuscript_page.get_random_bool()
     logging.info('Validate in {}'.format(validate_in[validate_view_in_place]))
-    validate_view_in_place = True
     dashboard_page.logout()
     if validate_view_in_place:
       logging.info(reviewer_login)
@@ -224,7 +224,7 @@ class ReviewerReportTest(CommonTest):
       paper_viewer.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
-      workflow_page.click_card('review_by')
+      workflow_page.click_card('review_by', 'Review by {0} (#1)'.format(reviewer_name))
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       reviewer_report_card.validate_reviewer_report(outdata)
 

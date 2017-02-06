@@ -175,13 +175,13 @@ FactoryGirl.define do
     trait(:gradual_engagement) do
       after(:create) do |paper|
         task_type_id = JournalTaskType.find_by(title: 'Initial Decision').id.to_s
-        initial_decision_params = {"paper_type"=>"Gradual Engagement", "journal_id"=>paper.journal.id,
-                        "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
-                          "task_templates"=>[
-                            {"title"=>"Initial Decision", "journal_task_type_id"=> task_type_id, "position"=>2}
-                          ]},
-                        {"name"=>"Phase 2", "position"=>2},
-                        {"name"=>"Phase 3", "position"=>3}]}
+        initial_decision_params = { "paper_type" => "Gradual Engagement", "journal_id" => paper.journal.id,
+                                    "phase_templates" => [{ "name" => "Phase 1", "position" => 1,
+                                                            "task_templates" => [
+                                                              { "title" => "Initial Decision", "journal_task_type_id" => task_type_id, "position" => 2 }
+                                                            ] },
+                                                          { "name" => "Phase 2", "position" => 2 },
+                                                          { "name" => "Phase 3", "position" => 3 }] }
         ManuscriptManagerTemplateForm.new(initial_decision_params).create!
         paper.update_column(:paper_type, 'Gradual Engagement')
         PaperFactory.new(paper.reload, paper.creator).add_phases_and_tasks
@@ -235,6 +235,52 @@ FactoryGirl.define do
         paper.submit! paper.creator
         paper.major_revision!
         paper.body = evaluator.second_version_body
+        paper.save!
+      end
+    end
+
+    trait(:with_versions_across_file_types) do
+      transient do
+        first_version_body  'first body'
+        second_version_body 'second body'
+        third_version_body 'third body'
+      end
+
+      after(:create) do |paper, evaluator|
+        # 0.0, 0.1, 0.2, 1.0, Draft
+        paper.body = evaluator.first_version_body
+        paper.save!
+        paper.submit! paper.creator
+
+        paper.major_revision!
+        paper.body = evaluator.second_version_body
+        paper.save!
+
+        paper.draft.be_minor_version!
+        paper.new_draft!
+        paper.draft.be_minor_version!
+        paper.save!
+
+        # New manuscript is a uploaded
+        paper.file = FactoryGirl.create(
+          :manuscript_attachment,
+          paper: paper,
+          file_type: 'pdf',
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.pdf')),
+          s3_dir: 'sample/dir'
+        )
+
+        paper.save!
+
+        paper.versioned_texts.last.update!(
+          file_type: 'pdf'
+        )
+        paper.new_draft!
+
+        paper.submit! paper.creator
+
+        paper.major_revision!
+        paper.body = evaluator.third_version_body
         paper.save!
       end
     end

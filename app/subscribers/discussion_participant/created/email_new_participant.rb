@@ -5,6 +5,7 @@ class DiscussionParticipant::Created::EmailNewParticipant
     participant = event_data[:record]
     return if participant.user_id == event_data[:current_user_id]
     UserMailer.delay.notify_added_to_topic(participant.user_id,
+                                           event_data[:current_user_id],
                                            participant.discussion_topic_id)
   end
 end

@@ -10,19 +10,11 @@ class PaperAttributesExtractor
   end
 
   def sync!(paper)
-    if paper.file_type == 'pdf'
-      # Since there is no grobid integration right now, we are just setting the
-      # body to a known value to force an update
-      paper.update!(
-        body: "PDF Uploaded: " + DateTime.now.utc.to_s
-      )
-    else
-      paper.update!(
-        body: extract_file('body'),
-        abstract: extract_abstract,
-        title: extract_file('title') || paper.title
-      )
-    end
+    paper.update!(
+      body: extract_file('body'),
+      abstract: extract_abstract,
+      title: extract_file('title') || paper.title
+    )
   end
 
   private

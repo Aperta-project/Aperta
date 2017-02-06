@@ -1821,6 +1821,15 @@ activities:
     - '12'
     - '2017-01-30 22:52:03.822989'
     - '2017-01-30 22:52:03.822989'
+  - - '202'
+    - manuscript
+    - '12'
+    - Paper
+    - collaborator.added
+    - Edith Editor has been assigned as collaborator
+    - '1'
+    - '2017-01-31 19:23:59.841235'
+    - '2017-01-31 19:23:59.841235'
 
 ---
 affiliations:
@@ -3112,6 +3121,13 @@ assignments:
     - Task
     - '2017-01-30 22:52:03.792361'
     - '2017-01-30 22:52:03.792361'
+  - - '172'
+    - '4'
+    - '14'
+    - '12'
+    - Paper
+    - '2017-01-31 19:23:59.797373'
+    - '2017-01-31 19:23:59.797373'
 
 ---
 attachments:
@@ -4526,8 +4542,8 @@ decisions:
 email_logs:
   columns:
   - id
-  - from
-  - to
+  - sender
+  - recipients
   - subject
   - message_id
   - raw_source
@@ -5779,6 +5795,88 @@ email_logs:
     - '{"@paper": ["Paper", 4], "@journal": ["Journal", 1], "@assigner": ["User",
       1], "@reviewer": ["User", 12], "@invitation": ["Invitation", 30], "@invite_reviewer_task":
       ["TahiStandardTasks::PaperReviewerTask", 82]}'
+  - - '15'
+    - no-reply@example.com
+    - editor@example.com
+    - 'You''ve been added as a collaborator to the manuscript, "Diffable Paper: Paper
+      has versioned text and tasks"'
+    - 5890e45159723_17d8f3ff613f07ed815629@curtis.local.mail
+    - "Date: Tue, 31 Jan 2017 14:24:01 -0500\r\nFrom: no-reply@example.com\r\nTo:
+      editor@example.com\r\nMessage-ID: <5890e45159723_17d8f3ff613f07ed815629@curtis.local.mail>\r\nSubject:
+      You've been added as a collaborator to the manuscript, \"Diffable\r\n Paper:
+      Paper has versioned text and tasks\"\r\nMime-Version: 1.0\r\nContent-Type: text/html;\r\n
+      charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n<!DOCTYPE
+      html>\r\n<html>\r\n  <head>\r\n    <meta name=3D\"viewport\" content=3D\"width=3Ddevice-width\"
+      />\r\n    <meta http-equiv=3D\"Content-Type\" content=3D\"text/html; charset=3DUTF=\r\n-8\"
+      />\r\n    <link rel=3D\"stylesheet\" media=3D\"screen\" href=3D\"/assets/email-0cdc3=\r\ne434e94d5379656294f4fffe3375013f922ec62ec1b1590902bd61e31c2.css\"
+      />\r\n    <style>\r\n      /* Responsive : PRESERVE THESE STYLES IN THE HEAD\r\n
+      \     -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media only screen and (max-width: 620px) {\r\n        table[class=3Dbody]
+      h1 {\r\n          margin-bottom: 10px !important;\r\n          font-size: 21px
+      !important;\r\n        }\r\n\r\n        table[class=3Dbody] p,\r\n        table[class=3Dbody]
+      ul,\r\n        table[class=3Dbody] ol,\r\n        table[class=3Dbody] td,\r\n
+      \       table[class=3Dbody] span,\r\n        table[class=3Dbody] a {\r\n          font-size:
+      16px !important;\r\n        }\r\n\r\n        table[class=3Dbody] .wrapper {\r\n
+      \         padding: 20px !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .content {\r\n          padding: 0 !important;\r\n        }\r\n\r\n        table[class=3Dbody]
+      .container {\r\n          width: 100% !important;\r\n          padding: 0 !important;\r\n
+      \       }\r\n\r\n        table[class=3Dbody] .main {\r\n          border-left-width:
+      0 !important;\r\n          border-radius: 0 !important;\r\n          border-right-width:
+      0 !important;\r\n        }\r\n\r\n        table[class=3Dbody] .btn table { width:
+      100% !important; }\r\n        table[class=3Dbody] .btn a { width: 100% !important;
+      }\r\n        table[class=3Dbody] .img-responsive {\r\n          width: auto
+      !important;\r\n          max-width: 100% !important;\r\n          height: auto
+      !important;\r\n        }\r\n      }\r\n\r\n\r\n      /* Outlook.com / Hotmail
+      / Apple specific\r\n         PRESERVE THESE STYLES IN THE HEAD\r\n      -------------------------------------------------------------------=\r\n----
+      */\r\n\r\n      @media all {\r\n        /* Outlook.com / Hotmail\r\n           Styles
+      present in the email are appended with .ExternalClass *=\r\n/\r\n        .ExternalClass
+      {\r\n          width: 100%;\r\n        }\r\n\r\n        .ExternalClass,\r\n
+      \       .ExternalClass p,\r\n        .ExternalClass span,\r\n        .ExternalClass
+      font,\r\n        .ExternalClass td,\r\n        .ExternalClass div {\r\n          line-height:
+      100%;\r\n        }\r\n\r\n        /* iOS : For auto formatted phone numbers,
+      addresses, and dates *=\r\n/\r\n        .apple-link a {\r\n          color:
+      inherit !important;\r\n          font-family: inherit !important;\r\n          font-size:
+      inherit !important;\r\n          font-weight: inherit !important;\r\n          line-height:
+      inherit !important;\r\n          text-decoration: none !important;\r\n        }\r\n
+      \     }\r\n    </style>\r\n  </head>\r\n  <body class=3D\"\">\r\n    <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\" class=3D\"body=\r\n\">\r\n
+      \     <tr>\r\n        <td>&nbsp;</td>\r\n        <td class=3D\"container\">\r\n
+      \         <!-- START CENTERED WHITE CONTAINER -->\r\n          <div class=3D\"content\">\r\n
+      \           <!-- START MAIN CONTENT AREA -->\r\n            <table class=3D\"main\">\r\n
+      \             <tr>\r\n                <td class=3D\"wrapper\">\r\n                  <table
+      border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\"=\r\n>\r\n                    <tr>\r\n
+      \                     <td>\r\n                          <img class=3D\"journal-logo\"
+      src=3D\"https://aper=\r\nta-tahi-prod-qa.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbna=\r\nil_images/no-journal-image.gif?X-Amz-Expires=3D518400&amp;X-Amz-Date=3D20=\r\n170131T192400Z&amp;X-Amz-Algorithm=3DAWS4-HMAC-SHA256&amp;X-Amz-Credentia=\r\nl=3DAKIAJK3UGUT3EFKMWXNA/20170131/us-west-1/s3/aws4_request&amp;X-Amz-Sig=\r\nnedHeaders=3Dhost&amp;X-Amz-Signature=3D9a89c15d05a6fd80de825560b4371f6dc=\r\n7aa349fe54f9c3683f86a9abd776b65\">\r\n\r\n<br><br>\r\n\r\n<h1>\r\n
+      \ You have been added as a collaborator to a manuscript\r\n</h1>\r\n\r\n<hr>\r\n\r\n<p>Hello
+      Edith Editor,</p>\r\n\r\n<p>\r\n  Adam Administrator just added you as a collaborator
+      to a manuscript tit=\r\nled \"<b>Diffable Paper:</b> <em>Paper has versioned
+      text and tasks</em>.\"=\r\n\r\n  Collaborator status does not denote authorship
+      of the manuscript.\r\n  All authors should be listed in the Authors card, and
+      must meet PLOS Bi=\r\nology=E2=80=99s authorship criteria.\r\n</p>\r\n\r\n<!--
+      START BUTTON -->\r\n<table border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\"
+      class=3D\"btn btn-=\r\nprimary\">\r\n  <tbody>\r\n    <tr>\r\n      <td align=3D\"left\">\r\n
+      \       <table border=3D\"0\" cellpadding=3D\"0\" cellspacing=3D\"0\">\r\n          <tbody>\r\n
+      \           <tr>\r\n              <td> <a href=3D\"http://localhost:5000/papers/yetijour.10000=\r\n02/\"
+      target=3D\"_blank\">View Manuscript</a> </td>\r\n            </tr>\r\n          </tbody>\r\n
+      \       </table>\r\n      </td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n<!--
+      END BUTTON -->\r\n\r\n\r\n<p>\r\n  With best wishes,<br>\r\n  PLOS Yeti Team\r\n</p>\r\n\r\n\r\n<hr>\r\n\r\n<p>\r\n
+      \ Visit this link to view the manuscript:\r\n  <a href=3D\"http://localhost:5000/papers/yetijour.1000002/\">http://local=\r\nhost:5000/papers/yetijour.1000002/</a>\r\n</p>\r\n\r\n
+      \                     </td>\r\n                    </tr>\r\n                  </table>\r\n
+      \               </td>\r\n              </tr>\r\n            </table>\r\n            <!--
+      END MAIN CONTENT AREA -->\r\n          </div>\r\n          <!-- END CENTERED
+      WHITE CONTAINER -->\r\n        </td>\r\n        <td>&nbsp;</td>\r\n      </tr>\r\n
+      \   </table>\r\n  </body>\r\n</html>\r\n"
+    - sent
+    - 
+    - 
+    - '2017-01-31 19:24:01.621235'
+    - '2017-01-31 19:24:01.395891'
+    - '2017-01-31 19:24:01.395891'
+    - 
+    - '12'
+    - '1'
+    - '{"@paper": ["Paper", 12], "@invitee": ["User", 4], "@invitor": ["User", 1],
+      "@journal": ["Journal", 1]}'
 
 ---
 group_authors:
@@ -32270,13 +32368,13 @@ users:
     - 
     - 
     - 
-    - '12'
+    - '13'
+    - '2017-01-31 19:22:35.685247'
     - '2017-01-24 15:43:06.217142'
-    - '2016-03-23 13:18:34.593535'
     - 127.0.0.1
-    - 10.43.0.68
+    - 127.0.0.1
     - '2015-10-29 19:36:19.627844'
-    - '2017-01-24 15:43:06.219966'
+    - '2017-01-31 19:22:35.688536'
     - admin
     - 
     - '1001'

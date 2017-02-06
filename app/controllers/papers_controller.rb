@@ -174,7 +174,7 @@ class PapersController < ApplicationController
   private
 
   def render_invalid_transition_error(e)
-    render status: 400, json: { errors: ["Failure to transition to " + e.event_name] }
+    render status: 422, json: { errors: ["Failure to transition to " + e.event_name] }
   end
 
   def withdrawal_params

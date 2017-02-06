@@ -706,10 +706,9 @@ describe PapersController do
             expect(paper).to be_unsubmitted
           end
 
-          it 'returns a 400 Bad Request error' do
+          it 'returns a 422 Unprocessible Entity error' do
             do_request
-            expect(response.status).to eq(400)
-            expect(response).to be_bad_request
+            expect(response.status).to eq(422)
             expect(response).to be_client_error
             expect(JSON[response.body]['errors'].first).to eq("Failure to transition to initially_submitted")
           end
@@ -755,10 +754,9 @@ describe PapersController do
             expect(paper).to be_unsubmitted
           end
 
-          it 'returns a 400 Bad Request error' do
+          it 'returns a 422 Unprocessible Entity error' do
             do_request
-            expect(response.status).to eq(400)
-            expect(response).to be_bad_request
+            expect(response.status).to eq(422)
             expect(response).to be_client_error
             expect(JSON[response.body]['errors'].first).to eq("Failure to transition to submitted")
           end
@@ -853,10 +851,9 @@ describe PapersController do
           expect(paper).to be_unsubmitted
         end
 
-        it 'returns a 400 Bad Request error' do
+        it 'returns a 422 Unprocessible Entity error' do
           do_request
-          expect(response.status).to eq(400)
-          expect(response).to be_bad_request
+          expect(response.status).to eq(422)
           expect(response).to be_client_error
           expect(JSON[response.body]['errors'].first).to eq("Failure to transition to whatever_state")
         end
@@ -943,10 +940,9 @@ describe PapersController do
           expect(paper).to be_unsubmitted
         end
 
-        it 'returns a 400 Bad Request error' do
+        it 'returns a 422 Unprocessible Entity error' do
           do_request
-          expect(response.status).to eq(400)
-          expect(response).to be_bad_request
+          expect(response.status).to eq(422)
           expect(response).to be_client_error
           expect(JSON[response.body]['errors'].first).to eq("Failure to transition to withdrawn")
         end

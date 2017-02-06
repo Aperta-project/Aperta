@@ -135,6 +135,8 @@ describe DiscussionTopicsController do
           expect do
             do_request
           end.to change { DiscussionParticipant.count }.by(users_to_assign.length)
+          discussion_topic = DiscussionTopic.last
+          expect(discussion_topic.participants.all).to match users_to_assign
         end
       end
     end

@@ -92,11 +92,7 @@ class ReviewerReportTest(CommonTest):
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
-
-    ms_title = PgSQL().query('SELECT title from papers WHERE short_doi = %s;',
-        (short_doi,))[0][0]
-    ms_title = unicode(ms_title, encoding='utf-8', errors='strict')
-    dashboard_page.accept_invitation(ms_title)
+    dashboard_page.accept_all_invitation()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     manuscript_page = ManuscriptViewerPage(self.getDriver())

@@ -714,6 +714,17 @@ describe PapersController do
             expect(JSON[response.body]['errors'].first).to eq("Failure to transition to initially_submitted")
           end
         end
+
+        context 'when the activity feed fails' do
+          it 'submission is rolled back' do
+            expect(Activity).to receive(:paper_initially_submitted!).with(paper, user: user) do
+              raise
+            end
+
+            expect{ do_request }.to raise_error
+            expect(paper).to be_unsubmitted
+          end
+        end
       end
 
       context 'Full submission (not gradual engagement)' do
@@ -750,6 +761,17 @@ describe PapersController do
             expect(response).to be_bad_request
             expect(response).to be_client_error
             expect(JSON[response.body]['errors'].first).to eq("Failure to transition to submitted")
+          end
+        end
+
+        context 'when the activity feed fails' do
+          it 'submission is rolled back' do
+            expect(Activity).to receive(:paper_submitted!).with(paper, user: user) do
+              raise
+            end
+
+            expect{ do_request }.to raise_error
+            expect(paper).to be_unsubmitted
           end
         end
       end

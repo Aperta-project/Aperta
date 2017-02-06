@@ -98,8 +98,7 @@ describe PapersController do
     end
   end
 
-  # - any authenticated user can create a paper
-  describe 'POST create' do
+  describe 'POST create - any authenticated user can create a paper' do
     subject(:do_request) do
       post(
         :create,

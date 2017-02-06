@@ -67,7 +67,7 @@ export default Component.extend({
     }
     const { users } = yield this.get('ajax').request(this.get('participantUrl') + '?query=' + window.encodeURIComponent(term));
     const participantIds = this.get('currentParticipants').mapBy('id').map((num) => parseInt(num));
-    return users.reject((user) => participantIds.includes(user.id));
+    return users.reject((user) => participantIds.includes(parseInt(user.id)));
   }),
 
   actions: {

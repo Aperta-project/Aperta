@@ -162,7 +162,7 @@ test('it shows suggestions', function(assert) {
   };
   withUserSuggestions([user], assert, this, function() {
     assert.elementFound($('.ember-power-select-option').length);
-    assert.textPresent('.ember-power-select-option .suggestion-sub-value', 'pokemon@oak.edu');
+    assert.textPresent('.ember-power-select-option .suggestion-sub-value', 'pikachu@oak.edu');
   });
 });
 

@@ -94,7 +94,11 @@ describe TasksController, redis: true do
 
       it "does not create another billing task if a billing task already exists" do
         FactoryGirl.create(:billing_task, paper: paper)
-        expect { do_request }.to change(Task, :count).by 0
+        expect { do_request }.not_to change(Task, :count)
+      end
+
+      it "does create another billing task when there are no billing tasks on the paper" do
+        expect { do_request }.to change(Task, :count).by 1
       end
 
       it "uses the TaskFactory to create the new task" do

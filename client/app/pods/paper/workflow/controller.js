@@ -55,7 +55,6 @@ export default Controller.extend({
   },
 
   addTaskType: concurrencyTask(function * (phase, taskTypeList) {
-    console.log('addTaskType called');
     if (taskTypeList.length == 0) {
       this.get('flash').displayRouteLevelMessage('error', "No tasks were selected to add to the workflow.");
       return;

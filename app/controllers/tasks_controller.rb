@@ -24,10 +24,10 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
-    if does_not_already_have_billing_task?
+    if does_not_violate_single_billing_task_condition?
       @task = TaskFactory.create(task_type, new_task_params)
     else
-      return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
+      return render status: :unprocessable_entity, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
     end
 
     respond_with(task, location: task_url(task))
@@ -97,7 +97,7 @@ class TasksController < ApplicationController
     @paper ||= Paper.find_by_id_or_short_doi(paper_id)
   end
 
-  def does_not_already_have_billing_task?
+  def does_not_violate_single_billing_task_condition?
     billing_type_string = 'PlosBilling::BillingTask'
     if task_type.to_s == billing_type_string
       paper.tasks.where(type: billing_type_string).count.zero?

@@ -51,8 +51,8 @@ class ReviewerReport < ActiveRecord::Base
 
   def revision
     # if a decision has a revision, use it, otherwise, use paper's
-    major_version = decision.major_version || task.paper.major_version
-    minor_version = decision.minor_version || task.paper.minor_version
+    major_version = decision.major_version || task.paper.major_version || 0
+    minor_version = decision.minor_version || task.paper.minor_version || 0
     "v#{major_version}.#{minor_version}"
   end
 end

@@ -19,7 +19,7 @@ class ReviewerReport < ActiveRecord::Base
   def status
     if invitation
       if invitation.state == "accepted"
-        if task.completed
+        if task.submitted?
           "completed"
         else
           "pending"
@@ -45,7 +45,7 @@ class ReviewerReport < ActiveRecord::Base
     when "invitation_declined"
       invitation.declined_at
     when "invitation_rescinded"
-      invitation.recinded_at
+      invitation.rescinded_at
     end
   end
 

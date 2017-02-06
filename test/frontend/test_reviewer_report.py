@@ -35,7 +35,7 @@ class ReviewerReportTest(CommonTest):
     Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def _test_core_rev_rep_non_research_actions(self):
+  def test_core_rev_rep_non_research_actions(self):
     """
     test_reviewer_report: Validates the elements, styles, roles and functions of the front-matter
       reviewer report.

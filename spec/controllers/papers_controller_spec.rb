@@ -4,6 +4,7 @@ describe PapersController do
   let(:user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.build_stubbed(:journal) }
   let(:paper) { FactoryGirl.build(:paper) }
+  let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
 
   describe 'GET index' do
     subject(:do_request) { get :index, format: :json }
@@ -97,7 +98,8 @@ describe PapersController do
     end
   end
 
-  describe 'POST create - any authenticated user can create a paper' do
+  # - any authenticated user can create a paper
+  describe 'POST create' do
     subject(:do_request) do
       post(
         :create,
@@ -690,6 +692,29 @@ describe PapersController do
             .with(paper, user: user)
           do_request
         end
+
+        context 'when the paper has unprocessed images' do
+          before do
+            expect(Paper).to receive(:find).and_return paper
+
+            expect(paper).to receive(:initial_submit!) do
+              raise AASM::InvalidTransition.new(paper, "initially_submitted", paper.publishing_state)
+            end
+          end
+
+          it 'submission fails' do
+            do_request
+            expect(paper).to be_unsubmitted
+          end
+
+          it 'returns a 400 Bad Request error' do
+            do_request
+            expect(response.status).to eq(400)
+            expect(response).to be_bad_request
+            expect(response).to be_client_error
+            expect(JSON[response.body]['errors'].first).to eq("Failure to transition to initially_submitted")
+          end
+        end
       end
 
       context 'Full submission (not gradual engagement)' do
@@ -704,6 +729,29 @@ describe PapersController do
           expect(Activity).to receive(:paper_submitted!)
             .with(paper, user: user)
           do_request
+        end
+
+        context 'when there is a transition error' do
+          before do
+            expect(Paper).to receive(:find).and_return paper
+
+            expect(paper).to receive(:submit!) do
+              raise AASM::InvalidTransition.new(paper, "submitted", paper.publishing_state)
+            end
+          end
+
+          it 'submission fails' do
+            do_request
+            expect(paper).to be_unsubmitted
+          end
+
+          it 'returns a 400 Bad Request error' do
+            do_request
+            expect(response.status).to eq(400)
+            expect(response).to be_bad_request
+            expect(response).to be_client_error
+            expect(JSON[response.body]['errors'].first).to eq("Failure to transition to submitted")
+          end
         end
       end
 
@@ -768,6 +816,29 @@ describe PapersController do
       it 'responds with 200 OK' do
         do_request
         expect(response).to responds_with(200)
+      end
+
+      context 'when there is a transition error' do
+        before do
+          expect(Paper).to receive(:find_by_id_or_short_doi).and_return paper
+
+          expect(paper).to receive(:reactivate!) do
+            raise AASM::InvalidTransition.new(paper, "whatever_state", paper.publishing_state)
+          end
+        end
+
+        it 'submission fails' do
+          do_request
+          expect(paper).to be_unsubmitted
+        end
+
+        it 'returns a 400 Bad Request error' do
+          do_request
+          expect(response.status).to eq(400)
+          expect(response).to be_bad_request
+          expect(response).to be_client_error
+          expect(JSON[response.body]['errors'].first).to eq("Failure to transition to whatever_state")
+        end
       end
     end
 
@@ -835,6 +906,29 @@ describe PapersController do
       it 'responds with 200 OK' do
         do_request
         expect(response).to responds_with(200)
+      end
+
+      context 'when there is a transition error' do
+        before do
+          expect(Paper).to receive(:find_by_id_or_short_doi).and_return paper
+
+          expect(paper).to receive(:withdraw!) do
+            raise AASM::InvalidTransition.new(paper, "withdrawn", paper.publishing_state)
+          end
+        end
+
+        it 'submission fails' do
+          do_request
+          expect(paper).to be_unsubmitted
+        end
+
+        it 'returns a 400 Bad Request error' do
+          do_request
+          expect(response.status).to eq(400)
+          expect(response).to be_bad_request
+          expect(response).to be_client_error
+          expect(JSON[response.body]['errors'].first).to eq("Failure to transition to withdrawn")
+        end
       end
     end
 

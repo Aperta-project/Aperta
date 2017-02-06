@@ -629,7 +629,7 @@ class AuthorsTask(BaseTask):
 
   def _orcid_connect_exists(self):
     """
-    Return the existance of the ORCID connect button in individual author
+    Return the existence of the ORCID connect button in individual author
     section
     return Boolean
     """

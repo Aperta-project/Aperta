@@ -72,6 +72,7 @@ class AuthorsTask(BaseTask):
     self._department_lbl = (By.CSS_SELECTOR, 'div.flex-group + div.flex-group div + div div label')
     self._department_input = (By.CSS_SELECTOR, 'input.author-department')
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
+    self._orcid_connect_div = (By.CLASS_NAME, 'orcid-connect')
     self._author_lbls = (By.CLASS_NAME, 'question-checkbox')
     self._author_other_lbl = (
         By.CSS_SELECTOR,
@@ -199,6 +200,7 @@ class AuthorsTask(BaseTask):
     title_input = self._get(self._title_input)
     department_lbl = self._get(self._department_lbl)
     department_input = self._get(self._department_input)
+
     assert first_lbl.text == 'First Name', first_lbl.text
     assert first_input.get_attribute('placeholder') == 'Jane'
 
@@ -256,6 +258,8 @@ class AuthorsTask(BaseTask):
     assert validation_lbl.text == 'Validation', validation_lbl.text
     assert writing_re_lbl.text == 'Writing - Review and Editing', writing_re_lbl.text
     assert formal_analysis_lbl.text == 'Formal Analysis', formal_analysis_lbl.text
+
+    assert self._orcid_connect_exists() == False, 'ORCID Connect exists when not expected.'
 
     # Validate the Govt Employee section
     gquest = self._get(self._govt_employee_question)
@@ -583,6 +587,10 @@ class AuthorsTask(BaseTask):
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
     department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
+
+    assert self._orcid_connect_exists() == True, 'ORCID Connect does not ' \
+                                                 'exists when expected.'
+
     # TODO: The following will be filled in as part of the APERTA-8780 work
     # Deal with the ORCID element
     # Test if connect button is present, if so, call to connect
@@ -618,6 +626,20 @@ class AuthorsTask(BaseTask):
       except ElementDoesNotExistAssertionError:
         logging.info('No validation errors completing Author Task')
     time.sleep(1)
+
+  def _orcid_connect_exists(self):
+    """
+    Return the existance of the ORCID connect button in individual author
+    section
+    return Boolean
+    """
+    try:
+      self._get(self._orcid_connect_div)
+      orcid_connect_exists = True
+    except ElementDoesNotExistAssertionError:
+      orcid_connect_exists = False
+    finally:
+      return orcid_connect_exists
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

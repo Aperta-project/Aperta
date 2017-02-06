@@ -6,27 +6,20 @@ export default Ember.Component.extend({
 
   statusMessage: Ember.computed('report.status', function() {
     const status = this.get('report.status');
-    const invitation_text = 'Invitation to review ' + this.get('report.revision') + ' ';
-    var output = '';
-    switch(status) {
-    case 'invitation_pending':
-    case 'not_invited':
+    var output = '';    const verbs = {
+      'pending': 'accepted',
+      'invitation_invited': 'sent on',
+      'invitation_accepted': 'accepted',
+      'invitation_declined': 'declined',
+      'invitation_rescinded': 'rescinded'
+    };
+    if (['invitation_pending', 'not_invited'].includes(status)) {
       output = 'This candidate has not been invited to ' + this.get('report.revision');
-      break;
-    case 'invitation_invited':
-      output = invitation_text + 'sent on ' + this.get('statusDate');
-      break;
-    case 'pending':
-    case 'invitation_accepted':
-      output = invitation_text + 'accepted ' + this.get('statusDate');
-      break;
-    case 'invitation_declined':
-      output = invitation_text + 'declined ' + this.get('statusDate');
-      break;
-    case 'invitation_rescinded':
-      output = invitation_text + 'rescinded ' + this.get('statusDate');
-      break;
+    } else {
+      output = 'Invitation to review ' + this.get('report.revision') + ' '
+             + verbs[status] + ' ' + this.get('statusDate');
     }
+
     return output;
   }),
 

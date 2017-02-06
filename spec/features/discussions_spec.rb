@@ -12,6 +12,7 @@ feature "Discussions", js: true, selenium: true do
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
+  let!(:other_person) { create :user, username: 'pickachu' }
 
   context 'access paper and manage discussions' do
     scenario 'can add topics, participants, and replies' do
@@ -22,8 +23,17 @@ feature "Discussions", js: true, selenium: true do
 
       find('#nav-discussions').click
 
-      discussion_page.create_topic(as: admin)
+      # create new topic
+      discussion_page.new_topic
+      discussion_page.add_participant(user: other_person, fragment: 'picka')
+      discussion_page.fill_in_topic(title: 'Great', comment: 'Awesome')
+      discussion_page.expect_participant(other_person)
+      discussion_page.confirm_create_topic
+      # ensure topic created
+      discussion_page.expect_topic_created_succesfully(admin)
+      discussion_page.expect_participant(other_person)
       discussion_page.expect_can_add_participant
+      # add discussion reply
       discussion_page.add_reply_mentioning_user(mentioned_user, fragment: 'char')
       discussion_page.expect_reply_count(2)
       discussion_page.expect_reply_mentioning_user(by: admin, mentioned: mentioned_user)

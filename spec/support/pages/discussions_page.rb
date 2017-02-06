@@ -105,6 +105,16 @@ class DiscussionsPage < Page
     expect(page).not_to have_css('.discussions-index-topic')
   end
 
+  def add_participant(user: user, fragment:)
+    find(add_participant_button).click
+    find(participant_search_input).send_keys(fragment)
+    find(participant_search_option, text: user.email).click
+  end
+
+  def expect_participant(user)
+    expect(page).to have_css(participant, text: user.full_name)
+  end
+
   private
 
   def new_comment_field
@@ -125,6 +135,18 @@ class DiscussionsPage < Page
 
   def add_participant_button
     '.add-participant-button'
+  end
+
+  def participant_search_input
+    '.ember-power-select-search-input'
+  end
+
+  def participant_search_option
+    '.ember-power-select-option'
+  end
+
+  def participant
+    '.participant-selector-user-name'
   end
 
   def user_name_in_comments(user, count)

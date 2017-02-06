@@ -1,0 +1,13 @@
+# Logfile created on 2017-02-03 10:53:20 -0800 by logger.rb/47272
+2017-02-03T18:53:29.029Z 23922 TID-owio4nv9k INFO: Booting Sidekiq 3.5.3 with redis options {:namespace=>"tahi_development", :url=>nil}
+2017-02-03T18:53:32.690Z 23922 TID-owio4nv9k INFO: Running in ruby 2.2.4p230 (2015-12-16 revision 53155) [x86_64-darwin14]
+2017-02-03T18:53:32.691Z 23922 TID-owio4nv9k INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2017-02-03T18:53:32.691Z 23922 TID-owio4nv9k INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2017-02-03T18:53:32.696Z 23922 TID-owio4nv9k INFO: Starting processing, hit Ctrl-C to stop
+2017-02-03T18:54:02.415Z 23922 TID-owio4nv9k INFO: Shutting down
+2017-02-03T18:54:03.015Z 23922 TID-owip0sgvg INFO: Terminating 5 quiet workers
+2017-02-03T18:54:33.154Z 24137 TID-ovwj9203k INFO: Booting Sidekiq 3.5.3 with redis options {:namespace=>"tahi_development", :url=>nil}
+2017-02-03T18:54:36.313Z 24137 TID-ovwj9203k INFO: Running in ruby 2.2.4p230 (2015-12-16 revision 53155) [x86_64-darwin14]
+2017-02-03T18:54:36.313Z 24137 TID-ovwj9203k INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2017-02-03T18:54:36.313Z 24137 TID-ovwj9203k INFO: Upgrade to Sidekiq Pro for more features and support: http://sidekiq.org
+2017-02-03T18:54:36.318Z 24137 TID-ovwj9203k INFO: Starting processing, hit Ctrl-C to stop

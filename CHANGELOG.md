@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 * Aperta can now use the title, abstract, and body HTML extracted from PDFs.
+* Display review status at the top of the task
 ### Changed
 ### Deprecated
 ### Removed

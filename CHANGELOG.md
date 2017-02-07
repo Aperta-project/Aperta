@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## ## [x.x.x] - {yyyy-mm-dd}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## ## [1.36.0] - {2017-02-07}
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures

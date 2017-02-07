@@ -62,12 +62,14 @@ export default Controller.extend({
 
     let promises = taskTypeList.map((task) => {
       let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
-      let newTaskPromise = this.store.createRecord(unNamespacedKind, {
+      let newTask = this.store.createRecord(unNamespacedKind, {
         phase: phase,
         type: task.get('kind'),
         paper: this.get('paper'),
         title: task.get('title')
-      }).save().catch((response) => {
+      })
+      let newTaskPromise = newTask.save().catch((response) => {
+        newTask.destroyRecord();
         this.get('flash').displayRouteLevelMessage('error', response.errors[0].detail);
       });
       return newTaskPromise;

@@ -27,7 +27,7 @@ class TasksController < ApplicationController
     if does_not_violate_single_billing_task_condition?
       @task = TaskFactory.create(task_type, new_task_params)
     else
-      return render status: :unprocessable_entity, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
+      return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
     end
 
     respond_with(task, location: task_url(task))

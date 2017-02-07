@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
+# from ##### XXXXX TODO: import colors
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.PostgreSQL import PgSQL
 from Base.Resources import docs, supporting_info_files, figures, pdfs
@@ -30,11 +31,14 @@ class AHCard(BaseCard):
     self._subtitle = (By.CLASS_NAME, 'ad-hoc-corresponding-role')
     self._add_btn = (By.CSS_SELECTOR, 'div.adhoc-content-toolbar div.button--green')
     self._plus_icon = (By.CLASS_NAME, 'fa-plus')
-    self._tb_list = (By.CLASS_NAME, 'adhoc-toolbar-item--list')
+    self._tb_check = (By.CLASS_NAME, 'adhoc-toolbar-item--list')
     self._tb_text = (By.CLASS_NAME, 'adhoc-toolbar-item--text')
     self._tb_label = (By.CLASS_NAME, 'adhoc-toolbar-item--label')
     self._tb_email = (By.CLASS_NAME, 'adhoc-toolbar-item--email')
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
+    self._text_text_area = (By.CSS_SELECTOR,
+        'div.inline-edit-body-part div.bodypart-display div.content-editable-muted')
+    self._text_delete_icon = (By.CSS_SELECTOR, 'div.view-actions span.fa-trash')
 
     #list
     self._chk_item_remove = (By.CLASS_NAME, 'item-remove')
@@ -68,7 +72,7 @@ class AHCard(BaseCard):
     """
     """
     if control == 'check':
-      self._get(self._tb_list).click()
+      self._get(self._tb_check).click()
       self._get(self._chk_item_remove)
       cancel_lnk = self._get(self._chk_cancel_lnk)
       assert cancel_lnk.text == 'cancel', cancel_lnk.text
@@ -78,12 +82,22 @@ class AHCard(BaseCard):
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_disabled_button_style(save_btn)
       chk_add_btn = self._get(self._chk_add_btn)
-      # can't validate PLUS sign due to APERTA-
-
-
-
-    elif control == 'text':
+      # can't validate PLUS sign style due to APERTA-XXXX
+  elif control == 'input_text':
       self._get(self._tb_text).click()
+      placeholder_text = self._get(self._text_text_area).text
+      assert placeholder_text == u'Click to type in your response.', placeholder_text
+      delete_icon = self._get(self._text_delete_icon)
+
+      # TODO: IMPORT COLORS!!
+      assert delete_icon.value_of_css_property('color') == aperta_grey_dark, \
+          delete_icon.value_of_css_property('color')
+      self._actions.move_to_element(delete_icon).perform()
+      assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
+          delete_icon.value_of_css_property('color')
+
+
+
     elif control == 'label':
       self._get(self._tb_label).click()
     elif control == 'email':

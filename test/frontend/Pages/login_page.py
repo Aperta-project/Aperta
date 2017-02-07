@@ -9,7 +9,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface, aperta_green, white
+from authenticated_page import AuthenticatedPage
 from Base.CustomException import ElementDoesNotExistAssertionError
 
 __author__ = 'jgray@plos.org'

@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
+from frontend.Pages.authenticated_page import APERTA_GREY_DARK
 # from ##### XXXXX TODO: import colors
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
 from Base.PostgreSQL import PgSQL
@@ -83,14 +84,14 @@ class AHCard(BaseCard):
       #self.validate_secondary_big_disabled_button_style(save_btn)
       chk_add_btn = self._get(self._chk_add_btn)
       # can't validate PLUS sign style due to APERTA-XXXX
-  elif control == 'input_text':
+    elif control == 'input_text':
       self._get(self._tb_text).click()
       placeholder_text = self._get(self._text_text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
       delete_icon = self._get(self._text_delete_icon)
 
       # TODO: IMPORT COLORS!!
-      assert delete_icon.value_of_css_property('color') == aperta_grey_dark, \
+      assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
           delete_icon.value_of_css_property('color')
       self._actions.move_to_element(delete_icon).perform()
       assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \

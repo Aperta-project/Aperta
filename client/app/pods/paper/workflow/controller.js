@@ -60,7 +60,7 @@ export default Controller.extend({
       return;
     }
 
-    taskTypeList.map((task) => {
+    let promises = taskTypeList.map((task) => {
       let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
       let newTaskPromise = this.store.createRecord(unNamespacedKind, {
         phase: phase,
@@ -72,8 +72,7 @@ export default Controller.extend({
       });
       return newTaskPromise;
     });
-
-    return Ember.RSVP.all(taskTypeList);
+    yield Ember.RSVP.all(promises);
   }).drop(),
 
   actions: {

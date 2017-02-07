@@ -37,8 +37,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       }
     },
 
-    debouncedAddTaskType() {
-      Ember.run.debounce(this, this.get('callAddTaskType'), 500);
+    throttledAddTaskType() {
+      Ember.run.throttle(this, this.get('callAddTaskType'), 500);
     },
 
     close() {

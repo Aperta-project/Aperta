@@ -259,7 +259,7 @@ class AuthorsTask(BaseTask):
     assert writing_re_lbl.text == 'Writing - Review and Editing', writing_re_lbl.text
     assert formal_analysis_lbl.text == 'Formal Analysis', formal_analysis_lbl.text
 
-    assert self._orcid_connect_exists() == False, 'ORCID Connect exists when not expected.'
+    assert self._orcid_connect_exist() == False, 'ORCID Connect exists when not expected.'
 
     # Validate the Govt Employee section
     gquest = self._get(self._govt_employee_question)
@@ -588,7 +588,7 @@ class AuthorsTask(BaseTask):
     department_input.clear()
     department_input.send_keys(author_data['affiliation-dept'] + Keys.ENTER)
 
-    assert self._orcid_connect_exists() == True, 'ORCID Connect does not ' \
+    assert self._orcid_connect_exist() == True, 'ORCID Connect does not ' \
                                                  'exists when expected.'
 
     # TODO: The following will be filled in as part of the APERTA-8780 work
@@ -625,9 +625,8 @@ class AuthorsTask(BaseTask):
         self.validate_completion_error()
       except ElementDoesNotExistAssertionError:
         logging.info('No validation errors completing Author Task')
-    time.sleep(1)
 
-  def _orcid_connect_exists(self):
+  def _orcid_connect_exist(self):
     """
     Return the existence of the ORCID connect button in individual author
     section
@@ -635,11 +634,11 @@ class AuthorsTask(BaseTask):
     """
     try:
       self._get(self._orcid_connect_div)
-      orcid_connect_exists = True
+      orcid_connect_exist = True
     except ElementDoesNotExistAssertionError:
-      orcid_connect_exists = False
+      orcid_connect_exist = False
     finally:
-      return orcid_connect_exists
+      return orcid_connect_exist
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

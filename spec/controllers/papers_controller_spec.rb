@@ -692,18 +692,28 @@ describe PapersController do
           do_request
         end
 
-        context 'when the paper has unprocessed images' do
+        context 'when there is a transition error' do
+          # for example, due to unprocessed images
+
+          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+
           before do
             expect(Paper).to receive(:find).and_return paper
 
-            expect(paper).to receive(:initial_submit!) do
+            allow(paper).to receive(:initial_submit!).and_wrap_original do |method, *arguments|
+              method.call(*arguments)
+              expect(paper.initially_submitted?).to be true
+              # force our transaction to be rolled back
               raise AASM::InvalidTransition.new(paper, "initially_submitted", paper.publishing_state)
             end
           end
 
-          it 'submission fails' do
+          it 'gets rolled back to the unsubmitted state' do
             do_request
-            expect(paper).to be_unsubmitted
+
+            # we pull the paper from the db, since the rollback
+            # only affects the db and not the in-memory paper
+            expect(paper_refreshed_from_db).to be_unsubmitted
           end
 
           it 'returns a 422 Unprocessible Entity error' do
@@ -720,7 +730,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error
+            expect{ do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end
@@ -741,17 +751,27 @@ describe PapersController do
         end
 
         context 'when there is a transition error' do
+          # for example, due to unprocessed images
+
+          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+
           before do
             expect(Paper).to receive(:find).and_return paper
 
-            expect(paper).to receive(:submit!) do
+            allow(paper).to receive(:submit!).and_wrap_original do |method, *arguments|
+              method.call(*arguments)
+              expect(paper.submitted?).to be true
+              # force our transaction to be rolled back
               raise AASM::InvalidTransition.new(paper, "submitted", paper.publishing_state)
             end
           end
 
-          it 'submission fails' do
+          it 'gets rolled back to the unsubmitted state' do
             do_request
-            expect(paper).to be_unsubmitted
+
+            # we pull the paper from the db, since the rollback
+            # only affects the db and not the in-memory paper
+            expect(paper_refreshed_from_db).to be_unsubmitted
           end
 
           it 'returns a 422 Unprocessible Entity error' do
@@ -768,7 +788,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error
+            expect{ do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end

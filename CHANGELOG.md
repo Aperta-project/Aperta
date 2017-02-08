@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Users can now change the initial participants on a discussion topic
 ### Changed
 ### Deprecated
 ### Removed

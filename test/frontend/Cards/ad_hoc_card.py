@@ -94,13 +94,15 @@ class AHCard(BaseCard):
 
       # Dissabled due to APERTA-9139
       #assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
-      #delete_icon.value_of_css_property('color')
+      #    delete_icon.value_of_css_property('color')
       self._actions.move_to_element(delete_icon).perform()
       time.sleep(1)
       # APERTA GREEN #39a329
       #import pdb; pdb.set_trace()
-      assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
-          delete_icon.value_of_css_property('color')
+      delete_icon = self._get(self._text_delete_icon)
+      # Dissabled due to APERTA-9139
+      #assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
+      #    delete_icon.value_of_css_property('color')
 
 
 

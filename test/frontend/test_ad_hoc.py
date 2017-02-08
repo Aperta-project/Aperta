@@ -99,7 +99,7 @@ class AdHocCardAuthorTest(CommonTest):
     manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
-    ad_hoc_user = random.choice(('Authors', 'Editors', 'Reviewers', 'Staff Only'))
+    ad_hoc_user = random.choice(('Authors', 'Editors', 'Reviewers', 'Staff-only'))
     logging.info('Ad Hoc card for: {0}'.format(ad_hoc_user))
     if not workflow_page.is_card('Ad-hoc for {0}'.format(ad_hoc_user)):
       workflow_page.add_card('Ad-hoc for {0}'.format(ad_hoc_user))
@@ -112,7 +112,7 @@ class AdHocCardAuthorTest(CommonTest):
     elif ad_hoc_user == 'Reviewers':
       workflow_page.click_ad_hoc_reviewer_card()
       ad_hoc_card = AHReviewerCard(self._driver)
-    elif ad_hoc_user == 'Staff Only':
+    elif ad_hoc_user == 'Staff-only':
       workflow_page.click_ad_hoc_staff_card()
       ad_hoc_card = AHStaffCard(self._driver)
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)

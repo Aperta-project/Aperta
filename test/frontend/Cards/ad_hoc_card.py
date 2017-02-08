@@ -62,7 +62,9 @@ class AHCard(BaseCard):
     assert title.text == role_title, (title.text, role_title)
     assert self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
-    assert subtitle.text in 'Corresponding Role {0}'.format(role), subtitle.text
+    corresponding_role = 'Corresponding Role {0}'.format(role)
+    assert subtitle.text in corresponding_role, '{0} not in {1}'.format(subtitle.text,
+        corresponding_role)
     self.validate_application_ptext(subtitle)
     add_btn = self._get(self._add_btn)
     self.validate_primary_big_green_button_style(add_btn)
@@ -90,10 +92,13 @@ class AHCard(BaseCard):
       assert placeholder_text == u'Click to type in your response.', placeholder_text
       delete_icon = self._get(self._text_delete_icon)
 
-      # TODO: IMPORT COLORS!!
-      assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
-          delete_icon.value_of_css_property('color')
+      # Dissabled due to APERTA-9139
+      #assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
+      #delete_icon.value_of_css_property('color')
       self._actions.move_to_element(delete_icon).perform()
+      time.sleep(1)
+      # APERTA GREEN #39a329
+      #import pdb; pdb.set_trace()
       assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
           delete_icon.value_of_css_property('color')
 

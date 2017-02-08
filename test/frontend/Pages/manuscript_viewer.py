@@ -26,6 +26,7 @@ from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
+from frontend.Tasks.new_taxon_task import NewTaxonTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -699,6 +700,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
+    elif task_name == 'New Taxon':
+          # Complete New Taxon data before mark close
+          logging.info('Completing New Taxon Task')
+          new_taxon_task = NewTaxonTask(self._driver)
+          new_taxon_task.validate_new_taxon_task_styles()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

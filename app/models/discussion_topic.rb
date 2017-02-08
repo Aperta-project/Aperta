@@ -30,9 +30,10 @@ class DiscussionTopic < ActiveRecord::Base
   end
 
   def add_discussion_participants_by_id(user_ids)
-    user_ids
-      .map { |id| User.find(id) }
-      .each { |user| add_discussion_participant(user) }
+    user_ids.each do |id|
+      user = User.find(id)
+      add_discussion_participant(user)
+    end
   end
 
   def remove_discussion_participant(discussion_participant)

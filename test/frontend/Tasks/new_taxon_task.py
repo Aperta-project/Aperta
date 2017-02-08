@@ -28,12 +28,14 @@ class NewTaxonTask(BaseTask):
   # POM Actions
   def validate_new_taxon_task_styles(self):
     """Validate"""
+    # Time needed for some elements to be loaded into the DOM
     time.sleep(2)
     zoological_text, botanical_text = self._gets(self._questions_text)
     assert zoological_text.text == "Does this manuscript describe a new zoological taxon name?", \
         zoological_text
     assert botanical_text.text == "Does this manuscript describe a new botanical taxon name?", \
         botanical_text
+    # Time needed for some elements to be loaded into the DOM
     time.sleep(2)
     zoological_checkbox, botanical_checkbox = self._gets(self._checkboxes)
     zoological_checkbox.click()
@@ -50,8 +52,8 @@ class NewTaxonTask(BaseTask):
         'http://www.plosbiology.org/static/policies#taxon')
     assert botanical_comply_link.get_attribute('href') == (
         'http://www.plosbiology.org/static/policies#taxon')
+    # Time needed for some elements to be loaded into the DOM
     time.sleep(2)
-    import pdb; pdb.set_trace()
     zoological_authors_comply = self._gets(self._questions_text)[1]
     botanical_authors_comply = self._gets(self._questions_text)[3]
     assert zoological_authors_comply.text == (

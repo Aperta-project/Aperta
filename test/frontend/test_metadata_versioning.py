@@ -5,6 +5,8 @@ import os
 import random
 import time
 
+from selenium.webdriver.common.by import By
+
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -57,8 +59,8 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    logging.info('Creating Article in {0} of type {1}'.format('PLOS Wombat', paper_type))
-    self.create_article(title=title, journal='PLOS Wombat', type_=paper_type, random_bit=True)
+    self.create_article(title=title, journal='PLOS Wombat',
+                        type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()
@@ -121,7 +123,6 @@ class MetadataVersioningTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
-    time.sleep(1)
     workflow_page.logout()
 
     # Log in as a author to make some changes
@@ -134,13 +135,9 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Additional Information',
                                click_override=True,
                                data=new_prq)
-    # check versioning
-    version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
-    version_btn.click()
-    paper_viewer._wait_for_element(paper_viewer._gets(paper_viewer._bar_items)[1])
-    bar_items = paper_viewer._gets(paper_viewer._bar_items)
-    # click on
-    bar_items[1].find_elements_by_tag_name('option')[1].click()
+
+    paper_viewer.select_manuscript_version_item('compare', 1)
+
     # Following command disabled due to bug APERTA-5849
     # paper_viewer.click_task('prq')
     return self

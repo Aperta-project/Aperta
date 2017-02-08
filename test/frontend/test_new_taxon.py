@@ -51,6 +51,8 @@ class NewTaxonTest(CommonTest):
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.complete_task('New Taxon')
+    # logout and enter as editor
+    manuscript_page.logout()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

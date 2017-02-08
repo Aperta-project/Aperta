@@ -26,8 +26,8 @@ class NewTaxonTask(BaseTask):
                         "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p/a")
 
   # POM Actions
-  def validate_new_taxon_task_styles(self):
-    """Validate"""
+  def validate_all_new_taxon_task_styles(self):
+    """Validate both zoological and botanical options"""
     # Time needed for some elements to be loaded into the DOM
     time.sleep(2)
     zoological_text, botanical_text = self._gets(self._questions_text)
@@ -66,3 +66,66 @@ class NewTaxonTask(BaseTask):
     botanical_authors_comply_checkbox = self._gets(self._checkboxes)[3]
     zoological_authors_comply_checkbox.click()
     botanical_authors_comply_checkbox.click()
+
+  def validate_zoological_taxon_style(self):
+    """Validate only zoological option"""
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    zoological_text = self._gets(self._questions_text)[0]
+    assert zoological_text.text == "Does this manuscript describe a new zoological taxon name?", \
+        zoological_text
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    zoological_checkbox = self._gets(self._checkboxes)[0]
+    zoological_checkbox.click()
+    zoological_comply_text = self._gets(self._comply_text)[0]
+    assert zoological_comply_text.text == (
+        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
+        zoological_comply_text
+    zoological_comply_link = self._gets(self._comply_link)[0]
+    assert zoological_comply_link.get_attribute('href') == (
+        'http://www.plosbiology.org/static/policies#taxon')
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    zoological_authors_comply = self._gets(self._questions_text)[1]
+    assert zoological_authors_comply.text == (
+        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
+        zoological_authors_comply
+    zoological_authors_comply_checkbox = self._gets(self._checkboxes)[1]
+    zoological_authors_comply_checkbox.click()
+    
+  def validate_botanical_taxon_style(self):
+    """Validate only botanical option"""
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    botanical_text = self._gets(self._questions_text)[1]
+    assert botanical_text.text == "Does this manuscript describe a new botanical taxon name?", \
+        botanical_text
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    botanical_checkbox = self._gets(self._checkboxes)[1]
+    botanical_checkbox.click()
+    botanical_comply_text = self._gets(self._comply_text)[0]
+    assert botanical_comply_text.text == (
+        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
+        botanical_comply_text
+    botanical_comply_link = self._gets(self._comply_link)[0]
+    assert botanical_comply_link.get_attribute('href') == (
+        'http://www.plosbiology.org/static/policies#taxon')
+    # Time needed for some elements to be loaded into the DOM
+    time.sleep(2)
+    botanical_authors_comply = self._gets(self._questions_text)[2]
+    assert botanical_authors_comply.text == (
+        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
+        botanical_authors_comply
+    botanical_authors_comply_checkbox = self._gets(self._checkboxes)[2]
+    botanical_authors_comply_checkbox.click()
+
+  def generate_random_taxon(self):
+    random_taxon = random.randint(0, 2)
+    if random_taxon == 0:
+      self.validate_all_new_taxon_task_styles()
+    if random_taxon == 1:
+      self.validate_zoological_taxon_style()
+    if random_taxon == 2:
+      self.validate_botanical_taxon_style()

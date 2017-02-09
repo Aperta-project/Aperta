@@ -101,7 +101,7 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles(research_type=False)
-    journal_name = get_journal_name_from_short_doi(short_doi)
+    journal_name = reviewer_report_task.get_journal_name_from_short_doi(short_doi)
     reviewer_report_task.validate_reviewer_report_edit_mode(journal_name, research_type=False)
     outdata = manuscript_page.complete_task('Review by', click_override=True)
     logging.debug(outdata)
@@ -187,7 +187,7 @@ class ReviewerReportTest(CommonTest):
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.task_ready()
     reviewer_report_task.validate_task_elements_styles()
-    journal_name = get_journal_name_from_short_doi(short_doi)
+    journal_name = reviewer_report_task.get_journal_name_from_short_doi(short_doi)
     reviewer_report_task.validate_reviewer_report_edit_mode(journal_name)
     outdata = manuscript_page.complete_task('Review by', click_override=True)
     validate_in = {True: 'task', False: 'card'}

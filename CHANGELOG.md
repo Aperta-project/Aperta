@@ -2,7 +2,8 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [xx.xx.xx] - {2017-02-07}
+
+## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
 ### Deprecated
@@ -10,7 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 ### Security
 
-## ## [1.36.1] - {2017-02-08}
+## ## [1.36.1] - {2017-02-09}
 ### Added
 ### Changed
 ### Deprecated
@@ -23,7 +24,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [1.36.0] - {2017-02-07}
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+* Aperta can now use the title, abstract, and body HTML extracted from PDFs.
 ### Changed
+* Users can download previous versions of a Manuscript
 ### Deprecated
 ### Removed
 ### Fixed

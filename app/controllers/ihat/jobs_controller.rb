@@ -13,7 +13,7 @@ module Ihat
     private
 
     def safe_params
-      params.require(:job).permit(:id, :state, outputs: [:file_type, :url], options: [:callback_url, :metadata]).tap do |safe|
+      params.require(:job).permit(:id, :state, outputs: [:file_type, :url], options: [:callback_url, :metadata, :recipe_name]).tap do |safe|
         safe[:options][:metadata] = Verifier.new(safe[:options][:metadata]).decrypt
       end
     end

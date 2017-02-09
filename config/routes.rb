@@ -205,6 +205,8 @@ Tahi::Application.routes.draw do
     namespace :s3 do
       get :sign, to: 'forms#sign'
     end
+
+    resources :feature_flags, param: :name, only: [:index, :update]
   end
 
   # epub/pdf paper download formats

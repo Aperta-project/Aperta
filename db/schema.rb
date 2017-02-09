@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208172115) do
+ActiveRecord::Schema.define(version: 20170209124450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,11 @@ ActiveRecord::Schema.define(version: 20170208172115) do
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
+
+  create_table "feature_flags", id: false, force: :cascade do |t|
+    t.string  "name",   null: false
+    t.boolean "active", null: false
+  end
 
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"

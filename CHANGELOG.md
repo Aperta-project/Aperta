@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## ## [xx.xx.xx] - {2017-02-07}
+### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.36.1] - {2017-02-08}
+### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
 ## ## [1.36.0] - {2017-02-07}
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures

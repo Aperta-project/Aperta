@@ -205,7 +205,7 @@ class ReviewerReportTask(BaseTask):
     self.validate_secondary_big_green_button_style(confirm_no)
     confirm_no.click()
 
-  def validate_reviewer_report_edit_mode(self, research_type=True):
+  def validate_reviewer_report_edit_mode(self, journal, research_type=True):
     """
     Validates content of Reviewer Report task.
     :param research_type: If set to False, validates content against Front-Matter type report; when
@@ -242,11 +242,11 @@ class ReviewerReportTask(BaseTask):
       assert qh5.text == u'Additional comments may include concerns about dual publication, '\
           u'research or publication ethics.\n\nThese comments will not be transmitted to the '\
           u'authors.', qh5.text
-      #Disabled due to APERTA-9101
-      #assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
-          #u' to continue there as reviewer. PLOS Wombat is committed to facilitate the transfer' \
-          #u' between journals of suitable manuscripts to reduce redundant review cycles, and we' \
-          #u' appreciate your support.', qh6.text
+      #Failing due to APERTA-9101
+      assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
+          u' to continue there as reviewer. {0} is committed to facilitate the transfer' \
+          u' between journals of suitable manuscripts to reduce redundant review cycles, and we' \
+          u' appreciate your support.'.format(journal), qh6.text
     else:
       assert u'Please refer to our referee guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text
@@ -468,7 +468,7 @@ class ReviewerReportTask(BaseTask):
     self._wait_for_element(self._get(self._submit_confirm_yes_btn))
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
-    # Note: Check for 'This report has been submitted' to make sure confirm is ACKed
+    # Note: Check for 'This report has been submitted' to make sure confirm is acknowledged
     report_submit_status = self._get(self._submitted_status)
     assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
     if research_type:

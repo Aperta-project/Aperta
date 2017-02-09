@@ -2301,6 +2301,70 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
 
+
+  @staticmethod
+  def validate_warning_message_style(warning, message):
+    """
+    Ensure consistency in rendering warning across confirmation
+    :param warning: Warning element
+    """
+    assert warning.text == message, '{0} not {1}'.format(warning.text, message)
+    assert APPLICATION_TYPEFACE in warning.value_of_css_property('font-family'), \
+        warning.value_of_css_property('font-family')
+    assert warning.value_of_css_property('font-size') == '18px', \
+        warning.value_of_css_property('font-size')
+    assert warning.value_of_css_property('font-weight') == '500', \
+        warning.value_of_css_property('font-weight')
+    assert warning.value_of_css_property('line-height') == '19.8px', \
+        warning.value_of_css_property('line-height')
+    assert warning.value_of_css_property('color') == WHITE, \
+        warning.value_of_css_property('color')
+    assert warning.value_of_css_property('text-align') == 'center', \
+        warning.value_of_css_property('text-align')
+    assert warning.value_of_css_property('vertical-align') == 'baseline', \
+        warning.value_of_css_property('vertical-align')
+
+  @staticmethod
+  def validate_cancel_confirmation_style(cancel):
+    """
+    Ensure consistency in rendering cancel link across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family'), \
+        cancel.value_of_css_property('font-family')
+    assert cancel.value_of_css_property('font-size') == '14px', \
+        cancel.value_of_css_property('font-size')
+    assert cancel.value_of_css_property('font-weight') == '400', \
+        cancel.value_of_css_property('font-weight')
+    assert cancel.value_of_css_property('line-height') == '20px', \
+        cancel.value_of_css_property('line-height')
+    assert cancel.value_of_css_property('color') == WHITE, \
+        cancel.value_of_css_property('color')
+    assert cancel.value_of_css_property('text-align') == 'center', \
+        cancel.value_of_css_property('text-align')
+
+  @staticmethod
+  def validate_delete_confirmation_style(delete):
+    """
+    Ensure consistency in rendering cancel link across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in delete.value_of_css_property('font-family'), \
+        delete.value_of_css_property('font-family')
+    assert delete.value_of_css_property('font-size') == '14px', \
+        delete.value_of_css_property('font-size')
+    assert delete.value_of_css_property('font-weight') == '400', \
+        delete.value_of_css_property('font-weight')
+    assert delete.value_of_css_property('line-height') == '20px', \
+        delete.value_of_css_property('line-height')
+    assert delete.value_of_css_property('color') == APERTA_GREEN, \
+        delete.value_of_css_property('color')
+    assert delete.value_of_css_property('text-align') == 'center', \
+        delete.value_of_css_property('text-align')
+    assert delete.value_of_css_property('background-color') == WHITE, \
+        delete.value_of_css_property('vertical-align')
+
+
   @staticmethod
   def validate_file_title_style(ft):
     """

@@ -11,8 +11,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
 from frontend.Pages.authenticated_page import APERTA_GREY_DARK
-# from ##### XXXXX TODO: import colors
 from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+
 from Base.PostgreSQL import PgSQL
 from Base.Resources import docs, supporting_info_files, figures, pdfs
 from frontend.Cards.basecard import BaseCard
@@ -39,13 +39,18 @@ class AHCard(BaseCard):
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
     self._text_text_area = (By.CSS_SELECTOR,
         'div.inline-edit-body-part div.bodypart-display div.content-editable-muted')
-    self._text_delete_icon = (By.CSS_SELECTOR, 'div.view-actions span.fa-trash')
+    #self._text_delete_icon = (By.CSS_SELECTOR, 'div.view-actions span.fa-trash')
+    self._text_delete_icon = (By.CSS_SELECTOR, 'span.fa-trash')
 
     #list
     self._chk_item_remove = (By.CLASS_NAME, 'item-remove')
     self._chk_cancel_lnk = (By.CSS_SELECTOR, 'div.edit-actions div.button-link')
     self._chk_save_btn = (By.CSS_SELECTOR, 'div.edit-actions div.button-secondary')
     self._chk_add_btn = (By.CSS_SELECTOR, 'div.inline-edit-body-part div.add-item')
+
+    self._delete_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay h4')
+    self._cancel_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.button--white')
+    self._delete_btn = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.delete-button')
 
   # POM Actions
   def validate_card_elements_styles(self, short_doi, role):
@@ -62,6 +67,8 @@ class AHCard(BaseCard):
     assert title.text == role_title, (title.text, role_title)
     assert self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
+    if role == 'Staff Only':
+      role = 'Staff-only'
     corresponding_role = 'Corresponding Role {0}'.format(role)
     assert subtitle.text in corresponding_role, '{0} not in {1}'.format(subtitle.text,
         corresponding_role)
@@ -90,20 +97,28 @@ class AHCard(BaseCard):
       self._get(self._tb_text).click()
       placeholder_text = self._get(self._text_text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
+      self._get(self._text_text_area).click()
+      self._wait_for_element(self._get(self._text_delete_icon))
       delete_icon = self._get(self._text_delete_icon)
-
+      #self._actions.move_to_element(delete_icon).perform()
+      delete_icon.click()
       # Dissabled due to APERTA-9139
       #assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
       #    delete_icon.value_of_css_property('color')
-      self._actions.move_to_element(delete_icon).perform()
-      time.sleep(1)
-      # APERTA GREEN #39a329
-      #import pdb; pdb.set_trace()
-      delete_icon = self._get(self._text_delete_icon)
+      #self._actions.move_to_element(delete_icon).perform()
+      #delete_icon = self._get(self._text_delete_icon)
+      #self._wait_for_element(self._get(self._text_delete_icon))
+      #self._get(self._text_delete_icon).click()
       # Dissabled due to APERTA-9139
       #assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
       #    delete_icon.value_of_css_property('color')
-
+      delete_warning = self._get(self._delete_warning)
+      warning_msg = 'This will permanently delete your item. Are you sure?'
+      self.validate_warning_message_style(delete_warning, warning_msg)
+      cancel_lnk = self._get(self._cancel_warning)
+      self.validate_cancel_confirmation_style(cancel_lnk)
+      delete_btn = self._get(self._delete_btn)
+      self.validate_delete_confirmation_style(delete_btn)
 
 
     elif control == 'label':

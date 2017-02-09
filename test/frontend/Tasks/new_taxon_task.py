@@ -36,8 +36,19 @@ class NewTaxonTask(BaseTask):
         "Does this manuscript describe a new zoological taxon name?"), zoological_text
     assert botanical_text.text == (
       "Does this manuscript describe a new botanical taxon name?"), botanical_text
+    return [False,False,False,False]
 
-  def zoological_and_botanical_first_question_with_one_checked(self, position_checkbox):
+  def zoological_and_botanical_first_question_with_zoological_checked(self):
+    """Validate zoological and botanical first question with zoological checked"""
+    self.zoological_and_botanical_first_question_with_one_checked_helper(0,1)
+    return [True,False,False,False]
+  
+  def zoological_and_botanical_first_question_with_botanical_checked(self):
+    """Validate zoological and botanical first question with botanical checked"""
+    self.zoological_and_botanical_first_question_with_one_checked_helper(1,2)
+    return [False,False,True,False]
+
+  def zoological_and_botanical_first_question_with_one_checked_helper(self, position_checkbox, position_text):
     """
     Validate zoological and botanical first question with zoological checked
     Validate zoological and botanical first question with botanical checked
@@ -48,28 +59,30 @@ class NewTaxonTask(BaseTask):
     time.sleep(2)
     checkbox = self._gets(self._checkboxes)[position_checkbox]
     checkbox.click()
-    comply_text = self._gets(self._comply_text)
+    comply_text = self._get(self._comply_text)
     assert comply_text.text == (
         "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
         comply_text
-    comply_link = self._gets(self._comply_link)
+    comply_link = self._get(self._comply_link)
     assert comply_link.get_attribute('href') == 'http://www.plosbiology.org/static/policies#taxon'
     # Time needed for some elements to be loaded into the DOM
     time.sleep(2)
-    authors_comply = self._gets(self._questions_text)
+    authors_comply = self._gets(self._questions_text)[position_text]
     assert authors_comply.text == (
         "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
         authors_comply
 
   def zoological_and_botanical_first_question_with_zoological_comply_accepted(self):
     """Validate zoological and botanical first question with zoological checked and comply accepted"""
-    self.zoological_and_botanical_first_question_with_one_checked(0)
+    self.zoological_and_botanical_first_question_with_one_checked_helper(0,1)
     self.zoological_and_botanical_comply_checkbox_helper(1)
+    return [True,True,False,False]
 
   def zoological_and_botanical_first_question_with_botanical_comply_accepted(self):
     """Validate zoological and botanical first question with botanical checked and comply accepted"""
-    self.zoological_and_botanical_first_question_with_one_checked(1)
+    self.zoological_and_botanical_first_question_with_one_checked_helper(1,2)
     self.zoological_and_botanical_comply_checkbox_helper(2)
+    return [False,False,True,True]
 
   def zoological_and_botanical_comply_checkbox_helper(self, position_comply_checkbox):
     """
@@ -82,15 +95,17 @@ class NewTaxonTask(BaseTask):
 
   def zoological_and_botanical_first_question_checked_with_zoological_comply_accepted(self):
     """Validate zoological and botanical first question and both checked but only zoological comply accepted"""
-    self.zoological_and_botanical_first_question_checked()
+    self.zoological_and_botanical_first_question_checked_helper()
     self.zoological_and_botanical_comply_checkbox_helper(1)
+    return [True,True,True,False]
 
   def zoological_and_botanical_first_question_checked_with_botanical_comply_accepted(self):
     """Validate zoological and botanical first question and both checked but only botanical comply accepted"""
-    self.zoological_and_botanical_first_question_checked()
+    self.zoological_and_botanical_first_question_checked_helper()
     self.zoological_and_botanical_comply_checkbox_helper(3)
+    return [True,False,True,True]
 
-  def zoological_and_botanical_first_question_checked(self):
+  def zoological_and_botanical_first_question_checked_helper(self):
     """
     Helper for zoological_and_botanical_first_question_checked_with_zoological_comply_accepted
     Helper for zoological_and_botanical_first_question_checked_with_botanical_comply_accepted
@@ -130,16 +145,18 @@ class NewTaxonTask(BaseTask):
     self.zoological_and_botanical_first_question_checked()
     self.zoological_and_botanical_comply_checkbox_helper(1)
     self.zoological_and_botanical_comply_checkbox_helper(3)
+    return [True,True,True,True]
 
   def generate_random_taxon(self):
     radom_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \
-                   self.zoological_and_botanical_first_question_with_one_checked, \
+                   self.zoological_and_botanical_first_question_with_zoological_checked, \
+                   self.zoological_and_botanical_first_question_with_botanical_checked, \
                    self.zoological_and_botanical_first_question_with_zoological_comply_accepted, \
                    self.zoological_and_botanical_first_question_with_botanical_comply_accepted, \
                    self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted, \
                    self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted, \
-                   self.zoological_and_botanical_with_all_checked, \
-                   self.zoological_and_botanical_first_question_checked
+                   self.zoological_and_botanical_with_all_checked
                   ]
     method = random.choice(radom_taxon)
-    method()
+    data = method()
+    return data

@@ -704,7 +704,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
           # Complete New Taxon data before mark close
           logging.info('Completing New Taxon Task')
           new_taxon_task = NewTaxonTask(self._driver)
-          new_taxon_task.generate_random_taxon()
+          outdata = new_taxon_task.generate_random_taxon()
           base_task.click_completion_button()
           self.click_covered_element(task)
     else:

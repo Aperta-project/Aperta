@@ -259,7 +259,7 @@ class ReviewerReportTask(BaseTask):
       assert q2.text == u'Do you have any potential or perceived competing interests that may ' \
                         u'influence your review?', q2.text
       assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
-                        u'PLOS Biology?', q3.text
+                        u'{0}?'.format(journal), q3.text
       assert q4.text == u'If previously unpublished data are included to support the conclusions,' \
                         u' please note in the box below whether:', q4.text
       assert q5.text == u'(Optional) Please offer any additional confidential comments to the ' \

@@ -50,9 +50,30 @@ class NewTaxonTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
+    #outdata = manuscript_page.complete_task('New Taxon', data = [True,True,True,True])
     outdata = manuscript_page.complete_task('New Taxon')
+    self.data_validation(outdata)
     # logout and enter as editor
     manuscript_page.logout()
 
+  def data_validation(self, data):
+    """Validation of the data to log into the logging.info()"""
+    if data == [False,False,False,False]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_without_checkboxes')
+    elif data == [True,False,False,False]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_with_zoological_checked')
+    elif data == [False,False,True,False]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_with_botanical_checked')
+    elif data == [True,True,False,False]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_with_zoological_comply_accepted')
+    elif data == [False,False,True,True]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_with_botanical_comply_accepted')
+    elif data == [True,True,True,False]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_checked_with_zoological_comply_accepted')
+    elif data == [True,False,True,True]:
+      logging.info('The test was executed with: zoological_and_botanical_first_question_checked_with_botanical_comply_accepted')
+    elif data == [True,True,True,True]:
+      logging.info('The test was executed with: zoological_and_botanical_with_all_checked')
+            
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

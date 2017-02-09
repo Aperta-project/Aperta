@@ -142,13 +142,13 @@ class NewTaxonTask(BaseTask):
 
   def zoological_and_botanical_with_all_checked(self):
     """Validate zoological and botanical first question and both checked with comply accepted"""
-    self.zoological_and_botanical_first_question_checked()
+    self.zoological_and_botanical_first_question_checked_helper()
     self.zoological_and_botanical_comply_checkbox_helper(1)
     self.zoological_and_botanical_comply_checkbox_helper(3)
     return [True,True,True,True]
 
   def generate_random_taxon(self):
-    radom_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \
+    random_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \
                    self.zoological_and_botanical_first_question_with_zoological_checked, \
                    self.zoological_and_botanical_first_question_with_botanical_checked, \
                    self.zoological_and_botanical_first_question_with_zoological_comply_accepted, \
@@ -157,6 +157,26 @@ class NewTaxonTask(BaseTask):
                    self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted, \
                    self.zoological_and_botanical_with_all_checked
                   ]
-    method = random.choice(radom_taxon)
+    method = random.choice(random_taxon)
     data = method()
     return data
+
+  def data_validation(self, data):
+    """Validation of the data to log into the logging.info()"""
+    if data == [False,False,False,False]:
+      outdata = self.zoological_and_botanical_first_question_without_checkboxes()
+    elif data == [True,False,False,False]:
+      outdata = self.zoological_and_botanical_first_question_with_zoological_checked()
+    elif data == [False,False,True,False]:
+      outdata = self.zoological_and_botanical_first_question_with_botanical_checked()
+    elif data == [True,True,False,False]:
+      outdata = self.zoological_and_botanical_first_question_with_zoological_comply_accepted()
+    elif data == [False,False,True,True]:
+      outdata = self.zoological_and_botanical_first_question_with_botanical_comply_accepted()
+    elif data == [True,True,True,False]:
+      outdata = self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted()
+    elif data == [True,False,True,True]:
+      outdata = self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
+    elif data == [True,True,True,True]:
+      outdata = self.zoological_and_botanical_with_all_checked()
+    return outdata

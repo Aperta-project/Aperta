@@ -701,12 +701,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
       self.click_covered_element(task)
       time.sleep(1)
     elif task_name == 'New Taxon':
-          # Complete New Taxon data before mark close
-          logging.info('Completing New Taxon Task')
-          new_taxon_task = NewTaxonTask(self._driver)
-          outdata = new_taxon_task.generate_random_taxon()
-          base_task.click_completion_button()
-          self.click_covered_element(task)
+      # Complete New Taxon data before mark close
+      logging.info('Completing New Taxon Task')
+      new_taxon_task = NewTaxonTask(self._driver)
+      if data:
+        outdata = new_taxon_task.data_validation(data)
+      else:
+        outdata = new_taxon_task.generate_random_taxon()
+      base_task.click_completion_button()
+      self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

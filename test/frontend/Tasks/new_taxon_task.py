@@ -132,7 +132,6 @@ class NewTaxonTask(BaseTask):
     self.zoological_and_botanical_comply_checkbox_helper(3)
 
   def generate_random_taxon(self):
-    import pdb; pdb.set_trace()
     radom_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \
                    self.zoological_and_botanical_first_question_with_one_checked, \
                    self.zoological_and_botanical_first_question_with_zoological_comply_accepted, \

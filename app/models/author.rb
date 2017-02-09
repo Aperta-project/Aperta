@@ -1,6 +1,7 @@
 class Author < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
+  include Tokenable
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
   CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author"
@@ -20,9 +21,28 @@ class Author < ActiveRecord::Base
   validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
   validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
   validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+  validates :co_author_state, inclusion: { in: %w(confirmed refuted), message: "must be confirmed or refuted" }, allow_nil: true
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def co_author_confirmed?
+    co_author_state == 'confirmed'
+  end
+
+  def co_author_confirmed!
+    update_attributes!(
+      co_author_state: 'confirmed',
+      co_author_state_modified: Time.now.utc
+    )
+  end
+
+  def co_author_refuted!
+    update_attributes!(
+      co_author_state: 'refuted',
+      co_author_state_modified: Time.now.utc
+    )
   end
 
   def paper_id

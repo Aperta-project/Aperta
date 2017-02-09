@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161206175332) do
+ActiveRecord::Schema.define(version: 20170207164754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,7 +130,12 @@ ActiveRecord::Schema.define(version: 20161206175332) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
     t.integer  "user_id"
+    t.string   "token"
+    t.string   "co_author_state"
+    t.datetime "co_author_state_modified"
   end
+
+  add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"

@@ -1,0 +1,34 @@
+<%= render layout: 'container' do %>
+  <div class="pending-confirmation">
+    <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
+      <span class="date"><%= @author.created_at.strftime('%b %d, %Y') %></span></h2>
+    <h3 class="dashboard-paper-title"><%= @paper.title.html_safe %></h3>
+
+    <h4>The full authorship list, as submitted is:</h4>
+
+    <ol id="author-list">
+    <% @authors.each do |single_author| %>
+      <li class="author-list-item">
+          <%= single_author.full_name %>
+          <% if single_author.affiliation %>
+            : <%= single_author.affiliation %>
+          <% end %>
+      </li>
+    <% end %>
+    </ol>
+
+    <h4>By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:</h4>
+
+    <ol id="authorship-criteria">
+      <li class="authorship-criteria-item">Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data;&nbsp;and</li>
+      <li class="authorship-criteria-item">Drafting the article or revisiting it critically for important intellectual content;&nbsp;and</li>
+      <li class="authorship-criteria-item">Final approval of the version to be published;&nbsp;and</li>
+      <li class="authorship-criteria-item">Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.</li>
+    </ol>
+
+    <%= form_for @author, url: confirm_token_co_author_path(@author.token), method: 'put'  do |f| %>
+      <%= f.submit value: 'Confirm Authorship', class: 'button-primary button--green' %>
+    <% end %>
+    <p class="refute-authorship">To refute authorship, please reply to the email you recieved.</p>
+  </div>
+<% end %>

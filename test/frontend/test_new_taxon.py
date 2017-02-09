@@ -29,6 +29,7 @@ class NewTaxonTest(CommonTest):
   def test_new_taxon_task(self,data):
     """
     test_new_taxon: Validates the elements and styles of the front-matter New Taxon Task.
+    :param data: The values for the New Taxon to be checked, i.e [True,False,True,False]
     :return: None
     """
     logging.info('Test New Taxon Task::front_matter')

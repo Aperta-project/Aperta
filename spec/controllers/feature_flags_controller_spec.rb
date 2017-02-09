@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FeatureFlagsController, type: :controller do
+describe FeatureFlagsController do
   let(:user) { FactoryGirl.create(:user) }
   let!(:feature_flag1) { FactoryGirl.create(:feature_flag) }
   let!(:feature_flag2) { FactoryGirl.create(:feature_flag) }
@@ -12,8 +12,9 @@ RSpec.describe FeatureFlagsController, type: :controller do
 
     it 'responds with the list of feature flags' do
       do_request
-      expect(res_body['feature_flags'].count).to eq(2)
-      expect(res_body['feature_flags'][0].keys).to include("name", "active")
+      expect(res_body.keys.count).to eq(2)
+      expect(res_body[feature_flag1.name]).to eq(true)
+      expect(res_body[feature_flag2.name]).to eq(true)
     end
   end
 

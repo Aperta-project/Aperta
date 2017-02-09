@@ -7,7 +7,7 @@ class FeatureFlagsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with FeatureFlag.all
+    render json: FeatureFlag.to_hash
   end
 
   def update

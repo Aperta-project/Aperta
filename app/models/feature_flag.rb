@@ -36,8 +36,14 @@ class FeatureFlag < ActiveRecord::Base
   # to accidentally *set* flags, AND it abstracts away the fact that
   # these are in the database instead of the environment.
   def self.[](flag)
-    flag = flag.to_s if flag.is_a? Symbol
+    find(flag.to_s).active
+  end
 
-    find(flag).active
+  def self.to_hash
+    ret = {}
+    all.find_each do |feature|
+      ret[feature.name] = feature.active
+    end
+    ret
   end
 end

@@ -20,9 +20,10 @@ describe FeatureFlagsController do
 
   describe '#update' do
     subject(:do_request) do
+      flags = {}
+      flags[feature_flag1.name] = false
       post :update,
-        name: feature_flag1.name,
-        feature_flag: { active: false },
+        feature_flags: flags,
         format: :json
     end
 
@@ -40,7 +41,7 @@ describe FeatureFlagsController do
         allow(user).to receive(:site_admin?).and_return(true)
       end
 
-      it { is_expected.to responds_with(201) }
+      it { is_expected.to responds_with(200) }
 
       it 'changes updates the active value' do
         expect { do_request }.to change { feature_flag1.reload.active }.from(true).to(false)

@@ -12,7 +12,7 @@
 # rake task! Ditto to remove an unneeded flag once all conditionals
 # have been removed.
 #
-# To turn a feature on or off, visit /admin/feature_previews as a user
+# To turn a feature on or off, visit /admin/feature_flags as a user
 # with the site_admin role.
 #
 class FeatureFlag < ActiveRecord::Base

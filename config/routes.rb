@@ -206,7 +206,9 @@ Tahi::Application.routes.draw do
       get :sign, to: 'forms#sign'
     end
 
-    resources :feature_flags, param: :name, only: [:index, :update]
+    resources :feature_flags, param: :name, only: [:index] do
+      put :update, on: :collection
+    end
   end
 
   # epub/pdf paper download formats

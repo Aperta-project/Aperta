@@ -8,7 +8,7 @@ export default Ember.Service.extend({
 
   init() {
     this._super(...arguments);
-    this.get('restless').get('/api/feature_flags').then(
+    this.get('restless').get('/api/feature_flags.json').then(
       (flags) => {
         this.setProperties(flags);
         this.set('ready', true);

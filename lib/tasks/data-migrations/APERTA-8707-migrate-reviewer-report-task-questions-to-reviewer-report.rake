@@ -44,13 +44,13 @@ namespace :data do
 
       task answerless_reviewer_report_task_to_reviewer_report: :environment do
         relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
-        task_id_set = Set.new Task.where(type: relevant_tasks).map(&:id).uniq
+        task_id_set = Set.new Task.where(type: relevant_tasks).pluck(:id).uniq
 
         # Every accepted reviewer invitation should have a corresponding Reviewer Report. If it does not, this next block will create one.
         task_id_set.each do |task_id|
           task = Task.find(task_id)
           task.paper.decisions.each do |decision|
-            if decision.invitations.where(invitee: task.reviewer, invitee_role: 'Reviewer', state: 'accepted').first.try(:state) == 'accepted'
+            if decision.invitations.where(invitee: task.reviewer, invitee_role: 'Reviewer', state: 'accepted').first
               reviewer_report = ReviewerReport.where(
                 task: task,
                 user: task.reviewer,

@@ -4,7 +4,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [xx.xx.xx] - {2017-02-07}
 ### Added
-* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 ### Changed
 ### Deprecated
 ### Removed
@@ -13,7 +12,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [1.36.1] - {2017-02-08}
 ### Added
-* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 ### Changed
 ### Deprecated
 ### Removed

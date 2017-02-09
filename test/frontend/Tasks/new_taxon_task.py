@@ -160,7 +160,7 @@ class NewTaxonTask(BaseTask):
     method = random.choice(random_taxon)
     data = method()
     return data
-
+        
   def data_validation(self, data):
     """Validation of the data to log into the logging.info()"""
     if data == [False,False,False,False]:

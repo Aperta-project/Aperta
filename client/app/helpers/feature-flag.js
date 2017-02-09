@@ -11,7 +11,7 @@ export default Ember.Helper.extend({
   },
 
   destroy() {
-    this.get('service').removeObserver(this.flag, this, 'recompute');
+    this.get('featureFlag').removeObserver(this.flag, this, 'recompute');
     return this._super();
   }
 });

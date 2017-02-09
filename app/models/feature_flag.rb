@@ -5,7 +5,7 @@
 # variables.
 #
 # Here in ruby-world, FeatureFlag[:YOUR_FEATURE] returns a boolean. In
-# client-world, you can use the (feature-enabled 'YOUR_FEATURE')
+# client-world, you can use the (feature-flag 'YOUR_FEATURE')
 # handlebars helper, or the featureFlags service.
 #
 # NOTE: To create a NEW feature flag, modify the create_feature_flags

@@ -13,7 +13,7 @@ export default Ember.Service.extend({
         this.setProperties(flags);
         this.set('ready', true);
         this.callbacks.forEach(
-          call => { call[1](flags[call[0]]); }
+          c => { c.callback(flags[c.name]); }
         );
       }
     );
@@ -25,10 +25,10 @@ export default Ember.Service.extend({
       if (this.get('ready')) {
         resolve(this.get(flag));
       } else {
-        this.callbacks.push([
-          flag,
-          (v) => { if (v) resolve(); }
-        ]);
+        this.callbacks.push({
+          name: flag,
+          callback:(v) => { if (v) resolve(); }
+        });
       }
     });
   },
@@ -39,10 +39,10 @@ export default Ember.Service.extend({
       if (this.get('ready')) {
         resolve(this.get(flag));
       } else {
-        this.callbacks.push([
-          flag,
-          (v) => { if (!v) resolve(); }
-        ]);
+        this.callbacks.push({
+          name: flag,
+          callback: (v) => { if (!v) resolve(); }
+        });
       }
     });
   },
@@ -52,10 +52,10 @@ export default Ember.Service.extend({
       if (this.get('ready')) {
         resolve(this.get(flag));
       } else {
-        this.callbacks.push([
-          flag,
-          resolve
-        ]);
+        this.callbacks.push({
+          name: flag,
+          callback: resolve
+        });
       }
     });
   }

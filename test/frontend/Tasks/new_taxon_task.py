@@ -48,7 +48,9 @@ class NewTaxonTask(BaseTask):
     self.zoological_and_botanical_first_question_with_one_checked_helper(1,2)
     return [False,False,True,False]
 
-  def zoological_and_botanical_first_question_with_one_checked_helper(self, position_checkbox, position_text):
+  def zoological_and_botanical_first_question_with_one_checked_helper(self, 
+                                                                      position_checkbox,
+                                                                      position_text):
     """
     Validate zoological and botanical first question with zoological checked
     Validate zoological and botanical first question with botanical checked
@@ -160,7 +162,7 @@ class NewTaxonTask(BaseTask):
     method = random.choice(random_taxon)
     data = method()
     return data
-        
+
   def data_validation(self, data):
     """Validation of the data to log into the logging.info()"""
     if data == [False,False,False,False]:
@@ -174,9 +176,11 @@ class NewTaxonTask(BaseTask):
     elif data == [False,False,True,True]:
       outdata = self.zoological_and_botanical_first_question_with_botanical_comply_accepted()
     elif data == [True,True,True,False]:
-      outdata = self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted()
+      outdata = \
+      self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted()
     elif data == [True,False,True,True]:
-      outdata = self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
+      outdata = \
+      self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
     elif data == [True,True,True,True]:
       outdata = self.zoological_and_botanical_with_all_checked()
     return outdata

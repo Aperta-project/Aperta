@@ -22,7 +22,7 @@ __author__ = 'scadavid@plos.org'
 @MultiBrowserFixture
 class NewTaxonTest(CommonTest):
   """
-  Validate the elements & styles of the New Taxon Card and Task
+  Validate the elements of the New Taxon Card and Task
   Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 

@@ -10,6 +10,16 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 ### Security
 
+## ## [1.36.1] - {2017-02-09}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
 ## ## [1.36.0] - {2017-02-07}
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures

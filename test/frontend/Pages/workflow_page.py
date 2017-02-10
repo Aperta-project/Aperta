@@ -36,7 +36,7 @@ class WorkflowPage(AuthenticatedPage):
     self._column_header_cancel = (By.XPATH,
                                   ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
-    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
+    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,  ".//div[@class='overlay-action-buttons']/button[2]")
@@ -88,7 +88,7 @@ class WorkflowPage(AuthenticatedPage):
     self._ad_hoc_reviewers_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Reviewers')]")
     self._ad_hoc_authors_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Authors')]")
     self._ad_hoc_staff_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Staff Only')]")
-    self._reviewed_by_card = (By.CSS_SELECTOR, 'div.front-matter-reviewer-report-task > a')
+    self._reviewed_by_card = (By.CSS_SELECTOR, 'div.reviewer-report-task > a')
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
@@ -119,6 +119,15 @@ class WorkflowPage(AuthenticatedPage):
     """
     recent_activity = self._get(self._recent_activity)
     recent_activity.click()
+    time.sleep(1)
+
+  def click_close_overlay(self):
+    """
+    Close the overlay modals
+    :return: void function
+    """
+    close_btn = self._get(self._close_icon_overlay)
+    close_btn.click()
     time.sleep(1)
 
   def click_initial_decision_card(self):

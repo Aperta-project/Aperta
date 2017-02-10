@@ -906,3 +906,38 @@ class ManuscriptViewerPage(AuthenticatedPage):
     sub_info = self._get(self._paper_sidebar_state_information)
     self._actions.move_to_element(sub_info).perform()
     time.sleep(.5)
+
+  def select_manuscript_version_item(self, version_selector='compare',
+                                     item_index=None):
+    """
+    Select a manuscript version item
+    :param version_selector: The version selector to use (compare or viewing). String
+    :param item_index: The item index in the selector. Integer
+    :return: None
+    """
+    # Convert the string to a bar_item elements index
+    bar_items_index = None
+    if version_selector == 'viewing':
+      bar_items_index = 0
+    elif version_selector == 'compare':
+      bar_items_index = 1
+
+    # Open the versioning box
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    # Waits for versioning box be visible
+    self._wait_for_element(
+      self._gets(self._bar_items)[1])
+
+    # Get the bar items
+    bar_items = self._gets(self._bar_items)
+    # click on
+    version_select = bar_items[bar_items_index].find_element_by_class_name(
+      'ember-power-select-trigger')
+    version_select.click()
+    version_select_id = version_select.get_attribute('id')
+    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
+    items_holder = self._get(items_holder_selector)
+    items_holder.find_elements_by_class_name('ember-power-select-option')[
+      item_index].click()
+

@@ -174,7 +174,7 @@ class DashboardPage(AuthenticatedPage):
         yes_btn.click()
         break
     else:
-      raise(ValueError, u'Title {0} not found'.format(title))
+      raise(ValueError(u'Title {0} not found'.format(title)))
 
   def accept_or_reject_invitation(self, title):
     """

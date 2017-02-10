@@ -512,6 +512,17 @@ class AuthenticatedPage(PlosPage):
     return short_doi
 
   @staticmethod
+  def get_journal_name_from_short_doi(short_doi):
+    """
+    A method to return the paper id from the database via a query on the short_doi
+    :param short_doi: The short doi available from the URL of a paper and also the short_url in db
+    :return: paper.id from db, an integer
+    """
+    journal_id = PgSQL().query('SELECT journal_id '
+                               'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
+    return PgSQL().query('SELECT name FROM journals WHERE id = %s;', (journal_id,))[0][0]
+
+  @staticmethod
   def get_paper_id_from_short_doi(short_doi):
     """
     A method to return the paper id from the database via a query on the short_doi

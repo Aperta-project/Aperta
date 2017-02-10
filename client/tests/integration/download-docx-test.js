@@ -77,7 +77,7 @@ test('show download links on control bar', function(assert) {
       versioned_texts: [{
         id: 1,
         paper_id: currentPaper.id,
-        file_type: 'docx',
+        file_type: 'docx'
       }]
     })
   ]);

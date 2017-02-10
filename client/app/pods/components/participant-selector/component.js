@@ -62,12 +62,12 @@ export default Component.extend({
   }),
 
   searchUsersTask: task(function* (term) {
-    yield timeout(250);
-    return this.get('ajax')
-               .request(this.get('participantUrl') + '?query=' + window.encodeURIComponent(term))
-               .then((response) => {
-                 return response.users;
-               });
+    if(!Ember.testing) {
+      yield timeout(250);
+    }
+    const { users } = yield this.get('ajax').request(this.get('participantUrl') + '?query=' + window.encodeURIComponent(term));
+    const participantIds = this.get('currentParticipants').mapBy('id').map((num) => parseInt(num));
+    return users.reject((user) => participantIds.includes(parseInt(user.id)));
   }),
 
   actions: {

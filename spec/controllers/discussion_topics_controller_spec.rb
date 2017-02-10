@@ -89,7 +89,8 @@ describe DiscussionTopicsController do
       {
         discussion_topic: {
           paper_id: paper.id,
-          title: title
+          title: title,
+          initial_discussion_participant_ids: [user.to_param]
         }
       }
     end
@@ -118,14 +119,25 @@ describe DiscussionTopicsController do
         expect(topic['paper_id']).to eq(paper.id)
       end
 
-      it "assigns the participant with the discussion_participant_role" do
-        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(0)
+      describe "initial discussion participant assignment" do
+        let!(:users_to_assign) { create_list :user, 3 }
+        let(:creation_params) do
+          {
+            discussion_topic: {
+              paper_id: paper.id,
+              title: title,
+              initial_discussion_participant_ids: users_to_assign.map(&:id)
+            }
+          }
+        end
 
-        expect do
-          do_request
-        end.to change { Assignment.count }.by(1)
-
-        expect(Assignment.where(user_id: user.id, role_id: role.id).count).to eq(1)
+        it "assigns all users in initial_discussion_participant_ids as participants" do
+          expect do
+            do_request
+          end.to change { DiscussionParticipant.count }.by(users_to_assign.length)
+          discussion_topic = DiscussionTopic.last
+          expect(discussion_topic.participants.all).to match users_to_assign
+        end
       end
     end
 
@@ -185,13 +197,7 @@ describe DiscussionTopicsController do
     end
   end
 
-  describe 'GET users' do
-    subject(:do_request) do
-      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
-    end
-
-    it_behaves_like 'an unauthenticated json request'
-
+  shared_examples_for 'a participant search endpoint' do
     context 'when the user is authorized' do
       let(:searchable_users) do
         [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
@@ -199,20 +205,46 @@ describe DiscussionTopicsController do
 
       before do
         stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_participant, topic_a)
-          .and_return true
-
         allow(User).to receive(:fuzzy_search)
           .with('Kangaroo')
           .and_return searchable_users
-        do_request
       end
 
       it 'returns any user who matches the query' do
+        do_request
         expect(res_body['users'].count).to eq(1)
         expect(res_body['users'][0]['email']).to eq('foo@example.com')
       end
     end
+  end
+
+  describe 'GET users' do
+    subject(:do_request) do
+      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
+    end
+
+    before do
+      allow(user).to receive(:can?)
+        .with(:manage_participant, topic_a)
+        .and_return true
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+    it_behaves_like 'a participant search endpoint'
+  end
+
+  describe 'GET new_discussion_users' do
+    subject(:do_request) do
+      xhr :get, :new_discussion_users, format: :json, paper_id: paper.to_param, query: 'Kangaroo'
+    end
+
+    before do
+      allow(user).to receive(:can?)
+        .with(:start_discussion, paper)
+        .and_return true
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+    it_behaves_like 'a participant search endpoint'
   end
 end

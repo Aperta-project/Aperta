@@ -116,7 +116,9 @@ Tahi::Application.routes.draw do
       resources :bibitems, only: :create
       resources :phases, only: :index
       resources :decisions, only: :index
-      resources :discussion_topics, only: :index
+      resources :discussion_topics, only: :index do
+        get :new_discussion_users, on: :collection
+      end
       resources :task_types, only: :index, controller: 'paper_task_types'
 
       resources :tasks, only: [:index, :update, :create, :destroy] do

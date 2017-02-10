@@ -26,7 +26,7 @@ class NewTaxonTest(CommonTest):
   Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_new_taxon_task(self, data=None):
+  def test_new_taxon_task(self):
     """
     test_new_taxon: Validates the elements and styles of the front-matter New Taxon Task.
     :param data: The values for the New Taxon to be checked, i.e [True,False,True,False]
@@ -51,10 +51,7 @@ class NewTaxonTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    if data:
-      manuscript_page.complete_task('New Taxon', data)
-    else:
-      data = manuscript_page.complete_task('New Taxon')
+    data = manuscript_page.complete_task('New Taxon')
     logging.info('Completed Taxonomy data: {0}'.format(data))
     # logout and enter as editor
     manuscript_page.logout()

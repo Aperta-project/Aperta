@@ -166,21 +166,19 @@ class NewTaxonTask(BaseTask):
   def data_validation(self, data):
     """Validation of the data to log into the logging.info()"""
     if data == [False,False,False,False]:
-      outdata = self.zoological_and_botanical_first_question_without_checkboxes()
+      self.zoological_and_botanical_first_question_without_checkboxes()
     elif data == [True,False,False,False]:
-      outdata = self.zoological_and_botanical_first_question_with_zoological_checked()
+      self.zoological_and_botanical_first_question_with_zoological_checked()
     elif data == [False,False,True,False]:
-      outdata = self.zoological_and_botanical_first_question_with_botanical_checked()
+      self.zoological_and_botanical_first_question_with_botanical_checked()
     elif data == [True,True,False,False]:
-      outdata = self.zoological_and_botanical_first_question_with_zoological_comply_accepted()
+      self.zoological_and_botanical_first_question_with_zoological_comply_accepted()
     elif data == [False,False,True,True]:
-      outdata = self.zoological_and_botanical_first_question_with_botanical_comply_accepted()
+      self.zoological_and_botanical_first_question_with_botanical_comply_accepted()
     elif data == [True,True,True,False]:
-      outdata = \
       self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted()
     elif data == [True,False,True,True]:
-      outdata = \
       self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
     elif data == [True,True,True,True]:
-      outdata = self.zoological_and_botanical_with_all_checked()
-    return outdata
+      self.zoological_and_botanical_with_all_checked()
+    return data

@@ -119,7 +119,7 @@ class AdHocCardAuthorTest(CommonTest):
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     controller = random.choice(('check', 'input_text', 'paragraph', 'email', 'file_upload'))
     # DEBUG
-    controller = 'input_text' # XXX
+    controller = 'file_upload' # XXX
     logging.info('Testing {0} controller'.format(controller))
     ad_hoc_card.test_controller(controller)
     return None

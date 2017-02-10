@@ -2327,7 +2327,7 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_cancel_confirmation_style(cancel):
     """
-    Ensure consistency in rendering cancel link across confirmation
+    Ensure consistency in rendering cancel link in confirmation across confirmation
     :param cancel: Cancel element
     """
     assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family'), \
@@ -2339,6 +2339,25 @@ class AuthenticatedPage(PlosPage):
     assert cancel.value_of_css_property('line-height') == '20px', \
         cancel.value_of_css_property('line-height')
     assert cancel.value_of_css_property('color') == WHITE, \
+        cancel.value_of_css_property('color')
+    assert cancel.value_of_css_property('text-align') == 'center', \
+        cancel.value_of_css_property('text-align')
+
+  @staticmethod
+  def validate_cancel_link_style(cancel):
+    """
+    Ensure consistency in rendering cancel link across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family'), \
+        cancel.value_of_css_property('font-family')
+    assert cancel.value_of_css_property('font-size') == '14px', \
+        cancel.value_of_css_property('font-size')
+    assert cancel.value_of_css_property('font-weight') == '400', \
+        cancel.value_of_css_property('font-weight')
+    assert cancel.value_of_css_property('line-height') == '20px', \
+        cancel.value_of_css_property('line-height')
+    assert cancel.value_of_css_property('color') == APERTA_GREEN, \
         cancel.value_of_css_property('color')
     assert cancel.value_of_css_property('text-align') == 'center', \
         cancel.value_of_css_property('text-align')

@@ -34,7 +34,7 @@ class AHCard(BaseCard):
     self._plus_icon = (By.CLASS_NAME, 'fa-plus')
     self._tb_check = (By.CLASS_NAME, 'adhoc-toolbar-item--list')
     self._tb_text = (By.CLASS_NAME, 'adhoc-toolbar-item--text')
-    self._tb_label = (By.CLASS_NAME, 'adhoc-toolbar-item--label')
+    self._tb_paragraph = (By.CLASS_NAME, 'adhoc-toolbar-item--label')
     self._tb_email = (By.CLASS_NAME, 'adhoc-toolbar-item--email')
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
     self._text_text_area = (By.CSS_SELECTOR,
@@ -51,6 +51,12 @@ class AHCard(BaseCard):
     self._delete_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay h4')
     self._cancel_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.button--white')
     self._delete_btn = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.delete-button')
+
+    self._paragraph_form = (By.CSS_SELECTOR, 'div.inline-edit-form div.editable')
+    self._cancel_lnk = (By.CLASS_NAME, 'cancel-block')
+    self._save_btn = (By.CSS_SELECTOR, 'div.save-block')
+
+    self._email_subject = (By.CSS_SELECTOR, 'div.email input.ember-text-field')
 
   # POM Actions
   def validate_card_elements_styles(self, short_doi, role):
@@ -121,9 +127,30 @@ class AHCard(BaseCard):
       self.validate_delete_confirmation_style(delete_btn)
 
 
-    elif control == 'label':
-      self._get(self._tb_label).click()
+    elif control == 'paragraph':
+      self._get(self._tb_paragraph).click()
+      cancel_lnk = self._get(self._cancel_lnk)
+      assert cancel_lnk.text == 'cancel', cancel_lnk.text
+      self.validate_cancel_link_style(cancel_lnk)
+      save_btn = self._get(self._save_btn)
+      assert save_btn.text == 'SAVE', save_btn.text
+      # Disabled due to APERTA-9063
+      #self.validate_secondary_big_green_button_style(save_btn)
+      # Dissabled due to APERTA-9167
+      #self._get(self._paragraph_form)
     elif control == 'email':
       self._get(self._tb_email).click()
-    elif control == 'image':
+
+      subject = self._get(self._email_subject)
+      assert subject.get_attribute('placeholder') == 'Enter a subject', \
+        subject.get_attribute('placeholder')
+      cancel_lnk = self._get(self._chk_cancel_lnk)
+      assert cancel_lnk.text == 'cancel', cancel_lnk.text
+      self.validate_link_big_green_button_style(cancel_lnk)
+      save_btn = self._get(self._save_btn)
+      assert save_btn.text == 'SAVE', save_btn.text
+      # Disabled due to APERTA-9063
+      #self.validate_secondary_big_green_button_style(save_btn)
+    elif control == 'file_upload':
       self._get(self._tb_image).click()
+      import pdb; pdb.set_trace()

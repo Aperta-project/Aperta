@@ -118,7 +118,7 @@ class AdHocCardAuthorTest(CommonTest):
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     controller = random.choice(('check', 'input_text', 'paragraph', 'email', 'file_upload'))
     logging.info('Testing {0} controller'.format(controller))
-    ad_hoc_card.test_controller_styles(controller)
+    ad_hoc_card.validate_controller_styles(controller)
     return None
 
 

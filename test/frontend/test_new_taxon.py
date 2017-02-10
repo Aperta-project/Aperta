@@ -26,12 +26,13 @@ class NewTaxonTest(CommonTest):
   Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_new_taxon_task(self,data):
+  def test_new_taxon_task(self):
     """
     test_new_taxon: Validates the elements and styles of the front-matter New Taxon Task.
     :param data: The values for the New Taxon to be checked, i.e [True,False,True,False]
     :return: None
     """
+    data = None
     logging.info('Test New Taxon Task::front_matter')
     current_path = os.getcwd()
     logging.info(current_path)
@@ -52,31 +53,12 @@ class NewTaxonTest(CommonTest):
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     if data:
-      outdata = manuscript_page.complete_task('New Taxon', data)
+      manuscript_page.complete_task('New Taxon', data)
     else:
-      outdata = manuscript_page.complete_task('New Taxon')
-    self.data_validation(outdata)
+      data = manuscript_page.complete_task('New Taxon')
+    logging.info('Completed Taxonomy data: {0}'.format(data))
     # logout and enter as editor
     manuscript_page.logout()
-
-  def data_validation(self, data):
-    """Validation of the data to log into the logging.info()"""
-    if data == [False,False,False,False]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_without_checkboxes')
-    elif data == [True,False,False,False]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_with_zoological_checked')
-    elif data == [False,False,True,False]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_with_botanical_checked')
-    elif data == [True,True,False,False]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_with_zoological_comply_accepted')
-    elif data == [False,False,True,True]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_with_botanical_comply_accepted')
-    elif data == [True,True,True,False]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_checked_with_zoological_comply_accepted')
-    elif data == [True,False,True,True]:
-      logging.info('The test was executed with: zoological_and_botanical_first_question_checked_with_botanical_comply_accepted')
-    elif data == [True,True,True,True]:
-      logging.info('The test was executed with: zoological_and_botanical_with_all_checked')
             
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

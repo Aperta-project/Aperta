@@ -705,7 +705,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.info('Completing New Taxon Task')
       new_taxon_task = NewTaxonTask(self._driver)
       if data:
-        outdata = new_taxon_task.data_validation(data)
+        new_taxon_task.data_validation(data)
+        outdata = data
       else:
         outdata = new_taxon_task.generate_random_taxon()
       base_task.click_completion_button()

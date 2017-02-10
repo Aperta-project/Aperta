@@ -26,13 +26,12 @@ class NewTaxonTest(CommonTest):
   Validate styles for both reports in both edit and view mode in both contexts (task and card)
   """
 
-  def test_new_taxon_task(self):
+  def test_new_taxon_task(self, data=None):
     """
     test_new_taxon: Validates the elements and styles of the front-matter New Taxon Task.
     :param data: The values for the New Taxon to be checked, i.e [True,False,True,False]
     :return: None
     """
-    data = None
     logging.info('Test New Taxon Task::front_matter')
     current_path = os.getcwd()
     logging.info(current_path)

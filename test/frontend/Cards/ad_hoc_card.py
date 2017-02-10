@@ -58,13 +58,18 @@ class AHCard(BaseCard):
 
     self._email_subject = (By.CSS_SELECTOR, 'div.email input.ember-text-field')
 
+    # AdFile
+    self._text_title_edit_icon = (By.CSS_SELECTOR, 'div.inline-edit-body-part span.fa-pencil')
+    self._add_file_title = (By.CSS_SELECTOR, 'div.bodypart-display div.item-text')
+    self._upload_btn = (By.CSS_SELECTOR, 'div.attachment-manager div.button-secondary')
+
   # POM Actions
   def validate_card_elements_styles(self, short_doi, role):
     """
     Style check for the card
     :param role: String with the role the card is made for
     :param short_doi: Used to pass through to validate_common_elements_styles
-    :return None
+    :return: None
     """
     self.validate_common_elements_styles(short_doi)
     title = self._get(self._card_title)
@@ -82,12 +87,13 @@ class AHCard(BaseCard):
     add_btn = self._get(self._add_btn)
     self.validate_primary_big_green_button_style(add_btn)
     self._get(self._plus_icon)
-    return None
 
-  def test_controller(self, control):
+  def validate_controller_styles(self, control_type):
     """
+    Style check for elements inside a given control
+    :return: None
     """
-    if control == 'check':
+    if control_type == 'check':
       self._get(self._tb_check).click()
       self._get(self._chk_item_remove)
       cancel_lnk = self._get(self._chk_cancel_lnk)
@@ -98,8 +104,8 @@ class AHCard(BaseCard):
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_disabled_button_style(save_btn)
       chk_add_btn = self._get(self._chk_add_btn)
-      # can't validate PLUS sign style due to APERTA-XXXX
-    elif control == 'input_text':
+      # Can't validate PLUS sign style due to APERTA-9082
+  elif control_type == 'input_text':
       self._get(self._tb_text).click()
       placeholder_text = self._get(self._text_text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
@@ -125,9 +131,7 @@ class AHCard(BaseCard):
       self.validate_cancel_confirmation_style(cancel_lnk)
       delete_btn = self._get(self._delete_btn)
       self.validate_delete_confirmation_style(delete_btn)
-
-
-    elif control == 'paragraph':
+  elif control_type == 'paragraph':
       self._get(self._tb_paragraph).click()
       cancel_lnk = self._get(self._cancel_lnk)
       assert cancel_lnk.text == 'cancel', cancel_lnk.text
@@ -138,9 +142,8 @@ class AHCard(BaseCard):
       #self.validate_secondary_big_green_button_style(save_btn)
       # Dissabled due to APERTA-9167
       #self._get(self._paragraph_form)
-    elif control == 'email':
+  elif control_type == 'email':
       self._get(self._tb_email).click()
-
       subject = self._get(self._email_subject)
       assert subject.get_attribute('placeholder') == 'Enter a subject', \
         subject.get_attribute('placeholder')
@@ -151,6 +154,13 @@ class AHCard(BaseCard):
       assert save_btn.text == 'SAVE', save_btn.text
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_green_button_style(save_btn)
-    elif control == 'file_upload':
+  elif control_type == 'file_upload':
       self._get(self._tb_image).click()
-      import pdb; pdb.set_trace()
+      self._get(self._text_title_edit_icon)
+      self._get(self._text_delete_icon)
+      self._add_file_title = (By.CSS_SELECTOR, 'div.bodypart-display div.item-text')
+      title = self._get(self._add_file_title)
+      assert title.text == u'Please select a file.', title.text
+      upload_btn = self._get(self._upload_btn)
+      assert upload_btn.text == u'UPLOAD FILE', upload_btn.text
+      self.validate_secondary_big_green_button_style(upload_btn)

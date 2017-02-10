@@ -82,7 +82,6 @@ class AdHocCardAuthorTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
     logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
@@ -118,10 +117,8 @@ class AdHocCardAuthorTest(CommonTest):
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     controller = random.choice(('check', 'input_text', 'paragraph', 'email', 'file_upload'))
-    # DEBUG
-    controller = 'file_upload' # XXX
     logging.info('Testing {0} controller'.format(controller))
-    ad_hoc_card.test_controller(controller)
+    ad_hoc_card.test_controller_styles(controller)
     return None
 
 

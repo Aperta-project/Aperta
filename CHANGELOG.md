@@ -31,6 +31,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Users can now select and copy text from invitation letters when there is more than one invitation.
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+  (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
 ### Security
 
 ## ## [1.34.0] - {2017-01-06}

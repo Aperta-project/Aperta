@@ -36,7 +36,7 @@ class WorkflowPage(AuthenticatedPage):
     self._column_header_cancel = (By.XPATH,
                                   ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
-    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
+    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,  ".//div[@class='overlay-action-buttons']/button[2]")
@@ -115,6 +115,15 @@ class WorkflowPage(AuthenticatedPage):
     """
     recent_activity = self._get(self._recent_activity)
     recent_activity.click()
+    time.sleep(1)
+
+  def click_close_overlay(self):
+    """
+    Close the overlay modals
+    :return: void function
+    """
+    close_btn = self._get(self._close_icon_overlay)
+    close_btn.click()
     time.sleep(1)
 
   def click_initial_decision_card(self):

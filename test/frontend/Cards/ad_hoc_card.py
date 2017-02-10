@@ -105,7 +105,7 @@ class AHCard(BaseCard):
       #self.validate_secondary_big_disabled_button_style(save_btn)
       chk_add_btn = self._get(self._chk_add_btn)
       # Can't validate PLUS sign style due to APERTA-9082
-  elif control_type == 'input_text':
+    elif control_type == 'input_text':
       self._get(self._tb_text).click()
       placeholder_text = self._get(self._text_text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
@@ -131,7 +131,7 @@ class AHCard(BaseCard):
       self.validate_cancel_confirmation_style(cancel_lnk)
       delete_btn = self._get(self._delete_btn)
       self.validate_delete_confirmation_style(delete_btn)
-  elif control_type == 'paragraph':
+    elif control_type == 'paragraph':
       self._get(self._tb_paragraph).click()
       cancel_lnk = self._get(self._cancel_lnk)
       assert cancel_lnk.text == 'cancel', cancel_lnk.text
@@ -142,7 +142,7 @@ class AHCard(BaseCard):
       #self.validate_secondary_big_green_button_style(save_btn)
       # Dissabled due to APERTA-9167
       #self._get(self._paragraph_form)
-  elif control_type == 'email':
+    elif control_type == 'email':
       self._get(self._tb_email).click()
       subject = self._get(self._email_subject)
       assert subject.get_attribute('placeholder') == 'Enter a subject', \
@@ -154,7 +154,7 @@ class AHCard(BaseCard):
       assert save_btn.text == 'SAVE', save_btn.text
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_green_button_style(save_btn)
-  elif control_type == 'file_upload':
+    elif control_type == 'file_upload':
       self._get(self._tb_image).click()
       self._get(self._text_title_edit_icon)
       self._get(self._text_delete_icon)

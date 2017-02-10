@@ -39,26 +39,23 @@ class AHCard(BaseCard):
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
     self._text_text_area = (By.CSS_SELECTOR,
         'div.inline-edit-body-part div.bodypart-display div.content-editable-muted')
-    #self._text_delete_icon = (By.CSS_SELECTOR, 'div.view-actions span.fa-trash')
     self._text_delete_icon = (By.CSS_SELECTOR, 'span.fa-trash')
-
-    #list
+    # checkboxes
     self._chk_item_remove = (By.CLASS_NAME, 'item-remove')
     self._chk_cancel_lnk = (By.CSS_SELECTOR, 'div.edit-actions div.button-link')
     self._chk_save_btn = (By.CSS_SELECTOR, 'div.edit-actions div.button-secondary')
     self._chk_add_btn = (By.CSS_SELECTOR, 'div.inline-edit-body-part div.add-item')
-
+    # delete confirmation option
     self._delete_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay h4')
     self._cancel_warning = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.button--white')
     self._delete_btn = (By.CSS_SELECTOR, 'div.bodypart-destroy-overlay button.delete-button')
-
+    # paragraph
     self._paragraph_form = (By.CSS_SELECTOR, 'div.inline-edit-form div.editable')
     self._cancel_lnk = (By.CLASS_NAME, 'cancel-block')
     self._save_btn = (By.CSS_SELECTOR, 'div.save-block')
-
+    # email
     self._email_subject = (By.CSS_SELECTOR, 'div.email input.ember-text-field')
-
-    # AdFile
+    # ad file
     self._text_title_edit_icon = (By.CSS_SELECTOR, 'div.inline-edit-body-part span.fa-pencil')
     self._add_file_title = (By.CSS_SELECTOR, 'div.bodypart-display div.item-text')
     self._upload_btn = (By.CSS_SELECTOR, 'div.attachment-manager div.button-secondary')

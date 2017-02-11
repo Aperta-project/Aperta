@@ -39,6 +39,7 @@ class InviteCard(BaseCard):
     self._invitation_email_editor = (By.CLASS_NAME, 'invitation-edit-body')
     self._invitation_save_button = (By.CLASS_NAME, 'invitation-save-button')
     self._invitation_email_body = (By.CLASS_NAME, 'invitation-show-body')
+    self._header = (By.CLASS_NAME, 'invitation-item-header')
     # new action buttons
     self._invite_edit_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-edit')
     self._invite_delete_invite_button = (By.CSS_SELECTOR, 'span.invitation-item-action-delete')
@@ -49,7 +50,6 @@ class InviteCard(BaseCard):
     self._closed_invitee_listing = (By.CSS_SELECTOR, 'div.invitation-item--closed')
     self._open_invitee_listing = (By.CSS_SELECTOR, 'div.invitation-item--show')
     self._reason_suggestions = (By.CSS_SELECTOR, 'div.invitation-item-decline-info')
-
     # the following locators assume they will be searched for by find element within the scope of
     #   the above, enclosing div
     self._invitee_full_name = (By.CSS_SELECTOR, 'div.invitation-item-full-name')
@@ -162,8 +162,7 @@ class InviteCard(BaseCard):
     attachments = self.get_attached_file_names()
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
-
-    self._get(self._edit_add_to_queue_btn).click()
+    self._get(self._header).click()
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
@@ -387,4 +386,3 @@ class InviteCard(BaseCard):
     first_invitation_item.click()
     email_body = self._get(self._invitation_email_body)
     assert paragraph in email_body.text, '{0} is not in {1}'.format(paragraph, email_body.text)
-

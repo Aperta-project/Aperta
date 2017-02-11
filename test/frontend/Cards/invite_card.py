@@ -162,7 +162,6 @@ class InviteCard(BaseCard):
     attachments = self.get_attached_file_names()
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
-    import pdb; pdb.set_trace()
     self._get(self._invitation_save_button).click()
     self._get(self._invitee_full_name).click()
     invitees = self._gets(self._invitee_listing)

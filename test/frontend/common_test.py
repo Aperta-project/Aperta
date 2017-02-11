@@ -381,9 +381,9 @@ class CommonTest(FrontEndTest):
     site_admin_role_for_env = PgSQL().query('SELECT id '
                                             'FROM roles '
                                             'WHERE name = \'Site Admin\';')[0][0]
-
+    logging.info(site_admin_role_for_env)
     siteadmin_user_id = PgSQL().query('SELECT id FROM users WHERE username = \'asuperadm\';')[0][0]
-
+    logging.info(siteadmin_user_id)
     # test if assignment already exists, add it NOT present
     try:
       x = PgSQL().query('SELECT roles.name '

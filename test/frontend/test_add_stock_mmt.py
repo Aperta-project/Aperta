@@ -205,7 +205,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     """
     qa_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
                 no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
-    logging.info('test_populate_base_mmts')
+    logging.info('test_populate_base_mmts for QA')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
@@ -237,30 +237,30 @@ class ApertaSeedJournalMMTTest(CommonTest):
         #   as each new mmt add updates the DOM
         ja_page = JournalAdminPage(self.getDriver())
 
-  def rest_populate_biology_demo_mmts(self):
+  def test_populate_biology_demo_mmts(self):
     """
     test_add_stock_mmt: adds the stock biology MMT from the journal_admin page.
     Add new Templates if they don't exist
     :return: void function
     """
     bio_mmts = [bio_essay, bio_resart, bio_genres, bio_mystery, bio_formcomm, bio_commpage, bio_nwc]
-    logging.info('test_populate_base_mmts')
+    logging.info('test_populate_base_mmts for Biology Demo')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    biology_exists = adm_page.select_named_journal('PLOS Biology', click=True)
+    biology_exists = adm_page.select_named_journal('PLOS Biology Demo', click=True)
     logging.info(biology_exists)
     if not biology_exists:
-      adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS Biology',
+      adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS Biology Demo',
                                         journal_desc='',
                                         logo='thumbnail_logo+plos+bio+2x.png',
-                                        doi_jrnl_prefix='journal.pbio',
+                                        doi_jrnl_prefix='journal.pbiod',
                                         doi_publ_prefix='10.1371', commit=True)
-      adm_page.select_named_journal('PLOS Biology', click=True)
-      adm_page._populate_journal_db_values('PLOS Biology', 'noreply@plos.org')
+      adm_page.select_named_journal('PLOS Biology Demo', click=True)
+      adm_page._populate_journal_db_values('PLOS Biology Demo', 'noreply@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
     for mmt in bio_mmts:
@@ -277,30 +277,30 @@ class ApertaSeedJournalMMTTest(CommonTest):
         #   as each new mmt add updates the DOM
         ja_page = JournalAdminPage(self.getDriver())
 
-  def rest_populate_genetics_demo_mmts(self):
+  def test_populate_genetics_demo_mmts(self):
     """
     test_add_stock_mmt: adds the stock genetics MMT from the journal_admin page.
     Add new Templates if they don't exist
     :return: void function
     """
     gen_mmts = [gen_resart, gen_persp]
-    logging.info('test_populate_base_mmts')
+    logging.info('test_populate_base_mmts for Genetics Demo')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    genetics_exists = adm_page.select_named_journal('PLOS Genetics', click=True)
+    genetics_exists = adm_page.select_named_journal('PLOS Genetics Demo', click=True)
     logging.info(genetics_exists)
     if not genetics_exists:
-      adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS Genetics',
+      adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS Genetics Demo',
                                         journal_desc='',
                                         logo='thumbnail_plos_genetics_demo_logo.png',
-                                        doi_jrnl_prefix='journal.pgen',
+                                        doi_jrnl_prefix='journal.pgend',
                                         doi_publ_prefix='10.1371', commit=True)
-      adm_page.select_named_journal('PLOS Genetics', click=True)
-      adm_page._populate_journal_db_values('PLOS Genetics', 'noreply@plos.org')
+      adm_page.select_named_journal('PLOS Genetics Demo', click=True)
+      adm_page._populate_journal_db_values('PLOS Genetics Demo', 'noreply@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
     time.sleep(1)
     for mmt in gen_mmts:
@@ -325,7 +325,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     """
     all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
                 no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
-    logging.info('test_populate_base_mmts')
+    logging.info('test_populate_base_mmts for Support Demo')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
@@ -366,7 +366,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     """
     all_mmts = [only_init_dec_mmt, only_rev_cands_mmt, gen_cmplt_apexdata, front_matter_mmt,
                 no_cards_mmt, imgs_init_dec_mmt, resrch_w_init_dec, research_mmt]
-    logging.info('test_populate_base_mmts')
+    logging.info('test_populate_base_mmts for Production Staff Demo')
     logging.info('Logging in as user: {0}, {1}'.format(super_admin_login['name'],
                                                        super_admin_login['email']))
     dashboard_page = self.cas_login(email=super_admin_login['email'])
@@ -377,7 +377,6 @@ class ApertaSeedJournalMMTTest(CommonTest):
     logging.info(prodstaff_exists)
     if not prodstaff_exists:
       adm_page.validate_add_new_journal('asuperadm', journal_name='PLOS ProdStaff',
-                                        journal_desc='',
                                         logo='thumbnail_plos_demo.png',
                                         doi_jrnl_prefix='journal.pps',
                                         doi_publ_prefix='10.1371', commit=True)

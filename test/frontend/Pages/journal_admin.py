@@ -573,4 +573,4 @@ class JournalAdminPage(AdminPage):
         card.click()
         break
     else:
-      raise ElementDoesNotExistAssertionError('No such card')
+      raise ElementDoesNotExistAssertionError('No such card: {0}'.format(card_title))

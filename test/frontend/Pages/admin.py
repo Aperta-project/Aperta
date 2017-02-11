@@ -289,7 +289,7 @@ class AdminPage(AuthenticatedPage):
       assert doi_publ_prefix_label.text == 'DOI Publisher Prefix', doi_publ_prefix_label.text
       # APERTA-6829
       # self.validate_input_field_inside_label_style(doi_publ_prefix_label)
-      doi_publ_prefix_field = self._get(self._base_admin_journals_edit_doi_jrnl_prefix_field)
+      doi_publ_prefix_field = self._get(self._base_admin_journals_edit_doi_publ_prefix_field)
       last_doi_issued_label = self._get(self._base_admin_journals_edit_last_doi_label)
       assert last_doi_issued_label.text == 'Last DOI Issued', last_doi_issued_label.text
       # APERTA-6829
@@ -495,6 +495,6 @@ class AdminPage(AuthenticatedPage):
     :return: void function
     """
     if jname and staff_email:
-      PgSQL().modify('UPDATE journals SET  staff_email=%s WHERE name=%s;', (staff_email,))
+      PgSQL().modify('UPDATE journals SET staff_email=%s WHERE name=%s;', (staff_email, jname))
     else:
       raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email')

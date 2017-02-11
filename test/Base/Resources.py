@@ -1589,7 +1589,7 @@ bio_essay = {'name':               'Essay',
              'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check', 'Final Tech Check',
                                     'Assign Team', 'Invite Academic Editor', 'Invite Reviewers',
                                     'Register Decision', 'Send to Apex', 'Production Metadata'],
-             'user_resrev_report': True
+             'uses_resrev_report': True
              }
 bio_resart = {'name':               'Research Article',
               'user_tasks':         ['Upload Manuscript', 'Cover Letter', 'Figures',
@@ -1600,22 +1600,22 @@ bio_resart = {'name':               'Research Article',
                                      'Title And Abstract', 'Initial Tech Check',
                                      'Revision Tech Check', 'Final Tech Check', 'Invite Reviewers',
                                      'Register Decision', 'Production Metadata',
-                                     'Ad-hoc for Staff Only', 'Ad-hoc for Author',
+                                     'Ad-hoc for Staff Only', 'Ad-hoc for Authors',
                                      'Ad-hoc for Staff Only', 'Ad-hoc for Staff Only',
                                      'Send to Apex'],
-              'user_resrev_report': True
+              'uses_resrev_report': True
               }
 bio_genres = {'name':               'Genetics Research',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
                                      'Competing Interests', 'Cover Letter', 'Data Availability',
                                      'Ethics Statement', 'Figures', 'Financial Disclosure',
-                                     'Reporting Guidelines', 'Reveiwer Candidates',
+                                     'Reporting Guidelines', 'Reviewer Candidates',
                                      'Supporting Info', 'Upload Manuscript'],
               'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check',
                                      'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                      'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                      'Related Articles', 'Production Metadata'],
-              'user_resrev_report': True
+              'uses_resrev_report': True
               }
 bio_mystery = {'name':               'Unsolved Mystery',
                'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1626,7 +1626,7 @@ bio_mystery = {'name':               'Unsolved Mystery',
                                       'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                       'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                       'Production Metadata'],
-               'user_resrev_report': True
+               'uses_resrev_report': True
                }
 bio_commpage = {'name':               'Community Page',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1637,7 +1637,7 @@ bio_commpage = {'name':               'Community Page',
                                        'Final Tech Check', 'Invite Academic Editor',
                                        'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                        'Production Metadata'],
-                'user_resrev_report': True
+                'uses_resrev_report': True
                 }
 bio_formcomm = {'name':               'Formal Comment',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
@@ -1648,7 +1648,7 @@ bio_formcomm = {'name':               'Formal Comment',
                                        'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                        'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                        'Production Metadata'],
-                'user_resrev_report': True
+                'uses_resrev_report': True
                 }
 bio_nwc = {'name':               'New Workflow Concept',
            'user_tasks':         ['Upload Manuscript', 'Supporting Info', 'Cover Letter',
@@ -1662,7 +1662,7 @@ bio_nwc = {'name':               'New Workflow Concept',
            # (named Rev 2 Round 2), (named All new submission cards?), (named Proof Archive)
            'staff_tasks':        ['Assign Team', 'Initial Decision', 'Title And Abstract',
                                   'Ad-hoc for Editors', 'Ad-hoc for Staff Only',
-                                  'Inital Tech Check', 'Invite Reviewers', 'Ad-hoc for Staff Only',
+                                  'Initial Tech Check', 'Invite Reviewers', 'Ad-hoc for Staff Only',
                                   'Ad-hoc for Staff Only', 'Ad-hoc for Editors',
                                   'Ad-hoc for Editors', 'Ad-hoc for Editors',
                                   'Ad-hoc for Staff Only', 'Register Decision',
@@ -1671,26 +1671,26 @@ bio_nwc = {'name':               'New Workflow Concept',
                                   'Ad-hoc for Staff Only', 'Register Decision', 'Final Tech Check',
                                   'Production Metadata', 'Send to Apex', 'Related Articles',
                                   'Ad-hoc for Staff Only'],
-           'user_resrev_report': True
+           'uses_resrev_report': True
            }
 gen_resart = {'name':               'Research Article',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
                                      'Competing Interests', 'Cover Letter', 'Data Availability',
                                      'Ethics Statement', 'Figures', 'Financial Disclosure',
-                                     'Reporting Guidelines', 'Reveiwer Candidates',
+                                     'Reporting Guidelines', 'Reviewer Candidates',
                                      'Supporting Info', 'Upload Manuscript'],
               'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check',
                                      'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                      'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                      'Related Articles', 'Production Metadata'],
-              'user_resrev_report': True
+              'uses_resrev_report': True
               }
 gen_persp = {'name':               'Perspective',
              'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors', 'Figures',
                                     'Supporting Info', 'Competing Interests',
                                     'Financial Disclosure', 'Additional Information'],
              'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check', 'Final Tech Check',
-                                    'Assign Team', 'Invite Academic Editor', 'Invite Reviewers',
-                                    'Register Decision', 'Production Metadata', 'Send to Apex'],
-             'user_resrev_report': False
+                                    'Assign Team', 'Invite Academic Editor', 'Register Decision',
+                                    'Production Metadata', 'Send to Apex'],
+             'uses_resrev_report': False
              }

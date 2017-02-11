@@ -167,7 +167,7 @@ class InviteCard(BaseCard):
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
-    self._get(self._invitee_updated_at)
+    self._get(self._invitee_state)
     # Make the actual invitation
     self._get(self._send_invitation_button).click()
     # This wait is needed for the invite text to appear

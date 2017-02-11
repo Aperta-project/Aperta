@@ -162,7 +162,9 @@ class InviteCard(BaseCard):
     attachments = self.get_attached_file_names()
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
-    self._get(self._header).click()
+    import pdb; pdb.set_trace()
+    self._get(self._invitation_save_button).click()
+    self._get(self._invitee_full_name).click()
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])

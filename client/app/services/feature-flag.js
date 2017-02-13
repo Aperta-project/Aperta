@@ -21,13 +21,13 @@ export default Ember.Service.extend({
 
   // return a promise that thens only if the flag is enabled
   enabled(flag) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (this.get('ready')) {
-        resolve(this.get(flag));
+        this.get(flag) ? resolve() : reject();
       } else {
         this.callbacks.push({
           name: flag,
-          callback:(v) => { if (v) resolve(); }
+          callback:(v) => { v ? resolve() : reject();  }
         });
       }
     });
@@ -35,13 +35,13 @@ export default Ember.Service.extend({
 
   // return a promise that thens only if the flag is disabled
   disabled(flag) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (this.get('ready')) {
-        resolve(this.get(flag));
+        this.get(flag) ? reject() : resolve();
       } else {
         this.callbacks.push({
           name: flag,
-          callback: (v) => { if (!v) resolve(); }
+          callback: (v) => { v ? reject() : resolve(); }
         });
       }
     });

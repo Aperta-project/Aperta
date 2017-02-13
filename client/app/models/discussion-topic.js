@@ -8,5 +8,6 @@ export default DS.Model.extend({
 
   paperId: DS.attr('string'),
   title: DS.attr('string'),
-  createdAt: DS.attr('date')
+  createdAt: DS.attr('date'),
+  initialDiscussionParticipantIDs: DS.attr()
 });

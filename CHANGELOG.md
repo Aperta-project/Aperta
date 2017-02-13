@@ -4,6 +4,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Users can now change the initial participants on a discussion topic
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.36.1] - {2017-02-09}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
+## ## [1.36.0] - {2017-02-07}
+### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 * Aperta can now use the title, abstract, and body HTML extracted from PDFs.
 ### Changed
@@ -12,6 +31,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Users can now select and copy text from invitation letters when there is more than one invitation.
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+  (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
 ### Security
 
 ## ## [1.34.0] - {2017-01-06}

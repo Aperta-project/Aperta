@@ -7,6 +7,19 @@
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
     <h1 class="sheet-title discussions-show-title">Create New Topic</h1>
+    {{participant-selector
+        currentParticipants=participants
+        paperId=model.paperId
+        label="Participants:"
+        displayEmails=true
+        afterOptionsComponent="discussions-participants-help-text"
+        canManage=true
+        onSelect=(action "addParticipant")
+        onRemove=(action "removeParticipant")
+        searchStarted=(action "searchStarted")
+        searchFinished=(action "searchFinished")
+        searching=searchingParticipant
+        url=participantSearchUrl}}
   </div>
 
   <div class="inset-form-control required {{if validationErrors.title "error"}}">

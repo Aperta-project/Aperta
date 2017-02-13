@@ -29,6 +29,13 @@ class DiscussionTopic < ActiveRecord::Base
     discussion_participants.append(discussion_participant)
   end
 
+  def add_discussion_participants_by_id(user_ids)
+    user_ids.each do |id|
+      user = User.find(id)
+      add_discussion_participant(user)
+    end
+  end
+
   def remove_discussion_participant(discussion_participant)
     assignments.find_by(
       user: discussion_participant.user,

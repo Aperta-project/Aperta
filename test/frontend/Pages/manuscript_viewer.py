@@ -709,8 +709,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         outdata = data
       else:
         outdata = new_taxon_task.generate_random_taxon()
-      base_task.click_completion_button()
-      self.click_covered_element(task)
+      #base_task.click_completion_button()
+      #self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

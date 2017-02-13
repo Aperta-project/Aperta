@@ -149,6 +149,28 @@ class NewTaxonTask(BaseTask):
     self.zoological_and_botanical_comply_checkbox_helper(3)
     return [True,True,True,True]
 
+  def validate_task_elements_styles(self):
+    self.validate_common_elements_styles()
+    zoological_checkbox, zoological_comply_checkbox, \
+        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
+    self.validate_checkbox(zoological_checkbox)
+    self.validate_checkbox(botanical_checkbox)
+    self.validate_checkbox(zoological_comply_checkbox)
+    self.validate_checkbox(botanical_comply_checkbox)
+    self.validate_checkbox_label()
+    zoological_text, zoological_authors_text, \
+        botanical_text, botanical_authors_text = self._gets(self._questions_text)
+    self.validate_textarea_style(zoological_text)
+    self.validate_textarea_style(zoological_authors_text)
+    self.validate_textarea_style(botanical_text)
+    self.validate_textarea_style(botanical_authors_text)
+    zoological_comply_text, botanical_comply_text = self._gets(self._comply_text)
+    self.validate_textarea_style(zoological_comply_text)
+    self.validate_textarea_style(botanical_comply_text)
+    zoological_comply_link, botanical_comply_link = self._gets(self._comply_link)
+    self.validate_default_link_style(zoological_comply_link)
+    self.validate_default_link_style(botanical_comply_link)
+    
   def generate_random_taxon(self):
     random_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \
                    self.zoological_and_botanical_first_question_with_zoological_checked, \
@@ -157,7 +179,8 @@ class NewTaxonTask(BaseTask):
                    self.zoological_and_botanical_first_question_with_botanical_comply_accepted, \
                    self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted, \
                    self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted, \
-                   self.zoological_and_botanical_with_all_checked
+                   self.zoological_and_botanical_with_all_checked, \
+                   self.zoological_and_botanical_first_question_checked_helper
                   ]
     method = random.choice(random_taxon)
     data = method()
@@ -181,4 +204,6 @@ class NewTaxonTask(BaseTask):
       self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
     elif data == [True,True,True,True]:
       self.zoological_and_botanical_with_all_checked()
+    elif data == [True,False,True,False]:
+      self.zoological_and_botanical_first_question_checked_helper()
     return data

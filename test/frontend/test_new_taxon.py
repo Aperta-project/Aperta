@@ -16,6 +16,7 @@ from frontend.common_test import CommonTest
 from Base.Resources import staff_admin_login, users
 from Pages.workflow_page import WorkflowPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
+from frontend.Tasks.new_taxon_task import NewTaxonTask
 
 __author__ = 'scadavid@plos.org'
 
@@ -28,8 +29,7 @@ class NewTaxonTest(CommonTest):
 
   def test_new_taxon_task(self):
     """
-    test_new_taxon: Validates the elements and styles of the front-matter New Taxon Task.
-    :param data: The values for the New Taxon to be checked, i.e [True,False,True,False]
+    test_new_taxon: Validates the elements of the front-matter New Taxon Task.
     :return: None
     """
     logging.info('Test New Taxon Task::front_matter')
@@ -53,6 +53,39 @@ class NewTaxonTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     data = manuscript_page.complete_task('New Taxon')
     logging.info('Completed Taxonomy data: {0}'.format(data))
+    # logout and enter as editor
+    manuscript_page.logout()
+    # Validation of Admin view is pending header
+
+  def test_new_taxon_style(self):
+    """
+    test_new_taxon_style: Validates the styles of the front-matter New Taxon Task.
+    :return: None
+    """
+    logging.info('Test New Taxon Task Style::front_matter')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    logging.info('test_new_taxon_task_style')
+    # Create base data - new papers
+    creator_user = random.choice(users)
+    logging.info(creator_user)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.set_timeout(60)
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
+    dashboard_page.restore_timeout()
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(5)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Abbreviate the timeout for conversion success message
+    manuscript_page.page_ready_post_create()
+    # Note: Request title to make sure the required page is loaded
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    import pdb; pdb.set_trace()
+    data = manuscript_page.complete_task('New Taxon', data=[True,False,True,False])
+    logging.info('Completed Taxonomy data: {0}'.format(data))
+    new_taxon_task = NewTaxonTask(self._driver)
+    new_taxon_task.validate_task_elements_styles()
     # logout and enter as editor
     manuscript_page.logout()
             

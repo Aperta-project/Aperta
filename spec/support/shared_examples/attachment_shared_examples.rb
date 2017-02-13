@@ -228,30 +228,12 @@ RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
       end
     end
 
-    context 'and the attachment has a resource token, and is not snapshotted' do
-      before do
-        FactoryGirl.create(:resource_token, owner: subject)
-      end
-
-      it 'destroys the resource token for the file being replaced' do
-        current_resource_token = subject.resource_token
-        subject.download!(url)
-
-        expect { current_resource_token.reload }.to \
-          raise_error(ActiveRecord::RecordNotFound)
-
-        # but it leaves the new resource token just made alone
-        expect(subject.resource_token).to be
-      end
-    end
-
-    context 'and the attachment has a resource token, and is snapshotted' do
+    context 'and the attachment has a resource token' do
       let(:url_2) { 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/journal/logo/1/thumbnail_yeti.jpg' }
 
       before do
         subject.download!(url)
         FactoryGirl.create(:resource_token, owner: subject)
-        FactoryGirl.create(:snapshot, source: subject)
       end
 
       it 'does not destroy the resource token for the file being replaced' do

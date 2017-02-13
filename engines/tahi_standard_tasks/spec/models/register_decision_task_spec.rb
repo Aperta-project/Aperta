@@ -31,6 +31,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
       it "calls #setup_new_revision with proper arguments" do
         expect(TahiStandardTasks::ReviseTask)
           .to receive(:setup_new_revision).with(task.paper, task.phase)
+        expect(TahiStandardTasks::UploadManuscriptTask)
+          .to receive(:setup_new_revision).with(task.paper, task.phase)
         task.after_register decision
       end
 
@@ -55,13 +57,13 @@ describe TahiStandardTasks::RegisterDecisionTask do
     let(:to_field) { double(value: Faker::Internet.safe_email) }
 
     before do
-      expect(task).to receive(:answer_for).
-        with('register_decision_questions--to-field').
-        and_return to_field
+      expect(task).to receive(:answer_for)
+        .with('register_decision_questions--to-field')
+        .and_return to_field
 
-      expect(task).to receive(:answer_for).
-        with('register_decision_questions--subject-field').
-        and_return subject_field
+      expect(task).to receive(:answer_for)
+        .with('register_decision_questions--subject-field')
+        .and_return subject_field
     end
 
     it "will email using last completed decision" do
@@ -70,7 +72,8 @@ describe TahiStandardTasks::RegisterDecisionTask do
         .with(
           decision_id: decision_one.id,
           to_field: to_field.value,
-          subject_field: subject_field.value)
+          subject_field: subject_field.value
+        )
       task.send_email
     end
   end

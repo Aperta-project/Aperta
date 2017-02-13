@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['report-status'],
   readOnly: false,
+  shortStatus: Ember.computed.reads('short'),
 
   statusMessage: Ember.computed('report.status', function() {
     const status = this.get('report.status');

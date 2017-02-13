@@ -1,5 +1,15 @@
 .report-status {
-  margin-bottom: 25px;
-  font-size: 1.4em;
-  line-height: 1.2em;
+  display: inline;
+
+  .short-status {
+    display: inline;
+    font-size: 0.8em;
+    margin-left: 3px;
+  }
+
+  .long-status {
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    line-height: 1.2em;
+  }
 }

@@ -81,7 +81,6 @@ class NewTaxonTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    import pdb; pdb.set_trace()
     data = manuscript_page.complete_task('New Taxon', data=[True,False,True,False])
     logging.info('Completed Taxonomy data: {0}'.format(data))
     new_taxon_task = NewTaxonTask(self._driver)

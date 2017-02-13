@@ -42,7 +42,10 @@
       <br>
       <button id="revise-task-edit-button" class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
     {{/if}}
-
+    <div>
+      Please upload <strong>an additional version</strong> of your manuscript that highlights
+      the changes you've made. You may also upload your point by point "response to reviewers" file here.
+    </div>
     {{attachment-manager filePath="tasks/attachment"
                          attachments=task.attachments
                          multiple=true

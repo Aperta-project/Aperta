@@ -88,6 +88,13 @@ group :staging, :production do
   gem 'rails_12factor'
 end
 
+group :staging do
+  gem 'pry-byebug'
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-rescue'
+end
+
 group :development, :test do
   gem 'auto_screenshot', require: false
   gem 'dotenv-rails', require: 'dotenv/rails-now'

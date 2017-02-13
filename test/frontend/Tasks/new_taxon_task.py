@@ -151,25 +151,10 @@ class NewTaxonTask(BaseTask):
 
   def validate_task_elements_styles(self):
     self.validate_common_elements_styles()
-    zoological_checkbox, zoological_comply_checkbox, \
-        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
-    self.validate_checkbox(zoological_checkbox)
-    self.validate_checkbox(botanical_checkbox)
-    self.validate_checkbox(zoological_comply_checkbox)
-    self.validate_checkbox(botanical_comply_checkbox)
-    self.validate_checkbox_label()
-    zoological_text, zoological_authors_text, \
-        botanical_text, botanical_authors_text = self._gets(self._questions_text)
-    self.validate_textarea_style(zoological_text)
-    self.validate_textarea_style(zoological_authors_text)
-    self.validate_textarea_style(botanical_text)
-    self.validate_textarea_style(botanical_authors_text)
-    zoological_comply_text, botanical_comply_text = self._gets(self._comply_text)
-    self.validate_textarea_style(zoological_comply_text)
-    self.validate_textarea_style(botanical_comply_text)
-    zoological_comply_link, botanical_comply_link = self._gets(self._comply_link)
-    self.validate_default_link_style(zoological_comply_link)
-    self.validate_default_link_style(botanical_comply_link)
+    map(self.validate_checkbox, self._gets(self._checkboxes))
+    map(self.validate_textarea_style, self._gets(self._questions_text))
+    map(self.validate_textarea_style, self._gets(self._comply_text))
+    map(self.validate_default_link_style, self._gets(self._comply_link))
     
   def generate_random_taxon(self):
     random_taxon = [self.zoological_and_botanical_first_question_without_checkboxes, \

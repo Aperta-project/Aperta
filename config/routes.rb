@@ -101,8 +101,12 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
-    resources :journals, only: [:index, :show]
-    resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
+    resources :journals, only: [:index, :show] do
+      get :manuscript_manager_templates, to: 'manuscript_manager_templates#index'
+    end
+
+    resources :manuscript_manager_templates
+    resources :cards, only: [:index]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, \

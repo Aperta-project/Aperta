@@ -387,9 +387,11 @@ ActiveRecord::Schema.define(version: 20170209124450) do
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
-    t.string  "paper_type"
-    t.integer "journal_id"
-    t.boolean "uses_research_article_reviewer_report", default: false
+    t.string   "paper_type"
+    t.integer  "journal_id"
+    t.boolean  "uses_research_article_reviewer_report", default: false
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree

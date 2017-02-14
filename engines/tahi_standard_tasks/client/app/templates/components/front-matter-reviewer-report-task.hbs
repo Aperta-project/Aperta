@@ -4,10 +4,6 @@
   <div class="reviewer-report-wrapper">
     {{#if task.body.submitted}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
-      <div class="reviewer-report-feedback">
-        {{fa-icon icon="check-circle"}}
-        This report has been submitted
-      </div>
     {{else}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 

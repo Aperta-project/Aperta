@@ -1,0 +1,15 @@
+<h2>Workflow Catalogue</h2>
+
+{{#if journal}}
+  {{#link-to "admin.journal.manuscript_manager_template.new" journal.id class="button-primary button--blue"}}
+    Add new workflow
+  {{/link-to}}
+{{/if}}
+
+{{#admin-page/catalogue}}
+  {{#each workflows as |workflow|}}
+    {{#admin-page/catalogue/item action=(action "editWorkflow" workflow.journal.id workflow.id)}}
+      {{admin-page/workflow-thumbnail workflow=workflow}}
+    {{/admin-page/catalogue/item}}
+  {{/each}}
+{{/admin-page/catalogue}}

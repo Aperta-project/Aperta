@@ -7,9 +7,10 @@ describe ManuscriptManagerTemplateSerializer, serializer_test: true do
       journal: journal,
       phase_templates: [phase_template]
   end
-  let(:journal) { FactoryGirl.build_stubbed(:journal) }
+  let(:journal) { FactoryGirl.create(:journal) }
   let(:phase_template) { FactoryGirl.build_stubbed(:phase_template) }
   let(:object_for_serializer) { mmt }
+  let!(:paper) { FactoryGirl.create(:paper, journal: journal, paper_type: mmt.paper_type) }
 
   let(:mmt_content){ deserialized_content.fetch(:manuscript_manager_template) }
 
@@ -23,7 +24,8 @@ describe ManuscriptManagerTemplateSerializer, serializer_test: true do
       uses_research_article_reviewer_report:
         mmt.uses_research_article_reviewer_report,
       journal_id: journal.id,
-      phase_template_ids: [phase_template.id]
+      phase_template_ids: [phase_template.id],
+      active_paper_ids: [paper.id]
     )
   end
 end

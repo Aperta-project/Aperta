@@ -1,0 +1,7 @@
+<h4 class="admin-workflow-thumbnail-name">{{workflow.paperType}}</h4>
+<div class="admin-workflow-thumbnail-updated">
+  Last updated: {{ format-date workflow.updatedAt format='MMM D, YYYY'}}
+</div>
+<div class="admin-workflow-thumbnail-active-manuscripts">
+  {{ workflow.activePaperCount }} Active {{ pluralize-string count=workflow.activePaperCount string="Manuscript" }}
+</div>

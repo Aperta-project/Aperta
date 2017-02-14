@@ -35,7 +35,6 @@ class NewTaxonTest(CommonTest):
     """
     logging.info('Test New Taxon Task::front_matter')
     current_path = os.getcwd()
-    logging.info(current_path)
     logging.info('test_new_taxon_task')
     # Create base data - new papers
     creator_user = random.choice(users)
@@ -45,8 +44,6 @@ class NewTaxonTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
     dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
     manuscript_page.page_ready_post_create()
@@ -65,7 +62,7 @@ class NewTaxonTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    paper_viewer.page_ready()
     # go to wf
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -78,6 +75,7 @@ class NewTaxonTest(CommonTest):
     logging.info('Reviewing data: {0}'.format(data))
     new_taxon_card.data_validation(data)
 
+  # Disable for APERTA-8500
   def _test_new_taxon_style(self):
     """
     test_new_taxon_style: Validates the styles of the front-matter New Taxon Task.
@@ -85,7 +83,6 @@ class NewTaxonTest(CommonTest):
     """
     logging.info('Test New Taxon Task Style::front_matter')
     current_path = os.getcwd()
-    logging.info(current_path)
     logging.info('test_new_taxon_task_style')
     # Create base data - new papers
     creator_user = random.choice(users)
@@ -104,9 +101,8 @@ class NewTaxonTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     data = manuscript_page.complete_task('New Taxon', data=[True,False,True,False])
     logging.info('Completed Taxonomy data: {0}'.format(data))
-    # Disable for APERTA-8500
-    #new_taxon_task = NewTaxonTask(self._driver)
-    #new_taxon_task.validate_task_elements_styles()
+    new_taxon_task = NewTaxonTask(self._driver)
+    new_taxon_task.validate_task_elements_styles()
     # logout and enter as editor
     manuscript_page.logout()
             

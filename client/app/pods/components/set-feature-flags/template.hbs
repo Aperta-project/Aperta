@@ -1,0 +1,20 @@
+<main id="main-content" class="main-content" role="main">
+  <div class="main-content-section">
+    <div class="base-screen admin-screen">
+      <h3>DANGER</h3>
+      <h4> DO NOT CHANGE THESE SETTINGS. THESE SETTINGS ENABLE FEATURES WHICH ARE INCOMPLETE AND THEIR BEHAVIOR IS UNPREDICTABLE.</h4>
+
+      {{#each-in flags as |name flag|}}
+        <label>
+          {{input type='checkbox' checked=(mut (get flags name))}}
+          {{name}}
+        </label>
+      {{/each-in}}
+
+      <div>
+        <br />
+        <button class="button-primary button--red" {{action "save"}}>Save</button>
+      </div>
+    </div>
+  </div>
+</main>

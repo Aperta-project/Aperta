@@ -46,6 +46,7 @@ Router.map(function() {
       });
 
     });
+    this.route('feature-flags');
   });
 });
 

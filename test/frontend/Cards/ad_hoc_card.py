@@ -102,6 +102,7 @@ class AHCard(BaseCard):
       # The following code could be used when APERTA-9139 is fixed
       #self._actions.move_to_element(delete_icon).perform()
       delete_icon.click()
+      # Wait to the delete modal to display
       time.sleep(1)
       # Disabled due to APERTA-9139
       #self.validate_delete_icon_grey(delete_icon)

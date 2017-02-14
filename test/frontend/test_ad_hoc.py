@@ -73,7 +73,6 @@ class AdHocCardAuthorTest(CommonTest):
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))
-    widget = 'input_text'
     logging.info('Testing {0} widget'.format(widget))
     ad_hoc_card.validate_widgets_styles(widget)
     return None

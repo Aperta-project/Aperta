@@ -4,6 +4,7 @@ describe PapersController do
   let(:user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.build_stubbed(:journal) }
   let(:paper) { FactoryGirl.build(:paper) }
+  let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
 
   describe 'GET index' do
     subject(:do_request) { get :index, format: :json }
@@ -690,6 +691,49 @@ describe PapersController do
             .with(paper, user: user)
           do_request
         end
+
+        context 'when there is a transition error' do
+          # for example, due to unprocessed images
+
+          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+
+          before do
+            expect(Paper).to receive(:find).and_return paper
+
+            allow(paper).to receive(:initial_submit!).and_wrap_original do |method, *arguments|
+              method.call(*arguments)
+              expect(paper.initially_submitted?).to be true
+              # force our transaction to be rolled back
+              raise AASM::InvalidTransition.new(paper, "initially_submitted", paper.publishing_state)
+            end
+          end
+
+          it 'gets rolled back to the unsubmitted state' do
+            do_request
+
+            # we pull the paper from the db, since the rollback
+            # only affects the db and not the in-memory paper
+            expect(paper_refreshed_from_db).to be_unsubmitted
+          end
+
+          it 'returns a 422 Unprocessible Entity error' do
+            do_request
+            expect(response.status).to eq(422)
+            expect(response).to be_client_error
+            expect(JSON[response.body]['errors'].first).to eq("Failure to transition to initially_submitted")
+          end
+        end
+
+        context 'when the activity feed fails' do
+          it 'submission is rolled back' do
+            expect(Activity).to receive(:paper_initially_submitted!).with(paper, user: user) do
+              raise
+            end
+
+            expect{ do_request }.to raise_error StandardError
+            expect(paper).to be_unsubmitted
+          end
+        end
       end
 
       context 'Full submission (not gradual engagement)' do
@@ -704,6 +748,49 @@ describe PapersController do
           expect(Activity).to receive(:paper_submitted!)
             .with(paper, user: user)
           do_request
+        end
+
+        context 'when there is a transition error' do
+          # for example, due to unprocessed images
+
+          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+
+          before do
+            expect(Paper).to receive(:find).and_return paper
+
+            allow(paper).to receive(:submit!).and_wrap_original do |method, *arguments|
+              method.call(*arguments)
+              expect(paper.submitted?).to be true
+              # force our transaction to be rolled back
+              raise AASM::InvalidTransition.new(paper, "submitted", paper.publishing_state)
+            end
+          end
+
+          it 'gets rolled back to the unsubmitted state' do
+            do_request
+
+            # we pull the paper from the db, since the rollback
+            # only affects the db and not the in-memory paper
+            expect(paper_refreshed_from_db).to be_unsubmitted
+          end
+
+          it 'returns a 422 Unprocessible Entity error' do
+            do_request
+            expect(response.status).to eq(422)
+            expect(response).to be_client_error
+            expect(JSON[response.body]['errors'].first).to eq("Failure to transition to submitted")
+          end
+        end
+
+        context 'when the activity feed fails' do
+          it 'submission is rolled back' do
+            expect(Activity).to receive(:paper_submitted!).with(paper, user: user) do
+              raise
+            end
+
+            expect{ do_request }.to raise_error StandardError
+            expect(paper).to be_unsubmitted
+          end
         end
       end
 
@@ -768,6 +855,28 @@ describe PapersController do
       it 'responds with 200 OK' do
         do_request
         expect(response).to responds_with(200)
+      end
+
+      context 'when there is a transition error' do
+        before do
+          expect(Paper).to receive(:find_by_id_or_short_doi).and_return paper
+
+          expect(paper).to receive(:reactivate!) do
+            raise AASM::InvalidTransition.new(paper, "whatever_state", paper.publishing_state)
+          end
+        end
+
+        it 'submission fails' do
+          do_request
+          expect(paper).to be_unsubmitted
+        end
+
+        it 'returns a 422 Unprocessible Entity error' do
+          do_request
+          expect(response.status).to eq(422)
+          expect(response).to be_client_error
+          expect(JSON[response.body]['errors'].first).to eq("Failure to transition to whatever_state")
+        end
       end
     end
 
@@ -835,6 +944,28 @@ describe PapersController do
       it 'responds with 200 OK' do
         do_request
         expect(response).to responds_with(200)
+      end
+
+      context 'when there is a transition error' do
+        before do
+          expect(Paper).to receive(:find_by_id_or_short_doi).and_return paper
+
+          expect(paper).to receive(:withdraw!) do
+            raise AASM::InvalidTransition.new(paper, "withdrawn", paper.publishing_state)
+          end
+        end
+
+        it 'submission fails' do
+          do_request
+          expect(paper).to be_unsubmitted
+        end
+
+        it 'returns a 422 Unprocessible Entity error' do
+          do_request
+          expect(response.status).to eq(422)
+          expect(response).to be_client_error
+          expect(JSON[response.body]['errors'].first).to eq("Failure to transition to withdrawn")
+        end
       end
     end
 

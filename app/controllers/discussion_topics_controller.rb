@@ -19,8 +19,10 @@ class DiscussionTopicsController < ApplicationController
 
   def create
     requires_user_can :start_discussion, discussion_topic.paper
-    discussion_topic.save
-    discussion_topic.add_discussion_participant(current_user)
+    discussion_topic.save!
+    discussion_topic.add_discussion_participants_by_id(
+      initial_discussion_participant_ids_param
+    )
     respond_with discussion_topic
   end
 
@@ -40,10 +42,26 @@ class DiscussionTopicsController < ApplicationController
     )
   end
 
+  def new_discussion_users
+    requires_user_can :start_discussion, paper
+    users = User.fuzzy_search params[:query]
+    respond_with(
+      users,
+      each_serializer: SensitiveInformationUserSerializer,
+      root: :users
+    )
+  end
+
   private
 
   def creation_params
     params.require(:discussion_topic).permit(:title, :paper_id)
+  end
+
+  def initial_discussion_participant_ids_param
+    params
+      .require(:discussion_topic)
+      .require(:initial_discussion_participant_ids)
   end
 
   def update_params

@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
+import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Controller,
@@ -13,6 +15,7 @@ const {
 } = Ember;
 
 export default Controller.extend({
+  flash: Ember.inject.service(),
   restless: service('restless'),
   routing: service('-routing'),
   positionSort: ['position:asc'],
@@ -51,6 +54,29 @@ export default Controller.extend({
     this.endPropertyChanges();
   },
 
+  addTaskType: concurrencyTask(function * (phase, taskTypeList) {
+    if (taskTypeList.length == 0) {
+      this.get('flash').displayRouteLevelMessage('error', "No tasks were selected to add to the workflow.");
+      return;
+    }
+
+    let promises = taskTypeList.map((task) => {
+      let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
+      let newTask = this.store.createRecord(unNamespacedKind, {
+        phase: phase,
+        type: task.get('kind'),
+        paper: this.get('paper'),
+        title: task.get('title')
+      })
+      let newTaskPromise = newTask.save().catch((response) => {
+        newTask.destroyRecord();
+        this.get('flash').displayRouteLevelMessage('error', response.errors[0].detail);
+      });
+      return newTaskPromise;
+    });
+    yield Ember.RSVP.all(promises);
+  }).drop(),
+
   actions: {
     viewCard(task) {
       const r = this.get('routing.router.router');
@@ -76,7 +102,7 @@ export default Controller.extend({
     },
 
     addTaskType(phase, taskTypeList) {
-      this.send('addTaskTypeToPhase', phase, taskTypeList);
+      return this.get('addTaskType').perform(phase, taskTypeList);
     },
 
     showCardDeleteOverlay(task) {

@@ -33,13 +33,13 @@ test('enabled returns a promise which resolves when a flag is enabled', function
   });
 });
 
-test('enabled returns a promise that resolves when a flag is disabled', function(assert) {
+test('enabled returns a promise that rejects when a flag is disabled', function(assert) {
   const done = assert.async();
   this.service.enabled('inactiveFlag').then(() => {
     assert.ok(false, 'the then does not run');
     done();
   }).catch(() => {
-    assert.ok(true, 'the catch does not run');
+    assert.ok(true, 'the catch runs');
     done();
   });
 });

@@ -13,10 +13,11 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
-from Base.Resources import staff_admin_login, users
+from Base.Resources import staff_admin_login, users, editorial_users
 from Pages.workflow_page import WorkflowPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Tasks.new_taxon_task import NewTaxonTask
+from frontend.Cards.new_taxon_card import NewTaxonCard
 
 __author__ = 'scadavid@plos.org'
 
@@ -55,9 +56,27 @@ class NewTaxonTest(CommonTest):
     logging.info('Completed Taxonomy data: {0}'.format(data))
     # logout and enter as editor
     manuscript_page.logout()
-    # Validation of Admin view is pending header
+    # Enter as Editorial User
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer._wait_for_element(paper_viewer._get(paper_viewer._tb_workflow_link))
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    card_title = 'New Taxon'
+    workflow_page.click_card('new_taxon', card_title)
+    new_taxon_card = NewTaxonCard(self.getDriver())
+    new_taxon_card.card_ready()
+    new_taxon_card.validate_card_elements_styles(short_doi)
+    new_taxon_card.data_validation(data)
 
-  def test_new_taxon_style(self):
+  def _test_new_taxon_style(self):
     """
     test_new_taxon_style: Validates the styles of the front-matter New Taxon Task.
     :return: None
@@ -83,8 +102,9 @@ class NewTaxonTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     data = manuscript_page.complete_task('New Taxon', data=[True,False,True,False])
     logging.info('Completed Taxonomy data: {0}'.format(data))
-    new_taxon_task = NewTaxonTask(self._driver)
-    new_taxon_task.validate_task_elements_styles()
+    # Disable for APERTA-
+    #new_taxon_task = NewTaxonTask(self._driver)
+    #new_taxon_task.validate_task_elements_styles()
     # logout and enter as editor
     manuscript_page.logout()
             

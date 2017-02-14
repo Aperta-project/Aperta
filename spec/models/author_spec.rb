@@ -107,6 +107,47 @@ describe Author do
     end
   end
 
+  describe "#co_author_confirmed?" do
+    it "returns true when co_author_state is 'confirmed'" do
+      author.co_author_state = 'confirmed'
+      expect(author.co_author_confirmed?).to eq(true)
+    end
+  end
+
+  describe "#co_author_confirmed!" do
+    it "sets co_author_state to confirmed" do
+      expect do
+        author.co_author_confirmed!
+      end.to change { author.co_author_state }.from(nil).to('confirmed')
+    end
+
+    it "sets co_author_state_modified" do
+      reference_time = Time.now.utc
+      Timecop.freeze(reference_time) do
+        expect do
+          author.co_author_confirmed!
+        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
+      end
+    end
+  end
+
+  describe "#co_author_refuted!" do
+    it "sets co_author_state to confirmed" do
+      expect do
+        author.co_author_refuted!
+      end.to change { author.co_author_state }.from(nil).to('refuted')
+    end
+
+    it "sets co_author_state_modified" do
+      reference_time = Time.now.utc
+      Timecop.freeze(reference_time) do
+        expect do
+          author.co_author_refuted!
+        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
+      end
+    end
+  end
+
   describe "#full_name" do
     it "returns the author's first + last name" do
       author.first_name = "Astronaut"

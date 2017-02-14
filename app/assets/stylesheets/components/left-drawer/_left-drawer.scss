@@ -1,0 +1,15 @@
+.left-drawer-closed .left-drawer-hide-when-closed { display: none; }
+.left-drawer-open .left-drawer-hide-when-open { display: none; }
+
+.left-drawer-page {
+  position: relative;
+}
+
+.left-drawer-rest {
+  display: flex;
+}
+
+.left-drawer-content {
+  flex: 1;
+  width: 100%;
+}

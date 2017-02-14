@@ -41,7 +41,6 @@ class AdHocCardAuthorTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
-    logging.info('The paper URL of this newly created paper is: {0}'.format(paper_url))
     manuscript_page.logout()
     # Log in as Editorial User
     editorial_user = random.choice(editorial_users)
@@ -75,7 +74,7 @@ class AdHocCardAuthorTest(CommonTest):
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))
     widget = 'input_text'
-    logging.info('Testing {0} controller'.format(widget))
+    logging.info('Testing {0} widget'.format(widget))
     ad_hoc_card.validate_widgets_styles(widget)
     return None
 

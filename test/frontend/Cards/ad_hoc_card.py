@@ -93,17 +93,15 @@ class AHCard(BaseCard):
       # Can't validate PLUS sign style due to APERTA-9082
     elif widget == 'input_text':
       self._get(self._tb_text).click()
-      ###
+      # Wait for the widget to display
       time.sleep(1)
       placeholder_text = self._get(self._text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
-      self._get(self._text_area).click()
       self._wait_for_element(self._get(self._text_delete_icon))
       delete_icon = self._get(self._text_delete_icon)
       # The following code could be used when APERTA-9139 is fixed
       #self._actions.move_to_element(delete_icon).perform()
       delete_icon.click()
-      ### DISABLE this part until fix
       time.sleep(1)
       # Disabled due to APERTA-9139
       #self.validate_delete_icon_grey(delete_icon)
@@ -113,7 +111,6 @@ class AHCard(BaseCard):
       #self.validate_delete_icon_green(delete_icon)
       delete_warning = self._get(self._delete_warning)
       warning_msg = 'This will permanently delete your item. Are you sure?'
-      ##import pdb; pdb.set_trace()
       self.validate_warning_message_style(delete_warning, warning_msg)
       cancel_lnk = self._get(self._cancel_warning)
       self.validate_cancel_confirmation_style(cancel_lnk)

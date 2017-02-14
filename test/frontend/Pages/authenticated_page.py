@@ -339,6 +339,26 @@ class AuthenticatedPage(PlosPage):
     assert discussions_label
     assert discussions_label.text.lower() == 'discussions', discussions_label.text
 
+  @staticmethod
+  def validate_delete_icon_grey(delete_icon):
+    """Validate style of delete icon (trash bin)"""
+    assert delete_icon.value_of_css_property('font-family') == 'FontAwesome', \
+        delete_icon.value_of_css_property('font-family')
+    assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
+        delete_icon.value_of_css_property('color')
+    assert delete_icon.value_of_css_property('font-size') in ('14px', '18px'), \
+        delete_icon.value_of_css_property('font-size')
+
+  @staticmethod
+  def validate_delete_icon_green(delete_icon):
+    """Validate style of delete icon (trash bin)"""
+    assert delete_icon.value_of_css_property('font-family') == 'FontAwesome', \
+        delete_icon.value_of_css_property('font-family')
+    assert delete_icon.value_of_css_property('color') == APERTA_GREEN, \
+        delete_icon.value_of_css_property('color')
+    assert delete_icon.value_of_css_property('font-size') in ('14px', '18px'), \
+        delete_icon.value_of_css_property('font-size')
+
   def click_profile_link(self):
     """Click nav toolbar profile link"""
     self.click_profile_nav()

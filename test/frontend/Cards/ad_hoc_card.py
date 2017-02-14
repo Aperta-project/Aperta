@@ -1,21 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import re
 import time
-import os
-import random
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
 
-from frontend.Pages.authenticated_page import APERTA_GREY_DARK
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
-
-from Base.PostgreSQL import PgSQL
-from Base.Resources import docs, supporting_info_files, figures, pdfs
 from frontend.Cards.basecard import BaseCard
+from frontend.Pages.authenticated_page import APERTA_GREY_DARK
 
 __author__ = 'sbassi@plos.org'
 
@@ -37,8 +27,7 @@ class AHCard(BaseCard):
     self._tb_paragraph = (By.CLASS_NAME, 'adhoc-toolbar-item--label')
     self._tb_email = (By.CLASS_NAME, 'adhoc-toolbar-item--email')
     self._tb_image = (By.CLASS_NAME, 'adhoc-toolbar-item--image')
-    self._text_text_area = (By.CSS_SELECTOR,
-        'div.inline-edit-body-part div.bodypart-display div.content-editable-muted')
+    self._text_area = (By.CSS_SELECTOR, 'div.content-editable-muted')
     self._text_delete_icon = (By.CSS_SELECTOR, 'span.fa-trash')
     # checkboxes
     self._chk_item_remove = (By.CLASS_NAME, 'item-remove')
@@ -73,7 +62,7 @@ class AHCard(BaseCard):
     self.validate_application_title_style(title)
     role_title = 'Ad-hoc for {0}'.format(role)
     assert title.text == role_title, (title.text, role_title)
-    assert self._get(self._edit_title)
+    self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
     if role == 'Staff Only':
       role = 'Staff-only'
@@ -85,12 +74,12 @@ class AHCard(BaseCard):
     self.validate_primary_big_green_button_style(add_btn)
     self._get(self._plus_icon)
 
-  def validate_controller_styles(self, control_type):
+  def validate_widgets_styles(self, widget):
     """
-    Style check for elements inside a given control
+    Style check for elements inside a given widget
     :return: None
     """
-    if control_type == 'check':
+    if widget == 'checkbox':
       self._get(self._tb_check).click()
       self._get(self._chk_item_remove)
       cancel_lnk = self._get(self._chk_cancel_lnk)
@@ -102,33 +91,35 @@ class AHCard(BaseCard):
       #self.validate_secondary_big_disabled_button_style(save_btn)
       chk_add_btn = self._get(self._chk_add_btn)
       # Can't validate PLUS sign style due to APERTA-9082
-    elif control_type == 'input_text':
+    elif widget == 'input_text':
       self._get(self._tb_text).click()
-      placeholder_text = self._get(self._text_text_area).text
+      ###
+      time.sleep(1)
+      placeholder_text = self._get(self._text_area).text
       assert placeholder_text == u'Click to type in your response.', placeholder_text
-      self._get(self._text_text_area).click()
+      self._get(self._text_area).click()
       self._wait_for_element(self._get(self._text_delete_icon))
       delete_icon = self._get(self._text_delete_icon)
+      # The following code could be used when APERTA-9139 is fixed
       #self._actions.move_to_element(delete_icon).perform()
       delete_icon.click()
-      # Dissabled due to APERTA-9139
-      #assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
-      #    delete_icon.value_of_css_property('color')
+      ### DISABLE this part until fix
+      time.sleep(1)
+      # Disabled due to APERTA-9139
+      #self.validate_delete_icon_grey(delete_icon)
       #self._actions.move_to_element(delete_icon).perform()
       #delete_icon = self._get(self._text_delete_icon)
-      #self._wait_for_element(self._get(self._text_delete_icon))
-      #self._get(self._text_delete_icon).click()
-      # Dissabled due to APERTA-9139
-      #assert delete_icon.value_of_css_property('color') == u'rgba(15, 116, 0, 1)', \
-      #    delete_icon.value_of_css_property('color')
+      # Disabled due to APERTA-9139
+      #self.validate_delete_icon_green(delete_icon)
       delete_warning = self._get(self._delete_warning)
       warning_msg = 'This will permanently delete your item. Are you sure?'
+      ##import pdb; pdb.set_trace()
       self.validate_warning_message_style(delete_warning, warning_msg)
       cancel_lnk = self._get(self._cancel_warning)
       self.validate_cancel_confirmation_style(cancel_lnk)
       delete_btn = self._get(self._delete_btn)
       self.validate_delete_confirmation_style(delete_btn)
-    elif control_type == 'paragraph':
+    elif widget == 'paragraph':
       self._get(self._tb_paragraph).click()
       cancel_lnk = self._get(self._cancel_lnk)
       assert cancel_lnk.text == 'cancel', cancel_lnk.text
@@ -137,9 +128,9 @@ class AHCard(BaseCard):
       assert save_btn.text == 'SAVE', save_btn.text
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_green_button_style(save_btn)
-      # Dissabled due to APERTA-9167
+      # Disabled due to APERTA-9167
       #self._get(self._paragraph_form)
-    elif control_type == 'email':
+    elif widget == 'email':
       self._get(self._tb_email).click()
       subject = self._get(self._email_subject)
       assert subject.get_attribute('placeholder') == 'Enter a subject', \
@@ -151,7 +142,7 @@ class AHCard(BaseCard):
       assert save_btn.text == 'SAVE', save_btn.text
       # Disabled due to APERTA-9063
       #self.validate_secondary_big_green_button_style(save_btn)
-    elif control_type == 'file_upload':
+    elif widget == 'file_upload':
       self._get(self._tb_image).click()
       self._get(self._text_title_edit_icon)
       self._get(self._text_delete_icon)

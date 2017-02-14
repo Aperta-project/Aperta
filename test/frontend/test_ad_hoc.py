@@ -7,11 +7,8 @@ The test document tarball from http://bighector.plos.org/aperta/testing_assets.t
     into frontend/assets/
 """
 import logging
-import os
 import random
-import time
 
-from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import docs, users, editorial_users
 from frontend.common_test import CommonTest
@@ -21,8 +18,6 @@ from frontend.Cards.ad_hoc_reviewer_card import AHReviewerCard
 from frontend.Cards.ad_hoc_staff_card import AHStaffCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
-
-from loremipsum import generate_paragraph
 
 __author__ = 'sbassi@plos.org'
 
@@ -78,9 +73,10 @@ class AdHocCardAuthorTest(CommonTest):
       ad_hoc_card = AHStaffCard(self._driver)
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
-    controller = random.choice(('check', 'input_text', 'paragraph', 'email', 'file_upload'))
-    logging.info('Testing {0} controller'.format(controller))
-    ad_hoc_card.validate_controller_styles(controller)
+    widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))
+    widget = 'input_text'
+    logging.info('Testing {0} controller'.format(widget))
+    ad_hoc_card.validate_widgets_styles(widget)
     return None
 
 

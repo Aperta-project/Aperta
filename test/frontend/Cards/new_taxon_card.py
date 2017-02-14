@@ -33,137 +33,97 @@ class NewTaxonCard(BaseCard):
     """
     self.validate_common_elements_styles(paper_id)
 
-  def zoological_and_botanical_first_question_without_checkboxes(self):
-    """Validate zoological and botanical first question without _checkboxes"""
-    # Time needed for some elements to be loaded into the DOM
-    time.sleep(2)
-    zoological_text, botanical_text = self._gets(self._questions_text)
-    assert zoological_text.text == (
-        "Does this manuscript describe a new zoological taxon name?"), zoological_text
-    assert botanical_text.text == (
-        "Does this manuscript describe a new botanical taxon name?"), botanical_text
-
-  def zoological_and_botanical_first_question_with_zoological_checked(self):
-    """Validate zoological and botanical first question with zoological checked"""
-    self.zoological_and_botanical_first_question_with_one_checked_helper(0,1)
-  
-  def zoological_and_botanical_first_question_with_botanical_checked(self):
-    """Validate zoological and botanical first question with botanical checked"""
-    self.zoological_and_botanical_first_question_with_one_checked_helper(1,2)
-
-  def zoological_and_botanical_first_question_with_one_checked_helper(self, 
-                                                                      position_checkbox,
-                                                                      position_text):
-    """
-    Validate zoological and botanical first question with zoological checked
-    Validate zoological and botanical first question with botanical checked
-    :param position_checkbox: The position to extract the information needed for the _checkboxes
-    """
-    self.zoological_and_botanical_first_question_without_checkboxes()
-    # Time needed for some elements to be loaded into the DOM
-    time.sleep(2)
-    checkbox = self._gets(self._checkboxes)[position_checkbox]
-    checkbox.click()
-    comply_text = self._get(self._comply_text)
-    assert comply_text.text == (
-        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
-        comply_text
-    comply_link = self._get(self._comply_link)
-    assert comply_link.get_attribute('href') == 'http://www.plosbiology.org/static/policies#taxon'
-    # Time needed for some elements to be loaded into the DOM
-    time.sleep(2)
-    authors_comply = self._gets(self._questions_text)[position_text]
-    assert authors_comply.text == (
-        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
-        authors_comply
-
-  def zoological_and_botanical_first_question_with_zoological_comply_accepted(self):
-    """Validate zoological and botanical first question with zoological checked and comply accepted"""
-    self.zoological_and_botanical_first_question_with_one_checked_helper(0,1)
-    self.zoological_and_botanical_comply_checkbox_helper(1)
-
-  def zoological_and_botanical_first_question_with_botanical_comply_accepted(self):
-    """Validate zoological and botanical first question with botanical checked and comply accepted"""
-    self.zoological_and_botanical_first_question_with_one_checked_helper(1,2)
-    self.zoological_and_botanical_comply_checkbox_helper(2)
-
-  def zoological_and_botanical_comply_checkbox_helper(self, position_comply_checkbox):
-    """
-    Helper for zoological_and_botanical_first_question_with_zoological_comply_accepted
-    Helper for zoological_and_botanical_first_question_with_botanical_comply_accepted
-    :param position_comply_checkbox: The position to extract the information needed for the _checkboxes
-    """
-    authors_comply_checkbox = self._gets(self._checkboxes)[position_comply_checkbox]
-    authors_comply_checkbox.click()
-
-  def zoological_and_botanical_first_question_checked_with_zoological_comply_accepted(self):
-    """Validate zoological and botanical first question and both checked but only zoological comply accepted"""
-    self.zoological_and_botanical_first_question_checked_helper()
-    self.zoological_and_botanical_comply_checkbox_helper(1)
-
-  def zoological_and_botanical_first_question_checked_with_botanical_comply_accepted(self):
-    """Validate zoological and botanical first question and both checked but only botanical comply accepted"""
-    self.zoological_and_botanical_first_question_checked_helper()
-    self.zoological_and_botanical_comply_checkbox_helper(3)
-
-  def zoological_and_botanical_first_question_checked_helper(self):
-    """
-    Helper for zoological_and_botanical_first_question_checked_with_zoological_comply_accepted
-    Helper for zoological_and_botanical_first_question_checked_with_botanical_comply_accepted
-    Helper for zoological_and_botanical_with_all_checked
-    """
-    self.zoological_and_botanical_first_question_without_checkboxes()
-    # Time needed for some elements to be loaded into the DOM
-    time.sleep(2)
+  def validate_zoological_and_botanical_no_checked(self):
+    """Validate if the checkboxes of zoological and botanical aren't checked"""
     zoological_checkbox, botanical_checkbox = self._gets(self._checkboxes)
-    zoological_checkbox.click()
-    botanical_checkbox.click()
-    zoological_comply_text, botanical_comply_text = self._gets(self._comply_text)
-    assert zoological_comply_text.text == (
-        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
-        zoological_comply_text
-    assert botanical_comply_text.text == (
-        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
-        botanical_comply_text
-    zoological_comply_link, botanical_comply_link = self._gets(self._comply_link)
-    assert zoological_comply_link.get_attribute('href') == (
-        'http://www.plosbiology.org/static/policies#taxon')
-    assert botanical_comply_link.get_attribute('href') == (
-        'http://www.plosbiology.org/static/policies#taxon')
-    # Time needed for some elements to be loaded into the DOM
-    time.sleep(2)
-    zoological_authors_comply = self._gets(self._questions_text)[1]
-    botanical_authors_comply = self._gets(self._questions_text)[3]
-    assert zoological_authors_comply.text == (
-        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
-        zoological_authors_comply
-    assert botanical_authors_comply.text == (
-        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
-        botanical_authors_comply
+    assert zoological_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == False
 
-  def zoological_and_botanical_with_all_checked(self):
-    """Validate zoological and botanical first question and both checked with comply accepted"""
-    self.zoological_and_botanical_first_question_checked_helper()
-    self.zoological_and_botanical_comply_checkbox_helper(1)
-    self.zoological_and_botanical_comply_checkbox_helper(3)
+  def validate_zoological_question_checked(self):
+    """Validate if the checkbox of zoological is checked and the others aren't checked"""
+    zoological_checkbox, zoological_comply_checkbox, botanical_checkbox = \
+        self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == False
+
+  def validate_botanical_question_checked(self):
+    """Validate if the checkbox of botanical is checked and the others aren't checked"""
+    zoological_checkbox, botanical_checkbox, botanical_comply_checkbox = \
+        self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == False
+
+  def validate_zoological_checkboxes(self):
+    """Validate if the checkboxes of zoological are checked and the others aren't checked"""
+    zoological_checkbox, zoological_comply_checkbox, botanical_checkbox = \
+        self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == True
+    assert botanical_checkbox.is_selected() == False
+
+  def validate_botanical_checkboxes(self):
+    """Validate if the checkboxes of botanical are checked and the others aren't checked"""
+    zoological_checkbox, botanical_checkbox, botanical_comply_checkbox = \
+        self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == True
+
+  def validate_zoological_checkboxes_with_botanical_question(self):
+    """Validate if the checkboxes of zoological are checked and botanical question is checked"""
+    zoological_checkbox, zoological_comply_checkbox, \
+        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == True
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == False
+
+  def validate_botanical_checkboxes_with_zoological_question(self):
+    """Validate if the checkboxes of botanical are checked and zoological question is checked"""
+    zoological_checkbox, zoological_comply_checkbox, \
+        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == True
+
+  def validate_all_checkboxes(self):
+    """validate all checkboxes"""
+    zoological_checkbox, zoological_comply_checkbox, \
+        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == True
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == True
+
+  def validate_only_questions(self):
+    """validate only the checkboxes from zoological and botanical questions"""
+    zoological_checkbox, zoological_comply_checkbox, \
+        botanical_checkbox, botanical_comply_checkbox = self._gets(self._checkboxes)
+    assert zoological_checkbox.is_selected() == True
+    assert zoological_comply_checkbox.is_selected() == False
+    assert botanical_checkbox.is_selected() == True
+    assert botanical_comply_checkbox.is_selected() == False
 
   def data_validation(self, data):
     """Validation of the data to log into the logging.info()"""
     if data == [False,False,False,False]:
-      self.zoological_and_botanical_first_question_without_checkboxes()
+      self.validate_zoological_and_botanical_no_checked()
     elif data == [True,False,False,False]:
-      self.zoological_and_botanical_first_question_with_zoological_checked()
+      self.validate_zoological_question_checked()
     elif data == [False,False,True,False]:
-      self.zoological_and_botanical_first_question_with_botanical_checked()
+      self.validate_botanical_question_checked()
     elif data == [True,True,False,False]:
-      self.zoological_and_botanical_first_question_with_zoological_comply_accepted()
+      self.validate_zoological_checkboxes()
     elif data == [False,False,True,True]:
-      self.zoological_and_botanical_first_question_with_botanical_comply_accepted()
+      self.validate_botanical_checkboxes()
     elif data == [True,True,True,False]:
-      self.zoological_and_botanical_first_question_checked_with_zoological_comply_accepted()
+      self.validate_zoological_checkboxes_with_botanical_question()
     elif data == [True,False,True,True]:
-      self.zoological_and_botanical_first_question_checked_with_botanical_comply_accepted()
+      self.validate_botanical_checkboxes_with_zoological_question()
     elif data == [True,True,True,True]:
-      self.zoological_and_botanical_with_all_checked()
+      self.validate_all_checkboxes()
     elif data == [True,False,True,False]:
-      self.zoological_and_botanical_first_question_checked_helper()
+      self.validate_only_questions()

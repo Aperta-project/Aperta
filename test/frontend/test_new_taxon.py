@@ -55,6 +55,7 @@ class NewTaxonTest(CommonTest):
     data = manuscript_page.complete_task('New Taxon')
     logging.info('Completed Taxonomy data: {0}'.format(data))
     # logout and enter as editor
+    time.sleep(3)
     manuscript_page.logout()
     # Enter as Editorial User
     editorial_user = random.choice(editorial_users)
@@ -74,6 +75,8 @@ class NewTaxonTest(CommonTest):
     new_taxon_card = NewTaxonCard(self.getDriver())
     new_taxon_card.card_ready()
     new_taxon_card.validate_card_elements_styles(short_doi)
+    logging.info('Reviewing data: {0}'.format(data))
+    import pdb; pdb.set_trace()
     new_taxon_card.data_validation(data)
 
   def _test_new_taxon_style(self):

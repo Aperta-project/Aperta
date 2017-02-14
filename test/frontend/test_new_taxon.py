@@ -102,7 +102,7 @@ class NewTaxonTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     data = manuscript_page.complete_task('New Taxon', data=[True,False,True,False])
     logging.info('Completed Taxonomy data: {0}'.format(data))
-    # Disable for APERTA-
+    # Disable for APERTA-8500
     #new_taxon_task = NewTaxonTask(self._driver)
     #new_taxon_task.validate_task_elements_styles()
     # logout and enter as editor

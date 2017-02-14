@@ -45,6 +45,7 @@ rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
 python -m frontend.test_ad_hoc
+exit
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin
 python -m frontend.test_assign_team

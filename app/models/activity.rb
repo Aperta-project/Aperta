@@ -49,7 +49,7 @@ class Activity < ActiveRecord::Base
       activity_key: "author.co_author_confirmed",
       subject: co_author.paper,
       user: user,
-      message: "#{co_author.full_name} confirmed co authorship"
+      message: "#{co_author.full_name} confirmed authorship"
     )
   end
 

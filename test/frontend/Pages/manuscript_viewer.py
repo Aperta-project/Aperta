@@ -64,6 +64,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
+    self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -365,6 +366,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.error('PDF file: {0} is invalid'.format(newest_file))
       raise('Invalid PDF generated for {0}'.format(newest_file))
     os.remove(newest_file)
+
+  def open_recent_activity(self):
+    """
+    Opens the recent activity overlay
+    :return: void function
+    """
+    self._get(self._tb_ra_link).click()
 
   def _check_recent_activity(self):
     """

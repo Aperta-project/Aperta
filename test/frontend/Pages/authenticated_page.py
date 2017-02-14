@@ -354,6 +354,7 @@ class AuthenticatedPage(PlosPage):
     """
     recent_activity = self._get(self._recent_activity)
     recent_activity.click()
+    # Time to allow the model to animate into place
     time.sleep(1)
 
   def click_profile_link(self):
@@ -862,6 +863,7 @@ class AuthenticatedPage(PlosPage):
     """
     close_btn = self._get(self._overlay_header_close)
     close_btn.click()
+    # time to allow the modal to animate away
     time.sleep(1)
 
   # Style Validations

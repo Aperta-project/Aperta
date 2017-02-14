@@ -9,7 +9,12 @@ class TokenCoAuthorsController < ApplicationController
   end
 
   def confirm
+    if author.co_author_confirmed?
+      redirect_to thank_you_token_co_author_path(token)
+    end
+
     author.co_author_confirmed!
+    Activity.co_author_confirmed!(author, user: current_user)
     redirect_to thank_you_token_co_author_path(token)
   end
 

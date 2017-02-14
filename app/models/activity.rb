@@ -43,6 +43,16 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.co_author_confirmed!(co_author, user:)
+    create(
+      feed_name: "manuscript",
+      activity_key: "author.co_author_confirmed",
+      subject: co_author.paper,
+      user: user,
+      message: "#{co_author.full_name} confirmed co authorship"
+    )
+  end
+
   def self.collaborator_added!(collaboration_assignment, user:)
     msg = [
       collaboration_assignment.user.full_name,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208172115) do
+ActiveRecord::Schema.define(version: 20170214120000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -610,11 +610,12 @@ ActiveRecord::Schema.define(version: 20170208172115) do
   add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
   create_table "reviewer_reports", force: :cascade do |t|
-    t.integer  "task_id",     null: false
-    t.integer  "decision_id", null: false
+    t.integer  "task_id",                         null: false
+    t.integer  "decision_id",                     null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "created_in_7993", default: false
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree

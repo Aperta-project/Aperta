@@ -9,7 +9,7 @@ class Paper::Submitted::CreateReviewerReports
 
     reviewer_tasks = paper.tasks.where(type: REVIEWER_SPECIFIC_TASKS)
     reviewer_tasks.each do |task|
-      ReviewerReport.create!(
+      ReviewerReport.find_or_create_by!(
         task: task,
         decision: paper.draft_decision,
         user: task.reviewer

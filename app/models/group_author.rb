@@ -3,6 +3,8 @@
 class GroupAuthor < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
+  include Tokenable
+  include CoAuthorConfirmable
 
   CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions"
   GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "group-author--government-employee"

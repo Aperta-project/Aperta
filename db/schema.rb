@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207164754) do
+ActiveRecord::Schema.define(version: 20170207164755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -278,7 +278,12 @@ ActiveRecord::Schema.define(version: 20170207164754) do
     t.string   "initial"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
+    t.string   "co_author_state"
+    t.datetime "co_author_state_modified"
   end
+
+  add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
 
   create_table "invitation_queues", force: :cascade do |t|
     t.integer  "task_id"

@@ -6,6 +6,7 @@ class AddTokenToAuthor < ActiveRecord::Migration
 
     add_index :authors, [:token], unique: true
 
+    Author.reset_column_information
     Author.find_each(&:migration_create_token!)
   end
 

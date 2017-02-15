@@ -54,7 +54,7 @@ Router.map(function() {
       });
 
     });
-    this.route('feature-flags');
+    this.route('feature_flags');
   });
 });
 

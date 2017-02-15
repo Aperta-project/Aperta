@@ -3885,6 +3885,7 @@ authors:
   - current_address_country
   - current_address_postal
   - user_id
+  - card_id
   records: 
   - - '1'
     - Arthur
@@ -3907,6 +3908,7 @@ authors:
     - 
     - 
     - '3'
+    - 
   - - '2'
     - Arthur
     - Author
@@ -3928,6 +3930,7 @@ authors:
     - 
     - 
     - '3'
+    - 
   - - '3'
     - Jane
     - Janesford
@@ -3939,6 +3942,7 @@ authors:
     - Second Greatest Author
     - Vanguard University of Southern California
     - Northwestern Oklahoma State University
+    - 
     - 
     - 
     - 
@@ -3970,6 +3974,7 @@ authors:
     - 
     - 
     - '3'
+    - 
   - - '5'
     - Barb
     - Jones
@@ -3981,6 +3986,7 @@ authors:
     - World's Best Author
     - Abraham Baldwin Agricultural College
     - Adler Graduate School
+    - 
     - 
     - 
     - 
@@ -4012,6 +4018,7 @@ authors:
     - 
     - 
     - '3'
+    - 
   - - '7'
     - Jeffrey SA
     - Gray
@@ -4033,6 +4040,7 @@ authors:
     - 
     - 
     - '7'
+    - 
   - - '8'
     - Jeffrey SA
     - Gray
@@ -4054,6 +4062,7 @@ authors:
     - 
     - 
     - '7'
+    - 
   - - '9'
     - Adam
     - Administrator
@@ -4075,6 +4084,7 @@ authors:
     - 
     - 
     - '1'
+    - 
   - - '11'
     - Arthur
     - Author
@@ -4096,6 +4106,7 @@ authors:
     - 
     - 
     - '3'
+    - 
   - - '12'
     - Han
     - Solo
@@ -4110,6 +4121,7 @@ authors:
     - 
     - 
     - HS
+    - 
     - 
     - 
     - 
@@ -4138,6 +4150,2737 @@ authors:
     - 
     - 
     - '3'
+    - 
+
+---
+card_contents:
+  columns:
+  - id
+  - card_id
+  - ident
+  - parent_id
+  - lft
+  - rgt
+  - text
+  - value_type
+  - created_at
+  - updated_at
+  - deleted_at
+  records: 
+  - - '1'
+    - '1'
+    - 
+    - 
+    - '1'
+    - '38'
+    - 
+    - 
+    - '2017-02-15 23:21:47.89328'
+    - '2017-02-15 23:21:48.224671'
+    - 
+  - - '2'
+    - '1'
+    - author--published_as_corresponding_author
+    - '1'
+    - '2'
+    - '3'
+    - This person should be identified as corresponding author on the published article
+    - boolean
+    - '2017-02-15 23:21:47.904839'
+    - '2017-02-15 23:21:47.914497'
+    - 
+  - - '3'
+    - '1'
+    - author--deceased
+    - '1'
+    - '4'
+    - '5'
+    - This person is deceased
+    - boolean
+    - '2017-02-15 23:21:47.931901'
+    - '2017-02-15 23:21:47.937446'
+    - 
+  - - '4'
+    - '1'
+    - author--contributions--conceptualization
+    - '18'
+    - '7'
+    - '8'
+    - Conceptualization
+    - boolean
+    - '2017-02-15 23:21:47.948912'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '5'
+    - '1'
+    - author--contributions--investigation
+    - '18'
+    - '9'
+    - '10'
+    - Investigation
+    - boolean
+    - '2017-02-15 23:21:47.960403'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '6'
+    - '1'
+    - author--contributions--visualization
+    - '18'
+    - '11'
+    - '12'
+    - Visualization
+    - boolean
+    - '2017-02-15 23:21:47.971389'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '7'
+    - '1'
+    - author--contributions--methodology
+    - '18'
+    - '13'
+    - '14'
+    - Methodology
+    - boolean
+    - '2017-02-15 23:21:47.98053'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '8'
+    - '1'
+    - author--contributions--resources
+    - '18'
+    - '15'
+    - '16'
+    - Resources
+    - boolean
+    - '2017-02-15 23:21:47.98961'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '9'
+    - '1'
+    - author--contributions--supervision
+    - '18'
+    - '17'
+    - '18'
+    - Supervision
+    - boolean
+    - '2017-02-15 23:21:47.998055'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '10'
+    - '1'
+    - author--contributions--software
+    - '18'
+    - '19'
+    - '20'
+    - Software
+    - boolean
+    - '2017-02-15 23:21:48.007866'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '11'
+    - '1'
+    - author--contributions--data-curation
+    - '18'
+    - '21'
+    - '22'
+    - Data Curation
+    - boolean
+    - '2017-02-15 23:21:48.017406'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '12'
+    - '1'
+    - author--contributions--project-administration
+    - '18'
+    - '23'
+    - '24'
+    - Project Administration
+    - boolean
+    - '2017-02-15 23:21:48.026273'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '13'
+    - '1'
+    - author--contributions--validation
+    - '18'
+    - '25'
+    - '26'
+    - Validation
+    - boolean
+    - '2017-02-15 23:21:48.034867'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '14'
+    - '1'
+    - author--contributions--writing-original-draft
+    - '18'
+    - '27'
+    - '28'
+    - Writing - Original Draft
+    - boolean
+    - '2017-02-15 23:21:48.044369'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '15'
+    - '1'
+    - author--contributions--writing-review-and-editing
+    - '18'
+    - '29'
+    - '30'
+    - Writing - Review and Editing
+    - boolean
+    - '2017-02-15 23:21:48.054638'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '16'
+    - '1'
+    - author--contributions--funding-acquisition
+    - '18'
+    - '31'
+    - '32'
+    - Funding Acquisition
+    - boolean
+    - '2017-02-15 23:21:48.068068'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '17'
+    - '1'
+    - author--contributions--formal-analysis
+    - '18'
+    - '33'
+    - '34'
+    - Formal Analysis
+    - boolean
+    - '2017-02-15 23:21:48.077381'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '18'
+    - '1'
+    - author--contributions
+    - '1'
+    - '6'
+    - '35'
+    - Author Contributions
+    - question-set
+    - '2017-02-15 23:21:48.088162'
+    - '2017-02-15 23:21:48.20558'
+    - 
+  - - '19'
+    - '1'
+    - author--government-employee
+    - '1'
+    - '36'
+    - '37'
+    - Is this author an employee of the United States Government?
+    - boolean
+    - '2017-02-15 23:21:48.2197'
+    - '2017-02-15 23:21:48.224671'
+    - 
+  - - '20'
+    - '2'
+    - 
+    - 
+    - '39'
+    - '46'
+    - 
+    - 
+    - '2017-02-15 23:21:48.24028'
+    - '2017-02-15 23:21:48.284039'
+    - 
+  - - '21'
+    - '2'
+    - authors--persons_agreed_to_be_named
+    - '20'
+    - '40'
+    - '41'
+    - Any persons named in the Acknowledgements section of the manuscript, or referred
+      to as the source of a personal communication, have agreed to being so named.
+    - boolean
+    - '2017-02-15 23:21:48.250793'
+    - '2017-02-15 23:21:48.256721'
+    - 
+  - - '22'
+    - '2'
+    - authors--authors_confirm_icmje_criteria
+    - '20'
+    - '42'
+    - '43'
+    - All authors have read, and confirm, that they meet, <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html"
+      target="_blank">ICMJE</a> criteria for authorship.
+    - boolean
+    - '2017-02-15 23:21:48.265481'
+    - '2017-02-15 23:21:48.270488'
+    - 
+  - - '23'
+    - '2'
+    - authors--authors_agree_to_submission
+    - '20'
+    - '44'
+    - '45'
+    - All contributing authors are aware of and agree to the submission of this manuscript.
+    - boolean
+    - '2017-02-15 23:21:48.278432'
+    - '2017-02-15 23:21:48.284039'
+    - 
+  - - '24'
+    - '3'
+    - 
+    - 
+    - '47'
+    - '52'
+    - 
+    - 
+    - '2017-02-15 23:21:48.30198'
+    - '2017-02-15 23:21:48.337503'
+    - 
+  - - '25'
+    - '3'
+    - competing_interests--statement
+    - '26'
+    - '49'
+    - '50'
+    - 'Please provide details about any and all competing interests in the box below.
+      Your response should begin with this statement: "I have read the journal''s
+      policy and the authors of this manuscript have the following competing interests."'
+    - text
+    - '2017-02-15 23:21:48.315516'
+    - '2017-02-15 23:21:48.337503'
+    - 
+  - - '26'
+    - '3'
+    - competing_interests--has_competing_interests
+    - '24'
+    - '48'
+    - '51'
+    - Do any authors of this manuscript have competing interests (as described in
+      the <a target='_blank' href='http://journals.plos.org/plosbiology/s/competing-interests'>PLOS
+      Policy on Declaration and Evaluation of Competing Interests</a>)?
+    - boolean
+    - '2017-02-15 23:21:48.323312'
+    - '2017-02-15 23:21:48.337503'
+    - 
+  - - '27'
+    - '4'
+    - 
+    - 
+    - '53'
+    - '58'
+    - 
+    - 
+    - '2017-02-15 23:21:48.356848'
+    - '2017-02-15 23:21:48.386918'
+    - 
+  - - '28'
+    - '4'
+    - cover_letter--text
+    - '27'
+    - '54'
+    - '55'
+    - 
+    - text
+    - '2017-02-15 23:21:48.366625'
+    - '2017-02-15 23:21:48.373081'
+    - 
+  - - '29'
+    - '4'
+    - cover_letter--attachment
+    - '27'
+    - '56'
+    - '57'
+    - 
+    - attachment
+    - '2017-02-15 23:21:48.381492'
+    - '2017-02-15 23:21:48.386918'
+    - 
+  - - '30'
+    - '5'
+    - 
+    - 
+    - '59'
+    - '68'
+    - 
+    - 
+    - '2017-02-15 23:21:48.402899'
+    - '2017-02-15 23:21:48.456982'
+    - 
+  - - '31'
+    - '5'
+    - data_availability--data_fully_available
+    - '30'
+    - '60'
+    - '61'
+    - Do the authors confirm that all the data underlying the findings described in
+      their manuscript are fully available without restriction?
+    - boolean
+    - '2017-02-15 23:21:48.411451'
+    - '2017-02-15 23:21:48.41638'
+    - 
+  - - '32'
+    - '5'
+    - data_availability--data_location
+    - '30'
+    - '62'
+    - '63'
+    - Please describe where your data may be found, writing in full sentences.
+    - text
+    - '2017-02-15 23:21:48.426562'
+    - '2017-02-15 23:21:48.431312'
+    - 
+  - - '33'
+    - '5'
+    - data_availability--additional_information_doi
+    - '30'
+    - '64'
+    - '65'
+    - Tick here if the URLs/accession numbers/DOIs will be available only after acceptance
+      of the manuscript for publication so that we can ensure their inclusion before
+      publication.
+    - boolean
+    - '2017-02-15 23:21:48.439213'
+    - '2017-02-15 23:21:48.444258'
+    - 
+  - - '34'
+    - '5'
+    - data_availability--additional_information_other
+    - '30'
+    - '66'
+    - '67'
+    - Tick here if your circumstances are not covered by the content above and you
+      need the journal’s help to make your data available.
+    - boolean
+    - '2017-02-15 23:21:48.453042'
+    - '2017-02-15 23:21:48.456982'
+    - 
+  - - '35'
+    - '6'
+    - 
+    - 
+    - '69'
+    - '72'
+    - 
+    - 
+    - '2017-02-15 23:21:48.472309'
+    - '2017-02-15 23:21:48.508979'
+    - 
+  - - '36'
+    - '6'
+    - early-posting--consent
+    - '35'
+    - '70'
+    - '71'
+    - Yes, I agree to publish an early version of my article
+    - boolean
+    - '2017-02-15 23:21:48.480849'
+    - '2017-02-15 23:21:48.508979'
+    - 
+  - - '37'
+    - '7'
+    - 
+    - 
+    - '73'
+    - '88'
+    - 
+    - 
+    - '2017-02-15 23:21:48.523602'
+    - '2017-02-15 23:21:48.614081'
+    - 
+  - - '38'
+    - '7'
+    - ethics--human_subjects--participants
+    - '39'
+    - '75'
+    - '76'
+    - Please enter the name of the IRB or Ethics Committee that approved this study
+      in the space below. Include the approval number and/or a statement indicating
+      approval of this research.
+    - text
+    - '2017-02-15 23:21:48.531367'
+    - '2017-02-15 23:21:48.549383'
+    - 
+  - - '39'
+    - '7'
+    - ethics--human_subjects
+    - '37'
+    - '74'
+    - '77'
+    - Does your study involve human participants and/or tissue?
+    - boolean
+    - '2017-02-15 23:21:48.538703'
+    - '2017-02-15 23:21:48.549383'
+    - 
+  - - '40'
+    - '7'
+    - ethics--animal_subjects--field_permit
+    - '42'
+    - '79'
+    - '80'
+    - 'Please enter your statement below:'
+    - text
+    - '2017-02-15 23:21:48.557676'
+    - '2017-02-15 23:21:48.58939'
+    - 
+  - - '41'
+    - '7'
+    - ethics--animal_subjects--field_arrive
+    - '42'
+    - '81'
+    - '82'
+    - ARRIVE checklist
+    - attachment
+    - '2017-02-15 23:21:48.566531'
+    - '2017-02-15 23:21:48.58939'
+    - 
+  - - '42'
+    - '7'
+    - ethics--animal_subjects
+    - '37'
+    - '78'
+    - '83'
+    - Does your study involve animal research (vertebrate animals, embryos or tissues)?
+    - boolean
+    - '2017-02-15 23:21:48.574148'
+    - '2017-02-15 23:21:48.58939'
+    - 
+  - - '43'
+    - '7'
+    - ethics--field_study--field_permit_number
+    - '44'
+    - '85'
+    - '86'
+    - Please provide your field permit number and indicate the institution or relevant
+      body that granted permission for use of the land or materials collected.
+    - text
+    - '2017-02-15 23:21:48.597589'
+    - '2017-02-15 23:21:48.614081'
+    - 
+  - - '44'
+    - '7'
+    - ethics--field_study
+    - '37'
+    - '84'
+    - '87'
+    - Is this a field study, or does it involve collection of plant, animal, or other
+      materials collected from a natural setting?
+    - boolean
+    - '2017-02-15 23:21:48.604631'
+    - '2017-02-15 23:21:48.614081'
+    - 
+  - - '45'
+    - '8'
+    - 
+    - 
+    - '89'
+    - '92'
+    - 
+    - 
+    - '2017-02-15 23:21:48.635506'
+    - '2017-02-15 23:21:48.647973'
+    - 
+  - - '46'
+    - '8'
+    - figures--complies
+    - '45'
+    - '90'
+    - '91'
+    - Yes - I confirm our figures comply with the guidelines.
+    - boolean
+    - '2017-02-15 23:21:48.642943'
+    - '2017-02-15 23:21:48.647973'
+    - 
+  - - '47'
+    - '9'
+    - 
+    - 
+    - '93'
+    - '96'
+    - 
+    - 
+    - '2017-02-15 23:21:48.662511'
+    - '2017-02-15 23:21:48.67408'
+    - 
+  - - '48'
+    - '9'
+    - financial_disclosures--author_received_funding
+    - '47'
+    - '94'
+    - '95'
+    - Did any of the authors receive specific funding for this work?
+    - boolean
+    - '2017-02-15 23:21:48.670423'
+    - '2017-02-15 23:21:48.67408'
+    - 
+  - - '49'
+    - '10'
+    - 
+    - 
+    - '97'
+    - '114'
+    - 
+    - 
+    - '2017-02-15 23:21:48.69118'
+    - '2017-02-15 23:21:48.793671'
+    - 
+  - - '50'
+    - '10'
+    - front_matter_reviewer_report--decision_term
+    - '49'
+    - '98'
+    - '99'
+    - 'Please provide your publication recommendation:'
+    - text
+    - '2017-02-15 23:21:48.698792'
+    - '2017-02-15 23:21:48.703341'
+    - 
+  - - '51'
+    - '10'
+    - front_matter_reviewer_report--competing_interests
+    - '49'
+    - '100'
+    - '101'
+    - Do you have any potential or perceived competing interests that may influence
+      your review?
+    - text
+    - '2017-02-15 23:21:48.710828'
+    - '2017-02-15 23:21:48.715051'
+    - 
+  - - '52'
+    - '10'
+    - front_matter_reviewer_report--suitable--comment
+    - '53'
+    - '103'
+    - '104'
+    - Suitable Comment
+    - text
+    - '2017-02-15 23:21:48.723225'
+    - '2017-02-15 23:21:48.740574'
+    - 
+  - - '53'
+    - '10'
+    - front_matter_reviewer_report--suitable
+    - '49'
+    - '102'
+    - '105'
+    - Is this manuscript suitable in principle for the magazine section of <em>PLOS
+      Biology</em>?
+    - boolean
+    - '2017-02-15 23:21:48.730553'
+    - '2017-02-15 23:21:48.740574'
+    - 
+  - - '54'
+    - '10'
+    - front_matter_reviewer_report--includes_unpublished_data--explanation
+    - '55'
+    - '107'
+    - '108'
+    - Includes Published Data Explanation
+    - text
+    - '2017-02-15 23:21:48.750003'
+    - '2017-02-15 23:21:48.769968'
+    - 
+  - - '55'
+    - '10'
+    - front_matter_reviewer_report--includes_unpublished_data
+    - '49'
+    - '106'
+    - '109'
+    - 'If previously unpublished data are included to support the conclusions, please
+      note in the box below whether:'
+    - boolean
+    - '2017-02-15 23:21:48.757758'
+    - '2017-02-15 23:21:48.769968'
+    - 
+  - - '56'
+    - '10'
+    - front_matter_reviewer_report--additional_comments
+    - '49'
+    - '110'
+    - '111'
+    - "(Optional) Please offer any additional confidential comments to the editor"
+    - text
+    - '2017-02-15 23:21:48.777775'
+    - '2017-02-15 23:21:48.78273'
+    - 
+  - - '57'
+    - '10'
+    - front_matter_reviewer_report--identity
+    - '49'
+    - '112'
+    - '113'
+    - "(Optional) If you'd like your identity to be revealed to the authors, please
+      include your name here."
+    - text
+    - '2017-02-15 23:21:48.789742'
+    - '2017-02-15 23:21:48.793671'
+    - 
+  - - '58'
+    - '11'
+    - 
+    - 
+    - '115'
+    - '120'
+    - 
+    - 
+    - '2017-02-15 23:21:48.808452'
+    - '2017-02-15 23:21:48.834448'
+    - 
+  - - '59'
+    - '11'
+    - funder--had_influence--role_description
+    - '60'
+    - '117'
+    - '118'
+    - Describe the role of any sponsors or funders in the study design, data collection
+      and analysis, decision to publish, or preparation of the manuscript.
+    - text
+    - '2017-02-15 23:21:48.816961'
+    - '2017-02-15 23:21:48.834448'
+    - 
+  - - '60'
+    - '11'
+    - funder--had_influence
+    - '58'
+    - '116'
+    - '119'
+    - Did the funder have a role in study design, data collection and analysis, decision
+      to publish, or preparation of the manuscript?
+    - boolean
+    - '2017-02-15 23:21:48.824442'
+    - '2017-02-15 23:21:48.834448'
+    - 
+  - - '61'
+    - '12'
+    - 
+    - 
+    - '121'
+    - '154'
+    - 
+    - 
+    - '2017-02-15 23:21:48.849685'
+    - '2017-02-15 23:21:49.103516'
+    - 
+  - - '62'
+    - '12'
+    - group-author--contributions--conceptualization
+    - '76'
+    - '123'
+    - '124'
+    - Conceptualization
+    - boolean
+    - '2017-02-15 23:21:48.859087'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '63'
+    - '12'
+    - group-author--contributions--investigation
+    - '76'
+    - '125'
+    - '126'
+    - Investigation
+    - boolean
+    - '2017-02-15 23:21:48.868162'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '64'
+    - '12'
+    - group-author--contributions--visualization
+    - '76'
+    - '127'
+    - '128'
+    - Visualization
+    - boolean
+    - '2017-02-15 23:21:48.876152'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '65'
+    - '12'
+    - group-author--contributions--methodology
+    - '76'
+    - '129'
+    - '130'
+    - Methodology
+    - boolean
+    - '2017-02-15 23:21:48.884181'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '66'
+    - '12'
+    - group-author--contributions--resources
+    - '76'
+    - '131'
+    - '132'
+    - Resources
+    - boolean
+    - '2017-02-15 23:21:48.892214'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '67'
+    - '12'
+    - group-author--contributions--supervision
+    - '76'
+    - '133'
+    - '134'
+    - Supervision
+    - boolean
+    - '2017-02-15 23:21:48.901088'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '68'
+    - '12'
+    - group-author--contributions--software
+    - '76'
+    - '135'
+    - '136'
+    - Software
+    - boolean
+    - '2017-02-15 23:21:48.908595'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '69'
+    - '12'
+    - group-author--contributions--data-curation
+    - '76'
+    - '137'
+    - '138'
+    - Data Curation
+    - boolean
+    - '2017-02-15 23:21:48.916453'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '70'
+    - '12'
+    - group-author--contributions--project-administration
+    - '76'
+    - '139'
+    - '140'
+    - Project Administration
+    - boolean
+    - '2017-02-15 23:21:48.924337'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '71'
+    - '12'
+    - group-author--contributions--validation
+    - '76'
+    - '141'
+    - '142'
+    - Validation
+    - boolean
+    - '2017-02-15 23:21:48.932249'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '72'
+    - '12'
+    - group-author--contributions--writing-original-draft
+    - '76'
+    - '143'
+    - '144'
+    - Writing - Original Draft
+    - boolean
+    - '2017-02-15 23:21:48.939964'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '73'
+    - '12'
+    - group-author--contributions--writing-review-and-editing
+    - '76'
+    - '145'
+    - '146'
+    - Writing - Review and Editing
+    - boolean
+    - '2017-02-15 23:21:48.948797'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '74'
+    - '12'
+    - group-author--contributions--funding-acquisition
+    - '76'
+    - '147'
+    - '148'
+    - Funding Acquisition
+    - boolean
+    - '2017-02-15 23:21:48.957815'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '75'
+    - '12'
+    - group-author--contributions--formal-analysis
+    - '76'
+    - '149'
+    - '150'
+    - Formal Analysis
+    - boolean
+    - '2017-02-15 23:21:48.967259'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '76'
+    - '12'
+    - group-author--contributions
+    - '61'
+    - '122'
+    - '151'
+    - Author Contributions
+    - question-set
+    - '2017-02-15 23:21:48.976632'
+    - '2017-02-15 23:21:49.085263'
+    - 
+  - - '77'
+    - '12'
+    - group-author--government-employee
+    - '61'
+    - '152'
+    - '153'
+    - Is this group a United States Government agency, department or organization?
+    - boolean
+    - '2017-02-15 23:21:49.098819'
+    - '2017-02-15 23:21:49.103516'
+    - 
+  - - '78'
+    - '13'
+    - 
+    - 
+    - '155'
+    - '220'
+    - 
+    - 
+    - '2017-02-15 23:21:49.122086'
+    - '2017-02-15 23:21:49.533153'
+    - 
+  - - '79'
+    - '13'
+    - plos_billing--first_name
+    - '78'
+    - '156'
+    - '157'
+    - First Name
+    - text
+    - '2017-02-15 23:21:49.129758'
+    - '2017-02-15 23:21:49.13422'
+    - 
+  - - '80'
+    - '13'
+    - plos_billing--last_name
+    - '78'
+    - '158'
+    - '159'
+    - Last Name
+    - text
+    - '2017-02-15 23:21:49.14174'
+    - '2017-02-15 23:21:49.14672'
+    - 
+  - - '81'
+    - '13'
+    - plos_billing--title
+    - '78'
+    - '160'
+    - '161'
+    - Title
+    - text
+    - '2017-02-15 23:21:49.154475'
+    - '2017-02-15 23:21:49.158675'
+    - 
+  - - '82'
+    - '13'
+    - plos_billing--department
+    - '78'
+    - '162'
+    - '163'
+    - Department
+    - text
+    - '2017-02-15 23:21:49.166277'
+    - '2017-02-15 23:21:49.1708'
+    - 
+  - - '83'
+    - '13'
+    - plos_billing--phone_number
+    - '78'
+    - '164'
+    - '165'
+    - Phone
+    - text
+    - '2017-02-15 23:21:49.178454'
+    - '2017-02-15 23:21:49.183219'
+    - 
+  - - '84'
+    - '13'
+    - plos_billing--email
+    - '78'
+    - '166'
+    - '167'
+    - Email
+    - text
+    - '2017-02-15 23:21:49.191009'
+    - '2017-02-15 23:21:49.195298'
+    - 
+  - - '85'
+    - '13'
+    - plos_billing--address1
+    - '78'
+    - '168'
+    - '169'
+    - Address Line 1
+    - text
+    - '2017-02-15 23:21:49.202728'
+    - '2017-02-15 23:21:49.206788'
+    - 
+  - - '86'
+    - '13'
+    - plos_billing--address2
+    - '78'
+    - '170'
+    - '171'
+    - Address Line 2 (optional)
+    - text
+    - '2017-02-15 23:21:49.213783'
+    - '2017-02-15 23:21:49.217873'
+    - 
+  - - '87'
+    - '13'
+    - plos_billing--city
+    - '78'
+    - '172'
+    - '173'
+    - City
+    - text
+    - '2017-02-15 23:21:49.224911'
+    - '2017-02-15 23:21:49.229045'
+    - 
+  - - '88'
+    - '13'
+    - plos_billing--state
+    - '78'
+    - '174'
+    - '175'
+    - State or Province
+    - text
+    - '2017-02-15 23:21:49.236563'
+    - '2017-02-15 23:21:49.240738'
+    - 
+  - - '89'
+    - '13'
+    - plos_billing--postal_code
+    - '78'
+    - '176'
+    - '177'
+    - ZIP or Postal Code
+    - text
+    - '2017-02-15 23:21:49.248425'
+    - '2017-02-15 23:21:49.253149'
+    - 
+  - - '90'
+    - '13'
+    - plos_billing--country
+    - '78'
+    - '178'
+    - '179'
+    - Country
+    - text
+    - '2017-02-15 23:21:49.260522'
+    - '2017-02-15 23:21:49.265254'
+    - 
+  - - '91'
+    - '13'
+    - plos_billing--affiliation1
+    - '78'
+    - '180'
+    - '181'
+    - 'Affiliation #1'
+    - text
+    - '2017-02-15 23:21:49.273096'
+    - '2017-02-15 23:21:49.277388'
+    - 
+  - - '92'
+    - '13'
+    - plos_billing--affiliation2
+    - '78'
+    - '182'
+    - '183'
+    - 'Affiliation #2'
+    - text
+    - '2017-02-15 23:21:49.284902'
+    - '2017-02-15 23:21:49.289333'
+    - 
+  - - '93'
+    - '13'
+    - plos_billing--payment_method
+    - '78'
+    - '184'
+    - '185'
+    - How would you like to pay?
+    - text
+    - '2017-02-15 23:21:49.300605'
+    - '2017-02-15 23:21:49.304983'
+    - 
+  - - '94'
+    - '13'
+    - plos_billing--pfa_question_1
+    - '78'
+    - '186'
+    - '187'
+    - Have you investigated if funding is available from your co-authors' institutions
+      to pay the publication fee?
+    - boolean
+    - '2017-02-15 23:21:49.312463'
+    - '2017-02-15 23:21:49.316806'
+    - 
+  - - '95'
+    - '13'
+    - plos_billing--pfa_question_1a
+    - '78'
+    - '188'
+    - '189'
+    - If your co-authors' institutions will not provide any funding to publish the
+      article, indicate why.
+    - text
+    - '2017-02-15 23:21:49.328274'
+    - '2017-02-15 23:21:49.332855'
+    - 
+  - - '96'
+    - '13'
+    - plos_billing--pfa_question_1b
+    - '78'
+    - '190'
+    - '191'
+    - If your coauthors' institutions will provide partial funding to publish the
+      article, indicate the amount they will pay towards your publication fee (in
+      USD).
+    - text
+    - '2017-02-15 23:21:49.340279'
+    - '2017-02-15 23:21:49.344907'
+    - 
+  - - '97'
+    - '13'
+    - plos_billing--pfa_question_2
+    - '78'
+    - '192'
+    - '193'
+    - Have you investigated if funding is available from your institution to pay the
+      publication fee?
+    - boolean
+    - '2017-02-15 23:21:49.353346'
+    - '2017-02-15 23:21:49.357961'
+    - 
+  - - '98'
+    - '13'
+    - plos_billing--pfa_question_2a
+    - '78'
+    - '194'
+    - '195'
+    - If your institution cannot provide any funding to publish the article, indicate
+      why.
+    - text
+    - '2017-02-15 23:21:49.365907'
+    - '2017-02-15 23:21:49.370987'
+    - 
+  - - '99'
+    - '13'
+    - plos_billing--pfa_question_2b
+    - '78'
+    - '196'
+    - '197'
+    - If your institution will provide partial funding to publish the article, indicate
+      the amount it will pay toward your publication fee (in USD).
+    - text
+    - '2017-02-15 23:21:49.378441'
+    - '2017-02-15 23:21:49.383098'
+    - 
+  - - '100'
+    - '13'
+    - plos_billing--pfa_question_3
+    - '78'
+    - '198'
+    - '199'
+    - Do your co-authors have any other sources of funding that can be used towards
+      the publication fee?
+    - boolean
+    - '2017-02-15 23:21:49.390627'
+    - '2017-02-15 23:21:49.395199'
+    - 
+  - - '101'
+    - '13'
+    - plos_billing--pfa_question_3a
+    - '78'
+    - '200'
+    - '201'
+    - Indicate the amount that they can pay (in USD).
+    - text
+    - '2017-02-15 23:21:49.402861'
+    - '2017-02-15 23:21:49.407396'
+    - 
+  - - '102'
+    - '13'
+    - plos_billing--pfa_question_4
+    - '78'
+    - '202'
+    - '203'
+    - Do you have any other sources of funding that can be used towards the publication
+      fee?
+    - boolean
+    - '2017-02-15 23:21:49.42881'
+    - '2017-02-15 23:21:49.432948'
+    - 
+  - - '103'
+    - '13'
+    - plos_billing--pfa_question_4a
+    - '78'
+    - '204'
+    - '205'
+    - Indicate the amount that they can pay (in USD).
+    - text
+    - '2017-02-15 23:21:49.440219'
+    - '2017-02-15 23:21:49.445142'
+    - 
+  - - '104'
+    - '13'
+    - plos_billing--pfa_amount_to_pay
+    - '78'
+    - '206'
+    - '207'
+    - Given your answers to the above content on your funding availability, what is
+      the amount that you and your co-authors can jointly pay for publication? (Specify
+      in USD.)
+    - text
+    - '2017-02-15 23:21:49.453746'
+    - '2017-02-15 23:21:49.458016'
+    - 
+  - - '105'
+    - '13'
+    - plos_billing--pfa_supporting_docs
+    - '78'
+    - '208'
+    - '209'
+    - If you would like to provide documents to assist in demonstrating your request,
+      you will have the opportunity to do so. After PLOS has received the completed
+      application, the confirmation email will provide direction on where to send
+      supplemental documents. Do you intend to supply supplemental documents?
+    - boolean
+    - '2017-02-15 23:21:49.465611'
+    - '2017-02-15 23:21:49.470724'
+    - 
+  - - '106'
+    - '13'
+    - plos_billing--pfa_additional_comments
+    - '78'
+    - '210'
+    - '211'
+    - If you wish to make additional comments to support your request, provide them
+      below. If you have no additional comments, enter "None" in the box.
+    - text
+    - '2017-02-15 23:21:49.482024'
+    - '2017-02-15 23:21:49.486089'
+    - 
+  - - '107'
+    - '13'
+    - plos_billing--affirm_true_and_complete
+    - '78'
+    - '212'
+    - '213'
+    - 'You are acknowledging that you have read and agree to the following statement:
+      I affirm that the information provided in this application is true and complete.'
+    - boolean
+    - '2017-02-15 23:21:49.494054'
+    - '2017-02-15 23:21:49.498683'
+    - 
+  - - '108'
+    - '13'
+    - plos_billing--agree_to_collections
+    - '78'
+    - '214'
+    - '215'
+    - I have read and agree to the Terms of Submission to PLOS Collections
+    - boolean
+    - '2017-02-15 23:21:49.506647'
+    - '2017-02-15 23:21:49.510632'
+    - 
+  - - '109'
+    - '13'
+    - plos_billing--gpi_country
+    - '78'
+    - '216'
+    - '217'
+    - Global Participation Initiative Country
+    - text
+    - '2017-02-15 23:21:49.517753'
+    - '2017-02-15 23:21:49.521804'
+    - 
+  - - '110'
+    - '13'
+    - plos_billing--ringgold_institution
+    - '78'
+    - '218'
+    - '219'
+    - Ringgold Institution
+    - text
+    - '2017-02-15 23:21:49.529204'
+    - '2017-02-15 23:21:49.533153'
+    - 
+  - - '111'
+    - '14'
+    - 
+    - 
+    - '221'
+    - '248'
+    - 
+    - 
+    - '2017-02-15 23:21:49.548588'
+    - '2017-02-15 23:21:49.704313'
+    - 
+  - - '112'
+    - '14'
+    - plos_bio_final_tech_check--open_rejects
+    - '111'
+    - '222'
+    - '223'
+    - 'Check Section Headings of all new submissions (including Open Rejects). Should
+      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
+      Discussion, Materials and Methods, References, Acknowledgements, and Figure
+      Legends.'
+    - boolean
+    - '2017-02-15 23:21:49.556311'
+    - '2017-02-15 23:21:49.56051'
+    - 
+  - - '113'
+    - '14'
+    - plos_bio_final_tech_check--human_subjects
+    - '111'
+    - '224'
+    - '225'
+    - Check the ethics statement - does it mention Human Participants? If so, flag
+      this with the editor in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:49.568783'
+    - '2017-02-15 23:21:49.573627'
+    - 
+  - - '114'
+    - '14'
+    - plos_bio_final_tech_check--ethics_needed
+    - '111'
+    - '226'
+    - '227'
+    - Check if there are any obvious ethical flags (mentions of animal/human work
+      in the title/abstract), check that there's an ethics statement. If not, ask
+      the authors about this.
+    - boolean
+    - '2017-02-15 23:21:49.581375'
+    - '2017-02-15 23:21:49.585602'
+    - 
+  - - '115'
+    - '14'
+    - plos_bio_final_tech_check--data_available
+    - '111'
+    - '228'
+    - '229'
+    - Is the data available? If not, or it's only available by contacting an author
+      or the institution, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:49.593302'
+    - '2017-02-15 23:21:49.597393'
+    - 
+  - - '116'
+    - '14'
+    - plos_bio_final_tech_check--supporting_information
+    - '111'
+    - '230'
+    - '231'
+    - If author indicates the data is available in Supporting Information, check to
+      make sure there are Supporting Information files in the submission (don't need
+      to check for specifics at this stage).
+    - boolean
+    - '2017-02-15 23:21:49.60478'
+    - '2017-02-15 23:21:49.609073'
+    - 
+  - - '117'
+    - '14'
+    - plos_bio_final_tech_check--dryad_url
+    - '111'
+    - '232'
+    - '233'
+    - If the author has mentioned Dryad in their Data statement, check that they've
+      included the Dryad reviewer URL. If not, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:49.616661'
+    - '2017-02-15 23:21:49.621219'
+    - 
+  - - '118'
+    - '14'
+    - plos_bio_final_tech_check--financial_disclosure
+    - '111'
+    - '234'
+    - '235'
+    - If Financial Disclosure Statement is not complete (they've written N/A or something
+      similar), message author.
+    - boolean
+    - '2017-02-15 23:21:49.628956'
+    - '2017-02-15 23:21:49.633154'
+    - 
+  - - '119'
+    - '14'
+    - plos_bio_final_tech_check--tobacco
+    - '111'
+    - '236'
+    - '237'
+    - If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:49.64052'
+    - '2017-02-15 23:21:49.644991'
+    - 
+  - - '120'
+    - '14'
+    - plos_bio_final_tech_check--figures_legible
+    - '111'
+    - '238'
+    - '239'
+    - If any figures are completely illegible, contact the author.
+    - boolean
+    - '2017-02-15 23:21:49.653082'
+    - '2017-02-15 23:21:49.657609'
+    - 
+  - - '121'
+    - '14'
+    - plos_bio_final_tech_check--cited
+    - '111'
+    - '240'
+    - '241'
+    - If any files or figures are cited but not included in the submission, message
+      the author.
+    - boolean
+    - '2017-02-15 23:21:49.665383'
+    - '2017-02-15 23:21:49.670133'
+    - 
+  - - '122'
+    - '14'
+    - plos_bio_final_tech_check--cover_letter
+    - '111'
+    - '242'
+    - '243'
+    - Have the authors asked any content in the cover letter? If yes, contact the
+      editor/journal team.
+    - boolean
+    - '2017-02-15 23:21:49.677342'
+    - '2017-02-15 23:21:49.682001'
+    - 
+  - - '123'
+    - '14'
+    - plos_bio_final_tech_check--billing_inquiries
+    - '111'
+    - '244'
+    - '245'
+    - Have the authors mentioned any billing information in the cover letter? If yes,
+      contact the editor/journal team.
+    - boolean
+    - '2017-02-15 23:21:49.689438'
+    - '2017-02-15 23:21:49.693421'
+    - 
+  - - '124'
+    - '14'
+    - plos_bio_final_tech_check--ethics_statement
+    - '111'
+    - '246'
+    - '247'
+    - If an Ethics Statement is present, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:49.700266'
+    - '2017-02-15 23:21:49.704313'
+    - 
+  - - '125'
+    - '15'
+    - 
+    - 
+    - '249'
+    - '282'
+    - 
+    - 
+    - '2017-02-15 23:21:49.718149'
+    - '2017-02-15 23:21:49.922094'
+    - 
+  - - '126'
+    - '15'
+    - plos_bio_initial_tech_check--ethics_statement
+    - '125'
+    - '250'
+    - '251'
+    - Make sure the ethics statement looks complete. If the authors have responded
+      Yes to any question, but have not provided approval information, please request
+      this from them.
+    - boolean
+    - '2017-02-15 23:21:49.725726'
+    - '2017-02-15 23:21:49.729842'
+    - 
+  - - '127'
+    - '15'
+    - plos_bio_initial_tech_check--data_availability_confidential
+    - '125'
+    - '252'
+    - '253'
+    - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
+      to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
+      or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
+      for researchers who meet the criteria for access to confidential data', start
+      a 'MetaData' discussion and ping the handling editor.
+    - boolean
+    - '2017-02-15 23:21:49.737317'
+    - '2017-02-15 23:21:49.741787'
+    - 
+  - - '128'
+    - '15'
+    - plos_bio_initial_tech_check--data_availability_blank
+    - '125'
+    - '254'
+    - '255'
+    - In the Data Availability card, if the authors have not selected one of the reasons
+      listed in Q2 and pasted it into the text box, please request that they complete
+      this section.
+    - boolean
+    - '2017-02-15 23:21:49.750397'
+    - '2017-02-15 23:21:49.757008'
+    - 
+  - - '129'
+    - '15'
+    - plos_bio_initial_tech_check--data_availability_dryad
+    - '125'
+    - '256'
+    - '257'
+    - 'In the Data Availability card, if the authors have mentioned data submitted
+      to Dryad, check that the author has provided the Dryad reviewer URL and if not,
+      request it from them. '
+    - boolean
+    - '2017-02-15 23:21:49.766189'
+    - '2017-02-15 23:21:49.772627'
+    - 
+  - - '130'
+    - '15'
+    - plos_bio_initial_tech_check--authors_match
+    - '125'
+    - '258'
+    - '259'
+    - Compare the author list between the manuscript file and the Authors card. If
+      the author list does not match, request the authors to update whichever section
+      is missing information. Ignore omissions of middle initials.
+    - boolean
+    - '2017-02-15 23:21:49.785058'
+    - '2017-02-15 23:21:49.789254'
+    - 
+  - - '131'
+    - '15'
+    - plos_bio_initial_tech_check--author_emails
+    - '125'
+    - '260'
+    - '261'
+    - If we don't have unique email addresses for all authors, send it back.
+    - boolean
+    - '2017-02-15 23:21:49.7972'
+    - '2017-02-15 23:21:49.802006'
+    - 
+  - - '132'
+    - '15'
+    - plos_bio_initial_tech_check--author_removed
+    - '125'
+    - '262'
+    - '263'
+    - If the author list has changed between initial and full submission, pass it
+      through if an author was added and flag it to the editor/initiate our COPE process
+      if an author was removed.
+    - boolean
+    - '2017-02-15 23:21:49.809714'
+    - '2017-02-15 23:21:49.814258'
+    - 
+  - - '133'
+    - '15'
+    - plos_bio_initial_tech_check--competing_interests
+    - '125'
+    - '264'
+    - '265'
+    - Check that the Competing Interest card has been filled out correctly. If the
+      authors have selected Yes and not provided an explanation, send it back.
+    - boolean
+    - '2017-02-15 23:21:49.821707'
+    - '2017-02-15 23:21:49.825945'
+    - 
+  - - '134'
+    - '15'
+    - plos_bio_initial_tech_check--financial_disclosure
+    - '125'
+    - '266'
+    - '267'
+    - Check that the Financial Disclosure card has been filled out correctly. Ensure
+      the authors have provided a description of the roles of the funder, if they
+      responded Yes to our standard statement.
+    - boolean
+    - '2017-02-15 23:21:49.833401'
+    - '2017-02-15 23:21:49.838014'
+    - 
+  - - '135'
+    - '15'
+    - plos_bio_initial_tech_check--tobacco
+    - '125'
+    - '268'
+    - '269'
+    - " If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, start a 'MetaData' discussion and ping the handling editor. See <a
+      href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
+      list</a>."
+    - boolean
+    - '2017-02-15 23:21:49.845351'
+    - '2017-02-15 23:21:49.850771'
+    - 
+  - - '136'
+    - '15'
+    - plos_bio_initial_tech_check--collection
+    - '125'
+    - '270'
+    - '271'
+    - If the authors mention submitting their paper to a collection in the cover letter
+      or Additional Information card, alert Jenni Horsley by pinging her through the
+      discussion of the ITC card.
+    - boolean
+    - '2017-02-15 23:21:49.858255'
+    - '2017-02-15 23:21:49.862674'
+    - 
+  - - '137'
+    - '15'
+    - plos_bio_initial_tech_check--figures_viewable
+    - '125'
+    - '272'
+    - '273'
+    - Make sure you can view and download all files uploaded to your Figures card.
+      Check against figure citations in the manuscript to ensure there are no missing
+      figures.
+    - boolean
+    - '2017-02-15 23:21:49.870845'
+    - '2017-02-15 23:21:49.875677'
+    - 
+  - - '138'
+    - '15'
+    - plos_bio_initial_tech_check--embedded_captions
+    - '125'
+    - '274'
+    - '275'
+    - If main figures or supporting information captions are only available in the
+      file itself (and not in the manuscript), request that the author remove the
+      captions from the file and instead place them in the manuscript file.
+    - boolean
+    - '2017-02-15 23:21:49.883367'
+    - '2017-02-15 23:21:49.887587'
+    - 
+  - - '139'
+    - '15'
+    - plos_bio_initial_tech_check--captions_missing
+    - '125'
+    - '276'
+    - '277'
+    - If main figures or supporting information captions are missing entirely, ask
+      the author to provide them in the manuscript file.
+    - boolean
+    - '2017-02-15 23:21:49.895106'
+    - '2017-02-15 23:21:49.899205'
+    - 
+  - - '140'
+    - '15'
+    - plos_bio_initial_tech_check--figures_missing
+    - '125'
+    - '278'
+    - '279'
+    - If any files or figures are cited in the manuscript but not included in the
+      Figures or Supporting Information cards, ask the author to provide the missing
+      information. (Search Fig, Table, Text, Movie and check that they are in the
+      file inventory).
+    - boolean
+    - '2017-02-15 23:21:49.906673'
+    - '2017-02-15 23:21:49.910783'
+    - 
+  - - '141'
+    - '15'
+    - plos_bio_initial_tech_check--open_reject
+    - '125'
+    - '280'
+    - '281'
+    - For any resubmissions after an Open Reject decision, ensure the authors have
+      uploaded A 'Response to Reviewer's document. If this information is provided
+      in the cover letter or another part of the submission, ask the authors to upload
+      it as a new file and if this information is not present, request the file from
+      author.
+    - boolean
+    - '2017-02-15 23:21:49.918'
+    - '2017-02-15 23:21:49.922094'
+    - 
+  - - '142'
+    - '16'
+    - 
+    - 
+    - '283'
+    - '334'
+    - 
+    - 
+    - '2017-02-15 23:21:49.936117'
+    - '2017-02-15 23:21:50.242054'
+    - 
+  - - '143'
+    - '16'
+    - plos_bio_revision_tech_check--open_rejects
+    - '142'
+    - '284'
+    - '285'
+    - 'Check Section Headings of all new submissions (including Open Rejects). Should
+      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
+      Discussion, Materials and Methods, References, Acknowledgements, and Figure
+      Legends.'
+    - boolean
+    - '2017-02-15 23:21:49.943761'
+    - '2017-02-15 23:21:49.948799'
+    - 
+  - - '144'
+    - '16'
+    - plos_bio_revision_tech_check--data_availability_confidential
+    - '142'
+    - '286'
+    - '287'
+    - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
+      to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
+      or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
+      for researchers who meet the criteria for access to confidential data', start
+      a 'MetaData' discussion and ping the handling editor.
+    - boolean
+    - '2017-02-15 23:21:49.956409'
+    - '2017-02-15 23:21:49.960589'
+    - 
+  - - '145'
+    - '16'
+    - plos_bio_revision_tech_check--data_availability_blank
+    - '142'
+    - '288'
+    - '289'
+    - In the Data Availability card, if the authors have not selected one of the reasons
+      listed in Q2 and pasted it into the text box, please request that they complete
+      this section.
+    - boolean
+    - '2017-02-15 23:21:49.968721'
+    - '2017-02-15 23:21:49.973175'
+    - 
+  - - '146'
+    - '16'
+    - plos_bio_revision_tech_check--data_availability_dryad
+    - '142'
+    - '290'
+    - '291'
+    - In the Data Availability card, if the authors have mentioned data submitted
+      to Dryad, check that the author has provided the Dryad reviewer URL and if not,
+      request it from them.
+    - boolean
+    - '2017-02-15 23:21:49.980693'
+    - '2017-02-15 23:21:49.984985'
+    - 
+  - - '147'
+    - '16'
+    - plos_bio_revision_tech_check--authors_match
+    - '142'
+    - '292'
+    - '293'
+    - Compare the author list between the manuscript file and the Authors card. If
+      the author list does not match, request the authors to update whichever section
+      is missing information. Ignore omissions of middle initials.
+    - boolean
+    - '2017-02-15 23:21:49.992286'
+    - '2017-02-15 23:21:49.996654'
+    - 
+  - - '148'
+    - '16'
+    - plos_bio_revision_tech_check--author_removed
+    - '142'
+    - '294'
+    - '295'
+    - If the author list has changed (author(s) being added or removed), flag it to
+      the editor/initiate our COPE process if an author was removed.
+    - boolean
+    - '2017-02-15 23:21:50.00443'
+    - '2017-02-15 23:21:50.008717'
+    - 
+  - - '149'
+    - '16'
+    - plos_bio_revision_tech_check--competing_interests
+    - '142'
+    - '296'
+    - '297'
+    - 'If any competing interests are listed, please add a manuscript note. ex: ''Initials
+      Date: Note to Editor - COI statement present, please see COI field.'''
+    - boolean
+    - '2017-02-15 23:21:50.02061'
+    - '2017-02-15 23:21:50.024945'
+    - 
+  - - '150'
+    - '16'
+    - plos_bio_revision_tech_check--collection
+    - '142'
+    - '298'
+    - '299'
+    - If the authors mention submitting their paper to a collection in the cover letter
+      or Additional Information card, alert Jenni Horsley by pinging her through the
+      discussion of the ITC card.
+    - boolean
+    - '2017-02-15 23:21:50.032087'
+    - '2017-02-15 23:21:50.036309'
+    - 
+  - - '151'
+    - '16'
+    - plos_bio_revision_tech_check--human_subjects
+    - '142'
+    - '300'
+    - '301'
+    - Check the ethics statement - does it mention Human Participants? If so, flag
+      this with the editor in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:50.044128'
+    - '2017-02-15 23:21:50.049186'
+    - 
+  - - '152'
+    - '16'
+    - plos_bio_revision_tech_check--ethics_needed
+    - '142'
+    - '302'
+    - '303'
+    - Check if there are any obvious ethical flags (mentions of animal/human work
+      in the title/abstract), check that there's an ethics statement. If not, ask
+      the authors about this.
+    - boolean
+    - '2017-02-15 23:21:50.056958'
+    - '2017-02-15 23:21:50.061279'
+    - 
+  - - '153'
+    - '16'
+    - plos_bio_revision_tech_check--data_available
+    - '142'
+    - '304'
+    - '305'
+    - Is the data available? If not, or it's only available by contacting an author
+      or the institution, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:50.068744'
+    - '2017-02-15 23:21:50.072931'
+    - 
+  - - '154'
+    - '16'
+    - plos_bio_revision_tech_check--supporting_information
+    - '142'
+    - '306'
+    - '307'
+    - If author indicates the data is available in Supporting Information, check to
+      make sure there are Supporting Information files in the submission (don't need
+      to check for specifics at this stage).
+    - boolean
+    - '2017-02-15 23:21:50.080519'
+    - '2017-02-15 23:21:50.084612'
+    - 
+  - - '155'
+    - '16'
+    - plos_bio_revision_tech_check--dryad_url
+    - '142'
+    - '308'
+    - '309'
+    - If the author has mentioned Dryad in their Data statement, check that they've
+      included the Dryad reviewer URL. If not, make a note in the discussion below.
+    - boolean
+    - '2017-02-15 23:21:50.091648'
+    - '2017-02-15 23:21:50.095793'
+    - 
+  - - '156'
+    - '16'
+    - plos_bio_revision_tech_check--financial_disclosure
+    - '142'
+    - '310'
+    - '311'
+    - Check that the Financial Disclosure card has been filled out correctly. Ensure
+      the authors have provided a description of the roles of the funder, if they
+      responded Yes to our standard statement.
+    - boolean
+    - '2017-02-15 23:21:50.102588'
+    - '2017-02-15 23:21:50.106617'
+    - 
+  - - '157'
+    - '16'
+    - plos_bio_revision_tech_check--tobacco
+    - '142'
+    - '312'
+    - '313'
+    - If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, start a 'MetaData' discussion and ping the handling editor. See <a
+      href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
+      list</a>.
+    - boolean
+    - '2017-02-15 23:21:50.113313'
+    - '2017-02-15 23:21:50.117199'
+    - 
+  - - '158'
+    - '16'
+    - plos_bio_revision_tech_check--figures_legible
+    - '142'
+    - '314'
+    - '315'
+    - If any figures are completely illegible, contact the author.
+    - boolean
+    - '2017-02-15 23:21:50.124122'
+    - '2017-02-15 23:21:50.127848'
+    - 
+  - - '159'
+    - '16'
+    - plos_bio_revision_tech_check--cited
+    - '142'
+    - '316'
+    - '317'
+    - If any files or figures are cited but not included in the submission, message
+      the author.
+    - boolean
+    - '2017-02-15 23:21:50.134611'
+    - '2017-02-15 23:21:50.138339'
+    - 
+  - - '160'
+    - '16'
+    - plos_bio_revision_tech_check--cover_letter
+    - '142'
+    - '318'
+    - '319'
+    - Have the authors asked any content in the cover letter? If yes, contact the
+      editor/journal team.
+    - boolean
+    - '2017-02-15 23:21:50.145412'
+    - '2017-02-15 23:21:50.151131'
+    - 
+  - - '161'
+    - '16'
+    - plos_bio_revision_tech_check--billing_inquiries
+    - '142'
+    - '320'
+    - '321'
+    - Have the authors mentioned any billing information in the cover letter? If yes,
+      contact the editor/journal team.
+    - boolean
+    - '2017-02-15 23:21:50.158999'
+    - '2017-02-15 23:21:50.163618'
+    - 
+  - - '162'
+    - '16'
+    - plos_bio_revision_tech_check--ethics_statement
+    - '142'
+    - '322'
+    - '323'
+    - Make sure the ethics statement looks complete. If the authors have responded
+      Yes to any question, but have not provided approval information, please request
+      this from them.
+    - boolean
+    - '2017-02-15 23:21:50.171753'
+    - '2017-02-15 23:21:50.176051'
+    - 
+  - - '163'
+    - '16'
+    - plos_bio_revision_tech_check--figures_viewable
+    - '142'
+    - '324'
+    - '325'
+    - Make sure you can view and download all files uploaded to your Figures card.
+      Check against figure citations in the manuscript to ensure there are no missing
+      figures.
+    - boolean
+    - '2017-02-15 23:21:50.187941'
+    - '2017-02-15 23:21:50.192718'
+    - 
+  - - '164'
+    - '16'
+    - plos_bio_revision_tech_check--embedded_captions
+    - '142'
+    - '326'
+    - '327'
+    - If main figures or supporting information captions are only available in the
+      file itself (and not in the manuscript), request that the author remove the
+      captions from the file and instead place them in the manuscript file.
+    - boolean
+    - '2017-02-15 23:21:50.200269'
+    - '2017-02-15 23:21:50.205036'
+    - 
+  - - '165'
+    - '16'
+    - plos_bio_revision_tech_check--captions_missing
+    - '142'
+    - '328'
+    - '329'
+    - If main figures or supporting information captions are missing entirely, ask
+      the author to provide them in the manuscript file.
+    - boolean
+    - '2017-02-15 23:21:50.212731'
+    - '2017-02-15 23:21:50.217254'
+    - 
+  - - '166'
+    - '16'
+    - plos_bio_revision_tech_check--figures_missing
+    - '142'
+    - '330'
+    - '331'
+    - If any files or figures are cited in the manuscript but not included in the
+      Figures or Supporting Information cards, ask the author to provide the missing
+      information. (Search Fig, Table, Text, Movie and check that they are in the
+      file inventory).
+    - boolean
+    - '2017-02-15 23:21:50.225342'
+    - '2017-02-15 23:21:50.230048'
+    - 
+  - - '167'
+    - '16'
+    - plos_bio_revision_tech_check--response_to_reviewers
+    - '142'
+    - '332'
+    - '333'
+    - For any resubmissions that have previously gone through review, ensure the authors
+      have responded to the reviewer comments in the Revision Details box of the Revise
+      Manuscript card. If this information is not present, request it from author.
+    - boolean
+    - '2017-02-15 23:21:50.23755'
+    - '2017-02-15 23:21:50.242054'
+    - 
+  - - '168'
+    - '17'
+    - 
+    - 
+    - '335'
+    - '348'
+    - 
+    - 
+    - '2017-02-15 23:21:50.260968'
+    - '2017-02-15 23:21:50.345678'
+    - 
+  - - '169'
+    - '17'
+    - production_metadata--publication_date
+    - '168'
+    - '336'
+    - '337'
+    - Publication Date
+    - text
+    - '2017-02-15 23:21:50.268938'
+    - '2017-02-15 23:21:50.273641'
+    - 
+  - - '170'
+    - '17'
+    - production_metadata--volume_number
+    - '168'
+    - '338'
+    - '339'
+    - Volume Number
+    - text
+    - '2017-02-15 23:21:50.281391'
+    - '2017-02-15 23:21:50.286253'
+    - 
+  - - '171'
+    - '17'
+    - production_metadata--issue_number
+    - '168'
+    - '340'
+    - '341'
+    - Issue Number
+    - text
+    - '2017-02-15 23:21:50.294022'
+    - '2017-02-15 23:21:50.298472'
+    - 
+  - - '172'
+    - '17'
+    - production_metadata--provenance
+    - '168'
+    - '342'
+    - '343'
+    - Provenance
+    - text
+    - '2017-02-15 23:21:50.3061'
+    - '2017-02-15 23:21:50.322921'
+    - 
+  - - '173'
+    - '17'
+    - production_metadata--production_notes
+    - '168'
+    - '344'
+    - '345'
+    - Production Notes
+    - text
+    - '2017-02-15 23:21:50.330203'
+    - '2017-02-15 23:21:50.334262'
+    - 
+  - - '174'
+    - '17'
+    - production_metadata--special_handling_instructions
+    - '168'
+    - '346'
+    - '347'
+    - Special Handling Instructions
+    - text
+    - '2017-02-15 23:21:50.341524'
+    - '2017-02-15 23:21:50.345678'
+    - 
+  - - '175'
+    - '18'
+    - 
+    - 
+    - '349'
+    - '384'
+    - 
+    - 
+    - '2017-02-15 23:21:50.361104'
+    - '2017-02-15 23:21:50.626421'
+    - 
+  - - '176'
+    - '18'
+    - publishing_related_questions--published_elsewhere--taken_from_manuscripts
+    - '178'
+    - '351'
+    - '352'
+    - Please identify which results, data, or figures have been taken from other published
+      or pending manuscripts and explain why inclusion in this submission does not
+      constitute dual publication.
+    - text
+    - '2017-02-15 23:21:50.370291'
+    - '2017-02-15 23:21:50.401507'
+    - 
+  - - '177'
+    - '18'
+    - publishing_related_questions--published_elsewhere--upload_related_work
+    - '178'
+    - '353'
+    - '354'
+    - Please also upload a copy of the related work with your submission as a 'Related
+      Manuscript' item. Note that reviewers may be asked to comment on the overlap
+      between the related submissions.
+    - attachment
+    - '2017-02-15 23:21:50.377911'
+    - '2017-02-15 23:21:50.401507'
+    - 
+  - - '178'
+    - '18'
+    - publishing_related_questions--published_elsewhere
+    - '175'
+    - '350'
+    - '355'
+    - Have the results, data, or figures in this manuscript been published elsewhere?
+      Are they under consideration for publication elsewhere?
+    - boolean
+    - '2017-02-15 23:21:50.385523'
+    - '2017-02-15 23:21:50.401507'
+    - 
+  - - '179'
+    - '18'
+    - publishing_related_questions--submitted_in_conjunction--corresponding_title
+    - '183'
+    - '357'
+    - '358'
+    - Title
+    - text
+    - '2017-02-15 23:21:50.410062'
+    - '2017-02-15 23:21:50.4729'
+    - 
+  - - '180'
+    - '18'
+    - publishing_related_questions--submitted_in_conjunction--corresponding_author
+    - '183'
+    - '359'
+    - '360'
+    - Corresponding author
+    - text
+    - '2017-02-15 23:21:50.417719'
+    - '2017-02-15 23:21:50.4729'
+    - 
+  - - '181'
+    - '18'
+    - publishing_related_questions--submitted_in_conjunction--corresponding_journal
+    - '183'
+    - '361'
+    - '362'
+    - Corresponding journal
+    - text
+    - '2017-02-15 23:21:50.425375'
+    - '2017-02-15 23:21:50.4729'
+    - 
+  - - '182'
+    - '18'
+    - publishing_related_questions--submitted_in_conjunction--handled_together
+    - '183'
+    - '363'
+    - '364'
+    - This submission and the manuscript I'm submitting should be handled together
+    - boolean
+    - '2017-02-15 23:21:50.432888'
+    - '2017-02-15 23:21:50.4729'
+    - 
+  - - '183'
+    - '18'
+    - publishing_related_questions--submitted_in_conjunction
+    - '175'
+    - '356'
+    - '365'
+    - Is this manuscript being submitted in conjunction with another submission?
+    - boolean
+    - '2017-02-15 23:21:50.440818'
+    - '2017-02-15 23:21:50.4729'
+    - 
+  - - '184'
+    - '18'
+    - publishing_related_questions--previous_interactions_with_this_manuscript--submission_details
+    - '185'
+    - '367'
+    - '368'
+    - Please enter manuscript number and editor name, if known
+    - text
+    - '2017-02-15 23:21:50.483627'
+    - '2017-02-15 23:21:50.511573'
+    - 
+  - - '185'
+    - '18'
+    - publishing_related_questions--previous_interactions_with_this_manuscript
+    - '175'
+    - '366'
+    - '369'
+    - I have had previous interactions about this manuscript with a staff editor or
+      Academic Editor of this journal.
+    - boolean
+    - '2017-02-15 23:21:50.495001'
+    - '2017-02-15 23:21:50.511573'
+    - 
+  - - '186'
+    - '18'
+    - publishing_related_questions--presubmission_inquiry--submission_details
+    - '187'
+    - '371'
+    - '372'
+    - Please enter manuscript number and editor name, if known
+    - text
+    - '2017-02-15 23:21:50.523436'
+    - '2017-02-15 23:21:50.548477'
+    - 
+  - - '187'
+    - '18'
+    - publishing_related_questions--presubmission_inquiry
+    - '175'
+    - '370'
+    - '373'
+    - I submitted a presubmission inquiry for this manuscript.
+    - boolean
+    - '2017-02-15 23:21:50.534804'
+    - '2017-02-15 23:21:50.548477'
+    - 
+  - - '188'
+    - '18'
+    - publishing_related_questions--other_journal_submission--submission_details
+    - '189'
+    - '375'
+    - '376'
+    - Please enter manuscript number and editor name, if known
+    - text
+    - '2017-02-15 23:21:50.559442'
+    - '2017-02-15 23:21:50.582075'
+    - 
+  - - '189'
+    - '18'
+    - publishing_related_questions--other_journal_submission
+    - '175'
+    - '374'
+    - '377'
+    - This manuscript was previously submitted to a different PLOS journal as either
+      a presubmission inquiry or a full submission.
+    - boolean
+    - '2017-02-15 23:21:50.568493'
+    - '2017-02-15 23:21:50.582075'
+    - 
+  - - '190'
+    - '18'
+    - publishing_related_questions--author_was_previous_journal_editor
+    - '175'
+    - '378'
+    - '379'
+    - One or more of the authors (including myself) currently serve, or have previously
+      served, as an Academic Editor or Guest Editor for this journal.
+    - boolean
+    - '2017-02-15 23:21:50.59214'
+    - '2017-02-15 23:21:50.597305'
+    - 
+  - - '191'
+    - '18'
+    - publishing_related_questions--intended_collection
+    - '175'
+    - '380'
+    - '381'
+    - If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS
+      Collection</a>, enter the name of the collection in the box below. Please also
+      ensure the name of the collection is included in your cover letter.
+    - text
+    - '2017-02-15 23:21:50.605638'
+    - '2017-02-15 23:21:50.609757'
+    - 
+  - - '192'
+    - '18'
+    - publishing_related_questions--short_title
+    - '175'
+    - '382'
+    - '383'
+    - Please give your paper a short title. Short titles are used as the running header
+      on published PDFs.
+    - text
+    - '2017-02-15 23:21:50.61917'
+    - '2017-02-15 23:21:50.626421'
+    - 
+  - - '193'
+    - '19'
+    - 
+    - 
+    - '385'
+    - '392'
+    - 
+    - 
+    - '2017-02-15 23:21:50.646556'
+    - '2017-02-15 23:21:50.694807'
+    - 
+  - - '194'
+    - '19'
+    - register_decision_questions--selected-template
+    - '193'
+    - '386'
+    - '387'
+    - Please select a template.
+    - text
+    - '2017-02-15 23:21:50.657595'
+    - '2017-02-15 23:21:50.663435'
+    - 
+  - - '195'
+    - '19'
+    - register_decision_questions--to-field
+    - '193'
+    - '388'
+    - '389'
+    - Enter the email here
+    - text
+    - '2017-02-15 23:21:50.674019'
+    - '2017-02-15 23:21:50.679297'
+    - 
+  - - '196'
+    - '19'
+    - register_decision_questions--subject-field
+    - '193'
+    - '390'
+    - '391'
+    - Enter the subject here
+    - text
+    - '2017-02-15 23:21:50.688932'
+    - '2017-02-15 23:21:50.694807'
+    - 
+  - - '197'
+    - '20'
+    - 
+    - 
+    - '393'
+    - '410'
+    - 
+    - 
+    - '2017-02-15 23:21:50.709867'
+    - '2017-02-15 23:21:50.814517'
+    - 
+  - - '198'
+    - '20'
+    - reporting_guidelines--clinical_trial
+    - '197'
+    - '394'
+    - '395'
+    - Clinical Trial
+    - boolean
+    - '2017-02-15 23:21:50.718068'
+    - '2017-02-15 23:21:50.723181'
+    - 
+  - - '199'
+    - '20'
+    - reporting_guidelines--systematic_reviews--checklist
+    - '200'
+    - '397'
+    - '398'
+    - Provide a completed PRISMA checklist as supporting information.  You can <a
+      href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
+    - attachment
+    - '2017-02-15 23:21:50.73263'
+    - '2017-02-15 23:21:50.75174'
+    - 
+  - - '200'
+    - '20'
+    - reporting_guidelines--systematic_reviews
+    - '197'
+    - '396'
+    - '399'
+    - Systematic Reviews
+    - boolean
+    - '2017-02-15 23:21:50.740661'
+    - '2017-02-15 23:21:50.75174'
+    - 
+  - - '201'
+    - '20'
+    - reporting_guidelines--meta_analyses--checklist
+    - '202'
+    - '401'
+    - '402'
+    - Provide a completed PRISMA checklist as supporting information.  You can <a
+      href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
+    - attachment
+    - '2017-02-15 23:21:50.762102'
+    - '2017-02-15 23:21:50.779227'
+    - 
+  - - '202'
+    - '20'
+    - reporting_guidelines--meta_analyses
+    - '197'
+    - '400'
+    - '403'
+    - Meta-analyses
+    - boolean
+    - '2017-02-15 23:21:50.76959'
+    - '2017-02-15 23:21:50.779227'
+    - 
+  - - '203'
+    - '20'
+    - reporting_guidelines--diagnostic_studies
+    - '197'
+    - '404'
+    - '405'
+    - Diagnostic studies
+    - boolean
+    - '2017-02-15 23:21:50.786162'
+    - '2017-02-15 23:21:50.790138'
+    - 
+  - - '204'
+    - '20'
+    - reporting_guidelines--epidemiological_studies
+    - '197'
+    - '406'
+    - '407'
+    - Epidemiological studies
+    - boolean
+    - '2017-02-15 23:21:50.796621'
+    - '2017-02-15 23:21:50.800192'
+    - 
+  - - '205'
+    - '20'
+    - reporting_guidelines--microarray_studies
+    - '197'
+    - '408'
+    - '409'
+    - Microarray studies
+    - boolean
+    - '2017-02-15 23:21:50.810812'
+    - '2017-02-15 23:21:50.814517'
+    - 
+  - - '206'
+    - '21'
+    - 
+    - 
+    - '411'
+    - '416'
+    - 
+    - 
+    - '2017-02-15 23:21:50.832494'
+    - '2017-02-15 23:21:50.855334'
+    - 
+  - - '207'
+    - '21'
+    - reviewer_recommendations--recommend_or_oppose
+    - '206'
+    - '412'
+    - '413'
+    - Are you recommending or opposing this reviewer?
+    - boolean
+    - '2017-02-15 23:21:50.84009'
+    - '2017-02-15 23:21:50.844127'
+    - 
+  - - '208'
+    - '21'
+    - reviewer_recommendations--reason
+    - '206'
+    - '414'
+    - '415'
+    - 'Optional: reason for recommending or opposing this reviewer'
+    - text
+    - '2017-02-15 23:21:50.851484'
+    - '2017-02-15 23:21:50.855334'
+    - 
+  - - '209'
+    - '22'
+    - 
+    - 
+    - '417'
+    - '434'
+    - 
+    - 
+    - '2017-02-15 23:21:50.868667'
+    - '2017-02-15 23:21:50.971222'
+    - 
+  - - '210'
+    - '22'
+    - reviewer_report--decision_term
+    - '209'
+    - '418'
+    - '419'
+    - 'Please provide your publication recommendation:'
+    - text
+    - '2017-02-15 23:21:50.875421'
+    - '2017-02-15 23:21:50.879173'
+    - 
+  - - '211'
+    - '22'
+    - reviewer_report--competing_interests--detail
+    - '212'
+    - '421'
+    - '422'
+    - Comment
+    - text
+    - '2017-02-15 23:21:50.887238'
+    - '2017-02-15 23:21:50.907372'
+    - 
+  - - '212'
+    - '22'
+    - reviewer_report--competing_interests
+    - '209'
+    - '420'
+    - '423'
+    - Do you have any potential or perceived competing interests that may influence
+      your review?
+    - boolean
+    - '2017-02-15 23:21:50.89773'
+    - '2017-02-15 23:21:50.907372'
+    - 
+  - - '213'
+    - '22'
+    - reviewer_report--identity
+    - '209'
+    - '424'
+    - '425'
+    - "(Optional) If you'd like your identity to be revealed to the authors, please
+      include your name here."
+    - text
+    - '2017-02-15 23:21:50.914285'
+    - '2017-02-15 23:21:50.918021'
+    - 
+  - - '214'
+    - '22'
+    - reviewer_report--comments_for_author
+    - '209'
+    - '426'
+    - '427'
+    - Add your comments to authors below.
+    - text
+    - '2017-02-15 23:21:50.924777'
+    - '2017-02-15 23:21:50.928539'
+    - 
+  - - '215'
+    - '22'
+    - reviewer_report--additional_comments
+    - '209'
+    - '428'
+    - '429'
+    - "(Optional) If you have any additional confidential comments to the editor,
+      please add them below."
+    - text
+    - '2017-02-15 23:21:50.935117'
+    - '2017-02-15 23:21:50.940898'
+    - 
+  - - '216'
+    - '22'
+    - reviewer_report--suitable_for_another_journal--journal
+    - '217'
+    - '431'
+    - '432'
+    - Other Journal
+    - text
+    - '2017-02-15 23:21:50.952898'
+    - '2017-02-15 23:21:50.971222'
+    - 
+  - - '217'
+    - '22'
+    - reviewer_report--suitable_for_another_journal
+    - '209'
+    - '430'
+    - '433'
+    - If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you
+      think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em>
+      journal</a>?
+    - boolean
+    - '2017-02-15 23:21:50.960105'
+    - '2017-02-15 23:21:50.971222'
+    - 
+  - - '218'
+    - '23'
+    - 
+    - 
+    - '435'
+    - '444'
+    - 
+    - 
+    - '2017-02-15 23:21:50.991394'
+    - '2017-02-15 23:21:51.047538'
+    - 
+  - - '219'
+    - '23'
+    - taxon--zoological--complies
+    - '220'
+    - '437'
+    - '438'
+    - All authors comply with the Policies Regarding Submission of a new Taxon Name
+    - boolean
+    - '2017-02-15 23:21:51.000104'
+    - '2017-02-15 23:21:51.018662'
+    - 
+  - - '220'
+    - '23'
+    - taxon--zoological
+    - '218'
+    - '436'
+    - '439'
+    - Does this manuscript describe a new zoological taxon name?
+    - boolean
+    - '2017-02-15 23:21:51.008452'
+    - '2017-02-15 23:21:51.018662'
+    - 
+  - - '221'
+    - '23'
+    - taxon--botanical--complies
+    - '222'
+    - '441'
+    - '442'
+    - All authors comply with the Policies Regarding Submission of a new Taxon Name
+    - boolean
+    - '2017-02-15 23:21:51.03006'
+    - '2017-02-15 23:21:51.047538'
+    - 
+  - - '222'
+    - '23'
+    - taxon--botanical
+    - '218'
+    - '440'
+    - '443'
+    - Does this manuscript describe a new botanical taxon name?
+    - boolean
+    - '2017-02-15 23:21:51.037484'
+    - '2017-02-15 23:21:51.047538'
+    - 
+
+---
+cards:
+  columns:
+  - id
+  - created_at
+  - updated_at
+  - deleted_at
+  - name
+  records: 
+  - - '1'
+    - '2017-02-15 23:21:47.869728'
+    - '2017-02-15 23:21:47.869728'
+    - 
+    - Author
+  - - '2'
+    - '2017-02-15 23:21:48.234266'
+    - '2017-02-15 23:21:48.234266'
+    - 
+    - TahiStandardTasks::AuthorsTask
+  - - '3'
+    - '2017-02-15 23:21:48.293715'
+    - '2017-02-15 23:21:48.293715'
+    - 
+    - TahiStandardTasks::CompetingInterestsTask
+  - - '4'
+    - '2017-02-15 23:21:48.346857'
+    - '2017-02-15 23:21:48.346857'
+    - 
+    - TahiStandardTasks::CoverLetterTask
+  - - '5'
+    - '2017-02-15 23:21:48.39712'
+    - '2017-02-15 23:21:48.39712'
+    - 
+    - TahiStandardTasks::DataAvailabilityTask
+  - - '6'
+    - '2017-02-15 23:21:48.466565'
+    - '2017-02-15 23:21:48.466565'
+    - 
+    - TahiStandardTasks::EarlyPostingTask
+  - - '7'
+    - '2017-02-15 23:21:48.517523'
+    - '2017-02-15 23:21:48.517523'
+    - 
+    - TahiStandardTasks::EthicsTask
+  - - '8'
+    - '2017-02-15 23:21:48.630164'
+    - '2017-02-15 23:21:48.630164'
+    - 
+    - TahiStandardTasks::FigureTask
+  - - '9'
+    - '2017-02-15 23:21:48.656807'
+    - '2017-02-15 23:21:48.656807'
+    - 
+    - TahiStandardTasks::FinancialDisclosureTask
+  - - '10'
+    - '2017-02-15 23:21:48.685684'
+    - '2017-02-15 23:21:48.685684'
+    - 
+    - TahiStandardTasks::FrontMatterReviewerReportTask
+  - - '11'
+    - '2017-02-15 23:21:48.802758'
+    - '2017-02-15 23:21:48.802758'
+    - 
+    - TahiStandardTasks::Funder
+  - - '12'
+    - '2017-02-15 23:21:48.843147'
+    - '2017-02-15 23:21:48.843147'
+    - 
+    - GroupAuthor
+  - - '13'
+    - '2017-02-15 23:21:49.112559'
+    - '2017-02-15 23:21:49.112559'
+    - 
+    - PlosBilling::BillingTask
+  - - '14'
+    - '2017-02-15 23:21:49.542386'
+    - '2017-02-15 23:21:49.542386'
+    - 
+    - PlosBioTechCheck::FinalTechCheckTask
+  - - '15'
+    - '2017-02-15 23:21:49.712618'
+    - '2017-02-15 23:21:49.712618'
+    - 
+    - PlosBioTechCheck::InitialTechCheckTask
+  - - '16'
+    - '2017-02-15 23:21:49.930947'
+    - '2017-02-15 23:21:49.930947'
+    - 
+    - PlosBioTechCheck::RevisionTechCheckTask
+  - - '17'
+    - '2017-02-15 23:21:50.255699'
+    - '2017-02-15 23:21:50.255699'
+    - 
+    - TahiStandardTasks::ProductionMetadataTask
+  - - '18'
+    - '2017-02-15 23:21:50.355789'
+    - '2017-02-15 23:21:50.355789'
+    - 
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+  - - '19'
+    - '2017-02-15 23:21:50.640054'
+    - '2017-02-15 23:21:50.640054'
+    - 
+    - TahiStandardTasks::RegisterDecisionTask
+  - - '20'
+    - '2017-02-15 23:21:50.704146'
+    - '2017-02-15 23:21:50.704146'
+    - 
+    - TahiStandardTasks::ReportingGuidelinesTask
+  - - '21'
+    - '2017-02-15 23:21:50.826984'
+    - '2017-02-15 23:21:50.826984'
+    - 
+    - TahiStandardTasks::ReviewerRecommendation
+  - - '22'
+    - '2017-02-15 23:21:50.863574'
+    - '2017-02-15 23:21:50.863574'
+    - 
+    - TahiStandardTasks::ReviewerReportTask
+  - - '23'
+    - '2017-02-15 23:21:50.981567'
+    - '2017-02-15 23:21:50.981567'
+    - 
+    - TahiStandardTasks::TaxonTask
 
 ---
 comments:
@@ -5899,6 +8642,7 @@ group_authors:
   - initial
   - created_at
   - updated_at
+  - card_id
   records: 
   - - '2'
     - Jane
@@ -5909,6 +8653,7 @@ group_authors:
     - GA
     - '2016-04-12 18:47:58.788407'
     - '2016-04-12 18:47:58.788407'
+    - 
 
 ---
 invitation_queues:
@@ -29733,6 +32478,7 @@ tahi_standard_tasks_funders:
   - created_at
   - updated_at
   - additional_comments
+  - card_id
   records: 
   - - '1'
     - Money McMunster
@@ -29742,6 +32488,7 @@ tahi_standard_tasks_funders:
     - '2015-10-30 19:57:11.699874'
     - '2015-10-30 19:57:27.12286'
     - 
+    - 
   - - '2'
     - Less MoneyMcMunster
     - 333-333333333
@@ -29749,6 +32496,7 @@ tahi_standard_tasks_funders:
     - '31'
     - '2015-10-30 19:57:44.86309'
     - '2015-10-30 19:58:03.20006'
+    - 
     - 
   - - '5'
     - Jedi Academy
@@ -29758,6 +32506,7 @@ tahi_standard_tasks_funders:
     - '2016-04-12 18:53:41.442489'
     - '2016-04-12 19:04:41.562912'
     - Additional comments go here.
+    - 
 
 ---
 tahi_standard_tasks_reviewer_recommendations:
@@ -29776,6 +32525,7 @@ tahi_standard_tasks_reviewer_recommendations:
   - created_at
   - updated_at
   - ringgold_id
+  - card_id
   records: 
   - - '2'
     - '34'
@@ -29791,6 +32541,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2015-11-02 13:41:37.871138'
     - '2015-11-02 13:42:13.77282'
     - '3479'
+    - 
   - - '3'
     - '34'
     - Dennis
@@ -29805,6 +32556,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2015-11-02 13:43:20.530731'
     - '2015-11-02 13:43:20.530731'
     - '53427'
+    - 
   - - '4'
     - '55'
     - Shelley
@@ -29819,6 +32571,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2015-11-02 14:12:53.204262'
     - '2015-11-02 14:12:53.204262'
     - '295612'
+    - 
   - - '5'
     - '76'
     - Ronald
@@ -29833,6 +32586,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2015-11-02 15:07:41.253665'
     - '2015-11-02 15:07:41.253665'
     - '32835'
+    - 
   - - '9'
     - '182'
     - Rob
@@ -29847,6 +32601,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2016-04-12 18:55:14.905937'
     - '2016-04-12 18:55:14.905937'
     - 
+    - 
   - - '10'
     - '182'
     - Ruth
@@ -29860,6 +32615,7 @@ tahi_standard_tasks_reviewer_recommendations:
     - 
     - '2016-04-12 18:55:43.595053'
     - '2016-04-12 18:55:43.595053'
+    - 
     - 
 
 ---

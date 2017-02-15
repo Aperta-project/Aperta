@@ -58,7 +58,8 @@ class GroupAuthorsController < ApplicationController
       :contact_email,
       :position,
       :paper_id,
-      :name
+      :name,
+      :card_id
     )
   end
 end

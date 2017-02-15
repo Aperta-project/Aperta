@@ -175,7 +175,11 @@ class InviteCard(BaseCard):
     invitees = self._gets(self._invitee_listing)
     assert any('Invited' in s for s in [x.text for x in invitees]), \
         'Invited not found in {0}'.format([x.text for x in invitees])
-    self._gets(self._rescind_button)
+    for item in self._gets(self._invitee_full_name):
+      if invitee['email'] in item.text:
+        item.click()
+        self._gets(self._rescind_button)
+        break
 
   def validate_response(self, invitee, response, reason='N/A', suggestions='N/A'):
     """

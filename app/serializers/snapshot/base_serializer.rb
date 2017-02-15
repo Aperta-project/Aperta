@@ -63,7 +63,7 @@ class Snapshot::BaseSerializer
       nested_questions = model.nested_questions.where(parent_id: nil).order('position')
 
       nested_questions.map do |question|
-        Snapshot::NestedQuestionSerializer.new(question, model).as_json
+        Snapshot::CardContentSerializer.new(question, model).as_json
       end
     else
       []

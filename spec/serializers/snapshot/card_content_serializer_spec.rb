@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Snapshot::NestedQuestionSerializer do
-  subject(:serializer) { described_class.new(nested_question, owner) }
-  let(:nested_question) do
-    FactoryGirl.create(:nested_question, ident: 'my-question', text: 'What up?')
+describe Snapshot::CardContentSerializer do
+  subject(:serializer) { described_class.new(card_content, owner) }
+  let(:card_content) do
+    FactoryGirl.create(:card_content, ident: 'my-question', text: 'What up?', value_type: 'text')
   end
   let(:owner) { FactoryGirl.create(:ad_hoc_task) }
+  let(:paper) { FactoryGirl.create(:paper) }
 
   describe '#as_json - serializing nested questions' do
     it 'serializes the question without an answer' do
@@ -13,7 +14,7 @@ describe Snapshot::NestedQuestionSerializer do
         name: 'my-question',
         type: 'question',
         value: {
-          id: nested_question.id,
+          id: card_content.id,
           title: 'What up?',
           answer_type: 'text',
           answer: nil,
@@ -25,14 +26,16 @@ describe Snapshot::NestedQuestionSerializer do
 
     context 'when it has child questions' do
       before do
-        nested_question.children << FactoryGirl.create(
-          :nested_question,
+        card_content.children << FactoryGirl.create(
+          :card_content,
           ident: '1st_question',
           text: '1st level child question',
+          value_type: 'text',
           children: [
-            FactoryGirl.build(
-              :nested_question,
+            FactoryGirl.create(
+              :card_content,
               ident: '2nd_question',
+              value_type: 'text',
               text: '2nd level child question'
             )
           ]
@@ -44,7 +47,7 @@ describe Snapshot::NestedQuestionSerializer do
           name: 'my-question',
           type: 'question',
           value: {
-            id: nested_question.id,
+            id: card_content.id,
             title: 'What up?',
             answer_type: 'text',
             answer: nil,
@@ -54,7 +57,7 @@ describe Snapshot::NestedQuestionSerializer do
             name: '1st_question',
             type: 'question',
             value: {
-              id: nested_question.children.first.id,
+              id: card_content.children.first.id,
               title: '1st level child question', answer_type: 'text',
               answer: nil, attachments: []
             },
@@ -62,7 +65,7 @@ describe Snapshot::NestedQuestionSerializer do
               name: '2nd_question',
               type: 'question',
               value: {
-                id: nested_question.children.first.children.first.id,
+                id: card_content.children.first.children.first.id,
                 title: '2nd level child question', answer_type: 'text',
                 answer: nil, attachments: []
               },
@@ -75,17 +78,17 @@ describe Snapshot::NestedQuestionSerializer do
 
     it 'serializes questions with an answer' do
       FactoryGirl.create(
-        :nested_question_answer,
+        :answer,
+        card_content: card_content,
+        paper: paper,
         owner: owner,
-        value: 'Answer Value',
-        nested_question: nested_question
+        value: 'Answer Value'
       )
-
       expect(serializer.as_json).to eq(
         name: 'my-question',
         type: 'question',
         value: {
-          id: nested_question.id,
+          id: card_content.id,
           title: 'What up?',
           answer_type: 'text',
           answer: 'Answer Value',
@@ -115,8 +118,10 @@ describe Snapshot::NestedQuestionSerializer do
       end
 
       before do
-        nested_question.nested_question_answers << FactoryGirl.build(
-          :nested_question_answer,
+        FactoryGirl.create(
+          :answer,
+          paper: paper,
+          card_content: card_content,
           owner: owner,
           value: 'The man was diseased with garrulity.',
           attachments: [attachment_1, attachment_2]

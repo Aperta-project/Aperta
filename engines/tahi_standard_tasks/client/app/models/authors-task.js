@@ -1,6 +1,12 @@
-import DS   from 'ember-data';
+import Ember from 'ember';
 import Task from 'tahi/models/task';
 
 export default Task.extend({
-  qualifiedType: 'TahiStandardTasks::GroupAuthorsTask'
+  fetchRelationships() {
+    return Ember.RSVP.all([
+      this._super(...arguments),
+      this.get('store').queryRecord('card', { name: 'Author' }),
+      this.get('store').queryRecord('card', { name: 'GroupAuthor' })
+    ]);
+  }
 });

@@ -2,46 +2,43 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
+import { manualSetup, make } from 'ember-data-factory-guy';
+import { createAnswer } from 'tahi/tests/factories/answer';
 
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('nested-question-check', 'Integration | Component | nested question check', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    manualSetup(this.container);
+  }
 });
 
-test('it renders', function(assert) {
-  let fakeQuestion = Ember.Object.create({
+test('it renders as long as the card content with the given ident is in the store', function(assert) {
+  make('card-content', {
     ident: 'foo',
     additionalData: [{}],
-    text: 'Test Question',
-    answerForOwner: function(){ return Ember.Object.create(); },
-    save() { return null; },
+    text: 'Test Question'
   });
 
-  this.set('task', Ember.Object.create({
-    findQuestion: function(){ return fakeQuestion; }
-  }));
-
   this.render(hbs`
-    {{nested-question-check ident="foo" owner=task}}
+    {{nested-question-check ident="foo"}}
   `);
 
   assert.equal(this.$('label:contains("Test Question")').length, 1);
 });
 
 test('when providing a block it renders additional data when initializing with a value as already checked', function(assert) {
-  let fakeQuestion = Ember.Object.create({
+  make('card-content', {
     ident: 'foo',
     additionalData: [{}],
-    text: 'Test Question',
-    answerForOwner: function(){ return Ember.Object.create({value: true}); },
-    save() { return null; },
+    text: 'Test Question'
   });
 
-  this.set('task', Ember.Object.create({
-    findQuestion: function(){ return fakeQuestion; }
-  }));
+  let task = make('ad-hoc-task');
+  createAnswer(task, 'foo', { value: true });
+
+  this.set('task', task);
 
   this.render(hbs`
     {{#nested-question-check ident="foo" owner=task as |selection|}}
@@ -57,18 +54,16 @@ test('when providing a block it renders additional data when initializing with a
 });
 
 test('when providing a block it renders the text provided when it yieldsForText and displayQuestionText=false', function(assert) {
-  let fakeQuestion = Ember.Object.create({
+  make('card-content', {
     ident: 'foo',
     additionalData: [{}],
-    text: 'Test Question',
-    answerForOwner: function(){ return Ember.Object.create({value: true}); },
-    save() { return null; },
+    text: 'Test Question'
   });
 
-  this.set('task', Ember.Object.create({
-    findQuestion: function(){ return fakeQuestion; }
-  }));
+  let task = make('ad-hoc-task');
+  createAnswer(task, 'foo', { value: true });
 
+  this.set('task', task);
   this.render(hbs`
     {{#nested-question-check ident="foo" owner=task displayQuestionText=false as |selection|}}
       {{#if selection.yieldingForText }}

@@ -59,7 +59,7 @@ export default Component.extend(ValidationErrorsMixin, {
       if(this.validationErrorsPresent()) {
         this.set('task.completed', false);
         this.set('validationErrors.completed', this.get('completedErrorText'));
-        return new Ember.RSVP.Promise((resolve) => { resolve() });
+        return new Ember.RSVP.Promise((resolve) => { resolve(); });
       }
     }
 
@@ -91,19 +91,10 @@ export default Component.extend(ValidationErrorsMixin, {
   validateQuestions() {
     if(isEmpty(this.get('questionValidations'))) { return; }
 
-    const nestedQuestionAnswers = this.get('task.nestedQuestions')
-                                      .mapBy('answers');
-
-    // NOTE: nested-questions.answers is hasMany relationship
-    // so we need to flatten
-    const answers = _.flatten(nestedQuestionAnswers.map(function(arr) {
-      return _.compact( arr.map(function(a) {
-        return a;
-      }) );
-    }) );
+    let answers = this.get('task.answers');
 
     answers.forEach(answer => {
-      const key = answer.get('nestedQuestion.ident');
+      const key = answer.get('cardContent.ident');
       const value = answer.get('value');
 
       this.validate(key, value);

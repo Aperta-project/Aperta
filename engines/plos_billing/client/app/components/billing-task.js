@@ -48,18 +48,18 @@ export default TaskComponent.extend({
   selectedRinggold: null,
   selectedPaymentMethod: computed('model.nestedQuestionAnswers.[]', function(){
     return this.get('task')
-               .answerForQuestion('plos_billing--payment_method')
+               .answerForIdent('plos_billing--payment_method')
                .get('value');
   }),
 
   agreeCollections: false,
 
   affiliation1Question: computed('model.nestedQuestions.[]', function() {
-    return this.get('task').findQuestion('plos_billing--affiliation1');
+    return this.get('store').peekCardContent('plos_billing--affiliation1');
   }),
 
   affiliation2Question: computed('model.nestedQuestions.[]', function() {
-    return this.get('task').findQuestion('plos_billing--affiliation2');
+    return this.get('store').peekCardContent('plos_billing--affiliation2');
   }),
 
   // institution-search component expects data to be

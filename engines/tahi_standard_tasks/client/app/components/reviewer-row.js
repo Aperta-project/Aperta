@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['author-task-item', 'reviewer'],
@@ -7,11 +8,15 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isDeleting: false,
   isEditing: false,
 
-  actions: {
+  loadCard: concurrencyTask( function * () {
+    let model = this.get('reviewerRecommendation');
+    yield Ember.RSVP.all([
+      model.get('card'),
+      model.get('answers')
+    ]);
+  }),
 
-    edit() {
-      this.set('isEditing', true);
-    },
+  actions: {
 
     delete() {
       this.set('isDeleting', true);
@@ -21,15 +26,16 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       this.set('isDeleting', false);
     },
 
-    cancelRecommendation() {
-      this.get('reviewerRecommendation').rollbackAttributes();
-      this.set('isEditing', false);
-      this.clearAllValidationErrors();
+    cancelRecommendation(recommendation) {
+      recommendation.rollbackAttributes();
+      this.get('reviewerRecommendation').clearAllValidationErrors();
+      this.get('toggleExpanded')();
     },
 
     saveRecommendation(recommendation) {
       recommendation.save().then(() => {
-        this.set('isEditing', false);
+        this.get('reviewerRecommendation').clearAllValidationErrors();
+        this.get('toggleExpanded')();
       }).catch((response) => {
         this.displayValidationErrorsFromResponse(response);
       });
@@ -37,7 +43,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     confirmDeletion() {
       this.$().fadeOut(250, ()=> {
-        this.get('reviewerRecommendation').destroyRecord();
+        this.get('reviewerRecommendation.object').destroyRecord();
       });
     }
   }

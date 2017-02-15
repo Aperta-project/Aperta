@@ -1,8 +1,9 @@
 import Ember from 'ember';
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import CardContentQuestion from
+  'tahi/pods/components/card-content-question/component';
 import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
-export default NestedQuestionComponent.extend({
+export default CardContentQuestion.extend({
   multiple: false,
 
   store: Ember.inject.service(),
@@ -43,6 +44,7 @@ export default NestedQuestionComponent.extend({
           src: s3Url,
           filename: file.name
         });
+        //TODO APERTA-8972 this is where the QuestionAttachmentsController gets hit
         attachment.save();
       });
     },
@@ -53,7 +55,7 @@ export default NestedQuestionComponent.extend({
     },
 
     deleteAttachment(attachment){
-     attachment.destroyRecord();
+      attachment.destroyRecord();
     }
   }
 });

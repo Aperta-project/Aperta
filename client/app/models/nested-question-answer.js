@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
-import QuestionAttachmentOwner from 'tahi/models/question-attachment-owner';
 
-export default QuestionAttachmentOwner.extend({
+export default DS.Model.extend({
+  attachments: DS.hasMany('question-attachment', { async: false, inverse: 'nestedQuestionAnswer' }),
   decision: DS.belongsTo('decision', { async: true }),
   owner: DS.belongsTo('nested-question-owner', {
     polymorphic: true,

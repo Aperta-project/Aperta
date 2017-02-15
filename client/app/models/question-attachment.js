@@ -2,6 +2,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   nestedQuestionAnswer: DS.belongsTo('nested-question-answer', { async: false }),
+  answer: DS.belongsTo('answer', { async: false }),
 
   filename: DS.attr('string'),
   src: DS.attr('string'),

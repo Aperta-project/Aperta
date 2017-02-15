@@ -1,40 +1,32 @@
 import Ember from 'ember';
 import { contributionIdents } from 'tahi/models/author';
-import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import CommonAuthorForm from 'tahi/mixins/components/common-author-form';
 
 const {
   Component,
   computed,
-  computed: { alias },
   inject: { service },
   isEqual
 } = Ember;
 
-export default Component.extend({
+export default Component.extend(CommonAuthorForm, {
   countries: service(),
   store: service(),
 
   classNames: ['author-form', 'individual-author-form'],
 
-  author: null,
-  authorProxy: null,
   isNewAuthor: false,
-  validationErrors: alias('authorProxy.validationErrors'),
   canRemoveOrcid: null,
 
   init() {
     this._super(...arguments);
     this.get('countries').fetch();
-
-    if(this.get('isNewAuthor')) {
-      this.initNewAuthorQuestions().then(() => {
-        this.createNewAuthor();
-      });
-    }
   },
 
   authorIsNotCurrentUser: computed('currentUser', 'author.user', function() {
     const currentUser = this.get('currentUser');
+    // For more information on how this works at all look up the docs for the
+    // DS.PromiseObject
     const author = this.get('author.user.content'); // <- promise
     return !isEqual(currentUser, author);
   }),
@@ -44,36 +36,6 @@ export default Component.extend({
     const creator = this.get('author.paper.creator');
     return isEqual(author, creator);
   }),
-
-  nestedQuestionsForNewAuthor: Ember.A(),
-  initNewAuthorQuestions(){
-    const q = { type: 'Author' };
-    return this.get('store').query('nested-question', q).then(
-      (nestedQuestions) => {
-        this.set('nestedQuestionsForNewAuthor', nestedQuestions.toArray());
-      });
-  },
-
-  clearNewAuthorAnswers(){
-    this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get('newAuthor.object'));
-    });
-  },
-
-  createNewAuthor() {
-    const newAuthor = this.get('store').createRecord('author', {
-      paper: this.get('task.paper'),
-      position: 0,
-      nestedQuestions: this.get('nestedQuestionsForNewAuthor')
-    });
-
-    this.set('author', newAuthor);
-
-    this.set('authorProxy', ObjectProxyWithErrors.create({
-      object: newAuthor,
-      validations: newAuthor.validations
-    }));
-  },
 
   formattedCountries: computed('countries.data', function() {
     return this.get('countries.data').map(function(c) {
@@ -108,33 +70,6 @@ export default Component.extend({
     );
   }),
 
-  resetAuthor() {
-    this.get('author').rollbackAttributes();
-  },
-
-  saveAuthor() {
-    this.get('authorProxy').validateAll();
-    if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save().then(() => {
-      this.get('saveSuccess')();
-    });
-  },
-
-  saveNewAuthor() {
-    const author = this.get('author');
-    author.save().then(savedAuthor => {
-      author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
-        const value = answer.get('value');
-        if(value || value === false){
-          answer.set('owner', savedAuthor);
-          answer.save();
-        }
-      });
-
-      this.get('saveSuccess')();
-    });
-  },
-
   validateOrcid: Ember.observer('author.orcidAccount.identifier', function() {
     const ident = this.get('author.orcidAccount.identifier');
     if(ident) {
@@ -143,19 +78,6 @@ export default Component.extend({
   }),
 
   actions: {
-    cancelEdit() {
-      this.resetAuthor();
-      this.sendAction('hideAuthorForm');
-    },
-
-    saveAuthor() {
-      if(this.get('isNewAuthor')) {
-        this.saveNewAuthor();
-      } else {
-        this.saveAuthor();
-      }
-    },
-
     addContribution(name) {
       this.get('author.contributions').addObject(name);
     },
@@ -191,12 +113,6 @@ export default Component.extend({
 
     currentAddressCountrySelected(data) {
       this.set('author.currentAddressCountry', data.text);
-    },
-
-    validateField(key, value) {
-      if(this.get('validateField')) {
-        this.get('validateField')(key, value);
-      }
     }
   }
 });

@@ -4,10 +4,9 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 const {
   assert,
   isEmpty,
-  Object
 } = Ember;
 
-const ObjectProxy = Object.extend(ValidationErrorsMixin, {
+const ObjectProxy = Ember.ObjectProxy.extend(ValidationErrorsMixin, {
   errorsPresent: false,
   validations: null,
   questionValidations: null,
@@ -17,7 +16,6 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
 
   init() {
     this._super(...arguments);
-
     const klass = 'ObjectProxyWithValidationErrors';
     const validationsEmpty = isEmpty(this.get('validations'));
     const questionValidationsEmpty = isEmpty(this.get('questionValidations'));
@@ -27,6 +25,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
       !isEmpty(this.get('object'))
     );
 
+    this.set('content', this.get('object'));
     assert(
       `the 'validations' or 'questionValidations' property must be set for ${klass}`,
       !validationsEmpty || !questionValidationsEmpty
@@ -62,7 +61,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
   },
 
   validateQuestion(ident) {
-    const value = this.get('object').findQuestion(ident);
+    const value = this.get('object').findCardContent(ident);
     this.validate(ident, value);
 
     if(this.validationErrorsPresentForKey(ident)) {

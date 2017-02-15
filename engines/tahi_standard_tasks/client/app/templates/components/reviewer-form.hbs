@@ -1,122 +1,128 @@
-<div class="author-form reviewer-form flex-form">
-  <div class="flex-group flex-group--divider">
-    <div class="flex-element inset-form-control required author-name first-name {{if validationErrors.firstName "error"}}">
-      <div class="inset-form-control-text">
-        <label>First Name</label>
-        {{error-message message=validationErrors.firstName
-                        displayIcon=true
-                        displayText=false}}
+{{#if model.isNew}}
+  {{progress-spinner visible=true size="small"}}
+{{else}}
+  {{#util/async-content concurrencyTask=loadCard}}
+    <div class="author-form reviewer-form flex-form">
+      <div class="flex-group flex-group--divider">
+        <div class="flex-element inset-form-control required author-name first-name {{if validationErrors.firstName "error"}}">
+          <div class="inset-form-control-text">
+            <label>First Name</label>
+            {{error-message message=validationErrors.firstName
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.firstName
+                  class="inset-form-control-input"
+                  placeholder="Jane"
+                  disabled=isNotEditable}}
+        </div>
+
+        <div class="flex-element inset-form-control author-middle-initial middle-name {{if validationErrors.middleInitial "error"}}">
+          <div class="inset-form-control-text">
+            <label>MI</label>
+            {{error-message message=validationErrors.middleInitial
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.middleInitial
+                  class="inset-form-control-input"
+                  placeholder="M"
+                  disabled=isNotEditable}}
+        </div>
+
+        <div class="flex-element inset-form-control author-name required last-name {{if validationErrors.lastName "error"}}">
+          <div class="inset-form-control-text">
+            <label>Last Name</label>
+            {{error-message message=validationErrors.lastName
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.lastName
+                  class="inset-form-control-input"
+                  placeholder="Doe"
+                  disabled=isNotEditable}}
+        </div>
+
+        <div class="flex-element inset-form-control required email {{if validationErrors.email "error"}}">
+          <div class="text-field-title">
+            <label>Email</label>
+            {{error-message message=validationErrors.email
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.email
+                  class="inset-form-control-input"
+                  placeholder="jane.doe@example.com"
+                  disabled=isNotEditable}}
+        </div>
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.firstName
-              class="inset-form-control-input"
-              placeholder="Jane"
-              disabled=isNotEditable}}
-    </div>
 
-    <div class="flex-element inset-form-control author-middle-initial middle-name {{if validationErrors.middleInitial "error"}}">
-      <div class="inset-form-control-text">
-        <label>MI</label>
-        {{error-message message=validationErrors.middleInitial
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-group">
+        <div class="flex-element inset-form-control title {{if validationErrors.title "error"}}">
+          <div class="inset-form-control-text">
+            <label>Title</label>
+            {{error-message message=validationErrors.title
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.title
+                  class="inset-form-control-input"
+                  placeholder="Professor"
+                  disabled=isNotEditable}}
+        </div>
+
+        <div class="flex-element inset-form-control department {{if validationErrors.department "error"}}">
+          <div class="text-field-title">
+            <label>Department</label>
+            {{error-message message=validationErrors.department
+                            displayIcon=true
+                            displayText=false}}
+          </div>
+          {{input type="text"
+                  value=reviewerRecommendation.department
+                  class="inset-form-control-input"
+                  placeholder="Biology"
+                  disabled=isNotEditable}}
+        </div>
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.middleInitial
-              class="inset-form-control-input"
-              placeholder="M"
-              disabled=isNotEditable}}
-    </div>
 
-    <div class="flex-element inset-form-control author-name required last-name {{if validationErrors.lastName "error"}}">
-      <div class="inset-form-control-text">
-        <label>Last Name</label>
-        {{error-message message=validationErrors.lastName
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-group">
+        <div class="flex-element institution {{if validationErrors.affiliation "error"}}">
+          {{error-message message=validationErrors.affiliation}}
+          {{institution-search value=affiliation
+                               institutionSelected="institutionSelected"
+                               placeholder="Institution"
+                               disabled=isNotEditable}}
+        </div>
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.lastName
-              class="inset-form-control-input"
-              placeholder="Doe"
-              disabled=isNotEditable}}
-    </div>
 
-    <div class="flex-element inset-form-control required email {{if validationErrors.email "error"}}">
-      <div class="text-field-title">
-        <label>Email</label>
-        {{error-message message=validationErrors.email
-                        displayIcon=true
-                        displayText=false}}
+      <div class="form-group">
+        {{nested-question-radio ident="reviewer_recommendations--recommend_or_oppose"
+                                owner=reviewerRecommendation
+                                yesLabel="Recommend"
+                                noLabel="Oppose"
+                                textClassNames="required"
+                                disabled=isNotEditable}}
+        {{error-message message=validationErrors.recommendOrOppose}}
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.email
-              class="inset-form-control-input"
-              placeholder="jane.doe@example.com"
-              disabled=isNotEditable}}
-    </div>
-  </div>
 
-  <div class="flex-group">
-    <div class="flex-element inset-form-control title {{if validationErrors.title "error"}}">
-      <div class="inset-form-control-text">
-        <label>Title</label>
-        {{error-message message=validationErrors.title
-                        displayIcon=true
-                        displayText=false}}
+      <div class="form-group">
+        {{nested-question-textarea ident="reviewer_recommendations--reason"
+                                   owner=reviewerRecommendation
+                                   displayContent=true
+                                   disabled=isNotEditable
+                                   displayQuestionAsPlaceholder=true}}
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.title
-              class="inset-form-control-input"
-              placeholder="Professor"
-              disabled=isNotEditable}}
-    </div>
 
-    <div class="flex-element inset-form-control department {{if validationErrors.department "error"}}">
-      <div class="text-field-title">
-        <label>Department</label>
-        {{error-message message=validationErrors.department
-                        displayIcon=true
-                        displayText=false}}
+      <div class="author-form-buttons control-buttons">
+        <a class="button-link button--green author-cancel cancel" disabled={{isNotEditable}} {{action "cancelRecommendation"}}>cancel</a>
+        <button class="button-secondary button--green knockout" disabled={{isNotEditable}} {{action "saveRecommendation"}}>done</button>
       </div>
-      {{input type="text"
-              value=reviewerRecommendation.department
-              class="inset-form-control-input"
-              placeholder="Biology"
-              disabled=isNotEditable}}
     </div>
-  </div>
-
-  <div class="flex-group">
-    <div class="flex-element institution {{if validationErrors.affiliation "error"}}">
-      {{error-message message=validationErrors.affiliation}}
-      {{institution-search value=affiliation
-                           institutionSelected="institutionSelected"
-                           placeholder="Institution"
-                           disabled=isNotEditable}}
-    </div>
-  </div>
-
-  <div class="form-group">
-    {{nested-question-radio ident="reviewer_recommendations--recommend_or_oppose"
-                            owner=reviewerRecommendation
-                            yesLabel="Recommend"
-                            noLabel="Oppose"
-                            textClassNames="required"
-                            disabled=isNotEditable}}
-    {{error-message message=validationErrors.recommendOrOppose}}
-  </div>
-
-  <div class="form-group">
-    {{nested-question-textarea ident="reviewer_recommendations--reason"
-                               owner=reviewerRecommendation
-                               displayContent=true
-                               disabled=isNotEditable
-                               displayQuestionAsPlaceholder=true}}
-  </div>
-
-  <div class="author-form-buttons control-buttons">
-    <a class="button-link button--green author-cancel cancel" disabled={{isNotEditable}} {{action "cancelRecommendation"}}>cancel</a>
-    <button class="button-secondary button--green knockout" disabled={{isNotEditable}} {{action "saveRecommendation"}}>done</button>
-  </div>
-</div>
+  {{/util/async-content}}
+{{/if}}

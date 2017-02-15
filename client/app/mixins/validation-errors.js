@@ -139,6 +139,8 @@ export default Mixin.create({
       'validationErrors.' + key,
       (isArray(value) ? value.join(', ') : value)
     );
+
+    this.notifyPropertyChange('validationErrors');
   },
 
   /**
@@ -206,6 +208,7 @@ export default Mixin.create({
 
   clearAllValidationErrorsForModel(model) {
     delete this.validationErrorsForType(model)[model.get('id')];
+    this.notifyPropertyChange('validationErrors');
   },
 
   /**
@@ -269,6 +272,10 @@ export default Mixin.create({
 
     return errorFound;
   },
+
+  hasValidationErrors: Ember.computed('validationErrors', function() {
+    return this.validationErrorsPresent();
+  }),
 
   /**
     List all validation errors. Helpful for debugging

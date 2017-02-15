@@ -80,17 +80,15 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
         template = templates.get('firstObject').toJSON();
       } else {
         const selectedTemplate = this.get('task')
-              .findQuestion('register_decision_questions--selected-template')
+              .findCardContent('register_decision_questions--selected-template')
               .get('answers.firstObject.value');
         template = templates.findBy('text', selectedTemplate).toJSON();
       }
       const letter = this.applyTemplateReplacements(template.letter);
       const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
-      const toQuestion = this.get('task').findQuestion('register_decision_questions--to-field');
-      const toAnswer = toQuestion.answerForOwner(this.get('task'));
-      const subjectQuestion = this.get('task').findQuestion('register_decision_questions--subject-field');
-      const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
+      const toAnswer = this.get('store').peekAnswer('register_decision_questions--to-field', this.get('task'));
+      const subjectAnswer = this.get('store').peekAnswer('register_decision_questions--subject-field', this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
       this.get('draftDecision').set('letter', letter); // will trigger save

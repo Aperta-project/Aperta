@@ -49,7 +49,7 @@ export default NestedQuestionOwner.extend(Answerable, {
       validation() {
         const author = this.get('object');
         const answer = author
-              .answerForQuestion('group-author--government-employee')
+              .answerForIdent('group-author--government-employee')
               .get('value');
 
         return answer === true || answer === false;
@@ -63,7 +63,7 @@ export default NestedQuestionOwner.extend(Answerable, {
         // here please also check to see if changes need to be made there.
         const author = this.get('object');
         return _.some(contributionIdents, (ident) => {
-          let answer = author.answerForQuestion(ident);
+          let answer = author.answerForIdent(ident);
           Ember.assert(`Tried to find an answer for question with ident, ${ident}, but none was found`, answer);
           return answer.get('value');
         });

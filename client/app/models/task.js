@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
+import Answerable from 'tahi/mixins/answerable';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import Snapshottable from 'tahi/mixins/snapshottable';
 
-export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, {
+export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
   attachments: DS.hasMany('adhoc-attachment', {
     async: true,
     inverse: 'task'

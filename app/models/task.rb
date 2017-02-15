@@ -243,6 +243,13 @@ class Task < ActiveRecord::Base
     "Override me"
   end
 
+  # Overrides Answerable.  Since Tasks are STI the client needs to be able to
+  # save an Answer with the expected owner type (Task) rather than the specific
+  # subclass type (ie TahiStandardTasks::ReviewerReportTask)
+  def owner_type_for_answer
+    'Task'
+  end
+
   private
 
   def update_completed_at

@@ -17,6 +17,8 @@ class ManuscriptManagerTemplatesController < ApplicationController
     end
 
     respond_with ManuscriptManagerTemplate.where(journal_id: journal_ids)
+      .includes(:journal,
+        phase_templates: { task_templates: :journal_task_type })
   end
 
   def show

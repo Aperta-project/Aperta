@@ -131,7 +131,7 @@ test('it shows completed', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim(),
-    'v99.0 Review\n    Completed January 1, 2020',
+    'v99.0 Review\n      Completed January 1, 2020',
     'Block template shows invited text with date'
   );
 });

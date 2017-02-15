@@ -34,14 +34,33 @@
               </a>
             </td>
           {{else if (eq version.fileType "pdf")}}
-            <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
-              <a href="#"
-                 class="download-pdf"
-                 title="Download PDF"
-                 {{action "exportDocument" version}}>
-                {{fa-icon "file-pdf-o"}} PDF
-              </a>
-            </td>
+            {{#if version.sourceType}}
+              <td class="paper-downloads-link paper-downloads-link--sourcetext-align-right">
+                <a href="#"
+                   class="download-source"
+                   title="Download Manuscript Source"
+                   {{action "exportSource" version}}>
+                  {{source-link version=version}}
+                </a>
+              </td>
+              <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+                <a href="#"
+                   class="download-pdf"
+                   title="Download PDF"
+                   {{action "exportDocument" version}}>
+                  {{fa-icon "file-pdf-o"}} PDF
+                </a>
+              </td>
+            {{else}}
+              <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+                <a href="#"
+                   class="download-pdf"
+                   title="Download PDF"
+                   {{action "exportDocument" version}}>
+                  {{fa-icon "file-pdf-o"}} PDF
+                </a>
+              </td>
+            {{/if}}
           {{else}}
             <td colspan="2">Processing...</td>
           {{/if}}

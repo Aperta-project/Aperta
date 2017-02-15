@@ -62,6 +62,10 @@ class Task < ActiveRecord::Base
   validates :title, presence: true
   validates :title, length: { maximum: 255 }
 
+  def card
+    @card ||= Card.where(name: self.class.name)
+  end
+
   class << self
     # Public: Restores the task defaults to all of its instances/models
     #

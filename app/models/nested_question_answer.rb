@@ -1,3 +1,6 @@
+# TODO: Whenever the time comes that we're going to remove NestedQuestionAnswers
+# from production, we should make sure that deleting the associated attachments
+# does not remove those files from s3.
 class NestedQuestionAnswer < ActiveRecord::Base
   SUPPORTED_VALUE_TYPES = ::NestedQuestion::SUPPORTED_VALUE_TYPES
   VALUE_REQUIRED_FOR_TYPES = ::NestedQuestion::VALUE_REQUIRED_FOR_TYPES

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe TahiStandardTasks::AuthorsTask do
   before do
-    Rake::Task['nested-questions:seed:author'].reenable
-    Rake::Task['nested-questions:seed:author'].invoke
+    Rake::Task['card_seed:author'].reenable
+    Rake::Task['card_seed:author'].invoke
   end
 
   it_behaves_like 'is a metadata task'

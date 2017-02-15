@@ -1,26 +1,23 @@
 require 'rails_helper'
 
-feature 'Authors card', js: true do
-  let(:author) { create :user, first_name: 'Author' }
+feature 'Authors Task', js: true do
+  let(:creator) { create :user, first_name: 'Author' }
   let!(:paper) do
     FactoryGirl.create(
-      :paper_with_task,
+      :paper,
+      :with_tasks,
       :with_integration_journal,
-      task_params: { type: "TahiStandardTasks::AuthorsTask" },
-      creator: author
+      creator: creator
     )
   end
-
-  before do
-    paper.tasks.each { |t| t.add_participant(author) }
+  let!(:authors_task) do
+    paper.tasks_for_type('TahiStandardTasks::AuthorsTask').first
   end
-
   context 'As an author' do
     scenario 'validates the authors card on completion', selenium: true do
-      login_as(author, scope: :user)
+      login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
-
-      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay = Page.view_task_overlay(paper, authors_task)
       find_button('Add a New Author').click
       find('#add-new-individual-author-link').click
       find('.author-first').send_keys('first')
@@ -33,15 +30,15 @@ feature 'Authors card', js: true do
       expect(overlay).to be_uncompleted
       overlay.dismiss
 
-      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay = Page.view_task_overlay(paper, authors_task)
       expect(overlay).to be_uncompleted
     end
 
     scenario 'validates group authors on completion', selenium: true do
-      login_as(author, scope: :user)
+      login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
 
-      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay = Page.view_task_overlay(paper, authors_task)
       find_button('Add a New Author').click
       find('#add-new-group-author-link').click
       find('.contact-first').send_keys('first')
@@ -52,14 +49,14 @@ feature 'Authors card', js: true do
       expect(overlay).to be_uncompleted
       overlay.dismiss
 
-      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay = Page.view_task_overlay(paper, authors_task)
       expect(overlay).to be_uncompleted
     end
 
     scenario 'new authors go to bottom of the list', selenium: true do
-      login_as(author, scope: :user)
+      login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
-      overlay = Page.view_task_overlay(paper, paper.tasks.first)
+      overlay = Page.view_task_overlay(paper, authors_task)
 
       find_button('Add a New Author').click
       find('#add-new-individual-author-link').click

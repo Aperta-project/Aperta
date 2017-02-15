@@ -183,13 +183,29 @@ describe UserMailer, redis: true do
       UserMailer.notify_coauthor_of_paper_submission(paper.id, author_2.id, "GroupAuthor")
     end
 
+    let(:authors_full_names) do
+      paper.author_list_items.map(&:author).map(&:full_name)
+    end
+
     it "sends the email to a group coauthor and list all authors" do
       expect(email_1.to).to contain_exactly(author_2.email)
       expect(email_1.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
       expect(email_1.body).to include(paper.title)
       expect(email_1.body).to include "#{author_2.full_name},"
       expect(email_1.body).not_to include "Dr #{author_2.full_name},"
-      expect(email_1.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
+      authors_full_names.each do |author_full_name|
+        expect(email_1.body).to include(author_full_name)
+      end
+    end
+
+    it "has a link to confirm authorship" do
+      expect(email_1.body).to include("Confirm Authorship")
+      expect(email_1.body).to include("co_authors_token/#{author_2.token}")
+    end
+
+    it "has a mailto: link to refute authorship" do
+      expect(email_1.body).to include("Reply to this email to refute authorship")
+      expect(email_1.body).to include("mailto:no-reply@example.com?subject=Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
     end
 
     let(:email_2) do
@@ -201,7 +217,9 @@ describe UserMailer, redis: true do
       expect(email_2.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
       expect(email_2.body).to include(paper.title)
       expect(email_2.body).to include "Dr #{author_3.last_name},"
-      expect(email_2.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
+      authors_full_names.each do |author_full_name|
+        expect(email_2.body).to include(author_full_name)
+      end
     end
   end
 

@@ -31,7 +31,7 @@
   <ol>
     <% @authors.each do |single_author| %>
       <li>
-          <%= single_author.full_name %><% if single_author.affiliation %>: <%= single_author.affiliation %>
+          <%= single_author.full_name %><% if single_author.respond_to?(:affiliation) && single_author.affiliation %>: <%= single_author.affiliation %>
           <% end %>
       </li>
     <% end %>
@@ -39,7 +39,7 @@
 </p>
 
 <%= render partial: 'email/button', locals: {
-  href: show_token_co_author_path(@coauthor.token),
+  href: show_token_co_author_url(@coauthor.token),
   text: 'Confirm Authorship'
 } %>
 

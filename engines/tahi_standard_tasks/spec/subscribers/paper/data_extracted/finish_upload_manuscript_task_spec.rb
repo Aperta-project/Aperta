@@ -3,9 +3,10 @@ require 'rails_helper'
 describe Paper::DataExtracted::FinishUploadManuscriptTask do
   include EventStreamMatchers
 
+  let(:user) { FactoryGirl.create(:user) }
   let(:upload_task) { FactoryGirl.create(:upload_manuscript_task) }
-  let(:response_completed) { IhatJobResponse.new(state: 'completed', options: { metadata: { paper_id: upload_task.paper.id } }) }
-  let(:response_errored) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id } }) }
+  let(:response_completed) { IhatJobResponse.new(state: 'completed', options: { metadata: { paper_id: upload_task.paper.id, user_id: user.id } }) }
+  let(:response_errored) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id, user_id: user.id } }) }
 
   it "marks the upload manuscript task as completed if job is completed" do
     expect(upload_task).to_not be_completed

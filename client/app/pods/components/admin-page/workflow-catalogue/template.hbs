@@ -7,7 +7,7 @@
 {{/if}}
 
 {{#admin-page/catalogue}}
-  {{#each workflows as |workflow|}}
+  {{#each sortedWorkflows as |workflow|}}
     {{#admin-page/catalogue/item action=(action "editWorkflow" workflow.journal.id workflow.id)}}
       {{admin-page/workflow-thumbnail workflow=workflow}}
     {{/admin-page/catalogue/item}}

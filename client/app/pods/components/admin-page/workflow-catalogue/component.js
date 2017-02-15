@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   workflows: [],
+  workflowSort: ['paperType:asc', 'journal.name:asc'],
+  sortedWorkflows: Ember.computed.sort('workflows', 'workflowSort'),
   journal: null,
 
   routing: Ember.inject.service('-routing'),

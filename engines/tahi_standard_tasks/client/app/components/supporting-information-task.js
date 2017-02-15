@@ -6,7 +6,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
-  uploadCount: null, // defined by component
+  uploadCount: 0,
   classNames: ['supporting-information-task'],
   files: computed.alias('task.paper.supportingInformationFiles'),
   uploadUrl: computed('task', function() {
@@ -20,7 +20,7 @@ export default TaskComponent.extend(FileUploadMixin, {
     objs.invoke('validateAll');
 
     let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
-    if (this.get('uploadCount')) {
+    if (this.get('uploadCount') > 0) {
       errors = true;
     }
 
@@ -56,11 +56,7 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   actions: {
     uploadStarted(data, filename) {
-      if (this.get('uploadCount')) {
-        this.set('uploadCount', this.get('uploadCount') + 1);
-      } else {
-        this.set('uploadCount', 1);
-      }
+      this.set('uploadCount', this.get('uploadCount') + 1);
       this.uploadStarted(data, filename);
     },
 

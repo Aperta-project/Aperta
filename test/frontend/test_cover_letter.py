@@ -51,7 +51,12 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task.validate_styles()
     # Mark task as complete
     cover_letter_task.click_completion_button()
-    cover_letter_task.logout()
+    # Test for task completion in the activity feed
+    manuscript_page.open_recent_activity()
+    manuscript_page.validate_recent_activity_entry('Cover Letter card was marked as complete',
+                                                   user_type['name'])
+    manuscript_page.close_overlay()
+    manuscript_page.logout()
 
     # Test card styles and activity feed
     staff_user = random.choice(editorial_users)
@@ -66,13 +71,6 @@ class CoverLetterTaskTest(CommonTest):
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
 
-    # Test task completion on activity feed
-    workflow_page.click_recent_activity_link()
-    workflow_page.validate_recent_activity_entry('Cover Letter card was '
-                                                 'marked as complete',
-                                                 user_type['name'])
-    workflow_page.click_close_overlay()
-
     workflow_page.click_card('cover_letter')
     cover_letter_card = CoverLetterCard(self.getDriver())
     cover_letter_card.card_ready()
@@ -86,10 +84,24 @@ class CoverLetterTaskTest(CommonTest):
 
     # Test card incompletion on activity feed
     workflow_page.click_recent_activity_link()
-    workflow_page.validate_recent_activity_entry('Cover Letter card was '
-                                                 'marked as incomplete',
+    workflow_page.validate_recent_activity_entry('Cover Letter card was marked as incomplete',
                                                  staff_user['name'])
-    workflow_page.click_close_overlay()
+    workflow_page.close_overlay()
+    workflow_page.click_card('cover_letter')
+    cover_letter_card = CoverLetterCard(self.getDriver())
+    cover_letter_card.card_ready()
+    # Mark card as complete
+    cover_letter_card.click_completion_button()
+    cover_letter_card.click_close_button()
+    # Wait for modal transition
+    time.sleep(0.5)
+
+    # Test card incompletion on activity feed
+    workflow_page.click_recent_activity_link()
+    workflow_page.validate_recent_activity_entry('Cover Letter card was marked as complete',
+                                                 staff_user['name'])
+    workflow_page.close_overlay()
+    manuscript_page.logout()
 
   def test_cover_letter_file_submission(self):
     """
@@ -101,7 +113,7 @@ class CoverLetterTaskTest(CommonTest):
     user_type = random.choice(users)
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='Research', format='word')
+    self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_short_doi()

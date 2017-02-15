@@ -36,7 +36,6 @@ class WorkflowPage(AuthenticatedPage):
     self._column_header_cancel = (By.XPATH,
                                   ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
-    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,  ".//div[@class='overlay-action-buttons']/button[2]")
@@ -88,13 +87,6 @@ class WorkflowPage(AuthenticatedPage):
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
-    # Workflow Recent Activity Overlay
-    self._recent_activity_table = (By.CSS_SELECTOR, 'div.overlay-body table')
-    self._recent_activity_table_row = (By.CSS_SELECTOR, 'div.overlay-body table tr')
-    self._recent_activity_table_msg = (By.CSS_SELECTOR, 'td.activity-feed-overlay-message')
-    self._recent_activity_table_user_full_name = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
-    self._recent_activity_table_user_avatar = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
-    self._recent_activity_table_timestamp = (By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
@@ -107,24 +99,6 @@ class WorkflowPage(AuthenticatedPage):
     assert self._get(self._toolbar_items)
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
-
-  def click_recent_activity_link(self):
-    """
-    Open the Recent Activity Modal from the Workflow page
-    :return: void function
-    """
-    recent_activity = self._get(self._recent_activity)
-    recent_activity.click()
-    time.sleep(1)
-
-  def click_close_overlay(self):
-    """
-    Close the overlay modals
-    :return: void function
-    """
-    close_btn = self._get(self._close_icon_overlay)
-    close_btn.click()
-    time.sleep(1)
 
   def click_initial_decision_card(self):
     """Open the Initial Decision Card from the workflow page"""
@@ -388,38 +362,6 @@ class WorkflowPage(AuthenticatedPage):
         completed.click()
       base_card._get(base_card._close_button).click()
       time.sleep(1)
-
-  def validate_recent_activity_entry(self, msg, full_name=''):
-    """
-    Confirms that msg is present in the workflow recent activity feed, executed by full name
-    :param msg: The recent activity message you wish to validate
-    :param full_name: the full name of the executing user. If not present, only validate message.
-    :return: boolean, true if found
-    """
-    msg_match = False
-    name_match = False
-    ra_entries = self._gets(self._recent_activity_table_row)
-    for ra_entry in ra_entries:
-      try:
-        assert msg in self._get(self._recent_activity_table_msg).text
-        logging.info('Workflow RA message '
-                     'match found: {0}'.format(self._get(self._recent_activity_table_msg).text))
-        msg_match = True
-        if full_name:
-          try:
-            assert full_name in self._get(self._recent_activity_table_user_full_name).text
-            logging.info('Workflow RA name match found: {0}'.format(
-                self._get(self._recent_activity_table_user_full_name).text))
-            return True
-          except AssertionError:
-            continue
-      except AssertionError:
-        continue
-    if not full_name:
-      if msg_match:
-        return True
-      else:
-        return False
 
   def set_editable(self):
     """

@@ -32,7 +32,7 @@
   &:after {
     content: '';
     @include position(absolute, 0px auto 0px 0px);
-    width: 1px;
+    width: 5px;
     background: #ddd;
   }
 

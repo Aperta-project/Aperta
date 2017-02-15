@@ -85,11 +85,11 @@ RSpec.configure do |config|
 
   config.before(:context, js: true) do
     # :truncation is the strategy we need to use for capybara tests, but do not
-    # truncate task_types and nested_questions, we want to keep these tables
+    # truncate task_types, cards, and card_contents, we want to keep these tables
     # around.
-    # Ensure this come after the generic setup (see above)
+    # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions) }
+      except: %w(task_types cards card_contents) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -132,8 +132,8 @@ RSpec.configure do |config|
 
     # Load question and roles & permission seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    Rake::Task['nested-questions:seed'].reenable
-    Rake::Task['nested-questions:seed'].invoke
+    Rake::Task['card_seed:seed'].reenable
+    Rake::Task['card_seed:seed'].invoke
 
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars

@@ -2,8 +2,8 @@ require "rails_helper"
 
 describe Snapshot::AuthorTaskSerializer do
   before do
-    Rake::Task['nested-questions:seed:authors-task'].reenable
-    Rake::Task['nested-questions:seed:authors-task'].invoke
+    Rake::Task['card_seed:authors_task'].reenable
+    Rake::Task['card_seed:authors_task'].invoke
   end
 
   subject(:serializer) { described_class.new(task) }

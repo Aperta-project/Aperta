@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Typesetter::GroupAuthorSerializer do
   before do
-    Rake::Task['nested-questions:seed:group-author'].reenable
-    Rake::Task['nested-questions:seed:group-author'].invoke
+    Rake::Task['card_seed:group_author'].reenable
+    Rake::Task['card_seed:group_author'].invoke
   end
 
   subject(:serializer) { described_class.new(group_author) }

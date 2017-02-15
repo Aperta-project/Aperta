@@ -63,11 +63,6 @@ module ProxyableResource
     resource_token.destroy! if resource_token
   end
 
-  def refresh_resource_token!(resource)
-    destroy_resource_token!
-    create_resource_token!(resource)
-  end
-
   # Not memoizing on purpose because it creates a situation where we have an
   # outdated resource token. If you memoize be sure to handle invalidating the
   # cache in every situation where the resource token changes.

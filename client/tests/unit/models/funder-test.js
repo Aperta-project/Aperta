@@ -4,24 +4,25 @@ import Ember from 'ember';
 moduleForModel('funder', 'Unit | Model | funder', {
   // Specify the other units that are required for this test.
   needs: [
-    'model:financial-disclosure-task',
+    'model:answer',
+    'model:attachment',
     'model:author',
+    'model:authors-task',
+    'model:card',
+    'model:card-thumbnail',
+    'model:comment',
+    'model:comment-look',
+    'model:decision',
+    'model:financial-disclosure-task',
     'model:nested-question',
     'model:nested-question-answer',
-    'model:attachment',
-    'model:card-thumbnail',
-    'model:card',
-    'model:comment-look',
-    'model:comment',
+    'model:nested-question-answer',
+    'model:nested-question-owner',
     'model:paper',
     'model:participation',
     'model:phase',
-    'model:snapshot',
-    'model:authors-task',
-    'model:decision',
-    'model:nested-question-answer',
-    'model:nested-question-owner',
-    'model:question-attachment'
+    'model:question-attachment',
+    'model:snapshot'
   ]
 });
 

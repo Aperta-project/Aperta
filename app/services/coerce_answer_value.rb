@@ -14,7 +14,7 @@ class CoerceAnswerValue
     "boolean" => ->(v) { v.match(TRUTHY_VALUES_RGX) ? true : false }
   }.freeze
 
-  COERCIONS.default = ->(v) { v }
+  IDENTITY = ->(v) { v }
 
   def self.coerce(value, value_type)
     raise ArgumentError unless EXPECTED_VALUE_TYPES.include?(value_type)
@@ -22,6 +22,6 @@ class CoerceAnswerValue
     # check
     return nil if value.nil?
 
-    COERCIONS[value_type].call(value)
+    COERCIONS.fetch(value_type, IDENTITY).call(value)
   end
 end

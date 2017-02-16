@@ -32,16 +32,13 @@ class AuthorsTaskTest(CommonTest):
     :return: void function
     """
     logging.info('Test Authors Task::components_styles')
-    current_path = os.getcwd()
-    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.validate_styles()
@@ -52,16 +49,13 @@ class AuthorsTaskTest(CommonTest):
     :return: void function
     """
     logging.info('Test Authors Task::add_delete_individual_author')
-    current_path = os.getcwd()
-    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_individual_author_task_action()
@@ -88,25 +82,36 @@ class AuthorsTaskTest(CommonTest):
     test_authors_task: Validates add and delete group author functions for the author task
     :return: void function
     """
-    logging.info('test_core_add_delete_group_author')
-    logging.info('Test Authors Task::add_delete_group_author')
-    current_path = os.getcwd()
-    logging.info(current_path)
+    logging.info('Test Authors Task::test_core_add_delete_group_author')
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard = self.cas_login(user_type['email'])
     dashboard.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Research')
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(10)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Need to allow time for tasks to attach to DOM, sadly
-    time.sleep(3)
+    manuscript_page.page_ready_post_create()
     manuscript_page.click_task('Authors')
     authors_task = AuthorsTask(self.getDriver())
     authors_task.add_group_author_task_action()
     authors_task.validate_delete_author()
     return self
+
+  def test_author_editing(self):
+    """
+        test_author_editing: Validates editing the current author
+        :return: void function
+        """
+    logging.info('Test Authors Task::test_author_editing')
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard = self.cas_login(user_type['email'])
+    dashboard.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='Research')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    manuscript_page.click_task('Authors')
+    authors_task = AuthorsTask(self.getDriver())
+    authors_task.edit_author(user_type)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

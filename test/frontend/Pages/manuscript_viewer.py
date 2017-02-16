@@ -64,6 +64,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
     self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
+    self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -365,6 +366,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.error('PDF file: {0} is invalid'.format(newest_file))
       raise('Invalid PDF generated for {0}'.format(newest_file))
     os.remove(newest_file)
+
+  def open_recent_activity(self):
+    """
+    Opens the recent activity overlay
+    :return: void function
+    """
+    self._get(self._tb_ra_link).click()
 
   def _check_recent_activity(self):
     """
@@ -906,3 +914,38 @@ class ManuscriptViewerPage(AuthenticatedPage):
     sub_info = self._get(self._paper_sidebar_state_information)
     self._actions.move_to_element(sub_info).perform()
     time.sleep(.5)
+
+  def select_manuscript_version_item(self, version_selector='compare',
+                                     item_index=None):
+    """
+    Select a manuscript version item
+    :param version_selector: The version selector to use (compare or viewing). String
+    :param item_index: The item index in the selector. Integer
+    :return: None
+    """
+    # Convert the string to a bar_item elements index
+    bar_items_index = None
+    if version_selector == 'viewing':
+      bar_items_index = 0
+    elif version_selector == 'compare':
+      bar_items_index = 1
+
+    # Open the versioning box
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    # Waits for versioning box be visible
+    self._wait_for_element(
+      self._gets(self._bar_items)[1])
+
+    # Get the bar items
+    bar_items = self._gets(self._bar_items)
+    # click on
+    version_select = bar_items[bar_items_index].find_element_by_class_name(
+      'ember-power-select-trigger')
+    version_select.click()
+    version_select_id = version_select.get_attribute('id')
+    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
+    items_holder = self._get(items_holder_selector)
+    items_holder.find_elements_by_class_name('ember-power-select-option')[
+      item_index].click()
+

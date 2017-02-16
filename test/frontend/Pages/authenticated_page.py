@@ -204,6 +204,13 @@ class AuthenticatedPage(PlosPage):
     self._profile_orcid_linked_title = (By.CSS_SELECTOR, 'div.orcid-linked')
     self._profile_orcid_linked_id_link = (By.CSS_SELECTOR, 'div.orcid-linked > a')
     self._profile_orcid_linked_delete_icon = (By.CSS_SELECTOR, 'div.orcid-linked > i.fa-trash')
+    # Recent Activity Overlay
+    self._recent_activity_table = (By.CSS_SELECTOR, 'div.overlay-body table')
+    self._recent_activity_table_row = (By.CSS_SELECTOR, 'div.overlay-body table tr')
+    self._recent_activity_table_msg = (By.CSS_SELECTOR, 'td.activity-feed-overlay-message')
+    self._recent_activity_table_user_full_name = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user')
+    self._recent_activity_table_user_avatar = (By.CSS_SELECTOR, 'td.activity-feed-overlay-user img')
+    self._recent_activity_table_timestamp = (By.CSS_SELECTOR, 'td.activity-feed-overlay-timestamp')
 
   # POM Actions
   def attach_file(self, file_name):
@@ -339,6 +346,16 @@ class AuthenticatedPage(PlosPage):
     discussions_label = self._get(self._discussion_link)
     assert discussions_label
     assert discussions_label.text.lower() == 'discussions', discussions_label.text
+
+  def click_recent_activity_link(self):
+    """
+    Open the Recent Activity Modal from the Workflow page
+    :return: void function
+    """
+    recent_activity = self._get(self._recent_activity)
+    recent_activity.click()
+    # Time to allow the model to animate into place
+    time.sleep(1)
 
   def click_profile_link(self):
     """Click nav toolbar profile link"""
@@ -511,6 +528,17 @@ class AuthenticatedPage(PlosPage):
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     return short_doi
+
+  @staticmethod
+  def get_journal_name_from_short_doi(short_doi):
+    """
+    A method to return the paper id from the database via a query on the short_doi
+    :param short_doi: The short doi available from the URL of a paper and also the short_url in db
+    :return: paper.id from db, an integer
+    """
+    journal_id = PgSQL().query('SELECT journal_id '
+                               'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
+    return PgSQL().query('SELECT name FROM journals WHERE id = %s;', (journal_id,))[0][0]
 
   @staticmethod
   def get_paper_id_from_short_doi(short_doi):
@@ -794,6 +822,48 @@ class AuthenticatedPage(PlosPage):
     :return: void function
     """
     self._driver.execute_script('javascript:scrollBy(0,{0})'.format(pixels))
+    time.sleep(1)
+
+  def validate_recent_activity_entry(self, msg, full_name=''):
+    """
+    Confirms that msg is present in the workflow recent activity feed, executed by full name
+    :param msg: The recent activity message you wish to validate
+    :param full_name: the full name of the executing user. If not present, only validate message.
+    :return: boolean, true if found
+    """
+    msg_match = False
+    name_match = False
+    ra_entries = self._gets(self._recent_activity_table_row)
+    for ra_entry in ra_entries:
+      try:
+        assert msg in self._get(self._recent_activity_table_msg).text
+        logging.info('Workflow RA message '
+                     'match found: {0}'.format(self._get(self._recent_activity_table_msg).text))
+        msg_match = True
+        if full_name:
+          try:
+            assert full_name in self._get(self._recent_activity_table_user_full_name).text
+            logging.info('Workflow RA name match found: {0}'.format(
+                self._get(self._recent_activity_table_user_full_name).text))
+            return True
+          except AssertionError:
+            continue
+      except AssertionError:
+        continue
+    if not full_name:
+      if msg_match:
+        return True
+      else:
+        return False
+
+  def close_overlay(self):
+    """
+    Close the overlay modals
+    :return: void function
+    """
+    close_btn = self._get(self._overlay_header_close)
+    close_btn.click()
+    # time to allow the modal to animate away
     time.sleep(1)
 
   # Style Validations

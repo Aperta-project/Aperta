@@ -62,7 +62,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
-    self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
+    self._tb_dl_pdf_link = (By.CLASS_NAME, 'download-pdf')
     self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
     self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
@@ -309,6 +309,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Tiny delay between download types to keep clean
     time.sleep(.5)
     pdf_link = self._get(self._tb_dl_pdf_link)
+    assert pdf_link.text == 'PDF'
     pdf_link.click()
     # This lengthy delay is here because the file must begin downloading before we can start
     #   to see if the download completes
@@ -948,4 +949,3 @@ class ManuscriptViewerPage(AuthenticatedPage):
     items_holder = self._get(items_holder_selector)
     items_holder.find_elements_by_class_name('ember-power-select-option')[
       item_index].click()
-

@@ -10,6 +10,7 @@ moduleForModel('funder', 'Unit | Model | funder', {
     'model:nested-question-answer',
     'model:attachment',
     'model:card-thumbnail',
+    'model:card',
     'model:comment-look',
     'model:comment',
     'model:paper',

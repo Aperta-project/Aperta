@@ -40,7 +40,6 @@ class TokenCoAuthorsController < ApplicationController
     @authors ||= author
                  .paper
                  .author_list_items
-                 .select { |ali| ali.author_type == "Author" }
                  .map(&:author)
   end
 

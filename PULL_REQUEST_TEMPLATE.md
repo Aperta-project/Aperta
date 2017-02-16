@@ -26,6 +26,10 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 Author tasks:
 
+- [ ] If I changed the database schema, I enforced database constraints.
+
+- [ ] If I created a migration, I added pre- and post-migration assertions.
+
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 
 If I modified any environment variables:

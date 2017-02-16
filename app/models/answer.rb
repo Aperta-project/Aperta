@@ -15,11 +15,8 @@ class Answer < ActiveRecord::Base
   validates :owner, presence: true
   validates :paper, presence: true
 
-  # TODO: Optimize this
   def children
-    card_content.children.map do |child|
-      Answer.where(owner: owner, card_content: child)
-    end
+    Answer.where(owner: owner, card_content: card_content.children)
   end
 
   def task
@@ -29,7 +26,7 @@ class Answer < ActiveRecord::Base
       owner.task
     else
       fail NotImplementedError, <<-ERROR.strip_heredoc
-        The owner (#{owner.inspect}) does is not a Task and does not respond to
+        The owner (#{owner.inspect}) is not a Task and does not respond to
         #task. This is currently unsupported on #{self.class.name} and if you
         meant it to work you may need to update the implementation.
       ERROR

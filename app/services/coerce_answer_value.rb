@@ -11,15 +11,17 @@ class CoerceAnswerValue
   ].freeze
 
   COERCIONS = {
-    "boolean" => ->(v) { v.match(TRUTHY_VALUES_RGX) ? true : false },
-    default: ->(v) { v }
+    "boolean" => ->(v) { v.match(TRUTHY_VALUES_RGX) ? true : false }
   }.freeze
+
+  COERCIONS.default = ->(v) { v }
 
   def self.coerce(value, value_type)
     raise ArgumentError unless EXPECTED_VALUE_TYPES.include?(value_type)
+    # we need to distinguish between nil? and blank? here, hence the explicit
+    # check
     return nil if value.nil?
 
-    coercion = COERCIONS[value_type] || COERCIONS[:default]
-    coercion.call(value)
+    COERCIONS[value_type].call(value)
   end
 end

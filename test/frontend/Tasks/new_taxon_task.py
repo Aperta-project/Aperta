@@ -24,6 +24,8 @@ class NewTaxonTask(BaseTask):
                         "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p")
     self._comply_link = (By.XPATH, 
                         "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p/a")
+    self._questions_text = (By.CLASS_NAME, 'model-question')
+    self._checkboxes = (By.XPATH, "//*[@class='question-checkbox']/input")
 
   # POM Actions
   def generate_test_scenario(self, total_questions):
@@ -77,3 +79,10 @@ class NewTaxonTask(BaseTask):
         
         if question_scenario['compliance']:
           compliance_checkbox.click()
+
+  def validate_task_elements_styles(self):
+    self.validate_common_elements_styles()
+    map(self.validate_checkbox, self._gets(self._checkboxes))
+    map(self.validate_textarea_style, self._gets(self._questions_text))
+    map(self.validate_textarea_style, self._gets(self._comply_text))
+    map(self.validate_default_link_style, self._gets(self._comply_link))

@@ -704,8 +704,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete New Taxon data before mark close
       logging.info('Completing New Taxon Task')
       new_taxon_task = NewTaxonTask(self._driver)
-      scenario = new_taxon_task.generate_test_scenario(2)
-      new_taxon_task.validate_taxon_questions_action(scenario)
+      if data:
+        new_taxon_task.validate_taxon_questions_action(data)
+        outdata = data
+      else:
+        scenario = new_taxon_task.generate_test_scenario(2)
+        new_taxon_task.validate_taxon_questions_action(scenario)
       base_task.click_completion_button()
       outdata = scenario
     else:

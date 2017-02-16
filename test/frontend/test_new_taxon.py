@@ -73,7 +73,7 @@ class NewTaxonTest(CommonTest):
     new_taxon_card.card_ready()
     new_taxon_card.validate_card_elements_styles(short_doi)
     logging.info('Reviewing data: {0}'.format(data))
-    new_taxon_card.data_validation(data)
+    new_taxon_card.validate_taxon_questions_answers(data)
 
   # Disable for APERTA-8500
   def _test_new_taxon_style(self):

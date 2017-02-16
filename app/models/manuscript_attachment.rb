@@ -9,8 +9,4 @@ class ManuscriptAttachment < Attachment
   def keep_file_when_replaced?
     true
   end
-
-  def processing_needed?
-    true
-  end
 end

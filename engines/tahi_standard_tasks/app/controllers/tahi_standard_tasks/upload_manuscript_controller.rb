@@ -13,7 +13,6 @@ module TahiStandardTasks
     def upload_manuscript
       requires_user_can :edit, task
 
-      # TODO: Should we defer this if source file upload is required?
       DownloadManuscriptWorker.download_manuscript(
         task.paper,
         params[:url],

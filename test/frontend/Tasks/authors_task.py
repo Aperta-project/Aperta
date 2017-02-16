@@ -387,6 +387,8 @@ class AuthorsTask(BaseTask):
     assert writing_re_lbl.text == 'Writing - Review and Editing', writing_re_lbl.text
     assert formal_analysis_lbl.text == 'Formal Analysis', formal_analysis_lbl.text
 
+    assert self._orcid_connect_exist() == False, 'ORCID Connect exists when not expected.'
+
     # Validate the Govt Employee section
     gquest = self._get(self._ggovt_employee_question)
     assert 'Is this group a United States Government agency, department or organization?' in \

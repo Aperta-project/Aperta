@@ -25,7 +25,6 @@ test('When the decision is a draft', function(assert) {
     this.task.set('decisions', [decision]);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  assert.elementNotFound('.reviewer-report-feedback');
   assert.nElementsFound('textarea', 5, 'The report should be editable');
 });
 
@@ -39,7 +38,6 @@ test('When the decision is not a draft', function(assert) {
     this.task.set('body', { submitted: true });
   });
   this.render(hbs`{{reviewer-report-task task=task model=reviewerReport}}`);
-  assert.elementFound('.reviewer-report-feedback');
   assert.nElementsFound('textarea', 0, 'The report should not be editable');
 });
 

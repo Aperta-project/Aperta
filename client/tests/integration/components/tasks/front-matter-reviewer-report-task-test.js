@@ -95,8 +95,6 @@ test('When the decision is a draft', function(assert) {
     this.task.set('decisions', [decision]);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
-
-  assert.elementNotFound('.reviewer-report-feedback');
   assertEditable(assert);
 });
 
@@ -111,7 +109,6 @@ test('When the decision is not a draft', function(assert) {
     this.task.set('body', { submitted: true });
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
-  assert.elementFound('.reviewer-report-feedback');
   assertNotEditable(assert);
 });
 

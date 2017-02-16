@@ -13,16 +13,7 @@ module Answerable
   included do
     belongs_to :card
 
-    before_destroy :destroy_answers
-
-    # TODO APERTA-8972 Do we need to have a dependent: :destroy equivalent for
-    # answers? Models like Authors and Funders are likely to be removed from the
-    # system.  We don't want to leave orphans lying around
-    has_many :answers, as: :owner
-
-    def destroy_answers
-      answers.destroy_all
-    end
+    has_many :answers, as: :owner, dependent: :destroy
 
     def owner_type_for_answer
       self.class.name

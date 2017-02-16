@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added "Confirm Authorship" button to email to co authors.
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
   the journal.

@@ -25,6 +25,7 @@ class NewTaxonCard(BaseCard):
     """
     Validate the Card view and compare if the selected data on Task is the same
     :param scenario: Is the scenario selected in the Task
+    :return: None
     """
     items = self._gets((By.CSS_SELECTOR, '.question > div'))
     
@@ -50,6 +51,7 @@ class NewTaxonCard(BaseCard):
     This method validates the styles of the card elements including the common card elements
     :param paper_id: The id of the manuscript
     :param scenario: Is the scenario selected in the Task
+    :return: None
     """
     self.validate_common_elements_styles(paper_id)
     
@@ -63,7 +65,7 @@ class NewTaxonCard(BaseCard):
       
       assert checkbox.is_selected() == question_scenario['checkbox'], \
           'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
-          str(checkbox.is_selected()), str(question_scenario['checkbox']))
+          checkbox.is_selected(), question_scenario['checkbox'])
           
       text_list = ["Does this manuscript describe a new %s taxon name?" % types \
           for types in ["zoological", "botanical"]]
@@ -78,23 +80,22 @@ class NewTaxonCard(BaseCard):
         
         assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
             'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
-            str(compliance_checkbox.is_selected()), str(question_scenario['compliance']))
+            compliance_checkbox.is_selected(), question_scenario['compliance'])
         assert comply_text.text == (
             "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
             comply_text
         assert authors_text.text == (
             "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
             authors_comply
-        assert comply_link.get_attribute('href') == (
-            'http://www.plosbiology.org/static/policies#taxon')
+        assert comply_link.get_attribute('href') == \
+            'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
 
-        self.validate_card_elements_styles(checkbox, text, 
-                                           compliance_checkbox, comply_link, 
+        self.validate_card_elements_styles(checkbox, text, compliance_checkbox, comply_link,
                                            comply_text, authors_text
                                           )
 
-  def validate_card_elements_styles(self, checkbox, text, 
-                                    compliance_checkbox, comply_link, comply_text, authors_text):
+  def validate_card_elements_styles(self, checkbox, text, compliance_checkbox, comply_link,
+                                    comply_text, authors_text):
     """
     Validate the elements styles for New Taxon Card
     :param checkbox: The selected checkbox
@@ -103,6 +104,7 @@ class NewTaxonCard(BaseCard):
     :param comply_link: The link for the comply text
     :param comply_text: The comply text
     :param authors_text: The authors comply text
+    :return: None
     """
     self.validate_common_elements_styles()
     self.validate_checkbox(checkbox)

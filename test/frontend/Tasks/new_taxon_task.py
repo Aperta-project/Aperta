@@ -26,6 +26,7 @@ class NewTaxonTask(BaseTask):
     """
     This method generate a random scenario for the New Taxon Task
     :param total_questions: Is the number of current question within the Task
+    :return: scenario
     """
     scenario = []
 
@@ -44,6 +45,7 @@ class NewTaxonTask(BaseTask):
     """
     This method validate the given scenario and click the corresponding checkboxes in the Task
     :param scenario: Is the scenario needed to fill the Task
+    :return: None
     """
     time.sleep(3)
     items = self._gets(self._questions)
@@ -65,6 +67,7 @@ class NewTaxonTask(BaseTask):
     """
     Validate the elements and styles of the Task
     :param scenario: Is the scenario needed to extract the elements
+    :return: None
     """
     items = self._gets(self._questions)
 
@@ -91,8 +94,8 @@ class NewTaxonTask(BaseTask):
         assert authors_text.text == (
         "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
         authors_comply
-        assert comply_link.get_attribute('href') == (
-        'http://www.plosbiology.org/static/policies#taxon')
+        assert comply_link.get_attribute('href') == \
+            'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
 
         self.validate_task_elements_styles(checkbox, text, 
                                            compliance_checkbox, comply_link, 
@@ -109,6 +112,7 @@ class NewTaxonTask(BaseTask):
     :param comply_link: The link for the comply text
     :param comply_text: The comply text
     :param authors_text: The authors comply text
+    :return: None
     """
     self.validate_common_elements_styles()
     self.validate_checkbox(checkbox)

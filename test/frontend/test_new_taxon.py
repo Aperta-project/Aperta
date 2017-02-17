@@ -7,7 +7,6 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
     frontend/assets/docs/
 """
 import logging
-import os
 import random
 import time
 

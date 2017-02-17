@@ -37,10 +37,11 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    exportDocument(downloadFormat) {
+    exportDocument(downloadFormat, versionId) {
       return DocumentDownload.initiate(
         this.get('model.id'),
-        downloadFormat
+        downloadFormat,
+        versionId
       );
     },
 

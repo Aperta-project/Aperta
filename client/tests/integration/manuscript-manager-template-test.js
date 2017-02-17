@@ -109,7 +109,7 @@ test('Adding an Ad-Hoc card', function(assert) {
     return assert.textNotPresent('.inline-edit', 'yahoo', 'Deleted text is gone');
   });
   click('.overlay-close-button');
-  click('.card-content');
+  click('.card-title');
   return andThen(function() {
     return assert.elementFound('h1.inline-edit:contains("Ad Hoc")', 'User can edit the existing ad-hoc card');
   });
@@ -142,7 +142,7 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
   click('.button--green:contains("Add New Card")');
   click('label:contains("Billing")');
   click('.overlay .button--green:contains("Add")');
-  click('.card-content');
+  click('.card-title');
   return andThen(function() {
     return assert.elementNotFound('.ad-hoc-template-overlay', 'Clicking any other card has no effect');
   });

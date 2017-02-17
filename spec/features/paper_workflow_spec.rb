@@ -101,7 +101,7 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
     task_manager_page = TaskManagerPage.new
 
     within 'body' do
-      find('.card-content', text: 'Invite Reviewer').click
+      find('.card-title', text: 'Invite Reviewer').click
 
       expect(task_manager_page).to have_css('.overlay-body', text: 'Invite Reviewers')
       expect(task_manager_page).to have_css('.overlay-body', text: 'Discussion')

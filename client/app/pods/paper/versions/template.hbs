@@ -36,8 +36,8 @@
 {{paper-control-bar paper=model
                     showActivity="showActivityOverlay"
                     addContributors="showCollaboratorsOverlay"
-                    exportDocument="exportDocument"
                     showWithdrawOverlay="showWithdrawOverlay"
+                    toggleDownloads=(action "toggleDownloads")
                     topicsIndexPath=topicsIndexPath
                     setViewingVersion=(action "setViewingVersion")
                     viewingVersion=viewingVersion
@@ -48,24 +48,35 @@
                     versioningMode=true
                     versionsVisible=true}}
 
+{{#if downloadsVisible}}
+  {{paper-downloads paper=model
+                    toggle=(action "toggleDownloads")
+                    exportDocument=(action "exportDocument")}}
+{{/if}}
+
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 {{flash-messages}}
 {{#split-pane id="main-content" class="main-content paper-container--versions" role="main" handleClass="manuscript-handle"}}
-  {{#split-pane-element class="manuscript-pane main-content-section"}}
-    <div class="manuscript-container">
-      {{#rendered-manuscript paper=model}}
-        <div id="paper-body">
-          {{html-diff default=model.body
-                      comparisonText=comparisonVersion.text
-                      viewingText=viewingVersion.text
-                      manuscriptDiff=true}}
-        </div>
-      {{/rendered-manuscript}}
-    </div>
-  {{/split-pane-element}}
+  {{#if showPdfManuscript}}
+    {{pdf-manuscript paper=model version=viewingVersion class="main-content-section split-pane-element"}}
+  {{else}}
+    {{#split-pane-element class="manuscript-pane main-content-section"}}
+      <div class="manuscript-container">
+        {{#rendered-manuscript paper=model}}
+          <div id="paper-body">
+            {{html-diff default=model.body
+            comparisonText=comparisonVersion.text
+            viewingText=viewingVersion.text
+            manuscriptDiff=true
+            comparisonIsPdf=comparisonIsPdf}}
+          </div>
+        {{/rendered-manuscript}}
+      </div>
+    {{/split-pane-element}}
+  {{/if}}
 
-  {{#split-pane-element class="paper-sidebar main-content-section"}}
+  {{#split-pane-element class="paper-sidebar paper-sidebar--versions main-content-section"}}
     <div class="paper-sidebar-info">
       <div class="task-list">
         {{#if model.doi}}

@@ -18,3 +18,7 @@ export function filteredUsersPath(paperId) {
 export function discussionUsersPath(topicId) {
   return `/api/discussion_topics/${topicId}/users`;
 }
+
+export function newDiscussionUsersPath(paperId) {
+  return `/api/papers/${paperId}/discussion_topics/new_discussion_users`;
+}

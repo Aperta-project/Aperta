@@ -21,6 +21,7 @@
   {{invitation-detail-row invitation=invitation
                           invitations=invitations
                           invitationsInFlight=invitationsInFlight
+                          invitationIsExpanded=invitationIsExpanded
                           setRowState=(action attrs.setRowState invitation)
                           deleteOnCancel=(eq invitation composedInvitation)
                           displayError=(action 'displayError')

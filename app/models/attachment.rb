@@ -122,7 +122,7 @@ class Attachment < ActiveRecord::Base
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
       save!(validate: false)
-      refresh_resource_token!(file) if public_resource
+      create_resource_token!(file) if public_resource
 
       # Do not mark as done until all of the steps that go into downloading a
       # file, creating resource tokens, etc are completed. This is to avoid
@@ -146,11 +146,6 @@ class Attachment < ActiveRecord::Base
 
   def public_url(*args)
     non_expiring_proxy_url(*args) if public_resource
-  end
-
-  def destroy_resource_token!
-    return if snapshotted?
-    super
   end
 
   def downloading?

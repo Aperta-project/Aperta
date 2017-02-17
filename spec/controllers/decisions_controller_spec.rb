@@ -334,7 +334,7 @@ describe DecisionsController do
           message: "A decision was made: Accept",
           feed_name: "manuscript")
         expect(Activity).to receive(:create).with hash_including(
-          message: "Paper state changed to submitted",
+          message: "Paper state changed to accepted",
           feed_name: "forensic")
         do_request
       end

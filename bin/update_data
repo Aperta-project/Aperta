@@ -10,5 +10,7 @@ bundle exec rake db:migrate
 bundle exec rake nested-questions:seed
 bundle exec rake roles-and-permissions:seed
 bundle exec rake data:update_journal_task_types
+bundle exec rake institutional_accounts:add_seed_accounts
+bundle exec rake create_feature_flags
 bundle exec rake db:data:dump
 

@@ -132,10 +132,11 @@ All properties are applied in a media query.
 
 
 .control-bar-sub-items {
-  @include position(absolute, $control-bar-height-large-screen - 1 0 auto 0);
+  @include position(absolute, $control-bar-height-large-screen 0 auto 0);
   display: flex;
   justify-content: flex-end;
-  height: $control-bar-height-large-screen;
+  align-items: center;
+  min-height: $control-bar-height-large-screen;
   border-bottom: 1px solid #ddd;
   font-size: 12px;
   box-shadow: 0 7px 7px rgba(0, 0, 0, 0.05);

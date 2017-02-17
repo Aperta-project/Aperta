@@ -19,6 +19,6 @@ export default QuestionAttachmentOwner.extend({
   updatedAt: DS.attr('date'),
 
   wasAnswered: Ember.computed('value', function(){
-    return Ember.isPresent(this.get('value')) || this.get('value') === false;
+    return Ember.isPresent(this.get('value'));
   })
 });

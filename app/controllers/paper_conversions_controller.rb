@@ -19,19 +19,12 @@ class PaperConversionsController < ApplicationController
   def export
     requires_user_can(:view, paper)
 
-    job_id = if docx_file_type_and_docx_attached
-               # This is already available for download, and does not
-               # need background processing.
-               'source'
-             elsif pdf_file_type_and_pdf_attached
-               'source'
-             elsif docx_file_type_but_docx_not_attached
-               PaperConverter.export(paper, export_format, current_user).job_id
-             end
+    job_id = 'source'
 
     render json: { url: url_for(controller: :paper_conversions, action: :status,
                                 id: params[:id], job_id: job_id,
-                                export_format: export_format) },
+                                export_format: export_format,
+                                versioned_text_id: params[:versioned_text_id]) },
     status: :accepted
   end
 
@@ -48,7 +41,20 @@ class PaperConversionsController < ApplicationController
     requires_user_can(:view, paper)
     if params[:job_id] == 'source'
       # Direct download, redirect to download link.
-      render status: :ok, json: { url: paper.file.url }
+      if params[:versioned_text_id].nil?
+        render status: :ok, json: { url: paper.file.url }
+      else
+        ver = VersionedText.find(params[:versioned_text_id])
+        # Make sure the client-supplied version number is for the right paper
+        if paper.id == ver.paper_id
+          url = Attachment.authenticated_url_for_key(ver.s3_full_path)
+          render status: :ok, json: { url: url }
+        else
+          # If the paper's ID doesn't match the VersionedText paper_id, this is
+          # probably a hacking attempt, so we'll error with no explicit info.
+          render status: 400
+        end
+      end
     else
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?
@@ -68,16 +74,16 @@ class PaperConversionsController < ApplicationController
     export_format ||= params[:export_format]
   end
 
+  def doc_file_type_and_doc_attached
+    export_format == 'doc' && paper.file_type == 'doc' && paper.file.url.present?
+  end
+
   def docx_file_type_and_docx_attached
     export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
   end
 
   def pdf_file_type_and_pdf_attached
     export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
-  end
-
-  def docx_file_type_but_docx_not_attached
-    export_format == 'docx' && paper.file_type == 'docx'
   end
 
   def paper

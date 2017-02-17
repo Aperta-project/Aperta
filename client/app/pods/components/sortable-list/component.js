@@ -1,4 +1,4 @@
- import Ember from 'ember';
+import Ember from 'ember';
 
 export default Ember.Component.extend({
   list: null, // passed-in
@@ -8,13 +8,15 @@ export default Ember.Component.extend({
   sortableNoCards: Ember.computed.empty('items'),
   changedWithinList: null,
 
-  initSortable: Ember.on('didInsertElement', function() {
+  didInsertElement() {
+    this._super(...arguments);
     Ember.run.schedule('afterRender', this, 'setupSortable');
-  }),
+  },
 
-  destroySortable: Ember.on('willDestroyElement', function() {
+  willDestroyElement() {
+    this._super(...arguments);
     this.$().sortable('destroy');
-  }),
+  },
 
   setupSortable() {
     const self = this;
@@ -30,17 +32,17 @@ export default Ember.Component.extend({
         ui.item.data('oldIndex', ui.item.index());
         self.set('changedWithinList', true);
 
-        self.attrs.startDragging($(ui.item), self.$());
+        self.get('startDragging')($(ui.item), self.$());
       },
 
       update(event, ui) {
-        var _id = ui.item.closest('.sortable').attr('id');
+        const _id = ui.item.closest('.sortable').attr('id');
         if ((_id === self.get('elementId')) && self.get('changedWithinList')) {
           const oldIndex = ui.item.data('oldIndex');
           const newIndex = ui.item.index();
           const items    = self.get('items');
           const item     = items.objectAt(oldIndex);
-          self.attrs.itemMovedWithinList(item, oldIndex, newIndex, items);
+          self.get('itemMovedWithinList')(item, oldIndex, newIndex, items);
         }
       },
 
@@ -54,13 +56,13 @@ export default Ember.Component.extend({
         const newItems    = self.get('items');
         const item        = sourceItems.objectAt(oldIndex);
 
-        self.attrs.itemMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems);
+        self.get('itemMovedBetweenList')(item, oldIndex, newIndex, newList, sourceItems, newItems);
       },
 
       stop(event, ui) {
         ui.item.removeData('oldIndex');
         self.set('changedWithinList', true);
-        self.attrs.stopDragging($(ui.item), ui.item.__source__.$());
+        self.get('stopDragging')($(ui.item), ui.item.__source__.$());
       }
     });
   }

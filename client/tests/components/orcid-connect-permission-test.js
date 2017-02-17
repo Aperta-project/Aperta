@@ -12,14 +12,19 @@ moduleForAcceptance('Integration: orcid connect permissions', {
     let journal = make('journal');
     TestHelper.mockFindAll('journal').returns({models: [journal]});
     TestHelper.mockFind('journal').returns({model: journal});
-    Factory.createPermission(
-      'User',
-      1,
-      ['view']);
   }
 });
 
 test('user without permission sees contact message', function(assert) {
+  Factory.createPermission(
+    'User',
+    1,
+    ['view']);
+  Factory.createPermission(
+    'Journal',
+    1,
+    ['']);
+
   visit('/profile');
 
   andThen(function() {
@@ -30,9 +35,13 @@ test('user without permission sees contact message', function(assert) {
 
 test('user with permission sees remove button', function(assert) {
   Factory.createPermission(
-      'Journal',
-      1,
-      ['remove_orcid']);
+    'User',
+    1,
+    ['view']);
+  Factory.createPermission(
+    'Journal',
+    1,
+    ['remove_orcid']);
 
   visit('/profile');
 

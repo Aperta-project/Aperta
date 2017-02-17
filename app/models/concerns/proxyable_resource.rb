@@ -8,8 +8,6 @@ module ProxyableResource
 
     has_many :resource_tokens, as: :owner
     delegate :token, to: :resource_token
-
-    after_destroy :destroy_resource_token!
   end
 
   # makes a non expiring proxy url
@@ -63,11 +61,6 @@ module ProxyableResource
 
   def destroy_resource_token!
     resource_token.destroy! if resource_token
-  end
-
-  def refresh_resource_token!(resource)
-    destroy_resource_token!
-    create_resource_token!(resource)
   end
 
   # Not memoizing on purpose because it creates a situation where we have an

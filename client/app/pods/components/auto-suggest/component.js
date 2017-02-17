@@ -59,7 +59,7 @@ export default Ember.Component.extend({
    *  Function called to manipulate data before displaying in component
    *  function(response) { return response.users.sort.map.filter.etc.etc.etc; }
    *
-   *  @property queryParameter
+   *  @property parseResponseFunction
    *  @type String
    *  @default null
    *  @required

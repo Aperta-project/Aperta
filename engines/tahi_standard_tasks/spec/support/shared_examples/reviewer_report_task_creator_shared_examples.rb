@@ -66,20 +66,9 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
   end
 
   context "with existing #{reviewer_report_type} for User" do
-    before do
-      subject.process
-      reviewer_report_type.first.update(completed: true)
-    end
-
-    it "finds the existing task" do
-      expect {
-        subject.process
-      }.to change { reviewer_report_type.count }.by(0)
-    end
-
-    context "if the user has been previously removed from the task's participants" do
+    context "if the user has no preexisting roles" do
       before do
-        assignee.resign_from!(assigned_to: reviewer_report_type.first, role: 'Participant')
+        assignee.roles.destroy_all
       end
 
       it "adds the user as a participant to the task" do

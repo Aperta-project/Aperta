@@ -1,123 +1,102 @@
 import Ember from 'ember';
 import { filteredUsersPath } from 'tahi/lib/api-path-helpers';
+import { task, timeout } from 'ember-concurrency';
+import { mousedown as powerSelectFocus } from 'tahi/lib/power-select-event-trigger';
+import { PropTypes } from 'ember-prop-types';
 
-export default Ember.Component.extend({
-  classNames: ['participant-selector', 'select2-multiple'],
+const {
+  Component,
+  computed,
+  inject: {service},
+  isPresent,
+  run: {later, schedule}
+} = Ember;
 
-  //passed in
-  paperId: null,
-  url: null,
-  currentParticipants: null,
-  label: null,
-  canManage: null,
-  displayEmails: false,
+export default Component.extend({
+  propTypes: {
+    canManage: PropTypes.bool,
+    currentParticipants: PropTypes.arrayOf(PropTypes.EmberObject).isRequired,
+    displayEmails: PropTypes.bool,
+    label: PropTypes.string,
+    searching: PropTypes.bool,
+    dropdownClass: PropTypes.string,
+    // ember-power-select property
+    afterOptionsComponent: PropTypes.string,
 
-  participantUrl: Ember.computed('paperId', 'url', function() {
-    let url = this.get('url');
-    if (Ember.isPresent(url)) {
-      return url;
-    } else {
-      return filteredUsersPath(this.get('paperId'));
-    }
-  }),
+    // url OR paperId is required
+    url: PropTypes.string,
+    paperId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
 
-  setupTooltips: (function() {
-    return Ember.run.schedule('afterRender', this, function() {
-      this.$('.select2-search-choice img').tooltip({
-        placement: 'bottom'
-      });
-
-      if (this.get('canManage')) {
-        this.$('.add-participant-button').tooltip({
-          placement: 'bottom'
-        });
-      }
-    });
-  }).on('didInsertElement').observes('currentParticipants.[]'),
-
-  // select2 uses this to show the actual autocomplete results
-  resultsTemplate: function(user) {
-    // This template accomodates user payloads from two kinds of serializers:
-    // 1. SensitiveInformationUserSerializer (id, full_name, avatar_url, email)
-    // 2. FilteredUserSerializer             (id, full_name, avatar_url, username)
-    let userInfo = user.email;
-    return `<strong>${user.full_name} @${user.username}</strong><br>
-            <div class="suggestion-sub-value">${userInfo || ''}</div>`;
+    // actions:
+    onRemove: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    searchStarted: PropTypes.func.isRequired,
+    searchFinished: PropTypes.func.isRequired
   },
 
-  // select2 uses this to list the already-selected items
-  // Return function resolved when "this" in the context of this component,
-  // as opposed to resolving later in select-2 where "this" has a context
-  // within the select-2 object.
-  selectedTemplate: Ember.computed('displayEmails', 'canManage', function() {
-    return (user) => {
-      let name = user.full_name || user.get('fullName');
-      let url = user.avatar_url || user.get('avatarUrl');
-      var email = '';
-      if (this.get('displayEmails')) {
-        email = Ember.get(user, 'email');
-      }
-      let title = `${name} ${email || ''}`.trim();
-      let toggle = this.get('canManage') ? `data-toggle='tooltip'` : '';
-      return Ember.String.htmlSafe(
-        `<img
-            alt='${name}'
-            class='user-thumbnail-small'
-            src='${url}'
-            ${toggle}
-            title='${title}'/>`);
-    };
-  }),
-
-  sortByCollaboration: function(a, b) {
-    if (a.full_name < b.full_name) {
-      return -1;
-    } else if (a.full_name > b.full_name) {
-      return 1;
-    } else {
-      return 0;
-    }
-  },
-
-  //used to translate our participant into a full user later
-  foundParticipants: null,
-
-  remoteSource: Ember.computed('participantUrl', function () {
+  getDefaultProps() {
     return {
-      url: this.get('participantUrl'),
-      dataType: 'json',
-      quietMillis: 500,
-      data: function(term) {
-        return {
-          query: term
-        };
-      },
-      results: (function(_this) {
-        return function(data) {
-          _this.set('foundParticipants', data.users);
-          data.users.sort(_this.sortByCollaboration);
-          return {
-            results: data.users
-          };
-        };
-      })(this)
+      currentParticipants: null,
+      // display email of user in tooltip
+      displayEmails: false,
+      // used to toggle display of add button and search user field
+      searching: false
     };
+  },
+
+  dropdownClass: 'aperta-select',
+  classNames: ['participant-selector'],
+  ajax: service(),
+
+  participantUrl: computed('paperId', 'url', function() {
+    return isPresent(this.get('url')) ?
+      this.get('url') :
+      filteredUsersPath(this.get('paperId'));
+  }),
+
+  canRemove: computed('canManage', 'currentParticipants.[]', function() {
+    return this.get('canManage') && this.get('currentParticipants').length > 1;
+  }),
+
+  searchUsersTask: task(function* (term) {
+    if(!Ember.testing) {
+      yield timeout(250);
+    }
+    const { users } = yield this.get('ajax').request(this.get('participantUrl') + '?query=' + window.encodeURIComponent(term));
+    const participantIds = this.get('currentParticipants').mapBy('id').map((num) => parseInt(num));
+    return users.reject((user) => participantIds.includes(parseInt(user.id)));
   }),
 
   actions: {
-    addParticipant: function(newParticipant) {
-      return this.attrs.onSelect(newParticipant, this.get('foundParticipants'));
+    toggleSearching(newState) {
+      if(newState) {
+        this.get('searchStarted')(newState);
+        schedule('afterRender', this, function() {
+          powerSelectFocus(this.$('.ember-power-select-trigger'));
+        });
+        return;
+      }
+
+      // Give power-select a moment to hide dropdown component
+      // Without this, set on undefined object error
+      later(this, function() {
+        this.get('searchFinished')(newState);
+      }, 50);
     },
-    removeParticipant: function(participant) {
-      return this.attrs.onRemove(participant.id);
+
+    handleInput(value) {
+      if(value.length < 3) { return false; }
     },
-    dropdownClosed: function() {
-      this.$('.select2-search-field input').removeClass('active');
-      this.$('.add-participant-button').removeClass('searching');
+
+    addParticipant(newParticipant) {
+      return this.get('onSelect')(newParticipant);
     },
-    activateDropdown: function() {
-      this.$('.select2-search-field input').addClass('active').trigger('click');
-      this.$('.add-participant-button').addClass('searching');
+
+    removeParticipant(participant) {
+      return this.get('onRemove')(participant.id);
     }
   }
 });

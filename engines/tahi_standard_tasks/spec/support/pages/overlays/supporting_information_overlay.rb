@@ -11,6 +11,14 @@ class SupportingInfoOverlay < CardOverlay
     )
   end
 
+  def attach_bad_supporting_information
+    upload_file(
+      element_id: 'file_attachment',
+      file_name: 'bad_yeti.tiff',
+      sentinel: -> { SupportingInformationFile.count }
+    )
+  end
+
   def edit_file_info
     find('.si-file-edit-icon').click
   end
@@ -52,6 +60,14 @@ class SupportingInfoOverlay < CardOverlay
 
   def error_message
     find('.si-file-actions .error-message').text
+  end
+
+  def file_error_message
+    find('.si-file-error .error-message').text
+  end
+
+  def dismiss_file_error
+    find('.si-file-error .acknowledge-error-button').click
   end
 
   def file_title

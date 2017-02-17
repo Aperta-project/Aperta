@@ -7,9 +7,7 @@
 
   <div class="available-journals-message">
     <p>
-      Aperta&nbsp;accepts&nbsp;new&nbsp;submissions&nbsp;to&nbsp;<strong>PLOS&nbsp;Biology</strong>&nbsp;for&nbsp;now.
-      It&nbsp;will&nbsp;be&nbsp;rolled&nbsp;out&nbsp;to&nbsp;all&nbsp;PLOS&nbsp;titles&nbsp;in&nbsp;the&nbsp;coming&nbsp;months.<br />
-      Microsoft Word files only (LaTeX coming soon!)<br />
+      All new manuscripts for consideration by <strong>PLOS Biology</strong> can be submitted via <strong>Aperta</strong>, in Word (.docx, .doc or via .pdf) and LaTeX (via .pdf) formats. Submission via Aperta will be rolled out on other PLOS journals in the coming months.
       <a href="http://journals.plos.org/plosbiology/s/submit-now">More information</a> about submitting to PLOS Biology.
     </p>
     <p>
@@ -24,6 +22,15 @@
     <% if alert %>
       <p class="auth-flash auth-flash--alert"><%= alert %> <span onclick="this.parentElement.remove()">&times;</span></p>
     <% end %>
+  <% end %>
+
+  <% if unsupported_browser %>
+    <p class="auth-flash auth-flash--alert">
+      Aperta is having trouble establishing a live connection with your browser
+      due to lack of browser support for required software.
+      <a href="http://browsehappy.com/">Please update your browser to the current version</a>
+      <span onclick="this.parentElement.remove()">&times;</span>
+    </p>
   <% end %>
 
   <div class="methods">

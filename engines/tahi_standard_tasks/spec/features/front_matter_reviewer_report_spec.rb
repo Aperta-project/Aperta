@@ -79,6 +79,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     # Revision 1
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
 
     # Create new report with our reviewer
@@ -98,6 +99,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     # Revision 2
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
 
     # Create new report with our reviewer
@@ -112,11 +114,12 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },
-      { title: 'v1.0', answers: ['answer for round 1'] }
+      title: 'v1.0', answers: ['answer for round 1']
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
 
     Page.view_paper paper
@@ -125,7 +128,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },
       { title: 'v1.0', answers: ['answer for round 1'] },
-      { title: 'v2.0', answers: ['answer for round 2'] }
+      title: 'v2.0', answers: ['answer for round 2']
     )
   end
 end

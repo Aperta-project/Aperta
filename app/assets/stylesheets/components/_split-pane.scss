@@ -28,15 +28,53 @@
   cursor: ew-resize;
   order: 2;
   z-index: 2;
+  background-color: #ddd;
 
+  .box-handle {
+    position: relative;
+    display: block;
+    z-index: 1;
+    background-color: #ddd;
+    width: 23px;
+    height: 35px;
+    top: 50%;
+    left: -9px;
+    .vertical-line {
+      position: relative;
+      display: inline-block;
+      top: 4px;
+      border-left: solid white 1px;
+      padding-left: 2px;
+      left: 5px;
+      height: 26px;
+    }
+    .tooltip {
+      display: none;
+      margin-top: 0; // bootstrap override
+      font-size: 1.4rem;
+    }
+
+    .tooltip-inner div {
+      padding-top: 3px;
+      color: $aperta-green;
+      cursor: pointer;
+    }
+
+    &:hover .tooltip { display: block; }
+  }
   &:after {
     content: '';
     @include position(absolute, 0px auto 0px 0px);
-    width: 5px;
+    width: 3px;
     background: #ddd;
   }
 
   &:hover:after {
     background: #bbb;
   }
+}
+
+.split-pane-drag-handle:hover .box-handle {
+  background-color: #bbb;
+
 }

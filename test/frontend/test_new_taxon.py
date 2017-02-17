@@ -30,29 +30,23 @@ class NewTaxonTest(CommonTest):
 
   def test_new_taxon_task(self):
     """
-    test_new_taxon: Validates the elements of the front-matter New Taxon Task.
-    :return: None
+    test_new_taxon: Validates the elements of the front-matter New Taxon Task
     """
-    logging.info('Test New Taxon Task::front_matter')
-    current_path = os.getcwd()
     logging.info('test_new_taxon_task')
     # Create base data - new papers
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
-    dashboard_page.restore_timeout()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # Abbreviate the timeout for conversion success message
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     data = manuscript_page.complete_task('New Taxon')
     logging.info('Completed Taxonomy data: {0}'.format(data))
     # logout and enter as editor
-    time.sleep(3)
     manuscript_page.logout()
     # Enter as Editorial User
     editorial_user = random.choice(editorial_users)
@@ -71,41 +65,54 @@ class NewTaxonTest(CommonTest):
     workflow_page.click_card('new_taxon', card_title)
     new_taxon_card = NewTaxonCard(self.getDriver())
     new_taxon_card.card_ready()
-    new_taxon_card.validate_card_elements_styles(short_doi)
     logging.info('Reviewing data: {0}'.format(data))
     new_taxon_card.validate_taxon_questions_answers(data)
 
-  # Disable for APERTA-8500
+  # Disabled for APERTA-8500
   def _test_new_taxon_style(self):
     """
-    test_new_taxon_style: Validates the styles of the front-matter New Taxon Task.
-    :return: None
+    test_new_taxon_style: Validates the styles of the front-matter New Taxon Task
+    :return: void
     """
-    logging.info('Test New Taxon Task Style::front_matter')
-    current_path = os.getcwd()
     logging.info('test_new_taxon_task_style')
     # Create base data - new papers
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
-    dashboard_page.set_timeout(60)
+    dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
-    dashboard_page.restore_timeout()
-    # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Abbreviate the timeout for conversion success message
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    data = manuscript_page.complete_task('New Taxon', \
-        data=[{'checkbox': False, 'compliance': False}, {'checkbox': False, 'compliance': False}])
+    data = manuscript_page.complete_task('New Taxon', 
+        data=[{'checkbox': True, 'compliance': False}, {'checkbox': True, 'compliance': False}])
     logging.info('Completed Taxonomy data: {0}'.format(data))
     new_taxon_task = NewTaxonTask(self._driver)
-    new_taxon_task.validate_task_elements_styles()
-    # logout and enter as editor
+    new_taxon_task.validate_task_elements_styles(data)
+    # logout
     manuscript_page.logout()
+    # Enter as Editorial User
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    card_title = 'New Taxon'
+    workflow_page.click_card('new_taxon', card_title)
+    new_taxon_card = NewTaxonCard(self.getDriver())
+    new_taxon_card.card_ready()
+    logging.info('Reviewing data: {0}'.format(data))
+    new_taxon_card.validate_card_elements_styles(short_doi, data)
             
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

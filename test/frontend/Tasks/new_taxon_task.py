@@ -20,16 +20,13 @@ class NewTaxonTask(BaseTask):
 
     # Locators - Instance members
     self._questions = (By.CSS_SELECTOR, '.question > div')
-    self._comply_text = (By.XPATH, 
-                        "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p")
-    self._comply_link = (By.XPATH, 
-                        "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p/a")
-    self._questions_text = (By.CLASS_NAME, 'model-question')
-    self._checkboxes = (By.XPATH, "//*[@class='question-checkbox']/input")
 
   # POM Actions
   def generate_test_scenario(self, total_questions):
-    """This method generate a random scenario for the New Taxon Task"""
+    """
+    This method generate a random scenario for the New Taxon Task
+    :param total_questions: Is the number of current question within the Task
+    """
     scenario = []
 
     for i in range(total_questions):
@@ -40,11 +37,35 @@ class NewTaxonTask(BaseTask):
       else:
         question_scenario['compliance'] = False
       scenario.append(question_scenario)
+
     return scenario
 
   def validate_taxon_questions_action(self, scenario):
-    """This method validate the given scenario and click the corresponding checkboxes in the Task"""
+    """
+    This method validate the given scenario and click the corresponding checkboxes in the Task
+    :param scenario: Is the scenario needed to fill the Task
+    """
     time.sleep(3)
+    items = self._gets(self._questions)
+
+    for key, item in enumerate(items):
+      question_scenario = scenario[key]
+      question = item.find_element_by_class_name('question-checkbox')
+      checkbox = question.find_element_by_tag_name('input')
+
+      if question_scenario['checkbox']:
+        checkbox.click()
+        additional_data = item.find_element_by_class_name('additional-data')
+        compliance_checkbox = additional_data.find_element_by_tag_name('input')
+        
+        if question_scenario['compliance']:
+          compliance_checkbox.click()
+
+  def validate_task_elements_styles(self, scenario):
+    """
+    Validate the elements and styles of the Task
+    :param scenario: Is the scenario needed to extract the elements
+    """
     items = self._gets(self._questions)
 
     for key, item in enumerate(items):
@@ -53,19 +74,15 @@ class NewTaxonTask(BaseTask):
       checkbox = question.find_element_by_tag_name('input')
       text = question.find_element_by_class_name('model-question')
       
-      if key == 0:
-        assert text.text == (
-        "Does this manuscript describe a new zoological taxon name?"), text
-      elif key == 1:
-        assert text.text == (
-        "Does this manuscript describe a new botanical taxon name?"), text
+      text_list = ["Does this manuscript describe a new %s taxon name?" % types \
+          for types in ["zoological", "botanical"]]
+      assert text.text == text_list[key], text
 
       if question_scenario['checkbox']:
-        checkbox.click()
         additional_data = item.find_element_by_class_name('additional-data')
         compliance_checkbox = additional_data.find_element_by_tag_name('input')
-        comply_text = self._gets(self._comply_text)[0]
-        comply_link = self._gets(self._comply_link)[0]
+        comply_text = additional_data.find_element_by_tag_name('p')
+        comply_link = additional_data.find_element_by_css_selector('p a')
         authors_text = additional_data.find_element_by_class_name('model-question')
 
         assert comply_text.text == (
@@ -76,13 +93,24 @@ class NewTaxonTask(BaseTask):
         authors_comply
         assert comply_link.get_attribute('href') == (
         'http://www.plosbiology.org/static/policies#taxon')
-        
-        if question_scenario['compliance']:
-          compliance_checkbox.click()
 
-  def validate_task_elements_styles(self):
+        self.validate_task_elements_styles(checkbox, text, 
+                                           compliance_checkbox, comply_link, 
+                                           comply_text, authors_text
+                                          )
+
+  def validate_task_elements_styles(self, checkbox, text, 
+                                    compliance_checkbox, comply_link, comply_text, authors_text):
+    """
+    Validate the elements styles for New Taxon Task
+    :param checkbox: The selected checkbox
+    :param text: The text for questions
+    :param compliance_checkbox: The compliance checkbox
+    :param comply_link: The link for the comply text
+    :param comply_text: The comply text
+    :param authors_text: The authors comply text
+    """
     self.validate_common_elements_styles()
-    map(self.validate_checkbox, self._gets(self._checkboxes))
-    map(self.validate_textarea_style, self._gets(self._questions_text))
-    map(self.validate_textarea_style, self._gets(self._comply_text))
-    map(self.validate_default_link_style, self._gets(self._comply_link))
+    self.validate_checkbox(checkbox)
+    self.validate_default_link_style(comply_link)
+    map(self.validate_textarea_style, [text, comply_text, authors_text])

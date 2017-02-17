@@ -708,7 +708,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         new_taxon_task.validate_taxon_questions_action(data)
         outdata = data
       else:
-        scenario = new_taxon_task.generate_test_scenario(2)
+        total_questions = 2
+        scenario = new_taxon_task.generate_test_scenario(total_questions)
         new_taxon_task.validate_taxon_questions_action(scenario)
       base_task.click_completion_button()
       outdata = scenario

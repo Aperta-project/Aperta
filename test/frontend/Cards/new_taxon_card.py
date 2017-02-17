@@ -19,21 +19,40 @@ class NewTaxonCard(BaseCard):
 
     # Locators - Instance members
     self._questions = (By.CSS_SELECTOR, '.question > div')
-    self._comply_text = (By.XPATH, 
-                        "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p")
-    self._comply_link = (By.XPATH, 
-                        "//*[contains(@id, 'ember')]//*[contains(@class, 'additional-data')]//*[contains(@class, 'question-text')]/p/a")
-
-  def validate_card_elements_styles(self, paper_id):
-    """
-    This method validates the styles of the card elements including the common card elements
-    :return void function
-    """
-    self.validate_common_elements_styles(paper_id)
 
   # POM Actions
   def validate_taxon_questions_answers(self, scenario):
-    """Validate the Card view and compare if the selected data on Task is the same"""
+    """
+    Validate the Card view and compare if the selected data on Task is the same
+    :param scenario: Is the scenario selected in the Task
+    """
+    items = self._gets((By.CSS_SELECTOR, '.question > div'))
+    
+    for key, item in enumerate(items):
+      question_scenario = scenario[key]
+      question = item.find_element_by_class_name('question-checkbox')
+      checkbox = question.find_element_by_tag_name('input')
+      
+      assert checkbox.is_selected() == question_scenario['checkbox'], \
+          'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+           str(checkbox.is_selected()), str(question_scenario['checkbox']))
+           
+      if question_scenario['checkbox']:
+        additional_data = item.find_element_by_class_name('additional-data')
+        compliance_checkbox = additional_data.find_element_by_tag_name('input')
+
+        assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
+            'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+            str(compliance_checkbox.is_selected()), str(question_scenario['compliance']))
+
+  def validate_card_elements_styles(self, paper_id, scenario):
+    """
+    This method validates the styles of the card elements including the common card elements
+    :param paper_id: The id of the manuscript
+    :param scenario: Is the scenario selected in the Task
+    """
+    self.validate_common_elements_styles(paper_id)
+    
     items = self._gets((By.CSS_SELECTOR, '.question > div'))
     
     for key, item in enumerate(items):
@@ -44,30 +63,48 @@ class NewTaxonCard(BaseCard):
       
       assert checkbox.is_selected() == question_scenario['checkbox'], \
           'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
-           str(checkbox.is_selected()), str(question_scenario['checkbox']))
-
-      if key == 0:
-        assert text.text == (
-        "Does this manuscript describe a new zoological taxon name?"), text
-      elif key == 1:
-        assert text.text == (
-        "Does this manuscript describe a new botanical taxon name?"), text
-           
+          str(checkbox.is_selected()), str(question_scenario['checkbox']))
+          
+      text_list = ["Does this manuscript describe a new %s taxon name?" % types \
+          for types in ["zoological", "botanical"]]
+      assert text.text == text_list[key], text
+      
       if question_scenario['checkbox']:
         additional_data = item.find_element_by_class_name('additional-data')
         compliance_checkbox = additional_data.find_element_by_tag_name('input')
-        comply_text = self._gets(self._comply_text)[0]
-        comply_link = self._gets(self._comply_link)[0]
+        comply_text = additional_data.find_element_by_tag_name('p')
+        comply_link = additional_data.find_element_by_css_selector('p a')
         authors_text = additional_data.find_element_by_class_name('model-question')
-
+        
         assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
             'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
             str(compliance_checkbox.is_selected()), str(question_scenario['compliance']))
         assert comply_text.text == (
-        "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
-        comply_text
+            "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
+            comply_text
         assert authors_text.text == (
-        "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
-        authors_comply
+            "All authors comply with the Policies Regarding Submission of a new Taxon Name"), \
+            authors_comply
         assert comply_link.get_attribute('href') == (
-        'http://www.plosbiology.org/static/policies#taxon')
+            'http://www.plosbiology.org/static/policies#taxon')
+
+        self.validate_card_elements_styles(checkbox, text, 
+                                           compliance_checkbox, comply_link, 
+                                           comply_text, authors_text
+                                          )
+
+  def validate_card_elements_styles(self, checkbox, text, 
+                                    compliance_checkbox, comply_link, comply_text, authors_text):
+    """
+    Validate the elements styles for New Taxon Card
+    :param checkbox: The selected checkbox
+    :param text: The text for questions
+    :param compliance_checkbox: The compliance checkbox
+    :param comply_link: The link for the comply text
+    :param comply_text: The comply text
+    :param authors_text: The authors comply text
+    """
+    self.validate_common_elements_styles()
+    self.validate_checkbox(checkbox)
+    self.validate_default_link_style(comply_link)
+    map(self.validate_textarea_style, [text, comply_text, authors_text])

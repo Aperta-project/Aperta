@@ -41,15 +41,16 @@ class TasksController < ApplicationController
     if task.completed?
       attrs = params.require(:task).permit(:completed)
       if attrs.has_key?(:completed)
-        task.update_attribute(:completed, attrs[:completed])
+        task.update!(completed: attrs[:completed])
       end
     else
       task.assign_attributes(task_params(task.class))
       task.save!
     end
 
-    Activity.task_updated! task, user: current_user
     task.after_update
+    Activity.task_updated! task, user: current_user
+
     render task.update_responder.new(task, view_context).response
   end
 

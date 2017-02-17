@@ -1,0 +1,22 @@
+.admin-catalogue-item, .admin-catalogue-filler {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  flex-direction: column;
+  min-width: 225px;
+  margin: 0 5px;
+  padding: 0 15px;
+}
+
+.admin-catalogue-item {
+  background-color: $aperta-blue;
+  min-height: 135px;
+  color: #fff;
+  padding: 15px;
+  margin: 5px;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    background-color: shade($aperta-blue, 10%);
+  }
+}

@@ -84,6 +84,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     # Revision 1
     register_paper_decision(paper, "major_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
     reviewer_report_task = create_reviewer_report_task
     create_reviewer_invitation(reviewer_report_task)
@@ -104,6 +105,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     # Revision 2
     register_paper_decision(paper, "major_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
     reviewer_report_task = create_reviewer_report_task
     create_reviewer_invitation(reviewer_report_task)
@@ -121,6 +123,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "major_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
     reviewer_report_task = create_reviewer_report_task
     create_reviewer_invitation(reviewer_report_task)

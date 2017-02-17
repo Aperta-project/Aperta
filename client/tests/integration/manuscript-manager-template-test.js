@@ -17,7 +17,15 @@ module('Integration: Manuscript Manager Templates', {
           url: "/api/admin/journals/authorization",
           status: 204
         });
-        return $.mockjax({
+        $.mockjax({
+          type: 'GET',
+          url: '/api/feature_flags.json',
+          status: 200,
+          responseText: {
+            CARD_CONFIGURATION: false
+          }
+        });
+        $.mockjax({
           type: 'GET',
           url: "/api/journals",
           status: 200,
@@ -51,13 +59,16 @@ test('Changing phase name', function(assert) {
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
   });
+
   columnTitleSelect = 'h2.column-title:contains("Phase 1")';
+
   visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+
   click(columnTitleSelect).then(function() {
     return Ember.$(columnTitleSelect).html('Shazam!');
   });
-  return andThen(function() {
-    return assert.ok(find('h2.column-title:contains("Shazam!")').length);
+  andThen(function() {
+    assert.textPresent('h2.column-title', 'Shazam!');
   });
 });
 

@@ -58,6 +58,9 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     this.get('journal').save().then(()=> {
       this.stopEditing();
       this.clearAllValidationErrors();
+      if(this.get('afterSave')) {
+        this.get('afterSave')();
+      }
     }, (response) => {
       this.displayValidationErrorsFromResponse(response);
     }).finally(() => {

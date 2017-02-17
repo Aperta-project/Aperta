@@ -50,7 +50,8 @@
     }
     .tooltip {
       display: none;
-      margin-top: 0; // bootstrap override
+      left: -31px;
+      margin-top: 15px; // bootstrap override
       font-size: 1.4rem;
     }
 
@@ -75,5 +76,4 @@
 
 .split-pane-drag-handle:hover .box-handle {
   background-color: #bbb;
-
 }

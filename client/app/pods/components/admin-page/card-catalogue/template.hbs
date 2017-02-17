@@ -1,0 +1,8 @@
+<h2>Card Catalogue</h2>
+{{#admin-page/catalogue}}
+  {{#each cards as |card|}}
+    {{#admin-page/catalogue/item}}
+      {{admin-page/card-thumbnail card=card}}
+    {{/admin-page/catalogue/item}}
+  {{/each}}
+{{/admin-page/catalogue}}

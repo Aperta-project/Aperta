@@ -30,7 +30,7 @@ export default Ember.Component.extend({
     editCSS(type) {
       this.setProperties({
         showEditCSSOverlay: true,
-        css: this.get('journal.' + type + 'Css'),
+        css: this.get(`journal.${type}Css`),
         editCssOverlayName: 'edit-journal-' + type + '-css',
       });
     },

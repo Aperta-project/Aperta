@@ -1,4 +1,5 @@
 module TahiStandardTasks
+  # :nodoc:
   class RegisterDecisionTask < Task
     include UrlBuilder
     DEFAULT_TITLE = 'Register Decision'.freeze
@@ -9,7 +10,10 @@ module TahiStandardTasks
     before_save { paper.save! }
 
     def after_register(decision)
-      ReviseTask.setup_new_revision(paper, phase) if decision.revision?
+      if decision.revision?
+        ReviseTask.setup_new_revision(paper, phase)
+        UploadManuscriptTask.setup_new_revision(paper, phase)
+      end
       complete!
     end
 

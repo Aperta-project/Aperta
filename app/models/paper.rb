@@ -547,6 +547,10 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass.to_s).last
   end
 
+  def all_authors
+    author_list_items.map(&:author)
+  end
+
   private
 
   def new_major_version!

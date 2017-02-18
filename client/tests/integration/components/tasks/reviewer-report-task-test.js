@@ -19,7 +19,8 @@ test('When the decision is a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
-    let reviewerReport = make('reviewer-report', 'with_questions', { task: this.task, decision: decision });
+    let reviewerReport = make('reviewer-report', 'with_questions',
+                              { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReport]);
     this.task.set('decisions', [decision]);
   });
@@ -30,7 +31,8 @@ test('When the decision is a draft', function(assert) {
 test('When the decision is not a draft', function(assert) {
   Ember.run(() => {
     let decision = make('decision', { draft: false });
-    let reviewerReport = make('reviewer-report', 'with_questions', { task: this.task, decision: decision });
+    let reviewerReport = make('reviewer-report', 'with_questions',
+                              { status: 'completed', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReport]);
     this.task.set('decisions', [decision]);
     this.task.set('body', { submitted: true });
@@ -65,8 +67,10 @@ test('That there are the correct nested question answers when there is no draft 
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
   const reviewerReports = [
-    make('reviewer-report', 'with_questions', { task: this.task, decision: decisions[0] }),
-    make('reviewer-report', 'with_questions', { task: this.task, decision: decisions[1] })
+    make('reviewer-report', 'with_questions',
+         { status: 'completed', task: this.task, decision: decisions[0] }),
+    make('reviewer-report', 'with_questions', 
+         { status: 'completed', task: this.task, decision: decisions[1] })
   ];
 
   const ident = 'reviewer_report--comments_for_author';

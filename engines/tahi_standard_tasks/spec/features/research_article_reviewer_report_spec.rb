@@ -12,8 +12,21 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
-  let(:paper_page){ PaperPage.new }
+  let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
+
+  let!(:inviter) { create :user }
+
+  def create_reviewer_invitation(task)
+    FactoryGirl.create(
+      :invitation,
+      :accepted,
+      accepted_at: DateTime.now.utc,
+      task: task,
+      invitee: reviewer,
+      inviter: inviter
+    )
+  end
 
   def create_reviewer_report_task
     ReviewerReportTaskCreator.new(
@@ -31,6 +44,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   scenario "A paper's creator cannot access the Reviewer Report" do
     reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
+
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
       task: reviewer_report_task
@@ -38,7 +53,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
-    create_reviewer_report_task
+    reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
+
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
@@ -47,11 +64,12 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     t.confirm_submit_report
 
     expect(page).to have_selector('.answer-text',
-                                  text: 'I have no competing interests')
+      text: 'I have no competing interests')
   end
 
   scenario 'A review can see their previous rounds of review' do
-    create_reviewer_report_task
+    reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
     # Revision 0
     Page.view_paper paper
 
@@ -68,11 +86,12 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    create_reviewer_report_task
+    reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}",
-                             ReviewerReportTaskOverlay)
+      ReviewerReportTaskOverlay)
 
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'answer for round 1'
@@ -88,7 +107,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    create_reviewer_report_task
+    reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
@@ -97,23 +117,24 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       'answer for round 2'
 
     t.ensure_review_history(
-      {title: 'v0.0', answers: ['answer for round 0']},
-      {title: 'v1.0', answers: ['answer for round 1']}
+      { title: 'v0.0', answers: ['answer for round 0'] },
+      title: 'v1.0', answers: ['answer for round 1']
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    create_reviewer_report_task
+    reviewer_report_task = create_reviewer_report_task
+    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
     t.ensure_review_history(
-      {title: 'v0.0', answers: ['answer for round 0']},
-      {title: 'v1.0', answers: ['answer for round 1']},
-      {title: 'v2.0', answers: ['answer for round 2']}
+      { title: 'v0.0', answers: ['answer for round 0'] },
+      { title: 'v1.0', answers: ['answer for round 1'] },
+      title: 'v2.0', answers: ['answer for round 2']
     )
   end
 end

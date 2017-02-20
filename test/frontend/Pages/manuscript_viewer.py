@@ -710,8 +710,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       else:
         scenario = new_taxon_task.generate_test_scenario()
         new_taxon_task.validate_taxon_questions_action(scenario)
+        outdata = scenario
       base_task.click_completion_button()
-      outdata = scenario
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

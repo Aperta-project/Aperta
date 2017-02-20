@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import logging
 import time
-import random
 
 from selenium.webdriver.common.by import By
 

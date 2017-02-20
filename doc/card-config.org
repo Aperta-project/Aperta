@@ -1,0 +1,27 @@
+Note: Check the codebase for 'TODO APERTA-8972' for additional items
+
+**New list of stuff to work on
+- [X] Tech Check
+- [ ] Funders
+- [ ] Reviewer Recommendations
+- [ ] Reviewer Reports
+- [ ] All snapshot-related things - Erik is doing these
+
+
+- [X] Failing js tests
+  - [X] "Integration FinancialDisclosure"
+  - [ ] "Integration Reviewer Report" - Wait until merging master
+  - [ ] "Integration Front Matter Reviewer Report" - Wait until merging master
+  - [X] "Integration | Component | billing task"
+  - [X] "Integration | Component | nested question check"
+  - [X] "Integration | Component | nested question input"
+  - [X] "Integration | Component | nested question radio"
+  - [X] "Integration | Component | nested question textarea"
+  - [ ] "Integration orcid connect permissions"
+  - [ ] "Integration | Component | early posting task"
+  - [ ] "Integration | Components | Tasks | Figure"
+  - [ ] "Integration | Components | Tasks | Paper Reviewer Task"
+  - [ ] "Integration | Components | Tasks | Register Decision"
+  - [ ] "Integration | Component | reporting guidelines task"
+  - [ ] "ObjectProxyWithValidationErrors"
+  - [ ] "Unit | Model | funder"

@@ -48,6 +48,17 @@ function assertNotEditable(assert) {
   assert.elementNotFound('textarea[name=front_matter_reviewer_report--identity]', 'User cannot provide their identity');
 }
 
+test('Reviewer invitation not accepted', function(assert) {
+  Ember.run(() => {
+    let decision = [make('decision', { draft: true })];
+    this.task.set('decisions', decision);
+    make('reviewer-report', 'with_front_matter_questions',
+         { status: 'invitation_sent', task: this.task, decision: decision});
+  });
+  this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
+
+  assertNotEditable(assert);
+});
 
 test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
   Ember.run(() => {
@@ -63,7 +74,11 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
 test('Edit mode: Providing reviewer feedback', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
-    this.task.set('decisions', [make('decision', { draft: true })]);
+    let decision = make('decision', { draft: true });
+    let reviewerReports = make('reviewer-report', 'with_front_matter_questions',
+                               { status: 'pending', task: this.task, decision: decision });
+    this.task.set('reviewerReports', [reviewerReports]);
+    this.task.set('decisions', [decision]);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
 
@@ -74,12 +89,12 @@ test('When the decision is a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', { task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
+                               { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
-
   assertEditable(assert);
 });
 
@@ -87,7 +102,8 @@ test('When the decision is not a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: false });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', { task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
+                               { status: 'completed', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
     this.task.set('body', { submitted: true });
@@ -105,7 +121,8 @@ test('History when there are completed decisions', function(assert) {
 
   let task = this.task;
   let reviewerReports = decisions.map((decision) => {
-    return make('reviewer-report', 'with_front_matter_questions', { task: task, decision: decision });
+    return make('reviewer-report', 'with_front_matter_questions', 
+                { status: 'completed', task: task, decision: decision });
   });
 
   Ember.run(() => {
@@ -122,8 +139,10 @@ test('That there are the correct nested question answers when there is no draft 
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
   const reviewerReports = [
-    make('reviewer-report', 'with_front_matter_questions', { task: this.task, decision: decisions[0] }),
-    make('reviewer-report', 'with_front_matter_questions', { task: this.task, decision: decisions[1] })
+    make('reviewer-report', 'with_front_matter_questions',
+         { status: 'completed', task: this.task, decision: decisions[0] }),
+    make('reviewer-report', 'with_front_matter_questions',
+         { status: 'completed', task: this.task, decision: decisions[1] })
   ];
 
   const ident = 'front_matter_reviewer_report--suitable--comment';

@@ -11,11 +11,6 @@ FactoryGirl.define do
     title "Head Jedi"
     affiliation 'university of dagobah'
 
-    after(:create) do |author|
-      author.position = 1
-      author.save
-    end
-
     trait :corresponding do
       after(:create) do |author|
         correponding_author_question = NestedQuestion.where(

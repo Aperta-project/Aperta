@@ -18,7 +18,6 @@ module TahiStandardTasks
         params[:url],
         current_user
       )
-
       head 204
     end
 

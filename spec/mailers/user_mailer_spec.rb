@@ -153,6 +153,58 @@ describe UserMailer, redis: true do
     end
   end
 
+  describe '#notify_coauthor_of_paper_submission' do
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_creator, :submitted)
+    end
+
+    let!(:author_1) do
+      FactoryGirl.create(:author,
+        email: paper.creator.email,
+        first_name: paper.creator.first_name,
+        last_name: paper.creator.last_name,
+        paper: paper)
+    end
+
+    let!(:author_2) do
+      FactoryGirl.create(:group_author,
+        paper: paper)
+    end
+
+    let!(:author_3) do
+      FactoryGirl.create(:author,
+        email: Faker::Internet.email,
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        paper: paper)
+    end
+
+    let(:email_1) do
+      UserMailer.notify_coauthor_of_paper_submission(paper.id, author_2.id, "GroupAuthor")
+    end
+
+    it "sends the email to a group coauthor and list all authors" do
+      expect(email_1.to).to contain_exactly(author_2.email)
+      expect(email_1.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email_1.body).to include(paper.title)
+      expect(email_1.body).to include "#{author_2.full_name},"
+      expect(email_1.body).not_to include "Dr #{author_2.full_name},"
+      expect(email_1.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
+    end
+
+    let(:email_2) do
+      UserMailer.notify_coauthor_of_paper_submission(paper.id, author_3.id, "Author")
+    end
+
+    it "sends the email to an individual coauthor and lists all the authors" do
+      expect(email_2.to).to contain_exactly(author_3.email)
+      expect(email_2.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email_2.body).to include(paper.title)
+      expect(email_2.body).to include "Dr #{author_3.last_name},"
+      expect(email_2.body).to include("#{author_1.full_name}, #{author_2.full_name}, #{author_3.full_name}")
+    end
+  end
+
   describe '#notify_creator_of_initial_submission' do
     let(:paper) do
       FactoryGirl.create(:paper, :with_creator, :initially_submitted)

@@ -3,9 +3,10 @@ require 'rails_helper'
 describe Paper::DataExtracted::FinishUploadManuscriptTask do
   include EventStreamMatchers
 
+  let(:user) { FactoryGirl.create(:user) }
   let(:upload_task) { FactoryGirl.create(:upload_manuscript_task) }
-  let(:response_completed) { IhatJobResponse.new(state: 'completed', options: { metadata: { paper_id: upload_task.paper.id } }) }
-  let(:response_errored) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id } }) }
+  let(:response_completed) { IhatJobResponse.new(state: 'completed', options: { metadata: { paper_id: upload_task.paper.id, user_id: user.id } }) }
+  let(:response_errored) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id, user_id: user.id } }) }
   let(:file) { FactoryGirl.create(:manuscript_attachment) }
 
   it "marks the upload manuscript task as completed if job is completed" do
@@ -34,5 +35,13 @@ describe Paper::DataExtracted::FinishUploadManuscriptTask do
     upload_task.paper.file = file
     described_class.call("tahi:paper:data_extracted:finish_upload_manuscript_task", record: response_completed)
     expect(upload_task.reload).to_not be_completed
+
+  it "creates an activity that the task was completed if the job is completed" do
+    expect(upload_task).to_not be_completed
+    expect(Activity.count).to eq(0)
+    described_class.call("tahi:paper:data_extracted", record: response_completed)
+    expect(upload_task.reload).to be_completed
+    expect(Activity.count).to eq(1)
+    expect(Activity.first.message).to eq('Upload Manuscript card was marked as complete')
   end
 end

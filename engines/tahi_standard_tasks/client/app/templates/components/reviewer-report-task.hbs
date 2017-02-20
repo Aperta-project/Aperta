@@ -35,7 +35,7 @@
             <div class="panel-heading" role="tab" id="decision-{{unbound report.decision.id}}" >
               <h4 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound report.decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound report.decision.id}}">
-                  v{{report.decision.majorVersion}}.{{report.decision.minorVersion}}
+                  v{{report.decision.majorVersion}}.{{report.decision.minorVersion}} {{reviewer-report-status report=report short=true}}
                 </a>
               </h4>
             </div>

@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
 
   # return all answers for a given `owner` (i.e., `CoverLetterTask`)
   def index
-    respond_with owner_klass.find(params[:owner_id]).answers
+    respond_with owner.answers
   end
 
   def create
@@ -23,10 +23,14 @@ class AnswersController < ApplicationController
 
   private
 
+  # since `index` action doesn't work with the `answer_params` the owner type could
+  # come from two possible places, and `raw_owner_type` is where we account for it.
+  def raw_owner_type
+    params[:owner_type] || answer_params[:owner_type]
+  end
+
   def owner_klass
-    raw_owner_type = (params[:owner_type] || answer_params[:owner_type])
-    potential_owner_name = raw_owner_type.classify
-    potential_owner = potential_owner_name.constantize
+    potential_owner = raw_owner_type.classify.constantize
     assert(potential_owner.try(:answerable?), "resource is not answerable")
 
     potential_owner

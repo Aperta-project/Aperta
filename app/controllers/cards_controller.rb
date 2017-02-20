@@ -13,7 +13,7 @@ class CardsController < ApplicationController
   private
 
   def owner_klass
-    potential_owner = params[:owner_type].to_s.gsub("::", "/").classify.constantize
+    potential_owner = params[:owner_type].classify.constantize
     assert(potential_owner.try(:answerable?), "resource is not answerable")
 
     potential_owner

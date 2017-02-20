@@ -22,19 +22,19 @@ class NewTaxonTask(BaseTask):
     self._questions = (By.CSS_SELECTOR, '.question > div')
 
   # POM Actions
-  def generate_test_scenario(self, total_questions):
+  def generate_test_scenario(self):
     """
     This method generate a random scenario for the New Taxon Task
-    :param total_questions: Is the number of current question within the Task
-    :return: scenario
+    :return: A list with boolean elements
     """
     scenario = []
+    TOTAL_QUESTIONS = 2
 
-    for i in range(total_questions):
+    for i in range(TOTAL_QUESTIONS):
       question_scenario = {}
-      question_scenario['checkbox'] = bool(random.getrandbits(1))
+      question_scenario['checkbox'] = self.get_random_bool()
       if question_scenario['checkbox']:
-        question_scenario['compliance'] = bool(random.getrandbits(1))
+        question_scenario['compliance'] = self.get_random_bool()
       else:
         question_scenario['compliance'] = False
       scenario.append(question_scenario)

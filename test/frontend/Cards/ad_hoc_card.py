@@ -61,7 +61,8 @@ class AHCard(BaseCard):
     title = self._get(self._card_title)
     self.validate_application_title_style(title)
     role_title = 'Ad-hoc for {0}'.format(role)
-    assert title.text == role_title, (title.text, role_title)
+    assert title.text == role_title, 'Current title {0} is not {1}'.format(title.text, 
+        role_title)
     self._get(self._edit_title)
     subtitle = self._get(self._subtitle)
     if role == 'Staff Only':

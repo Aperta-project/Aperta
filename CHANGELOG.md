@@ -4,8 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
-* Users can now change the initial participants on a discussion topic
+* Users can now change the initial participants on a discussion topic.
 ### Changed
+* The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
 ### Deprecated
 ### Removed
 ### Fixed
@@ -25,6 +26,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
 * Aperta can now use the title, abstract, and body HTML extracted from PDFs.
+* Display review status at the top of the task
 ### Changed
 * Users can download previous versions of a Manuscript
 ### Deprecated

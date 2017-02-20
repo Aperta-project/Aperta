@@ -24,7 +24,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
         expect(page).to have_link(title)
 
         click_on(title)
-
+        execute_script(%{$(".paper-sidebar").prop("scrollTop", 0).trigger('scroll')})
         hsh[:answers].each do |answer_text|
           expect(page).to have_selector(".answer-text", text: answer_text)
         end
@@ -42,7 +42,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
     )
 
     values.each_pair do |key, value|
-      element_name = "#{key}"
+      element_name = key.to_s
       fill_in element_name, with: value
       page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('input')"
     end

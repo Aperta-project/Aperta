@@ -1,4 +1,5 @@
 @import 'ad-hoc-body';
+@import 'admin-page/base';
 @import 'at-mentionable-textarea';
 @import 'attachment-manager';
 @import 'attachment-snapshot';
@@ -21,6 +22,7 @@
 @import 'html-diff';
 @import 'invitations-x';
 @import 'journal-thumbnail';
+@import 'left-drawer/base';
 @import 'letter-template';
 @import 'link-alternate';
 @import 'mmt';
@@ -37,6 +39,7 @@
 @import 'question';
 @import 'question-attachment-thumbnail';
 @import 'related-article';
+@import 'report-status';
 @import 'rescind-decision';
 @import 'segmented-buttons';
 @import 'reviewer-invitation-feedback';
@@ -51,6 +54,7 @@
 @import 'split-pane';
 @import 'supporting-information-file';
 @import 'supporting-information-file-snapshot';
+@import 'tab-bar';
 @import 'task-disclosure';
 @import 'text-diff';
 @import 'upload-preview';

@@ -429,9 +429,11 @@ ActiveRecord::Schema.define(version: 20170216185421) do
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
-    t.string  "paper_type"
-    t.integer "journal_id"
-    t.boolean "uses_research_article_reviewer_report", default: false
+    t.string   "paper_type"
+    t.integer  "journal_id"
+    t.boolean  "uses_research_article_reviewer_report", default: false
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -657,12 +659,13 @@ ActiveRecord::Schema.define(version: 20170216185421) do
   add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
   create_table "reviewer_reports", force: :cascade do |t|
-    t.integer  "task_id",     null: false
-    t.integer  "decision_id", null: false
+    t.integer  "task_id",                         null: false
+    t.integer  "decision_id",                     null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "card_id"
+    t.boolean  "created_in_7993", default: false
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree

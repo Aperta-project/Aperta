@@ -129,9 +129,14 @@ p, ul, ol {
 }
 
 p li,
-ul li,
+ul li {
+  list-style-position: inside;
+  margin-left: 5px;
+}
+
 ol li {
   list-style-position: inside;
+  list-style-type: decimal;
   margin-left: 5px;
 }
 

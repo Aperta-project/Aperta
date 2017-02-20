@@ -6,13 +6,13 @@ moduleForComponent('admin-page/card-thumbnail', 'Integration | Component | admin
 });
 
 const journal = {name: 'The best journal'};
-const card = {title: 'My special card', journal: journal};
+const card = {name: 'My special card', journal: journal};
 
-test('it shows the title of the card', function(assert) {
+test('it shows the name of the card', function(assert) {
   this.set('card', card);
   this.render(hbs`{{admin-page/card-thumbnail card=card}}`);
 
-  assert.textPresent('.admin-card-thumbnail-title', card.title);
+  assert.textPresent('.admin-card-thumbnail-name', card.name);
 });
 
 test("it shows the name of the card's journal", function(assert) {

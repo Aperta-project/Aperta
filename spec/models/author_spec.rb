@@ -122,8 +122,7 @@ describe Author do
     end
 
     it "sets co_author_state_modified" do
-      reference_time = Time.now.utc
-      Timecop.freeze(reference_time) do
+      Timecop.freeze do |reference_time|
         expect do
           author.co_author_confirmed!
         end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
@@ -139,8 +138,7 @@ describe Author do
     end
 
     it "sets co_author_state_modified" do
-      reference_time = Time.now.utc
-      Timecop.freeze(reference_time) do
+      Timecop.freeze do |reference_time|
         expect do
           author.co_author_refuted!
         end.to change { author.co_author_state_modified }.from(nil).to(reference_time)

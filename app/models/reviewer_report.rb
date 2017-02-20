@@ -57,4 +57,10 @@ class ReviewerReport < ActiveRecord::Base
     minor_version = decision.minor_version || task.paper.minor_version || 0
     "v#{major_version}.#{minor_version}"
   end
+
+  # NestedQuestionable will save the paper_id to newly created answers if
+  # an answer's owner responds to :paper
+  def paper
+    task.paper
+  end
 end

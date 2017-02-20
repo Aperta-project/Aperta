@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216185421) do
+ActiveRecord::Schema.define(version: 20170220185752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,7 +225,10 @@ ActiveRecord::Schema.define(version: 20170216185421) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.string   "name"
+    t.integer  "journal_id"
   end
+
+  add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
@@ -884,6 +887,7 @@ ActiveRecord::Schema.define(version: 20170216185421) do
   add_foreign_key "answers", "card_contents"
   add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
+  add_foreign_key "cards", "journals"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

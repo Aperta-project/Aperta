@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :card do
     name "Test Card"
+    journal
 
     trait :for_answerable do
       transient do

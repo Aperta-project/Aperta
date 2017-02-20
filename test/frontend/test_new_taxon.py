@@ -71,7 +71,7 @@ class NewTaxonTest(CommonTest):
   def _test_new_taxon_style(self):
     """
     test_new_taxon_style: Validates the styles of the front-matter New Taxon Task
-    :return: void
+    :return: None
     """
     logging.info('test_new_taxon_task_style')
     # Create base data - new papers

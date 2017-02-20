@@ -47,6 +47,7 @@ class NewTaxonTask(BaseTask):
     :param scenario: Is the scenario needed to fill the Task
     :return: None
     """
+    # Time needed after clicking on New Taxon Task for elements to be ready
     time.sleep(3)
     items = self._gets(self._questions)
 
@@ -87,7 +88,6 @@ class NewTaxonTask(BaseTask):
         comply_text = additional_data.find_element_by_tag_name('p')
         comply_link = additional_data.find_element_by_css_selector('p a')
         authors_text = additional_data.find_element_by_class_name('model-question')
-
         assert comply_text.text == (
         "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
         comply_text
@@ -96,14 +96,13 @@ class NewTaxonTask(BaseTask):
         authors_comply
         assert comply_link.get_attribute('href') == \
             'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
-
         self.validate_task_styles(checkbox, text, 
                                            compliance_checkbox, comply_link, 
                                            comply_text, authors_text
                                           )
 
-  def validate_task_styles(self, checkbox, text, 
-                                    compliance_checkbox, comply_link, comply_text, authors_text):
+  def validate_task_styles(self, checkbox, text, compliance_checkbox, comply_link, comply_text,
+                           authors_text):
     """
     Validate the elements styles for New Taxon Task
     :param checkbox: The selected checkbox

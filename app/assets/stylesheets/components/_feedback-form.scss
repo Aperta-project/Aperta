@@ -1,7 +1,4 @@
 .feedback-form {
-  @include clearfix;
-  margin-bottom: 20px;
-
   h1 {
     margin-bottom: 20px;
   }
@@ -83,8 +80,4 @@
     font-size: 20px;
     margin-bottom: 15px;
   }
-}
-
-.feedback-overlay .feedback-form {
-  margin-top: 70px;
 }

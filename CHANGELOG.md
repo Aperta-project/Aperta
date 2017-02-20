@@ -7,27 +7,99 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added "Confirm Authorship" button to email to co authors.
 * Added the ability for billing staff to view the paper tracker.
 * Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
-  the journal.
+* Users can now change the initial participants on a discussion topic.
+### Changed
+* The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.36.1] - {2017-02-09}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
+## ## [1.36.0] - {2017-02-07}
+### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+* Aperta can now use the title, abstract, and body HTML extracted from PDFs.
+* Display review status at the top of the task
+### Changed
+* Users can download previous versions of a Manuscript
+### Deprecated
+### Removed
+### Fixed
+* Users can now select and copy text from invitation letters when there is more than one invitation.
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+  (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
+### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
+### Deprecated
+### Removed
+### Fixed
+* ORCID-Connect works with users with accented letters in their names.
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
+### Changed
+* The Discussion participant list displays names in place of avatars
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
+### Deprecated
+### Removed
+### Fixed
+* Show supporting information file upload errors to users
+* Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
+### Security
+
+## ## [1.32.0] - {2016-12-16}
+### Added
+* Added the ability for billing staff to view the paper tracker.
+* Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
+* Added the ability to upload pdfs via the manuscript upload task
+* Added a PDF viewer to display uploaded PDF manuscripts
 * Withdrawn banner now shows on workflow view.
+* Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of
+  the parts.
 ### Deprecated
 ### Removed
+### Fixed
+* Do not check validations in DownloadAttachmentWorker
+* Deleting all the text for a question's answer will no longer cause an error on subsequent
+  changes to that that answer.
+* Attached images with capitalized filenames will now preview correctly
+
+## ## [1.31.1] - {2016-12-7}
 ### Fixed
 * Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
 * Add back missing attachment blocks for many ad hoc tasks
 * Recipients can be properly removed from adhoc emails.
 * Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
   to email Site Admin(s) instead.
-* Do not check validations in DownloadAttachmentWorker
-* Deleting all the text for a question's answer will no longer cause an error on subsequent
-  changes to that that answer.
-* Attached images with capitalized filenames will now preview correctly
 
 ## ## [1.30.1] - {2016-11-29}
 ### Added

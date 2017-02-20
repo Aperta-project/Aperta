@@ -27,7 +27,7 @@ export default {
             }
           }
         } else {
-          flash.displayMessage('error', error);
+          flash.displayRouteLevelMessage('error', error);
           logError(error);
           throw error;
         }
@@ -56,7 +56,7 @@ export default {
       let msg = `Error with ${type} request to ${url}. Server returned ${status}: ${statusText}. ${thrownError}`;
       logError(new Error(msg));
       // TODO: Remove this condidition when we switch to run loop respecting http mocks
-      if (!Ember.testing) { flash.displayMessage('error', msg); }
+      if (!Ember.testing) { flash.displayRouteLevelMessage('error', msg); }
     });
   }
 };

@@ -5,6 +5,7 @@ FactoryGuy.define('invitation', {
     state: 'invited',
     email: FactoryGuy.generate((num) => `user-${num}@example.com`),
     invitee: {},
-    inviteeRole: 'Reviewer'
+    inviteeRole: 'Reviewer',
+    validNewPositionsForInvitation: [0]
   }
 });

@@ -6,17 +6,17 @@ export default Ember.Component.extend({
   bodyPartType: Ember.computed.alias('bodyPart.type'),
   isSendable: Ember.computed.notEmpty('recipients'),
   showChooseReceivers: false,
-  mailRecipients: [],
   recipients: null,
   overlayParticipants: null,
   emailSentStates: null,
   lastSentAt: Ember.computed.reads('bodyPart.sent'),
   store: Ember.inject.service(),
+  searchingParticipant: false,
 
   initRecipients: Ember.observer('showChooseReceivers', function() {
     if (!this.get('showChooseReceivers')) { return; }
 
-    this.set('recipients', this.get('overlayParticipants'));
+    this.set('recipients', this.get('overlayParticipants').slice());
   }),
 
   keyForStates: Ember.computed.alias('bodyPart.subject'),
@@ -61,12 +61,17 @@ export default Ember.Component.extend({
       return this.get('recipients').removeObject(recipient);
     },
 
-    addRecipient: function(newRecipient, availableRecipients) {
-      var recipient, store;
-      store = this.get('store');
-      recipient = availableRecipients.findBy('id', newRecipient.id);
-      store.findOrPush('user', recipient);
-      return this.get('recipients').addObject(recipient);
+    addRecipient: function(newRecipient) {
+      const user = this.get('store').findOrPush('user', newRecipient);
+      this.get('recipients').addObject(user);
+    },
+
+    searchStarted() {
+      this.set('searchingParticipant', true);
+    },
+
+    searchFinished() {
+      this.set('searchingParticipant', false);
     }
   }
 });

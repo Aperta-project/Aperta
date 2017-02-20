@@ -118,7 +118,7 @@ $ov--card-breakpoint: 900px;
 .overlay--card {
   .overlay-footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin: 10px $ov--card-side-pad 0 $ov--card-side-pad;
     border-top: 1px solid #000;

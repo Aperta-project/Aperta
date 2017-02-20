@@ -101,8 +101,12 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
-    resources :journals, only: [:index, :show]
-    resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
+    resources :journals, only: [:index, :show] do
+      get :manuscript_manager_templates, to: 'manuscript_manager_templates#index'
+    end
+
+    resources :manuscript_manager_templates
+    resources :cards, only: [:index]
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, \
@@ -116,7 +120,9 @@ Tahi::Application.routes.draw do
       resources :bibitems, only: :create
       resources :phases, only: :index
       resources :decisions, only: :index
-      resources :discussion_topics, only: :index
+      resources :discussion_topics, only: :index do
+        get :new_discussion_users, on: :collection
+      end
       resources :task_types, only: :index, controller: 'paper_task_types'
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
@@ -149,6 +155,7 @@ Tahi::Application.routes.draw do
     end
 
     resources :related_articles, only: [:show, :create, :update, :destroy]
+    resources :reviewer_reports, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
@@ -201,6 +208,10 @@ Tahi::Application.routes.draw do
     #
     namespace :s3 do
       get :sign, to: 'forms#sign'
+    end
+
+    resources :feature_flags, param: :name, only: [:index] do
+      put :update, on: :collection
     end
   end
 

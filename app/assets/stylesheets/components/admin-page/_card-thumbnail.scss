@@ -1,0 +1,15 @@
+.admin-card-thumbnail {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.admin-card-thumbnail-title {
+  margin: 0;
+}
+
+.admin-card-thumbnail-journal {
+  font-size: 14px;
+  text-transform: uppercase;
+}

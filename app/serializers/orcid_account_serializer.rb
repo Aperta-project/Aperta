@@ -4,7 +4,8 @@ class OrcidAccountSerializer < ActiveModel::Serializer
     :name,
     :profile_url,
     :status,
-    :oauth_authorize_url
+    :oauth_authorize_url,
+    :orcid_connect_enabled
 
   private
 
@@ -22,5 +23,9 @@ class OrcidAccountSerializer < ActiveModel::Serializer
 
   def is_current_user?
     current_user.id == object.user_id
+  end
+
+  def orcid_connect_enabled
+    TahiEnv.orcid_connect_enabled?
   end
 end

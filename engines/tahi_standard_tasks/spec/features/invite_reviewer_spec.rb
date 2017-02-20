@@ -48,6 +48,7 @@ feature "Invite Reviewer", js: true do
     expect(overlay.active_invitations_count(1)).to be true
 
     register_paper_decision(paper, 'minor_revision')
+    paper.tasks.find_by_title("Upload Manuscript").complete!
     paper.submit! paper.creator
 
     overlay.reload
@@ -106,6 +107,18 @@ feature "Invite Reviewer", js: true do
     overlay.invitation_body = 'New body'
     overlay.find('.invitation-save-button').click
     expect(overlay.find('.invitation-show-body')).to have_text('New body')
+  end
+
+  scenario "still able to edit alternate when primary is invited" do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.invited_users = [reviewer1]
+    overlay.fill_in 'invitation-recipient', with: reviewer2.email
+    overlay.find('.invitation-email-entry-button').click
+    overlay.edit_invitation(reviewer2)
+    overlay.select_first_alternate
+    find('.invitation-save-button').click
+    expect(page.find('.alternate-link-icon')).to be_present
+    expect(overlay).to have_no_css('.invitation-item-action-edit.invitation-item-action--disabled')
   end
 
   scenario "deletes only a pending invitation" do

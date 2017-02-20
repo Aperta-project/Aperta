@@ -3,11 +3,26 @@ require 'rails_helper'
 require 'models/concerns/versioned_thing_shared_examples'
 
 describe VersionedText do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) { FactoryGirl.create :paper, :version_with_file_type }
   let(:user) { FactoryGirl.create :user }
   let(:versioned_text) { paper.latest_version }
 
   it_behaves_like 'a thing with major and minor versions', :versioned_text
+
+  describe '#version_string' do
+    it 'contains file_type' do
+      expect(versioned_text.version_string.match('DOCX').to_a.any?).to be(true)
+    end
+
+    it 'contains draft text' do
+      expect(versioned_text.version_string.match('draft').to_a.any?).to be(true)
+    end
+
+    it 'contains major and minor' do
+      paper.draft.be_minor_version!
+      expect(versioned_text.version_string.match('0.0').to_a.any?).to be(true)
+    end
+  end
 
   context 'validation' do
     context 'versioned text is completed' do
@@ -57,6 +72,17 @@ describe VersionedText do
 
       expect(paper.major_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_minor_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_minor_version!
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
   end
 
   describe "#be_major_version!" do
@@ -80,6 +106,17 @@ describe VersionedText do
 
       expect(paper.minor_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_major_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_major_version!
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
   end
 
   describe "#new_draft!" do
@@ -87,6 +124,19 @@ describe VersionedText do
 
     context "the versioned_text is a draft" do
       let(:versioned_text) { paper.draft }
+
+      it "has no submitting user" do
+        expect(versioned_text.submitting_user).to be_nil
+      end
+
+      it "has matching file and versioned_text s3 directories" do
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.s3_dir)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        expect(paper.file[:file]).to eq(versioned_text.file)
+      end
 
       it "fails" do
         expect { new_draft! }.to raise_error(ActiveRecord::RecordInvalid)

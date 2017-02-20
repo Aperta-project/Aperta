@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207164755) do
+ActiveRecord::Schema.define(version: 20170214151658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,34 @@ ActiveRecord::Schema.define(version: 20170207164755) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "email_logs", force: :cascade do |t|
+    t.string   "sender"
+    t.string   "recipients"
+    t.string   "subject"
+    t.string   "message_id"
+    t.text     "raw_source"
+    t.string   "status"
+    t.string   "error_message"
+    t.datetime "errored_at"
+    t.datetime "sent_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "task_id"
+    t.integer  "paper_id"
+    t.integer  "journal_id"
+    t.jsonb    "additional_context"
+  end
+
+  add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
+  add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
+  add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
+  add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
+
+  create_table "feature_flags", id: false, force: :cascade do |t|
+    t.string  "name",   null: false
+    t.boolean "active", null: false
+  end
+
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"
@@ -346,17 +374,16 @@ ActiveRecord::Schema.define(version: 20170207164755) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",               null: false
-    t.string   "doi_journal_prefix",                 null: false
-    t.string   "last_doi_issued",      default: "0", null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
     t.boolean  "pdf_allowed",          default: false
   end
 
-  add_index "journals", ["doi_journal_prefix"], name: "index_journals_on_doi_journal_prefix", unique: true, using: :btree
-  add_index "journals", ["doi_publisher_prefix"], name: "index_journals_on_doi_publisher_prefix", unique: true, using: :btree
+  add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
     t.string   "text"
@@ -370,9 +397,11 @@ ActiveRecord::Schema.define(version: 20170207164755) do
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
-    t.string  "paper_type"
-    t.integer "journal_id"
-    t.boolean "uses_research_article_reviewer_report", default: false
+    t.string   "paper_type"
+    t.integer  "journal_id"
+    t.boolean  "uses_research_article_reviewer_report", default: false
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -437,11 +466,8 @@ ActiveRecord::Schema.define(version: 20170207164755) do
     t.datetime "expires_at"
     t.string   "name"
     t.string   "scope"
-    t.jsonb    "authorization_code_response"
-    t.text     "profile_xml"
-    t.datetime "profile_xml_updated_at"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "orcid_accounts", ["user_id"], name: "index_orcid_accounts_on_user_id", using: :btree
@@ -478,6 +504,7 @@ ActiveRecord::Schema.define(version: 20170207164755) do
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
+    t.boolean  "number_reviewer_reports",               default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -585,6 +612,31 @@ ActiveRecord::Schema.define(version: 20170207164755) do
 
   add_index "resource_tokens", ["owner_id", "owner_type"], name: "index_resource_tokens_on_owner_id_and_owner_type", using: :btree
   add_index "resource_tokens", ["token"], name: "index_resource_tokens_on_token", using: :btree
+
+  create_table "reviewer_numbers", force: :cascade do |t|
+    t.integer  "paper_id",   null: false
+    t.integer  "user_id",    null: false
+    t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reviewer_numbers", ["paper_id", "number"], name: "index_reviewer_numbers_on_paper_id_and_number", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id", "user_id"], name: "index_reviewer_numbers_on_paper_id_and_user_id", unique: true, using: :btree
+  add_index "reviewer_numbers", ["paper_id"], name: "index_reviewer_numbers_on_paper_id", using: :btree
+  add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
+
+  create_table "reviewer_reports", force: :cascade do |t|
+    t.integer  "task_id",                         null: false
+    t.integer  "decision_id",                     null: false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "created_in_7993", default: false
+  end
+
+  add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
+  add_index "reviewer_reports", ["task_id"], name: "index_reviewer_reports_on_task_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                   null: false
@@ -763,6 +815,9 @@ ActiveRecord::Schema.define(version: 20170207164755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "original_text"
+    t.string   "file_type"
+    t.string   "s3_dir"
+    t.string   "file"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

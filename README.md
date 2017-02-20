@@ -266,6 +266,37 @@ E.G.
 heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
 ```
 
+## PDF Support
+
+The ability to upload and view PDFs is keyed off of a journal setting. To enable PDFs on a journal use:
+
+```
+Journal.find(id).update(pdf_allowed: true)
+```
+
+That will enable PDF uploads and display. To work with PDFs in a local setting, the pdf.js viewer assets need to be copied into the assets directory.
+
+```
+rake rake assets:bypass_pipeline:copy_pdfjsviewer
+```
+
+For deployments, the `assets:bypass_pipeline:copy_pdfjsviewer` task runs right after `assets:precompile`.
+
+Finally, the s3 bucket you use for the PDF uploads needs to be correctly configured for CORS GET requests with something like:
+
+```
+ <CORSRule>
+   <AllowedOrigin>*</AllowedOrigin>
+   <AllowedMethod>GET</AllowedMethod>
+   <MaxAgeSeconds>3000</MaxAgeSeconds>
+   <ExposeHeader>Accept-Ranges</ExposeHeader>
+   <ExposeHeader>Content-Range</ExposeHeader>
+   <ExposeHeader>Content-Encoding</ExposeHeader>
+   <ExposeHeader>Content-Length</ExposeHeader>
+   <AllowedHeader>*</AllowedHeader>
+ </CORSRule>
+```
+
 # Deploying Aperta
 
 Please see the

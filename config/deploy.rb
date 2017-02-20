@@ -36,6 +36,7 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
         execute :rake, 'nested-questions:seed'
         execute :rake, 'roles-and-permissions:seed'
         execute :rake, 'data:update_journal_task_types'
+        execute :rake, 'create_feature_flags'
       end
     end
   end

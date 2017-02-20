@@ -2,7 +2,8 @@ import Ember from 'ember';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
-  can: Ember.inject.service('can'),
+  can: Ember.inject.service(),
+  currentUser: Ember.inject.service(),
 
   beforeModel(transition){
     this.get('can').can('start_discussion', this.modelFor('paper')).then( (value)=> {
@@ -27,6 +28,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('replyText', '');
     controller.set('validationErrors', {});
+    controller.set('participants', [this.get('currentUser')]);
     return this._super(controller, model);
   },
 

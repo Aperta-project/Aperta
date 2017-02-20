@@ -47,13 +47,13 @@ export default Ember.Component.extend(EscapeListenerMixin, {
         this.set('isSaving', true);
       } else {
         this.set('isSaving', false);
-        this.get('flash').displayMessage(check.msg);
+        this.get('flash').displayRouteLevelMessage(check.msg);
       }
     },
 
     addingFileFailed(reason, message, {fileName, acceptedFileTypes}) {
       this.set('isSaving', false);
-      this.get('flash').displayMessage('error', message);
+      this.get('flash').displayRouteLevelMessage('error', message);
     },
 
     uploadFinished(s3Url){
@@ -70,7 +70,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     uploadFailed(reason){
       this.set('isSaving', false);
-      this.get('flash').displayMessage('error', reason);
+      this.get('flash').displayRouteLevelMessage('error', reason);
       console.log(reason);
     },
 

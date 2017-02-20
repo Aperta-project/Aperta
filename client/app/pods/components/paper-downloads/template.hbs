@@ -1,0 +1,60 @@
+<span class="sheet-close-x" {{action "toggle"}}>&times;</span>
+<div class="sheet-content">
+  <h1 class="sheet-title">Downloads</h1>
+  <br>
+  <table class="paper-downloads">
+    <tr class="paper-downloads-row">
+      <th>Manuscript Version</th>
+      <th colspan="2">Format</th>
+    </tr>
+    {{#if fetchVersions.isIdle}}
+      {{#each versions as |version|}}
+        <tr class="paper-downloads-row animation-fade-in">
+          <td class="paper-downloads-version">
+            {{#if version.isDraft}}
+              Draft
+            {{else}}
+              v{{version.majorVersion}}.{{version.minorVersion}}
+            {{/if}}
+          </td>
+          {{#if (or (eq version.fileType "docx") (eq version.fileType "doc"))}}
+            <td class="paper-downloads-link paper-downloads-link--docx">
+              <a href="#"
+                 class="download-docx"
+                 title="Download {{version.fileType}}"
+                 {{action "exportDocument" version}}>
+                {{fa-icon "file-word-o"}} Word
+              </a>
+            </td>
+            <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+              <a href={{concat pdfDownloadLink (if version.isDraft "" (concat "?version=" version.majorVersion "." version.minorVersion))}}
+                 class="download-pdf"
+                 title="Download PDF">
+                {{fa-icon "file-pdf-o"}} PDF
+              </a>
+            </td>
+          {{else if (eq version.fileType "pdf")}}
+            <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+              <a href="#"
+                 class="download-pdf"
+                 title="Download PDF"
+                 {{action "exportDocument" version}}>
+                {{fa-icon "file-pdf-o"}} PDF
+              </a>
+            </td>
+          {{else}}
+            <td colspan="2">Processing...</td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    {{else}}
+    <tr>
+      <td colspan="3">
+        {{progress-spinner visible=true
+                           align="middle"
+                           size="small"}}
+      </td>
+    </tr>
+    {{/if}}
+  </table>
+</div>

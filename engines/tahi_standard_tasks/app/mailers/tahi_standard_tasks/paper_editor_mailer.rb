@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class PaperEditorMailer < ActionMailer::Base
+  class PaperEditorMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
     layout "mailer"

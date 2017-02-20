@@ -7,6 +7,8 @@ export default TaskComponent.extend(FileUploadMixin, {
   progress: 0,
   showProgress: true,
 
+  pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
+
   progressBarStyle: Ember.computed('progress', function() {
     return Ember.String.htmlSafe('width:' + this.get('progress') + '%');
   }),

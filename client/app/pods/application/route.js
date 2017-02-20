@@ -19,6 +19,16 @@ const debug = function(description, obj) {
 export default Ember.Route.extend({
   restless: Ember.inject.service(),
   notifications: Ember.inject.service(),
+  fullStory: Ember.inject.service(),
+
+  beforeModel() {
+    Ember.assert('Application name is required for proper display', window.appName);
+    this.store.findAll('journal').then( (journals) => {
+      let controller = this.controllerFor('application');
+      controller.set('journals', journals);
+      controller.setCanViewPaperTracker();
+    });
+  },
 
   setupController(controller, model) {
     controller.set('model', model);
@@ -39,12 +49,18 @@ export default Ember.Route.extend({
         '/api/admin/journals/authorization',
         'canViewAdminLinks'
       );
+
+      this.get('fullStory').identify(this.currentUser);
     }
   },
 
   applicationSerializer: Ember.computed(function() {
     return getOwner(this).lookup('serializer:application');
   }),
+
+  assignWindowLocation(location) {
+    window.location.assign(location);
+  },
 
   actions: {
     willTransition(transition) {
@@ -121,7 +137,12 @@ export default Ember.Route.extend({
     },
 
     flashMessage(payload) {
-      this.flash.displayMessage(payload.messageType, payload.message);
+      this.flash.displayRouteLevelMessage(payload.messageType, payload.message);
+    },
+
+    signOut() {
+      this.get('fullStory').clearSession();
+      this.assignWindowLocation('/users/sign_out');
     }
   },
 

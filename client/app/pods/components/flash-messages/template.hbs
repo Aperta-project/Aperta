@@ -1,4 +1,8 @@
-{{#each flash.messages as |message|}}
-  {{flash-message remove="removeMessage"
+{{#each flash.systemLevelMessages as |message|}}
+  {{flash-message remove="removeSystemMessage"
+  message=message}}
+{{/each}}
+{{#each flash.routeLevelMessages as |message|}}
+  {{flash-message remove="removeRouteMessage"
                   message=message}}
 {{/each}}

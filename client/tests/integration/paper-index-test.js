@@ -146,7 +146,7 @@ test('on paper.index as a participant on a task and author of paper', function(a
     }, JSON.stringify(paperResponse)
   ]);
   return visit('/papers/' + currentPaper.shortDoi).then(function() {
-    return assert.ok(!!find('.card-content:contains("Revise Task")'),
+    return assert.ok(!!find('.card-title:contains("Revise Task")'),
       'Participant task is displayed in the sidebar for author');
   });
 });
@@ -159,7 +159,7 @@ test('visiting /paper: Author completes all metadata cards', function(assert) {
     const submitButton = find('button:contains("Submit")');
     return assert.ok(!submitButton.length, 'Submit is disabled');
   }).then(function() {
-    const ref = find('#paper-submission-tasks .card-content');
+    const ref = find('#paper-submission-tasks .card');
     let results = [];
     let i, len;
     for (i = 0, len = ref.length; i < len; i++) {
@@ -185,5 +185,18 @@ test('visiting /paper: Gradual Engagement banner visible', function(assert) {
 
   andThen(function() {
     assert.ok(!find('#submission-process').length, 'The banner is not visible');
+  });
+});
+
+test('visiting /paper: Paper displays for a real url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + '?firstView=true').then(function() {
+    assert.ok(currentRouteName() == 'paper.index.index', 'The shortDoi path is not pointing to the paper.index.index Ember route');
+    assert.ok(find('.manuscript-pane').length, 'The manuscript pane is not visible');
+  });
+});
+
+test('visiting /paper: Redirects to dashboard for malformed url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + 'blah').then(function() {
+    assert.ok(currentRouteName() == 'dashboard.loading', 'The dashboard welcome message is not visible');
   });
 });

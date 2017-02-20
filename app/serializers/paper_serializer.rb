@@ -2,7 +2,8 @@ class PaperSerializer < LitePaperSerializer
   attributes :id, :short_title, :title, :doi, :body, :abstract,
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
-             :submitted_at, :gradual_engagement
+             :submitted_at, :gradual_engagement,
+             :versions_contain_pdf
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -24,6 +25,10 @@ class PaperSerializer < LitePaperSerializer
 
   def paper_task_types
     paper.journal.journal_task_types
+  end
+
+  def versions_contain_pdf
+    object.versioned_texts.any? { |vt| vt.file_type == "pdf" }
   end
 
   def links

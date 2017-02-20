@@ -19,6 +19,7 @@ describe Paper::DataExtracted::NotifyUser do
                             file_type: 'epub'
                           }],
                           options: {
+                            recipe_name: 'docx_to_html',
                             metadata: {
                               paper_id: upload_task.paper.id,
                               user_id: user.id
@@ -31,6 +32,7 @@ describe Paper::DataExtracted::NotifyUser do
                             file_type: 'epub'
                           }],
                           options: {
+                            recipe_nane: 'docx_to_html',
                             metadata: {
                               paper_id: upload_task.paper.id,
                               user_id: user.id
@@ -62,9 +64,10 @@ describe Paper::DataExtracted::NotifyUser do
     let(:successful_response) do
       IhatJobResponse.new(state: 'completed',
                           outputs: [{
-                            file_type: 'pdf'
+                            file_type: 'epub'
                           }],
                           options: {
+                            recipe_name: 'pdf_to_html',
                             metadata: {
                               paper_id: upload_task.paper.id,
                               user_id: user.id
@@ -74,9 +77,10 @@ describe Paper::DataExtracted::NotifyUser do
     let(:errored_response) do
       IhatJobResponse.new(state: 'errored',
                           outputs: [{
-                            file_type: 'pdf'
+                            file_type: 'epub'
                           }],
                           options: {
+                            recipe_name: 'pdf_to_html',
                             metadata: {
                               paper_id: upload_task.paper.id,
                               user_id: user.id

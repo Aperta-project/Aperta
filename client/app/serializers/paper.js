@@ -7,6 +7,7 @@ export default ApplicationSerializer.extend({
     figures: { serialize: false },
     phases: { serialize: false },
     supportingInformationFiles: { serialize: false },
-    tasks: { serialize: false }
+    tasks: { serialize: false },
+    versionsContainPdf: { serialize: false }
   }
 });

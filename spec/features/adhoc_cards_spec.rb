@@ -66,11 +66,10 @@ feature 'Adhoc cards', js: true do
       overlay.find_all('.button-secondary', text: 'SAVE').first.click
       overlay.find('.email-send-participants').click
       overlay.find_all('.add-participant-button', text: '+').first.click
-      # Using the capybara-select2 helper here doesn't work because... not sure.
-      # I think we are using select2 strangely here.
-      overlay.find('.select2-input').set('author')
-      overlay.execute_script(%|$("input.select2-input:visible").keyup();|)
-      overlay.first("li.select2-result").click
+
+      find(".ember-power-select-search-input").set('author')
+      wait_for_ajax
+      find(".ember-power-select-option").click
       overlay.find('.send-email-action').click
 
       expect(overlay).to have_text('Your email has been sent.')

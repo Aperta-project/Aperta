@@ -15,7 +15,7 @@ from Base.PostgreSQL import PgSQL
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
     pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
-from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface, aperta_green
+from frontend.Pages.authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREEN
 
 __author__ = 'sbassi@plos.org'
 
@@ -173,20 +173,20 @@ class BaseCard(AuthenticatedPage):
 
     self.compare_unicode(html_header_title.text, title)
     # Validate Styles
-    assert application_typeface in html_header_author.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in html_header_author.value_of_css_property('font-family'), \
         html_header_author.value_of_css_property('font-family')
-    assert application_typeface in html_header_msid.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in html_header_msid.value_of_css_property('font-family'), \
         html_header_msid.value_of_css_property('font-family')
-    assert application_typeface in html_header_paper_type.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in html_header_paper_type.value_of_css_property('font-family'), \
         html_header_paper_type.value_of_css_property('font-family')
-    assert application_typeface in html_header_state.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in html_header_state.value_of_css_property('font-family'), \
         html_header_state.value_of_css_property('font-family')
-    assert application_typeface in html_header_title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in html_header_title.value_of_css_property('font-family'), \
         html_header_title.value_of_css_property('font-family')
     # APERTA-6497
     # assert html_header_title.value_of_css_property('font-size') == '18px', \
     #    html_header_title.value_of_css_property('font-size')
-    assert html_header_title.value_of_css_property('color') == aperta_green, \
+    assert html_header_title.value_of_css_property('color') == APERTA_GREEN, \
         paper_id.value_of_css_property('color')
     # APERTA-6497
     # assert html_header_title.value_of_css_property('line-height') == '23px', \
@@ -198,7 +198,7 @@ class BaseCard(AuthenticatedPage):
     Ensure consistency in rendering the plus (+) section headings across the all cards
     # TODO: Validate with the result of #103123812
     """
-    assert application_typeface in plus.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in plus.value_of_css_property('font-family'), \
         plus.value_of_css_property('font-family')
     # Nota Bene: The size of this element recently changed (20170104). Checked with SebT - OK
     assert plus.value_of_css_property('font-size') == '24px', \
@@ -207,7 +207,7 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('width') == '21px', plus.value_of_css_property('width')
     assert plus.value_of_css_property('line-height') == '20px', \
         plus.value_of_css_property('line-height')
-    assert plus.value_of_css_property('color') == aperta_green, plus.value_of_css_property('color')
+    assert plus.value_of_css_property('color') == APERTA_GREEN, plus.value_of_css_property('color')
     assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', \
         plus.value_of_css_property('background-color')
     assert plus.text == '+', plus.text

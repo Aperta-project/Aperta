@@ -25,29 +25,28 @@ __author__ = 'jgray@plos.org'
 # Variable definitions
 
 # typefaces
-application_typeface = 'source-sans-pro'
-manuscript_typeface = 'lora'
+APPLICATION_TYPEFACE = 'source-sans-pro'
+MANUSCRIPT_TYPEFACE = 'lora'
 # colors
-aperta_green = 'rgba(57, 163, 41, 1)'
-aperta_green_light = 'rgba(142, 203, 135, 1)'
-aperta_green_dark = 'rgba(15, 116, 0, 1)'
-aperta_blue = 'rgba(45, 133, 222, 1)'
-aperta_blue_light = 'rgba(148, 184, 224, 1)'
-aperta_blue_dark = 'rgba(32, 94, 156, 1)'
-aperta_grey_xlight = 'rgba(245, 245, 245, 1)'
-aperta_grey_medlight = 'rgba(228, 228, 228, 1)'
-aperta_grey_light = 'rgba(213, 213, 213, 1)'
-aperta_grey_dark = 'rgba(135, 135, 135, 1)'
-aperta_black = 'rgba(51, 51, 51, 1)'
-aperta_error = 'rgba(206, 11, 36, 1)'
-white = 'rgba(255, 255, 255, 1)'
-black = 'rgba(0, 0, 0, 1)'
-aperta_flash_error = 'rgba(122, 51, 78, 1)'
-aperta_flash_error_bkgrnd = 'rgba(230, 221, 210, 1)'
-aperta_flash_success = aperta_green
-aperta_flash_success_bkgrnd = 'rgba(234, 253, 231, 1)'
-aperta_flash_info = 'rgba(146, 139, 113, 1)'
-aperta_flash_info_bkgrnd = 'rgba(242, 242, 213, 1)'
+APERTA_GREEN = 'rgba(57, 163, 41, 1)'
+APERTA_GREEN_LIGHT = 'rgba(142, 203, 135, 1)'
+APERTA_GREEN_DARK = 'rgba(15, 116, 0, 1)'
+APERTA_BLUE = 'rgba(45, 133, 222, 1)'
+APERTA_BLUE_LIGHT = 'rgba(148, 184, 224, 1)'
+APERTA_BLUE_DARK = 'rgba(32, 94, 156, 1)'
+APERTA_GREY_XLIGHT = 'rgba(245, 245, 245, 1)'
+APERTA_GREY_LIGHT = 'rgba(213, 213, 213, 1)'
+APERTA_GREY_DARK = 'rgba(135, 135, 135, 1)'
+APERTA_BLACK = 'rgba(51, 51, 51, 1)'
+APERTA_ERROR = 'rgba(206, 11, 36, 1)'
+WHITE = 'rgba(255, 255, 255, 1)'
+BLACK = 'rgba(0, 0, 0, 1)'
+APERTA_FLASH_ERROR = 'rgba(122, 51, 78, 1)'
+APERTA_FLASH_ERROR_BKGRND = 'rgba(230, 221, 210, 1)'
+APERTA_FLASH_SUCCESS = APERTA_GREEN
+APERTA_FLASH_SUCCESS_BKGRND = 'rgba(234, 253, 231, 1)'
+APERTA_FLASH_INFO = 'rgba(146, 139, 113, 1)'
+APERTA_FLASH_INFO_BKGRND = 'rgba(242, 242, 213, 1)'
 
 
 class AuthenticatedPage(PlosPage):
@@ -304,9 +303,9 @@ class AuthenticatedPage(PlosPage):
     # The following block needs to be moved into a standardized style validation in authenticated_page.py
     # Further a bug should be filed to note the lack of any definition of these elements in a style_guide of any kind
     # assert editable.value_of_css_property('font-size') == '10px'
-    # assert editable.value_of_css_property('color') == aperta_green
+    # assert editable.value_of_css_property('color') == APERTA_GREEN
     # assert editable.value_of_css_property('font-weight') == '700'
-    # assert application_typeface in editable.value_of_css_property('font-family')
+    # assert APPLICATION_TYPEFACE in editable.value_of_css_property('font-family')
     # assert editable.value_of_css_property('text-transform') == 'uppercase'
     # assert editable.value_of_css_property('line-height') == '20px'
     # assert editable.value_of_css_property('text-align') == 'center'
@@ -324,14 +323,14 @@ class AuthenticatedPage(PlosPage):
     #             'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
     #             '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
     #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
-    # assert recent_activity_icon.value_of_css_property('color') == aperta_green
+    # assert recent_activity_icon.value_of_css_property('color') == APERTA_GREEN
     recent_activity_text = self._get(self._recent_activity)
     assert recent_activity_text
     assert 'Recent Activity' in recent_activity_text.text, recent_activity_text.text
     # assert recent_activity_text.value_of_css_property('font-size') == '10px'
-    # assert recent_activity_text.value_of_css_property('color') == aperta_green
+    # assert recent_activity_text.value_of_css_property('color') == APERTA_GREEN
     # assert recent_activity_text.value_of_css_property('font-weight') == '700'
-    # assert application_typeface in recent_activity_text.value_of_css_property('font-family')
+    # assert APPLICATION_TYPEFACE in recent_activity_text.value_of_css_property('font-family')
     # assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
     # assert recent_activity_text.value_of_css_property('line-height') == '20px'
     # assert recent_activity_text.value_of_css_property('text-align') == 'center'
@@ -339,13 +338,39 @@ class AuthenticatedPage(PlosPage):
     assert discussions_icon
     # assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
     # assert discussions_icon.value_of_css_property('font-size') == '16px'
-    # assert discussions_icon.value_of_css_property('color') == aperta_green
+    # assert discussions_icon.value_of_css_property('color') == APERTA_GREEN
     # assert discussions_icon.value_of_css_property('font-weight') == '400'
     # assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
     # assert discussions_icon.value_of_css_property('font-style') == 'normal'
     discussions_label = self._get(self._discussion_link)
     assert discussions_label
     assert discussions_label.text.lower() == 'discussions', discussions_label.text
+
+  @staticmethod
+  def validate_delete_icon_grey(delete_icon):
+    """
+    Validate style of delete icon (trash bin)
+    :return: None
+    """
+    assert delete_icon.value_of_css_property('font-family') == 'FontAwesome', \
+        delete_icon.value_of_css_property('font-family')
+    assert delete_icon.value_of_css_property('color') == APERTA_GREY_DARK, \
+        delete_icon.value_of_css_property('color')
+    assert delete_icon.value_of_css_property('font-size') in ('14px', '18px'), \
+        delete_icon.value_of_css_property('font-size')
+
+  @staticmethod
+  def validate_delete_icon_green(delete_icon):
+    """
+    Validate style of delete icon when mouse over (trash bin)
+    :return: None
+    """
+    assert delete_icon.value_of_css_property('font-family') == 'FontAwesome', \
+        delete_icon.value_of_css_property('font-family')
+    assert delete_icon.value_of_css_property('color') == APERTA_GREEN, \
+        delete_icon.value_of_css_property('color')
+    assert delete_icon.value_of_css_property('font-size') in ('14px', '18px'), \
+        delete_icon.value_of_css_property('font-size')
 
   def click_recent_activity_link(self):
     """
@@ -786,7 +811,7 @@ class AuthenticatedPage(PlosPage):
         withdraw_banner.value_of_css_property('background-color')
     assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
         withdraw_banner.value_of_css_property('color')
-    assert application_typeface in withdraw_banner.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
 
   def scroll_element_into_view_below_toolbar(self, element):
@@ -877,7 +902,7 @@ class AuthenticatedPage(PlosPage):
     """
     # This color is not represented in the tahi palette
     assert border.value_of_css_property('color') == 'rgba(128, 128, 128, 1)', border.value_of_css_property('color')
-    assert border.value_of_css_property('background-color') in (aperta_green_light, aperta_blue_light, aperta_grey_light), \
+    assert border.value_of_css_property('background-color') in (APERTA_GREEN_LIGHT, APERTA_BLUE_LIGHT, APERTA_GREY_LIGHT), \
         border.value_of_css_property('background-color')
 
   @staticmethod
@@ -888,7 +913,7 @@ class AuthenticatedPage(PlosPage):
     :return: Void function
     """
     # This color is not represented in the tahi palette
-    assert border.value_of_css_property('color') == aperta_black, border.value_of_css_property('color')
+    assert border.value_of_css_property('color') == APERTA_BLACK, border.value_of_css_property('color')
 
   # Heading Styles ===========================
   @staticmethod
@@ -899,12 +924,12 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     Updated for new style guide: https://app.zeplin.io/project.html
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '52.8px', title.value_of_css_property('line-height')
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h2_style(title):
@@ -912,13 +937,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h2 section headings across the application
     :param title: title to validate
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '30px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h3_style(title):
@@ -926,13 +951,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h3 section headings across the application
     :param title: title to validate
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '24px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_h4_style(title):
@@ -940,13 +965,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h4 section headings across the application
     :param title: title to validate
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '18px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h1_style(title):
@@ -954,13 +979,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay main headings within the manuscript
     :param title: title to validate
     """
-    assert manuscript_typeface in title.value_of_css_property('font-family'), \
+    assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '36px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '39.6px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h2_style(title):
@@ -968,13 +993,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h2 section headings within the manuscript
     :param title: Title to validate
     """
-    assert manuscript_typeface in title.value_of_css_property('font-family'), \
+    assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '30px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h3_style(title):
@@ -982,13 +1007,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h3 section headings within the manuscript
     :param title: title to validate
     """
-    assert manuscript_typeface in title.value_of_css_property('font-family'), \
+    assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '24px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_label_style(label):
@@ -996,12 +1021,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering label style in cards
     :param title: title to validate
     """
-    assert application_typeface in label.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family'), \
         label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '18px', label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', label.value_of_css_property('font-weight')
     assert label.value_of_css_property('line-height') == '25.7167px', label.value_of_css_property('line-height')
-    assert label.value_of_css_property('color') == aperta_black, label.value_of_css_property('color')
+    assert label.value_of_css_property('color') == APERTA_BLACK, label.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h4_style(title):
@@ -1009,13 +1034,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay h4 section headings within the manuscript
     :param title: title to validate
     """
-    assert manuscript_typeface in title.value_of_css_property('font-family'), \
+    assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
     assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   # This seems out of bounds - this should conform to one of the above styles - report as a bug
   @staticmethod
@@ -1025,7 +1050,7 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     :return: Void Function
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '14px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
@@ -1036,7 +1061,7 @@ class AuthenticatedPage(PlosPage):
   # This method is out of bounds and should not be here
   @staticmethod
   def validate_modal_title_style(title, font_size='14px', font_weight='400',
-                                 line_height='20px', color=aperta_black):
+                                 line_height='20px', color=APERTA_BLACK):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
@@ -1047,8 +1072,8 @@ class AuthenticatedPage(PlosPage):
     :return: None
     TODO: APERTA-7212
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
-        '{0} not found in {1}'.format(application_typeface,
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+        '{0} not found in {1}'.format(APPLICATION_TYPEFACE,
                                       title.value_of_css_property('font-family'))
     assert title.value_of_css_property('font-size') == font_size, \
         '{0) is not equal to {1}'.format(title.value_of_css_property('font-size'), font_size)
@@ -1067,7 +1092,7 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     :return: None
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '14px', \
         title.value_of_css_property('font-size')
@@ -1075,7 +1100,7 @@ class AuthenticatedPage(PlosPage):
         title.value_of_css_property('line-height')
     assert title.value_of_css_property('font-weight') == '400', \
         title.value_of_css_property('font-weight')
-    assert title.value_of_css_property('color') == aperta_grey_dark, \
+    assert title.value_of_css_property('color') == APERTA_GREY_DARK, \
         title.value_of_css_property('color')
 
   @staticmethod
@@ -1085,22 +1110,22 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     Updated for new style guide: https://app.zeplin.io/project.html
     """
-    assert application_typeface in title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
-    assert title.value_of_css_property('color') == aperta_black, title.value_of_css_property('color')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
 
   @staticmethod
   def validate_action_status_text(message):
     """In some places in the app, we give a status message in a large green font"""
-    assert application_typeface in message.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in message.value_of_css_property('font-family'), \
       message.value_of_css_property('font-family')
     assert message.value_of_css_property('font-size') == '16px', message.value_of_css_property(
       'font-size')
     assert message.value_of_css_property('line-height') == '22.85px', message.value_of_css_property(
       'line-height')
-    assert message.value_of_css_property('color') == aperta_green, message.value_of_css_property(
+    assert message.value_of_css_property('color') == APERTA_GREEN, message.value_of_css_property(
       'color')
 
   # Ordinary Text Styles ============================
@@ -1111,13 +1136,13 @@ class AuthenticatedPage(PlosPage):
     :param paragraph: paragraph to validate
     :return: Void Function
     """
-    assert application_typeface in paragraph.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
     assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == aperta_black, paragraph.value_of_css_property('color')
+    assert paragraph.value_of_css_property('color') == APERTA_BLACK, paragraph.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_ptext(paragraph):
@@ -1126,13 +1151,13 @@ class AuthenticatedPage(PlosPage):
     :param paragraph: paragraph to validate
     :return: Void Function
     """
-    assert manuscript_typeface in paragraph.value_of_css_property('font-family'), \
+    assert MANUSCRIPT_TYPEFACE in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
     assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == aperta_black, paragraph.value_of_css_property('color')
+    assert paragraph.value_of_css_property('color') == APERTA_BLACK, paragraph.value_of_css_property('color')
 
   # Link Styles ==============================
   @staticmethod
@@ -1141,12 +1166,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -1154,9 +1179,9 @@ class AuthenticatedPage(PlosPage):
     """
     Validate style of the mention
     """
-    assert application_typeface in element.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in element.value_of_css_property('font-family'), \
         element.value_of_css_property('font-family')
-    assert element.value_of_css_property('color') == aperta_green, element.value_of_css_property('color')
+    assert element.value_of_css_property('color') == APERTA_GREEN, element.value_of_css_property('color')
     assert element.value_of_css_property('font-size') == '14px', element.value_of_css_property('font-size')
     assert element.value_of_css_property('line-height') == '18.2px', element.value_of_css_property('line-height')
     assert element.value_of_css_property('font-weight') == '400', element.value_of_css_property('font-weight')
@@ -1167,12 +1192,12 @@ class AuthenticatedPage(PlosPage):
     Links valid in profile page
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '700', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -1181,12 +1206,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering link hover across the application
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == aperta_green, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
     assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
 
@@ -1196,12 +1221,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == aperta_blue, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   @staticmethod
@@ -1210,12 +1235,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering link hover across the application
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == aperta_blue, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
     assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
 
@@ -1225,13 +1250,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert application_typeface in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     # This color is not represented in the tahi palette
-    assert link.value_of_css_property('color') == aperta_black, link.value_of_css_property('color')
+    assert link.value_of_css_property('color') == APERTA_BLACK, link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
 
   # List Styles ==============================
@@ -1242,29 +1267,29 @@ class AuthenticatedPage(PlosPage):
     :param olul: ol or ul
     :return: Void function
     """
-    assert application_typeface in olul.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in olul.value_of_css_property('font-family'), \
         olul.value_of_css_property('font-family')
     assert olul.value_of_css_property('font-size') == '19.6px', \
         olul.value_of_css_property('font-size')
     assert olul.value_of_css_property('line-height') == '23.5167px', \
         olul.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert olul.value_of_css_property('color') == aperta_black, olul.value_of_css_property('color')
+    assert olul.value_of_css_property('color') == APERTA_BLACK, olul.value_of_css_property('color')
 
   # Button Styles ============================
   @staticmethod
   def validate_primary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large green-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay large green-backed, WHITE text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_green, \
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1276,18 +1301,18 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def delete_forever_btn_style_validation(button):
     """
-    Ensure consistency in rendering page and overlay large slide-in green-backed, white text
+    Ensure consistency in rendering page and overlay large slide-in green-backed, WHITE text
     buttons across the application. This style is not in the styleguide: APERTA-8504
     :param button: button to validate
     :return: None
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_green, \
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1299,20 +1324,20 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay big white-backed, green text buttons across
+    Ensure consistency in rendering page and overlay big WHITE-backed, green text buttons across
       the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', \
         button.value_of_css_property('font-size')
     # APERTA-6498
     # assert button.value_of_css_property('line-height') == '18px', \
     #     button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_green, \
+    assert button.value_of_css_property('color') == APERTA_GREEN, \
         button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', \
         button.value_of_css_property('vertical-align')
@@ -1334,12 +1359,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay transparent-backed, green text link-buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1352,16 +1377,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_small_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small green-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay small green-backed, WHITE text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_green, \
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1374,19 +1399,19 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_small_green_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small white-backed, green text buttons across the application
+    Ensure consistency in rendering page and overlay small WHITE-backed, green text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('padding-top') == '1px', button.value_of_css_property('padding-top')
     assert button.value_of_css_property('padding-right') == '5px', button.value_of_css_property('padding-right')
@@ -1396,19 +1421,19 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_small_green_button_task_style(button):
     """
-    Ensure consistency in rendering page and overlay small white-backed, green text validations buttons
+    Ensure consistency in rendering page and overlay small WHITE-backed, green text validations buttons
     across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
@@ -1421,12 +1446,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay transparent-backed, green text link-buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_green, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1443,12 +1468,12 @@ class AuthenticatedPage(PlosPage):
     application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREY_LIGHT, button.value_of_css_property('color')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('background-color') == 'rgba(238, 238, 238, 1)', \
         button.value_of_css_property('background-color')
@@ -1462,17 +1487,17 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_disabled_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large white-backed, grey text disabled buttons across the
+    Ensure consistency in rendering page and overlay large WHITE-backed, grey text disabled buttons across the
     application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('color') == APERTA_GREY_LIGHT, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1488,12 +1513,12 @@ class AuthenticatedPage(PlosPage):
     application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_grey_light, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREY_LIGHT, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1507,16 +1532,16 @@ class AuthenticatedPage(PlosPage):
   def validate_green_on_green_button_style(button):
     """
     Ensure consistency in rendering page and overlay light green-backed, dark green text buttons across the application.
-    These buttons should be used against a standard aperta_green background
+    These buttons should be used against a standard APERTA_GREEN background
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_green_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_green_light, \
+    assert button.value_of_css_property('color') == APERTA_GREEN_DARK, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_GREEN_LIGHT, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1528,16 +1553,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_big_grey_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large grey-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay large grey-backed, WHITE text buttons across the application
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('background-color') == 'rgba(119, 119, 119, 1)', \
         button.value_of_css_property('background-color')
@@ -1551,18 +1576,18 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_grey_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large white-backed, grey text buttons across the application
+    Ensure consistency in rendering page and overlay large WHITE-backed, grey text buttons across the application
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)', button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1578,13 +1603,13 @@ class AuthenticatedPage(PlosPage):
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert button.value_of_css_property('color') == aperta_grey_dark, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_GREY_DARK, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1597,16 +1622,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_small_grey_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small grey-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay small grey-backed, WHITE text buttons across the application
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('background-color') == 'rgba(119, 119, 19, 1)', \
         button.value_of_css_property('background-color')
@@ -1621,11 +1646,11 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_small_grey_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small white-backed, grey text buttons across the application
+    Ensure consistency in rendering page and overlay small WHITE-backed, grey text buttons across the application
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
@@ -1635,7 +1660,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('padding-top') == '1px', button.value_of_css_property('padding-top')
     assert button.value_of_css_property('padding-right') == '5px', button.value_of_css_property('padding-right')
@@ -1650,7 +1675,7 @@ class AuthenticatedPage(PlosPage):
     TODO: Find out what the use case is for this design as it seems duplicative with the defined disabled buttons
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
@@ -1673,13 +1698,13 @@ class AuthenticatedPage(PlosPage):
     These should be used on a standard tahi_grey background only.
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_grey_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_grey_light, \
+    assert button.value_of_css_property('color') == APERTA_GREY_DARK, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_GREY_LIGHT, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1691,16 +1716,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_big_blue_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large blue-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay large blue-backed, WHITE text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_blue, \
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_BLUE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1712,16 +1737,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_big_blue_button_style(button):
     """
-    Ensure consistency in rendering page and overlay large white-backed, blue text buttons across the application
+    Ensure consistency in rendering page and overlay large WHITE-backed, blue text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('color') == APERTA_BLUE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1736,12 +1761,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay large transparent-backed, blue text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_BLUE, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1754,16 +1779,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_small_blue_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small blue-backed, white text buttons across the application
+    Ensure consistency in rendering page and overlay small blue-backed, WHITE text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == white, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_blue, \
+    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_BLUE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1776,19 +1801,19 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_secondary_small_blue_button_style(button):
     """
-    Ensure consistency in rendering page and overlay small white-backed, blue text buttons across the application
+    Ensure consistency in rendering page and overlay small WHITE-backed, blue text buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_BLUE, button.value_of_css_property('color')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('padding-top') == '1px', button.value_of_css_property('padding-top')
     assert button.value_of_css_property('padding-right') == '5px', button.value_of_css_property('padding-right')
@@ -1802,12 +1827,12 @@ class AuthenticatedPage(PlosPage):
     application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_blue, button.value_of_css_property('color')
+    assert button.value_of_css_property('color') == APERTA_BLUE, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
@@ -1821,16 +1846,16 @@ class AuthenticatedPage(PlosPage):
   def validate_blue_on_blue_button_style(button):
     """
     Ensure consistency in rendering page and overlay light blue-backed, dark-blue text buttons across the application
-    These should only be used against a standard aperta_blue background
+    These should only be used against a standard APERTA_BLUE background
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_blue_dark, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == aperta_blue_light, \
+    assert button.value_of_css_property('color') == APERTA_BLUE_DARK, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == APERTA_BLUE_LIGHT, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
@@ -1842,16 +1867,16 @@ class AuthenticatedPage(PlosPage):
   @staticmethod
   def validate_primary_error_button_style(button):
     """
-    Ensure consistency in rendering page and overlay validation failed white background buttons across the application
+    Ensure consistency in rendering page and overlay validation failed WHITE background buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == aperta_error, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == white, \
+    assert button.value_of_css_property('color') == APERTA_ERROR, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1871,12 +1896,12 @@ class AuthenticatedPage(PlosPage):
     NOTE: Updated 20160722 as per style guide at:
     https://app.zeplin.io/project.html#pid=560d7bb83705520f4c7c0524&sid=56b239c60e93fc526ca02f8f
     """
-    assert application_typeface in label.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '14px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('color') == aperta_grey_dark, \
+    assert label.value_of_css_property('color') == APERTA_GREY_DARK, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '25.7167px', \
         label.value_of_css_property('line-height')
@@ -1890,13 +1915,13 @@ class AuthenticatedPage(PlosPage):
     NOTE: Not currently defined in the style guide at all - This definition is based on the
       implementation of the Invite AE card.
     """
-    assert application_typeface in label.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family'), \
         label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '18px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('color') == aperta_black, \
+    assert label.value_of_css_property('color') == APERTA_BLACK, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '25.7167px', \
         label.value_of_css_property('line-height')
@@ -1907,7 +1932,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay input fields across the application
     :param field: field to validate
     """
-    assert application_typeface in field.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in field.value_of_css_property('font-family')
     assert field.value_of_css_property('font-size') == '14px', \
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
@@ -1924,12 +1949,12 @@ class AuthenticatedPage(PlosPage):
       the application
     :param field: field to validate
     """
-    assert application_typeface in field.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in field.value_of_css_property('font-family')
     assert field.value_of_css_property('font-size') == '14px', \
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
         field.value_of_css_property('font-weight')
-    assert field.value_of_css_property('color') == aperta_black, \
+    assert field.value_of_css_property('color') == APERTA_BLACK, \
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '18px', \
         field.value_of_css_property('line-height')
@@ -1948,11 +1973,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay multi-select drop down fields across the application
     :param field: field to validate
     """
-    assert application_typeface in field.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in field.value_of_css_property('font-family')
     assert field.value_of_css_property('font-size') == '14px', \
         field.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert field.value_of_css_property('color') == aperta_black, \
+    assert field.value_of_css_property('color') == APERTA_BLACK, \
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
@@ -1967,7 +1992,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay textarea fields across the application
     :param field: field to validate
     """
-    assert application_typeface in field.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in field.value_of_css_property('font-family')
     assert field.value_of_css_property('font-size') == '14px', \
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
@@ -1979,7 +2004,7 @@ class AuthenticatedPage(PlosPage):
         field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
-    assert field.value_of_css_property('background-color') == white, \
+    assert field.value_of_css_property('background-color') == WHITE, \
         field.value_of_css_property('background-color')
     assert field.value_of_css_property('padding-top') == '6px', \
         field.value_of_css_property('padding-top')
@@ -1996,7 +2021,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay radio buttons across the application
     :param button: button to validate
     """
-    assert application_typeface in button.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px', \
         button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', \
@@ -2004,7 +2029,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-style') == 'normal', \
         button.value_of_css_property('font-style')
     # This color is not represented in the style guide. APERTA-8904
-    #assert button.value_of_css_property('color') == black, button.value_of_css_property('color')
+    #assert button.value_of_css_property('color') == BLACK, button.value_of_css_property('color')
     assert button.value_of_css_property('line-height') == '18px', \
         button.value_of_css_property('line-height')
     assert button.value_of_css_property('margin-top') == '4px', \
@@ -2016,7 +2041,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay radio button labels across the application
     :param label: label to validate
     """
-    assert application_typeface in label.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '14px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
@@ -2024,7 +2049,7 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('font-style') == 'normal', \
         label.value_of_css_property('font-style')
     # This color is not represented in the style guide
-    assert label.value_of_css_property('color') == aperta_black, \
+    assert label.value_of_css_property('color') == APERTA_BLACK, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', \
         label.value_of_css_property('line-height')
@@ -2036,14 +2061,14 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay checkboxes across the application
     :param checkbox: checkbox to validate
     """
-    assert application_typeface in checkbox.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in checkbox.value_of_css_property('font-family')
     assert checkbox.value_of_css_property('font-size') == '12px', \
         checkbox.value_of_css_property('font-size')
     assert checkbox.value_of_css_property('font-weight') == '400', \
         checkbox.value_of_css_property('font-weight')
     assert checkbox.value_of_css_property('font-style') == 'normal', \
         checkbox.value_of_css_property('font-style')
-    assert checkbox.value_of_css_property('color') == aperta_black, \
+    assert checkbox.value_of_css_property('color') == APERTA_BLACK, \
         checkbox.value_of_css_property('color')
     assert checkbox.value_of_css_property('line-height') == '20px', \
         checkbox.value_of_css_property('line-height')
@@ -2054,12 +2079,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page, card and overlay checkbox labels across the application
     :param label: label to validate
     """
-    assert application_typeface in label.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in label.value_of_css_property('font-family')
     assert label.value_of_css_property('font-size') == '14px', \
         label.value_of_css_property('font-size')
     assert label.value_of_css_property('font-weight') == '400', \
         label.value_of_css_property('font-weight')
-    assert label.value_of_css_property('color') == aperta_black, \
+    assert label.value_of_css_property('color') == APERTA_BLACK, \
         label.value_of_css_property('color')
     assert label.value_of_css_property('line-height') == '20px', \
         label.value_of_css_property('line-height')
@@ -2074,11 +2099,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering informational alerts across the application
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
         msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == aperta_black, msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == APERTA_BLACK, msg.value_of_css_property('color')
     assert msg.value_of_css_property('line-height') == '20px', \
         msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', \
@@ -2094,10 +2119,10 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering error alerts across the application
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     # assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide as a color and is not the color of the actual implementation
-    # assert msg.value_of_css_property('color') == aperta_flash_error, msg.value_of_css_property('color')
+    # assert msg.value_of_css_property('color') == APERTA_FLASH_ERROR, msg.value_of_css_property('color')
     # This color is not represented in the style guide
     # assert msg.value_of_css_property('background-color') == 'rgba(247, 239, 233, 1)', \
     #    msg.value_of_css_property('background-color')
@@ -2112,11 +2137,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering success alerts across the application
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    assert msg.value_of_css_property('color') == aperta_green, msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == APERTA_GREEN, msg.value_of_css_property('color')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == aperta_flash_success_bkgrnd, \
+    assert msg.value_of_css_property('background-color') == APERTA_FLASH_SUCCESS_BKGRND, \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
@@ -2129,12 +2154,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering warning alerts across the application
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('color') == aperta_flash_info, msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == APERTA_FLASH_INFO, msg.value_of_css_property('color')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == aperta_flash_info_bkgrnd, \
+    assert msg.value_of_css_property('background-color') == APERTA_FLASH_INFO_BKGRND, \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
@@ -2178,11 +2203,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering success alerts for rescind decision elements
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
         msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == aperta_black, \
+    assert msg.value_of_css_property('color') == APERTA_BLACK, \
         msg.value_of_css_property('color')
     assert msg.value_of_css_property('line-height') == '20px', \
         msg.value_of_css_property('line-height')
@@ -2193,13 +2218,13 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering informational alerts for rescind decision elements
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
         msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == aperta_black, \
+    assert msg.value_of_css_property('color') == APERTA_BLACK, \
         msg.value_of_css_property('color')
-    assert msg.value_of_css_property('background-color') == aperta_grey_xlight, \
+    assert msg.value_of_css_property('background-color') == APERTA_GREY_XLIGHT, \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '19.8px', \
         msg.value_of_css_property('line-height')
@@ -2210,10 +2235,10 @@ class AuthenticatedPage(PlosPage):
       decision elements
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
         msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
-    assert msg.value_of_css_property('color') == aperta_black, \
+    assert msg.value_of_css_property('color') == APERTA_BLACK, \
         msg.value_of_css_property('color')
     assert msg.value_of_css_property('line-height') == '19.8px', \
         msg.value_of_css_property('line-height')
@@ -2225,11 +2250,11 @@ class AuthenticatedPage(PlosPage):
       decision elements
     :param msg: alert message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
       msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == aperta_black, \
+    assert msg.value_of_css_property('color') == APERTA_BLACK, \
         msg.value_of_css_property('color')
     assert msg.value_of_css_property('background-color') == 'rgba(108, 108, 108, 1)', \
       msg.value_of_css_property('background-color')
@@ -2244,11 +2269,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering large avatars across the application
     :param avatar: avatar to validate
     """
-    assert application_typeface in avatar.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in avatar.value_of_css_property('font-family'), \
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == APERTA_BLACK, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '160px', avatar.value_of_css_property('width')
@@ -2260,12 +2285,12 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering large avatar hover states across the application
     :param avatar: avatar to validate
     """
-    assert application_typeface in avatar.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in avatar.value_of_css_property('font-family'), \
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert avatar.value_of_css_property('color') == aperta_green_dark, avatar.value_of_css_property('color')
-    assert avatar.value_of_css_property('background-color') == aperta_green_light, \
+    assert avatar.value_of_css_property('color') == APERTA_GREEN_DARK, avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('background-color') == APERTA_GREEN_LIGHT, \
         avatar.value_of_css_property('background-color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
@@ -2276,11 +2301,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering thumbnail avatars across the application
     :param avatar: avatar to validate
     """
-    assert application_typeface in avatar.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in avatar.value_of_css_property('font-family'), \
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == APERTA_BLACK, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '32px', avatar.value_of_css_property('width')
@@ -2292,11 +2317,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering thumbnail avatars across the application
     :param avatar: avatar to validate
     """
-    assert application_typeface in avatar.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in avatar.value_of_css_property('font-family'), \
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert avatar.value_of_css_property('color') == aperta_black, avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('color') == APERTA_BLACK, avatar.value_of_css_property('color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
     assert avatar.value_of_css_property('width') == '25px', avatar.value_of_css_property('width')
@@ -2310,10 +2335,10 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering activity list messages
     :param msg: activity message to validate
     """
-    assert application_typeface in msg.value_of_css_property('font-size'), msg.value_of_css_property('font-size')
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-size'), msg.value_of_css_property('font-size')
     assert msg.value_of_css_property('font-size') == '17px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('line-height') == aperta_black, msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('line-height') == APERTA_BLACK, msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('line-height') == '24.2833px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('padding-top') == '0px', msg.value_of_css_property('padding-top')
     assert msg.value_of_css_property('padding-right') == '15px', msg.value_of_css_property('padding-right')
@@ -2326,11 +2351,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering activity list timestamps
     :param timestamp: timestamp to validate
     """
-    assert application_typeface in timestamp.value_of_css_property('font-size'), \
+    assert APPLICATION_TYPEFACE in timestamp.value_of_css_property('font-size'), \
         timestamp.value_of_css_property('font-size')
     assert timestamp.value_of_css_property('font-size') == '14px', timestamp.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert timestamp.value_of_css_property('line-height') == aperta_black, \
+    assert timestamp.value_of_css_property('line-height') == APERTA_BLACK, \
         timestamp.value_of_css_property('line-height')
     assert timestamp.value_of_css_property('line-height') == '20px', timestamp.value_of_css_property('line-height')
     assert timestamp.value_of_css_property('padding-top') == '0px', timestamp.value_of_css_property('padding-top')
@@ -2346,11 +2371,11 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering progress spinners across the application
     :param spinner: spinner to validate
     """
-    assert application_typeface in spinner.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in spinner.value_of_css_property('font-family'), \
         spinner.value_of_css_property('font-family')
     assert spinner.value_of_css_property('font-size') == '14px', spinner.value_of_css_property('font-size')
     # These colors are not represented in the style guide
-    assert spinner.value_of_css_property('color') == aperta_black, spinner.value_of_css_property('color')
+    assert spinner.value_of_css_property('color') == APERTA_BLACK, spinner.value_of_css_property('color')
     assert spinner.value_of_css_property('line-height') == '20px', spinner.value_of_css_property('line-height')
     assert spinner.value_of_css_property('width') == '50px', spinner.value_of_css_property('width')
     assert spinner.value_of_css_property('height') == '50px', spinner.value_of_css_property('height')
@@ -2363,14 +2388,97 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering table headings across the application
     :param th: table heading to validate
     """
-    assert application_typeface in th.value_of_css_property('font-family'), th.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in th.value_of_css_property('font-family'), th.value_of_css_property('font-family')
     assert th.value_of_css_property('font-size') == '14px', th.value_of_css_property('font-size')
     assert th.value_of_css_property('font-weight') == '700', th.value_of_css_property('font-weight')
     assert th.value_of_css_property('line-height') == '20px', th.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert th.value_of_css_property('color') == aperta_black, th.value_of_css_property('color')
+    assert th.value_of_css_property('color') == APERTA_BLACK, th.value_of_css_property('color')
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
+
+
+  @staticmethod
+  def validate_warning_message_style(warning, message):
+    """
+    Ensure consistency in rendering warning across confirmation
+    :param warning: Warning element
+    """
+    assert warning.text == message, '{0} not {1}'.format(warning.text, message)
+    assert APPLICATION_TYPEFACE in warning.value_of_css_property('font-family'), \
+        warning.value_of_css_property('font-family')
+    assert warning.value_of_css_property('font-size') == '18px', \
+        warning.value_of_css_property('font-size')
+    assert warning.value_of_css_property('font-weight') == '500', \
+        warning.value_of_css_property('font-weight')
+    assert warning.value_of_css_property('line-height') == '19.8px', \
+        warning.value_of_css_property('line-height')
+    assert warning.value_of_css_property('color') == WHITE, \
+        warning.value_of_css_property('color')
+    assert warning.value_of_css_property('text-align') == 'center', \
+        warning.value_of_css_property('text-align')
+    assert warning.value_of_css_property('vertical-align') == 'baseline', \
+        warning.value_of_css_property('vertical-align')
+
+  @staticmethod
+  def validate_cancel_confirmation_style(cancel):
+    """
+    Ensure consistency in rendering cancel link in confirmation across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family'), \
+        cancel.value_of_css_property('font-family')
+    assert cancel.value_of_css_property('font-size') == '14px', \
+        cancel.value_of_css_property('font-size')
+    assert cancel.value_of_css_property('font-weight') == '400', \
+        cancel.value_of_css_property('font-weight')
+    assert cancel.value_of_css_property('line-height') == '20px', \
+        cancel.value_of_css_property('line-height')
+    assert cancel.value_of_css_property('color') == WHITE, \
+        cancel.value_of_css_property('color')
+    assert cancel.value_of_css_property('text-align') == 'center', \
+        cancel.value_of_css_property('text-align')
+
+  @staticmethod
+  def validate_cancel_link_style(cancel):
+    """
+    Ensure consistency in rendering cancel link across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family'), \
+        cancel.value_of_css_property('font-family')
+    assert cancel.value_of_css_property('font-size') == '14px', \
+        cancel.value_of_css_property('font-size')
+    assert cancel.value_of_css_property('font-weight') == '400', \
+        cancel.value_of_css_property('font-weight')
+    assert cancel.value_of_css_property('line-height') == '20px', \
+        cancel.value_of_css_property('line-height')
+    assert cancel.value_of_css_property('color') == APERTA_GREEN, \
+        cancel.value_of_css_property('color')
+    assert cancel.value_of_css_property('text-align') == 'center', \
+        cancel.value_of_css_property('text-align')
+
+  @staticmethod
+  def validate_delete_confirmation_style(delete):
+    """
+    Ensure consistency in rendering cancel link across confirmation
+    :param cancel: Cancel element
+    """
+    assert APPLICATION_TYPEFACE in delete.value_of_css_property('font-family'), \
+        delete.value_of_css_property('font-family')
+    assert delete.value_of_css_property('font-size') == '14px', \
+        delete.value_of_css_property('font-size')
+    assert delete.value_of_css_property('font-weight') == '400', \
+        delete.value_of_css_property('font-weight')
+    assert delete.value_of_css_property('line-height') == '20px', \
+        delete.value_of_css_property('line-height')
+    assert delete.value_of_css_property('color') == APERTA_GREEN, \
+        delete.value_of_css_property('color')
+    assert delete.value_of_css_property('text-align') == 'center', \
+        delete.value_of_css_property('text-align')
+    assert delete.value_of_css_property('background-color') == WHITE, \
+        delete.value_of_css_property('vertical-align')
+
 
   @staticmethod
   def validate_file_title_style(ft):
@@ -2378,7 +2486,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering the file title in SI Card
     :param ft: File title to validate
     """
-    assert application_typeface in ft.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in ft.value_of_css_property('font-family'), \
         ft.value_of_css_property('font-family')
     assert ft.value_of_css_property('font-size') == '14px', ft.value_of_css_property('font-size')
     assert ft.value_of_css_property('font-weight') == '700', \
@@ -2386,4 +2494,4 @@ class AuthenticatedPage(PlosPage):
     assert ft.value_of_css_property('line-height') == '20px', \
         ft.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert ft.value_of_css_property('color') == aperta_black, ft.value_of_css_property('color')
+    assert ft.value_of_css_property('color') == APERTA_BLACK, ft.value_of_css_property('color')

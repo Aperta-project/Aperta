@@ -5,7 +5,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
 from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.initial_decision_card import InitialDecisionCard
@@ -83,6 +83,10 @@ class WorkflowPage(AuthenticatedPage):
     self._supporting_info_card = (By.CSS_SELECTOR, 'div.supporting-information-task > a')
     self._title_abstract_card = (By.CSS_SELECTOR, 'div.title-and-abstract-task > a')
     self._upload_manu_card = (By.CSS_SELECTOR, 'div.upload-manuscript-task > a')
+    self._ad_hoc_editors_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Editors')]")
+    self._ad_hoc_reviewers_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Reviewers')]")
+    self._ad_hoc_authors_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Authors')]")
+    self._ad_hoc_staff_card = (By.XPATH, "//a/span[contains(., 'Ad-hoc for Staff Only')]")
     self._reviewed_by_card = (By.CSS_SELECTOR, 'div.reviewer-report-task > a')
     self._cards = (By.CSS_SELECTOR, 'div.card')
     self._card_types = (By.CSS_SELECTOR, 'div.row label')
@@ -107,6 +111,18 @@ class WorkflowPage(AuthenticatedPage):
   def click_supporting_information_card(self):
     """Open the Supporting Information Card from the workflow page"""
     self._get(self._supporting_info_card).click()
+
+  def click_ad_hoc_reviewer_card(self):
+    """Open Ad Hoc Reviewer Card from the workflow page"""
+    self._get(self._ad_hoc_reviewers_card).click()
+
+  def click_ad_hoc_editor_card(self):
+    """Open Ad Hoc Editor Card from the workflow page"""
+    self._get(self._ad_hoc_editors_card).click()
+
+  def click_ad_hoc_staff_card(self):
+    """Open Ad Hoc Reviewer Staff Only from the workflow page"""
+    self._get(self._ad_hoc_staff_card).click()
 
   def click_initial_tech_check_card(self):
     """Open the Initial Tech Check Card from the workflow page"""
@@ -140,6 +156,10 @@ class WorkflowPage(AuthenticatedPage):
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
     self._get(self._register_decision_card).click()
+
+  def click_ad_hoc_authors_card(self):
+    """Open the Ad Hoc author card"""
+    self._get(self._ad_hoc_authors_card).click()
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""
@@ -199,17 +219,17 @@ class WorkflowPage(AuthenticatedPage):
     close_icon_overlay = self._get(self._close_icon_overlay)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     select_task = self._get(self._select_in_overlay)
-    assert application_typeface in select_task.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in select_task.value_of_css_property('font-family')
     assert select_task.value_of_css_property('font-size') == '14px'
     assert select_task.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     add_button_overlay = self._get(self._add_button_overlay)
     self.validate_primary_big_green_button_style(add_button_overlay)
     assert add_button_overlay.text == 'ADD'
     cancel_button_overlay = self._get(self._cancel_button_overlay)
-    assert application_typeface in cancel_button_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in cancel_button_overlay.value_of_css_property('font-family')
     assert cancel_button_overlay.value_of_css_property('font-size') == '14px'
     assert cancel_button_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert cancel_button_overlay.value_of_css_property('text-align') == 'center'
@@ -299,7 +319,7 @@ class WorkflowPage(AuthenticatedPage):
     remove_subtitle = self._get(self._remove_confirmation_subtitle)
     assert remove_subtitle.text == "Are you sure?"
     assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert application_typeface in remove_subtitle.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in remove_subtitle.value_of_css_property('font-family')
     assert remove_subtitle.value_of_css_property('font-size') == '30px'
     assert remove_subtitle.value_of_css_property('font-weight') == '500'
     remove_yes = self._get(self._remove_confirmation_title)
@@ -308,7 +328,7 @@ class WorkflowPage(AuthenticatedPage):
     remove_cancel = self._get(self._remove_confirmation_subtitle)
     assert remove_cancel.text == "cancel"
     assert remove_cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert application_typeface in remove_cancel.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in remove_cancel.value_of_css_property('font-family')
     assert remove_cancel.value_of_css_property('font-size') == '14px'
 
   def add_invite_editor_card(self):
@@ -333,7 +353,7 @@ class WorkflowPage(AuthenticatedPage):
         card.click()
         break
     else:
-      raise ElementDoesNotExistAssertionError('No such card')
+      raise ElementDoesNotExistAssertionError('No such card: {0}'.format(card_title))
     div_buttons = self._get(self._div_buttons)
     div_buttons.find_element_by_class_name('button-primary').click()
     time.sleep(2)

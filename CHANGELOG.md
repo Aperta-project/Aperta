@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Users can now change the initial participants on a discussion topic
+* The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
 ### Changed
 ### Deprecated
 ### Removed

@@ -63,7 +63,7 @@ class NewTaxonTask(BaseTask):
         if question_scenario['compliance']:
           compliance_checkbox.click()
 
-  def validate_task_elements_styles(self, scenario):
+  def validate_task_elements(self, scenario):
     """
     Validate the elements and styles of the Task
     :param scenario: Is the scenario needed to extract the elements
@@ -102,7 +102,7 @@ class NewTaxonTask(BaseTask):
                                            comply_text, authors_text
                                           )
 
-  def validate_task_elements_styles(self, checkbox, text, 
+  def validate_task_styles(self, checkbox, text, 
                                     compliance_checkbox, comply_link, comply_text, authors_text):
     """
     Validate the elements styles for New Taxon Task

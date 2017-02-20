@@ -46,7 +46,7 @@ class NewTaxonCard(BaseCard):
             'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
             str(compliance_checkbox.is_selected()), str(question_scenario['compliance']))
 
-  def validate_card_elements_styles(self, paper_id, scenario):
+  def validate_card_elements(self, paper_id, scenario):
     """
     This method validates the styles of the card elements including the common card elements
     :param paper_id: The id of the manuscript
@@ -90,11 +90,11 @@ class NewTaxonCard(BaseCard):
         assert comply_link.get_attribute('href') == \
             'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
 
-        self.validate_card_elements_styles(checkbox, text, compliance_checkbox, comply_link,
+        self.validate_card_styles(checkbox, text, compliance_checkbox, comply_link,
                                            comply_text, authors_text
                                           )
 
-  def validate_card_elements_styles(self, checkbox, text, compliance_checkbox, comply_link,
+  def validate_card_styles(self, checkbox, text, compliance_checkbox, comply_link,
                                     comply_text, authors_text):
     """
     Validate the elements styles for New Taxon Card

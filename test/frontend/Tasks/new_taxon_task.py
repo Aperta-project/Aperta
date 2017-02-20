@@ -97,7 +97,7 @@ class NewTaxonTask(BaseTask):
         assert comply_link.get_attribute('href') == \
             'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
 
-        self.validate_task_elements_styles(checkbox, text, 
+        self.validate_task_styles(checkbox, text, 
                                            compliance_checkbox, comply_link, 
                                            comply_text, authors_text
                                           )

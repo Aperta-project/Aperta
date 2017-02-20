@@ -90,7 +90,7 @@ class NewTaxonTest(CommonTest):
         data=[{'checkbox': True, 'compliance': False}, {'checkbox': True, 'compliance': False}])
     logging.info('Completed Taxonomy data: {0}'.format(data))
     new_taxon_task = NewTaxonTask(self._driver)
-    new_taxon_task.validate_task_elements_styles(data)
+    new_taxon_task.validate_task_elements(data)
     # logout
     manuscript_page.logout()
     # Enter as Editorial User
@@ -111,7 +111,7 @@ class NewTaxonTest(CommonTest):
     new_taxon_card = NewTaxonCard(self.getDriver())
     new_taxon_card.card_ready()
     logging.info('Reviewing data: {0}'.format(data))
-    new_taxon_card.validate_card_elements_styles(short_doi, data)
+    new_taxon_card.validate_card_elements(short_doi, data)
             
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

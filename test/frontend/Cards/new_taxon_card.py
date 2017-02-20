@@ -36,7 +36,7 @@ class NewTaxonCard(BaseCard):
       
       assert checkbox.is_selected() == question_scenario['checkbox'], \
           'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
-           str(checkbox.is_selected()), str(question_scenario['checkbox']))
+           checkbox.is_selected(), question_scenario['checkbox'])
            
       if question_scenario['checkbox']:
         additional_data = item.find_element_by_class_name('additional-data')
@@ -44,7 +44,7 @@ class NewTaxonCard(BaseCard):
 
         assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
             'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
-            str(compliance_checkbox.is_selected()), str(question_scenario['compliance']))
+            compliance_checkbox.is_selected(), question_scenario['compliance'])
 
   def validate_card_elements(self, paper_id, scenario):
     """

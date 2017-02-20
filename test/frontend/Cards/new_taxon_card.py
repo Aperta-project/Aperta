@@ -35,7 +35,7 @@ class NewTaxonCard(BaseCard):
       checkbox = question.find_element_by_tag_name('input')
       
       assert checkbox.is_selected() == question_scenario['checkbox'], \
-          'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+          'The question {0} checkbox state: {1} is not the expected: {2}'.format(key,
            checkbox.is_selected(), question_scenario['checkbox'])
            
       if question_scenario['checkbox']:
@@ -43,7 +43,7 @@ class NewTaxonCard(BaseCard):
         compliance_checkbox = additional_data.find_element_by_tag_name('input')
 
         assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
-            'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+            'The question {0} checkbox state: {1} is not the expected: {2}'.format(key,
             compliance_checkbox.is_selected(), question_scenario['compliance'])
 
   def validate_card_elements(self, paper_id, scenario):
@@ -64,7 +64,7 @@ class NewTaxonCard(BaseCard):
       text = question.find_element_by_class_name('model-question')
       
       assert checkbox.is_selected() == question_scenario['checkbox'], \
-          'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+          'The question {0} checkbox state: {1} is not the expected: {2}'.format(key,
           checkbox.is_selected(), question_scenario['checkbox'])
           
       text_list = ["Does this manuscript describe a new %s taxon name?" % types \
@@ -79,7 +79,7 @@ class NewTaxonCard(BaseCard):
         authors_text = additional_data.find_element_by_class_name('model-question')
         
         assert compliance_checkbox.is_selected() == question_scenario['compliance'], \
-            'The question {0} checkbox state: {1} is not the expected: {2}'.format(key, \
+            'The question {0} checkbox state: {1} is not the expected: {2}'.format(key,
             compliance_checkbox.is_selected(), question_scenario['compliance'])
         assert comply_text.text == (
             "Please read Regarding Submission of a new Taxon Name and indicate if you comply:"), \
@@ -90,12 +90,11 @@ class NewTaxonCard(BaseCard):
         assert comply_link.get_attribute('href') == \
             'http://www.plosbiology.org/static/policies#taxon', comply_link.get_attribute('href')
 
-        self.validate_card_styles(checkbox, text, compliance_checkbox, comply_link,
-                                           comply_text, authors_text
-                                          )
+        self.validate_card_styles(checkbox, text, compliance_checkbox, comply_link, comply_text,
+                                  authors_text)
 
-  def validate_card_styles(self, checkbox, text, compliance_checkbox, comply_link,
-                                    comply_text, authors_text):
+  def validate_card_styles(self, checkbox, text, compliance_checkbox, comply_link, comply_text,
+                           authors_text):
     """
     Validate the elements styles for New Taxon Card
     :param checkbox: The selected checkbox

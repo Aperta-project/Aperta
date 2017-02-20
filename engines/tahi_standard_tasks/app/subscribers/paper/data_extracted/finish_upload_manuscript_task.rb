@@ -6,6 +6,7 @@ class Paper::DataExtracted::FinishUploadManuscriptTask
       paper.tasks_for_type(TahiStandardTasks::UploadManuscriptTask.to_s).each do |task|
         task.complete!
         Activity.task_updated! task, user: User.find(event_data[:record].user_id)
+      end
     end
   end
 end

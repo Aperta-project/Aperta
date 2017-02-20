@@ -8,15 +8,13 @@ FactoryGuy.define('card', {
   traits: {
     author: {
       name: 'Author',
-      cardContent: [
-        {ident: 'author--published_as_corresponding_author'}
-      ]
+      cardContent: [{ ident: 'author--published_as_corresponding_author' }]
     }
   }
 });
 
 let cardIdents = {
-  'Author': [
+  Author: [
     'author--published_as_corresponding_author',
     'author--deceased',
     'author--government-employee',
@@ -40,7 +38,7 @@ let cardIdents = {
     'authors--authors_confirm_icmje_criteria',
     'authors--authors_agree_to_submission'
   ],
-  'GroupAuthor': [
+  GroupAuthor: [
     'group-author--contributions--conceptualization',
     'group-author--contributions--investigation',
     'group-author--contributions--visualization',
@@ -54,14 +52,14 @@ let cardIdents = {
     'group-author--contributions--writing-original-draft',
     'group-author--contributions--writing-review-and-editing',
     'group-author--contributions--funding-acquisition',
-    'group-author--contributions--formal-analysis',
+    'group-author--contributions--formal-analysis'
   ],
   'TahiStandardTasks::FinancialDisclosureTask': [
     'financial_disclosures--author_received_funding'
   ],
   'TahiStandardTasks::Funder': [
     'funder--had_influence',
-    'funder--had_influence--role_description',
+    'funder--had_influence--role_description'
   ],
   'PlosBilling::BillingTask': [
     'plos_billing--first_name',
@@ -96,11 +94,29 @@ let cardIdents = {
     'plos_billing--affirm_true_and_complete',
     'plos_billing--agree_to_collections',
     'plos_billing--gpi_country',
-    'plos_billing--ringgold_institution',
+    'plos_billing--ringgold_institution'
+  ],
+  'TahiStandardTasks::FigureTask': ['figures--complies'],
+  'TahiStandardTasks::RegisterDecisionTask': [
+    'register_decision_questions--selected-template',
+    'register_decision_questions--to-field',
+    'register_decision_questions--subject-field'
+  ],
+  'TahiStandardTasks::EarlyPostingTask': ['early-posting--consent'],
+  'TahiStandardTasks::ReportingGuidelinesTask': [
+    'reporting_guidelines--clinical_trial',
+    'reporting_guidelines--systematic_reviews',
+    'reporting_guidelines--systematic_reviews--checklist',
+    'reporting_guidelines--meta_analyses',
+    'reporting_guidelines--meta_analyses--checklist',
+    'reporting_guidelines--diagnostic_studies',
+    'reporting_guidelines--epidemiological_studies',
+    'reporting_guidelines--microarray_studies'
   ]
 };
 
 export function createCard(cardName) {
-  let content = cardIdents[cardName].map((i) => FactoryGuy.make('card-content', {ident: i}));
-  return FactoryGuy.make('card', {name: cardName, cardContent: content});
+  let content = cardIdents[cardName].map(i =>
+    FactoryGuy.make('card-content', { ident: i }));
+  return FactoryGuy.make('card', { name: cardName, cardContent: content });
 }

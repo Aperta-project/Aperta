@@ -3,8 +3,8 @@ import Factory from 'tahi/tests/helpers/factory';
 import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
+import { createCard } from 'tahi/tests/factories/card';
 import { manualSetup, make, makeList } from 'ember-data-factory-guy';
-import setupMockServer from 'tahi/tests/helpers/mock-server';
 
 moduleForComponent(
   'register-decision-task',
@@ -13,10 +13,7 @@ moduleForComponent(
 
     beforeEach() {
       manualSetup(this.container);
-      let nestedQuestions = makeList('nested-question',
-                                     { id: 1, ident: 'register_decision_questions--to-field' },
-                                     { id: 2, ident: 'register_decision_questions--subject-field' },
-                                     { id: 3, ident: 'register_decision_questions--selected-template' });
+      let card = createCard('TahiStandardTasks::RegisterDecisionTask');
 
       let decisions = makeList('decision', 'draft', { verdict: 'accept' }, { verdict: 'minor_revision' });
       let paper = make('paper', {
@@ -51,7 +48,7 @@ moduleForComponent(
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
             letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
-        nestedQuestions: nestedQuestions
+        card: card
       });
 
       // Mock out pusher
@@ -61,10 +58,8 @@ moduleForComponent(
 
       this.set('task', task);
 
-      // mockCreate('nested-question-answer'); does not work, so we cannot use factory guy here.
-      // TODO: revisit when factory guy update
-      $.mockjax({url: '/api/nested_questions/3/answers', type: 'PUT', status: 204, responseText: '[]'});
-      $.mockjax({url: '/api/nested_questions/3/answers', type: 'POST', status: 204, responseText: '[]'});
+      $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: {answer: {id: 12}}});
+      $.mockjax({url: '/api/answers/12', type: 'PUT', status: 204, responseText: '[]'});
       $.mockjax({url: /\/api\/decisions\/[0-9]+/, type: 'PUT', status: 204, responseText: '[]'});
 
       this.selectDecision = function(decision) {

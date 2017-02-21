@@ -1,3 +1,4 @@
+# Add a randomly generated token to Authors
 class AddTokenToAuthor < ActiveRecord::Migration
   def up
     add_column :authors, :token, :string, unique: true
@@ -8,6 +9,10 @@ class AddTokenToAuthor < ActiveRecord::Migration
 
     Author.reset_column_information
     Author.find_each(&:migration_create_token!)
+
+    if null_token_count("authors").nonzero?
+      raise "Expected all Authors to have a token"
+    end
   end
 
   def down
@@ -23,5 +28,13 @@ class AddTokenToAuthor < ActiveRecord::Migration
     def migration_create_token!
       update_attributes! token: SecureRandom.hex(10)
     end
+  end
+
+  def null_token_count(table_name)
+    column_name = "#{table_name}_count"
+    sql_result = execute(<<-SQL)
+      SELECT COUNT(*) as #{column_name} FROM #{table_name} WHERE TOKEN IS NULL
+    SQL
+    sql_result.field_values(column_name).first.to_i
   end
 end

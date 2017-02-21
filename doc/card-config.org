@@ -24,8 +24,8 @@ to avoid having to pass a journal argument into the myriad rake tasks
 
 - [X] Failing js tests
   - [X] "Integration FinancialDisclosure"
-  - [ ] "Integration Reviewer Report" - Wait until merging master
-  - [ ] "Integration Front Matter Reviewer Report" - Wait until merging master
+  - [X] "Integration Reviewer Report"
+  - [X] "Integration Front Matter Reviewer Report"
   - [X] "Integration | Component | billing task"
   - [X] "Integration | Component | nested question check"
   - [X] "Integration | Component | nested question input"
@@ -37,7 +37,7 @@ to avoid having to pass a journal argument into the myriad rake tasks
   - [X] "Integration | Components | Tasks | Paper Reviewer Task"
   - [X] "Integration | Components | Tasks | Register Decision"
   - [X] "Integration | Component | reporting guidelines task"
-  - [ ] "ObjectProxyWithValidationErrors"
+  - [X] "ObjectProxyWithValidationErrors"
   - [X] "Unit | Model | funder"
 
 

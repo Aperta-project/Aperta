@@ -69,7 +69,7 @@ test('#validateAll without error', function(assert) {
       'key2': 'string',
       'ident--key': 'string',
       'ident--key2': 'string',
-      findQuestion() { return 'string'; },
+      findCardContent() { return 'string'; },
     },
 
     validations: {
@@ -100,7 +100,7 @@ test('#validateAll with error', function(assert) {
       'key2': '',
       'ident--key': '',
       'ident--key2': '',
-      findQuestion() { return ''; },
+      findCardContent() { return ''; },
     },
 
     validations: {

@@ -8,6 +8,7 @@ moduleForComponent(
   'Integration | Components | Tasks | figure thumbnail', {
     integration: true,
     beforeEach() {
+      $.mockjax.clear();
       registerCustomAssertions();
       manualSetup(this.container);
     }
@@ -51,6 +52,7 @@ test('it allows the user to cancel', function(assert) {
   this.set('destroyFigure', function(){});
   this.set('figure', make('figure', {status: 'processing'}));
   this.render(template);
+  $.mockjax({url: '/api/figures/1/cancel', status: 204, responseText: ''});
 
   this.$('.upload-cancel-link').click();
 

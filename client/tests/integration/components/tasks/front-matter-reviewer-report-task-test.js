@@ -3,12 +3,15 @@ import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import { make, manualSetup }  from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import { createCard } from 'tahi/tests/factories/card';
+import { createAnswer } from 'tahi/tests/factories/answer';
 
 moduleForComponent('task/front-matter-reviewer-report-task', 'Integration | Component | Front Matter Reviewer Report Task', {
   integration: true,
 
   beforeEach() {
     manualSetup(this.container);
+    createCard('FrontMatterReviewerReport');
     this.task = make('front-matter-reviewer-report-task', 'with_paper_and_journal');
     this.can = FakeCanService.create();
     this.register('service:can', this.can.asService());
@@ -52,8 +55,7 @@ test('Reviewer invitation not accepted', function(assert) {
   Ember.run(() => {
     let decision = [make('decision', { draft: true })];
     this.task.set('decisions', decision);
-    make('reviewer-report', 'with_front_matter_questions',
-         { status: 'invitation_sent', task: this.task, decision: decision});
+    make('reviewer-report', { status: 'invitation_sent', task: this.task, decision: decision});
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
 
@@ -64,7 +66,7 @@ test('Readonly mode: Not able to provide reviewer feedback', function(assert) {
   Ember.run(() => {
     let decision = [make('decision', { draft: true })];
     this.task.set('decisions', decision);
-    make('reviewer-report', 'with_front_matter_questions', {task: this.task, decision: decision});
+    make('reviewer-report', {task: this.task, decision: decision});
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
 
@@ -75,8 +77,7 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions',
-                               { status: 'pending', task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
   });
@@ -89,8 +90,7 @@ test('When the decision is a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
-                               { status: 'pending', task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
   });
@@ -102,8 +102,7 @@ test('When the decision is not a draft', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: false });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
-                               { status: 'completed', task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', { status: 'completed', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
     this.task.set('body', { submitted: true });
@@ -121,8 +120,7 @@ test('History when there are completed decisions', function(assert) {
 
   let task = this.task;
   let reviewerReports = decisions.map((decision) => {
-    return make('reviewer-report', 'with_front_matter_questions', 
-                { status: 'completed', task: task, decision: decision });
+    return make('reviewer-report', { status: 'completed', task: task, decision: decision });
   });
 
   Ember.run(() => {
@@ -139,26 +137,14 @@ test('That there are the correct nested question answers when there is no draft 
     make('decision', { majorVersion: 1, minorVersion: 0, draft: false })
   ];
   const reviewerReports = [
-    make('reviewer-report', 'with_front_matter_questions',
-         { status: 'completed', task: this.task, decision: decisions[0] }),
-    make('reviewer-report', 'with_front_matter_questions',
-         { status: 'completed', task: this.task, decision: decisions[1] })
+    make('reviewer-report', { status: 'completed', task: this.task, decision: decisions[0] }),
+    make('reviewer-report', { status: 'completed', task: this.task, decision: decisions[1] })
   ];
 
   const ident = 'front_matter_reviewer_report--suitable--comment';
   const answers = [
-    make('nested-question-answer', {
-      nestedQuestion: reviewerReports[0].findQuestion(ident),
-      value: 'The comments from my first review',
-      owner: reviewerReports[0],
-      decision: decisions[0]
-    }),
-    make('nested-question-answer', {
-      nestedQuestion: reviewerReports[1].findQuestion(ident),
-      value: 'The comments from my second review',
-      owner: reviewerReports[1],
-      decision: decisions[1]
-    })
+    createAnswer(reviewerReports[0], ident, { value: 'The comments from my first review' }),
+    createAnswer(reviewerReports[1], ident, { value: 'The comments from my second review' })
   ];
 
   Ember.run(() => {

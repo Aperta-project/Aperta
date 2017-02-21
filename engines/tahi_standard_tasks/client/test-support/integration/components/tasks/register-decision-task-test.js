@@ -12,6 +12,8 @@ moduleForComponent(
     integration: true,
 
     beforeEach() {
+      $.mockjax.clear();
+
       manualSetup(this.container);
       let card = createCard('TahiStandardTasks::RegisterDecisionTask');
 

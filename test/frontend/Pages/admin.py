@@ -12,7 +12,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, application_typeface, aperta_blue, white
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_BLUE, WHITE
 
 __author__ = 'jgray@plos.org'
 
@@ -219,13 +219,13 @@ class AdminPage(AuthenticatedPage):
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(2)
-      assert upload_button.value_of_css_property('color') == aperta_blue, \
+      assert upload_button.value_of_css_property('color') == APERTA_BLUE, \
           upload_button.value_of_css_property('color')
-      assert upload_button.value_of_css_property('background-color') == white, \
+      assert upload_button.value_of_css_property('background-color') == WHITE, \
           upload_button.value_of_css_property('background-color')
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
       assert upload_note.text == '(250px x 40px)', upload_note.text
-      assert application_typeface in upload_note.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in upload_note.value_of_css_property('font-family'), \
           upload_note.value_of_css_property('font-family')
       assert upload_note.value_of_css_property('font-size') == '14px', \
           upload_note.value_of_css_property('font-size')
@@ -244,7 +244,7 @@ class AdminPage(AuthenticatedPage):
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
       assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti', \
           journal_title_field.get_attribute('placeholder')
-      assert application_typeface in journal_title_field.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in journal_title_field.value_of_css_property('font-family'), \
           journal_title_field.value_of_css_property('font-family')
       assert journal_title_field.value_of_css_property('font-size') == '14px', \
           journal_title_field.value_of_css_property('font-size')
@@ -266,7 +266,7 @@ class AdminPage(AuthenticatedPage):
       assert journal_desc_field.get_attribute('placeholder') == \
           'Accelerating the publication of peer-reviewed science', \
           journal_desc_field.get_attribute('placeholder')
-      assert application_typeface in journal_desc_field.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in journal_desc_field.value_of_css_property('font-family'), \
           journal_desc_field.value_of_css_property('font-family')
       assert journal_desc_field.value_of_css_property('font-size') == '14px', \
           journal_desc_field.value_of_css_property('font-size')
@@ -301,13 +301,13 @@ class AdminPage(AuthenticatedPage):
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
-      assert save_button.value_of_css_property('color') == aperta_blue, \
+      assert save_button.value_of_css_property('color') == APERTA_BLUE, \
           save_button.value_of_css_property('color')
-      assert save_button.value_of_css_property('background-color') == white, \
+      assert save_button.value_of_css_property('background-color') == WHITE, \
           save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'cancel', cancel_link.text
-      assert application_typeface in cancel_link.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in cancel_link.value_of_css_property('font-family'), \
           cancel_link.value_of_css_property('font-family')
       assert cancel_link.value_of_css_property('font-size') == '14px', \
           cancel_link.value_of_css_property('font-size')
@@ -495,6 +495,6 @@ class AdminPage(AuthenticatedPage):
     :return: void function
     """
     if jname and staff_email:
-      PgSQL().modify('UPDATE journals SET staff_email=%s WHERE name=%s;', (staff_email, jname))
+      PgSQL().modify('UPDATE journals SET  staff_email=%s WHERE name=%s;', (staff_email,jname))
     else:
       raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email')

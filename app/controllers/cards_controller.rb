@@ -9,12 +9,12 @@ class CardsController < ApplicationController
     respond_with owner_klass.find(params[:owner_id]).card
   end
 
-  # Although this is the 'index' action, it's really only exists to find a
-  # single card by its name.  The index route maps more nicely to Ember Data's
-  # expectation for `queryRecord`.  As soon as multiple 'versions' of cards
-  # exist this method will have to change to either find the latest version for
-  # a given name or to find the correct Card instance for a given task
-  def query_name
+  # This action only exists to find a single card via query params. It
+  # corresponds to the `store.queryRecord('card', {})` call in the Card adapter
+  # on the client side As soon as multiple 'versions' of cards exist this
+  # method will have to change to either find the latest version for a given
+  # name or to find the correct Card instance for a given task
+  def find_card
     respond_with Card.find_by(name: params[:name])
   end
 

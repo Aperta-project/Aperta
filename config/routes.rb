@@ -67,6 +67,7 @@ Tahi::Application.routes.draw do
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index]
+    get "/cards/find_card", to: "cards#find_card"
 
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]

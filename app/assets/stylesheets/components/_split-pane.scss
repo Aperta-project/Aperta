@@ -31,13 +31,14 @@
   background-color: #ddd;
 
   .box-handle {
-    position: relative;
+    position: absolute;
     display: block;
     z-index: 1;
     background-color: #ddd;
     width: 23px;
     height: 35px;
     top: 50%;
+    transform: translateY(-50%);
     left: -9px;
     .vertical-line {
       position: relative;

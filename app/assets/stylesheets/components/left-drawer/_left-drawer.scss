@@ -3,6 +3,7 @@
 
 .left-drawer-page {
   position: relative;
+  min-height: calc(100vh - #{$main-nav-height-large-screen});
 }
 
 .left-drawer-rest {

@@ -1,6 +1,5 @@
 # Serves as the method for non-users to conform co-authorship without signing in.
 class TokenCoAuthorsController < ApplicationController
-
   before_action :assign_template_vars
 
   def show
@@ -26,24 +25,13 @@ class TokenCoAuthorsController < ApplicationController
   private
 
   def assign_template_vars
-    @author ||= author
-    @authors ||= authors
+    @author ||= Author.find_by_token!(token)
     @paper ||= @author.paper
+    @authors ||= @paper.author_list_items.map(&:author)
     @journal_logo_url ||= @paper.journal.logo_url
   end
 
   def token
     params[:token] || params[:invitation][:token]
-  end
-
-  def authors
-    @author
-     .paper
-     .author_list_items
-     .map(&:author)
-  end
-
-  def author
-    Author.find_by_token!(token)
   end
 end

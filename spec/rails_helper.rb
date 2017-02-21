@@ -130,7 +130,7 @@ RSpec.configure do |config|
         "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
     end
 
-    # Load question and roles & permission seeds before any tests start since we don't want them
+    # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
     Rake::Task['card_seed:seed'].reenable
     Rake::Task['card_seed:seed'].invoke

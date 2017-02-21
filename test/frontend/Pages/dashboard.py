@@ -15,7 +15,7 @@ from loremipsum import generate_paragraph
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, application_typeface
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
 
 """
 A page model for the dashboard page that validates state-dependent element existence
@@ -174,7 +174,7 @@ class DashboardPage(AuthenticatedPage):
         yes_btn.click()
         break
     else:
-      raise(ValueError, u'Title {0} not found'.format(title))
+      raise(ValueError(u'Title {0} not found'.format(title)))
 
   def accept_or_reject_invitation(self, title):
     """
@@ -623,7 +623,7 @@ class DashboardPage(AuthenticatedPage):
     """
     info_text = self._get(self._dashboard_info_text)
     assert info_text.text == 'Your scientific paper submissions will\nappear here.'
-    assert application_typeface in info_text.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in info_text.value_of_css_property('font-family')
     assert info_text.value_of_css_property('font-size') == '24px'
     assert info_text.value_of_css_property('font-style') == 'italic'
     assert info_text.value_of_css_property('line-height') == '24px'
@@ -881,7 +881,7 @@ class DashboardPage(AuthenticatedPage):
     logging.info(username)
     modal_title = self._get(self._view_invites_title)
     self.validate_application_title_style(modal_title)
-    assert application_typeface in modal_title.value_of_css_property('font-family'), \
+    assert APPLICATION_TYPEFACE in modal_title.value_of_css_property('font-family'), \
         modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px', \
         modal_title.value_of_css_property('font-size')

@@ -13,7 +13,7 @@ from datetime import datetime
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
@@ -26,6 +26,7 @@ from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
+from frontend.Tasks.new_taxon_task import NewTaxonTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -62,8 +63,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
-    self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]")
+    self._tb_dl_pdf_link = (By.CLASS_NAME, 'download-pdf')
     self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
+    self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -252,7 +254,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # close_icon_overlay = self._get(self._overlay_header_close)
     # # TODO: Change following line after bug #102078080 is solved
     # assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    # assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    # assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     # assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     # close_icon_overlay.click()
     # time.sleep(1)
@@ -308,6 +310,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Tiny delay between download types to keep clean
     time.sleep(.5)
     pdf_link = self._get(self._tb_dl_pdf_link)
+    assert pdf_link.text == 'PDF'
     pdf_link.click()
     # This lengthy delay is here because the file must begin downloading before we can start
     #   to see if the download completes
@@ -366,6 +369,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
       raise('Invalid PDF generated for {0}'.format(newest_file))
     os.remove(newest_file)
 
+  def open_recent_activity(self):
+    """
+    Opens the recent activity overlay
+    :return: void function
+    """
+    self._get(self._tb_ra_link).click()
+
   def _check_recent_activity(self):
     """
     Check recent activity modal styles
@@ -379,7 +389,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
     time.sleep(1)
@@ -410,7 +420,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       discussion_create_new_btn.click()
       # TODO: Styles for cancel since is not in the style guide
       cancel = self._get(self._create_topic_cancel)
-      assert application_typeface in cancel.value_of_css_property('font-family')
+      assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family')
       assert cancel.value_of_css_property('font-size') == '14px'
       assert cancel.value_of_css_property('line-height') == '60px'
       assert cancel.value_of_css_property('background-color') == 'transparent'
@@ -426,7 +436,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
 
@@ -455,7 +465,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'Are you sure?' == modal_title.text
       # TODO: Style parametrized due to lack of styleguide for modals
       self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
-                                      font_weight='500', color=aperta_grey_dark)
+                                      font_weight='500', color=APERTA_GREY_DARK)
       withdraw_modal_text = self._get(self._wm_modal_text)
       # TODO: Leave comment out until solved. Pivotal bug#103864752
       # self.validate_application_ptext(withdraw_modal_text)
@@ -474,9 +484,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # TODO: Change following line after bug #102078080 is solved
       assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
         close_icon_overlay.value_of_css_property('font-size')
-      assert application_typeface in close_icon_overlay.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
         close_icon_overlay.value_of_css_property('font-family')
-      assert close_icon_overlay.value_of_css_property('color') == aperta_grey_dark, \
+      assert close_icon_overlay.value_of_css_property('color') == APERTA_GREY_DARK, \
           close_icon_overlay.value_of_css_property('color')
       close_icon_overlay.click()
       # Need to allow the slightest time for the overlay to close to prevent covered element
@@ -699,6 +709,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
+    elif task_name == 'New Taxon':
+      # Complete New Taxon data before mark close
+      logging.info('Completing New Taxon Task')
+      new_taxon_task = NewTaxonTask(self._driver)
+      if data:
+        new_taxon_task.validate_taxon_questions_action(data)
+        outdata = data
+      else:
+        scenario = new_taxon_task.generate_test_scenario()
+        new_taxon_task.validate_taxon_questions_action(scenario)
+        outdata = scenario
+      base_task.click_completion_button()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
@@ -906,3 +928,37 @@ class ManuscriptViewerPage(AuthenticatedPage):
     sub_info = self._get(self._paper_sidebar_state_information)
     self._actions.move_to_element(sub_info).perform()
     time.sleep(.5)
+
+  def select_manuscript_version_item(self, version_selector='compare',
+                                     item_index=None):
+    """
+    Select a manuscript version item
+    :param version_selector: The version selector to use (compare or viewing). String
+    :param item_index: The item index in the selector. Integer
+    :return: None
+    """
+    # Convert the string to a bar_item elements index
+    bar_items_index = None
+    if version_selector == 'viewing':
+      bar_items_index = 0
+    elif version_selector == 'compare':
+      bar_items_index = 1
+
+    # Open the versioning box
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    # Waits for versioning box be visible
+    self._wait_for_element(
+      self._gets(self._bar_items)[1])
+
+    # Get the bar items
+    bar_items = self._gets(self._bar_items)
+    # click on
+    version_select = bar_items[bar_items_index].find_element_by_class_name(
+      'ember-power-select-trigger')
+    version_select.click()
+    version_select_id = version_select.get_attribute('id')
+    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
+    items_holder = self._get(items_holder_selector)
+    items_holder.find_elements_by_class_name('ember-power-select-option')[
+      item_index].click()

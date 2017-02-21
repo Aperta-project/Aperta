@@ -16,6 +16,9 @@ class ReviewerReportsController < ApplicationController
     task = Task.find(reviewer_report_params[:task_id])
     requires_user_can :edit, task
 
+    # TODO APERTA-9226 need to assign the appropriate card here
+    # based on the type of task.  reports belonging to a ReviewerReportTask will
+    # get the card named 'ReviewerReport', etc for FrontMatterReviewerReport
     reviewer_report = ReviewerReport.new(task: task,
                                          decision: task.paper.draft_decision,
                                          user: current_user)

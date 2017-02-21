@@ -5,7 +5,7 @@
 # details
 class CardSeeder
   def self.seed_card(card_name, content)
-    card = Card.find_or_create_by!(name: card_name)
+    card = Card.find_or_create_by!(name: card_name, journal: Journal.first)
     content_root = CardContent.find_or_create_by!(card: card, ident: nil, parent: nil)
     content.each do |c|
       c[:parent] = content_root

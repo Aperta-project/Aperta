@@ -7,6 +7,11 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 - [ ] Reviewer Reports
 - [ ] All snapshot-related things - Erik is doing these
 
+**Open Questions
+ - Cards need to belong to a journal now (as of merging 8972 into master).  When we're seeding cards,
+ are we going to just seed the same cards for every journal?  Are we going to pick a journal?  For now
+ `Journal.first` is hard coded into the `CardSeeder` code
+
 
 - [X] Failing js tests
   - [X] "Integration FinancialDisclosure"
@@ -30,4 +35,5 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 **Reviewer Reports
 Reviewer reports will link to two different kinds of cards, based on which type of task made them.
 - [ ] Migrate FrontMatterReviewerReportTask and ReviewerReportTask reports to different cards
+- [ ] ReviewerReportTask needs to load the appropriate card for its Report, like authors, etc.
 

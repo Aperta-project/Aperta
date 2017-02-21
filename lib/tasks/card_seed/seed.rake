@@ -10,7 +10,7 @@ namespace :card_seed do
     'card_seed:ethics_task',
     'card_seed:figure_task',
     'card_seed:financial_disclosure_task',
-    'card_seed:front_matter_reviewer_report_task',
+    'card_seed:front_matter_reviewer_report',
     'card_seed:funder',
     'card_seed:group_author',
     'card_seed:plos_billing_task',
@@ -22,7 +22,7 @@ namespace :card_seed do
     'card_seed:register_decision_task',
     'card_seed:reporting_guidelines_task',
     'card_seed:reviewer_recommendation',
-    'card_seed:reviewer_report_task',
+    'card_seed:reviewer_report',
     'card_seed:taxon_task'
   ]
 end

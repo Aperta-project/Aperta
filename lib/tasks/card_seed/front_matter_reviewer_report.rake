@@ -1,5 +1,5 @@
 namespace 'card_seed' do
-  task 'front_matter_reviewer_report_task': :environment do
+  task 'front_matter_reviewer_report': :environment do
     content = []
 
     content << {
@@ -52,6 +52,6 @@ namespace 'card_seed' do
       text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
     }
 
-    CardSeeder.seed_card('TahiStandardTasks::FrontMatterReviewerReportTask', content)
+    CardSeeder.seed_card('FrontMatterReviewerReport', content)
   end
 end

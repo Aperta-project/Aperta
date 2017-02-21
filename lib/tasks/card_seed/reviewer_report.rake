@@ -1,6 +1,6 @@
 require_relative './support/card_seeder'
 namespace 'card_seed' do
-  task 'reviewer_report_task': :environment do
+  task 'reviewer_report': :environment do
     content = []
 
     content << {
@@ -53,6 +53,6 @@ namespace 'card_seed' do
       ]
     }
 
-    CardSeeder.seed_card('TahiStandardTasks::ReviewerReportTask', content)
+    CardSeeder.seed_card('ReviewerReport', content)
   end
 end

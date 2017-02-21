@@ -19,23 +19,12 @@
   Submitted to Biomedical Journals (<a href="<%= recommendations_url %>"><%= recommendations_url %></a>).
   By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:
 </p>
-<ol>
-  <li>Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data; and</li>
-  <li>Drafting the article or revising it critically for important intellectual content; and</li>
-  <li>Final approval of the version to be published; and</li>
-  <li>Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or
-    integrity of any part of the work are appropriately investigated and resolved.</li>
-</ol>
+<%= render partial: 'token_co_authors/authorship_criteria' %>
 <p>
   The full authorship list, as submitted, is:
-  <ol>
-    <% @authors.each do |single_author| %>
-      <li>
-          <%= single_author.full_name %><% if single_author.respond_to?(:affiliation) && single_author.affiliation %>: <%= single_author.affiliation %>
-          <% end %>
-      </li>
-    <% end %>
-  </ol>
+  <%= render partial: 'token_co_authors/author_list',
+     locals: { authors: @authors }
+  %>
 </p>
 
 <%= render partial: 'email/button', locals: {

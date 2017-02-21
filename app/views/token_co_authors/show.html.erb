@@ -6,23 +6,13 @@
 
     <h4>The full authorship list, as submitted is:</h4>
 
-    <ol id="author-list">
-    <% @authors.each do |single_author| %>
-      <li class="author-list-item">
-          <%= single_author.full_name %>
-          <% if single_author.respond_to?(:affiliation) && single_author.affiliation %>: <%= single_author.affiliation %><% end %>
-      </li>
-    <% end %>
-    </ol>
+    <%= render partial: 'token_co_authors/author_list',
+       locals: { authors: @authors }
+    %>
 
     <h4>By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:</h4>
 
-    <ol id="authorship-criteria">
-      <li class="authorship-criteria-item">Substantial contribution to conception and design, or acquisition of data, or analysis and interpretation of data;&nbsp;and</li>
-      <li class="authorship-criteria-item">Drafting the article or revisiting it critically for important intellectual content;&nbsp;and</li>
-      <li class="authorship-criteria-item">Final approval of the version to be published;&nbsp;and</li>
-      <li class="authorship-criteria-item">Agreement to be accountable for all aspects of the work in ensuring that questions related to the accuracy or integrity of any part of the work are appropriately investigated and resolved.</li>
-    </ol>
+    <%= render partial: 'token_co_authors/authorship_criteria' %>
 
     <%= form_for @author, url: confirm_token_co_author_path(@author.token), method: 'put'  do |f| %>
       <%= f.submit value: 'Confirm Authorship', class: 'button-primary button--green' %>

@@ -1,5 +1,6 @@
 module TahiStandardTasks
   class Funder < ActiveRecord::Base
+    include Answerable
     include NestedQuestionable
 
     belongs_to :task, foreign_key: :task_id

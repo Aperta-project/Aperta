@@ -1,6 +1,7 @@
 # Authors that are not individual people; they are in the
 # same list as authors, but have different data.
 class GroupAuthor < ActiveRecord::Base
+  include Answerable
   include EventStream::Notifiable
   include NestedQuestionable
   include Tokenable

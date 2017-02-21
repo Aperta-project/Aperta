@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import Answerable from 'tahi/mixins/answerable';
 
 const { attr, belongsTo } = DS;
 const {
@@ -77,7 +78,7 @@ const validations = {
   }]
 };
 
-export default NestedQuestionOwner.extend({
+export default NestedQuestionOwner.extend(Answerable, {
   paper: belongsTo('paper', { async: false }),
   user: belongsTo('user'),
 

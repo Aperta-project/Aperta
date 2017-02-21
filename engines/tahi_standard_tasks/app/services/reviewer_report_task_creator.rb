@@ -45,8 +45,17 @@ class ReviewerReportTaskCreator
     ReviewerReport.create!(
       task: @task,
       decision: @paper.draft_decision,
-      user: assignee
+      user: assignee,
+      card: Card.find_by!(name: reviewer_report_card_name, journal: @task.journal)
     )
+  end
+
+  def reviewer_report_card_name
+    if @paper.uses_research_article_reviewer_report
+      'ReviewerReport'
+    else
+      'FrontMatterReviewerReport'
+    end
   end
 
   def reviewer_report_task_class

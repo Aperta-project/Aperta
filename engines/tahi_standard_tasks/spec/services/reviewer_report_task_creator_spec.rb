@@ -10,6 +10,9 @@ describe ReviewerReportTaskCreator do
       :with_reviewer_report_owner_role
     )
   end
+  let!(:card) { FactoryGirl.create(:card, journal: journal, name: 'ReviewerReport') }
+  let!(:front_matter_card) { FactoryGirl.create(:card, journal: journal, name: 'FrontMatterReviewerReport') }
+
   let!(:paper) { FactoryGirl.create(:paper, :submitted, journal: journal) }
   let!(:originating_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
@@ -22,7 +25,8 @@ describe ReviewerReportTaskCreator do
   end
 
   context "when the paper is configured to use the research reviewer report" do
-    let!(:card) { FactoryGirl.create(:card, journal: journal, name: 'ReviewerReport') }
+    # create a card for another journal with the same name
+    let!(:some_other_card) { FactoryGirl.create(:card, name: 'ReviewerReport') }
     before do
       paper.update_column :uses_research_article_reviewer_report, true
     end
@@ -35,7 +39,9 @@ describe ReviewerReportTaskCreator do
 
     it "sets the card to be one named 'ReviewerReport'" do
       task = subject.process
-      expect(task.card.name).to eq('ReviewerReport')
+      report = task.reviewer_reports.first
+      expect(report.card.name).to eq('ReviewerReport')
+      expect(report.card.journal).to eq(journal)
     end
 
     it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::ReviewerReportTask
@@ -53,7 +59,9 @@ describe ReviewerReportTaskCreator do
 
     it "sets the card to be one named 'FrontMatterReviewerReport'" do
       task = subject.process
-      expect(task.card.name).to eq('FrontMatterReviewerReport')
+      report = task.reviewer_reports.first
+      expect(report.card.name).to eq('FrontMatterReviewerReport')
+      expect(report.card.journal).to eq(journal)
     end
 
     it_behaves_like 'creating a reviewer report task', reviewer_report_type: TahiStandardTasks::FrontMatterReviewerReportTask

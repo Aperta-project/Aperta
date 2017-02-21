@@ -7,11 +7,19 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 - [ ] Reviewer Reports
 - [ ] All snapshot-related things - Erik is doing these
 
-**Open Questions
- - Cards need to belong to a journal now (as of merging 8972 into master).  When we're seeding cards,
- are we going to just seed the same cards for every journal?  Are we going to pick a journal?  For now
- `Journal.first` is hard coded into the `CardSeeder` code
+**Reviewer Reports
+Reviewer reports will link to two different kinds of cards, based on which type of task made them.
+- [X] Migrate FrontMatterReviewerReportTask and ReviewerReportTask reports to different cards
+    The tasks themselves don't have cards, but there is a type of card for each different report.
+    Another thing to note: There is *not* a FrontMatterReviewerReport class, even though we have
+    a card by that name in the seeds now.  Be careful.
+- [ ] Change ReviewerReportTaskCreator to assign the correct type of Card when creating a ReviewerReport
+- [ ] ReviewerReportTask on the client needs to load the appropriate card for its Report, like authors, etc.
+- [ ] Does the ReviewerReportsController#create action ever actually get called?
 
+**Open Questions, todos
+- [ ] Seed cards for every journal in the system. Need to restructure the way the seed runs
+to avoid having to pass a journal argument into the myriad rake tasks
 
 - [X] Failing js tests
   - [X] "Integration FinancialDisclosure"
@@ -32,8 +40,4 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
   - [X] "Unit | Model | funder"
 
 
-**Reviewer Reports
-Reviewer reports will link to two different kinds of cards, based on which type of task made them.
-- [ ] Migrate FrontMatterReviewerReportTask and ReviewerReportTask reports to different cards
-- [ ] ReviewerReportTask needs to load the appropriate card for its Report, like authors, etc.
 

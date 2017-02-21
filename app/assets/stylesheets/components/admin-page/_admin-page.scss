@@ -6,7 +6,6 @@ $drawer-item-height: 60px;
 
 .admin-page {
   position: relative;
-  min-height: 100%;
   .left-drawer-open .left-drawer-width {
     width: $drawer-open-width;
     transition: width .125s;

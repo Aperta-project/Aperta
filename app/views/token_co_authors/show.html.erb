@@ -14,7 +14,7 @@
 
     <%= render partial: 'token_co_authors/authorship_criteria' %>
 
-    <%= form_for @author, url: confirm_token_co_author_path(@author.token), method: 'put'  do |f| %>
+    <%= form_for @author, url: confirm_token_co_author_path(@author.token), method: 'put' do |f| %>
       <%= f.submit value: 'Confirm Authorship', class: 'button-primary button--green' %>
     <% end %>
     <p class="refute-authorship">To refute authorship, please reply to the email you recieved.</p>

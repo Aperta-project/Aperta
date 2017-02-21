@@ -2,6 +2,7 @@ import { test, moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import { createCard } from 'tahi/tests/factories/card';
+import { createAnswer } from 'tahi/tests/factories/answer';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import page from 'tahi/tests/pages/reporting-guidelines-task';
@@ -68,34 +69,24 @@ test('Meta analyses both shows a file uploader when checked', function(assert) {
 
 test('With an existing attachment, supporting guidelines shows it.', function(assert) {
   let task = this.get('task');
-  make('nested-question-answer', {
-    nestedQuestion: task.findQuestion('reporting_guidelines--systematic_reviews'),
-    value: true,
-    owner: task
-  });
+  createAnswer(task, 'reporting_guidelines--systematic_reviews', { value: true });
+  createAnswer(
+    task,
+    'reporting_guidelines--systematic_reviews--checklist',
+    { attachments: [make('question-attachment', {filename: 'test-upload.jpg'})] });
 
-  make('nested-question-answer', {
-    nestedQuestion: task.findQuestion('reporting_guidelines--systematic_reviews--checklist'),
-    owner: task,
-    attachments: [make('question-attachment', {filename: 'test-upload.jpg'})]
-  });
   this.render(template);
   assert.equal(page.systematicReviews.additionalData.attachmentName, 'test-upload.jpg');
 });
 
 test('With an existing attachment, meta analyses shows it.', function(assert) {
   let task = this.get('task');
-  make('nested-question-answer', {
-    nestedQuestion: task.findQuestion('reporting_guidelines--meta_analyses'),
-    value: true,
-    owner: task
-  });
 
-  make('nested-question-answer', {
-    nestedQuestion: task.findQuestion('reporting_guidelines--meta_analyses--checklist'),
-    owner: task,
-    attachments: [make('question-attachment', {filename: 'test-upload.jpg'})]
-  });
+  createAnswer(task, 'reporting_guidelines--meta_analyses', { value: true });
+  createAnswer(
+    task,
+    'reporting_guidelines--meta_analyses--checklist',
+    { attachments: [make('question-attachment', {filename: 'test-upload.jpg'})] });
 
   this.render(template);
   assert.equal(page.metaAnalyses.additionalData.attachmentName, 'test-upload.jpg');

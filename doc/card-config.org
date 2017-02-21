@@ -2,8 +2,8 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 
 **New list of stuff to work on
 - [X] Tech Check
-- [ ] Funders
-- [ ] Reviewer Recommendations
+- [X] Funders
+- [X] Reviewer Recommendations
 - [ ] Reviewer Reports
 - [ ] All snapshot-related things - Erik is doing these
 
@@ -22,6 +22,12 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
   - [X] "Integration | Components | Tasks | Figure"
   - [X] "Integration | Components | Tasks | Paper Reviewer Task"
   - [X] "Integration | Components | Tasks | Register Decision"
-  - [ ] "Integration | Component | reporting guidelines task" -in process
+  - [X] "Integration | Component | reporting guidelines task"
   - [ ] "ObjectProxyWithValidationErrors"
   - [X] "Unit | Model | funder"
+
+
+**Reviewer Reports
+Reviewer reports will link to two different kinds of cards, based on which type of task made them.
+- [ ] Migrate FrontMatterReviewerReportTask and ReviewerReportTask reports to different cards
+

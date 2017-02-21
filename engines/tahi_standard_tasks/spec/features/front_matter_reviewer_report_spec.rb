@@ -18,6 +18,10 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   let!(:inviter) { create :user }
 
+  before do
+    Card.update_all(journal_id: journal.id)
+  end
+
   def create_reviewer_invitation(task)
     FactoryGirl.create(
       :invitation,
@@ -60,7 +64,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     ident = 'front_matter_reviewer_report--competing_interests'
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    answers = NestedQuestion.where(ident: ident).first.nested_question_answers
+    answers = CardContent.where(ident: ident).first.answers
     sentinel_proc = -> { answers.count }
 
     # Recreating the error in APERTA-8647

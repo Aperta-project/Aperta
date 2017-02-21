@@ -11,6 +11,8 @@ class CardContent < ActiveRecord::Base
 
   validates :card, presence: true
 
+  has_many :answers
+
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)
     # This method runs on a scope and takes and a list of nested property

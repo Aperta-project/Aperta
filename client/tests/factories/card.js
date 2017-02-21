@@ -14,7 +14,7 @@ FactoryGuy.define('card', {
 });
 
 let cardIdents = {
-  Author: [
+  'Author': [
     'author--published_as_corresponding_author',
     'author--deceased',
     'author--government-employee',
@@ -33,12 +33,17 @@ let cardIdents = {
     'author--contributions--funding-acquisition',
     'author--contributions--formal-analysis'
   ],
-  'TahiStandardTasks::AuthorsTask': [
-    'authors--persons_agreed_to_be_named',
-    'authors--authors_confirm_icmje_criteria',
-    'authors--authors_agree_to_submission'
+  'FrontMatterReviewerReport': [
+    'front_matter_reviewer_report--decision_term',
+    'front_matter_reviewer_report--competing_interests',
+    'front_matter_reviewer_report--suitable',
+    'front_matter_reviewer_report--suitable--comment',
+    'front_matter_reviewer_report--includes_unpublished_data',
+    'front_matter_reviewer_report--includes_unpublished_data--explanation',
+    'front_matter_reviewer_report--additional_comments',
+    'front_matter_reviewer_report--identity'
   ],
-  GroupAuthor: [
+  'GroupAuthor': [
     'group-author--contributions--conceptualization',
     'group-author--contributions--investigation',
     'group-author--contributions--visualization',
@@ -53,13 +58,6 @@ let cardIdents = {
     'group-author--contributions--writing-review-and-editing',
     'group-author--contributions--funding-acquisition',
     'group-author--contributions--formal-analysis'
-  ],
-  'TahiStandardTasks::FinancialDisclosureTask': [
-    'financial_disclosures--author_received_funding'
-  ],
-  'TahiStandardTasks::Funder': [
-    'funder--had_influence',
-    'funder--had_influence--role_description'
   ],
   'PlosBilling::BillingTask': [
     'plos_billing--first_name',
@@ -96,13 +94,35 @@ let cardIdents = {
     'plos_billing--gpi_country',
     'plos_billing--ringgold_institution'
   ],
+  'ReviewerReport': [
+    'reviewer_report--decision_term',
+    'reviewer_report--competing_interests',
+    'reviewer_report--competing_interests--detail',
+    'reviewer_report--identity',
+    'reviewer_report--comments_for_author',
+    'reviewer_report--additional_comments',
+    'reviewer_report--suitable_for_another_journal',
+    'reviewer_report--suitable_for_another_journal--journal'
+  ],
+  'TahiStandardTasks::AuthorsTask': [
+    'authors--persons_agreed_to_be_named',
+    'authors--authors_confirm_icmje_criteria',
+    'authors--authors_agree_to_submission'
+  ],
+  'TahiStandardTasks::EarlyPostingTask': ['early-posting--consent'],
+  'TahiStandardTasks::FinancialDisclosureTask': [
+    'financial_disclosures--author_received_funding'
+  ],
+  'TahiStandardTasks::Funder': [
+    'funder--had_influence',
+    'funder--had_influence--role_description'
+  ],
   'TahiStandardTasks::FigureTask': ['figures--complies'],
   'TahiStandardTasks::RegisterDecisionTask': [
     'register_decision_questions--selected-template',
     'register_decision_questions--to-field',
     'register_decision_questions--subject-field'
   ],
-  'TahiStandardTasks::EarlyPostingTask': ['early-posting--consent'],
   'TahiStandardTasks::ReportingGuidelinesTask': [
     'reporting_guidelines--clinical_trial',
     'reporting_guidelines--systematic_reviews',

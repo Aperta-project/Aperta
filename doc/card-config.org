@@ -13,7 +13,8 @@ Reviewer reports will link to two different kinds of cards, based on which type 
     The tasks themselves don't have cards, but there is a type of card for each different report.
     Another thing to note: There is *not* a FrontMatterReviewerReport class, even though we have
     a card by that name in the seeds now.  Be careful.
-- [ ] Change ReviewerReportTaskCreator to assign the correct type of Card when creating a ReviewerReport
+- [X] Change ReviewerReportTaskCreator to assign the correct type of Card when creating a ReviewerReport
+- [ ] Migration: associate ReviewerReports to the appropriate kinds of cards
 - [ ] ReviewerReportTask on the client needs to load the appropriate card for its Report, like authors, etc.
 - [ ] Does the ReviewerReportsController#create action ever actually get called?
 

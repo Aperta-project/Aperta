@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import Answerable from 'tahi/mixins/answerable';
 import DS from 'ember-data';
 
-export default NestedQuestionOwner.extend({
+export default NestedQuestionOwner.extend(Answerable, {
   additionalComments: DS.attr('string'),
   task: DS.belongsTo('financialDisclosureTask'),
   authors: DS.hasMany('author'),

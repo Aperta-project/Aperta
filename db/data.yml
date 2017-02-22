@@ -4714,12 +4714,12 @@ card_contents:
     - 
     - 
     - '97'
-    - '114'
+    - '98'
     - 
     - 
     - '2017-02-15 23:21:48.69118'
     - '2017-02-15 23:21:48.793671'
-    - 
+    - '2017-02-22 14:56:16.849259'
   - - '50'
     - '10'
     - front_matter_reviewer_report--decision_term
@@ -4730,94 +4730,94 @@ card_contents:
     - text
     - '2017-02-15 23:21:48.698792'
     - '2017-02-15 23:21:48.703341'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '51'
     - '10'
     - front_matter_reviewer_report--competing_interests
     - '49'
-    - '100'
-    - '101'
+    - '98'
+    - '99'
     - Do you have any potential or perceived competing interests that may influence
       your review?
     - text
     - '2017-02-15 23:21:48.710828'
     - '2017-02-15 23:21:48.715051'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '52'
     - '10'
     - front_matter_reviewer_report--suitable--comment
     - '53'
-    - '103'
-    - '104'
+    - '99'
+    - '98'
     - Suitable Comment
     - text
     - '2017-02-15 23:21:48.723225'
     - '2017-02-15 23:21:48.740574'
-    - 
+    - '2017-02-22 14:56:16.942096'
   - - '53'
     - '10'
     - front_matter_reviewer_report--suitable
     - '49'
-    - '102'
-    - '105'
+    - '98'
+    - '99'
     - Is this manuscript suitable in principle for the magazine section of <em>PLOS
       Biology</em>?
     - boolean
     - '2017-02-15 23:21:48.730553'
     - '2017-02-15 23:21:48.740574'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '54'
     - '10'
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '55'
-    - '107'
-    - '108'
+    - '99'
+    - '98'
     - Includes Published Data Explanation
     - text
     - '2017-02-15 23:21:48.750003'
     - '2017-02-15 23:21:48.769968'
-    - 
+    - '2017-02-22 14:56:16.829809'
   - - '55'
     - '10'
     - front_matter_reviewer_report--includes_unpublished_data
     - '49'
-    - '106'
-    - '109'
+    - '98'
+    - '99'
     - 'If previously unpublished data are included to support the conclusions, please
       note in the box below whether:'
     - boolean
     - '2017-02-15 23:21:48.757758'
     - '2017-02-15 23:21:48.769968'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '56'
     - '10'
     - front_matter_reviewer_report--additional_comments
     - '49'
-    - '110'
-    - '111'
+    - '98'
+    - '99'
     - "(Optional) Please offer any additional confidential comments to the editor"
     - text
     - '2017-02-15 23:21:48.777775'
     - '2017-02-15 23:21:48.78273'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '57'
     - '10'
     - front_matter_reviewer_report--identity
     - '49'
-    - '112'
-    - '113'
+    - '98'
+    - '99'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
       include your name here."
     - text
     - '2017-02-15 23:21:48.789742'
     - '2017-02-15 23:21:48.793671'
-    - 
+    - '2017-02-22 14:56:16.829809'
   - - '58'
     - '11'
     - 
     - 
-    - '115'
-    - '120'
+    - '97'
+    - '98'
     - 
     - 
     - '2017-02-15 23:21:48.808452'
@@ -4827,65 +4827,65 @@ card_contents:
     - '11'
     - funder--had_influence--role_description
     - '60'
-    - '117'
-    - '118'
+    - '99'
+    - '98'
     - Describe the role of any sponsors or funders in the study design, data collection
       and analysis, decision to publish, or preparation of the manuscript.
     - text
     - '2017-02-15 23:21:48.816961'
     - '2017-02-15 23:21:48.834448'
-    - 
+    - '2017-02-22 14:56:16.942096'
   - - '60'
     - '11'
     - funder--had_influence
     - '58'
-    - '116'
-    - '119'
+    - '98'
+    - '99'
     - Did the funder have a role in study design, data collection and analysis, decision
       to publish, or preparation of the manuscript?
     - boolean
     - '2017-02-15 23:21:48.824442'
     - '2017-02-15 23:21:48.834448'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '61'
     - '12'
     - 
     - 
-    - '121'
-    - '154'
+    - '99'
+    - '120'
     - 
     - 
     - '2017-02-15 23:21:48.849685'
     - '2017-02-15 23:21:49.103516'
-    - 
+    - '2017-02-22 14:56:16.942096'
   - - '62'
     - '12'
     - group-author--contributions--conceptualization
     - '76'
-    - '123'
-    - '124'
+    - '99'
+    - '98'
     - Conceptualization
     - boolean
     - '2017-02-15 23:21:48.859087'
     - '2017-02-15 23:21:49.085263'
-    - 
+    - '2017-02-22 14:56:16.942096'
   - - '63'
     - '12'
     - group-author--contributions--investigation
     - '76'
-    - '125'
-    - '126'
+    - '99'
+    - '98'
     - Investigation
     - boolean
     - '2017-02-15 23:21:48.868162'
     - '2017-02-15 23:21:49.085263'
-    - 
+    - '2017-02-22 14:56:16.942096'
   - - '64'
     - '12'
     - group-author--contributions--visualization
     - '76'
-    - '127'
-    - '128'
+    - '99'
+    - '98'
     - Visualization
     - boolean
     - '2017-02-15 23:21:48.876152'
@@ -4895,8 +4895,8 @@ card_contents:
     - '12'
     - group-author--contributions--methodology
     - '76'
-    - '129'
-    - '130'
+    - '99'
+    - '98'
     - Methodology
     - boolean
     - '2017-02-15 23:21:48.884181'
@@ -4906,8 +4906,8 @@ card_contents:
     - '12'
     - group-author--contributions--resources
     - '76'
-    - '131'
-    - '132'
+    - '99'
+    - '98'
     - Resources
     - boolean
     - '2017-02-15 23:21:48.892214'
@@ -4917,8 +4917,8 @@ card_contents:
     - '12'
     - group-author--contributions--supervision
     - '76'
-    - '133'
-    - '134'
+    - '99'
+    - '100'
     - Supervision
     - boolean
     - '2017-02-15 23:21:48.901088'
@@ -4928,8 +4928,8 @@ card_contents:
     - '12'
     - group-author--contributions--software
     - '76'
-    - '135'
-    - '136'
+    - '101'
+    - '102'
     - Software
     - boolean
     - '2017-02-15 23:21:48.908595'
@@ -4939,8 +4939,8 @@ card_contents:
     - '12'
     - group-author--contributions--data-curation
     - '76'
-    - '137'
-    - '138'
+    - '103'
+    - '104'
     - Data Curation
     - boolean
     - '2017-02-15 23:21:48.916453'
@@ -4950,8 +4950,8 @@ card_contents:
     - '12'
     - group-author--contributions--project-administration
     - '76'
-    - '139'
-    - '140'
+    - '105'
+    - '106'
     - Project Administration
     - boolean
     - '2017-02-15 23:21:48.924337'
@@ -4961,8 +4961,8 @@ card_contents:
     - '12'
     - group-author--contributions--validation
     - '76'
-    - '141'
-    - '142'
+    - '107'
+    - '108'
     - Validation
     - boolean
     - '2017-02-15 23:21:48.932249'
@@ -4972,8 +4972,8 @@ card_contents:
     - '12'
     - group-author--contributions--writing-original-draft
     - '76'
-    - '143'
-    - '144'
+    - '109'
+    - '110'
     - Writing - Original Draft
     - boolean
     - '2017-02-15 23:21:48.939964'
@@ -4983,8 +4983,8 @@ card_contents:
     - '12'
     - group-author--contributions--writing-review-and-editing
     - '76'
-    - '145'
-    - '146'
+    - '111'
+    - '112'
     - Writing - Review and Editing
     - boolean
     - '2017-02-15 23:21:48.948797'
@@ -4994,8 +4994,8 @@ card_contents:
     - '12'
     - group-author--contributions--funding-acquisition
     - '76'
-    - '147'
-    - '148'
+    - '113'
+    - '114'
     - Funding Acquisition
     - boolean
     - '2017-02-15 23:21:48.957815'
@@ -5005,8 +5005,8 @@ card_contents:
     - '12'
     - group-author--contributions--formal-analysis
     - '76'
-    - '149'
-    - '150'
+    - '115'
+    - '116'
     - Formal Analysis
     - boolean
     - '2017-02-15 23:21:48.967259'
@@ -5016,19 +5016,19 @@ card_contents:
     - '12'
     - group-author--contributions
     - '61'
-    - '122'
-    - '151'
+    - '98'
+    - '117'
     - Author Contributions
     - question-set
     - '2017-02-15 23:21:48.976632'
     - '2017-02-15 23:21:49.085263'
-    - 
+    - '2017-02-22 14:56:17.014037'
   - - '77'
     - '12'
     - group-author--government-employee
     - '61'
-    - '152'
-    - '153'
+    - '118'
+    - '119'
     - Is this group a United States Government agency, department or organization?
     - boolean
     - '2017-02-15 23:21:49.098819'
@@ -5038,8 +5038,8 @@ card_contents:
     - '13'
     - 
     - 
-    - '155'
-    - '220'
+    - '121'
+    - '186'
     - 
     - 
     - '2017-02-15 23:21:49.122086'
@@ -5049,8 +5049,8 @@ card_contents:
     - '13'
     - plos_billing--first_name
     - '78'
-    - '156'
-    - '157'
+    - '122'
+    - '123'
     - First Name
     - text
     - '2017-02-15 23:21:49.129758'
@@ -5060,8 +5060,8 @@ card_contents:
     - '13'
     - plos_billing--last_name
     - '78'
-    - '158'
-    - '159'
+    - '124'
+    - '125'
     - Last Name
     - text
     - '2017-02-15 23:21:49.14174'
@@ -5071,8 +5071,8 @@ card_contents:
     - '13'
     - plos_billing--title
     - '78'
-    - '160'
-    - '161'
+    - '126'
+    - '127'
     - Title
     - text
     - '2017-02-15 23:21:49.154475'
@@ -5082,8 +5082,8 @@ card_contents:
     - '13'
     - plos_billing--department
     - '78'
-    - '162'
-    - '163'
+    - '128'
+    - '129'
     - Department
     - text
     - '2017-02-15 23:21:49.166277'
@@ -5093,8 +5093,8 @@ card_contents:
     - '13'
     - plos_billing--phone_number
     - '78'
-    - '164'
-    - '165'
+    - '130'
+    - '131'
     - Phone
     - text
     - '2017-02-15 23:21:49.178454'
@@ -5104,8 +5104,8 @@ card_contents:
     - '13'
     - plos_billing--email
     - '78'
-    - '166'
-    - '167'
+    - '132'
+    - '133'
     - Email
     - text
     - '2017-02-15 23:21:49.191009'
@@ -5115,8 +5115,8 @@ card_contents:
     - '13'
     - plos_billing--address1
     - '78'
-    - '168'
-    - '169'
+    - '134'
+    - '135'
     - Address Line 1
     - text
     - '2017-02-15 23:21:49.202728'
@@ -5126,8 +5126,8 @@ card_contents:
     - '13'
     - plos_billing--address2
     - '78'
-    - '170'
-    - '171'
+    - '136'
+    - '137'
     - Address Line 2 (optional)
     - text
     - '2017-02-15 23:21:49.213783'
@@ -5137,8 +5137,8 @@ card_contents:
     - '13'
     - plos_billing--city
     - '78'
-    - '172'
-    - '173'
+    - '138'
+    - '139'
     - City
     - text
     - '2017-02-15 23:21:49.224911'
@@ -5148,8 +5148,8 @@ card_contents:
     - '13'
     - plos_billing--state
     - '78'
-    - '174'
-    - '175'
+    - '140'
+    - '141'
     - State or Province
     - text
     - '2017-02-15 23:21:49.236563'
@@ -5159,8 +5159,8 @@ card_contents:
     - '13'
     - plos_billing--postal_code
     - '78'
-    - '176'
-    - '177'
+    - '142'
+    - '143'
     - ZIP or Postal Code
     - text
     - '2017-02-15 23:21:49.248425'
@@ -5170,8 +5170,8 @@ card_contents:
     - '13'
     - plos_billing--country
     - '78'
-    - '178'
-    - '179'
+    - '144'
+    - '145'
     - Country
     - text
     - '2017-02-15 23:21:49.260522'
@@ -5181,8 +5181,8 @@ card_contents:
     - '13'
     - plos_billing--affiliation1
     - '78'
-    - '180'
-    - '181'
+    - '146'
+    - '147'
     - 'Affiliation #1'
     - text
     - '2017-02-15 23:21:49.273096'
@@ -5192,8 +5192,8 @@ card_contents:
     - '13'
     - plos_billing--affiliation2
     - '78'
-    - '182'
-    - '183'
+    - '148'
+    - '149'
     - 'Affiliation #2'
     - text
     - '2017-02-15 23:21:49.284902'
@@ -5203,8 +5203,8 @@ card_contents:
     - '13'
     - plos_billing--payment_method
     - '78'
-    - '184'
-    - '185'
+    - '150'
+    - '151'
     - How would you like to pay?
     - text
     - '2017-02-15 23:21:49.300605'
@@ -5214,8 +5214,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_1
     - '78'
-    - '186'
-    - '187'
+    - '152'
+    - '153'
     - Have you investigated if funding is available from your co-authors' institutions
       to pay the publication fee?
     - boolean
@@ -5226,8 +5226,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_1a
     - '78'
-    - '188'
-    - '189'
+    - '154'
+    - '155'
     - If your co-authors' institutions will not provide any funding to publish the
       article, indicate why.
     - text
@@ -5238,8 +5238,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_1b
     - '78'
-    - '190'
-    - '191'
+    - '156'
+    - '157'
     - If your coauthors' institutions will provide partial funding to publish the
       article, indicate the amount they will pay towards your publication fee (in
       USD).
@@ -5251,8 +5251,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_2
     - '78'
-    - '192'
-    - '193'
+    - '158'
+    - '159'
     - Have you investigated if funding is available from your institution to pay the
       publication fee?
     - boolean
@@ -5263,8 +5263,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_2a
     - '78'
-    - '194'
-    - '195'
+    - '160'
+    - '161'
     - If your institution cannot provide any funding to publish the article, indicate
       why.
     - text
@@ -5275,8 +5275,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_2b
     - '78'
-    - '196'
-    - '197'
+    - '162'
+    - '163'
     - If your institution will provide partial funding to publish the article, indicate
       the amount it will pay toward your publication fee (in USD).
     - text
@@ -5287,8 +5287,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_3
     - '78'
-    - '198'
-    - '199'
+    - '164'
+    - '165'
     - Do your co-authors have any other sources of funding that can be used towards
       the publication fee?
     - boolean
@@ -5299,8 +5299,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_3a
     - '78'
-    - '200'
-    - '201'
+    - '166'
+    - '167'
     - Indicate the amount that they can pay (in USD).
     - text
     - '2017-02-15 23:21:49.402861'
@@ -5310,8 +5310,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_4
     - '78'
-    - '202'
-    - '203'
+    - '168'
+    - '169'
     - Do you have any other sources of funding that can be used towards the publication
       fee?
     - boolean
@@ -5322,8 +5322,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_question_4a
     - '78'
-    - '204'
-    - '205'
+    - '170'
+    - '171'
     - Indicate the amount that they can pay (in USD).
     - text
     - '2017-02-15 23:21:49.440219'
@@ -5333,8 +5333,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_amount_to_pay
     - '78'
-    - '206'
-    - '207'
+    - '172'
+    - '173'
     - Given your answers to the above content on your funding availability, what is
       the amount that you and your co-authors can jointly pay for publication? (Specify
       in USD.)
@@ -5346,8 +5346,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_supporting_docs
     - '78'
-    - '208'
-    - '209'
+    - '174'
+    - '175'
     - If you would like to provide documents to assist in demonstrating your request,
       you will have the opportunity to do so. After PLOS has received the completed
       application, the confirmation email will provide direction on where to send
@@ -5360,8 +5360,8 @@ card_contents:
     - '13'
     - plos_billing--pfa_additional_comments
     - '78'
-    - '210'
-    - '211'
+    - '176'
+    - '177'
     - If you wish to make additional comments to support your request, provide them
       below. If you have no additional comments, enter "None" in the box.
     - text
@@ -5372,8 +5372,8 @@ card_contents:
     - '13'
     - plos_billing--affirm_true_and_complete
     - '78'
-    - '212'
-    - '213'
+    - '178'
+    - '179'
     - 'You are acknowledging that you have read and agree to the following statement:
       I affirm that the information provided in this application is true and complete.'
     - boolean
@@ -5384,8 +5384,8 @@ card_contents:
     - '13'
     - plos_billing--agree_to_collections
     - '78'
-    - '214'
-    - '215'
+    - '180'
+    - '181'
     - I have read and agree to the Terms of Submission to PLOS Collections
     - boolean
     - '2017-02-15 23:21:49.506647'
@@ -5395,8 +5395,8 @@ card_contents:
     - '13'
     - plos_billing--gpi_country
     - '78'
-    - '216'
-    - '217'
+    - '182'
+    - '183'
     - Global Participation Initiative Country
     - text
     - '2017-02-15 23:21:49.517753'
@@ -5406,8 +5406,8 @@ card_contents:
     - '13'
     - plos_billing--ringgold_institution
     - '78'
-    - '218'
-    - '219'
+    - '184'
+    - '185'
     - Ringgold Institution
     - text
     - '2017-02-15 23:21:49.529204'
@@ -5417,8 +5417,8 @@ card_contents:
     - '14'
     - 
     - 
-    - '221'
-    - '248'
+    - '187'
+    - '214'
     - 
     - 
     - '2017-02-15 23:21:49.548588'
@@ -5428,8 +5428,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--open_rejects
     - '111'
-    - '222'
-    - '223'
+    - '188'
+    - '189'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
@@ -5442,8 +5442,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--human_subjects
     - '111'
-    - '224'
-    - '225'
+    - '190'
+    - '191'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
@@ -5454,8 +5454,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--ethics_needed
     - '111'
-    - '226'
-    - '227'
+    - '192'
+    - '193'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
@@ -5467,8 +5467,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--data_available
     - '111'
-    - '228'
-    - '229'
+    - '194'
+    - '195'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
@@ -5479,8 +5479,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--supporting_information
     - '111'
-    - '230'
-    - '231'
+    - '196'
+    - '197'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
@@ -5492,8 +5492,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--dryad_url
     - '111'
-    - '232'
-    - '233'
+    - '198'
+    - '199'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
@@ -5504,8 +5504,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--financial_disclosure
     - '111'
-    - '234'
-    - '235'
+    - '200'
+    - '201'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
@@ -5516,8 +5516,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--tobacco
     - '111'
-    - '236'
-    - '237'
+    - '202'
+    - '203'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
@@ -5528,8 +5528,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--figures_legible
     - '111'
-    - '238'
-    - '239'
+    - '204'
+    - '205'
     - If any figures are completely illegible, contact the author.
     - boolean
     - '2017-02-15 23:21:49.653082'
@@ -5539,8 +5539,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--cited
     - '111'
-    - '240'
-    - '241'
+    - '206'
+    - '207'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
@@ -5551,8 +5551,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--cover_letter
     - '111'
-    - '242'
-    - '243'
+    - '208'
+    - '209'
     - Have the authors asked any content in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
@@ -5563,8 +5563,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--billing_inquiries
     - '111'
-    - '244'
-    - '245'
+    - '210'
+    - '211'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
@@ -5575,8 +5575,8 @@ card_contents:
     - '14'
     - plos_bio_final_tech_check--ethics_statement
     - '111'
-    - '246'
-    - '247'
+    - '212'
+    - '213'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
     - '2017-02-15 23:21:49.700266'
@@ -5586,8 +5586,8 @@ card_contents:
     - '15'
     - 
     - 
-    - '249'
-    - '282'
+    - '215'
+    - '248'
     - 
     - 
     - '2017-02-15 23:21:49.718149'
@@ -5597,8 +5597,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--ethics_statement
     - '125'
-    - '250'
-    - '251'
+    - '216'
+    - '217'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
       this from them.
@@ -5610,8 +5610,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--data_availability_confidential
     - '125'
-    - '252'
-    - '253'
+    - '218'
+    - '219'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
       to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
       or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
@@ -5625,8 +5625,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--data_availability_blank
     - '125'
-    - '254'
-    - '255'
+    - '220'
+    - '221'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
@@ -5638,8 +5638,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--data_availability_dryad
     - '125'
-    - '256'
-    - '257'
+    - '222'
+    - '223'
     - 'In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them. '
@@ -5651,8 +5651,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--authors_match
     - '125'
-    - '258'
-    - '259'
+    - '224'
+    - '225'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
@@ -5664,8 +5664,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--author_emails
     - '125'
-    - '260'
-    - '261'
+    - '226'
+    - '227'
     - If we don't have unique email addresses for all authors, send it back.
     - boolean
     - '2017-02-15 23:21:49.7972'
@@ -5675,8 +5675,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--author_removed
     - '125'
-    - '262'
-    - '263'
+    - '228'
+    - '229'
     - If the author list has changed between initial and full submission, pass it
       through if an author was added and flag it to the editor/initiate our COPE process
       if an author was removed.
@@ -5688,8 +5688,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--competing_interests
     - '125'
-    - '264'
-    - '265'
+    - '230'
+    - '231'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
     - boolean
@@ -5700,8 +5700,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--financial_disclosure
     - '125'
-    - '266'
-    - '267'
+    - '232'
+    - '233'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
       the authors have provided a description of the roles of the funder, if they
       responded Yes to our standard statement.
@@ -5713,8 +5713,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--tobacco
     - '125'
-    - '268'
-    - '269'
+    - '234'
+    - '235'
     - " If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, start a 'MetaData' discussion and ping the handling editor. See <a
       href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
@@ -5727,8 +5727,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--collection
     - '125'
-    - '270'
-    - '271'
+    - '236'
+    - '237'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
@@ -5740,8 +5740,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--figures_viewable
     - '125'
-    - '272'
-    - '273'
+    - '238'
+    - '239'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
@@ -5753,8 +5753,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--embedded_captions
     - '125'
-    - '274'
-    - '275'
+    - '240'
+    - '241'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
@@ -5766,8 +5766,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--captions_missing
     - '125'
-    - '276'
-    - '277'
+    - '242'
+    - '243'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
@@ -5778,8 +5778,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--figures_missing
     - '125'
-    - '278'
-    - '279'
+    - '244'
+    - '245'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
@@ -5792,8 +5792,8 @@ card_contents:
     - '15'
     - plos_bio_initial_tech_check--open_reject
     - '125'
-    - '280'
-    - '281'
+    - '246'
+    - '247'
     - For any resubmissions after an Open Reject decision, ensure the authors have
       uploaded A 'Response to Reviewer's document. If this information is provided
       in the cover letter or another part of the submission, ask the authors to upload
@@ -5807,8 +5807,8 @@ card_contents:
     - '16'
     - 
     - 
-    - '283'
-    - '334'
+    - '249'
+    - '300'
     - 
     - 
     - '2017-02-15 23:21:49.936117'
@@ -5818,8 +5818,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--open_rejects
     - '142'
-    - '284'
-    - '285'
+    - '250'
+    - '251'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
@@ -5832,8 +5832,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--data_availability_confidential
     - '142'
-    - '286'
-    - '287'
+    - '252'
+    - '253'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
       to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
       or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
@@ -5847,8 +5847,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--data_availability_blank
     - '142'
-    - '288'
-    - '289'
+    - '254'
+    - '255'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
@@ -5860,8 +5860,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--data_availability_dryad
     - '142'
-    - '290'
-    - '291'
+    - '256'
+    - '257'
     - In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them.
@@ -5873,8 +5873,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--authors_match
     - '142'
-    - '292'
-    - '293'
+    - '258'
+    - '259'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
@@ -5886,8 +5886,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--author_removed
     - '142'
-    - '294'
-    - '295'
+    - '260'
+    - '261'
     - If the author list has changed (author(s) being added or removed), flag it to
       the editor/initiate our COPE process if an author was removed.
     - boolean
@@ -5898,8 +5898,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--competing_interests
     - '142'
-    - '296'
-    - '297'
+    - '262'
+    - '263'
     - 'If any competing interests are listed, please add a manuscript note. ex: ''Initials
       Date: Note to Editor - COI statement present, please see COI field.'''
     - boolean
@@ -5910,8 +5910,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--collection
     - '142'
-    - '298'
-    - '299'
+    - '264'
+    - '265'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
@@ -5923,8 +5923,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--human_subjects
     - '142'
-    - '300'
-    - '301'
+    - '266'
+    - '267'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
@@ -5935,8 +5935,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--ethics_needed
     - '142'
-    - '302'
-    - '303'
+    - '268'
+    - '269'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
@@ -5948,8 +5948,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--data_available
     - '142'
-    - '304'
-    - '305'
+    - '270'
+    - '271'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
@@ -5960,8 +5960,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--supporting_information
     - '142'
-    - '306'
-    - '307'
+    - '272'
+    - '273'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
@@ -5973,8 +5973,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--dryad_url
     - '142'
-    - '308'
-    - '309'
+    - '274'
+    - '275'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
@@ -5985,8 +5985,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--financial_disclosure
     - '142'
-    - '310'
-    - '311'
+    - '276'
+    - '277'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
       the authors have provided a description of the roles of the funder, if they
       responded Yes to our standard statement.
@@ -5998,8 +5998,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--tobacco
     - '142'
-    - '312'
-    - '313'
+    - '278'
+    - '279'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, start a 'MetaData' discussion and ping the handling editor. See <a
       href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
@@ -6012,8 +6012,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--figures_legible
     - '142'
-    - '314'
-    - '315'
+    - '280'
+    - '281'
     - If any figures are completely illegible, contact the author.
     - boolean
     - '2017-02-15 23:21:50.124122'
@@ -6023,8 +6023,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--cited
     - '142'
-    - '316'
-    - '317'
+    - '282'
+    - '283'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
@@ -6035,8 +6035,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--cover_letter
     - '142'
-    - '318'
-    - '319'
+    - '284'
+    - '285'
     - Have the authors asked any content in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
@@ -6047,8 +6047,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--billing_inquiries
     - '142'
-    - '320'
-    - '321'
+    - '286'
+    - '287'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
@@ -6059,8 +6059,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--ethics_statement
     - '142'
-    - '322'
-    - '323'
+    - '288'
+    - '289'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
       this from them.
@@ -6072,8 +6072,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--figures_viewable
     - '142'
-    - '324'
-    - '325'
+    - '290'
+    - '291'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
@@ -6085,8 +6085,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--embedded_captions
     - '142'
-    - '326'
-    - '327'
+    - '292'
+    - '293'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
@@ -6098,8 +6098,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--captions_missing
     - '142'
-    - '328'
-    - '329'
+    - '294'
+    - '295'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
@@ -6110,8 +6110,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--figures_missing
     - '142'
-    - '330'
-    - '331'
+    - '296'
+    - '297'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
@@ -6124,8 +6124,8 @@ card_contents:
     - '16'
     - plos_bio_revision_tech_check--response_to_reviewers
     - '142'
-    - '332'
-    - '333'
+    - '298'
+    - '299'
     - For any resubmissions that have previously gone through review, ensure the authors
       have responded to the reviewer comments in the Revision Details box of the Revise
       Manuscript card. If this information is not present, request it from author.
@@ -6137,8 +6137,8 @@ card_contents:
     - '17'
     - 
     - 
-    - '335'
-    - '348'
+    - '301'
+    - '314'
     - 
     - 
     - '2017-02-15 23:21:50.260968'
@@ -6148,8 +6148,8 @@ card_contents:
     - '17'
     - production_metadata--publication_date
     - '168'
-    - '336'
-    - '337'
+    - '302'
+    - '303'
     - Publication Date
     - text
     - '2017-02-15 23:21:50.268938'
@@ -6159,8 +6159,8 @@ card_contents:
     - '17'
     - production_metadata--volume_number
     - '168'
-    - '338'
-    - '339'
+    - '304'
+    - '305'
     - Volume Number
     - text
     - '2017-02-15 23:21:50.281391'
@@ -6170,8 +6170,8 @@ card_contents:
     - '17'
     - production_metadata--issue_number
     - '168'
-    - '340'
-    - '341'
+    - '306'
+    - '307'
     - Issue Number
     - text
     - '2017-02-15 23:21:50.294022'
@@ -6181,8 +6181,8 @@ card_contents:
     - '17'
     - production_metadata--provenance
     - '168'
-    - '342'
-    - '343'
+    - '308'
+    - '309'
     - Provenance
     - text
     - '2017-02-15 23:21:50.3061'
@@ -6192,8 +6192,8 @@ card_contents:
     - '17'
     - production_metadata--production_notes
     - '168'
-    - '344'
-    - '345'
+    - '310'
+    - '311'
     - Production Notes
     - text
     - '2017-02-15 23:21:50.330203'
@@ -6203,8 +6203,8 @@ card_contents:
     - '17'
     - production_metadata--special_handling_instructions
     - '168'
-    - '346'
-    - '347'
+    - '312'
+    - '313'
     - Special Handling Instructions
     - text
     - '2017-02-15 23:21:50.341524'
@@ -6214,8 +6214,8 @@ card_contents:
     - '18'
     - 
     - 
-    - '349'
-    - '384'
+    - '315'
+    - '350'
     - 
     - 
     - '2017-02-15 23:21:50.361104'
@@ -6225,8 +6225,8 @@ card_contents:
     - '18'
     - publishing_related_questions--published_elsewhere--taken_from_manuscripts
     - '178'
-    - '351'
-    - '352'
+    - '317'
+    - '318'
     - Please identify which results, data, or figures have been taken from other published
       or pending manuscripts and explain why inclusion in this submission does not
       constitute dual publication.
@@ -6238,8 +6238,8 @@ card_contents:
     - '18'
     - publishing_related_questions--published_elsewhere--upload_related_work
     - '178'
-    - '353'
-    - '354'
+    - '319'
+    - '320'
     - Please also upload a copy of the related work with your submission as a 'Related
       Manuscript' item. Note that reviewers may be asked to comment on the overlap
       between the related submissions.
@@ -6251,8 +6251,8 @@ card_contents:
     - '18'
     - publishing_related_questions--published_elsewhere
     - '175'
-    - '350'
-    - '355'
+    - '316'
+    - '321'
     - Have the results, data, or figures in this manuscript been published elsewhere?
       Are they under consideration for publication elsewhere?
     - boolean
@@ -6263,8 +6263,8 @@ card_contents:
     - '18'
     - publishing_related_questions--submitted_in_conjunction--corresponding_title
     - '183'
-    - '357'
-    - '358'
+    - '323'
+    - '324'
     - Title
     - text
     - '2017-02-15 23:21:50.410062'
@@ -6274,8 +6274,8 @@ card_contents:
     - '18'
     - publishing_related_questions--submitted_in_conjunction--corresponding_author
     - '183'
-    - '359'
-    - '360'
+    - '325'
+    - '326'
     - Corresponding author
     - text
     - '2017-02-15 23:21:50.417719'
@@ -6285,8 +6285,8 @@ card_contents:
     - '18'
     - publishing_related_questions--submitted_in_conjunction--corresponding_journal
     - '183'
-    - '361'
-    - '362'
+    - '327'
+    - '328'
     - Corresponding journal
     - text
     - '2017-02-15 23:21:50.425375'
@@ -6296,8 +6296,8 @@ card_contents:
     - '18'
     - publishing_related_questions--submitted_in_conjunction--handled_together
     - '183'
-    - '363'
-    - '364'
+    - '329'
+    - '330'
     - This submission and the manuscript I'm submitting should be handled together
     - boolean
     - '2017-02-15 23:21:50.432888'
@@ -6307,8 +6307,8 @@ card_contents:
     - '18'
     - publishing_related_questions--submitted_in_conjunction
     - '175'
-    - '356'
-    - '365'
+    - '322'
+    - '331'
     - Is this manuscript being submitted in conjunction with another submission?
     - boolean
     - '2017-02-15 23:21:50.440818'
@@ -6318,8 +6318,8 @@ card_contents:
     - '18'
     - publishing_related_questions--previous_interactions_with_this_manuscript--submission_details
     - '185'
-    - '367'
-    - '368'
+    - '333'
+    - '334'
     - Please enter manuscript number and editor name, if known
     - text
     - '2017-02-15 23:21:50.483627'
@@ -6329,8 +6329,8 @@ card_contents:
     - '18'
     - publishing_related_questions--previous_interactions_with_this_manuscript
     - '175'
-    - '366'
-    - '369'
+    - '332'
+    - '335'
     - I have had previous interactions about this manuscript with a staff editor or
       Academic Editor of this journal.
     - boolean
@@ -6341,8 +6341,8 @@ card_contents:
     - '18'
     - publishing_related_questions--presubmission_inquiry--submission_details
     - '187'
-    - '371'
-    - '372'
+    - '337'
+    - '338'
     - Please enter manuscript number and editor name, if known
     - text
     - '2017-02-15 23:21:50.523436'
@@ -6352,8 +6352,8 @@ card_contents:
     - '18'
     - publishing_related_questions--presubmission_inquiry
     - '175'
-    - '370'
-    - '373'
+    - '336'
+    - '339'
     - I submitted a presubmission inquiry for this manuscript.
     - boolean
     - '2017-02-15 23:21:50.534804'
@@ -6363,8 +6363,8 @@ card_contents:
     - '18'
     - publishing_related_questions--other_journal_submission--submission_details
     - '189'
-    - '375'
-    - '376'
+    - '341'
+    - '342'
     - Please enter manuscript number and editor name, if known
     - text
     - '2017-02-15 23:21:50.559442'
@@ -6374,8 +6374,8 @@ card_contents:
     - '18'
     - publishing_related_questions--other_journal_submission
     - '175'
-    - '374'
-    - '377'
+    - '340'
+    - '343'
     - This manuscript was previously submitted to a different PLOS journal as either
       a presubmission inquiry or a full submission.
     - boolean
@@ -6386,8 +6386,8 @@ card_contents:
     - '18'
     - publishing_related_questions--author_was_previous_journal_editor
     - '175'
-    - '378'
-    - '379'
+    - '344'
+    - '345'
     - One or more of the authors (including myself) currently serve, or have previously
       served, as an Academic Editor or Guest Editor for this journal.
     - boolean
@@ -6398,8 +6398,8 @@ card_contents:
     - '18'
     - publishing_related_questions--intended_collection
     - '175'
-    - '380'
-    - '381'
+    - '346'
+    - '347'
     - If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS
       Collection</a>, enter the name of the collection in the box below. Please also
       ensure the name of the collection is included in your cover letter.
@@ -6411,8 +6411,8 @@ card_contents:
     - '18'
     - publishing_related_questions--short_title
     - '175'
-    - '382'
-    - '383'
+    - '348'
+    - '349'
     - Please give your paper a short title. Short titles are used as the running header
       on published PDFs.
     - text
@@ -6423,8 +6423,8 @@ card_contents:
     - '19'
     - 
     - 
-    - '385'
-    - '392'
+    - '351'
+    - '358'
     - 
     - 
     - '2017-02-15 23:21:50.646556'
@@ -6434,8 +6434,8 @@ card_contents:
     - '19'
     - register_decision_questions--selected-template
     - '193'
-    - '386'
-    - '387'
+    - '352'
+    - '353'
     - Please select a template.
     - text
     - '2017-02-15 23:21:50.657595'
@@ -6445,8 +6445,8 @@ card_contents:
     - '19'
     - register_decision_questions--to-field
     - '193'
-    - '388'
-    - '389'
+    - '354'
+    - '355'
     - Enter the email here
     - text
     - '2017-02-15 23:21:50.674019'
@@ -6456,8 +6456,8 @@ card_contents:
     - '19'
     - register_decision_questions--subject-field
     - '193'
-    - '390'
-    - '391'
+    - '356'
+    - '357'
     - Enter the subject here
     - text
     - '2017-02-15 23:21:50.688932'
@@ -6467,8 +6467,8 @@ card_contents:
     - '20'
     - 
     - 
-    - '393'
-    - '410'
+    - '359'
+    - '376'
     - 
     - 
     - '2017-02-15 23:21:50.709867'
@@ -6478,8 +6478,8 @@ card_contents:
     - '20'
     - reporting_guidelines--clinical_trial
     - '197'
-    - '394'
-    - '395'
+    - '360'
+    - '361'
     - Clinical Trial
     - boolean
     - '2017-02-15 23:21:50.718068'
@@ -6489,8 +6489,8 @@ card_contents:
     - '20'
     - reporting_guidelines--systematic_reviews--checklist
     - '200'
-    - '397'
-    - '398'
+    - '363'
+    - '364'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
@@ -6501,8 +6501,8 @@ card_contents:
     - '20'
     - reporting_guidelines--systematic_reviews
     - '197'
-    - '396'
-    - '399'
+    - '362'
+    - '365'
     - Systematic Reviews
     - boolean
     - '2017-02-15 23:21:50.740661'
@@ -6512,8 +6512,8 @@ card_contents:
     - '20'
     - reporting_guidelines--meta_analyses--checklist
     - '202'
-    - '401'
-    - '402'
+    - '367'
+    - '368'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
@@ -6524,8 +6524,8 @@ card_contents:
     - '20'
     - reporting_guidelines--meta_analyses
     - '197'
-    - '400'
-    - '403'
+    - '366'
+    - '369'
     - Meta-analyses
     - boolean
     - '2017-02-15 23:21:50.76959'
@@ -6535,8 +6535,8 @@ card_contents:
     - '20'
     - reporting_guidelines--diagnostic_studies
     - '197'
-    - '404'
-    - '405'
+    - '370'
+    - '371'
     - Diagnostic studies
     - boolean
     - '2017-02-15 23:21:50.786162'
@@ -6546,8 +6546,8 @@ card_contents:
     - '20'
     - reporting_guidelines--epidemiological_studies
     - '197'
-    - '406'
-    - '407'
+    - '372'
+    - '373'
     - Epidemiological studies
     - boolean
     - '2017-02-15 23:21:50.796621'
@@ -6557,8 +6557,8 @@ card_contents:
     - '20'
     - reporting_guidelines--microarray_studies
     - '197'
-    - '408'
-    - '409'
+    - '374'
+    - '375'
     - Microarray studies
     - boolean
     - '2017-02-15 23:21:50.810812'
@@ -6568,8 +6568,8 @@ card_contents:
     - '21'
     - 
     - 
-    - '411'
-    - '416'
+    - '377'
+    - '382'
     - 
     - 
     - '2017-02-15 23:21:50.832494'
@@ -6579,8 +6579,8 @@ card_contents:
     - '21'
     - reviewer_recommendations--recommend_or_oppose
     - '206'
-    - '412'
-    - '413'
+    - '378'
+    - '379'
     - Are you recommending or opposing this reviewer?
     - boolean
     - '2017-02-15 23:21:50.84009'
@@ -6590,8 +6590,8 @@ card_contents:
     - '21'
     - reviewer_recommendations--reason
     - '206'
-    - '414'
-    - '415'
+    - '380'
+    - '381'
     - 'Optional: reason for recommending or opposing this reviewer'
     - text
     - '2017-02-15 23:21:50.851484'
@@ -6601,112 +6601,112 @@ card_contents:
     - '22'
     - 
     - 
-    - '417'
-    - '434'
+    - '383'
+    - '384'
     - 
     - 
     - '2017-02-15 23:21:50.868667'
     - '2017-02-15 23:21:50.971222'
-    - 
+    - '2017-02-22 14:56:10.582789'
   - - '210'
     - '22'
     - reviewer_report--decision_term
     - '209'
-    - '418'
-    - '419'
+    - '384'
+    - '385'
     - 'Please provide your publication recommendation:'
     - text
     - '2017-02-15 23:21:50.875421'
     - '2017-02-15 23:21:50.879173'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '211'
     - '22'
     - reviewer_report--competing_interests--detail
     - '212'
-    - '421'
-    - '422'
+    - '385'
+    - '384'
     - Comment
     - text
     - '2017-02-15 23:21:50.887238'
     - '2017-02-15 23:21:50.907372'
-    - 
+    - '2017-02-22 14:56:10.635193'
   - - '212'
     - '22'
     - reviewer_report--competing_interests
     - '209'
-    - '420'
-    - '423'
+    - '384'
+    - '385'
     - Do you have any potential or perceived competing interests that may influence
       your review?
     - boolean
     - '2017-02-15 23:21:50.89773'
     - '2017-02-15 23:21:50.907372'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '213'
     - '22'
     - reviewer_report--identity
     - '209'
-    - '424'
-    - '425'
+    - '384'
+    - '385'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
       include your name here."
     - text
     - '2017-02-15 23:21:50.914285'
     - '2017-02-15 23:21:50.918021'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '214'
     - '22'
     - reviewer_report--comments_for_author
     - '209'
-    - '426'
-    - '427'
+    - '384'
+    - '385'
     - Add your comments to authors below.
     - text
     - '2017-02-15 23:21:50.924777'
     - '2017-02-15 23:21:50.928539'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '215'
     - '22'
     - reviewer_report--additional_comments
     - '209'
-    - '428'
-    - '429'
+    - '384'
+    - '385'
     - "(Optional) If you have any additional confidential comments to the editor,
       please add them below."
     - text
     - '2017-02-15 23:21:50.935117'
     - '2017-02-15 23:21:50.940898'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '216'
     - '22'
     - reviewer_report--suitable_for_another_journal--journal
     - '217'
-    - '431'
-    - '432'
+    - '385'
+    - '384'
     - Other Journal
     - text
     - '2017-02-15 23:21:50.952898'
     - '2017-02-15 23:21:50.971222'
-    - 
+    - '2017-02-22 14:56:10.574949'
   - - '217'
     - '22'
     - reviewer_report--suitable_for_another_journal
     - '209'
-    - '430'
-    - '433'
+    - '384'
+    - '385'
     - If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you
       think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em>
       journal</a>?
     - boolean
     - '2017-02-15 23:21:50.960105'
     - '2017-02-15 23:21:50.971222'
-    - 
+    - '2017-02-22 14:56:10.574949'
   - - '218'
     - '23'
     - 
     - 
-    - '435'
-    - '444'
+    - '383'
+    - '384'
     - 
     - 
     - '2017-02-15 23:21:50.991394'
@@ -6716,46 +6716,46 @@ card_contents:
     - '23'
     - taxon--zoological--complies
     - '220'
-    - '437'
-    - '438'
+    - '385'
+    - '384'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
     - '2017-02-15 23:21:51.000104'
     - '2017-02-15 23:21:51.018662'
-    - 
+    - '2017-02-22 14:56:10.635193'
   - - '220'
     - '23'
     - taxon--zoological
     - '218'
-    - '436'
-    - '439'
+    - '384'
+    - '385'
     - Does this manuscript describe a new zoological taxon name?
     - boolean
     - '2017-02-15 23:21:51.008452'
     - '2017-02-15 23:21:51.018662'
-    - 
+    - '2017-02-22 14:56:10.643061'
   - - '221'
     - '23'
     - taxon--botanical--complies
     - '222'
-    - '441'
-    - '442'
+    - '385'
+    - '384'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
     - '2017-02-15 23:21:51.03006'
     - '2017-02-15 23:21:51.047538'
-    - 
+    - '2017-02-22 14:56:10.635193'
   - - '222'
     - '23'
     - taxon--botanical
     - '218'
-    - '440'
-    - '443'
+    - '384'
+    - '385'
     - Does this manuscript describe a new botanical taxon name?
     - boolean
     - '2017-02-15 23:21:51.037484'
     - '2017-02-15 23:21:51.047538'
-    - 
+    - '2017-02-22 14:56:10.643061'
 
 ---
 cards:
@@ -6765,122 +6765,146 @@ cards:
   - updated_at
   - deleted_at
   - name
+  - journal_id
   records: 
   - - '1'
     - '2017-02-15 23:21:47.869728'
     - '2017-02-15 23:21:47.869728'
     - 
     - Author
+    - 
   - - '2'
     - '2017-02-15 23:21:48.234266'
     - '2017-02-15 23:21:48.234266'
     - 
     - TahiStandardTasks::AuthorsTask
+    - 
   - - '3'
     - '2017-02-15 23:21:48.293715'
     - '2017-02-15 23:21:48.293715'
     - 
     - TahiStandardTasks::CompetingInterestsTask
+    - 
   - - '4'
     - '2017-02-15 23:21:48.346857'
     - '2017-02-15 23:21:48.346857'
     - 
     - TahiStandardTasks::CoverLetterTask
+    - 
   - - '5'
     - '2017-02-15 23:21:48.39712'
     - '2017-02-15 23:21:48.39712'
     - 
     - TahiStandardTasks::DataAvailabilityTask
+    - 
   - - '6'
     - '2017-02-15 23:21:48.466565'
     - '2017-02-15 23:21:48.466565'
     - 
     - TahiStandardTasks::EarlyPostingTask
+    - 
   - - '7'
     - '2017-02-15 23:21:48.517523'
     - '2017-02-15 23:21:48.517523'
     - 
     - TahiStandardTasks::EthicsTask
+    - 
   - - '8'
     - '2017-02-15 23:21:48.630164'
     - '2017-02-15 23:21:48.630164'
     - 
     - TahiStandardTasks::FigureTask
+    - 
   - - '9'
     - '2017-02-15 23:21:48.656807'
     - '2017-02-15 23:21:48.656807'
     - 
     - TahiStandardTasks::FinancialDisclosureTask
+    - 
   - - '10'
     - '2017-02-15 23:21:48.685684'
     - '2017-02-15 23:21:48.685684'
-    - 
+    - '2017-02-22 14:56:17.03994'
     - TahiStandardTasks::FrontMatterReviewerReportTask
+    - 
   - - '11'
     - '2017-02-15 23:21:48.802758'
     - '2017-02-15 23:21:48.802758'
     - 
     - TahiStandardTasks::Funder
+    - 
   - - '12'
     - '2017-02-15 23:21:48.843147'
     - '2017-02-15 23:21:48.843147'
     - 
     - GroupAuthor
+    - 
   - - '13'
     - '2017-02-15 23:21:49.112559'
     - '2017-02-15 23:21:49.112559'
     - 
     - PlosBilling::BillingTask
+    - 
   - - '14'
     - '2017-02-15 23:21:49.542386'
     - '2017-02-15 23:21:49.542386'
     - 
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
   - - '15'
     - '2017-02-15 23:21:49.712618'
     - '2017-02-15 23:21:49.712618'
     - 
     - PlosBioTechCheck::InitialTechCheckTask
+    - 
   - - '16'
     - '2017-02-15 23:21:49.930947'
     - '2017-02-15 23:21:49.930947'
     - 
     - PlosBioTechCheck::RevisionTechCheckTask
+    - 
   - - '17'
     - '2017-02-15 23:21:50.255699'
     - '2017-02-15 23:21:50.255699'
     - 
     - TahiStandardTasks::ProductionMetadataTask
+    - 
   - - '18'
     - '2017-02-15 23:21:50.355789'
     - '2017-02-15 23:21:50.355789'
     - 
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
   - - '19'
     - '2017-02-15 23:21:50.640054'
     - '2017-02-15 23:21:50.640054'
     - 
     - TahiStandardTasks::RegisterDecisionTask
+    - 
   - - '20'
     - '2017-02-15 23:21:50.704146'
     - '2017-02-15 23:21:50.704146'
     - 
     - TahiStandardTasks::ReportingGuidelinesTask
+    - 
   - - '21'
     - '2017-02-15 23:21:50.826984'
     - '2017-02-15 23:21:50.826984'
     - 
     - TahiStandardTasks::ReviewerRecommendation
+    - 
   - - '22'
     - '2017-02-15 23:21:50.863574'
     - '2017-02-15 23:21:50.863574'
-    - 
+    - '2017-02-22 14:56:10.649504'
     - TahiStandardTasks::ReviewerReportTask
+    - 
   - - '23'
     - '2017-02-15 23:21:50.981567'
     - '2017-02-15 23:21:50.981567'
     - 
     - TahiStandardTasks::TaxonTask
+    - 
 
 ---
 comments:
@@ -30836,6 +30860,8 @@ reviewer_reports:
   - user_id
   - created_at
   - updated_at
+  - card_id
+  - created_in_7993
   records: 
   - - '1'
     - '210'
@@ -30843,24 +30869,32 @@ reviewer_reports:
     - '1'
     - '2017-01-27 00:14:40.103717'
     - '2017-01-27 00:14:40.103717'
+    - 
+    - false
   - - '2'
     - '211'
     - '11'
     - '5'
     - '2017-01-30 22:47:44.195932'
     - '2017-01-30 22:47:44.195932'
+    - 
+    - false
   - - '3'
     - '212'
     - '11'
     - '12'
     - '2017-01-30 22:48:27.80441'
     - '2017-01-30 22:48:27.80441'
+    - 
+    - false
   - - '4'
     - '212'
     - '24'
     - '12'
     - '2017-01-30 22:52:03.803035'
     - '2017-01-30 22:52:03.803035'
+    - 
+    - false
 
 ---
 roles:
@@ -32979,6 +33013,7 @@ tasks:
   - position
   - paper_id
   - completed_at
+  - card_id
   records: 
   - - '1'
     - Supporting Info
@@ -32991,6 +33026,7 @@ tasks:
     - '1'
     - '1'
     - 
+    - 
   - - '2'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -33001,6 +33037,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
     - 
   - - '3'
     - Upload Manuscript
@@ -33013,6 +33050,7 @@ tasks:
     - '3'
     - '1'
     - 
+    - 
   - - '4'
     - Billing
     - PlosBilling::BillingTask
@@ -33023,6 +33061,7 @@ tasks:
     - "[]"
     - '4'
     - '1'
+    - 
     - 
   - - '5'
     - Competing Interests
@@ -33035,6 +33074,7 @@ tasks:
     - '5'
     - '1'
     - 
+    - 
   - - '6'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -33045,6 +33085,7 @@ tasks:
     - "[]"
     - '6'
     - '1'
+    - 
     - 
   - - '7'
     - Data Availability
@@ -33057,6 +33098,7 @@ tasks:
     - '7'
     - '1'
     - 
+    - 
   - - '8'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -33067,6 +33109,7 @@ tasks:
     - "[]"
     - '8'
     - '1'
+    - 
     - 
   - - '9'
     - Figures
@@ -33079,6 +33122,7 @@ tasks:
     - '9'
     - '1'
     - 
+    - 
   - - '10'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -33089,6 +33133,7 @@ tasks:
     - "[]"
     - '10'
     - '1'
+    - 
     - 
   - - '11'
     - Additional Information
@@ -33101,6 +33146,7 @@ tasks:
     - '11'
     - '1'
     - 
+    - 
   - - '12'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -33111,6 +33157,7 @@ tasks:
     - "[]"
     - '12'
     - '1'
+    - 
     - 
   - - '13'
     - Reviewer Candidates
@@ -33123,6 +33170,7 @@ tasks:
     - '13'
     - '1'
     - 
+    - 
   - - '14'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -33133,6 +33181,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '1'
+    - 
     - 
   - - '15'
     - Revision Tech Check
@@ -33145,6 +33194,7 @@ tasks:
     - '2'
     - '1'
     - 
+    - 
   - - '16'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -33155,6 +33205,7 @@ tasks:
     - "[]"
     - '3'
     - '1'
+    - 
     - 
   - - '17'
     - Assign Team
@@ -33167,6 +33218,7 @@ tasks:
     - '1'
     - '1'
     - 
+    - 
   - - '18'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -33177,6 +33229,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
     - 
   - - '19'
     - Invite Reviewers
@@ -33189,6 +33242,7 @@ tasks:
     - '1'
     - '1'
     - 
+    - 
   - - '20'
     - Academic Editor Feedback
     - AdHocTask
@@ -33199,6 +33253,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
     - 
   - - '21'
     - Register Decision
@@ -33211,6 +33266,7 @@ tasks:
     - '1'
     - '1'
     - 
+    - 
   - - '22'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -33221,6 +33277,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
     - 
   - - '23'
     - Authors
@@ -33233,6 +33290,7 @@ tasks:
     - '2'
     - '2'
     - 
+    - 
   - - '24'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -33243,6 +33301,7 @@ tasks:
     - "[]"
     - '3'
     - '2'
+    - 
     - 
   - - '25'
     - Billing
@@ -33255,6 +33314,7 @@ tasks:
     - '4'
     - '2'
     - 
+    - 
   - - '26'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -33265,6 +33325,7 @@ tasks:
     - "[]"
     - '5'
     - '2'
+    - 
     - 
   - - '27'
     - Cover Letter
@@ -33290,6 +33351,7 @@ tasks:
     - '6'
     - '2'
     - 
+    - 
   - - '28'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -33300,6 +33362,7 @@ tasks:
     - "[]"
     - '7'
     - '2'
+    - 
     - 
   - - '29'
     - Ethics Statement
@@ -33312,6 +33375,7 @@ tasks:
     - '8'
     - '2'
     - 
+    - 
   - - '30'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -33322,6 +33386,7 @@ tasks:
     - "[]"
     - '9'
     - '2'
+    - 
     - 
   - - '31'
     - Financial Disclosure
@@ -33334,6 +33399,7 @@ tasks:
     - '10'
     - '2'
     - 
+    - 
   - - '32'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -33344,6 +33410,7 @@ tasks:
     - "[]"
     - '11'
     - '2'
+    - 
     - 
   - - '33'
     - Reporting Guidelines
@@ -33356,6 +33423,7 @@ tasks:
     - '12'
     - '2'
     - 
+    - 
   - - '34'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -33366,6 +33434,7 @@ tasks:
     - "[]"
     - '13'
     - '2'
+    - 
     - 
   - - '35'
     - Initial Tech Check
@@ -33378,6 +33447,7 @@ tasks:
     - '1'
     - '2'
     - 
+    - 
   - - '36'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -33388,6 +33458,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
+    - 
     - 
   - - '37'
     - Final Tech Check
@@ -33400,6 +33471,7 @@ tasks:
     - '3'
     - '2'
     - 
+    - 
   - - '38'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -33410,6 +33482,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
     - 
   - - '39'
     - Editor Discussion
@@ -33422,6 +33495,7 @@ tasks:
     - '2'
     - '2'
     - 
+    - 
   - - '40'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -33432,6 +33506,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
     - 
   - - '41'
     - Academic Editor Feedback
@@ -33444,6 +33519,7 @@ tasks:
     - '2'
     - '2'
     - 
+    - 
   - - '42'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -33454,6 +33530,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
     - 
   - - '43'
     - Supporting Info
@@ -33466,6 +33543,7 @@ tasks:
     - '1'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '44'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -33477,6 +33555,7 @@ tasks:
     - '2'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '45'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -33487,6 +33566,7 @@ tasks:
     - "[]"
     - '3'
     - '3'
+    - 
     - 
   - - '46'
     - Billing
@@ -33499,6 +33579,7 @@ tasks:
     - '4'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '47'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -33510,6 +33591,7 @@ tasks:
     - '5'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '48'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -33528,6 +33610,7 @@ tasks:
     - '6'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '49'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -33539,6 +33622,7 @@ tasks:
     - '7'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '50'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -33550,6 +33634,7 @@ tasks:
     - '8'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '51'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -33561,6 +33646,7 @@ tasks:
     - '9'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '52'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -33572,6 +33658,7 @@ tasks:
     - '10'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '53'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -33583,6 +33670,7 @@ tasks:
     - '11'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '54'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -33594,6 +33682,7 @@ tasks:
     - '12'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '55'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -33605,6 +33694,7 @@ tasks:
     - '13'
     - '3'
     - '2016-02-02 19:33:00'
+    - 
   - - '56'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -33615,6 +33705,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '3'
+    - 
     - 
   - - '57'
     - Revision Tech Check
@@ -33627,6 +33718,7 @@ tasks:
     - '2'
     - '3'
     - 
+    - 
   - - '58'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -33637,6 +33729,7 @@ tasks:
     - "[]"
     - '3'
     - '3'
+    - 
     - 
   - - '59'
     - Assign Team
@@ -33649,6 +33742,7 @@ tasks:
     - '1'
     - '3'
     - 
+    - 
   - - '60'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -33659,6 +33753,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - 
     - 
   - - '61'
     - Invite Reviewers
@@ -33671,6 +33766,7 @@ tasks:
     - '1'
     - '3'
     - 
+    - 
   - - '62'
     - Academic Editor Feedback
     - AdHocTask
@@ -33681,6 +33777,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - 
     - 
   - - '63'
     - Register Decision
@@ -33693,6 +33790,7 @@ tasks:
     - '1'
     - '3'
     - 
+    - 
   - - '64'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -33704,6 +33802,7 @@ tasks:
     - '1'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '65'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -33715,6 +33814,7 @@ tasks:
     - '2'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '66'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -33726,6 +33826,7 @@ tasks:
     - '3'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '67'
     - Billing
     - PlosBilling::BillingTask
@@ -33737,6 +33838,7 @@ tasks:
     - '4'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '68'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -33748,6 +33850,7 @@ tasks:
     - '5'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '69'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -33769,6 +33872,7 @@ tasks:
     - '6'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '70'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -33780,6 +33884,7 @@ tasks:
     - '7'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '71'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -33791,6 +33896,7 @@ tasks:
     - '8'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '72'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -33802,6 +33908,7 @@ tasks:
     - '9'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '73'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -33813,6 +33920,7 @@ tasks:
     - '10'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '74'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -33824,6 +33932,7 @@ tasks:
     - '11'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '75'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -33835,6 +33944,7 @@ tasks:
     - '12'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '76'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -33846,6 +33956,7 @@ tasks:
     - '13'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '77'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -33856,6 +33967,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '4'
+    - 
     - 
   - - '78'
     - Revision Tech Check
@@ -33868,6 +33980,7 @@ tasks:
     - '2'
     - '4'
     - 
+    - 
   - - '79'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -33878,6 +33991,7 @@ tasks:
     - "[]"
     - '3'
     - '4'
+    - 
     - 
   - - '80'
     - Assign Team
@@ -33890,6 +34004,7 @@ tasks:
     - '1'
     - '4'
     - '2016-02-02 19:33:00'
+    - 
   - - '81'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -33900,6 +34015,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - 
     - 
   - - '82'
     - Invite Reviewers
@@ -33912,6 +34028,7 @@ tasks:
     - '1'
     - '4'
     - 
+    - 
   - - '83'
     - Academic Editor Feedback
     - AdHocTask
@@ -33922,6 +34039,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - 
     - 
   - - '84'
     - Register Decision
@@ -33934,6 +34052,7 @@ tasks:
     - '1'
     - '4'
     - 
+    - 
   - - '85'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -33944,6 +34063,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
     - 
   - - '86'
     - Authors
@@ -33956,6 +34076,7 @@ tasks:
     - '2'
     - '8'
     - 
+    - 
   - - '87'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -33966,6 +34087,7 @@ tasks:
     - "[]"
     - '3'
     - '8'
+    - 
     - 
   - - '88'
     - Billing
@@ -33978,6 +34100,7 @@ tasks:
     - '4'
     - '8'
     - 
+    - 
   - - '89'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -33988,6 +34111,7 @@ tasks:
     - "[]"
     - '5'
     - '8'
+    - 
     - 
   - - '90'
     - Cover Letter
@@ -34000,6 +34124,7 @@ tasks:
     - '6'
     - '8'
     - 
+    - 
   - - '91'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -34010,6 +34135,7 @@ tasks:
     - "[]"
     - '7'
     - '8'
+    - 
     - 
   - - '92'
     - Ethics Statement
@@ -34022,6 +34148,7 @@ tasks:
     - '8'
     - '8'
     - 
+    - 
   - - '93'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -34032,6 +34159,7 @@ tasks:
     - "[]"
     - '9'
     - '8'
+    - 
     - 
   - - '94'
     - Financial Disclosure
@@ -34044,6 +34172,7 @@ tasks:
     - '10'
     - '8'
     - 
+    - 
   - - '95'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -34054,6 +34183,7 @@ tasks:
     - "[]"
     - '11'
     - '8'
+    - 
     - 
   - - '96'
     - Reporting Guidelines
@@ -34066,6 +34196,7 @@ tasks:
     - '12'
     - '8'
     - 
+    - 
   - - '97'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -34076,6 +34207,7 @@ tasks:
     - "[]"
     - '13'
     - '8'
+    - 
     - 
   - - '98'
     - Initial Tech Check
@@ -34088,6 +34220,7 @@ tasks:
     - '1'
     - '8'
     - 
+    - 
   - - '99'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -34098,6 +34231,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
+    - 
     - 
   - - '100'
     - Final Tech Check
@@ -34110,6 +34244,7 @@ tasks:
     - '3'
     - '8'
     - 
+    - 
   - - '101'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -34120,6 +34255,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
     - 
   - - '102'
     - Editor Discussion
@@ -34132,6 +34268,7 @@ tasks:
     - '2'
     - '8'
     - 
+    - 
   - - '103'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -34142,6 +34279,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
     - 
   - - '104'
     - Academic Editor Feedback
@@ -34154,6 +34292,7 @@ tasks:
     - '2'
     - '8'
     - 
+    - 
   - - '105'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -34164,6 +34303,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
     - 
   - - '106'
     - Supporting Info
@@ -34176,6 +34316,7 @@ tasks:
     - '1'
     - '9'
     - 
+    - 
   - - '107'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -34186,6 +34327,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
     - 
   - - '108'
     - Upload Manuscript
@@ -34198,6 +34340,7 @@ tasks:
     - '3'
     - '9'
     - 
+    - 
   - - '109'
     - Billing
     - PlosBilling::BillingTask
@@ -34208,6 +34351,7 @@ tasks:
     - "[]"
     - '4'
     - '9'
+    - 
     - 
   - - '110'
     - Competing Interests
@@ -34220,6 +34364,7 @@ tasks:
     - '5'
     - '9'
     - 
+    - 
   - - '111'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -34230,6 +34375,7 @@ tasks:
     - "[]"
     - '6'
     - '9'
+    - 
     - 
   - - '112'
     - Data Availability
@@ -34242,6 +34388,7 @@ tasks:
     - '7'
     - '9'
     - 
+    - 
   - - '113'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -34252,6 +34399,7 @@ tasks:
     - "[]"
     - '8'
     - '9'
+    - 
     - 
   - - '114'
     - Figures
@@ -34264,6 +34412,7 @@ tasks:
     - '9'
     - '9'
     - 
+    - 
   - - '115'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -34274,6 +34423,7 @@ tasks:
     - "[]"
     - '10'
     - '9'
+    - 
     - 
   - - '116'
     - Additional Information
@@ -34286,6 +34436,7 @@ tasks:
     - '11'
     - '9'
     - 
+    - 
   - - '117'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -34296,6 +34447,7 @@ tasks:
     - "[]"
     - '12'
     - '9'
+    - 
     - 
   - - '118'
     - Reviewer Candidates
@@ -34308,6 +34460,7 @@ tasks:
     - '13'
     - '9'
     - 
+    - 
   - - '119'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -34318,6 +34471,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '9'
+    - 
     - 
   - - '120'
     - Revision Tech Check
@@ -34330,6 +34484,7 @@ tasks:
     - '2'
     - '9'
     - 
+    - 
   - - '121'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -34340,6 +34495,7 @@ tasks:
     - "[]"
     - '3'
     - '9'
+    - 
     - 
   - - '122'
     - Assign Team
@@ -34352,6 +34508,7 @@ tasks:
     - '1'
     - '9'
     - 
+    - 
   - - '123'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -34362,6 +34519,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
     - 
   - - '124'
     - Invite Reviewers
@@ -34374,6 +34532,7 @@ tasks:
     - '1'
     - '9'
     - 
+    - 
   - - '125'
     - Academic Editor Feedback
     - AdHocTask
@@ -34384,6 +34543,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
     - 
   - - '126'
     - Register Decision
@@ -34396,6 +34556,7 @@ tasks:
     - '1'
     - '9'
     - 
+    - 
   - - '127'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -34406,6 +34567,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
     - 
   - - '128'
     - Authors
@@ -34418,6 +34580,7 @@ tasks:
     - '2'
     - '10'
     - 
+    - 
   - - '129'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -34428,6 +34591,7 @@ tasks:
     - "[]"
     - '3'
     - '10'
+    - 
     - 
   - - '130'
     - Billing
@@ -34440,6 +34604,7 @@ tasks:
     - '4'
     - '10'
     - 
+    - 
   - - '131'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -34450,6 +34615,7 @@ tasks:
     - "[]"
     - '5'
     - '10'
+    - 
     - 
   - - '132'
     - Cover Letter
@@ -34462,6 +34628,7 @@ tasks:
     - '6'
     - '10'
     - 
+    - 
   - - '133'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -34472,6 +34639,7 @@ tasks:
     - "[]"
     - '7'
     - '10'
+    - 
     - 
   - - '134'
     - Ethics Statement
@@ -34484,6 +34652,7 @@ tasks:
     - '8'
     - '10'
     - 
+    - 
   - - '135'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -34494,6 +34663,7 @@ tasks:
     - "[]"
     - '9'
     - '10'
+    - 
     - 
   - - '136'
     - Financial Disclosure
@@ -34506,6 +34676,7 @@ tasks:
     - '10'
     - '10'
     - 
+    - 
   - - '137'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -34516,6 +34687,7 @@ tasks:
     - "[]"
     - '11'
     - '10'
+    - 
     - 
   - - '138'
     - Reporting Guidelines
@@ -34528,6 +34700,7 @@ tasks:
     - '12'
     - '10'
     - 
+    - 
   - - '139'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -34538,6 +34711,7 @@ tasks:
     - "[]"
     - '13'
     - '10'
+    - 
     - 
   - - '140'
     - Initial Tech Check
@@ -34550,6 +34724,7 @@ tasks:
     - '1'
     - '10'
     - 
+    - 
   - - '141'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -34560,6 +34735,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
+    - 
     - 
   - - '142'
     - Final Tech Check
@@ -34572,6 +34748,7 @@ tasks:
     - '3'
     - '10'
     - 
+    - 
   - - '143'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -34582,6 +34759,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
     - 
   - - '144'
     - Editor Discussion
@@ -34594,6 +34772,7 @@ tasks:
     - '2'
     - '10'
     - 
+    - 
   - - '145'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -34604,6 +34783,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
     - 
   - - '146'
     - Academic Editor Feedback
@@ -34616,6 +34796,7 @@ tasks:
     - '2'
     - '10'
     - 
+    - 
   - - '147'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -34626,6 +34807,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
     - 
   - - '170'
     - Supporting Info
@@ -34638,6 +34820,7 @@ tasks:
     - '1'
     - '12'
     - '2016-04-12 18:57:45.698465'
+    - 
   - - '171'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -34649,6 +34832,7 @@ tasks:
     - '2'
     - '12'
     - '2016-04-12 19:00:57.773952'
+    - 
   - - '172'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -34660,6 +34844,7 @@ tasks:
     - '3'
     - '12'
     - '2016-04-12 18:58:42.628533'
+    - 
   - - '173'
     - Billing
     - PlosBilling::BillingTask
@@ -34671,6 +34856,7 @@ tasks:
     - '4'
     - '12'
     - '2016-04-12 18:51:43.182339'
+    - 
   - - '174'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -34682,6 +34868,7 @@ tasks:
     - '5'
     - '12'
     - '2016-04-12 19:02:01.049585'
+    - 
   - - '175'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -34693,6 +34880,7 @@ tasks:
     - '6'
     - '12'
     - '2016-04-12 18:59:10.480324'
+    - 
   - - '176'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -34704,6 +34892,7 @@ tasks:
     - '7'
     - '12'
     - '2016-04-12 19:04:27.881906'
+    - 
   - - '177'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -34715,6 +34904,7 @@ tasks:
     - '8'
     - '12'
     - '2016-04-12 19:05:38.622468'
+    - 
   - - '178'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -34726,6 +34916,7 @@ tasks:
     - '9'
     - '12'
     - '2016-04-12 19:00:03.448747'
+    - 
   - - '179'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -34737,6 +34928,7 @@ tasks:
     - '10'
     - '12'
     - '2016-04-12 19:05:10.678262'
+    - 
   - - '180'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -34748,6 +34940,7 @@ tasks:
     - '11'
     - '12'
     - '2016-04-12 19:02:27.717245'
+    - 
   - - '181'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -34759,6 +34952,7 @@ tasks:
     - '12'
     - '12'
     - '2016-04-12 19:02:10.103454'
+    - 
   - - '182'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -34770,6 +34964,7 @@ tasks:
     - '13'
     - '12'
     - '2016-04-12 18:59:46.252411'
+    - 
   - - '183'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -34780,6 +34975,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '12'
+    - 
     - 
   - - '184'
     - Revision Tech Check
@@ -34792,6 +34988,7 @@ tasks:
     - '2'
     - '12'
     - 
+    - 
   - - '185'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -34802,6 +34999,7 @@ tasks:
     - "[]"
     - '3'
     - '12'
+    - 
     - 
   - - '186'
     - Assign Team
@@ -34814,6 +35012,7 @@ tasks:
     - '1'
     - '12'
     - 
+    - 
   - - '187'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -34824,6 +35023,7 @@ tasks:
     - "[]"
     - '2'
     - '12'
+    - 
     - 
   - - '188'
     - Invite Reviewers
@@ -34836,6 +35036,7 @@ tasks:
     - '1'
     - '12'
     - 
+    - 
   - - '189'
     - Academic Editor Feedback
     - AdHocTask
@@ -34847,6 +35048,7 @@ tasks:
     - '2'
     - '12'
     - 
+    - 
   - - '190'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -34857,6 +35059,7 @@ tasks:
     - "[]"
     - '1'
     - '12'
+    - 
     - 
   - - '191'
     - Revise Manuscript
@@ -34881,6 +35084,7 @@ tasks:
     - '2'
     - '12'
     - '2016-10-26 19:40:58.236409'
+    - 
   - - '192'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -34891,6 +35095,7 @@ tasks:
     - "[]"
     - '1'
     - '13'
+    - 
     - 
   - - '193'
     - Authors
@@ -34903,6 +35108,7 @@ tasks:
     - '2'
     - '13'
     - 
+    - 
   - - '194'
     - Billing
     - PlosBilling::BillingTask
@@ -34913,6 +35119,7 @@ tasks:
     - "[]"
     - '3'
     - '13'
+    - 
     - 
   - - '195'
     - Competing Interests
@@ -34925,6 +35132,7 @@ tasks:
     - '4'
     - '13'
     - 
+    - 
   - - '196'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -34935,6 +35143,7 @@ tasks:
     - "[]"
     - '5'
     - '13'
+    - 
     - 
   - - '197'
     - Cover Letter
@@ -34947,6 +35156,7 @@ tasks:
     - '6'
     - '13'
     - 
+    - 
   - - '198'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -34957,6 +35167,7 @@ tasks:
     - "[]"
     - '7'
     - '13'
+    - 
     - 
   - - '199'
     - Figures
@@ -34969,6 +35180,7 @@ tasks:
     - '8'
     - '13'
     - 
+    - 
   - - '200'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -34979,6 +35191,7 @@ tasks:
     - "[]"
     - '9'
     - '13'
+    - 
     - 
   - - '201'
     - Additional Information
@@ -34991,6 +35204,7 @@ tasks:
     - '10'
     - '13'
     - 
+    - 
   - - '202'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -35001,6 +35215,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '13'
+    - 
     - 
   - - '203'
     - Revision Tech Check
@@ -35013,6 +35228,7 @@ tasks:
     - '2'
     - '13'
     - 
+    - 
   - - '204'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -35023,6 +35239,7 @@ tasks:
     - "{}"
     - '3'
     - '13'
+    - 
     - 
   - - '206'
     - Editor Discussion
@@ -35035,6 +35252,7 @@ tasks:
     - '1'
     - '13'
     - 
+    - 
   - - '207'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -35045,6 +35263,7 @@ tasks:
     - "[]"
     - '1'
     - '13'
+    - 
     - 
   - - '208'
     - Register Decision
@@ -35057,6 +35276,7 @@ tasks:
     - '1'
     - '13'
     - 
+    - 
   - - '209'
     - Invite Academic Editor
     - TahiStandardTasks::PaperEditorTask
@@ -35067,6 +35287,7 @@ tasks:
     - "[]"
     - '3'
     - '12'
+    - 
     - 
   - - '210'
     - Review by Adam Administrator
@@ -35079,6 +35300,7 @@ tasks:
     - '3'
     - '12'
     - '2016-10-26 19:34:04.991447'
+    - 
   - - '211'
     - Review by Reviewer User
     - TahiStandardTasks::ReviewerReportTask
@@ -35090,6 +35312,7 @@ tasks:
     - '3'
     - '4'
     - '2017-01-30 22:50:19.061375'
+    - 
   - - '212'
     - Review by Jeffrey RV Gray
     - TahiStandardTasks::ReviewerReportTask
@@ -35100,6 +35323,7 @@ tasks:
     - "{}"
     - '4'
     - '4'
+    - 
     - 
   - - '213'
     - Revise Manuscript
@@ -35112,6 +35336,7 @@ tasks:
     - '2'
     - '4'
     - '2017-01-30 22:51:12.752319'
+    - 
 
 ---
 users:

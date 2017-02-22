@@ -9,13 +9,13 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 
 **Reviewer Reports
 Reviewer reports will link to two different kinds of cards, based on which type of task made them.
-- [ ] Delete the Cards where the name is 'ReviewerReportTask' and 'FrontMatterReviewerReportTask' from the data.yml
+- [X] Delete the Cards where the name is 'ReviewerReportTask' and 'FrontMatterReviewerReportTask' from the data.yml
 - [X] Migrate FrontMatterReviewerReportTask and ReviewerReportTask reports to different cards
     The tasks themselves don't have cards, but there is a type of card for each different report.
     Another thing to note: There is *not* a FrontMatterReviewerReport class, even though we have
     a card by that name in the seeds now.  Be careful.
 - [X] Change ReviewerReportTaskCreator to assign the correct type of Card when creating a ReviewerReport
-- [ ] Migration: associate ReviewerReports to the appropriate kinds of cards
+- [ ] Migration: associate ReviewerReports to the appropriate kinds of cards, migrate answers too
 - [X] ReviewerReportTask on the client needs to load the appropriate card for its Report, like authors, etc.
 - [ ] Does the ReviewerReportsController#create action ever actually get called?
 

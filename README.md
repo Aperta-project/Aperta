@@ -58,8 +58,6 @@ to prevent `.env` file loading.
 
 - The event server (slanger) is automatically installed in the setup script.
 
-- Make sure `PUSHER_URL` is set in your environment.
-
 When you run `foreman start`, slanger will start up as the event stream server.
 
 By default, slanger will listen on port `4567` for API requests (requests

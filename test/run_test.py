@@ -9,9 +9,9 @@ import subprocess
 modulelist = []
 err_list = []
 
-dir = '/'.join([os.getcwd(), 'frontend'])
-for file in os.listdir( dir ):
-  if re.search('^test_.*.py', file):
+dir_ = '/'.join([os.getcwd(), 'frontend'])
+for file_ in os.listdir(dir_):
+  if re.search('^test_.*.py', file_):
     module_name = file.split('.')[0]
     modulelist.append('.'.join(['frontend', module_name]))
 shuffle(modulelist)

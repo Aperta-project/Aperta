@@ -302,7 +302,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
       adm_page.select_named_journal('PLOS Genetics Demo', click=True)
       adm_page._populate_journal_db_values('PLOS Genetics Demo', 'noreply@plos.org')
     ja_page = JournalAdminPage(self.getDriver())
-    time.sleep(1)
+    ja_page.page_ready()
     for mmt in gen_mmts:
       # test if present, if not add
       mmt_present = ja_page.is_mmt_present(mmt['name'])

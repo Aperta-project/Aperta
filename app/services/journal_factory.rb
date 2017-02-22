@@ -171,6 +171,7 @@ class JournalFactory
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)
+      role.ensure_permission_exists(:create_card, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 

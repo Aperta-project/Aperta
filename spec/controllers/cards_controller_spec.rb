@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe CardsController do
-  subject(:do_request) do
-    get :show, format: 'json', owner_type: object.class.name.underscore, owner_id: object.id
-  end
-
   let(:user) { FactoryGirl.create(:user) }
   let(:my_journal) { FactoryGirl.create(:journal) }
   let(:my_other_journal) { FactoryGirl.create(:journal) }
@@ -57,37 +53,39 @@ describe CardsController do
   end
 
   describe "#show" do
-    let(:user) { create :user, :site_admin }
-
-    before do
-      stub_sign_in user
+    subject(:do_request) do
+      get :show, format: 'json', id: card.id
     end
-
-    context "resource is answerable" do
-      let(:card) { FactoryGirl.create(:card) }
-      let(:object) { FactoryGirl.create(:cover_letter_task, card: card) }
-
-      it "returns a serialized card" do
-        do_request
-        expect(response.status).to eq(200)
-        expect(res_body).to include("card")
-      end
-    end
-
-    context "resource is not answerable" do
-      let(:object) { FactoryGirl.create(:user) }
-
-      it "returns a 422" do
-        do_request
-        expect(response.status).to eq(422)
-      end
-    end
-  end
-
-  context "authentication" do
     let(:card) { FactoryGirl.create(:card) }
-    let(:object) { FactoryGirl.create(:cover_letter_task, card: card) }
 
     it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "when the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:view, card)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?).with(:view, card).and_return(true)
+        end
+
+        it { is_expected.to responds_with 200 }
+
+        it 'returns the serialized card' do
+          do_request
+          expect(res_body['card']['id']).to be card.id
+        end
+      end
+    end
   end
 end

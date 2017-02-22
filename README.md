@@ -12,7 +12,6 @@
 1. Make sure the following servers are already running:
     - PostgreSQL
     - Redis (run manually with `redis-server`)
-1. Clone the event server repo (`tahi-slanger`) in a sibling directory
 1. Make sure the following ports are clear:
     - 4567 (Slanger API)
     - 40604 (Slanger websocket)
@@ -57,8 +56,7 @@ to prevent `.env` file loading.
 
 ## Event server
 
-- Clone the [tahi-slanger](https://github.com/Tahi-project/tahi-slanger) github
-  repository and follow the installation instructions
+- The event server (slanger) is automatically installed in the setup script.
 
 - Make sure `PUSHER_URL` is set in your environment.
 

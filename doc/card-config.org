@@ -23,6 +23,12 @@ Reviewer reports will link to two different kinds of cards, based on which type 
 - [ ] Seed cards for every journal in the system. Need to restructure the way the seed runs
 to avoid having to pass a journal argument into the myriad rake tasks
 
+- [ ] failing capybara tests
+  - [ ] rspec ./spec/features/session_invalidation_spec.rb:42 # session invalidation editing a field with an invalid CSRF token the user is logged out and returned to the login screen
+  - [ ] rspec ./spec/features/authors_card_spec.rb:56 # Authors Task As an author new authors go to bottom of the list
+  - [ ] rspec ./spec/features/authors_card_spec.rb:37 # Authors Task As an author validates group authors on completion
+  - [ ] rspec ./spec/features/authors_card_spec.rb:17 # Authors Task As an author validates the authors card on completion
+  - [ ] rspec ./spec/features/manuscript_new_spec.rb:29
 - [X] Failing js tests
   - [X] "Integration FinancialDisclosure"
   - [X] "Integration Reviewer Report"
@@ -40,6 +46,3 @@ to avoid having to pass a journal argument into the myriad rake tasks
   - [X] "Integration | Component | reporting guidelines task"
   - [X] "ObjectProxyWithValidationErrors"
   - [X] "Unit | Model | funder"
-
-
-

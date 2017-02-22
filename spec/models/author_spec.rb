@@ -131,7 +131,7 @@ describe Author do
   end
 
   describe "#co_author_refuted!" do
-    it "sets co_author_state to confirmed" do
+    it "sets co_author_state to refuted" do
       expect do
         author.co_author_refuted!
       end.to change { author.co_author_state }.from(nil).to('refuted')

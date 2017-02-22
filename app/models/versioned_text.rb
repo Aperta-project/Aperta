@@ -74,20 +74,11 @@ class VersionedText < ActiveRecord::Base
     paper.file.present?
   end
 
-  # def sourcefile?
-  #   paper.sourcefile.present?
-  # end
-
   def add_file_info
     self.file_type = paper.file_type
     self.manuscript_s3_path = paper.file.s3_dir
     self.manuscript_filename = paper.file[:file]
   end
-
-  # def add_sourcefile_info
-  #   self.sourcefile = paper.sourcefile.s3_dir
-  #   self.sourcefile = paper.sourcefile[:file]
-  # end
 
   def s3_full_path
     file? ? manuscript_s3_path + '/' + manuscript_filename : nil

@@ -427,7 +427,8 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
-          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
         )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]

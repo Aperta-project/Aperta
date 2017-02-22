@@ -42,9 +42,12 @@ export default Ember.Component.extend(FileUploadMixin, {
       this.set('uploadError', message);
     },
 
-    uploadFinished(data, filename) {
+    uploadFinished(data, filename, s3Url) {
       this.uploadFinished(data, filename);
       this.get('task').save();
+      this.set('sourcefileUploaded', true);
+      this.set('s3Url', s3Url);
+      this.set('filename', filename);
     }
   }
 });

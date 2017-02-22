@@ -138,7 +138,7 @@ export default Ember.TextField.extend({
           type: requestMethod,
           data: postData
         }).then((data) => {
-          this.sendAction('done', data, filename);
+          this.sendAction('done', data, filename, uploadedS3Url);
         });
       } else {
       // without a resourceUrl pass the data up and allow the caller to

@@ -16,6 +16,16 @@ class ReviewerReport < ActiveRecord::Base
     decision.invitations.find_by(invitee_id: user.id)
   end
 
+  # This method encapsulates looking up the correctly-named card for a given
+  # task and journal, which happens in both the ReviewerReportTaskCreator and
+  # in the Paper::Submitted::CreateReviewerReports subscription
+  def self.card_for_task(task)
+    card_name = {
+      "TahiStandardTasks::FrontMatterReviewerReportTask" => 'FrontMatterReviewerReport',
+      "TahiStandardTasks::ReviewerReportTask" => 'ReviewerReport'}.fetch(task.class.name)
+    Card.find_by!(name: card_name, journal: task.journal)
+  end
+
   # status will look at the reviewer, invitations and the submitted state of
   # this task to get an overall status for the review
   def status

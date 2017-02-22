@@ -9,10 +9,6 @@ class SourcefileAttachment < Attachment
     true
   end
 
-  def processing_needed?
-    false
-  end
-
   def download!(url, uploaded_by: nil)
     super
     self.paper.latest_version.update!(sourcefile_s3_path: self.s3_dir, sourcefile_filename: self[:file])

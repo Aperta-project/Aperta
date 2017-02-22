@@ -19,6 +19,8 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   actions: {
     uploadStarted() {
+      this.set('showProgress', true);
+      this.set('progress', 0);
       this.uploadStarted(...arguments);
     },
 

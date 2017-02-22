@@ -18,6 +18,8 @@ export default Ember.Component.extend(FileUploadMixin, {
 
   actions: {
     uploadStarted() {
+      this.set('showProgress', true);
+      this.set('progress', 0);
       this.uploadStarted(...arguments);
     },
 
@@ -42,8 +44,6 @@ export default Ember.Component.extend(FileUploadMixin, {
 
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.get('store').pushPayload(data);
-
       this.get('task').save();
     }
   }

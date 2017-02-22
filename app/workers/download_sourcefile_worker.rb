@@ -13,7 +13,6 @@ class DownloadSourcefileWorker
     if url.blank?
       fail(ArgumentError, "Url must be provided (received a blank value)")
     end
-    paper.update_attribute(:processing, true)
     perform_async(
       paper.id,
       url,

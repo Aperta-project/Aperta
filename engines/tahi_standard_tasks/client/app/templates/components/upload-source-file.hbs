@@ -4,7 +4,6 @@
 
   <p class="flex-form">
     Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.
-  </p>
   <span id="upload-sourcefile" class="button-secondary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
     Select and upload source file
     {{file-uploader id="upload-source-file"
@@ -19,6 +18,7 @@
                     url=sourceFileUploadUrl
                     disabled=isNotEditable}}
   </span>
+  </p>
 
   {{#if isUploading}}
     <div id="paper-source-upload">

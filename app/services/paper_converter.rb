@@ -1,7 +1,11 @@
 class PaperConverter
-  def self.check_status(job_id)
-    response = connection.get("/jobs/#{job_id}")
-    IhatJobResponse.new(response.body.with_indifferent_access[:job])
+  def initialize(versioned_text, export_format)
+    @versioned_text = versioned_text
+    @export_format  = export_format
+  end
+
+  def download_url
+    Attachment.authenticated_url_for_key(@versioned_text.s3_full_path)
   end
 
   def self.connection

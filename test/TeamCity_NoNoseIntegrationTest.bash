@@ -78,3 +78,4 @@ python -m frontend.test_supporting_information
 python -m frontend.test_title_abstract_card
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow
+python -m frontend.test_new_taxon

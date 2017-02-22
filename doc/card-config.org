@@ -29,6 +29,7 @@ to avoid having to pass a journal argument into the myriad rake tasks
   - [ ] rspec ./spec/features/authors_card_spec.rb:37 # Authors Task As an author validates group authors on completion
   - [ ] rspec ./spec/features/authors_card_spec.rb:17 # Authors Task As an author validates the authors card on completion
   - [ ] rspec ./spec/features/manuscript_new_spec.rb:29
+- [ ] The CardsController spec is weird after the merge, fix it.
 - [X] Failing js tests
   - [X] "Integration FinancialDisclosure"
   - [X] "Integration Reviewer Report"

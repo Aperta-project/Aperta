@@ -32,7 +32,7 @@ class CardsController < ApplicationController
 
   def create
     journal = Journal.find(card_params[:journal_id])
-    requires_user_can(:create_cards, journal)
+    requires_user_can(:create_card, journal)
 
     card = Card.create!(card_params)
     respond_with card

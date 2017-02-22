@@ -64,6 +64,7 @@ python -m frontend.test_journal_admin
 python -m frontend.test_login
 python -m frontend.test_manuscript_viewer
 python -m frontend.test_metadata_versioning
+python -m frontend.test_new_taxon
 python -m frontend.test_paper_tracker
 python -m frontend.test_production_metadata_card
 python -m frontend.test_profile
@@ -78,4 +79,3 @@ python -m frontend.test_supporting_information
 python -m frontend.test_title_abstract_card
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow
-python -m frontend.test_new_taxon

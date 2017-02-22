@@ -4,8 +4,8 @@ Note: Check the codebase for 'TODO APERTA-8972' for additional items
 - [X] Tech Check
 - [X] Funders
 - [X] Reviewer Recommendations
-- [ ] Reviewer Reports
-- [ ] All snapshot-related things - Erik is doing these
+- [X] Reviewer Reports
+- [X] All snapshot-related things - Erik is doing these
 
 **Reviewer Reports
 Reviewer reports will link to two different kinds of cards, based on which type of task made them.
@@ -29,21 +29,24 @@ to avoid having to pass a journal argument into the myriad rake tasks
   - [ ] rspec ./spec/features/authors_card_spec.rb:37 # Authors Task As an author validates group authors on completion
   - [ ] rspec ./spec/features/authors_card_spec.rb:17 # Authors Task As an author validates the authors card on completion
   - [ ] rspec ./spec/features/manuscript_new_spec.rb:29
+- [ ] failing rspec test files from CI
+  - [ ] "engines/tahi_standard_tasks/spec/features/invite_new_reviewer_spec.rb"
+  - [ ] "engines/tahi_standard_tasks/spec/features/research_article_reviewer_report_spec.rb"
+  - [ ] "engines/tahi_standard_tasks/spec/features/reviewer_candidates_spec.rb"
+  - [ ] "engines/tahi_standard_tasks/spec/models/authors_task_spec.rb"
+  - [ ] "engines/tahi_standard_tasks/spec/models/reviewer_recommendation_spec.rb"
+  - [ ] "spec/controllers/cards_controller_spec.rb"
+  - [ ] "spec/features/manuscript_new_spec.rb"
+  - [ ] "spec/features/session_invalidation_spec.rb"
+  - [ ] "spec/features/view_paper_downloads_spec.rb"
+  - [ ] "spec/lib/tasks/card_config/support/answer_creator_spec.rb"
+  - [ ] "spec/lib/tasks/card_config/support/card_creator_spec.rb"
+  - [ ] "spec/serializers/snapshot/author_task_serializer_spec.rb"
+  - [ ] "spec/serializers/typesetter/author_serializer_spec.rb"
+  - [ ] "spec/serializers/typesetter/billing_log_serializer_spec.rb"
+  - [ ] "spec/serializers/typesetter/group_author_serializer_spec.rb"
+  - [ ] "spec/services/paper_factory_spec.rb"
+- [-] Failing js tests
+  - [ ] Integration | Component | Front Matter Reviewer Report Task
+  - [ ] Integration: Paper Docx Download
 - [ ] The CardsController spec is weird after the merge, fix it.
-- [X] Failing js tests
-  - [X] "Integration FinancialDisclosure"
-  - [X] "Integration Reviewer Report"
-  - [X] "Integration Front Matter Reviewer Report"
-  - [X] "Integration | Component | billing task"
-  - [X] "Integration | Component | nested question check"
-  - [X] "Integration | Component | nested question input"
-  - [X] "Integration | Component | nested question radio"
-  - [X] "Integration | Component | nested question textarea"
-  - [X] "Integration orcid connect permissions"
-  - [X] "Integration | Component | early posting task"
-  - [X] "Integration | Components | Tasks | Figure"
-  - [X] "Integration | Components | Tasks | Paper Reviewer Task"
-  - [X] "Integration | Components | Tasks | Register Decision"
-  - [X] "Integration | Component | reporting guidelines task"
-  - [X] "ObjectProxyWithValidationErrors"
-  - [X] "Unit | Model | funder"

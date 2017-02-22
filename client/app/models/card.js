@@ -1,9 +1,8 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  journal: DS.belongsTo('admin-journal', { async: false }),
-  kind: DS.attr('string'),
-  title: DS.attr('string'),
-  roleHint: DS.attr('string'),
-  systemGenerated: DS.attr('boolean')
+  contentRoot: DS.belongsTo('card-content'),
+  cardContent: DS.hasMany('card-content'),
+  journal: DS.belongsTo('admin-journal'),
+  name: DS.attr('string')
 });

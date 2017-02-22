@@ -1,5 +1,6 @@
 module TahiStandardTasks
   class ReviewerRecommendation < ActiveRecord::Base
+    include Answerable
     include NestedQuestionable
 
     belongs_to :reviewer_recommendations_task

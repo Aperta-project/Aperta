@@ -75,7 +75,6 @@ class LoginPage(AuthenticatedPage):
     assert 'Welcome to Aperta' in welcome_msg.text, welcome_msg.text
     welcome_p = self._get(self._welcome_paragraph)
     assert welcome_p.text == 'Submit & manage manuscripts.', welcome_p.text
-    import pdb; pdb.set_trace()
     avail_jrnls_msg = self._get(self._avail_journals_msg)
     assert avail_jrnls_msg.text == 'All new manuscripts for consideration by PLOS Biology can be ' \
                                    'submitted via Aperta, in Word (.docx, .doc or via .pdf) and ' \

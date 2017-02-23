@@ -69,7 +69,7 @@ class InitialDecisionCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
@@ -89,6 +89,12 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.close_modal()
     # refresh page and get version
     manuscript_page.refresh()
+    manuscript_page.open_recent_activity()
+    manuscript_page.validate_recent_activity_entry(
+        'Upload Manuscript card was marked as complete', creator_user['name'])
+    manuscript_page.validate_recent_activity_entry('Manuscript was initially submitted',
+        creator_user['name'])
+    manuscript_page.close_overlay()
     version = manuscript_page.get_ui_manuscript_version()
     # Wait for 0.0 according to new version proposal, where this version number
     # is assigned after the Initial submission.

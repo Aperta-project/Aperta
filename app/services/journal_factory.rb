@@ -488,7 +488,13 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      task_klasses = Task.descendants
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
+
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)

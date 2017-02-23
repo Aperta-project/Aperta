@@ -208,6 +208,8 @@ class JournalFactory
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
 
+      role.ensure_permission_exists(:view, applies_to: Card)
+
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)

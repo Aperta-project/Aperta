@@ -31,7 +31,8 @@ class AdminJournalSerializer < ActiveModel::Serializer
   def links
     template_path = journal_manuscript_manager_templates_path(object)
     {
-      manuscript_manager_templates: template_path
+      manuscript_manager_templates: template_path,
+      cards: journal_cards_path(object)
     }
   end
 end

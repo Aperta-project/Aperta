@@ -2,14 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    var journal = this.modelFor('admin.cc.journals').journal;
-    var journalID = (journal && journal.get('id'));
-
+    const journal = this.modelFor('admin.cc.journals').journal;
+    const cards = journal ? journal.get('cards') : this.store.findAll('card');
     return Ember.RSVP.hash({
-      cards: this.store.query(
-        'card',
-        {'journal_id': journalID}
-      ),
+      cards: cards,
       journal: journal
     });
   }

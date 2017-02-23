@@ -109,6 +109,7 @@ Tahi::Application.routes.draw do
     end
     resources :journals, only: [:index, :show] do
       get :manuscript_manager_templates, to: 'manuscript_manager_templates#index'
+      get :cards, to: 'cards#index'
     end
 
     resources :manuscript_manager_templates

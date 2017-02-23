@@ -5,11 +5,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Added "Confirm Authorship" button to email to co authors.
-* Added the ability for billing staff to view the paper tracker.
-* Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
-* The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
 ### Deprecated
 ### Removed
 ### Fixed
@@ -51,7 +48,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Users can now select and copy text from invitation letters when there is more than one invitation.
-* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved.
   (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
 ### Security
 

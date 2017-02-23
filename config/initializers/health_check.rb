@@ -43,4 +43,29 @@ HealthCheck.setup do |config|
       written_record.delete
     end
   end
+
+  config.add_custom_check('redis-writability') do
+    begin
+
+      redis = Redis.current
+
+      what_is_deposited = rand(42_000).to_s
+      scratch_key       = "scratch_key_#{what_is_deposited}"
+      redis_response    = redis.set(scratch_key, what_is_deposited)
+      what_is_withdrawn = redis.get(scratch_key)
+
+      if (what_is_withdrawn == what_is_deposited) && (redis_response == "OK")
+        "" # an empty string signals success!
+      else
+        "redis write error"
+      end
+
+    rescue
+      # if there's an exception, then we can assume redis has issues
+      'redis error'
+    ensure
+      redis.del(scratch_key)
+    end
+  end
+
 end

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import LazyLoader from 'tahi/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
+import { paperDownloadPath } from 'tahi/lib/api-path-helpers';
 
 // The template for this component comes from the pdf.js viewer template
 // (viewer.html). It was copied into the template and then edited to suit our
@@ -17,29 +18,13 @@ export default Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', this, this.refreshPdf);
   },
 
-  loadPdfUrl(url, pdfjsViewerLoad) {
-    Ember.$.ajax({
-      url: url,
-      statusCode: {
-        200: (data)=>{
-          pdfjsViewerLoad(data.url);
-        },
-        500: ()=>{
-          alert('PDF retrieval failed');
-        }
-      }
-    });
-  },
-
   loadPdf: function() {
-    var url = '/api/papers/'
-      + this.get('paper.id')
-      + '/status/'
-      + this.get('paper.id')
-      + '?export_format=pdf&job_id=source';
-    var versionedTextId = this.get('version.id');
-    if (Ember.isPresent(versionedTextId)) url += '&versioned_text_id=' + versionedTextId;
-    this.loadPdfUrl(url, window.PDFJS.webViewerLoad);
+    const url = paperDownloadPath({
+      paperId: this.get('paper.id'),
+      format: 'pdf',
+      versionedTextId: this.get('version.id')
+    });
+    window.PDFJS.webViewerLoad(url);
   },
 
   loadPdfJs: function() {

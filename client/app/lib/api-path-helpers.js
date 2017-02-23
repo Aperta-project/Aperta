@@ -22,3 +22,11 @@ export function discussionUsersPath(topicId) {
 export function newDiscussionUsersPath(paperId) {
   return `/api/papers/${paperId}/discussion_topics/new_discussion_users`;
 }
+
+export function paperDownloadPath({paperId, versionedTextId, format}) {
+  let path = `/api/paper_downloads/${paperId}?export_format=${format}`;
+  if (versionedTextId) {
+    path += `&versioned_text_id=${versionedTextId}`;
+  }
+  return path;
+}

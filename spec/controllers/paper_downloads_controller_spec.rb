@@ -38,11 +38,9 @@ describe PaperDownloadsController, type: :controller do
           .and_return true
       end
 
-      it 'returns the download url' do
-        do_request
-        expect(response.status).to eq(200)
+      it 'redirects to the correct s3 file' do
         quoted = Regexp.quote(versioned_text.s3_full_path)
-        expect(res_body['url']).to match(/#{quoted}.+Amz-SignedHeaders/)
+        expect(do_request).to redirect_to(/#{quoted}.+Amz-SignedHeaders/)
       end
 
       context 'the VersionedText is not specified' do
@@ -56,11 +54,9 @@ describe PaperDownloadsController, type: :controller do
         end
         let(:expected_versioned_text) { paper.latest_version }
 
-        it 'returns the file corresponding to latest versioned text' do
-          do_request
-          expect(response).to be_success
+        it 'redirects to the file corresponding to latest versioned text' do
           quoted = Regexp.quote(expected_versioned_text.s3_full_path)
-          expect(res_body['url']).to match(/#{quoted}.+Amz-SignedHeaders/)
+          expect(do_request).to redirect_to(/#{quoted}.+Amz-SignedHeaders/)
         end
       end
 

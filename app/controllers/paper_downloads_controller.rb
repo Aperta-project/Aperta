@@ -8,7 +8,7 @@ class PaperDownloadsController < ApplicationController
   def show
     requires_user_can(:view, paper)
     converter = PaperConverter.new(versioned_text, export_format)
-    render status: :ok, json: { url: converter.download_url }
+    redirect_to converter.download_url
   end
 
   private

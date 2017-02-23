@@ -33,6 +33,6 @@
 } %>
 
 <p>
-  <a href="mailto:<%= TahiEnv.from_email %>?subject=Authorship Confirmation of Manuscript Submitted to <%= @journal.name%>">Reply to this email to refute authorship</a>
+  <a href="mailto:<%= @paper.journal.staff_email %>?subject=Authorship Confirmation of Manuscript Submitted to <%= @journal.name%>">Reply to this email to refute authorship</a>
 </p>
 <%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>

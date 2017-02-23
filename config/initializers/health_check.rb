@@ -14,8 +14,8 @@ HealthCheck.setup do |config|
   config.http_status_for_error_object = 500
 
   # ensure our databases are available:
-  config.standard_checks = [ 'database', 'redis' ]
-  config.full_checks     = [ 'database', 'redis' ]
+  config.standard_checks = [ 'custom', 'database', 'redis' ]
+  config.full_checks     = [ 'custom', 'database', 'redis' ]
 
   # max-age of response in seconds
   # cache-control is public when max_age > 1 and basic_auth_username is not set
@@ -23,4 +23,24 @@ HealthCheck.setup do |config|
   # setting basic_auth_username but not basic_auth_password
   config.max_age = 1
 
+  config.add_custom_check('postgres-writability') do
+    begin
+      what_is_deposited = rand(42_000).to_s
+      written_record    = Scratch.create(contents: what_is_deposited)
+      read_record       = Scratch.find(written_record.id)
+      what_is_withdrawn = read_record.contents
+
+      if what_is_withdrawn == what_is_deposited
+        "" # an empty string signals success!
+      else
+        "database write error"
+      end
+
+    rescue
+      # if there's an exception, then we can assume the database has issues
+      'database error'
+    ensure
+      written_record.delete
+    end
+  end
 end

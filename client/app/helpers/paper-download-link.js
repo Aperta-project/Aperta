@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { paperDownloadPath } from 'tahi/lib/api-path-helpers';
+import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 
 export function paperDownloadLink(_, params) {
   return paperDownloadPath({

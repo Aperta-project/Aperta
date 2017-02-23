@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { eligibleUsersPath } from 'tahi/lib/api-path-helpers';
+import { eligibleUsersPath } from 'tahi/utils/api-path-helpers';
 import { task as concurrencyTask } from 'ember-concurrency';
 
 const {

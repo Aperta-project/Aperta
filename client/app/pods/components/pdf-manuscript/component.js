@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import LazyLoader from 'tahi/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
-import { paperDownloadPath } from 'tahi/lib/api-path-helpers';
+import { paperDownloadPath } from 'tahi/utils/api-path-helpers';
 
 // The template for this component comes from the pdf.js viewer template
 // (viewer.html). It was copied into the template and then edited to suit our

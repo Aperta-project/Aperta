@@ -154,8 +154,12 @@ describe UserMailer, redis: true do
   end
 
   describe '#notify_coauthor_of_paper_submission' do
+    let(:journal) do
+      FactoryGirl.create(:journal, staff_email: journal_staff_email)
+    end
+
     let(:paper) do
-      FactoryGirl.create(:paper, :with_creator, :submitted)
+      FactoryGirl.create(:paper, :with_creator, :submitted, journal: journal)
     end
 
     let!(:author_1) do
@@ -179,6 +183,8 @@ describe UserMailer, redis: true do
         paper: paper)
     end
 
+    let(:journal_staff_email) { 'staffemail@example.com' }
+
     let(:email_1) do
       UserMailer.notify_coauthor_of_paper_submission(paper.id, author_2.id, "GroupAuthor")
     end
@@ -198,6 +204,10 @@ describe UserMailer, redis: true do
       end
     end
 
+    it "has a reply-to header set to the journal staff email" do
+      expect(email_1.reply_to).to include(journal_staff_email)
+    end
+
     it "has a link to confirm authorship" do
       expect(email_1.body).to include("Confirm Authorship")
       expect(email_1.body).to include("co_authors_token/#{author_2.token}")
@@ -205,7 +215,7 @@ describe UserMailer, redis: true do
 
     it "has a mailto: link to refute authorship" do
       expect(email_1.body).to include("Reply to this email to refute authorship")
-      expect(email_1.body).to include("mailto:no-reply@example.com?subject=Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
+      expect(email_1.body).to include("mailto:#{journal_staff_email}?subject=Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
     end
 
     let(:email_2) do

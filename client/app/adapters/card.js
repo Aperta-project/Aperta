@@ -3,6 +3,6 @@ import DS from 'ember-data';
 
 export default ApplicationAdapter.extend(DS.BuildURLMixin, {
   urlForQueryRecord() {
-    return '/api/cards/find_card';
+    return '/api/find_card';
   }
 });

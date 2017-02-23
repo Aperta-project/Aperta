@@ -99,6 +99,7 @@ class UserMailer < ApplicationMailer
 
     mail(
       to: @coauthor.try(:email),
+      reply_to: @journal.staff_email,
       subject: "Authorship Confirmation of Manuscript Submitted to #{@journal.name}")
   end
 

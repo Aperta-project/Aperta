@@ -27,18 +27,6 @@ FactoryGirl.define do
       end
     end
 
-    trait(:with_pdf_allowed) do
-      after(:create) do |journal|
-        journal.update(pdf_allowed: true)
-      end
-    end
-
-    trait(:with_pdf_not_allowed) do
-      after(:create) do |journal|
-        journal.update(pdf_allowed: false)
-      end
-    end
-
     %w(
       academic_editor creator collaborator cover_editor discussion_participant
       handling_editor internal_editor production_staff publishing_services

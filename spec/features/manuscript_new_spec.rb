@@ -4,7 +4,8 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 0 }
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, pdf_allowed: true }
+  let!(:non_pdf_journal) { FactoryGirl.create :journal, :with_roles_and_permissions, pdf_allowed: false }
   let!(:papers) { [] }
 
   let(:dashboard) { DashboardPage.new }
@@ -52,5 +53,21 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
 
       expect(PaperPage.new).to be_not_loading_paper
     end
+  end
+
+  scenario 'pdf allowed instructions' do
+    login_as(user, scope: :user)
+    visit '/'
+    find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+    dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
+    expect(page).to have_content('Manuscripts uploaded in this format are suitable for review only')
+  end
+
+  scenario 'pdf not allowed instructions' do
+    login_as(user, scope: :user)
+    visit '/'
+    find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+    dashboard.fill_in_new_manuscript_fields('Paper Title', non_pdf_journal.name, non_pdf_journal.paper_types[0])
+    expect(page).to have_content('Microsoft Word files only')
   end
 end

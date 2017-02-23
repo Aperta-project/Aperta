@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   propTypes: {
     // actions:
     exportDocument: PropTypes.func.isRequired,
+    exportSource: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired
   },
 
@@ -33,6 +34,13 @@ export default Ember.Component.extend({
 
     exportDocument(version) {
       this.get('exportDocument')(
+        version.get('fileType'),
+        version.get('id')
+      );
+    },
+
+    exportSource(version) {
+      this.get('exportSource')(
         version.get('fileType'),
         version.get('id')
       );

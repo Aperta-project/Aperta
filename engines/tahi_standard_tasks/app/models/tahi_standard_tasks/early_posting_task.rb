@@ -5,7 +5,7 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'author'.freeze
 
     def task_added_to_paper(paper)
-      question = CardContent.for_journal(paper.journal).find_by!(ident: 'early-posting--consent')
+      question = CardContent.find_by!(ident: 'early-posting--consent')
 
       answer = question.answers.find_or_initialize_by(owner: self, paper: paper)
       answer.value = true

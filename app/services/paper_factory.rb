@@ -56,7 +56,7 @@ class PaperFactory
     journal_task_type = task_template.journal_task_type
     task_class = Task.safe_constantize(task_template.journal_task_type.kind)
 
-    card_for_task = Card.find_by(name: task_class.name)
+    card_for_task = task_class.card_for
     task = TaskFactory.create(
       task_class,
       phase: phase,

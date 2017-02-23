@@ -9,7 +9,7 @@ FactoryGirl.define do
 
   trait :with_card do
     after(:build) do |answerable|
-      answerable.card = Card.find_by(name: answerable.class.name)
+      answerable.card = answerable.class.card_for
     end
   end
 
@@ -17,7 +17,7 @@ FactoryGirl.define do
     phase
     paper
     after(:build) do |answerable|
-      answerable.card = Card.find_by(name: answerable.class.name)
+      answerable.card = answerable.class.card_for
     end
 
     factory :cover_letter_task, class: 'TahiStandardTasks::CoverLetterTask' do

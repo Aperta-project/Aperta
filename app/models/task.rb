@@ -250,6 +250,13 @@ class Task < ActiveRecord::Base
     'Task'
   end
 
+  # TODO: Remove this when there is not a 1-1 relationship between a descendent
+  # of Task and an instance of a Card.
+  # Returns the card instance for this Task class.
+  def self.card_for
+    Card.find_by_name!(name.to_s)
+  end
+
   private
 
   def update_completed_at

@@ -17,6 +17,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   let!(:inviter) { create :user }
 
+  before do
+    Card.update_all(journal_id: journal.id)
+  end
+
   def create_reviewer_invitation(task)
     FactoryGirl.create(
       :invitation,

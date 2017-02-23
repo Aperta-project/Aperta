@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Reviewer filling out their research article reviewer report', js: true do
-  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_test_cards }
   let(:paper) do
     FactoryGirl.create \
       :paper_with_phases,
@@ -16,10 +16,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   let!(:reviewer) { create :user }
 
   let!(:inviter) { create :user }
-
-  before do
-    Card.update_all(journal_id: journal.id)
-  end
 
   def create_reviewer_invitation(task)
     FactoryGirl.create(

@@ -4,7 +4,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 0 }
-  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_test_cards }
   let!(:papers) { [] }
 
   let(:dashboard) { DashboardPage.new }
@@ -22,6 +22,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   def paper_has_uploaded_manuscript
+    puts "checking paper"
     paper = Paper.find_by(title: 'Paper Title')
     paper.try(:file).try(:url)
   end

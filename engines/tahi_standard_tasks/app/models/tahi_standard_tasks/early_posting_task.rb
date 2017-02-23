@@ -5,10 +5,9 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'author'.freeze
 
     def task_added_to_paper(paper)
-      early_posting_task = self
+      question = CardContent.for_journal(paper.journal).find_by!(ident: 'early-posting--consent')
 
-      question = NestedQuestion.find_by!(ident: 'early-posting--consent')
-      answer = early_posting_task.find_or_build_answer_for(nested_question: question)
+      answer = question.answers.find_or_initialize_by(owner: self)
       answer.value = true
       answer.save!
     end

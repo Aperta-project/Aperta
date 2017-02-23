@@ -27,6 +27,12 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_test_cards) do
+      after(:create) do |journal|
+        Card.update_all(journal_id: journal)
+      end
+    end
+
     %w(
       academic_editor creator collaborator cover_editor discussion_participant
       handling_editor internal_editor production_staff publishing_services

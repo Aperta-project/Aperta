@@ -22,10 +22,11 @@ class GroupAuthorSerializer < ActiveModel::Serializer
            embed: :ids,
            include: true
 
+  has_one :card, embed: :id
+
   def links
     {
-      answers: answers_for_owner_path(owner_params),
-      card: card_for_owner_path(owner_params)
+      answers: answers_for_owner_path(owner_params)
     }
   end
 

@@ -6,6 +6,7 @@ module TahiStandardTasks
     has_many :authors, embed: :ids, include: true
     has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :ids, include: true
     has_many :nested_question_answers, serializer: NestedQuestionAnswerSerializer, embed: :ids, include: true
+    has_one :card, embed: :id
 
     def links
       owner_params = { owner_id: object.id,
@@ -14,9 +15,7 @@ module TahiStandardTasks
       # double-nesting the API under /api/api
       {
         answers: Rails.application.routes.url_helpers
-                      .answers_for_owner_path(owner_params),
-        card: Rails.application.routes.url_helpers
-                   .card_for_owner_path(owner_params)
+                      .answers_for_owner_path(owner_params)
       }
     end
   end

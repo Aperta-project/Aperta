@@ -12,6 +12,7 @@ class AuthorSerializer < ActiveModel::Serializer
              :owner_type_for_answer
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
+  has_one :card, embed: :id
 
   has_many :nested_questions,
            serializer: NestedQuestionSerializer,
@@ -24,8 +25,7 @@ class AuthorSerializer < ActiveModel::Serializer
 
   def links
     {
-      answers: answers_for_owner_path(owner_params),
-      card: card_for_owner_path(owner_params)
+      answers: answers_for_owner_path(owner_params)
     }
   end
 

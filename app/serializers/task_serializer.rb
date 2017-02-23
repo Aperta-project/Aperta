@@ -5,6 +5,7 @@ class TaskSerializer < ActiveModel::Serializer
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer
   has_one :paper, embed: :id
+  has_one :card, embed: :id
 
   self.root = :task
 
@@ -30,7 +31,6 @@ class TaskSerializer < ActiveModel::Serializer
       comments: task_comments_path(object),
       participations: task_participations_path(object),
       nested_questions: task_nested_questions_path(object),
-      card: card_for_owner_path(owner_id: object.id, owner_type: object.class.name.underscore),
       answers: answers_for_owner_path(owner_id: object.id, owner_type: object.class.name.underscore),
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)

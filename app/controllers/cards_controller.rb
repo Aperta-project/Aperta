@@ -6,7 +6,7 @@ class CardsController < ApplicationController
   respond_to :json
 
   def show
-    respond_with owner_klass.find(params[:owner_id]).card
+    respond_with Card.find(params[:id])
   end
 
   # This action only exists to find a single card via query params. It
@@ -30,14 +30,5 @@ class CardsController < ApplicationController
     end
 
     respond_with Card.where(journal_id: journal_ids)
-  end
-
-  private
-
-  def owner_klass
-    potential_owner = params[:owner_type].classify.constantize
-    assert(potential_owner.try(:answerable?), "resource is not answerable")
-
-    potential_owner
   end
 end

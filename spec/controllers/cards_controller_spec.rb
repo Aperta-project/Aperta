@@ -88,4 +88,46 @@ describe CardsController do
       end
     end
   end
+
+  describe "#create" do
+    subject(:do_request) do
+      post(:create, format: 'json', card: {
+             name: name,
+             journal_id: my_journal.id
+           })
+    end
+    let(:name) { "Steve" }
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "when the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:create_card, my_journal)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:create_card, my_journal)
+            .and_return(true)
+        end
+
+        it { is_expected.to responds_with 201 }
+
+        it 'returns the serialized card' do
+          do_request
+          expect(res_body['card']['name']).to eq name
+        end
+      end
+    end
+  end
 end

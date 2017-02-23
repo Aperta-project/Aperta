@@ -1,15 +1,21 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
+import {PropTypes} from 'ember-prop-types';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
-  store: Ember.inject.service(),
-  journal: null,
-  complete: null, // action, called when card created
-  close: null, // action, called when canceled
+  propTypes: {
+    journal: PropTypes.EmberObject,
+    create: PropTypes.func, // action, called when card created
+    complete: PropTypes.func, // action, called after card created
+    close: PropTypes.func // action, called when canceled
+  },
+
   classNames: ['admin-new-card-overlay'],
   cardName: '',
   saving: false,
   errors: [],
+
+  store: Ember.inject.service(),
 
   actions: {
     close() {

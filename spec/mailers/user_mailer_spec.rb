@@ -191,10 +191,10 @@ describe UserMailer, redis: true do
       expect(email_1.to).to contain_exactly(author_2.email)
       expect(email_1.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
       expect(email_1.body).to include(paper.title)
-      expect(email_1.body).to include "#{author_2.full_name},"
-      expect(email_1.body).not_to include "Dr #{author_2.full_name},"
+      expect(email_1.body).to include_as_escaped_html("#{author_2.full_name},")
+      expect(email_1.body).not_to include_as_escaped_html("Dr #{author_2.full_name},")
       authors_full_names.each do |author_full_name|
-        expect(email_1.body).to include(author_full_name)
+        expect(email_1.body).to include_as_escaped_html(author_full_name)
       end
     end
 
@@ -216,9 +216,10 @@ describe UserMailer, redis: true do
       expect(email_2.to).to contain_exactly(author_3.email)
       expect(email_2.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")
       expect(email_2.body).to include(paper.title)
-      expect(email_2.body).to include "Dr #{author_3.last_name},"
+      expect(email_2.body).to include_as_escaped_html("Dr #{author_3.last_name},")
+
       authors_full_names.each do |author_full_name|
-        expect(email_2.body).to include(author_full_name)
+        expect(email_2.body).to include_as_escaped_html(author_full_name)
       end
     end
   end

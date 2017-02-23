@@ -48,7 +48,7 @@ class QuestionAttachmentsController < ApplicationController
   def task_for(question_attachment)
     @task ||= begin
       owner = question_attachment
-      until Task.descendants.include?(owner.class)
+      until owner.is_a? Task
         if owner.respond_to?(:owner) && !owner.owner.nil?
           owner = owner.owner
         elsif owner.respond_to?(:card_content) && !owner.card_content.nil?
@@ -56,7 +56,7 @@ class QuestionAttachmentsController < ApplicationController
         elsif owner.respond_to? :answer
           owner = owner.answer
         else
-          fail ArgumentError "Cannot find task for question attachment"
+          raise ArgumentError, "Cannot find task for question attachment"
         end
       end
     end

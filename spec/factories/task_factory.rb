@@ -24,7 +24,7 @@ FactoryGirl.define do
       title "Cover Letter"
     end
 
-    factory :ad_hoc_task do
+    factory :ad_hoc_task, class: 'AdHocTask' do
       title "Do something awesome"
 
       trait :with_nested_question_answers do

@@ -23,16 +23,21 @@ class SendToApexCard(BaseCard):
                           '.animation-fade-in > div > div > .apex-delivery-message')
 
   # POM Actions
-  def validate_send_to_apex_error_message(self):
+  def validate_send_to_apex_error_message(self, ftp=False):
     """
     Validate the Send to Apex error message
     :return: None
     """
     # Time needed for message to be ready
     time.sleep(3)
-    apex_error = self._get(self._apex_message)
-    assert apex_error.text == (
-        "Apex Upload has failed. Paper has not been accepted"), apex_error
+    if ftp:
+      apex_error = self._get(self._apex_message)
+      assert apex_error.text == (
+          "Apex Upload has failed. 530 Please login with USER and PASS"), apex_error
+    else:
+      apex_error = self._get(self._apex_message)
+      assert apex_error.text == (
+          "Apex Upload has failed. Paper has not been accepted"), apex_error
 
   def validate_send_to_apex_succeed_message(self):
     """

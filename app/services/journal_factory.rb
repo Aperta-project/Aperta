@@ -209,6 +209,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
 

@@ -21,6 +21,7 @@ dependencies:
     - "client/bower_components"
 
   pre:
+    - gem update --system
     - gem install bundler -v '1.12.5'
     - bundle config --global jobs 7
     - bundle config --global without staging:production

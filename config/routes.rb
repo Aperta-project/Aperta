@@ -62,6 +62,12 @@ Tahi::Application.routes.draw do
     resources :manuscript_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
+
+    get "/cards/:owner_type/:owner_id", to: "cards#show", as: "card_for_owner"
+    get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
+    resources :answers, only: [:create, :destroy, :update]
+    resources :cards, only: [:index]
+
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
@@ -101,8 +107,11 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
-    resources :journals, only: [:index, :show]
-    resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
+    resources :journals, only: [:index, :show] do
+      get :manuscript_manager_templates, to: 'manuscript_manager_templates#index'
+    end
+
+    resources :manuscript_manager_templates
     resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, \

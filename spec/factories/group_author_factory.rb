@@ -9,9 +9,5 @@ FactoryGirl.define do
     name "Jedis"
     initial "F"
 
-    after(:create) do |instance|
-      instance.position = 1
-      instance.save
-    end
   end
 end

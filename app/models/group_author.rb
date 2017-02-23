@@ -1,6 +1,7 @@
 # Authors that are not individual people; they are in the
 # same list as authors, but have different data.
 class GroupAuthor < ActiveRecord::Base
+  include Answerable
   include EventStream::Notifiable
   include NestedQuestionable
 
@@ -27,6 +28,9 @@ class GroupAuthor < ActiveRecord::Base
   validates :contributions,
             presence: { message: "one must be selected" },
             if: :task_completed?
+
+  alias_attribute :email, :contact_email
+  alias_attribute :full_name, :name
 
   def paper_id
     ensured_author_list_item.paper_id

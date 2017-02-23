@@ -1,4 +1,8 @@
+{{reviewer-report-status report=model}}
+
+{{#if hasReport}}
 <ol class="question-list">
+
   <li class="question">
     {{nested-question-radio-decision ident="reviewer_report--decision_term"
                                      owner=model
@@ -64,3 +68,4 @@
 
 
 </ol>
+{{/if}}

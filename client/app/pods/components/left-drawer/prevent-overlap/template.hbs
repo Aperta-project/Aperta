@@ -1,0 +1,11 @@
+{{#if centered}}
+  <div class="left-drawer-width-compensator-centered left-drawer-width"></div>
+  <div class="left-drawer-content-centered">
+    {{yield}}
+  </div>
+{{else}}
+  <div class="left-drawer-width-compensator left-drawer-width"></div>
+  <div class="left-drawer-content">
+    {{yield}}
+  </div>
+{{/if}}

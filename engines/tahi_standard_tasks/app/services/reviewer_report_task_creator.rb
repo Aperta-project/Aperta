@@ -11,7 +11,6 @@ class ReviewerReportTaskCreator
     paper.transaction do
       assign_paper_role!
       find_or_create_related_task
-      create_reviewer_report
       @task
     end
   end
@@ -32,6 +31,7 @@ class ReviewerReportTaskCreator
       TahiStandardTasks::ReviewerMailer
         .delay.welcome_reviewer(assignee_id: assignee.id,
                                 paper_id: paper.id)
+      create_reviewer_report
       @task
     else
       assignee.assign_to!(assigned_to: existing_reviewer_report_task,

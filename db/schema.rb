@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170209124450) do
+ActiveRecord::Schema.define(version: 20170220185752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,21 @@ ActiveRecord::Schema.define(version: 20170209124450) do
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
+
+  create_table "answers", force: :cascade do |t|
+    t.integer  "card_content_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.integer  "paper_id"
+    t.string   "value"
+    t.jsonb    "additional_data"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.datetime "deleted_at"
+  end
+
+  add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
+  add_index "answers", ["paper_id"], name: "index_answers_on_paper_id", using: :btree
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "access_token"
@@ -130,6 +145,7 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
     t.integer  "user_id"
+    t.integer  "card_id"
   end
 
   create_table "billing_log_reports", force: :cascade do |t|
@@ -185,6 +201,34 @@ ActiveRecord::Schema.define(version: 20170209124450) do
   add_index "billing_logs", ["documentid"], name: "index_billing_logs_on_documentid", using: :btree
   add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
+
+  create_table "card_contents", force: :cascade do |t|
+    t.integer  "card_id"
+    t.string   "ident"
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.string   "text"
+    t.string   "value_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+  end
+
+  add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
+  add_index "card_contents", ["lft"], name: "index_card_contents_on_lft", using: :btree
+  add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
+  add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
+
+  create_table "cards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string   "name"
+    t.integer  "journal_id"
+  end
+
+  add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
@@ -301,6 +345,7 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.string   "initial"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "card_id"
   end
 
   create_table "invitation_queues", force: :cascade do |t|
@@ -390,6 +435,8 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.string   "paper_type"
     t.integer  "journal_id"
     t.boolean  "uses_research_article_reviewer_report", default: false
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -615,11 +662,13 @@ ActiveRecord::Schema.define(version: 20170209124450) do
   add_index "reviewer_numbers", ["user_id"], name: "index_reviewer_numbers_on_user_id", using: :btree
 
   create_table "reviewer_reports", force: :cascade do |t|
-    t.integer  "task_id",     null: false
-    t.integer  "decision_id", null: false
+    t.integer  "task_id",                         null: false
+    t.integer  "decision_id",                     null: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "card_id"
+    t.boolean  "created_in_7993", default: false
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -720,6 +769,7 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
+    t.integer  "card_id"
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -738,6 +788,7 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
+    t.integer  "card_id"
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -762,6 +813,7 @@ ActiveRecord::Schema.define(version: 20170209124450) do
     t.integer  "position",     default: 0
     t.integer  "paper_id",                      null: false
     t.datetime "completed_at"
+    t.integer  "card_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -832,7 +884,10 @@ ActiveRecord::Schema.define(version: 20170209124450) do
 
   add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
+  add_foreign_key "answers", "card_contents"
+  add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
+  add_foreign_key "cards", "journals"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

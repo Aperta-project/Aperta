@@ -1,9 +1,10 @@
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import Answerable from 'tahi/mixins/answerable';
 import DS from 'ember-data';
 
 let a = DS.attr;
 
-export default NestedQuestionOwner.extend({
+export default NestedQuestionOwner.extend(Answerable, {
   firstName: a('string'),
   middleInitial: a('string'),
   lastName: a('string'),

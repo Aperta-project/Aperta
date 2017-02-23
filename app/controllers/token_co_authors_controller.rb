@@ -27,7 +27,7 @@ class TokenCoAuthorsController < ApplicationController
   def assign_template_vars
     @author ||= Author.find_by_token!(token)
     @paper ||= @author.paper
-    @authors ||= @paper.author_list_items.map(&:author)
+    @authors ||= @paper.all_authors
     @journal_logo_url ||= @paper.journal.logo_url
   end
 

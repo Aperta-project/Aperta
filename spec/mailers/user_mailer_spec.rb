@@ -184,7 +184,7 @@ describe UserMailer, redis: true do
     end
 
     let(:authors_full_names) do
-      paper.author_list_items.map(&:author).map(&:full_name)
+      paper.all_authors.map(&:full_name)
     end
 
     it "sends the email to a group coauthor and list all authors" do

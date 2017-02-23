@@ -27,7 +27,7 @@ class NewTaxonCard(BaseCard):
     :param scenario: Is the scenario selected in the Task
     :return: None
     """
-    items = self._gets((By.CSS_SELECTOR, '.question > div'))
+    items = self._gets(self._questions)
     
     for key, item in enumerate(items):
       question_scenario = scenario[key]

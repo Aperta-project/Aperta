@@ -13,6 +13,14 @@ class CardContent < ActiveRecord::Base
 
   has_many :answers
 
+  # In the near future, we'll be seeding/migrating existing nested questions
+  # for every journal in the system.  It's highly possible for multiple
+  # CardContent records with a given ident to exist in the database at the same time,
+  # so we'll always need to scope queries based on ident to a particular journal
+  def self.for_journal(journal)
+    joins(:card).where('cards.journal_id' => journal.id)
+  end
+
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)
     # This method runs on a scope and takes and a list of nested property

@@ -13,7 +13,7 @@ from datetime import datetime
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface, aperta_grey_dark
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
@@ -26,6 +26,7 @@ from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
+from frontend.Tasks.new_taxon_task import NewTaxonTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -62,6 +63,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
+    self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -257,7 +259,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # close_icon_overlay = self._get(self._overlay_header_close)
     # # TODO: Change following line after bug #102078080 is solved
     # assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    # assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    # assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     # assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     # close_icon_overlay.click()
     # time.sleep(1)
@@ -278,6 +280,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     close_download_drawer_btn = self._get(self._download_drawer_close_btn)
     close_download_drawer_btn.click()
 
+  def open_recent_activity(self):
+    """
+    Opens the recent activity overlay
+    :return: void function
+    """
+    self._get(self._tb_ra_link).click()
+
   def _check_recent_activity(self):
     """
     Check recent activity modal styles
@@ -291,7 +300,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
     time.sleep(1)
@@ -322,7 +331,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       discussion_create_new_btn.click()
       # TODO: Styles for cancel since is not in the style guide
       cancel = self._get(self._create_topic_cancel)
-      assert application_typeface in cancel.value_of_css_property('font-family')
+      assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family')
       assert cancel.value_of_css_property('font-size') == '14px'
       assert cancel.value_of_css_property('line-height') == '60px'
       assert cancel.value_of_css_property('background-color') == 'transparent'
@@ -338,7 +347,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
-    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     close_icon_overlay.click()
 
@@ -367,7 +376,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'Are you sure?' == modal_title.text
       # TODO: Style parametrized due to lack of styleguide for modals
       self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
-                                      font_weight='500', color=aperta_grey_dark)
+                                      font_weight='500', color=APERTA_GREY_DARK)
       withdraw_modal_text = self._get(self._wm_modal_text)
       # TODO: Leave comment out until solved. Pivotal bug#103864752
       # self.validate_application_ptext(withdraw_modal_text)
@@ -386,9 +395,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # TODO: Change following line after bug #102078080 is solved
       assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
         close_icon_overlay.value_of_css_property('font-size')
-      assert application_typeface in close_icon_overlay.value_of_css_property('font-family'), \
+      assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
         close_icon_overlay.value_of_css_property('font-family')
-      assert close_icon_overlay.value_of_css_property('color') == aperta_grey_dark, \
+      assert close_icon_overlay.value_of_css_property('color') == APERTA_GREY_DARK, \
           close_icon_overlay.value_of_css_property('color')
       close_icon_overlay.click()
       # Need to allow the slightest time for the overlay to close to prevent covered element
@@ -611,6 +620,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
+    elif task_name == 'New Taxon':
+      # Complete New Taxon data before mark close
+      logging.info('Completing New Taxon Task')
+      new_taxon_task = NewTaxonTask(self._driver)
+      if data:
+        new_taxon_task.validate_taxon_questions_action(data)
+        outdata = data
+      else:
+        scenario = new_taxon_task.generate_test_scenario()
+        new_taxon_task.validate_taxon_questions_action(scenario)
+        outdata = scenario
+      base_task.click_completion_button()
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

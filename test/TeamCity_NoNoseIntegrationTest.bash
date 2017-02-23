@@ -44,6 +44,7 @@ rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
+python -m frontend.test_ad_hoc
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin
 python -m frontend.test_assign_team
@@ -51,6 +52,7 @@ python -m frontend.test_authors_task
 python -m frontend.test_bdd_cns
 python -m frontend.test_bdd_create_to_submit
 python -m frontend.test_changes_for_author
+python -m frontend.test_cover_letter
 python -m frontend.test_dashboard
 python -m frontend.test_discussion_forum
 python -m frontend.test_early_article_posting
@@ -64,6 +66,7 @@ python -m frontend.test_journal_admin
 python -m frontend.test_login
 python -m frontend.test_manuscript_viewer
 python -m frontend.test_metadata_versioning
+python -m frontend.test_new_taxon
 python -m frontend.test_paper_tracker
 python -m frontend.test_production_metadata_card
 python -m frontend.test_profile

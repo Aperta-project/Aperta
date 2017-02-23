@@ -9,7 +9,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, application_typeface, aperta_green, white
+from authenticated_page import AuthenticatedPage
 from Base.CustomException import ElementDoesNotExistAssertionError
 
 __author__ = 'jgray@plos.org'
@@ -76,19 +76,21 @@ class LoginPage(AuthenticatedPage):
     welcome_p = self._get(self._welcome_paragraph)
     assert welcome_p.text == 'Submit & manage manuscripts.', welcome_p.text
     avail_jrnls_msg = self._get(self._avail_journals_msg)
-    assert avail_jrnls_msg.text == 'Aperta accepts new submissions to PLOS Biology for now. It ' \
-                                   'will be rolled out to all PLOS titles in the coming months.\n' \
-                                   'Microsoft Word files only (LaTeX coming soon!)\n' \
-                                   'More information about submitting to PLOS Biology.\n' \
-                                   'To submit to one of our other journals, start here.', \
-                                   avail_jrnls_msg.text
+    assert avail_jrnls_msg.text == 'All new manuscripts for consideration by PLOS Biology can be ' \
+                                   'submitted via Aperta, in Word (.docx, .doc or via .pdf) and ' \
+                                   'LaTeX (via .pdf) formats. Submission via Aperta ' \
+                                   'will be rolled out on other PLOS journals in the coming ' \
+                                   'months.\nClick here for more information about submitting to ' \
+                                   'PLOS Biology.\nTo submit to one of our other journals, start ' \
+                                   'here.', avail_jrnls_msg.text                      
     avail_jrnls_list = self._get(self._avail_journals_list)
     assert avail_jrnls_list.text == 'PLOS Biology', avail_jrnls_list.text
     avail_jrnls_info_link = self._get(self._avail_journals_more_info_link)
     assert avail_jrnls_info_link.get_attribute('href') == \
         'http://journals.plos.org/plosbiology/s/submit-now', \
         avail_jrnls_info_link.get_attribute('href')
-    assert avail_jrnls_info_link.text == 'More information', avail_jrnls_info_link.text
+    assert avail_jrnls_info_link.text == 'Click here for more information', \
+        avail_jrnls_info_link.text
     avail_jrnls_em_link = self._get(self._avail_journals_em_link)
     assert avail_jrnls_em_link.get_attribute('href') == \
         'https://www.plos.org/which-journal-is-right-for-me', \

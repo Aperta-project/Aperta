@@ -1,6 +1,7 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 import { uploadManuscriptPath } from 'tahi/lib/api-path-helpers';
+import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 import Ember from 'ember';
 
 export default TaskComponent.extend(FileUploadMixin, {
@@ -15,6 +16,10 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   manuscriptUploadUrl: Ember.computed('task.id', function() {
     return uploadManuscriptPath(this.get('task.id'));
+  }),
+
+  fileTypeClass: Ember.computed('filename', function(){
+    return fontAwesomeFiletypeClass(this.get('filename'));
   }),
 
   actions: {

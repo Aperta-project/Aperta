@@ -1,5 +1,6 @@
 import FileUploadMixin from 'tahi/mixins/file-upload';
 import { uploadSourceFilePath } from 'tahi/lib/api-path-helpers';
+import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 import Ember from 'ember';
 
 export default Ember.Component.extend(FileUploadMixin, {
@@ -14,6 +15,10 @@ export default Ember.Component.extend(FileUploadMixin, {
 
   sourceFileUploadUrl: Ember.computed('task.id', function() {
     return uploadSourceFilePath(this.get('task.id'));
+  }),
+
+  fileTypeClass: Ember.computed('filename', function(){
+    return fontAwesomeFiletypeClass(this.get('filename'));
   }),
 
   actions: {

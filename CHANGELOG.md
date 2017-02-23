@@ -4,12 +4,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
-* Users can now change the initial participants on a discussion topic.
 ### Changed
-* The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## ## [1.37.0] - {2017-02-16}
+### Added
+* Users can now change the initial participants on a discussion topici
+* Feature flags for hiding/showing partial features.
+### Changed
+* Reset review status on revision submission event
+* Don’t automatically destroy resource tokens
+* Changed figure cards for PDF submissions
+* Changes to topic creation (See APERTA-8247)
+### Deprecated
+### Removed
+### Fixed
+* Handle submission as a single transaction (More details in APERTA-8415)
 ### Security
 
 ## ## [1.36.1] - {2017-02-09}

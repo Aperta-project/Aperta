@@ -22,7 +22,6 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   def paper_has_uploaded_manuscript
-    puts "checking paper"
     paper = Paper.find_by(title: 'Paper Title')
     paper.try(:file).try(:url)
   end

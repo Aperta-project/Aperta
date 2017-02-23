@@ -1,2 +1,14 @@
-<div class="split-pane-drag-handle {{if handleClass handleClass }}"></div>
+<div class="split-pane-drag-handle {{if handleClass handleClass }}">
+  <div class="box-handle">
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="vertical-line"></div>
+    <div class="tooltip bottom animation-fade-in">
+      <div class="tooltip-arrow"></div>
+      <div class="tooltip-inner">
+        adjust the size of your workspace
+      </div>
+    </div>
+  </div>
+</div>
 {{yield}}

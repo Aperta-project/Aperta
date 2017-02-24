@@ -148,6 +148,36 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
+        unless Card.exists?
+          start = Time.now
+          Rake::Task['card_seed:seed'].reenable
+          Rake::Task['card_seed:author'].reenable
+          Rake::Task['card_seed:authors_task'].reenable
+          Rake::Task['card_seed:competing_interests_task'].reenable
+          Rake::Task['card_seed:cover_letter_task'].reenable
+          Rake::Task['card_seed:data_availability_task'].reenable
+          Rake::Task['card_seed:early_posting_task'].reenable
+          Rake::Task['card_seed:ethics_task'].reenable
+          Rake::Task['card_seed:figure_task'].reenable
+          Rake::Task['card_seed:financial_disclosure_task'].reenable
+          Rake::Task['card_seed:front_matter_reviewer_report'].reenable
+          Rake::Task['card_seed:funder'].reenable
+          Rake::Task['card_seed:group_author'].reenable
+          Rake::Task['card_seed:plos_billing_task'].reenable
+          Rake::Task['card_seed:plos_bio_final_tech_check_task'].reenable
+          Rake::Task['card_seed:plos_bio_initial_tech_check_task'].reenable
+          Rake::Task['card_seed:plos_bio_revision_tech_check_task'].reenable
+          Rake::Task['card_seed:production_metadata_task'].reenable
+          Rake::Task['card_seed:publishing_related_questions_task'].reenable
+          Rake::Task['card_seed:register_decision_task'].reenable
+          Rake::Task['card_seed:reporting_guidelines_task'].reenable
+          Rake::Task['card_seed:reviewer_recommendation'].reenable
+          Rake::Task['card_seed:reviewer_report'].reenable
+          Rake::Task['card_seed:taxon_task'].reenable
+          Rake::Task['card_seed:seed'].invoke
+          end_time = Time.now
+          puts "seeded cards in test in #{end_time - start} seconds"
+        end
         FactoryGirl.create(:early_posting_task)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end

@@ -1,5 +1,6 @@
 .left-drawer {
   position: absolute;
+  z-index: z('admin-left-drawer');
   min-height: 100%;
   box-sizing: border-box;
   left: 0;

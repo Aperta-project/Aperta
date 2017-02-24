@@ -27,7 +27,6 @@ class ReviewerReportTaskCreator
       assignee.assign_to!(assigned_to: @task, role: paper.journal.task_participant_role)
       assignee.assign_to!(assigned_to: @task, role: paper.journal.reviewer_report_owner_role)
 
-      ParticipationFactory.create(task: @task, assignee: assignee, notify: false)
       TahiStandardTasks::ReviewerMailer
         .delay.welcome_reviewer(assignee_id: assignee.id,
                                 paper_id: paper.id)

@@ -935,14 +935,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Validate table headers
     table_headers = self._gets(self._download_drawer_table_header)
-    expected_table_headers = [
-      'Manuscript Version',
-      'Format'
-    ]
+    expected_table_headers = ['Manuscript Version', 'Format']
     for key, table_header in enumerate(table_headers):
       assert table_header.text == expected_table_headers[key], \
-        'The download table header {0}: {1} is not the expected:' \
-        ' {2}'.format(key, table_header.text, expected_table_headers[key])
+          'The download table header {0}: {1} is not the expected:' \
+          ' {2}'.format(key, table_header.text, expected_table_headers[key])
 
       # self.validate_table_heading_style(table_header)
 
@@ -960,17 +957,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Validate version name styles
       version_name = table_item.find_element_by_class_name('paper-downloads-version')
       assert version_name.text.lower() == expected_version_name.lower(), \
-        'Download table item {0} version name {1} is not the expected {2}'\
+          'Download table item {0} version name {1} is not the expected {2}'\
           .format(key, version_name.text, expected_version_name)
       self.validate_application_ptext(version_name)
 
       download_links = table_item.find_elements_by_class_name(
         'paper-downloads-link')
 
-      expected_link_title = {
-        'download-docx': 'Word',
-        'download-pdf': 'PDF'
-      }
+      expected_link_title = {'download-docx': 'Word', 'download-pdf': 'PDF'}
 
       # Validate table item links
       for download_link in download_links:
@@ -978,13 +972,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
         download_link_classes = download_link.get_attribute('class').split(' ')
         if 'paper-downloads-link--pdf' in download_link_classes:
           assert 'text-align-right' in download_link_classes, \
-            'The PDF link is not right aligned as expected'
+              'The PDF link is not right aligned as expected'
 
         link_class = link.get_attribute('class')
         assert link.text == expected_link_title[link_class],\
-          'The download link {0} of the item {1} title {2} is not the ' \
-          'expected {3}'.format(link_class, key, link.text,
-                                expected_link_title[link_class])
+            'The download link {0} of the item {1} title {2} is not the ' \
+            'expected {3}'.format(link_class, key, link.text,
+                                  expected_link_title[link_class])
 
         self.validate_default_link_style(link)
 

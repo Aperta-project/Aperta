@@ -40,7 +40,7 @@
                    class="download-source"
                    title="Download Manuscript Source"
                    {{action "exportSource" version}}>
-                  {{source-link version=version}}
+                  {{file-label fileName=(concat '.' version.sourceType)}}
                 </a>
               </td>
               <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">

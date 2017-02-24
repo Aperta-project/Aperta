@@ -13,16 +13,14 @@ FactoryGirl.define do
 
     trait :corresponding do
       after(:create) do |author|
-        correponding_author_question = NestedQuestion.where(
+        correponding_author_question = CardContent.where(
           ident: Author::CORRESPONDING_QUESTION_IDENT,
-          owner_id: nil,
-          owner_type: Author.name,
           value_type: 'boolean'
         ).first_or_create!
-        author.nested_question_answers << FactoryGirl.create(
-          :nested_question_answer,
+        author.answers << FactoryGirl.create(
+          :answer,
           :boolean_yes,
-          nested_question: correponding_author_question
+          card_content: correponding_author_question
         )
       end
     end

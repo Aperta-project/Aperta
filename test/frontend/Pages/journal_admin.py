@@ -112,6 +112,10 @@ class JournalAdminPage(AdminPage):
     self._div_buttons = (By.CSS_SELECTOR, 'div.overlay-action-buttons')
 
   # POM Actions
+  def page_ready(self):
+    """"Ensure the page is ready to test"""
+    self._wait_for_element(self._get(self._journal_admin_manu_mgr_templates_title))
+
   def validate_users_section(self, journal):
     """
     Validate the elements and functions of the User search and role assignment areas of the page
@@ -573,4 +577,4 @@ class JournalAdminPage(AdminPage):
         card.click()
         break
     else:
-      raise ElementDoesNotExistAssertionError('No such card')
+      raise ElementDoesNotExistAssertionError('No such card: {0}'.format(card_title))

@@ -18,6 +18,7 @@ include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
+require_relative '../lib/tasks/card_loading/support/card_loader'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -132,8 +133,8 @@ RSpec.configure do |config|
 
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    Rake::Task['card_seed:seed'].reenable
-    Rake::Task['card_seed:seed'].invoke
+    Rake::Task['cards:load'].reenable
+    Rake::Task['cards:load'].invoke
 
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars

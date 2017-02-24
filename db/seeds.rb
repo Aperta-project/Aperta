@@ -5,11 +5,11 @@ class ManualSeeds # Use this class to run seeds the old way
     # Create Journal
     plos_journal = Journal.first_or_create!(name: 'PLOS Biology', logo: '', doi_publisher_prefix: "10.1371", doi_journal_prefix: "pbio", last_doi_issued: "0000001")
 
+    Rake::Task['cards:load'].invoke
     Rake::Task['roles-and-permissions:seed'].invoke
     Rake::Task['data:update_journal_task_types'].invoke
     Rake::Task['journal:create_default_templates'].invoke
     Rake::Task['create_feature_flags'].invoke
-    Rake::Task['card_seed:seed'].invoke
 
     puts 'Tahi Production Seeds have been loaded successfully'
   end

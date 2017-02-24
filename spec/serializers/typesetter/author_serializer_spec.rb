@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Typesetter::AuthorSerializer do
   before do
-    Rake::Task['card_seed:author'].reenable
-    Rake::Task['card_seed:author'].invoke
+    CardLoader.load('TahiStandardTasks::Author')
   end
 
   subject(:serializer) { described_class.new(author) }

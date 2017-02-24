@@ -2,8 +2,7 @@ require "rails_helper"
 
 describe Snapshot::AuthorTaskSerializer do
   before do
-    Rake::Task['card_seed:authors_task'].reenable
-    Rake::Task['card_seed:authors_task'].invoke
+    CardLoader.load('TahiStandardTasks::AuthorsTask')
   end
 
   subject(:serializer) { described_class.new(task) }

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe TahiStandardTasks::AuthorsTask do
   before do
-    Rake::Task['card_seed:author'].reenable
-    Rake::Task['card_seed:author'].invoke
+    CardLoader.load('TahiStandardTasks::AuthorsTask')
   end
 
   it_behaves_like 'is a metadata task'

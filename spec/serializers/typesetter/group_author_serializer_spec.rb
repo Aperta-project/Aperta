@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Typesetter::GroupAuthorSerializer do
   before do
-    Rake::Task['card_seed:group_author'].reenable
-    Rake::Task['card_seed:group_author'].invoke
+    CardLoader.load('GroupAuthor')
   end
 
   subject(:serializer) { described_class.new(group_author) }

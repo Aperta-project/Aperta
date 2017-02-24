@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Typesetter::BillingLogSerializer do
   before do
-    Rake::Task['card_seed:plos_billing_task'].reenable
-    Rake::Task['card_seed:plos_billing_task'].invoke
+    CardLoader.load('PlosBilling::BillingTask')
   end
 
   subject(:serializer) { described_class.new(paper) }

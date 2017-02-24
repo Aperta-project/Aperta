@@ -9,9 +9,9 @@ describe PaperDownloadsController, type: :controller do
     create(
       :versioned_text,
       paper: paper,
-      file_type: 'pdf',
+      file_type: 'docx',
       s3_dir: 'sample/path',
-      file: 'name.pdf'
+      file: 'name.docx'
     )
   end
   let!(:manuscript_attachment) { create(:manuscript_attachment, owner: paper) }
@@ -23,7 +23,7 @@ describe PaperDownloadsController, type: :controller do
         :show,
         id: paper.to_param,
         versioned_text_id: versioned_text.to_param,
-        export_format: 'pdf',
+        export_format: 'docx',
         format: :json
       )
     end
@@ -48,7 +48,7 @@ describe PaperDownloadsController, type: :controller do
           get(
             :show,
             id: paper.to_param,
-            export_format: 'pdf',
+            export_format: 'docx',
             format: :json
           )
         end
@@ -64,9 +64,9 @@ describe PaperDownloadsController, type: :controller do
         let!(:versioned_text) do
           create(
             :versioned_text,
-            file_type: 'pdf',
+            file_type: 'docx',
             s3_dir: 'sample/path',
-            file: 'name.pdf'
+            file: 'name.docx'
           )
         end
         let!(:manuscript_attachment) do

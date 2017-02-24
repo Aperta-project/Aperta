@@ -7,11 +7,22 @@ class PaperDownloadsController < ApplicationController
 
   def show
     requires_user_can(:view, paper)
-    converter = PaperConverter.new(versioned_text, export_format)
-    redirect_to converter.download_url
+    case converter
+    when PaperConverters::RedirectingPaperConverter
+      redirect_to converter.download_url
+    else
+      raise "Unexpected PaperConverter: #{converter}"
+    end
   end
 
   private
+
+  def converter
+    @converter ||= PaperConverters::PaperConverter.make(
+      versioned_text,
+      export_format
+    )
+  end
 
   def export_format
     params.require(:export_format)

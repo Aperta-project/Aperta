@@ -21,6 +21,7 @@ class SendToApexCard(BaseCard):
     self._apex_button = (By.CSS_SELECTOR, '.animation-fade-in > div > .send-to-apex-button')
     self._apex_message = (By.CSS_SELECTOR, 
                           '.animation-fade-in > div > div > .apex-delivery-message')
+    self._close_apex = (By.CSS_SELECTOR, '.overlay-footer > div + a')
 
   # POM Actions
   def validate_send_to_apex_error_message(self, ftp=False):
@@ -56,3 +57,23 @@ class SendToApexCard(BaseCard):
     """
     apex_button = self._get(self._apex_button)
     apex_button.click()
+
+  def click_close_apex(self):
+    """
+    Clicking Close Apex Card
+    :return: None
+    """
+    close_apex = self._get(self._close_apex)
+    close_apex.click()
+
+  def validate_card_elements(self, paper_id):
+    """
+    This method validates the styles of the card elements including the common card elements
+    :param paper_id: The id of the manuscript
+    :return: None
+    """
+    apex_messages = self._gets(self._apex_message)
+    apex_button = self._get(self._apex_button)
+    self.validate_common_elements_styles(paper_id)
+    self.validate_primary_big_green_button_style(apex_button)
+    map(self.validate_textarea_style, apex_messages)

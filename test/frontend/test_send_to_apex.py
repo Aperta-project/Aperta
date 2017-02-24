@@ -158,5 +158,60 @@ class SendToApexTest(CommonTest):
     send_to_apex_card.click_send_to_apex_button()
     send_to_apex_card.validate_send_to_apex_error_message(ftp=True)
 
+  # Disabled for APERTA-8500
+  def _test_send_to_apex_card_style(self):
+    """
+    test_send_to_apex: Validate if the Send to Apex display the confirmation message
+    """
+    logging.info('test_send_to_apex')
+    # Create base data - new papers
+    creator_user = random.choice(users)
+    logging.info(creator_user)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    self.create_article(journal='PLOS Wombat', type_='NoCards')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    # Request title to make sure the required page is loaded
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.page_ready()
+    manuscript_page.close_modal()
+    manuscript_page.logout()
+    # Enter as Editorial User
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # Disable Upload Manuscript Task
+    data = manuscript_page.complete_task('Upload Manuscript', click_override=True)
+    # go to workflow and open Send to Apex Card
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    card_title = 'Send to Apex'
+    workflow_page.click_card('send_to_apex', card_title)
+    send_to_apex_card = SendToApexCard(self.getDriver())
+    send_to_apex_card.click_send_to_apex_button()
+    send_to_apex_card.click_close_apex()
+    # Open Register Decision Card
+    time.sleep(3)
+    workflow_page.click_card('register_decision')
+    register_decision = RegisterDecisionCard(self.getDriver())
+    register_decision.register_decision('Accept')
+    # Time needed to proceed after closing the RegisterDecisionCard
+    time.sleep(3)
+    card_title = 'Send to Apex'
+    workflow_page.click_card('send_to_apex', card_title)
+    send_to_apex_card = SendToApexCard(self.getDriver())
+    send_to_apex_card.click_send_to_apex_button()
+    send_to_apex_card.validate_card_elements(short_doi)
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

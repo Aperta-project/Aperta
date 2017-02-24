@@ -8,8 +8,8 @@ import FakeCanService from '../helpers/fake-can-service';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent(
-  'author-form',
-  'Integration | Component | author-form',
+  'group-author-form',
+  'Integration | Component | group-author-form',
   {
     integration: true,
     beforeEach: function() {
@@ -28,7 +28,7 @@ moduleForComponent(
 
       let user = FactoryGuy.make('user');
       let task = FactoryGuy.make('authors-task');
-      let author = FactoryGuy.make('author', { user: user });
+      let author = FactoryGuy.make('group-author');
       let paper = FactoryGuy.make('paper');
 
       this.set('author', author);
@@ -38,9 +38,9 @@ moduleForComponent(
       this.set('model', Ember.ObjectProxy.create({object: author}));
       this.set('task', task);
 
-      this.set("toggleEditForm", () => {});
       this.set("validateField", () => {});
       this.set("canRemoveOrcid", true);
+      this.set('can', FakeCanService.create());
 
       createQuestionWithAnswer(author, 'author--published_as_corresponding_author', true);
       createQuestionWithAnswer(author, 'author--deceased', false);
@@ -64,33 +64,14 @@ moduleForComponent(
 );
 
 var template = hbs`
-  {{author-form
+  {{group-author-form
       author=model.object
       authorProxy=model
       validateField=(action validateField)
-      hideAuthorForm="toggleEditForm"
+      hideAuthorForm="toggleGroupAuthorForm"
       isNotEditable=isNotEditable
-      saveSuccess=(action toggleEditForm)
-      canRemoveOrcid=true
       authorIsPaperCreator=true
   }}`;
-
-test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){
-  let orcidAccount = FactoryGuy.make('orcid-account');
-  Ember.run( () => {
-    this.get("author.user").set("orcidAccount", orcidAccount);
-  });
-  this.render(template);
-  assert.elementFound(".orcid-connect");
-});
-
-test("component does not display the orcid-connect component when the author does not have an orcidAccount", function(assert){
-  Ember.run( () => {
-    this.get("author.user").set("orcidAccount", null);
-  });
-  this.render(template);
-  assert.elementNotFound(".orcid-wrapper");
-});
 
 test("component shows author is confirmed", function(assert){
   Ember.run( () => {

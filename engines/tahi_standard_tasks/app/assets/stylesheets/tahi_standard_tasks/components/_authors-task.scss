@@ -12,6 +12,16 @@
   counter-increment: authorTaskItem;
 }
 
+.author-form, .author-task-item-view {
+  .author-confirmed {
+    color: $aperta-green;
+  }
+
+  .author-refuted {
+    color: $aperta-red;
+  }
+}
+
 .author-task-item-view {
   @include align-items(center);
   background: $aperta-grey-xlight;
@@ -118,6 +128,11 @@
     border-radius: 4px;
     width: 418px;
   }
+
+  .coauthor-status-modified-by {
+
+  }
+
 
   .author-government {
     .error-message { margin-left: 0; }

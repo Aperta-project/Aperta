@@ -47,10 +47,23 @@ describe Author do
         answer = FactoryGirl.create(
           :nested_question_answer,
           nested_question: question,
-          owner: author)
+          owner: author
+        )
         expect(author.contributions.empty?).to be(false)
         expect(author.valid?).to be(true)
       end
+    end
+  end
+
+  describe "#update_coauthor_status" do
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
+    it "Updates coauthor status" do
+      status = "confirmed"
+      author.update_coauthor_status(status, user.id)
+      author.reload
+      expect(author.co_author_state).to eq "confirmed"
+      expect(author.co_author_modified).to be_present
+      expect(author.co_author_modified_by_id).to eq user.id
     end
   end
 
@@ -171,6 +184,16 @@ describe Author do
 
     it "is false when there is no task" do
       expect(Author.new.task_completed?).to be_falsy
+    end
+  end
+
+  describe "callbacks" do
+    context "before_create" do
+      describe "#set_default_co_author_state" do
+        it "sets a default value of 'unconfirmed' on author creation" do
+          expect(author.co_author_state).to eq "unconfirmed"
+        end
+      end
     end
   end
 end

@@ -11,15 +11,20 @@
         <div>
           {{displayName}}
         </div>
-
-        {{#if author.coAuthorConfirmed}}
-          <div>
-            <i class="fa fa-check author-confirmed-check"></i>
+        {{#if author.confirmedAsCoAuthor}}
+          <div data-test-selector="author-confirmed">
+            <i class="fa fa-check author-confirmed-check author-confirmed"></i>
             Confirmed
+          </div>
+        {{else if author.refutedAsCoAuthor}}
+          <div data-test-selector="author-refuted">
+            <i class="fa fa-minus-circle author-refuted-circle author-refuted"></i>
+            Refuted
           </div>
         {{/if}}
       </div>
       <div class="author-email flex-element">{{or author.email author.contactEmail}}</div>
+
     </div>
 
     {{#unless isNotEditable}}

@@ -32,7 +32,6 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
 
   build(abilityString, resource, callback) {
-
     let classname = resource.constructor.modelName.camelize();
     classname = classname.charAt(0).toLowerCase() + classname.slice(1);
     const permissionId =  classname + '+' + resource.id;

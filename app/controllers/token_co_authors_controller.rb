@@ -6,6 +6,12 @@ class TokenCoAuthorsController < ApplicationController
     if @author.co_author_confirmed?
       redirect_to thank_you_token_co_author_path(token)
     end
+
+    if author.co_author_refuted?
+      redirect_to authorship_refuted_token_co_author_path(token)
+    end
+
+    assign_template_vars
   end
 
   def confirm
@@ -20,6 +26,11 @@ class TokenCoAuthorsController < ApplicationController
 
   def thank_you
     redirect_to show_token_co_author_path(token) unless @author.co_author_confirmed?
+  end
+
+  def refuted
+    redirect_to show_token_co_author_path(token) unless author.co_author_refuted?
+    assign_template_vars
   end
 
   private

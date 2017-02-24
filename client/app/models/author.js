@@ -80,9 +80,12 @@ const validations = {
 export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
   user: belongsTo('user'),
+  coAuthorStateModifiedBy: belongsTo('user'),
 
   orcidAccount: alias('user.orcidAccount'),
   orcidIdentifier: alias('user.orcidAccount.identifier'),
+  confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
+  refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),

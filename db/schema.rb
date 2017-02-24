@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170301212950) do
+ActiveRecord::Schema.define(version: 20170302222318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
+    t.integer  "co_author_state_modified_by_id"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -354,6 +355,7 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
+    t.integer  "co_author_state_modified_by_id"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -899,12 +901,14 @@ ActiveRecord::Schema.define(version: 20170301212950) do
   add_foreign_key "answers", "card_contents"
   add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
+  add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "cards", "journals"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"
   add_foreign_key "discussion_replies", "discussion_topics"
   add_foreign_key "discussion_topics", "papers"
+  add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
 end

@@ -18,11 +18,22 @@ class Author < ActiveRecord::Base
   # Not validated as not all authors have corresponding users.
   belongs_to :user
 
+  belongs_to :co_author_state_modified_by, class_name: "User"
+
   delegate :position, to: :author_list_item
 
-  validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
-  validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
-  validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+  validates :first_name, :last_name, :author_initial,
+    :affiliation, :email, presence: true, if: :task_completed?
+
+  validates :email,
+    format: { with: Devise.email_regexp,
+      message: "needs to be a valid email address" },
+      if: :task_completed?
+
+  validates :contributions,
+    presence: { message: "one must be selected" }, if: :task_completed?
+
+  before_create :set_default_co_author_state
 
   def full_name
     "#{first_name} #{last_name}"
@@ -74,4 +85,5 @@ class Author < ActiveRecord::Base
     question_ids = self.class.contributions_question.children.map(&:id)
     nested_question_answers.where(nested_question_id: question_ids)
   end
+
 end

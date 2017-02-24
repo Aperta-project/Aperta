@@ -34,6 +34,7 @@ describe GroupAuthorsController do
 
   describe "when the current user can edit_authors on the paper" do
     before do
+      allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(true)
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
     end
 
@@ -82,6 +83,56 @@ describe GroupAuthorsController do
     it 'a DELETE request responds with a 403' do
       delete_request
       expect(response).to have_http_status(:forbidden)
+    end
+  end
+
+  describe 'coauthor update' do
+    let!(:time) { Time.now.utc }
+
+    let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
+
+    let!(:group_author) do
+      FactoryGirl.create(:group_author, co_author_state: "unconfirmed",
+        co_author_state_modified_at: time,
+        co_author_state_modified_by_id: staff_admin.id,
+        paper: paper)
+    end
+
+    let(:put_request) do
+      put :update, format: :json, id: group_author.id, group_author: { contact_last_name: "Blabby",
+        author_task_id: task.id,
+        co_author_state: "confirmed",
+        co_author_state_modified_by: staff_admin
+      }
+    end
+
+    context 'administrator user' do
+
+      it 'a PUT request from an administrator allows updating coauthor status' do
+        allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
+        allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(true)
+
+        put_request
+        group_author.reload
+        expect(group_author.contact_last_name).to eq "Blabby"
+        expect(group_author.co_author_state).to eq "confirmed"
+        expect(group_author.co_author_state_modified_at).to be > time
+        expect(group_author.co_author_state_modified_by_id).to eq user.id
+      end
+
+      context 'non-administrator user with edit access'
+
+      it 'a PUT request from an administrator skips updating coauthor status' do
+        allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
+        allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(false)
+
+        put_request
+        group_author.reload
+        expect(group_author.contact_last_name).to eq "Blabby"
+        expect(group_author.co_author_state).to eq "unconfirmed"
+        expect(group_author.co_author_state_modified_at).to eq time
+        expect(group_author.co_author_state_modified_by_id).to eq staff_admin.id
+      end
     end
   end
 end

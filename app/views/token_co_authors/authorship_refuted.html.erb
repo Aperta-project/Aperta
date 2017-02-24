@@ -1,0 +1,10 @@
+<%= render layout: 'container' do %>
+  <div class="pending-confirmation">
+    <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
+      <span class="date"><%= @author.created_at.strftime('%b %d, %Y') %></span></h2>
+    <h3 class="dashboard-paper-title"><%= @paper.title.html_safe %></h3>
+
+    <i class="fa fa-exclamation-triangle"></i><span>Your authorship is refuted</span>
+    <p>If you need to change that status please contact us at <%= @paper.journal.staff_email %> to correct the issue</p>
+  </div>
+<% end %>

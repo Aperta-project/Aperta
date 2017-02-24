@@ -12,6 +12,8 @@ class GroupAuthor < ActiveRecord::Base
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
+  belongs_to :co_author_state_modified_by, class_name: "User"
+
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors

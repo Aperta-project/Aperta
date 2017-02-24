@@ -63,8 +63,24 @@ test("component lists the author when they are the current user", function(asser
 
 test("component shows author is confirmed", function(assert){
   Ember.run( () => {
-    this.get('author').set('coAuthorConfirmed', true);
+    this.get('author').set('coAuthorState', 'confirmed');
   });
   this.render(template);
-  assert.textPresent('.author-name', 'Confirmed');
+  assert.textPresent('.author-confirmed', 'Confirmed');
+});
+
+test("component shows author is confirmed", function(assert){
+  Ember.run( () => {
+    this.get('author').set('coAuthorState', 'confirmed');
+  });
+  this.render(template);
+  assert.textPresent('.author-confirmed', 'Confirmed');
+});
+
+test("component shows author is confirmed", function(assert){
+  Ember.run( () => {
+    this.get('author').set('coAuthorState', 'refuted');
+  });
+  this.render(template);
+  assert.textPresent('.author-refuted', 'Refuted');
 });

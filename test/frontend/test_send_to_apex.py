@@ -30,7 +30,7 @@ class SendToApexTest(CommonTest):
 
   def test_upload_failure_to_apex(self):
     """
-    test_upload_failure_to_apex: Validate if the Send to Apex card display the corresponding errors
+    test_upload_failure_to_apex: Validate if the Send to Apex card displays the corresponding errors
     """
     logging.info('test_upload_failure_to_apex')
     # Create base data - new papers
@@ -72,7 +72,7 @@ class SendToApexTest(CommonTest):
 
   def test_send_to_apex(self):
     """
-    test_send_to_apex: Validate if the Send to Apex display the confirmation message
+    test_send_to_apex: Validate if the Send to Apex displays the confirmation message
     """
     logging.info('test_send_to_apex')
     # Create base data - new papers
@@ -118,7 +118,7 @@ class SendToApexTest(CommonTest):
   # Disabled until ftp user/pass has wrong values
   def _test_ftp_failure_to_apex(self):
     """
-    test_ftp_failure_to_apex: Validate if the Send to Apex card display the corresponding errors
+    test_ftp_failure_to_apex: Validate if the Send to Apex card displays the corresponding errors
     """
     logging.info('test_ftp_failure_to_apex')
     # Create base data - new papers
@@ -161,7 +161,7 @@ class SendToApexTest(CommonTest):
   # Disabled for APERTA-8500
   def _test_send_to_apex_card_style(self):
     """
-    test_send_to_apex_card_style: Validate if the Send to Apex display the confirmation message
+    test_send_to_apex_card_style: Validate the styles of Send to Apex Card
     """
     logging.info('test_send_to_apex_card_style')
     # Create base data - new papers

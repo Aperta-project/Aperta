@@ -59,10 +59,8 @@ class Snapshot::BaseSerializer
   end
 
   def snapshot_nested_questions
-    if model.respond_to?(:nested_questions)
-      nested_questions = model.nested_questions.where(parent_id: nil).order('position')
-
-      nested_questions.map do |question|
+    if model.class.respond_to?(:card_for)
+      model.class.card_for.content_root.children.map do |question|
         Snapshot::CardContentSerializer.new(question, model).as_json
       end
     else
@@ -77,5 +75,4 @@ class Snapshot::BaseSerializer
   def snapshot_property(name, type, value)
     { name: name, type: type, value: value }
   end
-
 end

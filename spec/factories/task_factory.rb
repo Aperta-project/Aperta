@@ -7,12 +7,6 @@ FactoryGirl.define do
     phase { FactoryGirl.build_stubbed(:phase) }
   end
 
-  trait :with_card do
-    after(:build) do |answerable|
-      answerable.card = answerable.class.card_for
-    end
-  end
-
   factory :task do
     phase
     paper
@@ -46,11 +40,6 @@ FactoryGirl.define do
 
     factory :early_posting_task, class: 'TahiStandardTasks::EarlyPostingTask' do
       title "Early Article Posting"
-
-      before(:create) do
-        early_posting = NestedQuestion.find_by_ident('early-posting--consent')
-        FactoryGirl.create(:nested_question, ident: 'early-posting--consent').save unless early_posting
-      end
     end
 
     factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do

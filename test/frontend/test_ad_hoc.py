@@ -25,7 +25,7 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class AdHocCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of all types Ad-Hoc Card
+  Validate the elements, styles, functions of all types of Ad-Hoc Card
   """
   def test_ad_hoc_card_styles(self):
     """

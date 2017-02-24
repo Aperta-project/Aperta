@@ -19,6 +19,10 @@ class Answer < ActiveRecord::Base
     Answer.where(owner: owner, card_content: card_content.children)
   end
 
+  def coerced_value
+    CoerceAnswerValue.coerce(value, card_content.value_type)
+  end
+
   # The primary reason an answer will need to find its task is for permission
   # checks in various controllers, since our R&P system normally speaks in
   # Tasks rather than at a more granular level

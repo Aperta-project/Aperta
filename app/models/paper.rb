@@ -534,11 +534,6 @@ class Paper < ActiveRecord::Base
     notify
   end
 
-  def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
-  end
-
   def in_terminal_state?
     TERMINAL_STATES.include? publishing_state.to_sym
   end

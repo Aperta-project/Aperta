@@ -13,15 +13,10 @@ FactoryGirl.define do
 
     trait :corresponding do
       after(:create) do |author|
-        correponding_author_question = CardContent.where(
+        corresponding_author_question = CardContent.find_by!(
           ident: Author::CORRESPONDING_QUESTION_IDENT,
-          value_type: 'boolean'
-        ).first_or_create!
-        author.answers << FactoryGirl.create(
-          :answer,
-          :boolean_yes,
-          card_content: correponding_author_question
         )
+        corresponding_author_question.answers.create(owner: author, paper: author.paper, value: 't')
       end
     end
   end

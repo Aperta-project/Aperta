@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221220551) do
+ActiveRecord::Schema.define(version: 20170224212404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -885,7 +885,6 @@ ActiveRecord::Schema.define(version: 20170221220551) do
   add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "answers", "card_contents"
-  add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

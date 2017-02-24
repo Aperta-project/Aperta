@@ -18,5 +18,9 @@ module Answerable
     def owner_type_for_answer
       self.class.name
     end
+
+    def answer_for_ident(ident)
+      answers.joins(:card_content).find_by(card_contents: { ident: ident } )
+    end
   end
 end

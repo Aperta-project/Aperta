@@ -23,13 +23,13 @@ __author__ = 'sbassi@plos.org'
 
 
 @MultiBrowserFixture
-class AdHocCardAuthorTest(CommonTest):
+class AdHocCardTest(CommonTest):
   """
-  Validate the elements, styles, functions of the Ad-Hoc Card
+  Validate the elements, styles, functions of all types of Ad-Hoc Card
   """
   def test_ad_hoc_card_styles(self):
     """
-    test_ad_hoc_author_card_styles: Validates the elements, styles Ad Hoc card
+    test_ad_hoc_card_styles: Validates the elements, styles of all types of Ad Hoc card
     :return: None
     """
     creator_user = random.choice(users)

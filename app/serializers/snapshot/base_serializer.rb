@@ -59,12 +59,13 @@ class Snapshot::BaseSerializer
   end
 
   def snapshot_nested_questions
-    if model.class.respond_to?(:card_for)
-      model.class.card_for.content_root.children.map do |question|
+    card = model.class.try(:card_for)
+    if card.nil?
+      []
+    else
+      card.content_root.children.map do |question|
         Snapshot::CardContentSerializer.new(question, model).as_json
       end
-    else
-      []
     end
   end
 

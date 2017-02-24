@@ -6,7 +6,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Users can now change the initial participants on a discussion topic.
 * The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
-* Users can now change the initial participants on a discussion topic.
 ### Changed
 * The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
 ### Deprecated

@@ -17,8 +17,14 @@ export default Ember.Component.extend(FileUploadMixin, {
     return uploadSourceFilePath(this.get('task.id'));
   }),
 
-  fileTypeClass: Ember.computed('filename', function(){
-    return fontAwesomeFiletypeClass(this.get('filename'));
+  fileTypeClass: Ember.computed('filename', 'task.paper.file.filename', function(){
+    let uploaded = this.get('manuscriptfileUploaded');
+    return fontAwesomeFiletypeClass(this.get(uploaded ? 'filename' : 'task.paper.sourcefile.filename'));
+  }),
+
+  sourcefileDownloadUrl: Ember.computed('task.paper.id', function() {
+    let id = this.get('task.paper.id');
+    return '/api/papers/' + id + '/status/' + id + '?job_id=raw';
   }),
 
   actions: {

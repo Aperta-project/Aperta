@@ -2,32 +2,55 @@
 <div class="paper-source-upload">
 
   <p class="flex-form">
+    <h4>Please Upload Your Source File</h4>
+    Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.
   {{#if sourcefileUploaded}}
     <div>
       <a href="{{s3Url}}"
          class="download-docx"
-         title="{{filename}}">
+         title="{{filename}}" target="_new">
          {{fa-icon fileTypeClass}} {{filename}}
       </a>
       <span class="fileinput-button manuscript-task">
         {{fa-icon icon="refresh"}}
         <span>Replace</span>
-        {{file-uploader id="upload-source-file"
-        railsMethod="PUT"
-        accept=".doc,.docx,.tex,.zip"
-        start="uploadStarted"
-        progress="uploadProgress"
-        done="uploadFinished"
-        addingFileFailed="fileAddError"
-        error="uploadError"
-        filePrefix="paper/source"
-        url=sourceFileUploadUrl
-        disabled=isNotEditable}}
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        accept=".doc,.docx,.tex,.zip"
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=sourceFileUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+    </div>
+  {{else if task.paper.sourcefile.filename}}
+    <div>
+      <a href="{{sourcefileDownloadUrl}}"
+         class="download-docx"
+         title="{{filename}}" target="_new">
+         {{fa-icon fileTypeClass}} {{task.paper.sourcefile.filename}}
+      </a>
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        accept=".doc,.docx,.tex,.zip"
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=sourceFileUploadUrl
+                        disabled=isNotEditable}}
       </span>
     </div>
   {{else}}
-    <h4>Please Upload Your Source File</h4>
-    Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.
     <p><span id="upload-sourcefile" class="button-secondary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
       Select and upload source file
       {{file-uploader id="upload-source-file"

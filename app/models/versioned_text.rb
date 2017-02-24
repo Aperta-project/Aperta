@@ -84,6 +84,10 @@ class VersionedText < ActiveRecord::Base
     file? ? manuscript_s3_path + '/' + manuscript_filename : nil
   end
 
+  def s3_full_sourcefile_path
+    file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
+  end
+
   private
 
   def only_version_once

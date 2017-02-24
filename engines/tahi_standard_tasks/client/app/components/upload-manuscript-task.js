@@ -18,8 +18,14 @@ export default TaskComponent.extend(FileUploadMixin, {
     return uploadManuscriptPath(this.get('task.id'));
   }),
 
-  fileTypeClass: Ember.computed('filename', function(){
-    return fontAwesomeFiletypeClass(this.get('filename'));
+  fileTypeClass: Ember.computed('filename', 'task.paper.file.filename', function(){
+    let uploaded = this.get('manuscriptfileUploaded');
+    return fontAwesomeFiletypeClass(this.get(uploaded ? 'filename' : 'task.paper.file.filename'));
+  }),
+
+  manuscriptDownloadUrl: Ember.computed('task.paper.id', function() {
+    let id = this.get('task.paper.id');
+    return '/api/papers/' + id + '/status/' + id + '?job_id=raw&export_format=manuscript';
   }),
 
   actions: {
@@ -53,7 +59,7 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.get('store').pushPayload(data);
 
       this.get('task').save();
-      this.set('sourcefileUploaded', true);
+      this.set('manuscriptUploaded', true);
       this.set('s3Url', s3Url);
       this.set('filename', filename);
     }

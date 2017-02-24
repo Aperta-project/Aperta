@@ -254,7 +254,7 @@ class Task < ActiveRecord::Base
   # of Task and an instance of a Card.
   # Returns the card instance for this Task class.
   def self.card_for
-    Card.find_by_name!(name.to_s)
+    Card.find_by_name(name.to_s)
   end
 
   private

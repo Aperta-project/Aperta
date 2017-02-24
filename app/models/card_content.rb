@@ -33,7 +33,8 @@ class CardContent < ActiveRecord::Base
 
     existing_idents = all.map(&:ident)
     for_deletion = existing_idents - updated_idents
-    where(ident: for_deletion).destroy_all
+    raise "You forgot some questions: #{for_deletion}" \
+      unless for_deletion.empty?
   end
 
   def self.update_nested!(content_hashes, parent_id, idents)

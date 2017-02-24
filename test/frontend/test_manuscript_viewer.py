@@ -8,12 +8,14 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, editorial_users, external_editorial_users, \
-    admin_users, super_admin_login, handling_editor_login, academic_editor_login
+    admin_users, super_admin_login, handling_editor_login, academic_editor_login, \
+  internal_editor_login, login_valid_pw
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 from Cards.initial_decision_card import InitialDecisionCard
 from Tasks.figures_task import FiguresTask
+from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
 """
@@ -257,27 +259,90 @@ class ManuscriptViewerTest(CommonTest):
 
   def test_paper_download(self):
     """
-    test_manuscript_viewer: Validates the download functions, formats, UI elements and styles
+    test_manuscript_viewer: Validates the download functions for different
+    versions, formats, UI elements and styles
     :return: void function
     """
     logging.info('Test Manuscript Viewer::paper_download')
     current_path = os.getcwd()
     logging.info(current_path)
     user = random.choice(users)
-    logging.info('Running test_paper_download')
-    logging.info('Logging in as {0}'.format(user))
     dashboard_page = self.cas_login(email=user['email'])
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
-    self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
+    self.create_article(journal='PLOS Wombat', format='pdf',
+                        type_='NoCards', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.page_ready_post_create()
+    short_doi = manuscript_viewer.get_paper_short_doi_from_url()
 
-    # Need to wait for url to update
-    manuscript_viewer.get_short_doi()
+    # Make submission
+    manuscript_viewer.click_submit_btn()
+    manuscript_viewer.confirm_submit_btn()
+    manuscript_viewer.close_submit_overlay()
+    # Logout
+    manuscript_viewer.logout()
+
+    logging.info('Logging in as the Internal Editor to Register a Decision')
+    # Log as editor to approve the manuscript with modifications
+    dashboard_page = self.cas_login(email=internal_editor_login['email'],
+                                    password=login_valid_pw)
+    # Go to article
+    dashboard_page.go_to_manuscript(short_doi)
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
+    manuscript_viewer.logout()
+
+    # Log in as a author to upload the word version
+    logging.info('Logging in as creator to upload a word version')
+    dashboard_page = self.cas_login(email=user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.page_ready()
+    manuscript_viewer.click_task('Upload Manuscript')
+    upms = UploadManuscriptTask(self.getDriver())
+    upms._wait_for_element(upms._get(upms._upload_manuscript_btn))
+    upms.upload_manuscript()
+    upms.validate_ihat_conversions_success(timeout=45)
+    data = {'attach': 2}
+    manuscript_viewer.complete_task('Revise Manuscript', data=data)
+    # Make new submission
+    manuscript_viewer.click_submit_btn()
+    manuscript_viewer.confirm_submit_btn()
+    manuscript_viewer.close_submit_overlay()
+    # Logout
+    manuscript_viewer.logout()
+
+    logging.info('Logging in as the Internal Editor to Register a Decision')
+    # Log as editor to approve the manuscript with modifications
+    dashboard_page = self.cas_login(email=internal_editor_login['email'],
+                                    password=login_valid_pw)
+    # Go to article
+    dashboard_page.go_to_manuscript(short_doi)
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
+    manuscript_viewer.logout()
+
+    # Log in as a author to validate the download drawer
+    logging.info('Logging in as author to validate the download drawer')
+    dashboard_page = self.cas_login(email=user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.page_ready()
+    # Validate download drawer styles and actions
+    manuscript_viewer.validate_download_drawer_styles()
     manuscript_viewer.validate_download_btn_actions()
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

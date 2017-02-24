@@ -32,10 +32,11 @@ class SendToApexCard(BaseCard):
     # Time needed for message to be ready
     time.sleep(3)
     apex_error, apex_succeed = self._gets(self._apex_message)
-    if "530" in apex_error.text:
+    if "530" in apex_succeed.text:
       assert apex_error.text == (
-          "Apex Upload has failed. 530 Please login with USER and PASS"), apex_error
-      assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed
+          "Apex Upload has failed. Paper has not been accepted"), apex_error
+      assert apex_succeed.text == (
+          "Apex Upload has failed. 530 Please login with USER and PASS"), apex_succeed
     else:
       assert apex_error.text == (
           "Apex Upload has failed. Paper has not been accepted"), apex_error

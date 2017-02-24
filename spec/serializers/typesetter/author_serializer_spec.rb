@@ -40,11 +40,11 @@ describe Typesetter::AuthorSerializer do
   end
 
   let(:question1) do
-    author.class.contributions_question.children[0]
+    author.class.contributions_content.children[0]
   end
 
   let(:question2) do
-    author.class.contributions_question.children[1]
+    author.class.contributions_content.children[1]
   end
 
   let!(:deceased_question) do

@@ -15,7 +15,7 @@ describe TahiStandardTasks::AuthorsTask do
   describe "#validate_authors" do
     let!(:valid_author) do
       author = FactoryGirl.create(:author, paper: task.paper)
-      question = Author.contributions_question
+      question = Author.contributions_content
       contribution = question.children.first
       q = author.find_or_build_answer_for(nested_question: contribution)
       q.value = true

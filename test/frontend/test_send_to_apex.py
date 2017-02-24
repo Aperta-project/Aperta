@@ -115,10 +115,22 @@ class SendToApexTest(CommonTest):
     paper_viewer.page_ready()
     # Disable Upload Manuscript Task
     data = manuscript_page.complete_task('Upload Manuscript', click_override=True)
-    # go to workflow
+    # go to workflow and open Send to Apex Card
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
+    card_title = 'Send to Apex'
+    workflow_page.click_card('send_to_apex', card_title)
+    send_to_apex_card = SendToApexCard(self.getDriver())
+    send_to_apex_card.click_send_to_apex_button()
+    send_to_apex_card.click_close_apex()
+    # Open Register Decision Card
+    time.sleep(3)
+    workflow_page.click_card('register_decision')
+    register_decision = RegisterDecisionCard(self.getDriver())
+    register_decision.register_decision('Accept')
+    # Time needed to proceed after closing the RegisterDecisionCard
+    time.sleep(3)
     card_title = 'Send to Apex'
     workflow_page.click_card('send_to_apex', card_title)
     send_to_apex_card = SendToApexCard(self.getDriver())

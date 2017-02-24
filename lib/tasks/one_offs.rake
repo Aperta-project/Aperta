@@ -22,4 +22,13 @@ namespace :one_off do
     end
   end
 
+  desc "Create temporary Card models for testing purposes"
+  task create_fake_cards_for_testing: :environment do
+    puts "Creating fake cards ..."
+    Card.transaction do
+      25.times do |i|
+        Card.create(name: "Card #{i}", journal: Journal.first)
+      end
+    end
+  end
 end

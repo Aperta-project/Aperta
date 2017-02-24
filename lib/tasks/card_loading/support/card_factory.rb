@@ -19,12 +19,12 @@ class CardFactory
   def create_from_configuration_klass(configuration_klass)
     card = Card.find_or_create_by!(name: configuration_klass.name, journal: journal)
     content_root = CardContent.find_or_create_by!(card: card, ident: nil, parent: nil)
-    configuration_klass.content.each do |c|
+    new_content = configuration_klass.content
+    new_content.each do |c|
       c[:parent] = content_root
       c[:card] = card
     end
-
     CardContent.where(card: card).where.not(ident: nil)
-               .update_all_exactly!(configuration_klass.content)
+               .update_all_exactly!(new_content)
   end
 end

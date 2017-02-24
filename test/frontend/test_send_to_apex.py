@@ -161,9 +161,9 @@ class SendToApexTest(CommonTest):
   # Disabled for APERTA-8500
   def _test_send_to_apex_card_style(self):
     """
-    test_send_to_apex: Validate if the Send to Apex display the confirmation message
+    test_send_to_apex_card_style: Validate if the Send to Apex display the confirmation message
     """
-    logging.info('test_send_to_apex')
+    logging.info('test_send_to_apex_card_style')
     # Create base data - new papers
     creator_user = random.choice(users)
     logging.info(creator_user)

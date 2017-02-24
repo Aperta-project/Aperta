@@ -10,6 +10,9 @@ class CardContent < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_content
 
   validates :card, presence: true
+  validates :card, uniqueness:
+                     { message: 'can only have a single root content.' },
+                   if: ->() { parent_id.nil? }
 
   has_many :answers
 

@@ -4,6 +4,8 @@
 @import 'config/webfonts';
 @import 'ui/buttons';
 @import 'auth-invitations';
+@import 'auth-co-authors';
+@import 'font-awesome';
 
 html { box-sizing: border-box; }
 *, *:before, *:after { box-sizing: inherit; }
@@ -251,5 +253,3 @@ a {
   max-width: 170px;
   height: auto;
 }
-
-

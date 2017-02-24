@@ -6,11 +6,27 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 * Users can now change the initial participants on a discussion topic.
 * The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
+* Added "Confirm Authorship" button to email to co authors.
 ### Changed
-* The Upload Manuscript card will uncheck as incomplete when a revision related decision is registered
+* Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## ## [1.37.0] - {2017-02-16}
+### Added
+* Users can now change the initial participants on a discussion topic
+* Feature flags for hiding/showing partial features.
+### Changed
+* Reset review status on revision submission event
+* Don’t automatically destroy resource tokens
+* Changed figure cards for PDF submissions
+* Changes to topic creation (See APERTA-8247)
+### Deprecated
+### Removed
+### Fixed
+* Handle submission as a single transaction (More details in APERTA-8415)
 ### Security
 
 ## ## [1.36.1] - {2017-02-09}
@@ -34,7 +50,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Users can now select and copy text from invitation letters when there is more than one invitation.
-* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved.
   (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
 ### Security
 

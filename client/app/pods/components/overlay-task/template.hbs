@@ -23,18 +23,21 @@
             {{/task-load}}
           </div>
           <footer class="overlay-footer">
-            {{#if (can 'view_discussion_footer' task)}}
-            {{participant-selector currentParticipants=participants
-                                   paperId=task.paper.id
-                                   label="Following:"
-                                   canManage=(can "manage_participant" task)
-                                   onSelect=(action "saveNewParticipant")
-                                   onRemove=(action "removeParticipant")
-                                   searchStarted=(action "searchStarted")
-                                   searchFinished=(action "searchFinished")
-                                   searching=searchingParticipant
-                                   dropdownClass="aperta-select task-following-dropdown"}}
-             {{/if}}
+            {{#if (can 'edit_discussion_footer' task)}}
+              {{participant-selector currentParticipants=participants
+                                     paperId=task.paper.id
+                                     label="Following:"
+                                     canManage=(can "manage_participant" task)
+                                     canEditDiscussion=(can "edit_discussion_footer" task)
+                                     onSelect=(action "saveNewParticipant")
+                                     onRemove=(action "removeParticipant")
+                                     searchStarted=(action "searchStarted")
+                                     searchFinished=(action "searchFinished")
+                                     searching=searchingParticipant
+                                     dropdownClass="aperta-select task-following-dropdown"}}
+            {{else}}
+              <span class="participant-selector-label"></span>
+            {{/if}}
             <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
           </footer>
         </div>

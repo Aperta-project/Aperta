@@ -19,7 +19,7 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
   context "serializing related nested questions" do
     before do
       # find the corresponding +let+ variable
-      resource = instance_eval opts[:resource].to_s
+      @resource = instance_eval opts[:resource].to_s
 
       unless serializer
         fail NotImplementError, <<-EOT.strip_heredoc
@@ -30,45 +30,55 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         EOT
       end
 
-      unless resource
+      unless @resource
         fail NotImplementError, <<-EOT.strip_heredoc
           Missing :resource for shared examples. Please pass in
           `resource: :let_var_name_here` when including these examples.
         EOT
       end
 
-      unless resource.respond_to?(:nested_questions)
+      unless @resource.respond_to?(:nested_questions)
         fail <<-EOT.strip_heredoc
-          The given resource (#{resource.inspect}) doesn't respond to
+          The given resource (#{@resource.inspect}) doesn't respond to
           #nested_questions. It may not be implemented or you may not be passing
           in the right resource.
         EOT
       end
+      root.children << card_content_2
+      root.children << card_content_1
+      expect(@resource.class.card_for.content_root.children).to eq([card_content_2, card_content_1])
+    end
 
-      # Remove any questions that may exist so we can construct our own
-      # for the purpose of this test
-      resource.class.nested_questions.delete_all
+    let(:card) do
+      FactoryGirl.create(
+        :card,
+        name: @resource.class.name
+      )
+    end
 
-      nested_question_1 = FactoryGirl.create(
-        :nested_question,
-        id: 9001,
-        owner_id: nil,
-        owner_type: resource.class.name,
+    let(:root) do
+      FactoryGirl.create(
+        :card_content,
+        card: card
+      )
+    end
+
+    let(:card_content_1) do
+      FactoryGirl.create(
+        :card_content,
         ident: "question_1",
         text: "Question 1?",
-        position: 2
+        value_type: 'text'
       )
-      nested_question_2 = FactoryGirl.create(
-        :nested_question,
-        id: 9002,
-        owner_id: nil,
-        owner_type: resource.class.name,
+    end
+
+    let(:card_content_2) do
+      FactoryGirl.create(
+        :card_content,
         ident: "question_2",
         text: "Question 2?",
-        position: 1
+        value_type: 'text'
       )
-
-      expect(resource.nested_questions.sort_by(&:id)).to eq([nested_question_1, nested_question_2])
     end
 
     it "serializes each question" do
@@ -77,13 +87,13 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         {
           name: "question_2",
           type: "question",
-          value: { id: 9002, title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
+          value: { id: card_content_2.id, title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         },
         {
           name: "question_1",
           type: "question",
-          value: { id: 9001, title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
+          value: { id: card_content_1.id, title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         }
       )
@@ -94,7 +104,7 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
       index_of_question_1 = children.index { |hsh| hsh[:name] == "question_1" }
       index_of_question_2 = children.index { |hsh| hsh[:name] == "question_2" }
 
-      # nested_question_2 should come first
+      # card_content_2 should come first
       expect(index_of_question_2 < index_of_question_1).to be(true)
     end
   end

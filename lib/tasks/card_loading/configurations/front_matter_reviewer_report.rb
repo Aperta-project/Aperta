@@ -5,7 +5,7 @@
 module CardConfiguration
   class FrontMatterReviewerReport
     def self.name
-      "Front Matter Reviewer Report"
+      "FrontMatterReviewerReport"
     end
 
     def self.content

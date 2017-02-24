@@ -3,6 +3,7 @@ require 'rails_helper'
 describe TahiStandardTasks::AuthorsTask do
   before do
     CardLoader.load('TahiStandardTasks::AuthorsTask')
+    CardLoader.load('Author')
   end
 
   it_behaves_like 'is a metadata task'
@@ -30,7 +31,8 @@ describe TahiStandardTasks::AuthorsTask do
       invalid_author = FactoryGirl.create(
         :author,
         email: nil,
-        paper: task.paper)
+        paper: task.paper
+      )
 
       task.update(completed: true)
 

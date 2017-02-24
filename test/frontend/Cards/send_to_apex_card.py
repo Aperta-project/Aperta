@@ -24,7 +24,7 @@ class SendToApexCard(BaseCard):
     self._close_apex = (By.CSS_SELECTOR, '.overlay-footer > div + a')
 
   # POM Actions
-  def validate_send_to_apex_error_message(self, ftp=False):
+  def validate_send_to_apex_message(self, ftp=False):
     """
     Validate the Send to Apex error message
     :return: None
@@ -32,23 +32,15 @@ class SendToApexCard(BaseCard):
     # Time needed for message to be ready
     time.sleep(3)
     if ftp:
-      apex_error = self._get(self._apex_message)
+      apex_error, apex_succeed = self._gets(self._apex_message)
       assert apex_error.text == (
           "Apex Upload has failed. 530 Please login with USER and PASS"), apex_error
+      assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed
     else:
-      apex_error = self._get(self._apex_message)
+      apex_error, apex_succeed = self._gets(self._apex_message)
       assert apex_error.text == (
           "Apex Upload has failed. Paper has not been accepted"), apex_error
-
-  def validate_send_to_apex_succeed_message(self):
-    """
-    Validate the Send to Apex succeed message
-    :return: None
-    """
-    # Time needed for message to be ready
-    time.sleep(3)
-    apex_succeed = self._get(self._apex_message)
-    assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed
+      assert apex_succeed.text == ("Apex Upload succeeded."), apex_succeed
 
   def click_send_to_apex_button(self):
     """

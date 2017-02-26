@@ -5,15 +5,17 @@ module PaperConverters
   # a paper converter
   class PaperConverter
     def self.make(versioned_text, export_format)
-      current_type = versioned_text.file_type
-      if export_format == current_type
+      current_format = versioned_text.file_type
+      if export_format == current_format
         return IdentityPaperConverter.new(versioned_text, export_format)
-      else
-        raise(
-          UnknownConversionError,
-          "I don't know how to convert #{current_type} to #{export_format}"
-        )
       end
+      if export_format == 'pdf_with_figures' && current_format == 'pdf'
+        return PdfWithFiguresPaperConverter.new(versioned_text, export_format)
+      end
+      raise(
+        UnknownConversionError,
+        "I don't know how to convert #{current_format} to #{export_format}"
+      )
     end
 
     def initialize(versioned_text, export_format)

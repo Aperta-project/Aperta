@@ -4,7 +4,7 @@ describe PaperConverters::PaperConverter do
   describe '::make' do
     subject { PaperConverters::PaperConverter.make(versioned_text, export_format) }
 
-    context 'versioned text type is pdf' do
+    context 'the versioned text type is pdf' do
       let(:versioned_text) { create :versioned_text, file_type: 'pdf' }
 
       context 'the export format is pdf' do
@@ -18,6 +18,12 @@ describe PaperConverters::PaperConverter do
         it 'raises an error' do
           expect { subject }.to raise_error PaperConverters::UnknownConversionError
         end
+      end
+
+      context 'the export format is pdf_with_figures' do
+        let(:export_format) { 'pdf_with_figures' }
+
+        it { is_expected.to be_an_instance_of PaperConverters::PdfWithFiguresPaperConverter }
       end
     end
   end

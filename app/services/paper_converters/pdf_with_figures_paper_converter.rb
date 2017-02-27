@@ -42,7 +42,8 @@ module PaperConverters
         'pdf_with_figures',
         layout: nil,
         locals: {
-          figures: figures
+          figures: figures,
+          journal_pdf_css: @versioned_text.paper.journal.pdf_css
         }
       )
     end

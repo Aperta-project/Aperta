@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Added "Confirm Authorship" button to email to co authors.
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 ### Deprecated
@@ -13,7 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [1.37.0] - {2017-02-16}
 ### Added
-* Users can now change the initial participants on a discussion topici
+* Users can now change the initial participants on a discussion topic
 * Feature flags for hiding/showing partial features.
 ### Changed
 * Reset review status on revision submission event
@@ -47,7 +48,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Removed
 ### Fixed
 * Users can now select and copy text from invitation letters when there is more than one invitation.
-* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved. 
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved.
   (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
 ### Security
 

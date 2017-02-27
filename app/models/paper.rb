@@ -406,7 +406,8 @@ class Paper < ActiveRecord::Base
     task = tasks.find_by(type: 'TahiStandardTasks::PublishingRelatedQuestionsTask')
     return '' unless task
 
-    task.answer_for_ident('publishing_related_questions--short_title')
+    answer = task.answer_for_ident('publishing_related_questions--short_title')
+    answer.try(:value)
   end
 
   def latest_withdrawal

@@ -169,12 +169,21 @@ FactoryGirl.define do
           :publishing_related_questions_task,
           paper: paper
         )
-        nested_question = FactoryGirl.create(
-          :nested_question,
-          ident: 'publishing_related_questions--short_title'
+
+        card = FactoryGirl.create(
+          :card,
+          :for_answerable,
+          answerable: task,
+          idents: 'publishing_related_questions--short_title'
         )
-        task.find_or_build_answer_for(nested_question: nested_question,
-                                      value: evaluator.short_title).save
+
+        answer = FactoryGirl.create(
+          :answer,
+          card_content: card.card_content.last,
+          owner: task,
+          paper: task.paper,
+          value: evaluator.short_title
+        )
       end
     end
 

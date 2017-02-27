@@ -3,7 +3,11 @@ import { task } from 'ember-concurrency';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['sheet', 'sheet--visible'],
+  classNames: [
+    'paper-downloads-component',
+    'sheet',
+    'sheet--visible'
+  ],
 
   propTypes: {
     // actions:

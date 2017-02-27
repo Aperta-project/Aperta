@@ -26,8 +26,11 @@ Metrics/MethodLength:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/MultilineMethodCallIndentation:
+  Enabled: false
+
 Style/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
+  Enabled: false
 
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very

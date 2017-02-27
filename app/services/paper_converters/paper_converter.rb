@@ -7,7 +7,7 @@ module PaperConverters
     def self.make(versioned_text, export_format)
       current_format = versioned_text.file_type
       if export_format == current_format
-        converter_klass = IdentiyPaperConverter
+        converter_klass = IdentityPaperConverter
       end
       if export_format == 'pdf_with_figures' && current_format == 'pdf'
         converter_klass = PdfWithAttachmentsPaperConverter

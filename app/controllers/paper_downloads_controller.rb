@@ -10,11 +10,11 @@ class PaperDownloadsController < ApplicationController
     case converter
     when PaperConverters::RedirectingPaperConverter
       redirect_to(converter.download_url)
-    when PaperConverters::PdfWithAttachmentsPaperConverter
+    when PaperConverters::SynchronousPaperConverter
       send_data(
-        converter.converted_data,
-        filename: 'file.pdf',
-        type: 'application/pdf',
+        converter.output_data,
+        filename: converter.output_filename,
+        type: converter.output_filetype,
         disposition: 'attachment'
       )
     else

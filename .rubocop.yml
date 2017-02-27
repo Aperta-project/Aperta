@@ -12,6 +12,9 @@ Metrics/AbcSize:
   # default of 15.
   Max: 20
 
+Metrics/ClassLength:
+  Enabled: false
+
 Metrics/MethodLength:
   # The linux kernel styleguide puts this number at 24; the rubocop
   # default is 10 (!). Seeking a happy medium; particularly for those
@@ -76,6 +79,15 @@ Style/ClassAndModuleChildren:
   # difficult to disambiguate the long-hand version of
   # Module::Submodule definitions
   Enabled: false
+
+Style/Documentation:
+  # Class-level comments on migrations and serializers often end up being
+  # tautological
+  Exclude:
+    - 'db/migrate/*'
+    - 'engines/**/db/migrate/*'
+    - 'app/serializers/*'
+    - 'engines/**/app/serializers/*'
 
 Style/WordArray:
   # If an array is *accidentally* made of single-word strings, being

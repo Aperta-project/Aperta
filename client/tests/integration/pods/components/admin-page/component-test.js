@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('admin-page', 'Integration | Component | admin page', {
+moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
   integration: true
 });
 
@@ -18,7 +18,7 @@ test('it has a tab bar', function(assert) {
 test('it has a drawer showing all available journals', function(assert) {
   const journals = [
     { name: 'My Journal', initials: 'MJ', id: 1 },
-    { name: 'My Secondary', initials: 'MS', id: 2 },
+    { name: 'My Secondary', initials: 'MS', id: 2 }
   ];
 
   this.set('journals', journals);
@@ -31,6 +31,31 @@ test('it has a drawer showing all available journals', function(assert) {
 
   // "All My Journals" will be shown for multiple journals
   assert.nElementsFound('.admin-drawer-item', journals.length + 1);
+});
+
+test('it alphabetizes the list of journals', function(assert) {
+  const journals = [
+    { name: 'Zebra', initials: 'Z', id: 1 },
+    { name: 'Apple', initials: 'A', id: 2 }
+  ];
+
+  this.set('journals', journals);
+
+  this.render(hbs`
+    {{#admin-page journals=journals}}
+      Some interesting text.
+    {{/admin-page}}
+  `);
+
+  let actualOrderedJournalNames = $('.admin-drawer-item-title').map((_, el) => {
+    return $(el).html().trim();
+  }).get();
+  let expectedOrderedJournalNames = journals.mapBy('name').sort();
+
+  // "All My Journals" will be shown for multiple journals
+  expectedOrderedJournalNames.unshift('All My Journals');
+
+  assert.deepEqual(actualOrderedJournalNames, expectedOrderedJournalNames, 'journals not in alphabetical order');
 });
 
 test('it has a drawer with "all journals" for multiple journals', function(assert) {

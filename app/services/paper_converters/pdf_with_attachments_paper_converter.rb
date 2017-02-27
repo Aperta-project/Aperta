@@ -39,6 +39,7 @@ module PaperConverters
       html = create_attachments_html
       pdf_data = PDFKit.new(
         html,
+        javascript_delay: 0,
         footer_font_name: 'Times New Roman',
         footer_font_size: '10' # TODO: I deleted a thing here
       ).to_pdf

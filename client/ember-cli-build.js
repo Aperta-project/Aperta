@@ -72,7 +72,7 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
 
   if (app.env !== 'production') {
-    app.import(app.bowerDirectory + '/sinon/index.js', { type: 'test' });
+    app.import(app.bowerDirectory + '/sinon/lib/sinon.js', { type: 'test' });
     app.import(app.bowerDirectory + '/ember/ember-template-compiler.js', { type: 'test' });
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }

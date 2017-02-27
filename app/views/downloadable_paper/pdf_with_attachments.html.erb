@@ -13,7 +13,7 @@
 <body>
   <% figures.each do |figure| %>
   <figure>
-    <img src="<%=figure.proxyable_url(version: :detail)%>">
+    <img class="pdf-image" src="<%=figure.proxyable_url(version: :detail)%>">
     <figcaption class="paper-body-figure-caption"><%=figure.title%></figcaption>
   </figure>
   <% end %>

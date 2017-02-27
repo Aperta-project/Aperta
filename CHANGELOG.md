@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Added "Confirm Authorship" button to email to co authors.
+* Added PDF submissions for PLOS Biology
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 ### Deprecated

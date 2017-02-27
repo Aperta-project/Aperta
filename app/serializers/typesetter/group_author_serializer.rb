@@ -20,9 +20,7 @@ module Typesetter
     def contributions
       object.contributions.map do |contribution|
         if contribution.value_type == 'boolean'
-          contribution.nested_question.text if contribution.value
-        elsif contribution.value_type == 'text'
-          contribution.value
+          contribution.card_content.text if contribution.coerced_value
         else
           fail TypeSetter::MetadataError,
                "Unknown contribution type #{contribution.value_type}"

@@ -34,7 +34,7 @@
             </td>
           {{else if (eq version.fileType "pdf")}}
             <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
-              <a href={{paper-download-link versionedText=version format=version.fileType}}
+              <a href={{paper-download-link versionedText=version format="pdf_with_figures"}}
                  target="_blank"
                  class="download-pdf"
                  title="Download PDF">

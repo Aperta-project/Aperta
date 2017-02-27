@@ -677,8 +677,8 @@ ActiveRecord::Schema.define(version: 20170220185752) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.boolean  "created_in_7993", default: false
+    t.integer  "card_id"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree

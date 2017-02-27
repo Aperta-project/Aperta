@@ -1,4 +1,4 @@
 <% figures.each do |figure| %>
 <p class="paper-body-figure-caption"><%=figure.title%></p>
-<img src="<%=figure.detail_src%>">
+<img src="<%=figure.proxyable_url(version: :detail)%>">
 <% end %>

@@ -9,7 +9,14 @@ class PaperDownloadsController < ApplicationController
     requires_user_can(:view, paper)
     case converter
     when PaperConverters::RedirectingPaperConverter
-      redirect_to converter.download_url
+      redirect_to(converter.download_url)
+    when PaperConverters::PdfWithFiguresPaperConverter
+      send_data(
+        converter.converted_data,
+        filename: 'file.pdf',
+        type: 'application/pdf',
+        disposition: 'attachment'
+      )
     else
       raise "Unexpected PaperConverter: #{converter}"
     end

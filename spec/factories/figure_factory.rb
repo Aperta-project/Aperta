@@ -15,5 +15,10 @@ FactoryGirl.define do
         owner: figure
       )
     end
+
+    trait :unprocessed do
+      status nil
+      title nil
+    end
   end
 end

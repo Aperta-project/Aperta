@@ -25,7 +25,14 @@ describe Figure, redis: true do
   end
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
-    subject(:figure) { FactoryGirl.create(:figure, :with_resource_token, owner: paper) }
+    subject(:figure) do
+      create(
+        :figure,
+        :with_resource_token,
+        :unprocessed,
+        owner: paper
+      )
+    end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
@@ -183,6 +190,8 @@ describe Figure, redis: true do
   end
 
   describe '#build_title' do
+    let(:figure) { create :figure, :unprocessed }
+
     it 'returns the title if it is set' do
       figure.title = Faker::Lorem.word
       expect(figure.send(:build_title)).to eq(figure.title)

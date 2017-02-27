@@ -15,6 +15,8 @@ class Answer < ActiveRecord::Base
   validates :owner, presence: true
   validates :paper, presence: true
 
+  delegate :value_type, to: :card_content
+
   def children
     Answer.where(owner: owner, card_content: card_content.children)
   end

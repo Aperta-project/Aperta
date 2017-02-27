@@ -10,7 +10,7 @@ class PaperDownloadsController < ApplicationController
     case converter
     when PaperConverters::RedirectingPaperConverter
       redirect_to(converter.download_url)
-    when PaperConverters::PdfWithFiguresPaperConverter
+    when PaperConverters::PdfWithAttachmentsPaperConverter
       send_data(
         converter.converted_data,
         filename: 'file.pdf',

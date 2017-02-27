@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe 'downloadable_paper/pdf_with_figures' do
+describe 'downloadable_paper/pdf_with_attachments' do
   let(:figures) { create_list :figure, 2 }
   let(:page) { Capybara::Node::Simple.new(rendered) }
   subject(:do_render) do

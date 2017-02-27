@@ -17,5 +17,9 @@
     <figcaption class="paper-body-figure-caption"><%=figure.title%></figcaption>
   </figure>
   <% end %>
+
+  <%= render partial: 'supporting_information',
+             locals: { paper: paper,
+                       should_proxy_previews: true } %>
 </body>
 </html>

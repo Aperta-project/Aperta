@@ -24,7 +24,7 @@ export default Ember.Component.extend(FileUploadMixin, {
 
   sourcefileDownloadUrl: Ember.computed('task.paper.id', function() {
     let id = this.get('task.paper.id');
-    return '/api/papers/' + id + '/status/' + id + '?job_id=raw';
+    return '/api/papers/' + id + '/status/' + id + '?job_id=raw&export_format=source';
   }),
 
   actions: {

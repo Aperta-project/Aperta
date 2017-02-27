@@ -56,13 +56,7 @@ class PaperConversionsController < ApplicationController
         end
       end
     elsif params[:job_id] == 'raw'
-      path = if params[:export_format] == 'manuscript'
-               paper.latest_version.s3_full_path
-             else
-               paper.latest_version.s3_full_sourcefile_path
-             end
-      url = Attachment.authenticated_url_for_key(path)
-      redirect_to url
+      redirect_to s3_url(paper.latest_version)
     else
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?

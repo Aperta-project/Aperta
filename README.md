@@ -2,13 +2,11 @@
 
 [![Circle CI](https://circleci.com/gh/Tahi-project/tahi/tree/master.svg?style=svg&circle-token=8f8d8e64dc324b8dd1af4e141632a46cffe78702)](https://circleci.com/gh/Tahi-project/tahi/tree/master)
 
-
-
 # Initial Setup
 
 ## Overview
 
-1. Run the partial setup script (`bin/setup`)
+1. Run the setup script (`bin/setup`)
 1. Make sure the following servers are already running:
     - PostgreSQL
     - Redis (run manually with `redis-server`)
@@ -18,7 +16,7 @@
     - 5000 (Rails server)
 1. Run with `foreman start`
 
-## Partial Automated Setup
+## Automated Setup
 
 - Clone the repo, then run
 

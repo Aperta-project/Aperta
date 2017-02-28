@@ -77,6 +77,8 @@ class InitialDecisionCardTest(CommonTest):
     # Get paper version for AC 6
     version = manuscript_page.get_ui_manuscript_version()
     assert 'draft' in version, version
+    # Upload manuscript
+    manuscript_page.complete_task('Upload Manuscript')
     # figures
     manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')

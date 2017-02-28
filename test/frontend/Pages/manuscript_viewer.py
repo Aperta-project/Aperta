@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, staff_admin_login, pub_svcs_login, \
+from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
@@ -146,6 +146,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
                                                            '.paper-downloads .paper-downloads-row:not(.animation-fade-in) th')
     self._download_drawer_items = (By.CSS_SELECTOR, '.sheet .paper-downloads .paper-downloads-row.animation-fade-in')
     self._download_drawer_close_btn = (By.CSS_SELECTOR, '.sheet .sheet-close-x')
+    # Upload ms
+    self._upload_source = (By.ID, 'upload-source-file')
 
   # POM Actions
   def page_ready(self):
@@ -228,10 +230,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     short_doi = self.get_paper_short_doi_from_url()
     logging.info(short_doi)
-    journal_id = PgSQL().query('SELECT papers.journal_id '
+    return PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
                                'WHERE short_doi = %s;', (short_doi,))[0][0]
-    return journal_id
 
   def _check_collaborator(self):
     """
@@ -600,8 +601,27 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # close task
         task.click()
       time.sleep(1)
-    elif task_name in ('Cover Letter', 'Figures', 'Upload Manuscript',
-                       'Financial Disclosure', 'Reviewer Candidates'):
+    elif task_name == 'Upload Manuscript':
+      # before checking that the complete is selected, in the accordion we need to
+      # check if it is open
+      if 'task-disclosure--open' not in task_div.get_attribute('class'):
+        # accordion is close it, open it:
+        logging.info('Accordion was closed, opening: {0}'.format(task.text))
+        task.click()
+      if data and 'source' in data:
+        # there is a sourcefile
+        doc2upload = random.choice(docs)
+        current_path = os.getcwd()
+        fn = os.path.join(current_path, '{0}'.format(doc2upload))
+        logging.info('Sending document: {0}'.format(fn))
+        time.sleep(1)
+        self._driver.find_element_by_id('upload-files').send_keys(fn)
+      # Check completed_check status
+      if not base_task.completed_state():
+        base_task.click_completion_button()
+      self.click_covered_element(task)
+      time.sleep(.5)
+    elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
@@ -720,23 +740,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Returns the title
     """
     return self._get(self._title).text
-
-  def get_paper_short_doi_from_url(self):
-    """
-    Returns the database paper short doi from URL
-    """
-    # Need to wait for url to update
-    count = 0
-    short_doi = self.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = self.get_current_url().split('/')[-1]
-      count += 1
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
-    logging.info("Assigned paper short doi: {0}".format(short_doi))
-    return short_doi
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):
     """

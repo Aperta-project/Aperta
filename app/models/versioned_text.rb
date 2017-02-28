@@ -16,6 +16,7 @@ class VersionedText < ActiveRecord::Base
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
   before_update :add_file_info, if: :file?
+  # before_update :add_sourcefile_info, if: :sourcefile?
 
   validates :paper, presence: true
   validate :only_version_once
@@ -75,12 +76,16 @@ class VersionedText < ActiveRecord::Base
 
   def add_file_info
     self.file_type = paper.file_type
-    self.s3_dir = paper.file.s3_dir
-    self.file = paper.file[:file]
+    self.manuscript_s3_path = paper.file.s3_dir
+    self.manuscript_filename = paper.file[:file]
   end
 
   def s3_full_path
-    file? ? s3_dir + '/' + file : nil
+    file? ? manuscript_s3_path + '/' + manuscript_filename : nil
+  end
+
+  def s3_full_sourcefile_path
+    file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
   end
 
   private

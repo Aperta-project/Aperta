@@ -17,21 +17,21 @@ let createTaskWithFigures = function(figures) {
 moduleForComponent(
   'figure-task',
   'Integration | Components | Tasks | Figure', {
-  integration: true,
-  beforeEach() {
-    manualSetup(this.container);
-    Factory.createPermission('figureTask', 1, ['edit', 'view']);
+    integration: true,
+    beforeEach() {
+      manualSetup(this.container);
+      Factory.createPermission('figureTask', 1, ['edit', 'view']);
+    }
   }
-});
+);
 
 let template = hbs`{{figure-task task=testTask}}`;
-let errorSelector = '.figure-thumbnail .error-message:not(.error-message--hidden)'
+let errorSelector = '.figure-thumbnail .error-message:not(.error-message--hidden)';
 test('it renders the paper\'s figures', function(assert) {
   let testTask = createTaskWithFigures([{rank: 1, title: 'Fig. 1', id: 1}]);
   this.set('testTask', testTask);
   this.render(template);
   assert.elementsFound('.figure-thumbnail', 1);
-
 });
 
 test('it shows an error message for figures with the same rank', function(assert) {
@@ -57,4 +57,14 @@ test('it orders the figures based on rank', function(assert) {
   this.render(template);
   let ids = this.$('.figure-thumbnail').map((_i, el) => $(el).data('figure-id')).get();
   assert.deepEqual(ids, [1, 2, 3], 'Figures are sorted with rank 0 coming last');
+});
+
+test('it deletes last figure', function(assert) {
+  let testTask = createTaskWithFigures([{rank: 1, title: 'Fig. 1', id: 1}]);
+  this.set('testTask', testTask);
+  this.render(template);
+  assert.elementsFound('.figure-thumbnail', 1);
+  $('.edit-icons .fa-trash').click();
+  $('.attachment-delete-button').click();
+  assert.elementsFound('.figure-thumbnail', 0);
 });

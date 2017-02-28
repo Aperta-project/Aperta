@@ -14,7 +14,8 @@
     - 4567 (Slanger API)
     - 40604 (Slanger websocket)
     - 5000 (Rails server)
-1. Run with `foreman start`
+1. Setup S3
+1. Run `foreman start`
 
 ## Automated Setup
 
@@ -23,6 +24,39 @@
 ```console
 ./bin/setup
 ```
+
+Running this script will:
+- Install dependencies
+- Create the following config files:
+    - .env.development
+    - .foreman
+    - Procfile.local
+    - config/database.yml
+- Create a new database
+
+## Configuring S3 direct uploads
+
+To set up a new test bucket for your own use, run:
+
+```bash
+rake s3:create_bucket
+```
+
+You will be prompted for an AWS key/secret key pair. You can ask a team member
+for these: they should only be used to bootstrap your new settings.
+
+Your new settings will be printed to stdout, and you can copy these settings
+into your `.env.development` file.
+
+## Run the server
+
+Run `foreman start` to start the web server, worker, and slanger.
+
+# Troubleshooting
+
+TODO
+
+# Further information
 
 ## Environment Variables
 
@@ -61,11 +95,6 @@ When you run `foreman start`, slanger will start up as the event stream server.
 By default, slanger will listen on port `4567` for API requests (requests
 coming from tahi rails server) and port `40604` for websocket requests (from
 tahi browser client).
-
-# Running the server
-
-We're using Foreman to run everything in dev.  Run `foreman start` to start the
-server with the correct Procfile.
 
 ## Inserting test data
 
@@ -155,20 +184,6 @@ EditModalFragment.new(find('tr'), context: page)
 All of the cards in Tahi are external engines. While Rails Engines work great as backend extensions, there is no easy way to package add-ons within the same repository as engines and have them auto-detected by the application. Obviously, this is because these are two separate platforms. To make it easier for plugin developers to swap in different engines only from a Gemfile, we created an initializer that detects if these are Tahi plugins (all gems prefixed `tahi-`). The detected plugin's path is injected into the `ember-addon.paths` object in `package.json` on every server run. That’s why you see package.json change all the time.
 
 There is no problem in committing and pushing `package.json`, the ember-addons object is flushed at every server run to get the fresh and correct paths from Tahi plugins.
-
-## Configuring S3 direct uploads
-
-To set up a new test bucket for your own use, run:
-
-```bash
-rake s3:create_bucket
-```
-
-You will be prompted for an AWS key/secret key pair. You can ask a team member
-for these: they should only be used to bootstrap your new settings.
-
-Your new settings will be printed to stdout, and you can copy these settings
-into your `.env.development` file.
 
 ## PDF Support
 

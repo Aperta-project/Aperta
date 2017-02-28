@@ -70,7 +70,7 @@ module PaperConverters
 
     def supporting_information_files
       if @versioned_text == @versioned_text.paper.latest_version
-        return @versioned_text.paper.figures.map do |supporting_information_file|
+        return @versioned_text.paper.supporting_information_files.map do |supporting_information_file|
           SupportingInformationFileProxy.from_supporting_information_file(supporting_information_file)
         end
       else
@@ -80,7 +80,7 @@ module PaperConverters
                       .where(major_version: major_version,
                              minor_version: minor_version)
         return snapshots.map do |snapshot|
-          FigureProxy.from_snapshot(snapshot)
+          SupportingInformationFileProxy.from_snapshot(snapshot)
         end
       end
     end
@@ -91,7 +91,7 @@ module PaperConverters
         layout: nil,
         locals: {
           figures: figures,
-          supporting_information_files: @versioned_text.paper.supporting_information_files,
+          supporting_information_files: supporting_information_files,
           journal_pdf_css: @versioned_text.paper.journal.pdf_css
         }
       )

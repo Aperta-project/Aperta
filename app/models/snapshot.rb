@@ -21,6 +21,9 @@ class Snapshot < ActiveRecord::Base
 
   scope :attachments, -> { where(source_type: "Attachment") }
   scope :figures, -> { attachments.where("contents ->> 'name' = 'figure'") }
+  scope :supporting_information_files, lambda {
+    attachments.where("contents ->> 'name' = 'supporting-information-file'")
+  }
 
   def source=(new_source)
     super

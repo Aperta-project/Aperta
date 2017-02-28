@@ -6,8 +6,11 @@ module PaperConverters
   class PaperConverter
     def self.make(versioned_text, export_format)
       current_format = versioned_text.file_type
-      if export_format == current_format
+      if export_format == current_format || export_format.nil?
         converter_klass = IdentityPaperConverter
+      end
+      if export_format == 'source'
+        converter_klass = SourcePaperConverter
       end
       if export_format == 'pdf_with_figures' && current_format == 'pdf'
         converter_klass = PdfWithAttachmentsPaperConverter

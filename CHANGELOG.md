@@ -4,6 +4,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Users can now change the initial participants on a discussion topic.
+* The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
 * Added "Confirm Authorship" button to email to co authors.
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts

@@ -32,7 +32,7 @@ class PaperDownloadsController < ApplicationController
   end
 
   def export_format
-    params.require(:export_format)
+    params[:export_format]
   end
 
   def paper

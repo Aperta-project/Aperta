@@ -233,9 +233,9 @@ class InviteCard(BaseCard):
                                                  'validate_card_elements_styles(): ' \
                                                  '{0}'.format(card_type)
     self.validate_common_elements_styles(short_doi)
-    # There is no definition of this external label style in the style guide. APERTA-7311
-    #   currently, a new style validator has been implemented to match this UI
     user_input = self._get(self._recipient_field)
+    # APERTA-9291 - color fail
+    # self.validate_input_field_placeholder_style(user_input)
     card_title = self._get(self._card_heading)
     if card_type == 'reviewer':
       assert card_title.text == 'Invite Reviewers', card_title.text

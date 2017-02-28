@@ -729,6 +729,31 @@ class ManuscriptViewerPage(AuthenticatedPage):
         outdata = scenario
       base_task.click_completion_button()
       self.click_covered_element(task)
+    elif task_name == 'Competing Interest':
+      # Complete Competing Interest data before mark close
+      logging.info('Completing Competing Interest Task')
+      base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name == 'Data Availability':
+      #Complete Data Availability data before mark close
+      logging.info('Completing Data Availability Task')
+      base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name == 'Early Article Posting':
+      #Complete Early Article Posting data before mark close
+      logging.info('Completing Early Article Posting Task')
+      base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name == 'Ethics Statement':
+      #Complete Ethics Statement data before mark close
+      logging.info('Completing Ethics Statement Task')
+      base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name == 'Reporting Guidelines':
+      #Complete Reporting Guidelines data before mark close
+      logging.info('Completing Reporting Guidelines Task')
+      base_task.click_completion_button()
+      self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

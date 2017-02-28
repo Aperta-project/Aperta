@@ -143,7 +143,7 @@ class SendToApexTest(CommonTest):
     """
     logging.info('test_send_to_apex_file')
     # Create base data - new papers
-    creator_user = random.choice(users)
+    creator_user = users[0]
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
@@ -153,19 +153,18 @@ class SendToApexTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    import pdb; pdb.set_trace()
     manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Authors') #fail
+    manuscript_page.complete_task('Authors')
     manuscript_page.complete_task('Billing')
-    #manuscript_page.complete_task('Competing Interest') #missing
+    manuscript_page.complete_task('Competing Interest')
     manuscript_page.complete_task('Cover Letter')
-    #manuscript_page.complete_task('Data Availability') #missing
-    #manuscript_page.complete_task('Early Article Posting') #missing
-    #manuscript_page.complete_task('Ethics Statement') #missing
+    manuscript_page.complete_task('Data Availability')
+    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Ethics Statement')
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Financial Disclosure')
     manuscript_page.complete_task('New Taxon')
-    #manuscript_page.complete_task('Reporting Guidelines') #missing
+    manuscript_page.complete_task('Reporting Guidelines')
     manuscript_page.complete_task('Reviewer Candidates')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.complete_task('Upload Manuscript')
@@ -196,7 +195,6 @@ class SendToApexTest(CommonTest):
     workflow_page.click_card('send_to_apex', card_title)
     send_to_apex_card = SendToApexCard(self.getDriver())
     send_to_apex_card.click_send_to_apex_button()
-    import pdb; pdb.set_trace()
     # Connecting to FTP
     logging.info('Connecting to FTP and taking the file')
     filename = send_to_apex_card.connect_to_aperta_ftp(short_doi)

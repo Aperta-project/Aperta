@@ -130,8 +130,11 @@ describe PaperConversionsController, type: :controller do
     context 'of a prior pdf version of a paper that is currently a docx' do
       let(:versioned_paper) { FactoryGirl.create :paper, :version_with_file_type }
       let(:versioned_text) do
-        FactoryGirl.create :versioned_text, paper_id: versioned_paper.id,
-          file_type: 'pdf', s3_dir: 'sample/path', file: 'name.pdf'
+        FactoryGirl.create :versioned_text,
+          paper_id: versioned_paper.id,
+          file_type: 'pdf',
+          manuscript_s3_path: 'sample/path',
+          manuscript_filename: 'name.pdf'
       end
 
       before do

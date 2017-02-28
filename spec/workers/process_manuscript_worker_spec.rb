@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ProcessManuscriptWorker do
   let(:user) { FactoryGirl.build_stubbed(:user) }
   let(:paper) { FactoryGirl.build_stubbed(:paper) }
-  let(:manuscript_attachment) { FactoryGirl.build_stubbed(:manuscript_attachment) }
+  let(:manuscript_attachment) { FactoryGirl.build_stubbed(:manuscript_attachment, :with_pending_url) }
   subject(:worker) { described_class.new }
 
   describe "#perform" do
@@ -37,7 +37,6 @@ describe ProcessManuscriptWorker do
         worker.perform manuscript_attachment.id
       end
       thr.abort_on_exception = true
-
       sleep 1
       manuscript_attachment[:file] = 'source.docx'
       thr.join

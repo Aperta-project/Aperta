@@ -26,20 +26,34 @@
      You can upload a replacement manuscript file at any time before you
      submit.
     {{/if}}
-    <span id="upload-manuscript" class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
-      Select and upload manuscript
-      {{file-uploader id="upload-files"
-                      railsMethod="PUT"
-                      accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
-                      start="uploadStarted"
-                      progress="uploadProgress"
-                      done="uploadFinished"
-                      addingFileFailed="fileAddError"
-                      error="uploadError"
-                      filePrefix="paper/manuscript"
-                      url=manuscriptUploadUrl
-                      disabled=isNotEditable}}
-    </span>
+      <div>
+    {{#if manuscriptUploaded}}
+        <a href="{{s3Url}}"
+           class="download-docx"
+           title="{{filename}}">
+           {{fa-icon fileTypeClass}} {{filename}}
+        </a>
+    {{else}}
+      <a href="{{manuscriptDownloadUrl}}" target="_new">
+        {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
+      </a>
+    {{/if}}
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=manuscriptUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+      </div>
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
   {{/if}}
@@ -62,4 +76,9 @@
       {{/if}}
     </div>
   {{/if}}
+
+  {{#if needsSourcefile}}
+    {{upload-source-file task=task}}
+  {{/if}}
+
 </div>

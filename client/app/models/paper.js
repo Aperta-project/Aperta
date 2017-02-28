@@ -30,6 +30,9 @@ export default DS.Model.extend({
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
 
+  file: attr(),
+  sourcefile: attr(),
+
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
 
   phases: hasMany('phase', { async: true }),

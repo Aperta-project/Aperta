@@ -4,9 +4,11 @@ class GroupAuthor < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
   include NestedQuestionable
+  include Tokenable
+  include CoAuthorConfirmable
 
-  CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions"
-  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "group-author--government-employee"
+  CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions".freeze
+  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "group-author--government-employee".freeze
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 

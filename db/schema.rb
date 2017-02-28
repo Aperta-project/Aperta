@@ -146,7 +146,12 @@ ActiveRecord::Schema.define(version: 20170224212404) do
     t.string   "current_address_postal"
     t.integer  "user_id"
     t.integer  "card_id"
+    t.string   "token"
+    t.string   "co_author_state"
+    t.datetime "co_author_state_modified"
   end
+
+  add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
 
   create_table "billing_log_reports", force: :cascade do |t|
     t.string   "csv_file"
@@ -346,7 +351,12 @@ ActiveRecord::Schema.define(version: 20170224212404) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "card_id"
+    t.string   "token"
+    t.string   "co_author_state"
+    t.datetime "co_author_state_modified"
   end
+
+  add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
 
   create_table "invitation_queues", force: :cascade do |t|
     t.integer  "task_id"

@@ -19,7 +19,7 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
 
   describe "#output_filename" do
     subject { converter.output_filename }
-    it { is_expected.to match(/.+with_attachments\.pdf/) }
+    it { is_expected.to match(/.+ with attachments\.pdf/) }
   end
 
   describe "#parsed_uploaded_pdf" do

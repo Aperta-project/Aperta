@@ -1,6 +1,28 @@
 module PaperConverters
+  # Used to create things which act like figures
+  # This is a layer of indirection which allows us to use
+  # a figure snapshot record like a real Figure
+  class FigureProxy
+    def initialize(figure: nil, title: nil, href: nil)
+      @figure = figure
+      @title = title
+      @href = href
+    end
+
+    def title
+      return @title if @title
+      return @figure.title if @figure
+    end
+
+    def href
+      return @href if @href
+      return @figure.proxyable_url(version: :detail) if @figure
+    end
+  end
+
   # Adds figures to the end of PDFs
   class PdfWithAttachmentsPaperConverter < SynchronousPaperConverter
+    include UrlBuilder
     include RenderAnywhere
     include DownloadablePaper
 
@@ -46,14 +68,25 @@ module PaperConverters
       CombinePDF.parse(pdf_data)
     end
 
-    # TODO: this shouldn't depend on paper -- needs to be able to version
-    def create_attachments_html
+    def figures
       if @versioned_text == @versioned_text.paper.latest_version
-        figures = @versioned_text.paper.figures
+        return @versioned_text.paper.figures.map { |f| FigureProxy.new(figure: f) }
       else
-        raise "I don't know how to do this yet"
-      end
+        figure_snapshots = @versioned_text.paper.snapshots.where(source_type: "Attachment").where("contents ->> 'name' = 'figure'")
+                             .where(major_version: @versioned_text.major_version, minor_version: @versioned_text.minor_version)
+        return figure_snapshots.map do |snapshot|
+          token = snapshot.get_property("url").split('/').last
+          resource_token = ResourceToken.find_by(token: token)
 
+          FigureProxy.new(
+            title: snapshot.get_property("title"),
+            href: resource_token.url(:detail)
+          )
+        end
+      end
+    end
+
+    def create_attachments_html
       render(
         'pdf_with_attachments',
         layout: nil,

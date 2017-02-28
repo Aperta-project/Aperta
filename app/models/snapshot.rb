@@ -24,6 +24,12 @@ class Snapshot < ActiveRecord::Base
     set_key
   end
 
+  def get_property(name)
+    contents["children"].find do |property|
+      property["name"] == name
+    end.try(:fetch, "value")
+  end
+
   private
 
   def set_key

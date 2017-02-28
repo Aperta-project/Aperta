@@ -58,7 +58,8 @@ test('A card with more than 5 comments has the show all comments button', functi
     body: []
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
 
   TestHelper.mockFind('task').returns({
@@ -86,7 +87,8 @@ test('A card with less than 5 comments doesnt have the show all comments button'
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
   TestHelper.mockFind('task').returns({
     model: task
@@ -110,7 +112,8 @@ test('A task with a commentLook shows up as unread and deletes its comment look'
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
   TestHelper.mockFind('task').returns({
     model: task

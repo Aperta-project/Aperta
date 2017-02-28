@@ -61,7 +61,7 @@ describe CardsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'and the user is signed in' do
-      context "when the user does not have access" do
+      context 'when the user does not have access' do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)

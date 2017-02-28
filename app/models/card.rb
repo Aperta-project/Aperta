@@ -5,6 +5,8 @@ class Card < ActiveRecord::Base
 
   belongs_to :journal, inverse_of: :cards
   has_many :card_content, inverse_of: :card, dependent: :destroy
+  has_one :content_root, -> { where(parent_id: nil) }, class_name: 'CardContent'
+
   validates :name, presence: { message: "Please give your card a name." }
   validates :journal, presence: true
   validates :name, uniqueness: {

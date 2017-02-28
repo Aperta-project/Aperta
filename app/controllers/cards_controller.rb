@@ -5,12 +5,6 @@ class CardsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  #  This endpoint exists temporarily, in order to fetch Card objects
-  #  for non-task-cards: Funders, Authors, etc.
-  def query_name
-    respond_with Card.find_by(name: params[:name])
-  end
-
   def index
     journal_ids = current_user.filter_authorized(
       :administer,
@@ -49,12 +43,5 @@ class CardsController < ApplicationController
       :name,
       :journal_id
     )
-  end
-
-  def owner_klass
-    potential_owner = params[:owner_type].classify.constantize
-    assert(potential_owner.try(:answerable?), "resource is not answerable")
-
-    potential_owner
   end
 end

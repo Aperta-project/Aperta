@@ -47,8 +47,12 @@ module PaperConverters
       CombinePDF.parse(pdf_data)
     end
 
+    def latest_version?
+      @versioned_text == @versioned_text.paper.latest_version
+    end
+
     def figures
-      if @versioned_text == @versioned_text.paper.latest_version
+      if latest_version?
         return @versioned_text.paper.figures.map do |figure|
           FigureProxy.from_figure(figure)
         end
@@ -64,16 +68,34 @@ module PaperConverters
       end
     end
 
+    def supporting_information_files
+      if @versioned_text == @versioned_text.paper.latest_version
+        return @versioned_text.paper.figures.map do |supporting_information_file|
+          SupportingInformationFileProxy.from_supporting_information_file(supporting_information_file)
+        end
+      else
+        major_version = @versioned_text.major_version
+        minor_version = @versioned_text.minor_version
+        snapshots = @versioned_text.paper.snapshots.supporting_information_files
+                      .where(major_version: major_version,
+                             minor_version: minor_version)
+        return snapshots.map do |snapshot|
+          FigureProxy.from_snapshot(snapshot)
+        end
+      end
+    end
+
     def create_attachments_html
       render(
         'pdf_with_attachments',
         layout: nil,
         locals: {
           figures: figures,
-          paper: @versioned_text.paper, # TODO: dont pass paper into here
+          supporting_information_files: @versioned_text.paper.supporting_information_files,
           journal_pdf_css: @versioned_text.paper.journal.pdf_css
         }
       )
     end
+
   end
 end

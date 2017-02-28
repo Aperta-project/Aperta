@@ -1,7 +1,7 @@
-<% if paper.supporting_information_files.any? %>
+<% if supporting_information_files.any? %>
   <div class="supporting-information-files">
     <h2 id='si_header'>Supporting Information</h2>
-    <% paper.supporting_information_files.each do |file| %>
+    <% supporting_information_files.each do |file| %>
       <% if file.image? %>
         <p>
           <a href='<%= file.non_expiring_proxy_url(only_path: false) %>'>

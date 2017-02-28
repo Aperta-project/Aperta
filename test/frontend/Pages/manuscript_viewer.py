@@ -698,6 +698,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
         base_task.click_completion_button()
+        self.click_covered_element(task)
       else:
         if 'task-disclosure--open' not in task_div.get_attribute('class'):
           # accordion is close it, open it:
@@ -727,6 +728,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         new_taxon_task.validate_taxon_questions_action(scenario)
         outdata = scenario
       base_task.click_completion_button()
+      self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

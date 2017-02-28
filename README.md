@@ -109,29 +109,6 @@ This should update both the `client/package.json` and
 In the project directory, running `rspec` will run all unit and integration
 specs for the application. Firefox will pop up to run integration tests.
 
-### Running engine specs
-
-There are a number of Rails engines in the `engines/` directory. To run those point the `rspec` command to their `spec/` directory, e.g.:
-
-```
-rspec engines/plos_bio_tech_check/spec/
-```
-
-It's important that the `rspec` command is run from the application directory and not the engine directory when running as they share dependencies that are loaded with the `RAILS_ROOT/spec/rails_helper.rb`
-
-### Running vendored/gems specs
-
-The Tahi application vendors gem(s) that are private and do not fall into the category of Rails engines. These are placed in the `vendor/gems/` directory.
-
-Their tests can be run by `cd`'ing into the gem directory and running rspec directly, e.g.:
-
-```
-cd vendor/gems/tahi_epub
-rspec spec
-```
-
-Note: you may need to run `bundle install` in order to install the necessary test dependencies for vendored gems.
-
 ## Running qunit tests from the command line
 
 You can run the javascript specs via the command line with `rake ember:test`.

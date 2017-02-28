@@ -19,6 +19,9 @@ class Snapshot < ActiveRecord::Base
 
   after_initialize :set_key, if: :new_record?
 
+  scope :attachments, -> { where(source_type: "Attachment") }
+  scope :figures, -> { attachments.where("contents ->> 'name' = 'figure'") }
+
   def source=(new_source)
     super
     set_key

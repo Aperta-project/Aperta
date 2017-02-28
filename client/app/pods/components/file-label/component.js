@@ -8,7 +8,7 @@ export default Ember.Component.extend({
     fileName: PropTypes.string.isRequired
   },
 
-  classNames: ['source-link'],
+  classNames: ['file-label'],
 
   fileIcon: Ember.computed('fileName', function() {
     return fontAwesomeFiletypeClass(this.get('fileName'));

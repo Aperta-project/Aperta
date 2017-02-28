@@ -895,7 +895,9 @@ ActiveRecord::Schema.define(version: 20170224212404) do
   add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "answers", "card_contents"
+  add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
+  add_foreign_key "cards", "journals"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

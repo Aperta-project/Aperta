@@ -33126,8 +33126,10 @@ versioned_texts:
   - updated_at
   - original_text
   - file_type
-  - s3_dir
-  - file
+  - manuscript_s3_path
+  - manuscript_filename
+  - sourcefile_s3_path
+  - sourcefile_filename
   records: 
   - - '1'
     - 
@@ -33323,6 +33325,8 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - docx
+    - 
+    - 
     - 
     - 
   - - '2'
@@ -33522,6 +33526,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '3'
     - 
     - '3'
@@ -33717,6 +33723,8 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - docx
+    - 
+    - 
     - 
     - 
   - - '4'
@@ -33916,6 +33924,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '8'
     - 
     - '8'
@@ -34110,6 +34120,8 @@ versioned_texts:
       </div>
       </div><!--TEI back-->
     - docx
+    - 
+    - 
     - 
     - 
   - - '9'
@@ -34308,6 +34320,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '10'
     - 
     - '10'
@@ -34504,6 +34518,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '14'
     - '3'
     - '12'
@@ -34637,6 +34653,8 @@ versioned_texts:
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
     - docx
+    - 
+    - 
     - 
     - 
   - - '15'
@@ -34774,6 +34792,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '16'
     - '3'
     - '12'
@@ -34909,6 +34929,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '17'
     - '3'
     - '12'
@@ -35042,6 +35064,8 @@ versioned_texts:
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
     - docx
+    - 
+    - 
     - 
     - 
   - - '18'
@@ -35415,6 +35439,8 @@ versioned_texts:
     - docx
     - 
     - 
+    - 
+    - 
   - - '19'
     - '1'
     - '12'
@@ -35548,6 +35574,8 @@ versioned_texts:
         <span class="None">where for the <span style="font-style:italic">i</span><sup>th</sup> survey site: </span>
       </p>
     - docx
+    - 
+    - 
     - 
     - 
   - - '20'
@@ -35746,6 +35774,8 @@ versioned_texts:
       </div><!--TEI back-->
     - docx
     - uploads/versioned_text/4
+    - 
+    - 
     - 
 
 ---

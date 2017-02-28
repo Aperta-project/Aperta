@@ -47,7 +47,7 @@ class PaperConversionsController < ApplicationController
         ver = VersionedText.find(params[:versioned_text_id])
         # Make sure the client-supplied version number is for the right paper
         if paper.id == ver.paper_id
-          url = Attachment.authenticated_url_for_key(ver.s3_full_path)
+          url = s3_url(ver)
           render status: :ok, json: { url: url }
         else
           # If the paper's ID doesn't match the VersionedText paper_id, this is
@@ -55,6 +55,8 @@ class PaperConversionsController < ApplicationController
           render status: 400
         end
       end
+    elsif params[:job_id] == 'raw'
+      redirect_to s3_url(paper.latest_version)
     else
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?
@@ -74,16 +76,13 @@ class PaperConversionsController < ApplicationController
     export_format ||= params[:export_format]
   end
 
-  def doc_file_type_and_doc_attached
-    export_format == 'doc' && paper.file_type == 'doc' && paper.file.url.present?
-  end
-
-  def docx_file_type_and_docx_attached
-    export_format == 'docx' && paper.file_type == 'docx' && paper.file.url.present?
-  end
-
-  def pdf_file_type_and_pdf_attached
-    export_format == 'pdf' && paper.file_type == 'pdf' && paper.file.url.present?
+  def s3_url(version)
+    s3_path = if export_format == 'source'
+                version.s3_full_sourcefile_path
+              else
+                version.s3_full_path
+              end
+    Attachment.authenticated_url_for_key(s3_path)
   end
 
   def paper

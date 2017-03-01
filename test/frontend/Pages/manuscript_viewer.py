@@ -148,6 +148,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._download_drawer_close_btn = (By.CSS_SELECTOR, '.sheet .sheet-close-x')
     # Upload ms
     self._upload_source = (By.ID, 'upload-source-file')
+    # Manuscript/sidebar resizing handle
+    self._resize_handle_line = (By.CLASS_NAME, 'manuscript-handle')
+    self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
+    self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
+    self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
 
   # POM Actions
   def page_ready(self):
@@ -184,6 +189,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_recent_activity()
     self._check_discussion(user)
     self._check_more_btn(user)
+    self._check_resize_handle()
 
   def validate_independent_scrolling(self):
     """Ensure both the manuscript and accordion panes scroll independently"""
@@ -1086,3 +1092,83 @@ class ManuscriptViewerPage(AuthenticatedPage):
       self.validate_manuscript_downloaded_file(pdf_link)
 
     self._get(self._download_drawer_close_btn).click()
+
+  def _check_resize_handle(self):
+    """
+    _check_resize_handle: Validates the sidebar/manuscript resize handle
+    styles and tooltip action
+    :return: void function
+    """
+    handle_line = self._get(self._resize_handle_line)
+    handle_box = self._get(self._resize_handle_box)
+    handle_box_lines = self._gets(self._resize_handle_box_lines)
+
+    # Validate handle line
+    # Ps: Cannot validate the line width because it's on a CSS pseudo-element
+    assert handle_line.is_displayed(), 'The handle line is not displayed'
+    # Certify the handle line is over the other elements
+    assert handle_line.value_of_css_property('z-index') == '2', \
+        'The handle line z-index {0} is not the expected 2'.format(handle_line.value_of_css_property('z-index'))
+
+    assert handle_line.value_of_css_property('cursor') == 'ew-resize', \
+        'The handle line cursor {0} is not the expected ew-resize'.format(handle_line.value_of_css_property('cursor'))
+
+    # Validate handle box
+    handle_box_expected_width = '23px'
+    handle_box_expected_height = '35px'
+    handle_box_expected_bg = ['#ddd', 'rgba(221, 221, 221, 1)']
+    handle_box_expected_left = '-9px'
+
+    assert handle_box.is_displayed(), 'The handle box is not displayed'
+
+    assert handle_box.value_of_css_property('width') == \
+           handle_box_expected_width, 'The handle box width {0} is not the ' \
+                                      'expected {1}'.format(
+      handle_box.value_of_css_property('width'), handle_box_expected_width)
+
+    assert handle_box.value_of_css_property('height') == \
+           handle_box_expected_height, 'The handle box height {0} is not the ' \
+                                      'expected {1}'.format(
+      handle_box.value_of_css_property('height'), handle_box_expected_height)
+
+    assert handle_box.value_of_css_property('background-color') in \
+           handle_box_expected_bg, 'The handle box bg color {0} is not the ' \
+                                       'expected {1}'.format(
+      handle_box.value_of_css_property('background-color'),
+      handle_box_expected_bg)
+
+    assert handle_box.value_of_css_property('left') == \
+           handle_box_expected_left, 'The handle box left {0} is not the ' \
+                                    'expected {1}'.format(
+      handle_box.value_of_css_property('left'), handle_box_expected_left)
+
+    # Validate handle box lines
+    assert len(handle_box_lines) == 3, 'The handle box have {0} lines when 3 ' \
+                                       'is expected'.format(len(handle_box_lines))
+    line_expected_top = '4px'
+    line_expected_padding_left = '2px'
+    line_expected_height = '26px'
+
+    for key, line in enumerate(handle_box_lines):
+      assert line.value_of_css_property('top') == line_expected_top, \
+          'The handle box line {0} top {1} is not the expected: {2}'.format(
+          line.value_of_css_property('top'), line_expected_top)
+
+      assert line.value_of_css_property('padding-left') == line_expected_padding_left, \
+        'The handle box line {0} padding-left {1} is not the expected: {2}'.format(
+          key, line.value_of_css_property('padding-left'),
+          line_expected_padding_left)
+
+      assert line.value_of_css_property('height') == line_expected_height, \
+        'The handle box line {0} height {1} is not the expected: {2}'.format(
+          key, line.value_of_css_property('height'), line_expected_height)
+
+    # Validate tooltip
+    self._actions.move_to_element(handle_box).perform()
+    self._wait_for_element(self._get(self._resize_handle_box_tooltip))
+    tooltip = self._get(self._resize_handle_box_tooltip)
+    tooltip_expected_text = 'adjust the size of your workspace'
+    assert tooltip.is_displayed(), 'The handle box tooltip is not visible.'
+    assert tooltip.text == tooltip_expected_text, \
+        'The handle box tooltip text {0} is not the expected {1}'.format(
+          tooltip.text, tooltip_expected_text)

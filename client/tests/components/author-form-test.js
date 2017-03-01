@@ -89,3 +89,11 @@ test("component does not display the orcid-connect component when the author doe
   this.render(template);
   assert.elementNotFound(".orcid-wrapper");
 });
+
+test("component shows author is confirmed", function(assert){
+  Ember.run( () => {
+    this.get("author").set("coAuthorConfirmed", true);
+  });
+  this.render(template);
+  assert.textPresent('.author-confirmed', 'Authorship has been confirmed');
+});

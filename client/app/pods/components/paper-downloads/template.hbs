@@ -7,7 +7,7 @@
       <th>Manuscript Version</th>
       <th colspan="2">Format</th>
     </tr>
-    {{#util/async-content concurrencyTask=fetchVersions}}
+    {{#util/async-content concurrencyTask=fetchVersions tagName="tbody"}}
       {{#each versions as |version|}}
         <tr class="paper-downloads-row animation-fade-in">
           <td class="paper-downloads-version">

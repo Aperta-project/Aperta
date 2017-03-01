@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
-    t.datetime "co_author_state_modified_on"
+    t.datetime "co_author_state_modified_at"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -353,7 +353,7 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
-    t.datetime "co_author_state_modified_on"
+    t.datetime "co_author_state_modified_at"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree

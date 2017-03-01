@@ -19,7 +19,7 @@
 
 {{#admin-page/catalogue}}
   {{#each sortedCards as |card|}}
-    {{#admin-page/catalogue/item}}
+    {{#admin-page/catalogue/item action=(action "editCard" card)}}
       {{admin-page/card-thumbnail card=card}}
     {{/admin-page/catalogue/item}}
   {{/each}}

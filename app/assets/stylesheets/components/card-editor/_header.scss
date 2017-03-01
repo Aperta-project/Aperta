@@ -1,0 +1,33 @@
+.card-editor-header {
+  position: relative;
+  border-bottom: 1px solid $aperta-grey-light;
+  background-color: #fff;
+
+  h1 {
+    font-color: $aperta-grey;
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+
+  .card-editor-header-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 30px 0;
+  }
+
+  .card-editor-header-back {
+    font-size: 14px;
+    color: $aperta-blue;
+    margin: 20px 30px 0;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .tab-bar {
+    margin-bottom: -1px;
+    > a {
+      font-size: 14px;
+    }
+  }
+}

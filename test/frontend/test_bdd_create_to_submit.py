@@ -291,7 +291,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       else:
         break
       logging.warning('Conversion never completed - still showing interim title')
-
     # Give a little time for the submit button to attach to the DOM
     manuscript_page.complete_task('Upload Manuscript')
     time.sleep(5)

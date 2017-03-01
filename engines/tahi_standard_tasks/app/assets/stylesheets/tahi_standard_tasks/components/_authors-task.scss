@@ -198,3 +198,11 @@
 .author-label-other div {
   display: inline;
 }
+
+.author-confirmed {
+  margin-bottom: 1em;
+  
+  .author-confirmed-check {
+    color: $aperta-green
+  }
+}

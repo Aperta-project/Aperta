@@ -93,6 +93,7 @@ export default NestedQuestionOwner.extend({
   department: attr('string'),
   coAuthorState: attr('string'),
   coAuthorStateModified: attr('date'),
+  coAuthorConfirmed: computed.equal('coAuthorState', 'confirmed'),
 
   currentAddressStreet: attr('string'),
   currentAddressStreet2: attr('string'),

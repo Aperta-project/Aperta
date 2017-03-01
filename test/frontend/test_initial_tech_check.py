@@ -49,6 +49,7 @@ class ITCCardTest(CommonTest):
     paper_canonical_url = manuscript_page.get_current_url().split('?')[0]
     paper_id = paper_canonical_url.split('/')[-1]
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_id))
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

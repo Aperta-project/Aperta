@@ -87,6 +87,10 @@ class VersionedText < ActiveRecord::Base
     file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
   end
 
+  def latest_version?
+    self == paper.latest_version
+  end
+
   private
 
   def only_version_once

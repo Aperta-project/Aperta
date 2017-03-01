@@ -52,20 +52,7 @@ module PaperConverters
     end
 
     def figures
-      if latest_version?
-        return @versioned_text.paper.figures.map do |figure|
-          FigureProxy.from_figure(figure)
-        end
-      else
-        major_version = @versioned_text.major_version
-        minor_version = @versioned_text.minor_version
-        snapshots = @versioned_text.paper.snapshots.figures
-                                   .where(major_version: major_version,
-                                          minor_version: minor_version)
-        return snapshots.map do |snapshot|
-          FigureProxy.from_snapshot(snapshot)
-        end
-      end
+      FigureProxy.from_versioned_text(@versioned_text)
     end
 
     def supporting_information_files

@@ -7,9 +7,12 @@ class AuthorSerializer < ActiveModel::Serializer
              :current_address_city,
              :current_address_state,
              :current_address_country,
-             :current_address_postal
+             :current_address_postal,
+             :links,
+             :owner_type_for_answer
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
+  has_one :card, embed: :id
 
   has_many :nested_questions,
            serializer: NestedQuestionSerializer,
@@ -19,4 +22,16 @@ class AuthorSerializer < ActiveModel::Serializer
            serializer: NestedQuestionAnswerSerializer,
            embed: :ids,
            include: true
+
+  def links
+    {
+      answers: answers_for_owner_path(owner_params)
+    }
+  end
+
+  private
+
+  def owner_params
+    { owner_id: object.id, owner_type: object.class.name.underscore }
+  end
 end

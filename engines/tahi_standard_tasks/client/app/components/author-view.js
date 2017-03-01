@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
@@ -13,6 +14,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     'isAuthorCurrentUser:author-task-item-current-user'
   ],
   deleteState: false,
+  editing: false,
   author: alias('model.object'),
   componentName: computed('model', function() {
     return this.get('author').constructor
@@ -35,7 +37,6 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
 
   editState: computed.or('errorsPresent', 'editing'),
-  editing: false,
   errorsPresent: alias('model.errorsPresent'),
 
   viewState: computed('editState', 'deleteState', function() {
@@ -44,6 +45,14 @@ export default Component.extend(DragNDrop.DraggableMixin, {
 
   draggable: computed('isNotEditable', 'editState', function() {
     return !this.get('isNotEditable') && !this.get('editState');
+  }),
+
+  loadCard: concurrencyTask( function * () {
+    let model = this.get('model.object');
+    yield Ember.RSVP.all([
+      model.get('card'),
+      model.get('answers')
+    ]);
   }),
 
   dragStart(e) {
@@ -55,15 +64,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     e.dataTransfer.setData('Text', this.get('author.id'));
   },
 
+
   actions: {
     deleteAuthor() {
       this.$().fadeOut(250, ()=> {
         this.sendAction('delete', this.get('author'));
       });
-    },
-
-    toggleEditForm() {
-      this.toggleProperty('editing');
     },
 
     toggleDeleteConfirmation() {

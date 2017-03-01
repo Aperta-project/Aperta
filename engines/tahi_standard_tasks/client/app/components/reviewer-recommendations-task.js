@@ -1,65 +1,47 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import MultiExpandableList from 'tahi/mixins/multi-expandable-list';
+import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 import Ember from 'ember';
 
-export default TaskComponent.extend({
-  showNewReviewerForm: false,
+export default TaskComponent.extend(MultiExpandableList, {
+  validateData() {
+    this.validateAll();
+    const objs = this.get('reviewerRecommendationsWithErrors');
+    objs.invoke('validateAll');
 
-  // Doing this to prevent short period of time
-  // where `newRecommendation` is in the DOM while save is happening.
-  // If it becomes invalid after save it is removed.
-  // This creates a glitchy look to the list.
-  validReviewerRecommendations: Ember.computed(
-    'task.reviewerRecommendations.@each.isNew',
-    function() {
-      return this.get('task.reviewerRecommendations').filterBy('isNew', false);
+    const taskErrors    = this.validationErrorsPresent();
+    const collectionErrors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+
+    if(taskErrors || collectionErrors) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
+
+  reviewerRecommendationsWithErrors: Ember.computed.map('task.reviewerRecommendations',
+    function(recommendation) {
+      return ObjectProxyWithErrors.create({
+        object: recommendation,
+        skipValidations: () => { return this.get('skipValidations'); },
+        validations: recommendation.validations
+      });
     }
   ),
-
-  newRecommendationQuestions: Ember.on('init', function() {
-    const queryParams = { type: 'ReviewerRecommendation' };
-    this.get('store').query('nested-question', queryParams).then( (questions) => {
-      this.set('nestedQuestionsForNewRecommendation', questions);
-    });
-  }),
-
-  clearNewRecommendationAnswers() {
-    this.get('nestedQuestionsForNewRecommendation').forEach( (question) => {
-      question.clearAnswerForOwner(this.get('newRecommendation'));
-    });
-  },
 
   actions: {
     addNewReviewer() {
       // Note that when referring to ember data models when interacting with the store
       // (pushPayload, createRecord, findRecord, etc) we should always be using the
       // dasherized form of the name going forward
-      const recommendation = this.get('store').createRecord('reviewer-recommendation', {
+      let store = this.get('store');
+      let recommendation = store.createRecord('reviewer-recommendation', {
         reviewerRecommendationsTask: this.get('task'),
-        nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
+        card: store.peekCard('TahiStandardTasks::ReviewerRecommendation')
       });
-      this.set('newRecommendation', recommendation);
-      this.set('showNewReviewerForm', true);
-    },
-
-    cancelNewRecommendation() {
-      this.set('showNewReviewerForm', false);
-      this.clearNewRecommendationAnswers();
-      this.get('newRecommendation').destroyRecord();
-      this.set('newRecommendation', null);
-      this.clearAllValidationErrors();
+      recommendation.save().then((rec) => { this.setExpanded(rec); });
     },
 
     saveRecommendation(recommendation) {
-      recommendation.save().then((savedRecommendation) => {
-        recommendation.get('nestedQuestionAnswers').forEach(function(answer){
-          if(answer.get('wasAnswered')){
-            answer.set('owner', savedRecommendation);
-            answer.save();
-          }
-        });
-        this.set('showNewReviewerForm', false);
-        this.set('newRecommendation', null);
-      }).catch((response) => {
+      recommendation.save().catch((response) => {
         this.displayValidationErrorsFromResponse(response);
       });
     },

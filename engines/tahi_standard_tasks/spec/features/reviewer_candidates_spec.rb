@@ -35,6 +35,10 @@ feature "User adding reviewer candidates", js: true do
     end
     expect(page).to_not have_selector(".reviewer-form")
 
+    find(".reviewer-task-item-view:first-child").hover
+    find(".reviewer .fa-trash").click
+    click_button "Delete Forever"
+
     click_button "New Reviewer Candidate"
     expect(page).to have_selector(".reviewer-form")
 

@@ -8,6 +8,13 @@ module Answerable
     def answerable?
       true
     end
+
+    # TODO: Remove this when there is not a 1-1 relationship between a
+    # descendent of Task and an instance of a Card.
+    # Returns the card instance for this Task class.
+    def card_for
+      Card.find_by_name(name.to_s)
+    end
   end
 
   included do
@@ -17,6 +24,10 @@ module Answerable
 
     def owner_type_for_answer
       self.class.name
+    end
+
+    def answer_for_ident(ident)
+      answers.joins(:card_content).find_by(card_contents: { ident: ident } )
     end
   end
 end

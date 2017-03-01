@@ -18,6 +18,7 @@ include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
+require_relative '../lib/tasks/card_loading/support/card_loader'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -85,11 +86,11 @@ RSpec.configure do |config|
 
   config.before(:context, js: true) do
     # :truncation is the strategy we need to use for capybara tests, but do not
-    # truncate task_types and nested_questions, we want to keep these tables
+    # truncate task_types, cards, and card_contents, we want to keep these tables
     # around.
-    # Ensure this come after the generic setup (see above)
+    # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions) }
+      except: %w(task_types cards card_contents) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -130,10 +131,10 @@ RSpec.configure do |config|
         "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
     end
 
-    # Load question and roles & permission seeds before any tests start since we don't want them
+    # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    Rake::Task['nested-questions:seed'].reenable
-    Rake::Task['nested-questions:seed'].invoke
+    Rake::Task['cards:load'].reenable
+    Rake::Task['cards:load'].invoke
 
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars

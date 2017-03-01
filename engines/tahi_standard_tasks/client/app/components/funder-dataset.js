@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 export default  Ember.Component.extend({
   classNames: ['dataset'],
@@ -14,11 +15,18 @@ export default  Ember.Component.extend({
 
   setFunderRoleDescriptionAnswer: function(value){
     let model = this.get('model');
-    let answer = model.answerForQuestion('funder--had_influence--role_description');
+    let answer = model.answerForIdent('funder--had_influence--role_description');
     answer.set('value', value);
     answer.save();
   },
 
+  loadCard: concurrencyTask( function * () {
+    let model = this.get('model');
+    yield Ember.RSVP.all([
+      model.get('card'),
+      model.get('answers')
+    ]);
+  }),
   actions: {
     userSelectedYesForFunderInfluence(){
       this.setFunderRoleDescriptionAnswer('');

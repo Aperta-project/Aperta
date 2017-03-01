@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_test_cards }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
@@ -13,14 +13,13 @@ describe PaperFactory do
     end
   end
 
+  let!(:card) { FactoryGirl.create(:card, name: 'TahiStandardTasks::DataAvailabilityTask') }
   let!(:role) { journal.creator_role }
   let(:user) { FactoryGirl.create :user }
 
   describe ".create" do
     let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: mmt.paper_type) }
-    subject do
-      PaperFactory.create(paper_attrs, user)
-    end
+    let(:new_paper) { PaperFactory.create(paper_attrs, user) }
 
     context "when the mmt is configured to use the research reviewer report" do
       it "sets the paper to use the research reviewer report" do
@@ -39,17 +38,14 @@ describe PaperFactory do
     end
 
     it "sets the paper's number_reviewer_reports attribute to true" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.number_reviewer_reports).to eq(true)
     end
 
     it "makes the creator a collaborator on the paper" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.collaborators.first).to eq(user)
     end
 
     it "makes the creator an author on the paper" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.authors.length).to eq(1)
 
       author = new_paper.authors.last
@@ -59,19 +55,22 @@ describe PaperFactory do
     end
 
     it "reifies the phases for the given paper from the correct MMT" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.phases.size).to eq(2)
       expect(new_paper.phases.first.name).to eq(mmt.phase_templates.first.name)
     end
 
     it "reifies the tasks for the given paper from the correct MMT" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.tasks.size).to eq(1)
       expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask'])
     end
 
+    it "associates cards to the tasks for the given paper" do
+      expect(new_paper.tasks.size).to eq(1)
+      new_task = new_paper.tasks.last
+      expect(new_task.card.name).to eq('TahiStandardTasks::DataAvailabilityTask')
+    end
+
     it "adds correct positions to new tasks" do
-      new_paper = PaperFactory.create(paper_attrs, user)
       new_paper.phases.each do |phase|
         expect(phase.tasks.pluck(:position).uniq.count).to eq(phase.tasks.count)
       end
@@ -79,33 +78,33 @@ describe PaperFactory do
 
     it "calls the task_added_to_paper hook for each task" do
       expect_any_instance_of(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_paper)
-      subject
+      new_paper
     end
 
     it "sets the creator" do
-      expect(subject.creator).to eq(user)
+      expect(new_paper.creator).to eq(user)
     end
 
     it "does not create a decision" do
-      expect(subject.decisions).to be_empty
+      expect(new_paper.decisions).to be_empty
     end
 
     it "applies the template" do
-      expect(subject.phases.count).to eq(2)
+      expect(new_paper.phases.count).to eq(2)
     end
 
     it "assigns a DOI to paper" do
-      expect(subject.doi).to_not be_nil
+      expect(new_paper.doi).to_not be_nil
     end
 
     it "saves the paper" do
-      expect(subject).to be_persisted
+      expect(new_paper).to be_persisted
     end
 
     context "with non-existant template" do
       let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: "Opinion Piece") }
       it "adds an error on paper_type" do
-        expect(subject.errors[:paper_type]).to eq(["is not valid"])
+        expect(new_paper.errors[:paper_type]).to eq(["is not valid"])
       end
     end
 
@@ -116,8 +115,8 @@ describe PaperFactory do
                                    paper_type: mmt.paper_type)
       end
 
-      specify { expect(subject).to_not be_valid }
-      specify { expect(subject.errors[:journal]).to eq(["can't be blank"]) }
+      specify { expect(new_paper).to_not be_valid }
+      specify { expect(new_paper.errors[:journal]).to eq(["can't be blank"]) }
     end
   end
 end

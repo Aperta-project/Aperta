@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CardsController do
   subject(:do_request) do
-    get :show, format: 'json', owner_type: object.class.name.underscore, owner_id: object.id
+    get :show, format: 'json', id: card.id
   end
 
   let(:user) { FactoryGirl.create(:user) }
@@ -63,23 +63,13 @@ describe CardsController do
       stub_sign_in user
     end
 
-    context "resource is answerable" do
+    context "the card exists" do
       let(:card) { FactoryGirl.create(:card) }
-      let(:object) { FactoryGirl.create(:cover_letter_task, card: card) }
 
       it "returns a serialized card" do
         do_request
         expect(response.status).to eq(200)
         expect(res_body).to include("card")
-      end
-    end
-
-    context "resource is not answerable" do
-      let(:object) { FactoryGirl.create(:user) }
-
-      it "returns a 422" do
-        do_request
-        expect(response.status).to eq(422)
       end
     end
   end

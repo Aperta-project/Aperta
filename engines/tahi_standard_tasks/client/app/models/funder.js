@@ -27,7 +27,7 @@ export default NestedQuestionOwner.extend(Answerable, {
   funderHadInfluence: Ember.computed.alias('funderInfluenceAnswer.value'),
 
   funderInfluenceAnswer: Ember.computed('nestedQuestionAnswers.[]', function() {
-    return this.answerForQuestion('funder--had_influence');
+    return this.answerForIdent('funder--had_influence');
   }),
 
   funderInfluenceDescription: Ember.computed.alias(
@@ -36,7 +36,7 @@ export default NestedQuestionOwner.extend(Answerable, {
   funderInfluenceDescriptionAnswer: Ember.computed(
       'nestedQuestionAnswers.[]',
       function() {
-        return this.answerForQuestion('funder--had_influence--role_description');
+        return this.answerForIdent('funder--had_influence--role_description');
       }
   ),
 

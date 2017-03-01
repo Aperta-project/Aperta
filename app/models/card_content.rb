@@ -10,6 +10,11 @@ class CardContent < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_content
 
   validates :card, presence: true
+  validates :card, uniqueness:
+                     { message: 'can only have a single root content.' },
+                   if: ->() { parent_id.nil? }
+
+  has_many :answers
 
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)
@@ -24,22 +29,22 @@ class CardContent < ActiveRecord::Base
     updated_idents = []
 
     # Refresh the living, welcome the newly born
-    update_nested!(content_hashes, updated_idents)
+    update_nested!(content_hashes, nil, updated_idents)
 
     existing_idents = all.map(&:ident)
     for_deletion = existing_idents - updated_idents
-    where(ident: for_deletion).destroy_all
+    raise "You forgot some questions: #{for_deletion}" \
+      unless for_deletion.empty?
   end
 
-  def self.update_nested!(content_hashes, idents)
+  def self.update_nested!(content_hashes, parent_id, idents)
     content_hashes.map do |hash|
       idents.append(hash[:ident])
       child_hashes = hash.delete(:children) || []
-      children = update_nested!(child_hashes, idents)
-
       content = CardContent.find_or_initialize_by(ident: hash[:ident])
-      content.children = children
+      content.parent_id = parent_id
       content.update!(hash)
+      update_nested!(child_hashes, content.id, idents)
       content
     end
   end

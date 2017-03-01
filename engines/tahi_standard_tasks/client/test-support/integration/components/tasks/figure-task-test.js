@@ -1,6 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
+import { createCard } from 'tahi/tests/factories/card';
 import Factory from '../../../helpers/factory';
 
 let createTaskWithFigures = function(figures) {
@@ -12,7 +13,7 @@ let createTaskWithFigures = function(figures) {
       {id: 1, ident: "figures--complies"}
     ]
   });
-}
+};
 
 moduleForComponent(
   'figure-task',
@@ -21,11 +22,12 @@ moduleForComponent(
   beforeEach() {
     manualSetup(this.container);
     Factory.createPermission('figureTask', 1, ['edit', 'view']);
+    createCard('TahiStandardTasks::FigureTask');
   }
 });
 
 let template = hbs`{{figure-task task=testTask}}`;
-let errorSelector = '.figure-thumbnail .error-message:not(.error-message--hidden)'
+let errorSelector = '.figure-thumbnail .error-message:not(.error-message--hidden)';
 test('it renders the paper\'s figures', function(assert) {
   let testTask = createTaskWithFigures([{rank: 1, title: 'Fig. 1', id: 1}]);
   this.set('testTask', testTask);

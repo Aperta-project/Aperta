@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe QuestionAttachmentsController do
   let(:user) { FactoryGirl.build_stubbed :user }
+  let(:paper) { FactoryGirl.create(:paper) }
   let!(:question_attachment) do
     FactoryGirl.create(:question_attachment, owner: answer)
   end
-  let(:answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
+  let!(:answer) { FactoryGirl.create(:answer, owner: task, paper: task.paper) }
   let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
   describe "#show" do
@@ -81,17 +82,9 @@ describe QuestionAttachmentsController do
   end
 
   describe '#create' do
-    let!(:answer) do
-      FactoryGirl.create(
-        :nested_question_answer,
-        owner: task,
-        paper: task.paper
-      )
-    end
-
     subject(:do_request) do
       post :create, format: :json, question_attachment: {
-        nested_question_answer_id: answer.id,
+        answer_id: answer.id,
         caption: 'This is a great caption!',
         src: 'http://some.cat.image.gif'
       }

@@ -15,7 +15,7 @@ export default Ember.Component.extend({
     let ident = this.get("ident");
     Ember.assert("Must provide ident", ident);
 
-    let answer = owner.answerForQuestion(ident);
+    let answer = owner.answerForIdent(ident);
     if(answer){
       return answer;
     } else {

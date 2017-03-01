@@ -4,18 +4,9 @@ class Snapshot::AuthorTaskSerializer < Snapshot::BaseSerializer
   private
 
   def snapshot_properties
-    authors = model.authors
-              .includes(:author_list_item)
-              .map do |author|
-      Snapshot::AuthorSerializer.new(author).as_json
-    end
-
-    group_authors = model.group_authors
-                    .includes(:author_list_item)
-                    .map do |author|
-      Snapshot::GroupAuthorSerializer.new(author).as_json
-    end
-
-    (authors + group_authors).sort_by { |a| a[:position] }
+    registry = SnapshotService.registry
+    model.paper.all_authors
+         .map { |author| registry.serializer_for(author).new(author) }
+         .map(&:as_json)
   end
 end

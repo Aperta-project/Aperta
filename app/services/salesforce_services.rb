@@ -11,7 +11,7 @@ module SalesforceServices
       SalesforceServices::PaperSync.sync!(paper: paper)
       logger.info "Salesforce: Paper #{paper.id} sync'd successfully"
 
-      answer = paper.answer_for('plos_billing--payment_method')
+      answer = paper.answer_for_ident('plos_billing--payment_method')
       should_send_billing_to_salesforce = answer.try(:value) == "pfa"
 
       if should_send_billing_to_salesforce

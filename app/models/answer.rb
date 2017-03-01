@@ -15,8 +15,14 @@ class Answer < ActiveRecord::Base
   validates :owner, presence: true
   validates :paper, presence: true
 
+  delegate :value_type, to: :card_content
+
   def children
     Answer.where(owner: owner, card_content: card_content.children)
+  end
+
+  def coerced_value
+    CoerceAnswerValue.coerce(value, card_content.value_type)
   end
 
   # The primary reason an answer will need to find its task is for permission

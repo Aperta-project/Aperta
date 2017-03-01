@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import NestedQuestionComponent from
-  'tahi/pods/components/nested-question/component';
-
+import CardContentQuestion from
+  'tahi/pods/components/card-content-question/component';
 const { computed } = Ember;
 const { equal } = computed;
 
-export default NestedQuestionComponent.extend({
+export default CardContentQuestion.extend({
   helpText: null,
   unwrappedHelpText: null,
   yesLabel: 'Yes',

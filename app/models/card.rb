@@ -5,9 +5,5 @@ class Card < ActiveRecord::Base
   belongs_to :journal
   has_many :card_content, inverse_of: :card, dependent: :destroy
   validates :name, presence: true
-  validates :journal, presence: true
-
-  def content_root
-    card_content.roots.first
-  end
+  has_one :content_root, -> { where(parent_id: nil) }, class_name: 'CardContent'
 end

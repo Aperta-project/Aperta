@@ -10,5 +10,12 @@ export default Task.extend({
 
   decision: Ember.computed('decisions', function() {
     return this.get('decisions').findBy('draft', true);
-  })
+  }),
+  fetchRelationships() {
+    return Ember.RSVP.all([
+      this._super(...arguments),
+      this.get('store').queryRecord('card', { name: 'ReviewerReport' }),
+      this.get('store').queryRecord('card', { name: 'FrontMatterReviewerReport' })
+    ]);
+  }
 });

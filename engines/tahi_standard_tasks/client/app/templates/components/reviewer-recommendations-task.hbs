@@ -14,20 +14,14 @@
               disabled={{isNotEditable}} {{action "addNewReviewer"}}>
         New Reviewer Candidate
       </button>
-
-      {{#if showNewReviewerForm}}
-        {{reviewer-form reviewerRecommendation=newRecommendation
-                        validationErrors=validationErrors
-                        saveRecommendation=(action "saveRecommendation")
-                        cancelRecommendation=(action "cancelNewRecommendation")
-                        isNotEditable=isNotEditable}}
-      {{/if}}
     {{/if}}
 
-    {{#each validReviewerRecommendations as |reviewerRecommendation|}}
+    {{#each reviewerRecommendationsWithErrors as |reviewerRecommendation|}}
       {{reviewer-row reviewerRecommendation=reviewerRecommendation
                      isEditable=isEditable
-                     isNotEditable=isNotEditable}}
+                     isNotEditable=isNotEditable
+                     isEditing=(contains reviewerRecommendation.id expanded)
+                     toggleExpanded=(action 'toggleExpanded' reviewerRecommendation)}}
     {{/each}}
   </div>
 </div>

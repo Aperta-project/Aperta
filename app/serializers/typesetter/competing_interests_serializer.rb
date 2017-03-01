@@ -5,12 +5,12 @@ module Typesetter
     attributes :competing_interests, :competing_interests_statement
 
     def competing_interests
-      object.answer_for('competing_interests--has_competing_interests').try(:value)
+      object.answer_for_ident('competing_interests--has_competing_interests').try(:value)
     end
 
     def competing_interests_statement
       return no_competing_interests unless competing_interests
-      object.answer_for('competing_interests--statement').try(:value)
+      object.answer_for_ident('competing_interests--statement').try(:value)
     end
 
     def no_competing_interests

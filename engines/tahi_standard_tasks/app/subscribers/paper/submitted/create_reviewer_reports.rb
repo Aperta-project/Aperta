@@ -12,7 +12,8 @@ class Paper::Submitted::CreateReviewerReports
       ReviewerReport.find_or_create_by!(
         task: task,
         decision: paper.draft_decision,
-        user: task.reviewer
+        user: task.reviewer,
+        card: ReviewerReport.card_for_task(task)
       )
     end
   end

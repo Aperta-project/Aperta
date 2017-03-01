@@ -1,25 +1,13 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
-const { computed, observer, on } = Ember;
+const { computed, observer } = Ember;
 const { alias } = computed;
 
 export default TaskComponent.extend({
   funders: alias('task.funders'),
   paper: alias('task.paper'),
   receivedFunding: null,
-
-  nestedQuestionsForNewFunder: Ember.A(),
-
-  newFunderQuestions: on('init', function(){
-    const queryParams = { type: 'Funder' };
-    const results = this.get('store').query('nested-question', queryParams);
-
-    results.then( (nestedQuestions) => {
-      this.set('nestedQuestionsForNewFunder', nestedQuestions);
-    });
-  }),
-
   numFundersObserver: observer('funders.[]', function() {
     if (this.get('receivedFunding') === false) {
       return;
@@ -30,7 +18,6 @@ export default TaskComponent.extend({
       this.set('receivedFunding', null);
     }
   }),
-
   actions: {
     choseFundingReceived() {
       this.set('receivedFunding', true);
@@ -38,7 +25,6 @@ export default TaskComponent.extend({
         return this.send('addFunder');
       }
     },
-
     choseFundingNotReceived() {
       this.set('receivedFunding', false);
       return this.get('funders').toArray().forEach(function(funder) {
@@ -49,12 +35,14 @@ export default TaskComponent.extend({
         }
       });
     },
-
     addFunder() {
-      return this.get('store').createRecord('funder', {
-        nestedQuestions: this.get('nestedQuestionsForNewFunder'),
+      let store = this.get('store');
+      let funderCard = store.peekCard('TahiStandardTasks::Funder');
+      let newFunder = store.createRecord('funder', {
+        card: funderCard,
         task: this.get('task')
-      }).save();
+      });
+      return newFunder.save();
     }
   }
 });

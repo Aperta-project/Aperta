@@ -148,6 +148,12 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
+        unless Card.exists?
+          start = Time.now
+          CardLoader.load_all
+          end_time = Time.now
+          puts "seeded cards in test in #{end_time - start} seconds"
+        end
         FactoryGirl.create(:early_posting_task)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
@@ -163,12 +169,21 @@ FactoryGirl.define do
           :publishing_related_questions_task,
           paper: paper
         )
-        nested_question = FactoryGirl.create(
-          :nested_question,
-          ident: 'publishing_related_questions--short_title'
+
+        card = FactoryGirl.create(
+          :card,
+          :for_answerable,
+          answerable: task,
+          idents: 'publishing_related_questions--short_title'
         )
-        task.find_or_build_answer_for(nested_question: nested_question,
-                                      value: evaluator.short_title).save
+
+        answer = FactoryGirl.create(
+          :answer,
+          card_content: card.card_content.last,
+          owner: task,
+          paper: task.paper,
+          value: evaluator.short_title
+        )
       end
     end
 
@@ -309,6 +324,7 @@ FactoryGirl.define do
         evaluator.task_params[:title] ||= "Ad Hoc"
         evaluator.task_params[:type] ||= "Task"
         evaluator.task_params[:paper] ||= paper
+        evaluator.task_params[:card] = Card.find_by(name: evaluator.task_params[:type])
 
         phase.tasks.create(evaluator.task_params)
         paper.reload

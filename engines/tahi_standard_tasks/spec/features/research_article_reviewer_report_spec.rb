@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Reviewer filling out their research article reviewer report', js: true do
-  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_test_cards }
   let(:paper) do
     FactoryGirl.create \
       :paper_with_phases,

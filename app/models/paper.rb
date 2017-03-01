@@ -411,8 +411,11 @@ class Paper < ActiveRecord::Base
   end
 
   def short_title
-    answer = answer_for('publishing_related_questions--short_title')
-    answer ? answer.value : ''
+    task = tasks.find_by(type: 'TahiStandardTasks::PublishingRelatedQuestionsTask')
+    return '' unless task
+
+    answer = task.answer_for_ident('publishing_related_questions--short_title')
+    answer.try(:value)
   end
 
   def latest_withdrawal
@@ -540,11 +543,6 @@ class Paper < ActiveRecord::Base
   def insert_figures!
     latest_version.insert_figures!
     notify
-  end
-
-  def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
   end
 
   def in_terminal_state?

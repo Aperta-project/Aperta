@@ -4,6 +4,12 @@ import DS from 'ember-data';
 
 let a = DS.attr;
 
+const validations = {
+  firstName: ['presence'],
+  lastName: ['presence'],
+  email: ['presence', 'email']
+};
+
 export default NestedQuestionOwner.extend(Answerable, {
   firstName: a('string'),
   middleInitial: a('string'),
@@ -16,6 +22,7 @@ export default NestedQuestionOwner.extend(Answerable, {
   recommendOrOppose: a('string'),
   reason: a('string'),
   reviewerRecommendationsTask: DS.belongsTo('reviewerRecommendationsTask'),
+  validations: validations,
 
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');

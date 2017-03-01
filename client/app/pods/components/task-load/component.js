@@ -28,9 +28,10 @@ export default Ember.Component.extend({
   taskLoad: concurrencyTask(function * () {
     const task = this.get('task');
     yield Ember.RSVP.all([
-      task.get('nestedQuestions'),
-      task.get('nestedQuestionAnswers'),
+      task.get('nestedQuestions'), //TODO: delete
+      task.get('nestedQuestionAnswers'), //TODO: delete
       task.get('participations'),
+      task.fetchRelationships(),
       this.get('store').findRecord(task._internalModel.modelName, task.get('id'), {reload: true}) // see "NOTE: task find"
     ]);
   })

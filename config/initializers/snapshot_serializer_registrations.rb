@@ -14,8 +14,9 @@ ActionDispatch::Reloader.to_prepare do
     SnapshotService.configure do
       serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
+      serialize GroupAuthor, with: Snapshot::GroupAuthorSerializer
       serialize Figure, with: Snapshot::AttachmentSerializer
-      serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
+      serialize CardContent, with: Snapshot::CardContentSerializer
       serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
       serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 

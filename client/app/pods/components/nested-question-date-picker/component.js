@@ -1,6 +1,7 @@
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import CardContentQuestion from
+  'tahi/pods/components/card-content-question/component';
 
-export default NestedQuestionComponent.extend({
+export default CardContentQuestion.extend({
   actions: {
     dateChanged: function(newDate){
       this.set('answer.value', newDate);

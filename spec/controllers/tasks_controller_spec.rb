@@ -6,7 +6,8 @@ describe TasksController, redis: true do
     FactoryGirl.create(
       :journal,
       :with_creator_role,
-      :with_task_participant_role
+      :with_task_participant_role,
+      :with_test_cards
     )
   end
   let!(:paper) do

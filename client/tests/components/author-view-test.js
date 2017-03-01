@@ -31,19 +31,21 @@ moduleForComponent(
       this.set('isNotEditable', false);
       this.set('model', {object: author});
       this.set('task', authorsTask);
+      this.set('toggleExpanded', function() {});
     }
   }
 );
 
 var template = hbs`
-  {{
-    author-view
+  {{author-view
       currentUser=currentUser
       task=task
+      editing=false
       model=model
       isEditable=isEditable
       isNotEditable=isNotEditable
       delete="removeAuthor"
+      toggleExpanded=(action toggleExpanded)
   }}`;
 
 test("component lists the author", function(assert){

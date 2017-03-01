@@ -18,10 +18,10 @@ module TahiStandardTasks
     end
 
     def send_email
-      to_field = answer_for(
+      to_field = answer_for_ident(
         'register_decision_questions--to-field'
       ).try(:value)
-      subject_field = answer_for(
+      subject_field = answer_for_ident(
         'register_decision_questions--subject-field'
       ).try(:value)
 

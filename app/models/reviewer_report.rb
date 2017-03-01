@@ -16,6 +16,17 @@ class ReviewerReport < ActiveRecord::Base
     decision.invitations.find_by(invitee_id: user.id)
   end
 
+  # This method encapsulates looking up the correctly-named card for a given
+  # task, which happens in both the ReviewerReportTaskCreator and
+  # in the Paper::Submitted::CreateReviewerReports subscription
+  # Note that this assumes a card for a given name is unique in the system
+  def self.card_for_task(task)
+    card_name = {
+      "TahiStandardTasks::FrontMatterReviewerReportTask" => 'FrontMatterReviewerReport',
+      "TahiStandardTasks::ReviewerReportTask" => 'ReviewerReport'}.fetch(task.class.name)
+    Card.find_by!(name: card_name)
+  end
+
   # status will look at the reviewer, invitations and the submitted state of
   # this task to get an overall status for the review
   def status
@@ -56,5 +67,11 @@ class ReviewerReport < ActiveRecord::Base
     major_version = decision.major_version || task.paper.major_version || 0
     minor_version = decision.minor_version || task.paper.minor_version || 0
     "v#{major_version}.#{minor_version}"
+  end
+
+  # NestedQuestionable will save the paper_id to newly created answers if
+  # an answer's owner responds to :paper
+  def paper
+    task.paper
   end
 end

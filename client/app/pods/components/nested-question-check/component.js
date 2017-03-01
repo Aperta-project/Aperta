@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import NestedQuestionComponent from
-  'tahi/pods/components/nested-question/component';
+import CardContentQuestion from
+  'tahi/pods/components/card-content-question/component';
 
 const { computed } = Ember;
 
-export default NestedQuestionComponent.extend({
+export default CardContentQuestion.extend({
   labelClassNames: ['question-checkbox'],
   textClassNames: ['model-question'],
 

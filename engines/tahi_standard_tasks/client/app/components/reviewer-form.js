@@ -1,13 +1,22 @@
-import Ember from "ember";
+import Ember from 'ember';
+import { task as concurrencyTask } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   reviewerRecommendation: null,
 
-  affiliation: Ember.computed("reviewerRecommendation", function() {
-    if (this.get("reviewerRecommendation.affiliation")) {
+  loadCard: concurrencyTask( function * () {
+    let model = this.get('reviewerRecommendation');
+    yield Ember.RSVP.all([
+      model.get('card'),
+      model.get('answers')
+    ]);
+  }),
+
+  affiliation: Ember.computed('reviewerRecommendation', function() {
+    if (this.get('reviewerRecommendation.affiliation')) {
       return {
-        id: this.get("reviewerRecommendation.ringgoldId"),
-        name: this.get("reviewerRecommendation.affiliation")
+        id: this.get('reviewerRecommendation.ringgoldId'),
+        name: this.get('reviewerRecommendation.affiliation')
       };
     }
   }),

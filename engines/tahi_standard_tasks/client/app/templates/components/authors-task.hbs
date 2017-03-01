@@ -11,34 +11,22 @@
   <p>Note: Ensure the authors are in the correct publication order.</p>
 
   <div>
-    {{#each sortedSavedAuthorsWithErrors as |authorWithErrors|}}
+    {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
       {{author-view task=task
                     model=authorWithErrors
                     isEditable=isEditable
                     isNotEditable=isNotEditable
+                    editing=(contains authorWithErrors.id expanded)
+                    toggleExpanded=(action 'toggleExpanded' authorWithErrors)
                     delete="removeAuthor"}}
 
-      {{author-drop-target index=authorWithErrors.object.position
+      {{author-drop-target index=authorWithErrors.position
                            isEditable=isEditable
                            changePosition=(action "changeAuthorPosition")}}
     {{/each}}
 
     {{#if isEditable}}
       {{error-message message=validationErrors.corresponding}}
-
-      {{#if newGroupAuthorFormVisible}}
-        {{group-author-form task=task
-                            isNewAuthor=true
-                            hideAuthorForm="toggleGroupAuthorForm"
-                            saveSuccess=(action "saveNewGroupAuthorSuccess")}}
-      {{/if}}
-
-      {{#if newAuthorFormVisible}}
-        {{author-form task=task
-                      isNewAuthor=true
-                      saveSuccess=(action "saveNewAuthorSuccess")
-                      hideAuthorForm="toggleAuthorForm"}}
-      {{/if}}
     {{/if}}
 
     {{author-drop-target index=0
@@ -56,8 +44,8 @@
         {{/popover.trigger}}
         {{#popover.content}}
           <div class="popover-menu-content" id="add-new-author-dropdown">
-            <a class="popover-menu-item" id="add-new-individual-author-link" {{action "toggleAuthorForm"}}>Add Individual Author</a>
-            <a class="popover-menu-item" id="add-new-group-author-link" {{action "toggleGroupAuthorForm"}}>Add Group Author</a>
+            <a class="popover-menu-item" id="add-new-individual-author-link" {{action "createAuthor"}}>Add Individual Author</a>
+            <a class="popover-menu-item" id="add-new-group-author-link" {{action "createGroupAuthor"}}>Add Group Author</a>
           </div>
         {{/popover.content}}
       {{/basic-popover}}

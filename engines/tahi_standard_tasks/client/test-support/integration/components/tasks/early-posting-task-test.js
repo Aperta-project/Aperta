@@ -1,7 +1,8 @@
 import { test, moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
-import { createQuestion, createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
+import { createCard } from 'tahi/tests/factories/card';
+import { createAnswer } from 'tahi/tests/factories/answer';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
@@ -23,7 +24,8 @@ test('checkbox should be checked', function(assert) {
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', task);
 
-  createQuestionWithAnswer(task, 'early-posting--consent', true);
+  createCard('TahiStandardTasks::EarlyPostingTask');
+  createAnswer(task, 'early-posting--consent', { value: true });
 
   this.set('task', task);
   this.render(template);

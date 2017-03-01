@@ -7,7 +7,8 @@ module TahiStandardTasks
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
 
-    # useful for nested_questions to always have path to owner
+    # NestedQuestionable will save the paper_id to newly created answers if
+    # an answer's owner responds to :paper
     def paper
       task.paper
     end
@@ -25,11 +26,11 @@ module TahiStandardTasks
     end
 
     def influence
-      answer_for('funder--had_influence').try(:value)
+      answer_for_ident('funder--had_influence').try(:value)
     end
 
     def influence_description
-      answer_for('funder--had_influence--role_description').try(:value)
+      answer_for_ident('funder--had_influence--role_description').try(:value)
     end
 
     private

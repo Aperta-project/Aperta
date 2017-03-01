@@ -1,71 +1,75 @@
-<h4 class="block-title">FUNDER</h4>
-{{#if enabled}}
-  <span {{action "removeFunder" isNotEditable}} class="remove-funder fa fa-trash small"></span>
-{{/if}}
-<div class="form-group">
-  <span class="text-field-title">Funder</span>
-  {{input
-    type="text"
-    name="name"
-    value=model.name
-    class="funder-name form-control tall-text-field"
-    placeholder="Funder Name"
-    disabled=disabled}}
-</div>
-
-<div class="form-group">
-  <span class="text-field-title">Grant Number</span>
-  {{input
-    type="text"
-    name="grant_number"
-    value=model.grantNumber
-    class="grant-number form-control tall-text-field"
-    placeholder="502-686353647"
-    disabled=disabled}}
-</div>
-
-<div class="form-group">
-  <span class="text-field-title">Website</span>
-  {{input
-    type="text"
-    name="website"
-    value=model.website
-    class="form-control tall-text-field"
-    placeholder="www.funder.org"
-    disabled=disabled}}
-</div>
-
-<div class="form-group">
-  <span class="text-field-title">Additional Comments</span>
-  {{input
-    type="text"
-    name="additional_comments"
-    value=model.additionalComments
-    class="form-control tall-text-field"
-    placeholder="Additional comments about the funder go here"
-    disabled=disabled}}
-</div>
-
-{{#nested-question-radio ident="funder--had_influence"
-    owner=model
-    disabled=disabled
-    yesAction="userSelectedYesForFunderInfluence"
-    noAction="userSelectedNoForFunderInfluence" as |selected|}}
-
-  {{#if selected.yes}}
-    <p class="question-text">
-      {{funderRoleDescriptionQuestion.text}}
-    </p>
-
-    <div class="form-group">
-      <span class="text-field-title">Role of sponsors or funders</span>
-      {{nested-question-textarea ident="funder--had_influence--role_description"
-          owner=model
-          displayQuestionText=false
-          placeholder="Description"
-          inputClassNames="form-control tall-textarea"
-          disabled=disabled}}
-    </div>
+{{#util/async-content concurrencyTask=loadCard}}
+  <h4 class="block-title">FUNDER</h4>
+  {{#if enabled}}
+    <span {{action "removeFunder" isNotEditable}} class="remove-funder fa fa-trash small"></span>
   {{/if}}
+  <div class="form-group">
+    <span class="text-field-title">Funder</span>
+    {{input
+      type="text"
+      name="name"
+      value=model.name
+      class="funder-name form-control tall-text-field"
+      placeholder="Funder Name"
+      disabled=disabled}}
+  </div>
 
-{{/nested-question-radio}}
+  <div class="form-group">
+    <span class="text-field-title">Grant Number</span>
+    {{input
+      type="text"
+      name="grant_number"
+      value=model.grantNumber
+      class="grant-number form-control tall-text-field"
+      placeholder="502-686353647"
+      disabled=disabled}}
+  </div>
+
+  <div class="form-group">
+    <span class="text-field-title">Website</span>
+    {{input
+      type="text"
+      name="website"
+      value=model.website
+      class="form-control tall-text-field"
+      placeholder="www.funder.org"
+      disabled=disabled}}
+  </div>
+
+  <div class="form-group">
+    <span class="text-field-title">Additional Comments</span>
+    {{input
+      type="text"
+      name="additional_comments"
+      value=model.additionalComments
+      class="form-control tall-text-field"
+      placeholder="Additional comments about the funder go here"
+      disabled=disabled}}
+  </div>
+
+  {{#nested-question-radio ident="funder--had_influence"
+      owner=model
+      disabled=disabled
+      yesAction="userSelectedYesForFunderInfluence"
+      noAction="userSelectedNoForFunderInfluence" as |selected|}}
+
+    {{#if selected.yes}}
+      <p class="question-text">
+        {{funderRoleDescriptionQuestion.text}}
+      </p>
+
+      <div class="form-group">
+        <span class="text-field-title">Role of sponsors or funders</span>
+        {{nested-question-textarea ident="funder--had_influence--role_description"
+            owner=model
+            displayQuestionText=false
+            placeholder="Description"
+            inputClassNames="form-control tall-textarea"
+            disabled=disabled}}
+      </div>
+    {{/if}}
+
+  {{/nested-question-radio}}
+{{else}}
+  {{progress-spinner visible=true}}
+{{/util/async-content}}

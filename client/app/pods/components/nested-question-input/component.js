@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import CardContentQuestion from
+  'tahi/pods/components/card-content-question/component';
 
-export default NestedQuestionComponent.extend({
+export default CardContentQuestion.extend({
   defaultAnswer: null,
   setAnswer: Ember.on('init',
       function() {

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do
-  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, :with_test_cards }
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
@@ -60,7 +60,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     ident = 'front_matter_reviewer_report--competing_interests'
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    answers = NestedQuestion.where(ident: ident).first.nested_question_answers
+    answers = CardContent.where(ident: ident).first.answers
     sentinel_proc = -> { answers.count }
 
     # Recreating the error in APERTA-8647

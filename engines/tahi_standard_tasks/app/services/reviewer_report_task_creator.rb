@@ -45,7 +45,8 @@ class ReviewerReportTaskCreator
     ReviewerReport.create!(
       task: @task,
       decision: @paper.draft_decision,
-      user: assignee
+      user: assignee,
+      card: ReviewerReport.card_for_task(@task)
     )
   end
 

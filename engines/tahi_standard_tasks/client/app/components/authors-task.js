@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import MultiExpandableList from 'tahi/mixins/multi-expandable-list';
 
 const {
   computed,
@@ -20,7 +21,7 @@ const taskValidations = {
       const author = this.get('task');
 
       return _.every(acknowledgementIdents, (ident) => {
-        let answer = author.answerForQuestion(ident);
+        let answer = author.answerForIdent(ident);
         if(!answer){
           console.error(`Tried to find an answer for question with ident, ${ident}, but none was found`);
         } else {
@@ -32,11 +33,9 @@ const taskValidations = {
 };
 
 
-export default TaskComponent.extend({
+export default TaskComponent.extend(MultiExpandableList, {
   classNames: ['authors-task'],
   validations: taskValidations,
-  newAuthorFormVisible: false,
-  newGroupAuthorFormVisible: false,
 
   validateData() {
     this.validateAll();
@@ -45,18 +44,8 @@ export default TaskComponent.extend({
 
     const taskErrors    = this.validationErrorsPresent();
     const authorsErrors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
-    let newAuthorErrors = false;
 
-    if(this.get('newAuthorFormVisible')) {
-      const newAuthor= this.get('newAuthor');
-      newAuthor.validateAll();
-
-      if(newAuthor.validationErrorsPresent()) {
-        newAuthorErrors = true;
-      }
-    }
-
-    if(taskErrors || authorsErrors || newAuthorErrors) {
+    if(taskErrors || authorsErrors) {
       this.set('validationErrors.completed', 'Please fix all errors');
     }
   },
@@ -69,19 +58,9 @@ export default TaskComponent.extend({
       return this.get('task.paper.allAuthors').map( (a) => {
         return ObjectProxyWithErrors.create({
           object: a,
-          skipValidations: () => { return this.get('skipValidations') },
+          skipValidations: () => { return this.get('skipValidations'); },
           validations: a.validations
         });
-      });
-    }
-  ),
-
-  sortedSavedAuthorsWithErrors: computed(
-    'sortedAuthorsWithErrors.@each.isNew',
-    'sentinal',
-    function() {
-      return this.get('sortedAuthorsWithErrors').filter((a)=> {
-        return !a.get('object.isNew');
       });
     }
   ),
@@ -91,22 +70,36 @@ export default TaskComponent.extend({
     author.save();
   },
 
+  createNewAuthor(modelName, cardName) {
+    let maxPosition = _.max(this.get('sortedAuthorsWithErrors').mapBy('object.position'));
+    let newPosition = maxPosition > 0 ? maxPosition + 1 : 1;
+    const newAuthor = this.get('store').createRecord(modelName, {
+      paper: this.get('task.paper'),
+      position: newPosition,
+      card: this.get('store').peekAll('card').findBy('name', cardName)
+    });
+
+    this.set('author', newAuthor);
+
+    this.set('authorProxy', ObjectProxyWithErrors.create({
+      object: newAuthor,
+      validations: newAuthor.validations
+    }));
+
+    newAuthor.save().then((author) => { this.setExpanded(author); });
+  },
+
   actions: {
-    toggleGroupAuthorForm() {
-      this.toggleProperty('newGroupAuthorFormVisible');
+    createGroupAuthor() {
+      this.createNewAuthor('group-author', 'GroupAuthor');
     },
 
-    toggleAuthorForm() {
-      this.toggleProperty('newAuthorFormVisible');
+    createAuthor() {
+      this.createNewAuthor('author', 'Author');
     },
 
     saveNewAuthorSuccess() {
       this.notifyPropertyChange('sentinal');
-      this.set('newAuthorFormVisible', false);
-    },
-
-    saveNewGroupAuthorSuccess() {
-      this.set('newGroupAuthorFormVisible', false);
     },
 
     changeAuthorPosition(author, newPosition) {

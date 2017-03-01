@@ -66,7 +66,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   },
 
   responseToQuestion(key) {
-    var questionResponse = (this.answerForQuestion(key) || Ember.ObjectProxy.create());
+    var questionResponse = (this.answerForIdent(key) || Ember.ObjectProxy.create());
     return questionResponse.get('value');
   },
 

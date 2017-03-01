@@ -1,71 +1,75 @@
-{{reviewer-report-status report=model}}
+{{#util/async-content concurrencyTask=loadCard}}
+  {{reviewer-report-status report=model}}
 
-{{#if hasReport}}
-<ol class="question-list">
+  {{#if hasReport}}
+  <ol class="question-list">
 
-  <li class="question">
-    {{nested-question-radio-decision ident="reviewer_report--decision_term"
-                                     owner=model
-                                     readOnly=readOnly}}
-  </li>
-  <li class="question">
-    {{nested-question-radio ident="reviewer_report--competing_interests"
-                            owner=model
-                            displayContent=true
-                            helpText=(concat
-                                        "Please review our <a href='"
-                                        competingInterestsLink
-                                        "'>Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.")
-                            readOnly=readOnly}}
+    <li class="question">
+      {{nested-question-radio-decision ident="reviewer_report--decision_term"
+                                       owner=model
+                                       readOnly=readOnly}}
+    </li>
+    <li class="question">
+      {{nested-question-radio ident="reviewer_report--competing_interests"
+                              owner=model
+                              displayContent=true
+                              helpText=(concat
+                                          "Please review our <a href='"
+                                          competingInterestsLink
+                                          "'>Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.")
+                              readOnly=readOnly}}
 
-    {{nested-question-textarea ident="reviewer_report--competing_interests--detail"
-                               owner=model
-                               displayQuestionText=false
-                               inputClassNames="form-control reviewer_report--competing_interests--detail"
-                               readOnly=readOnly}}
-  </li>
+      {{nested-question-textarea ident="reviewer_report--competing_interests--detail"
+                                 owner=model
+                                 displayQuestionText=false
+                                 inputClassNames="form-control reviewer_report--competing_interests--detail"
+                                 readOnly=readOnly}}
+    </li>
 
-  <li class="question">
-    {{nested-question-textarea ident="reviewer_report--identity"
-                        owner=model
-                        displayContent=true
-                        inputClassNames="form-control reviewer_report--identity"
-                        helpText="Your name and review will not be published with the manuscript."
-                        readOnly=readOnly}}
-  </li>
+    <li class="question">
+      {{nested-question-textarea ident="reviewer_report--identity"
+                          owner=model
+                          displayContent=true
+                          inputClassNames="form-control reviewer_report--identity"
+                          helpText="Your name and review will not be published with the manuscript."
+                          readOnly=readOnly}}
+    </li>
 
-  <li class="question">
-    {{nested-question-textarea ident="reviewer_report--comments_for_author"
-                        owner=model
-                        displayContent=true
-                        inputClassNames="form-control taller reviewer_report--comments_for_author"
-                        helpText="These comments will be transmitted to the author."
-                        readOnly=readOnly}}
-  </li>
+    <li class="question">
+      {{nested-question-textarea ident="reviewer_report--comments_for_author"
+                          owner=model
+                          displayContent=true
+                          inputClassNames="form-control taller reviewer_report--comments_for_author"
+                          helpText="These comments will be transmitted to the author."
+                          readOnly=readOnly}}
+    </li>
 
-  <li class="question">
-    {{nested-question-textarea ident="reviewer_report--additional_comments"
-                        owner=model
-                        displayContent=true
-                        inputClassNames="form-control reviewer_report--additional_comments"
-                        helpText="Additional comments may include concerns about dual publication, research or publication ethics.<br><br>These comments will not be transmitted to the authors."
-                        readOnly=readOnly}}
-  </li>
+    <li class="question">
+      {{nested-question-textarea ident="reviewer_report--additional_comments"
+                          owner=model
+                          displayContent=true
+                          inputClassNames="form-control reviewer_report--additional_comments"
+                          helpText="Additional comments may include concerns about dual publication, research or publication ethics.<br><br>These comments will not be transmitted to the authors."
+                          readOnly=readOnly}}
+    </li>
 
-  <li class="question">
-    {{nested-question-radio ident="reviewer_report--suitable_for_another_journal"
-      owner=model
-      readOnly=readOnly
-      helpText=(concat "If so, please specify which journal and whether you will be willing to continue there as reviewer. <em>" model.paper.journal.name "</em> is committed to facilitate the transfer between journals of suitable manuscripts to reduce redundant review cycles, and we appreciate your support.")}}
+    <li class="question">
+      {{nested-question-radio ident="reviewer_report--suitable_for_another_journal"
+        owner=model
+        readOnly=readOnly
+        helpText=(concat "If so, please specify which journal and whether you will be willing to continue there as reviewer. <em>" model.paper.journal.name "</em> is committed to facilitate the transfer between journals of suitable manuscripts to reduce redundant review cycles, and we appreciate your support.")}}
 
-    {{nested-question-textarea ident="reviewer_report--suitable_for_another_journal--journal"
-      owner=model
-      inputClassNames="form-control reviewer_report--suitable_for_another_journal--journal"
-      displayQuestionText=false
-      readOnly=readOnly}}
-  </li>
+      {{nested-question-textarea ident="reviewer_report--suitable_for_another_journal--journal"
+        owner=model
+        inputClassNames="form-control reviewer_report--suitable_for_another_journal--journal"
+        displayQuestionText=false
+        readOnly=readOnly}}
+    </li>
 
 
 
-</ol>
-{{/if}}
+  </ol>
+  {{/if}}
+{{else}}
+  {{progress-spinner visible=true}}
+{{/util/async-content}}

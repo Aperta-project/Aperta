@@ -1088,6 +1088,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._download_drawer_close_btn).click()
 
   def _check_resize_handle(self):
+    """
+    _check_resize_handle: Validates the sidebar/manuscript resize handle
+    styles and tooltip action
+    :return: void function
+    """
     handle_line = self._get(self._resize_handle_line)
     handle_box = self._get(self._resize_handle_box)
     handle_box_lines = self._gets(self._resize_handle_box_lines)
@@ -1133,7 +1138,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Validate handle box lines
     assert len(handle_box_lines) == 3, 'The handle box have {0} lines when 3 ' \
-                                       'is expected'.format(str(len(handle_box_lines)))
+                                       'is expected'.format(len(handle_box_lines))
     line_expected_top = '4px'
     line_expected_padding_left = '2px'
     line_expected_height = '26px'

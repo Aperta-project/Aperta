@@ -12,14 +12,14 @@ module CoAuthorConfirmable
   def co_author_confirmed!
     update_attributes!(
       co_author_state: 'confirmed',
-      co_author_state_modified: Time.now.utc
+      co_author_state_modified_on: Time.now.utc
     )
   end
 
   def co_author_refuted!
     update_attributes!(
       co_author_state: 'refuted',
-      co_author_state_modified: Time.now.utc
+      co_author_state_modified_on: Time.now.utc
     )
   end
 end

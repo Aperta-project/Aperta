@@ -121,11 +121,11 @@ describe Author do
       end.to change { author.co_author_state }.from(nil).to('confirmed')
     end
 
-    it "sets co_author_state_modified" do
+    it "sets co_author_state_modified_on" do
       Timecop.freeze do |reference_time|
         expect do
           author.co_author_confirmed!
-        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
+        end.to change { author.co_author_state_modified_on }.from(nil).to(reference_time)
       end
     end
   end
@@ -137,11 +137,11 @@ describe Author do
       end.to change { author.co_author_state }.from(nil).to('refuted')
     end
 
-    it "sets co_author_state_modified" do
+    it "sets co_author_state_modified_on" do
       Timecop.freeze do |reference_time|
         expect do
           author.co_author_refuted!
-        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
+        end.to change { author.co_author_state_modified_on }.from(nil).to(reference_time)
       end
     end
   end

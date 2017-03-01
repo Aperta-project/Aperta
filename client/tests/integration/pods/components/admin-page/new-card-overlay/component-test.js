@@ -14,7 +14,7 @@ function mockStore(record) {
       return record;
     }
   };
-};
+}
 
 test('it creates a record when the save button is pushed', function(assert) {
   const mockRecord = {

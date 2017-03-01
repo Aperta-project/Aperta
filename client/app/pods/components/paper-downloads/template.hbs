@@ -7,7 +7,7 @@
       <th>Manuscript Version</th>
       <th colspan="2">* Format</th>
     </tr>
-    {{#if fetchVersions.isIdle}}
+    {{#util/async-content concurrencyTask=fetchVersions tagName="tbody"}}
       {{#each versions as |version|}}
         <tr class="paper-downloads-row animation-fade-in">
           <td class="paper-downloads-version">
@@ -33,13 +33,30 @@
               </a>
             </td>
           {{else if (eq version.fileType "pdf")}}
-            <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
-              <a href={{paper-download-link versionedText=version format="pdf_with_attachments"}}
-                 class="download-pdf"
-                 title="Download PDF">
-                {{fa-icon "file-pdf-o"}} PDF
-              </a>
-            </td>
+            {{#if version.sourceType}}
+              <td class="paper-downloads-link paper-downloads-link--sourcetext-align-right">
+                <a href={{paper-download-link versionedText=version format="source"}}
+                   class="download-source"
+                   title="Download Manuscript Source">
+                  {{file-label fileName=(concat '.' version.sourceType)}}
+                </a>
+              </td>
+              <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+                <a href={{paper-download-link versionedText=version format="pdf_with_attachments"}}
+                   class="download-pdf"
+                   title="Download PDF">
+                  {{fa-icon "file-pdf-o"}} PDF
+                </a>
+              </td>
+            {{else}}
+              <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
+                <a href={{paper-download-link versionedText=version format="pdf"}}
+                   class="download-pdf"
+                   title="Download PDF">
+                  {{fa-icon "file-pdf-o"}} PDF
+                </a>
+              </td>
+            {{/if}}
           {{else}}
             <td colspan="2">Processing...</td>
           {{/if}}
@@ -53,7 +70,7 @@
                            size="small"}}
       </td>
     </tr>
-    {{/if}}
+    {{/util/async-content}}
   </table>
   <p class="downloads-figures-description">*PDFs contain all figures and supplemental information.</p>
 </div>

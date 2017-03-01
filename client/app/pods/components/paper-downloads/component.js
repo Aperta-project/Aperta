@@ -16,7 +16,6 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.fetchVersions.perform();
   },
 
   pdfDownloadLink: Ember.computed('paperid', function() {

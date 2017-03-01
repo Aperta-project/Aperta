@@ -40,15 +40,9 @@ module PaperConverters
       html = create_attachments_html
       pdf_data = PDFKit.new(
         html,
-        javascript_delay: 0,
-        footer_font_name: 'Times New Roman',
-        footer_font_size: '10'
+        javascript_delay: 0
       ).to_pdf
       CombinePDF.parse(pdf_data)
-    end
-
-    def latest_version?
-      @versioned_text == @versioned_text.paper.latest_version
     end
 
     def figures

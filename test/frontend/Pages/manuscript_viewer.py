@@ -236,9 +236,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     short_doi = self.get_paper_short_doi_from_url()
     logging.info(short_doi)
-    return PgSQL().query('SELECT papers.journal_id '
+    journal_id = PgSQL().query('SELECT papers.journal_id '
                                'FROM papers '
                                'WHERE short_doi = %s;', (short_doi,))[0][0]
+    return journal_id
 
   def _check_collaborator(self):
     """

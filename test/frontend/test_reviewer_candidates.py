@@ -242,6 +242,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rev_cand_task.complete_reviewer_cand_form(reviewer)
     rev_cand_task.click_completion_button()
     manuscript_page.check_for_flash_error()
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_submit_overlay()

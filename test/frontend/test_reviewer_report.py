@@ -65,6 +65,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.complete_task('Additional Information')
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -151,6 +152,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()

@@ -278,7 +278,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.page_ready_post_create()
     short_doi = manuscript_viewer.get_paper_short_doi_from_url()
-
+    manuscript_page.complete_task('Upload Manuscript')
     # Make submission
     manuscript_viewer.click_submit_btn()
     manuscript_viewer.confirm_submit_btn()

@@ -7,7 +7,7 @@
       <th>Manuscript Version</th>
       <th colspan="2">Format</th>
     </tr>
-    {{#if fetchVersions.isIdle}}
+    {{#util/async-content concurrencyTask=fetchVersions}}
       {{#each versions as |version|}}
         <tr class="paper-downloads-row animation-fade-in">
           <td class="paper-downloads-version">
@@ -74,6 +74,6 @@
                            size="small"}}
       </td>
     </tr>
-    {{/if}}
+    {{/util/async-content}}
   </table>
 </div>

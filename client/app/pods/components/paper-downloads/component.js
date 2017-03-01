@@ -7,6 +7,7 @@ export default Ember.Component.extend({
 
   propTypes: {
     // actions:
+    paper: PropTypes.EmberObject.isRequired,
     exportDocument: PropTypes.func.isRequired,
     exportSource: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired
@@ -14,7 +15,6 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.fetchVersions.perform();
   },
 
   pdfDownloadLink: Ember.computed('paperid', function() {

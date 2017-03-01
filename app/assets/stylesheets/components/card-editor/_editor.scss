@@ -1,0 +1,33 @@
+.card-editor-editor {
+  flex: 1;
+  padding-top: 10px;
+  background-color: $aperta-grey-light;
+
+  .card-editor-workspace-container {
+    overflow-y: scroll;
+    margin-top: 10px;
+  }
+
+  .card-editor-save-buttons {
+    text-align: right;
+    padding: 0 10px;
+
+    .card-editor-save-buttons-container {
+      max-width: 1150px;
+      padding: 0 30px;
+      margin: 0 auto;
+    }
+
+    .button {
+      margin-left: 10px;
+    }
+
+    .editor-save {
+      min-width: 100px;
+    }
+
+    .editor-publish:disabled {
+      background-color: $aperta-grey;
+    }
+  }
+}

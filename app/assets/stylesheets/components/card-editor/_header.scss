@@ -16,9 +16,10 @@
   }
 
   .card-editor-header-back {
-    font-size: 14px;
-    color: $aperta-blue;
+    display: block;
     margin: 20px 30px 0;
+    color: $aperta-blue;
+    font-size: 14px;
     &:hover {
       text-decoration: none;
     }

@@ -10,8 +10,8 @@ describe PaperDownloadsController, type: :controller do
       :versioned_text,
       paper: paper,
       file_type: 'docx',
-      s3_dir: 'sample/path',
-      file: 'name.docx'
+      manuscript_s3_path: 'sample/path',
+      manuscript_filename: 'name.docx'
     )
   end
   let!(:manuscript_attachment) { create(:manuscript_attachment, owner: paper) }
@@ -65,8 +65,8 @@ describe PaperDownloadsController, type: :controller do
           create(
             :versioned_text,
             file_type: 'docx',
-            s3_dir: 'sample/path',
-            file: 'name.docx'
+            manuscript_s3_path: 'sample/path',
+            manuscript_filename: 'name.docx'
           )
         end
         let!(:manuscript_attachment) do

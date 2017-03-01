@@ -42,7 +42,7 @@ module PaperConverters
         html,
         javascript_delay: 0,
         footer_font_name: 'Times New Roman',
-        footer_font_size: '10' # TODO: I deleted a thing here
+        footer_font_size: '10'
       ).to_pdf
       CombinePDF.parse(pdf_data)
     end

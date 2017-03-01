@@ -43,6 +43,36 @@ describe PaperDownloadsController, type: :controller do
         expect(do_request).to redirect_to(/#{quoted}.+Amz-SignedHeaders/)
       end
 
+      context 'a synchronous conversion is requested' do
+        let!(:versioned_text) do
+          paper.reload # weirdly, this is needed for paper.file to not be nil
+          create(
+            :versioned_text,
+            paper: paper,
+            file_type: 'pdf',
+            manuscript_s3_path: 'sample/path',
+            manuscript_filename: 'name.pdf'
+          )
+        end
+
+        subject(:do_request) do
+          get(
+            :show,
+            id: paper.to_param,
+            versioned_text_id: versioned_text.to_param,
+            export_format: 'pdf_with_attachments',
+            format: :json
+          )
+        end
+
+        it 'sends data to the browser', vcr: { cassette_name: 'pdf_file', match_requests_on: [:method] } do
+          do_request
+          expect(response).to be_success
+          expect(response.headers['Content-Disposition']).to match /attachment/
+          expect(response.headers['Content-Type']).to eq 'application/pdf'
+        end
+      end
+
       context 'the VersionedText is not specified' do
         subject(:do_request) do
           get(

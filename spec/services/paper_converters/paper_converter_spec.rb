@@ -20,8 +20,8 @@ describe PaperConverters::PaperConverter do
         end
       end
 
-      context 'the export format is pdf_with_figures' do
-        let(:export_format) { 'pdf_with_figures' }
+      context 'the export format is pdf_with_attachments' do
+        let(:export_format) { 'pdf_with_attachments' }
 
         it { is_expected.to be_an_instance_of PaperConverters::PdfWithAttachmentsPaperConverter }
       end

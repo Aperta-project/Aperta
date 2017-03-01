@@ -12,7 +12,7 @@ module PaperConverters
       if export_format == 'source'
         converter_klass = SourcePaperConverter
       end
-      if export_format == 'pdf_with_figures' && current_format == 'pdf'
+      if export_format == 'pdf_with_attachments' && current_format == 'pdf'
         converter_klass = PdfWithAttachmentsPaperConverter
       end
       raise(

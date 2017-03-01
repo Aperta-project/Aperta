@@ -33,16 +33,6 @@ module PaperConverters
       )
     end
 
-    def rank
-      return 0 unless title
-      number_match = title.match(/\d+/)
-      if number_match
-        number_match[0].to_i
-      else
-        0
-      end
-    end
-
     def initialize(figure: nil, title: nil, href: nil)
       @figure = figure
       @title = title
@@ -57,6 +47,16 @@ module PaperConverters
     def href
       return @href if @href
       return @figure.proxyable_url(version: :detail) if @figure
+    end
+
+    def rank
+      return 0 unless title
+      number_match = title.match(/\d+/)
+      if number_match
+        number_match[0].to_i
+      else
+        0
+      end
     end
   end
 end

@@ -28,7 +28,6 @@ describe Figure, redis: true do
     subject(:figure) do
       create(
         :figure,
-        :with_resource_token,
         :unprocessed,
         owner: paper
       )

@@ -49,6 +49,7 @@ class ProductionMetadataCardTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

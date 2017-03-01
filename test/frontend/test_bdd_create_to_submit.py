@@ -91,12 +91,12 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     # Need to wait for url to update
     count = 0
-    short_doi = manuscript_page.get_current_url().split('/')[-1]
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     while not short_doi:
       if count > 60:
         raise (StandardError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
-      short_doi = manuscript_page.get_current_url().split('/')[-1]
+      short_doi = manuscript_page.get_paper_short_doi_from_url()
       count += 1
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
@@ -113,6 +113,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       logging.warning('Conversion never completed - still showing interim title')
 
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    manuscript_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
     manuscript_page.click_submit_btn()
@@ -127,7 +128,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-
     manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
@@ -175,6 +175,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       logging.warning('Conversion not completed - still showing interim title')
 
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+
+    upload_package = {'source':''}
+    manuscript_page.complete_task('Upload Manuscript', data=upload_package)
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
     manuscript_page.click_submit_btn()
@@ -288,8 +291,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       else:
         break
       logging.warning('Conversion never completed - still showing interim title')
-
     # Give a little time for the submit button to attach to the DOM
+    manuscript_page.complete_task('Upload Manuscript')
     time.sleep(5)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -413,7 +416,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       count += 1
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
@@ -427,6 +429,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
 
     # Give a little time for the submit button to attach to the DOM
     time.sleep(5)
+    upload_package = {'source':''}
+    manuscript_page.complete_task('Upload Manuscript', data=upload_package)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()

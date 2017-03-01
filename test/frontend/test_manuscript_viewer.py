@@ -201,6 +201,7 @@ class ManuscriptViewerTest(CommonTest):
     figures_task.task_ready()
     manuscript_page.complete_task('Figures')
     manuscript_page.click_task('Figures')
+    manuscript_page.complete_task('Upload Manuscript')
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
     assert "Your manuscript is ready for Initial Submission." in \
@@ -277,7 +278,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.page_ready_post_create()
     short_doi = manuscript_viewer.get_paper_short_doi_from_url()
-
+    manuscript_page.complete_task('Upload Manuscript')
     # Make submission
     manuscript_viewer.click_submit_btn()
     manuscript_viewer.confirm_submit_btn()

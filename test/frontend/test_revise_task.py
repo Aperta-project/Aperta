@@ -57,6 +57,7 @@ class ReviseManuscriptTest(CommonTest):
     paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
+    paper_viewer.complete_task('Upload Manuscript')
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()

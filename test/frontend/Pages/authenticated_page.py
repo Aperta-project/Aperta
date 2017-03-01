@@ -226,6 +226,23 @@ class AuthenticatedPage(PlosPage):
     attach_input.send_keys(file_name)
     return None
 
+  def get_paper_short_doi_from_url(self):
+    """
+    Returns the database paper short doi from URL
+    """
+    # Need to wait for url to update
+    count = 0
+    short_doi = self.get_current_url().split('/')[-1]
+    while not short_doi:
+      if count > 60:
+        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+      time.sleep(1)
+      short_doi = self.get_current_url().split('/')[-1]
+      count += 1
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    return short_doi
+
   def delete_attach_file(self, file_name):
     """
     Delete a file from the attach component that is located in Invite AE and other places

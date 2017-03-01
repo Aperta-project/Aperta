@@ -39,7 +39,7 @@ class DiscussionForumTest(CommonTest):
 
   """
 
-  def test_notification(self):
+  def _test_notification(self):
     """
     Validates red circle on discussion icon on manuscript, discussion and message topic
     when added to a discussion and when mentioned in a topic.
@@ -179,6 +179,7 @@ class DiscussionForumTest(CommonTest):
     logging.info('Assigned paper short doi: {0}'.format(short_doi))
     # Submit paper
     # reviewer1
+    ms_viewer.complete_task('Upload Manuscript')
     ms_viewer.click_submit_btn()
     ms_viewer.confirm_submit_btn()
     ms_viewer.close_modal()

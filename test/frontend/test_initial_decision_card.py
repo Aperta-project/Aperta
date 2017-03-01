@@ -80,6 +80,7 @@ class InitialDecisionCardTest(CommonTest):
     # figures
     manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Upload Manuscript')
     # Submit paper
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

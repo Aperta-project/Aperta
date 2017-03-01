@@ -27,9 +27,15 @@ Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 Style/MultilineMethodCallIndentation:
+  # Both styles of method call indentation are acceptable, and depending on
+  # folks' editor configurations the default might be to indent a single level
+  # or to align subsequent lines with the first call
   Enabled: false
 
 Style/AlignParameters:
+  # Both styles of method call indentation are acceptable, and depending on
+  # folks' editor configurations the default might be to indent a single level
+  # or to align subsequent lines with the first parameter
   Enabled: false
 
 Style/StringLiterals:
@@ -49,24 +55,12 @@ Metrics/LineLength:
 
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.
-    - 'spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/plos_billing/spec/**/*'
-    - 'engines/tahi_standard_tasks/spec/**/*'
-    - 'engines/plos_bio_internal_review/spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/tahi-assign_team/spec/**/*'
+    - '**/spec/**/*'
 
 Style/PredicateName:
   Exclude:
     # has_foo? is idiomatic usage in page objects
-    - 'spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/plos_billing/spec/**/*'
-    - 'engines/tahi_standard_tasks/spec/**/*'
-    - 'engines/plos_bio_internal_review/spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/tahi-assign_team/spec/**/*'
+    - '**/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.
@@ -87,10 +81,9 @@ Style/Documentation:
   # Class-level comments on migrations and serializers often end up being
   # tautological
   Exclude:
-    - 'db/migrate/*'
-    - 'engines/**/db/migrate/*'
-    - 'app/serializers/*'
-    - 'engines/**/app/serializers/*'
+    - '**/db/migrate/*'
+    - '**/app/serializers/*'
+    - '**/spec/**/*'
 
 Style/WordArray:
   # If an array is *accidentally* made of single-word strings, being

@@ -610,7 +610,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task.click()
       if data and 'source' in data:
         # there is a sourcefile
-        doc2upload = random.choice(docs)
+        if not data['source']:
+          doc2upload = random.choice(docs)
+        else:
+          doc2upload = data['source']
         current_path = os.getcwd()
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))

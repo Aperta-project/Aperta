@@ -15,6 +15,7 @@
 .author-task-item-view {
   @include align-items(center);
   background: $aperta-grey-xlight;
+  margin-bottom: .25em;
 
   .flex-group {
     margin-left: 1rem;
@@ -22,6 +23,9 @@
 
   &.current-user .author-name {
     font-weight: bold;
+  }
+  .author-name {
+    flex-direction: column;
   }
 }
 
@@ -201,8 +205,8 @@
 
 .author-confirmed {
   margin-bottom: 1em;
-  
-  .author-confirmed-check {
-    color: $aperta-green
-  }
+}
+
+.author-confirmed-check {
+  color: $aperta-green
 }

@@ -23,7 +23,7 @@ module PaperConverters
 
     def uploaded_pdf_data
       url = Attachment.authenticated_url_for_key(@versioned_text.s3_full_path)
-      Net::HTTP.get_response(URI.parse(url)).body
+      Faraday.get(URI.parse(url)).body
     end
 
     def parsed_uploaded_pdf

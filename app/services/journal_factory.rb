@@ -171,6 +171,7 @@ class JournalFactory
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)
+      role.ensure_permission_exists(:create_card, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
@@ -206,6 +207,8 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+
+      role.ensure_permission_exists(:view, applies_to: Card)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)

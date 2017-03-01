@@ -50,4 +50,10 @@ class EventStreamSubscriber
     TahiPusher::ChannelName.build(target: TahiPusher::ChannelName::SYSTEM, access: TahiPusher::ChannelName::PUBLIC)
   end
 
+  def admin_channel
+    TahiPusher::ChannelName.build(
+      target: TahiPusher::ChannelName::ADMIN,
+      access: TahiPusher::ChannelName::PRIVATE
+    )
+  end
 end

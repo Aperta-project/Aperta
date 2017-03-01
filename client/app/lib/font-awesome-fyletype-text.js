@@ -1,42 +1,42 @@
 export default function(type) {
 
   if ( /\.(jpe?g|png|gif|bmp)$/i.test(type) ) {
-    return 'fa-file-image-o';
+    return 'Image';
   }
 
   if ( /\.(doc|docx)$/i.test(type) ) {
-    return 'fa-file-word-o';
+    return 'Word';
   }
 
   if ( /\.(xls|xlsx)$/i.test(type) ) {
-    return 'fa-file-excel-o';
+    return 'Excel';
   }
 
   if ( /\.(ppt|pptx)$/i.test(type) ) {
-    return 'fa-file-powerpoint-o';
+    return 'Powerpoint';
   }
 
   if ( /\.(pdf)$/i.test(type) ) {
-    return 'fa-file-pdf-o';
+    return 'PDF';
   }
 
   if ( /\.(mp4|mpg)$/i.test(type) ) {
-    return 'fa-file-movie-o';
+    return 'Movie';
   }
 
   if ( /\.(mp3|flac|wav)$/i.test(type) ) {
-    return 'fa-file-audio-o';
+    return 'Audio';
   }
 
   if ( /\.(zip|tar)$/i.test(type) ) {
-    return 'fa-file-archive-o';
+    return 'Zip';
   }
 
   if ( /\.(rb|java|py)$/i.test(type) ) {
-    return 'fa-file-code-o';
+    return 'Code';
   }
 
   if ( /\.(txt)$/i.test(type) ) {
-    return 'fa-file-text-o';
+    return 'Text';
   }
 }

@@ -52,24 +52,11 @@ module PaperConverters
     end
 
     def figures
-      FigureProxy.from_versioned_text(@versioned_text)
+      FigureProxy.from_versioned_text(@versioned_text).sort_by(&:rank)
     end
 
     def supporting_information_files
-      if @versioned_text == @versioned_text.paper.latest_version
-        return @versioned_text.paper.supporting_information_files.map do |supporting_information_file|
-          SupportingInformationFileProxy.from_supporting_information_file(supporting_information_file)
-        end
-      else
-        major_version = @versioned_text.major_version
-        minor_version = @versioned_text.minor_version
-        snapshots = @versioned_text.paper.snapshots.supporting_information_files
-                      .where(major_version: major_version,
-                             minor_version: minor_version)
-        return snapshots.map do |snapshot|
-          SupportingInformationFileProxy.from_snapshot(snapshot)
-        end
-      end
+      SupportingInformationFileProxy.from_versioned_text(@versioned_text)
     end
 
     def create_attachments_html
@@ -83,6 +70,5 @@ module PaperConverters
         }
       )
     end
-
   end
 end

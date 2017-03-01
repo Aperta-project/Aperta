@@ -23,6 +23,11 @@ describe PaperConverters::FigureProxy do
       subject { figure_proxy.title }
       it { is_expected.to be_present }
     end
+
+    describe 'rank' do
+      subject { figure_proxy.rank }
+      it { is_expected.to be_present }
+    end
   end
 
   describe ".from_figure" do

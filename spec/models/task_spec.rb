@@ -164,12 +164,12 @@ describe Task do
     let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
 
     it "returns the answer for the question matching the given ident" do
-      expect(task.answer_for("foo")).to eq(answer_foo)
+      expect(task.answer_for_ident("foo")).to eq(answer_foo)
     end
 
     context "and there is no answer for the given ident" do
       it "returns nil" do
-        expect(task.answer_for("unknown-ident")).to be(nil)
+        expect(task.answer_for_ident("unknown-ident")).to be(nil)
       end
     end
   end

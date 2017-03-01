@@ -38,7 +38,7 @@ module Typesetter
     end
 
     def government_employee
-      object.answer_for(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+      object.answer_for_ident(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
         .try(:value)
     end
 

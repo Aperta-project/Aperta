@@ -26,11 +26,11 @@ module TahiStandardTasks
     end
 
     def influence
-      answer_for('funder--had_influence').try(:value)
+      answer_for_ident('funder--had_influence').try(:value)
     end
 
     def influence_description
-      answer_for('funder--had_influence--role_description').try(:value)
+      answer_for_ident('funder--had_influence--role_description').try(:value)
     end
 
     private

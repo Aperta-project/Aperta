@@ -18,24 +18,24 @@ module TahiStandardTasks
     end
 
     def publication_date
-      answer_for("production_metadata--publication_date").try(:value)
+      answer_for_ident("production_metadata--publication_date").try(:value)
     end
 
     def provenance
-      answer_for("production_metadata--provenance").try(:value)
+      answer_for_ident("production_metadata--provenance").try(:value)
     end
 
     def special_handling_instructions
-      answer_for("production_metadata--special_handling_instructions")
+      answer_for_ident("production_metadata--special_handling_instructions")
         .try(:value)
     end
 
     def volume_number
-      answer_for("production_metadata--volume_number").try(:value)
+      answer_for_ident("production_metadata--volume_number").try(:value)
     end
 
     def issue_number
-      answer_for("production_metadata--issue_number").try(:value)
+      answer_for_ident("production_metadata--issue_number").try(:value)
     end
   end
 end

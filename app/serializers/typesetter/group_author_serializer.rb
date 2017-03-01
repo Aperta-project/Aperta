@@ -13,7 +13,7 @@ module Typesetter
     end
 
     def government_employee
-      object.answer_for(::GroupAuthor::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
+      object.answer_for_ident(::GroupAuthor::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
         .try(:value)
     end
 

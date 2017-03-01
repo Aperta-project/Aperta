@@ -26,7 +26,7 @@ module Typesetter
     end
 
     def title
-      billing_answer_for('plos_billing--title')
+      billing_answer_for_ident('plos_billing--title')
     end
 
     def journal
@@ -34,7 +34,7 @@ module Typesetter
     end
 
     def firstname
-      billing_answer_for('plos_billing--first_name')
+      billing_answer_for_ident('plos_billing--first_name')
     end
 
     def middlename
@@ -42,23 +42,23 @@ module Typesetter
     end
 
     def lastname
-      billing_answer_for('plos_billing--last_name')
+      billing_answer_for_ident('plos_billing--last_name')
     end
 
     def institute
-      billing_answer_for('plos_billing--affiliation1')
+      billing_answer_for_ident('plos_billing--affiliation1')
     end
 
     def department
-      billing_answer_for('plos_billing--department')
+      billing_answer_for_ident('plos_billing--department')
     end
 
     def address1
-      billing_answer_for('plos_billing--address1')
+      billing_answer_for_ident('plos_billing--address1')
     end
 
     def address2
-      billing_answer_for('plos_billing--address2')
+      billing_answer_for_ident('plos_billing--address2')
     end
 
     def address3
@@ -66,23 +66,23 @@ module Typesetter
     end
 
     def city
-      billing_answer_for('plos_billing--city')
+      billing_answer_for_ident('plos_billing--city')
     end
 
     def state
-      billing_answer_for('plos_billing--state')
+      billing_answer_for_ident('plos_billing--state')
     end
 
     def zip
-      billing_answer_for('plos_billing--postal_code')
+      billing_answer_for_ident('plos_billing--postal_code')
     end
 
     def country
-      billing_answer_for('plos_billing--country')
+      billing_answer_for_ident('plos_billing--country')
     end
 
     def phone1
-      billing_answer_for('plos_billing--phone_number')
+      billing_answer_for_ident('plos_billing--phone_number')
     end
 
     def phone2
@@ -94,7 +94,7 @@ module Typesetter
     end
 
     def email
-      billing_answer_for('plos_billing--email')
+      billing_answer_for_ident('plos_billing--email')
     end
 
     def pubdnumber
@@ -119,16 +119,16 @@ module Typesetter
     end
 
     def direct_bill_response
-      return unless billing_answer_for(
+      return unless billing_answer_for_ident(
         'plos_billing--payment_method') == 'institutional'
       additional_data =
-        billing_task.answer_for('plos_billing--ringgold_institution').try(:additional_data)
+        billing_task.answer_for_ident('plos_billing--ringgold_institution').try(:additional_data)
       additional_data['nav_customer_number'] if additional_data
     end
 
     def gpi_response
-      return unless billing_answer_for('plos_billing--payment_method') == 'gpi'
-      billing_answer_for('plos_billing--gpi_country')
+      return unless billing_answer_for_ident('plos_billing--payment_method') == 'gpi'
+      billing_answer_for_ident('plos_billing--gpi_country')
     end
 
     def final_dispo_accept
@@ -149,8 +149,8 @@ module Typesetter
       task('PlosBilling::BillingTask')
     end
 
-    def billing_answer_for(ident)
-      answer = task('PlosBilling::BillingTask').answer_for(ident)
+    def billing_answer_for_ident(ident)
+      answer = task('PlosBilling::BillingTask').answer_for_ident(ident)
       answer.value if answer
     end
 

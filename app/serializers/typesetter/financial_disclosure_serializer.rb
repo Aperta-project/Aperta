@@ -8,7 +8,7 @@ module Typesetter
     has_many :funders, serializer: Typesetter::FunderSerializer
 
     def author_received_funding
-      object.answer_for('financial_disclosures--author_received_funding').try(:value)
+      object.answer_for_ident('financial_disclosures--author_received_funding').try(:value)
     end
 
     def funding_statement

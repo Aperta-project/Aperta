@@ -35,7 +35,7 @@ class SendToApexCard(BaseCard):
     :return: None
     """
     # Time needed for message to be ready
-    time.sleep(3)
+    self._wait_for_text_be_present_in_element(self._apex_message)
     apex_error, apex_succeed = self._gets(self._apex_message)
     if "530" in apex_succeed.text:
       assert apex_error.text == (

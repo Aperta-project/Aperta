@@ -11,6 +11,7 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
+from Base.Resources import creator_login1
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'scadavid@plos.org'
@@ -35,8 +36,8 @@ class SendToApexCard(BaseCard):
     :return: None
     """
     # Time needed for message to be ready
-    self._wait_for_text_be_present_in_element(self._apex_message)
     apex_error, apex_succeed = self._gets(self._apex_message)
+    self._wait_for_text_be_present_in_element(apex_succeed, "Apex Upload succeeded.")
     if "530" in apex_succeed.text:
       assert apex_error.text == (
           "Apex Upload has failed. Paper has not been accepted"), apex_error
@@ -136,12 +137,12 @@ class SendToApexCard(BaseCard):
     paper_type = json_data["metadata"]["paper_type"]
     doi = json_data["metadata"]["doi"]
 
-    asset_author = {"affiliation": "University of Copenhagen",
+    asset_author = {"affiliation": creator_login1['affiliation-name'],
                     "contributions": "Conceptualization", 
                     "corresponding": True, 
                     "deceased": None, 
-                    "department": "Physics", 
-                    "email": "sealresq+1000@gmail.com", 
+                    "department": creator_login1['affiliation-dept'], 
+                    "email": creator_login1['email'], 
                     "first_name": "atest", 
                     "government_employee": False, 
                     "last_name": "author1", 
@@ -149,7 +150,7 @@ class SendToApexCard(BaseCard):
                     "orcid_authenticated": True, 
                     "orcid_profile_url": "http://sandbox.orcid.org/0000-0002-3438-8942", 
                     "secondary_affiliation": None, 
-                    "title": "Professor", 
+                    "title": creator_login1['affiliation-title'], 
                     "type": "author"}
     asset_competing_interests = {"competing_interests": None,
                                  "competing_interests_statement":

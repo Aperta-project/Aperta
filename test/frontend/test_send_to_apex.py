@@ -45,6 +45,7 @@ class SendToApexTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.complete_task('Upload Manuscript', click_override=True)
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.page_ready()

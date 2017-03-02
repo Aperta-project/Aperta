@@ -18,6 +18,7 @@ from Pages.manuscript_viewer import ManuscriptViewerPage
 from Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.Cards.send_to_apex_card import SendToApexCard
 from Cards.register_decision_card import RegisterDecisionCard
+from Base.PostgreSQL import PgSQL
 
 __author__ = 'scadavid@plos.org'
 
@@ -153,8 +154,13 @@ class SendToApexTest(CommonTest):
     manuscript_page.page_ready_post_create()
     # Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
+    db_title, db_abstract = PgSQL().query('SELECT title, abstract '
+                                          'FROM papers '
+                                          'WHERE short_doi=%s;', (short_doi,))[0]
+    db_title = unicode(db_title, encoding='utf-8', errors='strict')
+    #db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
     manuscript_page.complete_task('Additional Information')
-    manuscript_page.complete_task('Authors')
+    manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Billing')
     manuscript_page.complete_task('Competing Interest')
     manuscript_page.complete_task('Cover Letter')
@@ -199,6 +205,7 @@ class SendToApexTest(CommonTest):
     logging.info('Connecting to FTP and taking the file')
     filename = send_to_apex_card.connect_to_aperta_ftp(short_doi)
     json_data = send_to_apex_card.extract_zip_file_and_load_json(filename)
+    send_to_apex_card.validate_json_information(json_data, short_doi, db_title, db_abstract)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

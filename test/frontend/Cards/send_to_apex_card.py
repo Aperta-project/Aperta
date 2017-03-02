@@ -87,12 +87,12 @@ class SendToApexCard(BaseCard):
     FTP_DIR = 'aperta2apextest'
 
     ftp = FTP(FTP_URL)
-    ftp.login(FTP_USER, FTP_USER)
+    ftp.login(FTP_USER, FTP_PASS)
     ftp.cwd(FTP_DIR)
     filename = '{0}.zip'.format(paper_id)
     local_filename = os.path.join(r'/home/smurcia/Desktop', filename)
     lf = open(local_filename, 'wb')
-    ftp.retrbinary('RETR' + filename, lf.write, 8*1024)
+    ftp.retrbinary('RETR ' + filename, lf.write, 8*1024)
     lf.close()
 
     return filename
@@ -100,6 +100,7 @@ class SendToApexCard(BaseCard):
   def extract_zip_file_and_load_json(self, filename):
     """
     This method extract the content of the retrieved file from FTP
+    :param filename: The name of the file to extract
     :return: json_data
     """
     zip_ref = zipfile.ZipFile(r'/home/smurcia/Desktop/{0}'.format(filename))
@@ -110,3 +111,72 @@ class SendToApexCard(BaseCard):
       json_data = json.load(json_file)
 
     return json_data
+
+  def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract):
+    """
+    This method validate the information within the extracted json
+    :param json_data: Is the extracted json
+    :param short_doi: Is the manuscript's ID
+    :param manuscript_title: Is the manuscript's title
+    :param manuscript_abstract: Is the manuscript's abstract
+    :return: None
+    """
+    author = json_data["metadata"]["authors"][0]["author"]
+    competing_interests = json_data["metadata"]["competing_interests"]
+    data_availability = json_data["metadata"]["data_availability"]
+    financial_disclosure = json_data["metadata"]["financial_disclosure"]
+    early_article_posting = json_data["metadata"]["early_article_posting"]
+    journal_title = json_data["metadata"]["journal_title"]
+    manuscript_id = json_data["metadata"]["manuscript_id"]
+    paper_abstract = json_data["metadata"]["paper_abstract"]
+    paper_title = json_data["metadata"]["paper_title"]
+    paper_type = json_data["metadata"]["paper_type"]
+    doi = json_data["metadata"]["doi"]
+
+    asset_author = {"affiliation": "University of Copenhagen",
+                    "contributions": "Conceptualization", 
+                    "corresponding": True, 
+                    "deceased": None, 
+                    "department": "Physics", 
+                    "email": "sealresq+1000@gmail.com", 
+                    "first_name": "atest", 
+                    "government_employee": False, 
+                    "last_name": "author1", 
+                    "middle_initial": None, 
+                    "orcid_authenticated": True, 
+                    "orcid_profile_url": "http://sandbox.orcid.org/0000-0002-3438-8942", 
+                    "secondary_affiliation": None, 
+                    "title": "Professor", 
+                    "type": "author"}
+    asset_competing_interests = {"competing_interests": None,
+                                 "competing_interests_statement": \
+                                     "The authors have declared that no competing interests exist."}
+    asset_data_availability = {"data_fully_available": None,
+                               "data_location_statement": None}
+    asset_financial_disclosure = {"author_received_funding": None,
+                                  "funders": [], 
+                                  "funding_statement": \
+                                      "The author(s) received no specific funding for this work."}
+
+    for key, value in author.iteritems():
+      if key == "contributions":
+        assert asset_author.get(key) in value, value
+      else:
+        assert value == asset_author.get(key), value
+
+    for key, value in competing_interests.iteritems():
+      assert value == asset_competing_interests.get(key), value
+
+    for key, value in data_availability.iteritems():
+      assert value == asset_data_availability.get(key), value
+
+    for key, value in financial_disclosure.iteritems():
+      assert value == asset_financial_disclosure.get(key), value
+
+    assert early_article_posting == True, early_article_posting
+    assert journal_title == "PLOS Wombat", journal_title
+    assert manuscript_id == short_doi, manuscript_id
+    assert paper_abstract == manuscript_abstract, paper_abstract
+    assert paper_title == manuscript_title, paper_title
+    assert paper_type == "generateCompleteApexData", paper_type
+    assert "/journal.{0}".format(short_doi) in doi, doi

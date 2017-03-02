@@ -39,4 +39,8 @@ export default function(type) {
   if ( /\.(txt)$/i.test(type) ) {
     return 'fa-file-text-o';
   }
+
+  if ( /\.(tex)$/i.test(type) ) {
+    return 'fa-file-text-o';
+  }
 }

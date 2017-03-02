@@ -13,6 +13,7 @@ moduleForComponent('file-label', 'Integration | Component | file label', {
     this.set('docFileName', 'test.doc');
     this.set('pdfFileName', 'test.pdf');
     this.set('zipFileName', 'test.zip');
+    this.set('texFileName', 'test.tex');
   }
 });
 
@@ -32,7 +33,7 @@ test('it shows PDF correctly', function(assert) {
   `);
 
   assert.textPresent('.file-label', 'PDF');
-  assert.elementFound('.fa-file-pdf-o', 'The word doc icon appears');
+  assert.elementFound('.fa-file-pdf-o', 'The pdf icon appears');
 });
 
 test('it shows DOC correctly', function(assert) {
@@ -52,11 +53,21 @@ test('it shows DOCX correctly', function(assert) {
   assert.textPresent('.file-label', 'Word');
   assert.elementFound('.fa-file-word-o', 'The word doc icon appears');
 });
+
 test('it shows ZIP correctly', function(assert) {
   this.render(hbs`
     {{file-label fileName=zipFileName}}
   `);
 
   assert.textPresent('.file-label', 'Zip');
-  assert.elementFound('.fa-file-archive-o', 'The word doc icon appears');
+  assert.elementFound('.fa-file-archive-o', 'The archive icon appears');
+});
+
+test('it shows LaTeX correctly', function(assert) {
+  this.render(hbs`
+    {{file-label fileName=texFileName}}
+  `);
+
+  assert.textPresent('.file-label', 'LaTeX');
+  assert.elementFound('.fa-file-text-o', 'The text icon appears');
 });

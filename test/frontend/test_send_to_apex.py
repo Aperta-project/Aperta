@@ -36,7 +36,6 @@ class SendToApexTest(CommonTest):
     logging.info('test_send_to_apex_message')
     # Create base data - new papers
     creator_user = random.choice(users)
-    logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -91,7 +90,6 @@ class SendToApexTest(CommonTest):
     logging.info('test_send_to_apex_card_style')
     # Create base data - new papers
     creator_user = random.choice(users)
-    logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -145,7 +143,6 @@ class SendToApexTest(CommonTest):
     logging.info('test_send_to_apex_file')
     # Create base data - new papers
     creator_user = users[0]
-    logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()

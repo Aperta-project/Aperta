@@ -24,9 +24,8 @@ class SendToApexCard(BaseCard):
     super(SendToApexCard, self).__init__(driver)
 
     # Locators - Instance members
-    self._apex_button = (By.CSS_SELECTOR, '.animation-fade-in > div > .send-to-apex-button')
-    self._apex_message = (By.CSS_SELECTOR, 
-                          '.animation-fade-in > div > div > .apex-delivery-message')
+    self._apex_button = (By.CLASS_NAME, 'send-to-apex-button')
+    self._apex_message = (By.CLASS_NAME, 'apex-delivery-message')
     self._close_apex = (By.CSS_SELECTOR, '.overlay-footer > div + a')
 
   # POM Actions
@@ -79,8 +78,8 @@ class SendToApexCard(BaseCard):
   def connect_to_aperta_ftp(self, paper_id):
     """
     This method allows to connect the ftp server and copy the file
-    :param paper_id: The id of the manuscrip
-    :return: filename, directory_path
+    :param paper_id: The id of the manuscript
+    :return: filename as str, directory_path as path
     """
     FTP_USER = 'aperta'
     FTP_PASS = 'flyskyfish'
@@ -104,7 +103,7 @@ class SendToApexCard(BaseCard):
     This method extract the content of the retrieved file from FTP
     :param filename: The name of the file to extract
     :param directory_path: The path of the folder
-    :return: json_data
+    :return: json_data as dict
     """
     zip_ref = zipfile.ZipFile(r'{0}/{1}'.format(directory_path, filename))
     zip_ref.extractall(r'{0}'.format(directory_path))

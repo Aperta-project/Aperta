@@ -5,10 +5,11 @@ import time
 import os
 import zipfile
 import json
+import tempfile
+import shutil
 
 from selenium.webdriver.common.by import By
 from ftplib import FTP
-from pprint import pprint
 
 from frontend.Cards.basecard import BaseCard
 
@@ -79,7 +80,7 @@ class SendToApexCard(BaseCard):
     """
     This method allows to connect the ftp server and copy the file
     :param paper_id: The id of the manuscrip
-    :return: filename
+    :return: filename, directory_path
     """
     FTP_USER = 'aperta'
     FTP_PASS = 'flyskyfish'
@@ -90,25 +91,28 @@ class SendToApexCard(BaseCard):
     ftp.login(FTP_USER, FTP_PASS)
     ftp.cwd(FTP_DIR)
     filename = '{0}.zip'.format(paper_id)
-    local_filename = os.path.join(r'/home/smurcia/Desktop', filename)
+    directory_path = tempfile.mkdtemp()
+    local_filename = os.path.join(r'{0}'.format(directory_path), filename)
     lf = open(local_filename, 'wb')
     ftp.retrbinary('RETR ' + filename, lf.write, 8*1024)
     lf.close()
 
-    return filename
+    return filename, directory_path
 
-  def extract_zip_file_and_load_json(self, filename):
+  def extract_zip_file_and_load_json(self, filename, directory_path):
     """
     This method extract the content of the retrieved file from FTP
     :param filename: The name of the file to extract
+    :param directory_path: The path of the folder
     :return: json_data
     """
-    zip_ref = zipfile.ZipFile(r'/home/smurcia/Desktop/{0}'.format(filename))
-    zip_ref.extractall(r'/home/smurcia/Desktop')
+    zip_ref = zipfile.ZipFile(r'{0}/{1}'.format(directory_path, filename))
+    zip_ref.extractall(r'{0}'.format(directory_path))
     zip_ref.close()
 
-    with open('/home/smurcia/Desktop/metadata.json') as json_file:    
+    with open('{0}/metadata.json'.format(directory_path)) as json_file:    
       json_data = json.load(json_file)
+    shutil.rmtree(directory_path)
 
     return json_data
 

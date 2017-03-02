@@ -29,7 +29,7 @@ class SendToApexTest(CommonTest):
   Validate if the data in the frontend match the data in the backend sent to Apex
   """
 
-  def _test_send_to_apex_message(self):
+  def test_send_to_apex_message(self):
     """
     test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding messages
     """
@@ -158,7 +158,7 @@ class SendToApexTest(CommonTest):
                                           'FROM papers '
                                           'WHERE short_doi=%s;', (short_doi,))[0]
     db_title = unicode(db_title, encoding='utf-8', errors='strict')
-    #db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
+    db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Billing')
@@ -203,8 +203,8 @@ class SendToApexTest(CommonTest):
     send_to_apex_card.click_send_to_apex_button()
     # Connecting to FTP
     logging.info('Connecting to FTP and taking the file')
-    filename = send_to_apex_card.connect_to_aperta_ftp(short_doi)
-    json_data = send_to_apex_card.extract_zip_file_and_load_json(filename)
+    filename, directory_path = send_to_apex_card.connect_to_aperta_ftp(short_doi)
+    json_data = send_to_apex_card.extract_zip_file_and_load_json(filename, directory_path)
     send_to_apex_card.validate_json_information(json_data, short_doi, db_title, db_abstract)
 
 if __name__ == '__main__':

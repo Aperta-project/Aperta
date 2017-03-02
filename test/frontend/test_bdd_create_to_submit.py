@@ -88,7 +88,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Need to wait for url to update
-    count = 0
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
@@ -125,7 +124,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_full_submit(self, init=True):
+  def test_validate_full_submit_styles(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -134,8 +133,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     NOTE TO SELF: ONLY STYLES AND CHECK FOR NO Please Upload Your Source File BOX!!
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_full_submit')
-    current_path = os.getcwd()
-    logging.info(current_path)
     user_type = random.choice(users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
@@ -148,45 +145,16 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
                         random_bit=True)
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-    # Need to wait for url to update
-    count = 0
+    manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = manuscript_page.get_paper_short_doi_from_url()
-      count += 1
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page.encode('utf8'):
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-      logging.warning('Conversion never completed - still showing interim title')
-
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
-    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Upload Manuscript', check_style=True)
     # Allow time for submit button to attach to the DOM
-    time.sleep(3)
     manuscript_page.click_submit_btn()
     time.sleep(3)
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
-    manuscript_page.confirm_submit_cancel()
-    # The overlay mush be cleared to interact with the submit button
-    # and it takes time
-    time.sleep(.5)
-    manuscript_page.click_submit_btn()
-    time.sleep(1)
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay

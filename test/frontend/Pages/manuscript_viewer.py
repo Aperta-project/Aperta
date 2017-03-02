@@ -27,6 +27,7 @@ from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
+from frontend.Tasks.upload_manuscript import UploadManuscriptTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -621,6 +622,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
           doc2upload = random.choice(docs)
         else:
           doc2upload = data['source']
+        # REF TO UPLOAD TASK!
+        if check_style:
+          upload_ms = UploadManuscriptTask(self._driver)
+          upload_ms.validate_styles()
         current_path = os.getcwd()
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))

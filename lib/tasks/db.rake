@@ -1,8 +1,48 @@
 # yaml_db defines these, override them
 Rake::Task["db:dump"].clear
 Rake::Task["db:load"].clear
+# We have our own versions of these
+Rake::Task["db:drop"].clear
+Rake::Task["db:create"].clear
 
 namespace :db do
+  PG_RESTORE_ARGS = "--verbose --clean --if-exists --no-acl --no-owner".freeze
+
+  # Lambda block to avoid polluting global namespace.
+  with_config = lambda do |&block|
+    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password].to_s
+    block.call(
+      ActiveRecord::Base.connection_config[:host],
+      ActiveRecord::Base.connection_config[:database],
+      ActiveRecord::Base.connection_config[:username]
+    )
+  end
+
+  task :ensure_dev do
+    raise "This can only be run in a development environment" unless Rails.env.development?
+  end
+
+  task :create do
+    with_config.call do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("createdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m"
+      end
+    end
+  end
+
+  task :drop do
+    with_config.call do |host, db, user|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+      unless system("dropdb -h #{host} -U #{user} #{db}")
+        raise "\e[31m Error dropping database. Is #{db} in use?\e[0m"
+      end
+    end
+  end
 
   desc <<-DESC
     Dumps slightly older prod database from internal network into development environment
@@ -12,27 +52,15 @@ namespace :db do
     while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
     'dev_dump.tar.gz' exists in bighector.
   DESC
-  task :import_remote, [:env] => :environment do |t, args|
-    return unless Rails.env.development?
-    args[:env] = nil if args[:env] == 'prod'
-    env = args[:env]
-    location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
-
-    with_config do |app, host, db, user, password|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
-
-      drop_cmd = system("dropdb #{db} && createdb #{db}")
-      raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
-
-      ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
-      result = system(cmd)
-      if result
-        STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
+  task :import_remote, [:env] => [:environment, :ensure_dev, :drop, :create] do |_, args|
+    env = (args[:env] || 'prod')
+    location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
+    with_config.call do |host, db, user|
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar #{PG_RESTORE_ARGS} -h #{host} -U #{user} -d #{db})"
+      if system(cmd)
+        STDERR.puts("Successfully restored #{env} database by running \n #{cmd}")
       else
-        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
+        STDERR.puts("Restored #{env} with errors or warnings")
       end
     end
   end
@@ -41,13 +69,11 @@ namespace :db do
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
-    cmd = nil
-    with_config do |app, host, db, user, password|
-      ENV['PGPASSWORD'] = password.to_s
-      fail('Backup file already exists') if File.exist?(File.expand_path(location))
-      cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
+    with_config.call do |host, db, user|
+      raise('Backup file already exists') if File.exist?(File.expand_path(location))
+      cmd = "pg_dump --host #{host} --username #{user} --verbose --format=c #{db} > #{location}"
+      system(cmd) || raise("Dump failed for \n #{cmd}")
     end
-    system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"
@@ -59,16 +85,16 @@ namespace :db do
   end
 
   desc "Restores the database dump at LOCATION"
-  task :restore, [:location] => :environment do |t, args|
+  task :restore, [:location] => :environment do |_, args|
     location = args[:location]
     if location
-      cmd = nil
-      with_config do |app, host, db, user, password|
-        ENV['PGPASSWORD'] = password.to_s
-        cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
+      Rake::Task['db:drop'].invoke
+      Rake::Task['db:create'].invoke
+      with_config.call do |host, db, user|
+        cmd = "pg_restore --host #{host} --username #{user} #{PG_RESTORE_ARGS} --dbname #{db} #{location}"
+        puts cmd
+        system(cmd) || raise("Restore failed for \n #{cmd}")
       end
-      puts cmd
-      system(cmd) || STDERR.puts("Restore failed for \n #{cmd}") && exit(1)
     else
       STDERR.puts('Location argument is required.')
     end
@@ -77,8 +103,7 @@ namespace :db do
   # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
-  task :import_heroku, [:source_db_name] => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+  task :import_heroku, [:source_db_name] => [:environment, :ensure_dev] do |_, args|
     source_db = args[:source_db_name]
     unless source_db
       raise <<-MSG.strip_heredoc
@@ -88,7 +113,10 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
+    with_config.call do |host, db, user|
+      local_db = URI::Generic.new("postgres", user, host, nil, nil, "/#{db}", nil, nil, nil)
+      system("heroku pg:pull DATABASE_URL #{local_db} --app #{source_db}")
+    end
   end
 
   desc <<-DESC
@@ -96,8 +124,7 @@ namespace :db do
 
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
-  task :reset_passwords => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+  task reset_passwords: [:environment, :ensure_dev] do |_, _|
     Journal.update_all(logo: nil)
     User.update_all(avatar: nil)
     User.all.each do |u|
@@ -105,15 +132,4 @@ namespace :db do
       u.save
     end
   end
-
-  private
-
-  def with_config
-    yield Rails.application.class.parent_name.underscore,
-      ActiveRecord::Base.connection_config[:host],
-      ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username],
-      ActiveRecord::Base.connection_config[:password]
-  end
-
 end

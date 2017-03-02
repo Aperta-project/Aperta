@@ -28,7 +28,7 @@ describe Task do
     it 'adds the user as a participant on the task' do
       expect do
         task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      end.to change(task.reload.participants, :count).by(1)
     end
 
     it 'does not add them more than once' do
@@ -36,7 +36,7 @@ describe Task do
         task.add_participant(user)
         task.add_participant(user)
         task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      end.to change(task.reload.participants, :count).by(1)
     end
   end
 

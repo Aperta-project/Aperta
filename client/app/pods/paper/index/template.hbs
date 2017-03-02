@@ -53,7 +53,8 @@
 {{#if downloadsVisible}}
   {{paper-downloads paper=model
                     toggle=(action "toggleDownloads")
-                    exportDocument=(action "exportDocument")}}
+                    exportDocument=(action "exportDocument")
+                    exportSource=(action "exportSource")}}
 {{/if}}
 
 {{withdrawal-banner paper=model}}

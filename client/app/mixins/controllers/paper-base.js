@@ -45,6 +45,14 @@ export default Ember.Mixin.create({
       );
     },
 
+    exportSource(downloadFormat, versionId) {
+      return DocumentDownload.initiate(
+        this.get('model.id'),
+        'source',
+        versionId
+      );
+    },
+
     hideActivityOverlay() {
       this.set('showActivityOverlay', false);
     },

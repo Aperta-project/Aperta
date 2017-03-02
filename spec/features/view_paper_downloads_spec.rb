@@ -30,26 +30,26 @@ feature 'Viewing Versions:', js: true, flaky: true do
       page.downloads_link.click
       wait_for_ajax
 
-      expect(page.find('.paper-downloads-row:nth-child(2) .paper-downloads-version')).to have_content 'Draft'
-      expect(page.find('.paper-downloads-row:nth-child(3) .paper-downloads-version')).to have_content 'v1.0'
-      expect(page.find('.paper-downloads-row:nth-child(4) .paper-downloads-version')).to have_content 'v0.2'
-      expect(page.find('.paper-downloads-row:nth-child(5) .paper-downloads-version')).to have_content 'v0.1'
-      expect(page.find('.paper-downloads-row:nth-child(6) .paper-downloads-version')).to have_content 'v0.0'
+      expect(page.find('tbody .paper-downloads-row:nth-child(1) .paper-downloads-version')).to have_content 'Draft'
+      expect(page.find('tbody .paper-downloads-row:nth-child(2) .paper-downloads-version')).to have_content 'v1.0'
+      expect(page.find('tbody .paper-downloads-row:nth-child(3) .paper-downloads-version')).to have_content 'v0.2'
+      expect(page.find('tbody .paper-downloads-row:nth-child(4) .paper-downloads-version')).to have_content 'v0.1'
+      expect(page.find('tbody .paper-downloads-row:nth-child(5) .paper-downloads-version')).to have_content 'v0.0'
 
-      expect(page.find('.paper-downloads-row:nth-child(2)')).to have_css '.paper-downloads-link--pdf'
-      expect(page).not_to have_selector('.paper-downloads-row:nth-child(2) .paper-downloads-link--docx')
+      expect(page.find('tbody .paper-downloads-row:nth-child(1)')).to have_css '.paper-downloads-link--pdf'
+      expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(1) .paper-downloads-link--docx')
 
-      expect(page.find('.paper-downloads-row:nth-child(3)')).to have_css '.paper-downloads-link--pdf'
-      expect(page).not_to have_selector('.paper-downloads-row:nth-child(3) .paper-downloads-link--docx')
+      expect(page.find('tbody .paper-downloads-row:nth-child(2)')).to have_css '.paper-downloads-link--pdf'
+      expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(2) .paper-downloads-link--docx')
 
-      expect(page.find('.paper-downloads-row:nth-child(4)')).to have_css '.paper-downloads-link--docx'
-      expect(page.find('.paper-downloads-row:nth-child(4)')).to have_css '.paper-downloads-link--pdf'
+      expect(page.find('tbody .paper-downloads-row:nth-child(3)')).to have_css '.paper-downloads-link--docx'
+      expect(page.find('tbody .paper-downloads-row:nth-child(3)')).to have_css '.paper-downloads-link--pdf'
 
-      expect(page.find('.paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--pdf'
-      expect(page).not_to have_selector('.paper-downloads-row:nth-child(5) .paper-downloads-link--docx')
+      expect(page.find('tbody .paper-downloads-row:nth-child(4)')).to have_css '.paper-downloads-link--pdf'
+      expect(page).not_to have_selector('tbody .paper-downloads-row:nth-child(4) .paper-downloads-link--docx')
 
-      expect(page.find('.paper-downloads-row:nth-child(6)')).to have_css '.paper-downloads-link--docx'
-      expect(page.find('.paper-downloads-row:nth-child(6)')).to have_css '.paper-downloads-link--pdf'
+      expect(page.find('tbody .paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--docx'
+      expect(page.find('tbody .paper-downloads-row:nth-child(5)')).to have_css '.paper-downloads-link--pdf'
     end
   end
 end

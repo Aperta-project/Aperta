@@ -19,13 +19,11 @@ class PaperConversionsController < ApplicationController
   def export
     requires_user_can(:view, paper)
 
-    job_id = 'source'
-
     render json: { url: url_for(controller: :paper_conversions, action: :status,
-                                id: params[:id], job_id: job_id,
+                                id: params[:id], job_id: 'source',
                                 export_format: export_format,
                                 versioned_text_id: params[:versioned_text_id]) },
-    status: :accepted
+           status: :accepted
   end
 
   # Check the status of a job.
@@ -61,7 +59,8 @@ class PaperConversionsController < ApplicationController
       job = PaperConverter.check_status(params[:job_id])
       if job.completed?
         render status: :ok, json: {
-          url: job.format_url(export_format) }
+          url: job.format_url(export_format)
+        }
       elsif job.errored?
         render status: :server_error, nothing: true
       else

@@ -1,14 +1,18 @@
-{{#if shortStatus}}
-  <div class='short-status'>
-    {{reviewerStatus}} {{statusDate}}
-  </div>
-{{else}}
-  <div class='long-status'>
-  {{#if (eq report.status 'completed')}}
-  <h3>{{report.revision}} Review</h3>
-      Completed {{statusDate}}
+{{#if testing}}
+  {{!-- Disable status until the remaining issues are fixed APERTA-7993 --}}
+  {{!-- Keep these on for testing for now --}}
+  {{#if shortStatus}}
+    <div class='short-status'>
+      {{reviewerStatus}} {{statusDate}}
+    </div>
   {{else}}
-  <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
+    <div class='long-status'>
+    {{#if (eq report.status 'completed')}}
+    <h3>{{report.revision}} Review</h3>
+      Completed {{statusDate}}
+    {{else}}
+    <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
+    {{/if}}
+    </div>
   {{/if}}
-  </div>
 {{/if}}

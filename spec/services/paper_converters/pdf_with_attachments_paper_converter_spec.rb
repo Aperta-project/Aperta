@@ -13,7 +13,7 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
 
   describe "#output_filename" do
     subject { converter.output_filename }
-    it { is_expected.to match(/.+ with attachments\.pdf/) }
+    it { is_expected.to match(/.+ - with attachments\.pdf/) }
   end
 
   # More coverage in pdf_with_attachments.html.erb_spec.rb

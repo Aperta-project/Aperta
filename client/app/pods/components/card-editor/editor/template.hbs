@@ -1,10 +1,19 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
     <button class="button button--blue button-primary editor-save">Save</button>
-    <button class="button button--blue button-primary editor-publish" disabled>Publish Card</button>
   </div>
 </div>
 
-<div class="card-editor-workspace-container">
-  {{card-editor/editor/workspace card=card}}
+<div class="card-editor-workspace">
+  <div class="card-editor-workspace-container">
+    <div class="card-editor-workspace-title">
+      <div class="card-editor-workspace-component-type-name">
+        Card Title
+      </div>
+      <h1>{{card.name}}</h1>
+    </div>
+    <hr />
+
+    {{!-- Put the editor component here --}}
+  </div>
 </div>

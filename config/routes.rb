@@ -140,7 +140,6 @@ Tahi::Application.routes.draw do
         get 'activity/manuscript', to: 'papers#manuscript_activities'
         get :comment_looks
         get :versioned_texts
-        get :export, to: 'paper_conversions#export'
         get :snapshots
         get :related_articles
         put :submit
@@ -149,6 +148,7 @@ Tahi::Application.routes.draw do
         put :toggle_editable
       end
     end
+    resources :paper_downloads, only: [:show]
     resources :paper_tracker_queries, only: [:index, :create, :update, :destroy]
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates

@@ -28,7 +28,7 @@
     </div>
   {{else if task.paper.sourcefile.filename}}
     <div>
-      <a href="{{sourcefileDownloadUrl}}"
+      <a href={{paper-download-link paper=task.paper format="source"}}
          class="download-docx"
          title="{{filename}}" target="_new">
          {{fa-icon fileTypeClass}} {{task.paper.sourcefile.filename}}

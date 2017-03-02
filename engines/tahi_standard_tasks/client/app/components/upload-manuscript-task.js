@@ -7,7 +7,7 @@ import { uploadManuscriptPath } from 'tahi/utils/api-path-helpers';
 const taskValidations = {
   'hasSourceIfNeeded': [{
     type: 'equality',
-    message: 'Please upload a source file',
+    message: 'Please upload your source file',
     validation() {
       if (this.get('task.paper.fileType') !== 'pdf') return true;
 
@@ -32,7 +32,7 @@ export default TaskComponent.extend(FileUploadMixin, {
     const taskErrors = this.validationErrorsPresent();
 
     if(taskErrors) {
-      this.set('validationErrors.completed', 'Please fix all errors');
+      this.set('validationErrors.completed', 'Please correct the errors below');
     }
   },
 

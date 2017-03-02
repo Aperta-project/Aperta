@@ -92,6 +92,7 @@ test('pdf papers display a validation error if no sourcefile is attached', funct
     assert.equal(this.get('task.completed'), false, 'task did not complete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     assert.equal(this.$('.error-message').length, 2);
+    assert.equal(this.$('.error-message:contains("Please upload your source file")').length, 1);
     done();
   });
 });

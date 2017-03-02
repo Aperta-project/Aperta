@@ -79,9 +79,7 @@
   {{/if}}
 
   {{#if needsSourcefile}}
-    {{upload-source-file task=task}}
-    {{error-message message=validationErrors.hasSourceIfNeeded
-                    displayIcon=true}}
+    {{upload-source-file task=task message=validationErrors.hasSourceIfNeeded}}
   {{/if}}
 
 </div>

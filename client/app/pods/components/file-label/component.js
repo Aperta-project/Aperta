@@ -11,11 +11,12 @@ export default Ember.Component.extend({
   classNames: ['file-label'],
 
   fileIcon: Ember.computed('fileName', function() {
-    return fontAwesomeFiletypeClass(this.get('fileName'));
+    return fontAwesomeFiletypeClass(this.get('fileName')) || 'fa-file-o';
   }),
 
   fileTypeName: Ember.computed('fileName', function() {
-    return fontAwesomeFiletypeText(this.get('fileName'));
+    var filename = this.get('fileName');
+    return fontAwesomeFiletypeText(filename) || filename.match(/\.([^.]+)$/)[1].toUpperCase();
   })
 
 });

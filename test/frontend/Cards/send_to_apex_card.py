@@ -1,15 +1,15 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import time
-import os
-import zipfile
 import json
-import tempfile
+import logging
+import os
 import shutil
+import tempfile
+import time
+import zipfile
 
-from selenium.webdriver.common.by import By
 from ftplib import FTP
+from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
 
@@ -118,7 +118,7 @@ class SendToApexCard(BaseCard):
   def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract):
     """
     This method validate the information within the extracted json
-    :param json_data: Is the extracted json
+    :param json_data: Is the extracted json from the unziped metadata.json
     :param short_doi: Is the manuscript's ID
     :param manuscript_title: Is the manuscript's title
     :param manuscript_abstract: Is the manuscript's abstract
@@ -152,13 +152,13 @@ class SendToApexCard(BaseCard):
                     "title": "Professor", 
                     "type": "author"}
     asset_competing_interests = {"competing_interests": None,
-                                 "competing_interests_statement": \
+                                 "competing_interests_statement":
                                      "The authors have declared that no competing interests exist."}
     asset_data_availability = {"data_fully_available": None,
                                "data_location_statement": None}
     asset_financial_disclosure = {"author_received_funding": None,
                                   "funders": [], 
-                                  "funding_statement": \
+                                  "funding_statement":
                                       "The author(s) received no specific funding for this work."}
 
     for key, value in author.iteritems():

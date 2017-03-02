@@ -10,15 +10,16 @@ import logging
 import random
 import time
 
-from Base.Decorators import MultiBrowserFixture
-from frontend.common_test import CommonTest
-from Base.Resources import staff_admin_login, users, editorial_users
-from Pages.workflow_page import WorkflowPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Tasks.upload_manuscript_task import UploadManuscriptTask
-from frontend.Cards.send_to_apex_card import SendToApexCard
-from Cards.register_decision_card import RegisterDecisionCard
 from Base.PostgreSQL import PgSQL
+
+from Base.Decorators import MultiBrowserFixture
+from Base.Resources import staff_admin_login, users, editorial_users
+from Cards.register_decision_card import RegisterDecisionCard
+from frontend.Cards.send_to_apex_card import SendToApexCard
+from frontend.common_test import CommonTest
+from Pages.manuscript_viewer import ManuscriptViewerPage
+from Pages.workflow_page import WorkflowPage
+from Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'scadavid@plos.org'
 
@@ -29,7 +30,7 @@ class SendToApexTest(CommonTest):
   Validate if the data in the frontend match the data in the backend sent to Apex
   """
 
-  def test_send_to_apex_message(self):
+  def _test_send_to_apex_message(self):
     """
     test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding messages
     """
@@ -64,8 +65,7 @@ class SendToApexTest(CommonTest):
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
-    card_title = 'Send to Apex'
-    workflow_page.click_card('send_to_apex', card_title)
+    workflow_page.click_card('send_to_apex')
     send_to_apex_card = SendToApexCard(self.getDriver())
     send_to_apex_card.click_send_to_apex_button()
     send_to_apex_card.click_close_apex()
@@ -118,8 +118,7 @@ class SendToApexTest(CommonTest):
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
-    card_title = 'Send to Apex'
-    workflow_page.click_card('send_to_apex', card_title)
+    workflow_page.click_card('send_to_apex')
     send_to_apex_card = SendToApexCard(self.getDriver())
     send_to_apex_card.click_send_to_apex_button()
     send_to_apex_card.click_close_apex()
@@ -155,7 +154,8 @@ class SendToApexTest(CommonTest):
                                           'FROM papers '
                                           'WHERE short_doi=%s;', (short_doi,))[0]
     db_title = unicode(db_title, encoding='utf-8', errors='strict')
-    db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
+    if not db_abstract:
+      db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Billing')
@@ -194,8 +194,7 @@ class SendToApexTest(CommonTest):
     register_decision.register_decision('Accept')
     # Time needed to proceed after closing the RegisterDecisionCard
     time.sleep(3)
-    card_title = 'Send to Apex'
-    workflow_page.click_card('send_to_apex', card_title)
+    workflow_page.click_card('send_to_apex')
     send_to_apex_card = SendToApexCard(self.getDriver())
     send_to_apex_card.click_send_to_apex_button()
     # Connecting to FTP

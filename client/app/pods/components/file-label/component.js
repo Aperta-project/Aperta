@@ -16,7 +16,7 @@ export default Ember.Component.extend({
 
   fileTypeName: Ember.computed('fileName', function() {
     var filename = this.get('fileName');
-    return fontAwesomeFiletypeText(this.get(filename)) || filename.match(/\.([^.]+)$/)[1].toUpperCase();
+    return fontAwesomeFiletypeText(filename) || filename.match(/\.([^.]+)$/)[1].toUpperCase();
   })
 
 });

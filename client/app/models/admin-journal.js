@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
+  permissionModelName: 'journal',
   manuscriptManagerTemplates: DS.hasMany('manuscript-manager-template'),
   journalTaskTypes: DS.hasMany('journal-task-type', {async: false}),
   adminJournalRoles: DS.hasMany('admin-journal-role', {async: false}),

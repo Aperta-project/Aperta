@@ -5,7 +5,7 @@
   <table class="paper-downloads">
     <tr class="paper-downloads-row">
       <th>Manuscript Version</th>
-      <th colspan="2">Format</th>
+      <th colspan="2">* Format</th>
     </tr>
     {{#util/async-content concurrencyTask=fetchVersions tagName="tbody"}}
       {{#each versions as |version|}}
@@ -19,10 +19,9 @@
           </td>
           {{#if (or (eq version.fileType "docx") (eq version.fileType "doc"))}}
             <td class="paper-downloads-link paper-downloads-link--docx">
-              <a href="#"
+              <a href={{paper-download-link versionedText=version format=version.fileType}}
                  class="download-docx"
-                 title="Download {{version.fileType}}"
-                 {{action "exportDocument" version}}>
+                 title="Download {{version.fileType}}">
                 {{fa-icon "file-word-o"}} Word
               </a>
             </td>
@@ -36,27 +35,24 @@
           {{else if (eq version.fileType "pdf")}}
             {{#if version.sourceType}}
               <td class="paper-downloads-link paper-downloads-link--sourcetext-align-right">
-                <a href="#"
+                <a href={{paper-download-link versionedText=version format="source"}}
                    class="download-source"
-                   title="Download Manuscript Source"
-                   {{action "exportSource" version}}>
+                   title="Download Manuscript Source">
                   {{file-label fileName=(concat '.' version.sourceType)}}
                 </a>
               </td>
               <td class="paper-downloads-link paper-downloads-link--pdf text-align-right">
-                <a href="#"
+                <a href={{paper-download-link versionedText=version format="pdf_with_attachments"}}
                    class="download-pdf"
-                   title="Download PDF"
-                   {{action "exportDocument" version}}>
+                   title="Download PDF">
                   {{fa-icon "file-pdf-o"}} PDF
                 </a>
               </td>
             {{else}}
               <td colspan="2" class="paper-downloads-link paper-downloads-link--pdf text-align-right">
-                <a href="#"
+                <a href={{paper-download-link versionedText=version format="pdf_with_attachments"}}
                    class="download-pdf"
-                   title="Download PDF"
-                   {{action "exportDocument" version}}>
+                   title="Download PDF">
                   {{fa-icon "file-pdf-o"}} PDF
                 </a>
               </td>
@@ -76,4 +72,5 @@
     </tr>
     {{/util/async-content}}
   </table>
+  <p class="downloads-figures-description">*PDFs contain all figures and supplemental information.</p>
 </div>

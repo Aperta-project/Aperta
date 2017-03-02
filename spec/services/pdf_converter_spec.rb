@@ -49,7 +49,7 @@ describe PDFConverter do
     context 'when paper has supporting information files' do
       let(:file) do
         paper.supporting_information_files.create!(
-          resource_tokens: [ResourceToken.new],
+          resource_tokens: [ResourceToken.new(version_urls: { preview: Faker::Internet.url })],
           owner: task,
           file: ::File.open('spec/fixtures/yeti.tiff')
         )

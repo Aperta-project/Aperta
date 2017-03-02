@@ -1,19 +1,20 @@
-<% if paper.supporting_information_files.any? %>
-  <h2 id='si_header'>Supporting Information</h2>
+<% if supporting_information_files.any? %>
+  <div class="supporting-information-files">
+    <h2 id='si_header'>Supporting Information</h2>
+    <% supporting_information_files.each do |file| %>
+      <% if file.preview? %>
+        <p>
+          <a href='<%= file.href(is_proxied: true, only_path: false) %>'>
+            <img
+                class='si_preview'
+                id="si_preview_<%= file.id %>"
+                src="<%= file.href(version: :preview, is_proxied: should_proxy_previews) %>"
+            />
+          </a>
+        </p>
+      <% end %>
 
-  <% paper.supporting_information_files.each do |file| %>
-    <% if file.image? %>
-      <p>
-        <a href='<%= file.non_expiring_proxy_url(only_path: false) %>'>
-          <img
-              class='si_preview'
-              id="si_preview_<%= file.id %>"
-              src="<%= file.proxyable_url(version: :preview, is_proxied: should_proxy_previews, only_path: false) %>"
-          />
-        </a>
-      </p>
+      <p><a class='si_link' id='si_link_<%= file.id %>' href='<%= file.href(is_proxied: true, only_path: false) %>'><%= file.filename %></a></p>
     <% end %>
-
-    <p><a class='si_link' id='si_link_<%= file.id %>' href='<%= file.non_expiring_proxy_url(only_path: false) %>'><%= file.filename %></a></p>
-  <% end %>
+  </div>
 <% end %>

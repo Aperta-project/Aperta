@@ -3,7 +3,7 @@ require 'rails_helper'
 describe FiguresController do
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.build_stubbed(:paper) }
-  let(:figure) { FactoryGirl.build_stubbed(:figure, paper: paper) }
+  let(:figure) { FactoryGirl.create(:figure, paper: paper) }
 
   describe "#index" do
     let(:paper) { FactoryGirl.create(:paper) }

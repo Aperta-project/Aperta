@@ -4,6 +4,6 @@ FactoryGuy.define('upload-manuscript-task', {
   default: {
     title: 'Upload Manuscript Task',
     type: 'UploadManuscriptTask',
-    completed: false,
+    completed: false
   }
 });

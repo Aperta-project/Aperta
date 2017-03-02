@@ -19,9 +19,21 @@ class Snapshot < ActiveRecord::Base
 
   after_initialize :set_key, if: :new_record?
 
+  scope :attachments, -> { where(source_type: "Attachment") }
+  scope :figures, -> { attachments.where("contents ->> 'name' = 'figure'") }
+  scope :supporting_information_files, lambda {
+    attachments.where("contents ->> 'name' = 'supporting-information-file'")
+  }
+
   def source=(new_source)
     super
     set_key
+  end
+
+  def get_property(name)
+    contents["children"].find do |property|
+      property["name"] == name
+    end.try(:fetch, "value")
   end
 
   private

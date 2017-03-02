@@ -195,6 +195,8 @@ GEM
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
+    combine_pdf (0.2.34)
+      ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     cookiejar (0.3.2)
@@ -604,6 +606,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
+    ruby-rc4 (0.1.5)
     ruby_dig (0.0.2)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
@@ -721,6 +724,7 @@ DEPENDENCIES
   carrierwave
   climate_control
   codeclimate-test-reporter
+  combine_pdf
   database_cleaner
   databasedotcom
   devise (~> 3.5.6)
@@ -812,4 +816,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.13.6
+   1.14.4

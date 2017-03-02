@@ -12,5 +12,6 @@ class SourcefileAttachment < Attachment
   def download!(url, uploaded_by: nil)
     super
     self.paper.latest_version.update!(sourcefile_s3_path: self.s3_dir, sourcefile_filename: self[:file])
+    paper.update!(state_updated_at: Time.current.utc)
   end
 end

@@ -1,12 +1,40 @@
+import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 import { uploadManuscriptPath } from 'tahi/utils/api-path-helpers';
-import Ember from 'ember';
+
+const taskValidations = {
+  'hasSourceIfNeeded': [{
+    type: 'equality',
+    message: 'Please upload a source file',
+    validation() {
+      if (this.get('task.paper.fileType') !== 'pdf') return true;
+
+      let versions = this.get('task.paper.versionedTexts');
+      let inRevision = this.get('task.paper.publishingState') === 'in_revision';
+      if (inRevision || versions.any(v => v.get('majorVersion') > 0)) {
+        return this.get('task.paper.sourcefile');
+      } else {
+        return true;
+      }
+    }
+  }]
+};
 
 export default TaskComponent.extend(FileUploadMixin, {
   progress: 0,
   showProgress: true,
+  validations: taskValidations,
+
+  validateData() {
+    this.validateAll();
+    const taskErrors = this.validationErrorsPresent();
+
+    if(taskErrors) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
 
   pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
 
@@ -22,6 +50,11 @@ export default TaskComponent.extend(FileUploadMixin, {
     let uploaded = this.get('manuscriptfileUploaded');
     return fontAwesomeFiletypeClass(this.get(uploaded ? 'filename' : 'task.paper.file.filename'));
   }),
+
+  clearErrors: function() {
+    this.set('validationErrors.completed', '');
+    this.set('validationErrors.hasSourceIfNeeded', '');
+  },
 
   actions: {
     uploadStarted() {

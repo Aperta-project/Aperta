@@ -150,7 +150,18 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    manuscript_page.complete_task('Upload Manuscript', check_style=True)
+    count = 0
+    while count < 60:
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'full submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
+        continue
+      else:
+        break
+      logging.warning('Conversion never completed - still showing interim title')
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    manuscript_page.complete_task('Upload Manuscript', style_check=True)
     # Allow time for submit button to attach to the DOM
     manuscript_page.click_submit_btn()
     time.sleep(3)

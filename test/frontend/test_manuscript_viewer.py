@@ -15,7 +15,7 @@ from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 from Cards.initial_decision_card import InitialDecisionCard
 from Tasks.figures_task import FiguresTask
-from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
+from Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
 """

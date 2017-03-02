@@ -27,7 +27,7 @@ from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
-from frontend.Tasks.upload_manuscript import UploadManuscriptTask
+from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -623,9 +623,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         else:
           doc2upload = data['source']
         # REF TO UPLOAD TASK!
-        if check_style:
+        if style_check:
           upload_ms = UploadManuscriptTask(self._driver)
           upload_ms.validate_styles()
+          import pdb; pdb.set_trace()
         current_path = os.getcwd()
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))
@@ -633,6 +634,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._driver.find_element_by_id('upload-files').send_keys(fn)
       # Check completed_check status
       if not base_task.completed_state():
+        if style_check:
+          upload_ms = UploadManuscriptTask(self._driver)
+          upload_ms.validate_styles()
+          import pdb; pdb.set_trace()
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(.5)

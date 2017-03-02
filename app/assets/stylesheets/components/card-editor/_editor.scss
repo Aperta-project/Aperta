@@ -1,6 +1,14 @@
 .card-editor-editor {
   flex: 1;
   background-color: $aperta-grey-light;
+
+  // Look, I know there's more flexing here than on venice beach, but
+  // the goal is to have the workspace itself (the white area) take up
+  // *all* the remaining height on the page, *scroll* when it contains
+  // more content than will fit, AND be centered on teh page when the
+  // page is wider than 1120px; and the best way to accomplish the //
+  // full-remaining-height thing is to flex columns all the way down the
+  // component stack :(
   display: flex;
   flex-direction: column;
 

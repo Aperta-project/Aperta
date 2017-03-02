@@ -95,7 +95,7 @@ class SendToApexCard(BaseCard):
     directory_path = tempfile.mkdtemp()
     local_filename = os.path.join(r'{0}'.format(directory_path), filename)
     lf = open(local_filename, 'wb')
-    time.sleep(10)
+    time.sleep(30)
     ftp.retrbinary('RETR ' + filename, lf.write, 8*1024)
     lf.close()
 

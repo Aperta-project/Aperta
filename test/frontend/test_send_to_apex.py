@@ -155,7 +155,7 @@ class SendToApexTest(CommonTest):
                                           'FROM papers '
                                           'WHERE short_doi=%s;', (short_doi,))[0]
     db_title = unicode(db_title, encoding='utf-8', errors='strict')
-    if not db_abstract:
+    if db_abstract:
       db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author=creator_user)

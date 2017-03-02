@@ -38,7 +38,6 @@ class SendToApexCard(BaseCard):
     # Time needed for message to be ready
     time.sleep(3)
     apex_error, apex_succeed = self._gets(self._apex_message)
-    #self._wait_for_text_be_present_in_element(apex_succeed, "Apex Upload succeeded.")
     if "530" in apex_succeed.text:
       assert apex_error.text == (
           "Apex Upload has failed. Paper has not been accepted"), apex_error
@@ -95,7 +94,8 @@ class SendToApexCard(BaseCard):
     directory_path = tempfile.mkdtemp()
     local_filename = os.path.join(r'{0}'.format(directory_path), filename)
     lf = open(local_filename, 'wb')
-    time.sleep(30)
+    # Time needed for the FTP to load the file and allow to grap it when running on TeamCity
+    time.sleep(15)
     ftp.retrbinary('RETR ' + filename, lf.write, 8*1024)
     lf.close()
 

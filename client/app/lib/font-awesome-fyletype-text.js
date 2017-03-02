@@ -39,4 +39,8 @@ export default function(type) {
   if ( /\.(txt)$/i.test(type) ) {
     return 'Text';
   }
+
+  if ( /\.(tex)$/i.test(type) ) {
+    return 'LaTeX';
+  }
 }

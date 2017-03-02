@@ -28,7 +28,9 @@
     </div>
 
     <%= render partial: 'supporting_information',
-               locals: { paper: paper,
-                         should_proxy_previews: should_proxy_previews } %>
+               locals: {
+                   supporting_information_files: supporting_information_files,
+                   should_proxy_previews: should_proxy_previews
+               } %>
   </body>
 </html>

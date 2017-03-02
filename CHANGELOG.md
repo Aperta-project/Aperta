@@ -4,10 +4,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Users can now change the initial participants on a discussion topic.
+* Source file is sent to APEX instead of a PDF manuscript
+* The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
+* Source files show can be downloaded
 * Added "Confirm Authorship" button to email to co authors.
 * Added PDF submissions for PLOS Biology
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
+* Temporarily disabled coauthor notification
 ### Deprecated
 ### Removed
 ### Fixed

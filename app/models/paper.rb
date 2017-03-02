@@ -25,6 +25,8 @@ class Paper < ActiveRecord::Base
   has_many :adhoc_attachments, dependent: :destroy
   has_one :file, as: :owner, dependent: :destroy,
     class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy,
+    class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -326,6 +328,12 @@ class Paper < ActiveRecord::Base
   # Downloads the manuscript from the given URL.
   def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
+    attachment.download!(url, uploaded_by: uploaded_by)
+  end
+
+  # Downloads the sourcefile from the given URL.
+  def download_sourcefile!(url, uploaded_by:)
+    attachment = sourcefile || create_sourcefile
     attachment.download!(url, uploaded_by: uploaded_by)
   end
 

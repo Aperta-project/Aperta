@@ -52,7 +52,7 @@ class Figure < Attachment
   end
 
   def should_insert_figures?
-    title_changed? && !downloading? && all_figures_done?
+    title_changed? && !downloading? && all_figures_done? && resource_token
   end
 
   def all_figures_done?

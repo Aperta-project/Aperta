@@ -5,15 +5,8 @@ class CardsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  def show
-    respond_with owner_klass.find(params[:owner_id]).card
-  end
-
-  # Although this is the 'index' action, it's really only exists to find a
-  # single card by its name.  The index route maps more nicely to Ember Data's
-  # expectation for `queryRecord`.  As soon as multiple 'versions' of cards
-  # exist this method will have to change to either find the latest version for
-  # a given name or to find the correct Card instance for a given task
+  #  This endpoint exists temporarily, in order to fetch Card objects
+  #  for non-task-cards: Funders, Authors, etc.
   def query_name
     respond_with Card.find_by(name: params[:name])
   end
@@ -29,10 +22,34 @@ class CardsController < ApplicationController
       journal_ids = journal_ids.select { |j| j == params[:journal_id].to_i }
     end
 
-    respond_with Card.where(journal_id: journal_ids)
+    respond_with Card.includes(:card_content).where(journal_id: journal_ids)
+  end
+
+  def show
+    requires_user_can(:view, card)
+    respond_with card
+  end
+
+  def create
+    journal = Journal.find(card_params[:journal_id])
+    requires_user_can(:create_card, journal)
+
+    card = Card.create!(card_params)
+    respond_with card
   end
 
   private
+
+  def card
+    @card ||= Card.includes(:card_content).find(params[:id])
+  end
+
+  def card_params
+    params.require(:card).permit(
+      :name,
+      :journal_id
+    )
+  end
 
   def owner_klass
     potential_owner = params[:owner_type].classify.constantize

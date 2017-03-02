@@ -677,8 +677,8 @@ ActiveRecord::Schema.define(version: 20170227164217) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.boolean  "created_in_7993", default: false
+    t.integer  "card_id"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -857,16 +857,18 @@ ActiveRecord::Schema.define(version: 20170227164217) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
-    t.integer  "paper_id",                        null: false
+    t.integer  "paper_id",                         null: false
     t.integer  "major_version"
     t.integer  "minor_version"
-    t.text     "text",               default: ""
+    t.text     "text",                default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "original_text"
     t.string   "file_type"
-    t.string   "s3_dir"
-    t.string   "file"
+    t.string   "manuscript_s3_path"
+    t.string   "manuscript_filename"
+    t.string   "sourcefile_s3_path"
+    t.string   "sourcefile_filename"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

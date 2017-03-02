@@ -65,11 +65,73 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
+  def _test_validate_full_submit(self, init=True):
+    """
+    test_bdd_create_to_submit: Validates creating a new document and making a full submission
+    :param init: Determine if login is needed
+    :return: void function
+    """
+    logging.info('Test BDDCreatetoNormalSubmitTest::validate_full_submit')
+    current_path = os.getcwd()
+    logging.info(current_path)
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(user_type))
+    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
+    # Temporary changing timeout
+    dashboard_page.click_create_new_submission_button()
+    dashboard_page.set_timeout(120)
+    # We recently became slow drawing this overlay (20151006)
+    time.sleep(.5)
+    self.create_article(title='full submit', journal='PLOS Wombat', type_='NoCards',
+                        random_bit=True)
+    dashboard_page.restore_timeout()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    # Need to wait for url to update
+    count = 0
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    count = 0
+    while count < 60:
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      if 'full submit' in paper_title_from_page.encode('utf8'):
+        count += 1
+        time.sleep(1)
+        continue
+      else:
+        break
+      logging.warning('Conversion never completed - still showing interim title')
+
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    manuscript_page.complete_task('Upload Manuscript')
+    # Allow time for submit button to attach to the DOM
+    time.sleep(3)
+    manuscript_page.click_submit_btn()
+    time.sleep(3)
+    manuscript_page.confirm_submit_cancel()
+    # The overlay mush be cleared to interact with the submit button
+    # and it takes time
+    time.sleep(.5)
+    manuscript_page.click_submit_btn()
+    time.sleep(1)
+    manuscript_page.confirm_submit_btn()
+    # Now we get the submit confirmation overlay
+    # Sadly, we take time to switch the overlay
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    assert sub_data[0][0] == 'submitted', sub_data[0][0]
+    assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][2], sub_data[0][2]
+
   def test_validate_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
     :return: void function
+
+    NOTE TO SELF: ONLY STYLES AND CHECK FOR NO Please Upload Your Source File BOX!!
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_full_submit')
     current_path = os.getcwd()
@@ -136,7 +198,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_pdf_full_submit(self, init=True):
+  def _test_validate_pdf_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
@@ -243,7 +305,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
-  def test_validate_initial_submit(self):
+  def _test_validate_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission
@@ -379,7 +441,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_pdf_initial_submit(self):
+  def _test_validate_pdf_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission via pdf upload

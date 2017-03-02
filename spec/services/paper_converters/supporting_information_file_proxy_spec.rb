@@ -41,14 +41,6 @@ describe PaperConverters::SupportingInformationFileProxy do
     subject(:supporting_information_file_proxy) { described_class.from_supporting_information_file(supporting_information_file) }
     it { is_expected.to be_an_instance_of(described_class) }
     it_behaves_like 'a supporting_information_file proxy'
-
-    describe "href" do
-      subject(:href) { supporting_information_file_proxy.href(is_proxied: true) }
-
-      it "works" do
-        href
-      end
-    end
   end
 
   describe ".from_snapshot" do

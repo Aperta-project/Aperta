@@ -6,20 +6,20 @@ module PaperConverters
   class PaperConverter
     def self.make(versioned_text, export_format)
       current_format = versioned_text.file_type
-      if export_format == current_format || export_format.nil?
-        converter_klass = IdentityPaperConverter
-      end
-      if export_format == 'source'
-        converter_klass = SourcePaperConverter
-      end
-      if export_format == 'pdf_with_attachments' && current_format == 'pdf'
-        converter_klass = PdfWithAttachmentsPaperConverter
-      end
-      raise(
-        UnknownConversionError,
-        "I don't know how to convert #{current_format} to #{export_format}"
-      ) unless converter_klass
-      converter_klass.new(versioned_text, export_format)
+      klass = if export_format == current_format || export_format.nil?
+                IdentityPaperConverter
+              elsif export_format == 'source'
+                SourcePaperConverter
+              elsif export_format == 'pdf_with_attachments'\
+                && current_format == 'pdf'
+                PdfWithAttachmentsPaperConverter
+              else
+                raise(
+                  UnknownConversionError,
+                  "Unknown conversion: #{current_format} to #{export_format}"
+                )
+              end
+      klass.new(versioned_text, export_format)
     end
 
     def initialize(versioned_text, export_format)

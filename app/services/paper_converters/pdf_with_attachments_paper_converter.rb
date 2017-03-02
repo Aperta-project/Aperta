@@ -2,7 +2,6 @@ module PaperConverters
   # Adds figures to the end of PDFs
   class PdfWithAttachmentsPaperConverter < SynchronousPaperConverter
     include UrlBuilder
-    include RenderAnywhere
     include DownloadablePaper
 
     def output_data

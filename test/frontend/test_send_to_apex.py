@@ -30,7 +30,7 @@ class SendToApexTest(CommonTest):
   Validate if the data in the frontend match the data in the backend sent to Apex
   """
 
-  def test_send_to_apex_message(self):
+  def _test_send_to_apex_message(self):
     """
     test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding messages
     """

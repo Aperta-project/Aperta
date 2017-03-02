@@ -143,12 +143,13 @@ class SendToApexCard(BaseCard):
                     "deceased": None, 
                     "department": creator_login1['affiliation-dept'], 
                     "email": creator_login1['email'], 
-                    "first_name": "atest", 
+                    "first_name": creator_login1["name"].split()[0], 
                     "government_employee": False, 
-                    "last_name": "author1", 
+                    "last_name": creator_login1["name"].split()[1], 
                     "middle_initial": None, 
                     "orcid_authenticated": True, 
-                    "orcid_profile_url": "http://sandbox.orcid.org/0000-0002-3438-8942", 
+                    "orcid_profile_url": 
+                        "http://sandbox.orcid.org/{0}".format(creator_login1["orcidid"]), 
                     "secondary_affiliation": None, 
                     "title": creator_login1['affiliation-title'], 
                     "type": "author"}

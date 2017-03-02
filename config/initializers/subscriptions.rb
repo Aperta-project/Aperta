@@ -11,7 +11,7 @@ Subscriptions.configure do
 
   add 'paper:submitted', \
       Paper::Submitted::EmailCreator,
-      Paper::Submitted::SnapshotPaper,
+      Paper::Submitted::SnapshotPaper
       #Paper::Submitted::EmailCoauthors
 
   add 'paper:initially_submitted', \

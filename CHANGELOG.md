@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added "Confirm Authorship" button to email to co authors.
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
+* Temporarily disabled coauthor notification
 ### Deprecated
 ### Removed
 ### Fixed

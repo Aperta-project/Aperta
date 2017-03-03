@@ -14,8 +14,8 @@ export default DS.Model.extend({
   updatedAt: DS.attr('date'),
   versionString: DS.attr('string'),
   fileType: DS.attr('string'),
-
   isDraft: computed('majorVersion', 'minorVersion', function() {
     return isEmpty(this.get('majorVersion')) && isEmpty(this.get('minorVersion'));
-  })
+  }),
+  sourceType: DS.attr('string')
 });

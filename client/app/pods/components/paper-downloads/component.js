@@ -3,17 +3,19 @@ import { task } from 'ember-concurrency';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['sheet', 'sheet--visible'],
+  classNames: [
+    'paper-downloads-component',
+    'sheet',
+    'sheet--visible'
+  ],
 
   propTypes: {
     // actions:
-    exportDocument: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired
   },
 
   init() {
     this._super(...arguments);
-    this.fetchVersions.perform();
   },
 
   pdfDownloadLink: Ember.computed('paperid', function() {
@@ -29,13 +31,6 @@ export default Ember.Component.extend({
   actions: {
     toggle() {
       this.get('toggle')();
-    },
-
-    exportDocument(version) {
-      this.get('exportDocument')(
-        version.get('fileType'),
-        version.get('id')
-      );
     }
   }
 });

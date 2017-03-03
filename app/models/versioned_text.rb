@@ -16,7 +16,6 @@ class VersionedText < ActiveRecord::Base
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
   before_update :add_file_info, if: :file?
-  # before_update :add_sourcefile_info, if: :sourcefile?
 
   validates :paper, presence: true
   validate :only_version_once
@@ -86,6 +85,10 @@ class VersionedText < ActiveRecord::Base
 
   def s3_full_sourcefile_path
     file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
+  end
+
+  def latest_version?
+    self == paper.latest_version
   end
 
   private

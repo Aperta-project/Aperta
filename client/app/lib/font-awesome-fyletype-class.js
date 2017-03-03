@@ -32,15 +32,15 @@ export default function(type) {
     return 'fa-file-archive-o';
   }
 
-  if ( /\.(mp4|mpg)$/i.test(type) ) {
-    return 'fa-file-movie-o';
-  }
-
   if ( /\.(rb|java|py)$/i.test(type) ) {
     return 'fa-file-code-o';
   }
 
   if ( /\.(txt)$/i.test(type) ) {
+    return 'fa-file-text-o';
+  }
+
+  if ( /\.(tex)$/i.test(type) ) {
     return 'fa-file-text-o';
   }
 }

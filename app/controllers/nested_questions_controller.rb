@@ -3,8 +3,10 @@ class NestedQuestionsController < ApplicationController
   respond_to :json
 
   def index
-    owner_type = NestedQuestion.lookup_owner_type(params[:type])
-    nested_questions = NestedQuestion.where(owner_type: owner_type, owner_id: nil)
-    render json: nested_questions, each_serializer: NestedQuestionSerializer
+    card = Card.lookup_card(params[:type])
+    content = CardContent.where(card: card)
+    # Exclude the root node
+    content = content.where.not(parent_id: nil)
+    render json: content, each_serializer: CardContentAsNestedQuestionSerializer
   end
 end

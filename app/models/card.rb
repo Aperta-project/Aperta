@@ -17,4 +17,24 @@ class Card < ActiveRecord::Base
   def content_root
     card_content.roots.first
   end
+
+  def self.lookup_card(owner_type)
+    name = case owner_type
+           when /Task$/
+             owner_type
+           when "Author"
+             'Author'
+           when "GroupAuthor"
+             'GroupAuthor'
+           when "Funder"
+             'TahiStandardTasks::Funder'
+           when "ReviewerRecommendation"
+             'TahiStandardTasks::ReviewerRecommendation'
+           when "ReviewerReport"
+             'ReviewerReport'
+           else
+             raise "Don't know how to lookup owner_type: #{owner_type}"
+           end
+    Card.find_by!(name: name)
+  end
 end

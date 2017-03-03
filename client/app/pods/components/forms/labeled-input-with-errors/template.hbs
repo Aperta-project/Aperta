@@ -1,12 +1,14 @@
 <label>{{label}}</label>
 {{error-message message=errors displayIcon=false}}
-{{#if errorPresent}}
-  <i class="fa fa-exclamation-triangle" title={{capitalize errors}}></i>
-{{/if}}
-{{input type="text"
-  value=value
-  enter=enter
-  class="form-control"
-  classBinding="errorPresent:labeled-input-with-errors-errored"
-  autofocus=(if autofocus "autofocus")
-  placeholder=placeholder}}
+<div class="input-with-notification-icon">
+  {{input type="text"
+    value=value
+    enter=enter
+    class="form-control"
+    classBinding="errorPresent:labeled-input-with-errors-errored"
+    autofocus=(if autofocus "autofocus")
+    placeholder=placeholder}}
+  {{#if errorPresent}}
+    <i class="fa fa-exclamation-triangle" title={{capitalize errors}}></i>
+  {{/if}}
+</div>

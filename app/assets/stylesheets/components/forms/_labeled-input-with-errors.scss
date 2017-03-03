@@ -1,22 +1,25 @@
 .labeled-input-with-errors {
-  position: relative;
 
   .error-message {
     float: right;
     margin-top: 6px;
   }
 
-  .fa-exclamation-triangle {
-    color: $aperta-red;
-    position: absolute;
-    top: 37px;
-    right: 10px;
-  }
+  .input-with-notification-icon {
+    position: relative;
 
-  .labeled-input-with-errors-errored {
-    border-color: $aperta-red;
-    &:focus {
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px transparentize($aperta-red, 0.6);
+    .fa-exclamation-triangle {
+      color: $aperta-red;
+      position: absolute;
+      right: 10px;
+      bottom: 30%;
+    }
+
+    .labeled-input-with-errors-errored {
+      border-color: $aperta-red;
+      &:focus {
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px transparentize($aperta-red, 0.6);
+      }
     }
   }
 }

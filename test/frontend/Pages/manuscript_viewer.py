@@ -636,8 +636,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         if style_check:
           upload_ms = UploadManuscriptTask(self._driver)
-          upload_ms.validate_styles()
-          import pdb; pdb.set_trace()
+          upload_ms.validate_styles(uploaded=True)
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(.5)

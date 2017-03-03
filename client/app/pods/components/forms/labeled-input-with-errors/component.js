@@ -7,7 +7,8 @@ export default Ember.Component.extend({
     placeholder: PropTypes.string,
     label: PropTypes.string,
     errors: PropTypes.array,
-    enter: PropTypes.func
+    enter: PropTypes.func,
+    autofocus: PropTypes.bool
   },
 
   classNames: ['labeled-input-with-errors'],

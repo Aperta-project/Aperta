@@ -17,6 +17,6 @@
   cursor: pointer;
 
   &:hover, &:focus {
-    background-color: shade($aperta-blue, 10%);
+    background-color: $aperta-blue-dark;
   }
 }

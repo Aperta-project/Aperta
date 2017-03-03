@@ -5,7 +5,8 @@ import {PropTypes} from 'ember-prop-types';
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
     journal: PropTypes.EmberObject,
-    close: PropTypes.func // action, called when overlay closes
+    success: PropTypes.func, // action, called when card is created
+    close: PropTypes.func // action, called to close the overlay
   },
 
   classNames: ['admin-new-card-overlay'],
@@ -31,6 +32,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
       card.save().then(() =>{
         this.set('saving', false);
+        this.get('success')(card);
         this.get('close')();
       }).catch(() => {
         this.set('saving', false);

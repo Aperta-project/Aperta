@@ -8,7 +8,6 @@ class Card < ActiveRecord::Base
   has_one :content_root, -> { where(parent_id: nil) }, class_name: 'CardContent'
 
   validates :name, presence: { message: "Please give your card a name." }
-  validates :journal, presence: true
   validates :name, uniqueness: {
     scope: :journal,
     message: "That card name is taken. Please give your card a new name."

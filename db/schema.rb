@@ -713,6 +713,12 @@ ActiveRecord::Schema.define(version: 20170227164217) do
     t.datetime "updated_at"
   end
 
+  create_table "scratches", force: :cascade do |t|
+    t.string   "contents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"

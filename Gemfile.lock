@@ -387,6 +387,8 @@ GEM
     has_secure_token (1.0.0)
       activerecord (>= 3.0)
     hashie (3.4.2)
+    health_check (2.6.0)
+      rails (>= 4.0)
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
     hitimes (1.2.3)
@@ -743,6 +745,7 @@ DEPENDENCIES
   generator_spec
   gepub (~> 0.7.0beta1)
   has_secure_token
+  health_check
   heroku-deflater
   kaminari
   lograge

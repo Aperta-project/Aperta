@@ -1,6 +1,14 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Individual Author</legend>
+
+    {{#if author.coAuthorConfirmed}}
+      <div class="author-confirmed">
+        <i class="fa fa-check author-confirmed-check"></i>
+        Authorship has been confirmed
+      </div>
+    {{/if}}
+
     {{#if authorIsNotCurrentUser}}
       {{error-message message=validationErrors.orcidIdentifier
                       displayIcon=true

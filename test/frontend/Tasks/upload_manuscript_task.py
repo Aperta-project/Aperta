@@ -26,7 +26,7 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_input = (By.ID, 'upload-files')
 
   # POM Actions
-  def validate_styles(self, uploaded=False):
+  def validate_styles(self, uploaded=False, pdf=False):
     """
     Validate styles in Upload Manuscript Task
     """

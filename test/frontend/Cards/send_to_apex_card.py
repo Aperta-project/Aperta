@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import hashlib
 import json
 import logging
 import os
@@ -11,7 +12,7 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
-from Base.Resources import creator_login1
+from Base.Resources import creator_login1, docs
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'scadavid@plos.org'
@@ -114,17 +115,18 @@ class SendToApexCard(BaseCard):
 
     with open('{0}/metadata.json'.format(directory_path)) as json_file:    
       json_data = json.load(json_file)
-    shutil.rmtree(directory_path)
 
     return json_data
 
-  def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract):
+  def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract,
+                                directory_path):
     """
     This method validate the information within the extracted json
     :param json_data: Is the extracted json from the unziped metadata.json
     :param short_doi: Is the manuscript's ID
     :param manuscript_title: Is the manuscript's title
     :param manuscript_abstract: Is the manuscript's abstract
+    :param directory_path: The location of the temp folder
     :return: None
     """
     author = json_data["metadata"]["authors"][0]["author"]
@@ -187,3 +189,28 @@ class SendToApexCard(BaseCard):
     assert paper_title == manuscript_title, paper_title
     assert paper_type == "generateCompleteApexData", paper_type
     assert "/journal.{0}".format(short_doi) in doi, doi
+
+    shutil.rmtree(directory_path)
+
+  def validate_source_file_on_zip(self, filename, directory_path, doc2upload, hash_file, short_doi):
+    """
+    This method extract the content of the retrieved file from FTP
+    :param filename: The name of the file to extract
+    :param directory_path: The path of the folder
+    :param doc2upload: The uploaded source file
+    :param hash_file: Is the hash number of the uploaded source file
+    :param short_doi: Is the manuscript ID
+    :return: None
+    """
+    zip_ref = zipfile.ZipFile(r'{0}/{1}'.format(directory_path, filename))
+    zip_ref.extractall(r'{0}'.format(directory_path))
+    zip_ref.close()
+
+    source_file_name = doc2upload.split("/")[3]
+    file_ext = source_file_name.split(".")[1]
+    extracted_source_file = os.path.join(directory_path, '{0}.{1}'.format(short_doi, file_ext))
+    hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
+
+    assert hash_file == hash_file_extracted, hash_file
+
+    shutil.rmtree(directory_path)

@@ -18,7 +18,8 @@ class ReviewerReport < ActiveRecord::Base
 
   # status will look at the reviewer, invitations and the submitted state of
   # this task to get an overall status for the review
-  def status
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def computed_status
     if invitation
       if invitation.state == "accepted"
         if task.submitted?
@@ -34,7 +35,7 @@ class ReviewerReport < ActiveRecord::Base
     end
   end
 
-  def status_date
+  def computed_status_date
     case status
     when "completed"
       task.completed_at
@@ -50,6 +51,7 @@ class ReviewerReport < ActiveRecord::Base
       invitation.rescinded_at
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def revision
     # if a decision has a revision, use it, otherwise, use paper's

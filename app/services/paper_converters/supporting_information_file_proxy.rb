@@ -7,8 +7,10 @@ module PaperConverters
 
     def self.from_versioned_text(versioned_text)
       if versioned_text.latest_version?
-        return versioned_text.paper.supporting_information_files.map do |supporting_information_file|
-          SupportingInformationFileProxy.from_supporting_information_file(supporting_information_file)
+        paper = versioned_text.paper
+        return paper.supporting_information_files.map do |si_file|
+          klass = SupportingInformationFileProxy
+          klass.from_supporting_information_file(si_file)
         end
       else
         major_version = versioned_text.major_version
@@ -64,15 +66,13 @@ module PaperConverters
     def href(**params)
       if @supporting_information_file
         @supporting_information_file.proxyable_url(params)
+      elsif params[:is_proxied]
+        options = { token: @resource_token.token,
+                    version: params[:version],
+                    only_path: params[:only_path] }
+        url_for(:resource_proxy, options)
       else
-        if params[:is_proxied]
-          options = { token: @resource_token.token,
-                      version: params[:version],
-                      only_path: params[:only_path] }
-          url_for(:resource_proxy, options)
-        else
-          @resource_token.url(params[:version] || :detail)
-        end
+        @resource_token.url(params[:version] || :detail)
       end
     end
   end

@@ -75,16 +75,24 @@ class TasksController < ApplicationController
 
   def nested_questions
     requires_user_can :view, task
-    respond_with task.nested_questions,
-                 each_serializer: NestedQuestionSerializer,
-                 root: "nested_questions"
+    card = Card.lookup_card(task.type)
+    content = CardContent.where(card: card)
+    # Exclude the root node
+    content = content.where.not(parent_id: nil)
+    respond_with(
+      content,
+      each_serializer: CardContentAsNestedQuestionSerializer,
+      root: "nested_questions"
+    )
   end
 
   def nested_question_answers
     requires_user_can :view, task
-    respond_with task.nested_question_answers,
-                 each_serializer: NestedQuestionAnswerSerializer,
-                 root: "nested_question_answers"
+    respond_with(
+      task.answers,
+      each_serializer: AnswerAsNestedQuestionAnswerSerializer,
+      root: "nested_question_answers"
+    )
   end
 
   private

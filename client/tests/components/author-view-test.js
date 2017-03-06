@@ -60,3 +60,11 @@ test("component lists the author when they are the current user", function(asser
   this.render(template);
   assert.textPresent('.author-task-item-view .author-name', 'Bob Smith (you)');
 });
+
+test("component shows author is confirmed", function(assert){
+  Ember.run( () => {
+    this.get('author').set('coAuthorConfirmed', true);
+  });
+  this.render(template);
+  assert.textPresent('.author-name', 'Confirmed');
+});

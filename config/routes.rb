@@ -286,5 +286,6 @@ Tahi::Application.routes.draw do
   end
 
   root to: 'ember_cli/ember#index'
+  health_check_routes
   mount_ember_app :client, to: '/'
 end

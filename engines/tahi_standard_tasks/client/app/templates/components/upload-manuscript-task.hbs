@@ -34,8 +34,9 @@
            {{fa-icon fileTypeClass}} {{filename}}
         </a>
     {{else}}
-      <a href="{{manuscriptDownloadUrl}}" target="_new">
-        {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
+      <a href={{paper-download-link paper=task.paper}}
+         target="_new">
+         {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
       </a>
     {{/if}}
       <span class="fileinput-button manuscript-task">

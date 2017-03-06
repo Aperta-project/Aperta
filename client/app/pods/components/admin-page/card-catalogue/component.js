@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   journal: null,
   newCardOverlayVisible: false,
 
+  routing: Ember.inject.service('-routing'),
   cardsSorting: ['name'],
   sortedCards: Ember.computed.sort('filteredCards', 'cardsSorting'),
   filteredCards: Ember.computed('cards.@each.isNew', function () {
@@ -18,6 +19,13 @@ export default Ember.Component.extend({
 
     hideNewCardOverlay() {
       this.set('newCardOverlayVisible', false);
+    },
+
+    editCard(card) {
+      this.get('routing')
+        .transitionTo(
+          'admin.cc.card',
+          [card]);
     }
   }
 });

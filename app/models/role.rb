@@ -17,6 +17,7 @@ class Role < ActiveRecord::Base
   PUBLISHING_SERVICES_ROLE = 'Publishing Services'.freeze
   REVIEWER_ROLE = 'Reviewer'.freeze
   SITE_ADMIN_ROLE = 'Site Admin'.freeze
+  JOURNAL_SETUP_ROLE = 'Journal Setup Admin'.freeze
   STAFF_ADMIN_ROLE = 'Staff Admin'.freeze
   TASK_PARTICIPANT_ROLE = 'Participant'.freeze
   USER_ROLE = 'User'.freeze
@@ -48,7 +49,8 @@ class Role < ActiveRecord::Base
     INTERNAL_EDITOR_ROLE,
     PRODUCTION_STAFF_ROLE,
     PUBLISHING_SERVICES_ROLE,
-    STAFF_ADMIN_ROLE
+    STAFF_ADMIN_ROLE,
+    JOURNAL_SETUP_ROLE
   ].freeze
 
   def self.user_role

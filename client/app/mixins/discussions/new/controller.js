@@ -1,6 +1,6 @@
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 import Ember from 'ember';
-import { newDiscussionUsersPath } from 'tahi/lib/api-path-helpers';
+import { newDiscussionUsersPath } from 'tahi/utils/api-path-helpers';
 import { task } from 'ember-concurrency';
 
 const { Mixin, isEmpty } = Ember;

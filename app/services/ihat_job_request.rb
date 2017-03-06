@@ -46,7 +46,7 @@ class IhatJobRequest
         callback_url: callback_url,
         content_type: 'application/epub+zip',
         metadata: metadata)
-      PaperConverter.post_ihat_job(request)
+      PaperConverters::PaperConverter.post_ihat_job(request)
     end
   end
 

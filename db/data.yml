@@ -3902,7 +3902,7 @@ authors:
   - card_id
   - token
   - co_author_state
-  - co_author_state_modified
+  - co_author_state_modified_at
   records: 
   - - '1'
     - Arthur
@@ -6129,7 +6129,7 @@ group_authors:
   - card_id
   - token
   - co_author_state
-  - co_author_state_modified
+  - co_author_state_modified_at
   records: 
   - - '2'
     - Jane

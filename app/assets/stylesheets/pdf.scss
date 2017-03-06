@@ -10,3 +10,11 @@
 .pdf-image-with-caption {
   page-break-after:avoid;
 }
+
+figure {
+  page-break-inside: avoid;
+}
+
+.supporting-information-files {
+  page-break-before: always;
+}

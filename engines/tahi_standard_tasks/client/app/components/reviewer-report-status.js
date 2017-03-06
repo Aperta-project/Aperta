@@ -5,6 +5,11 @@ export default Ember.Component.extend({
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
+  // Remove when APERTA-7993 is fixed
+  testing: Ember.computed(function() {
+    return Ember.testing;
+  }),
+
   statusMessage: Ember.computed('report.status', function() {
     const status = this.get('report.status');
     var output = '';    const verbs = {

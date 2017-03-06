@@ -1,0 +1,31 @@
+.admin-new-card-overlay {
+  width: 100%;
+
+  h1 {
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: $aperta-blue;
+  }
+
+  label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: .5rem;
+  }
+
+  .admin-new-card-overlay-form {
+    margin-bottom: 25px;
+  }
+
+  .admin-new-card-overlay-note {
+    margin-top: .5rem;
+    color: $aperta-grey;
+    font-style: italic;
+  }
+
+  .admin-new-card-overlay-save {
+    position: relative;
+    width: 150px;
+    height: 40px;
+  }
+}

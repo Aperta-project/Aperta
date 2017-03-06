@@ -2,6 +2,11 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
+  // permissionModelName is used by the can service to
+  // clarify that the adminJournal is really a journal, as far as
+  // permissions are concerned.
+  permissionModelName: 'journal',
+
   manuscriptManagerTemplates: DS.hasMany('manuscript-manager-template'),
   journalTaskTypes: DS.hasMany('journal-task-type', {async: false}),
   adminJournalRoles: DS.hasMany('admin-journal-role', {async: false}),
@@ -20,7 +25,7 @@ export default DS.Model.extend({
 
   // Card config:
 
-  cards: DS.hasMany('card'),
+  cards: DS.hasMany('card', {async: true}),
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');
   })

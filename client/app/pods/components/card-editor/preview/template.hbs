@@ -1,0 +1,15 @@
+<div class="card-editor-preview-container">
+  <div class="card-editor-preview-toggles">
+    <button class="card-editor-full-screen-button {{if sidebar "" "active"}}"
+            {{action "showFullscreen"}}>
+      Full Screen
+    </button>
+    <button class="card-editor-sidebar-button {{if sidebar "active"}}"
+            {{action "showSidebar"}}>
+      Side Bar
+    </button>
+  </div>
+
+  <div class="card-editor-preview-card {{if sidebar "card-editor-preview-sidebar" "card-editor-preview-full"}}">
+  </div>
+</div>

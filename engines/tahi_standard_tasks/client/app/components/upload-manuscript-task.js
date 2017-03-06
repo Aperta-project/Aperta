@@ -1,6 +1,7 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
-import { uploadManuscriptPath } from 'tahi/lib/api-path-helpers';
+import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
+import { uploadManuscriptPath } from 'tahi/utils/api-path-helpers';
 import Ember from 'ember';
 
 export default TaskComponent.extend(FileUploadMixin, {
@@ -17,8 +18,15 @@ export default TaskComponent.extend(FileUploadMixin, {
     return uploadManuscriptPath(this.get('task.id'));
   }),
 
+  fileTypeClass: Ember.computed('filename', 'task.paper.file.filename', function(){
+    let uploaded = this.get('manuscriptfileUploaded');
+    return fontAwesomeFiletypeClass(this.get(uploaded ? 'filename' : 'task.paper.file.filename'));
+  }),
+
   actions: {
     uploadStarted() {
+      this.set('showProgress', true);
+      this.set('progress', 0);
       this.uploadStarted(...arguments);
     },
 
@@ -41,11 +49,14 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.set('uploadError', message);
     },
 
-    uploadFinished(data, filename) {
+    uploadFinished(data, filename, s3Url) {
       this.uploadFinished(data, filename);
       this.get('store').pushPayload(data);
 
       this.get('task').save();
+      this.set('manuscriptUploaded', true);
+      this.set('s3Url', s3Url);
+      this.set('filename', filename);
     }
   }
 });

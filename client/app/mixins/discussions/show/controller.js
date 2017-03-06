@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { discussionUsersPath } from 'tahi/lib/api-path-helpers';
+import { discussionUsersPath } from 'tahi/utils/api-path-helpers';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 import { task } from 'ember-concurrency';
 import ENV from 'tahi/config/environment';

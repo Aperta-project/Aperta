@@ -42,9 +42,22 @@ class ApexPackager
   end
 
   def add_manuscript(package)
+    if @paper.file_type == 'pdf'
+      filename = source_filename
+      url = @paper.sourcefile.url
+    else
+      filename = manuscript_filename
+      url = @paper.file.url
+    end
+
     add_file_to_package package,
-                        manuscript_filename,
-                        open(@paper.file.url, &:read)
+      filename,
+      open(url, &:read)
+  end
+
+  def source_filename
+    extension = @paper.sourcefile.filename.split('.').last
+    "#{@paper.manuscript_id}.#{extension}"
   end
 
   def manuscript_filename

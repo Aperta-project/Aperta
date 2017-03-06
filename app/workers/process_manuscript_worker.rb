@@ -23,10 +23,9 @@ class ProcessManuscriptWorker
     set_file_type(manuscript_attachment)
     paper = manuscript_attachment.paper
     epub_stream = get_epub(paper)
-
     IhatJobRequest.request_for_epub(
       epub: epub_stream,
-      source_url: manuscript_attachment.url,
+      url: manuscript_attachment.pending_url,
       metadata: {
         paper_id: paper.id,
         user_id: manuscript_attachment.uploaded_by_id })
@@ -35,7 +34,9 @@ class ProcessManuscriptWorker
   private
 
   def set_file_type(manuscript_attachment)
-    manuscript_attachment.update_column(:file_type, manuscript_attachment.file.file.extension)
+    path = URI.parse(manuscript_attachment.pending_url).path
+    extension = Pathname.new(path).extname.delete('.')
+    manuscript_attachment.update_column(:file_type, extension)
   end
 
   def get_epub(paper)

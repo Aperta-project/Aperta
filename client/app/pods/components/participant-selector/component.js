@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { filteredUsersPath } from 'tahi/lib/api-path-helpers';
+import { filteredUsersPath } from 'tahi/utils/api-path-helpers';
 import { task, timeout } from 'ember-concurrency';
 import { mousedown as powerSelectFocus } from 'tahi/lib/power-select-event-trigger';
 import { PropTypes } from 'ember-prop-types';

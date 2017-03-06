@@ -6,16 +6,18 @@ moduleForComponent('admin-page/card-catalogue', 'Integration | Component | admin
 });
 
 test('it renders a catalogue', function(assert) {
-  this.render(hbs`{{admin-page/card-catalogue cards=[]}}`);
+  const cards = [];
+  this.set('cards', cards);
+  this.render(hbs`{{admin-page/card-catalogue cards=cards}}`);
   assert.elementFound('.admin-page-catalogue');
 });
 
 test('it renders an item for each card given', function(assert) {
   const journal = {name: 'My Journal'};
   const cards = [
-    {title: 'Authors', journal: journal},
-    {title: 'Tech Check', journal: journal},
-    {title: 'Register Decision', journal: journal}
+    {title: 'Authors', journal: journal, isNew: false},
+    {title: 'Tech Check', journal: journal, isNew: false},
+    {title: 'Register Decision', journal: journal, isNew: false}
   ];
   this.set('cards', cards);
 

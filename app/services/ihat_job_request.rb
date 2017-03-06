@@ -35,9 +35,9 @@ class IhatJobRequest
     end
   end
 
-  def self.request_for_epub(epub:, source_url:, metadata: {})
+  def self.request_for_epub(epub:, url:, metadata: {})
     callback_url = build_ihat_callback_url
-    from_format = Pathname.new(URI.parse(source_url).path).extname.delete('.')
+    from_format = Pathname.new(URI.parse(url).path).extname.delete('.')
 
     TahiEpub::Tempfile.create epub, delete: true do |file|
       request = IhatJobRequest.new(
@@ -46,7 +46,7 @@ class IhatJobRequest
         callback_url: callback_url,
         content_type: 'application/epub+zip',
         metadata: metadata)
-      PaperConverter.post_ihat_job(request)
+      PaperConverters::PaperConverter.post_ihat_job(request)
     end
   end
 

@@ -1,7 +1,28 @@
+{{#overlay-fullscreen
+   visible=newCardOverlayVisible
+   outAnimationComplete=(action "hideNewCardOverlay")
+   overlayClass="overlay--blue"
+   as |overlay|}}
+  {{admin-page/new-card-overlay
+    journal=journal
+    success=(action "editCard")
+    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
 <h2>Card Catalogue</h2>
+
+{{#if journal}}
+  {{#if (can 'create_card' journal)}}
+  <button class="button-primary button--blue" {{action "showNewCardOverlay"}}>
+    Add new card
+  </button>
+  {{/if}}
+{{/if}}
+
 {{#admin-page/catalogue}}
-  {{#each cards as |card|}}
-    {{#admin-page/catalogue/item}}
+  {{#each sortedCards as |card|}}
+    {{#admin-page/catalogue/item action=(action "editCard" card)}}
       {{admin-page/card-thumbnail card=card}}
     {{/admin-page/catalogue/item}}
   {{/each}}

@@ -7,6 +7,7 @@ stream_to_everyone = EventStream::StreamToEveryone
 stream_to_user = EventStream::StreamToUser
 stream_to_discussion_channel = EventStream::StreamToDiscussionChannel
 stream_to_orcid_account_channel = EventStream::StreamToOrcidAccountChannel
+stream_to_admin = EventStream::StreamToAdmin
 
 Subscriptions.configure do
 
@@ -20,7 +21,7 @@ Subscriptions.configure do
 
   add 'paper:updated', stream_to_paper_channel
   add 'paper:destroyed', stream_to_everyone
-  add 'paper:data_extracted', Paper::DataExtracted::FinishUploadManuscriptTask, Paper::DataExtracted::NotifyUser
+  add 'paper:data_extracted', Paper::DataExtracted::NotifyUser
 
   # Paper constituents:
 
@@ -91,4 +92,8 @@ Subscriptions.configure do
   # Orcid Accounts:
 
   add 'orcid_account:updated', stream_to_orcid_account_channel
+
+  add 'card:created', stream_to_admin
+  add 'card:updated', stream_to_admin
+  add 'card:destroyed', stream_to_admin
 end

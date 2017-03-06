@@ -73,4 +73,10 @@ class GroupAuthor < ActiveRecord::Base
     question_ids = self.class.contributions_question.children.map(&:id)
     nested_question_answers.where(nested_question_id: question_ids)
   end
+
+  private
+
+  def set_default_co_author_state
+    self.co_author_state ||= 'unconfirmed'
+  end
 end

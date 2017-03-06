@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Author do
-  subject(:author) { FactoryGirl.build(:author) }
+  subject(:author) { FactoryGirl.create(:author) }
 
   def setup_contribution_question_for_author
     NestedQuestion.where(owner_type: Author.name).delete_all
@@ -55,15 +55,15 @@ describe Author do
     end
   end
 
-  describe "#update_coauthor_status" do
+  describe "#update_coauthor_state" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     it "Updates coauthor status" do
       status = "confirmed"
-      author.update_coauthor_status(status, user.id)
+      author.update_coauthor_state(status, user.id)
       author.reload
       expect(author.co_author_state).to eq "confirmed"
-      expect(author.co_author_modified).to be_present
-      expect(author.co_author_modified_by_id).to eq user.id
+      expect(author.co_author_state_modified_at).to be_present
+      expect(author.co_author_state_modified_by_id).to eq user.id
     end
   end
 
@@ -131,30 +131,14 @@ describe Author do
     it "sets co_author_state to confirmed" do
       expect do
         author.co_author_confirmed!
-      end.to change { author.co_author_state }.from(nil).to('confirmed')
+      end.to change { author.co_author_state }.from('unconfirmed').to('confirmed')
     end
 
     it "sets co_author_state_modified_at" do
       Timecop.freeze do |reference_time|
         expect do
           author.co_author_confirmed!
-        end.to change { author.co_author_state_modified_at }.from(nil).to(reference_time)
-      end
-    end
-  end
-
-  describe "#co_author_refuted!" do
-    it "sets co_author_state to refuted" do
-      expect do
-        author.co_author_refuted!
-      end.to change { author.co_author_state }.from(nil).to('refuted')
-    end
-
-    it "sets co_author_state_modified_at" do
-      Timecop.freeze do |reference_time|
-        expect do
-          author.co_author_refuted!
-        end.to change { author.co_author_state_modified_at }.from(nil).to(reference_time)
+        end.to change { author.co_author_state_modified_at }.to(reference_time)
       end
     end
   end

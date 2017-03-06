@@ -38,8 +38,4 @@ module CoAuthorConfirmable
     update!(attrs)
   end
 
-  def set_default_co_author_state
-    self.co_author_state ||= 'unconfirmed'
-  end
-
 end

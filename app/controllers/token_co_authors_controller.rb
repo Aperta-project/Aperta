@@ -7,8 +7,9 @@ class TokenCoAuthorsController < ApplicationController
       redirect_to thank_you_token_co_author_path(token)
     end
 
-    if author.co_author_refuted?
-      redirect_to authorship_refuted_token_co_author_path(token)
+    # a more elegant handling of this edge case is handled in a later story
+    if @author.co_author_refuted?
+      render nothing: true, status: 200, content_type: 'text/html'
     end
 
     assign_template_vars

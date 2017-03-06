@@ -1,0 +1,13 @@
+.admin-card-editor {
+  // After the main nav, this component should take up the whole
+  // remaining vertical height
+  flex: 1;
+
+  // Inside our full height row, there are two sub-rows: the header is
+  // one, and the remaining content is another. They're both
+  // full-width, so we stretch both ways.
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}

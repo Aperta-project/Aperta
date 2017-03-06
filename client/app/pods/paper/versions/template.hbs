@@ -50,9 +50,7 @@
 
 {{#if downloadsVisible}}
   {{paper-downloads paper=model
-                    toggle=(action "toggleDownloads")
-                    exportDocument=(action "exportDocument")
-                    exportSource=(action "exportSource")}}
+                    toggle=(action "toggleDownloads")}}
 {{/if}}
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}

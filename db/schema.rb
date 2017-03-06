@@ -677,8 +677,8 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.boolean  "created_in_7993", default: false
+    t.integer  "card_id"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -711,6 +711,12 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.datetime "errored_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "scratches", force: :cascade do |t|
+    t.string   "contents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simple_reports", force: :cascade do |t|

@@ -1,5 +1,3 @@
-require 'securerandom'
-
 FactoryGirl.define do
   factory :versioned_text do
     major_version 1

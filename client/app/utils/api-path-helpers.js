@@ -26,3 +26,18 @@ export function discussionUsersPath(topicId) {
 export function newDiscussionUsersPath(paperId) {
   return `/api/papers/${paperId}/discussion_topics/new_discussion_users`;
 }
+
+export function paperDownloadPath({paperId, versionedTextId, format}) {
+  let path = `/api/paper_downloads/${paperId}`;
+  let params = {};
+  if (format) {
+    params.export_format = format;
+  }
+  if (versionedTextId) {
+    params.versioned_text_id = versionedTextId;
+  }
+  if (!_.isEmpty(params)) {
+    path += `?${$.param(params)}`;
+  }
+  return path;
+}

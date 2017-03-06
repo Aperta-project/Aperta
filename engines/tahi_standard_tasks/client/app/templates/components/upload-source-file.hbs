@@ -16,7 +16,6 @@
         <span>Replace</span>
         {{file-uploader id="upload-files"
                         railsMethod="PUT"
-                        accept=".doc,.docx,.tex,.zip"
                         start="uploadStarted"
                         progress="uploadProgress"
                         done="uploadFinished"
@@ -29,7 +28,7 @@
     </div>
   {{else if task.paper.sourcefile.filename}}
     <div>
-      <a href="{{sourcefileDownloadUrl}}"
+      <a href={{paper-download-link paper=task.paper format="source"}}
          class="download-docx"
          title="{{filename}}" target="_new">
          {{fa-icon fileTypeClass}} {{task.paper.sourcefile.filename}}
@@ -39,7 +38,6 @@
         <span>Replace</span>
         {{file-uploader id="upload-files"
                         railsMethod="PUT"
-                        accept=".doc,.docx,.tex,.zip"
                         start="uploadStarted"
                         progress="uploadProgress"
                         done="uploadFinished"
@@ -55,7 +53,6 @@
       Select and upload source file
       {{file-uploader id="upload-source-file"
       railsMethod="PUT"
-      accept=".doc,.docx,.tex,.zip"
       start="uploadStarted"
       progress="uploadProgress"
       done="uploadFinished"

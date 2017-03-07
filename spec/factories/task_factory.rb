@@ -7,6 +7,12 @@ FactoryGirl.define do
     phase { FactoryGirl.build_stubbed(:phase) }
   end
 
+  trait :with_card do
+    after(:create) do |task|
+      card = FactoryGirl.create(:card, name: task.class.to_s)
+      FactoryGirl.create(:card_content, card: card)
+    end
+  end
   factory :ad_hoc_task do
     title "Do something awesome"
     phase

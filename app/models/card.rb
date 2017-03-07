@@ -18,6 +18,7 @@ class Card < ActiveRecord::Base
   end
 
   def self.lookup_card(owner_type)
+    return if owner_type.to_s =~ /AdHocTask$/
     name = case owner_type.to_s
            when /Task$/
              owner_type.to_s

@@ -4,6 +4,6 @@ class AddCoAuthorStateModifiedByIdToAuthor < ActiveRecord::Migration
   end
 
   def down
-    remove_reference :authors, :co_author_state_modified_by, :foreign_key: true
+    remove_reference :authors, :co_author_state_modified_by
   end
 end

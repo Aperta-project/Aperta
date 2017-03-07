@@ -1,8 +1,6 @@
 {{#link-to "admin.cc.journals.cards" class="card-editor-header-back"}}&lt; Card Catalogue{{/link-to}}
 
 <div class="card-editor-header-container">
-  <h1>{{card.name}}</h1>
-
-
+  {{card-editor/name card=card}}
   {{card-editor/tab-bar card=card}}
 </div>

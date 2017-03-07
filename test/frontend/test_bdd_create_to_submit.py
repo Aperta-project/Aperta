@@ -175,9 +175,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       logging.warning('Conversion not completed - still showing interim title')
 
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
-
-    upload_package = {'source':''}
-    manuscript_page.complete_task('Upload Manuscript', data=upload_package)
+    manuscript_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
     manuscript_page.click_submit_btn()
@@ -429,8 +427,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
 
     # Give a little time for the submit button to attach to the DOM
     time.sleep(5)
-    upload_package = {'source':''}
-    manuscript_page.complete_task('Upload Manuscript', data=upload_package)
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()

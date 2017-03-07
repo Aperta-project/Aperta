@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Users can now change the initial participants on a discussion topic.
-* Source file is sent to APEX instead of a PDF manuscript
+* Source file is sent to APEX along with PDF manuscripts
 * The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
 * Source files show can be downloaded
 * Added "Confirm Authorship" button to email to co authors.

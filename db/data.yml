@@ -863,10 +863,10 @@ activities:
     - '11'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2016-03-23 13:26:09.524857'
-    - '2016-03-23 13:26:09.524857'
+    - '2017-03-07 16:30:16.515704'
   - - '96'
     - manuscript
     - '11'
@@ -971,10 +971,10 @@ activities:
     - '11'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2016-03-23 13:32:20.498372'
-    - '2016-03-23 13:32:20.498372'
+    - '2017-03-07 16:30:16.519825'
   - - '108'
     - manuscript
     - '11'
@@ -1268,10 +1268,10 @@ activities:
     - '12'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2016-04-12 19:00:15.599261'
-    - '2016-04-12 19:00:15.599261'
+    - '2017-03-07 16:30:16.524813'
   - - '141'
     - manuscript
     - '12'
@@ -1376,10 +1376,10 @@ activities:
     - '12'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2016-04-12 19:02:43.634567'
-    - '2016-04-12 19:02:43.634567'
+    - '2017-03-07 16:30:16.529119'
   - - '153'
     - manuscript
     - '12'
@@ -1466,10 +1466,10 @@ activities:
     - '12'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2016-04-12 19:05:50.949635'
-    - '2016-04-12 19:05:50.949635'
+    - '2017-03-07 16:30:16.534584'
   - - '163'
     - manuscript
     - '12'
@@ -1610,10 +1610,10 @@ activities:
     - '12'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '1'
     - '2016-10-26 19:40:58.253583'
-    - '2016-10-26 19:40:58.253583'
+    - '2017-03-07 16:30:16.540833'
   - - '179'
     - forensic
     - '12'
@@ -1772,10 +1772,10 @@ activities:
     - '4'
     - Paper
     - task.completed
-    - Revise Manuscript card was marked as complete
+    - Response to Reviewers card was marked as complete
     - '3'
     - '2017-01-30 22:51:12.767159'
-    - '2017-01-30 22:51:12.767159'
+    - '2017-03-07 16:30:16.543839'
   - - '197'
     - forensic
     - '4'
@@ -7689,7 +7689,7 @@ journal_task_types:
     - reviewer
   - - '18'
     - '1'
-    - Revise Manuscript
+    - Response to Reviewers
     - TahiStandardTasks::ReviseTask
     - "{}"
     - true
@@ -32566,12 +32566,12 @@ tasks:
     - 
     - 
   - - '191'
-    - Revise Manuscript
+    - Response to Reviewers
     - TahiStandardTasks::ReviseTask
     - '45'
     - true
     - '2016-04-12 18:57:26.99737'
-    - '2016-10-26 19:40:58.237065'
+    - '2017-03-07 15:55:52.8579'
     - '[[{"type":"text","value":"Dear Dr. Author,\n\nThank you for submitting your
       manuscript, \u003cb\u003eDiffable Paper:\u003c/b\u003e \u003cem\u003ePaper has
       versioned text and tasks\u003c/em\u003e to PLOS Yeti. After careful consideration,
@@ -32830,12 +32830,12 @@ tasks:
     - 
     - 
   - - '213'
-    - Revise Manuscript
+    - Response to Reviewers
     - TahiStandardTasks::ReviseTask
     - '20'
     - true
     - '2017-01-30 22:50:34.586155'
-    - '2017-01-30 22:51:12.752864'
+    - '2017-03-07 15:56:03.296451'
     - "[]"
     - '2'
     - '4'
@@ -32908,13 +32908,13 @@ users:
     - 
     - 
     - 
-    - '10'
+    - '11'
+    - '2017-03-07 15:48:09.334513'
     - '2017-01-30 22:50:42.194957'
-    - '2017-01-30 22:39:34.385771'
     - 127.0.0.1
     - 127.0.0.1
     - '2015-10-29 20:11:22.705226'
-    - '2017-01-30 22:50:42.196736'
+    - '2017-03-07 15:48:09.336849'
     - author
     - 
     - '1003'

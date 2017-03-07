@@ -24,8 +24,8 @@ export default Ember.Component.extend({
     return output;
   }),
 
-  statusDate: Ember.computed('report.statusDate', function(){
-    const date = this.get('report.statusDate');
+  statusDate: Ember.computed('report.statusDatetime', function(){
+    const date = this.get('report.statusDatetime');
     const format = 'MMMM D, YYYY';
     return moment(date).format(format);
   }),

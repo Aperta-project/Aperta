@@ -19,6 +19,8 @@ class GroupAuthor < ActiveRecord::Base
           inverse_of: :authors
   delegate :position, to: :author_list_item
 
+  before_create :set_default_co_author_state
+
   validates :contact_first_name,
             :contact_last_name,
             :contact_email,

@@ -48,8 +48,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def owner_type
-    # TODO: Make this safer
-    answer_params[:owner_type].constantize
+    LookupOwnerType.lookup(answer_params[:owner_type])
   end
 
   def card_content

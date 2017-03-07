@@ -1,52 +1,52 @@
 $invite-padding-vertical: 1.5rem;
 $invite-padding-horizontal: 2rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
-
-.invitees, .assignments {
-  width: $message-body-width;
-  margin-top: 36px;
-
-  .invitation-updated-at,
-  .assignment-updated-at {
-    font-size: 14px;
-    text-transform: capitalize;
-  }
-
-  .expired-invitations {
-    &::before {
-      content: '';
-      display: block;
-      height: 25px;
+.invitees,
+.assignments {
+    width: $message-body-width;
+    margin-top: 36px;
+    .invitation-updated-at,
+    .assignment-updated-at {
+        font-size: 14px;
+        text-transform: capitalize;
     }
-  }
-  .invitation, .assignment {
-    &::after {
-      content: '';
-      display: block;
-      height: 46px;
+    .expired-invitations {
+        &::before {
+            content: '';
+            display: block;
+            height: 25px;
+        }
     }
-
-    .invite-remove, .assignment-remove {
-      position: inherit;
-      top: 4px;
-      right: 0;
-      color: #d5d5d5;
-      font-size: 18px;
-      cursor: pointer;
+    .invitation,
+    .assignment {
+        &::after {
+            content: '';
+            display: block;
+            height: 46px;
+        }
+        .invite-remove,
+        .assignment-remove {
+            position: inherit;
+            top: 4px;
+            right: 0;
+            color: #d5d5d5;
+            font-size: 18px;
+            cursor: pointer;
+        }
     }
-  }
 }
+
 
 /* Invitation body content-editable
 ---------------------------------------------------------------------------- */
 
 .invitation-item-decline-info {
-  margin-bottom: 1rem;
-  padding: 0.75rem 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1.5rem;
 }
 
 .invitation-item-decline-title {
-  font-style: italic;
+    font-style: italic;
 }
 
 
@@ -55,15 +55,15 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-show-body,
 .invitation-edit-body {
-  padding: 0.75rem 1.5rem;
-  white-space: pre-wrap;
+    padding: 0.75rem 1.5rem;
+    white-space: pre-wrap;
 }
 
 .invitation-edit-body {
-  overflow: auto;
-  max-height: 300px;
-  border: 1px solid #bababa;
-  border-radius: 5px;
+    overflow: auto;
+    max-height: 300px;
+    border: 1px solid #bababa;
+    border-radius: 5px;
 }
 
 
@@ -75,41 +75,38 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item {
-  border-top: 2px solid $aperta-grey-light;
-
-  &:last-child {
-    margin-bottom: 1px;
-  }
+    border-top: 2px solid $aperta-grey-light;
+    &:last-child {
+        margin-bottom: 1px;
+    }
 }
 
 .invitation-item--primary {
-  border-top-color: #B2B2B2;
+    border-top-color: #B2B2B2;
 }
 
 .invitation-item--alternate {
-  position: relative;
-  border-top: 1px dashed $aperta-grey-light;
-
-  &:last-child:after {
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: #B2B2B2;
-  }
-
-  .invitation-item-full-name {
-    padding-left: 2rem;
-    .alternate-link-icon {
-       padding-right: 0.3rem;
+    position: relative;
+    border-top: 1px dashed $aperta-grey-light;
+    &:last-child:after {
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: #B2B2B2;
     }
-  }
+    .invitation-item-full-name {
+        padding-left: 2rem;
+        .alternate-link-icon {
+            padding-right: 0.3rem;
+        }
+    }
 }
 
-.invitation-item--disabled {
-}
+.invitation-item--disabled {}
+
 
 /* Invitation Item Header
    .invitation-item-header
@@ -120,176 +117,183 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item-header {
-  display: flex;
-  width: 100%;
-  font-size: 1.4rem;
-  cursor: pointer;
-  user-select: none; // This is important so as not to have strange drag and drop behavior
+    display: flex;
+    width: 100%;
+    font-size: 1.4rem;
+    cursor: pointer;
+    user-select: inherit; // This is important so as not to have strange drag and drop behavior
 }
 
-.invitation-item-header > * {
-  flex: 0 0 auto;
-  padding: $invite-padding-vertical 0 $invite-padding-vertical $invite-padding-horizontal;
+.invitation-item-header>* {
+    flex: 0 0 auto;
+    padding: $invite-padding-vertical 0 $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-spacer {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .invitation-item--closed {
-  &:hover {
-    background: $aperta-grey-xlight;
-  }
-
-  .invitation-item-action-text { display: none; }
+    &:hover {
+        background: $aperta-grey-xlight;
+    }
+    .invitation-item-action-text {
+        display: none;
+    }
 }
 
 .invitation-item--show {
-  .invitation-item-header,
-  .invitation-item-details {
-    background-color: $aperta-grey-light;
-  }
+    .invitation-item-header,
+    .invitation-item-details {
+        background-color: $aperta-grey-light;
+    }
 }
 
 .invitation-item--edit {
-  .invitation-item-header,
-  .invitation-item-details {
-    background-color: $aperta-grey-light;
-  }
+    .invitation-item-header,
+    .invitation-item-details {
+        background-color: $aperta-grey-light;
+    }
 }
 
 .invitation-item--delete {
-  box-shadow: 0px 0px 15px rgba(0,0,0, 0.1);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 .invitation-decline-info {
-  padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
-  color: #555;
-  font-size: 1.2rem;
+    padding: 0 $invite-padding-horizontal 1rem $invite-padding-horizontal;
+    color: #555;
+    font-size: 1.2rem;
 }
 
 .invitation-item--edit {
-  .invitation-item-full-name {
-    cursor: default;
-    padding-left: 2rem;
-  }
+    .invitation-item-full-name {
+        cursor: default;
+        padding-left: 2rem;
+    }
 }
 
 .invitation-state--accepted {
-  .invitation-item-status,
-  .invitation-item-full-name {
-    font-weight: bold;
-  }
+    .invitation-item-status,
+    .invitation-item-full-name {
+        font-weight: bold;
+    }
 }
 
 .invitation-item--closed {
-  .invitation-item-body-preview {
-    display: block;
-  }
+    .invitation-item-body-preview {
+        display: block;
+    }
 }
 
 .invitation-item-body-preview {
-  display: none;
-  overflow: hidden;
-  flex-shrink: 1;
-  cursor: pointer;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    display: none;
+    overflow: hidden;
+    flex-shrink: 1;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .invitation-item-full-name {
-  width: 32%;
-  cursor: pointer;
-  padding-left: 0.5rem;
+    width: 32%;
+    cursor: pointer;
+    padding-left: 0.5rem;
 }
 
 .invitation-state--accepted .invitation-item-full-name {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .invitation-item-status {
-  width: 18%;
-  cursor: pointer;
+    width: 18%;
+    cursor: pointer;
 }
 
 .invitation-item-actions {
-  flex-basis: auto;
-  padding: 0 $invite-padding-horizontal 0 0;
-  text-align: right;
+    flex-basis: auto;
+    padding: 0 $invite-padding-horizontal 0 0;
+    text-align: right;
 }
 
 .invitation-item-action {
-  display: inline-block;
-  margin-left: 2rem;
-  padding: $invite-padding-vertical 0;
-  color: $aperta-grey;
-  cursor: pointer;
-
-  .fa { font-size: 1.7rem; }
+    display: inline-block;
+    margin-left: 2rem;
+    padding: $invite-padding-vertical 0;
+    color: $aperta-grey;
+    cursor: pointer;
+    .fa {
+        font-size: 1.7rem;
+    }
 }
 
 .invitation-item-action:hover {
-  color: $aperta-green;
-
-  .fa { color: $aperta-green; }
+    color: $aperta-green;
+    .fa {
+        color: $aperta-green;
+    }
 }
 
 .invitation-item-action.invitation-item-action--disabled {
-  cursor: default;
-  color: $aperta-grey-lighter;
-
-  &:hover { color: $aperta-grey-lighter; }
-
-  .fa { color: $aperta-grey-lighter; }
+    cursor: default;
+    color: $aperta-grey-lighter;
+    &:hover {
+        color: $aperta-grey-lighter;
+    }
+    .fa {
+        color: $aperta-grey-lighter;
+    }
 }
 
 .invitation-item--closed {
-  /* text next to action icons */
-  .invitation-item-action-text { display: none; }
+    /* text next to action icons */
+    .invitation-item-action-text {
+        display: none;
+    }
 }
 
 .invitation-item-drag-handle {
-  padding: 6px;
-  max-width: 12px;
-  &.active {
-    @include align-self(stretch);
-    cursor: move;
-    cursor: -webkit-grab;
-    background: url(image-path('drag-circle.svg'));
-    background-size: 6px;
-    opacity: 0;
-  }
+    padding: 6px;
+    max-width: 12px;
+    &.active {
+        @include align-self(stretch);
+        cursor: move;
+        cursor: -webkit-grab;
+        background: url(image-path('drag-circle.svg'));
+        background-size: 6px;
+        opacity: 0;
+    }
 }
+
 
 /* Invitation Item Header and Details state changes
 ---------------------------------------------------------------------------- */
 
 .invitation-item--closed {
-  .invitation-item-header:hover {
-    background: $aperta-grey-xlight;
-
-    .invitation-item-drag-handle {
-      opacity: 1;
+    .invitation-item-header:hover {
+        background: $aperta-grey-xlight;
+        .invitation-item-drag-handle {
+            opacity: 1;
+        }
     }
-  }
 }
 
 .invitation-item--show {
-  .invitation-item-header,
-  .invitation-item-details {
-    background-color: $aperta-grey-xlight;
-  }
+    .invitation-item-header,
+    .invitation-item-details {
+        background-color: $aperta-grey-xlight;
+    }
 }
 
 .invitation-item--edit {
-  .invitation-item-header,
-  .invitation-item-details {
-    background-color: $aperta-grey-light;
-  }
+    .invitation-item-header,
+    .invitation-item-details {
+        background-color: $aperta-grey-light;
+    }
 }
 
 .invitation-item--delete {
-  box-shadow: 0px 0px 15px rgba(0,0,0, 0.1);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -297,7 +301,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item-details-loading {
-  padding: 10px 0 10px $invite-padding-horizontal;
+    padding: 10px 0 10px $invite-padding-horizontal;
 }
 
 
@@ -305,72 +309,72 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-item-details {
-  padding: 0 2rem 2rem 2rem;
+    padding: 0 2rem 2rem 2rem;
 }
 
 .invite-edit-buttons {
-  padding-top: $invite-padding-vertical;
-  display: flex;
-  align-items: flex-end;
-
-  .spacer { flex-grow: 1; }
-
-  .invitation-attachment-manager {
-    width: 80%;
-  }
-
-  .attachment-manager {
-    margin-bottom: 0;
-  }
+    padding-top: $invite-padding-vertical;
+    display: flex;
+    align-items: flex-end;
+    .spacer {
+        flex-grow: 1;
+    }
+    .invitation-attachment-manager {
+        width: 80%;
+    }
+    .attachment-manager {
+        margin-bottom: 0;
+    }
 }
 
 // NOTE not used?
 .invite-edit-save-message {
-  margin-right: 30px;
-  padding-bottom: 0.75rem;
-  color: $aperta-grey;
-  font-size: 1.4rem;
+    margin-right: 30px;
+    padding-bottom: 0.75rem;
+    color: $aperta-grey;
+    font-size: 1.4rem;
 }
+
 
 /* displayed when ui state is edit */
-.invitation-item-state-and-date {
-  padding-left: 1.5rem;
-  color: #aaa;
-}
 
+.invitation-item-state-and-date {
+    padding-left: 1.5rem;
+    color: #aaa;
+}
 
 // NOTE not used?
 .invite-edit-save-confirmation {
-  margin-right: 30px;
-  color: $aperta-grey;
-  font-size: 1.4rem;
+    margin-right: 30px;
+    color: $aperta-grey;
+    font-size: 1.4rem;
 }
+
 
 /* Invitation Link Alternate
 ---------------------------------------------------------------------------- */
 
 .invitation-alternates-info {
-  padding: 1.5rem 0;
+    padding: 1.5rem 0;
 }
 
 .invitation-link-alternate {
-  padding-top: 1.5rem;
+    padding-top: 1.5rem;
 }
 
 .alternate-text {
-  display: inline-block;
-  margin: 0 3px 0 3px;
+    display: inline-block;
+    margin: 0 3px 0 3px;
 }
 
-
 .invitation-revision-round {
-  margin-top: 12px;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  padding: 12px 20px;
-  color: $aperta-black;
-  font-size: 20px;
-  background: $aperta-grey-xlight;
+    margin-top: 12px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    padding: 12px 20px;
+    color: $aperta-black;
+    font-size: 20px;
+    background: $aperta-grey-xlight;
 }
 
 
@@ -378,16 +382,14 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 ---------------------------------------------------------------------------- */
 
 .invitation-drop-target {
-  transition: all 0.2s;
-  height: 0px;
-
-  &.valid-drop-target {
-    height: 35px;
-    border: 2px dashed $aperta-green-light;
-  }
-
-  &.current-drop-target {
-    height: 70px;
-    border: 2px dashed $aperta-green-light;
-  }
+    transition: all 0.2s;
+    height: 0px;
+    &.valid-drop-target {
+        height: 35px;
+        border: 2px dashed $aperta-green-light;
+    }
+    &.current-drop-target {
+        height: 70px;
+        border: 2px dashed $aperta-green-light;
+    }
 }

@@ -611,7 +611,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Upload Manuscript':
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
-      ##import pdb; pdb.set_trace() XXX
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
         # accordion is close it, open it:
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
@@ -626,7 +625,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))
         time.sleep(1)
-        self._driver.find_element_by_id('upload-source-file').send_keys(fn)
+        self._get(self._upload_source).send_keys(fn)
+        ###self._driver.find_element_by_id('upload-source-file').send_keys(fn) XXX DELETE!!
       # Check completed_check status
       if not base_task.completed_state():
         base_task.click_completion_button()

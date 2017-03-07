@@ -11,7 +11,8 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
-from Base.Resources import creator_login1, FTP_USER, FTP_PASS, FTP_DOMAIN, FTP_DIR
+from Base.Resources import creator_login1, APEX_FTP_USER, APEX_FTP_PASS, APEX_FTP_DOMAIN, \
+    APEX_FTP_DIR
 
 from frontend.Cards.basecard import BaseCard
 
@@ -83,9 +84,9 @@ class SendToApexCard(BaseCard):
     :param paper_id: The id of the manuscript
     :return: filename as str, directory_path as path
     """
-    ftp = FTP(FTP_DOMAIN)
-    ftp.login(FTP_USER, FTP_PASS)
-    ftp.cwd(FTP_DIR)
+    ftp = FTP(APEX_FTP_DOMAIN)
+    ftp.login(APEX_FTP_USER, APEX_FTP_PASS)
+    ftp.cwd(APEX_FTP_DIR)
     filename = '{0}.zip'.format(paper_id)
     directory_path = tempfile.mkdtemp()
     local_filename = os.path.join(r'{0}'.format(directory_path), filename)
@@ -177,9 +178,12 @@ class SendToApexCard(BaseCard):
       assert value == asset_financial_disclosure.get(key), value
 
     assert early_article_posting == True, early_article_posting
-    assert journal_title == "PLOS Wombat", journal_title
-    assert manuscript_id == short_doi, manuscript_id
-    assert paper_abstract == manuscript_abstract, paper_abstract
-    assert paper_title == manuscript_title, paper_title
-    assert paper_type == "generateCompleteApexData", paper_type
-    assert "/journal.{0}".format(short_doi) in doi, doi
+    assert journal_title == 'PLOS Wombat', 'PLOS Wombat not equal to {1}'.format(journal_title)
+    assert manuscript_id == short_doi, '{0} not equal to {1}'.format(manuscript_id, short_doi)
+    assert paper_abstract == manuscript_abstract, '{0} not equal to {1}'.format(paper_abstract,
+        manuscript_abstract)
+    assert paper_title == manuscript_title, '{0} not equal to {1}'.format(paper_title,
+        manuscript_title)
+    assert paper_type == "generateCompleteApexData", '{0} not equal to generateCompleteApexData'.\
+        format(paper_type)
+    assert "/journal.{0}".format(short_doi) in doi, '{0} not equal to {1}'.format(short_doi, doi)

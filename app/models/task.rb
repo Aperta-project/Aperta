@@ -250,6 +250,10 @@ class Task < ActiveRecord::Base
     'Task'
   end
 
+  def card
+    Card.lookup_card(type)
+  end
+
   private
 
   def update_completed_at

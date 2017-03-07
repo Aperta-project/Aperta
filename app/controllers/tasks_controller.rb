@@ -75,8 +75,7 @@ class TasksController < ApplicationController
 
   def nested_questions
     requires_user_can :view, task
-    card = Card.lookup_card(task.type)
-    content = CardContent.where(card: card)
+    content = CardContent.where(card: task.card)
     # Exclude the root node
     content = content.where.not(parent_id: nil)
     respond_with(

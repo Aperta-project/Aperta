@@ -18,9 +18,9 @@ class Card < ActiveRecord::Base
   end
 
   def self.lookup_card(owner_type)
-    name = case owner_type
+    name = case owner_type.to_s
            when /Task$/
-             owner_type
+             owner_type.to_s
            when "Author"
              'Author'
            when "GroupAuthor"

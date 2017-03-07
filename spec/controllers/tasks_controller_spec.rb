@@ -349,7 +349,10 @@ describe TasksController, redis: true do
 
   describe "GET #nested_questions" do
     let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
-    let!(:card_content) { FactoryGirl.create(:card_content, card: task.card, parent: task.card.content_root) }
+    let!(:card_content) do
+      root = task.card.content_root_for_version(:latest)
+      FactoryGirl.create(:card_content, card: task.card, parent: root)
+    end
 
     subject(:do_request) do
       get :nested_questions, task_id: task.id, format: "json"
@@ -396,7 +399,10 @@ describe TasksController, redis: true do
 
   describe "GET #nested_question_answers" do
     let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
-    let(:card_content) { FactoryGirl.create(:card_content, parent: Card.lookup_card(task.class).content_root) }
+    let(:card_content) do
+      root = Card.lookup_card(task.class).content_root_for_version(:latest)
+      FactoryGirl.create(:card_content, parent: root)
+    end
     let!(:answer) do
       FactoryGirl.create(
         :answer,

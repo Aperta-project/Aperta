@@ -11,19 +11,22 @@ class Card < ActiveRecord::Base
     message: "That card name is taken. Please give your card a new name."
   }
 
+  # can take a version number or the symbol `:latest`
   def content_for_version(version_no)
     content_root_for_version(version_no).self_and_descendants
   end
 
+  # can take a version number or the symbol `:latest`
   def content_root_for_version(version_no)
-    card_versions.find_by!(version: version_no).card_content
+    to_find = if version_no == :latest
+                latest_version
+              else
+                version_no
+              end
+    card_versions.find_by!(version: to_find).card_content
   end
 
-  def latest_card_version
-    card_versions.find_by!(version: latest_version)
-  end
-
-  def self.create_new(attrs)
+  def self.create_new!(attrs)
     Card.transaction do
       card = Card.create!(attrs)
       root = CardContent.create!(card: card)

@@ -9,8 +9,8 @@ describe NestedQuestionsController do
 
   describe "#index" do
     let!(:questions) { [question1, question2] }
-    let!(:card) { FactoryGirl.create(:card) }
-    let(:root) { FactoryGirl.create(:card_content, card: card) }
+    let!(:card) { FactoryGirl.create(:card, :versioned) }
+    let(:root) { card.content_root_for_version(1) }
     let(:question1) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
     let(:question2) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
 

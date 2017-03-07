@@ -17,8 +17,10 @@ class CardFactory
   private
 
   def create_from_configuration_klass(configuration_klass)
-    card = Card.find_or_create_by!(name: configuration_klass.name, journal: journal)
-    content_root = CardContent.find_or_create_by!(card: card, ident: nil, parent: nil)
+    existing_card = Card.find_by(name: configuration_klass.name, journal: journal, latest_version: 1)
+    card = existing_card || Card.create_new!(name: configuration_klass.name,
+                                             journal: journal)
+    content_root = card.content_root_for_version(:latest)
     new_content = configuration_klass.content
     new_content.each do |c|
       c[:parent] = content_root

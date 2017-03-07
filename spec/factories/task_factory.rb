@@ -9,8 +9,7 @@ FactoryGirl.define do
 
   trait :with_card do
     after(:create) do |task|
-      card = FactoryGirl.create(:card, name: task.class.to_s)
-      FactoryGirl.create(:card_content, card: card)
+      FactoryGirl.create(:card, :versioned, name: task.class.to_s)
     end
   end
   factory :ad_hoc_task do

@@ -4,8 +4,7 @@ class NestedQuestionsController < ApplicationController
 
   def index
     content = Card.lookup_card(params[:type])
-                  .content_for_version(:latest)
-                  .where.not(parent_id: nil)
+                .latest_content_without_root
 
     # Exclude the root node
     render json: content, each_serializer: CardContentAsNestedQuestionSerializer

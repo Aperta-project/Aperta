@@ -11,6 +11,16 @@ class Card < ActiveRecord::Base
     message: "That card name is taken. Please give your card a new name."
   }
 
+  # this method is used in the shim layer between nested questions
+  # on the front end and card content on the backend.
+  # in those cases, we don't need the proper tree of card content,
+  # as the client is simply going to look up records by their ident
+  # instead of traversing them.
+  def latest_content_without_root
+    content_for_version(:latest)
+      .where.not(parent_id: nil)
+  end
+
   # can take a version number or the symbol `:latest`
   def content_for_version(version_no)
     content_root_for_version(version_no).self_and_descendants

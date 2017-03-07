@@ -1,5 +1,6 @@
 module TahiStandardTasks
   class ReviewerRecommendationSerializer < ActiveModel::Serializer
+    include CardContentShim
     attributes :id,
                :first_name,
                :middle_initial,
@@ -11,8 +12,5 @@ module TahiStandardTasks
                :ringgold_id,
                :recommend_or_oppose,
                :reason
-    has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :id, include: true
-    has_many :nested_question_answers, serializer: NestedQuestionAnswerSerializer, embed: :ids, include: true
-
   end
 end

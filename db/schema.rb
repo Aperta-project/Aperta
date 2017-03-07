@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302145702) do
+ActiveRecord::Schema.define(version: 20170307214826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,10 +145,10 @@ ActiveRecord::Schema.define(version: 20170302145702) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
     t.integer  "user_id"
-    t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified"
+    t.integer  "card_version_id"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -363,10 +363,10 @@ ActiveRecord::Schema.define(version: 20170302145702) do
     t.string   "initial"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified"
+    t.integer  "card_version_id"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -691,7 +691,7 @@ ActiveRecord::Schema.define(version: 20170302145702) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -798,7 +798,7 @@ ActiveRecord::Schema.define(version: 20170302145702) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -817,7 +817,7 @@ ActiveRecord::Schema.define(version: 20170302145702) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -832,17 +832,17 @@ ActiveRecord::Schema.define(version: 20170302145702) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                         null: false
-    t.string   "type",         default: "Task"
-    t.integer  "phase_id",                      null: false
-    t.boolean  "completed",    default: false,  null: false
+    t.string   "title",                            null: false
+    t.string   "type",            default: "Task"
+    t.integer  "phase_id",                         null: false
+    t.boolean  "completed",       default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",         default: [],     null: false
-    t.integer  "position",     default: 0
-    t.integer  "paper_id",                      null: false
+    t.json     "body",            default: [],     null: false
+    t.integer  "position",        default: 0
+    t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

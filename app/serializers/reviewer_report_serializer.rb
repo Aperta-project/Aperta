@@ -1,4 +1,8 @@
+# Serializes ReviewerReports.  Sends down its card content
+# as nested questions
 class ReviewerReportSerializer < ActiveModel::Serializer
+  include CardContentShim
+
   attributes :id,
     :decision_id,
     :user_id,
@@ -7,6 +11,4 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :status_date,
     :revision
   has_one :task
-  has_many :nested_questions, embed: :ids, include: true
-  has_many :nested_question_answers, embed: :ids, include: true
 end

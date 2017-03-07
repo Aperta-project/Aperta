@@ -4,17 +4,32 @@ class Card < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :journal, inverse_of: :cards
-  has_many :card_content, inverse_of: :card, dependent: :destroy
-  has_one :content_root, -> { where(parent_id: nil) }, class_name: 'CardContent'
-
+  has_many :card_versions, inverse_of: :card, dependent: :destroy
   validates :name, presence: { message: "Please give your card a name." }
   validates :name, uniqueness: {
     scope: :journal,
     message: "That card name is taken. Please give your card a new name."
   }
 
-  def content_root
-    card_content.roots.first
+  def content_for_version(version_no)
+    content_root_for_version(version_no).self_and_descendants
+  end
+
+  def content_root_for_version(version_no)
+    card_versions.find_by!(version: version_no).card_content
+  end
+
+  def latest_card_version
+    card_versions.find_by!(version: latest_version)
+  end
+
+  def self.create_new(attrs)
+    Card.transaction do
+      card = Card.create!(attrs)
+      root = CardContent.create!(card: card)
+      CardVersion.create!(version: 1, card: card, card_content: root)
+      card
+    end
   end
 
   def self.lookup_card(owner_type)

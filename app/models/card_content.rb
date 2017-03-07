@@ -7,7 +7,7 @@ class CardContent < ActiveRecord::Base
   acts_as_nested_set
   acts_as_paranoid
 
-  belongs_to :card, inverse_of: :card_content
+  belongs_to :card
 
   validates :card, presence: true
   validates :card, uniqueness:

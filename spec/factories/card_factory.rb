@@ -2,7 +2,13 @@ FactoryGirl.define do
   factory :card do
     name "Test Card"
     journal
+    latest_version 1
 
+    trait :versioned do
+      after(:create) do |card|
+        FactoryGirl.create(:card_version, card: card, version: card.latest_version)
+      end
+    end
     trait :for_answerable do
       transient do
         answerable TahiStandardTasks::PublishingRelatedQuestionsTask

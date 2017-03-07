@@ -18,7 +18,8 @@ class Paper::DataExtracted::NotifyUser < FlashMessageSubscriber
       message = "Finished loading #{pdf_type? ? 'PDF' : 'Word'} file."
       unless pdf_type?
         addendum = ' Any figures included in the file will have been removed' \
-                   ' should now be uploaded directly by clicking \'Figures\'.'
+                   ' and should now be uploaded directly' \
+                   ' by clicking \'Figures\'.'
         message.concat(addendum)
       end
       message

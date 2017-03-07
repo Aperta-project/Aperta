@@ -42,8 +42,9 @@ describe Paper::DataExtracted::NotifyUser do
     it 'sends a message on successful upload' do
       expect(pusher_channel).to receive_push(
         payload: hash_including(
-          message:  'Finished loading Word file. Any figures included in the file will have been removed' \
-                    ' should now be uploaded directly by clicking \'Figures\'.',
+          message:  'Finished loading Word file. Any figures included in the file will have been removed ' \
+                    'and should now be uploaded directly by ' \
+                    'clicking \'Figures\'.',
           messageType: 'success'
         ),
         down: 'user',

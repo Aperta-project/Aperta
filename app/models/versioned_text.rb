@@ -81,13 +81,13 @@ class VersionedText < ActiveRecord::Base
 
   def s3_full_path
     # TMP: APERTA-9385: Displaying only the latest version
-    paper.file.url
+    paper.file.s3_dir + '/' + paper.file[:file]
     # file? ? manuscript_s3_path + '/' + manuscript_filename : nil
   end
 
   def s3_full_sourcefile_path
     # TMP: APERTA-9385: Displaying only the latest version
-    paper.sourcefile.url
+    paper.sourcefile.s3_dir + '/' + paper.sourcefile[:file]
     # file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
   end
 

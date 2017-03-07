@@ -53,8 +53,8 @@ FactoryGirl.define do
     title "Early Article Posting"
 
     before(:create) do
-      early_posting = NestedQuestion.find_by_ident('early-posting--consent')
-      FactoryGirl.create(:nested_question, ident: 'early-posting--consent').save unless early_posting
+      early_posting = CardContent.find_by_ident('early-posting--consent')
+      FactoryGirl.create(:card_content, ident: 'early-posting--consent').save unless early_posting
     end
   end
 

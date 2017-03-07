@@ -1,4 +1,5 @@
 class AnswerAsNestedQuestionAnswerSerializer < ActiveModel::Serializer
+  root :nested_question_answer
   attributes :id, :value, :value_type, :owner, :nested_question_id, :decision_id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments
 

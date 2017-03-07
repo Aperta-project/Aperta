@@ -8,7 +8,16 @@
 
     <div class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
       <div class="author-name flex-element">
-        {{displayName}}
+        <div>
+          {{displayName}}
+        </div>
+
+        {{#if author.coAuthorConfirmed}}
+          <div>
+            <i class="fa fa-check author-confirmed-check"></i>
+            Confirmed
+          </div>
+        {{/if}}
       </div>
       <div class="author-email flex-element">{{or author.email author.contactEmail}}</div>
     </div>

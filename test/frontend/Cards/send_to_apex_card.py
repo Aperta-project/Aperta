@@ -11,7 +11,8 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
-from Base.Resources import creator_login1
+from Base.Resources import creator_login1, FTP_USER, FTP_PASS, FTP_DOMAIN, FTP_DIR
+
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'scadavid@plos.org'
@@ -82,12 +83,7 @@ class SendToApexCard(BaseCard):
     :param paper_id: The id of the manuscript
     :return: filename as str, directory_path as path
     """
-    FTP_USER = 'aperta'
-    FTP_PASS = 'flyskyfish'
-    FTP_URL = 'delivery.plos.org'
-    FTP_DIR = 'aperta2apextest'
-
-    ftp = FTP(FTP_URL)
+    ftp = FTP(FTP_DOMAIN)
     ftp.login(FTP_USER, FTP_PASS)
     ftp.cwd(FTP_DIR)
     filename = '{0}.zip'.format(paper_id)
@@ -112,7 +108,7 @@ class SendToApexCard(BaseCard):
     zip_ref.extractall(r'{0}'.format(directory_path))
     zip_ref.close()
 
-    with open('{0}/metadata.json'.format(directory_path)) as json_file:    
+    with open('{0}/metadata.json'.format(directory_path)) as json_file:
       json_data = json.load(json_file)
     shutil.rmtree(directory_path)
 
@@ -140,20 +136,20 @@ class SendToApexCard(BaseCard):
     doi = json_data["metadata"]["doi"]
 
     asset_author = {"affiliation": creator_login1['affiliation-name'],
-                    "contributions": "Conceptualization", 
-                    "corresponding": True, 
-                    "deceased": None, 
-                    "department": creator_login1['affiliation-dept'], 
-                    "email": creator_login1['email'], 
-                    "first_name": creator_login1["name"].split()[0], 
-                    "government_employee": False, 
-                    "last_name": creator_login1["name"].split()[1], 
-                    "middle_initial": None, 
-                    "orcid_authenticated": True, 
-                    "orcid_profile_url": 
-                        "http://sandbox.orcid.org/{0}".format(creator_login1["orcidid"]), 
-                    "secondary_affiliation": None, 
-                    "title": creator_login1['affiliation-title'], 
+                    "contributions": "Conceptualization",
+                    "corresponding": True,
+                    "deceased": None,
+                    "department": creator_login1['affiliation-dept'],
+                    "email": creator_login1['email'],
+                    "first_name": creator_login1["name"].split()[0],
+                    "government_employee": False,
+                    "last_name": creator_login1["name"].split()[1],
+                    "middle_initial": None,
+                    "orcid_authenticated": True,
+                    "orcid_profile_url":
+                        "http://sandbox.orcid.org/{0}".format(creator_login1["orcidid"]),
+                    "secondary_affiliation": None,
+                    "title": creator_login1['affiliation-title'],
                     "type": "author"}
     asset_competing_interests = {"competing_interests": None,
                                  "competing_interests_statement":
@@ -161,7 +157,7 @@ class SendToApexCard(BaseCard):
     asset_data_availability = {"data_fully_available": None,
                                "data_location_statement": None}
     asset_financial_disclosure = {"author_received_funding": None,
-                                  "funders": [], 
+                                  "funders": [],
                                   "funding_statement":
                                       "The author(s) received no specific funding for this work."}
 

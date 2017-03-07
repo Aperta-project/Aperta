@@ -13,7 +13,7 @@ import time
 from Base.PostgreSQL import PgSQL
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, users, editorial_users
+from Base.Resources import staff_admin_login, users, editorial_users, creator_login1
 from Cards.register_decision_card import RegisterDecisionCard
 from frontend.Cards.send_to_apex_card import SendToApexCard
 from frontend.common_test import CommonTest
@@ -142,7 +142,7 @@ class SendToApexTest(CommonTest):
     """
     logging.info('test_send_to_apex_file')
     # Create base data - new papers
-    creator_user = users[0]
+    creator_user = creator_login1
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -212,7 +212,7 @@ class SendToApexTest(CommonTest):
     """
     logging.info('test_send_to_apex_source_PDF')
     # Create base data - new papers
-    creator_user = users[0]
+    creator_user = creator_login1
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -255,7 +255,7 @@ class SendToApexTest(CommonTest):
     # Connecting to FTP
     logging.info('Connecting to FTP and taking the file')
     filename, directory_path = send_to_apex_card.connect_to_aperta_ftp(short_doi)
-    send_to_apex_card.validate_source_file_on_zip(filename, directory_path, doc2upload, hash_file,
+    send_to_apex_card.validate_source_file_in_zip(filename, directory_path, doc2upload, hash_file,
                                                   short_doi)
 
 if __name__ == '__main__':

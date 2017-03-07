@@ -192,9 +192,10 @@ class SendToApexCard(BaseCard):
 
     shutil.rmtree(directory_path)
 
-  def validate_source_file_on_zip(self, filename, directory_path, doc2upload, hash_file, short_doi):
+  def validate_source_file_in_zip(self, filename, directory_path, doc2upload, hash_file, short_doi):
     """
-    This method extract the content of the retrieved file from FTP
+    This method compares the hash of the uploaded source file against the hash of the file
+    contained in the zip retrieved from FTP
     :param filename: The name of the file to extract
     :param directory_path: The path of the folder
     :param doc2upload: The uploaded source file

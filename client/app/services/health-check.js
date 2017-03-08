@@ -12,7 +12,7 @@ export default Ember.Service.extend({
   flash: Ember.inject.service('flash'),
 
   start() {
-    if (Ember.testing) { return; }
+    if (Ember.testing || window.RailsEnv.testing) { return; }
     this.get('poll').perform();
   },
 

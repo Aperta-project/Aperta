@@ -12,7 +12,13 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
+<<<<<<< HEAD
 from Base.Resources import creator_login1, docs
+=======
+from Base.Resources import creator_login1, APEX_FTP_USER, APEX_FTP_PASS, APEX_FTP_DOMAIN, \
+    APEX_FTP_DIR
+
+>>>>>>> master
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'scadavid@plos.org'
@@ -83,14 +89,9 @@ class SendToApexCard(BaseCard):
     :param paper_id: The id of the manuscript
     :return: filename as str, directory_path as path
     """
-    FTP_USER = 'aperta'
-    FTP_PASS = 'flyskyfish'
-    FTP_URL = 'delivery.plos.org'
-    FTP_DIR = 'aperta2apextest'
-
-    ftp = FTP(FTP_URL)
-    ftp.login(FTP_USER, FTP_PASS)
-    ftp.cwd(FTP_DIR)
+    ftp = FTP(APEX_FTP_DOMAIN)
+    ftp.login(APEX_FTP_USER, APEX_FTP_PASS)
+    ftp.cwd(APEX_FTP_DIR)
     filename = '{0}.zip'.format(paper_id)
     directory_path = tempfile.mkdtemp()
     local_filename = os.path.join(r'{0}'.format(directory_path), filename)
@@ -113,7 +114,7 @@ class SendToApexCard(BaseCard):
     zip_ref.extractall(r'{0}'.format(directory_path))
     zip_ref.close()
 
-    with open('{0}/metadata.json'.format(directory_path)) as json_file:    
+    with open('{0}/metadata.json'.format(directory_path)) as json_file:
       json_data = json.load(json_file)
 
     return json_data
@@ -142,20 +143,20 @@ class SendToApexCard(BaseCard):
     doi = json_data["metadata"]["doi"]
 
     asset_author = {"affiliation": creator_login1['affiliation-name'],
-                    "contributions": "Conceptualization", 
-                    "corresponding": True, 
-                    "deceased": None, 
-                    "department": creator_login1['affiliation-dept'], 
-                    "email": creator_login1['email'], 
-                    "first_name": creator_login1["name"].split()[0], 
-                    "government_employee": False, 
-                    "last_name": creator_login1["name"].split()[1], 
-                    "middle_initial": None, 
-                    "orcid_authenticated": True, 
-                    "orcid_profile_url": 
-                        "http://sandbox.orcid.org/{0}".format(creator_login1["orcidid"]), 
-                    "secondary_affiliation": None, 
-                    "title": creator_login1['affiliation-title'], 
+                    "contributions": "Conceptualization",
+                    "corresponding": True,
+                    "deceased": None,
+                    "department": creator_login1['affiliation-dept'],
+                    "email": creator_login1['email'],
+                    "first_name": creator_login1["name"].split()[0],
+                    "government_employee": False,
+                    "last_name": creator_login1["name"].split()[1],
+                    "middle_initial": None,
+                    "orcid_authenticated": True,
+                    "orcid_profile_url":
+                        "http://sandbox.orcid.org/{0}".format(creator_login1["orcidid"]),
+                    "secondary_affiliation": None,
+                    "title": creator_login1['affiliation-title'],
                     "type": "author"}
     asset_competing_interests = {"competing_interests": None,
                                  "competing_interests_statement":
@@ -163,7 +164,7 @@ class SendToApexCard(BaseCard):
     asset_data_availability = {"data_fully_available": None,
                                "data_location_statement": None}
     asset_financial_disclosure = {"author_received_funding": None,
-                                  "funders": [], 
+                                  "funders": [],
                                   "funding_statement":
                                       "The author(s) received no specific funding for this work."}
 
@@ -188,6 +189,7 @@ class SendToApexCard(BaseCard):
           "from the GUI: {1}".format(value, asset_author.get(key))
 
     for key, value in financial_disclosure.iteritems():
+<<<<<<< HEAD
       assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
           "{0} does not match to data point of the source manuscript taken " \
           "from the GUI: {1}".format(value, asset_author.get(key))
@@ -239,3 +241,17 @@ class SendToApexCard(BaseCard):
     assert hash_file == hash_file_extracted, hash_file
 
     shutil.rmtree(directory_path)
+=======
+      assert value == asset_financial_disclosure.get(key), value
+
+    assert early_article_posting == True, early_article_posting
+    assert journal_title == 'PLOS Wombat', 'PLOS Wombat not equal to {1}'.format(journal_title)
+    assert manuscript_id == short_doi, '{0} not equal to {1}'.format(manuscript_id, short_doi)
+    assert paper_abstract == manuscript_abstract, '{0} not equal to {1}'.format(paper_abstract,
+        manuscript_abstract)
+    assert paper_title == manuscript_title, '{0} not equal to {1}'.format(paper_title,
+        manuscript_title)
+    assert paper_type == "generateCompleteApexData", '{0} not equal to generateCompleteApexData'.\
+        format(paper_type)
+    assert "/journal.{0}".format(short_doi) in doi, '{0} not equal to {1}'.format(short_doi, doi)
+>>>>>>> master

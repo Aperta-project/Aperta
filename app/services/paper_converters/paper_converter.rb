@@ -4,7 +4,7 @@ module PaperConverters
   # Base class of paper converters. Use ::make to get a particular instance of
   # a paper converter
   class PaperConverter
-    def self.make(versioned_text, export_format)
+    def self.make(versioned_text, export_format, current_user)
       current_format = versioned_text.file_type
       klass = if export_format == current_format || export_format.nil?
                 IdentityPaperConverter
@@ -13,18 +13,22 @@ module PaperConverters
               elsif export_format == 'pdf_with_attachments'\
                 && current_format == 'pdf'
                 PdfWithAttachmentsPaperConverter
+              elsif export_format == 'pdf'\
+                && current_format == 'docx'
+                PdfPaperConverter
               else
                 raise(
                   UnknownConversionError,
                   "Unknown conversion: #{current_format} to #{export_format}"
                 )
               end
-      klass.new(versioned_text, export_format)
+      klass.new(versioned_text, export_format, current_user)
     end
 
-    def initialize(versioned_text, export_format)
+    def initialize(versioned_text, export_format, current_user = nil)
       @versioned_text = versioned_text
       @export_format  = export_format
+      @current_user = current_user
     end
 
     def self.connection

@@ -60,6 +60,9 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def answer_params
+    # TODO: APERTA-9226 How did this ever work?
+    # on the destroy action, params[:nested_question_answer] is always empty, so we can't
+    # call answer_params in order to check permissions as part of `must_be_able_to_edit_task`
     @answer_params ||= params
                        .require(:nested_question_answer)
                        .permit(:owner_id, :owner_type, :value, :decision_id)

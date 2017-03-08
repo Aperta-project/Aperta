@@ -8,7 +8,8 @@ module TahiStandardTasks
     has_many :authors, through: :funded_authors
 
     # NestedQuestionable will save the paper_id to newly created answers if
-    # an answer's owner responds to :paper
+    # an answer's owner responds to :paper.  This method is needed by
+    # the NestedQuestionAnswersController#fetch_answer method, among others
     def paper
       task.paper
     end

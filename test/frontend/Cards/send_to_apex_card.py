@@ -166,54 +166,55 @@ class SendToApexCard(BaseCard):
                                   "funding_statement":
                                       "The author(s) received no specific funding for this work."}
 
-    for key, value in author.iteritems():
-      if key == "contributions":
-        assert asset_author.get(key) in value, "Data point from json file: {0} does not match " \
-            "to data point of the source manuscript " \
-            "taken from the GUI: {1}".format(value, asset_author.get(key))
-      else:
-        assert value == asset_author.get(key), "Data point from json file: {0} does not match " \
-            "to data point of the source manuscript " \
-            "taken from the GUI: {1}".format(value, asset_author.get(key))
+    try:
+      for key, value in author.iteritems():
+        if key == "contributions":
+          assert asset_author.get(key) in value, "Data point from json file: {0} " \
+              "does not match to data point of the source manuscript " \
+              "taken from the GUI: {1}".format(value, asset_author.get(key))
+        else:
+          assert value == asset_author.get(key), "Data point from json file: {0} " \
+              "does not match to data point of the source manuscript " \
+              "taken from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in competing_interests.iteritems():
-      assert value == asset_competing_interests.get(key), "Data point from json file: " \
-          "{0} does not match to data point of the source manuscript taken " \
-          "from the GUI: {1}".format(value, asset_author.get(key))
+      for key, value in competing_interests.iteritems():
+        assert value == asset_competing_interests.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in data_availability.iteritems():
-      assert value == asset_data_availability.get(key), "Data point from json file: " \
-          "{0} does not match to data point of the source manuscript taken " \
-          "from the GUI: {1}".format(value, asset_author.get(key))
+      for key, value in data_availability.iteritems():
+        assert value == asset_data_availability.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in financial_disclosure.iteritems():
+      for key, value in financial_disclosure.iteritems():
         assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
+
+      assert early_article_posting == True, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(early_article_posting, True)
+      assert journal_title == "PLOS Wombat", "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(journal_title, "PLOS Wombat")
+      assert manuscript_id == short_doi, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(manuscript_id, short_doi)
+      assert paper_abstract == manuscript_abstract, "Data point from json file: {0} " \
+          "does not match to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(paper_abstract, manuscript_abstract)
+      assert paper_title == manuscript_title, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(paper_title, manuscript_title)
+      assert paper_type == "generateCompleteApexData", "Data point from json file: " \
           "{0} does not match to data point of the source manuscript taken " \
-          "from the GUI: {1}".format(value, asset_author.get(key))
-
-    assert early_article_posting == True, "Data point from json file: {0} does not match " \
-        "to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(early_article_posting, True)
-    assert journal_title == "PLOS Wombat", "Data point from json file: {0} does not match " \
-        "to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(journal_title, "PLOS Wombat")
-    assert manuscript_id == short_doi, "Data point from json file: {0} does not match " \
-        "to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(manuscript_id, short_doi)
-    assert paper_abstract == manuscript_abstract, "Data point from json file: {0} does not match " \
-        "to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(paper_abstract, manuscript_abstract)
-    assert paper_title == manuscript_title, "Data point from json file: {0} does not match " \
-        "to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(paper_title, manuscript_title)
-    assert paper_type == "generateCompleteApexData", "Data point from json file: " \
-        "{0} does not match to data point of the source manuscript taken " \
-        "from the GUI: {1}".format(paper_type, "generateCompleteApexData")
-    assert "/journal.{0}".format(short_doi) in doi, "Data point from json file: " \
-        "{0} does not match to data point of the source manuscript taken from " \
-        "the GUI: {1}".format("/journal.{0}".format(short_doi), doi)
-
-    shutil.rmtree(directory_path)
+          "from the GUI: {1}".format(paper_type, "generateCompleteApexData")
+      assert "/journal.{0}".format(short_doi) in doi, "Data point from json file: " \
+          "{0} does not match to data point of the source manuscript taken from " \
+          "the GUI: {1}".format("/journal.{0}".format(short_doi), doi)
+    except:
+      shutil.rmtree(directory_path)
 
   def validate_source_file_in_zip(self, filename, directory_path, doc2upload, hash_file, short_doi):
     """
@@ -235,8 +236,9 @@ class SendToApexCard(BaseCard):
     extracted_source_file = os.path.join(directory_path, '{0}.{1}'.format(short_doi, file_ext))
     hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
 
-    assert hash_file == hash_file_extracted, "The extracted document is not the same " \
-        "that were uploaded as source file: " \
-        "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
-
-    shutil.rmtree(directory_path)
+    try:
+      assert hash_file == hash_file_extracted, "The extracted document is not the same " \
+          "that were uploaded as source file: " \
+          "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
+    except:
+      shutil.rmtree(directory_path)

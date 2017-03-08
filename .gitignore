@@ -43,7 +43,6 @@ setup.log
 bin/eventsource
 dump.rdb
 spring
-.vscode
 
 # ignore Gemfile.lock in engines/
 engines/*/Gemfile.lock

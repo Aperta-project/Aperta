@@ -46,23 +46,6 @@ class Card < ActiveRecord::Base
   end
 
   def self.lookup_card(owner_type)
-    return if owner_type.to_s =~ /AdHocTask$/
-    name = case owner_type.to_s
-           when /Task$/
-             owner_type.to_s
-           when "Author"
-             'Author'
-           when "GroupAuthor"
-             'GroupAuthor'
-           when "Funder"
-             'TahiStandardTasks::Funder'
-           when "ReviewerRecommendation"
-             'TahiStandardTasks::ReviewerRecommendation'
-           when "ReviewerReport"
-             'ReviewerReport'
-           else
-             raise "Don't know how to lookup owner_type: #{owner_type}"
-           end
-    Card.find_by!(name: name)
+    Card.find_by!(name: owner_type.to_s)
   end
 end

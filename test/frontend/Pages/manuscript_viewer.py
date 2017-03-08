@@ -631,7 +631,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))
         time.sleep(1)
-        self._driver.find_element_by_id('upload-files').send_keys(fn)
+        self._get(self._upload_source).send_keys(fn)
+        ###self._driver.find_element_by_id('upload-source-file').send_keys(fn) XXX DELETE!!
       # Check completed_check status
       if not base_task.completed_state():
         if style_check:
@@ -643,15 +644,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
-      if 'task-disclosure--open' not in task_div.get_attribute('class'):
-        # accordion is close it, open it:
+      if click_override:
+        # Open Upload Manuscript Task
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
-      # Check completed_check status
-      if not base_task.completed_state():
         base_task.click_completion_button()
-      self.click_covered_element(task)
-      time.sleep(1)
+        self.click_covered_element(task)
+      else:
+        if 'task-disclosure--open' not in task_div.get_attribute('class'):
+          # accordion is close it, open it:
+          logging.info('Accordion was closed, opening: {0}'.format(task.text))
+          task.click()
+          # Check completed_check status
+        if not base_task.completed_state():
+          base_task.click_completion_button()
+          self.click_covered_element(task)
+          time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       logging.info('Completing Author Task')
@@ -671,6 +679,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
         new_taxon_task.validate_taxon_questions_action(scenario)
         outdata = scenario
       base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
+                       'Ethics Statement', 'Reporting Guidelines'):
+      # Complete Competing Interest data before mark close
+      logging.info('Completing {0} Task'.format(task.text))
+      base_task.click_completion_button()
+      self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()

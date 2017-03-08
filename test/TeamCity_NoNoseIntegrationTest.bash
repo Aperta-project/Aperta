@@ -77,6 +77,7 @@ python -m frontend.test_reviewer_candidates
 python -m frontend.test_reviewer_report
 python -m frontend.test_revise_task
 python -m frontend.test_revision_tech_check
+python -m frontend.test_send_to_apex
 python -m frontend.test_supporting_information
 python -m frontend.test_title_abstract_card
 python -m frontend.test_withdraw_ms

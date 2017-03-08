@@ -27,7 +27,7 @@ class NewTaxonCard(BaseCard):
     :param scenario: Is the scenario selected in the Task
     :return: None
     """
-    items = self._gets((By.CSS_SELECTOR, '.question > div'))
+    items = self._gets(self._questions)
     
     for key, item in enumerate(items):
       question_scenario = scenario[key]
@@ -55,7 +55,7 @@ class NewTaxonCard(BaseCard):
     """
     self.validate_common_elements_styles(paper_id)
     
-    items = self._gets((By.CSS_SELECTOR, '.question > div'))
+    items = self._gets(self._questions)
     
     for key, item in enumerate(items):
       question_scenario = scenario[key]
@@ -105,7 +105,6 @@ class NewTaxonCard(BaseCard):
     :param authors_text: The authors comply text
     :return: None
     """
-    self.validate_common_elements_styles()
     self.validate_checkbox(checkbox)
     self.validate_default_link_style(comply_link)
     map(self.validate_textarea_style, [text, comply_text, authors_text])

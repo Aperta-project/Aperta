@@ -1,11 +1,11 @@
+# Serves card content as nested questions
 class NestedQuestionsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
   def index
-    content = Card.lookup_card(params[:type])
-                .latest_content_without_root
-
+    card = Card.lookup_card(params[:type])
+    content = card.try(:latest_content_without_root) || []
     # Exclude the root node
     render json: content, each_serializer: CardContentAsNestedQuestionSerializer
   end

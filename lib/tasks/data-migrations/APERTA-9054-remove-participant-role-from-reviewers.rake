@@ -8,7 +8,7 @@ namespace :data do
       DESC
       task remove_participant_roles: :environment do
         relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
-        set_of_reviewer_report_ids = Task.all.where(type: relevant_tasks).pluck(:id)
+        set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         deletion_count = 0
         user_count = 0
 
@@ -29,7 +29,7 @@ namespace :data do
       DESC
       task add_back_participant_roles: :environment do
         relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
-        set_of_reviewer_report_ids = Task.all.where(type: relevant_tasks).pluck(:id)
+        set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         set_of_reviewer_report_owner_role_ids = Role.where(name: 'Reviewer Report Owner').pluck(:id)
         added_count = 0
         user_count = 0

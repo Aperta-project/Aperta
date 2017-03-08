@@ -24,6 +24,11 @@ describe PDFConverter do
     let(:doc) { Nokogiri::HTML(pdf_html) }
     let(:pdf_html) { converter.pdf_html }
 
+    before do
+      # See SupportingInformationFileProxy#preview?
+      allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:exists?).and_return(true)
+    end
+
     after { expect(doc.errors.length).to be 0 }
 
     it 'includes all necessary info and default journal stylesheet

@@ -47,7 +47,7 @@ class Figure < Attachment
   def title_from_filename
     title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
     title_rank_regex.match(file.filename) do |match|
-      return "Fig. #{match['label']}"
+      return "Fig #{match['label']}"
     end
   end
 

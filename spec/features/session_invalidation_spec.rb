@@ -34,6 +34,7 @@ feature "session invalidation", js: true do
 
   before do
     assign_reviewer_role paper, reviewer
+    ReviewerReport.update_report_status(paper: paper, reviewer: reviewer)
     login_as(reviewer, scope: :user)
     Page.view_paper paper
   end

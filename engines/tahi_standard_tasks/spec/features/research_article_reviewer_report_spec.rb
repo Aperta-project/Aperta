@@ -26,6 +26,11 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       invitee: reviewer,
       inviter: inviter
     )
+    update_reviewer_report(task)
+  end
+
+  def update_reviewer_report(task)
+    ReviewerReport.update_report_status(paper: task.paper, reviewer: reviewer)
   end
 
   def create_reviewer_report_task

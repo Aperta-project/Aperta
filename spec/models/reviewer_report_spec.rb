@@ -14,42 +14,42 @@ describe ReviewerReport do
     subject.decision.invitations << invitation
   end
 
-  describe "#status and #status_date" do
+  describe "#computed_status and #computed_status_datetime" do
     it "has status 'not_invited' without an invitation" do
-      expect(subject.status_date).to be_nil
-      expect(subject.status).to eq("not_invited")
+      expect(subject.computed_status_datetime).to be_nil
+      expect(subject.computed_status).to eq("not_invited")
     end
 
     it "has status 'invitation_invited' if invited" do
       add_invitation(:invited)
-      expect(subject.status_date).to eq(subject.invitation.invited_at)
-      expect(subject.status).to eq("invitation_invited")
+      expect(subject.computed_status_datetime).to eq(subject.invitation.invited_at)
+      expect(subject.computed_status).to eq("invitation_invited")
     end
 
     it "has status 'invitation_declined' if declined" do
       add_invitation(:declined)
-      expect(subject.status_date).to eq(subject.invitation.declined_at)
-      expect(subject.status).to eq("invitation_declined")
+      expect(subject.computed_status_datetime).to eq(subject.invitation.declined_at)
+      expect(subject.computed_status).to eq("invitation_declined")
     end
 
     it "has status 'invitation_rescinded' if rescinded" do
       add_invitation(:rescinded)
-      expect(subject.status_date).to eq(subject.invitation.rescinded_at)
-      expect(subject.status).to eq("invitation_rescinded")
+      expect(subject.computed_status_datetime).to eq(subject.invitation.rescinded_at)
+      expect(subject.computed_status).to eq("invitation_rescinded")
     end
 
     it "has status 'pending' if invite accepted" do
       add_invitation(:accepted)
-      expect(subject.status_date).to eq(subject.invitation.accepted_at)
-      expect(subject.status).to eq("pending")
+      expect(subject.computed_status_datetime).to eq(subject.invitation.accepted_at)
+      expect(subject.computed_status).to eq("pending")
     end
 
     it "has status 'complete' if invite accepted and report submitted" do
       add_invitation(:accepted)
       subject.task.body["submitted"] = true
 
-      expect(subject.status_date).to eq(subject.task.completed_at)
-      expect(subject.status).to eq("completed")
+      expect(subject.computed_status_datetime).to eq(subject.task.completed_at)
+      expect(subject.computed_status).to eq("completed")
     end
   end
 

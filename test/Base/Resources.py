@@ -845,6 +845,11 @@ admin_users = [staff_admin_login,
                super_admin_login,
                ]
 
+#Define FTP connection Information for APEX
+APEX_FTP_USER, APEX_FTP_PASS = getenv('APEX_FTP_CREDENTIALS', 'user:password').split(':')
+APEX_FTP_DOMAIN = getenv('APEX_FTP_DOMAIN', 'delivery.plos.org')
+APEX_FTP_DIR = getenv('APEX_FTP_DIR', 'aperta2apextest')
+
 # Define connector information for Aperta's Tahi component postgres instance
 # NOTA BENE: Production data should NEVER be included in this file.
 # DEV/CI

@@ -36,6 +36,10 @@ class Card < ActiveRecord::Base
     card_versions.find_by!(version: to_find).card_content
   end
 
+  def latest_card_version
+    card_versions.find_by(version: latest_version)
+  end
+
   def self.create_new!(attrs)
     Card.transaction do
       card = Card.create!(attrs)

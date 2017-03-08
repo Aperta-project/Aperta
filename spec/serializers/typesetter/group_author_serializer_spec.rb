@@ -30,11 +30,11 @@ describe Typesetter::GroupAuthorSerializer do
   end
 
   let(:question1) do
-    group_author.class.contributions_question.children[0]
+    group_author.class.contributions_content.children[0]
   end
 
   let(:question2) do
-    group_author.class.contributions_question.children[1]
+    group_author.class.contributions_content.children[1]
   end
 
   let!(:answer1) do

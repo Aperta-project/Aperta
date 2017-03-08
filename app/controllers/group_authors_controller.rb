@@ -59,7 +59,7 @@ class GroupAuthorsController < ApplicationController
       :position,
       :paper_id,
       :name,
-      :card_id
+      :card_version_id
     )
   end
 end

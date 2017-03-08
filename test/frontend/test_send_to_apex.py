@@ -205,7 +205,7 @@ class SendToApexTest(CommonTest):
     send_to_apex_card.validate_json_information(json_data, short_doi, db_title, db_abstract,
                                                 directory_path)
 
-  def test_send_to_apex_source_PDF(self):
+  def test_send_to_apex_source_pdf(self):
     """
     test_send_to_apex_source_PDF: Validate if the source file is sent to apex 
                                   when the manuscript is PDF

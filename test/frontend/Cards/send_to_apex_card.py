@@ -12,10 +12,8 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
-from Base.Resources import creator_login1, docs
-
 from Base.Resources import creator_login1, APEX_FTP_USER, APEX_FTP_PASS, APEX_FTP_DOMAIN, \
-    APEX_FTP_DIR
+                           APEX_FTP_DIR, docs
 
 from frontend.Cards.basecard import BaseCard
 
@@ -69,7 +67,8 @@ class SendToApexCard(BaseCard):
     close_apex = self._get(self._close_apex)
     close_apex.click()
 
-  def validate_card_elements(self, paper_id):
+  @staticmethod
+  def validate_card_elements(paper_id):
     """
     This method validates the styles of the card elements including the common card elements
     :param paper_id: The id of the manuscript
@@ -81,7 +80,8 @@ class SendToApexCard(BaseCard):
     self.validate_primary_big_green_button_style(apex_button)
     map(self.validate_textarea_style, apex_messages)
 
-  def connect_to_aperta_ftp(self, paper_id):
+  @staticmethod
+  def connect_to_aperta_ftp(paper_id):
     """
     This method allows to connect the ftp server and copy the file
     :param paper_id: The id of the manuscript
@@ -101,7 +101,8 @@ class SendToApexCard(BaseCard):
 
     return filename, directory_path
 
-  def extract_zip_file_and_load_json(self, filename, directory_path):
+  @staticmethod
+  def extract_zip_file_and_load_json(filename, directory_path):
     """
     This method extract the content of the retrieved file from FTP
     :param filename: The name of the file to extract
@@ -117,7 +118,8 @@ class SendToApexCard(BaseCard):
 
     return json_data
 
-  def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract,
+  @staticmethod
+  def validate_json_information(json_data, short_doi, manuscript_title, manuscript_abstract,
                                 directory_path):
     """
     This method validate the information within the extracted json
@@ -216,7 +218,8 @@ class SendToApexCard(BaseCard):
     except:
       shutil.rmtree(directory_path)
 
-  def validate_source_file_in_zip(self, filename, directory_path, doc2upload, hash_file, short_doi):
+  @staticmethod
+  def validate_source_file_in_zip(filename, directory_path, doc2upload, hash_file, short_doi):
     """
     This method compares the hash of the uploaded source file against the hash of the file
     contained in the zip retrieved from FTP

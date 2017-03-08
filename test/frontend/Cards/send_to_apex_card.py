@@ -187,8 +187,7 @@ class SendToApexCard(BaseCard):
           "from the GUI: {1}".format(value, asset_author.get(key))
 
     for key, value in financial_disclosure.iteritems():
-        
-      assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
+        assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
           "{0} does not match to data point of the source manuscript taken " \
           "from the GUI: {1}".format(value, asset_author.get(key))
 
@@ -236,19 +235,8 @@ class SendToApexCard(BaseCard):
     extracted_source_file = os.path.join(directory_path, '{0}.{1}'.format(short_doi, file_ext))
     hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
 
-    assert hash_file == hash_file_extracted, hash_file
+    assert hash_file == hash_file_extracted, "The extracted document is not the same " \
+        "that were uploaded as source file: " \
+        "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
 
     shutil.rmtree(directory_path)
-    
-    assert value == asset_financial_disclosure.get(key), value
-
-    assert early_article_posting == True, early_article_posting
-    assert journal_title == 'PLOS Wombat', 'PLOS Wombat not equal to {1}'.format(journal_title)
-    assert manuscript_id == short_doi, '{0} not equal to {1}'.format(manuscript_id, short_doi)
-    assert paper_abstract == manuscript_abstract, '{0} not equal to {1}'.format(paper_abstract,
-        manuscript_abstract)
-    assert paper_title == manuscript_title, '{0} not equal to {1}'.format(paper_title,
-        manuscript_title)
-    assert paper_type == "generateCompleteApexData", '{0} not equal to generateCompleteApexData'.\
-        format(paper_type)
-    assert "/journal.{0}".format(short_doi) in doi, '{0} not equal to {1}'.format(short_doi, doi)

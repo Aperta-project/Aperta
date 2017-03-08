@@ -25,7 +25,7 @@ class UploadManuscriptTask(BaseTask):
     self._intro_text = (By.TAG_NAME, 'p')
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
     self._upload_manuscript_input = (By.ID, 'upload-files')
-    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content >> a')
+    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
     self._upload_source_file_button = (By.ID, 'upload-sourcefile')
 
   # POM Actions

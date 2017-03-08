@@ -12,13 +12,11 @@ import zipfile
 from ftplib import FTP
 from selenium.webdriver.common.by import By
 
-<<<<<<< HEAD
 from Base.Resources import creator_login1, docs
-=======
+
 from Base.Resources import creator_login1, APEX_FTP_USER, APEX_FTP_PASS, APEX_FTP_DOMAIN, \
     APEX_FTP_DIR
 
->>>>>>> master
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'scadavid@plos.org'
@@ -189,7 +187,7 @@ class SendToApexCard(BaseCard):
           "from the GUI: {1}".format(value, asset_author.get(key))
 
     for key, value in financial_disclosure.iteritems():
-<<<<<<< HEAD
+        
       assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
           "{0} does not match to data point of the source manuscript taken " \
           "from the GUI: {1}".format(value, asset_author.get(key))
@@ -241,8 +239,8 @@ class SendToApexCard(BaseCard):
     assert hash_file == hash_file_extracted, hash_file
 
     shutil.rmtree(directory_path)
-=======
-      assert value == asset_financial_disclosure.get(key), value
+    
+    assert value == asset_financial_disclosure.get(key), value
 
     assert early_article_posting == True, early_article_posting
     assert journal_title == 'PLOS Wombat', 'PLOS Wombat not equal to {1}'.format(journal_title)
@@ -254,4 +252,3 @@ class SendToApexCard(BaseCard):
     assert paper_type == "generateCompleteApexData", '{0} not equal to generateCompleteApexData'.\
         format(paper_type)
     assert "/journal.{0}".format(short_doi) in doi, '{0} not equal to {1}'.format(short_doi, doi)
->>>>>>> master

@@ -1,19 +1,14 @@
-import { test, moduleForComponent } from 'ember-qunit';
+import { test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { manualSetup, make } from 'ember-data-factory-guy';
-import { createQuestion, createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
-import registerCustomAssertions from '../helpers/custom-assertions';
+import { make } from 'ember-data-factory-guy';
+import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import Factory from '../helpers/factory';
 import Ember from 'ember';
-import wait from 'ember-test-helpers/wait';
+import moduleForComponentIntegration from 'tahi/tests/helpers/module-for-component-integration';
 
-moduleForComponent('billing-task', 'Integration | Component | billing task', {
-  integration: true,
+moduleForComponentIntegration('billing-task', {
+  useRealCanService: true,
   beforeEach() {
-    registerCustomAssertions();
-    manualSetup(this.container);
-
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
     $.mockjax({url: '/api/countries', status: 200, responseText: {
       countries: [],
     }});
@@ -22,9 +17,6 @@ moduleForComponent('billing-task', 'Integration | Component | billing task', {
     }});
     Factory.createPermission('billingTask', 1, ['edit', 'view']);
   },
-  afterEach() {
-    $.mockjax.clear();
-  }
 });
 
 let template = hbs`{{billing-task task=testTask}}`;
@@ -93,7 +85,7 @@ test('validates numericality of a few fields', function(assert) {
   this.$('input[name=plos_billing--pfa_question_4a]').val('not a number').trigger('input');
 
   let done = assert.async();
-  wait().then(() => {
+  this.wait().then(() => {
     assert.textPresent('#error-for-plos_billing--pfa_question_1b', 'Must be a number');
     assert.textPresent('#error-for-plos_billing--pfa_question_2b', 'Must be a number');
     assert.textPresent('#error-for-plos_billing--pfa_question_3a', 'Must be a number');
@@ -109,7 +101,7 @@ test('it reports validation errors on the task when attempting to complete', fun
   this.$('.billing-task button.task-completed').click();
 
   let done = assert.async();
-  wait().then(() => {
+  this.wait().then(() => {
     // Error at the task level
     assert.textPresent('.billing-task', 'Please fix all errors');
     done();
@@ -123,7 +115,7 @@ test('it does not allow the user to complete when there are validation errors', 
   this.$('.billing-task button.task-completed').click();
 
   let done = assert.async();
-  wait().then(() => {
+  this.wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
     done();
   });
@@ -140,7 +132,7 @@ test('it lets you complete the task when there are no validation errors', functi
   this.$('.billing-task button.task-completed').click();
 
   let done = assert.async();
-  wait().then(() => {
+  this.wait().then(() => {
     assert.equal(testTask.get('completed'), true, 'task was completed');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     done();
@@ -162,7 +154,7 @@ test('it lets you uncomplete the task when it has validation errors', function(a
   this.$('.billing-task button.task-completed').click();
 
   let done = assert.async();
-  wait().then(() => {
+  this.wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     $.mockjax.clear();
@@ -170,7 +162,7 @@ test('it lets you uncomplete the task when it has validation errors', function(a
     // try complete again
     this.$('.billing-task button.task-completed').click();
 
-    wait().then(() => {
+    this.wait().then(() => {
       assert.textPresent('.billing-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not input completion status');
       assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');

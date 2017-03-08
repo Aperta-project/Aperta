@@ -132,6 +132,4 @@ describe PaperConverters::PdfPaperConverter do
       end
     end
   end
-
-  
 end

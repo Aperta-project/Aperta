@@ -12,6 +12,9 @@ class GroupAuthor < ActiveRecord::Base
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
+  # This is to associate specifically with the user that last manually modified
+  # a coauthors status.  We have to track this separately from the standard
+  # non-coauthor updates
   belongs_to :co_author_state_modified_by, class_name: "User"
 
   has_one :paper,

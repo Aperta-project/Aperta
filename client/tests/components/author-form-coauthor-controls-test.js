@@ -3,7 +3,6 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
-import wait from 'ember-test-helpers/wait';
 
 import hbs from 'htmlbars-inline-precompile';
 

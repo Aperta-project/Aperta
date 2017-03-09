@@ -19,7 +19,6 @@ export default Component.extend({
 
   author: null,
   authorProxy: null,
-  journal: alias('author.paper.journal'),
   isNewAuthor: false,
   validationErrors: alias('authorProxy.validationErrors'),
   canRemoveOrcid: null,

@@ -18,6 +18,9 @@ class Author < ActiveRecord::Base
   # Not validated as not all authors have corresponding users.
   belongs_to :user
 
+  # This is to associate specifically with the user that last manually modified
+  # a coauthors status.  We have to track this separately from the standard
+  # non-coauthor updates
   belongs_to :co_author_state_modified_by, class_name: "User"
 
   delegate :position, to: :author_list_item

@@ -120,7 +120,7 @@ describe AuthorsController do
 
       context 'non-administrator user with edit access'
 
-      it 'a PUT request from an administrator skips updating coauthor status' do
+      it 'a PUT request from an non-administrator skips updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, author.paper.journal).and_return(false)
 

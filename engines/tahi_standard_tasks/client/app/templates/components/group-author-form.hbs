@@ -1,59 +1,13 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Group Author</legend>
-    <div class="flex-group">
       {{#if canChangeCoauthorStatus}}
-        <label class="confirm-coauthor-label flex-element">
-          {{radio-button
-          value="confirmed"
-          selection=author.coAuthorState
+        {{author-form-coauthor-controls
+          author=author
           disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          Accept Authorship
-        </label>
-
-        <label class="decline-coauthor-label flex-element">
-          {{radio-button
-          value="refuted"
-          selection=author.coAuthorState
-          disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          Decline Authorship
-        </label>
-
-        <label class="no-response-coauthor-label flex-element">
-          {{radio-button
-          value="unconfirmed"
-          selection=author.coAuthorState
-          disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          No Response
-        </label>
-        {{#if author.coAuthorStateModifiedBy}}
-          <span class="flex-element"><em>{{humanizedCoAuthorState}}</em> {{author.coAuthorStateModifiedBy.fullName}} on {{format-date author.coAuthorStateModified}}</span>
-        {{/if}}
+          setConfirmation=(action "selectAuthorConfirmation")
+        }}
       {{/if}}
-
-
-      {{#if author.confirmedAsCoAuthor}}
-        <div class="author-confirmed flex-element">
-          <i class="fa fa-check author-confirmed-check"></i>
-          Authorship has been confirmed
-        </div>
-      {{else if author.refutedAsCoAuthor}}
-        <div class="author-refuted flex-element">
-          <i class="fa fa-minus-circle author-refuted-circle"></i>
-          Authorship has been refuted
-        </div>
-      {{else}}
-        <div class="author-coauthor-info flex-element">
-          When you submit your manuscript, an email will be sent to this coauthor at the address you provide below to confirm authorship<
-        </div>
-      {{/if}}
-    </div>
     <div class="flex-group">
       <div class="flex-element inset-form-control required {{if validationErrors.name "error"}}">
         <div class="inset-form-control-text">

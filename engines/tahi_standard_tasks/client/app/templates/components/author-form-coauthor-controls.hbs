@@ -1,0 +1,59 @@
+<div data-test-selector="coauthor-radio-controls" class="flex-group coauthor-radio-controls">
+  <label class="confirm-coauthor-label flex-element">
+    {{radio-button
+    value="confirmed"
+    data-test-selector="confirm-authorship"
+    selection=coAuthorState
+    disabled=isNotEditable
+    name="coauthor-confirmation"
+    action=(action "setConfirmation")}}
+    Accept Authorship
+  </label>
+
+  <label class="decline-coauthor-label flex-element">
+    {{radio-button
+    value="refuted"
+    data-test-selector="refute-authorship"
+    selection=coAuthorState
+    disabled=isNotEditable
+    name="coauthor-confirmation"
+    action=(action "setConfirmation")}}
+    Decline Authorship
+  </label>
+
+  <label class="no-response-coauthor-label flex-element">
+    {{radio-button
+    value="unconfirmed"
+    data-test-selector="unconfirm-authorship"
+    selection=coAuthorState
+    disabled=isNotEditable
+    name="coauthor-confirmation"
+    action=(action "setConfirmation")}}
+    No Response
+  </label>
+  {{#if author.coAuthorStateModifiedBy}}
+    <div class="flex-element">
+      <span class="coauthor-status-modified-by"><em>{{humanizedCoAuthorState}}</em> {{author.coAuthorStateModifiedBy.fullName}} on {{format-date author.coAuthorStateModified}}</span>
+    </div>
+  {{/if}}
+</div>
+
+<div class="flex-group">
+  <div class="flex-element">
+    {{#if author.confirmedAsCoAuthor}}
+      <div class="author-confirmed">
+        <i class="fa fa-check author-confirmed-check"></i>
+        Authorship has been confirmed
+      </div>
+    {{else if author.refutedAsCoAuthor}}
+      <div class="author-refuted">
+        <i class="fa fa-minus-circle author-refuted-circle"></i>
+        Authorship has been refuted
+      </div>
+    {{else}}
+      <div class="author-coauthor-info">
+        When you submit your manuscript, an email will be sent to this coauthor at the address you provide below to confirm authorship<
+      </div>
+    {{/if}}
+  </div>
+</div>

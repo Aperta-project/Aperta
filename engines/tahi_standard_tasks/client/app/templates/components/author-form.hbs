@@ -1,61 +1,13 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Individual Author</legend>
-      <div class="flex-group co-author-radio">
       {{#if canChangeCoauthorStatus}}
-        <label class="confirm-coauthor-label flex-element">
-          {{radio-button
-          value="confirmed"
-          selection=author.coAuthorState
+        {{author-form-coauthor-controls
+          author=author
           disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          Accept Authorship
-        </label>
-
-        <label class="decline-coauthor-label flex-element">
-          {{radio-button
-          value="refuted"
-          selection=author.coAuthorState
-          disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          Decline Authorship
-        </label>
-
-        <label class="no-response-coauthor-label flex-element">
-          {{radio-button
-          value="unconfirmed"
-          selection=author.coAuthorState
-          disabled=isNotEditable
-          name="coauthor-confirmation"
-          action=(action "selectAuthorConfirmation")}}
-          No Response
-        </label>
-        {{#if author.coAuthorStateModifiedBy}}
-          <div class="flex-element">
-            <span class="coauthor-status-modified-by"><em>{{humanizedCoAuthorState}}</em> {{author.coAuthorStateModifiedBy.fullName}} on {{format-date author.coAuthorStateModified}}</span>
-          </div>
-        {{/if}}
+          setConfirmation=(action "selectAuthorConfirmation")
+        }}
       {{/if}}
-      </div>
-
-    {{#if author.confirmedAsCoAuthor}}
-      <div class="author-confirmed">
-        <i class="fa fa-check author-confirmed-check"></i>
-        Authorship has been confirmed
-      </div>
-    {{else if author.refutedAsCoAuthor}}
-      <div class="author-refuted">
-        <i class="fa fa-minus-circle author-refuted-circle"></i>
-        Authorship has been refuted
-      </div>
-    {{else}}
-      <div class="author-coauthor-info">
-        When you submit your manuscript, an email will be sent to this coauthor at the address you provide below to confirm authorship<
-      </div>
-    {{/if}}
-
     {{#if authorIsNotCurrentUser}}
       {{error-message message=validationErrors.orcidIdentifier
                       displayIcon=true

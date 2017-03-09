@@ -61,12 +61,10 @@ test("component lists the author when they are the current user", function(asser
   assert.textPresent('.author-task-item-view .author-name', 'Bob Smith (you)');
 });
 
-test("component shows author is confirmed", function(assert){
-  Ember.run( () => {
-    this.get('author').set('coAuthorState', 'confirmed');
-  });
+test("component shows author is unconfirmed", function(assert){
   this.render(template);
-  assert.textPresent('.author-confirmed', 'Confirmed');
+  // The author's name should be the only text present
+  assert.textPresent('[data-test-selector="author-task-item-view-text"]', 'Bob Smith');
 });
 
 test("component shows author is confirmed", function(assert){
@@ -74,13 +72,13 @@ test("component shows author is confirmed", function(assert){
     this.get('author').set('coAuthorState', 'confirmed');
   });
   this.render(template);
-  assert.textPresent('.author-confirmed', 'Confirmed');
+  assert.textPresent('[data-test-selector="author-confirmed"]', 'Confirmed');
 });
 
-test("component shows author is confirmed", function(assert){
+test("component shows author is refuted", function(assert){
   Ember.run( () => {
     this.get('author').set('coAuthorState', 'refuted');
   });
   this.render(template);
-  assert.textPresent('.author-refuted', 'Refuted');
+  assert.textPresent('[data-test-selector="author-refuted"]', 'Refuted');
 });

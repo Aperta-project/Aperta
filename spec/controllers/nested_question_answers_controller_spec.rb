@@ -177,13 +177,7 @@ describe NestedQuestionAnswersController do
       delete_params = {
         format: 'json',
         id: answer.to_param,
-        nested_question_id: card_content.to_param,
-        nested_question_answer: {
-          value: "Bye",
-          owner_id: owner.id,
-          owner_type: owner.type,
-          additional_data: { "institution-id" => "234" }
-        }
+        nested_question_id: card_content.to_param
       }
       delete(:destroy, delete_params)
     end

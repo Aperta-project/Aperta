@@ -44,7 +44,11 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def owner
-    @owner ||= owner_type.find(answer_params[:owner_id])
+    @owner ||= if params[:nested_question_answer].present?
+                 owner_type.find(answer_params[:owner_id])
+               else
+                 Answer.find(params[:id]).owner
+               end
   end
 
   def owner_type
@@ -60,9 +64,6 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def answer_params
-    # TODO: APERTA-9226 How did this ever work?
-    # on the destroy action, params[:nested_question_answer] is always empty, so we can't
-    # call answer_params in order to check permissions as part of `must_be_able_to_edit_task`
     @answer_params ||= params
                        .require(:nested_question_answer)
                        .permit(:owner_id, :owner_type, :value, :decision_id)
@@ -73,10 +74,9 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def must_be_able_to_edit_task
-    if owner.is_a? Task
-      raise AuthorizationError unless current_user.can?(:edit, owner)
-    else
-      raise AuthorizationError unless current_user.can?(:edit, owner.task)
-    end
+    raise AuthorizationError unless current_user.can?(
+      :edit,
+      fetch_or_create_answer.task
+    )
   end
 end

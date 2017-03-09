@@ -16,7 +16,7 @@ class CardsController < ApplicationController
       journal_ids = journal_ids.select { |j| j == params[:journal_id].to_i }
     end
 
-    respond_with Card.includes(:card_content).where(journal_id: journal_ids)
+    respond_with Card.where(journal_id: journal_ids)
   end
 
   def show
@@ -35,7 +35,7 @@ class CardsController < ApplicationController
   private
 
   def card
-    @card ||= Card.includes(:card_content).find(params[:id])
+    @card ||= Card.find(params[:id])
   end
 
   def card_params

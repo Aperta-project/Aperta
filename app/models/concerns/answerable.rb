@@ -41,7 +41,7 @@ module Answerable
     # find_or_build_answer_for(...) will return the associated answer for this
     # task given the :card_content parameter.
     def find_or_build_answer_for(card_content:, value: nil)
-      answer = answers.find_or_build(
+      answer = answers.find_or_initialize_by(
         card_content: card_content,
         value: value
       )

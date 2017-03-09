@@ -15,19 +15,20 @@ namespace :data do
         User.joins(:roles).where(roles: {name: 'Reviewer Report Owner'}).find_each do |reviewer|
           user_count += 1
           reviewer.participations.where(assigned_to_id: set_of_reviewer_report_ids).each do |assignment|
-            STDOUT.puts("Deleting Reviewer Report Owner #{reviewer.id}'s participation assignment #{assignment.id}...")
+            STDOUT.puts("Deleting Reviewer Report Owner #{reviewer.id}'s participation assignment #{assignment.id} for paper #{assignment.assigned_to.paper.short_doi}...")
             assignment.destroy!
             deletion_count += 1
           end
         end
         STDOUT.puts("-------------------------------------")
-        STDOUT.puts("Deleted #{deletion_count} assignments for ")
+        STDOUT.puts("Deleted #{deletion_count} participation assignments")
       end
 
       desc <<-DESC
-        APERTA-9054: This adds back reviewers as participants on their Reviewer Report Task
+        APERTA-9054: This makes all reviewers participants on their Reviewer Report Task
       DESC
       task add_back_participant_roles: :environment do
+        # THIS MAY ADD BACK REVIEWERS AS PARTICIPANTS WHO WERE PREVIOUSLY REMOVED AS PARTICIPANTS
         relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
         set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         set_of_reviewer_report_owner_role_ids = Role.where(name: 'Reviewer Report Owner').pluck(:id)
@@ -43,10 +44,16 @@ namespace :data do
                                                 STDOUT.puts("Adding back Reviewer Report Owner #{reviewer_report_owner.id}'s participation...")
                                                 participation = ParticipationFactory.create(task: task, assignee: reviewer_report_owner, assigner: reviewer_report_owner, notify: false)
                                                 if participation.present?
-                                                  STDOUT.puts("Created participation for Reviewer Report Owner #{reviewer_report_owner.id}")
+                                                  added_count += 1
+                                                  STDOUT.puts("Created participation for Reviewer Report Owner #{reviewer_report_owner.id} for paper #{task.paper.id}")
                                                 else
-                                                  STDERR.puts("Failed to create participation for Reviewer Report Owner #{reviewer_report_owner.id}")
-                                                  fail "Error with creating participation for Reviewer Report Owner #{reviewer_report_owner.id}"
+                                                  if task.participants.include? reviewer_report_owner
+                                                    participation = task.participations.find_by(user: reviewer_report_owner)
+                                                    STDOUT.puts("Already have participation #{participation.id} for Reviewer Report Owner #{reviewer_report_owner.id}")
+                                                  else
+                                                    STDERR.puts("Failed to create participation for Reviewer Report Owner #{reviewer_report_owner.id}")
+                                                    fail "Error with creating participation for Reviewer Report Owner #{reviewer_report_owner.id}"
+                                                  end
                                                 end
                                              end
           STDOUT.puts("-------------------------------------")

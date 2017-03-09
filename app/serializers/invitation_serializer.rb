@@ -21,8 +21,13 @@ class InvitationSerializer < ActiveModel::Serializer
   has_many :attachments, embed: :id, polymorphic: true, include: true
   has_one :primary, embed: :id
   has_many :alternates, embed: :id
+  has_one :reviewer_report, embed: :id, include: true
 
   def valid_new_positions_for_invitation
     object.invitation_queue.valid_new_positions_for_invitation(object)
+  end
+
+  def reviewer_report
+    ReviewerReport.for_invitation(invitation: object)
   end
 end

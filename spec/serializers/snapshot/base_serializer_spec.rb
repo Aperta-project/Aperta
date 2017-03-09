@@ -8,7 +8,7 @@ describe Snapshot::BaseSerializer do
       [{ properties: "here" }]
     end
 
-    def snapshot_nested_questions
+    def snapshot_card_content
       [{ questions: "here" }]
     end
   end

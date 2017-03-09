@@ -7,7 +7,7 @@
 - [X]  "spec/controllers/nested_question_answers_controller_spec.rb",
 - [X]  "spec/controllers/question_attachments_controller_spec.rb",
 - [X]  "spec/controllers/tasks_controller_spec.rb",
-- [ ]  "spec/factory_specs/paper_factory_spec.rb",
+- [X]  "spec/factory_specs/paper_factory_spec.rb",
 - [ ]  "spec/lib/tasks/card_config/support/answer_creator_spec.rb",
 - [ ]  "spec/lib/tasks/card_config/support/card_creator_spec.rb",
 - [ ]  "spec/lib/tasks/plos_billing_rake_spec.rb",
@@ -15,7 +15,7 @@
 - [X]  "spec/models/paper_spec.rb",
 - [X]  "spec/models/question_attachment_spec.rb",
 - [X]  "spec/models/task_spec.rb",
-- [ ]  "spec/serializers/question_attachment_serializer_spec.rb",
+- [X]  "spec/serializers/question_attachment_serializer_spec.rb",
 - [ ]  "spec/serializers/snapshot/author_task_serializer_spec.rb",
 - [ ]  "spec/serializers/snapshot/nested_question_serializer_spec.rb",
 - [ ]  "spec/serializers/typesetter/author_serializer_spec.rb", - Erik did stuff

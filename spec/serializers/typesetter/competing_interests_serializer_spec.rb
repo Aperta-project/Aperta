@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe Typesetter::CompetingInterestsSerializer do
   subject(:serializer) { described_class.new(task) }
-
   let!(:task) do
     AnswerableFactory.create(
       FactoryGirl.create(:competing_interests_task),

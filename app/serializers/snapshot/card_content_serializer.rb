@@ -1,4 +1,4 @@
-class Snapshot::NestedQuestionSerializer
+class Snapshot::CardContentSerializer
   def initialize(nested_question, owner)
     @nested_question = nested_question
     @owner = owner
@@ -24,7 +24,7 @@ class Snapshot::NestedQuestionSerializer
 
   def serialized_children_json
     @nested_question.children.map do |child|
-      Snapshot::NestedQuestionSerializer.new(child, @owner).as_json
+      Snapshot::CardContentSerializer.new(child, @owner).as_json
     end
   end
 

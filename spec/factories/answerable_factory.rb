@@ -9,7 +9,7 @@ class AnswerableFactory
       owner
     end
 
-    def create_questions(questions, parent: nil, owner: nil, card: nil)
+    def create_questions(questions, parent: nil, owner: nil, card:)
       questions.each do |question_hash|
         question = create_question(question_hash, parent, owner, card)
         create_answer(question_hash, question, owner)
@@ -17,7 +17,8 @@ class AnswerableFactory
         create_questions(
           question_hash[:questions],
           parent: question,
-          owner: owner
+          owner: owner,
+          card: card
         )
       end
     end

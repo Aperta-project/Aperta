@@ -331,7 +331,7 @@ FactoryGirl.define do
         author = FactoryGirl.create(:author, paper: paper)
         paper.authors = [author]
         paper.creator = FactoryGirl.create(:user)
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           author,
           questions: [
             {
@@ -366,7 +366,7 @@ FactoryGirl.define do
 
         # Financial Disclosure
         financial_task = create(:financial_disclosure_task, funders: [], paper: paper)
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           financial_task,
           questions: [
             {
@@ -378,7 +378,7 @@ FactoryGirl.define do
         )
 
         # Competing interests
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:competing_interests_task, paper: paper),
           questions: [
             {
@@ -397,7 +397,7 @@ FactoryGirl.define do
         )
 
         # data availability
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:data_availability_task, paper: paper),
           questions: [
             {
@@ -413,7 +413,7 @@ FactoryGirl.define do
           ]
         )
 
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:production_metadata_task, paper: paper),
           questions: [
             {

@@ -127,6 +127,8 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   user-select: none; // This is important so as not to have strange drag and drop behavior
   .invitation-item-email {
     user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
   }
 }
 

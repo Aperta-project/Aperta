@@ -215,7 +215,7 @@ class SendToApexCard(BaseCard):
       assert "/journal.{0}".format(short_doi) in doi, "Data point from json file: " \
           "{0} does not match to data point of the source manuscript taken from " \
           "the GUI: {1}".format("/journal.{0}".format(short_doi), doi)
-    except:
+    except AssertionError:
       shutil.rmtree(directory_path)
 
   @staticmethod
@@ -243,5 +243,5 @@ class SendToApexCard(BaseCard):
       assert hash_file == hash_file_extracted, "The extracted document is not the same " \
           "that were uploaded as source file: " \
           "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
-    except:
+    except AssertionError:
       shutil.rmtree(directory_path)

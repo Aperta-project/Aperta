@@ -75,7 +75,7 @@ class UploadManuscriptTask(BaseTask):
     """
     upload_source_file: To upload the source file of the selected PDF
     :param: file_name is the name of the source file to be uploaded
-    :return: doc2upload as str, hash_file as int
+    :return: doc2upload as str, hash_file as str
     """
     current_path = os.getcwd()
     for path in docs:

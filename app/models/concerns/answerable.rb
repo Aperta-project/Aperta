@@ -33,5 +33,21 @@ module Answerable
         Card.lookup_card(self.class.name)
       end
     end
+
+    def answer_for(ident)
+      answers.joins(:card_content).find_by(card_contents: { ident: ident })
+    end
+
+    # find_or_build_answer_for(...) will return the associated answer for this
+    # task given the :card_content parameter.
+    def find_or_build_answer_for(card_content:, value: nil)
+      answer = answers.find_or_build(
+        card_content: card_content,
+        value: value
+      )
+      answer.paper = paper if respond_to?(:paper)
+
+      answer
+    end
   end
 end

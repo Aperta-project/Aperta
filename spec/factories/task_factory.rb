@@ -160,10 +160,10 @@ FactoryGirl.define do
     title "Billing"
     trait :with_nested_question_answers do
       after(:create) do |task|
-        task.nested_questions.each do |nested_question|
+        task.latest_content_without_root.each do |card_content|
           value = "#{nested_question.ident} answer"
-          value = 'bob@example.com' if nested_question.ident == 'plos_billing--email'
-          task.find_or_build_answer_for(nested_question: nested_question, value: value)
+          value = 'bob@example.com' if card_content.ident == 'plos_billing--email'
+          task.find_or_build_answer_for(card_content: card_content, value: value)
         end
       end
     end

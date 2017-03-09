@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'db/schema.rb'
     - 'lib/generators/tahi/task/templates/*'
+  TargetRubyVersion: 2.2
 
 Rails:
   Enabled: true

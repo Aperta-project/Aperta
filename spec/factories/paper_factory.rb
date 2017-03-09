@@ -167,7 +167,7 @@ FactoryGirl.define do
           :nested_question,
           ident: 'publishing_related_questions--short_title'
         )
-        task.find_or_build_answer_for(nested_question: nested_question,
+        task.find_or_build_answer_for(card_content: card_content,
                                       value: evaluator.short_title).save
       end
     end

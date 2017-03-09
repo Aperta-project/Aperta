@@ -23,7 +23,7 @@ describe Typesetter::BillingLogSerializer do
   end
 
   let(:billing_task) do
-    FactoryGirl.create(:billing_task, :with_nested_question_answers, paper: paper)
+    FactoryGirl.create(:billing_task, :with_card_content, paper: paper)
   end
 
   let(:financial_disclosure_task) do

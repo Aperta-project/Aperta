@@ -158,7 +158,7 @@ FactoryGirl.define do
     phase
     paper
     title "Billing"
-    trait :with_nested_question_answers do
+    trait :with_card_content do
       after(:create) do |task|
         task.latest_content_without_root.each do |card_content|
           value = "#{nested_question.ident} answer"

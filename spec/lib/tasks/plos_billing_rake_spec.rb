@@ -21,7 +21,7 @@ describe "plos_billing namespace rake task" do
   let(:billing_task) do
     FactoryGirl.create(
       :billing_task,
-      :with_nested_question_answers,
+      :with_card_content,
       completed: true,
       paper: paper
     )

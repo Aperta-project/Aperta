@@ -70,7 +70,7 @@ module Typesetter
     end
 
     def early_article_posting
-      task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
+      task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:coerced_value) || false
     end
 
     def serializable_hash

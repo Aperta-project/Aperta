@@ -3,6 +3,7 @@ require 'rails_helper'
 describe "plos_billing namespace rake task" do
   before :all do
     Rake::Task.define_task(:environment)
+    CardLoader.load("PlosBilling::BillingTask")
   end
 
   let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }

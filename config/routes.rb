@@ -64,7 +64,6 @@ Tahi::Application.routes.draw do
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
 
-    get "/cards/:owner_type/:owner_id", to: "cards#show", as: "card_for_owner"
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index, :create, :show, :update]

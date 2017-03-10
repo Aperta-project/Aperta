@@ -18,6 +18,6 @@ class AnswerSerializer < ActiveModel::Serializer
   end
 
   def value
-    CoerceAnswerValue.coerce(object.value, object.card_content.value_type)
+    object.coerced_value
   end
 end

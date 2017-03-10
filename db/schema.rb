@@ -677,8 +677,8 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "created_in_7993", default: false
     t.integer  "card_id"
+    t.boolean  "created_in_7993", default: false
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -711,12 +711,6 @@ ActiveRecord::Schema.define(version: 20170301212950) do
     t.datetime "errored_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "scratches", force: :cascade do |t|
-    t.string   "contents"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "simple_reports", force: :cascade do |t|
@@ -903,9 +897,7 @@ ActiveRecord::Schema.define(version: 20170301212950) do
   add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "answers", "card_contents"
-  add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
-  add_foreign_key "cards", "journals"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

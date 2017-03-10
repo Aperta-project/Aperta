@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe ApexPackager do
+  before do
+    CardLoader.load('TahiStandardTasks::FigureTask')
+  end
+
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let!(:manuscript_file) do
     instance_double(ManuscriptAttachment, filename: 'manuscript_file.docx')
@@ -46,12 +50,11 @@ describe ApexPackager do
 
   context 'a well formed paper' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -123,12 +126,11 @@ describe ApexPackager do
 
   context 'a paper with figures' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -175,28 +177,15 @@ describe ApexPackager do
   end
 
   context 'a paper with supporting information' do
-    let!(:task) do
-      paper.tasks.find_by_type('TahiStandardTasks::SupportingInformationTask')
-    end
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
-                         value: 'true',
-                         value_type: 'boolean',
-                         owner: task,
-                         owner_type: 'Task')
-    end
     let!(:figure_task) do
       paper.tasks.find_by_type('TahiStandardTasks::FigureTask')
     end
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
+    let!(:figure_question) { figure_task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:figure_nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
-                         owner: task,
+                         owner: figure_task,
                          owner_type: 'Task')
     end
 
@@ -249,7 +238,7 @@ describe ApexPackager do
 
   context 'a paper with a striking image' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:attachment1) do
       double('attachment_model', filename: 'yeti.jpg',
                                  read: 'some bytes')
@@ -258,11 +247,10 @@ describe ApexPackager do
       double('attachment_model', filename: 'yeti2.jpg',
                                  read: 'some other bytes')
     end
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -320,12 +308,11 @@ describe ApexPackager do
 
   context 'a pdf manuscript' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-        nested_question: figure_question,
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+        card_content: figure_question,
         value: 'true',
-        value_type: 'boolean',
         owner: task,
         owner_type: 'Task')
     end

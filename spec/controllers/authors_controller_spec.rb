@@ -95,7 +95,7 @@ describe AuthorsController do
                                                            co_author_state: "confirmed" }
     end
     let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
-    let!(:author) do
+    let(:author) do
       FactoryGirl.create(:author, co_author_state: "unconfirmed",
                                   co_author_state_modified_by: staff_admin,
                                   paper: paper)
@@ -130,7 +130,7 @@ describe AuthorsController do
         author.reload
         expect(author.last_name).to eq "Blabby"
         expect(author.co_author_state).to eq "unconfirmed"
-        expect(author.co_author_state_modified_at).to eq old_time
+        expect(author.co_author_state_modified_at).to be_within(0.1).of(old_time)
         expect(author.co_author_state_modified_by_id).to eq staff_admin.id
       end
     end

@@ -92,7 +92,7 @@ describe GroupAuthorsController do
 
     let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
 
-    let!(:group_author) do
+    let(:group_author) do
       FactoryGirl.create(:group_author, co_author_state: "unconfirmed",
                                         co_author_state_modified_at: time,
                                         co_author_state_modified_by_id: staff_admin.id,
@@ -111,7 +111,7 @@ describe GroupAuthorsController do
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(true)
 
-        old_time = author.co_author_state_modified_at
+        old_time = group_author.co_author_state_modified_at
         Timecop.travel(30_000)
 
         put_request
@@ -128,7 +128,7 @@ describe GroupAuthorsController do
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(false)
 
-        old_time = author.co_author_state_modified_at
+        old_time = group_author.co_author_state_modified_at
         Timecop.travel(30_000)
 
         put_request

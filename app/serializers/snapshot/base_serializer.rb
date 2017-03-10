@@ -62,7 +62,7 @@ class Snapshot::BaseSerializer
   # without idents, but for now it's been changed around to keep the same
   # semantics as it had with nested questions
   def snapshot_card_content
-    if model.card.present?
+    if model.try(:card).present?
       card_contents = model.card
                            .content_root_for_version(:latest)
                            .children.order('lft')

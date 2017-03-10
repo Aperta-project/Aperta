@@ -27,7 +27,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
   end
 
   describe "#can_change?" do
-    let!(:answer) { FactoryGirl.build(:nested_question_answer) }
+    let!(:answer) { FactoryGirl.build(:answer) }
 
     it "returns true when the task is not submitted" do
       task.update! body: { submitted: false }

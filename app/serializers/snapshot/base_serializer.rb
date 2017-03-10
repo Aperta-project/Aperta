@@ -1,22 +1,22 @@
 #
-# A snapshot serializer is responsible for serializing a given object/model
+# A snapshot serializer is responsible for serializing a given model/model
 # into an acceptable format for storing snapshots (see `Snapshot` class).
 #
 # By default serializing happens in the following order:
 #
-#   * nested questions - Only serialized if the given object/model responds to \
+#   * nested questions - Only serialized if the given model/model responds to \
 #     `nested_questions`. Ignored otherwise.
 #   * properties - Override in subclass to provide an array of specific \
 #     properties.
 #
 # === Serializing nested_questions
 #
-# When the object/model being serialized it will try to recursively serialize
+# When the model/model being serialized it will try to recursively serialize
 # any of its `nested_questions` and their associated answers. The default method
 # used for doing this is `snapshot_card_content`. In most cases you will not
 # need to override this.
 #
-# When the object/model doesn't respond to `nested_questions` this will not
+# When the model/model doesn't respond to `nested_questions` this will not
 # not attempt to serialize nested questions. It will simply ignore them and
 # move on.
 #
@@ -62,10 +62,10 @@ class Snapshot::BaseSerializer
   # without idents, but for now it's been changed around to keep the same
   # semantics as it had with nested questions
   def snapshot_card_content
-    if object.card.present?
-      card_contents = object.card
-                            .content_root_for_version(:latest)
-                            .children.order('lft')
+    if model.card.present?
+      card_contents = model.card
+                           .content_root_for_version(:latest)
+                           .children.order('lft')
 
       card_contents.map do |question|
         Snapshot::CardContentSerializer.new(question, model).as_json

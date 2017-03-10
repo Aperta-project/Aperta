@@ -1,0 +1,26 @@
+<h1 {{action "edit"}} class="{{if editing "editing"}}">
+  {{cardName}}
+  <i class="fa fa-pencil" />
+</h1>
+{{#if editing}}
+  <div class="card-editor-name-form animation-fade-in">
+    <div class="card-editor-name-row">
+      <div class="card-editor-name-field">
+        {{forms/labeled-input-with-errors value=cardName enter=(action "complete") errors=errors autofocus=true}}
+      </div>
+
+      <div class="card-editor-name-action-buttons">
+        <button class="button-link button--blue card-editor-name-cancel" {{action "cancel"}}>
+          cancel
+        </button>
+
+        <button class="button-primary button--blue card-editor-name-save" disabled={{if saving true null}} {{action "complete"}}>
+          {{progress-spinner visible=saving color="blue" center=true}}
+          Save
+        </button>
+      </div>
+    </div>
+
+    <p class="card-editor-name-note">Note: this name will not appear to external audiences.</p>
+  </div>
+{{/if}}

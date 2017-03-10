@@ -50,7 +50,7 @@
     </div>
   {{else}}
     <p><span id="upload-sourcefile" class="button-secondary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
-      Select and upload source file
+      Upload source file
       {{file-uploader id="upload-source-file"
       railsMethod="PUT"
       start="uploadStarted"
@@ -61,7 +61,9 @@
       filePrefix="paper/source"
       url=sourceFileUploadUrl
       disabled=isNotEditable}}
-    </span></p>
+    </span>
+    {{error-message message=message displayIcon=true}}
+  </p>
   {{/if}}
   </p>
 

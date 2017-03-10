@@ -14,7 +14,13 @@ describe PaperDownloadsController, type: :controller do
       manuscript_filename: 'name.docx'
     )
   end
-  let!(:manuscript_attachment) { create(:manuscript_attachment, owner: paper) }
+  let!(:manuscript_attachment) do
+     create(:manuscript_attachment,
+     owner: paper,
+     file:'name.docx',
+     s3_dir: 'sample/path',
+     )
+   end
   let!(:user) { create(:user) }
 
   describe 'GET show' do

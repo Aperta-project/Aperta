@@ -66,8 +66,7 @@ class UploadManuscriptTask(BaseTask):
     :return: file_name as str
     """
     uploaded_pdf = self._get(self._uploaded_pdf)
-    file_name = uploaded_pdf.text
-    file_name = file_name.split(".")[0]
+    file_name, file_ext = os.path.splitext(uploaded_pdf.text)
 
     return file_name
 

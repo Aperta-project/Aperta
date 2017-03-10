@@ -234,9 +234,8 @@ class SendToApexCard(BaseCard):
     zip_ref.extractall(r'{0}'.format(directory_path))
     zip_ref.close()
 
-    source_file_name = doc2upload.split("/")[3]
-    file_ext = source_file_name.split(".")[1]
-    extracted_source_file = os.path.join(directory_path, '{0}.{1}'.format(short_doi, file_ext))
+    source_file_name, file_ext = os.path.splitext(doc2upload)
+    extracted_source_file = os.path.join(directory_path, '{0}{1}'.format(short_doi, file_ext))
     hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
 
     try:

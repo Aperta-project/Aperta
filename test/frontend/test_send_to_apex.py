@@ -30,7 +30,7 @@ class SendToApexTest(CommonTest):
   Validate if the data in the frontend match the data in the backend sent to Apex
   """
 
-  def test_send_to_apex_message(self):
+  def _test_send_to_apex_message(self):
     """
     test_send_to_apex_message: Validate if the Send to Apex card displays the corresponding messages
     """
@@ -136,7 +136,7 @@ class SendToApexTest(CommonTest):
     send_to_apex_card.click_send_to_apex_button()
     send_to_apex_card.validate_card_elements(short_doi)
 
-  def test_send_to_apex_file(self):
+  def _test_send_to_apex_file(self):
     """
     test_send_to_apex_file: Validate if the file sent to apex contains the correct information
     """

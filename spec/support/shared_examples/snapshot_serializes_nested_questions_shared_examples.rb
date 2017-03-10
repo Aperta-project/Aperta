@@ -37,38 +37,41 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         EOT
       end
 
-      unless resource.respond_to?(:nested_questions)
+      unless resource.respond_to?(:card)
         fail <<-EOT.strip_heredoc
           The given resource (#{resource.inspect}) doesn't respond to
-          #nested_questions. It may not be implemented or you may not be passing
+          #card. It may not be implemented or you may not be passing
           in the right resource.
         EOT
       end
 
-      # Remove any questions that may exist so we can construct our own
-      # for the purpose of this test
-      resource.class.nested_questions.delete_all
+      # Create our own card with content for the purporses of this
+      # test.  We'll rely on the resource looking up the card by its
+      # name to simulate the current use case, rather than setting the
+      # card_version_id on the resource as will be the case for new custom
+      # cards
+      card = FactoryGirl.create(:card, :versioned, name: resource.class.name)
 
+      content_root = card.content_root_for_version(:latest)
       nested_question_1 = FactoryGirl.create(
-        :nested_question,
+        :card_content,
+        parent: content_root,
         id: 9001,
-        owner_id: nil,
-        owner_type: resource.class.name,
         ident: "question_1",
-        text: "Question 1?",
-        position: 2
+        text: "Question 1?"
       )
       nested_question_2 = FactoryGirl.create(
-        :nested_question,
+        :card_content,
+        parent: content_root,
         id: 9002,
-        owner_id: nil,
-        owner_type: resource.class.name,
         ident: "question_2",
-        text: "Question 2?",
-        position: 1
+        text: "Question 2?"
       )
 
-      expect(resource.nested_questions.sort_by(&:id)).to eq([nested_question_1, nested_question_2])
+      # swap the position of the card content.
+      nested_question_2.move_left
+      expect(resource.card.latest_content_without_root.sort_by(&:id)).to eq([nested_question_1, nested_question_2])
+      expect(resource.card.latest_content_without_root.sort_by(&:lft)).to eq([nested_question_2, nested_question_1])
     end
 
     it "serializes each question" do

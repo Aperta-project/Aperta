@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Typesetter::AuthorSerializer do
   before do
-    Rake::Task['nested-questions:seed:author'].reenable
-    Rake::Task['nested-questions:seed:author'].invoke
+    CardLoader.load('Author')
   end
 
   subject(:serializer) { described_class.new(author) }
@@ -36,7 +35,7 @@ describe Typesetter::AuthorSerializer do
   let(:user) { FactoryGirl.create(:user) }
 
   let(:contributes_question) do
-    NestedQuestion.find_by(ident: "author--contributions")
+    CardContent.find_by(ident: "author--contributions")
   end
 
   let(:question1) do
@@ -48,46 +47,36 @@ describe Typesetter::AuthorSerializer do
   end
 
   let!(:deceased_question) do
-    author.nested_questions.find_by_ident('author--deceased')
+    CardContent.find_by_ident('author--deceased')
   end
 
   let!(:answer1) do
     FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question1,
+      :answer,
+      card_content: question1,
       owner: author,
-      value: true,
-      value_type: 'boolean'
+      paper: author.paper,
+      value: true
     )
   end
 
   let!(:answer2) do
     FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question2,
+      :answer,
+      card_content: question2,
       owner: author,
-      value: false,
-      value_type: 'boolean'
-    )
-  end
-
-  let!(:answer3) do
-    FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question2,
-      owner: author,
-      value: 'Performed some other duty',
-      value_type: 'text'
+      paper: author.paper,
+      value: false
     )
   end
 
   let!(:deceased_answer) do
     FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: deceased_question,
+      :answer,
+      card_content: deceased_question,
       owner: author,
-      value: true,
-      value_type: 'boolean'
+      paper: author.paper,
+      value: true
     )
   end
 
@@ -126,10 +115,6 @@ describe Typesetter::AuthorSerializer do
 
     it 'does not include question text when the answer is false' do
       expect(output[:contributions]).to_not include(question2.text)
-    end
-
-    it 'includes the `other` text if answered' do
-      expect(output[:contributions]).to include(answer3.value)
     end
   end
 
@@ -215,7 +200,7 @@ describe Typesetter::AuthorSerializer do
     before do
       allow(author).to receive(:answer_for)
         .with(::Author::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
-        .and_return instance_double(NestedQuestionAnswer, value: true)
+        .and_return instance_double(Answer, value: true)
     end
 
     it 'includes whether or not the author is a government employee' do

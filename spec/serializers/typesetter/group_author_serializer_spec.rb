@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe Typesetter::GroupAuthorSerializer do
   before do
-    Rake::Task['nested-questions:seed:group-author'].reenable
-    Rake::Task['nested-questions:seed:group-author'].invoke
+    CardLoader.load('GroupAuthor')
   end
 
   subject(:serializer) { described_class.new(group_author) }
@@ -25,10 +24,6 @@ describe Typesetter::GroupAuthorSerializer do
     )
   end
 
-  let(:contributes_question) do
-    NestedQuestion.find_by(ident: "group-author--contributions")
-  end
-
   let(:question1) do
     group_author.class.contributions_content.children[0]
   end
@@ -39,31 +34,21 @@ describe Typesetter::GroupAuthorSerializer do
 
   let!(:answer1) do
     FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question1,
+      :answer,
+      card_content: question1,
       owner: group_author,
-      value: true,
-      value_type: 'boolean'
+      paper: group_author.paper,
+      value: true
     )
   end
 
   let!(:answer2) do
     FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question2,
+      :answer,
+      card_content: question2,
       owner: group_author,
-      value: false,
-      value_type: 'boolean'
-    )
-  end
-
-  let!(:answer3) do
-    FactoryGirl.create(
-      :nested_question_answer,
-      nested_question: question2,
-      owner: group_author,
-      value: 'Performed some other duty',
-      value_type: 'text'
+      paper: group_author.paper,
+      value: false
     )
   end
 
@@ -88,9 +73,6 @@ describe Typesetter::GroupAuthorSerializer do
     end
     it 'does not include question text when the answer is false' do
       expect(output[:contributions]).to_not include(question2.text)
-    end
-    it 'includes the `other` text if answered' do
-      expect(output[:contributions]).to include(answer3.value)
     end
   end
 
@@ -142,5 +124,4 @@ describe Typesetter::GroupAuthorSerializer do
       expect(output[:type]).to eq 'group_author'
     end
   end
-
 end

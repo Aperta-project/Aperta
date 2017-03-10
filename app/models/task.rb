@@ -180,8 +180,7 @@ class Task < ActiveRecord::Base
   end
 
   def participants
-    participant_ids = participations.map(&:user).uniq.map(&:id)
-    User.where(id: participant_ids)
+    participations.map(&:user).uniq
   end
 
   def participants=(users)

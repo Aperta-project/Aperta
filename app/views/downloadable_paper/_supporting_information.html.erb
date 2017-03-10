@@ -2,7 +2,7 @@
   <div class="supporting-information-files">
     <h2 id='si_header'>Supporting Information</h2>
     <% supporting_information_files.each do |file| %>
-      <% if file.preview? %>
+      <% if false # TODO APERTA-9406 Re-enable SI previews or don't %>
         <p>
           <a href='<%= file.href(is_proxied: true, only_path: false) %>'>
             <img

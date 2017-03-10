@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.38.0] - {2017-03-09}
+### Added
 * Users can now change the initial participants on a discussion topic.
 * Source file is sent to APEX instead of a PDF manuscript
 * The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.

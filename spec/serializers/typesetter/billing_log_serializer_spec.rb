@@ -151,8 +151,8 @@ describe Typesetter::BillingLogSerializer do
     end
 
     it 'has a direct_bill_response when the payment method is institutional' do
-      question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
-      question.nested_question_answers.first.update_column(:value, 'institutional')
+      question = CardContent.find_by(ident: 'plos_billing--payment_method')
+      question.answers.first.update_column(:value, 'institutional')
       billing_task.answer_for('plos_billing--ringgold_institution').update_column(:additional_data, { 'nav_customer_number' => 'C01010' })
       expect(output[:direct_bill_response]).to eq('C01010')
     end
@@ -162,8 +162,8 @@ describe Typesetter::BillingLogSerializer do
     end
 
     it 'has a gpi_response when the payment method is gpi' do
-      question = NestedQuestion.find_by(ident: 'plos_billing--payment_method')
-      question.nested_question_answers.first.update_column(:value, 'gpi')
+      question = CardContent.find_by(ident: 'plos_billing--payment_method')
+      question.answers.first.update_column(:value, 'gpi')
       expect(output[:gpi_response]).to eq(billing_task.answer_for('plos_billing--gpi_country').value)
     end
 

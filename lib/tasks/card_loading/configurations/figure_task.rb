@@ -3,9 +3,9 @@
 # to create CardContent for the Card.
 #
 module CardConfiguration
-  class FiguresTask
+  class FigureTask
     def self.name
-      "TahiStandardTasks::FiguresTask"
+      "TahiStandardTasks::FigureTask"
     end
 
     def self.title

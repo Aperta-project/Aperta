@@ -9,17 +9,13 @@ describe NestedQuestionsController do
 
   describe "#index" do
     let!(:questions) { [question1, question2] }
-    let!(:card) { FactoryGirl.create(:card, :versioned) }
+    let!(:card) { FactoryGirl.create(:card, :versioned, name: "My Card") }
     let(:root) { card.content_root_for_version(1) }
     let(:question1) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
     let(:question2) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
 
     def do_request(params={})
-      get(:index, { type: "MyQuestion" }.merge(params), format: :json)
-    end
-
-    before do
-      allow(Card).to receive(:lookup_card).with("MyQuestion").and_return card
+      get(:index, { type: "My Card" }.merge(params), format: :json)
     end
 
     it "responds with a list of questions for the given :type" do

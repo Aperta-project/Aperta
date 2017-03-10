@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Snapshot::CardContentSerializer do
   subject(:serializer) { described_class.new(card_content, owner) }
   let(:card_content) do
-    FactoryGirl.create(:card_content, ident: 'my-question', text: 'What up?')
+    FactoryGirl.create(:card_content, ident: 'my-question', value_type: 'text', text: 'What up?')
   end
   let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 

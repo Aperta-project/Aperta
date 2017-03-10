@@ -1,19 +1,19 @@
 class Snapshot::CardContentSerializer
-  def initialize(nested_question, owner)
-    @nested_question = nested_question
+  def initialize(card_content, owner)
+    @card_content = card_content
     @owner = owner
     @answer = fetch_answer
   end
 
   def as_json
     {
-      name: @nested_question.ident,
+      name: @card_content.ident,
       type: 'question',
       value: {
-        id: @nested_question.id,
-        title: @nested_question.text,
-        answer_type: @nested_question.value_type,
-        answer: @answer.try(:value),
+        id: @card_content.id,
+        title: @card_content.text,
+        answer_type: @card_content.value_type,
+        answer: @answer.try(:coerced_value),
         attachments: serialized_attachments_json
       },
       children: serialized_children_json
@@ -23,7 +23,7 @@ class Snapshot::CardContentSerializer
   private
 
   def serialized_children_json
-    @nested_question.children.map do |child|
+    @card_content.children.map do |child|
       Snapshot::CardContentSerializer.new(child, @owner).as_json
     end
   end
@@ -37,8 +37,8 @@ class Snapshot::CardContentSerializer
   end
 
   def fetch_answer
-    @owner.nested_question_answers
-      .where(nested_question: @nested_question)
+    @owner.answers
+      .where(card_content: @card_content)
       .first
   end
 end

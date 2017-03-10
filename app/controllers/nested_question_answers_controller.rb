@@ -52,7 +52,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def owner_type
-    LookupOwnerType.lookup(answer_params[:owner_type])
+    RenamespaceClass.lookup(answer_params[:owner_type]).constantize
   end
 
   def card_content

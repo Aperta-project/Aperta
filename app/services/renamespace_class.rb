@@ -4,13 +4,9 @@
 # alternative to having to change the client code.
 # This service class is used in the NestedQuestionAnswersController
 #
-class LookupOwnerType
+class RenamespaceClass
   POSSIBLE_TYPES = {
     # Tasks
-    "AdHocForAuthorsTask"            =>     "AdHocForAuthorsTask",
-    "AdHocForEditorsTask"            =>     "AdHocForEditorsTask",
-    "AdHocForReviewersTask"          =>     "AdHocForReviewersTask",
-    "AdHocTask"                      =>     "AdHocTask",
     "BillingTask"                    =>     "PlosBilling::BillingTask",
     "EditorsDiscussionTask"          =>     "PlosBioInternalReview::EditorsDiscussionTask",
     "ChangesForAuthorTask"           =>     "PlosBioTechCheck::ChangesForAuthorTask",
@@ -43,17 +39,13 @@ class LookupOwnerType
     "TaxonTask"                      =>     "TahiStandardTasks::TaxonTask",
     "TitleAndAbstractTask"           =>     "TahiStandardTasks::TitleAndAbstractTask",
     "UploadManuscriptTask"           =>     "TahiStandardTasks::UploadManuscriptTask",
-    "Task"                           =>     "Task",
     # The Rest
-    "Author"                         =>     "Author",
-    "GroupAuthor"                    =>     "GroupAuthor",
-    "ReviewerReport"                 =>     "ReviewerReport",
     "Funder"                         =>     "TahiStandardTasks::Funder",
     "ReviewerRecommendation"         =>     "TahiStandardTasks::ReviewerRecommendation"
   }.freeze
 
   def self.lookup(type_name)
-    POSSIBLE_TYPES.fetch(type_name).constantize
+    POSSIBLE_TYPES.fetch(type_name, type_name)
   end
 end
 # rubocop:enable Metrics/LineLength

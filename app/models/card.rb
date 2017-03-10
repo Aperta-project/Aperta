@@ -49,7 +49,7 @@ class Card < ActiveRecord::Base
     end
   end
 
-  def self.lookup_card(owner_type)
-    Card.find_by(name: owner_type.to_s)
+  def self.lookup_card(owner_type_name)
+    Card.find_by(name: owner_type_name)
   end
 end

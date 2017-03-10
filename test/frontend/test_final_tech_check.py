@@ -45,9 +45,6 @@ class FTCCardTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
-
     # Need to wait for url to update
     count = 0
     short_doi = manuscript_page.get_current_url().split('/')[-1]
@@ -60,7 +57,8 @@ class FTCCardTest(CommonTest):
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
 
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
+    manuscript_page.page_ready_post_create()
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

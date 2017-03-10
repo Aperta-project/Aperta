@@ -15,7 +15,7 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, staff_admin_login, pub_svcs_login, \
+from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
@@ -63,8 +63,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
-    self._tb_dl_pdf_link = (By.CLASS_NAME, 'download-pdf')
-    self._tb_dl_docx_link = (By.CLASS_NAME, 'download-docx')
     self._tb_ra_link = (By.ID, 'nav-recent-activity')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
@@ -141,6 +139,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._status_info_ready_to_submit = (By.CSS_SELECTOR, 'div.ready-to-submit')
     self._title = (By.ID, 'control-bar-paper-title')
     self._generic_task_item = (By.CSS_SELECTOR, 'div.paper-sidebar > div.ember-view')
+    # Download drawer
+    self._download_drawer = (By.CLASS_NAME, 'sheet')
+    self._download_drawer_title = (By.CSS_SELECTOR, '.sheet .sheet-title')
+    self._download_drawer_table_header = (By.CSS_SELECTOR, '.sheet '
+                                                           '.paper-downloads .paper-downloads-row:not(.animation-fade-in) th')
+    self._download_drawer_items = (By.CSS_SELECTOR, '.sheet .paper-downloads .paper-downloads-row.animation-fade-in')
+    self._download_drawer_close_btn = (By.CSS_SELECTOR, '.sheet .sheet-close-x')
+    # Upload ms
+    self._upload_source = (By.ID, 'upload-source-file')
+    # Manuscript/sidebar resizing handle
+    self._resize_handle_line = (By.CLASS_NAME, 'manuscript-handle')
+    self._resize_handle_box = (By.CLASS_NAME, 'box-handle')
+    self._resize_handle_box_lines = (By.CSS_SELECTOR, '.box-handle .vertical-line')
+    self._resize_handle_box_tooltip = (By.CSS_SELECTOR, '.box-handle .tooltip')
 
   # POM Actions
   def page_ready(self):
@@ -177,6 +189,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_recent_activity()
     self._check_discussion(user)
     self._check_more_btn(user)
+    self._check_resize_handle()
 
   def validate_independent_scrolling(self):
     """Ensure both the manuscript and accordion panes scroll independently"""
@@ -267,107 +280,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
-    word_link = self._get(self._tb_dl_docx_link)
-    assert 'WORD' in word_link.text, word_link.text
-    assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
-    pdf_link = self._get(self._tb_dl_pdf_link)
-    assert 'PDF' in pdf_link.text, pdf_link.text
-    assert 'download.pdf' in pdf_link.get_attribute('href')
-    time.sleep(1)
-    downloads_link.click()
-    time.sleep(1)
 
-  def validate_download_btn_actions(self):
-    """
-    Initiates all supported download types, validates complete download and for pdf does
-      some structural and metadata tests of the output.
-    :return: void function
-    """
-    original_dir = os.getcwd()
-    downloads_link = self._get(self._tb_downloads_link)
-    downloads_link.click()
-    word_link = self._get(self._tb_dl_docx_link)
-    word_link.click()
-    time.sleep(3)
-    # Note that there is no validation of the doc or docx - we are not manipulating them at all
-    #   Just returning the last stored version - so not doing anything beyond validating download
-    #   completion.
-    os.chdir('/tmp')
-    files = filter(os.path.isfile, os.listdir('/tmp'))
-    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-    files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
-    logging.debug(newest_file)
-    while newest_file.split('.')[-1] == 'part':
-      time.sleep(.5)
-      files = filter(os.path.isfile, os.listdir('/tmp'))
-      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-      files.sort(key=lambda x: os.path.getmtime(x))
-      newest_file = files[-1]
-      logging.debug(newest_file.split('.')[-1])
-    logging.debug(newest_file)
-    os.remove(newest_file)
-    # Tiny delay between download types to keep clean
-    time.sleep(.5)
-    pdf_link = self._get(self._tb_dl_pdf_link)
-    assert pdf_link.text == 'PDF'
-    pdf_link.click()
-    # This lengthy delay is here because the file must begin downloading before we can start
-    #   to see if the download completes
-    time.sleep(25)
-    os.chdir('/tmp')
-    files = filter(os.path.isfile, os.listdir('/tmp'))
-    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-    files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
-    logging.debug('Newest file is {0}'.format(newest_file.split('.')[-1]))
-    while newest_file.split('.')[-1] == 'part':
-      time.sleep(5)
-      files = filter(os.path.isfile, os.listdir('/tmp'))
-      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-      files.sort(key=lambda x: os.path.getmtime(x))
-      newest_file = files[-1]
-      logging.debug(newest_file.split('.')[-1])
-    logging.info('PDF to validate: {0}'.format(newest_file))
-    pdf_valid = PdfUtil.validate_pdf(newest_file)
-    os.remove(newest_file)
-    os.chdir(original_dir)
-    if not pdf_valid:
-      logging.error('PDF file: {0} is invalid'.format(newest_file))
-      raise ('Invalid PDF generated for {0}'.format(newest_file))
+    downloads_drawer = self._get(self._download_drawer)
+    assert downloads_drawer.is_displayed() == True, 'The download drawer is ' \
+                                                  'not open when it should be.'
 
-  def validate_download_pdf_actions(self):
-    """
-    Initiates pdf download, validates complete download and does
-      some structural and metadata tests of the output.
-      Note that this is not actually called at present, but has been a useful function for
-      doing ad-hoc tests around pdf generation about which we have had much pain.
-    :return: void function
-    """
-    downloads_link = self._get(self._tb_downloads_link)
-    downloads_link.click()
-    pdf_link = self._get(self._tb_dl_pdf_link)
-    pdf_link.click()
-    time.sleep(3)
-    os.chdir('/tmp')
-    files = filter(os.path.isfile, os.listdir('/tmp'))
-    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-    files.sort(key=lambda x: os.path.getmtime(x))
-    newest_file = files[-1]
-    logging.debug('Newest file type is {0}'.format(newest_file.split('.')[-1]))
-    while newest_file.split('.')[-1] == 'part':
-      time.sleep(5)
-      files = filter(os.path.isfile, os.listdir('/tmp'))
-      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
-      files.sort(key=lambda x: os.path.getmtime(x))
-      newest_file = files[-1]
-      logging.debug('Newest file type is {0}'.format(newest_file.split('.')[-1]))
-    logging.debug(newest_file)
-    pdf_valid = PdfUtil.validate_pdf(newest_file)
-    if not pdf_valid:
-      logging.error('PDF file: {0} is invalid'.format(newest_file))
-      raise('Invalid PDF generated for {0}'.format(newest_file))
-    os.remove(newest_file)
+    close_download_drawer_btn = self._get(self._download_drawer_close_btn)
+    close_download_drawer_btn.click()
 
   def open_recent_activity(self):
     """
@@ -689,19 +608,49 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # close task
         task.click()
       time.sleep(1)
-    elif task_name in ('Cover Letter', 'Figures', 'Upload Manuscript',
-                       'Financial Disclosure', 'Reviewer Candidates'):
+    elif task_name == 'Upload Manuscript':
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
         # accordion is close it, open it:
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
+      if data and 'source' in data:
+        # there is a sourcefile
+        if not data['source']:
+          doc2upload = random.choice(docs)
+        else:
+          doc2upload = data['source']
+        current_path = os.getcwd()
+        fn = os.path.join(current_path, '{0}'.format(doc2upload))
+        logging.info('Sending document: {0}'.format(fn))
+        time.sleep(1)
+        self._get(self._upload_source).send_keys(fn)
+        ###self._driver.find_element_by_id('upload-source-file').send_keys(fn) XXX DELETE!!
       # Check completed_check status
       if not base_task.completed_state():
         base_task.click_completion_button()
       self.click_covered_element(task)
-      time.sleep(1)
+      time.sleep(.5)
+    elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
+      # before checking that the complete is selected, in the accordion we need to
+      # check if it is open
+      if click_override:
+        # Open Upload Manuscript Task
+        logging.info('Accordion was closed, opening: {0}'.format(task.text))
+        task.click()
+        base_task.click_completion_button()
+        self.click_covered_element(task)
+      else:
+        if 'task-disclosure--open' not in task_div.get_attribute('class'):
+          # accordion is close it, open it:
+          logging.info('Accordion was closed, opening: {0}'.format(task.text))
+          task.click()
+          # Check completed_check status
+        if not base_task.completed_state():
+          base_task.click_completion_button()
+          self.click_covered_element(task)
+          time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       logging.info('Completing Author Task')
@@ -721,6 +670,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
         new_taxon_task.validate_taxon_questions_action(scenario)
         outdata = scenario
       base_task.click_completion_button()
+      self.click_covered_element(task)
+    elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
+                       'Ethics Statement', 'Reporting Guidelines'):
+      # Complete Competing Interest data before mark close
+      logging.info('Completing {0} Task'.format(task.text))
+      base_task.click_completion_button()
+      self.click_covered_element(task)
     else:
       raise ValueError('No information on this task: {0}'.format(task_name))
     base_task.restore_timeout()
@@ -809,23 +765,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Returns the title
     """
     return self._get(self._title).text
-
-  def get_paper_short_doi_from_url(self):
-    """
-    Returns the database paper short doi from URL
-    """
-    # Need to wait for url to update
-    count = 0
-    short_doi = self.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = self.get_current_url().split('/')[-1]
-      count += 1
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
-    logging.info("Assigned paper short doi: {0}".format(short_doi))
-    return short_doi
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):
     """
@@ -962,3 +901,290 @@ class ManuscriptViewerPage(AuthenticatedPage):
     items_holder = self._get(items_holder_selector)
     items_holder.find_elements_by_class_name('ember-power-select-option')[
       item_index].click()
+
+  def get_manuscript_versions(self):
+    """
+    get_manuscript_versions: Returns the list of versions for this manuscript
+    :return: A list of version objects
+    """
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    # Waits for versioning box be visible
+    self._wait_for_element(
+      self._gets(self._bar_items)[0])
+
+    bar_items = self._gets(self._bar_items)
+    version_select = bar_items[0].find_element_by_class_name(
+      'ember-power-select-trigger')
+    version_select.click()
+    version_select_id = version_select.get_attribute('id')
+    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
+    items_holder = self._get(items_holder_selector)
+    versions_el = items_holder.find_elements_by_class_name(
+      'ember-power-select-option')
+
+    versions = []
+
+    for version_el in versions_el:
+      version_data = version_el.text.split(' - ')
+      version_number_format = version_data[0].replace('R', '')\
+        .replace('(', '')\
+        .replace(')', '')\
+        .split(' ')
+
+      versions.append({
+        'version': version_number_format[0],
+        'date': version_data[1],
+        'format': version_number_format[1]
+      })
+
+    self._get(self._tb_versions_closer).click()
+
+    return versions
+
+  def validate_download_drawer_styles(self):
+    """
+    validate_download_drawer_styles: Validates the download drawer styles
+    and version items
+    :return: void function
+    """
+    # Get manuscript versions list
+    ms_versions = self.get_manuscript_versions()
+
+    # Open download drawer
+    self._get(self._tb_downloads_link).click()
+
+    # Validate drawer title
+    title = self._get(self._download_drawer_title)
+    expected_title = 'Downloads'
+    assert title.text == expected_title, 'The drawer title {0} is not the ' \
+                                         'expected {1}'.format(title.text, expected_title)
+    # self.validate_manuscript_h1_style(title)
+
+    # Validate table headers
+    table_headers = self._gets(self._download_drawer_table_header)
+    expected_table_headers = ['Manuscript Version', 'Format']
+    for key, table_header in enumerate(table_headers):
+      assert table_header.text == expected_table_headers[key], \
+          'The download table header {0}: {1} is not the expected:' \
+          ' {2}'.format(key, table_header.text, expected_table_headers[key])
+
+      # self.validate_table_heading_style(table_header)
+
+    # Validate table items
+    table_items = self._gets(self._download_drawer_items)
+    for key, table_item in enumerate(table_items):
+      version_data = ms_versions[key]
+      expected_version_name = version_data['version']
+
+
+      # Fix for adding the 'V' before the version number
+      if expected_version_name != 'draft':
+        expected_version_name = 'V{0}'.format(expected_version_name)
+
+      # Validate version name styles
+      version_name = table_item.find_element_by_class_name('paper-downloads-version')
+      assert version_name.text.lower() == expected_version_name.lower(), \
+          'Download table item {0} version name {1} is not the expected {2}'\
+          .format(key, version_name.text, expected_version_name)
+      self.validate_application_ptext(version_name)
+
+      download_links = table_item.find_elements_by_class_name(
+        'paper-downloads-link')
+
+      expected_link_title = {'download-docx': 'Word', 'download-pdf': 'PDF'}
+
+      # Validate table item links
+      for download_link in download_links:
+        link = download_link.find_element_by_tag_name('a')
+        download_link_classes = download_link.get_attribute('class').split(' ')
+        if 'paper-downloads-link--pdf' in download_link_classes:
+          assert 'text-align-right' in download_link_classes, \
+              'The PDF link is not right aligned as expected'
+
+        link_class = link.get_attribute('class')
+        assert link.text == expected_link_title[link_class],\
+            'The download link {0} of the item {1} title {2} is not the ' \
+            'expected {3}'.format(link_class, key, link.text,
+                                  expected_link_title[link_class])
+
+        self.validate_default_link_style(link)
+
+    self._get(self._download_drawer_close_btn).click()
+
+  def validate_manuscript_downloaded_file(self, download_link_el,
+                                          format='pdf'):
+    """
+    validate_manuscript_downloaded_file: Validates if the manuscript
+    download was successful
+    :param: download_link_el: The element to click to start the download
+    :param: format: The format of the manuscript to be downloaded
+    :return: void function
+    """
+    original_dir = os.getcwd()
+    download_link_el.click()
+    # Longer sleep for PDF generation
+    if format == 'pdf':
+      time.sleep(15)
+    else:
+      time.sleep(5)
+
+    # Note that there is no validation of the doc or docx - we are not manipulating them at all
+    #   Just returning the last stored version - so not doing anything beyond validating download
+    #   completion.
+    os.chdir('/tmp')
+    files = filter(os.path.isfile, os.listdir('/tmp'))
+    files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+    files.sort(key=lambda x: os.path.getmtime(x))
+    newest_file = files[-1]
+    logging.debug(newest_file)
+    while newest_file.split('.')[-1] == 'part':
+      time.sleep(.5)
+      files = filter(os.path.isfile, os.listdir('/tmp'))
+      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      files.sort(key=lambda x: os.path.getmtime(x))
+      newest_file = files[-1]
+      logging.debug(newest_file.split('.')[-1])
+    logging.debug(newest_file)
+    if format == 'pdf':
+      logging.info('PDF to validate: {0}'.format(newest_file))
+      pdf_valid = PdfUtil.validate_pdf(newest_file)
+    else:
+      pdf_valid = True
+
+    os.remove(newest_file)
+    os.chdir(original_dir)
+
+    # Raising error just after move to the original working dir
+    if not pdf_valid:
+      logging.error('PDF file: {0} is invalid'.format(newest_file))
+      raise ('Invalid PDF generated for {0}'.format(newest_file))
+
+  def validate_download_btn_actions(self):
+    """
+    validate_download_btn_actions: Validates the download buttons actions
+    for all the manuscript versions
+    :return: void function
+    """
+    # Get manuscript versions list
+    ms_versions = self.get_manuscript_versions()
+
+    # Open download drawer
+    self._get(self._tb_downloads_link).click()
+
+    # Validate table items links action
+    table_items = self._gets(self._download_drawer_items)
+    for key, table_item in enumerate(table_items):
+      version_data = ms_versions[key]
+      item_version_name = version_data['version']
+
+      word_formats = ['DOC', 'DOCX']
+      pdf_link = table_item.find_element_by_class_name('download-pdf')
+
+      if version_data['format'] in word_formats:
+        word_link = table_item.find_element_by_class_name('download-docx')
+        logging.info('Validating word format file for version {0}'.format(
+          item_version_name))
+        self.validate_manuscript_downloaded_file(word_link, format='word')
+        pdf_link_href = pdf_link.get_attribute('href')
+        pdf_file = pdf_link_href.split('/')[-1]
+
+        expected_pdf_file = 'download.pdf'
+
+        if item_version_name != 'draft':
+          expected_pdf_file = '{0}?version={1}'.format(expected_pdf_file, item_version_name)
+
+        assert pdf_file == expected_pdf_file, \
+            'The PDF file {0} for item {1} is not the expected {2}'.format(
+              pdf_file, key, expected_pdf_file)
+      else:
+        pdf_link_href = pdf_link.get_attribute('href')
+        expected_pdf_link_href = '{0}#'.format(self.get_current_url())
+        assert pdf_link_href == expected_pdf_link_href, 'The PDF link {0} for item {1} is not the ' \
+                                'expected {2}'.format(pdf_link_href, key, expected_pdf_link_href)
+
+      logging.info('Validating pdf format file for version {0}'.format(
+        item_version_name))
+      self.validate_manuscript_downloaded_file(pdf_link)
+
+    self._get(self._download_drawer_close_btn).click()
+
+  def _check_resize_handle(self):
+    """
+    _check_resize_handle: Validates the sidebar/manuscript resize handle
+    styles and tooltip action
+    :return: void function
+    """
+    handle_line = self._get(self._resize_handle_line)
+    handle_box = self._get(self._resize_handle_box)
+    handle_box_lines = self._gets(self._resize_handle_box_lines)
+
+    # Validate handle line
+    # Ps: Cannot validate the line width because it's on a CSS pseudo-element
+    assert handle_line.is_displayed(), 'The handle line is not displayed'
+    # Certify the handle line is over the other elements
+    assert handle_line.value_of_css_property('z-index') == '2', \
+        'The handle line z-index {0} is not the expected 2'.format(handle_line.value_of_css_property('z-index'))
+
+    assert handle_line.value_of_css_property('cursor') == 'ew-resize', \
+        'The handle line cursor {0} is not the expected ew-resize'.format(handle_line.value_of_css_property('cursor'))
+
+    # Validate handle box
+    handle_box_expected_width = '23px'
+    handle_box_expected_height = '35px'
+    handle_box_expected_bg = ['#ddd', 'rgba(221, 221, 221, 1)']
+    handle_box_expected_left = '-9px'
+
+    assert handle_box.is_displayed(), 'The handle box is not displayed'
+
+    assert handle_box.value_of_css_property('width') == \
+           handle_box_expected_width, 'The handle box width {0} is not the ' \
+                                      'expected {1}'.format(
+      handle_box.value_of_css_property('width'), handle_box_expected_width)
+
+    assert handle_box.value_of_css_property('height') == \
+           handle_box_expected_height, 'The handle box height {0} is not the ' \
+                                      'expected {1}'.format(
+      handle_box.value_of_css_property('height'), handle_box_expected_height)
+
+    assert handle_box.value_of_css_property('background-color') in \
+           handle_box_expected_bg, 'The handle box bg color {0} is not the ' \
+                                       'expected {1}'.format(
+      handle_box.value_of_css_property('background-color'),
+      handle_box_expected_bg)
+
+    assert handle_box.value_of_css_property('left') == \
+           handle_box_expected_left, 'The handle box left {0} is not the ' \
+                                    'expected {1}'.format(
+      handle_box.value_of_css_property('left'), handle_box_expected_left)
+
+    # Validate handle box lines
+    assert len(handle_box_lines) == 3, 'The handle box have {0} lines when 3 ' \
+                                       'is expected'.format(len(handle_box_lines))
+    line_expected_top = '4px'
+    line_expected_padding_left = '2px'
+    line_expected_height = '26px'
+
+    for key, line in enumerate(handle_box_lines):
+      assert line.value_of_css_property('top') == line_expected_top, \
+          'The handle box line {0} top {1} is not the expected: {2}'.format(
+          line.value_of_css_property('top'), line_expected_top)
+
+      assert line.value_of_css_property('padding-left') == line_expected_padding_left, \
+        'The handle box line {0} padding-left {1} is not the expected: {2}'.format(
+          key, line.value_of_css_property('padding-left'),
+          line_expected_padding_left)
+
+      assert line.value_of_css_property('height') == line_expected_height, \
+        'The handle box line {0} height {1} is not the expected: {2}'.format(
+          key, line.value_of_css_property('height'), line_expected_height)
+
+    # Validate tooltip
+    self._actions.move_to_element(handle_box).perform()
+    self._wait_for_element(self._get(self._resize_handle_box_tooltip))
+    tooltip = self._get(self._resize_handle_box_tooltip)
+    tooltip_expected_text = 'adjust the size of your workspace'
+    assert tooltip.is_displayed(), 'The handle box tooltip is not visible.'
+    assert tooltip.text == tooltip_expected_text, \
+        'The handle box tooltip text {0} is not the expected {1}'.format(
+          tooltip.text, tooltip_expected_text)

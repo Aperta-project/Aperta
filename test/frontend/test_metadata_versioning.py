@@ -74,8 +74,8 @@ class MetadataVersioningTest(CommonTest):
     ms_viewer.complete_task('Authors', author=creator_login1)
     ms_viewer.complete_task('Financial Disclosure')
     ms_viewer.complete_task('Additional Information')
+    ms_viewer.complete_task('Upload Manuscript')
     time.sleep(3)
-
     # make submission
     ms_viewer.click_submit_btn()
     ms_viewer.confirm_submit_btn()

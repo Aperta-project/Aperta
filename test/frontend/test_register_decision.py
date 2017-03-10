@@ -58,10 +58,9 @@ class RegisterDecisionCardTest(CommonTest):
     self.create_article(title='Testing Register Decision Card', journal=journal, type_=paper_type,
                         random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page.page_ready_post_create()
     paper_id = manuscript_page.get_paper_short_doi_from_url()
-    manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._submit_button))
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._overlay_header_close))
@@ -116,6 +115,7 @@ class RegisterDecisionCardTest(CommonTest):
     # figures
     manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

@@ -154,4 +154,12 @@ feature "Invite Reviewer", js: true do
     expect(email).to be
     expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
   end
+
+  scenario 'clicking on an email selects it' do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(reviewer1)
+    find('.invitation-item-email', text: reviewer1.email).click
+    expect(execute_script("return window.getSelection().toString()").strip)
+      .to eq("#{reviewer1.full_name} <#{reviewer1.email}>")
+  end
 end

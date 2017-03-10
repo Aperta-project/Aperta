@@ -2,7 +2,15 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [1.38.0] - {2017-03-02}
+## ## [x.x.x] - {yyyy-mm-dd}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.38.0] - {2017-03-09}
 ### Added
 * Users can now change the initial participants on a discussion topic.
 * Source file is sent to APEX instead of a PDF manuscript

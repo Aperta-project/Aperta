@@ -9,7 +9,7 @@ class AnswerAsNestedQuestionAnswerSerializer < ActiveModel::Serializer
   end
 
   def value
-    object.coerced_value
+    object.value
   end
 
   def nested_question_id

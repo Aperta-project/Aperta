@@ -58,7 +58,7 @@ class Author < ActiveRecord::Base
 
   def corresponding?
     return false unless answer_for(CORRESPONDING_QUESTION_IDENT)
-    answer_for(CORRESPONDING_QUESTION_IDENT).coerced_value
+    answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 
   def self.contributions_content

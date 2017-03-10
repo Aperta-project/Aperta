@@ -13,7 +13,7 @@ class Snapshot::CardContentSerializer
         id: @card_content.id,
         title: @card_content.text,
         answer_type: @card_content.value_type,
-        answer: @answer.try(:coerced_value),
+        answer: @answer.try(:value),
         attachments: serialized_attachments_json
       },
       children: serialized_children_json

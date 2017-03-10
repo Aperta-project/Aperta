@@ -18,6 +18,6 @@ class AnswerSerializer < ActiveModel::Serializer
   end
 
   def value
-    object.coerced_value
+    object.value
   end
 end

@@ -11,23 +11,36 @@ namespace :data do
         set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)
         deletion_count = 0
         user_count = 0
-
+        removed_participations = []
         User.joins(:roles).where(roles: {name: 'Reviewer Report Owner'}).find_each do |reviewer|
           user_count += 1
           reviewer.participations.where(assigned_to_id: set_of_reviewer_report_ids).each do |assignment|
+            removed_participations << {
+              task: assignment.assigned_to.id,
+              assigner: reviewer.id,
+              assignee: reviewer.id
+            }
             STDOUT.puts("Deleting Reviewer Report Owner #{reviewer.id}'s participation assignment #{assignment.id} for paper #{assignment.assigned_to.paper.short_doi}...")
             assignment.destroy!
             deletion_count += 1
           end
         end
         STDOUT.puts("-------------------------------------")
-        STDOUT.puts("Deleted #{deletion_count} participation assignments")
+        STDOUT.puts("Deleted #{deletion_count} participation assignments:")
+        STDOUT.puts("#{removed_participations.join(',')}")
       end
 
       desc <<-DESC
         APERTA-9054: This makes all reviewers participants on their Reviewer Report Task
       DESC
       task add_back_participant_roles: :environment do
+        # irreversible
+        raise ActiveRecord::IrreversibleMigration, "Some participations were removed manually from \
+         Reviewer Tasks so they cannot be added automatically without adding a participation for \
+         every Reviewer Report."
+        # To reverse the previous migration take the output logs of the up migration for the deleted participations
+        # and iterate through them with ParticipationFactory
+
         # THIS MAY ADD BACK REVIEWERS AS PARTICIPANTS WHO WERE PREVIOUSLY REMOVED AS PARTICIPANTS
         relevant_tasks = ['TahiStandardTasks::ReviewerReportTask', 'TahiStandardTasks::FrontMatterReviewerReportTask']
         set_of_reviewer_report_ids = Task.where(type: relevant_tasks).pluck(:id)

@@ -14,7 +14,7 @@ describe PaperConverters::PdfPaperConverter do
   let(:versioned_text) { paper.latest_version }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:converter) { PaperConverters::PdfPaperConverter.new(versioned_text, export_format, user) }
-  
+
 
   it_behaves_like "a synchronous paper converter"
 
@@ -111,7 +111,7 @@ describe PaperConverters::PdfPaperConverter do
       it 'replaces img src urls (which are normally proxied) with resolveable urls' do
           expected_uri = URI.parse(figure.proxyable_url)
           actual_uri = URI.parse(figure.proxyable_url)
-
+          allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
           expect(actual_uri.scheme).to eq expected_uri.scheme
           expect(actual_uri.host).to eq expected_uri.host
           expect(actual_uri.path).to eq expected_uri.path
@@ -127,6 +127,7 @@ describe PaperConverters::PdfPaperConverter do
       end
 
       it 'has the proper css class to prevent figures spanning multiple lines' do
+        allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
         expect(figure_img['class']).to include("pdf-image",
                                                "pdf-image-with-caption")
       end

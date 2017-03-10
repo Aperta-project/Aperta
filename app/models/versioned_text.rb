@@ -91,6 +91,7 @@ class VersionedText < ActiveRecord::Base
     self == paper.latest_version
   end
 
+  # rubocop:disable Rails/OutputSafety
   def materialized_content
     doc = Nokogiri::HTML::DocumentFragment.parse text
     doc.css('img').each do |img|
@@ -99,7 +100,7 @@ class VersionedText < ActiveRecord::Base
       signed_url = Attachment.authenticated_url_for_key(detail_url)
       img.attributes['src'].content = signed_url
     end
-    doc.to_s
+    doc.to_s.html_safe
   end
 
   private

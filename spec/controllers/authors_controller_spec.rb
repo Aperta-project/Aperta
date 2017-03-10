@@ -96,9 +96,11 @@ describe AuthorsController do
     end
     let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
     let(:author) do
-      FactoryGirl.create(:author, co_author_state: "unconfirmed",
-                                  co_author_state_modified_by: staff_admin,
-                                  paper: paper)
+      Timecop.freeze(1.day.ago) do
+        FactoryGirl.create(:author, co_author_state: "unconfirmed",
+                                    co_author_state_modified_by: staff_admin,
+                                    paper: paper)
+      end
     end
 
     context 'administrator user' do
@@ -107,7 +109,6 @@ describe AuthorsController do
         allow(user).to receive(:can?).with(:administer, paper.journal).and_return(true)
 
         old_time = author.co_author_state_modified_at
-        Timecop.travel(30_000)
 
         put_request
         author.reload
@@ -124,7 +125,6 @@ describe AuthorsController do
         allow(user).to receive(:can?).with(:administer, author.paper.journal).and_return(false)
 
         old_time = author.co_author_state_modified_at
-        Timecop.travel(30_000)
 
         put_request
         author.reload

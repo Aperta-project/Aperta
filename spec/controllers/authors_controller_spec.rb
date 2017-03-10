@@ -89,11 +89,10 @@ describe AuthorsController do
   end
 
   describe 'coauthor update' do
-
     let(:put_request) do
       put :update, format: :json, id: author.id, author: { last_name: "Blabby",
                                                            author_task_id: task.id,
-                                                           co_author_state: "confirmed", }
+                                                           co_author_state: "confirmed" }
     end
     let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
     let!(:author) do
@@ -102,19 +101,19 @@ describe AuthorsController do
                                   paper: paper)
     end
 
-    let!(:time) { author.co_author_state_modified_at }
-
     context 'administrator user' do
-
       it 'a PUT request from an administrator allows updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, paper.journal).and_return(true)
+
+        old_time = author.co_author_state_modified_at
+        Timecop.travel(30_000)
 
         put_request
         author.reload
         expect(author.last_name).to eq "Blabby"
         expect(author.co_author_state).to eq "confirmed"
-        expect(author.co_author_state_modified_at).to be > time
+        expect(author.co_author_state_modified_at).to be > old_time
         expect(author.co_author_state_modified_by_id).to eq user.id
       end
 
@@ -124,11 +123,14 @@ describe AuthorsController do
         allow(user).to receive(:can?).with(:edit_authors, author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, author.paper.journal).and_return(false)
 
+        old_time = author.co_author_state_modified_at
+        Timecop.travel(30_000)
+
         put_request
         author.reload
         expect(author.last_name).to eq "Blabby"
         expect(author.co_author_state).to eq "unconfirmed"
-        expect(author.co_author_state_modified_at).to eq time
+        expect(author.co_author_state_modified_at).to eq old_time
         expect(author.co_author_state_modified_by_id).to eq staff_admin.id
       end
     end

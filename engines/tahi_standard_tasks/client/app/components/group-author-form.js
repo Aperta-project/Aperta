@@ -86,7 +86,7 @@ export default Ember.Component.extend({
   },
 
   saveNewAuthor() {
-    const author = this.get('author'); ``
+    const author = this.get('author');
     author.save().then(savedAuthor => {
       author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
         const value = answer.get('value');

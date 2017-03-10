@@ -3,7 +3,7 @@
     {{radio-button
     value="confirmed"
     data-test-selector="confirm-authorship"
-    selection=coAuthorState
+    selection=author.coAuthorState
     disabled=isNotEditable
     name="coauthor-confirmation"
     action=(action "setConfirmation")}}
@@ -14,7 +14,7 @@
     {{radio-button
     value="refuted"
     data-test-selector="refute-authorship"
-    selection=coAuthorState
+    selection=author.coAuthorState
     disabled=isNotEditable
     name="coauthor-confirmation"
     action=(action "setConfirmation")}}
@@ -25,7 +25,7 @@
     {{radio-button
     value="unconfirmed"
     data-test-selector="unconfirm-authorship"
-    selection=coAuthorState
+    selection=author.coAuthorState
     disabled=isNotEditable
     name="coauthor-confirmation"
     action=(action "setConfirmation")}}

@@ -24,7 +24,8 @@ describe GroupAuthorsController do
         id: group_author.id,
         group_author: {
           contact_last_name: "Blabby",
-          task_id: task.id }
+          task_id: task.id
+        }
   end
 
   before do
@@ -93,30 +94,31 @@ describe GroupAuthorsController do
 
     let!(:group_author) do
       FactoryGirl.create(:group_author, co_author_state: "unconfirmed",
-        co_author_state_modified_at: time,
-        co_author_state_modified_by_id: staff_admin.id,
-        paper: paper)
+                                        co_author_state_modified_at: time,
+                                        co_author_state_modified_by_id: staff_admin.id,
+                                        paper: paper)
     end
 
     let(:put_request) do
       put :update, format: :json, id: group_author.id, group_author: { contact_last_name: "Blabby",
-        author_task_id: task.id,
-        co_author_state: "confirmed",
-        co_author_state_modified_by: staff_admin
-      }
+                                                                       author_task_id: task.id,
+                                                                       co_author_state: "confirmed",
+                                                                       co_author_state_modified_by: staff_admin }
     end
 
     context 'administrator user' do
-
       it 'a PUT request from an administrator allows updating coauthor status' do
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(true)
+
+        old_time = author.co_author_state_modified_at
+        Timecop.travel(30_000)
 
         put_request
         group_author.reload
         expect(group_author.contact_last_name).to eq "Blabby"
         expect(group_author.co_author_state).to eq "confirmed"
-        expect(group_author.co_author_state_modified_at).to be > time
+        expect(group_author.co_author_state_modified_at).to be > old_time
         expect(group_author.co_author_state_modified_by_id).to eq user.id
       end
 
@@ -126,11 +128,14 @@ describe GroupAuthorsController do
         allow(user).to receive(:can?).with(:edit_authors, group_author.paper).and_return(true)
         allow(user).to receive(:can?).with(:administer, group_author.paper.journal).and_return(false)
 
+        old_time = author.co_author_state_modified_at
+        Timecop.travel(30_000)
+
         put_request
         group_author.reload
         expect(group_author.contact_last_name).to eq "Blabby"
         expect(group_author.co_author_state).to eq "unconfirmed"
-        expect(group_author.co_author_state_modified_at).to eq time
+        expect(group_author.co_author_state_modified_at).to eq old_time
         expect(group_author.co_author_state_modified_by_id).to eq staff_admin.id
       end
     end

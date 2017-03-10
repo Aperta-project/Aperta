@@ -13,6 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 * Temporarily disabled coauthor notification
+* Change in figure task workflow to remove period from title
 ### Deprecated
 ### Removed
 ### Fixed

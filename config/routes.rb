@@ -60,13 +60,14 @@ Tahi::Application.routes.draw do
       put :cancel, on: :member
     end
     resources :manuscript_attachments, only: [:show]
+    resources :sourcefile_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
 
     get "/cards/:owner_type/:owner_id", to: "cards#show", as: "card_for_owner"
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
-    resources :cards, only: [:index, :create, :show]
+    resources :cards, only: [:index, :create, :show, :update]
 
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]

@@ -15,7 +15,6 @@ describe PaperConverters::PdfPaperConverter do
   let(:task) { FactoryGirl.create(:supporting_information_task) }
   let(:converter) { PaperConverters::PdfPaperConverter.new(versioned_text, export_format, user) }
 
-
   it_behaves_like "a synchronous paper converter"
 
   describe "#output_filename" do
@@ -109,21 +108,21 @@ describe PaperConverters::PdfPaperConverter do
       end
 
       it 'replaces img src urls (which are normally proxied) with resolveable urls' do
-          expected_uri = URI.parse(figure.proxyable_url)
-          actual_uri = URI.parse(figure.proxyable_url)
-          allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
-          expect(actual_uri.scheme).to eq expected_uri.scheme
-          expect(actual_uri.host).to eq expected_uri.host
-          expect(actual_uri.path).to eq expected_uri.path
-          expect(CGI.parse(actual_uri.query).keys).to \
-            contain_exactly(
-              'X-Amz-Expires',
-              'X-Amz-Date',
-              'X-Amz-Algorithm',
-              'X-Amz-Credential',
-              'X-Amz-SignedHeaders',
-              'X-Amz-Signature'
-            )
+        expected_uri = URI.parse(figure.proxyable_url)
+        actual_uri = URI.parse(figure.proxyable_url)
+        allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
+        expect(actual_uri.scheme).to eq expected_uri.scheme
+        expect(actual_uri.host).to eq expected_uri.host
+        expect(actual_uri.path).to eq expected_uri.path
+        expect(CGI.parse(actual_uri.query).keys).to \
+          contain_exactly(
+            'X-Amz-Expires',
+            'X-Amz-Date',
+            'X-Amz-Algorithm',
+            'X-Amz-Credential',
+            'X-Amz-SignedHeaders',
+            'X-Amz-Signature'
+          )
       end
 
       it 'has the proper css class to prevent figures spanning multiple lines' do

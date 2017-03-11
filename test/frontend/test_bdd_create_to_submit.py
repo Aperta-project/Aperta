@@ -6,12 +6,13 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import users, admin_users
+from Base.Resources import users, admin_users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
+from Tasks.upload_manuscript_task import UploadManuscriptTask
 
 """
 This behavioral test case validates the Aperta Create New Submission through Submit process.
@@ -124,7 +125,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_full_submit_styles(self, init=True):
+  def _test_validate_full_submit_styles(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -177,7 +178,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_pdf_full_submit(self, init=True):
+  def test_validate_pdf_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
@@ -187,9 +188,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_full_submit')
     current_path = os.getcwd()
     logging.info(current_path)
-    user_type = random.choice(users)
-    logging.info('Logging in as user: {0}'.format(user_type))
-    dashboard_page = self.cas_login() if init else DashboardPage(self.getDriver())
+    author = random.choice(users)
+    logging.info('Logging in as user: {0}'.format(author))
+    dashboard_page = self.cas_login(email=author['email'])
     # Temporary changing timeout
     dashboard_page.click_create_new_submission_button()
     dashboard_page.set_timeout(120)
@@ -200,45 +201,71 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.page_ready_post_create()
-    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    ms_page = ManuscriptViewerPage(self.getDriver())
+    ms_page.page_ready_post_create()
+    short_doi = ms_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page.encode('utf8'):
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-      logging.warning('Conversion not completed - still showing interim title')
-
+    paper_title_from_page = ms_page.get_paper_title_from_page()
     logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
-    manuscript_page.complete_task('Upload Manuscript')
+    ms_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
-    manuscript_page.click_submit_btn()
+    ms_page.click_submit_btn()
     time.sleep(3)
-    manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
-    manuscript_page.confirm_submit_cancel()
+    ms_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
     # and it takes time
     time.sleep(.5)
-    manuscript_page.click_submit_btn()
+    ms_page.click_submit_btn()
     time.sleep(1)
-    manuscript_page.confirm_submit_btn()
+    ms_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-
-    manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
-    manuscript_page.close_submit_overlay()
-    manuscript_page.validate_submit_success()
-    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    ms_page.close_submit_overlay()
+    ms_page.validate_submit_success()
+    sub_data = ms_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
+    # Extend with 1- login as admin user. 2- aprobe with major rev and then log as
+    # first user and submit without source and check for error.
+    ms_page.logout()
+
+    editor = random.choice(editorial_users)
+    dashboard_page = self.cas_login(email=editor['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to wf
+    paper_viewer.click_workflow_link()
+    wf_page = WorkflowPage(self.getDriver())
+    wf_page.page_ready()
+    wf_page.click_card('register_decision')
+    wf_page.complete_card('Register Decision')
+    wf_page.logout()
+
+    logging.info('Logging in as user: {0}'.format(author))
+    dashboard_page = self.cas_login(email=author['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    #paper_viewer.
+    paper_viewer.click_task('Upload Manuscript')
+    upms = UploadManuscriptTask(self.getDriver())
+    upms._wait_for_element(upms._get(upms._completion_button))
+    upms.click_completion_button()
+    # look for errors here
+    warning = upms._get(upms._upload_source_warning)
+    assert warning.get_attribute('title') == 'Please upload your source file', \
+        '{0} not Please upload your source file'.format(warning.get_attribute('title'))
+    paper_viewer.complete_task('Upload Manuscript', data={'source': ''})
+
+
+
 
 @MultiBrowserFixture
 class ApertaBDDCreatetoInitialSubmitTest(CommonTest):

@@ -626,13 +626,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if style_check:
           upload_ms = UploadManuscriptTask(self._driver)
           upload_ms.validate_styles()
-          import pdb; pdb.set_trace()
         current_path = os.getcwd()
         fn = os.path.join(current_path, '{0}'.format(doc2upload))
         logging.info('Sending document: {0}'.format(fn))
         time.sleep(1)
-        self._get(self._upload_source).send_keys(fn)
-        ###self._driver.find_element_by_id('upload-source-file').send_keys(fn) XXX DELETE!!
+        self._driver.find_element_by_id('upload-source-file').send_keys(fn)
       # Check completed_check status
       if not base_task.completed_state():
         if style_check:

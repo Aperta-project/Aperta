@@ -24,6 +24,7 @@ class UploadManuscriptTask(BaseTask):
     self._intro_text = (By.CLASS_NAME, 'task-main-content')
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
     self._upload_manuscript_input = (By.ID, 'upload-files')
+    self._upload_source_warning = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
 
   # POM Actions
   def validate_styles(self, uploaded=False, pdf=False):

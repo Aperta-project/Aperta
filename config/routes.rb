@@ -67,8 +67,11 @@ Tahi::Application.routes.draw do
     get "/cards/:owner_type/:owner_id", to: "cards#show", as: "card_for_owner"
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
-    resources :cards, only: [:index, :create, :show]
+    resources :cards, only: [:index, :create, :show, :update]
 
+    resources :authors, only: [:show, :create, :update, :destroy] do
+      put :coauthor_confirmation, on: :member
+    end
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
@@ -92,7 +95,7 @@ Tahi::Application.routes.draw do
     resources :filtered_users do
       collection do
         get 'users/:paper_id', constraints: { paper_id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ },
-          to: 'filtered_users#users'
+                               to: 'filtered_users#users'
       end
     end
     resources :formats, only: [:index]
@@ -260,25 +263,30 @@ Tahi::Application.routes.draw do
     to: 'token_co_authors#thank_you',
     as: 'thank_you_token_co_author'
 
+  get '/co_authors_token/:token/authorship_refuted',
+    to: 'token_co_authors#authorship_refuted',
+    as: 'authorship_refuted_token_co_author'
+
   # Legacy resource_proxy routes
   # We need to maintain this route as existing resources have been linked with
   # this scheme.
   get '/resource_proxy/:resource/:token(/:version)',
-      constraints: {
-        resource: /
-          adhoc_attachments
-          | attachments
-          | question_attachments
-          | figures
-          | supporting_information_files
-        /x },
-      to: 'resource_proxy#url', as: :old_resource_proxy
+    constraints: {
+      resource: /
+        adhoc_attachments
+        | attachments
+        | question_attachments
+        | figures
+        | supporting_information_files
+      /x
+    },
+    to: 'resource_proxy#url', as: :old_resource_proxy
 
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
                                            as: :resource_proxy
 
-  scope constraints: lambda { |request| request.fullpath =~ Journal::SHORT_DOI_FORMAT } do
+  scope constraints: ->(request) { request.fullpath =~ Journal::SHORT_DOI_FORMAT } do
     get('/(*rest)', controller: "ember_cli/ember",
                     action: "index",
                     format: :html,

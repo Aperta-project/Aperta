@@ -52,4 +52,15 @@ class Card < ActiveRecord::Base
       card
     end
   end
+
+  def to_xml(options = {})
+    require 'builder'
+    options[:indent] ||= 2
+    xml = (options[:builder] ||=
+             ::Builder::XmlMarkup.new(indent: options[:indent]))
+    xml.instruct! unless options[:skip_instruct]
+    xml.card(name: name) do
+      content_root_for_version(:latest).to_xml
+    end
+  end
 end

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <define name="content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <choice>
+          <value>attachment</value>
+          <value>boolean</value>
+          <value>text</value>
+          <value>question_set</value>
+        </choice>
+      </attribute>
+      <optional>
+        <attribute name="text"/>
+      </optional>
+      <optional>
+        <element name="text">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <start>
+    <element name="card">
+      <attribute name="name"/>
+      <ref name="content"/>
+    </element>
+  </start>
+</grammar>

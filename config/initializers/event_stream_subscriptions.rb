@@ -52,6 +52,10 @@ Subscriptions.configure do
   add 'invitation:created', stream_to_paper_channel
   add 'invitation:updated', stream_to_paper_channel, Invitation::Updated::EventStream::NotifyInvitee
   add 'invitation:destroyed', stream_to_everyone
+  add 'invitation:accepted', Invitation::Updated::StateChange
+  add 'invitation:declined', Invitation::Updated::StateChange
+  add 'invitation:invited', Invitation::Updated::StateChange
+  add 'invitation:rescinded', Invitation::Updated::StateChange
 
   add 'versioned_text:created', stream_to_paper_channel
   add 'versioned_text:updated', stream_to_paper_channel

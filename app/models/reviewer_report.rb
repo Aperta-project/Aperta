@@ -35,8 +35,8 @@ class ReviewerReport < ActiveRecord::Base
     end
   end
 
-  def computed_status_date
-    case status
+  def computed_status_datetime
+    case computed_status
     when "completed"
       task.completed_at
     when "pending"

@@ -30,6 +30,10 @@ div[contenteditable=true] {
   input[type=checkbox] {
     margin-top: 10px;
   }
+
+  .inline-edit-display {
+    display: list-item;
+  }
 }
 
 .content-editable-muted {

@@ -10,4 +10,9 @@ class CardVersion < ActiveRecord::Base
 
   validates :card, presence: true
   validates :card_content, presence: true
+
+  validates :version, uniqueness: {
+    scope: :card_id,
+    message: "Card version numbers are unique for a given card"
+  }
 end

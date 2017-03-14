@@ -21,19 +21,17 @@ div[contenteditable=true] {
   overflow: hidden;
   margin-bottom: 5px;
 
-  label {
+  .inline-edit-display {
     float: left;
-    width: 870px;
+    width: 95%;
     margin: 3px;
+    display: list-item;    
   }
 
   input[type=checkbox] {
     margin-top: 10px;
   }
 
-  .inline-edit-display {
-    display: list-item;
-  }
 }
 
 .content-editable-muted {

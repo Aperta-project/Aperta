@@ -32,70 +32,56 @@ namespace :data do
 
         # Get the corresponding invitaiton if there is one
         invitation = report.invitation
+        report.state = 'invitation_pending'
 
         if invitation
           # Update status based on invitation state
-          case invitation.state
-          when "accepted"
-            report.status = "pending"
-            report.status_datetime = invitation.accepted_at
-          when "declined"
-            report.status = "invitation_declined"
-            report.status_datetime = invitation.declined_at
-          when "invited"
-            report.status = "invitation_invited"
-            report.status_datetime = invitation.invited_at
-          when "rescinded"
-            report.status = "invitation_rescinded"
-            report.status_datetime = invitation.rescinded_at
-          when "pending"
-            report.status = "invitation_pending"
-          end
-        else
-          # If there is no invitation for this report (and associated decision),
-          # then the reviewer has not been invited to this round.
-          report.status = "not_invited"
+          report.state = 'review_pending' if invitation.state == "accepted"
         end
+
+        # Update any of the status/datetime fields
+        report.update_invitation_status
 
         # With an accepted invitation, the report is marked 'pending'. Usually
         # finishing the task will mark it complete. Here we will check to see
         # if there are any nested question answers and mark the review complete
         # accordingly.
-        if report.status == 'pending'
+        if report.review_pending?
           # Get the newest answered qustion for this report
           answer = NestedQuestionAnswer.where(owner: report)
                                        .select { |a| !a.value.blank? }
                                        .max_by(&:updated_at)
 
-          # If there is one, we can update the status to complete
+          # If there is an answer, try to mark reviews as complete
           if answer
-            report.status = 'complete'
-            report.status_datetime = answer.updated_at
+            # Look if there is a draft (current) decision
+            # And see if our reviewer report is for that decision
+            if paper.draft_decision && report.decision == report.paper.draft_decision && report.task.body['submitted']
+              # If we are for the current decision, look on tasks body for submitted?
+              report.status = 'complete'
+            end
+            if report.decision != report.paper.draft_decision
+              report.status = 'complete'
+              report.status_datetime = answer.updated_at
+            end
           end
         end
 
         puts "Updating: ReviewerReport[#{report.id}, status: #{report.status}, status_datetime: #{report.status_datetime}]"
         # Save the status
-        report.update_columns(status: report.status, status_datetime: report.status_datetime)
-        report.touch
-        # Let me explain about the preceeding lines. For some unknown reason,
-        # `report.save` didn't work reliably when run as part of a set of
-        # migrations. ActiveRecord would notice the attributes were changed,
-        # but keep them as `nil`
-        #
-        # This means that to get the data saved reliably, I needed to force it
-        # in with `update_columns` instead.  The `report.touch` that follows
-        # updates the `updated_at` time for the ReviewerReport.
+        report.save!
       end
 
       puts "Updated #{count} reports, Skipped #{skipped_ids.count} #{skipped_ids}"
 
       # Check the remaining blanks if any
-      ReviewerReport
+      blank_statuses = ReviewerReport
         .where(status: nil)
         .where.not(id: skipped_ids)
-        .find_each do |report|
-        puts "Error: Blank Report [#{report.id}, status: #{report.status}, status_datetime: #{report.status_datetime}]"
+
+      if blank_statuses.any?
+        ids = blank_statuses.map(&:id)
+        raise "Blank status found for Reports: #{ids}"
       end
 
       # Check that any nil dates are 'not_invited

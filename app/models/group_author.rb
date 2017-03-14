@@ -12,10 +12,17 @@ class GroupAuthor < ActiveRecord::Base
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
+  # This is to associate specifically with the user that last manually modified
+  # a coauthors status.  We have to track this separately from the standard
+  # non-coauthor updates
+  belongs_to :co_author_state_modified_by, class_name: "User"
+
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors
   delegate :position, to: :author_list_item
+
+  before_create :set_default_co_author_state
 
   validates :contact_first_name,
             :contact_last_name,
@@ -70,5 +77,11 @@ class GroupAuthor < ActiveRecord::Base
     return [] unless contributions_question
     question_ids = self.class.contributions_question.children.map(&:id)
     nested_question_answers.where(nested_question_id: question_ids)
+  end
+
+  private
+
+  def set_default_co_author_state
+    self.co_author_state ||= 'unconfirmed'
   end
 end

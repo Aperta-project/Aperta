@@ -86,6 +86,7 @@ class BaseAdminPage(AuthenticatedPage):
       displayed per the db
     :return: void function
     """
+    # Determine whether toolbar is collapsed or expanded, then
     logging.info(username)
     if username == 'asuperadm':
       logging.info('Validating journal links for Super Admin user')
@@ -114,17 +115,12 @@ class BaseAdminPage(AuthenticatedPage):
                                          'WHERE journals.id = %s '
                                          'GROUP BY journals.id;', (journal,))[0])
     logging.debug(db_journals)
+    db_journals.append('All My Journals')
     journal_links = self._gets(self._base_admin_journal_links)
     logging.debug(journal_links)
-    count = 0
-    while count < len(journal_links):
-      # Once again, while less than ideal, these must be defined on the fly
-      self._base_admin_journal_block_name = \
-        (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]\
-          /div/a/h3[@class="journal-thumbnail-name"]' % str(count + 1))
-      journal_title = self._get(self._base_admin_journal_block_name)
-      journal_t = (journal_title.text)
-      assert journal_t in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
+    for link in journal_links:
+      journal_title = link.text
+      assert journal_title in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
       count += 1
 
   def journal_selector_drawer_state(self):

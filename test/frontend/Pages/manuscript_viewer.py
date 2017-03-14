@@ -490,6 +490,20 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
+  def is_task_completed(self, task_name):
+    """
+    Check if a task is marked as completed
+    :param task_name: The name of the task to validate
+    :return: True if task is marked as completed and False otherwise
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        completed_icon = task.find_element_by_css_selector('div div')
+        if 'active' in completed_icon.get_attribute('class'):
+          return True
+    return False
+
   def click_task(self, task_name):
     """
     Click a task title
@@ -631,6 +645,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         logging.info('Sending document: {0}'.format(fn))
         time.sleep(1)
         self._driver.find_element_by_id('upload-source-file').send_keys(fn)
+        # time for uploading the source
+        time.sleep(5)
       # Check completed_check status
       if not base_task.completed_state():
         if style_check:

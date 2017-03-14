@@ -8,6 +8,7 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, admin_users, editorial_users
 from frontend.common_test import CommonTest
+from frontend.Tasks.basetask import BaseTask
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -66,7 +67,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def _test_validate_full_submit(self, init=True):
+  def test_validate_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -125,7 +126,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_full_submit_styles(self, init=True):
+  def test_validate_full_submit_styles(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -225,7 +226,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     ms_page.validate_submit_success()
     sub_data = ms_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] == False, 'Gradual Engagement: {0}'.format(sub_data[0][1])
     assert sub_data[0][2], sub_data[0][2]
     # Extend with 1- login as admin user. 2- aprobe with major rev and then log as
     # first user and submit without source and check for error.
@@ -251,10 +252,10 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.page_ready()
+    ms_page = ManuscriptViewerPage(self.getDriver())
+    ms_page.page_ready()
     #paper_viewer.
-    paper_viewer.click_task('Upload Manuscript')
+    ms_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
@@ -262,7 +263,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
         '{0} not Please upload your source file'.format(warning.get_attribute('title'))
-    paper_viewer.complete_task('Upload Manuscript', data={'source': ''})
+    ms_page.complete_task('Upload Manuscript', data={'source': ''})
+    assert ms_page.is_task_completed('Upload Manuscript') == True
 
 
 
@@ -309,7 +311,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
-  def _test_validate_initial_submit(self):
+  def test_validate_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission
@@ -445,7 +447,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_pdf_initial_submit(self):
+  def test_validate_pdf_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission via pdf upload

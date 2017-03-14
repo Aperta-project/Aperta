@@ -9,5 +9,6 @@ export default NestedQuestionOwner.extend(Answerable, {
   status: DS.attr('string'),
   statusDatetime: DS.attr('date'),
   revision: DS.attr('string'),
-  createdAt: DS.attr('date')
+  createdAt: DS.attr('date'),
+  submitted: DS.attr('boolean')
 });

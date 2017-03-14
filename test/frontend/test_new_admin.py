@@ -1,14 +1,17 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import admin_users, users, external_editorial_users, editorial_users, \
-    super_admin_login, billing_staff_login
+    billing_staff_login
 from Pages.base_admin import BaseAdminPage
 from Pages.admin_workflows import AdminWorkflowsPage
+from Pages.admin_cards import AdminCardsPage
+from Pages.admin_users import AdminUsersPage
+from Pages.admin_settings import AdminSettingsPage
+
 from frontend.common_test import CommonTest
 
 """
@@ -51,12 +54,26 @@ class ApertaAdminTest(CommonTest):
     adm_page.page_ready()
     adm_page.validate_page_elements_styles(user_type['user'])
     adm_page.validate_nav_toolbar_elements(user_type)
-    curr_journal = adm_page.get_selected_journal()
-    if curr_journal in ('All My Journals', 'All'):
-      adm_page.select_regular_journal()
+    # Select a random journal link to validate the workflow sub-page
+    selected_journal = adm_page.select_journal()
     admin_workflow_pane = AdminWorkflowsPage(self.getDriver())
     admin_workflow_pane.page_ready()
-    admin_workflow_pane.validate_workflow_pane()
+    admin_workflow_pane.validate_workflow_pane(selected_journal)
+    # Select a random journal link to validate the cards sub-page
+    selected_journal = adm_page.select_journal()
+    admin_cards_pane = AdminCardsPage(self.getDriver())
+    admin_cards_pane.page_ready()
+    admin_cards_pane.validate_cards_pane(selected_journal)
+    # Select a random journal link to validate the Users sub-page
+    selected_journal = adm_page.select_journal()
+    admin_users_pane = AdminUsersPage(self.getDriver())
+    admin_users_pane.page_ready()
+    admin_users_pane.validate_users_pane(selected_journal)
+    # Select a random journal link to validate the Settings sub-page
+    selected_journal = adm_page.select_journal()
+    admin_settings_pane = AdminSettingsPage(self.getDriver())
+    admin_settings_pane.page_ready()
+    admin_settings_pane.validate_settings_pane(selected_journal)
 
   def _test_negative_permission(self):
     """

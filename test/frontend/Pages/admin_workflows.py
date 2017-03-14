@@ -77,31 +77,49 @@ class AdminWorkflowsPage(BaseAdminPage):
     """"Ensure the page is ready to test"""
     self._wait_for_element(self._get(self._admin_workflow_catalogue))
 
-  def validate_workflow_pane(self):
+  def validate_workflow_pane(self, selected_jrnl):
     """
     Assert the existence and function of the elements of the Workflows pane.
     Validate Add new template, edit/delete existing templates, validate presentation.
+    :param selected_jrnl: The name of the selected journal for which to validate the workflow pane
     :return: void function
     """
+    # Time to fully populate MMT for selected journal
     time.sleep(1)
+    all_journals = False
     dbmmts = []
     dbids = []
     mmts = []
     workflow_pane_title = self._get(self._admin_workflow_pane_title)
     self.validate_application_h2_style(workflow_pane_title)
     assert 'Workflow Catalogue' in workflow_pane_title.text, workflow_pane_title.text
-    # Ostorozhna: The add_mmt_button is not present for the All My Journals left drawer selection
-    add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
-    assert 'ADD NEW WORKFLOW' in add_mmt_btn.text, add_mmt_btn.text
+    # Ostorozhna: The All My Journals selection is a special case. There is no add workflow button
+    # and there will be no defined jid
+    logging.info('Validating workflow display for {0}.'.format(selected_jrnl))
+    # only validate add new mmt button if not all my journals
+    if selected_jrnl not in ('All My Journals', 'All'):
+      add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
+      assert 'ADD NEW WORKFLOW' in add_mmt_btn.text, add_mmt_btn.text
+    # Now a guard to ensure we are in a reasonable data state
     try:
       mmts = self._gets(self._admin_workflow_mmt_thumbnail)
+    # I know this looks weird, but I want an explicit error string for this failure if it occurs
     except ElementDoesNotExistAssertionError:
-      logging.error('No extant MMT found for Journal. This should never happen.')
-    jid = self._driver.current_url.split('=')[-1]
-    logging.info(jid)
-    db_mmts = PgSQL().query('SELECT paper_type, id '
-                            'FROM manuscript_manager_templates '
-                            'WHERE journal_id = %s;', (jid,))
+      raise ElementDoesNotExistAssertionError('No extant MMT found for Journal. '
+                                              'This should never happen.')
+    try:
+      jid = self._driver.current_url.split('=')[1]
+    except IndexError:
+      logging.info("We are on the All journals selection, have to roll up all mmt")
+      all_journals = True
+    if not all_journals:
+      db_mmts = PgSQL().query('SELECT paper_type, id '
+                              'FROM manuscript_manager_templates '
+                              'WHERE journal_id = %s;', (jid,))
+    else:
+      db_mmts = PgSQL().query('SELECT paper_type, id '
+                              'FROM manuscript_manager_templates;')
+    logging.info(db_mmts)
     for dbmmt in db_mmts:
       logging.debug('Appending {0} to dbmmts'.format(dbmmt[0]))
       dbmmts.append(dbmmt[0])
@@ -114,6 +132,14 @@ class AdminWorkflowsPage(BaseAdminPage):
         logging.info('Examining MMT: {0}'.format(name.text))
         assert name.text in dbmmts, name.text
         journal = mmt.find_element(*self._admin_workflow_mmt_journal)
+        logging.info('Validating MMT for journal: {0}'.format(journal.text))
+        if all_journals:
+          jid = PgSQL().query('SELECT id '
+                              'FROM journals '
+                              'WHERE LOWER(name) = %s;', (journal.text.lower(),))[0][0]
+          logging.info(jid)
+          jid = int(jid)
+          logging.info('JID is {0}'.format(jid))
         mmt_id = PgSQL().query('SELECT id '
                                'FROM manuscript_manager_templates '
                                'WHERE journal_id = %s '
@@ -134,7 +160,9 @@ class AdminWorkflowsPage(BaseAdminPage):
             int(mmt.find_element(*self._admin_workflow_mmt_number_of_ms_and_label).text.split(' Active')[0])
         assert page_mmt_active_paper_count == db_mmt_active_paper_count, \
             'Page MMT Active MS Count: {0}, is not equal to DB MMT ' \
-            'Active MS Count: {1}'.format(page_mmt_active_paper_count, db_mmt_active_paper_count)
+            'Active MS Count: {1} for mmt: {2}'.format(page_mmt_active_paper_count,
+                                                       db_mmt_active_paper_count,
+                                                       name.text)
         assert mmt.value_of_css_property('background-color') == APERTA_BLUE, \
           mmt.value_of_css_property('background-color')
         # Validate Color shift on hover
@@ -143,9 +171,10 @@ class AdminWorkflowsPage(BaseAdminPage):
         #   style guide. Currently only a question in APERTA-8989.
         # assert mmt.value_of_css_property('background-color') == APERTA_BLUE_DARK, \
         #   mmt.value_of_css_property('background-color')
-    add_mmt_btn.click()
-    time.sleep(2)
-    self._validate_mmt_definition_overlay_items()
+    if not all_journals:
+      add_mmt_btn.click()
+      time.sleep(2)
+      self._validate_mmt_definition_overlay_items()
 
   def _validate_mmt_definition_overlay_items(self):
     """

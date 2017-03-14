@@ -9,11 +9,12 @@ Page Object Model for the base Admin Page. This page defines common elements use
     get_journal_selector_drawer_state()
     toggle_journal_drawer()
     get_selected_journal()
-    select_regular_journal()
+    select_journal()
     get_active_admin_tab()
 """
 import logging
 import random
+import time
 
 from selenium.webdriver.common.by import By
 
@@ -63,39 +64,56 @@ class BaseAdminPage(AuthenticatedPage):
     :return: void function
     """
     # Validate Common Elements
-    state = self.journal_selector_drawer_state()
-    if state == 'expanded':
+    # We need to be able to validate the journal drawer title in either state
+    choices = ['expanded', 'contracted']
+    test_drawer_state = random.choice(choices)
+    drawer_state = self.journal_selector_drawer_state()
+    logging.info('Testing Journals drawer in {0} state, '
+                 'current state is {1}'.format(test_drawer_state, drawer_state))
+    if drawer_state != test_drawer_state:
+      self.toggle_journal_drawer()
+    # The drawer title only appears in expanded state
+    if test_drawer_state == 'expanded':
       drawer_title = self._get(self._base_admin_drawer_title)
       self.validate_application_subheading_style(drawer_title)
       assert drawer_title.text == 'Journals', drawer_title.text
-      self._get(self._base_admin_drawer_toggle_button)
     else:
-      toggle = self._get(self._base_admin_drawer_toggle_button)
-      toggle.click()
       drawer_title = self._get(self._base_admin_drawer_title)
       self.validate_application_subheading_style(drawer_title)
-      assert drawer_title.text == 'Journals', drawer_title.text
+      assert drawer_title.text != 'Journals', drawer_title.text
+    # Put away our toys:
+    if drawer_state != test_drawer_state:
+      self.toggle_journal_drawer()
     self._validate_journal_drawer_display(username)
-    pass
 
   def _validate_journal_drawer_display(self, username):
     """
     Provided a privileged username, validates the display of journal elements in the left drawer
-      for user
+      for user. Randomly chooses whether to validate the list in expanded or contracted view
     :param username: a privileged username for determining which journal blocks should be
       displayed per the db
     :return: void function
     """
-    # Determine whether toolbar is collapsed or expanded, then
+    # We need to be able to validate the journal drawer in either state
+    choices = ['expanded', 'contracted']
+    test_drawer_state = random.choice(choices)
+    drawer_state = self.journal_selector_drawer_state()
+    logging.info('Testing Journals drawer in {0} state, '
+                 'current state is {1}'.format(test_drawer_state, drawer_state))
+    if drawer_state != test_drawer_state:
+      self.toggle_journal_drawer()
     logging.info(username)
+    db_journals = ['All My Journals']
     if username == 'asuperadm':
       logging.info('Validating journal links for Super Admin user')
       # Validate the presentation of journal links in the left drawer
       # Super Admin gets all journals
-      db_journals = PgSQL().query('SELECT journals.name,journals.description,count(papers.id)'
-                                  'FROM journals LEFT JOIN papers '
-                                  'ON journals.id = papers.journal_id '
-                                  'GROUP BY journals.id;')
+      db_jrnls = PgSQL().query('SELECT name '
+                               'FROM journals')
+      logging.info(db_jrnls)
+      for jrnl in db_jrnls:
+        db_journals.append(jrnl[0])
+      logging.info('SuperAdmin journals list: {0}'.format(db_journals))
     else:
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
@@ -105,23 +123,23 @@ class BaseAdminPage(AuthenticatedPage):
                                     'FROM assignments '
                                     'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
                                     (uid,))[0][0])
-      db_journals = []
       for journal in journals:
         logging.info(journal)
-        db_journals.append(PgSQL().query('SELECT journals.name, journals.description, '
-                                         'COUNT(papers.id) '
-                                         'FROM journals LEFT JOIN papers '
-                                         'ON journals.id = papers.journal_id '
-                                         'WHERE journals.id = %s '
-                                         'GROUP BY journals.id;', (journal,))[0])
-    logging.debug(db_journals)
-    db_journals.append('All My Journals')
+        db_journals.append(PgSQL().query('SELECT journals.name '
+                                         'FROM journals '
+                                         'WHERE journals.id = %s ', (journal,))[0][0])
+    logging.info(db_journals)
+    if test_drawer_state == 'contracted':
+      db_journals = self._abbreviate_jrnls_list(db_journals)
+    logging.info(db_journals)
     journal_links = self._gets(self._base_admin_journal_links)
-    logging.debug(journal_links)
     for link in journal_links:
       journal_title = link.text
-      assert journal_title in db_journals, '{0} not found in \n{1}'.format(journal_t, db_journals)
-      count += 1
+      assert journal_title in db_journals, '{0} not found in \n{1}'.format(journal_title,
+                                                                           db_journals)
+    # finally, put the drawer state back to what it was originally
+    if drawer_state != test_drawer_state:
+      self.toggle_journal_drawer()
 
   def journal_selector_drawer_state(self):
     """
@@ -143,6 +161,8 @@ class BaseAdminPage(AuthenticatedPage):
     """
     drawer_toggle = self._get(self._base_admin_drawer_toggle_button)
     drawer_toggle.click()
+    # Give a moment for the animation
+    time.sleep(1)
 
   def get_selected_journal(self):
     """
@@ -153,21 +173,26 @@ class BaseAdminPage(AuthenticatedPage):
     active_journal = self._get(self._base_admin_selected_journal)
     return active_journal.text
 
-  def select_regular_journal(self):
+  def select_journal(self, regular=False):
     """
-    Select a random normal journal - excludes the All My Journals or All selection
-    :return:  void function
+    Select a random journal
+    :param regular: If True, will not include the 'All My Journals/All' item in random selection
+    :return:  Name of Selected Journal
     """
     journal_names = []
     journal_links = self._gets(self._base_admin_journal_links)
     for journal in journal_links:
-      if journal.text not in ('All My Journals', 'All'):
+      if regular:
+        if journal.text not in ('All My Journals', 'All'):
+          journal_names.append(journal.text)
+      else:
         journal_names.append(journal.text)
     rand_selection = random.choice(journal_names)
     logging.info('Selected {0}'.format(rand_selection))
     for journal in journal_links:
       if journal.text == rand_selection:
         journal.click()
+    return rand_selection
 
   def get_active_admin_tab(self):
     """
@@ -177,3 +202,25 @@ class BaseAdminPage(AuthenticatedPage):
     """
     active_tab = self._get(self._base_admin_toolbar_active_link)
     return active_tab.text.to_lower()
+
+  @staticmethod
+  def _abbreviate_jrnls_list(jrnls_list):
+    """
+    Given a list of journals, returns the canonical abbreviated form of that list (apropos of the
+    journal drawer of the admin page)
+    :param jrnls_list: the full name of a list of journals
+    :return: abbreviated_journals_list
+    """
+    logging.info('Passed journals list: {0}'.format(jrnls_list))
+    abbreviated_journals_list = []
+    for jrnl in jrnls_list:
+      if jrnl == 'All My Journals':
+        abbreviated_journals_list.append('All')
+      else:
+        entry = jrnl.split(' ')
+        jrnl_abbr = []
+        for word in entry:
+          jrnl_abbr.append(word[0])
+        abbreviation = ''.join(jrnl_abbr)
+        abbreviated_journals_list.append(abbreviation)
+    return abbreviated_journals_list

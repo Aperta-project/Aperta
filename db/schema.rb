@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314050426) do
+ActiveRecord::Schema.define(version: 20170314134948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -208,7 +208,6 @@ ActiveRecord::Schema.define(version: 20170314050426) do
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
-    t.integer  "card_id"
     t.string   "ident"
     t.integer  "parent_id"
     t.integer  "lft",        null: false

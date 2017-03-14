@@ -7,10 +7,6 @@ class CardContent < ActiveRecord::Base
   acts_as_nested_set
   acts_as_paranoid
 
-  belongs_to :card
-
-  validates :card, presence: true
-
   has_many :answers
 
   # Note that we essentially copied this method over from nested question

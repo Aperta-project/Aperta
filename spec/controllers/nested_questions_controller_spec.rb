@@ -11,8 +11,8 @@ describe NestedQuestionsController do
     let!(:questions) { [question1, question2] }
     let!(:card) { FactoryGirl.create(:card, :versioned, name: "My Card") }
     let(:root) { card.content_root_for_version(1) }
-    let(:question1) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
-    let(:question2) { FactoryGirl.build(:card_content, card: card).tap { |c| root.children << c } }
+    let(:question1) { FactoryGirl.build(:card_content).tap { |c| root.children << c } }
+    let(:question2) { FactoryGirl.build(:card_content).tap { |c| root.children << c } }
 
     def do_request(params={})
       get(:index, { type: "My Card" }.merge(params), format: :json)

@@ -24,9 +24,8 @@ class CardFactory
     new_content = configuration_klass.content
     new_content.each do |c|
       c[:parent] = content_root
-      c[:card] = card
     end
-    CardContent.where(card: card).where.not(ident: nil)
-               .update_all_exactly!(new_content)
+    content_root.descendants.where.not(ident: nil)
+                .update_all_exactly!(new_content)
   end
 end

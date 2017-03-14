@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import hashlib
 import json
 import logging
 import os
@@ -12,7 +13,7 @@ from ftplib import FTP
 from selenium.webdriver.common.by import By
 
 from Base.Resources import creator_login1, APEX_FTP_USER, APEX_FTP_PASS, APEX_FTP_DOMAIN, \
-    APEX_FTP_DIR
+                           APEX_FTP_DIR, docs
 
 from frontend.Cards.basecard import BaseCard
 
@@ -66,7 +67,8 @@ class SendToApexCard(BaseCard):
     close_apex = self._get(self._close_apex)
     close_apex.click()
 
-  def validate_card_elements(self, paper_id):
+  @staticmethod
+  def validate_card_elements(paper_id):
     """
     This method validates the styles of the card elements including the common card elements
     :param paper_id: The id of the manuscript
@@ -78,7 +80,8 @@ class SendToApexCard(BaseCard):
     self.validate_primary_big_green_button_style(apex_button)
     map(self.validate_textarea_style, apex_messages)
 
-  def connect_to_aperta_ftp(self, paper_id):
+  @staticmethod
+  def connect_to_aperta_ftp(paper_id):
     """
     This method allows to connect the ftp server and copy the file
     :param paper_id: The id of the manuscript
@@ -98,7 +101,8 @@ class SendToApexCard(BaseCard):
 
     return filename, directory_path
 
-  def extract_zip_file_and_load_json(self, filename, directory_path):
+  @staticmethod
+  def extract_zip_file_and_load_json(filename, directory_path):
     """
     This method extract the content of the retrieved file from FTP
     :param filename: The name of the file to extract
@@ -111,17 +115,19 @@ class SendToApexCard(BaseCard):
 
     with open('{0}/metadata.json'.format(directory_path)) as json_file:
       json_data = json.load(json_file)
-    shutil.rmtree(directory_path)
 
     return json_data
 
-  def validate_json_information(self, json_data, short_doi, manuscript_title, manuscript_abstract):
+  @staticmethod
+  def validate_json_information(json_data, short_doi, manuscript_title, manuscript_abstract,
+                                directory_path):
     """
     This method validate the information within the extracted json
     :param json_data: Is the extracted json from the unziped metadata.json
     :param short_doi: Is the manuscript's ID
     :param manuscript_title: Is the manuscript's title
     :param manuscript_abstract: Is the manuscript's abstract
+    :param directory_path: The location of the temp folder
     :return: None
     """
     author = json_data["metadata"]["authors"][0]["author"]
@@ -162,28 +168,79 @@ class SendToApexCard(BaseCard):
                                   "funding_statement":
                                       "The author(s) received no specific funding for this work."}
 
-    for key, value in author.iteritems():
-      if key == "contributions":
-        assert asset_author.get(key) in value, value
-      else:
-        assert value == asset_author.get(key), value
+    try:
+      for key, value in author.iteritems():
+        if key == "contributions":
+          assert asset_author.get(key) in value, "Data point from json file: {0} " \
+              "does not match to data point of the source manuscript " \
+              "taken from the GUI: {1}".format(value, asset_author.get(key))
+        else:
+          assert value == asset_author.get(key), "Data point from json file: {0} " \
+              "does not match to data point of the source manuscript " \
+              "taken from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in competing_interests.iteritems():
-      assert value == asset_competing_interests.get(key), value
+      for key, value in competing_interests.iteritems():
+        assert value == asset_competing_interests.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in data_availability.iteritems():
-      assert value == asset_data_availability.get(key), value
+      for key, value in data_availability.iteritems():
+        assert value == asset_data_availability.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
 
-    for key, value in financial_disclosure.iteritems():
-      assert value == asset_financial_disclosure.get(key), value
+      for key, value in financial_disclosure.iteritems():
+        assert value == asset_financial_disclosure.get(key), "Data point from json file: " \
+            "{0} does not match to data point of the source manuscript taken " \
+            "from the GUI: {1}".format(value, asset_author.get(key))
 
-    assert early_article_posting == True, early_article_posting
-    assert journal_title == 'PLOS Wombat', 'PLOS Wombat not equal to {1}'.format(journal_title)
-    assert manuscript_id == short_doi, '{0} not equal to {1}'.format(manuscript_id, short_doi)
-    assert paper_abstract == manuscript_abstract, '{0} not equal to {1}'.format(paper_abstract,
-        manuscript_abstract)
-    assert paper_title == manuscript_title, '{0} not equal to {1}'.format(paper_title,
-        manuscript_title)
-    assert paper_type == "generateCompleteApexData", '{0} not equal to generateCompleteApexData'.\
-        format(paper_type)
-    assert "/journal.{0}".format(short_doi) in doi, '{0} not equal to {1}'.format(short_doi, doi)
+      assert early_article_posting == True, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(early_article_posting, True)
+      assert journal_title == "PLOS Wombat", "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(journal_title, "PLOS Wombat")
+      assert manuscript_id == short_doi, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(manuscript_id, short_doi)
+      assert paper_abstract == manuscript_abstract, "Data point from json file: {0} " \
+          "does not match to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(paper_abstract, manuscript_abstract)
+      assert paper_title == manuscript_title, "Data point from json file: {0} does not match " \
+          "to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(paper_title, manuscript_title)
+      assert paper_type == "generateCompleteApexData", "Data point from json file: " \
+          "{0} does not match to data point of the source manuscript taken " \
+          "from the GUI: {1}".format(paper_type, "generateCompleteApexData")
+      assert "/journal.{0}".format(short_doi) in doi, "Data point from json file: " \
+          "{0} does not match to data point of the source manuscript taken from " \
+          "the GUI: {1}".format("/journal.{0}".format(short_doi), doi)
+    except AssertionError:
+      shutil.rmtree(directory_path)
+
+  @staticmethod
+  def validate_source_file_in_zip(filename, directory_path, doc2upload, hash_file, short_doi):
+    """
+    This method compares the hash of the uploaded source file against the hash of the file
+    contained in the zip retrieved from FTP
+    :param filename: The name of the file to extract
+    :param directory_path: The path of the folder
+    :param doc2upload: The uploaded source file
+    :param hash_file: Is the hash number of the uploaded source file
+    :param short_doi: Is the manuscript ID
+    :return: None
+    """
+    zip_ref = zipfile.ZipFile(r'{0}/{1}'.format(directory_path, filename))
+    zip_ref.extractall(r'{0}'.format(directory_path))
+    zip_ref.close()
+
+    source_file_name, file_ext = os.path.splitext(doc2upload)
+    extracted_source_file = os.path.join(directory_path, '{0}{1}'.format(short_doi, file_ext))
+    hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
+
+    try:
+      assert hash_file == hash_file_extracted, "The extracted document is not the same " \
+          "that were uploaded as source file: " \
+          "Uploaded hash {0} and extracted hash {1}".format(hash_file,hash_file_extracted) 
+    except AssertionError:
+      shutil.rmtree(directory_path)

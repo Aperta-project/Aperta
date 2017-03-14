@@ -1,0 +1,214 @@
+***************
+*** 10345,10353 ****
+  var pdfjsSrc = scriptTagContainer.lastChild.src;
+  
+  if (pdfjsSrc) {
+-   PDFJS.imageResourcesPath = pdfjsSrc.replace(/pdf\.js$/i, 'images/');
+-   PDFJS.workerSrc = pdfjsSrc.replace(/pdf\.js$/i, 'pdf.worker.js');
+-   PDFJS.cMapUrl = pdfjsSrc.replace(/pdf\.js$/i, 'cmaps/');
+  }
+  
+  PDFJS.cMapPacked = true;
+--- 10345,10353 ----
+  var pdfjsSrc = scriptTagContainer.lastChild.src;
+  
+  if (pdfjsSrc) {
++   var pdfjsroot = '/assets/pdfjsviewer/';
++   PDFJS.imageResourcesPath = pdfjsroot + 'images/';
++   PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
+  }
+  
+  PDFJS.cMapPacked = true;
+***************
+*** 15730,15736 ****
+  
+      var div = document.createElement('div');
+      div.id = 'thumbnailContainer' + id;
+-     div.className = 'thumbnail';
+      this.div = div;
+  
+      if (id === 1) {
+--- 15730,15736 ----
+  
+      var div = document.createElement('div');
+      div.id = 'thumbnailContainer' + id;
++     div.className = 'pdfthumbnail';
+      this.div = div;
+  
+      if (id === 1) {
+***************
+*** 15742,15749 ****
+      var ring = document.createElement('div');
+      ring.className = 'thumbnailSelectionRing';
+      var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
+-     ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+-     ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+      this.ring = ring;
+  
+      div.appendChild(ring);
+--- 15742,15749 ----
+      var ring = document.createElement('div');
+      ring.className = 'thumbnailSelectionRing';
+      var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
++     //ring.style.width = this.canvasWidth + borderAdjustment + 'px';
++     //ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+      this.ring = ring;
+  
+      div.appendChild(ring);
+***************
+*** 15782,15789 ****
+          ring.removeChild(childNodes[i]);
+        }
+        var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
+-       ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+-       ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+  
+        if (this.canvas) {
+          // Zeroing the width and height causes Firefox to release graphics
+--- 15782,15789 ----
+          ring.removeChild(childNodes[i]);
+        }
+        var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
++       // ring.style.width = this.canvasWidth + borderAdjustment + 'px';
++       // ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+  
+        if (this.canvas) {
+          // Zeroing the width and height causes Firefox to release graphics
+***************
+*** 16001,16007 ****
+  
+      scrollThumbnailIntoView:
+          function PDFThumbnailViewer_scrollThumbnailIntoView(page) {
+-       var selected = document.querySelector('.thumbnail.selected');
+        if (selected) {
+          selected.classList.remove('selected');
+        }
+--- 16001,16007 ----
+  
+      scrollThumbnailIntoView:
+          function PDFThumbnailViewer_scrollThumbnailIntoView(page) {
++       var selected = document.querySelector('.pdfthumbnail.selected');
+        if (selected) {
+          selected.classList.remove('selected');
+        }
+***************
+*** 16347,16353 ****
+    preferencePdfBugEnabled: false,
+    preferenceShowPreviousViewOnLoad: true,
+    preferenceDefaultZoomValue: '',
+-   isViewerEmbedded: (window.parent !== window),
+    url: '',
+  
+    // called once when the document is loaded
+--- 16347,16354 ----
+    preferencePdfBugEnabled: false,
+    preferenceShowPreviousViewOnLoad: true,
+    preferenceDefaultZoomValue: '',
++   /* The automatic discovery of this failed and we are always embedded */
++   isViewerEmbedded: true,
+    url: '',
+  
+    // called once when the document is loaded
+***************
+*** 17491,17504 ****
+    document.getElementById('presentationMode').addEventListener('click',
+      SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
+  
+-   document.getElementById('openFile').addEventListener('click',
+-     SecondaryToolbar.openFileClick.bind(SecondaryToolbar));
+- 
+-   document.getElementById('print').addEventListener('click',
+      SecondaryToolbar.printClick.bind(SecondaryToolbar));
+- 
+    document.getElementById('download').addEventListener('click',
+      SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
+  
+  
+    if (file && file.lastIndexOf('file:', 0) === 0) {
+--- 17492,17502 ----
+    document.getElementById('presentationMode').addEventListener('click',
+      SecondaryToolbar.presentationModeClick.bind(SecondaryToolbar));
+  
++   /* document.getElementById('print').addEventListener('click',
+      SecondaryToolbar.printClick.bind(SecondaryToolbar));
+    document.getElementById('download').addEventListener('click',
+      SecondaryToolbar.downloadClick.bind(SecondaryToolbar));
++   */
+  
+  
+    if (file && file.lastIndexOf('file:', 0) === 0) {
+***************
+*** 17617,17630 ****
+        // unable to write to storage
+      });
+    });
+-   var href =
+-     PDFViewerApplication.pdfLinkService.getAnchorUrl(location.pdfOpenParams);
+-   document.getElementById('viewBookmark').href = href;
+-   document.getElementById('secondaryViewBookmark').href = href;
+- 
+-   // Update the current bookmark in the browsing history.
+-   PDFViewerApplication.pdfHistory.updateCurrentBookmark(location.pdfOpenParams,
+-                                                         location.pageNumber);
+  
+    // Show/hide the loading indicator in the page number input element.
+    var pageNumberInput = document.getElementById('pageNumber');
+--- 17615,17620 ----
+        // unable to write to storage
+      });
+    });
+  
+    // Show/hide the loading indicator in the page number input element.
+    var pageNumberInput = document.getElementById('pageNumber');
+***************
+*** 17638,17644 ****
+    }
+  }, true);
+  
+- window.addEventListener('resize', function webViewerResize(evt) {
+    if (PDFViewerApplication.initialized &&
+        (document.getElementById('pageAutoOption').selected ||
+         /* Note: the scale is constant for |pageActualOption|. */
+--- 17628,17634 ----
+    }
+  }, true);
+  
++ function webViewerResize(evt) {
+    if (PDFViewerApplication.initialized &&
+        (document.getElementById('pageAutoOption').selected ||
+         /* Note: the scale is constant for |pageActualOption|. */
+***************
+*** 17651,17657 ****
+  
+    // Set the 'max-height' CSS property of the secondary toolbar.
+    SecondaryToolbar.setMaxHeight(document.getElementById('viewerContainer'));
+- });
+  
+  window.addEventListener('hashchange', function webViewerHashchange(evt) {
+    if (PDFViewerApplication.pdfHistory && PDFViewerApplication.pdfHistory.isHashChangeUnlocked) {
+--- 17641,17649 ----
+  
+    // Set the 'max-height' CSS property of the secondary toolbar.
+    SecondaryToolbar.setMaxHeight(document.getElementById('viewerContainer'));
++ }
++ 
++ window.addEventListener('resize', webViewerResize);
+  
+  window.addEventListener('hashchange', function webViewerHashchange(evt) {
+    if (PDFViewerApplication.pdfHistory && PDFViewerApplication.pdfHistory.isHashChangeUnlocked) {
+***************
+*** 17932,17937 ****
+    // Some shortcuts should not get handled if a control/input element
+    // is selected.
+    var curElement = document.activeElement || document.querySelector(':focus');
+    var curElementTagName = curElement && curElement.tagName.toUpperCase();
+    if (curElementTagName === 'INPUT' ||
+        curElementTagName === 'TEXTAREA' ||
+--- 17924,17930 ----
+    // Some shortcuts should not get handled if a control/input element
+    // is selected.
+    var curElement = document.activeElement || document.querySelector(':focus');
++   if (curElement.isContentEditable) { return; } // skip any contenteditables
+    var curElementTagName = curElement && curElement.tagName.toUpperCase();
+    if (curElementTagName === 'INPUT' ||
+        curElementTagName === 'TEXTAREA' ||

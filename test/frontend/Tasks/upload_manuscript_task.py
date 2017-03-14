@@ -36,16 +36,14 @@ class UploadManuscriptTask(BaseTask):
     """
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
-    assert u'You may upload a manuscript in either Microsoft Word (.docx or'\
-        ' .doc) or PDF format. You can upload a replacement manuscript file at any time before'\
-        ' you submit.\nMicrosoft Word format: Manuscripts uploaded in this format are suitable'\
-        ' for production, and can take advantage of automatic inline figure placement and visu'\
-        'al version comparison features.\nPDF format: Manuscripts uploaded in this format are '\
-        'suitable for review only and will need to be accompanied by a supplemental upload of '\
-        'your source document. PDF format should be used for LaTeX submissions. Additional che'\
-        'cks may be required if your manuscript is accepted. If your manuscript is available i'\
-        'n Microsoft Word format, please upload the original file and not a PDF, in order to m'\
-        'ake use of automated figure placement and version comparison features.\n' in \
+    assert 'You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format'\
+        '. You can upload a replacement manuscript file at any time before you submit.\nMicros'\
+        'oft Word format: Manuscripts uploaded in this format can take advantage of automatic '\
+        'inline figure placement and visual version comparison features.\nPDF format: For auth'\
+        'ors uploading a PDF manuscript file, figures and any SI information can be included i'\
+        'n the manuscript and are not required separately for initial assessment. If a revisio'\
+        'n is invited, separate figure and SI file upload will be required. If preferred, you '\
+        'may upload those files separately before completing your submission.' in \
         intro_text.text, intro_text.text
     if uploaded:
       link = intro_text.find_element_by_tag_name('a')

@@ -1,22 +1,22 @@
 #
-# A snapshot serializer is responsible for serializing a given model/model
+# A snapshot serializer is responsible for serializing a given object/model
 # into an acceptable format for storing snapshots (see `Snapshot` class).
 #
 # By default serializing happens in the following order:
 #
-#   * nested questions - Only serialized if the given model/model responds to \
+#   * nested questions - Only serialized if the given object/model responds to \
 #     `nested_questions`. Ignored otherwise.
 #   * properties - Override in subclass to provide an array of specific \
 #     properties.
 #
 # === Serializing nested_questions
 #
-# When the model/model being serialized it will try to recursively serialize
+# When the object/model being serialized it will try to recursively serialize
 # any of its `nested_questions` and their associated answers. The default method
 # used for doing this is `snapshot_card_content`. In most cases you will not
 # need to override this.
 #
-# When the model/model doesn't respond to `nested_questions` this will not
+# When the object/model doesn't respond to `nested_questions` this will not
 # not attempt to serialize nested questions. It will simply ignore them and
 # move on.
 #

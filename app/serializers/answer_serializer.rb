@@ -16,8 +16,4 @@ class AnswerSerializer < ActiveModel::Serializer
     owner_instance = object.owner
     { id: owner_instance.id, type: owner_instance.class.name.demodulize }
   end
-
-  def value
-    object.value
-  end
 end

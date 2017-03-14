@@ -4,7 +4,7 @@
 #
 module CardConfiguration
   class TaxonTask
-    def self.title
+    def self.name
       "TahiStandardTasks::TaxonTask"
     end
 

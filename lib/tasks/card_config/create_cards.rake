@@ -3,6 +3,8 @@ require_relative "./support/card_migrator"
 namespace "card_config" do
   desc "Convert NestedQuestionAnswers to Answers and associate cards to Answerables"
   task convert_nested_questions: [:environment, :add_papers_to_reviewer_reports] do
+    count = Answer.count
+    raise "Expected Answer to be empty, but it has #{count} rows!" unless count.zero?
     puts "------------------- Convert Nested Questions Answers Start ----------------------------"
     answerables = ObjectSpace.each_object(Class).select { |c| c.included_modules.include? Answerable } - [Task]
     answerables.each do |klass|
@@ -12,7 +14,13 @@ namespace "card_config" do
     count = Answer.count
     nqa_count = NestedQuestionAnswer.count
     $stderr.puts("Created #{count} Answers (c.f. #{nqa_count} NestedQuestionAnswers)")
-    raise 'Expected to create a new Answerfor every NestedQuestionAnswer' unless count == nqa_count
+    unless count == nqa_count
+      idents = Answer.joins(:card_content).pluck(:ident).uniq
+      nqa_idents = NestedQuestionAnswer.joins(:nested_question).all.pluck(:ident).uniq
+      missing = (nqa_idents - idents)
+      $stderr.puts("Missing idents: #{missing}")
+      raise 'Expected to create a new Answer for every NestedQuestionAnswer'
+    end
     puts "------------------- Convert Nested Questions Answers End ----------------------------"
   end
 

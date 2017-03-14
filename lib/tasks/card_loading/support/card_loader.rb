@@ -8,6 +8,10 @@ Dir[Rails.root.join("lib/tasks/card_loading/configurations/*")].each { |f| requi
 class CardLoader
   def self.load_all(journal: nil)
     CardFactory.new(journal: journal).create(card_configuration_klasses)
+    count = CardContent.where.not(ident: nil).count
+    nq_count = NestedQuestion.count
+    raise 'Expected to create a new CardContent for every NestedQuestion' unless count == nq_count
+    $stderr.puts("Created #{count} CardContent questions (c.f. #{nq_count} nested questions)")
   end
 
   def self.load(owner_klass, journal: nil)

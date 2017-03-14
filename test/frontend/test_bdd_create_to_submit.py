@@ -67,7 +67,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def _test_validate_full_submit(self, init=True):
+  def test_validate_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -126,7 +126,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_full_submit_styles(self, init=True):
+  def test_validate_full_submit_styles(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed

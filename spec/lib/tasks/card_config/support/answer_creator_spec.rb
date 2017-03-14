@@ -3,7 +3,7 @@ require "rails_helper"
 describe "CardConfig::AnswerCreator" do
 
   let(:card_content) { FactoryGirl.create(:card_content) }
-  let(:nested_question) { FactoryGirl.create(:nested_question) }
+  let(:nested_question) { FactoryGirl.create(:old_nested_question) }
 
   let(:creator) { CardConfig::AnswerCreator.new(nested_question: nested_question, card_content: card_content) }
 
@@ -15,7 +15,7 @@ describe "CardConfig::AnswerCreator" do
 
   context "NestedQuestion has a NestedQuestionAnswer" do
     let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer, :with_task_owner, :with_attachment, nested_question: nested_question)
+      FactoryGirl.create(:old_nested_question_answer, :with_task_owner, :with_attachment, nested_question: nested_question)
     end
 
     let(:nested_question_attachment) do
@@ -33,8 +33,8 @@ describe "CardConfig::AnswerCreator" do
         expect(answer.paper).to eq(nested_question_answer.paper)
         expect(answer.value).to eq(nested_question_answer.value)
         expect(answer.additional_data).to eq(nested_question_answer.additional_data)
-        expect(answer.created_at).to eq(nested_question_answer.created_at)
-        expect(answer.updated_at).to eq(nested_question_answer.updated_at)
+        expect(answer.created_at).to be_within_db_precision.of(nested_question_answer.created_at)
+        expect(answer.updated_at).to be_within_db_precision.of(nested_question_answer.updated_at)
       end
     end
 

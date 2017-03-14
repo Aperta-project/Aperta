@@ -4,7 +4,7 @@ class NestedQuestionsController < ApplicationController
   respond_to :json
 
   def index
-    card = Card.lookup_card(RenamespaceClass.lookup(params[:type]))
+    card = Card.lookup_card(LookupClassNamespace.lookup_namespace(params[:type]))
     content = card.try(:latest_content_without_root) || []
     # Exclude the root node
     render json: content, each_serializer: CardContentAsNestedQuestionSerializer

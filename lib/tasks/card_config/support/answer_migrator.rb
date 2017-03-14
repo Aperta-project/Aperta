@@ -1,5 +1,5 @@
 module CardConfig
-  class AnswerCreator
+  class AnswerMigrator
 
     attr_reader :nested_question, :card_content
 

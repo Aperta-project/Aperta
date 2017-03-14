@@ -1,11 +1,11 @@
 require "rails_helper"
 
-describe "CardConfig::AnswerCreator" do
+describe "CardConfig::AnswerMigrator" do
 
   let(:card_content) { FactoryGirl.create(:card_content) }
   let(:nested_question) { FactoryGirl.create(:old_nested_question) }
 
-  let(:creator) { CardConfig::AnswerCreator.new(nested_question: nested_question, card_content: card_content) }
+  let(:creator) { CardConfig::AnswerMigrator.new(nested_question: nested_question, card_content: card_content) }
 
   context "NestedQuestion has no NestedQuestionAnswers" do
     it "does not create any answers" do

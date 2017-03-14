@@ -1,7 +1,7 @@
-require_relative "./answer_creator"
+require_relative "./answer_migrator"
 
 module CardConfig
-  class CardCreator
+  class CardMigrator
     attr_reader :owner_klass
 
     def initialize(owner_klass:)
@@ -15,7 +15,7 @@ module CardConfig
         card.latest_card_version.card_content.descendants.all.each do |cc|
           puts "migrating #{cc.ident}"
           nested_question = NestedQuestion.find_by(ident: cc.ident)
-          AnswerCreator.new(nested_question: nested_question, card_content: cc).call
+          AnswerMigrator.new(nested_question: nested_question, card_content: cc).call
         end
 
         # associate all instances of this owner to the newly created card / card_content

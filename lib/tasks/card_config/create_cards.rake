@@ -6,10 +6,9 @@ namespace "card_config" do
     count = Answer.count
     raise "Expected Answer to be empty, but it has #{count} rows!" unless count.zero?
     puts "------------------- Convert Nested Questions Answers Start ----------------------------"
-    answerables = ObjectSpace.each_object(Class).select { |c| c.included_modules.include? Answerable } - [Task]
-    answerables.each do |klass|
-      puts "+++ converting nested question answers for #{klass.name}"
-      CardConfig::CardMigrator.new(owner_klass: klass).call
+    Card.all.pluck(:name).each do |name|
+      puts "+++ converting nested question answers for #{name}"
+      CardConfig::CardMigrator.new(name).call
     end
     count = Answer.count
     nqa_count = NestedQuestionAnswer.count

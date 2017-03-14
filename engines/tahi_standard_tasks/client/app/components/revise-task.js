@@ -49,6 +49,10 @@ export default TaskComponent.extend({
       'editingAuthorResponse',
       isEmpty(this.get('latestRegisteredDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
     );
+    // Each time the Response to Reviewers card is opened, refresh the decision
+    // history. Unfortunately, slanger will not update the RtR card while it is
+    // already open.
+    this.get('task.paper.decisions').reload();
   },
 
   attachmentsPath: computed('task.id', function() {

@@ -331,18 +331,17 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_ihat_conversions_success(timeout=45)
+    ms_page = ManuscriptViewerPage(self.getDriver())
+    ms_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(5)
     # Need to wait for url to update
-    count = 0
-    short_doi = paper_viewer.get_short_doi()
+    short_doi = ms_page.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     count = 0
     while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
+      paper_title_from_page = ms_page.get_paper_title_from_page()
       if 'initial submit' in paper_title_from_page.encode('utf8'):
         count += 1
         time.sleep(1)
@@ -351,28 +350,28 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
         break
       logging.warning('Conversion never completed - still showing interim title')
     # Give a little time for the submit button to attach to the DOM
-    manuscript_page.complete_task('Upload Manuscript')
+    ms_page.complete_task('Upload Manuscript')
     time.sleep(5)
-    manuscript_page.click_submit_btn()
-    manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
-    manuscript_page.confirm_submit_cancel()
+    ms_page.click_submit_btn()
+    ms_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
+    ms_page.confirm_submit_cancel()
     # The overlay must be cleared to interact with the submit button
     # and it takes time
     time.sleep(2)
-    manuscript_page.click_submit_btn()
-    manuscript_page.confirm_submit_btn()
+    ms_page.click_submit_btn()
+    ms_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(3)
-    manuscript_page.check_for_flash_error()
-    manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
-    manuscript_page.close_submit_overlay()
-    manuscript_page.validate_initial_submit_success()
-    sub_data = manuscript_page.get_db_submission_data(short_doi)
+    ms_page.check_for_flash_error()
+    ms_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
+    ms_page.close_submit_overlay()
+    ms_page.validate_initial_submit_success()
+    sub_data = ms_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
-    manuscript_page.logout()
+    ms_page.logout()
 
     admin_user = random.choice(admin_users)
     logging.info('Logging in as {0}'.format(admin_user['name']))
@@ -465,7 +464,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(5)
     # Need to wait for url to update
     count = 0
-    short_doi = paper_viewer.get_short_doi()
+    short_doi = manuscript_page.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     count = 0

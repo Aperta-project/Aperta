@@ -1,0 +1,58 @@
+.journal-logo-uploader {
+
+  margin-bottom: 20px;
+
+  // header for a logo purposely differs slightly
+  // from a typical aperta form field
+  .input-header {
+    .description {
+      label {
+        font-size: 18px;
+        font-weight: normal;
+      }
+
+      .help-text {
+        margin-top: 5px;
+        max-width: 75%;
+      }
+
+      .error-message {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  .journal-logo-uploader-and-preview {
+    display: flex;
+    align-items: center;
+
+    &.saving {
+      opacity: 0.3;
+      transition: opacity 0.5s;
+    }
+
+    .journal-logo-preview {
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-color: $aperta-white;
+      border: 1px solid $aperta-grey-light;
+      border-radius: 5px;
+      min-width: 250px;
+      min-height: 40px;
+      max-height: 200px;
+    }
+
+    .journal-logo-upload-button {
+      margin-left: 15px;
+    }
+
+    .journal-logo-thumbnail-placeholder {
+      width: 250px;
+      height: 40px;
+      background: image-url('default-journal-logo.svg') no-repeat center;
+      background-size: 40%;
+      opacity: 0.2;
+    }
+  }
+}

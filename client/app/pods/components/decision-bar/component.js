@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SnapshotAttachment from 'tahi/models/snapshot/attachment';
 
 export default Ember.Component.extend({
   decision: null, // pass in an ember-data Decision
@@ -8,10 +9,12 @@ export default Ember.Component.extend({
 
   classNames: ['decision-bar'],
 
-  attachmentsForVersion: Ember.computed('attachmentSnapshots', 'decision',
+  attachmentsForVersion: Ember.computed(
+    'attachmentSnapshots.@each.versionString', 'decision.revisionNumber',
   function() {
     let version = 'R' + this.get('decision.revisionNumber');
-    return this.get('attachmentSnapshots').filterBy('versionString', version);
+    return this.get('attachmentSnapshots').filterBy('versionString', version)
+      .map(e => SnapshotAttachment.create({attachment: e.get('contents')}));
   }),
 
   actions: {

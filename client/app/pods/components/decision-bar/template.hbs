@@ -30,5 +30,10 @@
         {{{decision.authorResponse}}}
       </div>
     {{/if}}
+    {{#each attachmentsForVersion as |attachment|}}
+      <a href="{{attachment.url}}" class="file-link" target="_blank">
+        <i class="fa fa-file-image-o"></i> {{attachment.file}}
+      </a>
+    {{/each}}
   </div>
 {{/unless}}

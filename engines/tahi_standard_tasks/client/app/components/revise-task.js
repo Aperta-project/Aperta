@@ -69,7 +69,7 @@ export default TaskComponent.extend({
     });
   },
 
-  attachmentSnapshots: computed('task.paper.snapshots', function() {
+  attachmentSnapshots: computed('task.paper.snapshots.[]', function() {
     let tskId = this.get('task.id');
     return this.get('task.paper.snapshots')
       .filterBy('contents.name', 'adhoc-attachment')

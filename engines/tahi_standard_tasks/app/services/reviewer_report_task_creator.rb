@@ -24,7 +24,6 @@ class ReviewerReportTaskCreator
         phase: default_phase,
         title: "Review by #{assignee.full_name}"
       )
-      assignee.assign_to!(assigned_to: @task, role: paper.journal.task_participant_role)
       assignee.assign_to!(assigned_to: @task, role: paper.journal.reviewer_report_owner_role)
 
       TahiStandardTasks::ReviewerMailer

@@ -11,8 +11,8 @@ namespace "card_config" do
     end
     count = Answer.count
     nqa_count = NestedQuestionAnswer.count
+    $stderr.puts("Created #{count} Answers (c.f. #{nqa_count} NestedQuestionAnswers)")
     raise 'Expected to create a new Answerfor every NestedQuestionAnswer' unless count == nqa_count
-    $stderr.puts("Created #{count} Answers (c.f. #{count} NestedQuestionAnswers")
     puts "------------------- Convert Nested Questions Answers End ----------------------------"
   end
 

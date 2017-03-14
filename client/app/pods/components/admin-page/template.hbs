@@ -1,3 +1,13 @@
+{{#overlay-fullscreen
+   visible=newJournalOverlayVisible
+   outAnimationComplete=(action "hideNewJournalOverlay")
+   overlayClass="overlay--blue"
+   as |overlay|}}
+  {{admin-page/new-journal-overlay
+    success=(action overlay.animateOut)
+    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 {{#left-drawer as |toggle|}}
   {{#left-drawer/drawer title="Journals" onToggle=toggle}}
     {{#if multipleJournals}}

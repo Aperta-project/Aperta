@@ -67,7 +67,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def test_validate_full_submit(self, init=True):
+  def _test_validate_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -126,7 +126,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_full_submit_styles(self, init=True):
+  def _test_validate_full_submit_styles(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
     :param init: Determine if login is needed
@@ -179,7 +179,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_pdf_full_submit(self, init=True):
+  def _test_validate_pdf_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
@@ -315,7 +315,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission
-    :param init: Determine if login is needed
     :return: void function
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_initial_submit')
@@ -447,11 +446,10 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_pdf_initial_submit(self):
+  def _test_validate_pdf_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission via pdf upload
-    :param init: Determine if login is needed
     :return: void function
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_initial_submit')

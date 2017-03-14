@@ -44,6 +44,8 @@ rm Base/*.pyc
 rm frontend/*.pyc
 rm frontend/Pages/*.pyc
 
+python -m frontend.test_bdd_create_to_submit
+exit
 python -m frontend.test_ad_hoc
 python -m frontend.test_addl_info_task
 python -m frontend.test_admin

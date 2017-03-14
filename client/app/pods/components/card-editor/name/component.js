@@ -7,10 +7,10 @@ export default Ember.Component.extend({
 
   editing: false,
   saving: false,
-  errors: [],
+  errors: null,
 
   clearErrors() {
-    this.set('errors', Ember.array);
+    this.set('errors', null);
   },
 
   actions: {
@@ -37,7 +37,7 @@ export default Ember.Component.extend({
         this.set('editing', false);
       }).catch(() => {
         this.set('saving', false);
-        this.set('errors', card.get('errors.messages'));
+        this.set('errors', card.get('errors'));
       });
     }
   }

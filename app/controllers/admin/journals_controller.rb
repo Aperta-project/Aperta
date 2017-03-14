@@ -35,6 +35,7 @@ class Admin::JournalsController < ApplicationController
   def create
     requires_user_can(:administer, journal)
     journal.save!
+    download_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
@@ -46,7 +47,7 @@ class Admin::JournalsController < ApplicationController
 
   def upload_logo
     requires_user_can(:administer, journal)
-    journal_with_logo = DownloadLogo.call(journal, params[:url])
+    journal_with_logo = download_logo(params[:url])
     respond_with(journal_with_logo) do |format|
       format.json { render json: journal_with_logo, serializer: AdminJournalSerializer, status: :ok }
     end
@@ -74,5 +75,10 @@ class Admin::JournalsController < ApplicationController
       :doi_journal_prefix,
       :doi_publisher_prefix
     )
+  end
+
+  def download_logo(url)
+    return unless url.present?
+    DownloadLogo.call(journal, url)
   end
 end

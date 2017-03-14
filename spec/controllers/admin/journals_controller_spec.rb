@@ -18,9 +18,12 @@ describe Admin::JournalsController, redis: true do
                             description: 'new journal desc',
                             doi_journal_prefix: 'journal.SHORTJPREFIX1',
                             doi_publisher_prefix: 'SHORTJPREFIX1',
-                            last_doi_issued: '100001'
+                            last_doi_issued: '100001',
+                            logo_url: logo_url
                           }
     end
+
+    let(:logo_url) { nil } # by default, do not upload logo
 
     it_behaves_like "an unauthenticated json request"
 
@@ -42,6 +45,24 @@ describe Admin::JournalsController, redis: true do
         expect(journal.name).to eq 'new journal name'
         expect(journal.description).to eq 'new journal desc'
         expect(response.status).to eq 201
+      end
+
+      describe 'uploading journal logo' do
+        context 'when url is provided' do
+          let(:logo_url) { 'http://s3.com/logo.png' }
+
+          it 'calls the journal logo service class' do
+            expect(DownloadLogo).to receive(:call).with(instance_of(Journal), logo_url)
+            do_request
+          end
+        end
+
+        context 'when url is not provided' do
+          it 'does not call the journal logo service class' do
+            expect(DownloadLogo).to_not receive(:call)
+            do_request
+          end
+        end
       end
     end
 
@@ -104,6 +125,60 @@ describe Admin::JournalsController, redis: true do
       end
 
       it "renders status 403" do
+        do_request
+        expect(response.status).to eq 403
+      end
+    end
+  end
+
+  describe '#upload_logo' do
+    subject(:do_request) do
+      patch :upload_logo,
+            format: 'json',
+            id: journal.id,
+            url: logo_url
+    end
+
+    let(:logo_url) { 'http://s3.com/logo.png' }
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:administer, journal)
+          .and_return true
+      end
+
+      context 'when url is provided' do
+        it 'calls the journal logo service class' do
+          expect(DownloadLogo).to receive(:call).with(instance_of(Journal), logo_url)
+          do_request
+        end
+      end
+
+      context 'when url is not provided' do
+        let(:logo_url) { nil }
+
+        it 'does not call the journal logo service class' do
+          expect(DownloadLogo).to_not receive(:call)
+          do_request
+        end
+      end
+    end
+
+    context 'when the user does not have access' do
+      let(:logo_url) { nil }
+
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:administer, journal)
+          .and_return false
+      end
+
+      it 'renders status 403' do
         do_request
         expect(response.status).to eq 403
       end

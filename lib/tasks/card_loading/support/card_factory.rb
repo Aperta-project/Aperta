@@ -20,13 +20,14 @@ class CardFactory
     existing_card = Card.find_by(name: configuration_klass.name, journal: journal, latest_version: 1)
     card = existing_card || Card.create_new!(name: configuration_klass.name,
                                              journal: journal)
-    content_root = card.content_root_for_version(:latest)
+    card_version = card.latest_card_version
+    content_root = card_version.content_root
     new_content = configuration_klass.content
     new_content.each do |c|
       c[:parent] = content_root
-      c[:card] = card
+      c[:card_version] = card_version
     end
-    CardContent.where(card: card).where.not(ident: nil)
+    CardContent.where(card_version: card_version).where.not(ident: nil)
                .update_all_exactly!(new_content)
   end
 end

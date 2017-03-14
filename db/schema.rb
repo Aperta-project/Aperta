@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 20170314050426) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.jsonb    "config"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -230,11 +230,9 @@ ActiveRecord::Schema.define(version: 20170314050426) do
   create_table "card_versions", force: :cascade do |t|
     t.integer  "version",         null: false
     t.integer  "card_id"
-    t.integer  "card_content_id"
     t.datetime "deleted_at"
   end
 
-  add_index "card_versions", ["card_content_id"], name: "index_card_versions_on_card_content_id", using: :btree
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
@@ -920,7 +918,6 @@ ActiveRecord::Schema.define(version: 20170314050426) do
   add_foreign_key "answers", "card_contents"
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
-  add_foreign_key "card_versions", "card_contents"
   add_foreign_key "card_versions", "cards"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

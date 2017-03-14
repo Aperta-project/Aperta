@@ -33,7 +33,7 @@ class Card < ActiveRecord::Base
               else
                 version_no
               end
-    card_versions.find_by!(version: to_find).card_content
+    card_versions.find_by!(version: to_find).content_root
   end
 
   def latest_card_version
@@ -42,9 +42,10 @@ class Card < ActiveRecord::Base
 
   def self.create_new!(attrs)
     Card.transaction do
-      card = Card.create!(attrs)
-      root = CardContent.create!(card: card)
-      CardVersion.create!(version: 1, card: card, card_content: root)
+      card = Card.new(attrs)
+      card.card_versions << CardVersion.new(version: 1)
+      card.card_versions.first.card_contents << CardContent.new
+      card.save!
       card
     end
   end

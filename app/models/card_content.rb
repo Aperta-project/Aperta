@@ -7,9 +7,15 @@ class CardContent < ActiveRecord::Base
   acts_as_nested_set
   acts_as_paranoid
 
-  belongs_to :card
+  belongs_to :card_version
+  has_one :card, through: :card_version
 
-  validates :card, presence: true
+  validates :card_version, presence: true
+  validates :card_version,
+            uniqueness: {
+              message: "Card versions can only have one root node."
+            },
+            if: -> { parent_id.nil? }
 
   has_many :answers
 

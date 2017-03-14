@@ -6,7 +6,7 @@ FactoryGirl.define do
 
     trait :versioned do
       after(:build) do |card|
-        card.card_versions << build(:card_version, version: card.latest_version)
+        card.card_versions << build(:card_version, version: card.latest_version) if card.card_versions.count.zero?
       end
     end
     trait :for_answerable do

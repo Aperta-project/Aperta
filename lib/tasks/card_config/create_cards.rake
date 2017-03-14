@@ -7,7 +7,6 @@ namespace "card_config" do
     answerables = ObjectSpace.each_object(Class).select { |c| c.included_modules.include? Answerable } - [Task]
     answerables.each do |klass|
       puts "+++ converting nested question answers for #{klass.name}"
-      # TODO APERTA-9226 make this work for reviewer reports
       CardConfig::CardCreator.new(owner_klass: klass).call
     end
     count = Answer.count

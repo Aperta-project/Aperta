@@ -179,7 +179,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_pdf_full_submit(self, init=True):
+  def test_validate_pdf_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
@@ -267,8 +267,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert ms_page.is_task_completed('Upload Manuscript') == True
 
 
-
-
 @MultiBrowserFixture
 class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
   """
@@ -338,13 +336,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(5)
     # Need to wait for url to update
     count = 0
-    short_doi = manuscript_page.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
+    short_doi = paper_viewer.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
 
@@ -446,7 +438,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def _test_validate_pdf_initial_submit(self):
+  def test_validate_pdf_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
       bringing it through to full submission via pdf upload
@@ -473,13 +465,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(5)
     # Need to wait for url to update
     count = 0
-    short_doi = manuscript_page.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = manuscript_page.get_current_url().split('/')[-1]
-      count += 1
+    short_doi = paper_viewer.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     count = 0

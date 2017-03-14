@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+import hashlib
 import logging
 import os
 import random
@@ -25,6 +26,8 @@ class UploadManuscriptTask(BaseTask):
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
+    self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
+    self._upload_source_file_button = (By.ID, 'upload-sourcefile')
 
   # POM Actions
   def validate_styles(self, uploaded=False, pdf=False):
@@ -76,3 +79,36 @@ class UploadManuscriptTask(BaseTask):
     upload_ms_btn.click()
     # Time needed for script execution.
     time.sleep(7)
+
+  def take_name_of_pdf_file(self):
+    """
+    take_name_of_pdf_file: Take the name of the uploaded PDF
+    :return: file_name as str
+    """
+    uploaded_pdf = self._get(self._uploaded_pdf)
+    file_name, file_ext = os.path.splitext(uploaded_pdf.text)
+    return file_name
+
+  def upload_source_file(self, file_name):
+    """
+    upload_source_file: To upload the source file of the selected PDF
+    :param: file_name is the name of the source file to be uploaded
+    :return: doc2upload as str, hash_file as str
+    """
+    current_path = os.getcwd()
+    for path in docs:
+      path_without_ext = os.path.splitext(path)[0]
+      if file_name in path_without_ext.split("/"):
+        doc2upload = path
+    fn = os.path.join(current_path, '{0}'.format(doc2upload))
+    hash_file = hashlib.sha256(open(fn, 'rb').read()).hexdigest()
+    logging.info('Sending document: {0}'.format(fn))
+    time.sleep(1)
+    # TEST THIS
+    ##upload_source_btn = self._get(self._upload_source_file_button)
+    ##upload_source_btn.click()
+    self._driver.find_element_by_id('upload-source-file').send_keys(fn)
+    # Time needed for script execution.
+    time.sleep(7)
+
+    return doc2upload, hash_file

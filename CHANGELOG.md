@@ -16,7 +16,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 ### Deprecated
 ### Removed
-* Label element tag on ad-hoc-staff
 ### Fixed
 ### Security
 

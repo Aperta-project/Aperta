@@ -12,7 +12,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   classNames: ['admin-new-card-overlay'],
   cardName: '',
   saving: false,
-  errors: [],
+  errors: null,
 
   store: Ember.inject.service(),
 
@@ -24,7 +24,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     complete() {
       // Create the card, here
       this.set('saving', true);
-      this.set('errors', []);
+      this.set('errors', null);
       const card = this.get('store').createRecord('card', {
         name: this.get('cardName'),
         journal: this.get('journal')
@@ -36,7 +36,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
         this.get('close')();
       }).catch(() => {
         this.set('saving', false);
-        this.set('errors', card.get('errors.messages'));
+        this.set('errors', card.get('errors'));
       });
     }
   }

@@ -43,7 +43,7 @@ class Card < ActiveRecord::Base
   def self.create_new!(attrs)
     Card.transaction do
       card = Card.create!(attrs)
-      root = CardContent.create!
+      root = CardContent.create!(card: card)
       CardVersion.create!(version: 1, card: card, card_content: root)
       card
     end

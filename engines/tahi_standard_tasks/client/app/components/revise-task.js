@@ -53,6 +53,7 @@ export default TaskComponent.extend({
     // history. Unfortunately, slanger will not update the RtR card while it is
     // already open.
     this.get('task.paper.decisions').reload();
+    this.get('task.paper.snapshots').reload();
   },
 
   attachmentsPath: computed('task.id', function() {
@@ -67,6 +68,17 @@ export default TaskComponent.extend({
       store.pushPayload(response);
     });
   },
+
+  attachmentSnapshots: computed('task.paper.snapshots', function() {
+    let tskId = this.get('task.id');
+    return this.get('task.paper.snapshots')
+      .filterBy('contents.name', 'adhoc-attachment')
+      .filter(function(adhoc) {
+        return adhoc.get('contents.children').some(function(child) {
+          return child.name === 'owner_id' && child.value.toString() === tskId;
+        });
+      });
+  }),
 
   actions: {
     cancelUpload(attachment) {

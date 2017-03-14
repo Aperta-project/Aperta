@@ -59,7 +59,7 @@
     <h3>Decision History</h3>
     <div class="previous-decisions">
       {{#each previousDecisions as |decision|}}
-        {{decision-bar decision=decision}}
+        {{decision-bar decision=decision attachmentSnapshots=attachmentSnapshots}}
       {{/each}}
     </div>
   {{/if}}

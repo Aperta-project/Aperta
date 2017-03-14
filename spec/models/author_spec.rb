@@ -53,6 +53,18 @@ describe Author do
     end
   end
 
+  describe "#update_coauthor_state" do
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
+    it "Updates coauthor status" do
+      status = "confirmed"
+      author.update_coauthor_state(status, user.id)
+      author.reload
+      expect(author.co_author_state).to eq "confirmed"
+      expect(author.co_author_state_modified_at).to be_present
+      expect(author.co_author_state_modified_by_id).to eq user.id
+    end
+  end
+
   describe "#contributions" do
     let!(:question_that_does_not_belong_to_contributions) do
       FactoryGirl.create(
@@ -104,30 +116,14 @@ describe Author do
     it "sets co_author_state to confirmed" do
       expect do
         author.co_author_confirmed!
-      end.to change { author.co_author_state }.from(nil).to('confirmed')
+      end.to change { author.co_author_state }.from('unconfirmed').to('confirmed')
     end
 
-    it "sets co_author_state_modified" do
+    it "sets co_author_state_modified_at" do
       Timecop.freeze do |reference_time|
         expect do
           author.co_author_confirmed!
-        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
-      end
-    end
-  end
-
-  describe "#co_author_refuted!" do
-    it "sets co_author_state to refuted" do
-      expect do
-        author.co_author_refuted!
-      end.to change { author.co_author_state }.from(nil).to('refuted')
-    end
-
-    it "sets co_author_state_modified" do
-      Timecop.freeze do |reference_time|
-        expect do
-          author.co_author_refuted!
-        end.to change { author.co_author_state_modified }.from(nil).to(reference_time)
+        end.to change { author.co_author_state_modified_at }.to(reference_time)
       end
     end
   end
@@ -157,6 +153,16 @@ describe Author do
 
     it "is false when there is no task" do
       expect(Author.new.task_completed?).to be_falsy
+    end
+  end
+
+  describe "callbacks" do
+    context "before_create" do
+      describe "#set_default_co_author_state" do
+        it "sets a default value of 'unconfirmed' on author creation" do
+          expect(author.co_author_state).to eq "unconfirmed"
+        end
+      end
     end
   end
 end

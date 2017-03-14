@@ -54,6 +54,7 @@ export default Ember.Component.extend(FileUploadMixin, {
       this.set('sourcefileUploaded', true);
       this.set('s3Url', s3Url);
       this.set('filename', filename);
+      this.parentView.clearErrors();
     }
   }
 });

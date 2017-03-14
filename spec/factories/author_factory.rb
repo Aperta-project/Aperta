@@ -10,6 +10,7 @@ FactoryGirl.define do
     department "Jedis"
     title "Head Jedi"
     affiliation 'university of dagobah'
+    co_author_state_modified_at DateTime.current
 
     trait :corresponding do
       after(:create) do |author|

@@ -1,4 +1,3 @@
-# Serves up Authors
 class AuthorsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
@@ -23,6 +22,10 @@ class AuthorsController < ApplicationController
     requires_user_can :edit_authors, author.paper
     author.update!(author_params)
 
+    if current_user.can? :administer, author.paper.journal
+      author.update_coauthor_state(author_coauthor_state, current_user.id)
+    end
+
     # render all authors, since position is controlled by acts_as_list
     render json: author_list_payload(author)
   end
@@ -46,6 +49,10 @@ class AuthorsController < ApplicationController
     hash = serializer.as_json
     hash.delete("paper")
     hash
+  end
+
+  def author_coauthor_state
+    params.require(:author).permit(:co_author_state)[:co_author_state]
   end
 
   def author_params

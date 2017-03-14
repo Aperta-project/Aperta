@@ -33,7 +33,41 @@ describe PaperConverters::SupportingInformationFileProxy do
 
     describe 'preview?' do
       subject { supporting_information_file_proxy.preview? }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe ".preview" do
+    let(:supporting_information_file_proxy) { described_class.from_supporting_information_file(supporting_information_file) }
+    subject { supporting_information_file_proxy.preview? }
+    before do
+      allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:exists?).and_return(exists_in_aws)
+    end
+
+    context "when CarrierWave says it exists" do
+      let(:exists_in_aws) { true }
+
       it { is_expected.to eq true }
+    end
+
+    context "when CarrierWave says it does not exist" do
+      let(:exists_in_aws) { false }
+
+      it { is_expected.to eq false }
+    end
+
+    context "when preview_url is blank" do
+      let(:exists_in_aws) { true }
+      let(:preview_uri) { "" }
+
+      it { is_expected.to eq false }
+    end
+
+    context "when preview_url is nil" do
+      let(:exists_in_aws) { true }
+      let(:preview_uri) { nil }
+
+      it { is_expected.to eq false }
     end
   end
 

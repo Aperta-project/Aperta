@@ -130,4 +130,47 @@ describe CardsController do
       end
     end
   end
+
+  describe '#update' do
+    let(:card) { FactoryGirl.create(:card, journal: my_journal, name: 'An Old Name') }
+    let(:name) { 'A New Name' }
+
+    subject(:do_request) do
+      put :update, format: 'json', id: card.id, card: {
+        name: name
+      }
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "when the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit_card, my_journal)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:edit_card, my_journal)
+            .and_return(true)
+        end
+
+        it { is_expected.to responds_with 204 }
+
+        it 'updates the card' do
+          do_request
+          expect(card.reload.name).to eq(name)
+        end
+      end
+    end
+  end
 end

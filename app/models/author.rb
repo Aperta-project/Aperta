@@ -18,11 +18,25 @@ class Author < ActiveRecord::Base
   # Not validated as not all authors have corresponding users.
   belongs_to :user
 
+  # This is to associate specifically with the user that last manually modified
+  # a coauthors status.  We have to track this separately from the standard
+  # non-coauthor updates
+  belongs_to :co_author_state_modified_by, class_name: "User"
+
   delegate :position, to: :author_list_item
 
-  validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
-  validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
-  validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+  validates :first_name, :last_name, :author_initial,
+    :affiliation, :email, presence: true, if: :task_completed?
+
+  validates :email,
+    format: { with: Devise.email_regexp,
+      message: "needs to be a valid email address" },
+      if: :task_completed?
+
+  validates :contributions,
+    presence: { message: "one must be selected" }, if: :task_completed?
+
+  before_create :set_default_co_author_state
 
   def full_name
     "#{first_name} #{last_name}"
@@ -72,5 +86,11 @@ class Author < ActiveRecord::Base
     return [] unless contributions_content
     content_ids = self.class.contributions_content.children.map(&:id)
     answers.where(card_content_id: content_ids)
+  end
+
+  private
+
+  def set_default_co_author_state
+    self.co_author_state ||= 'unconfirmed'
   end
 end

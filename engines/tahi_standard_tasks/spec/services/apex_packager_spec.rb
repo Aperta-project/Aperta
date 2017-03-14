@@ -334,11 +334,15 @@ describe ApexPackager do
         .and_return(Rails.root.join('spec/fixtures/about_turtles.docx'))
     end
 
-    it 'creates a zip package for a paper' do
+    it 'creates a zip package for a paper with pdf and docx' do
       zip_io = ApexPackager.create_zip(paper)
       expect(zip_filenames(zip_io)).to include('test.0001.docx')
       expect(
         zip_contains(zip_io, 'test.0001.docx', Rails.root.join('spec/fixtures/about_turtles.docx'))
+      ).to be(true)
+      expect(zip_filenames(zip_io)).to include('test.0001.pdf')
+      expect(
+        zip_contains(zip_io, 'test.0001.pdf', Rails.root.join('spec/fixtures/about_turtles.pdf'))
       ).to be(true)
     end
   end

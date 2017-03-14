@@ -147,8 +147,9 @@ ActiveRecord::Schema.define(version: 20170314050426) do
     t.integer  "user_id"
     t.string   "token"
     t.string   "co_author_state"
-    t.datetime "co_author_state_modified"
+    t.datetime "co_author_state_modified_at"
     t.integer  "card_version_id"
+    t.integer  "co_author_state_modified_by_id"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -208,7 +209,6 @@ ActiveRecord::Schema.define(version: 20170314050426) do
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
-    t.integer  "card_id"
     t.string   "ident"
     t.integer  "parent_id"
     t.integer  "lft",        null: false
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 20170314050426) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.jsonb    "config"
+    t.integer  "card_id"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -365,8 +366,9 @@ ActiveRecord::Schema.define(version: 20170314050426) do
     t.datetime "updated_at"
     t.string   "token"
     t.string   "co_author_state"
-    t.datetime "co_author_state_modified"
+    t.datetime "co_author_state_modified_at"
     t.integer  "card_version_id"
+    t.integer  "co_author_state_modified_by_id"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -917,6 +919,7 @@ ActiveRecord::Schema.define(version: 20170314050426) do
 
   add_foreign_key "answers", "card_contents"
   add_foreign_key "author_list_items", "papers"
+  add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "card_versions", "card_contents"
   add_foreign_key "card_versions", "cards"
   add_foreign_key "decisions", "papers"
@@ -924,6 +927,7 @@ ActiveRecord::Schema.define(version: 20170314050426) do
   add_foreign_key "discussion_participants", "users"
   add_foreign_key "discussion_replies", "discussion_topics"
   add_foreign_key "discussion_topics", "papers"
+  add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
 end

@@ -32,6 +32,13 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  def update
+    requires_user_can(:edit_card, card.journal)
+
+    card.update!(card_params)
+    respond_with card
+  end
+
   private
 
   def card

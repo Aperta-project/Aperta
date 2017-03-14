@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
-import Answerable from 'tahi/mixins/answerable';
 
 const { attr, belongsTo } = DS;
 const {
@@ -78,12 +77,15 @@ const validations = {
   }]
 };
 
-export default NestedQuestionOwner.extend(Answerable, {
+export default NestedQuestionOwner.extend({
   paper: belongsTo('paper', { async: false }),
   user: belongsTo('user'),
+  coAuthorStateModifiedBy: belongsTo('user'),
 
   orcidAccount: alias('user.orcidAccount'),
   orcidIdentifier: alias('user.orcidAccount.identifier'),
+  confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
+  refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),
 
   authorInitial: attr('string'),
   firstName: attr('string'),
@@ -92,6 +94,9 @@ export default NestedQuestionOwner.extend(Answerable, {
   email: attr('string'),
   title: attr('string'),
   department: attr('string'),
+  coAuthorState: attr('string'),
+  coAuthorStateModifiedOn: attr('date'),
+  coAuthorConfirmed: computed.equal('coAuthorState', 'confirmed'),
 
   currentAddressStreet: attr('string'),
   currentAddressStreet2: attr('string'),

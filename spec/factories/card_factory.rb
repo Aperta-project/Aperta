@@ -5,8 +5,8 @@ FactoryGirl.define do
     latest_version 1
 
     trait :versioned do
-      after(:create) do |card|
-        FactoryGirl.create(:card_version, card: card, version: card.latest_version)
+      after(:build) do |card|
+        card.card_versions << build(:card_version, version: card.latest_version)
       end
     end
     trait :for_answerable do

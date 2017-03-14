@@ -4,7 +4,7 @@ FactoryGirl.define do
     version 1
 
     after(:build) do |v|
-      v.card_content = create(:card_content, card: v.card)
+      v.card_contents << build(:card_content)
     end
   end
 end

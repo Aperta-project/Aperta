@@ -4,7 +4,7 @@
 # alternative to having to change the client code.
 # This service class is used in the NestedQuestionAnswersController
 #
-class RenamespaceClass
+class LookupClassNamespace
   POSSIBLE_TYPES = {
     # Tasks
     "BillingTask"                    =>     "PlosBilling::BillingTask",
@@ -44,7 +44,8 @@ class RenamespaceClass
     "ReviewerRecommendation"         =>     "TahiStandardTasks::ReviewerRecommendation"
   }.freeze
 
-  def self.lookup(type_name)
+  # If the type_name isn't found in the POSSIBLE_TYPES, let it go on through as-is.
+  def self.lookup_namespace(type_name)
     POSSIBLE_TYPES.fetch(type_name, type_name)
   end
 end

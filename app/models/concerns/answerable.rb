@@ -30,7 +30,7 @@ module Answerable
       if card_version_id
         card_version.card
       else
-        Card.lookup_card(self.class.name)
+        Card.find_by(name: self.class.name)
       end
     end
 

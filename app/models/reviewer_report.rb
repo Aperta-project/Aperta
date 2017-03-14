@@ -27,7 +27,7 @@ class ReviewerReport < ActiveRecord::Base
         "TahiStandardTasks::ReviewerReportTask" => "ReviewerReport",
         "TahiStandardTasks::FrontMatterReviewerReportTask" => "FrontMatterReviewerReport"
       }.fetch(task.class.name)
-      Card.lookup_card(card_name)
+      Card.find_by(name: card_name)
     end
   end
 

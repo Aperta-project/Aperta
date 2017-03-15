@@ -69,7 +69,7 @@ describe Author do
     let!(:question_that_does_not_belong_to_contributions) do
       FactoryGirl.create(
         :card_content,
-        ident: "conceived_and_designed_experiments",
+        ident: "another--question",
         value_type: "boolean",
         text: "Conceived and designed the experiments"
       )

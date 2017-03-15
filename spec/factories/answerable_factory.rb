@@ -27,13 +27,13 @@ class AnswerableFactory
       card_content = CardContent.find_by(ident: question_hash[:ident]) ||
         FactoryGirl.build(:card_content)
 
-      card_content.tap do |nq|
-        nq.parent = parent
-        nq.card = card
-        nq.text = question_hash[:text]
-        nq.ident = question_hash[:ident]
-        nq.value_type = question_hash[:value_type]
-        nq.save!
+      card_content.tap do |cc|
+        cc.parent = parent
+        cc.card_version = card.latest_card_version
+        cc.text = question_hash[:text]
+        cc.ident = question_hash[:ident]
+        cc.value_type = question_hash[:value_type]
+        cc.save!
       end
     end
 

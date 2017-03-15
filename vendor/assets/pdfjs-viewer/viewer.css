@@ -477,18 +477,18 @@ html[dir='rtl'] .pdfjs #toolbarContainer,
     transition: width 200ms
 }
 @-webkit-keyframes progressIndeterminate {
-    .pdfjs 0% {
+    0% {
         left: -142px
     }
-    .pdfjs 100% {
+    100% {
         left: 0
     }
 }
 @keyframes progressIndeterminate {
-    .pdfjs 0% {
+    0% {
         left: -142px
     }
-    .pdfjs 100% {
+    100% {
         left: 0
     }
 }

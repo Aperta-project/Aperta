@@ -10,15 +10,14 @@ namespace "card_config" do
       puts "+++ converting nested question answers for #{name}"
       CardConfig::CardMigrator.new(name).call
     end
-    count = Answer.count
-    nqa_count = NestedQuestionAnswer.count
-    $stderr.puts("Created #{count} Answers (c.f. #{nqa_count} NestedQuestionAnswers)")
-    unless count == nqa_count
-      idents = Answer.joins(:card_content).pluck(:ident).uniq
-      nqa_idents = NestedQuestionAnswer.joins(:nested_question).all.pluck(:ident).uniq
-      missing = (nqa_idents - idents)
-      $stderr.puts("Missing idents: #{missing}")
-      raise 'Expected to create a new Answer for every NestedQuestionAnswer'
+    $stderr.puts("Created #{Answer.count} Answers (c.f. #{NestedQuestionAnswer.count} NestedQuestionAnswers)")
+    Answer.joins(:card_content).pluck(:ident).uniq.each do |ident|
+      c1 = Answer.joins(:card_content).where('card_contents.ident' => ident).count
+      c2 = NestedQuestionAnswer.joins(:nested_question).where('nested_questions.ident' => ident).count
+      $stderr.puts("  for #{ident}: #{c1} Answers (c.f. #{c2} NestedQuestionAnswers)")
+      next if c1 == c2
+
+      raise "Expected to create a new Answer for every NestedQuestionAnswer for #{ident}"
     end
     puts "------------------- Convert Nested Questions Answers End ----------------------------"
   end

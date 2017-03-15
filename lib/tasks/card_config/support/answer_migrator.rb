@@ -10,29 +10,13 @@ module CardConfig
 
     def call
       Answer.transaction do
-        new_answers = nested_question.nested_question_answers.map do |nqa|
+        nested_question.nested_question_answers.map do |nqa|
           migrate_answer!(nqa)
         end
-
-        verify_new_answers!(new_answers)
-
-        new_answers
       end
     end
 
     private
-
-    def verify_new_answers!(new_answers)
-      expected_answer_count = nested_question.nested_question_answers.count
-
-      if expected_answer_count != new_answers.count
-        fail <<-ERROR.strip_heredoc
-          Expected Question #{nested_question.ident} to have
-          #{expected_answer_count} answers in the database,
-          but found #{new_answers.count}
-        ERROR
-      end
-    end
 
     def migrate_answer!(nested_question_answer)
       Answer.new do |answer|

@@ -13,7 +13,8 @@ export default Ember.Component.extend({
     'attachmentSnapshots.@each.versionString', 'decision.revisionNumber',
   function() {
     let version = 'R' + this.get('decision.revisionNumber');
-    return this.get('attachmentSnapshots').filterBy('versionString', version)
+    let snapshots = this.get('attachmentSnapshots');
+    if (snapshots) return snapshots.filterBy('versionString', version)
       .map(e => SnapshotAttachment.create({attachment: e.get('contents')}));
   }),
 

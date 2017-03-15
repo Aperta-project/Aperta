@@ -1,3 +1,0 @@
-** Specs to delete
-- [X]  "spec/models/nested_question_answer_spec.rb", 
-- [X]  "spec/models/nested_question_spec.rb",

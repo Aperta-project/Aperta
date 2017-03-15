@@ -16,6 +16,7 @@ class ReviewerReport < ActiveRecord::Base
     decision.invitations.find_by(invitee_id: user.id)
   end
 
+  # TODO: CardConfig
   # override card from Answerable as a temporary measure.  A ReviewerReport needs to look
   # up the name of its card based on the type of task it belongs to, as there's no
   # FrontMatterReviewerReport at the moment

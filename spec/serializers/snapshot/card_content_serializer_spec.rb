@@ -7,8 +7,8 @@ describe Snapshot::CardContentSerializer do
   end
   let(:owner) { FactoryGirl.create(:ad_hoc_task) }
 
-  describe '#as_json - serializing nested questions' do
-    it 'serializes the question without an answer' do
+  describe '#as_json - serializing card content as nested questions' do
+    it 'serializes the card content without an answer' do
       expect(serializer.as_json).to eq(
         name: 'my-question',
         type: 'question',
@@ -23,7 +23,7 @@ describe Snapshot::CardContentSerializer do
       )
     end
 
-    context 'when it has child questions' do
+    context 'when it has child content' do
       before do
         card_content.children << FactoryGirl.create(
           :card_content,
@@ -39,7 +39,7 @@ describe Snapshot::CardContentSerializer do
         )
       end
 
-      it 'serializes children questions' do
+      it 'serializes child content as nested questions' do
         expect(serializer.as_json).to eq(
           name: 'my-question',
           type: 'question',
@@ -73,7 +73,7 @@ describe Snapshot::CardContentSerializer do
       end
     end
 
-    it 'serializes questions with an answer' do
+    it 'serializes card conntent with an answer as nested questions' do
       FactoryGirl.create(
         :answer,
         owner: owner,
@@ -123,7 +123,7 @@ describe Snapshot::CardContentSerializer do
         )
       end
 
-      it 'serializes questions with attachments' do
+      it 'serializes answers with attachments' do
         expect(attachments_json.length).to eq 2
 
         expect(attachments_json[0]).to match hash_including(

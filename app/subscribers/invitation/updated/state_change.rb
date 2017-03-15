@@ -11,7 +11,5 @@ class Invitation::Updated::StateChange
     elsif action == 'rescinded'
       report.rescind_invitation
     end
-
-    report.update_invitation_status
   end
 end

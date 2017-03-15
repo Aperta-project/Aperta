@@ -29,18 +29,17 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
-          guards: [:invitation_accepted?],
-          after: [:update_invitation_status]) do
+          guards: [:invitation_accepted?]) do
       transitions from: :invitation_pending, to: :review_pending
     end
 
-    event(:rescind_invitation,
-          after: [:update_invitation_status]) do
-      transitions from: :review_pending, to: :invitation_pending
+    event(:rescind_invitation) do
+      transitions from: [:invitation_pending, :review_pending],
+                  to: :invitation_pending
     end
 
     event(:submit,
-          guards: [:invitation_accepted?], after: [:set_submitted_status]) do
+          guards: [:invitation_accepted?], after: [:set_completed_at]) do
       transitions from: :review_pending, to: :submitted
     end
   end
@@ -50,7 +49,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def invitation_accepted?
-    invitation.accepted?
+    invitation && invitation.accepted?
   end
 
   def revision
@@ -60,19 +59,6 @@ class ReviewerReport < ActiveRecord::Base
     "v#{major_version}.#{minor_version}"
   end
 
-  def update_invitation_status
-    update!(status: computed_status,
-            status_datetime: compute_invitation_datetime) unless submitted?
-  end
-
-  private
-
-  def set_submitted_status
-    update!(status: 'completed', status_datetime: Time.current.utc)
-  end
-
-  # status will look at the reviewer, invitations and the submitted state of
-  # this task to get an overall status for the review
   def computed_status
     case aasm.current_state
     when STATE_INVITATION_PENDING
@@ -84,15 +70,8 @@ class ReviewerReport < ActiveRecord::Base
     end
   end
 
-  def compute_invitation_state
-    if invitation
-      "invitation_#{invitation.state}"
-    else
-      "not_invited"
-    end
-  end
-
-  def compute_invitation_datetime
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def computed_datetime
     case computed_status
     when "pending"
       invitation.accepted_at
@@ -104,6 +83,23 @@ class ReviewerReport < ActiveRecord::Base
       invitation.declined_at
     when "invitation_rescinded"
       invitation.rescinded_at
+    when "completed"
+      completed_at
+    end
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+
+  private
+
+  def set_completed_at
+    update!(completed_at: Time.current.utc)
+  end
+
+  def compute_invitation_state
+    if invitation
+      "invitation_#{invitation.state}"
+    else
+      "not_invited"
     end
   end
 end

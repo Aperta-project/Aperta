@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314235400) do
+ActiveRecord::Schema.define(version: 20170315133447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,8 +148,8 @@ ActiveRecord::Schema.define(version: 20170314235400) do
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
-    t.integer  "card_version_id"
     t.integer  "co_author_state_modified_by_id"
+    t.integer  "card_version_id"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -211,14 +211,13 @@ ActiveRecord::Schema.define(version: 20170314235400) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
+    t.integer  "lft",             null: false
+    t.integer  "rgt",             null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
-    t.jsonb    "config"
     t.integer  "card_version_id", null: false
   end
 
@@ -228,7 +227,7 @@ ActiveRecord::Schema.define(version: 20170314235400) do
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
   create_table "card_versions", force: :cascade do |t|
-    t.integer  "version",         null: false
+    t.integer  "version",    null: false
     t.integer  "card_id",    null: false
     t.datetime "deleted_at"
   end
@@ -365,8 +364,8 @@ ActiveRecord::Schema.define(version: 20170314235400) do
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
-    t.integer  "card_version_id"
     t.integer  "co_author_state_modified_by_id"
+    t.integer  "card_version_id"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree

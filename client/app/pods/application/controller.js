@@ -11,6 +11,12 @@ export default Ember.Controller.extend(pusherConcerns, {
   showFeedbackOverlay: false,
   journals: null,
   canViewPaperTracker: false,
+  healthCheck: Ember.inject.service('health-check'),
+
+  init: function() {
+    this._super(...arguments);
+    this.get('healthCheck').start();
+  },
 
   pusherConnectionStatusChanged: function() {
     this.set('pusherConnectionState', this.pusher.connection.connection.state);

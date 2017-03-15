@@ -18,6 +18,7 @@ class CardContent < ActiveRecord::Base
             if: -> { parent_id.nil? }
 
   has_many :answers
+  scope :root, -> { where(parent: nil) }
 
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)

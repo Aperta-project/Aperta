@@ -8,4 +8,12 @@ describe CardContent do
       expect(card_content).to be_valid
     end
   end
+
+  context "root scope" do
+    let!(:root_content) { FactoryGirl.create(:card_content, parent: nil) }
+
+    it 'returns all roots' do
+      expect(CardContent.all.root).to contain_exactly(root_content)
+    end
+  end
 end

@@ -75,7 +75,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
     end
 
     context 'serializing related nested questions' do
-      it_behaves_like 'snapshot serializes related nested questions', resource: :task
+      it_behaves_like 'snapshot serializes related answers as nested questions', resource: :task
     end
   end
 end

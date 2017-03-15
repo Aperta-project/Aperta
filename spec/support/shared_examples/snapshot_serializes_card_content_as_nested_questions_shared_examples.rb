@@ -15,7 +15,7 @@
 # The :resource is passed in as symbol because it tells the shared examples
 # what +let+ variable to use when running the examples.
 #
-shared_examples_for "snapshot serializes related nested questions" do |opts|
+shared_examples_for "snapshot serializes related answers as nested questions" do |opts|
   context "serializing related nested questions" do
     before do
       # find the corresponding +let+ variable

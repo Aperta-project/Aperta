@@ -8,6 +8,10 @@ export default Ember.Component.extend({
   authorProxy: null,
   validationErrors: Ember.computed.alias('authorProxy.validationErrors'),
   store: Ember.inject.service(),
+  can: Ember.inject.service(),
+
+  authorshipConfirmed: Ember.computed.alias('author.confirmedAsCoAuthor'),
+  authorshipDeclined: Ember.computed.alias('author.refutedAsCoAuthor'),
 
   init() {
     this._super(...arguments);
@@ -15,8 +19,32 @@ export default Ember.Component.extend({
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {
         this.createNewAuthor();
+        this.initializeCoauthorshipControls();
       });
+    } else {
+      this.initializeCoauthorshipControls();
     }
+  },
+
+  humanizedCoAuthorState: Ember.computed('author.coAuthorState', function(){
+    switch(this.get('author.coAuthorState')) {
+      case "confirmed":
+        return "Confirmed by";
+      case "refuted":
+        return "Refuted By";
+      default:
+        return "Last changed by";
+    }
+  }),
+
+  initializeCoauthorshipControls() {
+    this.get('author.paper.journal').then( (journal) => {
+      this.get('can').can('administer', journal).then( (value) => {
+        Ember.run( () => {
+          this.set('canChangeCoauthorStatus', value);
+        });
+      });
+    });
   },
 
   nestedQuestionsForNewAuthor: Ember.A(),
@@ -88,6 +116,10 @@ export default Ember.Component.extend({
       } else {
         this.saveAuthor();
       }
+    },
+
+    selectAuthorConfirmation(status) {
+      this.set('author.coAuthorState', status);
     },
 
     validateField(key, value) {

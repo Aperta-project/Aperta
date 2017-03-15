@@ -12,6 +12,17 @@
   counter-increment: authorTaskItem;
 }
 
+.author-form, .author-task-item-view {
+
+  .author-confirmed {
+    color: $aperta-green;
+  }
+
+  .author-refuted {
+    color: $aperta-red;
+  }
+}
+
 .author-task-item-view {
   @include align-items(center);
   background: $aperta-grey-xlight;
@@ -114,6 +125,10 @@
 }
 
 .author-form {
+  .author-confirmed, .author-refuted, .author-coauthor-info {
+    margin-bottom: 1em;
+  }
+
   .affiliation-field, .secondary-affiliation-field {
     border-radius: 4px;
     width: 418px;
@@ -201,10 +216,6 @@
 
 .author-label-other div {
   display: inline;
-}
-
-.author-confirmed {
-  margin-bottom: 1em;
 }
 
 .author-confirmed-check {

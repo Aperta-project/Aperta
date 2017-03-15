@@ -10,7 +10,8 @@ class CardVersion < ActiveRecord::Base
 
   validates :card, presence: true
   validates :card_contents, presence: true
-  has_one :content_root, -> { root }, class_name: 'CardContent'
+  # the `roots` scope comes from `awesome_nested_set`
+  has_one :content_root, -> { roots }, class_name: 'CardContent'
 
   validates :version, uniqueness: {
     scope: :card_id,

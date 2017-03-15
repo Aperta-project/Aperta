@@ -190,6 +190,11 @@ class Task < ActiveRecord::Base
     users.each { |user| add_participant user }
   end
 
+  def reviewer
+    assignments.joins(:role)
+      .find_by(roles: { name: Role::REVIEWER_REPORT_OWNER_ROLE }).try(:user)
+  end
+
   def update_responder
     UpdateResponders::Task
   end

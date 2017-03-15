@@ -1,23 +1,20 @@
 namespace :data do
   namespace :migrate do
     desc <<-DESC
-      APERTA-7993 Update blank ReviewerReport statuses
+      APERTA-7993 Update states for ReviewerReports
     DESC
-    task update_blank_status_for_reviewer_reports: :environment do
+    task update_states_for_reviewer_reports: :environment do
       # Keep a running count of reports
       count = 0
       # Keep a list of skipped ids
       skipped_ids = []
 
-      # Query to find candidates for updating
-      blank_status_query = 'status_datetime IS NULL OR status IS NULL'
-
       # Print out our total reports
-      total_reports = ReviewerReport.where(blank_status_query).count
-      puts "Updating status fields for #{total_reports} ReviewerReports"
+      total_reports = ReviewerReport.where(state: nil).count
+      puts "Updating state for #{total_reports} ReviewerReports"
 
       # Find any blank status
-      ReviewerReport.where(blank_status_query).find_each do |report|
+      ReviewerReport.where(state: nil).find_each do |report|
         # Some reports in production had no user id. These cannot be
         # automatically updated and will have to be skipped.
         unless report.user_id
@@ -30,17 +27,11 @@ namespace :data do
         # All reports after this point get some kind of update
         count += 1
 
-        # Get the corresponding invitaiton if there is one
-        invitation = report.invitation
-        report.state = 'invitation_pending'
-
-        if invitation
-          # Update status based on invitation state
-          report.state = 'review_pending' if invitation.state == "accepted"
-        end
-
-        # Update any of the status/datetime fields
-        report.update_invitation_status
+        # All reports here have blank state columns
+        # AASM will fill in 'invitation_pending' when they are hydrated
+        # If we have an accepted invitation, we can start going through the
+        # flow to update the report state.
+        report.accept_invitation! if report.invitation_accepted?
 
         # With an accepted invitation, the report is marked 'pending'. Usually
         # finishing the task will mark it complete. Here we will check to see
@@ -53,47 +44,40 @@ namespace :data do
                                        .max_by(&:updated_at)
 
           # If there is an answer, try to mark reviews as complete
+          # If there is no answer to an accepted invitation, those stay in the
+          # 'review_pending' state
           if answer
-            # Look if there is a draft (current) decision
-            # And see if our reviewer report is for that decision
-            if paper.draft_decision && report.decision == report.paper.draft_decision && report.task.body['submitted']
-              # If we are for the current decision, look on tasks body for submitted?
-              report.status = 'complete'
+            # If our decision is a draft (not decided yet) and the task body
+            # had 'submitted' set, we can mark this complete by submitting the
+            # review
+            if report.decision.draft? && report.task.body['submitted']
+              report.submit!
             end
-            if report.decision != report.paper.draft_decision
-              report.status = 'complete'
-              report.status_datetime = answer.updated_at
+
+            # We are for a decision that has been made. Since it has answers,
+            # we mark it complete
+            unless report.decision.draft?
+              report.submit!
+              report.completed_at = answer.updated_at
             end
           end
         end
 
-        puts "Updating: ReviewerReport[#{report.id}, status: #{report.status}, status_datetime: #{report.status_datetime}]"
-        # Save the status
+        puts "Updating: ReviewerReport[#{report.id}, state: #{report.aasm.current_state}, completed_at: #{report.completed_at}]"
+        # Save the report
         report.save!
       end
 
       puts "Updated #{count} reports, Skipped #{skipped_ids.count} #{skipped_ids}"
 
       # Check the remaining blanks if any
-      blank_statuses = ReviewerReport
-        .where(status: nil)
+      blank_state = ReviewerReport
+        .where(state: nil)
         .where.not(id: skipped_ids)
 
-      if blank_statuses.any?
-        ids = blank_statuses.map(&:id)
-        raise "Blank status found for Reports: #{ids}"
-      end
-
-      # Check that any nil dates are 'not_invited
-      blank_datetime_states = ['invitation_pending', 'not_invited']
-      incorrect_status =
-        ReviewerReport.where(status_datetime: nil)
-                      .where.not(id: skipped_ids)
-                      .select { |report| !blank_datetime_states.include? report.status }
-
-      if incorrect_status.any?
-        ids = incorrect_status.map(&:id)
-        raise "Incorrect status with nil dates for Reports: #{ids}"
+      if blank_state.any?
+        ids = blank_state.map(&:id)
+        raise "Blank state found for Reports: #{ids}"
       end
     end
   end

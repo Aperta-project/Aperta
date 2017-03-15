@@ -6,6 +6,13 @@ namespace "card_config" do
     count = Answer.count
     raise "Expected Answer to be empty, but it has #{count} rows!" unless count.zero?
     puts "------------------- Convert Nested Questions Answers Start ----------------------------"
+
+    # To avoid id collision on the ember side, where we are making Answer look
+    # like NestedQuestionAnswer, do not reuse ids.
+    start = NestedQuestionAnswer.pluck(:id).max + 1
+    $stderr.puts("Starting Answer.id sequence at #{start}")
+    ActiveRecord::Base.connection.execute("ALTER SEQUENCE answers_id_seq RESTART WITH #{start}")
+
     Card.all.pluck(:name).each do |name|
       puts "+++ converting nested question answers for #{name}"
       CardConfig::CardMigrator.new(name).call

@@ -16,6 +16,21 @@ describe Card do
     end
   end
 
+  describe 'create_new!' do
+    let(:new_card) { Card.create_new!(name: 'foo') }
+    it 'creates a new card with the given attributes' do
+      expect(new_card.name).to eq('foo')
+    end
+
+    it 'creates a new card version' do
+      expect(new_card.card_version(:latest)).to be_present
+    end
+
+    it 'gives the card version a piece of card content' do
+      expect(new_card.card_version(:latest).content_root).to be_present
+    end
+  end
+
   describe '#content_root_for_version' do
     it 'returns the root card content' do
       expect(card.content_root_for_version(1)).to be_present

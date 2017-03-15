@@ -12807,9 +12807,10 @@ function configure(PDFJS) {
  var scriptTagContainer = document.body || document.getElementsByTagName('head')[0];
  var pdfjsSrc = scriptTagContainer.lastChild.src;
  if (pdfjsSrc) {
-  PDFJS.imageResourcesPath = pdfjsSrc.replace(/pdf\.js$/i, 'images/');
-  PDFJS.workerSrc = pdfjsSrc.replace(/pdf\.js$/i, 'pdf.worker.js');
-  PDFJS.cMapUrl = pdfjsSrc.replace(/pdf\.js$/i, 'cmaps/');
+  var pdfjsroot = '/assets/pdfjsviewer/';
+  PDFJS.imageResourcesPath = pdfjsroot + 'images/';
+  PDFJS.workerSrc = pdfjsroot + '/';
+  PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
  }
 }
 var DefaultExernalServices = {
@@ -12869,7 +12870,8 @@ var PDFViewerApplication = {
   renderInteractiveForms: false,
   enablePrintAutoRotate: false
  },
- isViewerEmbedded: window.parent !== window,
+ /* The automatic discovery of this failed and we are always embedded */
+ isViewerEmbedded: true,
  url: '',
  baseUrl: '',
  externalServices: DefaultExernalServices,
@@ -13622,9 +13624,7 @@ var PDFViewerApplication = {
   window.addEventListener('wheel', webViewerWheel);
   window.addEventListener('click', webViewerClick);
   window.addEventListener('keydown', webViewerKeyDown);
-  window.addEventListener('resize', function windowResize() {
-   eventBus.dispatch('resize');
-  });
+  window.addEventListener('resize', webViewerResize);
   window.addEventListener('hashchange', function windowHashChange() {
    eventBus.dispatch('hashchange', { hash: document.location.hash.substring(1) });
   });
@@ -13896,10 +13896,6 @@ function webViewerUpdateViewarea(e) {
    });
   });
  }
- var href = PDFViewerApplication.pdfLinkService.getAnchorUrl(location.pdfOpenParams);
- PDFViewerApplication.appConfig.toolbar.viewBookmark.href = href;
- PDFViewerApplication.appConfig.secondaryToolbar.viewBookmarkButton.href = href;
- PDFViewerApplication.pdfHistory.updateCurrentBookmark(location.pdfOpenParams, location.pageNumber);
  var currentPage = PDFViewerApplication.pdfViewer.getPageView(PDFViewerApplication.page - 1);
  var loading = currentPage.renderingState !== RenderingStates.FINISHED;
  PDFViewerApplication.toolbar.updateLoadingIndicatorState(loading);
@@ -14188,6 +14184,7 @@ function webViewerKeyDown(evt) {
   return;
  }
  var curElement = document.activeElement || document.querySelector(':focus');
+ if (curElement.isContentEditable) { return; } // skip any contenteditables
  var curElementTagName = curElement && curElement.tagName.toUpperCase();
  if (curElementTagName === 'INPUT' || curElementTagName === 'TEXTAREA' || curElementTagName === 'SELECT') {
   if (evt.keyCode !== 27) {
@@ -14308,6 +14305,9 @@ function webViewerKeyDown(evt) {
   evt.preventDefault();
  }
 }
+function windowResize() {
+  eventBus.dispatch('resize');
+});
 localized.then(function webViewerLocalized() {
  document.getElementsByTagName('html')[0].dir = mozL10n.getDirection();
 });
@@ -17478,7 +17478,7 @@ var PDFThumbnailView = function PDFThumbnailViewClosure() {
   };
   this.anchor = anchor;
   var div = document.createElement('div');
-  div.className = 'thumbnail';
+  div.className = 'pdfthumbnail';
   div.setAttribute('data-page-number', this.id);
   this.div = div;
   if (id === 1) {
@@ -17487,8 +17487,8 @@ var PDFThumbnailView = function PDFThumbnailViewClosure() {
   var ring = document.createElement('div');
   ring.className = 'thumbnailSelectionRing';
   var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
-  ring.style.width = this.canvasWidth + borderAdjustment + 'px';
-  ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+  // ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+  // ring.style.height = this.canvasHeight + borderAdjustment + 'px';
   this.ring = ring;
   div.appendChild(ring);
   anchor.appendChild(div);
@@ -17516,8 +17516,8 @@ var PDFThumbnailView = function PDFThumbnailViewClosure() {
     ring.removeChild(childNodes[i]);
    }
    var borderAdjustment = 2 * THUMBNAIL_CANVAS_BORDER_WIDTH;
-   ring.style.width = this.canvasWidth + borderAdjustment + 'px';
-   ring.style.height = this.canvasHeight + borderAdjustment + 'px';
+   //  ring.style.width = this.canvasWidth + borderAdjustment + 'px';
+   //  ring.style.height = this.canvasHeight + borderAdjustment + 'px';
    if (this.canvas) {
     this.canvas.width = 0;
     this.canvas.height = 0;
@@ -17739,11 +17739,11 @@ var PDFThumbnailViewer = function PDFThumbnailViewerClosure() {
    return getVisibleElements(this.container, this.thumbnails);
   },
   scrollThumbnailIntoView: function PDFThumbnailViewer_scrollThumbnailIntoView(page) {
-   var selected = document.querySelector('.thumbnail.selected');
+   var selected = document.querySelector('.pdfthumbnail.selected');
    if (selected) {
     selected.classList.remove('selected');
    }
-   var thumbnail = document.querySelector('div.thumbnail[data-page-number="' + page + '"]');
+   var thumbnail = document.querySelector('div.pdfthumbnail[data-page-number="' + page + '"]');
    if (thumbnail) {
     thumbnail.classList.add('selected');
    }
@@ -19120,15 +19120,15 @@ var Toolbar = function ToolbarClosure() {
    items.presentationModeButton.addEventListener('click', function (e) {
     eventBus.dispatch('presentationmode');
    });
-   items.openFile.addEventListener('click', function (e) {
-    eventBus.dispatch('openfile');
-   });
-   items.print.addEventListener('click', function (e) {
-    eventBus.dispatch('print');
-   });
-   items.download.addEventListener('click', function (e) {
-    eventBus.dispatch('download');
-   });
+   // items.openFile.addEventListener('click', function (e) {
+   //   eventBus.dispatch('openfile');
+   // });
+   // items.print.addEventListener('click', function (e) {
+   //   eventBus.dispatch('print');
+   // });
+   // items.download.addEventListener('click', function (e) {
+   //   eventBus.dispatch('download');
+   // });
    items.scaleSelect.oncontextmenu = noContextMenuHandler;
    localized.then(this._localized.bind(this));
   },

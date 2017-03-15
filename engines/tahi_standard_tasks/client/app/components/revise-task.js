@@ -52,8 +52,10 @@ export default TaskComponent.extend({
     // Each time the Response to Reviewers card is opened, refresh the decision
     // history. Unfortunately, slanger will not update the RtR card while it is
     // already open.
-    this.get('task.paper.decisions').reload();
-    this.get('task.paper.snapshots').reload();
+    if (this.get('task.paper.decisions'))
+      this.get('task.paper.decisions').reload();
+    if (this.get('task.paper.snapshots'))
+      this.get('task.paper.snapshots').reload();
   },
 
   attachmentsPath: computed('task.id', function() {

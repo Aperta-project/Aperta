@@ -5,12 +5,14 @@
       {{#if invitation.isAlternate}}
         <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>
       {{/if}}
-      {{#if invitee}}
-        {{invitee.fullName}}
-        &lt;{{invitation.email}}&gt;
-      {{else}}
-        {{invitation.email}}
-      {{/if}}
+      <div class="invitation-item-email">
+        {{#if invitee}}
+          {{invitee.fullName}}
+          &lt;{{invitation.email}}&gt;
+        {{else}}
+          {{invitation.email}}
+        {{/if}}
+      </div>
     </div>
     <div class="invitation-item-status">
       {{#if (and (eq uiState 'closed') (not invitation.pending))}}

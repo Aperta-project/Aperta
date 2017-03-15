@@ -42,20 +42,26 @@ describe Paper::DataExtracted::NotifyUser do
     it 'sends a message on successful upload' do
       expect(pusher_channel).to receive_push(
         payload: hash_including(
-                  message:  "Finished loading Word file. Any images that had been included in the manuscript should be uploaded directly to the figures card.",
-                  messageType: 'success'),
-        down: 'user', 
-        on: 'flashMessage')
+          message:  'Finished loading Word file. Any figures included in the file will have been removed ' \
+                    'and should now be uploaded directly by ' \
+                    'clicking \'Figures\'.',
+          messageType: 'success'
+        ),
+        down: 'user',
+        on: 'flashMessage'
+      )
       described_class.call("tahi:paper:data_extracted", record: successful_response)
     end
 
     it 'sends a message on errored upload' do
       expect(pusher_channel).to receive_push(
         payload: hash_including(
-                  message: "There was an error loading your Word file.",
-                  messageType: 'error'),
+          message: "There was an error loading your Word file.",
+          messageType: 'error'
+        ),
         down: 'user',
-        on: 'flashMessage')
+        on: 'flashMessage'
+      )
       described_class.call("tahi:paper:data_extracted", record: errored_response)
     end
   end
@@ -91,20 +97,24 @@ describe Paper::DataExtracted::NotifyUser do
     it 'sends a message on successful upload' do
       expect(pusher_channel).to receive_push(
         payload: hash_including(
-                  message:  "Finished loading PDF file. Any images that had been included in the manuscript should be uploaded directly to the figures card.",
-                  messageType: 'success'),
-        down: 'user', 
-        on: 'flashMessage')
+          message:  "Finished loading PDF file.",
+          messageType: 'success'
+        ),
+        down: 'user',
+        on: 'flashMessage'
+      )
       described_class.call("tahi:paper:data_extracted", record: successful_response)
     end
 
     it 'sends a message on errored upload' do
       expect(pusher_channel).to receive_push(
         payload: hash_including(
-                  message: "There was an error loading your PDF file.",
-                  messageType: 'error'),
+          message: "There was an error loading your PDF file.",
+          messageType: 'error'
+        ),
         down: 'user',
-        on: 'flashMessage')
+        on: 'flashMessage'
+      )
       described_class.call("tahi:paper:data_extracted", record: errored_response)
     end
   end

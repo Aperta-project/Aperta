@@ -70,14 +70,18 @@ describe PaperConverters::PdfPaperConverter do
       end
 
       it 'has supporting information' do
+        pending "waiting for APERTA-9406"
         expect(file).to be_truthy
         expect(paper.supporting_information_files.length).to be 1
         expect(doc.css('#si_header').count).to be 1
-        expect(doc.css("img#si_preview_#{file.id}").count).to be 1
+        pending "waiting for APERTA-9406" do
+          expect(doc.css("img#si_preview_#{file.id}").count).to be 1
+        end
         expect(doc.css("a#si_link_#{file.id}").count).to be 1
       end
 
       it 'the si_preview urls are to S3' do
+        pending "waiting for APERTA-9406"
         # because they need to resolve at create time for pdf
         expect(file)
         expect(doc.css('.si_preview').count).to be 1

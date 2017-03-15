@@ -66,7 +66,7 @@ describe Figure, redis: true do
       it 'sets the figure title and rank from the label' do
         figure.download!(url)
         figure.reload
-        expect(figure.title).to eq('Fig. 1')
+        expect(figure.title).to eq('Fig 1')
         expect(figure.rank).to eq(1)
       end
     end
@@ -210,9 +210,9 @@ describe Figure, redis: true do
 
   describe '#title_from_filename' do
     ["Figure 1.tiff", "figure 1.tiff", "fig. 1.tiff", "fig_1.tiff"].each do |filename|
-      it "returns 'Fig. 1' when file is named #{filename}" do
+      it "returns 'Fig 1' when file is named #{filename}" do
         expect(figure.file).to receive(:filename).and_return(filename)
-        expect(figure.send(:title_from_filename)).to eq("Fig. 1")
+        expect(figure.send(:title_from_filename)).to eq("Fig 1")
       end
     end
 

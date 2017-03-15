@@ -125,6 +125,11 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-size: 1.4rem;
   cursor: pointer;
   user-select: none; // This is important so as not to have strange drag and drop behavior
+  .invitation-item-email {
+    user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+  }
 }
 
 .invitation-item-header > * {

@@ -55,7 +55,7 @@ class UploadManuscriptTask(BaseTask):
           replace_icon.get_attribute('class')
     else:
       upload_ms_btn = self._get(self._upload_manuscript_btn)
-      assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT'
+      assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT', upload_ms_btn.text
       self.validate_primary_big_green_button_style(upload_ms_btn)
 
   def upload_manuscript(self, doc='random'):
@@ -102,11 +102,8 @@ class UploadManuscriptTask(BaseTask):
     hash_file = hashlib.sha256(open(fn, 'rb').read()).hexdigest()
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
-    # TEST THIS
-    ##upload_source_btn = self._get(self._upload_source_file_button)
-    ##upload_source_btn.click()
     self._driver.find_element_by_id('upload-source-file').send_keys(fn)
-    # Time needed for script execution.
+    # Time needed for script execution (file upload).
     time.sleep(7)
 
     return doc2upload, hash_file

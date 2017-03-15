@@ -228,7 +228,7 @@ class SendToApexTest(CommonTest):
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
-    manuscript_page.page_ready_post_create()
+    manuscript_page.page_ready()
     manuscript_page.close_modal()
     manuscript_page.logout()
     # Enter as Editorial User

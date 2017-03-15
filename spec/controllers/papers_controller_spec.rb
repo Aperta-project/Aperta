@@ -214,7 +214,6 @@ describe PapersController do
         expect(Activity).to receive(:paper_edited!).with(paper, user: user)
         do_request
       end
-
     end
 
     context "when the user has access and the paper is NOT editable" do
@@ -253,7 +252,7 @@ describe PapersController do
       get :comment_looks, id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper)}
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -360,7 +359,7 @@ describe PapersController do
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
-      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:activities) { [manuscript_activity, workflow_activity] }
       let!(:manuscript_activity) do
         FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
       end
@@ -412,7 +411,7 @@ describe PapersController do
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
-      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:activities) { [manuscript_activity, workflow_activity] }
       let!(:manuscript_activity) do
         FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
       end
@@ -583,7 +582,7 @@ describe PapersController do
 
   describe 'PUT submit' do
     subject(:do_request) do
-       put :submit, id: paper.id, format: :json
+      put :submit, id: paper.id, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -651,7 +650,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error StandardError
+            expect { do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end
@@ -709,7 +708,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error StandardError
+            expect { do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end
@@ -816,7 +815,7 @@ describe PapersController do
 
   describe 'PUT withdraw' do
     subject(:do_request) do
-       put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
+      put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
     let(:withdrawal_reason) { 'It was a whoopsie' }

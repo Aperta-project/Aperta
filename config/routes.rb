@@ -69,6 +69,9 @@ Tahi::Application.routes.draw do
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index, :create, :show, :update]
 
+    resources :authors, only: [:show, :create, :update, :destroy] do
+      put :coauthor_confirmation, on: :member
+    end
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
@@ -253,6 +256,10 @@ Tahi::Application.routes.draw do
   get '/co_authors_token/:token/thank_you',
     to: 'token_co_authors#thank_you',
     as: 'thank_you_token_co_author'
+
+  get '/co_authors_token/:token/authorship_refuted',
+    to: 'token_co_authors#authorship_refuted',
+    as: 'authorship_refuted_token_co_author'
 
   # Legacy resource_proxy routes
   # We need to maintain this route as existing resources have been linked with

@@ -24,18 +24,18 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   aasm column: :state do
-    state :invitation_pending, initial: true
+    state :invitation_not_accepted, initial: true
     state :review_pending
     state :submitted
 
     event(:accept_invitation,
           guards: [:invitation_accepted?]) do
-      transitions from: :invitation_pending, to: :review_pending
+      transitions from: :invitation_not_accepted, to: :review_pending
     end
 
     event(:rescind_invitation) do
-      transitions from: [:invitation_pending, :review_pending],
-                  to: :invitation_pending
+      transitions from: [:invitation_not_accepted, :review_pending],
+                  to: :invitation_not_accepted
     end
 
     event(:submit,
@@ -61,7 +61,7 @@ class ReviewerReport < ActiveRecord::Base
 
   def computed_status
     case aasm.current_state
-    when STATE_INVITATION_PENDING
+    when STATE_INVITATION_NOT_ACCEPTED
       compute_invitation_state
     when STATE_REVIEW_PENDING
       "pending"

@@ -15,11 +15,11 @@ describe ReviewerReport do
   end
 
   describe "report states" do
-    it "defaults to :invitation_pending" do
-      expect(subject.invitation_pending?).to be true
+    it "defaults to :invitation_not_accepted" do
+      expect(subject.invitation_not_accepted?).to be true
     end
 
-    it "can move from :invitation_pending to :review_pending" do
+    it "can move from :invitation_not_accepted to :review_pending" do
       add_invitation(:accepted)
       subject.accept_invitation
       expect(subject.review_pending?).to be true
@@ -32,11 +32,17 @@ describe ReviewerReport do
       expect(subject.submitted?).to be true
     end
 
-    it "can move from :review_pending to :invitation_pending" do
+    it "can move from :review_pending to :invitation_not_accepted" do
       add_invitation(:accepted)
       subject.accept_invitation
       subject.rescind_invitation
-      expect(subject.invitation_pending?).to be true
+      expect(subject.invitation_not_accepted?).to be true
+    end
+
+    it "can move from :invitation_not_accepted to :invitation_not_accepted" do
+      expect(subject.invitation_not_accepted?).to be true
+      subject.rescind_invitation
+      expect(subject.invitation_not_accepted?).to be true
     end
 
     it "can not move from :submitted" do
@@ -59,40 +65,36 @@ describe ReviewerReport do
     end
   end
 
-  describe "#update_invitation_status" do
+  describe "#computed_status" do
     it "has status 'not_invited' without an invitation" do
-      subject.update_invitation_status
-      expect(subject.status_datetime).to be_nil
-      expect(subject.status).to eq("not_invited")
+      expect(subject.computed_datetime).to be_nil
+      expect(subject.computed_status).to eq("not_invited")
     end
 
     it "has status 'invitation_invited' if invited" do
       add_invitation(:invited)
-      subject.update_invitation_status
-      expect(subject.status_datetime).to eq(subject.invitation.invited_at)
-      expect(subject.status).to eq("invitation_invited")
+      expect(subject.computed_datetime).to eq(subject.invitation.invited_at)
+      expect(subject.computed_status).to eq("invitation_invited")
     end
 
     it "has status 'invitation_declined' if declined" do
       add_invitation(:declined)
-      subject.update_invitation_status
-      expect(subject.status_datetime).to eq(subject.invitation.declined_at)
-      expect(subject.status).to eq("invitation_declined")
+      expect(subject.computed_datetime).to eq(subject.invitation.declined_at)
+      expect(subject.computed_status).to eq("invitation_declined")
     end
 
     it "has status 'invitation_rescinded' if rescinded" do
       add_invitation(:rescinded)
-      subject.update_invitation_status
-      expect(subject.status_datetime).to eq(subject.invitation.rescinded_at)
-      expect(subject.status).to eq("invitation_rescinded")
+      expect(subject.computed_datetime).to eq(subject.invitation.rescinded_at)
+      expect(subject.computed_status).to eq("invitation_rescinded")
     end
 
     it "has status 'pending' if invite accepted" do
       add_invitation(:accepted)
       subject.accept_invitation
 
-      expect(subject.status_datetime).to eq(subject.invitation.accepted_at)
-      expect(subject.status).to eq("pending")
+      expect(subject.computed_datetime).to eq(subject.invitation.accepted_at)
+      expect(subject.computed_status).to eq("pending")
     end
 
     it "has status 'complete' if invite accepted and report submitted" do
@@ -100,7 +102,7 @@ describe ReviewerReport do
       subject.accept_invitation
       subject.submit
 
-      expect(subject.status).to eq("completed")
+      expect(subject.computed_status).to eq("completed")
     end
   end
 

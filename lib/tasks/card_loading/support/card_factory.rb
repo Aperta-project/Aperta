@@ -20,7 +20,7 @@ class CardFactory
     existing_card = Card.find_by(name: configuration_klass.name, journal: journal, latest_version: 1)
     card = existing_card || Card.create_new!(name: configuration_klass.name,
                                              journal: journal)
-    card_version = card.latest_card_version
+    card_version = card.card_version(:latest)
     content_root = card_version.content_root
     new_content = configuration_klass.content
     new_content.each do |c|

@@ -14,7 +14,7 @@ describe AuthorsController do
            paper_id: paper.id,
            task_id: task.id,
            position: 1,
-           card_version_id: card.latest_card_version.id
+           card_version_id: card.card_version(:latest).id
          }
   end
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
@@ -40,7 +40,7 @@ describe AuthorsController do
 
     it 'a POST request associates a new author to an existing card version' do
       post_request
-      expect(Author.last.card_version).to eq(card.latest_card_version)
+      expect(Author.last.card_version).to eq(card.card_version(:latest))
     end
 
     it 'a PUT request updates the author' do

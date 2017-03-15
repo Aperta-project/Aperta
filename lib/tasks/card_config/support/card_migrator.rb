@@ -12,7 +12,7 @@ module CardConfig
       Card.transaction do
         card = Card.find_by_name(card_name)
         return unless card
-        card.latest_card_version.content_root.descendants.all.each do |cc|
+        card.card_version(:latest).content_root.descendants.all.each do |cc|
           puts "migrating #{cc.ident}"
           nested_question = NestedQuestion.find_by(ident: cc.ident)
           AnswerMigrator.new(nested_question: nested_question, card_content: cc).call

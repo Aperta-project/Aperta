@@ -16,8 +16,8 @@ class Card < ActiveRecord::Base
   # in those cases, we don't need the proper tree of card content,
   # as the client is simply going to look up records by their ident
   # instead of traversing them.
-  def latest_content_without_root
-    content_for_version(:latest)
+  def content_for_version_without_root(version_no)
+    content_for_version(version_no)
       .where.not(parent_id: nil)
   end
 
@@ -28,16 +28,18 @@ class Card < ActiveRecord::Base
 
   # can take a version number or the symbol `:latest`
   def content_root_for_version(version_no)
+    card_version(version_no).content_root
+  end
+
+  # all the methods dealing with card content go through
+  # `card_version`
+  def card_version(version_no)
     to_find = if version_no == :latest
                 latest_version
               else
                 version_no
               end
-    card_versions.find_by!(version: to_find).content_root
-  end
-
-  def latest_card_version
-    card_versions.find_by(version: latest_version)
+    card_versions.find_by!(version: to_find)
   end
 
   def self.create_new!(attrs)

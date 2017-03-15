@@ -74,7 +74,7 @@ class TasksController < ApplicationController
   def nested_questions
     requires_user_can :view, task
     # Exclude the root node
-    content = task.card.try(:latest_content_without_root) || []
+    content = task.card.try(:content_for_version_without_root, :latest) || []
     respond_with(
       content,
       each_serializer: CardContentAsNestedQuestionSerializer,

@@ -156,7 +156,7 @@ FactoryGirl.define do
     title "Billing"
     trait :with_card_content do
       after(:create) do |task|
-        task.card.latest_content_without_root.each do |card_content|
+        task.card.content_for_version_without_root(:latest).each do |card_content|
           value = "#{card_content.ident} answer"
           value = 'bob@example.com' if card_content.ident == 'plos_billing--email'
           task.find_or_build_answer_for(card_content: card_content, value: value)

@@ -14,7 +14,7 @@ module CardContentShim
              include: true
 
     def nested_questions
-      object.card.try(:latest_content_without_root) || []
+      object.card.try(:content_for_version_without_root, :latest) || []
     end
 
     def nested_question_answers

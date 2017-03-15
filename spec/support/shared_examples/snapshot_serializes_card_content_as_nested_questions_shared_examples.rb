@@ -70,8 +70,8 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
 
       # swap the position of the card content.
       nested_question_2.move_left
-      expect(resource.card.latest_content_without_root.sort_by(&:id)).to eq([nested_question_1, nested_question_2])
-      expect(resource.card.latest_content_without_root.sort_by(&:lft)).to eq([nested_question_2, nested_question_1])
+      expect(resource.card.content_for_version_without_root(:latest).sort_by(&:id)).to eq([nested_question_1, nested_question_2])
+      expect(resource.card.content_for_version_without_root(:latest).sort_by(&:lft)).to eq([nested_question_2, nested_question_1])
     end
 
     it "serializes each question" do

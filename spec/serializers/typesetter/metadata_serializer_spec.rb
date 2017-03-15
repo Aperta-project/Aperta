@@ -34,7 +34,7 @@ describe Typesetter::MetadataSerializer do
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
-      our_task.card.latest_content_without_root.find_by_ident(question_ident)
+      our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
 

@@ -21,7 +21,12 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def assigned_to_me
-    object.participations.map(&:user).include? scope
+    # Reviewers are not participants on their own task
+    if object.reviewer.blank?
+      object.participations.map(&:user).include? scope
+    else
+      object.reviewer == scope
+    end
   end
 
   def links

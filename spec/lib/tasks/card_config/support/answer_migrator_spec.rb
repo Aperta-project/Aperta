@@ -49,7 +49,7 @@ describe "CardConfig::AnswerMigrator" do
 
         attachment = attachments.first
         expect(attachment.owner).to eq(answer)
-        expect(attachment.file.path).to eq nested_question_answer_attachment.file.path
+        expect(attachment['file']).to eq nested_question_answer_attachment['file']
         expect(nested_question_answer.attachments).to be_empty
       end
     end

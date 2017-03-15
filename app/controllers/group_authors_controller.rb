@@ -24,6 +24,10 @@ class GroupAuthorsController < ApplicationController
     requires_user_can :edit_authors, group_author.paper
     group_author.update!(group_author_params)
 
+    if current_user.can? :administer, group_author.paper.journal
+      group_author.update_coauthor_state(author_coauthor_state, current_user.id)
+    end
+
     # render all group_authors, since position is controlled by acts_as_list
     render json: author_list_payload(group_author)
   end
@@ -47,6 +51,10 @@ class GroupAuthorsController < ApplicationController
     hash = serializer.as_json
     hash.delete("paper")
     hash
+  end
+
+  def author_coauthor_state
+    params.require(:group_author).permit(:co_author_state)[:co_author_state]
   end
 
   def group_author_params

@@ -1,6 +1,13 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Group Author</legend>
+      {{#if canChangeCoauthorStatus}}
+        {{author-form-coauthor-controls
+          author=author
+          disabled=isNotEditable
+          setConfirmation=(action "selectAuthorConfirmation")
+        }}
+      {{/if}}
     <div class="flex-group">
       <div class="flex-element inset-form-control required {{if validationErrors.name "error"}}">
         <div class="inset-form-control-text">

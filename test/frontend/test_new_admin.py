@@ -54,21 +54,27 @@ class ApertaAdminTest(CommonTest):
     adm_page.page_ready()
     adm_page.validate_page_elements_styles(user_type['user'])
     adm_page.validate_nav_toolbar_elements(user_type)
+    adm_page.select_admin_top_link('Workflows')
     # Select a random journal link to validate the workflow sub-page
     selected_journal = adm_page.select_journal()
     admin_workflow_pane = AdminWorkflowsPage(self.getDriver())
     admin_workflow_pane.page_ready()
     admin_workflow_pane.validate_workflow_pane(selected_journal)
+    # Due to APERTA-9489 Need to manually go back to the admin page
+    adm_page.click_admin_link()
+    adm_page.select_admin_top_link('Cards')
     # Select a random journal link to validate the cards sub-page
     selected_journal = adm_page.select_journal()
     admin_cards_pane = AdminCardsPage(self.getDriver())
     admin_cards_pane.page_ready()
     admin_cards_pane.validate_cards_pane(selected_journal)
+    adm_page.select_admin_top_link('Users')
     # Select a random journal link to validate the Users sub-page
     selected_journal = adm_page.select_journal()
     admin_users_pane = AdminUsersPage(self.getDriver())
     admin_users_pane.page_ready()
     admin_users_pane.validate_users_pane(selected_journal)
+    adm_page.select_admin_top_link('Settings')
     # Select a random journal link to validate the Settings sub-page
     selected_journal = adm_page.select_journal()
     admin_settings_pane = AdminSettingsPage(self.getDriver())

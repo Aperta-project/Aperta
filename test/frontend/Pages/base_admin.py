@@ -224,3 +224,18 @@ class BaseAdminPage(AuthenticatedPage):
         abbreviation = ''.join(jrnl_abbr)
         abbreviated_journals_list.append(abbreviation)
     return abbreviated_journals_list
+
+  def select_admin_top_link(self, linkname):
+    """Clicks the named link from the admin toolbar"""
+    if linkname == 'Workflows':
+      self._get(self._base_admin_workflows_link).click()
+    elif linkname == 'Cards':
+      self._get(self._base_admin_cards_link).click()
+    elif linkname == 'Users':
+      self._get(self._base_admin_users_link).click()
+    elif linkname == 'Settings':
+      self._get(self._base_admin_settings_link).click()
+    else:
+      logging.error('Invalid linkname specified: {0}'.format(linkname))
+    # Allow time for the UI to update
+    time.sleep(1)

@@ -92,7 +92,7 @@ Tahi::Application.routes.draw do
     resources :filtered_users do
       collection do
         get 'users/:paper_id', constraints: { paper_id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ },
-          to: 'filtered_users#users'
+                               to: 'filtered_users#users'
       end
     end
     resources :formats, only: [:index]
@@ -265,14 +265,15 @@ Tahi::Application.routes.draw do
           | question_attachments
           | figures
           | supporting_information_files
-        /x },
+        /
+      },
       to: 'resource_proxy#url', as: :old_resource_proxy
 
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',
                                            as: :resource_proxy
 
-  scope constraints: lambda { |request| request.fullpath =~ Journal::SHORT_DOI_FORMAT } do
+  scope constraints: ->(request) { request.fullpath =~ Journal::SHORT_DOI_FORMAT } do
     get('/(*rest)', controller: "ember_cli/ember",
                     action: "index",
                     format: :html,

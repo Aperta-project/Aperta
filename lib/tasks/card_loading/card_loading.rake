@@ -7,9 +7,11 @@ namespace :cards do
 
     # To avoid id collision on the ember side, where we are making CardContent
     # look like NestedQuestion, do not reuse ids.
-    start = NestedQuestion.pluck(:id).max + 1
-    $stderr.puts("Starting CardContent.id sequence at #{start}")
-    ActiveRecord::Base.connection.execute("ALTER SEQUENCE card_contents_id_seq RESTART WITH #{start}")
+    start = NestedQuestion.pluck(:id).max.try(:+, 1)
+    if start.present?
+      $stderr.puts("Starting CardContent.id sequence at #{start}")
+      ActiveRecord::Base.connection.execute("ALTER SEQUENCE card_contents_id_seq RESTART WITH #{start}")
+    end
     CardLoader.load_all(journal: nil)
   end
 end

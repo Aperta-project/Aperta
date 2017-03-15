@@ -222,12 +222,6 @@ Tahi::Application.routes.draw do
     end
   end
 
-  # epub/pdf paper download formats
-  #
-  resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, only: [] do
-    get :download, on: :member
-  end
-
   get '/invitations/:token',
     to: 'token_invitations#show',
     as: 'confirm_decline_invitation'

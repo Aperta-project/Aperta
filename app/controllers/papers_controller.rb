@@ -108,29 +108,6 @@ class PapersController < ApplicationController
                  root: 'related_articles'
   end
 
-  ## CONVERSION
-
-  def download
-    requires_user_can(:view, paper)
-    respond_to do |format|
-      format.docx do
-        if paper.file.blank? || paper.file.url.blank?
-          render status: :not_found, nothing: true
-        else
-          redirect_to paper.file.url
-        end
-      end
-
-      format.pdf do
-        pdf = PDFConverter.new(paper, current_user)
-        send_data pdf.convert,
-                  filename: pdf.fs_filename,
-                  type: 'application/pdf',
-                  disposition: 'attachment'
-      end
-    end
-  end
-
   ## EDITING
 
   def toggle_editable

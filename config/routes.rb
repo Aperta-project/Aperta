@@ -265,7 +265,7 @@ Tahi::Application.routes.draw do
           | question_attachments
           | figures
           | supporting_information_files
-        /
+        /x
       },
       to: 'resource_proxy#url', as: :old_resource_proxy
 

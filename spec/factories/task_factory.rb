@@ -16,10 +16,6 @@ FactoryGirl.define do
     title "Do something awesome"
     phase
     paper
-
-    trait :with_nested_question_answers do
-      nested_question_answers { FactoryGirl.create_list(:nested_question_answer, 3) }
-    end
   end
 
   factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do

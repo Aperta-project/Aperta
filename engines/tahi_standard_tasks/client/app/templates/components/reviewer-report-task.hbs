@@ -2,7 +2,7 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{#if task.body.submitted}}
+    {{#if task.isSubmitted}}
       {{reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
       <p><strong>Please refer to our 

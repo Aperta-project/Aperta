@@ -89,8 +89,6 @@ module TahiStandardTasks
       self.title = new_title
     end
 
-    private
-
     def latest_reviewer_report
       reviewer_reports.order('created_at DESC').first
     end

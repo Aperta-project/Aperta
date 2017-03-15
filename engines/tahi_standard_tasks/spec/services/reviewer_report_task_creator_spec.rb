@@ -13,7 +13,16 @@ describe ReviewerReportTaskCreator do
   let!(:paper) { FactoryGirl.create(:paper, :submitted, journal: journal) }
   let!(:originating_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
-
+  let!(:invitation) do
+    FactoryGirl.create(
+      :invitation,
+      :accepted,
+      accepted_at: DateTime.now.utc,
+      invitee: assignee,
+      task: originating_task,
+      decision: paper.draft_decision
+    )
+  end
   subject do
     ReviewerReportTaskCreator.new(
       originating_task: originating_task,
@@ -24,6 +33,7 @@ describe ReviewerReportTaskCreator do
   context "when the paper is configured to use the research reviewer report" do
     before do
       paper.update_column :uses_research_article_reviewer_report, true
+      paper.draft_decision.invitations << invitation
     end
 
     it "sets the task to be a ReviewerReportTask" do

@@ -26,7 +26,7 @@ class EventStreamSubscriber
   end
 
   def payload
-    payload_for_record record
+    payload_for_record(record)
   end
 
   def channel

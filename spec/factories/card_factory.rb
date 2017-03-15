@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :card do
-    name "Test Card"
+    sequence(:name) { |n| "Test Card #{n}" }
     journal
     latest_version 1
 

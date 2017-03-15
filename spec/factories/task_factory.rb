@@ -9,7 +9,9 @@ FactoryGirl.define do
 
   trait :with_card do
     after(:create) do |task|
-      FactoryGirl.create(:card, :versioned, name: task.class.to_s)
+      # first check to see if there's an existing card we can use
+      name = task.class.to_s
+      Card.find_by(name: name) || FactoryGirl.create(:card, :versioned, name: name)
     end
   end
   factory :ad_hoc_task do

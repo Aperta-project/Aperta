@@ -31,6 +31,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::ReportingGuidelinesTask, with: Snapshot::ReportingGuidelinesTaskSerializer
       serialize TahiStandardTasks::ReviewerRecommendation, with: Snapshot::ReviewerRecommendationSerializer
       serialize TahiStandardTasks::ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
+      serialize TahiStandardTasks::ReviseTask, with: Snapshot::ReviseTaskSerializer
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer

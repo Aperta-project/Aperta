@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added "Confirm Authorship" button to email to co authors.
 * Added PDF submissions for PLOS Biology
 * Require source files on PDF manuscripts that are in revision or have major versions greater than 0
+* Warn users to save work externally when server health check fails
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 * Temporarily disabled coauthor notification

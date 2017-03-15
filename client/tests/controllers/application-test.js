@@ -2,11 +2,12 @@ import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import sinon from 'sinon';
 
-let pusherStub, flashStub, pusherFailureMessageSpy, displayFlashMessageSpy;
+let pusherStub, flashStub, pusherFailureMessageSpy, displayFlashMessageSpy, healthCheckStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
   needs: ['model:journal'],
   beforeEach: function() {
+    healthCheckStub = { start: ()=>{} };
     pusherStub = {connection: { connection: { state: 'connecting' } }};
     pusherFailureMessageSpy = sinon.stub().returns('oh noes -.-');
     displayFlashMessageSpy = sinon.spy();
@@ -28,9 +29,12 @@ test('Slanger notifications - happy path', function(assert) {
   pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(false);
 
   Ember.run(() => {
-    let controller = this.subject({ pusher: pusherStub,
+    let controller = this.subject({
+      pusher: pusherStub,
       _pusherFailureMessage: pusherFailureMessageSpy,
-      flash: flashStub });
+      healthCheck: healthCheckStub,
+      flash: flashStub
+    });
 
     assert.ok(controller);
 
@@ -57,6 +61,7 @@ test('Slanger notifications - unable to connect', function(assert) {
     let controller = this.subject({
       pusher: pusherStub,
       _pusherFailureMessage: pusherFailureMessageSpy,
+      healthCheck: healthCheckStub,
       flash: flashStub });
 
     assert.ok(controller);
@@ -80,6 +85,7 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
   Ember.run(() => {
     let controller = this.subject({ pusher: pusherStub,
       _pusherFailureMessage: pusherFailureMessageSpy,
+      healthCheck: healthCheckStub,
       flash: flashStub });
 
     assert.ok(controller);
@@ -103,6 +109,7 @@ test('Slanger notifications - user was disconnected by the application', functio
   Ember.run(() => {
     let controller = this.subject({ pusher: pusherStub,
       _pusherFailureMessage: pusherFailureMessageSpy,
+      healthCheck: healthCheckStub,
       flash: flashStub });
 
     assert.ok(controller);

@@ -36,7 +36,7 @@ module CardConfig
     end
 
     def migrate_attachments!(nested_question_answer, answer)
-      nested_question_answer.attachments.all.map(&:dup).each do |attachment|
+      nested_question_answer.attachments.all.each do |attachment|
         attachment.owner = answer
         attachment.save!
       end

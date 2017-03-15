@@ -4,10 +4,11 @@ FactoryGirl.define do
   factory :attachment, class: 'Attachment' do
     status "processing"
     file_hash { Digest::SHA256.hexdigest rand(10000).to_s(16) }
+
     association :owner, factory: :paper
 
     after :build do |attachment|
-      attachment['file'] ||= 'factory-test-file.jpg'
+      attachment['file'] ||= Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'bill_ted1.jpg'))
     end
 
     before :create do |attachment|

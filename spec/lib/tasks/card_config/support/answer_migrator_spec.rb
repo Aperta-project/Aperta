@@ -39,14 +39,18 @@ describe "CardConfig::AnswerMigrator" do
     end
 
     it "copies any Attachments from the NestedQuestionAnswer to the Answer" do
+      nested_question_answer_attachment = nested_question_answer.attachments.first
       answers = creator.call
-      attachments = answers.first.attachments
+      answer = answers.first
+      attachments = answer.attachments
 
       aggregate_failures("migrated attachments") do
         expect(attachments.count).to eq(1)
 
         attachment = attachments.first
-        expect(attachment[:file]).to eq(nested_question_attachment[:file])
+        expect(attachment.owner).to eq(answer)
+        expect(attachment.file.path).to eq nested_question_answer_attachment.file.path
+        expect(nested_question_answer.attachments).to be_empty
       end
     end
   end

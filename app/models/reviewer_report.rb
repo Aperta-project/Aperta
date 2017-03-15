@@ -61,8 +61,8 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def update_invitation_status
-    update!(status: compute_invitation_state,
-            status_datetime: compute_invitation_datetime) if !submitted?
+    update!(status: computed_status,
+            status_datetime: compute_invitation_datetime) unless submitted?
   end
 
   private
@@ -104,8 +104,6 @@ class ReviewerReport < ActiveRecord::Base
       invitation.declined_at
     when "invitation_rescinded"
       invitation.rescinded_at
-    else
-      Time.current.utc
     end
   end
 end

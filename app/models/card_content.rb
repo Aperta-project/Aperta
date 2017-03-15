@@ -11,13 +11,20 @@ class CardContent < ActiveRecord::Base
   has_one :card, through: :card_version
 
   validates :card_version, presence: true
-  validates :card_version,
+  validates :parent_id,
             uniqueness: {
+              scope: :card_version,
               message: "Card versions can only have one root node."
             },
             if: -> { parent_id.nil? }
 
   has_many :answers
+
+  validates :ident,
+            uniqueness: {
+              message: "CardContent idents must be unique"
+            },
+            if: -> { ident.present? }
 
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)

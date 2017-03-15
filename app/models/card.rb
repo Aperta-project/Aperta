@@ -7,7 +7,6 @@ class Card < ActiveRecord::Base
   has_many :card_versions, inverse_of: :card, dependent: :destroy
   validates :name, presence: { message: "Please give your card a name." }
   validates :name, uniqueness: {
-    scope: :journal,
     message: "That card name is taken. Please give your card a new name."
   }
 

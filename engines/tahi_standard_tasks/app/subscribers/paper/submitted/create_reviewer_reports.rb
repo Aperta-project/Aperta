@@ -13,7 +13,7 @@ class Paper::Submitted::CreateReviewerReports
         task: task,
         decision: paper.draft_decision,
         user: task.reviewer
-      ).update_invitation_status
+      )
     end
   end
 end

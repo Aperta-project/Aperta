@@ -59,6 +59,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'I have no competing interests'
     t.submit_report
@@ -91,7 +92,6 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     invitation = create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    reviewer_report_task.latest_reviewer_report.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}",
@@ -112,9 +112,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
 
-    invitation = create_reviewer_invitation(paper)
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    reviewer_report_task.latest_reviewer_report.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
@@ -132,9 +131,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
 
-    invitation = create_reviewer_invitation(paper)
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    reviewer_report_task.latest_reviewer_report.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)

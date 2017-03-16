@@ -79,6 +79,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     end
     t.submit_report
     t.confirm_submit_report
+
     expect(page).to have_selector(".answer-text", text: no_compete)
     expect(answers.count).to eq(1)
     expect(answers.reload.first.value).to eq('I have no competing interests with this work.')

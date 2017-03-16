@@ -6,7 +6,13 @@
     <div class="labeled-input-form card-editor-name-form animation-fade-in">
       <div class="card-editor-name-row">
         <div class="card-editor-name-field">
-          {{forms/labeled-input-with-errors type='text' name='name' value=cardName enter=(action "complete") errors=errors autofocus=true autofocus='autofocus'}}
+          {{forms/labeled-input-with-errors
+            type='text'
+            name='name'
+            value=cardName
+            enter=(action "complete")
+            errors=errors
+            autofocus=true}}
         </div>
 
         <div class="card-editor-name-action-buttons">

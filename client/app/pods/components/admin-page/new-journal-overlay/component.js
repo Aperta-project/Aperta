@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
-import {PropTypes} from 'ember-prop-types';
+import { PropTypes } from 'ember-prop-types';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
@@ -11,7 +12,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
   classNames: ['admin-new-journal-overlay'],
-  saving: false,
+  saving: Ember.computed.reads('createJournal.isRunning'),
   errors: null,
 
   name: '',
@@ -32,6 +33,27 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       { journalID: journal.id });
   },
 
+  createJournal: task(function * () {
+    let newJournalProps = this.getProperties([
+      'name',
+      'description',
+      'doiPublisherPrefix',
+      'doiJournalPrefix',
+      'lastDoiIssued',
+      'logoUrl'
+    ]);
+    const journal = this.get('store').createRecord('admin-journal', newJournalProps);
+
+    try {
+      yield journal.save();
+      this.get('success')(journal);
+      this.redirectToJournal(journal);
+      this.get('close')();
+    } catch (response) {
+      this.set('errors', journal.get('errors'));
+    }
+  }),
+
   actions: {
     close() {
       this.get('close')();
@@ -39,27 +61,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     complete() {
-      this.set('saving', true);
-      this.clearErrors();
-
-      const journal = this.get('store').createRecord('admin-journal', {
-        name: this.get('name'),
-        description: this.get('description'),
-        doiPublisherPrefix: this.get('doiPublisherPrefix'),
-        doiJournalPrefix: this.get('doiJournalPrefix'),
-        lastDoiIssued: this.get('lastDoiIssued'),
-        logoUrl: this.get('logoUrl')
-      });
-
-      journal.save().then(() =>{
-        this.set('saving', false);
-        this.get('success')(journal);
-        this.redirectToJournal(journal);
-        this.get('close')();
-      }).catch(() => {
-        this.set('saving', false);
-        this.set('errors', journal.get('errors'));
-      });
+      this.get('createJournal').perform();
     }
   }
 });

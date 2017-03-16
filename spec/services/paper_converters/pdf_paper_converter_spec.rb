@@ -19,7 +19,7 @@ describe PaperConverters::PdfPaperConverter do
 
   describe "#output_filename" do
     subject { converter.output_filename }
-    it { is_expected.to match(/.+\.pdf/) }
+    it { is_expected.to eq "#{paper.short_doi} - #{paper.creator.last_name} - #{versioned_text.version}.pdf" }
   end
 
   describe "#output_filetype" do

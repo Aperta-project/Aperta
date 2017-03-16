@@ -11,8 +11,9 @@ module PaperConverters
     end
 
     def output_filename
-      filename = @versioned_text.paper.display_title.gsub(/[^)(\d\w\s_-]+/, '')
-      filename = filename[0..149] # limit to 150 chars
+      paper = @versioned_text.paper
+      filename = "#{paper.short_doi} - #{paper.creator.last_name} "\
+       "- #{@versioned_text.version}"
       "#{filename}.pdf"
     end
 

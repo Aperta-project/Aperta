@@ -10,6 +10,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 ### Security
 
+## ## [1.39.0] - {2017-03-14}
+### Added
+* Users can now save lists on Safari for Ad Hoc cards
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## ## [1.38.0] - {2017-03-09}
 ### Added
 * Users can now change the initial participants on a discussion topic.

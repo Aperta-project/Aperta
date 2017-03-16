@@ -24,20 +24,25 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  def update
+    if params[:card][:content_changed]
+      VersionCardContent.save_new_version(
+        card,
+        params[:card][:admin_content]
+      )
+    end
+    card.update!(card_params)
+
+    respond_with card.reload
+  end
+
   def create
     journal = Journal.find(card_params[:journal_id])
     requires_user_can(:create_card, journal)
 
-    card = Card.create!(card_params)
-    respond_with card
+    respond_with Card.create_new(card_params)
   end
 
-  def update
-    requires_user_can(:edit_card, card.journal)
-
-    card.update!(card_params)
-    respond_with card
-  end
 
   private
 

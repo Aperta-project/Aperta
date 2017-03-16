@@ -131,15 +131,17 @@ describe CardsController do
     end
   end
 
-  describe '#update' do
-    let(:card) { FactoryGirl.create(:card, journal: my_journal, name: 'An Old Name') }
-    let(:name) { 'A New Name' }
-
-    subject(:do_request) do
-      put :update, format: 'json', id: card.id, card: {
-        name: name
+  describe "#update" do
+    let(:card_params) do
+      {
+        name: name,
+        journal_id: my_journal.id
       }
     end
+    subject(:do_request) do
+      post(:update, format: 'json', id: existing_card.id, card: card_params)
+    end
+    let(:name) { "Steve" }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -157,18 +159,37 @@ describe CardsController do
       end
 
       context 'user has access' do
+        let(:existing_card) { FactoryGirl.create(:card, name: "Old Name") }
         before do
           stub_sign_in user
           allow(user).to receive(:can?)
-            .with(:edit_card, my_journal)
+            .with(:create_card, my_journal)
             .and_return(true)
         end
 
-        it { is_expected.to responds_with 204 }
+        it { is_expected.to responds_with 201 }
 
-        it 'updates the card' do
+        it 'returns the updated card' do
           do_request
-          expect(card.reload.name).to eq(name)
+          expect(res_body['card']['name']).to eq name
+        end
+
+        context "the content_changed flag is true" do
+          let(:card_params) do
+            {
+              content_changed: true,
+              admin_content: {
+                "text" => "parent"
+              }
+            }
+          end
+          it "calls VersionCardContent.save_new_version" do
+            allow(Card).to receive(:find)
+              .and_return(existing_card)
+            expect(VersionCardContent).to receive(:save_new_version)
+              .with(existing_card, "text" => "parent")
+            do_request
+          end
         end
       end
     end

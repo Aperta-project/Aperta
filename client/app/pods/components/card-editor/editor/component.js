@@ -6,5 +6,11 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
-  classNames: ['card-editor-editor']
+  classNames: ['card-editor-editor'],
+
+  actions: {
+    saveCard() {
+      this.get('card').save();
+    }
+  }
 });

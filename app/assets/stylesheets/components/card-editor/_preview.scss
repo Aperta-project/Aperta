@@ -9,22 +9,6 @@
     padding: 0 30px;
   }
 
-  .card-editor-preview-card {
-    background-color: #fff;
-    margin: 0 auto;
-    min-height: 100px;
-    transition: max-width .25s, border-radius .25s;
-  }
-
-  .card-editor-preview-full {
-    max-width: 1120px;
-    border-radius: 5px;
-  }
-
-  .card-editor-preview-sidebar {
-    max-width: 500px;
-  }
-
   .card-editor-preview-toggles {
     button {
       background-color: transparent;

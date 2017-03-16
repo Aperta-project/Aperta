@@ -10,6 +10,14 @@
     </button>
   </div>
 
-  <div class="card-editor-preview-card {{if sidebar "card-editor-preview-sidebar" "card-editor-preview-full"}}">
-  </div>
+  {{#if sidebar}}
+    {{#card-editor/preview/sidebar card=card}}
+      {{card-content/preview content=card.adminContent}}
+    {{/card-editor/preview/sidebar}}
+  {{else}}
+    {{#card-editor/preview/overlay card=card}}
+      {{card-content/preview content=card.adminContent}}
+    {{/card-editor/preview/overlay}}
+  {{/if}}
+
 </div>

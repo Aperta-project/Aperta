@@ -4,6 +4,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* The footer discussion cannot be seen by Reviewers and other external users in
+  individual card view
+* Billing staff now have more viewing access than just to the Billing card
 ### Changed
 ### Deprecated
 ### Removed

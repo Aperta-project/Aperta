@@ -58,7 +58,8 @@ test('A card with more than 5 comments has the show all comments button', functi
     body: []
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
 
   TestHelper.mockFind('task').returns({
@@ -86,13 +87,94 @@ test('A card with less than 5 comments doesnt have the show all comments button'
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
   TestHelper.mockFind('task').returns({
     model: task
   });
   visit('/papers/' + (paper.get('shortDoi')) + '/tasks/' + (task.get('id')));
   return andThen(function() {
+    assert.ok(find('.load-all-comments').length === 0);
+    assert.equal(find('.message-comment').length, 3, 'All messages displayed');
+    return assert.equal(find('.message-comment.unread').length, 0);
+  });
+});
+
+test('A card without comment view permissions can not see the discussion section', function(assert) {
+  var comments, paper, task;
+  assert.expect(4);
+  paper = FactoryGuy.make('paper');
+  comments = makeList('comment', 3);
+  task = FactoryGuy.make('ad-hoc-task', {
+    paper: paper,
+    body: [],
+    comments: comments
+  });
+  Factory.createPermission('Paper', paper.id, ['view']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit']);
+  TestHelper.mockPaperQuery(paper);
+  TestHelper.mockFind('task').returns({
+    model: task
+  });
+  visit('/papers/' + (paper.get('shortDoi')) + '/tasks/' + (task.get('id')));
+  return andThen(function() {
+    assert.ok(find('.overlay-discussion-board').length === 0);
+    assert.ok(find('.load-all-comments').length === 0);
+    assert.equal(find('.message-comment').length, 0, 'No messages displayed');
+    return assert.equal(find('.message-comment.unread').length, 0);
+  });
+});
+
+test('A card with discussion view permissions but not discussion edit permissions can not edit the discussion section', function(assert) {
+  var comments, paper, task;
+  assert.expect(5);
+  paper = FactoryGuy.make('paper');
+  comments = makeList('comment', 3);
+  task = FactoryGuy.make('ad-hoc-task', {
+    paper: paper,
+    body: [],
+    comments: comments
+  });
+  Factory.createPermission('Paper', paper.id, ['view']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer']);
+  TestHelper.mockPaperQuery(paper);
+  TestHelper.mockFind('task').returns({
+    model: task
+  });
+  visit('/papers/' + (paper.get('shortDoi')) + '/tasks/' + (task.get('id')));
+  return andThen(function() {
+    assert.ok(find('.participant-selector').length === 0);
+    assert.ok(find('.load-all-comments').length === 0);
+    assert.ok(find('.overlay-discussion-board').length === 1);
+    assert.equal(find('.message-comment').length, 3, 'All messages displayed');
+    return assert.equal(find('.message-comment.unread').length, 0);
+  });
+});
+
+test('A card with discussion view permissions and discussion edit permissions can view and edit the discussion section', function(assert) {
+  var comments, paper, task;
+  assert.expect(5);
+  paper = FactoryGuy.make('paper');
+  comments = makeList('comment', 3);
+  task = FactoryGuy.make('ad-hoc-task', {
+    paper: paper,
+    body: [],
+    comments: comments
+  });
+  Factory.createPermission('Paper', paper.id, ['view']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
+  TestHelper.mockPaperQuery(paper);
+  TestHelper.mockFind('task').returns({
+    model: task
+  });
+  visit('/papers/' + (paper.get('shortDoi')) + '/tasks/' + (task.get('id')));
+  return andThen(function() {
+    assert.ok(find('.participant-selector').length === 1);
+    assert.ok(find('.overlay-discussion-board').length === 1);
     assert.ok(find('.load-all-comments').length === 0);
     assert.equal(find('.message-comment').length, 3, 'All messages displayed');
     return assert.equal(find('.message-comment.unread').length, 0);
@@ -110,7 +192,8 @@ test('A task with a commentLook shows up as unread and deletes its comment look'
     comments: comments
   });
   Factory.createPermission('Paper', paper.id, ['view']);
-  Factory.createPermission('AdHocTask', task.id, ['view', 'edit']);
+  Factory.createPermission('AdHocTask', task.id,
+                          ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']);
   TestHelper.mockPaperQuery(paper);
   TestHelper.mockFind('task').returns({
     model: task

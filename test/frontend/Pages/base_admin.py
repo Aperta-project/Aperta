@@ -182,8 +182,7 @@ class BaseAdminPage(AuthenticatedPage):
     journal_names = []
     journal_links = self._gets(self._base_admin_journal_links)
     for journal in journal_links:
-      if regular:
-        if journal.text not in ('All My Journals', 'All'):
+      if regular and journal.text not in ('All My Journals', 'All'):
           journal_names.append(journal.text)
       else:
         journal_names.append(journal.text)

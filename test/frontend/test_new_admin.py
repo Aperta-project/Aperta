@@ -81,14 +81,14 @@ class ApertaAdminTest(CommonTest):
     admin_settings_pane.page_ready()
     admin_settings_pane.validate_settings_pane(selected_journal)
 
-  def _test_negative_permission(self):
+  def rest_negative_permission(self):
     """
     test_admin: Validate if non authorized user can see Admin panel
     :return: void function
     """
     # TODO
 
-  # Not yet implemented
+  # Not yet implemented as a test, nor in underlying application code
   # def test_validate_add_new_journal(self):
   #   """
   #   test_admin: Validate the elements, styles and process of adding a new journal.
@@ -107,7 +107,7 @@ class ApertaAdminTest(CommonTest):
     # Not yet implemented
     # adm_page.validate_add_new_journal(user_type['user'])
 
-  # Not Yet Implemented
+  # Not Yet Implemented as a test - beyond the scope of this ticket APERTA-8989
   # def test_validate_edit_journal(self):
   #   """
   #   test_admin: Validates the edit journal function, form elements and styles.

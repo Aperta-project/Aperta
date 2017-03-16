@@ -16,11 +16,6 @@ module TahiStandardTasks
     def self.restore_defaults
     end
 
-    def reviewer
-      assignments.joins(:role)
-        .where(roles: {name: Role::REVIEWER_REPORT_OWNER_ROLE}).first.try(:user)
-    end
-
     def reviewer_number
       ReviewerNumber.number_for(reviewer, paper)
     end

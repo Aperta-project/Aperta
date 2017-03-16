@@ -24,7 +24,7 @@ module CardConfig
         answer.owner_id        = nested_question_answer.owner.id
         answer.owner_type      = nested_question_answer.owner_type
         answer.value           = nested_question_answer.value
-        answer.paper_id        = nested_question_answer.paper_id
+        answer.paper_id        = nested_question_answer.paper_id || nested_question_answer.owner.paper.id
         answer.additional_data = nested_question_answer.additional_data
         answer.created_at      = nested_question_answer.created_at
         answer.updated_at      = nested_question_answer.updated_at

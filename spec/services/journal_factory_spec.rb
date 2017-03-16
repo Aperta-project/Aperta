@@ -1458,7 +1458,7 @@ describe JournalFactory do
           it 'can :view and :edit' do
             # Sometimes there is more than one 'edit' or 'view' permission for BillingTask so this fixes spec flakiness
             permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
-            expect(permission_strings).to contain_exactly('view', 'edit')
+            expect(permission_strings).to contain_exactly('view', 'edit','view_discussion_footer', 'view_participants')
           end
         end
 

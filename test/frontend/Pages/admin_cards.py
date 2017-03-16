@@ -75,6 +75,7 @@ class AdminCardsPage(BaseAdminPage):
     if selected_jrnl not in ('All My Journals', 'All'):
       add_card_btn = self._get(self._admin_cards_add_new_card_btn)
       assert 'ADD NEW CARD' in add_card_btn.text, add_card_btn.text
+    self.set_timeout(3)
     # Now a guard to ensure we are in a reasonable data state
     try:
       cards = self._gets(self._admin_cards_card_thumbnail)
@@ -85,6 +86,7 @@ class AdminCardsPage(BaseAdminPage):
       # raise ElementDoesNotExistAssertionError('No extant Cards found for Journal. '
       #                                         'This should never happen.')
       logging.info('No Cards found for journal: {0}'.format(selected_jrnl))
+    self.restore_timeout()
     try:
       jid = self._driver.current_url.split('=')[1]
     except IndexError:

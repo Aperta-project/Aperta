@@ -4,7 +4,9 @@
 Page Object Model for the base Admin Page, Settings Tab. Validates elements and their styles,
 and functions.
 """
+import logging
 import time
+
 from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -22,6 +24,51 @@ class AdminSettingsPage(BaseAdminPage):
 
     # Locators - Instance members
     self._admin_settings_pane_title = (By.CSS_SELECTOR, 'div.admin-page-content > div > h2')
+    self._admin_settings_pane_alljournals_placeholder_heading = (By.CSS_SELECTOR,
+                                                                 'div.admin-journal-settings > h4')
+    # Edit journal form section
+    self._admin_setings_edit_journal_div = (By.CLASS_NAME, 'journal-thumbnail-edit-form')
+    self._admin_settings_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
+    self._admin_settings_edit_logo_upload_note = (By.CLASS_NAME,
+                                                       'journal-thumbnail-logo-upload-note')
+    self._admin_settings_edit_logo_input_field = (By.ID, 'journal-logo-null')
+    self._admin_settings_edit_title_label = (By.CSS_SELECTOR,
+                                                 'div.inset-form-control-text > label')
+    self._admin_settings_edit_title_field = (By.CSS_SELECTOR, 'div.inset-form-control > input')
+    self._admin_settings_edit_desc_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control '
+                         '> div.inset-form-control-text > label')
+    self._admin_settings_edit_desc_field = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control > textarea')
+    self._admin_settings_edit_doi_jrnl_prefix_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '> div.inset-form-control-text > label')
+    self._admin_settings_edit_doi_jrnl_prefix_field = (By.CLASS_NAME,
+                                                            'journal-doi-journal-prefix-edit')
+    self._admin_settings_edit_doi_publ_prefix_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '+ div.inset-form-control > div.inset-form-control-text > label')
+    self._admin_settings_edit_doi_publ_prefix_field = (By.CLASS_NAME,
+                                                            'journal-doi-publisher-prefix-edit')
+    self._admin_settings_edit_last_doi_label = (
+        By.CSS_SELECTOR, 'div.inset-form-control + div.inset-form-control + div.inset-form-control '
+                         '+ div.inset-form-control + div.inset-form-control > '
+                         'div.inset-form-control-text > label')
+    self._admin_settings_edit_last_doi_field = (By.CLASS_NAME, 'journal-last-doi-edit')
+    self._admin_settings_edit_cancel_link = (By.XPATH,
+                                                  '//div[@class="journal-edit-buttons"]/a[1]')
+    self._admin_settings_edit_save_button = (By.XPATH,
+                                                  '//div[@class="journal-edit-buttons"]/a[2]')
+
+    # Style Settings Section
+    self._admin_settings_edit_pdf_css_btn = (By.ID, 'edit-pdf-css')
+    self._admin_settings_edit_ms_css_btn = (By.ID, 'edit-manuscript-css')
+
+    self._journal_styles_css_overlay_field_label = (By.CSS_SELECTOR, 'div.overlay-header + p')
+    self._journal_styles_css_overlay_field = (By.CSS_SELECTOR, 'div.overlay-header + p + textarea')
+    self._journal_styles_css_overlay_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a')
+    self._journal_styles_css_overlay_save = (By.CSS_SELECTOR,
+                                             'div.overlay-action-buttons a + button')
 
   # POM Actions
   def page_ready(self):
@@ -30,17 +77,83 @@ class AdminSettingsPage(BaseAdminPage):
 
   def validate_settings_pane(self, selected_jrnl):
     """
-    Assert the existence and function of the elements of the Workflows pane.
+    Assert the existence and function of the elements of the Settings pane.
     Validate Add new template, edit/delete existing templates, validate presentation.
     :param selected_jrnl: The name of the selected journal for which to validate the workflow pane
     :return: void function
     """
-    # Time to fully populate MMT for selected journal
+    logging.info('Validating settings display for {0}.'.format(selected_jrnl))
+    # Time to fully populate Settings for selected journal
     time.sleep(1)
-    all_journals = False
-    dbmmts = []
-    dbids = []
-    mmts = []
-    workflow_pane_title = self._get(self._admin_settings_pane_title)
-    self.validate_application_h2_style(workflow_pane_title)
-    assert 'Journal Settings' in workflow_pane_title.text, workflow_pane_title.text
+    if selected_jrnl in ('All My Journals', 'All'):
+      alljournals_subhead = self._get(self._admin_settings_pane_alljournals_placeholder_heading)
+      assert alljournals_subhead.text == 'Please select a specific journal ' \
+                                         'to modify.', alljournals_subhead.text
+    else:
+      # We have a regular journal so all elements present
+      users_pane_title = self._get(self._admin_settings_pane_title)
+      self.validate_application_h2_style(users_pane_title)
+      assert 'Journal Settings' in users_pane_title.text, users_pane_title.text
+      self.validate_edit_journal(selected_jrnl)
+      self.validate_style_settings_section()
+
+  def validate_edit_journal(self, journal):
+    """
+    Validates the edit function of the named journal
+    :param journal: The name of the journal chosen for the settings pane
+    :return: void function
+    """
+    logging.info('Validating editing journal: {0}'.format(journal))
+    upload_button = self._get(self._admin_settings_edit_logo_upload_btn)
+    assert upload_button.text == 'UPLOAD NEW'
+    self.validate_blue_on_blue_button_style(upload_button)
+    journal_title_label = self._get(self._admin_settings_edit_title_label)
+    assert journal_title_label.text == 'Journal Title'
+    journal_title_field = self._get(self._admin_settings_edit_title_field)
+    assert journal_title_field.get_attribute('value') == journal
+    journal_desc_label = self._get(self._admin_settings_edit_desc_label)
+    assert journal_desc_label.text == 'Journal Description'
+    # APERTA-6829
+    # self.validate_input_field_inside_label_style(journal_desc_label)
+    self._get(self._admin_settings_edit_desc_field)
+    save_button = self._get(self._admin_settings_edit_save_button)
+    assert save_button.text == 'SAVE'
+    self.validate_blue_on_blue_button_style(save_button)
+    cancel_link = self._get(self._admin_settings_edit_cancel_link)
+    assert cancel_link.text == 'cancel'
+    cancel_link.click()
+
+  def validate_style_settings_section(self):
+    """
+    Validate the CSS style section elements and functions of the Admin Settings page
+    :return: void function
+    """
+    edit_pdf_css_btn = self._get(self._admin_settings_edit_pdf_css_btn)
+    assert edit_pdf_css_btn.text == 'EDIT PDF CSS', edit_pdf_css_btn.text
+    edit_pdf_css_btn.click()
+    time.sleep(.5)
+    self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'PDF CSS' in title.text, title.text
+    label = self._get(self._journal_styles_css_overlay_field_label)
+    assert label.text == 'Enter or edit CSS to format the PDF output for this '\
+        'journal\'s papers.', label.text
+    self._get(self._journal_styles_css_overlay_field)
+    cancel = self._get(self._journal_styles_css_overlay_cancel)
+    self._get(self._journal_styles_css_overlay_save)
+    cancel.click()
+    time.sleep(.5)
+    edit_ms_css_btn = self._get(self._admin_settings_edit_ms_css_btn)
+    assert edit_ms_css_btn.text == 'EDIT MANUSCRIPT CSS', edit_ms_css_btn.text
+    edit_ms_css_btn.click()
+    time.sleep(.5)
+    self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'Manuscript CSS' in title.text, title.text
+    label = self._get(self._journal_styles_css_overlay_field_label)
+    assert label.text == 'Enter or edit CSS to format the manuscript editor and output for '\
+        'this journal.', label.text
+    self._get(self._journal_styles_css_overlay_field)
+    self._get(self._journal_styles_css_overlay_cancel)
+    save = self._get(self._journal_styles_css_overlay_save)
+    save.click()

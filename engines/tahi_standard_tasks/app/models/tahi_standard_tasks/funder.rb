@@ -7,7 +7,9 @@ module TahiStandardTasks
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
 
-    # useful for nested_questions to always have path to owner
+    # NestedQuestionable will save the paper_id to newly created answers if
+    # an answer's owner responds to :paper.  This method is needed by
+    # the NestedQuestionAnswersController#fetch_answer method, among others
     def paper
       task.paper
     end

@@ -16,6 +16,28 @@ class ReviewerReport < ActiveRecord::Base
     decision.invitations.find_by(invitee_id: user.id)
   end
 
+  # TODO: CardConfig
+  # override card from Answerable as a temporary measure.  A ReviewerReport needs to look
+  # up the name of its card based on the type of task it belongs to, as there's no
+  # FrontMatterReviewerReport at the moment
+  def card
+    if card_version_id
+      card_version.card
+    else
+      card_name = {
+        "TahiStandardTasks::ReviewerReportTask" => "ReviewerReport",
+        "TahiStandardTasks::FrontMatterReviewerReportTask" => "FrontMatterReviewerReport"
+      }.fetch(task.class.name)
+      Card.find_by(name: card_name)
+    end
+  end
+
+  # this is a convenience method that's called by
+  # NestedQuestionAnswersController#fetch_answer and a few other places
+  def paper
+    task.paper
+  end
+
   # status will look at the reviewer, invitations and the submitted state of
   # this task to get an overall status for the review
   def status

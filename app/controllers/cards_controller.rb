@@ -26,6 +26,11 @@ class CardsController < ApplicationController
 
   def update
     requires_user_can(:edit, card)
+
+    if params[:card][:content_changed]
+      card.xml = params[:card][:xml]
+    end
+
     card.update!(card_params)
 
     respond_with card.reload

@@ -2,7 +2,7 @@
   <div class="card-editor-save-buttons-container">
     <button class="button button--blue button-primary editor-save"
             {{action 'saveCard'}}
-            disabled={{if card.adminContentDirty null true}}>Publish</button>
+            disabled={{ null }}>Publish</button>
   </div>
 </div>
 
@@ -12,11 +12,11 @@
       <div class="card-editor-workspace-component-type-name">
         Card Title
       </div>
-      <h1>{{card.name}}</h1>
+      <h1>{{card.title}}</h1>
     </div>
     <hr />
 
-    {{!-- Put the editor component here --}}
+    {{card-editor/editor/xml-editor card=card}}
 
   </div>
 </div>

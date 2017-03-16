@@ -53,7 +53,7 @@ class Card < ActiveRecord::Base
     end
   end
 
-  def to_xml(options = {})
+  def xml(options = {})
     require 'builder'
     options[:indent] ||= 2
     xml = (options[:builder] ||=
@@ -62,5 +62,9 @@ class Card < ActiveRecord::Base
     xml.card(name: name) do
       content_root_for_version(:latest).to_xml
     end
+  end
+
+  def xml=(xml)
+    XmlCardLoader.version_from_xml_string(xml, self)
   end
 end

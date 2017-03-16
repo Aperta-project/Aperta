@@ -24,17 +24,6 @@ export default Component.extend({
   canRemoveOrcid: null,
   canChangeCoauthorStatus: null,
 
-  humanizedCoAuthorState: Ember.computed('author.coAuthorState', function(){
-    switch(this.get('author.coAuthorState')) {
-      case "confirmed":
-        return "Confirmed by";
-      case "refuted":
-        return "Refuted By";
-      default:
-        return "Last changed by";
-    }
-  }),
-
   authorshipConfirmed: Ember.computed.alias('author.confirmedAsCoAuthor'),
   authorshipDeclined: Ember.computed.alias('author.refutedAsCoAuthor'),
 

@@ -636,7 +636,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
           doc2upload = random.choice(docs)
         else:
           doc2upload = data['source']
-        # REF TO UPLOAD TASK!
         if style_check:
           upload_ms = UploadManuscriptTask(self._driver)
           upload_ms.validate_styles()

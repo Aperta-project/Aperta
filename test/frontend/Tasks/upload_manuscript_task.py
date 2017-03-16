@@ -28,11 +28,16 @@ class UploadManuscriptTask(BaseTask):
     self._upload_source_warning = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
     self._upload_source_file_button = (By.ID, 'upload-sourcefile')
+    self._upload_source_file_box = (By.CLASS_NAME, 'paper-source-upload')
 
   # POM Actions
   def validate_styles(self, uploaded=False, pdf=False):
     """
-    Validate styles in Upload Manuscript Task
+    Validate styles in Upload Manuscript Task.
+    :param uploaded: True when there is already a paper. False when the task has no paper.
+        It is needed because the text to validate is different on each case.
+    :param pdf: True when a PDF is uploaded. False when not. It is needed because with the
+        PDF there is a box asking for the source.
     """
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
@@ -57,6 +62,11 @@ class UploadManuscriptTask(BaseTask):
       upload_ms_btn = self._get(self._upload_manuscript_btn)
       assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT', upload_ms_btn.text
       self.validate_primary_big_green_button_style(upload_ms_btn)
+    if pdf:
+      # check for upload box
+      source_file_box = self._get(self._upload_source_file_box)
+      print(source_file_box.text)
+
 
   def upload_manuscript(self, doc='random'):
     """

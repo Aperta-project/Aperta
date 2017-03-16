@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe PaperConverters::PdfWithAttachmentsPaperConverter do
   let(:export_format) { 'pdf' }
-  let(:paper) { create(:paper, :version_with_file_type) }
+  let(:paper) { create(:paper, :version_with_file_type, :with_creator) }
   let(:figure_count) { 2 }
   let!(:figures) { create_list(:figure, figure_count, owner: paper).tap { paper.reload } }
   let(:versioned_text) { paper.latest_version }
@@ -13,7 +13,7 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
 
   describe "#output_filename" do
     subject { converter.output_filename }
-    it { is_expected.to match(/.+ - with attachments\.pdf/) }
+    it { is_expected.to eq "#{paper.short_doi} - #{paper.creator.last_name} - #{versioned_text.version} (with attachments).pdf" }
   end
 
   # More coverage in pdf_with_attachments.html.erb_spec.rb

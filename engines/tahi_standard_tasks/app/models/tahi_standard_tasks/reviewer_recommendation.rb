@@ -11,7 +11,9 @@ module TahiStandardTasks
 
     alias_method :task, :reviewer_recommendations_task
 
-    # useful for nested_questions to always have path to owner
+    # NestedQuestionable will save the paper_id to newly created answers if
+    # an answer's owner responds to :paper.  This method is needed by
+    # the NestedQuestionAnswersController#fetch_answer method, among others
     def paper
       reviewer_recommendations_task.paper
     end

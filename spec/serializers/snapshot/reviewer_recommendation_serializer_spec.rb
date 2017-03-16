@@ -37,5 +37,5 @@ describe Snapshot::ReviewerRecommendationSerializer do
     end
   end
 
-  it_behaves_like "snapshot serializes related nested questions", resource: :reviewer_recommendation
+  it_behaves_like "snapshot serializes related answers as nested questions", resource: :reviewer_recommendation
 end

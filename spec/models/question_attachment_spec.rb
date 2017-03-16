@@ -11,7 +11,7 @@ describe QuestionAttachment do
   end
   let(:paper) { FactoryGirl.create(:paper_with_phases) }
   let(:answer) do
-    FactoryGirl.create(:nested_question_answer, owner: task, paper: paper)
+    FactoryGirl.create(:answer, owner: task, paper: paper)
   end
   let(:task) do
     FactoryGirl.create(:ad_hoc_task, paper: paper)

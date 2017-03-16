@@ -54,6 +54,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
+    ##self._task_headings = (By.CLASS_NAME, 'task-disclosure')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
     self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
     # Main Toolbar items
@@ -490,7 +491,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
-  def is_task_completed(self, task_name):
+  def is_task_marked_complete(self, task_name):
     """
     Check if a task is marked as completed
     :param task_name: The name of the task to validate
@@ -503,6 +504,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if 'active' in completed_icon.get_attribute('class'):
           return True
     return False
+
+  def is_task_open(self, task_name):
+    """
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        task_div = task.find_element_by_xpath('..')
+        return 'task-disclosure--open' in task.get_attribute('class')
+    raise ElementDoesNotExistAssertionError('This task is not present')
 
   def click_task(self, task_name):
     """

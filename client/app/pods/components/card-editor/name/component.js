@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   card: null,
@@ -6,8 +7,22 @@ export default Ember.Component.extend({
   cardName: Ember.computed.alias('card.name'),
 
   editing: false,
-  saving: false,
+  saving: Ember.computed.reads('saveCard.isRunning'),
   errors: null,
+
+  saveCard: task(function * () {
+    const card = this.get('card');
+    this.clearErrors();
+
+    card.set('name', this.get('cardName'));
+
+    try {
+      yield card.save();
+      this.set('editing', false);
+    } catch (e) {
+      this.set('errors', card.get('errors'));
+    }
+  }),
 
   clearErrors() {
     this.set('errors', null);
@@ -25,20 +40,7 @@ export default Ember.Component.extend({
     },
 
     complete() {
-      const card = this.get('card');
-
-      this.set('saving', true);
-      this.clearErrors();
-
-      card.set('name', this.get('cardName'));
-
-      card.save().then(() =>{
-        this.set('saving', false);
-        this.set('editing', false);
-      }).catch(() => {
-        this.set('saving', false);
-        this.set('errors', card.get('errors'));
-      });
+      this.get('saveCard').perform();
     }
   }
 });

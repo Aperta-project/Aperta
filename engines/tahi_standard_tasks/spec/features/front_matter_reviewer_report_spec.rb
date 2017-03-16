@@ -60,7 +60,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     ident = 'front_matter_reviewer_report--competing_interests'
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    answers = NestedQuestion.where(ident: ident).first.nested_question_answers
+    answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
 
     # Recreating the error in APERTA-8647

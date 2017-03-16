@@ -77,7 +77,7 @@ class AuthorsController < ApplicationController
       :current_address_state,
       :current_address_country,
       :current_address_postal,
-      :card_id
+      :card_version_id
     )
   end
 end

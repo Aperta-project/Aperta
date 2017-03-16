@@ -17,6 +17,9 @@ class Decision < ActiveRecord::Base
   belongs_to :paper
   has_many :invitations
   has_one :invitation_queue
+  # TODO: APERTA-9226 remove or change. we can probably eliminate
+  # this relationship entirely at this point since answers belong to reports
+  # more meaningfully.
   has_many :nested_question_answers
   has_many :reviewer_reports
 

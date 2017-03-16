@@ -26,42 +26,8 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     end
   end
 
-  describe "#find_or_build_answer_for" do
-    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
-    let(:nested_question) { FactoryGirl.create(:nested_question) }
-
-    context "when there is no answer for the given question" do
-      it "returns a new answer for the question and current decision" do
-        answer = task.find_or_build_answer_for(
-          nested_question: nested_question
-        )
-        expect(answer).to be_kind_of(NestedQuestionAnswer)
-        expect(answer.new_record?).to be(true)
-        expect(answer.owner).to eq(task)
-        expect(answer.nested_question).to eq(nested_question)
-        expect(answer.decision).to eq(paper.draft_decision)
-      end
-    end
-
-    context "when there is an answer for the given question and current decision" do
-      let!(:existing_answer) do
-        FactoryGirl.create(
-          :nested_question_answer,
-          nested_question: nested_question,
-          owner: task,
-          decision: task.paper.draft_decision
-        )
-      end
-
-      it "returns the existing answer" do
-        answer = task.find_or_build_answer_for(nested_question: nested_question)
-        expect(answer).to eq(existing_answer)
-      end
-    end
-  end
-
   describe "#can_change?" do
-    let!(:answer) { FactoryGirl.build(:nested_question_answer) }
+    let!(:answer) { FactoryGirl.build(:answer) }
 
     it "returns true when the task is not submitted" do
       task.update! body: { submitted: false }

@@ -40,9 +40,7 @@ class TasksController < ApplicationController
     # it as uncompleted
     if task.completed?
       attrs = params.require(:task).permit(:completed)
-      if attrs.has_key?(:completed)
-        task.update!(completed: attrs[:completed])
-      end
+      task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else
       task.assign_attributes(task_params(task.class))
       task.save!
@@ -75,16 +73,22 @@ class TasksController < ApplicationController
 
   def nested_questions
     requires_user_can :view, task
-    respond_with task.nested_questions,
-                 each_serializer: NestedQuestionSerializer,
-                 root: "nested_questions"
+    # Exclude the root node
+    content = task.card.try(:content_for_version_without_root, :latest) || []
+    respond_with(
+      content,
+      each_serializer: CardContentAsNestedQuestionSerializer,
+      root: "nested_questions"
+    )
   end
 
   def nested_question_answers
     requires_user_can :view, task
-    respond_with task.nested_question_answers,
-                 each_serializer: NestedQuestionAnswerSerializer,
-                 root: "nested_question_answers"
+    respond_with(
+      task.answers,
+      each_serializer: AnswerAsNestedQuestionAnswerSerializer,
+      root: "nested_question_answers"
+    )
   end
 
   private

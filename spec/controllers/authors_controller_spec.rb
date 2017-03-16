@@ -4,7 +4,7 @@ describe AuthorsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:card) { FactoryGirl.create(:card) }
+  let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:post_request) do
     post :create,
          format: :json,
@@ -14,7 +14,7 @@ describe AuthorsController do
            paper_id: paper.id,
            task_id: task.id,
            position: 1,
-           card_id: card.id
+           card_version_id: card.card_version(:latest).id
          }
   end
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
@@ -38,9 +38,9 @@ describe AuthorsController do
       expect { post_request }.to change { Author.count }.by(1)
     end
 
-    it 'a POST request associates a new author to an existing card' do
+    it 'a POST request associates a new author to an existing card version' do
       post_request
-      expect(Author.last.card).to eq(card)
+      expect(Author.last.card_version).to eq(card.card_version(:latest))
     end
 
     it 'a PUT request updates the author' do

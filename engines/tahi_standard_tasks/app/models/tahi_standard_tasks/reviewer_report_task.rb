@@ -25,21 +25,6 @@ module TahiStandardTasks
       ReviewerNumber.number_for(reviewer, paper)
     end
 
-    # find_or_build_answer_for(...) will return the associated answer for this
-    # task given :nested_question. For ReviewerReportTask this enforces the
-    # lookup to be scoped to this task's current decision. Answers associated
-    # with previous decisions will not be returned.
-    #
-    # == Optional Parameters
-    #  * decision - ignored if provided, always enforces the task's decision.id
-    #
-    def find_or_build_answer_for(nested_question:, **_kwargs)
-      super(
-        nested_question: nested_question,
-        decision: paper.draft_decision
-      )
-    end
-
     def body
       # body is a json column by default which returns an Array. We don't want
       # an array, we want to store properties. So if we get a blank

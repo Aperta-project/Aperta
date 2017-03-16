@@ -209,8 +209,8 @@
     "heroku-postgresql:hobby-dev",
     "rediscloud:30"
   ],
-  "formation": [
-    { "process": "web",    "quantity": 1},
-    { "process": "worker", "quantity": 1}
-  ]
+  "formation": {
+     "web": {"quantity": 1, "size": "free"},
+     "worker": {"quantity": 1, "size": "free"}
+  }
 }

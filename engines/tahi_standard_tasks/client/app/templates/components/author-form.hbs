@@ -1,18 +1,18 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Individual Author</legend>
-      {{#if canChangeCoauthorStatus}}
+      {{#unless authorIsPaperCreator}}
         {{author-form-coauthor-controls
           author=author
+          controlsVisible=canChangeCoauthorStatus
           disabled=isNotEditable
           setConfirmation=(action "selectAuthorConfirmation")
         }}
-      {{/if}}
+      {{/unless}}
     {{#if authorIsNotCurrentUser}}
       {{error-message message=validationErrors.orcidIdentifier
                       displayIcon=true
                       displayText=true}}
-      <br><br>
     {{/if}}
 
     <div class="flex-group">

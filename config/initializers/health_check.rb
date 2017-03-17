@@ -14,8 +14,8 @@ HealthCheck.setup do |config|
   config.http_status_for_error_object = 500
 
   # ensure our databases are available:
-  config.standard_checks = [ 'custom', 'database', 'redis' ]
-  config.full_checks     = [ 'custom', 'database', 'redis' ]
+  config.standard_checks = ['custom', 'database', 'sidekiq-redis']
+  config.full_checks     = ['custom', 'database', 'sidekiq-redis']
 
   # max-age of response in seconds
   # cache-control is public when max_age > 1 and basic_auth_username is not set
@@ -47,7 +47,10 @@ HealthCheck.setup do |config|
   config.add_custom_check('redis-writability') do
     begin
 
-      redis = Redis.current
+      # use any custom redis url that was provided using env convention
+      # with fallback to localhost if custom url is not provided
+      custom_redis_url = ENV[ENV['REDIS_PROVIDER'] || 'REDIS_URL']
+      redis = Redis.new(url: custom_redis_url)
 
       what_is_deposited = rand(42_000).to_s
       scratch_key       = "scratch_key_#{what_is_deposited}"

@@ -18,6 +18,15 @@ namespace :deploy do
   task :cold do
     before 'deploy:updated', 'deploy:schema_load'
     invoke 'deploy'
+
+    on primary fetch(:migration_role) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'institutional_accounts:add_seed_accounts'
+          execute :rake, 'seed:letter_templates:populate'
+        end
+      end
+    end
   end
 
   desc 'Copy ember-built assets to public/client'

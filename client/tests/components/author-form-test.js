@@ -8,7 +8,7 @@ import sinon from 'sinon'
 
 import hbs from 'htmlbars-inline-precompile';
 
-let journal;
+let journal, template;
 
 moduleForComponent(
   'author-form',
@@ -65,7 +65,7 @@ moduleForComponent(
   }
 );
 
-var template = hbs`
+template = hbs`
   {{author-form
       author=model.object
       authorProxy=model
@@ -99,7 +99,18 @@ test("component does not display the orcid-connect component when the author doe
 });
 
 test("component shows coauthor controls when user is considered an admin user", function(assert){
-  // Administrator
+  template = hbs`
+  {{author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleEditForm"
+      isNotEditable=isNotEditable
+      saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
+      authorIsPaperCreator=false
+  }}`;
+
   Ember.run(() => {
     const can = FakeCanService.create().allowPermission('administer', journal);
     this.register('service:can', can.asService());
@@ -110,7 +121,17 @@ test("component shows coauthor controls when user is considered an admin user", 
 });
 
 test("component hides coauthor controls when user is considered an non-admin user", function(assert){
-  // Administrator
+  template = hbs`
+  {{author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleEditForm"
+      isNotEditable=isNotEditable
+      saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
+      authorIsPaperCreator=false
+  }}`;
   Ember.run(() => {
     const can = FakeCanService.create().rejectPermission('administer', journal);
     this.register('service:can', can.asService());

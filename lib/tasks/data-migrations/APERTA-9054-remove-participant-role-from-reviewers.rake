@@ -14,14 +14,20 @@ namespace :data do
         reviewer_count = 0
         removed_participations = []
         assignment_count = 0
+        assignment_ids = []
 
         # Assertions to check the integrity of the data
         User.joins(:roles).where(roles: { name: 'Reviewer Report Owner' }).map do |reviewer|
           reviewer_count += 1
           reviewer_report_ids = reviewer.tasks.where(type: relevant_tasks).pluck(:id).uniq
           reviewer_report_ids.each do |reviewer_report_id|
-            reviewer.participations.where(assigned_to_id: reviewer_report_id).each do
-              assignment_count += 1
+            reviewer.participations.where(assigned_to_id: reviewer_report_id).each do |assignment|
+              if assignment_ids.include? assignment.id
+                STDOUT.puts("Skipping #{assignment.id} because it is already counted")
+              else
+                assignment_ids << assignment.id
+                assignment_count += 1
+              end
             end
           end
         end

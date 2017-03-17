@@ -5,9 +5,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* File name for PDF Downloads have been updated to follow the format "[short doi] - [author last name] - [version].pdf"
 ### Deprecated
 ### Removed
 ### Fixed
+* Fixed bug that always returned the latest version of a manuscript regardless of the version that was requested.
 ### Security
 
 ## ## [1.38.0] - {2017-03-09}

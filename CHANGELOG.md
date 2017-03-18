@@ -2,19 +2,11 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [x.x.x] - {yyyy-mm-dd}
+## ## [1.39.0] - {2017-03-16}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in
   individual card view
 * Billing staff now have more viewing access than just to the Billing card
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Security
-
-## ## [1.39.0] - {2017-03-14}
-### Added
 * Users can now save lists on Safari for Ad Hoc cards
 ### Changed
 ### Deprecated

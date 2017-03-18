@@ -1,0 +1,37 @@
+<div class='input-header'>
+  <div class='description'>
+    <label>Upload Journal Logo</label>
+    <p class='help-text'>
+      The logo will appear in the header bar on the manuscript page.
+      We recommend a logo with the proportions of 250 pixels wide and 40 pixels tall.
+      File must be a jpeg, eps, or png.
+    </p>
+    {{error-message message=errorMessage displayIcon=true}}
+  </div>
+</div>
+
+<div class="journal-logo-uploader-and-preview {{if saving 'saving'}}">
+  <div class='journal-logo-preview'>
+    {{progress-spinner visible=saving size='small' center=true}}
+    {{#if logoUrl}}
+      <!-- logo preview -->
+      <img src='{{logoUrl}}' alt='Journal Logo' class='journal-logo-thumbnail' />
+    {{else}}
+      <!-- logo placeholder -->
+      <div class="journal-logo-thumbnail-placeholder" />
+    {{/if}}
+  </div>
+
+  <div class="button-secondary button--blue fileinput-button journal-logo-upload-button" disabled={{if saving true null}}>
+    Upload New
+    {{s3-file-uploader elementId='upload-journal-logo-button'
+                       accept=allowedFileTypes
+                       validateFileTypes=true
+                       filePath='journals'
+                       fileAdded=(action 'fileAdded')
+                       addingFileFailed=(action 'addingFileFailed')
+                       uploadFinished=(action 'uploadFinished')
+                       uploadFailed=(action 'uploadFailed')}}
+  </div>
+</div>
+

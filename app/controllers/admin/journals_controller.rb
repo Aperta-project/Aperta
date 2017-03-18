@@ -35,22 +35,17 @@ class Admin::JournalsController < ApplicationController
   def create
     requires_user_can(:administer, journal)
     journal.save!
+    process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def update
     requires_user_can(:administer, journal)
     journal.update(journal_params)
+    process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
-  def upload_logo
-    requires_user_can(:administer, journal)
-    journal_with_logo = DownloadLogo.call(journal, params[:url])
-    respond_with(journal_with_logo) do |format|
-      format.json { render json: journal_with_logo, serializer: AdminJournalSerializer, status: :ok }
-    end
-  end
 
   private
 
@@ -74,5 +69,14 @@ class Admin::JournalsController < ApplicationController
       :doi_journal_prefix,
       :doi_publisher_prefix
     )
+  end
+
+  def process_pending_logo(url)
+    return unless url.present?
+
+    if url.include?("/pending/")
+      # logo is waiting to be processed in s3 pending bucket
+      DownloadJournalLogoWorker.perform_async(journal.id, url)
+    end
   end
 end

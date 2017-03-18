@@ -540,14 +540,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
                     task_name,
                     click_override=False,
                     data=None,
-                    style_check=False,
                     author=''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data: A dictionary with the required data for each task.
-    :param style_check: A boolean, when True will do style checking. Default False.
     :param author: Author to use in completing author task, if applicable - looks up values from
       Base/Resources.py
     :return outdata or None: returns a list of the values used to fill out the form or None if
@@ -641,27 +639,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # accordion is close it, open it:
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
-      if data and 'source' in data:
-        # there is a sourcefile
-        if not data['source']:
-          doc2upload = random.choice(docs)
-        else:
-          doc2upload = data['source']
-        if style_check:
-          upload_ms = UploadManuscriptTask(self._driver)
-          upload_ms.validate_styles()
-        current_path = os.getcwd()
-        fn = os.path.join(current_path, '{0}'.format(doc2upload))
-        logging.info('Sending document: {0}'.format(fn))
-        time.sleep(1)
-        self._driver.find_element_by_id('upload-source-file').send_keys(fn)
-        # time for uploading the source
-        time.sleep(5)
       # Check completed_check status
       if not base_task.completed_state():
-        if style_check:
-          upload_ms = UploadManuscriptTask(self._driver)
-          upload_ms.validate_styles(uploaded=True)
         base_task.click_completion_button()
       self.click_covered_element(task)
       time.sleep(.5)

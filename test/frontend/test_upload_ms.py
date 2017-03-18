@@ -23,44 +23,41 @@ __author__ = 'sbassi@plos.org'
 @MultiBrowserFixture
 class UploadManuscriptTest(CommonTest):
   """
-  This class test XXX
-
+  This class test uploading a manuscript (ms) as a doc and as PDF.
+  For PDF ms, checks for the source uploading.
   """
 
-  def _test_validate_styles_doc(self):
+  def test_upload_doc_task(self):
     """
-    test_upload_ms: Validate elements and styles for the upload manuscript task
+    test_upload_ms: Validate functions and styles for the upload manuscript task
     """
-    logging.info('Test Upload ms::components_styles')
-    user = random.choice(users)
-    logging.info('Running test_validate_component_styles')
-    logging.info('Logging in as {0}'.format(user))
-    dashboard_page = self.cas_login(email=user['email'])
+    logging.info('Test Upload ms::Upload doc[x]')
+    author = random.choice(users)
+    logging.info('Logging in as {0}'.format(author))
+    dashboard_page = self.cas_login(email=author['email'])
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True)
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
-    ms_page.complete_task('Upload Manuscript', style_check=True)
-
-  def _test_validate_styles_pdf(self):
-    """
-    test_upload_ms: Validate elements and styles for the upload manuscript task
-    """
-    logging.info('Test Upload ms::components_styles')
-    user = random.choice(users)
-    logging.info('Running test_validate_component_styles')
-    logging.info('Logging in as {0}'.format(user))
-    dashboard_page = self.cas_login(email=user['email'])
-    dashboard_page.page_ready()
-    # create a new manuscript
-    dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True,
-        format='pdf')
-    ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.page_ready_post_create()
-    ms_page.complete_task('Upload Manuscript', style_check=True)
+    short_doi = ms_page.get_paper_short_doi_from_url()
+    logging.info("Assigned paper short doi: {0}".format(short_doi))
+    # Test that the task exist, is not completed and closed:
+    assert ms_page.is_task_present('Upload Manuscript'), \
+        'The task must be present and is not'
+    assert not ms_page.is_task_marked_complete('Upload Manuscript'), \
+        'The task is marked as complete and should not'
+    assert not ms_page.is_task_open('Upload Manuscript'), \
+        'The task is opened and must be closed'
+    # open to check style
+    ms_page.click_task('Upload Manuscript')
+    # check style without source
+    upms = UploadManuscriptTask(self.getDriver())
+    upms.validate_styles(type_='doc')
+    upms.click_completion_button()
+    assert ms_page.is_task_marked_complete('Upload Manuscript'), \
+        'The task in not market as complete and it shoyld be completed'
 
   def test_upload_pdf_task(self):
     """
@@ -85,13 +82,14 @@ class UploadManuscriptTest(CommonTest):
     assert ms_page.is_task_present('Upload Manuscript')
     assert not ms_page.is_task_marked_complete('Upload Manuscript')
     assert not ms_page.is_task_open('Upload Manuscript')
-    ms_page.complete_task('Upload Manuscript')
-    time.sleep(3)
+    # open to check style
+    ms_page.click_task('Upload Manuscript')
+    # check style without source
+    upms = UploadManuscriptTask(self.getDriver())
+    upms.validate_styles(type_='pdf')
+    upms.click_completion_button()
     ms_page.click_submit_btn()
-    time.sleep(3)
     ms_page.confirm_submit_btn()
-    # Now we get the submit confirmation overlay
-    # Sadly, we take time to switch the overlay
     ms_page.close_submit_overlay()
     ms_page.logout()
 
@@ -102,7 +100,6 @@ class UploadManuscriptTest(CommonTest):
     self._driver.navigated = True
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
-    # go to wf
     paper_viewer.click_workflow_link()
     wf_page = WorkflowPage(self.getDriver())
     wf_page.page_ready()
@@ -117,7 +114,6 @@ class UploadManuscriptTest(CommonTest):
     self._driver.navigated = True
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready()
-    #paper_viewer.
     ms_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
@@ -125,27 +121,14 @@ class UploadManuscriptTest(CommonTest):
     # look for errors here
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
-        '{0} not Please upload your source file'.format(warning.get_attribute('title'))
-
-
-    import pdb; pdb.set_trace()
-    # DO THIS FROM TASK
-    ms_page.complete_task('Upload Manuscript', data={'source': ''})
-    assert ms_page.is_task_completed('Upload Manuscript') == True
-
-    #import pdb; pdb.set_trace()
-    # CLICK IF NOT OPEN
-    #UploadManuscriptTask
-
-    #ms_page.complete_task('Upload Manuscript', style_check=False)
-
-
-
-
-    #ms_page.complete_task('Upload Manuscript', data={'source': ''})
-
-
-
+        '{0} instead of Please upload your source file'.format(warning.get_attribute('title'))
+    upms.upload_source_file('random')
+    upms.validate_styles(type_='pdf', source_uploaded=True)
+    upms._wait_for_element(upms._get(upms._completion_button))
+    upms.click_completion_button()
+    time.sleep(1)
+    completed = ms_page.is_task_marked_complete('Upload Manuscript')
+    assert completed, 'The task should be marked as completed and is not'
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

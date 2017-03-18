@@ -11,6 +11,12 @@ stream_to_admin = EventStream::StreamToAdmin
 
 Subscriptions.configure do
 
+  # Journals
+
+  add 'journal:created', AdminJournal::NotifyAdmin
+  add 'journal:updated', AdminJournal::NotifyAdmin
+  add 'journal:destroyed', AdminJournal::NotifyAdmin
+
   # Assgnments
 
   add 'assignment:created', Assignment::NotifyAssignee

@@ -9,5 +9,7 @@ class CardSerializer < ActiveModel::Serializer
     object.content_root_for_version(:latest)
   end
 
-
+  def xml
+    object.to_xml
+  end
 end

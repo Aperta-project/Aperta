@@ -58,4 +58,18 @@ class CardContent < ActiveRecord::Base
       content
     end
   end
+
+
+  def to_xml(options = {})
+    require 'builder'
+    options[:indent] ||= 2
+    xml = (options[:builder] ||=
+             ::Builder::XmlMarkup.new(indent: options[:indent]))
+    xml.instruct! unless options[:skip_instruct]
+    xml.card_content(content_type: content_type, text: text) do |card_content|
+      children.each do |child|
+        child.to_xml(builder: card_content, skip_instruct: true)
+      end
+    end
+  end
 end

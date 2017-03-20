@@ -7,16 +7,10 @@
 </div>
 
 <div class="card-editor-workspace">
-  <div class="card-editor-workspace-container">
-    <div class="card-editor-workspace-title">
-      <div class="card-editor-workspace-component-type-name">
-        Card Title
-      </div>
-      <h1>{{card.title}}</h1>
+  <div class="card-editor-xml-container">
+    <div class="card-editor-xml-controls"></div>
+    <div class="card-editor-xml">
+      {{textarea value=card.xml autoresize=true rows=10}}
     </div>
-    <hr />
-
-    {{card-editor/editor/xml-editor card=card}}
-
   </div>
 </div>

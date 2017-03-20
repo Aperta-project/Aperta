@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
-import {PropTypes} from 'ember-prop-types';
+import { PropTypes } from 'ember-prop-types';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
@@ -11,10 +12,26 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   classNames: ['admin-new-card-overlay'],
   cardName: '',
-  saving: false,
-  errors: [],
+  saving: Ember.computed.reads('createCard.isRunning'),
+  errors: null,
 
   store: Ember.inject.service(),
+
+  createCard: task(function * () {
+    this.set('errors', null);
+    const card = this.get('store').createRecord('card', {
+      name: this.get('cardName'),
+      journal: this.get('journal')
+    });
+
+    try {
+      yield card.save();
+      this.get('success')(card);
+      this.get('close')();
+    } catch (e) {
+      this.set('errors', card.get('errors'));
+    }
+  }),
 
   actions: {
     close() {
@@ -22,22 +39,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     complete() {
-      // Create the card, here
-      this.set('saving', true);
-      this.set('errors', []);
-      const card = this.get('store').createRecord('card', {
-        name: this.get('cardName'),
-        journal: this.get('journal')
-      });
-
-      card.save().then(() =>{
-        this.set('saving', false);
-        this.get('success')(card);
-        this.get('close')();
-      }).catch(() => {
-        this.set('saving', false);
-        this.set('errors', card.get('errors.messages'));
-      });
+      this.get('createCard').perform();
     }
   }
 });

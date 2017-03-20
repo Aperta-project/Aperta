@@ -26,7 +26,7 @@ feature "Discussions", js: true, selenium: true do
       # create new topic
       discussion_page.new_topic
       discussion_page.expect_participant(admin)
-      discussion_page.add_participant(user: other_person, fragment: 'picka')
+      discussion_page.add_a_participant(user: other_person, fragment: 'picka')
       discussion_page.fill_in_topic(title: 'Great', comment: 'Awesome')
       discussion_page.expect_participant(other_person)
       discussion_page.confirm_create_topic

@@ -54,7 +54,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
-    ##self._task_headings = (By.CLASS_NAME, 'task-disclosure')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
     self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
     # Main Toolbar items
@@ -507,6 +506,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def is_task_open(self, task_name):
     """
+    Check if a task is open
+    :param task_name: The name of the task to validate
+    :return: True if task is open and False if closed
     """
     tasks = self._gets(self._task_headings)
     for task in tasks:

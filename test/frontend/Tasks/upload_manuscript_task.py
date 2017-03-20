@@ -47,7 +47,7 @@ class UploadManuscriptTask(BaseTask):
         'n the manuscript and are not required separately for initial assessment. If a revisio'\
         'n is invited, separate figure and SI file upload will be required. If preferred, you '\
         'may upload those files separately before completing your submission.' in \
-        intro_text.text, intro_text.text
+        intro_text.text, 'Upload ms message: {0} is not the expected'.format(intro_text.text)
     #if uploaded:
     link = intro_text.find_element_by_tag_name('a')
     self.validate_default_link_style(link)

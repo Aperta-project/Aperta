@@ -1,5 +1,11 @@
 # This module contains cards that should not be auto-loaded in most
-# environments
+# environments.
+# To load it, run
+#
+#     rake "cards:load_one[Card Configuration Sampler, 1]"
+#
+# Where 1 is the id of the journal you'd like to add it to.
+#
 module CardConfiguration
   module NonstandardConfigurations
     # This card configuration is a sampler of vairous kinds of content

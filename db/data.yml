@@ -33135,7 +33135,7 @@ reviewer_reports:
   - updated_at
   - created_in_7993
   - state
-  - completed_at
+  - submitted_at
   - card_version_id
   records: 
   - - '1'

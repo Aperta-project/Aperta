@@ -39,7 +39,7 @@ class ReviewerReport < ActiveRecord::Base
     end
 
     event(:submit,
-          guards: [:invitation_accepted?], after: [:set_completed_at]) do
+          guards: [:invitation_accepted?], after: [:set_submitted_at]) do
       transitions from: :review_pending, to: :submitted
     end
   end
@@ -106,15 +106,15 @@ class ReviewerReport < ActiveRecord::Base
     when "invitation_rescinded"
       invitation.rescinded_at
     when "completed"
-      completed_at
+      submitted_at
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
 
   private
 
-  def set_completed_at
-    update!(completed_at: Time.current.utc)
+  def set_submitted_at
+    update!(submitted_at: Time.current.utc)
   end
 
   def compute_invitation_state

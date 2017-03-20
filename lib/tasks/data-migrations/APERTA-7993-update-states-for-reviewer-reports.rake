@@ -39,9 +39,9 @@ namespace :data do
         # accordingly.
         if report.review_pending?
           # Get the newest answered qustion for this report
-          answer = NestedQuestionAnswer.where(owner: report)
-                                       .select { |a| !a.value.blank? }
-                                       .max_by(&:updated_at)
+          answer = Answer.where(owner: report)
+                         .select { |a| !a.value.blank? }
+                         .max_by(&:updated_at)
 
           # If there is an answer, try to mark reviews as complete
           # If there is no answer to an accepted invitation, those stay in the
@@ -52,18 +52,19 @@ namespace :data do
             # review
             if report.decision.draft? && report.task.body['submitted']
               report.submit!
+              report.submitted_at = answer.updated_at
             end
 
             # We are for a decision that has been made. Since it has answers,
             # we mark it complete
             unless report.decision.draft?
               report.submit!
-              report.completed_at = answer.updated_at
+              report.submitted_at = answer.updated_at
             end
           end
         end
 
-        puts "Updating: ReviewerReport[#{report.id}, state: #{report.aasm.current_state}, completed_at: #{report.completed_at}]"
+        puts "Updating: ReviewerReport[#{report.id}, state: #{report.aasm.current_state}, submitted_at: #{report.submitted_at}]"
         # Save the report
         report.save!
       end

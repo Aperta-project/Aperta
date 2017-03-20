@@ -1,5 +1,13 @@
 Sidekiq.configure_server do |config|
   config.redis = {
+    master_name: 'aperta',
+    sentinels: [
+      "sentinel://10.5.3.120:26379",
+      "sentinel://10.5.3.121:26379",
+      "sentinel://10.5.3.122:26379",
+      "sentinel://10.5.3.123:26379"
+    ],
+    failover_reconnect_timeout: 20,
     namespace: "tahi_#{Rails.env}"
   }
 
@@ -19,6 +27,15 @@ end
 
 Sidekiq.configure_client do |config|
   config.redis = {
+    # namespace: "tahi_#{Rails.env}"
+    master_name: 'aperta',
+    sentinels: [
+      "sentinel://10.5.3.120:26379",
+      "sentinel://10.5.3.121:26379",
+      "sentinel://10.5.3.122:26379",
+      "sentinel://10.5.3.123:26379"
+    ],
+    failover_reconnect_timeout: 20,
     namespace: "tahi_#{Rails.env}"
   }
 end

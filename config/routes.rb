@@ -75,6 +75,9 @@ Tahi::Application.routes.draw do
     resources :decisions, only: [:create, :update, :show] do
       put :rescind, on: :member
       put :register, on: :member
+      resources :attachments, only: [:index, :create, :update, :destroy], controller: 'decision_attachments' do
+        put :update_attachment, on: :member
+      end
     end
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member

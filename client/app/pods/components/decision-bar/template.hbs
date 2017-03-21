@@ -30,8 +30,8 @@
         {{{decision.authorResponse}}}
       </div>
     {{/if}}
-    {{#each attachmentsForVersion as |attachment|}}
-      {{attachment-snapshot-link attachment=attachment}}
+    {{#each decision.attachments as |attachment|}}
+      {{attachment-link attachment=attachment}}
     {{/each}}
   </div>
 {{/unless}}

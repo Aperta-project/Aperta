@@ -54,12 +54,10 @@ export default TaskComponent.extend({
     // already open.
     if (this.get('task.paper.decisions'))
       this.get('task.paper.decisions').reload();
-    if (this.get('task.paper.snapshots'))
-      this.get('task.paper.snapshots').reload();
   },
 
-  attachmentsPath: computed('task.id', function() {
-    return `/api/tasks/${this.get('task.id')}/attachments`;
+  attachmentsPath: computed('latestRegisteredDecision.id', function() {
+    return `/api/decisions/${this.get('latestRegisteredDecision.id')}/attachments`;
   }),
 
   attachmentsRequest(path, method, s3Url, file) {
@@ -70,17 +68,6 @@ export default TaskComponent.extend({
       store.pushPayload(response);
     });
   },
-
-  attachmentSnapshots: computed('task.paper.snapshots.[]', function() {
-    let tskId = this.get('task.id');
-    return this.get('task.paper.snapshots')
-      .filterBy('contents.name', 'adhoc-attachment')
-      .filter(function(adhoc) {
-        return adhoc.get('contents.children').some(function(child) {
-          return child.name === 'owner_id' && child.value.toString() === tskId;
-        });
-      });
-  }),
 
   actions: {
     cancelUpload(attachment) {

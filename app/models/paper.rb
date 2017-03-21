@@ -559,6 +559,10 @@ class Paper < ActiveRecord::Base
     author_list_items.map(&:author)
   end
 
+  def revise_task
+    tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
+  end
+
   private
 
   def new_major_version!

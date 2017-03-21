@@ -520,7 +520,8 @@ class DashboardPage(AuthenticatedPage):
         in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
                                               format(first_name),
                                               welcome_msg.text.encode('utf-8'))
-    self.validate_application_title_style(welcome_msg)
+    # APERTA-9556
+    # self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 
   def validate_active_manuscript_section(self,
@@ -819,6 +820,7 @@ class DashboardPage(AuthenticatedPage):
     # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
+        logging.info('Found {0} in list item: {1}'.format(journal, item.text))
         item.click()
         time.sleep(1)
         break
@@ -1009,11 +1011,13 @@ class DashboardPage(AuthenticatedPage):
       list(journals)
       journal_info = journals
     for journal_entry in journal_info:
+      logging.info(journal_entry)
       mmt_list = []
       journal_id, journal_name = journal_entry
       # Get list of mmts for journal in id order ASC
       ordered_mmts = PgSQL().query('SELECT paper_type FROM manuscript_manager_templates '
                                    'WHERE journal_id = %s ORDER BY id ASC;', (journal_id,))
+      logging.info(ordered_mmts)
       # turn db returned tuples into a simple list
       for mmt in ordered_mmts:
         mmt_list.append(mmt[0])

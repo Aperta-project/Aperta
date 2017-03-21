@@ -28,6 +28,6 @@ class InvitationSerializer < ActiveModel::Serializer
   end
 
   def reviewer_report
-    ReviewerReport.for_invitation(invitation: object)
+    ReviewerReport.for_invitation(object)
   end
 end

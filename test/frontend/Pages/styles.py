@@ -71,7 +71,7 @@ class StyledPage(PlosPage):
   def validate_application_title_style(title):
     """
     Ensure consistency in rendering Titles across the application
-    Examples where used: Card title in overlay view
+    Examples where used: Page Title
     :param title: title to validate
     Updated for new style guide: https://app.zeplin.io/project.html
     """
@@ -301,6 +301,27 @@ class StyledPage(PlosPage):
 
   # ===================================================
   # Cards =============================================
+  @staticmethod
+  def validate_card_title_style(title):
+    """
+    Ensure consistency in rendering Card Titles across the application
+    Examples where used: Card title
+    :param title: title to validate
+    Updated for new style guide: https://app.zeplin.io/project.html
+    """
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+      title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property(
+      'font-size')
+    # APERTA-9552
+    # assert title.value_of_css_property('line-height') == '60px', title.value_of_css_property(
+    #   'line-height')
+    # font-weight is canonically specified as 'normal' whatever that means.
+    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
+      'font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
+      'color')
+
 
   # ===================================================
   # Tables ============================================

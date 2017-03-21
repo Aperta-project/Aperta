@@ -28,7 +28,7 @@
    window.addEventListener('wheel', webViewerWheel);
    window.addEventListener('click', webViewerClick);
    window.addEventListener('keydown', webViewerKeyDown);
--  window.addEventListener('resize', function windowResize() {
+-  window.addEventListener('resize', function webViewerResize() {
 -   eventBus.dispatch('resize');
 -  });
 +  window.addEventListener('resize', webViewerResize);
@@ -58,9 +58,9 @@
    evt.preventDefault();
   }
  }
-+function windowResize() {
++function webViewerResize() {
 +  eventBus.dispatch('resize');
-+});
++};
  localized.then(function webViewerLocalized() {
   document.getElementsByTagName('html')[0].dir = mozL10n.getDirection();
  });

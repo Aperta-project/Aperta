@@ -14307,7 +14307,7 @@ function webViewerKeyDown(evt) {
 }
 function windowResize() {
   eventBus.dispatch('resize');
-});
+};
 localized.then(function webViewerLocalized() {
  document.getElementsByTagName('html')[0].dir = mozL10n.getDirection();
 });

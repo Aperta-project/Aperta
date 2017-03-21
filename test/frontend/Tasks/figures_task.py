@@ -408,7 +408,7 @@ class FiguresTask(BaseTask):
           self.click_covered_element(edit_icon)
         time.sleep(1)
         label_prefix = figure_block.find_element(*self._figure_edit_label_prefix)
-        assert 'Fig.' in label_prefix.text, label_prefix.text
+        assert 'Fig' in label_prefix.text, label_prefix.text
         label_field = figure_block.find_element(*self._figure_edit_label_field)
         assert label_field.get_attribute('value') == '1', label_field.get_attribute('value')
         striking_label = figure_block.find_element(*self._figure_edit_striking_img_checkbox_lbl)

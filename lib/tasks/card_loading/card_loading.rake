@@ -16,6 +16,7 @@ namespace :cards do
     CardLoader.load_standard(journal: nil)
   end
 
+  desc "Loads one specific card into the db for testing purposes. See card_configuration_sampler.rb"
   task :load_one, [:name, :journal] => :environment do |_, args|
     puts "Loading..."
     journal = args[:journal] ? Journal.find(args[:journal]) : nil

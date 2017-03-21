@@ -18,6 +18,7 @@ more user friendly.
   individual card view
 * Billing staff now have more viewing access than just to the Billing card
 * Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list 
 ### Changed
 ### Deprecated
 ### Removed

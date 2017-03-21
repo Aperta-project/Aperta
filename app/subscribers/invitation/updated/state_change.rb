@@ -7,9 +7,9 @@ class Invitation::Updated::StateChange
 
     action = event_data[:action]
     if action == 'accepted'
-      report.accept_invitation
+      report.accept_invitation!
     elsif action == 'rescinded'
-      report.rescind_invitation
+      report.rescind_invitation!
     end
   end
 end

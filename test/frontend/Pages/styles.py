@@ -40,7 +40,7 @@ APERTA_GREEN = 'rgba(57, 163, 41, 1)'
 APERTA_GREEN_LIGHT = 'rgba(142, 203, 135, 1)'
 APERTA_GREEN_DARK = 'rgba(15, 116, 0, 1)'
 APERTA_BLUE = 'rgba(45, 133, 222, 1)'
-APERTA_BLUE_LIGHT = 'rgba(148, 184, 224, 1)'
+APERTA_BLUE_LIGHT = 'rgba(215, 235, 254, 1)'
 APERTA_BLUE_DARK = 'rgba(32, 94, 156, 1)'
 APERTA_GREY_XLIGHT = 'rgba(245, 245, 245, 1)'
 APERTA_GREY_LIGHT = 'rgba(213, 213, 213, 1)'
@@ -1168,8 +1168,8 @@ class StyledPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
     assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == APERTA_BLUE_DARK, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == APERTA_BLUE_LIGHT, \
+    assert button.value_of_css_property('color') == APERTA_BLUE, button.value_of_css_property('color')
+    assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')

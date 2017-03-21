@@ -11,9 +11,9 @@ describe CardsController do
     it_behaves_like "an unauthenticated json request"
 
     before do
-      FactoryGirl.create(:card, journal: my_journal, name: 'My Journal')
-      FactoryGirl.create(:card, journal: my_other_journal, name: 'My Other Journal')
-      FactoryGirl.create(:card, journal: not_my_journal, name: 'Not My Journal')
+      FactoryGirl.create(:card, :versioned, journal: my_journal, name: 'My Journal')
+      FactoryGirl.create(:card, :versioned, journal: my_other_journal, name: 'My Other Journal')
+      FactoryGirl.create(:card, :versioned, journal: not_my_journal, name: 'Not My Journal')
     end
 
     context 'and the user is signed in' do
@@ -56,7 +56,7 @@ describe CardsController do
     subject(:do_request) do
       get :show, format: 'json', id: card.id
     end
-    let(:card) { FactoryGirl.create(:card) }
+    let(:card) { FactoryGirl.create(:card, :versioned) }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -132,6 +132,7 @@ describe CardsController do
   end
 
   describe "#update" do
+    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
     let(:card_params) do
       {
         name: name,
@@ -139,7 +140,7 @@ describe CardsController do
       }
     end
     subject(:do_request) do
-      post(:update, format: 'json', id: existing_card.id, card: card_params)
+      post(:update, format: 'json', id: card.id, card: card_params)
     end
     let(:name) { "Steve" }
 
@@ -150,7 +151,7 @@ describe CardsController do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)
-            .with(:edit_card, my_journal)
+            .with(:edit, card)
             .and_return false
           do_request
         end
@@ -159,11 +160,10 @@ describe CardsController do
       end
 
       context 'user has access' do
-        let(:existing_card) { FactoryGirl.create(:card, name: "Old Name") }
         before do
           stub_sign_in user
           allow(user).to receive(:can?)
-            .with(:create_card, my_journal)
+            .with(:edit, card)
             .and_return(true)
         end
 
@@ -172,24 +172,6 @@ describe CardsController do
         it 'returns the updated card' do
           do_request
           expect(res_body['card']['name']).to eq name
-        end
-
-        context "the content_changed flag is true" do
-          let(:card_params) do
-            {
-              content_changed: true,
-              admin_content: {
-                "text" => "parent"
-              }
-            }
-          end
-          it "calls VersionCardContent.save_new_version" do
-            allow(Card).to receive(:find)
-              .and_return(existing_card)
-            expect(VersionCardContent).to receive(:save_new_version)
-              .with(existing_card, "text" => "parent")
-            do_request
-          end
         end
       end
     end

@@ -25,12 +25,7 @@ class CardsController < ApplicationController
   end
 
   def update
-    if params[:card][:content_changed]
-      VersionCardContent.save_new_version(
-        card,
-        params[:card][:admin_content]
-      )
-    end
+    requires_user_can(:edit, card)
     card.update!(card_params)
 
     respond_with card.reload

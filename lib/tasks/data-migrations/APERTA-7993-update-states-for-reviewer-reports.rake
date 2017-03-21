@@ -4,6 +4,8 @@ namespace :data do
       APERTA-7993 Update states for ReviewerReports
     DESC
     task update_states_for_reviewer_reports: :environment do
+      # Make sure the column information is current
+      ReviewerReport.reset_column_information
       # Keep a running count of reports
       count = 0
       # Keep a list of skipped ids
@@ -52,18 +54,14 @@ namespace :data do
             # review
             if report.decision.draft? && report.task.body['submitted']
               report.submit!
-              # Due to issues in data migrations, we use update_column here and
-              # force a database write of the correct data.
-              report.update_column(:submitted_at, answer.updated_at)
+              report.submitted_at = answer.updated_at
             end
 
             # We are for a decision that has been made. Since it has answers,
             # we mark it complete
             unless report.decision.draft?
               report.submit!
-              # Due to issues in data migrations, we use update_column here and
-              # force a database write of the correct data.
-              report.update_column(:submitted_at, answer.updated_at)
+              report.submitted_at = answer.updated_at
             end
           end
         end

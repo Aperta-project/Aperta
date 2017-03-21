@@ -78,7 +78,7 @@ describe TokenCoAuthorsController do
       end
 
       context "author previously confirmed" do
-        let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
+        let!(:group_author) { FactoryGirl.create(:group_author, co_author_state: 'confirmed') }
         it "redirects to #thank_you" do
           do_request
           expect(response).to redirect_to(:thank_you_token_co_author)

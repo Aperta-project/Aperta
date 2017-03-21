@@ -52,21 +52,26 @@ namespace :data do
             # review
             if report.decision.draft? && report.task.body['submitted']
               report.submit!
-              report.submitted_at = answer.updated_at
+              # Due to issues in data migrations, we use update_column here and
+              # force a database write of the correct data.
+              report.update_column(:submitted_at, answer.updated_at)
             end
 
             # We are for a decision that has been made. Since it has answers,
             # we mark it complete
             unless report.decision.draft?
               report.submit!
-              report.submitted_at = answer.updated_at
+              # Due to issues in data migrations, we use update_column here and
+              # force a database write of the correct data.
+              report.update_column(:submitted_at, answer.updated_at)
             end
           end
         end
 
-        puts "Updating: ReviewerReport[#{report.id}, state: #{report.aasm.current_state}, submitted_at: #{report.submitted_at}]"
         # Save the report
         report.save!
+        report.reload
+        puts "Updated: ReviewerReport[#{report.id}, state: #{report.aasm.current_state}, submitted_at: #{report.submitted_at}]"
       end
 
       puts "Updated #{count} reports, Skipped #{skipped_ids.count} #{skipped_ids}"
@@ -79,6 +84,11 @@ namespace :data do
       if blank_state.any?
         ids = blank_state.map(&:id)
         raise "Blank state found for Reports: #{ids}"
+      end
+
+      undated_count = ReviewerReport.where(state: :submitted, submitted_at: nil).count
+      if undated_count > 0
+        raise "Blank submitted_at for #{undated_count} ReviewerReports"
       end
     end
   end

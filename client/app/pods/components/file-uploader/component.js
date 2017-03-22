@@ -59,6 +59,20 @@ export default Ember.TextField.extend({
     }
   },
 
+  // should I prefix this with an underscore?
+  createResource() {
+    if (this.get('updateUrl')){
+      return $.ajax({
+        url: this.get('url'),
+        dataType: 'json',
+        type: 'POST',
+        data: {}
+      });
+    } else {
+      return null;
+    }
+  },
+
   setupUploader: (function() {
     let uploader = this.$();
     let params = this.getProperties('dataType', 'method', 'acceptFileTypes');
@@ -88,39 +102,41 @@ export default Ember.TextField.extend({
           return;
         }
       }
-
-      let self = this;
-
       let contentType = file.type;
-      this.getS3Credentials(fileName, contentType).then(({url, formData}) => {
-        uploadData.url = url;
-        uploadData.formData = formData;
 
-        let uploadFunction = function() {
-          uploadData.process().done(function(data) {
-            self.sendAction('start', data, uploadData.submit());
+      Ember.$.when(
+        this.getS3Credentials(fileName, contentType),
+        this.createResource()
+      ).done((s3Data, resourceData) => {
+        uploadData.url = s3Data[0].url;
+        uploadData.formData = s3Data[0].formData;
+        if (resourceData) {
+          uploadData.resourceId = resourceData[0].figure.id;
+        }
+        let uploadFunction = () => {
+          uploadData.process().done((data) => {
+            this.sendAction('start', data, uploadData.submit());
           });
         };
 
-        if (self.get('uploadImmediately')) {
+        if (this.get('uploadImmediately')) {
           uploadFunction();
         } else {
-          self.sendAction('uploadReady', uploadFunction);
+          this.sendAction('uploadReady', uploadFunction);
         }
       });
-
     });
 
     uploader.on('fileuploaddone', (e, fileData) => {
       let filename = fileData.files[0].name;
-
+      let resourceId = fileData.resourceId;
       // fileData is xml returned from s3
       let uploadedS3Url = $(fileData.result)
         .find('Location')[0]
         .textContent
         .replace(/%2F/g, '/');
-      let resourceUrl = this.get('url');
-      let requestMethod = this.get('railsMethod');
+      let resourceUrl = resourceId ? this.get('updateUrl')(resourceId) : this.get('url');
+      let requestMethod = resourceId ? 'PUT' : this.get('railsMethod');
 
       // file-uploader will post data to the rails server itself if it's provided
       // with a `resourceUrl`.  This is in contrast to the s3-file-uploader, which

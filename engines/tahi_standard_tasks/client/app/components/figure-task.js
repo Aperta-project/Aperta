@@ -20,6 +20,10 @@ export default TaskComponent.extend(FileUploadMixin, {
     }
   ),
 
+  figureUpdateUrl(figureId) {
+    return '/api/figures/' + figureId + '/update_attachment';
+  },
+
   actions: {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
@@ -32,6 +36,11 @@ export default TaskComponent.extend(FileUploadMixin, {
     // get updated paper text with figure inserted
     processingFinished() {
       this.get('task.paper').reload();
+    },
+
+    uploadFailed() {
+      return null;
     }
+
   }
 });

@@ -3,7 +3,7 @@
 // here.
 
 const CONTENT_TYPES = {
-  'conditional-children': 'card-content/display-children'
+  // 'conditional-children': 'card-content/display-children'
 };
 
 export default {

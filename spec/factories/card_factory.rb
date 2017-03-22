@@ -18,7 +18,7 @@ FactoryGirl.define do
 
       after(:create) do |card, evaluator|
         idents = Array(evaluator.idents)
-        root = create(:card_content, card: card, content_type: "root")
+        root = create(:card_content, card: card, content_type: "display-children")
         idents.each do |ident|
           create(:card_content, parent: root, card: card, ident: ident)
         end

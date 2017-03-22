@@ -1,7 +1,7 @@
 // This component is a thin layer around the card-content components;
-// it takes a card-content json blob and displays the right component
-// to view that blob in a task. To change which component goes with
-// which content type, edit client/lib/card-content-types.js
+// it takes a card-content and displays the right component to view
+// that in a task. To change which component goes with which content
+// type, edit client/lib/card-content-types.js
 
 import Ember from 'ember';
 import CardContentTypes from 'tahi/lib/card-content-types';

@@ -46,7 +46,6 @@ class Card < ActiveRecord::Base
       card = Card.new(attrs)
       card.card_versions << CardVersion.new(version: 1)
       card.card_versions.first.card_contents << CardContent.new(
-        content_type: 'root',
         config: {}
       )
       card.save!

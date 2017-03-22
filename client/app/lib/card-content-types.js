@@ -1,13 +1,12 @@
-// Every kind of card-content has a type, a view component (this is
-// how to render the content in when viewed on a manuscript) and a
-// preview component (how to render it in the editor preview). Often,
-// the view and preview components are the same component.
+// Every kind of card-content has a type and a view component. Mos tof
+// the time, they share a name. In case they don't, add the exceptions
+// here.
 
 const CONTENT_TYPES = [
-  {
-    contentType: 'root',
-    component: 'card-content/display-children'
-  }
+//  {
+//    contentType: 'conditional-children',
+//    component: 'card-content/display-children'
+//  }
 ];
 
 export default {

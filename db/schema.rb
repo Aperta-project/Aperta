@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320141043) do
+ActiveRecord::Schema.define(version: 20170315133447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,8 +219,6 @@ ActiveRecord::Schema.define(version: 20170320141043) do
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
     t.integer  "card_version_id", null: false
-    t.string   "content_type"
-    t.jsonb    "config"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

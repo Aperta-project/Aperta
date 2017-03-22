@@ -35,7 +35,7 @@ export default Ember.Service.extend({
       }).then(
         resolve,
         (e) => {
-          if (e.status === 500) {
+          if (e.status === 500 || e.status === 503 || e.status === 307) {
             this.displayErrorAndStopPolling();
           }
           reject(e);

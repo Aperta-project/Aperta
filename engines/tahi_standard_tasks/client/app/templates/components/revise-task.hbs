@@ -43,7 +43,11 @@
       <button id="revise-task-edit-button" class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
     {{/if}}
 
-    {{decision-attachment-manager filePath="tasks/attachment"
+    <p>
+      Please upload an additional version of your manuscript that highlights the changes you’ve made.
+      You may also upload your point by point 'response to reviewers' file here.
+    </p>
+    {{decision-attachment-manager filePath="decisions/attachment"
                          attachments=latestRegisteredDecision.attachments
                          multiple=true
                          description="Please select files to add attachment"

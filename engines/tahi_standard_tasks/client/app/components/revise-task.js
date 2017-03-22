@@ -24,7 +24,7 @@ export default TaskComponent.extend({
       type: 'presence',
       message: 'Please provide a response or attach a file',
       validation() {
-        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('latestRegisteredDecision.authorResponse'));
+        return !isEmpty(this.get('latestRegisteredDecision.attachments')) || !isEmpty(this.get('latestRegisteredDecision.authorResponse'));
       }
     }]
   },

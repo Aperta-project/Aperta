@@ -10,10 +10,10 @@ import FileUpload from 'tahi/models/file-upload';
  *  In your template:
  *
  *  ```
- *  {{attachment-manager accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
- *                       filePath="tasks/attachment"
+ *  {{decision-attachment-manager accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
+ *                       filePath="decisions/attachment"
  *                       hasCaption=true
- *                       attachments=task.attachments
+ *                       attachments=latestRegisteredDecision.attachments
  *                       noteChanged=(action "noteChanged")
  *                       deleteFile=(action "deleteAttachment")
  *                       uploadFinished=(action "uploadFinished")}}
@@ -22,7 +22,7 @@ import FileUpload from 'tahi/models/file-upload';
 
 let { computed } = Ember;
 export default Ember.Component.extend({
-  classNames: ['attachment-manager'],
+  classNames: ['decision-attachment-manager'],
   classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
   disabled: false,

@@ -1,3 +1,15 @@
-<a href="{{attachment.url}}" class="attachment-file-link" target="_blank">
-  <i class="fa {{fileTypeClass}}"></i> {{attachment.file}}
+<a href="{{attachment.file.url}}" class="attachment-file-link" target="_blank">
+  <i class="fa {{fileTypeClass}}"></i> {{attachment.title}}
 </a>
+
+{{#if draft}}
+  <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
+    {{fa-icon icon="refresh"}}
+    Replace
+  </span>
+
+  <span {{action "deleteFile"}} class="file-action delete-attachment">
+    {{fa-icon icon="trash"}}
+    Delete
+  </span>
+{{/if}}

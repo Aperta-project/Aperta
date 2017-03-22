@@ -43,12 +43,12 @@
       <button id="revise-task-edit-button" class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
     {{/if}}
 
-    {{attachment-manager filePath="tasks/attachment"
+    {{decision-attachment-manager filePath="tasks/attachment"
                          attachments=latestRegisteredDecision.attachments
                          multiple=true
                          description="Please select files to add attachment"
                          cancelUpload=(action "cancelUpload")
-                         disabled=(not canUploadAttachments)
+                         draft=(not task.completed)
                          deleteFile=(action "deleteAttachment")
                          uploadFinished=(action "createAttachment")
                          updateAttachment=(action "updateAttachment")}}

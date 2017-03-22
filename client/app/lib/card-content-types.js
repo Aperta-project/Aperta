@@ -5,23 +5,15 @@
 
 const CONTENT_TYPES = [
   {
-    contentType: 'text',
-    viewComponent: 'card-content/text/view',
-    previewComponent: 'card-content/text/view'
-  },
-  {
     contentType: 'root',
-    viewComponent: 'card-content/display-children/view',
-    previewComponent: 'card-content/display-children/preview'
+    component: 'card-content/display-children'
   }
 ];
 
 export default {
   forType(type) {
-    return _.find(CONTENT_TYPES, t => t.contentType === type);
-  },
-
-  types() {
-    return CONTENT_TYPES;
+    const substitution = _.find(CONTENT_TYPES, t => t.contentType === type);
+    if (substitution) return substitution;
+    return {component: `card-content/${type}`};
   }
 };

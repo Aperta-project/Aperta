@@ -6,8 +6,12 @@ moduleForComponent('card-editor/preview', 'Integration | Component | card editor
   integration: true
 });
 
+const card = Ember.Object.create({
+  name: 'Fig',
+  content: Ember.Object.create({ contentType: 'display-children', children: [] })
+});
+
 test('it renders a preview (defaults wide)', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card}}`);
 
@@ -16,7 +20,6 @@ test('it renders a preview (defaults wide)', function(assert) {
 });
 
 test('it renders a preview (narrow when sidebar-preview)', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card sidebar=true}}`);
 
@@ -25,7 +28,6 @@ test('it renders a preview (narrow when sidebar-preview)', function(assert) {
 });
 
 test('it has buttons for toggling width', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card}}`);
 

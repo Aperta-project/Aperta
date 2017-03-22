@@ -10,7 +10,6 @@ export default DS.Model.extend({
   ident: DS.attr('string'),
   text: DS.attr('string'),
   valueType: DS.attr('string'),
-  config: DS.attr(),
   contentType: DS.attr('string'),
   order: DS.attr('number'),
 

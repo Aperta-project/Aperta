@@ -45,9 +45,7 @@ class Card < ActiveRecord::Base
     Card.transaction do
       card = Card.new(attrs)
       card.card_versions << CardVersion.new(version: 1)
-      card.card_versions.first.card_contents << CardContent.new(
-        config: {}
-      )
+      card.card_versions.first.card_contents << CardContent.new
       card.save!
       card
     end

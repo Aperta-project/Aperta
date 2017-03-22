@@ -12,11 +12,11 @@
 
   {{#if sidebar}}
     {{#card-editor/preview/sidebar card=card}}
-      {{card-content/preview content=card.adminContent}}
+      {{card-content/preview content=card.content}}
     {{/card-editor/preview/sidebar}}
   {{else}}
     {{#card-editor/preview/overlay card=card}}
-      {{card-content/preview content=card.adminContent}}
+      {{card-content/preview content=card.content}}
     {{/card-editor/preview/overlay}}
   {{/if}}
 

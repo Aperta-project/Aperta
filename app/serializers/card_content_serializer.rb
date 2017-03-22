@@ -1,14 +1,10 @@
 class CardContentSerializer < ActiveModel::Serializer
-  attributes :id, :ident, :text, :value_type, :content_type,
-    :children, :config
+  attributes :id, :ident, :text, :value_type, :content_type, :config,
+    :order
 
-  def children
-    if @options[:admin]
-      object.children.map do |c|
-        CardContentSerializer.new(c, admin: true, root: false).as_json
-      end
-    else
-      []
-    end
+  has_many :children, embed: :ids, include: true, root: :card_contents, key: :unsorted_child_ids
+
+  def order
+    object.lft
   end
 end

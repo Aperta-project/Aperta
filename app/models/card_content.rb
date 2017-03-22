@@ -16,7 +16,7 @@ class CardContent < ActiveRecord::Base
               scope: :card_version,
               message: "Card versions can only have one root node."
             },
-            if: -> { parent_id.nil? }
+            if: -> { root? }
 
   has_many :answers
 

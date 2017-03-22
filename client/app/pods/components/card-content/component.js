@@ -7,10 +7,8 @@ import Ember from 'ember';
 import CardContentTypes from 'tahi/lib/card-content-types';
 
 export default Ember.Component.extend({
-  contentType: Ember.computed('content.contentType', function() {
+  templateName: Ember.computed('content.contentType', function() {
     let type = this.get('content.contentType');
     return CardContentTypes.forType(type);
-  }),
-
-  templateName: Ember.computed.reads('contentType.component')
+  })
 });

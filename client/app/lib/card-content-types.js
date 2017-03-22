@@ -2,17 +2,14 @@
 // the time, they share a name. In case they don't, add the exceptions
 // here.
 
-const CONTENT_TYPES = [
-//  {
-//    contentType: 'conditional-children',
-//    component: 'card-content/display-children'
-//  }
-];
+const CONTENT_TYPES = {
+  'conditional-children': 'card-content/display-children'
+};
 
 export default {
   forType(type) {
-    const substitution = _.find(CONTENT_TYPES, t => t.contentType === type);
+    const substitution = CONTENT_TYPES[type];
     if (substitution) return substitution;
-    return {component: `card-content/${type}`};
+    return `card-content/${type}`;
   }
 };

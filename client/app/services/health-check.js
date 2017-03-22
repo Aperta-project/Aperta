@@ -5,9 +5,10 @@ export default Ember.Service.extend({
   intervalInMilliseconds: 30000,
   status: 'healthy',
   failureMessage: "<span>ALERT - STOP YOUR WORK</span><br>" +
-    "The Aperta system is having a problem. If you are currently entering text, copy your work and exit Aperta. " +
-    "We will fix the problem as soon as possible. " +
-    "Check back later - if this message is gone, it is safe to work in Aperta again. Sorry for the interruption.",
+    "The Aperta system is currently experiencing difficulties. Your work has been saved up to this point. " +
+    "Please reload the page or check back later. We will fix the problem as soon as possible. " +
+    "We apologize for the interruption.",
+
 
   flash: Ember.inject.service('flash'),
 

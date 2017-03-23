@@ -141,7 +141,7 @@ class TitleAbstractTest(CommonTest):
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
-    upms._wait_for_element(upms._get(upms._upload_manuscript_btn))
+    upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
     upms.upload_manuscript()
     upms.validate_ihat_conversions_success(timeout=45)
     upms.check_for_flash_error()

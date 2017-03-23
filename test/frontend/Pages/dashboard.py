@@ -238,7 +238,10 @@ class DashboardPage(AuthenticatedPage):
                                      'FROM papers '
                                      'WHERE id=%s;', (paper_id,))
     db_title, db_abstract = db_article_tuple[0]
+    logging.info(db_title)
+    logging.info(db_abstract)
     db_title = self.normalize_spaces(db_title)
+    db_abstract = self.get_text(db_abstract)
     page_invite_listings = self._gets(self._view_invites_invite_listing)
     for page_listing in page_invite_listings:
       logging.info(u'Validating Invitation: {0}'.format(page_listing.text))
@@ -272,7 +275,7 @@ class DashboardPage(AuthenticatedPage):
         auth_listings = page_listing.find_elements(*self._invitation_author_listing)
         tested_authors = []
         for author in auth_listings:
-          logging.info('Testing page listed author: {0}'.format(author.text))
+          logging.info(u'Testing page listed author: {0}'.format(author.text))
           tested_authors.append(author.text)
           if db_author_information in unicode(author.text):
             logging.info('Found Creator in invitation listing...')

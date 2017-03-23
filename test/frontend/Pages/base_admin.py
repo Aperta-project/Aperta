@@ -191,6 +191,7 @@ class BaseAdminPage(AuthenticatedPage):
     for journal in journal_links:
       if journal.text == rand_selection:
         journal.click()
+        break
     return rand_selection
 
   def get_active_admin_tab(self):

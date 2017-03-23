@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from authenticated_page import APERTA_BLUE
+from styles import APERTA_BLUE
 from base_admin import BaseAdminPage
 
 __author__ = 'jgray@plos.org'
@@ -88,6 +88,8 @@ class AdminCardsPage(BaseAdminPage):
       logging.info('No Cards found for journal: {0}'.format(selected_jrnl))
     self.restore_timeout()
     try:
+      # The canonical form of this full url is, for example:
+      #   http://rc.aperta.tech/admin/cc/journals/workflows?journalID=3
       jid = self._driver.current_url.split('=')[1]
     except IndexError:
       logging.info("We are on the All journals selection, have to roll up all cards")
@@ -134,6 +136,9 @@ class AdminCardsPage(BaseAdminPage):
         #   mmt.value_of_css_property('background-color')
     if not all_journals:
       add_card_btn.click()
+      # The add new card overlay (modal) uses an animation to draw. The following sleep in a
+      #  temporary shorthand because this overlay test is beyond the scope of APERTA-8989. When
+      #  we get the ticket that covers card creation this should be removed.
       time.sleep(2)
       self._validate_add_card_definition_overlay(selected_jrnl)
 

@@ -105,7 +105,7 @@ class AdminSettingsPage(BaseAdminPage):
     """
     logging.info('Validating editing journal: {0}'.format(journal))
     upload_button = self._get(self._admin_settings_edit_logo_upload_btn)
-    assert upload_button.text == 'UPLOAD NEW'
+    assert upload_button.text == 'UPLOAD NEW', upload_button.text
     self.validate_blue_on_blue_button_style(upload_button)
     journal_title_label = self._get(self._admin_settings_edit_title_label)
     assert journal_title_label.text == 'Journal Title'
@@ -117,10 +117,10 @@ class AdminSettingsPage(BaseAdminPage):
     # self.validate_input_field_inside_label_style(journal_desc_label)
     self._get(self._admin_settings_edit_desc_field)
     save_button = self._get(self._admin_settings_edit_save_button)
-    assert save_button.text == 'SAVE'
+    assert save_button.text == 'SAVE', save_button.text
     self.validate_blue_on_blue_button_style(save_button)
     cancel_link = self._get(self._admin_settings_edit_cancel_link)
-    assert cancel_link.text == 'cancel'
+    assert cancel_link.text == 'cancel', cancel_link.text
     cancel_link.click()
 
   def validate_style_settings_section(self):

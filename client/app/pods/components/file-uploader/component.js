@@ -31,6 +31,7 @@ export default Ember.TextField.extend({
   dataType: 'json',
   method: 'POST',
   railsMethod: 'POST',
+  preCreate: false,
 
   acceptFileTypes: Ember.computed('accept', function(){
     if (!this.get('accept')) { return null; }
@@ -61,7 +62,7 @@ export default Ember.TextField.extend({
 
   // should I prefix this with an underscore?
   createResource() {
-    if (this.get('updateUrl')){
+    if (this.get('preCreate')){
       return $.ajax({
         url: this.get('url'),
         dataType: 'json',
@@ -135,8 +136,16 @@ export default Ember.TextField.extend({
         .find('Location')[0]
         .textContent
         .replace(/%2F/g, '/');
-      let resourceUrl = resourceId ? this.get('updateUrl')(resourceId) : this.get('url');
-      let requestMethod = resourceId ? 'PUT' : this.get('railsMethod');
+
+      let resourceUrl;
+      let requestMethod;
+      if (this.get('preCreate')) {
+        resourceUrl = this.get('updateUrlFunc')(resourceId);
+        requestMethod = 'PUT';
+      } else {
+        resourceUrl = this.get('url');
+        requestMethod = this.get('railsMethod');
+      }
 
       // file-uploader will post data to the rails server itself if it's provided
       // with a `resourceUrl`.  This is in contrast to the s3-file-uploader, which

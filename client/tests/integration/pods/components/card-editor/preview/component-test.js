@@ -6,32 +6,34 @@ moduleForComponent('card-editor/preview', 'Integration | Component | card editor
   integration: true
 });
 
+const card = Ember.Object.create({
+  name: 'Fig',
+  content: Ember.Object.create({ contentType: 'display-children', children: [] })
+});
+
 test('it renders a preview (defaults wide)', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card}}`);
 
-  assert.elementFound('.card-editor-preview-card.card-editor-preview-full');
-  assert.elementNotFound('.card-editor-preview-card.card-editor-preview-sidebar');
+  assert.elementFound('.card-editor-preview-overlay');
+  assert.elementNotFound('.card-editor-preview-sidebar');
 });
 
 test('it renders a preview (narrow when sidebar-preview)', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card sidebar=true}}`);
 
-  assert.elementFound('.card-editor-preview-card.card-editor-preview-sidebar');
-  assert.elementNotFound('.card-editor-preview-card.card-editor-preview-full');
+  assert.elementFound('.card-editor-preview-sidebar');
+  assert.elementNotFound('.card-editor-preview-overlay');
 });
 
 test('it has buttons for toggling width', function(assert) {
-  const card = Ember.Object.create({ name: 'Fig' });
   this.set('card', card);
   this.render(hbs`{{card-editor/preview card=card}}`);
 
-  assert.elementFound('.card-editor-preview-card.card-editor-preview-full');
+  assert.elementFound('.card-editor-preview-overlay');
   $('.card-editor-sidebar-button').click();
-  assert.elementFound('.card-editor-preview-card.card-editor-preview-sidebar');
+  assert.elementFound('.card-editor-preview-sidebar');
   $('.card-editor-full-screen-button').click();
-  assert.elementFound('.card-editor-preview-card.card-editor-preview-full');
+  assert.elementFound('.card-editor-preview-overlay');
 });

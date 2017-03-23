@@ -1,6 +1,8 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
-    <button class="button button--blue button-primary editor-save">Save</button>
+    <button class="button button--blue button-primary editor-save"
+            {{action 'saveCard'}}
+            disabled={{if card.adminContentDirty null true}}>Publish</button>
   </div>
 </div>
 
@@ -15,5 +17,6 @@
     <hr />
 
     {{!-- Put the editor component here --}}
+
   </div>
 </div>

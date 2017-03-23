@@ -1,0 +1,44 @@
+// As much of the css for this component as possible is from the real
+// sidebar css; this file is just the diff that makes the rest of it
+// work OK in the preview pane.
+
+
+.card-editor-preview-sidebar {
+  background-color: #fff;
+  margin: 0 auto;
+  min-height: 100px;
+  transition: max-width .25s, border-radius .25s;
+  padding: 15px;
+  max-width: 500px;
+}
+
+
+.card-editor-preview-sidebar .task-disclosure {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-top: 0px;
+}
+
+.card-editor-preview-sidebar .task-disclosure-heading {
+  height: 4rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.9rem;
+  line-height: 4rem;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+
+.card-editor-preview-sidebar-button.button-secondary.button--green {
+  cursor: default;
+  &:hover,&:active,&:focus {
+    background-color: #fff;
+    color: $aperta-green;
+    text-decoration: none;
+    outline: none;
+    border-color: $aperta-green;
+  }
+}

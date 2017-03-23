@@ -44,14 +44,14 @@ class AdminWorkflowsPage(BaseAdminPage):
     self._admin_workflow_catalogue = (By.CLASS_NAME, 'admin-workflow-catalogue')
     self._admin_workflow_mmt_thumbnail = (By.CLASS_NAME, 'admin-catalogue-item')
     # Manuscript manager thumbnail details
-    self._admin_workflow_mmt_title = (By.CSS_SELECTOR, 'h4.admin-workflow-thumbnail-name')
-    self._admin_workflow_mmt_journal = (By.CSS_SELECTOR, 'div.admin-workflow-thumbnail-journal')
-    self._admin_workflow_mmt_last_update_label_date = (By.CSS_SELECTOR,
-                                                       'div.admin-workflow-thumbnail-updated')
+    self._admin_workflow_mmt_title = (By.CLASS_NAME, 'admin-workflow-thumbnail-name')
+    self._admin_workflow_mmt_journal = (By.CLASS_NAME, 'admin-workflow-thumbnail-journal')
+    self._admin_workflow_mmt_last_update_label_date = (By.CLASS_NAME,
+                                                       'admin-workflow-thumbnail-updated')
     self._admin_workflow_mmt_number_of_ms_and_label = (
-        By.CSS_SELECTOR, 'div.admin-workflow-thumbnail-active-manuscripts')
-    self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
-    self._mmt_template_error_msg = (By.CSS_SELECTOR, 'div.mmt-edit-error-message')
+        By.CLASS_NAME, 'admin-workflow-thumbnail-active-manuscripts')
+    self._mmt_template_name_field = (By.CLASS_NAME, 'edit-paper-type-field')
+    self._mmt_template_error_msg = (By.CLASS_NAME, 'mmt-edit-error-message')
     self._mmt_template_save_button = (By.CSS_SELECTOR,
                                       'a.paper-type-save-button')
     self._mmt_template_cancel_link = (By.CSS_SELECTOR,
@@ -173,7 +173,6 @@ class AdminWorkflowsPage(BaseAdminPage):
         #   mmt.value_of_css_property('background-color')
     if not all_journals:
       add_mmt_btn.click()
-      time.sleep(2)
       self._validate_mmt_definition_overlay_items()
 
   def _validate_mmt_definition_overlay_items(self):
@@ -181,6 +180,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     Validate the elements of the manuscript manager template (aka paper type)
     :return: void function
     """
+    self._wait_for_element(self._get(self._mmt_template_name_field))
     template_field = self._get(self._mmt_template_name_field)
     # The default name should be Research
     assert 'Research' in template_field.get_attribute('value'), \
@@ -188,7 +188,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     self._get(self._mmt_template_save_button)
     template_cancel = self._get(self._mmt_template_cancel_link)
     self._gets(self._mmt_template_add_phase_icons)
-    time.sleep(3)
+    self._wait_for_element(self._get(self._mmt_template_columns))
     columns = self._gets(self._mmt_template_columns)
     # For each column, validate its widgets
     for column in columns:
@@ -247,6 +247,8 @@ class AdminWorkflowsPage(BaseAdminPage):
       # If this mmt template already exists, this save should return an error and the name link
       # won't exist
       save_template_button.click()
+      # time to execute the save, then given the above comment, set timeout temporarily low since
+      #  the error pops immediately in in that data condition
       time.sleep(1)
       self.set_timeout(2)
       try:

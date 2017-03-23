@@ -95,7 +95,6 @@ class AdminUsersPage(BaseAdminPage):
       # self._validate_user_with_role('atest author3', 'Staff Admin')
       logging.info('Deleting newly added user')
       self._delete_user_with_role()
-      time.sleep(3)
 
   def _add_user_with_role(self, user, role):
     """

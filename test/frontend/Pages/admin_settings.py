@@ -108,11 +108,12 @@ class AdminSettingsPage(BaseAdminPage):
     assert upload_button.text == 'UPLOAD NEW', upload_button.text
     self.validate_blue_on_blue_button_style(upload_button)
     journal_title_label = self._get(self._admin_settings_edit_title_label)
-    assert journal_title_label.text == 'Journal Title'
+    assert journal_title_label.text == 'Journal Title', journal_title_label.text
     journal_title_field = self._get(self._admin_settings_edit_title_field)
-    assert journal_title_field.get_attribute('value') == journal
+    assert journal_title_field.get_attribute('value') == journal, \
+        journal_title_field.get_attribute('value')
     journal_desc_label = self._get(self._admin_settings_edit_desc_label)
-    assert journal_desc_label.text == 'Journal Description'
+    assert journal_desc_label.text == 'Journal Description', journal_desc_label.text
     # APERTA-6829
     # self.validate_input_field_inside_label_style(journal_desc_label)
     self._get(self._admin_settings_edit_desc_field)
@@ -133,8 +134,7 @@ class AdminSettingsPage(BaseAdminPage):
     edit_pdf_css_btn = self._get(self._admin_settings_edit_pdf_css_btn)
     assert edit_pdf_css_btn.text == 'EDIT PDF CSS', edit_pdf_css_btn.text
     edit_pdf_css_btn.click()
-    time.sleep(.5)
-    self._get(self._overlay_header_close)
+    self._wait_for_element(self._get(self._overlay_header_close))
     title = self._get(self._overlay_header_title)
     assert 'PDF CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
@@ -144,12 +144,11 @@ class AdminSettingsPage(BaseAdminPage):
     cancel = self._get(self._journal_styles_css_overlay_cancel)
     self._get(self._journal_styles_css_overlay_save)
     cancel.click()
-    time.sleep(.5)
+    self._wait_for_not_element(self._overlay_header_close, .25)
     edit_ms_css_btn = self._get(self._admin_settings_edit_ms_css_btn)
     assert edit_ms_css_btn.text == 'EDIT MANUSCRIPT CSS', edit_ms_css_btn.text
     edit_ms_css_btn.click()
-    time.sleep(.5)
-    self._get(self._overlay_header_close)
+    self._wait_for_element(self._get(self._overlay_header_close))
     title = self._get(self._overlay_header_title)
     assert 'Manuscript CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)

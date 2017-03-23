@@ -28,13 +28,12 @@ class AdminCardsPage(BaseAdminPage):
     # Locators - Instance members
     self._admin_cards_pane_title = (By.CSS_SELECTOR, 'div.admin-page-content > div > h2')
     self._admin_cards_add_new_card_btn = (By.CLASS_NAME, 'button-primary')
-    # self._admin_cards_catalogue = (By.CSS_SELECTOR, 'div.admin-page-catalogue')
     self._admin_cards_catalogue = (By.CLASS_NAME, 'admin-page-catalogue')
     self._admin_cards_card_thumbnail = (By.CLASS_NAME, 'admin-catalogue-item')
     self._admin_cards_thumbnail_item_name = (By.CLASS_NAME, 'admin-card-thumbnail-name')
     self._admin_cards_thumbnail_item_jrnl = (By.CLASS_NAME, 'admin-card-thumbnail-journal')
     # Add New Card Overlay (anco)
-    self._admin_cards_anco = (By.CSS_SELECTOR, 'div.overlay-container')
+    self._admin_cards_anco = (By.CLASS_NAME, 'overlay-container')
     self._admin_cards_anco_closer = (By.CLASS_NAME, 'overlay-close')
     self._admin_cards_anco_title = (By.CSS_SELECTOR, 'div.overlay-body > div > h1')
     self._admin_cards_anco_name_field_label = (By.CSS_SELECTOR,
@@ -112,7 +111,8 @@ class AdminCardsPage(BaseAdminPage):
       for card in cards:
         name = card.find_element(*self._admin_cards_thumbnail_item_name)
         logging.info('Examining Card: {0}'.format(name.text))
-        assert name.text in dbcards, name.text
+        assert name.text in dbcards, 'Card: {0} is not present in ' \
+                                     'db card names: {1}'.format(name.text, dbcards)
         journal = card.find_element(*self._admin_cards_thumbnail_item_jrnl)
         logging.info('Validating Card for journal: {0}'.format(journal.text))
         if all_journals:
@@ -129,10 +129,10 @@ class AdminCardsPage(BaseAdminPage):
         assert card_id, 'No card named "{0}" in journal: {1}'.format(name.text, journal.text)
         assert card.value_of_css_property('background-color') == APERTA_BLUE, \
             card.value_of_css_property('background-color')
-        # Validate Color shift on hover
-        self._actions.move_to_element_with_offset(card, 5, 5).perform()
         # The hover color of the mmt thumbnails is not present in the approved palette in the
         #   style guide. Currently only a question in APERTA-8989.
+        # Validate Color shift on hover
+        # self._actions.move_to_element_with_offset(card, 5, 5).perform()
         # assert mmt.value_of_css_property('background-color') == APERTA_BLUE_DARK, \
         #   mmt.value_of_css_property('background-color')
     if not all_journals:
@@ -168,5 +168,4 @@ class AdminCardsPage(BaseAdminPage):
     choices = [closer, cancel_link]
     choice = random.choice(choices)
     choice.click()
-    time.sleep(1)
-
+    self._wait_for_not_element(self._admin_cards_anco, .25)

@@ -12,28 +12,10 @@ class ReviewerReportsController < ApplicationController
     render json: reviewer_report
   end
 
-  def create
-    task = Task.find(reviewer_report_params[:task_id])
-    requires_user_can :edit, task
-
-    reviewer_report = ReviewerReport.new(task: task,
-                                         decision: task.paper.draft_decision,
-                                         user: current_user)
-    reviewer_report.save!
-
-    render json: reviewer_report
-  end
-
   def update
     requires_user_can :edit, reviewer_report.task
-    reviewer_report.update!(reviewer_report_params)
 
-    render json: reviewer_report
-  end
-
-  def destroy
-    requires_user_can :edit, reviewer_report.task
-    reviewer_report.destroy!
+    reviewer_report.submit! if reviewer_report_params[:submitted].present?
 
     render json: reviewer_report
   end
@@ -46,6 +28,6 @@ class ReviewerReportsController < ApplicationController
 
   def reviewer_report_params
     params.require(:reviewer_report)
-          .permit(:task_id)
+      .permit(:submitted)
   end
 end

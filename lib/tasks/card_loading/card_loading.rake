@@ -12,6 +12,13 @@ namespace :cards do
       $stderr.puts("Starting CardContent.id sequence at #{start}")
       ActiveRecord::Base.connection.execute("ALTER SEQUENCE card_contents_id_seq RESTART WITH #{start}")
     end
-    CardLoader.load_all(journal: nil)
+
+    CardLoader.load_standard(journal: nil)
+  end
+
+  task :load_one, [:name, :journal] => :environment do |_, args|
+    puts "Loading..."
+    journal = args[:journal] ? Journal.find(args[:journal]) : nil
+    CardLoader.load(args[:name], journal: journal)
   end
 end

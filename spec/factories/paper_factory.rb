@@ -150,7 +150,7 @@ FactoryGirl.define do
       after(:create) do |paper|
         unless Card.exists?
           start = Time.now
-          CardLoader.load_all
+          CardLoader.load_standard
           end_time = Time.now
           puts "seeded cards in test in #{end_time - start} seconds"
         end

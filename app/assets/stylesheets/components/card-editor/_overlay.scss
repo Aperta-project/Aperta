@@ -1,0 +1,80 @@
+.card-editor-preview-overlay {
+  background-color: #fff;
+  margin: 0 auto;
+  min-height: 100px;
+  transition: max-width .25s, border-radius .25s;
+  max-width: 1120px;
+  border-radius: 5px;
+}
+
+.card-editor-preview-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  margin: 0 8rem;
+  border-bottom: 1px solid #000;
+  padding: 5.0rem 5px 1.0rem 5px;
+
+  ul {
+    padding-left: 0;
+    margin-bottom: 5px;
+
+    li {
+      display: inline-block;
+      font-size: 1.6rem;
+    }
+
+    li + li:before {
+      position: relative;
+      top: -2px;
+      content: " | ";
+      padding: 0 5px;
+      color: #999;
+    }
+  }
+
+  .card-editor-preview-overlay-paper-title {
+    position: relative;
+    display: inline-block;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: $aperta-green;
+
+    .manuscript-icon {
+      @include position(absolute, 2px auto auto 0px);
+      path, rect { fill: $aperta-green; }
+    }
+  }
+}
+
+.card-editor-preview-overlay-button.add-participant-button, .card-editor-preview-overlay-button.button-secondary.button--green {
+  cursor: default;
+  margin-left: 10px;
+  &:hover,&:active,&:focus {
+    background-color: #fff;
+    color: $aperta-green;
+    text-decoration: none;
+    outline: none;
+    border-color: $aperta-green;
+  }
+}
+
+.card-editor-preview-overlay-body {
+  position: relative;
+  padding: 4rem 8rem;
+
+ .card-editor-preview-overlay-title {
+   margin: 0 0 1em 0;
+   font-size: 4.8rem;
+ }
+}
+
+.card-editor-preview-overlay-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 8rem 0 8rem;
+  border-top: 1px solid #000;
+  padding: 15px 0 50px 0;
+}

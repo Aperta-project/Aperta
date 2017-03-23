@@ -8,7 +8,6 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-// todo: Add route for DELETE /api/decision_attachments/(id)
     deleteFile() {
       if (this.attrs.deleteFile) {
         this.attrs.deleteFile(this.get('attachment'));

@@ -51,7 +51,8 @@ export default TaskComponent.extend({
     );
     // Each time the Response to Reviewers card is opened, refresh the decision
     // history. Unfortunately, slanger will not update the RtR card while it is
-    // already open.
+    // already open since decisions is a hasMany relationships, and the
+    // notification from Pusher is for a single decision.
     if (this.get('task.paper.decisions'))
       this.get('task.paper.decisions').reload();
   },
@@ -93,6 +94,7 @@ export default TaskComponent.extend({
 
     createAttachment(s3Url, file) {
       this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
+      this.get('task.paper.decisions').reload();
     },
 
     updateAttachment(s3Url, file, attachment) {

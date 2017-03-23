@@ -79,6 +79,7 @@ Tahi::Application.routes.draw do
         put :update_attachment, on: :member
       end
     end
+    resources :decision_attachments, only: [:index, :show, :create, :update, :destroy]
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member
     end

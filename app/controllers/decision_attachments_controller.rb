@@ -15,7 +15,12 @@ class DecisionAttachmentsController < ApplicationController
 
   def show
     attachment = Attachment.find(params[:id])
-    requires_user_can :view, attachment.owner
+    revise_task = attachment.revise_task
+    if revise_task.completed?
+      requires_user_can :view, attachment.owner
+    else
+      requires_user_can :view, revise_task
+    end
     respond_with attachment, root: 'attachment'
   end
 

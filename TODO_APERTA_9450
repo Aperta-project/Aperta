@@ -1,0 +1,11 @@
+- Only update XML when necessary -- Sam
+- Draft states for previews      -- Sam
+- Upload/download
+- Validation/error messages
+- What should multi-option look like?
+- What should nested options look like?
+- what should exports look like?
+- what should validations look like?
+- what should styled text look like?
+- can we do live previews, or can you only preview a saved draft?
+  -- if only a saved draft, how to we make clear to the user what they're seeing in the draft pane? Auto-save draft?

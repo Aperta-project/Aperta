@@ -57,6 +57,7 @@ export default {
 
       let msg = `Error with ${type} request to ${url}. Server returned ${status}: ${statusText}. ${thrownError}`;
       logError(new Error(msg));
+      Bugsnag.notifyException(thrownError, 'AJAX Error');
       // TODO: Remove this condidition when we switch to run loop respecting http mocks
       if (!Ember.testing) { flash.displayRouteLevelMessage('error', msg); }
     });

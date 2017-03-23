@@ -28,7 +28,8 @@ class AdminCardsPage(BaseAdminPage):
     # Locators - Instance members
     self._admin_cards_pane_title = (By.CSS_SELECTOR, 'div.admin-page-content > div > h2')
     self._admin_cards_add_new_card_btn = (By.CLASS_NAME, 'button-primary')
-    self._admin_cards_catalogue = (By.CSS_SELECTOR, 'div.admin-page-catalogue')
+    # self._admin_cards_catalogue = (By.CSS_SELECTOR, 'div.admin-page-catalogue')
+    self._admin_cards_catalogue = (By.CLASS_NAME, 'admin-page-catalogue')
     self._admin_cards_card_thumbnail = (By.CLASS_NAME, 'admin-catalogue-item')
     self._admin_cards_thumbnail_item_name = (By.CLASS_NAME, 'admin-card-thumbnail-name')
     self._admin_cards_thumbnail_item_jrnl = (By.CLASS_NAME, 'admin-card-thumbnail-journal')
@@ -37,7 +38,7 @@ class AdminCardsPage(BaseAdminPage):
     self._admin_cards_anco_closer = (By.CLASS_NAME, 'overlay-close')
     self._admin_cards_anco_title = (By.CSS_SELECTOR, 'div.overlay-body > div > h1')
     self._admin_cards_anco_name_field_label = (By.CSS_SELECTOR,
-                                               'div.admin-new-card-overlay-form > div > label')
+                                               'div.admin-new-card-overlay-form label')
     self._admin_cards_anco_name_field = (By.CSS_SELECTOR,
                                          'div.admin-new-card-overlay-form > div > div > input')
     self._admin_cards_anco_name_field_note = (By.CSS_SELECTOR,

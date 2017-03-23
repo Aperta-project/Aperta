@@ -21,8 +21,9 @@ export default TaskComponent.extend({
     },
 
     submitReport() {
-      this.get('currentReviewerReport').save().then(() => {
-        this.set('task.body.submitted', true);
+      let report = this.get('currentReviewerReport');
+      report.set('submitted', true);
+      report.save().then(() => {
         this.set('task.completed', true);
         this.get('task').save();
       });

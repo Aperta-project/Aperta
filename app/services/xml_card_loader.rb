@@ -47,7 +47,7 @@ class XmlCardLoader
       card: card
     )
     content_root = make_card_content(
-      root.xpath('/card/card_content').first,
+      root.xpath('/card/content').first,
       version
     )
     version.card_contents << content_root
@@ -68,12 +68,12 @@ class XmlCardLoader
     #text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
     content = CardContent.new(
       ident: attr_val(el, 'ident'),
-      value_type: attr_val(el, 'value_type'),
-      content_type: attr_val(el, 'content_type'),
+      value_type: attr_val(el, 'value-type'),
+      content_type: attr_val(el, 'content-type'),
       text: attr_val(el, 'text'),
       card_version: card_version
     )
-    el.xpath('card_content').each do |el1|
+    el.xpath('content').each do |el1|
       content.children << make_card_content(el1, card_version)
     end
     content

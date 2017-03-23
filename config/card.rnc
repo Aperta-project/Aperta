@@ -1,11 +1,16 @@
-# Do not forget to update card.rng if you change this file! This is not actually
-# used by Aperta, but it is far easier to write than XML.
+# card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
+# change this file! This is not actually used by Aperta, but it is far easier to
+# write than XML.
 #
-# trang -I rnc -O rng card.rnc card.rng
+#   trang -I rnc -O rng card.rnc card.rng
+#
+# card.rng: If this file is card.rng, please edit card.rnc instead. You will be
+# happier
 
 content = element content {
               attribute ident { text }?,
-              attribute value-type { "attachment" | "boolean" | "text" | "question_set" },
+              attribute value-type { "attachment" | "boolean" | "text" | "question_set" }?,
+              attribute content-type { "display-children" | "text" },
               attribute text { text }?,
               element text { text }?,
               content*

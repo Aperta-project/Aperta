@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <!--
+    card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
+    change this file! This is not actually used by Aperta, but it is far easier to
+    write than XML.
+    
+      trang -I rnc -O rng card.rnc card.rng
+    
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be
+    happier
+  -->
   <define name="content">
-    <element name="card_content">
+    <element name="content">
       <optional>
         <attribute name="ident"/>
       </optional>
       <optional>
-        <attribute name="value_type">
+        <attribute name="value-type">
           <choice>
             <value>attachment</value>
             <value>boolean</value>
@@ -15,12 +25,12 @@
           </choice>
         </attribute>
       </optional>
-        <attribute name="content_type">
-          <choice>
-            <value>root</value>
-            <value>text</value>
-          </choice>
-        </attribute>
+      <attribute name="content-type">
+        <choice>
+          <value>display-children</value>
+          <value>text</value>
+        </choice>
+      </attribute>
       <optional>
         <attribute name="text"/>
       </optional>

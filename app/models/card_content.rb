@@ -4,6 +4,8 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include XmlSerializable
+
   acts_as_nested_set
   acts_as_paranoid
 
@@ -59,16 +61,14 @@ class CardContent < ActiveRecord::Base
     end
   end
 
-
   def to_xml(options = {})
-    require 'builder'
-    options[:indent] ||= 2
-    xml = (options[:builder] ||=
-             ::Builder::XmlMarkup.new(indent: options[:indent]))
-    xml.instruct! unless options[:skip_instruct]
-    xml.card_content(content_type: content_type, text: text) do |card_content|
+    setup_builder(options).tag!(
+      'content',
+      'content-type' => content_type,
+      'text' => text
+    ) do |xml|
       children.each do |child|
-        child.to_xml(builder: card_content, skip_instruct: true)
+        child.to_xml(builder: xml, skip_instruct: true)
       end
     end
   end

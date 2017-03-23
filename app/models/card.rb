@@ -1,6 +1,8 @@
 # Card is a container for CardContents
 class Card < ActiveRecord::Base
   include EventStream::Notifiable
+  include XmlSerializable
+
   acts_as_paranoid
 
   belongs_to :journal, inverse_of: :cards
@@ -54,13 +56,11 @@ class Card < ActiveRecord::Base
   end
 
   def to_xml(options = {})
-    require 'builder'
-    options[:indent] ||= 2
-    xml = (options[:builder] ||=
-             ::Builder::XmlMarkup.new(indent: options[:indent]))
-    xml.instruct! unless options[:skip_instruct]
-    xml.card(name: name) do |card|
-      content_root_for_version(:latest).to_xml(builder: card, skip_instruct: true)
+    setup_builder(options).card(name: name) do |xml|
+      content_root_for_version(:latest).to_xml(
+        builder: xml,
+        skip_instruct: true
+      )
     end
   end
 

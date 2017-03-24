@@ -7,6 +7,7 @@ export default {
   initialize(instance) {
     let flash    = instance.container.lookup('service:flash');
     let logError = instance.container.lookup('logError:main');
+    let bugsnagService = instance.lookup('service:bugsnag');
 
     // The global error handler for internal ember errors.
     // In production and staging send the error to bugsnag.
@@ -56,8 +57,7 @@ export default {
       if (status === 500 && url.match(/\/health/) ) { return; }
 
       let msg = `Error with ${type} request to ${url}. Server returned ${status}: ${statusText}. ${thrownError}`;
-      logError(new Error(msg));
-      Bugsnag.notifyException(thrownError, 'AJAX Error');
+      bugsnagService.notifyException(thrownError, msg);
       // TODO: Remove this condidition when we switch to run loop respecting http mocks
       if (!Ember.testing) { flash.displayRouteLevelMessage('error', msg); }
     });

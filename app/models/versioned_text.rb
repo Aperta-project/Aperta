@@ -7,6 +7,13 @@ class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
 
+  # Base exception class for VersionedText
+  class VersionedTextError < StandardError; end
+
+  # Exception thrown when manuscript attachments aren't `done?` and we're
+  # attempting to copy data from them.
+  class AttachmentNotDone < VersionedTextError; end
+
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
   has_many :figures, through: :paper
@@ -15,7 +22,7 @@ class VersionedText < ActiveRecord::Base
 
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
-  before_update :add_file_info, if: :file?
+  before_save :add_file_info, if: :file?
 
   validates :paper, presence: true
   validate :only_version_once
@@ -55,11 +62,10 @@ class VersionedText < ActiveRecord::Base
 
   def new_draft!
     dup.tap do |d|
-      d.update!(
-        major_version: nil,
-        minor_version: nil,
-        submitting_user: nil
-      ) # makes duplicate of S3 file
+      d.major_version = nil
+      d.minor_version = nil
+      d.submitting_user = nil
+      d.save! # makes duplicate of VersionedText
     end
   end
 
@@ -74,6 +80,8 @@ class VersionedText < ActiveRecord::Base
   end
 
   def add_file_info
+    raise AttachmentNotDone unless paper.file.done?
+
     self.file_type = paper.file_type
     self.manuscript_s3_path = paper.file.s3_dir
     self.manuscript_filename = paper.file[:file]

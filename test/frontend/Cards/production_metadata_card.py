@@ -44,7 +44,7 @@ class ProductionMedataCard(BaseCard):
     self.validate_common_elements_styles(short_doi)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Production Metadata'
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     publication_date = self._get(self._publication_date)
     assert publication_date.get_attribute('placeholder') == 'Select Date...', \
       publication_date.get_attribute('placeholder')

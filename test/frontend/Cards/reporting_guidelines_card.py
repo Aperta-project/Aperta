@@ -37,7 +37,7 @@ class ReportingGuidelinesCard(BaseCard):
       self.click_completion_button()
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Reporting Guidelines', card_title.text
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     question_text = self._get(self._question_text)
     assert question_text.text == 'Authors should check the EQUATOR Network site for any reporting' \
                              ' guidelines that apply to their study design, and ensure that any' \

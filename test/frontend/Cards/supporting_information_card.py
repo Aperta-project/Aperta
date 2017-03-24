@@ -37,7 +37,7 @@ class SICard(BaseCard):
     self.validate_common_elements_styles(short_doi)
     card_title = self._get(self._card_title)
     assert card_title.text == 'Supporting Info', card_title.text
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
 
     msg_div = self._get(self._msg_div)
     msg = msg_div.find_elements_by_tag_name('div')[-1]

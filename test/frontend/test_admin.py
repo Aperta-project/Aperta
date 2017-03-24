@@ -55,7 +55,7 @@ class ApertaAdminTest(CommonTest):
     adm_page.validate_journal_block_display(user_type['user'])
     adm_page.validate_nav_toolbar_elements(user_type)
 
-  def _test_negative_permission(self):
+  def _rest_negative_permission(self):
     """
     test_admin: Validate if non authorized user can see Admin panel
     :return: void function
@@ -80,7 +80,6 @@ class ApertaAdminTest(CommonTest):
     user = random.choice(user_search)
     logging.info('Searching user: {0}'.format(user))
     adm_page.validate_search_edit_user(user)
-
 
   def test_validate_add_new_journal(self):
     """

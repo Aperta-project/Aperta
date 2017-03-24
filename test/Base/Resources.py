@@ -918,6 +918,7 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/docs/Acupuncture_and_Counselling_for_Depression_in_Primary_Care_a_Randomised_Controlled.docx',
         'frontend/assets/docs/Adaptation_to_Temporally_Fluctuating_Environments_by_the_Evolution_of_Maternal_.docx',
         'frontend/assets/docs/Aedes_hensilli_as_a_Potential_Vector_of_Chikungunya_and_Zika_Viruses.doc',
+        'frontend/assets/docs/AgMicrobiomesSynthesisPaperRevision_2_21_17_IB.docx',
         'frontend/assets/docs/Alternative_Immunomodulatory_Strategies_for_Xenotransplantation_CD80_CD86-CTLA4_.doc',
         'frontend/assets/docs/An_In-Depth_Analysis_of_a_Piece_of_Shit_Distribution_of_Schistosoma_mansoni_and_.doc',
         'frontend/assets/docs/Antibiotic_prescription_for_COPD_exacerbations_admitted_to_hospital_European_COPD_.docx',

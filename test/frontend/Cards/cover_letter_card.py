@@ -38,7 +38,8 @@ class CoverLetterCard(BaseCard):
     assert card_title.text == expected_card_title, 'The card title: {0} is not ' \
                                                    'the expected: {1}'.format(card_title.text,
                                                                               expected_card_title)
-    self.validate_application_title_style(card_title)
+
+    self.validate_card_title_style(card_title)
 
     # Assert instructions text styling
     instructions_first_p = self._get(self._instructions_text_first_p)

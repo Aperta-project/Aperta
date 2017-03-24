@@ -84,7 +84,7 @@ class ManuscriptViewerTest(CommonTest):
               'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
               'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
               'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 6,
-              'Cover Editor': 6, 'Reviewer': 7}
+              'Cover Editor': 6, 'Reviewer': 7, 'Journal Setup Admin': 7}
     random_users = [random.choice(users), random.choice(editorial_users),
                     random.choice(external_editorial_users), random.choice(admin_users)]
     for user in random_users:
@@ -111,6 +111,7 @@ class ManuscriptViewerTest(CommonTest):
                                           'from assignments where ((assigned_to_type = '
                                           '\'System\' and user_id = %s)));',(uid,))
         permissions = journal_permissions + paper_permissions + system_permissions
+        logging.info('DB Permissions: {0}'.format(permissions))
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
         logging.info(u'Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
                     .format(user['user'], short_doi, permissions, max_elements))
@@ -308,10 +309,11 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer.page_ready()
     manuscript_viewer.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
-    upms._wait_for_element(upms._get(upms._upload_manuscript_btn))
+    upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
     upms.upload_manuscript()
     upms.validate_ihat_conversions_success(timeout=45)
     data = {'attach': 2}
+    manuscript_viewer.complete_task('Upload Manuscript')
     manuscript_viewer.complete_task('Revise Manuscript', data=data)
     # Make new submission
     manuscript_viewer.click_submit_btn()
@@ -343,7 +345,6 @@ class ManuscriptViewerTest(CommonTest):
     # Validate download drawer styles and actions
     manuscript_viewer.validate_download_drawer_styles()
     manuscript_viewer.validate_download_btn_actions()
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

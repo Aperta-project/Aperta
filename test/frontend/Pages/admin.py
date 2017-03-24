@@ -12,7 +12,8 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_BLUE, WHITE
+from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_BLUE, \
+    APERTA_BLUE_DARK, APERTA_BLUE_LIGHT, WHITE
 
 __author__ = 'jgray@plos.org'
 
@@ -218,25 +219,26 @@ class AdminPage(AuthenticatedPage):
       assert upload_button.text == 'UPLOAD NEW'
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
-      time.sleep(2)
-      assert upload_button.value_of_css_property('color') == APERTA_BLUE, \
-          upload_button.value_of_css_property('color')
-      assert upload_button.value_of_css_property('background-color') == WHITE, \
-          upload_button.value_of_css_property('background-color')
-      upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
-      assert upload_note.text == '(250px x 40px)', upload_note.text
-      assert APPLICATION_TYPEFACE in upload_note.value_of_css_property('font-family'), \
-          upload_note.value_of_css_property('font-family')
-      assert upload_note.value_of_css_property('font-size') == '14px', \
-          upload_note.value_of_css_property('font-size')
-      assert upload_note.value_of_css_property('font-style') == 'italic', \
-          upload_note.value_of_css_property('font-style')
-      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
-          upload_note.value_of_css_property('color')
-      assert upload_note.value_of_css_property('line-height') == '40px', \
-          upload_note.value_of_css_property('line-height')
-      assert upload_note.value_of_css_property('padding-left') == '10px', \
-          upload_note.value_of_css_property('padding-left')
+      # APERTA-9542
+      # time.sleep(2)
+      # assert upload_button.value_of_css_property('color') == APERTA_BLUE_DARK, \
+      #     upload_button.value_of_css_property('color')
+      # assert upload_button.value_of_css_property('background-color') == APERTA_BLUE_LIGHT, \
+      #     upload_button.value_of_css_property('background-color')
+      # upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
+      # assert upload_note.text == '(250px x 40px)', upload_note.text
+      # assert APPLICATION_TYPEFACE in upload_note.value_of_css_property('font-family'), \
+      #     upload_note.value_of_css_property('font-family')
+      # assert upload_note.value_of_css_property('font-size') == '14px', \
+      #     upload_note.value_of_css_property('font-size')
+      # assert upload_note.value_of_css_property('font-style') == 'italic', \
+      #     upload_note.value_of_css_property('font-style')
+      # assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+      #     upload_note.value_of_css_property('color')
+      # assert upload_note.value_of_css_property('line-height') == '40px', \
+      #     upload_note.value_of_css_property('line-height')
+      # assert upload_note.value_of_css_property('padding-left') == '10px', \
+      #     upload_note.value_of_css_property('padding-left')
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
       assert journal_title_label.text == 'Journal Title', journal_title_label.text
       # APERTA-6829
@@ -297,14 +299,16 @@ class AdminPage(AuthenticatedPage):
       last_doi_issued_field = self._get(self._base_admin_journals_edit_last_doi_field)
       save_button = self._get(self._base_admin_journals_edit_save_button)
       assert save_button.text == 'SAVE', save_button.text
-      self.validate_blue_on_blue_button_style(save_button)
+      # APERTA-9539
+      # self.validate_blue_on_blue_button_style(save_button)
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
-      assert save_button.value_of_css_property('color') == APERTA_BLUE, \
-          save_button.value_of_css_property('color')
-      assert save_button.value_of_css_property('background-color') == WHITE, \
-          save_button.value_of_css_property('background-color')
+      # APERTA-9542
+      # assert save_button.value_of_css_property('color') == APERTA_BLUE_DARK, \
+      #     save_button.value_of_css_property('color')
+      # assert save_button.value_of_css_property('background-color') == APERTA_BLUE_LIGHT, \
+      #     save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'cancel', cancel_link.text
       assert APPLICATION_TYPEFACE in cancel_link.value_of_css_property('font-family'), \
@@ -380,7 +384,8 @@ class AdminPage(AuthenticatedPage):
       self._get(self._base_admin_journals_edit_desc_field)
       save_button = self._get(self._base_admin_journals_edit_save_button)
       assert save_button.text == 'SAVE'
-      self.validate_blue_on_blue_button_style(save_button)
+      # APERTA-9539
+      # self.validate_blue_on_blue_button_style(save_button)
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'cancel'
       cancel_link.click()

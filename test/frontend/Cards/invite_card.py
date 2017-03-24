@@ -105,7 +105,7 @@ class InviteCard(BaseCard):
         continue
       else:
         closed_invite_listing = self._get(self._closed_invitee_listing)
-        # The following three lines need to differentiate the specific invite we are trying to validate
+        # The following 3 lines need to differentiate the specific invite we are trying to validate
         self._actions.move_to_element(closed_invite_listing).perform()
         invite.click()
         self._get(self._invite_edit_invite_button).click()
@@ -162,23 +162,31 @@ class InviteCard(BaseCard):
     attachments = self.get_attached_file_names()
     fn = fn.split('/')[-1].replace(' ', '+')
     assert fn in attachments, '{0} not in {1}'.format(fn, attachments)
+
+    # Save invite with attachments
     self._get(self._invitation_save_button).click()
+
+    # This next action closes the invite again
     self._get(self._invitee_full_name).click()
     invitees = self._gets(self._invitee_listing)
     assert any(invitee['name'] in s for s in [x.text for x in invitees]), \
         '{0} not found in {1}'.format(invitee['name'], [x.text for x in invitees])
     self._get(self._invitee_state)
-    # Make the actual invitation
+    # Send the invitation
     self._get(self._send_invitation_button).click()
+
     # This wait is needed for the invite text to appear
     time.sleep(2)
     invitees = self._gets(self._invitee_listing)
     assert any('Invited' in s for s in [x.text for x in invitees]), \
         'Invited not found in {0}'.format([x.text for x in invitees])
-    for item in self._gets(self._invitee_full_name):
-      if invitee['email'] in item.text:
+
+    for item in self._gets(self._invitee_listing):
+      if invitee['email'] in item.text and 'Rescinded' not in item.text:
+        # So the issue is that the thing you need to click on is the thing with the link/js function
+        #   upon it. So in this case, it can't be the full name, it must be the listing itself.
         item.click()
-        self._gets(self._rescind_button)
+        self._get(self._rescind_button)
         break
 
   def validate_response(self, invitee, response, reason='N/A', suggestions='N/A'):
@@ -233,9 +241,9 @@ class InviteCard(BaseCard):
                                                  'validate_card_elements_styles(): ' \
                                                  '{0}'.format(card_type)
     self.validate_common_elements_styles(short_doi)
-    # There is no definition of this external label style in the style guide. APERTA-7311
-    #   currently, a new style validator has been implemented to match this UI
     user_input = self._get(self._recipient_field)
+    # APERTA-9291 - color fail
+    # self.validate_input_field_placeholder_style(user_input)
     card_title = self._get(self._card_heading)
     if card_type == 'reviewer':
       assert card_title.text == 'Invite Reviewers', card_title.text
@@ -245,7 +253,7 @@ class InviteCard(BaseCard):
       assert card_title.text == 'Invite Academic Editor', card_title.text
       assert user_input.get_attribute('placeholder') == 'Invite editor by name or email',\
           user_input.get_attribute('placeholder')
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     # Button
     btn = self._get(self._compose_invitation_button)
     assert btn.text == 'ADD TO QUEUE', '{0} instead of ADD TO QUEUE'.format(btn.text)

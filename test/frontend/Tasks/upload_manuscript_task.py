@@ -23,7 +23,7 @@ class UploadManuscriptTask(BaseTask):
 
     #Locators - Instance members
     self._intro_text = (By.TAG_NAME, 'p')
-    self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
+    self._upload_manuscript_replace_btn = (By.CSS_SELECTOR, 'span.fileinput-button')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
     self._upload_source_file_button = (By.ID, 'upload-sourcefile')
@@ -36,7 +36,7 @@ class UploadManuscriptTask(BaseTask):
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     assert intro_text.text == 'You may upload a manuscript at any time.', intro_text.text
-    upload_ms_btn = self._get(self._upload_manuscript_btn)
+    upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
     assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT'
     self.validate_primary_big_green_button_style(upload_ms_btn)
 
@@ -55,7 +55,7 @@ class UploadManuscriptTask(BaseTask):
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
-    upload_ms_btn = self._get(self._upload_manuscript_btn)
+    upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
     upload_ms_btn.click()
     # Time needed for script execution.
     time.sleep(7)

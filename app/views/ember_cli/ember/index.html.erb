@@ -1,5 +1,7 @@
 <%= render_ember_app :client do |head, body| %>
   <% head.append do %>
+    <%= git_commit_id_meta_tag %>
+
     <script type='text/javascript'>
       window.appName = "<%= app_name %>"
     </script>

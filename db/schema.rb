@@ -691,8 +691,8 @@ ActiveRecord::Schema.define(version: 20170320141043) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.string   "state"
     t.integer  "card_version_id"
+    t.string   "state"
     t.datetime "submitted_at"
   end
 

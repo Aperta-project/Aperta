@@ -35,7 +35,7 @@ class ReviseManuscriptCard(BaseCard):
     subtitle_1, subtitle_2 = self._gets(self._subtitle)
     assert subtitle_1.text == 'Current Revision'
     assert subtitle_2.text == 'Revision Details:'
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     response_field = self._get(self._response_field)

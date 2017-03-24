@@ -128,7 +128,7 @@ class ITCCard(BaseCard):
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Initial Tech Check', card_title.text
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
     h2_titles = self._gets(self._h2_titles)

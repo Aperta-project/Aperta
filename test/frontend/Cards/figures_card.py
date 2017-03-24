@@ -43,7 +43,7 @@ class FiguresCard(BaseCard):
 
     card_title = self._get(self._card_title)
     assert card_title.text == 'Figures'
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     assert intro_text.text == (

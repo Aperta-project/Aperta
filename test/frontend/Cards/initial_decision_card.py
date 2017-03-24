@@ -36,7 +36,7 @@ class InitialDecisionCard(BaseCard):
     """
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     self._get(self._invite_radio_button).click()
     intro_text = self._get(self._intro_text)
     # APERTA-8902

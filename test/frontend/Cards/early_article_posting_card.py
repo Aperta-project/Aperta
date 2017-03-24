@@ -32,7 +32,7 @@ class EarlyArticlePostingCard(BaseCard):
       self.click_completion_button()
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Early Article Posting', card_title.text
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     assert intro_text.text == 'A copy of your uncorrected proof will be published online ahead ' \

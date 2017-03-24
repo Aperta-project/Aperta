@@ -85,7 +85,7 @@ test('Edit mode: Providing reviewer feedback', function(assert) {
   assertEditable(assert);
 });
 
-test('When the decision is a draft', function(assert) {
+test('When the task is not submitted', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
@@ -93,20 +93,21 @@ test('When the decision is a draft', function(assert) {
                                { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
+    this.task.set('isSubmitted', false);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
   assertEditable(assert);
 });
 
-test('When the decision is not a draft', function(assert) {
+test('When the task is submitted', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: false });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
-                               { status: 'completed', task: this.task, decision: decision });
+    let reviewerReports = make('reviewer-report', 'with_front_matter_questions',
+                               { status: 'completed', task: this.task, decision: decision});
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
-    this.task.set('body', { submitted: true });
+    this.task.set('isSubmitted', true);
   });
   this.render(hbs`{{front-matter-reviewer-report-task task=task}}`);
   assertNotEditable(assert);

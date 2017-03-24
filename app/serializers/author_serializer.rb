@@ -1,5 +1,7 @@
 # nodoc #
 class AuthorSerializer < ActiveModel::Serializer
+  include CardContentShim
+
   attributes :affiliation, :author_initial, :department,
     :email, :first_name, :id, :last_name, :middle_initial, :paper_id,
     :position, :secondary_affiliation, :title, :co_author_state,
@@ -8,13 +10,4 @@ class AuthorSerializer < ActiveModel::Serializer
     :current_address_country, :current_address_postal
 
   has_one :user, serializer: UserSerializer, embed: :ids, include: true
-
-  has_many :nested_questions,
-    serializer: NestedQuestionSerializer,
-    embed: :ids,
-    include: true
-  has_many :nested_question_answers,
-    serializer: NestedQuestionAnswerSerializer,
-    embed: :ids,
-    include: true
 end

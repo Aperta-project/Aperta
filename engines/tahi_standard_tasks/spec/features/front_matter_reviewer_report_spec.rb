@@ -18,15 +18,18 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   let!(:inviter) { create :user }
 
-  def create_reviewer_invitation(task)
-    FactoryGirl.create(
+  def create_reviewer_invitation(paper)
+    invitation = FactoryGirl.create(
       :invitation,
       :accepted,
       accepted_at: DateTime.now.utc,
-      task: task,
       invitee: reviewer,
-      inviter: inviter
+      inviter: inviter,
+      task: task,
+      decision: paper.draft_decision
     )
+    paper.draft_decision.invitations << invitation
+    invitation
   end
 
   def create_reviewer_report_task
@@ -44,8 +47,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
@@ -54,13 +57,13 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     ident = 'front_matter_reviewer_report--competing_interests'
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    answers = NestedQuestion.where(ident: ident).first.nested_question_answers
+    answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
 
     # Recreating the error in APERTA-8647
@@ -76,14 +79,15 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     end
     t.submit_report
     t.confirm_submit_report
+
     expect(page).to have_selector(".answer-text", text: no_compete)
     expect(answers.count).to eq(1)
     expect(answers.reload.first.value).to eq('I have no competing interests with this work.')
   end
 
   scenario 'A reviewer can see their previous rounds of review' do
-    reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
+    create_reviewer_invitation(paper)
+    create_reviewer_report_task
     # Revision 0
     Page.view_paper paper
 
@@ -102,8 +106,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     paper.submit! paper.creator
 
     # Create new report with our reviewer
+    invitation = create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
+    reviewer_report_task.latest_reviewer_report.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
@@ -123,8 +128,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     paper.submit! paper.creator
 
     # Create new report with our reviewer
+    invitation = create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
+    reviewer_report_task.latest_reviewer_report.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)

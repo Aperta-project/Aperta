@@ -5,6 +5,20 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 ### Changed
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+more user friendly.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.39.0] - {2017-03-16}
+### Added
+* The footer discussion cannot be seen by Reviewers and other external users in
+  individual card view
+* Billing staff now have more viewing access than just to the Billing card
+* Users can now save lists on Safari for Ad Hoc cards
+### Changed
 * File name for PDF Downloads have been updated to follow the format "[short doi] - [author last name] - [version].pdf"
 ### Deprecated
 ### Removed
@@ -21,6 +35,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Added "Confirm Authorship" button to email to co authors.
 * Added PDF submissions for PLOS Biology
 * Require source files on PDF manuscripts that are in revision or have major versions greater than 0
+* Warn users to save work externally when server health check fails
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 * Temporarily disabled coauthor notification

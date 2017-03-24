@@ -1,11 +1,29 @@
+{{#overlay-fullscreen
+   visible=newJournalOverlayVisible
+   outAnimationComplete=(action "hideNewJournalOverlay")
+   overlayClass="overlay--blue"
+   as |overlay|}}
+  {{admin-page/new-journal-overlay
+    success=(action overlay.animateOut)
+    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 {{#left-drawer as |toggle|}}
   {{#left-drawer/drawer title="Journals" onToggle=toggle}}
     {{#if multipleJournals}}
       {{admin-page/drawer-item initials="All" title="All My Journals"}}
     {{/if}}
+
     {{#each sortedJournals as |journal|}}
       {{admin-page/drawer-item initials=journal.initials title=journal.name id=journal.id}}
     {{/each}}
+
+    {{#if currentUser.siteAdmin}}
+      {{admin-page/drawer-item-button title='Add New Journal'
+                                      clicked=(action 'showNewJournalOverlay')
+                                      buttonClassNames='button-secondary button--blue'
+                                      abbreviationIconClassNames='fa fa-plus' }}
+    {{/if}}
   {{/left-drawer/drawer}}
 
   {{#left-drawer/prevent-overlap}}
@@ -15,7 +33,6 @@
     <div class="admin-page-content">
       {{yield}}
     </div>
-
   {{/left-drawer/prevent-overlap}}
 
 {{/left-drawer}}

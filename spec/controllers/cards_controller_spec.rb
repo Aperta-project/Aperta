@@ -11,9 +11,9 @@ describe CardsController do
     it_behaves_like "an unauthenticated json request"
 
     before do
-      FactoryGirl.create(:card, journal: my_journal, name: 'My Journal')
-      FactoryGirl.create(:card, journal: my_other_journal, name: 'My Other Journal')
-      FactoryGirl.create(:card, journal: not_my_journal, name: 'Not My Journal')
+      FactoryGirl.create(:card, :versioned, journal: my_journal, name: 'My Journal')
+      FactoryGirl.create(:card, :versioned, journal: my_other_journal, name: 'My Other Journal')
+      FactoryGirl.create(:card, :versioned, journal: not_my_journal, name: 'Not My Journal')
     end
 
     context 'and the user is signed in' do
@@ -56,12 +56,12 @@ describe CardsController do
     subject(:do_request) do
       get :show, format: 'json', id: card.id
     end
-    let(:card) { FactoryGirl.create(:card) }
+    let(:card) { FactoryGirl.create(:card, :versioned) }
 
     it_behaves_like 'an unauthenticated json request'
 
     context 'and the user is signed in' do
-      context "when the user does not have access" do
+      context 'when the user does not have access' do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)
@@ -131,15 +131,18 @@ describe CardsController do
     end
   end
 
-  describe '#update' do
-    let(:card) { FactoryGirl.create(:card, journal: my_journal, name: 'An Old Name') }
-    let(:name) { 'A New Name' }
-
-    subject(:do_request) do
-      put :update, format: 'json', id: card.id, card: {
-        name: name
+  describe "#update" do
+    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
+    let(:card_params) do
+      {
+        name: name,
+        journal_id: my_journal.id
       }
     end
+    subject(:do_request) do
+      post(:update, format: 'json', id: card.id, card: card_params)
+    end
+    let(:name) { "Steve" }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -148,7 +151,7 @@ describe CardsController do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)
-            .with(:edit_card, my_journal)
+            .with(:edit, card)
             .and_return false
           do_request
         end
@@ -160,15 +163,15 @@ describe CardsController do
         before do
           stub_sign_in user
           allow(user).to receive(:can?)
-            .with(:edit_card, my_journal)
+            .with(:edit, card)
             .and_return(true)
         end
 
-        it { is_expected.to responds_with 204 }
+        it { is_expected.to responds_with 201 }
 
-        it 'updates the card' do
+        it 'returns the updated card' do
           do_request
-          expect(card.reload.name).to eq(name)
+          expect(res_body['card']['name']).to eq name
         end
       end
     end

@@ -5,10 +5,10 @@
   // Look, I know there's more flexing here than on venice beach, but
   // the goal is to have the workspace itself (the white area) take up
   // *all* the remaining height on the page, *scroll* when it contains
-  // more content than will fit, AND be centered on teh page when the
-  // page is wider than 1120px; and the best way to accomplish the //
-  // full-remaining-height thing is to flex columns all the way down the
-  // component stack :(
+  // more content than will fit, AND be centered on the page when the
+  // page is wider than 1120px; and the best way to accomplish the
+  // full-remaining-height thing is to flex columns all the way down
+  // the component stack :(
   display: flex;
   flex-direction: column;
 
@@ -27,6 +27,10 @@
 
     .editor-save {
       min-width: 100px;
+    }
+
+    .button:disabled.button-primary, :disabled.button-primary, .button--disabled.button-primary {
+      background-color: $aperta-grey-dark
     }
   }
 
@@ -58,7 +62,7 @@
     .card-editor-workspace-title {
       background-color: $aperta-grey-xlight;
       border-radius: 5px;
-      margin: 15px 20px;
+      margin: 20px 60px 0px 20px;
       padding: 10px;
 
       h1 {

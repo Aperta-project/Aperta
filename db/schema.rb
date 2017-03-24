@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170302222318) do
+ActiveRecord::Schema.define(version: 20170320141043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,11 +145,11 @@ ActiveRecord::Schema.define(version: 20170302222318) do
     t.string   "current_address_country"
     t.string   "current_address_postal"
     t.integer  "user_id"
-    t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
+    t.integer  "card_version_id"
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -209,16 +209,17 @@ ActiveRecord::Schema.define(version: 20170302222318) do
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
-    t.integer  "card_id"
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
+    t.integer  "lft",             null: false
+    t.integer  "rgt",             null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
+    t.integer  "card_version_id", null: false
+    t.string   "content_type"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -226,12 +227,22 @@ ActiveRecord::Schema.define(version: 20170302222318) do
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
+  create_table "card_versions", force: :cascade do |t|
+    t.integer  "version",    null: false
+    t.integer  "card_id",    null: false
+    t.datetime "deleted_at"
+  end
+
+  add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
+  add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
+
   create_table "cards", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
     t.string   "name"
     t.integer  "journal_id"
+    t.integer  "latest_version", default: 1, null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
@@ -351,11 +362,11 @@ ActiveRecord::Schema.define(version: 20170302222318) do
     t.string   "initial"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.string   "token"
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
+    t.integer  "card_version_id"
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -679,8 +690,10 @@ ActiveRecord::Schema.define(version: 20170302222318) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "card_id"
     t.boolean  "created_in_7993", default: false
+    t.string   "state"
+    t.integer  "card_version_id"
+    t.datetime "submitted_at"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -787,7 +800,7 @@ ActiveRecord::Schema.define(version: 20170302222318) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -806,7 +819,7 @@ ActiveRecord::Schema.define(version: 20170302222318) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -821,17 +834,17 @@ ActiveRecord::Schema.define(version: 20170302222318) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                         null: false
-    t.string   "type",         default: "Task"
-    t.integer  "phase_id",                      null: false
-    t.boolean  "completed",    default: false,  null: false
+    t.string   "title",                            null: false
+    t.string   "type",            default: "Task"
+    t.integer  "phase_id",                         null: false
+    t.boolean  "completed",       default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",         default: [],     null: false
-    t.integer  "position",     default: 0
-    t.integer  "paper_id",                      null: false
+    t.json     "body",            default: [],     null: false
+    t.integer  "position",        default: 0
+    t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
-    t.integer  "card_id"
+    t.integer  "card_version_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -905,10 +918,9 @@ ActiveRecord::Schema.define(version: 20170302222318) do
   add_index "withdrawals", ["paper_id"], name: "index_withdrawals_on_paper_id", using: :btree
 
   add_foreign_key "answers", "card_contents"
-  add_foreign_key "answers", "papers"
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
-  add_foreign_key "cards", "journals"
+  add_foreign_key "card_versions", "cards"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
   add_foreign_key "discussion_participants", "users"

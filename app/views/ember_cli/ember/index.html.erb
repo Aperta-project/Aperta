@@ -25,6 +25,7 @@
       window.pdfviewerPath = "<%= asset_path('pdfviewer.js') %>";
       window.RailsEnv = {};
       window.RailsEnv.orcidConnectEnabled = <%= TahiEnv.orcid_connect_enabled? %>;
+      window.RailsEnv.testing = <%= Rails.env.test? %>;
     </script>
 
     <% if Rails.env.test? %>

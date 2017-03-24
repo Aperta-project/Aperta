@@ -17,7 +17,10 @@ class CoerceAnswerValue
   IDENTITY = ->(v) { v }
 
   def self.coerce(value, value_type)
-    raise ArgumentError unless EXPECTED_VALUE_TYPES.include?(value_type)
+    unless EXPECTED_VALUE_TYPES.include?(value_type)
+      msg = "value_type: #{value_type || "<blank value type>"} was not expected"
+      raise ArgumentError, msg
+    end
     # we need to distinguish between nil? and blank? here, hence the explicit
     # check
     return nil if value.nil?

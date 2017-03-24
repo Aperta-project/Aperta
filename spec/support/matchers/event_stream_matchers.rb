@@ -30,6 +30,8 @@ module EventStreamMatchers
     def channel_name(channel_scope)
       if channel_scope == 'system'
         /^system$/
+      elsif channel_scope == 'admin'
+        /^private-#{channel_scope}/
       else
         /^private-#{channel_scope}@.*/
       end

@@ -44,6 +44,6 @@ describe Snapshot::FinancialDisclosureTaskSerializer do
       end
     end
 
-    it_behaves_like "snapshot serializes related nested questions", resource: :task
+    it_behaves_like "snapshot serializes related answers as nested questions", resource: :task
   end
 end

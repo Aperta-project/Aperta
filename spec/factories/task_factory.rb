@@ -7,14 +7,17 @@ FactoryGirl.define do
     phase { FactoryGirl.build_stubbed(:phase) }
   end
 
+  trait :with_card do
+    after(:create) do |task|
+      # first check to see if there's an existing card we can use
+      name = task.class.to_s
+      Card.find_by(name: name) || FactoryGirl.create(:card, :versioned, name: name)
+    end
+  end
   factory :ad_hoc_task do
     title "Do something awesome"
     phase
     paper
-
-    trait :with_nested_question_answers do
-      nested_question_answers { FactoryGirl.create_list(:nested_question_answer, 3) }
-    end
   end
 
   factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do
@@ -47,8 +50,8 @@ FactoryGirl.define do
     title "Early Article Posting"
 
     before(:create) do
-      early_posting = NestedQuestion.find_by_ident('early-posting--consent')
-      FactoryGirl.create(:nested_question, ident: 'early-posting--consent').save unless early_posting
+      early_posting = CardContent.find_by_ident('early-posting--consent')
+      FactoryGirl.create(:card_content, ident: 'early-posting--consent').save unless early_posting
     end
   end
 
@@ -153,12 +156,12 @@ FactoryGirl.define do
     phase
     paper
     title "Billing"
-    trait :with_nested_question_answers do
+    trait :with_card_content do
       after(:create) do |task|
-        task.nested_questions.each do |nested_question|
-          value = "#{nested_question.ident} answer"
-          value = 'bob@example.com' if nested_question.ident == 'plos_billing--email'
-          task.find_or_build_answer_for(nested_question: nested_question, value: value)
+        task.card.content_for_version_without_root(:latest).each do |card_content|
+          value = "#{card_content.ident} answer"
+          value = 'bob@example.com' if card_content.ident == 'plos_billing--email'
+          task.find_or_build_answer_for(card_content: card_content, value: value)
         end
       end
     end

@@ -2,15 +2,15 @@
 
 <div class="task-main-content">
   {{#if confirmVisible}}
-  <div style="background-color:#39a329;color:white;">
-    <div style="padding-top:10px;font-size:15;text-align:center;">Are you sure?</div>
+  <div class="confirm-container">
+    <div class="confirm-container-title">Are you sure?</div>
     <br>
-    <div class="row" style="padding-bottom:10px;">
-      <div class="col-xs-6" style="text-align:right;">
-        <button class="button-primary button--green" style="text-transform: lowercase" {{ action "cancel" }}>cancel</button>
+    <div class="row confirm-container-actionbox">
+      <div class="col-xs-6 cancel-container">
+        <button class="button-primary button--green cancel-button" {{ action "cancel" }}>cancel</button>
       </div>
-      <div class="col-xs-6" style="text-align:left;">
-        <button class="button-primary" style="background-color:white;color:#39a329" {{ action "generateReport" }}>Generate Report</button>
+      <div class="col-xs-6 accept-container">
+        <button class="button-primary accept-button" {{ action "generateReport" }}>Generate Report</button>
       </div>
     </div>
   </div>

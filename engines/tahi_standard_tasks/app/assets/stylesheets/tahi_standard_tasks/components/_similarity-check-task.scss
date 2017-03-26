@@ -1,3 +1,33 @@
 .similarity-check-task {
 
 }
+
+.confirm-container {
+  background-color:#39a329;
+  color:white;
+}
+.confirm-container-title {
+  padding-top:10px;
+  font-size:15;
+  text-align:center;
+}
+.confirm-container-actionbox {
+  padding-bottom:10px;
+}
+
+.confirm-container .cancel-container {
+  text-align:right;
+}
+
+.confirm-container .cancel-button {
+  text-transform: lowercase;
+}
+
+.confirm-container .accept-container {
+  text-align:left;
+}
+
+.confirm-container .accept-button {
+  background-color:white;
+  color:#39a329;
+}

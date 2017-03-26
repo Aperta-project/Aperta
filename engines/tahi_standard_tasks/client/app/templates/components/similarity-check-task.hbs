@@ -1,6 +1,21 @@
  {{partial "task-completed-section"}}
 
 <div class="task-main-content">
+  {{#if confirmVisible}}
+  <div style="background-color:#39a329;color:white;">
+    <div style="padding-top:10px;font-size:15;text-align:center;">Are you sure?</div>
+    <br>
+    <div class="row" style="padding-bottom:10px;">
+      <div class="col-xs-6" style="text-align:right;">
+        <button class="button-primary button--green" style="text-transform: lowercase" {{ action "cancel" }}>cancel</button>
+      </div>
+      <div class="col-xs-6" style="text-align:left;">
+        <button class="button-primary" style="background-color:white;color:#39a329" {{ action "generateReport" }}>Generate Report</button>
+      </div>
+    </div>
+  </div>
+  {{else}}
   <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
-  <button class="button-primary button--green">Generate Report</button>
+  <button class="button-primary button--green" {{ action "generateReport" }}>Generate Report</button>
+  {{/if}}
 </div>

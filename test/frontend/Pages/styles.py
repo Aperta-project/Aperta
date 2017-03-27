@@ -326,6 +326,54 @@ class StyledPage(PlosPage):
   # ===================================================
   # Tables ============================================
 
+  @staticmethod
+  def validate_column_header(header, selected=False):
+    """
+    Validate a basic column header (th)
+    :param header: the column header to validate
+    :param selected: whether the column is selected as in a sort, default value=False
+    :return: void function
+    """
+    assert APPLICATION_TYPEFACE in header.value_of_css_property('font-family'), \
+      header.value_of_css_property('font-family')
+    assert header.value_of_css_property('font-size') == '14px', header.value_of_css_property(
+      'font-size')
+    assert header.value_of_css_property('line-height') == '20px', header.value_of_css_property(
+      'line-height')
+    assert header.value_of_css_property('color') == APERTA_BLACK, header.value_of_css_property(
+      'color')
+    if selected:
+      assert header.value_of_css_property('font-weight') == '700', header.value_of_css_property(
+        'font-weight')
+    else:
+      # font-weight is canonically specified as 'normal' whatever that means.
+      assert header.value_of_css_property('font-weight') == '500', header.value_of_css_property(
+        'font-weight')
+
+    @staticmethod
+    def validate_table_data_item(item, highlighted=False):
+      """
+      Validate a basic column/row item (td)
+      :param item: the td element to validate
+      :param highlighted: whether the column is selected or otherwise highlighted, 
+        default value=False
+      :return: void function
+      """
+      assert APPLICATION_TYPEFACE in item.value_of_css_property('font-family'), \
+        item.value_of_css_property('font-family')
+      assert item.value_of_css_property('font-size') == '14px', item.value_of_css_property(
+        'font-size')
+      assert item.value_of_css_property('line-height') == '20px', item.value_of_css_property(
+        'line-height')
+      assert item.value_of_css_property('color') == APERTA_BLACK, item.value_of_css_property(
+        'color')
+      if highlighted:
+        assert item.value_of_css_property('background-color') == APERTA_GREY_LIGHT, \
+          item.value_of_css_property('background-color')
+      else:
+        assert item.value_of_css_property('background-color') == WHITE, \
+          item.value_of_css_property('background-color')
+
   # ===================================================
   # Components ========================================
 

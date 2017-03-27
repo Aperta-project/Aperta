@@ -3,16 +3,10 @@
 <div class="task-main-content">
   {{#if confirmVisible}}
   <div class="confirm-container">
-    <div class="confirm-container-title">Are you sure?</div>
-    <br>
-    <div class="row confirm-container-actionbox">
-      <div class="col-xs-6 cancel-container">
-        <button class="button-primary button--green cancel-button" {{ action "cancel" }}>cancel</button>
-      </div>
-      <div class="col-xs-6 accept-container">
-        <button class="button-primary accept-button" {{ action "generateReport" }}>Generate Report</button>
-      </div>
-    </div>
+      <h4>Are you sure?</h4>
+      <br>
+      <button class="button-link button--white" {{action "cancel"}}>cancel</button>
+      <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
   </div>
   {{else}}
   <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>

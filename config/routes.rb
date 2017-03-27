@@ -137,6 +137,7 @@ Tahi::Application.routes.draw do
         get :new_discussion_users, on: :collection
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
+      resources :available_cards, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create

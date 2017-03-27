@@ -4,6 +4,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
 ### Changed
 * Edited CSS (color and hover features) for manuscript list on dashboard to be
 more user friendly.

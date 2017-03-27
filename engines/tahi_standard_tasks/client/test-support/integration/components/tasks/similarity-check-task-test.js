@@ -1,7 +1,6 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-// Pretend like you're in client/tests even if you're in an engine.
-import FakeCanService from '../helpers/fake-can-service';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 
 moduleForComponent(

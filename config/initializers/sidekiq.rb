@@ -31,6 +31,9 @@ end
 
 Sidekiq.configure_client do |config|
   if sentinels.present?
+    sentinel_list = sentinels.map do |sentinel_host|
+      { host: sentinel_host, port: ENV['REDIS_PORT'] }
+    end.join(',')
     config.redis = {
       master_name: 'aperta',
       sentinels: sentinel_list,

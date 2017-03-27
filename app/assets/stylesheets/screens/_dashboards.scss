@@ -68,10 +68,13 @@
   padding-bottom: 20px;
 
   a {
-    color: #333;
+    color: $aperta-green;
     font-family: $aperta-article-font-family;
     font-size: 18px;
     line-height: 1.5;
+    &:hover {
+      text-decoration: underline;
+    };
   }
 }
 
@@ -88,25 +91,10 @@
   margin-left: 20px;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
-  color: white;
-  background-color: #6c6c6c;
-  margin-left: 20px;
-  padding: 0 8px;
-}
-
-.status-tag:after {
-  right: 100%;
-  top: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border-color: rgba(108, 108, 108, 0);
-  border-right-color: #6c6c6c;
-  border-width: 10px;
-  margin-top: -10px;
+  color: $aperta-black;
+  background-color: none;
+  margin-left: 0px;
+  padding: 0 24px;
 }
 
 .top-margin {

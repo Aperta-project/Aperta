@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315133447) do
+ActiveRecord::Schema.define(version: 20170320141043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 20170315133447) do
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
     t.integer  "card_version_id", null: false
+    t.string   "content_type"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -690,7 +691,9 @@ ActiveRecord::Schema.define(version: 20170315133447) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
+    t.string   "state"
     t.integer  "card_version_id"
+    t.datetime "submitted_at"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree

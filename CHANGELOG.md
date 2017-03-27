@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## ## [x.x.x] - {yyyy-mm-dd}
+### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
+### Changed
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+more user friendly.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## ## [1.39.0] - {2017-03-16}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in

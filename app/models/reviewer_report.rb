@@ -1,6 +1,8 @@
+# This class represents the reviewer reports per decision round
 class ReviewerReport < ActiveRecord::Base
   include Answerable
   include NestedQuestionable
+  include AASM
 
   default_scope { order('decision_id DESC') }
 
@@ -12,8 +14,49 @@ class ReviewerReport < ActiveRecord::Base
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
                   message: 'Only one report allowed per reviewer per decision' }
 
+  def self.for_invitation(invitation)
+    reports = ReviewerReport.where(user: invitation.invitee,
+                                   decision: invitation.decision)
+    if reports.count > 1
+      raise "More than one reviewer report for invitation (#{invitation.id})"
+    end
+    reports.first
+  end
+
+  aasm column: :state do
+    state :invitation_not_accepted, initial: true
+    state :review_pending
+    state :submitted
+
+    event(:accept_invitation,
+          guards: [:invitation_accepted?]) do
+      transitions from: :invitation_not_accepted, to: :review_pending
+    end
+
+    event(:rescind_invitation) do
+      transitions from: [:invitation_not_accepted, :review_pending],
+                  to: :invitation_not_accepted
+    end
+
+    event(:submit,
+          guards: [:invitation_accepted?], after: [:set_submitted_at]) do
+      transitions from: :review_pending, to: :submitted
+    end
+  end
+
   def invitation
-    decision.invitations.find_by(invitee_id: user.id)
+    @invitation ||= decision.invitations.find_by(invitee_id: user.id)
+  end
+
+  def invitation_accepted?
+    invitation && invitation.accepted?
+  end
+
+  def revision
+    # if a decision has a revision, use it, otherwise, use paper's
+    major_version = decision.major_version || task.paper.major_version || 0
+    minor_version = decision.minor_version || task.paper.minor_version || 0
+    "v#{major_version}.#{minor_version}"
   end
 
   # TODO: CardConfig
@@ -38,28 +81,20 @@ class ReviewerReport < ActiveRecord::Base
     task.paper
   end
 
-  # status will look at the reviewer, invitations and the submitted state of
-  # this task to get an overall status for the review
-  def status
-    if invitation
-      if invitation.state == "accepted"
-        if task.submitted?
-          "completed"
-        else
-          "pending"
-        end
-      else
-        "invitation_#{invitation.state}"
-      end
-    else
-      "not_invited"
+  def computed_status
+    case aasm.current_state
+    when STATE_INVITATION_NOT_ACCEPTED
+      compute_invitation_state
+    when STATE_REVIEW_PENDING
+      "pending"
+    when STATE_SUBMITTED
+      "completed"
     end
   end
 
-  def status_date
-    case status
-    when "completed"
-      task.completed_at
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def computed_datetime
+    case computed_status
     when "pending"
       invitation.accepted_at
     when "invitation_invited"
@@ -70,13 +105,23 @@ class ReviewerReport < ActiveRecord::Base
       invitation.declined_at
     when "invitation_rescinded"
       invitation.rescinded_at
+    when "completed"
+      submitted_at
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
-  def revision
-    # if a decision has a revision, use it, otherwise, use paper's
-    major_version = decision.major_version || task.paper.major_version || 0
-    minor_version = decision.minor_version || task.paper.minor_version || 0
-    "v#{major_version}.#{minor_version}"
+  private
+
+  def set_submitted_at
+    update!(submitted_at: Time.current.utc)
+  end
+
+  def compute_invitation_state
+    if invitation
+      "invitation_#{invitation.state}"
+    else
+      "not_invited"
+    end
   end
 end

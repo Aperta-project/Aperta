@@ -2,7 +2,7 @@
 class AttachmentSerializer < ActiveModel::Serializer
   attributes :id,
     :title_html,
-    :caption,
+    :caption_html,
     :file_type,
     :src,
     :status,

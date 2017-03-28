@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20170328170526) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title_html"
-    t.string   "caption"
+    t.string   "caption_html"
     t.string   "status",             default: "processing"
     t.string   "file_type"
     t.text     "s3_dir"

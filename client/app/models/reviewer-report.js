@@ -1,6 +1,7 @@
 import Answerable from 'tahi/mixins/answerable';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import Ember from 'ember';
 
 export default NestedQuestionOwner.extend(Answerable, {
   decision: DS.belongsTo('decision'),
@@ -10,5 +11,10 @@ export default NestedQuestionOwner.extend(Answerable, {
   statusDatetime: DS.attr('date'),
   revision: DS.attr('string'),
   createdAt: DS.attr('date'),
-  submitted: DS.attr('boolean')
+  submitted: DS.attr('boolean'),
+  needsSubmission: Ember.computed('status', 'submitted', function() {
+    var status = this.get('status');
+    return !this.get('submitted')
+      && (status === 'pending' || status === 'invitation_pending');
+  })
 });

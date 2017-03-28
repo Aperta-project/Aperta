@@ -10,7 +10,7 @@ export default DS.Model.extend({
   initial: DS.attr('boolean'),
   invitations: DS.hasMany('invitation', { async: false }),
   latestRegistered: DS.attr('boolean'),
-  letter: DS.attr('string'),
+  letterHtml: DS.attr('string'),
   majorVersion: DS.attr('number'),
   minorVersion: DS.attr('number'),
   nestedQuestionAnswers: DS.hasMany('nested-question-answer', { async: false }),

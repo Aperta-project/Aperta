@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 20170328170526) do
 
   create_table "decisions", force: :cascade do |t|
     t.integer  "paper_id"
-    t.text     "letter"
+    t.text     "letter_html"
     t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"

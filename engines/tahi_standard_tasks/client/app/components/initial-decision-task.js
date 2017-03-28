@@ -25,7 +25,7 @@ export default TaskComponent.extend(HasBusyStateMixin, {
   }),
   initialDecision: computed.alias('task.paper.initialDecision'),
   nonPublishable: not('publishable'),
-  hasNoLetter: empty('initialDecision.letter'),
+  hasNoLetter: empty('initialDecision.letterHtml'),
   hasNoVerdict: none('initialDecision.verdict'),
   isPaperInitiallySubmitted: equal('task.paper.publishingState',
                                    'initially_submitted'),

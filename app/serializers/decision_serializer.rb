@@ -5,7 +5,7 @@ class DecisionSerializer < ActiveModel::Serializer
              :id,
              :initial,
              :latest_registered?,
-             :letter,
+             :letter_html,
              :major_version,
              :minor_version,
              :registered_at,

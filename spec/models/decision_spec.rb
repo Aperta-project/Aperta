@@ -216,7 +216,7 @@ describe Decision do
       end
 
       it 'does not validate when updating the letter' do
-        decision.update(letter: Faker::Lorem.paragraph(2))
+        decision.update(letter_html: Faker::Lorem.paragraph(2))
         expect(decision.valid?).to be(false)
       end
 
@@ -232,7 +232,7 @@ describe Decision do
       end
 
       it 'validates when updating the letter' do
-        decision.update(letter: Faker::Lorem.paragraph(2))
+        decision.update(letter_html: Faker::Lorem.paragraph(2))
         expect(decision.valid?).to be(true)
       end
 

@@ -34,8 +34,8 @@ class Decision < ActiveRecord::Base
   end
 
   validate do
-    if letter_changed? && completed? && persisted?
-      errors.add(:letter, 'Letter can only change on draft decisions')
+    if letter_html_changed? && completed? && persisted?
+      errors.add(:letter_html, 'Letter can only change on draft decisions')
     end
     if verdict_changed? && completed? && persisted?
       errors.add(:verdict, 'Verdict can only change on draft decisions')

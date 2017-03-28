@@ -34,7 +34,7 @@ describe TahiStandardTasks::InitialDecisionMailer do
     end
 
     it "email body is the decisions's letter" do
-      expect(email.body.raw_source).to match(decision.letter)
+      expect(email.body.raw_source).to match(decision.letter_html)
     end
   end
 end

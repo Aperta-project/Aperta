@@ -41,7 +41,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
     return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
   },
 
-  onDecisionLetterUpdate: Ember.observer('draftDecision.letter', function() {
+  onDecisionLetterUpdate: Ember.observer('draftDecision.letterHtml', function() {
     let draftDecision = this.get('draftDecision');
     if (draftDecision && draftDecision.get('hasDirtyAttributes')) {
       Ember.run.debounce(draftDecision, draftDecision.save, 500);

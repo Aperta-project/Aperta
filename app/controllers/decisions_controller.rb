@@ -27,7 +27,7 @@ class DecisionsController < ApplicationController
     permitted = []
     revise_task = decision.paper.last_of_task(TahiStandardTasks::ReviseTask)
     if current_user.can?(:register_decision, decision.paper)
-      permitted += [:verdict, :letter]
+      permitted += [:verdict, :letter_html]
     end
     if !revise_task.nil? && current_user.can?(:edit, revise_task)
       # Only allow the creator to update the `author_response` column

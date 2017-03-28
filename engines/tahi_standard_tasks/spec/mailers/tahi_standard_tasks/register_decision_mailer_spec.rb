@@ -31,7 +31,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
       end
 
       it "email body is the decision's letter" do
-        expect(email_with_no_fields_specified.body.raw_source).to match(decision.letter)
+        expect(email_with_no_fields_specified.body.raw_source).to match(decision.letter_html)
       end
     end
 
@@ -48,7 +48,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
       end
 
       it "email body is the decision's letter" do
-        expect(email_to_arbitrary.body.raw_source).to match(decision.letter)
+        expect(email_to_arbitrary.body.raw_source).to match(decision.letter_html)
       end
     end
   end

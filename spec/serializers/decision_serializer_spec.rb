@@ -16,7 +16,7 @@ describe DecisionSerializer, serializer_test: true do
         initial: decision.initial?,
         invitation_ids: decision.invitation_ids,
         latest_registered: decision.latest_registered?,
-        letter: decision.letter,
+        letter_html: decision.letter_html,
         major_version: decision.major_version,
         minor_version: decision.minor_version,
         paper_id: paper.id,

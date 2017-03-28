@@ -217,7 +217,7 @@ describe DecisionsController do
               format: :json,
               id: decision.id,
               decision: {
-                letter: new_letter,
+                letter_html: new_letter,
                 verdict: new_verdict
               }
         end
@@ -233,7 +233,7 @@ describe DecisionsController do
               expect do
                 do_request
                 decision.reload
-              end.to change { [decision.letter, decision.verdict] }.to([new_letter, new_verdict])
+              end.to change { [decision.letter_html, decision.verdict] }.to([new_letter, new_verdict])
             end
           end
 
@@ -246,9 +246,9 @@ describe DecisionsController do
               expect do
                 do_request
                 decision.reload
-              end.not_to change { [decision.verdict, decision.letter] }
+              end.not_to change { [decision.verdict, decision.letter_html] }
               expect(response.status).to eq 422
-              expect(res_body).to have(1).errors_on(:letter)
+              expect(res_body).to have(1).errors_on(:letter_html)
               expect(res_body).to have(1).errors_on(:verdict)
             end
           end
@@ -259,7 +259,7 @@ describe DecisionsController do
             expect do
               do_request
               decision.reload
-            end.not_to change { [decision.verdict, decision.letter] }
+            end.not_to change { [decision.verdict, decision.letter_html] }
             expect(response.status).to eq 403
           end
         end

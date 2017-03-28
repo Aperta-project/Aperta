@@ -14,7 +14,6 @@ export default NestedQuestionOwner.extend(Answerable, {
   submitted: DS.attr('boolean'),
   needsSubmission: Ember.computed('status', 'submitted', function() {
     var status = this.get('status');
-    return !this.get('submitted')
-      && (status === 'pending' || status === 'invitation_pending');
+    return !this.get('submitted') && status === 'pending';
   })
 });

@@ -42,16 +42,8 @@ module TahiStandardTasks
       !submitted?
     end
 
-    # overriden to remove the 'submitted' flag from body
-    def incomplete!
-      update!(
-        completed: false,
-        body: body.except("submitted")
-      )
-    end
-
     def submitted?
-      !!body["submitted"]
+      latest_reviewer_report.submitted?
     end
 
     # before save we want to update the reviewer number if neccessary
@@ -77,10 +69,8 @@ module TahiStandardTasks
       self.title = new_title
     end
 
-    private
-
-    def update_body(hsh)
-      self.body = body.merge(hsh)
+    def latest_reviewer_report
+      reviewer_reports.order('created_at DESC').first
     end
   end
 end

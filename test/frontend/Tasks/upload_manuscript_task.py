@@ -34,7 +34,7 @@ class UploadManuscriptTask(BaseTask):
     Validate styles in Upload Manuscript Task
     """
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    self.validate_application_body_text(intro_text)
     assert intro_text.text == 'You may upload a manuscript at any time.', intro_text.text
     upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
     assert upload_ms_btn.text == 'SELECT AND UPLOAD A DOCUMENT'
@@ -92,4 +92,3 @@ class UploadManuscriptTask(BaseTask):
     time.sleep(7)
 
     return doc2upload, hash_file
-    

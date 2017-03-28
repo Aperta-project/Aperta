@@ -161,8 +161,8 @@ class AuthorsTask(BaseTask):
     authors_note = self._get(self._authors_note)
     assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.', \
         authors_note.text
-    self.validate_application_ptext(authors_text)
-    self.validate_application_ptext(authors_note)
+    self.validate_application_body_text(authors_text)
+    self.validate_application_body_text(authors_note)
     add_new_author_btn = self._get(self._add_new_author_btn)
     assert 'ADD A NEW AUTHOR' in add_new_author_btn.text, add_new_author_btn.text
     self.validate_primary_big_green_button_style(add_new_author_btn)

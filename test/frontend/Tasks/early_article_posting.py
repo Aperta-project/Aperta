@@ -30,7 +30,7 @@ class EarlyArticlePostingTask(BaseTask):
     Validate styles in the Early Article Posting Task
     """
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    self.validate_application_body_text(intro_text)
     assert intro_text.text == 'A copy of your uncorrected proof will be published online ahead ' \
                               'of the final version of your manuscript, should your manuscript ' \
                               'be accepted. If you do NOT consent to having an early version of ' \

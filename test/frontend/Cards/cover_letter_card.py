@@ -39,7 +39,7 @@ class CoverLetterCard(BaseCard):
                                                    'the expected: {1}'.format(card_title.text,
                                                                               expected_card_title)
 
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
 
     # Assert instructions text styling
     instructions_first_p = self._get(self._instructions_text_first_p)
@@ -69,8 +69,8 @@ class CoverLetterCard(BaseCard):
         'The instructions text last paragraph: {0} is not the expected: ' \
         '{1}'.format(instructions_last_p.text, expected_instructions_last_p)
 
-    self.validate_application_ptext(instructions_first_p)
-    self.validate_application_ptext(instructions_last_p)
+    self.validate_application_body_text(instructions_first_p)
+    self.validate_application_body_text(instructions_last_p)
 
     expected_instructions_questions = [
       'What is the scientific question you are addressing?',
@@ -89,7 +89,7 @@ class CoverLetterCard(BaseCard):
         i], 'The instructions question {0}: {1} is not the expected: {2}'.format(
         i, question.text,
         expected_instructions_questions[i])
-      self.validate_application_ptext(question)
+      self.validate_application_body_text(question)
 
     # Validate textarea state
     textarea = self._get(self._cover_letter_textarea)

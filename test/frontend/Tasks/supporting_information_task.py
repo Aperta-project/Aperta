@@ -58,7 +58,7 @@ class SITask(BaseTask):
     task_main_content = self._get(self._si_task_main_content)
     # Requested non positional locator at APERTA-8609
     upload_msg = task_main_content.find_elements_by_tag_name('div')[2]
-    self.validate_application_ptext(upload_msg)
+    self.validate_application_body_text(upload_msg)
     assert upload_msg.text == 'Please provide files in their native file formats, e.g. '\
         'Word, Excel, WAV, MPEG, JPG, etc.', upload_msg.text
     upload_button = self._get(self._si_upload_btn)

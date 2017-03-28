@@ -86,8 +86,8 @@ class CoverLetterTask(BaseTask):
         'The instructions text last paragraph: {0} is not ' \
         'the expected: {1}'.format(instructions_last_p.text, expected_instructions_last_p)
 
-    self.validate_application_ptext(instructions_first_p)
-    self.validate_application_ptext(instructions_last_p)
+    self.validate_application_body_text(instructions_first_p)
+    self.validate_application_body_text(instructions_last_p)
 
     expected_instructions_questions = [
       'What is the scientific question you are addressing?',
@@ -105,7 +105,7 @@ class CoverLetterTask(BaseTask):
       assert question.text == expected_instructions_questions[i], \
           'The instructions question {0}: {1} is not the expected: ' \
           '{2}'.format(i, question.text, expected_instructions_questions[i])
-      self.validate_application_ptext(question)
+      self.validate_application_body_text(question)
 
     # Assert form styling
     textarea = self._get(self._cover_letter_textarea)

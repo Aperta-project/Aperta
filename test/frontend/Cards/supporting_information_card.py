@@ -37,13 +37,13 @@ class SICard(BaseCard):
     self.validate_common_elements_styles(short_doi)
     card_title = self._get(self._card_title)
     assert card_title.text == 'Supporting Info', card_title.text
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
 
     msg_div = self._get(self._msg_div)
     msg = msg_div.find_elements_by_tag_name('div')[-1]
     assert msg.text == 'Please provide files in their native file formats, e.g. Word, Excel, '\
         'WAV, MPEG, JPG, etc.', card_title.text
-    self.validate_application_ptext(msg)
+    self.validate_application_body_text(msg)
     add_new_files_btn = self._get(self._add_new_files_btn)
     assert add_new_files_btn.text == 'ADD FILES', add_new_files_btn.text
     self.validate_primary_big_green_button_style(add_new_files_btn)
@@ -53,7 +53,7 @@ class SICard(BaseCard):
     file_title = self._get(self._file_title)
     self.validate_file_title_style(file_title)
     file_caption = self._get(self._file_caption)
-    self.validate_application_ptext(file_caption)
+    self.validate_application_body_text(file_caption)
 
   def check_si_item(self, data):
     """

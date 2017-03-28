@@ -391,7 +391,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
                                       font_weight='500', color=APERTA_GREY_DARK)
       withdraw_modal_text = self._get(self._wm_modal_text)
       # TODO: Leave comment out until solved. Pivotal bug#103864752
-      # self.validate_application_ptext(withdraw_modal_text)
+      # self.validate_application_body_text(withdraw_modal_text)
       assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
               'Please provide your reason for withdrawing this manuscript.' in
               withdraw_modal_text.text)
@@ -964,7 +964,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     expected_title = 'Downloads'
     assert title.text == expected_title, 'The drawer title {0} is not the ' \
                                          'expected {1}'.format(title.text, expected_title)
-    # self.validate_manuscript_h1_style(title)
+    # self.validate_manuscript_title_style(title)
 
     # Validate table headers
     table_headers = self._gets(self._download_drawer_table_header)
@@ -992,7 +992,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert version_name.text.lower() == expected_version_name.lower(), \
           'Download table item {0} version name {1} is not the expected {2}'\
           .format(key, version_name.text, expected_version_name)
-      self.validate_application_ptext(version_name)
+      self.validate_application_body_text(version_name)
 
       download_links = table_item.find_elements_by_class_name(
         'paper-downloads-link')

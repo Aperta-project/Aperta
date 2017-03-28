@@ -253,7 +253,7 @@ class InviteCard(BaseCard):
       assert card_title.text == 'Invite Academic Editor', card_title.text
       assert user_input.get_attribute('placeholder') == 'Invite editor by name or email',\
           user_input.get_attribute('placeholder')
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     # Button
     btn = self._get(self._compose_invitation_button)
     assert btn.text == 'ADD TO QUEUE', '{0} instead of ADD TO QUEUE'.format(btn.text)

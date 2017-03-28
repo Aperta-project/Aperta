@@ -109,7 +109,7 @@ class FTCCard(BaseCard):
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Final Tech Check', card_title.text
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
     h3_titles = self._gets(self._h3_titles)

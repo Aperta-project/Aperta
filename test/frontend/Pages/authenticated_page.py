@@ -14,16 +14,11 @@ from selenium.common.exceptions import WebDriverException
 
 from loremipsum import generate_paragraph
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
-from Base.PlosPage import PlosPage
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
 from Base.Resources import staff_admin_login, super_admin_login, \
     internal_editor_login, prod_staff_login, pub_svcs_login
-from styles import StyledPage, APPLICATION_TYPEFACE, MANUSCRIPT_TYPEFACE, APERTA_GREEN, \
-    APERTA_GREEN_LIGHT, APERTA_GREEN_DARK, APERTA_BLUE, APERTA_BLUE_LIGHT, APERTA_BLUE_DARK, \
-    APERTA_GREY_XLIGHT, APERTA_GREY_LIGHT, APERTA_GREY_DARK, APERTA_BLACK, APERTA_ERROR, WHITE, \
-    BLACK, APERTA_FLASH_ERROR, APERTA_FLASH_ERROR_BKGRND, APERTA_FLASH_SUCCESS, \
-    APERTA_FLASH_SUCCESS_BKGRND, APERTA_FLASH_INFO, APERTA_FLASH_INFO_BKGRND
+from styles import StyledPage, APPLICATION_TYPEFACE, APERTA_GREEN, APERTA_GREY_DARK
 
 __author__ = 'jgray@plos.org'
 

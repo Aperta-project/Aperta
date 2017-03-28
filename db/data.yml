@@ -9085,99 +9085,123 @@ card_versions:
   - version
   - card_id
   - deleted_at
+  - draft
   records: 
   - - '1'
     - '1'
     - '26'
     - 
+    - false
   - - '2'
     - '1'
     - '27'
     - 
+    - false
   - - '3'
     - '1'
     - '28'
     - 
+    - false
   - - '4'
     - '1'
     - '29'
     - 
+    - false
   - - '5'
     - '1'
     - '30'
     - 
+    - false
   - - '6'
     - '1'
     - '31'
     - 
+    - false
   - - '7'
     - '1'
     - '32'
     - 
+    - false
   - - '8'
     - '1'
     - '33'
     - 
+    - false
   - - '9'
     - '1'
     - '34'
     - 
+    - false
   - - '10'
     - '1'
     - '35'
     - 
+    - false
   - - '11'
     - '1'
     - '36'
     - 
+    - false
   - - '12'
     - '1'
     - '37'
     - 
+    - false
   - - '13'
     - '1'
     - '38'
     - 
+    - false
   - - '14'
     - '1'
     - '39'
     - 
+    - false
   - - '15'
     - '1'
     - '40'
     - 
+    - false
   - - '16'
     - '1'
     - '41'
     - 
+    - false
   - - '17'
     - '1'
     - '42'
     - 
+    - false
   - - '18'
     - '1'
     - '43'
     - 
+    - false
   - - '19'
     - '1'
     - '44'
     - 
+    - false
   - - '20'
     - '1'
     - '45'
     - 
+    - false
   - - '21'
     - '1'
     - '46'
     - 
+    - false
   - - '22'
     - '1'
     - '47'
     - 
+    - false
   - - '23'
     - '1'
     - '48'
     - 
+    - false
 
 ---
 cards:
@@ -33350,8 +33374,8 @@ reviewer_reports:
   - created_at
   - updated_at
   - created_in_7993
-  - state
   - card_version_id
+  - state
   - submitted_at
   records: 
   - - '1'
@@ -33361,8 +33385,8 @@ reviewer_reports:
     - '2017-01-27 00:14:40.103717'
     - '2017-03-16 13:31:02.612456'
     - false
-    - submitted
     - 
+    - submitted
     - '2017-01-27 00:14:40.214342'
   - - '2'
     - '211'
@@ -33371,8 +33395,8 @@ reviewer_reports:
     - '2017-01-30 22:47:44.195932'
     - '2017-03-16 13:31:02.635112'
     - false
-    - submitted
     - 
+    - submitted
     - '2017-01-30 22:50:12.768658'
   - - '3'
     - '212'
@@ -33381,8 +33405,8 @@ reviewer_reports:
     - '2017-01-30 22:48:27.80441'
     - '2017-03-16 13:31:02.662826'
     - false
-    - submitted
     - 
+    - submitted
     - '2017-01-30 22:49:10.507854'
   - - '4'
     - '212'
@@ -33391,8 +33415,8 @@ reviewer_reports:
     - '2017-01-30 22:52:03.803035'
     - '2017-03-16 13:31:02.671979'
     - false
-    - review_pending
     - 
+    - review_pending
     - 
 
 ---

@@ -1,6 +1,15 @@
-<a href="{{attachment.file.url}}" class="attachment-file-link" target="_blank">
-  <i class="fa {{fileTypeClass}}"></i> {{attachment.title}}
-</a>
+{{#if isProcessing}}
+    <div class="processing-attachment">
+      {{progress-spinner visible=true size="small"}} Processing {{attachment.title}} ...
+      {{#unless disabled}}
+        <a class="upload-cancel-link" {{action "cancelUpload"}} title="Cancel file processing">cancel</a>
+      {{/unless}}
+    </div>
+{{else}}
+  <a href="{{attachment.file.url}}" class="attachment-file-link" target="_blank">
+    <i class="fa {{fileTypeClass}}"></i> {{attachment.title}}
+  </a>
+{{/if}}
 
 {{#if draft}}
   <span {{action "triggerFileSelection"}} class="file-action replace-attachment">

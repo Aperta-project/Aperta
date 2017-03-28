@@ -21,7 +21,7 @@ class DecisionAttachmentsController < ApplicationController
     else
       requires_user_can :view, revise_task
     end
-    respond_with attachment, root: 'attachment'
+    respond_with attachment, root: 'decision-attachment'
   end
 
   def create
@@ -32,7 +32,7 @@ class DecisionAttachmentsController < ApplicationController
       params[:url],
       current_user.id
     )
-    render json: attachment, root: 'attachment'
+    render json: attachment, root: 'decision-attachment'
   end
 
   def destroy

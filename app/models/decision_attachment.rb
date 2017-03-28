@@ -7,4 +7,8 @@ class DecisionAttachment < Attachment
   def revise_task
     paper.revise_task
   end
+
+  def decision
+    owner
+  end
 end

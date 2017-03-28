@@ -65,7 +65,7 @@ export default TaskComponent.extend({
     const store = this.get('store');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
+      response['decision-attachment'].title = file.name;
       store.pushPayload(response);
     });
   },
@@ -94,7 +94,6 @@ export default TaskComponent.extend({
 
     createAttachment(s3Url, file) {
       this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
-      this.get('task.paper.decisions').reload();
     },
 
     updateAttachment(s3Url, file, attachment) {

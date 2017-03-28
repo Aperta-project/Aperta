@@ -1,10 +1,6 @@
-# YAML is part of the Ruby standard library and it is used here to convert
-# "['server1', 'server2', 'server3']" into ['server1', 'server2', 'server3']
-require 'yaml'
-sentinels = YAML::load(ENV['REDIS_SENTINELS'])
 Sidekiq.configure_server do |config|
-  if sentinels.present?
-    sentinel_list = sentinels.map do |sentinel_host|
+  if TahiEnv.redis_sentinel_enabled?
+    sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
       { host: sentinel_host, port: ENV['REDIS_PORT'] }
     end
     config.redis = {
@@ -33,8 +29,8 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  if sentinels.present?
-    sentinel_list = sentinels.map do |sentinel_host|
+  if TahiEnv.redis_sentinel_enabled?
+    sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
       { host: sentinel_host, port: ENV['REDIS_PORT'] }
     end
     config.redis = {

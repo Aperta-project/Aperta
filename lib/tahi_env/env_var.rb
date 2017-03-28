@@ -21,6 +21,8 @@ class TahiEnv
         default_value
       elsif boolean?
         converted_boolean_value
+      elsif array?
+        converted_array_value
       else
         raw_value_from_env
       end
@@ -28,6 +30,10 @@ class TahiEnv
 
     def raw_value_from_env
       ENV[@key]
+    end
+
+    def array?
+      @type == :array
     end
 
     def boolean?
@@ -41,6 +47,12 @@ class TahiEnv
     end
 
     private
+
+    def converted_array_value
+      # This is used to convert a string that contains
+      # an array into a Ruby array object
+      YAML::load(raw_value_from_env)
+    end
 
     def converted_boolean_value
       ['true', '1'].include?(raw_value_from_env.downcase)

@@ -141,6 +141,7 @@ export default Ember.Component.extend({
     this.$().on('fileuploadfail', (e, data) => {
       // call action uploadFailed if it's defined
       if (this.get('uploadCanceled')) { return; }
+      Ember.getOwner(this).lookup('service:bugsnag').notifyUploadError(e);
       if (this.attrs.uploadFailed) {
         this.attrs.uploadFailed(data.errorThrown);
       }

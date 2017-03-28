@@ -8,12 +8,15 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
   beforeEach() {
     manualSetup(this.container);
     this.set('update-date', new Date('January 01, 2016'));
+    this.set('completed-date', new Date('March 01, 2016'));
+    this.set('reviewerReport', make('reviewer-report'));
     this.set('invitation', make('invitation', {
       declineReason: null,
       declined: false,
       email: 'jane@example.com',
       invitee: { fullName: 'Jane McEdits' },
       reviewerSuggestions: null,
+      reviewerReport: this.get('reviewerReport'),
       state: 'pending',
       title: 'Awesome Paper!',
       updatedAt: this.get('update-date')
@@ -32,6 +35,24 @@ test('displays invitation information if invitation.invited is true', function(a
 
   assert.textPresent('.invitation-item-status',
                      `Invited ${moment(this.get('update-date')).format('MMM D, YYYY')}`);
+});
+
+test('displays invitation information if invitation.accepted is true', function(assert){
+  this.set('invitation.state', 'accepted');
+  this.set('invitation.reviewerReport.status', 'pending');
+  this.render(template);
+
+  assert.textPresent('.invitation-item-status', 'Pending');
+});
+
+test('displays invitation information if invitation.accepted is true and report complete', function(assert){
+  this.set('invitation.reviewerReport.status', 'completed');
+  this.set('invitation.reviewerReport.statusDateTime', this.get('completed-date'));
+  this.set('invitation.state', 'accepted');
+  this.render(template);
+
+  assert.textPresent('.invitation-item-status',
+                     `Completed ${moment(this.get('completed-date')).format('MMM D, YYYY')}`);
 });
 
 test('displays invitee name and email when present', function(assert){

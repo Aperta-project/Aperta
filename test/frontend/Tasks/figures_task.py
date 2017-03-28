@@ -104,8 +104,9 @@ class FiguresTask(BaseTask):
     self.validate_application_ptext(self._get(self._question_label))
     labels_intro = self._get(self._labels_intro_p1)
     assert labels_intro.text == (
-        'Figure labels (e.g. Fig 1) are generated from file names and will automatically place '
-        'figures above matching legends.'), labels_intro.text
+        'For .doc or .docx manuscript uploads only, figure labels (e.g. \'Fig 1\') are generated '
+        'from file names and will automatically place figures above matching legends. PDF '
+        'manuscripts are presented as uploaded.'), labels_intro.text
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     assert add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)
@@ -407,7 +408,7 @@ class FiguresTask(BaseTask):
           self.click_covered_element(edit_icon)
         time.sleep(1)
         label_prefix = figure_block.find_element(*self._figure_edit_label_prefix)
-        assert 'Fig.' in label_prefix.text, label_prefix.text
+        assert 'Fig' in label_prefix.text, label_prefix.text
         label_field = figure_block.find_element(*self._figure_edit_label_field)
         assert label_field.get_attribute('value') == '1', label_field.get_attribute('value')
         striking_label = figure_block.find_element(*self._figure_edit_striking_img_checkbox_lbl)

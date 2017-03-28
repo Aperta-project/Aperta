@@ -238,7 +238,10 @@ class DashboardPage(AuthenticatedPage):
                                      'FROM papers '
                                      'WHERE id=%s;', (paper_id,))
     db_title, db_abstract = db_article_tuple[0]
+    logging.info(db_title)
+    logging.info(db_abstract)
     db_title = self.normalize_spaces(db_title)
+    db_abstract = self.get_text(db_abstract)
     page_invite_listings = self._gets(self._view_invites_invite_listing)
     for page_listing in page_invite_listings:
       logging.info(u'Validating Invitation: {0}'.format(page_listing.text))
@@ -272,7 +275,7 @@ class DashboardPage(AuthenticatedPage):
         auth_listings = page_listing.find_elements(*self._invitation_author_listing)
         tested_authors = []
         for author in auth_listings:
-          logging.info('Testing page listed author: {0}'.format(author.text))
+          logging.info(u'Testing page listed author: {0}'.format(author.text))
           tested_authors.append(author.text)
           if db_author_information in unicode(author.text):
             logging.info('Found Creator in invitation listing...')
@@ -389,7 +392,8 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have {0} invitations.'.format(invitation_count), \
                                    '{0} {1}'.format(welcome_msg.text, str(invitation_count))
-      self.validate_application_title_style(welcome_msg)
+      # APERTA-9605
+      # self.validate_application_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
@@ -520,7 +524,8 @@ class DashboardPage(AuthenticatedPage):
         in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
                                               format(first_name),
                                               welcome_msg.text.encode('utf-8'))
-    self.validate_application_title_style(welcome_msg)
+    # APERTA-9556
+    # self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
 
   def validate_active_manuscript_section(self,
@@ -819,6 +824,7 @@ class DashboardPage(AuthenticatedPage):
     # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
+        logging.info('Found {0} in list item: {1}'.format(journal, item.text))
         item.click()
         time.sleep(1)
         break
@@ -1009,11 +1015,13 @@ class DashboardPage(AuthenticatedPage):
       list(journals)
       journal_info = journals
     for journal_entry in journal_info:
+      logging.info(journal_entry)
       mmt_list = []
       journal_id, journal_name = journal_entry
       # Get list of mmts for journal in id order ASC
       ordered_mmts = PgSQL().query('SELECT paper_type FROM manuscript_manager_templates '
                                    'WHERE journal_id = %s ORDER BY id ASC;', (journal_id,))
+      logging.info(ordered_mmts)
       # turn db returned tuples into a simple list
       for mmt in ordered_mmts:
         mmt_list.append(mmt[0])

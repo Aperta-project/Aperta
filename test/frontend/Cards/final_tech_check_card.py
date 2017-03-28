@@ -109,7 +109,7 @@ class FTCCard(BaseCard):
     self.validate_common_elements_styles(paper_id)
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Final Tech Check', card_title.text
-    self.validate_application_title_style(card_title)
+    self.validate_card_title_style(card_title)
     time.sleep(1)
     # Check all h2 titles
     h3_titles = self._gets(self._h3_titles)
@@ -131,7 +131,8 @@ class FTCCard(BaseCard):
     """
     check_items = self._gets(self._check_items)
     for item in [item.text for item in check_items]:
-      assert item in self._check_items_text, '{0} not in {1}'.format(item, self._check_items_text)
+      assert item in self._check_items_text, '{0}\n not in\n {1}'.format(item,
+                                                                         self._check_items_text)
     send_changes = self._get(self._send_changes)
     assert send_changes.text == u'If there are issues the author needs to address, click '\
         'below to send changes to the author.', send_changes.text

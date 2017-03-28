@@ -305,12 +305,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(.5)
     self._get(self._recent_activity_modal)
     modal_title = self._get(self._overlay_header_title)
-    self.validate_application_title_style(modal_title)
+    # APERTA-9589
+    # self.validate_application_title_style(modal_title)
     close_icon_overlay = self._get(self._overlay_header_close)
-    # TODO: Change following line after bug #102078080 is solved
-    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
-    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # APERTA-9591
+    # assert close_icon_overlay.value_of_css_property('font-size') in ('24px', '16px'), \
+    #     close_icon_overlay.value_of_css_property('font-size')
+    assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
+        close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
+        close_icon_overlay.value_of_css_property('color')
     close_icon_overlay.click()
     time.sleep(1)
 
@@ -402,8 +406,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # self.validate_secondary_grey_small_button_modal_style(no_btn)
       close_icon_overlay = self._get(self._overlay_header_close)
       # TODO: Change following line after bug #102078080 is solved
-      assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
-        close_icon_overlay.value_of_css_property('font-size')
+      # APERTA-9608
+      # assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px'), \
+      #   close_icon_overlay.value_of_css_property('font-size')
       assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
         close_icon_overlay.value_of_css_property('font-family')
       assert close_icon_overlay.value_of_css_property('color') == APERTA_GREY_DARK, \

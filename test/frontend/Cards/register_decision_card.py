@@ -76,7 +76,7 @@ class RegisterDecisionCard(BaseCard):
     decision_history_head = False
     title = self._get(self._card_heading)
     assert title.text == 'Register Decision', title.text
-    self.validate_application_title_style(title)
+    self.validate_card_title_style(title)
     # This div will be present if the paper in question is an initial decision paper, it will not be
     #   present for full decision papers.
     self.set_timeout(5)

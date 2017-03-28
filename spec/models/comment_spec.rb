@@ -8,8 +8,8 @@ describe Comment do
       expect(comment.valid?).to be(true)
     end
 
-    it 'requires a body' do
-      comment.body = nil
+    it 'requires a body_html' do
+      comment.body_html = nil
       expect(comment.valid?).to be(false)
     end
 

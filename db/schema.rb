@@ -258,7 +258,7 @@ ActiveRecord::Schema.define(version: 20170328170526) do
   add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.text     "body"
+    t.text     "body_html"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "commenter_id"

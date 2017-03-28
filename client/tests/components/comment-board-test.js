@@ -23,7 +23,7 @@ moduleForComponent('comment-board', 'Unit: components/comment-board', {
 
 test('#firstComments returns the latest 5 comments in reverse order', function(assert) {
   let expectedCommentBodies = board.get('firstComments').map(function(comment) {
-    return comment.get('body');
+    return comment.get('bodyHtml');
   });
 
   assert.deepEqual(

@@ -11,7 +11,7 @@ export default DS.Model.extend({
     async: false
   }),
 
-  body: DS.attr('string'),
+  bodyHtml: DS.attr('string'),
   createdAt: DS.attr('date'),
   entities: DS.attr(),
 });

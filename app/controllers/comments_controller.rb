@@ -1,3 +1,4 @@
+# controller that handles comments
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
@@ -12,7 +13,9 @@ class CommentsController < ApplicationController
   def create
     requires_user_can :view, task
     unless current_user.can?(:administer, task.paper.journal)
-      ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
+      ParticipationFactory.create(task: comment.task,
+                                  assignee: current_user,
+                                  assigner: current_user)
     end
     Activity.comment_created! comment, user: current_user
     respond_with comment if CommentLookManager.sync_comment(comment)
@@ -48,7 +51,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:commenter_id, :body, :task_id)
+    params.require(:comment).permit(:commenter_id, :body_html, :task_id)
   end
 
   def render_404

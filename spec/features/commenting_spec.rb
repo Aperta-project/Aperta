@@ -29,7 +29,7 @@ feature 'Comments on cards', js: true do
     end
 
     before do
-      task.comments.create(commenter: albert, body: "Lorem\nipsum dolor\nsit amet")
+      task.comments.create(commenter: albert, body_html: "Lorem\nipsum dolor\nsit amet")
       CommentLookManager.sync_task(task)
       click_link paper.title
       find('#nav-workflow').click

@@ -72,7 +72,7 @@ describe CommentsController do
     subject(:do_request) do
       xhr :post, :create, format: :json,
                           comment: { commenter_id: user.id,
-                                     body: "My comment",
+                                     body_html: "My comment",
                                      task_id: task.id }
     end
 
@@ -95,7 +95,7 @@ describe CommentsController do
             xhr :post, :create,
               format: :json,
               comment: { commenter_id: user.id,
-                         body: "",
+                         body_html: "",
                          task_id: task.id }
           end.to_not change { Comment.count }
         end
@@ -120,7 +120,7 @@ describe CommentsController do
 
       it "creates a new comment" do
         do_request
-        expect(Comment.last.body).to eq('My comment')
+        expect(Comment.last.body_html).to eq('My comment')
         expect(Comment.last.commenter_id).to eq(user.id)
       end
 
@@ -143,7 +143,7 @@ describe CommentsController do
         subject(:do_request) do
           xhr :post, :create, format: :json,
                               comment: { commenter_id: journal_admin.id,
-                                         body: "My comment RULES",
+                                         body_html: "My comment RULES",
                                          task_id: task.id }
         end
 

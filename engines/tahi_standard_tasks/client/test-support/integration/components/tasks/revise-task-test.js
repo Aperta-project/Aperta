@@ -52,7 +52,7 @@ test('it renders information regarding the latest decision', function(assert) {
     'majorVersion': '1',
     'minorVersion': '2',
     'createdAt': new Date('November 29, 2016'),
-    'letter': 'This is my letter',
+    'letterHtml': 'This is my letter',
     'latestRegistered': true
   });
   this.set('testTask', testTask);

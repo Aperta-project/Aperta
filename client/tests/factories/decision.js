@@ -4,7 +4,7 @@ FactoryGuy.define('decision', {
   default: {
     draft: false,
     verdict: null,
-    letter: null,
+    letterHtml: null,
     registeredAt: new Date(),
     minorVersion: FactoryGuy.generate((num) => num),
     majorVersion: FactoryGuy.generate((num) => num)

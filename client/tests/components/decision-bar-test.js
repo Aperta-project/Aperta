@@ -56,7 +56,7 @@ test('shows the rescinded flag for a rescinded decision when closed',
 );
 
 test('shows the decision letter when unfolded', function(assert) {
-  let decision = FactoryGuy.make('decision', { letter: 'a letter' });
+  let decision = FactoryGuy.make('decision', { letterHtml: 'a letter' });
   setup(this, { decision, unfolded: true });
   assert.textPresent('.decision-bar-letter', 'a letter', 'shows letter');
 });

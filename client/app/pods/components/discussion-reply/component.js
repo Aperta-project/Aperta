@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
   classNames: ['message-comment'],
 
-  resetTooltip: Ember.observer('reply.bodyHtml', function() {
+  resetTooltip: Ember.observer('reply.body', function() {
     return Ember.run.schedule('afterRender', this, function() {
       this.$('a[title]').tooltip({ placement: 'top' });
     });

@@ -9,7 +9,7 @@ moduleForComponent('comment-board', 'Unit: components/comment-board', {
   beforeEach: function() {
     let comments = [1,2,3,4,5,6,7,8].map((number)=> {
       return Ember.Object.create({
-        body: 'comment ' + number,
+        bodyHtml: 'comment ' + number,
         createdAt: number
       });
     });

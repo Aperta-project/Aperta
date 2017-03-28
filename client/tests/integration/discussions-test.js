@@ -39,7 +39,7 @@ module('Integration: Discussions', {
 
     $.mockjax({
       url: '/api/papers/' + paperResponse.shortDoi,
-      status: 200, 
+      status: 200,
       responseText: {
         paper: paperResponse
       }
@@ -107,7 +107,7 @@ test('can reply to a topic with view permissions', function(assert) {
 
   Factory.createPermission('DiscussionTopic', 1, ['view']);
   mockFind('discussion-topic').returns({ model: topic });
-  mockCreate('discussion-reply').returns({ body: replyText });
+  mockCreate('discussion-reply').returns({ bodyHtml: replyText });
 
   visit(topicScreen).then(function() {
     triggerEvent(find('.new-comment-field'), 'focus').then(function() {

@@ -43,14 +43,16 @@ moduleForComponent(
             templateDecision: 'accept',
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
-            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
+            letterHtml: `Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] 
+            for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts` },
           {
             id: 2,
             text: 'Editor Reject',
             templateDecision: 'reject',
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
-            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
+            letterHtml: `Dear Dr. [LAST NAME],Regarding [PAPER TITLE] 
+            in [JOURNAL NAME] Sincerely who Rejects` }],
         nestedQuestions: nestedQuestions
       });
 

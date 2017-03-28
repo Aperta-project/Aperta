@@ -84,7 +84,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
               .get('answers.firstObject.value');
         template = templates.findBy('text', selectedTemplate).toJSON();
       }
-      const letter = this.applyTemplateReplacements(template.letter);
+      const letterHtml = this.applyTemplateReplacements(template.letterHtml);
       const to = this.applyTemplateReplacements(template.to);
       const subject = this.applyTemplateReplacements(template.subject);
       const toQuestion = this.get('task').findQuestion('register_decision_questions--to-field');
@@ -93,7 +93,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
-      this.get('draftDecision').set('letter', letter); // will trigger save
+      this.get('draftDecision').set('letterHtml', letterHtml); // will trigger save
     }
   }
 });

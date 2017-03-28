@@ -2,7 +2,7 @@ import FactoryGuy from "ember-data-factory-guy";
 
 FactoryGuy.define("comment", {
   default: {
-    body: "Lorem ipsum dolar",
+    bodyHtml: 'Lorem ipsum dolar',
   },
 
   traits: {

@@ -148,9 +148,6 @@ class TahiEnv
   required :PUSHER_SSL_VERIFY, :boolean
   required :PUSHER_VERBOSE_LOGGING, :boolean
 
-  # Redis
-  optional :REDIS_SENTINELS
-
   # Salesforce
   optional :SALESFORCE_ENABLED, :boolean, default: true
   required :DATABASEDOTCOM_HOST, if: :salesforce_enabled?

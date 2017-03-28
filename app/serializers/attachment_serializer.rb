@@ -1,7 +1,7 @@
 # Generic Attachment serializer.
 class AttachmentSerializer < ActiveModel::Serializer
   attributes :id,
-    :title,
+    :title_html,
     :caption,
     :file_type,
     :src,

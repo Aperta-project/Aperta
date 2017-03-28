@@ -10,7 +10,7 @@ class Attachment < ActiveRecord::Base
   include ProxyableResource
   include Snapshottable
 
-  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif).freeze
 
   STATUSES = {
     processing: 'processing'.freeze,
@@ -33,7 +33,7 @@ class Attachment < ActiveRecord::Base
     value = self.class.public_resource if @public_resource.nil?
 
     if value.nil?
-      fail NotImplementedError, <<-ERROR.strip_heredoc
+      raise NotImplementedError, <<-ERROR.strip_heredoc
         #{self.class.name} did not declare whether it was a public or private
         resource. Please set this after careful consideration in
         #{self.class.name}. Here's what that might need to look like:
@@ -117,7 +117,7 @@ class Attachment < ActiveRecord::Base
 
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
-      self.title = build_title
+      self.title_html = build_title
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
@@ -158,7 +158,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def on_download_failed(exception)
-    fail exception
+    raise exception
   end
 
   def url(*args)
@@ -257,7 +257,7 @@ class Attachment < ActiveRecord::Base
   protected
 
   def build_title
-    title || file.filename
+    title_html || file.filename
   end
 
   private

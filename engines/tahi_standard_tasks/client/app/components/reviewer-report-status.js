@@ -5,11 +5,6 @@ export default Ember.Component.extend({
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
-  // Remove when APERTA-7993 is fixed
-  testing: Ember.computed(function() {
-    return Ember.testing;
-  }),
-
   statusMessage: Ember.computed('report.status', function() {
     const status = this.get('report.status');
     var output = '';    const verbs = {
@@ -29,8 +24,8 @@ export default Ember.Component.extend({
     return output;
   }),
 
-  statusDate: Ember.computed('report.statusDate', function(){
-    const date = this.get('report.statusDate');
+  statusDate: Ember.computed('report.statusDatetime', function(){
+    const date = this.get('report.statusDatetime');
     const format = 'MMMM D, YYYY';
     return moment(date).format(format);
   }),

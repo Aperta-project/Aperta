@@ -1,11 +1,35 @@
-<label>{{label}}</label>
-{{error-message message=errors displayIcon=false}}
-{{#if errorPresent}}
-  <i class="fa fa-exclamation-triangle" title={{capitalize errors}}></i>
-{{/if}}
-{{input type="text"
-  value=value
-  enter=enter
-  class="form-control"
-  classBinding="errorPresent:labeled-input-with-errors-errored"
-  placeholder=placeholder}}
+<div class='input-header'>
+  <div class='description'>
+    <label class="{{if required 'required'}}">{{label}}</label>
+    {{#if helpText }}
+      <div class='help-text'>{{helpText}}</div>
+    {{/if}}
+  </div>
+  {{error-message message=errorMessageOnField displayIcon=false}}
+</div>
+
+<div class='input-with-notification-icon'>
+  {{#if (eq type 'text')}}
+    {{input type='text'
+      name=name
+      value=value
+      enter=enter
+      placeholder=placeholder
+      class='form-control'
+      classBinding='errorsPresentOnField:labeled-input-with-errors-errored'
+      autofocus=(if autofocus 'autofocus') }}
+  {{else if (eq type 'textarea')}}
+    {{textarea
+      name=name
+      value=value
+      enter=enter
+      placeholder=placeholder
+      class='form-control'
+      classBinding='errorsPresentOnField:labeled-input-with-errors-errored'
+      autofocus=(if autofocus 'autofocus') }}
+  {{/if}}
+
+  {{#if errorsPresentOnField}}
+    <i class='fa fa-exclamation-triangle' title={{capitalize errorMessageOnField}}></i>
+  {{/if}}
+</div>

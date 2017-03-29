@@ -26,7 +26,7 @@ module PaperConverters
     end
 
     def parsed_uploaded_pdf
-      CombinePDF.parse uploaded_pdf_data
+      CombinePDF.parse(uploaded_pdf_data, allow_optional_content: true)
     end
 
     def merge_pdfs(pdfs)

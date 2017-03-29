@@ -3,7 +3,7 @@
 class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :position,
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
-             :links, :phase_id, :assigned_to_me
+             :links, :phase_id, :assigned_to_me, :owner_type_for_answer
   has_one :paper, embed: :id
 
   self.root = :task
@@ -21,7 +21,12 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def assigned_to_me
-    object.participations.map(&:user).include? scope
+    # Reviewers are not participants on their own task
+    if object.reviewer.blank?
+      object.participations.map(&:user).include? scope
+    else
+      object.reviewer == scope
+    end
   end
 
   def links
@@ -30,6 +35,7 @@ class TaskSerializer < ActiveModel::Serializer
       comments: task_comments_path(object),
       participations: task_participations_path(object),
       nested_questions: task_nested_questions_path(object),
+      answers: answers_for_owner_path(owner_id: object.id, owner_type: object.class.name.underscore),
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)
     }

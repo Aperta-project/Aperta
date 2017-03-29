@@ -3,8 +3,12 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import { createQuestionWithAnswer } from 'tahi/tests/factories/nested-question';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import FakeCanService from '../helpers/fake-can-service';
+import sinon from 'sinon'
 
 import hbs from 'htmlbars-inline-precompile';
+
+let journal, template;
 
 moduleForComponent(
   'author-form',
@@ -21,7 +25,7 @@ moduleForComponent(
         institutional_accounts: []
       }});
 
-      let journal = FactoryGuy.make('journal');
+      journal = FactoryGuy.make('journal');
       TestHelper.mockFind('journal').returns({model: journal});
 
       let user = FactoryGuy.make('user');
@@ -31,7 +35,7 @@ moduleForComponent(
 
       this.set('author', author);
       this.set('author.paper', paper);
-      this.set('author.paper.journal', 1);
+      this.set('author.paper.journal', journal);
       this.set('isNotEditable', false);
       this.set('model', Ember.ObjectProxy.create({object: author}));
       this.set('task', task);
@@ -61,7 +65,7 @@ moduleForComponent(
   }
 );
 
-var template = hbs`
+template = hbs`
   {{author-form
       author=model.object
       authorProxy=model
@@ -74,6 +78,8 @@ var template = hbs`
   }}`;
 
 test("component displays the orcid-connect component when the author has an orcidAccount", function(assert){
+  const can = FakeCanService.create().allowPermission('administer', journal);
+  this.register('service:can', can.asService());
   let orcidAccount = FactoryGuy.make('orcid-account');
   Ember.run( () => {
     this.get("author.user").set("orcidAccount", orcidAccount);
@@ -83,6 +89,8 @@ test("component displays the orcid-connect component when the author has an orci
 });
 
 test("component does not display the orcid-connect component when the author does not have an orcidAccount", function(assert){
+  const can = FakeCanService.create().allowPermission('administer', journal);
+  this.register('service:can', can.asService());
   Ember.run( () => {
     this.get("author.user").set("orcidAccount", null);
   });
@@ -90,10 +98,45 @@ test("component does not display the orcid-connect component when the author doe
   assert.elementNotFound(".orcid-wrapper");
 });
 
-test("component shows author is confirmed", function(assert){
-  Ember.run( () => {
-    this.get("author").set("coAuthorConfirmed", true);
+test("component shows coauthor controls when user is considered an admin user", function(assert){
+  template = hbs`
+  {{author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleEditForm"
+      isNotEditable=isNotEditable
+      saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
+      authorIsPaperCreator=false
+  }}`;
+
+  Ember.run(() => {
+    const can = FakeCanService.create().allowPermission('administer', journal);
+    this.register('service:can', can.asService());
   });
+
   this.render(template);
-  assert.textPresent('.author-confirmed', 'Authorship has been confirmed');
+  assert.elementFound('[data-test-selector="coauthor-radio-controls"]');
+});
+
+test("component hides coauthor controls when user is considered an non-admin user", function(assert){
+  template = hbs`
+  {{author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleEditForm"
+      isNotEditable=isNotEditable
+      saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
+      authorIsPaperCreator=false
+  }}`;
+  Ember.run(() => {
+    const can = FakeCanService.create().rejectPermission('administer', journal);
+    this.register('service:can', can.asService());
+  });
+
+  this.render(template);
+  assert.elementNotFound('[data-test-selector="coauthor-radio-controls"]');
 });

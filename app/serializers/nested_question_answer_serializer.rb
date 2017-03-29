@@ -5,5 +5,4 @@ class NestedQuestionAnswerSerializer < ActiveModel::Serializer
   def owner
     { id: object.owner_id, type: object.owner_type.demodulize }
   end
-
 end

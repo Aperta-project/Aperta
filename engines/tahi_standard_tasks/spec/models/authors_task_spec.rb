@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe TahiStandardTasks::AuthorsTask do
   before do
-    Rake::Task['nested-questions:seed:author'].reenable
-    Rake::Task['nested-questions:seed:author'].invoke
+    CardLoader.load('TahiStandardTasks::AuthorsTask')
+    CardLoader.load('Author')
   end
 
   it_behaves_like 'is a metadata task'
@@ -15,11 +15,9 @@ describe TahiStandardTasks::AuthorsTask do
   describe "#validate_authors" do
     let!(:valid_author) do
       author = FactoryGirl.create(:author, paper: task.paper)
-      question = Author.contributions_question
+      question = Author.contributions_content
       contribution = question.children.first
-      q = author.find_or_build_answer_for(nested_question: contribution)
-      q.value = true
-      q.save!
+      contribution.answers.find_or_create_by(owner: author, value: true, paper: task.paper)
       author
     end
 
@@ -33,7 +31,8 @@ describe TahiStandardTasks::AuthorsTask do
       invalid_author = FactoryGirl.create(
         :author,
         email: nil,
-        paper: task.paper)
+        paper: task.paper
+      )
 
       task.update(completed: true)
 

@@ -3,6 +3,9 @@ require 'rails_helper'
 module TahiStandardTasks
   describe ReviewerRecommendationsController do
     routes { TahiStandardTasks::Engine.routes }
+    before do
+      CardLoader.load("TahiStandardTasks::Funder")
+    end
 
     let(:user) { FactoryGirl.create :user }
     let(:journal) do

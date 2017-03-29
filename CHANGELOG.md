@@ -4,16 +4,43 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
+* Similarity Check Task Card (UI Only)
+### Changed
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+more user friendly.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.39.0] - {2017-03-16}
+### Added
+* The footer discussion cannot be seen by Reviewers and other external users in
+  individual card view
+* Billing staff now have more viewing access than just to the Billing card
+* Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list 
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.38.0] - {2017-03-09}
+### Added
 * Users can now change the initial participants on a discussion topic.
-* Source file is sent to APEX instead of a PDF manuscript
+* Source file is sent to APEX along with PDF manuscripts
 * The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
 * Source files show can be downloaded
 * Added "Confirm Authorship" button to email to co authors.
 * Added PDF submissions for PLOS Biology
 * Require source files on PDF manuscripts that are in revision or have major versions greater than 0
+* Warn users to save work externally when server health check fails
 ### Changed
 * Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
 * Temporarily disabled coauthor notification
+* Change in figure task workflow to remove period from title
 ### Deprecated
 ### Removed
 ### Fixed

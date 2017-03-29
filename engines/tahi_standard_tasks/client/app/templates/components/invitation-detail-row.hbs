@@ -5,19 +5,29 @@
       {{#if invitation.isAlternate}}
         <i class="fa fa-link alternate-link-icon" aria-hidden="true"></i>
       {{/if}}
-      {{#if invitee}}
-        {{invitee.fullName}}
-        &lt;{{invitation.email}}&gt;
-      {{else}}
-        {{invitation.email}}
-      {{/if}}
+      <div class="invitation-item-email">
+        {{#if invitee}}
+          {{invitee.fullName}}
+          &lt;{{invitation.email}}&gt;
+        {{else}}
+          {{invitation.email}}
+        {{/if}}
+      </div>
     </div>
     <div class="invitation-item-status">
       {{#if (and (eq uiState 'closed') (not invitation.pending))}}
         {{#if invitation.invited}}
           <span>Invited {{format-date invitation.invitedAt format="MMM D, YYYY"}}</span>
         {{else if invitation.accepted}}
-          <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+          {{#if (eq invitation.reviewerReport.status 'completed')}}
+            <div class="invitation-item-review-completed-icon">
+              {{partial "svg/check"}}
+            </div>
+            <span>Completed {{format-date invitation.reviewerReport.statusDateTime format="MMM D, YYYY"}}</span>
+          {{else}}
+            <span>Pending</span><br>
+            <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+          {{/if}}
         {{else if invitation.declined}}
           <span>Declined {{format-date invitation.declinedAt format="MMM D, YYYY"}}</span>
         {{else if invitation.rescinded}}

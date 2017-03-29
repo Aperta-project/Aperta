@@ -13,6 +13,7 @@ const {
 export default Component.extend({
   countries: service(),
   store: service(),
+  can: service(),
 
   classNames: ['author-form', 'individual-author-form'],
 
@@ -21,6 +22,10 @@ export default Component.extend({
   isNewAuthor: false,
   validationErrors: alias('authorProxy.validationErrors'),
   canRemoveOrcid: null,
+  canChangeCoauthorStatus: null,
+
+  authorshipConfirmed: Ember.computed.alias('author.confirmedAsCoAuthor'),
+  authorshipDeclined: Ember.computed.alias('author.refutedAsCoAuthor'),
 
   init() {
     this._super(...arguments);
@@ -29,8 +34,21 @@ export default Component.extend({
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {
         this.createNewAuthor();
+        this.initializeCoauthorshipControls();
       });
+    } else {
+      this.initializeCoauthorshipControls();
     }
+  },
+
+  initializeCoauthorshipControls() {
+    this.get('author.paper.journal').then( (journal) => {
+      this.get('can').can('administer', journal).then( (value) => {
+        Ember.run( () => {
+          this.set('canChangeCoauthorStatus', value);
+        });
+      });
+    });
   },
 
   authorIsNotCurrentUser: computed('currentUser', 'author.user', function() {
@@ -48,6 +66,7 @@ export default Component.extend({
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };
+
     return this.get('store').query('nested-question', q).then(
       (nestedQuestions) => {
         this.set('nestedQuestionsForNewAuthor', nestedQuestions.toArray());
@@ -191,6 +210,10 @@ export default Component.extend({
 
     currentAddressCountrySelected(data) {
       this.set('author.currentAddressCountry', data.text);
+    },
+    
+    selectAuthorConfirmation(status) {
+      this.set('author.coAuthorState', status);
     },
 
     validateField(key, value) {

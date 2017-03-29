@@ -1179,6 +1179,9 @@ describe Paper do
       end
 
       context 'and there are authors' do
+        before do
+          CardLoader.load('Author')
+        end
         let(:author_1) do
           FactoryGirl.create(:author, email: 'a1@example.com')
         end

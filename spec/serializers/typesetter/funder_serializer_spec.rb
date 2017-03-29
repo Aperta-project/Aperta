@@ -17,7 +17,7 @@ describe Typesetter::FunderSerializer do
   end
 
   before do
-    NestedQuestionableFactory.create(
+    AnswerableFactory.create(
       funder,
       questions: [
         {

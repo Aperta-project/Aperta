@@ -61,7 +61,7 @@ export default PageObject.create({
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
-      labelText: contentEditable('label.editable'),
+      labelText: contentEditable('.editable.inline-edit-display'),
       label: text('label:nth(0)'),
       save: clickable('.edit-actions .button-secondary'),
     }

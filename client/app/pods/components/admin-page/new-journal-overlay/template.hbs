@@ -1,0 +1,25 @@
+<h1>Add a new journal</h1>
+
+<div class="labeled-input-form">
+  {{journal-logo-uploader logoUrl=logoUrl}}
+
+  <div class="admin-new-card-overlay-form">
+    {{forms/labeled-input-with-errors type="text" label="Journal Title" name='name' value=name required=true errors=errors autofocus=true enter=(action 'complete')}}
+    {{forms/labeled-input-with-errors type="textarea" label="Journal Description" name='description' value=description errors=errors enter=(action 'complete')}}
+    {{forms/labeled-input-with-errors type="text" label="DOI Journal Prefix" name='doiJournalPrefix' required=true value=doiJournalPrefix errors=errors helpText='Must begin with "journal".' enter=(action 'complete')}}
+    {{forms/labeled-input-with-errors type="text" label="DOI Publisher Prefix" name='doiPublisherPrefix' required=true value=doiPublisherPrefix errors=errors enter=(action 'complete')}}
+    {{forms/labeled-input-with-errors type="text" label="Last DOI Issued" name='lastDoiIssued' required=true value=lastDoiIssued errors=errors enter=(action 'complete')}}
+  </div>
+
+  <div class="overlay-action-buttons">
+    <button class="button-link button--blue admin-new-journal-overlay-cancel" {{action "close"}}>
+      cancel
+    </button>
+
+    <button class="button-primary button--blue admin-new-journal-overlay-save" disabled={{if saving true null}} {{action "complete"}}>
+      {{progress-spinner visible=saving color="blue" center=true}}
+      Save Journal
+    </button>
+  </div>
+
+</div>

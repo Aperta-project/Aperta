@@ -2,7 +2,7 @@
   {{progress-spinner visible=true align="middle" size="large"}}
 {{else}}
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4 author-task-cards">
       <h3>Author task cards</h3>
       {{#each authorTasks as |authorTask|}}
         <label>
@@ -11,7 +11,7 @@
         <br>
       {{/each}}
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4 staff-task-cards">
       <h3>Staff task cards</h3>
       {{#each staffTasks as |staffTask|}}
         <label>
@@ -20,10 +20,24 @@
         <br>
       {{/each}}
     </div>
+
+    <div class="col-md-4 custom-cards">
+      <h3>Custom Cards</h3>
+      {{#if sortedCards.length}}
+        {{#each sortedCards as |card|}}
+          <label>
+            {{check-box task=card action="updateList"}} {{card.name}}
+          </label>
+          <br>
+        {{/each}}
+      {{else}}
+        No cards are available.
+      {{/if}}
+    </div>
   </div>
 
   <div class="overlay-action-buttons">
-    <button class="button-primary button--green" {{action "throttledAddTaskType"}}>Add</button>
+    <button class="button-primary button--green" {{action "throttledSave"}}>Add</button>
     <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
   </div>
 {{/if}}

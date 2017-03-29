@@ -7,8 +7,11 @@ module TahiStandardTasks
     def task_added_to_paper(paper)
       early_posting_task = self
 
-      question = NestedQuestion.find_by!(ident: 'early-posting--consent')
-      answer = early_posting_task.find_or_build_answer_for(nested_question: question)
+      card_content = CardContent.find_by!(ident: 'early-posting--consent')
+      answer = early_posting_task
+               .answers
+               .find_or_initialize_by(card_content: card_content)
+      answer.paper = paper
       answer.value = true
       answer.save!
     end

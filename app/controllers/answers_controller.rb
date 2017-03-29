@@ -36,8 +36,12 @@ class AnswersController < ApplicationController
     potential_owner
   end
 
+  def owner_id
+    params[:owner_id] || answer_params[:owner_id]
+  end
+
   def owner
-    @owner ||= owner_klass.find(answer_params[:owner_id])
+    @owner ||= owner_klass.find(owner_id)
   end
 
   def answer_params

@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
+  card: DS.belongsTo('card'),
   journalTaskType: DS.belongsTo('journal-task-type', { async: false }),
   phaseTemplate: DS.belongsTo('phase-template', { async: false }),
   position: DS.attr('number'),

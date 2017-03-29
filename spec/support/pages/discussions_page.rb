@@ -105,7 +105,7 @@ class DiscussionsPage < Page
     expect(page).not_to have_css('.discussions-index-topic')
   end
 
-  def add_participant(user: user, fragment:)
+  def add_a_participant(user:, fragment:)
     find(add_participant_button).click
     find(participant_search_input).send_keys(fragment)
     find(participant_search_option, text: user.email).click

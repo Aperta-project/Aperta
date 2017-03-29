@@ -8,7 +8,7 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
       end
 
       it 'creates new assignments' do
-        expect { subject.process }.to change { Assignment.count }.by(3)
+        expect { subject.process }.to change { Assignment.count }.by(2)
       end
 
       it 'assigns the user as a Participant on the Paper' do
@@ -18,18 +18,6 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
             user: assignee,
             role: paper.journal.reviewer_role,
             assigned_to: paper
-          )
-        ).to be
-      end
-
-      it 'assigns the user as a Participant on the task' do
-        subject.process
-        task = reviewer_report_type.last
-        expect(
-          Assignment.find_by(
-            user: assignee,
-            role: paper.journal.task_participant_role,
-            assigned_to: task
           )
         ).to be
       end
@@ -71,10 +59,10 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
         assignee.roles.destroy_all
       end
 
-      it "adds the user as a participant to the task" do
+      it "does not include the user as a participant to the task" do
         subject.process
         task = paper.tasks_for_type(reviewer_report_type.name).first
-        expect(task.participants).to match_array([assignee])
+        expect(task.participants).not_to include(assignee)
       end
     end
 
@@ -89,10 +77,10 @@ RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_
     end
   end
 
-  it "adds the assignee as a participant to the task" do
+  it "does not add the reviewer as a participant on the task" do
     subject.process
     task = paper.tasks_for_type(reviewer_report_type.name).first
-    expect(task.participants).to match_array([assignee])
+    expect(task.participants).not_to include(assignee)
   end
 
   context 'when assigning a new reviewer' do

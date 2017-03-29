@@ -30,6 +30,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showChooseNewCardOverlay: false,
   addToPhase: null,
   journalTaskTypes: [],
+  cards: [],
   journalTaskTypesIsLoading: false,
 
   saveTemplate(transition){
@@ -62,6 +63,16 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.setProperties({ editingName: false, pendingChanges: false });
   },
 
+  buildTaskTemplate(title, journalTaskType, card, phaseTemplate) {
+    return this.store.createRecord('task-template', {
+      title: title,
+      journalTaskType: journalTaskType,
+      card: card,
+      phaseTemplate: phaseTemplate,
+      template: []
+    });
+  },
+
   actions: {
     toggleResearchArticleReviewerReport(value) {
       this.set('model.usesResearchArticleReviewerReport', value);
@@ -85,6 +96,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.store.findRecord('admin-journal', journalId).then(adminJournal => {
         this.setProperties({
           journalTaskTypes: adminJournal.get('journalTaskTypes'),
+          cards: adminJournal.get('cards'),
           journalTaskTypesIsLoading: false
         });
       });
@@ -96,19 +108,26 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('showChooseNewCardOverlay', false);
     },
 
-    addTaskType(phaseTemplate, taskTypeList) {
-      if (!taskTypeList) { return; }
+    addTaskTemplate(phaseTemplate, selectedCards) {
+      if (!selectedCards) { return; }
+
       let hasAdHocType = false;
 
-      taskTypeList.forEach((taskType) => {
-        const newTaskTemplate = this.store.createRecord('task-template', {
-          title: taskType.get('title'),
-          journalTaskType: taskType,
-          phaseTemplate: phaseTemplate,
-          template: []
-        });
+      selectedCards.forEach((item) => {
+        let newTaskTemplate;
 
-        if (isAdHocTask(taskType.get('kind'))) {
+        if(item.constructor.modelName === 'card') {
+          // task template from a Card
+          newTaskTemplate = this.buildTaskTemplate(item.get('name'), null, item, phaseTemplate);
+        } else {
+          // task template from a JournalTaskType
+          newTaskTemplate = this.buildTaskTemplate(item.get('title'), item, null, phaseTemplate);
+        }
+
+        // reposition phases
+        this.updateTaskPositions(phaseTemplate.get('taskTemplates'));
+
+        if (isAdHocTask(item.get('kind'))) {
           hasAdHocType = true;
           this.set('adHocTaskToDisplay', newTaskTemplate);
         }

@@ -15,10 +15,10 @@ test('it has a tab bar', function(assert) {
   assert.elementFound('.admin-tab-bar');
 });
 
-test('it has a drawer showing all available journals', function(assert) {
+test('it has a drawer showing all persisted journals', function(assert) {
   const journals = [
-    { name: 'My Journal', initials: 'MJ', id: 1 },
-    { name: 'My Secondary', initials: 'MS', id: 2 }
+    { name: 'My Journal', initials: 'MJ', id: 1, isNew: false },
+    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false }
   ];
 
   this.set('journals', journals);
@@ -33,10 +33,26 @@ test('it has a drawer showing all available journals', function(assert) {
   assert.nElementsFound('.admin-drawer-item', journals.length + 1);
 });
 
+test('it does not show unpersisted journals in the drawer', function(assert) {
+  const journals = [
+    { name: 'My Journal', initials: 'MJ', id: 1, isNew: true }
+  ];
+
+  this.set('journals', journals);
+
+  this.render(hbs`
+    {{#admin-page journals=journals}}
+      Some interesting text.
+    {{/admin-page}}
+  `);
+
+  assert.nElementsFound('.admin-drawer-item', 0);
+});
+
 test('it alphabetizes the list of journals', function(assert) {
   const journals = [
-    { name: 'Zebra', initials: 'Z', id: 1 },
-    { name: 'Apple', initials: 'A', id: 2 }
+    { name: 'Zebra', initials: 'Z', id: 1, isNew: false },
+    { name: 'Apple', initials: 'A', id: 2, isNew: false }
   ];
 
   this.set('journals', journals);
@@ -60,8 +76,8 @@ test('it alphabetizes the list of journals', function(assert) {
 
 test('it has a drawer with "all journals" for multiple journals', function(assert) {
   const journals = [
-    { name: 'My Journal', initials: 'MJ', id: 1 },
-    { name: 'My Secondary', initials: 'MS', id: 2 },
+    { name: 'My Journal', initials: 'MJ', id: 1, isNew: false },
+    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false },
   ];
 
   this.set('journals', journals);
@@ -77,7 +93,7 @@ test('it has a drawer with "all journals" for multiple journals', function(asser
 
 test('it has a drawer without "all journals" for single journal', function(assert) {
   const journals = [
-    { name: 'My Secondary', initials: 'MS', id: 2 }
+    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false }
   ];
 
   this.set('journals', journals);

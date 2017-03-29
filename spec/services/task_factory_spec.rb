@@ -79,4 +79,17 @@ describe TaskFactory do
       expect(task.required_permissions).to include(*expected_permissions)
     end
   end
+
+  context "roles and permissions do not exist" do
+    let(:journal) { create :journal }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+    let(:card_version) { FactoryGirl.create(:card_version) }
+    let(:klass) { CustomCardTask }
+
+    it "does not set permissions" do
+      task = TaskFactory.create(klass, card_version: card_version, paper: paper, phase: phase)
+      expect(task.required_permissions).to be_empty
+    end
+  end
 end

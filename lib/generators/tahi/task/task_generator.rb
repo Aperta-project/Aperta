@@ -1,4 +1,5 @@
 module Tahi
+  # Task Generator
   class TaskGenerator < Rails::Generators::NamedBase
     source_root File.expand_path('../templates', __FILE__)
 
@@ -15,6 +16,7 @@ module Tahi
       template_client_component
     end
 
+    # rubocop:disable Rails/Output
     private
 
     def template_backend_model
@@ -33,6 +35,9 @@ module Tahi
       )
 
       rake 'data:update_journal_task_types'
+
+      puts 'To avoid running into permissions issues, '\
+        'run rake roles-and-permissions:seed'
     end
 
     def template_client_component
@@ -78,6 +83,7 @@ module Tahi
       Pathname.new(source.path.to_s).expand_path
     end
 
+    # rubocop:disable Rails/Exit
     def die(msg)
       puts "\033[31m#{msg}\033[0m"
       exit 1

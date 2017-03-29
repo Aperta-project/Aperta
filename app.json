@@ -3,9 +3,6 @@
   "description": "tahi-review-app",
   "success_url": "/",
   "repository": "https://github.com/Tahi-Project/tahi",
-  "scripts": {
-    "postdeploy": "rake db:setup"
-  },
   "env": {
     "ADMIN_EMAIL": {
       "required": true

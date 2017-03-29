@@ -68,20 +68,43 @@ module DataTransformation
       if versioned_text.latest_version?
         ma_version = manuscript_attachment
       else
-        ma_version = manuscript_attachment
-          .versions
-          .where('object IS NOT NULL')
-          .where('created_at > ?', versioned_text.updated_at + 5.seconds)
-          .order(created_at: :asc).first.try(:reify)
+        ma_version = manuscript_attachment.versions.where('object IS NOT NULL')
+          .map(&:reify)
+          .sort_by(&:created_at)
+          .select { |v| v.created_at < versioned_text.updated_at }
+          .last
 
         ma_version ||= manuscript_attachment
 
+        if ma_version == "done"
+          vt_id_from_s3_dir = ma_version.s3_dir
+            .scan(%r{(?<=versioned_text/)\d+}).first
+          if vt_id_from_s3_dir
+            assert(
+              vt_id_from_s3_dir.to_i == versioned_text.id ||
+                previous_versioned_text_has_s3_dir(
+                  versioned_text,
+                  ma_version.s3_dir
+                ),
+              "versioned text id did not match s3 dir"
+            )
+          end
+        end
+
         assert(
-          ma_version.updated_at <= versioned_text.updated_at,
+          ma_version.created_at <= versioned_text.updated_at,
           "could not find correct manuscript attachment version"
         )
       end
       ma_version
+    end
+
+    def previous_versioned_text_has_s3_dir(versioned_text, s3_dir)
+      previous_versioned_text = versioned_text.paper.versioned_texts
+        .order(created_at: :asc)
+        .where('created_at < ?', versioned_text.created_at).last
+      return false unless previous_versioned_text
+      s3_dir == previous_versioned_text.manuscript_s3_path
     end
   end
 end

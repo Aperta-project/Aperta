@@ -1,8 +1,9 @@
+sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
+  { host: sentinel_host, port: TahiEnv.redis_port }
+end
+
 Sidekiq.configure_server do |config|
   if TahiEnv.redis_sentinel_enabled?
-    sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
-      { host: sentinel_host, port: ENV['REDIS_PORT'] }
-    end
     config.redis = {
       master_name: 'aperta',
       sentinels: sentinel_list,
@@ -30,9 +31,6 @@ end
 
 Sidekiq.configure_client do |config|
   if TahiEnv.redis_sentinel_enabled?
-    sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
-      { host: sentinel_host, port: ENV['REDIS_PORT'] }
-    end
     config.redis = {
       master_name: 'aperta',
       sentinels: sentinel_list,

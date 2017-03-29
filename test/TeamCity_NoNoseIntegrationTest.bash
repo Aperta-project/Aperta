@@ -80,5 +80,6 @@ python -m frontend.test_revision_tech_check
 python -m frontend.test_send_to_apex
 python -m frontend.test_supporting_information
 python -m frontend.test_title_abstract_card
+python -m frontend.test_upload_ms
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow

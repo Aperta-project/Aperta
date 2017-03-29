@@ -27,6 +27,7 @@ from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
+from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -494,6 +495,33 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return True
     return False
 
+  def is_task_marked_complete(self, task_name):
+    """
+    Check if a task is marked as completed
+    :param task_name: The name of the task to validate
+    :return: True if task is marked as completed and False otherwise
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        completed_icon = task.find_element_by_css_selector('div div')
+        if 'active' in completed_icon.get_attribute('class'):
+          return True
+    return False
+
+  def is_task_open(self, task_name):
+    """
+    Check if a task is open
+    :param task_name: The name of the task to validate
+    :return: True if task is open and False if closed
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        task_div = task.find_element_by_xpath('..')
+        return 'task-disclosure--open' in task.get_attribute('class')
+    raise ElementDoesNotExistAssertionError('This task is not present')
+
   def click_task(self, task_name):
     """
     Click a task title
@@ -519,14 +547,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
                     task_name,
                     click_override=False,
                     data=None,
-                    style_check=False,
                     author=''):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
     :param click_override: If True, do not prosecute task click to open (when already open)
     :param data: A dictionary with the required data for each task.
-    :param style_check: A boolean, when True will do style checking. Default False.
     :param author: Author to use in completing author task, if applicable - looks up values from
       Base/Resources.py
     :return outdata or None: returns a list of the values used to fill out the form or None if
@@ -620,18 +646,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # accordion is close it, open it:
         logging.info('Accordion was closed, opening: {0}'.format(task.text))
         task.click()
-      if data and 'source' in data:
-        # there is a sourcefile
-        if not data['source']:
-          doc2upload = random.choice(docs)
-        else:
-          doc2upload = data['source']
-        current_path = os.getcwd()
-        fn = os.path.join(current_path, '{0}'.format(doc2upload))
-        logging.info('Sending document: {0}'.format(fn))
-        time.sleep(1)
-        self._get(self._upload_source).send_keys(fn)
-        ###self._driver.find_element_by_id('upload-source-file').send_keys(fn) XXX DELETE!!
       # Check completed_check status
       if not base_task.completed_state():
         base_task.click_completion_button()

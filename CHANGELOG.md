@@ -2,12 +2,26 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## ## [x.x.x] - {yyyy-mm-dd}
+### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
+* Similarity Check Task Card (UI Only)
+### Changed
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+* Revise Manuscript card changed to Response to Reviewers, it's attachments are now owned by decisions.
+more user friendly.
+### Deprecated
+### Removed
+### Fixed
+### Security
+
 ## ## [1.39.0] - {2017-03-16}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in
   individual card view
 * Billing staff now have more viewing access than just to the Billing card
 * Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list 
 ### Changed
 ### Deprecated
 ### Removed

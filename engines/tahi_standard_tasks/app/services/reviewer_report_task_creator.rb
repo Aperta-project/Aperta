@@ -44,7 +44,7 @@ class ReviewerReportTaskCreator
       task: @task,
       decision: @paper.draft_decision,
       user: assignee
-    )
+    ).accept_invitation!
   end
 
   def reviewer_report_task_class

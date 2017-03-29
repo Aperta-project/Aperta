@@ -32,6 +32,10 @@ class TaskFactory
 
   def set_required_permissions
     return if @task.required_permissions.present?
+
+    # custom card permissions have not been defined yet
+    return if @task.is_a?(CustomCardTask)
+
     @task.required_permissions = @task.journal_task_type.required_permissions
   end
 end

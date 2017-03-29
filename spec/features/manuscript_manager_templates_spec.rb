@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'Manuscript Manager Templates', js: true, selenium: true do
   let(:journal_admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
   let(:mmt) { journal.manuscript_manager_templates.first }
   let(:mmt_page) { ManuscriptManagerTemplatePage.new }
   let(:task_manager_page) { TaskManagerPage.new }
@@ -67,7 +68,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
   describe 'Task Templates' do
     scenario 'Adding a new Task Template'do
-      phase = task_manager_page.phase 'Get Reviews'
+      phase = task_manager_page.phase('Get Reviews')
       phase.find('a', text: 'ADD NEW CARD').click
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
@@ -112,6 +113,18 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
       find('.adhoc-content-toolbar .fa-plus').click
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click
+    end
+
+    scenario 'Adding a CustomCard Task' do
+      phase = task_manager_page.phase 'Get Reviews'
+      phase.find('a', text: 'ADD NEW CARD').click
+
+      within '.overlay' do
+        find('label', text: card.name).click
+        find('button', text: 'ADD').click
+      end
+
+      expect(page).to have_css('.card-title', text: card.name)
     end
 
     scenario 'Removing a task' do

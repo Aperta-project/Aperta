@@ -56,25 +56,24 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, after: [:set_invitee, :set_invited_at],
-                   after_commit: :notify_invitation_invited) do
+    event(:invite,
+      after_commit: [:set_invitee,
+                     :set_invited_at,
+                     :notify_invitation_invited]) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
 
     event(:rescind,
-      after: [:set_rescinded_at],
-      after_commit: :notify_invitation_rescinded) do
+      after_commit: [:set_rescinded_at, :notify_invitation_rescinded]) do
       transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,
-      after: [:set_accepted_at],
-      after_commit: :notify_invitation_accepted) do
+      after_commit: [:set_accepted_at, :notify_invitation_accepted]) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
-      after: [:set_declined_at],
-      after_commit: :notify_invitation_declined) do
+      after_commit: [:set_declined_at, :notify_invitation_declined]) do
       transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end
@@ -145,18 +144,22 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_invited
     add_authors_to_information(self)
+    notify(action: 'invited')
     task.invitation_invited(self)
   end
 
   def notify_invitation_accepted
+    notify(action: 'accepted')
     task.invitation_accepted(self)
   end
 
   def notify_invitation_declined
+    notify(action: 'declined')
     task.invitation_declined(self)
   end
 
   def notify_invitation_rescinded
+    notify(action: 'rescinded')
     task.invitation_rescinded(self)
   end
 

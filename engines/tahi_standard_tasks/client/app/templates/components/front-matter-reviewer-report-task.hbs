@@ -2,11 +2,12 @@
 
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
-    {{#if task.body.submitted}}
+    {{#if task.isSubmitted}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 
+      {{#if currentReviewerReport.needsSubmission }}
       <div class="reviewer-report-confirmation">
         {{#if submissionConfirmed}}
           <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
@@ -17,6 +18,7 @@
           <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
         {{/if}}
       </div>
+      {{/if}}
     {{/if}}
 
     {{#if previousReviewerReports}}

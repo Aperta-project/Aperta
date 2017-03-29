@@ -8,7 +8,15 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :user_id,
     :created_at,
     :status,
-    :status_date,
+    :status_datetime,
     :revision
   has_one :task
+
+  def status
+    object.computed_status
+  end
+
+  def status_datetime
+    object.computed_datetime
+  end
 end

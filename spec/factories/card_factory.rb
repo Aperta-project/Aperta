@@ -9,6 +9,7 @@ FactoryGirl.define do
         card.card_versions << build(:card_version, version: card.latest_version) if card.card_versions.count.zero?
       end
     end
+
     trait :for_answerable do
       transient do
         answerable TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -17,7 +18,7 @@ FactoryGirl.define do
 
       after(:create) do |card, evaluator|
         idents = Array(evaluator.idents)
-        root = create(:card_content, card: card)
+        root = create(:card_content, card: card, content_type: "display-children")
         idents.each do |ident|
           create(:card_content, parent: root, card: card, ident: ident)
         end

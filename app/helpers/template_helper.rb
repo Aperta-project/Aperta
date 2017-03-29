@@ -4,8 +4,9 @@ module TemplateHelper
   end
 
   def git_commit_id_meta_tag
-    content_tag(:meta, nil,
-                name: "git-commit-id",
-                content: Rails.configuration.x.git_commit_id)
+    tag(:meta,
+        { name: "git-commit-id",
+          content: Rails.configuration.x.git_commit_id },
+        true)
   end
 end

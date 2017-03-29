@@ -24,6 +24,7 @@ export default DS.Model.extend({
   task: DS.belongsTo('task', { polymorphic: true }),
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
+  reviewerReport: DS.belongsTo('reviewer_report'),
 
   isAlternate: Ember.computed.notEmpty('primary'),
   isPrimary: Ember.computed.notEmpty('alternates'),

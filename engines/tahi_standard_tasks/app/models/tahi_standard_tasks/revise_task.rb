@@ -2,7 +2,7 @@ module TahiStandardTasks
   class ReviseTask < Task
     include SubmissionTask
 
-    DEFAULT_TITLE = 'Revise Manuscript'.freeze
+    DEFAULT_TITLE = 'Response to Reviewers'.freeze
     DEFAULT_ROLE_HINT = 'author'.freeze
     SYSTEM_GENERATED = true
 

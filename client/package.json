@@ -49,7 +49,7 @@
     "ember-data-filter": "1.13.0",
     "ember-disable-proxy-controllers": "^1.0.1",
     "ember-export-application-global": "^1.0.5",
-    "ember-font-awesome": "2.2.0",
+    "ember-font-awesome": "3.0.5",
     "ember-inflector": "^1.9.6",
     "ember-load-initializers": "^0.5.1",
     "ember-power-select": "1.0.0",

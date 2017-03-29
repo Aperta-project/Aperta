@@ -37,16 +37,16 @@ class ReportingGuidelinesCard(BaseCard):
       self.click_completion_button()
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Reporting Guidelines', card_title.text
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     question_text = self._get(self._question_text)
     assert question_text.text == 'Authors should check the EQUATOR Network site for any reporting' \
                              ' guidelines that apply to their study design, and ensure that any' \
                              ' required Supporting Information (checklists, protocols, flowcharts,' \
                              ' etc.) be included in the article submission.', question_text.text
     select_instruction = self._get(self._select_instruction)
-    self.validate_application_ptext(select_instruction)
+    self.validate_application_body_text(select_instruction)
     selection_list = self._get(self._selection_list)
-    self.validate_application_ptext(selection_list)
+    self.validate_application_body_text(selection_list)
     selection_list_items = selection_list.find_elements_by_css_selector('li.item')
     # All checkboxes should be unchecked by default:
     for item in selection_list_items:

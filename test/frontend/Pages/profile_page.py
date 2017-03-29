@@ -204,7 +204,7 @@ class ProfilePage(AuthenticatedPage):
     profile_link_subtext = self._get(self._cas_profile_ptext)
     assert 'Any changes to your username or email will be updated ' \
            'in Aperta on your next login.' in profile_link_subtext.text, profile_link_subtext.text
-    self.validate_application_ptext(profile_link_subtext)
+    self.validate_application_body_text(profile_link_subtext)
 
     assert 'Affiliations:' in profile_affiliation_form_title.text
     try:

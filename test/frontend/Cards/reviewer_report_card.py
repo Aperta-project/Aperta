@@ -64,66 +64,66 @@ class ReviewerReportCard(BaseCard):
       recommendation = qb1.find_element(*self._res_q1_answer)
       assert recommendation.text.lower() == recc_entry.lower(), \
           '{0} != {1}'.format(recommendation.text, recc_entry)
-      self.validate_application_ptext(recommendation)
+      self.validate_application_body_text(recommendation)
       q2bool = qb2.find_element(*self._res_q2_answer_bool)
-      self.validate_application_ptext(q2bool)
+      self.validate_application_body_text(q2bool)
       if q2bentry:
         assert q2bool.text == 'Yes', q2bool.text
       else:
         assert q2bool.text == 'No', q2bool.text
       q2ans = qb2.find_element(*self._res_q2_answer)
-      self.validate_application_ptext(q2ans)
+      self.validate_application_body_text(q2ans)
       assert q2ans.text == q2entry, '{0} != {1}'.format(q2ans.text, q2entry)
       q3ans = qb3.find_element(*self._res_q3_answer)
-      self.validate_application_ptext(q3ans)
+      self.validate_application_body_text(q3ans)
       assert q3ans.text == q3entry, '{0} != {1}'.format(q3ans.text, q3entry)
       q4ans = qb4.find_element(*self._res_q4_answer)
-      self.validate_application_ptext(q4ans)
+      self.validate_application_body_text(q4ans)
       assert q4ans.text == q4entry, '{0} != {1}'.format(q4ans.text, q4entry)
       q5ans = qb5.find_element(*self._res_q5_answer)
-      self.validate_application_ptext(q5ans)
+      self.validate_application_body_text(q5ans)
       assert q5ans.text == q5entry, '{0} != {1}'.format(q5ans.text, q5entry)
       q6bool = qb6.find_element(*self._res_q6_answer_bool)
-      self.validate_application_ptext(q6bool)
+      self.validate_application_body_text(q6bool)
       if q6bentry:
         assert q6bool.text == 'Yes', q6bool.text
       else:
         assert q6bool.text == 'No', q6bool.text
       q6ans = self._get(self._res_q6_answer)
-      self.validate_application_ptext(q6ans)
+      self.validate_application_body_text(q6ans)
       assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
     else:
       recc_entry, q2entry, q3bentry, q3entry, q4bentry, q4entry, q5entry, q6entry = data
       recommendation = qb1.find_element(*self._fm_q1_answer)
-      self.validate_application_ptext(recommendation)
+      self.validate_application_body_text(recommendation)
       assert recommendation.text.lower() == recc_entry.lower(), \
           '{0} != {1}'.format(recommendation.text, recc_entry)
       q2ans = qb2.find_element(*self._fm_q2_answer)
-      self.validate_application_ptext(q2ans)
+      self.validate_application_body_text(q2ans)
       assert q2ans.text == q2entry, '{0} != {1}'.format(q2ans.text, q2entry)
       q3bool = qb3.find_element(*self._fm_q3_answer_bool)
-      self.validate_application_ptext(q3bool)
+      self.validate_application_body_text(q3bool)
       if q3bentry:
         assert q3bool.text == 'Yes', q3bool.text
       else:
         assert q3bool.text == 'No', q3bool.text
       q3ans = qb3.find_element(*self._fm_q3_answer)
-      self.validate_application_ptext(q3ans)
+      self.validate_application_body_text(q3ans)
       assert q3ans.text == q3entry, '{0} != {1}'.format(q3ans.text, q3entry)
       q4bool = qb4.find_element(*self._fm_q4_answer_bool)
-      self.validate_application_ptext(q4bool)
+      self.validate_application_body_text(q4bool)
       if q4bentry:
         assert q4bool.text == 'Yes', q4bool.text
       else:
         assert q4bool.text == 'No', q4bool.text
       q4ans = qb4.find_element(*self._fm_q4_answer)
-      self.validate_application_ptext(q4ans)
+      self.validate_application_body_text(q4ans)
       assert q4ans.text == q4entry, '{0} != {1}'.format(q4ans.text, q4entry)
       q5ans = qb5.find_element(*self._fm_q5_answer)
-      self.validate_application_ptext(q5ans)
+      self.validate_application_body_text(q5ans)
       assert q5ans.text == q5entry, '{0} != {1}'.format(q5ans.text, q5entry)
       q6ans = qb6.find_element(*self._fm_q6_answer)
-      self.validate_application_ptext(q6ans)
+      self.validate_application_body_text(q6ans)
       assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
     report_submit_status = self._get(self._submitted_status)
     assert report_submit_status.text == 'This report has been submitted', report_submit_status.text

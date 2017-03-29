@@ -13,6 +13,7 @@ from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'jgray@plos.org'
 
+
 class UploadManuscriptTask(BaseTask):
   """
   Page Object Model for Upload Manuscript task
@@ -21,7 +22,7 @@ class UploadManuscriptTask(BaseTask):
   def __init__(self, driver, url_suffix='/'):
     super(UploadManuscriptTask, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._intro_text = (By.CLASS_NAME, 'task-main-content')
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
     self._upload_manuscript_input = (By.ID, 'upload-files')
@@ -35,20 +36,20 @@ class UploadManuscriptTask(BaseTask):
     """
     Validate styles in Upload Manuscript Task.
     :param type_: Document type ('doc' or 'pdf')
-    :source_uploaded: Boolean. Styles change when the source is uploaded
+    :param source_uploaded: Boolean. Styles change when the source is uploaded
     """
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
-    assert 'You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format'\
-        '. You can upload a replacement manuscript file at any time before you submit.\nMicros'\
-        'oft Word format: Manuscripts uploaded in this format can take advantage of automatic '\
-        'inline figure placement and visual version comparison features.\nPDF format: For auth'\
-        'ors uploading a PDF manuscript file, figures and any SI information can be included i'\
-        'n the manuscript and are not required separately for initial assessment. If a revisio'\
-        'n is invited, separate figure and SI file upload will be required. If preferred, you '\
-        'may upload those files separately before completing your submission.' in \
-        intro_text.text, 'Upload ms message: {0} is not the expected'.format(intro_text.text)
-    #if uploaded:
+    self.validate_application_body_text(intro_text)
+    assert 'You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format. ' \
+           'You can upload a replacement manuscript file at any time before you submit.\n' \
+           'Microsoft Word format: Manuscripts uploaded in this format can take advantage of ' \
+           'automatic inline figure placement and visual version comparison features.\nPDF ' \
+           'format: For authors uploading a PDF manuscript file, figures and any SI information ' \
+           'can be included in the manuscript and are not required separately for initial ' \
+           'assessment. If a revision is invited, separate figure and SI file upload will be ' \
+           'required. If preferred, you may upload those files separately before completing your ' \
+           'submission.' in intro_text.text, 'Upload ms message: {0} is not the ' \
+                                             'expected copy'.format(intro_text.text)
     link = intro_text.find_element_by_tag_name('a')
     self.validate_default_link_style(link)
     replace = intro_text.find_element_by_tag_name('span')
@@ -56,11 +57,11 @@ class UploadManuscriptTask(BaseTask):
     replace_icon = replace.find_element_by_tag_name('i')
     assert 'fa-refresh' in replace_icon.get_attribute('class'), \
         replace_icon.get_attribute('class')
-    if type_=='pdf':
+    if type_ == 'pdf':
       source_file_box = self._get(self._upload_source_file_box)
-      source_file_box.text == 'Please Upload Your Source File\nBecause you uploaded a PDF, you m'\
-      'ust also provide your source file (e.g. .tex, .docx) before marking this task as done.\nU'\
-      'PLOAD SOURCE FILE', source_file_box.text
+      assert 'Please Upload Your Source File\nBecause you uploaded a PDF, you must also provide ' \
+             'your source file (e.g. .tex, .docx) before marking this task as done.' \
+             in source_file_box.text, source_file_box.text
       if source_uploaded:
         link = source_file_box.find_element_by_tag_name('a')
         self.validate_default_link_style(link)
@@ -74,9 +75,6 @@ class UploadManuscriptTask(BaseTask):
         upload_source_btn.text == 'UPLOAD SOURCE FILE', '{0} not UPLOAD SOURCE FILE'.format(
             upload_source_btn.text)
         self.validate_secondary_big_green_button_style(upload_source_btn)
-
-
-
 
   def upload_manuscript(self, doc='random'):
     """

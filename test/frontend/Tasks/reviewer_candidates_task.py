@@ -83,7 +83,7 @@ class ReviewerCandidatesTask(BaseTask):
     Validate styles in Reviewer Candidates Task
     """
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    self.validate_application_body_text(intro_text)
     assert intro_text.text == 'Use the fields below to give us contact information for each ' \
                               'suggested reviewer, and please provide specific reasons for your ' \
                               'suggestion in the "Reason" box for each person. Please note that ' \
@@ -233,16 +233,16 @@ class ReviewerCandidatesTask(BaseTask):
     # Now to do a little style validation for the view listing of the recommendation
     entry = self._get(self._cand_entry_view)
     full_name = entry.find_element(*self._cand_view_full_name)
-    self.validate_application_ptext(full_name)
+    self.validate_application_body_text(full_name)
     assert user_object['name'] in full_name.text, full_name.text
     email = entry.find_element(*self._cand_view_email)
-    self.validate_application_ptext(email)
+    self.validate_application_body_text(email)
     assert user_object['email'] == email.text, email.text
     decision = entry.find_element(*self._cand_view_decision)
-    self.validate_application_ptext(decision)
+    self.validate_application_body_text(decision)
     assert choice in decision.text.lower(), decision.text.lower()
     stated_reason = entry.find_element(*self._cand_view_reason)
-    self.validate_application_ptext(stated_reason)
+    self.validate_application_body_text(stated_reason)
     assert reason == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
     self._actions.move_to_element(full_name).perform()
     delete_recommendation = entry.find_element(*self._cand_view_delete)

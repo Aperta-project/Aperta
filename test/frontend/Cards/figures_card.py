@@ -43,9 +43,9 @@ class FiguresCard(BaseCard):
 
     card_title = self._get(self._card_title)
     assert card_title.text == 'Figures'
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    self.validate_application_body_text(intro_text)
     assert intro_text.text == (
       "Please confirm that your figures comply with our guidelines for preparation and "
       "have not been inappropriately manipulated. For information on image manipulation, "
@@ -53,7 +53,7 @@ class FiguresCard(BaseCard):
       ), intro_text.text
     assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the " \
                                                    "guidelines."
-    self.validate_application_ptext(self._get(self._question_label))
+    self.validate_application_body_text(self._get(self._question_label))
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)

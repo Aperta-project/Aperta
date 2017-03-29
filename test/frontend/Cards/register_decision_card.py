@@ -65,8 +65,7 @@ class RegisterDecisionCard(BaseCard):
     self._template_selector_arrow = (By.CLASS_NAME, 'select2-arrow')
     self._first_option = (By.CSS_SELECTOR, 'div.select2-result-label')
 
-
-    # POM Actions
+  # POM Actions
   def validate_styles(self):
     """
     Validate the elements and styles of the Register Decision card
@@ -76,7 +75,7 @@ class RegisterDecisionCard(BaseCard):
     decision_history_head = False
     title = self._get(self._card_heading)
     assert title.text == 'Register Decision', title.text
-    self.validate_card_title_style(title)
+    self.validate_overlay_card_title_style(title)
     # This div will be present if the paper in question is an initial decision paper, it will not be
     #   present for full decision papers.
     self.set_timeout(5)
@@ -97,7 +96,7 @@ class RegisterDecisionCard(BaseCard):
     # Initial state
     letter_placeholder = self._get(self._letter_template_placeholder_p)
     assert 'No decision has been registered.' in letter_placeholder.text, letter_placeholder.text
-    self.validate_application_ptext(letter_placeholder)
+    self.validate_application_body_text(letter_placeholder)
     # The decision history elements are conditional on their being a decision history
     self.set_timeout(1)
     try:
@@ -127,14 +126,14 @@ class RegisterDecisionCard(BaseCard):
         assert 'Letter sent to Author:' in decision_preamble.text, decision_preamble.text
         self.validate_manuscript_h4_style(decision_preamble)
         decision_letter = previous_decision.find_element(*self._decision_bar_contents_letter)
-        self.validate_application_ptext(decision_letter)
+        self.validate_application_body_text(decision_letter)
         previous_decision.click()
     decision, reject_selection = self.register_decision(decision=False, commit=False)
     template_sign = self._get(self._letter_template_placeholder_paragraph)
     assert 'Please select the template letter and then edit further.' in template_sign.text, \
           template_sign.text
     # Following style commented out due to APERTA-9004
-    # self.validate_application_ptext(template_sign)
+    # self.validate_application_body_text(template_sign)
     to_label = self._get(self._letter_template_to_field_label)
     assert 'To:' in to_label.text, to_label.text
     self._letter_template_to_display_field = (By.CSS_SELECTOR, 'input.to-field')
@@ -269,7 +268,7 @@ class RegisterDecisionCard(BaseCard):
       if not template:
         reject_selection = random.choice(expected_reject_selections)
       else:
-        reject_selection = reject_template
+        reject_selection = template
       logging.info('Rejection template selection is {0}'.format(reject_selection))
       template_selector = self._get(self._letter_template_reject_selector)
       template_selector.click()
@@ -291,6 +290,8 @@ class RegisterDecisionCard(BaseCard):
       self._get(self._register_decision_button).click()
       # give some time to allow complete to check automatically
       time.sleep(2)
+      decision_msg = self._get(self._decision_alert)
+      self.validate_static_notification_style(decision_msg)
       self.click_close_button()
     return decision, reject_selection
 

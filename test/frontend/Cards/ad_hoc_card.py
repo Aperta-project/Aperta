@@ -59,7 +59,7 @@ class AHCard(BaseCard):
     """
     self.validate_common_elements_styles(short_doi)
     title = self._get(self._card_title)
-    self.validate_card_title_style(title)
+    self.validate_overlay_card_title_style(title)
     role_title = 'Ad-hoc for {0}'.format(role)
     assert title.text == role_title, 'Current title {0} is not {1}'.format(title.text, 
         role_title)
@@ -70,7 +70,7 @@ class AHCard(BaseCard):
     corresponding_role = 'Corresponding Role {0}'.format(role)
     assert subtitle.text in corresponding_role, '{0} not in {1}'.format(subtitle.text,
         corresponding_role)
-    self.validate_application_ptext(subtitle)
+    self.validate_application_body_text(subtitle)
     add_btn = self._get(self._add_btn)
     self.validate_primary_big_green_button_style(add_btn)
     self._get(self._plus_icon)

@@ -36,11 +36,11 @@ class InitialDecisionCard(BaseCard):
     """
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     self._get(self._invite_radio_button).click()
     intro_text = self._get(self._intro_text)
     # APERTA-8902
-    # self.validate_application_ptext(intro_text)
+    # self.validate_application_body_text(intro_text)
     assert intro_text.text == 'Please write your decision letter in the area below:', \
         intro_text.text
     self._get(self._reject_radio_button)
@@ -92,5 +92,6 @@ class InitialDecisionCard(BaseCard):
     else:
       assert "A final decision of Reject has been registered." in decision_msg.text, \
           decision_msg.text
+    self.validate_static_notification_style(decision_msg)
     self.click_close_button()
     return choice

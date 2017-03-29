@@ -46,7 +46,7 @@ class TitleAbstractCard(BaseCard):
     """
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Title And Abstract'
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     title_label = self._get(self._title_label)
     abstract_label = self._get(self._abstract_label)
     assert title_label.text == 'Title', title_label.text

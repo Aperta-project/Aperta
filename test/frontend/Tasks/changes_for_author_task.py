@@ -37,7 +37,7 @@ class ChangesForAuthorTask(BaseTask):
     assert heading_text.text == ('Please address the following changes so we can process your '
                                  'manuscript:'), heading_text.text
     changes_detail_p = self._get(self._changes_requested_detail)
-    self.validate_application_ptext(changes_detail_p)
+    self.validate_application_body_text(changes_detail_p)
 
     changes_made_btn = self._get(self._these_changes_have_been_made_btn)
     assert changes_made_btn.text == "THESE CHANGES HAVE BEEN MADE"

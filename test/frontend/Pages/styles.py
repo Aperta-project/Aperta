@@ -34,11 +34,17 @@ __author__ = 'jgray@plos.org'
 
 # typefaces
 APPLICATION_TYPEFACE = 'source-sans-pro'
+APPLICATION_TYPEFACE_ITALIC = 'source-sans-pro-it'
 MANUSCRIPT_TYPEFACE = 'lora'
+
+# Attention, only colors defined in the Color palette section of the style guide should be
+#   represented here. Anything not defined in the color palette should be pushed into the specific
+#   validation method.
 # colors
 APERTA_GREEN = 'rgba(57, 163, 41, 1)'
 APERTA_GREEN_LIGHT = 'rgba(142, 203, 135, 1)'
 APERTA_GREEN_DARK = 'rgba(15, 116, 0, 1)'
+APERTA_RED = 'rgba(206, 11, 36, 1)'
 APERTA_BLUE = 'rgba(45, 133, 222, 1)'
 APERTA_BLUE_LIGHT = 'rgba(215, 235, 254, 1)'
 APERTA_BLUE_DARK = 'rgba(32, 94, 156, 1)'
@@ -49,12 +55,6 @@ APERTA_BLACK = 'rgba(51, 51, 51, 1)'
 APERTA_ERROR = 'rgba(206, 11, 36, 1)'
 WHITE = 'rgba(255, 255, 255, 1)'
 BLACK = 'rgba(0, 0, 0, 1)'
-APERTA_FLASH_ERROR = 'rgba(122, 51, 78, 1)'
-APERTA_FLASH_ERROR_BKGRND = 'rgba(230, 221, 210, 1)'
-APERTA_FLASH_SUCCESS = APERTA_GREEN
-APERTA_FLASH_SUCCESS_BKGRND = 'rgba(234, 253, 231, 1)'
-APERTA_FLASH_INFO = 'rgba(146, 139, 113, 1)'
-APERTA_FLASH_INFO_BKGRND = 'rgba(242, 242, 213, 1)'
 
 
 class StyledPage(PlosPage):
@@ -67,6 +67,7 @@ class StyledPage(PlosPage):
   # ===================================================
   # Typography ========================================
   # Note typefaces are defined as global variables at the top of the file
+
   @staticmethod
   def validate_application_title_style(title):
     """
@@ -76,16 +77,16 @@ class StyledPage(PlosPage):
     Updated for new style guide: https://app.zeplin.io/project.html
     """
     assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('line-height') == '52px', title.value_of_css_property(
-      'line-height')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '48px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '52px', \
+        title.value_of_css_property('line-height')
     # font-weight is canonically specified as 'normal' whatever that means.
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_section_heading_style(title, admin=False):
@@ -97,20 +98,20 @@ class StyledPage(PlosPage):
       blue
     """
     assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '30px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property(
-      'line-height')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '33px', \
+        title.value_of_css_property('line-height')
     # font-weight is canonically specified as 'normal' whatever that means.
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
     if admin:
-      assert title.value_of_css_property('color') == APERTA_BLUE, title.value_of_css_property(
-        'color')
+      assert title.value_of_css_property('color') == APERTA_BLUE, \
+          title.value_of_css_property('color')
     else:
-      assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-        'color')
+      assert title.value_of_css_property('color') == APERTA_BLACK, \
+          title.value_of_css_property('color')
 
   @staticmethod
   def validate_application_subheading_style(title):
@@ -121,88 +122,91 @@ class StyledPage(PlosPage):
     Updated for new style guide: https://app.zeplin.io/project.html
     """
     assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '20px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '400', title.value_of_css_property(
-      'font-weight')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '20px', \
+        title.value_of_css_property('font-size')
     # APERTA-9305
-    # assert title.value_of_css_property('line-height') == '22px', title.value_of_css_property(
-    # 'line-height')
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+    # assert title.value_of_css_property('line-height') == '22px',
+    #   title.value_of_css_property('line-height')
+    assert title.value_of_css_property('font-weight') == '400', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
-  def validate_application_h2_style(title):
+  def validate_application_accordion_card_title_style(title):
     """
-    Ensure consistency in rendering page and overlay h2 section headings across the application
+    Ensure consistency in rendering accordion card titles and headings across the application
+    Not used for the Manuscript Title!
     :param title: title to validate
+    Updated for new style guide: https://app.zeplin.io/project.html
     """
     assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '30px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '23px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('font-weight') == '400', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
-  def validate_application_h3_style(title):
+  def validate_application_body_text(paragraph):
     """
-    Ensure consistency in rendering page and overlay h3 section headings across the application
-    :param title: title to validate
+    Ensure consistency in rendering application ordinary text and paragraph text across the application
+    :param paragraph: paragraph to validate
+    :return: Void Function
     """
-    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '24px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family'), \
+        paragraph.value_of_css_property('font-family')
+    assert paragraph.value_of_css_property('font-size') == '14px', \
+        paragraph.value_of_css_property('font-size')
+    assert paragraph.value_of_css_property('line-height') == '20px', \
+      paragraph.value_of_css_property('line-height')
+    assert paragraph.value_of_css_property('font-weight') == '400', \
+        paragraph.value_of_css_property('font-weight')
+    assert paragraph.value_of_css_property('color') == APERTA_BLACK, \
+        paragraph.value_of_css_property('color')
+
+  # TODO: Define label style
+
+  # NOTA BENE: This is incorrect per the v.1.1 style guide but correct per usage - the style guide
+  #   definition seems bunk - need to check in with Sebastian Toomey
+  @staticmethod
+  def validate_input_field_placeholder_style(placeholder):
+    """
+    Ensure consistency in rendering page, card and overlay internal input field placeholders across 
+      the application
+    :param placeholder: text to validate
+    """
+    assert APPLICATION_TYPEFACE in placeholder.value_of_css_property('font-family')
+    assert placeholder.value_of_css_property('font-size') == '14px', \
+        placeholder.value_of_css_property('font-size')
+    assert placeholder.value_of_css_property('line-height') == '20px', \
+        placeholder.value_of_css_property('line-height')
+    assert placeholder.value_of_css_property('font-weight') == '400', \
+        placeholder.value_of_css_property('font-weight')
+    assert placeholder.value_of_css_property('color') == APERTA_GREY_DARK, \
+        placeholder.value_of_css_property('color')
 
   @staticmethod
-  def validate_application_h4_style(title):
-    """
-    Ensure consistency in rendering page and overlay h4 section headings across the application
-    :param title: title to validate
-    """
-    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '18px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
-
-  @staticmethod
-  def validate_manuscript_h1_style(title):
+  def validate_manuscript_title_style(title):
     """
     Ensure consistency in rendering page and overlay main headings within the manuscript
     :param title: title to validate
     """
     assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '36px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '39.6px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '36px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '39.6px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h2_style(title):
@@ -211,16 +215,15 @@ class StyledPage(PlosPage):
     :param title: Title to validate
     """
     assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '30px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '33px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '33px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h3_style(title):
@@ -229,16 +232,15 @@ class StyledPage(PlosPage):
     :param title: title to validate
     """
     assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '24px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '26.4px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '24px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '26.4px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   @staticmethod
   def validate_manuscript_h4_style(title):
@@ -247,40 +249,36 @@ class StyledPage(PlosPage):
     :param title: title to validate
     """
     assert MANUSCRIPT_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '19.8px', title.value_of_css_property(
-      'line-height')
-    # This color is not represented in the tahi palette
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '19.8px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
-  # This seems out of bounds - this should conform to one of the above styles - report as a bug
   @staticmethod
-  def validate_profile_title_style(title):
+  def validate_manuscript_body_text(paragraph):
     """
-    Ensure consistency in rendering page and overlay main headings across the application
-    :param title: title to validate
+    Ensure consistency in rendering manuscript ordinary text and paragraph text across the application
+    :param paragraph: paragraph to validate
     :return: Void Function
     """
-    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '14px', title.value_of_css_property(
-      'font-size')
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('line-height') == '15.4px', title.value_of_css_property(
-      'line-height')
+    assert MANUSCRIPT_TYPEFACE in paragraph.value_of_css_property('font-family'), \
+        paragraph.value_of_css_property('font-family')
+    assert paragraph.value_of_css_property('font-size') == '14px', \
+        paragraph.value_of_css_property('font-size')
+    assert paragraph.value_of_css_property('font-weight') == '400', \
+        paragraph.value_of_css_property('font-weight')
+    assert paragraph.value_of_css_property('line-height') == '20px', \
+        paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
-    assert title.value_of_css_property(
-      'color') == 'rgba(153, 153, 153, 1)', title.value_of_css_property('color')
+    assert paragraph.value_of_css_property('color') == APERTA_BLACK, \
+        paragraph.value_of_css_property('color')
 
-
-
-    # ===================================================
+  # ===================================================
   # Icons =============================================
 
   # ===================================================
@@ -302,7 +300,7 @@ class StyledPage(PlosPage):
   # ===================================================
   # Cards =============================================
   @staticmethod
-  def validate_card_title_style(title):
+  def validate_overlay_card_title_style(title):
     """
     Ensure consistency in rendering Card Titles across the application
     Examples where used: Card title
@@ -310,25 +308,180 @@ class StyledPage(PlosPage):
     Updated for new style guide: https://app.zeplin.io/project.html
     """
     assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-      title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property(
-      'font-size')
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '48px', \
+        title.value_of_css_property('font-size')
     # APERTA-9552
-    # assert title.value_of_css_property('line-height') == '60px', title.value_of_css_property(
-    #   'line-height')
+    # assert title.value_of_css_property('line-height') == '60px',
+    #   title.value_of_css_property('line-height')
     # font-weight is canonically specified as 'normal' whatever that means.
-    assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property(
-      'font-weight')
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property(
-      'color')
-
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
 
   # ===================================================
   # Tables ============================================
+  @staticmethod
+  def validate_table_heading_style(th, selected=False):
+    """
+    Validate a basic column header (th)
+    :param th: the column header to validate
+    :param selected: whether the column is selected as in a sort, default value=False
+    :return: void function
+    """
+    assert APPLICATION_TYPEFACE in th.value_of_css_property('font-family'), \
+        th.value_of_css_property('font-family')
+    assert th.value_of_css_property('font-size') == '14px', th.value_of_css_property('font-size')
+    assert th.value_of_css_property('line-height') == '20px', \
+        th.value_of_css_property('line-height')
+    assert th.value_of_css_property('color') == APERTA_BLACK, th.value_of_css_property('color')
+    if selected:
+      assert th.value_of_css_property('font-weight') == '700', \
+          th.value_of_css_property('font-weight')
+    else:
+      # font-weight is canonically specified as 'normal' whatever that means.
+      assert th.value_of_css_property('font-weight') == '500', \
+          th.value_of_css_property('font-weight')
+
+  @staticmethod
+  def validate_table_data_item(td, highlighted=False):
+    """
+    Validate a basic column/row item (td)
+    :param td: the td element to validate
+    :param highlighted: whether the column is selected or otherwise highlighted, 
+      default value=False
+    :return: void function
+    """
+    assert APPLICATION_TYPEFACE in td.value_of_css_property('font-family'), \
+        td.value_of_css_property('font-family')
+    assert td.value_of_css_property('font-size') == '14px', td.value_of_css_property('font-size')
+    assert td.value_of_css_property('line-height') == '20px', \
+        td.value_of_css_property('line-height')
+    assert td.value_of_css_property('color') == APERTA_BLACK, td.value_of_css_property('color')
+    if highlighted:
+      assert td.value_of_css_property('background-color') == APERTA_GREY_LIGHT, \
+        td.value_of_css_property('background-color')
+    else:
+      assert td.value_of_css_property('background-color') == WHITE, \
+        td.value_of_css_property('background-color')
 
   # ===================================================
   # Components ========================================
+  @staticmethod
+  def validate_flash_error_style(msg):
+    """
+    Ensure consistency in rendering error alerts across the application
+    :param msg: alert message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('line-height') == '22px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('color') == 'rgba(122, 51, 78, 1)', \
+        msg.value_of_css_property('color')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('background-color') == 'rgba(247, 239, 233, 1)', \
+        msg.value_of_css_property('background-color')
 
+  @staticmethod
+  def validate_flash_success_style(msg):
+    """
+    Ensure consistency in rendering success alerts across the application
+    :param msg: alert message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('line-height') == '18px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    assert msg.value_of_css_property('color') == APERTA_GREEN, msg.value_of_css_property('color')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('background-color') == 'rgba(234, 253, 231, 1)', \
+        msg.value_of_css_property('background-color')
+
+  @staticmethod
+  def validate_flash_warn_style(msg):
+    """
+    Ensure consistency in rendering warning alerts across the application
+    :param msg: alert message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property(
+      'font-family'), msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('line-height') == '18px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('color') == 'rgba(146, 139, 112, 1)', \
+        msg.value_of_css_property('color')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('background-color') == 'rgba(242, 242, 214, 1)', \
+        msg.value_of_css_property('background-color')
+
+  @staticmethod
+  def validate_flash_fatal_error_title_style(msg):
+    """
+    Ensure consistency in rendering informational alerts across the application
+    :param msg: alert message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '18px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('line-height') == '20px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('color') == 'rgba(245, 245, 245, 1)', \
+        msg.value_of_css_property('color')
+
+  @staticmethod
+  def validate_flash_fatal_error_body_style(msg):
+    """
+    Ensure consistency in rendering informational alerts across the application
+    :param msg: alert message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    assert msg.value_of_css_property('line-height') == '20px', \
+        msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('text-align') == 'center', \
+        msg.value_of_css_property('text-align')
+    # This color is not represented in the style guide in our palette
+    assert msg.value_of_css_property('color') == 'rgba(245, 245, 245, 1)', \
+      msg.value_of_css_property('color')
+
+  @staticmethod
+  def validate_static_notification_style(msg):
+    """
+    Ensure consistency in static notifications across the application
+    :param msg: notification message to validate
+    """
+    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
+        msg.value_of_css_property('font-family')
+    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
+    # APERTA-9649
+    # assert msg.value_of_css_property('line-height') == '18px', \
+    #     msg.value_of_css_property('line-height')
+    assert msg.value_of_css_property('color') == APERTA_BLACK, \
+        '{0} not equal to {1}'.format(APERTA_BLACK, msg.value_of_css_property('color'))
+    # This color is not represented in the tahi palette
+    # Also allow for this being implemented on the correct color background directly or as a
+    #   transparency atop a box of correct color
+    assert msg.value_of_css_property('background-color') in ('rgba(234, 253, 231, 1)',
+                                                             'transparent'), \
+        msg.value_of_css_property('background-color')
+
+  # OLD Non-clean, pre v.1. style guide definitions are all below here #############################
   # Divider and Border Styles ===========================
   @staticmethod
   def validate_light_background_border(border):
@@ -338,8 +491,11 @@ class StyledPage(PlosPage):
     :return: Void function
     """
     # This color is not represented in the tahi palette
-    assert border.value_of_css_property('color') == 'rgba(128, 128, 128, 1)', border.value_of_css_property('color')
-    assert border.value_of_css_property('background-color') in (APERTA_GREEN_LIGHT, APERTA_BLUE_LIGHT, APERTA_GREY_LIGHT), \
+    assert border.value_of_css_property('color') == 'rgba(128, 128, 128, 1)', \
+        border.value_of_css_property('color')
+    assert border.value_of_css_property('background-color') in (APERTA_GREEN_LIGHT,
+                                                                APERTA_BLUE_LIGHT,
+                                                                APERTA_GREY_LIGHT), \
         border.value_of_css_property('background-color')
 
   @staticmethod
@@ -350,9 +506,81 @@ class StyledPage(PlosPage):
     :return: Void function
     """
     # This color is not represented in the tahi palette
-    assert border.value_of_css_property('color') == APERTA_BLACK, border.value_of_css_property('color')
+    assert border.value_of_css_property('color') == APERTA_BLACK, \
+        border.value_of_css_property('color')
 
   # Heading Styles ===========================
+  # This seems out of bounds - this should conform to one of the above styles - report as a bug
+  @staticmethod
+  def validate_profile_title_style(title):
+    """
+    Ensure consistency in rendering page and overlay main headings across the application
+    :param title: title to validate
+    :return: Void Function
+    """
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '15.4px', \
+        title.value_of_css_property('line-height')
+    # This color is not represented in the tahi palette
+    assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)', \
+        title.value_of_css_property('color')
+
+  @staticmethod
+  def validate_application_h2_style(title):
+    """
+    Ensure consistency in rendering page and overlay h2 section headings across the application
+    :param title: title to validate
+    """
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '33px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
+
+  @staticmethod
+  def validate_application_h3_style(title):
+    """
+    Ensure consistency in rendering page and overlay h3 section headings across the application
+    :param title: title to validate
+    """
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '24px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '26.4px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
+
+  @staticmethod
+  def validate_application_h4_style(title):
+    """
+    Ensure consistency in rendering page and overlay h4 section headings across the application
+    :param title: title to validate
+    """
+    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px', \
+        title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-weight') == '500', \
+        title.value_of_css_property('font-weight')
+    assert title.value_of_css_property('line-height') == '18px', \
+        title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == APERTA_BLACK, \
+        title.value_of_css_property('color')
+
   # This method is out of bounds and should not be here
   @staticmethod
   def validate_modal_title_style(title, font_size='14px', font_weight='400',
@@ -398,60 +626,16 @@ class StyledPage(PlosPage):
         title.value_of_css_property('color')
 
   @staticmethod
-  def validate_accordion_task_title(title):
-    """
-    Ensure consistency in rendering accordion headings across the application
-    :param title: title to validate
-    Updated for new style guide: https://app.zeplin.io/project.html
-    """
-    assert APPLICATION_TYPEFACE in title.value_of_css_property('font-family'), \
-        title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
-    assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
-    assert title.value_of_css_property('color') == APERTA_BLACK, title.value_of_css_property('color')
-
-  @staticmethod
   def validate_action_status_text(message):
     """In some places in the app, we give a status message in a large green font"""
     assert APPLICATION_TYPEFACE in message.value_of_css_property('font-family'), \
-      message.value_of_css_property('font-family')
-    assert message.value_of_css_property('font-size') == '16px', message.value_of_css_property(
-      'font-size')
-    assert message.value_of_css_property('line-height') == '22.85px', message.value_of_css_property(
-      'line-height')
-    assert message.value_of_css_property('color') == APERTA_GREEN, message.value_of_css_property(
-      'color')
-
-  # Ordinary Text Styles ============================
-  @staticmethod
-  def validate_application_ptext(paragraph):
-    """
-    Ensure consistency in rendering application ordinary text and paragraph text across the application
-    :param paragraph: paragraph to validate
-    :return: Void Function
-    """
-    assert APPLICATION_TYPEFACE in paragraph.value_of_css_property('font-family'), \
-        paragraph.value_of_css_property('font-family')
-    assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
-    assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
-    assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
-    # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == APERTA_BLACK, paragraph.value_of_css_property('color')
-
-  @staticmethod
-  def validate_manuscript_ptext(paragraph):
-    """
-    Ensure consistency in rendering manuscript ordinary text and paragraph text across the application
-    :param paragraph: paragraph to validate
-    :return: Void Function
-    """
-    assert MANUSCRIPT_TYPEFACE in paragraph.value_of_css_property('font-family'), \
-        paragraph.value_of_css_property('font-family')
-    assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
-    assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
-    assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
-    # This color is not represented in the tahi palette
-    assert paragraph.value_of_css_property('color') == APERTA_BLACK, paragraph.value_of_css_property('color')
+        message.value_of_css_property('font-family')
+    assert message.value_of_css_property('font-size') == '16px', \
+        message.value_of_css_property('font-size')
+    assert message.value_of_css_property('line-height') == '22.85px', \
+        message.value_of_css_property('line-height')
+    assert message.value_of_css_property('color') == APERTA_GREEN, \
+        message.value_of_css_property('color')
 
   # Link Styles ==============================
   @staticmethod
@@ -460,13 +644,18 @@ class StyledPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('color') == APERTA_GREEN, \
+        link.value_of_css_property('color')
+    assert link.value_of_css_property('font-weight') == '400', \
+        link.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_mention_style(element):
@@ -475,10 +664,14 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in element.value_of_css_property('font-family'), \
         element.value_of_css_property('font-family')
-    assert element.value_of_css_property('color') == APERTA_GREEN, element.value_of_css_property('color')
-    assert element.value_of_css_property('font-size') == '14px', element.value_of_css_property('font-size')
-    assert element.value_of_css_property('line-height') == '18.2px', element.value_of_css_property('line-height')
-    assert element.value_of_css_property('font-weight') == '400', element.value_of_css_property('font-weight')
+    assert element.value_of_css_property('color') == APERTA_GREEN, \
+        element.value_of_css_property('color')
+    assert element.value_of_css_property('font-size') == '14px', \
+        element.value_of_css_property('font-size')
+    assert element.value_of_css_property('line-height') == '18.2px', \
+        element.value_of_css_property('line-height')
+    assert element.value_of_css_property('font-weight') == '400', \
+        element.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_profile_link_style(link):
@@ -486,13 +679,18 @@ class StyledPage(PlosPage):
     Links valid in profile page
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
-    assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '700', link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('color') == APERTA_GREEN, \
+        link.value_of_css_property('color')
+    assert link.value_of_css_property('font-weight') == '700', \
+        link.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_default_link_hover_style(link):
@@ -500,14 +698,19 @@ class StyledPage(PlosPage):
     Ensure consistency in rendering link hover across the application
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == APERTA_GREEN, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
-    assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
+    assert link.value_of_css_property('font-weight') == '400', \
+        link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('text-decoration') == 'underline', \
+        link.value_of_css_property('text-decoration')
 
   @staticmethod
   def validate_admin_link_style(link):
@@ -515,13 +718,17 @@ class StyledPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('font-weight') == '400', \
+        link.value_of_css_property('font-weight')
 
   @staticmethod
   def validate_admin_link_hover_style(link):
@@ -529,14 +736,19 @@ class StyledPage(PlosPage):
     Ensure consistency in rendering link hover across the application
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == APERTA_BLUE, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
-    assert link.value_of_css_property('text-decoration') == 'underline', link.value_of_css_property('text-decoration')
+    assert link.value_of_css_property('font-weight') == '400', \
+        link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('text-decoration') == 'underline', \
+        link.value_of_css_property('text-decoration')
 
   @staticmethod
   def validate_disabled_link_style(link):
@@ -544,14 +756,18 @@ class StyledPage(PlosPage):
     Ensure consistency in rendering links across the application
     :param link: link to validate
     """
-    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px', link.value_of_css_property('font-size')
-    assert link.value_of_css_property('line-height') == '20px', link.value_of_css_property('line-height')
+    assert APPLICATION_TYPEFACE in link.value_of_css_property('font-family'), \
+        link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px', \
+        link.value_of_css_property('font-size')
+    assert link.value_of_css_property('line-height') == '20px', \
+        link.value_of_css_property('line-height')
     assert link.value_of_css_property('background-color') == 'transparent', \
         link.value_of_css_property('background-color')
     # This color is not represented in the tahi palette
     assert link.value_of_css_property('color') == APERTA_BLACK, link.value_of_css_property('color')
-    assert link.value_of_css_property('font-weight') == '400', link.value_of_css_property('font-weight')
+    assert link.value_of_css_property('font-weight') == '400', \
+        link.value_of_css_property('font-weight')
 
   # Confirmation Styles =====================
   @staticmethod
@@ -620,18 +836,27 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def delete_forever_btn_style_validation(button):
@@ -643,18 +868,27 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_secondary_big_green_button_style(button):
@@ -696,18 +930,28 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == APERTA_GREEN, \
+        button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == 'transparent', \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('text-align') == 'center', \
+        button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_primary_small_green_button_style(button):
@@ -717,19 +961,30 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('color') == WHITE, button.value_of_css_property('color')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('color') == WHITE, \
+        button.value_of_css_property('color')
     assert button.value_of_css_property('background-color') == APERTA_GREEN, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('padding-top') == '1px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-bottom') == '1px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '5px', button.value_of_css_property('padding-left')
-    assert button.value_of_css_property('padding-right') == '5px', button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('text-align') == 'center', \
+        button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('padding-top') == '1px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-bottom') == '1px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '5px', \
+        button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-right') == '5px', \
+        button.value_of_css_property('padding-right')
 
   @staticmethod
   def validate_secondary_small_green_button_style(button):
@@ -739,19 +994,30 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
-    assert button.value_of_css_property('text-transform') == 'uppercase', button.value_of_css_property('text-transform')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('color') == APERTA_GREEN, \
+        button.value_of_css_property('color')
+    assert button.value_of_css_property('text-transform') == 'uppercase', \
+        button.value_of_css_property('text-transform')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('text-align') == 'center', \
+        button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('padding-top') == '1px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-right') == '5px', button.value_of_css_property('padding-right')
-    assert button.value_of_css_property('padding-bottom') == '1px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '5px', button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-top') == '1px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-right') == '5px', \
+        button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('padding-bottom') == '1px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '5px', \
+        button.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_secondary_small_green_button_task_style(button):
@@ -762,18 +1028,28 @@ class StyledPage(PlosPage):
     """
     assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family'), \
         button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px', button.value_of_css_property('font-size')
-    assert button.value_of_css_property('font-weight') == '400', button.value_of_css_property('font-weight')
-    assert button.value_of_css_property('color') == APERTA_GREEN, button.value_of_css_property('color')
-    assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
-    assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
-    assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
+    assert button.value_of_css_property('font-size') == '14px', \
+        button.value_of_css_property('font-size')
+    assert button.value_of_css_property('font-weight') == '400', \
+        button.value_of_css_property('font-weight')
+    assert button.value_of_css_property('color') == APERTA_GREEN, \
+        button.value_of_css_property('color')
+    assert button.value_of_css_property('line-height') == '20px', \
+        button.value_of_css_property('line-height')
+    assert button.value_of_css_property('text-align') == 'center', \
+        button.value_of_css_property('text-align')
+    assert button.value_of_css_property('vertical-align') == 'middle', \
+        button.value_of_css_property('vertical-align')
     assert button.value_of_css_property('background-color') == WHITE, \
         button.value_of_css_property('background-color')
-    assert button.value_of_css_property('padding-top') == '6px', button.value_of_css_property('padding-top')
-    assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
-    assert button.value_of_css_property('padding-bottom') == '6px', button.value_of_css_property('padding-bottom')
-    assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
+    assert button.value_of_css_property('padding-top') == '6px', \
+        button.value_of_css_property('padding-top')
+    assert button.value_of_css_property('padding-right') == '12px', \
+        button.value_of_css_property('padding-right')
+    assert button.value_of_css_property('padding-bottom') == '6px', \
+        button.value_of_css_property('padding-bottom')
+    assert button.value_of_css_property('padding-left') == '12px', \
+        button.value_of_css_property('padding-left')
 
   @staticmethod
   def validate_link_small_green_button_style(button):
@@ -1297,23 +1573,6 @@ class StyledPage(PlosPage):
         label.value_of_css_property('line-height')
 
   @staticmethod
-  def validate_input_field_placeholder_style(placeholder):
-    """
-    Ensure consistency in rendering page, card and overlay internal input field labels across the
-      application
-    :param placeholder: text to validate
-    """
-    assert APPLICATION_TYPEFACE in placeholder.value_of_css_property('font-family')
-    assert placeholder.value_of_css_property('font-size') == '14px', \
-        placeholder.value_of_css_property('font-size')
-    assert placeholder.value_of_css_property('font-weight') == '400', \
-        placeholder.value_of_css_property('font-weight')
-    assert placeholder.value_of_css_property('color') == APERTA_GREY_DARK, \
-        placeholder.value_of_css_property('color')
-    assert placeholder.value_of_css_property('line-height') == '20px', \
-        placeholder.value_of_css_property('line-height')
-
-  @staticmethod
   def validate_single_select_dropdown_style(field):
     """
     Ensure consistency in rendering page, card and overlay single select drop down fields across
@@ -1464,78 +1723,6 @@ class StyledPage(PlosPage):
   # There are currently no defined navigation styles in the style guide
 
   # Error Styles =============================
-  @staticmethod
-  def validate_flash_info_style(msg):
-    """
-    Ensure consistency in rendering informational alerts across the application
-    :param msg: alert message to validate
-    """
-    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), \
-        msg.value_of_css_property('font-family')
-    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    # This color is not represented in the tahi palette
-    assert msg.value_of_css_property('color') == APERTA_BLACK, msg.value_of_css_property('color')
-    assert msg.value_of_css_property('line-height') == '20px', \
-        msg.value_of_css_property('line-height')
-    assert msg.value_of_css_property('text-align') == 'center', \
-        msg.value_of_css_property('text-align')
-    assert msg.value_of_css_property('position') == 'relative', \
-        msg.value_of_css_property('position')
-    assert msg.value_of_css_property('display') == 'inline-block', \
-        msg.value_of_css_property('display')
-
-  @staticmethod
-  def validate_flash_error_style(msg):
-    """
-    Ensure consistency in rendering error alerts across the application
-    :param msg: alert message to validate
-    """
-    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
-    # assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    # This color is not represented in the style guide as a color and is not the color of the actual implementation
-    # assert msg.value_of_css_property('color') == APERTA_FLASH_ERROR, msg.value_of_css_property('color')
-    # This color is not represented in the style guide
-    # assert msg.value_of_css_property('background-color') == 'rgba(247, 239, 233, 1)', \
-    #    msg.value_of_css_property('background-color')
-    # assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
-    # assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
-    # assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
-    # assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')
-
-  @staticmethod
-  def validate_flash_success_style(msg):
-    """
-    Ensure consistency in rendering success alerts across the application
-    :param msg: alert message to validate
-    """
-    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
-    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    assert msg.value_of_css_property('color') == APERTA_GREEN, msg.value_of_css_property('color')
-    # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == APERTA_FLASH_SUCCESS_BKGRND, \
-        msg.value_of_css_property('background-color')
-    assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
-    assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
-    assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
-    assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')
-
-  @staticmethod
-  def validate_flash_warn_style(msg):
-    """
-    Ensure consistency in rendering warning alerts across the application
-    :param msg: alert message to validate
-    """
-    assert APPLICATION_TYPEFACE in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
-    assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
-    # This color is not represented in the style guide
-    assert msg.value_of_css_property('color') == APERTA_FLASH_INFO, msg.value_of_css_property('color')
-    # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == APERTA_FLASH_INFO_BKGRND, \
-        msg.value_of_css_property('background-color')
-    assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
-    assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')
-    assert msg.value_of_css_property('position') == 'relative', msg.value_of_css_property('position')
-    assert msg.value_of_css_property('display') == 'inline-block', msg.value_of_css_property('display')
 
   @staticmethod
   def validate_error_field_style(field):
@@ -1569,6 +1756,7 @@ class StyledPage(PlosPage):
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
 
+  @staticmethod
   def validate_rescind_decision_success_style(msg):
     """
     Ensure consistency in rendering success alerts for rescind decision elements
@@ -1583,7 +1771,7 @@ class StyledPage(PlosPage):
     assert msg.value_of_css_property('line-height') == '20px', \
         msg.value_of_css_property('line-height')
 
-
+  @staticmethod
   def validate_rescind_decision_info_style(msg):
     """
     Ensure consistency in rendering informational alerts for rescind decision elements
@@ -1600,6 +1788,7 @@ class StyledPage(PlosPage):
     assert msg.value_of_css_property('line-height') == '19.8px', \
         msg.value_of_css_property('line-height')
 
+  @staticmethod
   def validate_rescind_decision_info_revision_style(msg):
     """
     Ensure consistency in rendering revision information in informational alerts for rescind
@@ -1615,6 +1804,7 @@ class StyledPage(PlosPage):
         msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('font-weight') == 700, msg.value_of_css_property('font-weight')
 
+  @staticmethod
   def validate_rescind_decision_info_rescinded_flag(msg):
     """
     Ensure consistency in rendering rescinded information in informational alerts for rescind
@@ -1772,23 +1962,6 @@ class StyledPage(PlosPage):
     assert spinner.value_of_css_property('line-height') == '20px', spinner.value_of_css_property('line-height')
     assert spinner.value_of_css_property('width') == '50px', spinner.value_of_css_property('width')
     assert spinner.value_of_css_property('height') == '50px', spinner.value_of_css_property('height')
-
-  # Table Styles =============================
-  # None of these are currently represented in the style guide and there is a lot of variance in the app
-  @staticmethod
-  def validate_table_heading_style(th):
-    """
-    Ensure consistency in rendering table headings across the application
-    :param th: table heading to validate
-    """
-    assert APPLICATION_TYPEFACE in th.value_of_css_property('font-family'), th.value_of_css_property('font-family')
-    assert th.value_of_css_property('font-size') == '14px', th.value_of_css_property('font-size')
-    assert th.value_of_css_property('font-weight') == '700', th.value_of_css_property('font-weight')
-    assert th.value_of_css_property('line-height') == '20px', th.value_of_css_property('line-height')
-    # This color is not represented in the tahi palette
-    assert th.value_of_css_property('color') == APERTA_BLACK, th.value_of_css_property('color')
-    assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
-    assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
 
   @staticmethod
   def validate_file_title_style(ft):

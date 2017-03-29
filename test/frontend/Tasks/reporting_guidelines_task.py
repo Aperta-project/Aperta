@@ -43,9 +43,9 @@ class ReportingGuidelinesTask(BaseTask):
                                  ' required Supporting Information (checklists, protocols, flowcharts,' \
                                  ' etc.) be included in the article submission.', question_text.text
     select_instruction = self._get(self._select_instruction)
-    self.validate_application_ptext(select_instruction)
+    self.validate_application_body_text(select_instruction)
     selection_list = self._get(self._selection_list)
-    self.validate_application_ptext(selection_list)
+    self.validate_application_body_text(selection_list)
     selection_list_items = selection_list.find_elements_by_css_selector('li.item')
     # All checkboxes should be unchecked by default:
     for item in selection_list_items:

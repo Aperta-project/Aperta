@@ -76,7 +76,7 @@ class FiguresTask(BaseTask):
     error_msg = ''
     intro_text_p1 = self._get(self._intro_text_p1)
     # The intro paragraph is rendered in the incorrect font size
-    # self.validate_application_ptext(intro_text)
+    # self.validate_application_body_text(intro_text)
     assert intro_text_p1.text == (
         'Please confirm that your figures comply with our guidelines for preparation and '
         'have not been inappropriately manipulated. For information on image manipulation, '
@@ -101,7 +101,7 @@ class FiguresTask(BaseTask):
         intro_text_p2_link2.get_attribute('href')
     assert self._get(self._question_label).text == 'Yes - I confirm our figures comply with the ' \
                                                    'guidelines.'
-    self.validate_application_ptext(self._get(self._question_label))
+    self.validate_application_body_text(self._get(self._question_label))
     labels_intro = self._get(self._labels_intro_p1)
     assert labels_intro.text == (
         'For .doc or .docx manuscript uploads only, figure labels (e.g. \'Fig 1\') are generated '

@@ -90,9 +90,9 @@ class ReviewerCandidatesCard(BaseCard):
       self.click_completion_button()
     card_title = self._get(self._card_heading)
     assert card_title.text == 'Reviewer Candidates'
-    self.validate_card_title_style(card_title)
+    self.validate_overlay_card_title_style(card_title)
     intro_text = self._get(self._intro_text)
-    self.validate_application_ptext(intro_text)
+    self.validate_application_body_text(intro_text)
     assert intro_text.text == 'Use the fields below to give us contact information for each ' \
                               'suggested reviewer, and please provide specific reasons for your ' \
                               'suggestion in the "Reason" box for each person. Please note that ' \
@@ -108,15 +108,15 @@ class ReviewerCandidatesCard(BaseCard):
       logging.info('No Reviewer candidate entry present, skipping existing entry validation')
     if entry:
       full_name = entry.find_element(*self._cand_view_full_name)
-      self.validate_application_ptext(full_name)
+      self.validate_application_body_text(full_name)
       assert user_object['name'] in full_name.text, full_name.text
       email = entry.find_element(*self._cand_view_email)
-      self.validate_application_ptext(email)
+      self.validate_application_body_text(email)
       assert user_object['email'] == email.text, email.text
       decision = entry.find_element(*self._cand_view_decision)
-      self.validate_application_ptext(decision)
+      self.validate_application_body_text(decision)
       stated_reason = entry.find_element(*self._cand_view_reason)
-      self.validate_application_ptext(stated_reason)
+      self.validate_application_body_text(stated_reason)
       self._actions.move_to_element(entry).perform()
       delete_recommendation = entry.find_element(*self._cand_view_delete)
       time.sleep(.5)
@@ -255,17 +255,17 @@ class ReviewerCandidatesCard(BaseCard):
     # Now to do a little style validation for the view listing of the recommendation
     entry = self._get(self._cand_entry_view)
     full_name = entry.find_element(*self._cand_view_full_name)
-    self.validate_application_ptext(full_name)
+    self.validate_application_body_text(full_name)
     logging.info('Validating existing entry')
     assert candidate['name'] in full_name.text, full_name.text
     email = entry.find_element(*self._cand_view_email)
-    self.validate_application_ptext(email)
+    self.validate_application_body_text(email)
     assert candidate['email'] == email.text, email.text
     decision = entry.find_element(*self._cand_view_decision)
-    self.validate_application_ptext(decision)
+    self.validate_application_body_text(decision)
     assert choice in decision.text.lower(), decision.text.lower()
     stated_reason = entry.find_element(*self._cand_view_reason)
-    self.validate_application_ptext(stated_reason)
+    self.validate_application_body_text(stated_reason)
     assert reason == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
 
   def check_no_entry(self):

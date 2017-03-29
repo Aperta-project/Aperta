@@ -62,7 +62,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
         this.get('draftDecision').register(task)
           .then(() => {
             // reload to pick up completed flag on current task and possibly new
-            // Revise Manuscript task
+            // Response to Reviewers task
             return this.get('task.paper.tasks').reload();
           }).then(() => {
             this.clearAllValidationErrors();

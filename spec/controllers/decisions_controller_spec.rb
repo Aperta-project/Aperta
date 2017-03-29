@@ -97,6 +97,9 @@ describe DecisionsController do
         allow(user).to receive(:can?)
           .with(:view_decisions, paper)
           .and_return true
+        allow(user).to receive(:can?)
+          .with(:view, paper.revise_task)
+          .and_return true
         do_request
       end
 
@@ -118,6 +121,9 @@ describe DecisionsController do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view_decisions, paper)
+          .and_return false
+        allow(user).to receive(:can?)
+          .with(:view, paper.revise_task)
           .and_return false
       end
 

@@ -4,7 +4,6 @@ require File.dirname(__FILE__) + '/tahi_env/dsl_methods'
 require File.dirname(__FILE__) + '/tahi_env/env_var'
 require File.dirname(__FILE__) + '/tahi_env/optional_env_var'
 require File.dirname(__FILE__) + '/tahi_env/required_env_var'
-require File.dirname(__FILE__) + '/tahi_env/array_validator'
 require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
 require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
@@ -151,7 +150,7 @@ class TahiEnv
 
   # Redis
   optional :REDIS_SENTINEL_ENABLED, :boolean, default: false
-  required :REDIS_SENTINELS, :array, default: [], if: :redis_sentinel_enabled?
+  required :REDIS_SENTINELS, if: :redis_sentinel_enabled?
 
   # Salesforce
   optional :SALESFORCE_ENABLED, :boolean, default: true

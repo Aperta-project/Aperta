@@ -1,12 +1,8 @@
-sentinel_list = TahiEnv.redis_sentinels.map do |sentinel_host|
-  { host: sentinel_host, port: TahiEnv.redis_port }
-end
-
 Sidekiq.configure_server do |config|
   if TahiEnv.redis_sentinel_enabled?
     config.redis = {
       master_name: 'aperta',
-      sentinels: sentinel_list,
+      sentinels: TahiEnv.redis_sentinels.split(' '),
       failover_reconnect_timeout: 20,
       namespace: "tahi_#{Rails.env}"
     }
@@ -33,7 +29,7 @@ Sidekiq.configure_client do |config|
   if TahiEnv.redis_sentinel_enabled?
     config.redis = {
       master_name: 'aperta',
-      sentinels: sentinel_list,
+      sentinels: TahiEnv.redis_sentinels.split(' '),
       failover_reconnect_timeout: 20,
       namespace: "tahi_#{Rails.env}"
     }

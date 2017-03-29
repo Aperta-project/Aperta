@@ -50,13 +50,7 @@ class TahiEnv
       )
       register_env_var(required_env_var)
 
-      validation_args = if required_env_var.boolean?
-                          { boolean: true }
-                        elsif required_env_var.array?
-                          { array: true }
-                        else
-                          { presence: true }
-                        end
+      validation_args = required_env_var.boolean? ? { boolean: true } : { presence: true }
 
       validation_args[:if] = if_method if if_method
       validates key, **validation_args

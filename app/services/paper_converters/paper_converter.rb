@@ -8,7 +8,7 @@ module PaperConverters
       current_format = versioned_text.file_type
       klass = if [nil, current_format, 'source'].include?(export_format)
                 direct_converter(export_format)
-              elsif ['pdf', 'docx'].include?(current_format)\
+              elsif ['pdf', 'doc', 'docx'].include?(current_format)\
                 || ['pdf', 'pdf_with_attachments'].include?(export_format)
                 dynamic_converter(current_format, export_format)
               end
@@ -26,7 +26,7 @@ module PaperConverters
     def self.dynamic_converter(current_format, export_format)
       if export_format == 'pdf_with_attachments' && current_format == 'pdf'
         PdfWithAttachmentsPaperConverter
-      elsif export_format == 'pdf' && current_format == 'docx'
+      elsif export_format == 'pdf' && ['doc', 'docx'].include?(current_format)
         PdfPaperConverter
       else
         raise(

@@ -1,6 +1,7 @@
 module TahiStandardTasks
   # The model class for the Similarity Check task, which is
-  # used by SOMEONE for SOMETHING. FILL ME OUT PLEASE.
+  # used by Admins and Staff Admins for running a check against the iThenticate
+  # api to generate a plagiarism report.
   class SimilarityCheckTask < Task
     DEFAULT_TITLE = 'Similarity Check'.freeze
     DEFAULT_ROLE_HINT = 'admin'.freeze

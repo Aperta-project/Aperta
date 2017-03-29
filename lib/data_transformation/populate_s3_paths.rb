@@ -16,8 +16,10 @@ module DataTransformation
           log("Populated s3 columns on VersionedText: #{versioned_text.id}")
           increment_counter(:migrated_versioned_texts)
         elsif manuscript_attachment
+          log("Not migrating not-done MA (id: #{manuscript_attachment.id})")
           increment_counter(:not_done_attachment)
         else
+          log("Unable to find MA for versioned_text (id: #{versioned_text.id})")
           increment_counter(:no_manuscript_attachment)
         end
       end
@@ -68,13 +70,19 @@ module DataTransformation
       if versioned_text.latest_version?
         ma_version = manuscript_attachment
       else
-        ma_version = manuscript_attachment.versions.where('object IS NOT NULL')
-          .map(&:reify)
-          .sort_by(&:created_at)
-          .select { |v| v.created_at < versioned_text.updated_at }
-          .last
 
-        ma_version ||= manuscript_attachment
+        if manuscript_attachment.updated_at <= versioned_text.updated_at
+          ma_version = manuscript_attachment
+        else
+          ma_version = manuscript_attachment.versions
+            .where('object IS NOT NULL')
+            .map(&:reify)
+            .sort_by(&:created_at)
+            .select { |v| v.status == "done" }
+            .select { |v| v.updated_at <= versioned_text.updated_at }
+            .last
+          assert(ma_version.present?, "Could not find a MA version")
+        end
 
         if ma_version == "done"
           vt_id_from_s3_dir = ma_version.s3_dir
@@ -90,11 +98,6 @@ module DataTransformation
             )
           end
         end
-
-        assert(
-          ma_version.created_at <= versioned_text.updated_at,
-          "could not find correct manuscript attachment version"
-        )
       end
       ma_version
     end

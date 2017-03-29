@@ -3,7 +3,7 @@ Rails.configuration.x.git_commit_id = \
     revision_path = Rails.root.join('REVISION')
     if File.exist?(revision_path)
       File.read(revision_path).strip
-    elsif system('git status')
+    elsif File.exist?(Rails.root.join('.git'))
       id = `git rev-parse HEAD`[0..6]
       if `git status --porcelain`.strip.empty?
         id

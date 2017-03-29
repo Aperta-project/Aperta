@@ -22,6 +22,9 @@ class Decision < ActiveRecord::Base
   # more meaningfully.
   has_many :nested_question_answers
   has_many :reviewer_reports
+  has_many :attachments, as: :owner,
+                         class_name: 'DecisionAttachment',
+                         dependent: :destroy
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 

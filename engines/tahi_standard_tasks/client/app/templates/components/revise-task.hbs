@@ -28,7 +28,7 @@
     {{#if editingAuthorResponse}}
       {{content-editable value=latestRegisteredDecision.authorResponse
                          class="revise-overlay-response-field author-response"
-                         placeholder="Please detail the changes you've made to your submission here"
+                         placeholder="You may respond to the reviewer and editor comments point by point here. Alternatively, you may upload your response as a text file (e.g. .doc, .pdf, .rtf) below."
                          editable=isEditable}}
 
       <button id="revise-task-save-button"
@@ -43,12 +43,16 @@
       <button id="revise-task-edit-button" class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
     {{/if}}
 
-    {{attachment-manager filePath="tasks/attachment"
-                         attachments=task.attachments
+    <p>
+      Please upload an additional version of your manuscript that highlights the changes you’ve made.
+      You may also upload your point by point 'response to reviewers' file here.
+    </p>
+    {{decision-attachment-manager filePath="decisions/attachment"
+                         attachments=latestRegisteredDecision.attachments
                          multiple=true
                          description="Please select files to add attachment"
                          cancelUpload=(action "cancelUpload")
-                         disabled=(not canUploadAttachments)
+                         draft=(not task.completed)
                          deleteFile=(action "deleteAttachment")
                          uploadFinished=(action "createAttachment")
                          updateAttachment=(action "updateAttachment")}}

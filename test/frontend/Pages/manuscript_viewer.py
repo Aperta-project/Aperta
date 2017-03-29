@@ -982,7 +982,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Validate table headers
     table_headers = self._gets(self._download_drawer_table_header)
-    expected_table_headers = ['Manuscript Version', 'Format']
+    expected_table_headers = ['Manuscript Version', '* Format']
     for key, table_header in enumerate(table_headers):
       assert table_header.text == expected_table_headers[key], \
           'The download table header {0}: {1} is not the expected:' \

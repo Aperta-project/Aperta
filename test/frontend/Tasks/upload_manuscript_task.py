@@ -25,6 +25,7 @@ class UploadManuscriptTask(BaseTask):
     # Locators - Instance members
     self._intro_text = (By.CLASS_NAME, 'task-main-content')
     self._upload_manuscript_btn = (By.CLASS_NAME, 'button-primary')
+    self._upload_manuscript_replace_btn = (By.CSS_SELECTOR, 'span.fileinput-button')
     self._upload_manuscript_input = (By.ID, 'upload-files')
     self._upload_source_warning = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
     self._uploaded_pdf = (By.CSS_SELECTOR, '.task-main-content > div > a')
@@ -92,6 +93,26 @@ class UploadManuscriptTask(BaseTask):
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     upload_ms_btn = self._get(self._upload_manuscript_btn)
+    upload_ms_btn.click()
+    # Time needed for script execution.
+    time.sleep(7)
+
+  def replace_manuscript(self, doc='random'):
+    """
+    Function to replace a uploaded doc/docx file
+    :param doc: Name of the document to upload. If blank will default to 'random', this will choose
+      one of available papers
+    :return void function
+    """
+    if doc == 'random':
+      doc2upload = random.choice(docs)
+      fn = os.path.join(os.getcwd(), doc2upload)
+    else:
+      fn = os.path.join(os.getcwd(), doc)
+    logging.info('Sending document: {0}'.format(fn))
+    time.sleep(1)
+    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
     upload_ms_btn.click()
     # Time needed for script execution.
     time.sleep(7)

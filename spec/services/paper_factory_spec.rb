@@ -2,12 +2,17 @@ require 'rails_helper'
 
 describe PaperFactory do
   let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
       tasks = [TahiStandardTasks::DataAvailabilityTask]
       JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
+
+      # add TaskTemplate using a custom Card
+      mmt.phase_templates.first.task_templates.create(card: card, title: card.name)
+
       journal.manuscript_manager_templates = [mmt]
       journal.save!
     end
@@ -66,8 +71,8 @@ describe PaperFactory do
 
     it "reifies the tasks for the given paper from the correct MMT" do
       new_paper = PaperFactory.create(paper_attrs, user)
-      expect(new_paper.tasks.size).to eq(1)
-      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask'])
+      expect(new_paper.tasks.size).to eq(2)
+      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask', 'CustomCardTask'])
     end
 
     it "adds correct positions to new tasks" do

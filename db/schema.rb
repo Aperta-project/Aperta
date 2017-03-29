@@ -830,8 +830,10 @@ ActiveRecord::Schema.define(version: 20170323143724) do
     t.string  "title"
     t.json    "template",             default: [], null: false
     t.integer "position"
+    t.integer "card_id"
   end
 
+  add_index "task_templates", ["card_id"], name: "index_task_templates_on_card_id", using: :btree
   add_index "task_templates", ["journal_task_type_id"], name: "index_task_templates_on_journal_task_type_id", using: :btree
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
@@ -931,4 +933,5 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "task_templates", "cards"
 end

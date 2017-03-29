@@ -47,6 +47,8 @@ describe TahiEnv do
       PUSHER_VERBOSE_LOGGING: 'false',
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token',
+      REDIS_SENTINEL_ENABLED: 'true',
+      REDIS_SENTINELS: "sentinel://localhost:6379, sentinel://localhost:6379",
       SENDGRID_USERNAME: 'username',
       SENDGRID_PASSWORD: 'password'
     }

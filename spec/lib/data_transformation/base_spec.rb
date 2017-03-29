@@ -81,7 +81,7 @@ describe DataTransformation::Base do
       allow(data_transformation).to receive(:transform) { FactoryGirl.create :paper }
     end
 
-    it "runs #transformation wrapped in a transaction" do
+    it "runs #transformation" do
       expect do
         data_transformation.call
       end.to change { Paper.count }.by 1

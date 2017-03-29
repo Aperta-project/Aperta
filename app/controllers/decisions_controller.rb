@@ -20,10 +20,10 @@ class DecisionsController < ApplicationController
   def show
     paper = decision.paper
     revise_task = paper.revise_task
-    if revise_task.completed?
-      requires_user_can :view_decisions, paper
-    else
+    if revise_task.present? && !revise_task.completed?
       requires_user_can :view, revise_task
+    else
+      requires_user_can :view_decisions, paper
     end
     render json: decision,
            serializer: DecisionSerializer, root: 'decision'

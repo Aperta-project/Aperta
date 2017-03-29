@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
+  attachments: DS.hasMany('decision-attachment', { async: false }),
   authorResponse: DS.attr('string'),
   // Draft is always != competed, so we only serialize one.
   completed: Ember.computed.not('draft'),

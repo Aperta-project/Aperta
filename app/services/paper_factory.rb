@@ -40,7 +40,11 @@ class PaperFactory
     template.phase_templates.each do |phase_template|
       phase = paper.phases.create!(name: phase_template['name'])
       phase_template.task_templates.each do |task_template|
-        create_task_from_template(task_template, phase)
+        if task_template.card
+          create_task_from_card(task_template, phase)
+        else
+          create_task_from_template(task_template, phase)
+        end
       end
     end
   end
@@ -62,6 +66,20 @@ class PaperFactory
       creator: creator,
       title: task_template.title,
       body: task_template.template,
+      notify: false
+    )
+    task
+  end
+
+  def create_task_from_card(task_template, phase)
+    card = task_template.card
+    task = TaskFactory.create(
+      CustomCardTask,
+      phase: phase,
+      paper: phase.paper,
+      creator: creator,
+      card_version: card.card_version(:latest),
+      title: task_template.title,
       notify: false
     )
     task

@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
 * Inject the Git Commit ID in <meta> tag for easier debugging
+* Similarity Check Task Card (UI Only)
 ### Changed
 * Edited CSS (color and hover features) for manuscript list on dashboard to be
 more user friendly.
@@ -19,6 +20,7 @@ more user friendly.
   individual card view
 * Billing staff now have more viewing access than just to the Billing card
 * Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list 
 ### Changed
 ### Deprecated
 ### Removed

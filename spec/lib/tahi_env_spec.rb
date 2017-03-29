@@ -148,9 +148,6 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'PORT'
   it_behaves_like 'optional env var', var: 'RACK_ENV'
 
-  # Redis Sentinel
-  it_behaves_like 'optional env var', var: 'REDIS_SENTINELS'
-
   # Pusher / Slanger
   it_behaves_like 'required env var', var: 'PUSHER_URL'
   it_behaves_like 'required boolean env var', var: 'PUSHER_SSL_VERIFY'

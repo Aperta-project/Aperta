@@ -1,20 +1,8 @@
-sentinels = ENV['REDIS_SENTINELS']
 Sidekiq.configure_server do |config|
-  if sentinels.present?
-    sentinel_list = sentinels.map do |sentinel_host|
-      { host: sentinel_host, port: ENV['REDIS_PORT'] }
-    end.join(',')
-    config.redis = {
-      master_name: 'aperta',
-      sentinels: sentinel_list,
-      failover_reconnect_timeout: 20,
-      namespace: "tahi_#{Rails.env}"
-    }
-  else
-    config.redis = {
-      namespace: "tahi_#{Rails.env}"
-    }
-  end
+  config.redis = {
+    namespace: "tahi_#{Rails.env}"
+  }
+
   # allow configuration of concurrency without redeploy
   # controls the number of redis connections
   sidekiq_workers = Integer(ENV.fetch 'SIDEKIQ_CONCURRENCY', 25)
@@ -30,16 +18,7 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  if sentinels.present?
-    config.redis = {
-      master_name: 'aperta',
-      sentinels: sentinel_list,
-      failover_reconnect_timeout: 20,
-      namespace: "tahi_#{Rails.env}"
-    }
-  else
-    config.redis = {
-      namespace: "tahi_#{Rails.env}"
-    }
-  end
+  config.redis = {
+    namespace: "tahi_#{Rails.env}"
+  }
 end

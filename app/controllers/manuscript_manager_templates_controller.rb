@@ -68,7 +68,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
       :uses_research_article_reviewer_report,
       phase_templates: [
         :name, :position, task_templates: [
-          :title, :journal_task_type_id, :position
+          :title, :journal_task_type_id, :position, :card_id
         ]
       ]
     ).tap do |whitelisted|

@@ -65,8 +65,7 @@ class RegisterDecisionCard(BaseCard):
     self._template_selector_arrow = (By.CLASS_NAME, 'select2-arrow')
     self._first_option = (By.CSS_SELECTOR, 'div.select2-result-label')
 
-
-    # POM Actions
+  # POM Actions
   def validate_styles(self):
     """
     Validate the elements and styles of the Register Decision card
@@ -269,7 +268,7 @@ class RegisterDecisionCard(BaseCard):
       if not template:
         reject_selection = random.choice(expected_reject_selections)
       else:
-        reject_selection = reject_template
+        reject_selection = template
       logging.info('Rejection template selection is {0}'.format(reject_selection))
       template_selector = self._get(self._letter_template_reject_selector)
       template_selector.click()
@@ -291,6 +290,8 @@ class RegisterDecisionCard(BaseCard):
       self._get(self._register_decision_button).click()
       # give some time to allow complete to check automatically
       time.sleep(2)
+      decision_msg = self._get(self._decision_alert)
+      self.validate_static_notification_style(decision_msg)
       self.click_close_button()
     return decision, reject_selection
 

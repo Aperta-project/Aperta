@@ -37,6 +37,6 @@ Reviewer tasks:
 
 #### After the Code Review:
 
-Author tasks:
+Reviewer tasks:
 
 - [ ] I have moved the ticket forward in JIRA

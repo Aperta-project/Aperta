@@ -92,5 +92,6 @@ class InitialDecisionCard(BaseCard):
     else:
       assert "A final decision of Reject has been registered." in decision_msg.text, \
           decision_msg.text
+    self.validate_static_notification_style(decision_msg)
     self.click_close_button()
     return choice

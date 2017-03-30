@@ -10,7 +10,45 @@
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be
     happier
   -->
-  <define name="content">
+  <define name="possible-value">
+    <element name="possible-value">
+      <attribute name="label"/>
+      <attribute name="value"/>
+    </element>
+  </define>
+  <define name="text-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>text</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+    </element>
+  </define>
+  <define name="radio-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>radio</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="other-content">
     <element name="content">
       <optional>
         <attribute name="ident"/>
@@ -32,9 +70,6 @@
         </choice>
       </attribute>
       <optional>
-        <attribute name="text"/>
-      </optional>
-      <optional>
         <element name="text">
           <text/>
         </element>
@@ -43,6 +78,13 @@
         <ref name="content"/>
       </zeroOrMore>
     </element>
+  </define>
+  <define name="content">
+    <choice>
+      <ref name="radio-content"/>
+      <ref name="text-content"/>
+      <ref name="other-content"/>
+    </choice>
   </define>
   <start>
     <element name="card">

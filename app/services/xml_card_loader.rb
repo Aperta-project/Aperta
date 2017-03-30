@@ -64,6 +64,15 @@ class XmlCardLoader
     el.attributes[name].try(:value)
   end
 
+  def parse_possible_values(el)
+    el.xpath('possible-value').map do |el1|
+      {
+        label: attr_val(el1, 'label'),
+        value: attr_val(el1, 'value')
+      }
+    end
+  end
+
   def make_card_content(el, card_version)
     text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
     content = CardContent.new(
@@ -71,6 +80,7 @@ class XmlCardLoader
       value_type: attr_val(el, 'value-type'),
       content_type: attr_val(el, 'content-type'),
       text: text,
+      possible_values: parse_possible_values(el),
       card_version: card_version
     )
     el.xpath('content').each do |el1|

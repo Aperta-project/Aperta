@@ -34,7 +34,7 @@ describe XmlCardLoader do
     let(:xml) { "<card name='Foo'>#{content1}#{content2}</card>" }
 
     it 'throws an exception' do
-      expect { card }.to raise_exception(Nokogiri::XML::SyntaxError, 'Did not expect element content there')
+      expect { card }.to raise_exception(Nokogiri::XML::SyntaxError, 'Element card has extra content: content')
     end
   end
 
@@ -48,6 +48,15 @@ describe XmlCardLoader do
       expect(first.content_type).to eq('text')
       expect(second.ident).to eq('bar')
       expect(second.content_type).to eq('text')
+    end
+  end
+
+  context 'with radio content' do
+    let(:content1) { "<content ident='foo' value-type='text' content-type='radio'><possible-value label=\"one\" value=\"1\"/></content>" }
+    let(:xml) { "<card name='Foo'>#{content1}</card." }
+
+    it 'parses possible values' do
+      expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
     end
   end
 
@@ -81,7 +90,7 @@ describe XmlCardLoader do
     let(:card) { FactoryGirl.create(:card, :versioned, name: Faker::Lorem.word) }
     let(:opts) { { indent: 0, skip_instruct: 0 } }
 
-    pending 'works' do
+    it 'works' do
       expect(card.to_xml(opts)).to eq("<card name=\"#{card.name}\"><content></content></card>")
     end
   end

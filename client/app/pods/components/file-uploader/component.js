@@ -94,7 +94,7 @@ export default Ember.TextField.extend({
         uploadData.url = url;
         uploadData.formData = formData;
 
-        let uploadFunction = function() {
+        let uploadFunction = () => {
           uploadData.process().done((data) => {
             this.sendAction('start', data, uploadData.submit());
           });

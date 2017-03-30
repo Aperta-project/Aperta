@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
+## ## [1.39.1] - {2017-03-30}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Funders can now be added and updated
+### Security
+
 ## ## [1.39.0] - {2017-03-16}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in

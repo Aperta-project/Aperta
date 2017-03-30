@@ -27,7 +27,8 @@ class PaperDownloadsController < ApplicationController
   def converter
     @converter ||= PaperConverters::PaperConverter.make(
       versioned_text,
-      export_format
+      export_format,
+      current_user
     )
   end
 

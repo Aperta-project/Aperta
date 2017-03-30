@@ -10,5 +10,15 @@ export default Ember.Component.extend({
   templateName: Ember.computed('content.contentType', function() {
     let type = this.get('content.contentType');
     return CardContentTypes.forType(type);
-  })
+  }),
+
+  fakeAnswer: Ember.computed(() => {
+    return { value: null };
+  }),
+
+  actions: {
+    updateFakeAnswer(newVal) {
+      this.set('fakeAnswer.value', newVal);
+    }
+  }
 });

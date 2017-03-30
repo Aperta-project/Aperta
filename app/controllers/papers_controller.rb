@@ -1,3 +1,4 @@
+# Papers Controller
 class PapersController < ApplicationController
   before_action :authenticate_user!
 
@@ -11,11 +12,10 @@ class PapersController < ApplicationController
       Paper.all.includes(:roles, journal: :creator_role)
     ).objects
     active_papers, inactive_papers = papers.partition(&:active?)
-    respond_with(papers, {
-      each_serializer: LitePaperSerializer,
-      meta: { total_active_papers: active_papers.length,
-              total_inactive_papers: inactive_papers.length }
-    })
+    respond_with(papers, each_serializer: LitePaperSerializer,
+                         meta: { total_active_papers: active_papers.length,
+                                 total_inactive_papers:
+                                 inactive_papers.length })
   end
 
   def show
@@ -25,7 +25,8 @@ class PapersController < ApplicationController
     ).find_by_id_or_short_doi(params[:id])
 
     if current_user.unaccepted_and_invited_to?(paper: paper)
-      return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
+      return render status: :forbidden, text: 'To access this manuscript, ' \
+          'please accept the invitation below.'
     end
 
     requires_user_can(:view, paper, not_found: true)
@@ -68,7 +69,8 @@ class PapersController < ApplicationController
 
   def comment_looks
     requires_user_can(:view, paper)
-    comment_looks = paper.comment_looks.where(user: current_user).includes(:task)
+    comment_looks = paper.comment_looks.where(user: current_user)
+    .includes(:task)
     respond_with(comment_looks, root: :comment_looks)
   end
 
@@ -77,7 +79,8 @@ class PapersController < ApplicationController
     versions = paper.versioned_texts
       .includes(:submitting_user)
       .order('major_version DESC, minor_version DESC')
-    respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
+    respond_with versions, each_serializer: VersionedTextSerializer,
+                           root: 'versioned_texts'
   end
 
   def workflow_activities
@@ -106,29 +109,6 @@ class PapersController < ApplicationController
     respond_with paper.related_articles,
                  each_serializer: RelatedArticleSerializer,
                  root: 'related_articles'
-  end
-
-  ## CONVERSION
-
-  def download
-    requires_user_can(:view, paper)
-    respond_to do |format|
-      format.docx do
-        if paper.file.blank? || paper.file.url.blank?
-          render status: :not_found, nothing: true
-        else
-          redirect_to paper.file.url
-        end
-      end
-
-      format.pdf do
-        pdf = PDFConverter.new(paper, current_user)
-        send_data pdf.convert,
-                  filename: pdf.fs_filename,
-                  type: 'application/pdf',
-                  disposition: 'attachment'
-      end
-    end
   end
 
   ## EDITING
@@ -174,7 +154,8 @@ class PapersController < ApplicationController
   private
 
   def render_invalid_transition_error(e)
-    render status: 422, json: { errors: ["Failure to transition to " + e.event_name] }
+    render status: 422, json:
+    { errors: ["Failure to transition to " + e.event_name] }
   end
 
   def withdrawal_params

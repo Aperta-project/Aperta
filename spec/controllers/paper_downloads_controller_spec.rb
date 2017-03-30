@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PaperDownloadsController, type: :controller do
   include Rails.application.routes.url_helpers
 
-  let!(:paper) { create(:paper, :version_with_file_type) }
+  let!(:paper) { create(:paper, :version_with_file_type, :with_creator) }
   let!(:versioned_text) do
     paper.reload # weirdly, this is needed for paper.file to not be nil
     create(
@@ -52,12 +52,10 @@ describe PaperDownloadsController, type: :controller do
       context 'a synchronous conversion is requested' do
         let!(:versioned_text) do
           paper.reload # weirdly, this is needed for paper.file to not be nil
+          paper.file.update(file_type: 'pdf')
           create(
             :versioned_text,
             paper: paper,
-            file_type: 'pdf',
-            manuscript_s3_path: 'sample/path',
-            manuscript_filename: 'name.pdf'
           )
         end
 

@@ -216,15 +216,15 @@ describe VersionedText do
       create(:versioned_text).tap { |vt| vt.update!(text: html) }
     end
     let(:expected_html) do
-      <<-HTML
-<h1>Hello</h1><img src="https://signed.jpg"><h3>World</h3>
+      <<-HTML.strip
+        <h1>Hello</h1><img src="https://signed.jpg"><h3>World</h3>
       HTML
     end
 
     context 'a recent versioned text record' do
       let(:html) do
-        <<-HTML
-<h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>
+        <<-HTML.strip
+          <h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>
         HTML
       end
 
@@ -238,8 +238,8 @@ describe VersionedText do
     # 'the embedded resource proxy urls changed at some point'
     context 'an old versioned text record' do
       let(:html) do
-        <<-HTML
-<h1>Hello</h1><img src="/resource_proxy/figures/12345/detail"><h3>World</h3>
+        <<-HTML.strip
+          <h1>Hello</h1><img src="/resource_proxy/figures/12345/detail"><h3>World</h3>
         HTML
       end
 

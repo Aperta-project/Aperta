@@ -26,6 +26,13 @@ FactoryGirl.define do
     title "Assign Team"
   end
 
+  factory :custom_card_task do
+    phase
+    paper
+    card_version
+    title "Custom Card"
+  end
+
   factory :cover_letter_task, class: 'TahiStandardTasks::CoverLetterTask' do
     phase
     paper

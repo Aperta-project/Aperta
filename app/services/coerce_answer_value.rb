@@ -3,13 +3,6 @@
 class CoerceAnswerValue
   TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
 
-  EXPECTED_VALUE_TYPES = [
-    "attachment",
-    "boolean",
-    "text",
-    "question_set"
-  ].freeze
-
   COERCIONS = {
     "boolean" => ->(v) { v.match(TRUTHY_VALUES_RGX) ? true : false }
   }.freeze
@@ -17,7 +10,7 @@ class CoerceAnswerValue
   IDENTITY = ->(v) { v }
 
   def self.coerce(value, value_type)
-    unless EXPECTED_VALUE_TYPES.include?(value_type)
+    unless CardContent::SUPPORTED_VALUE_TYPES.include?(value_type)
       msg = "value_type: #{value_type || "<blank value type>"} was not expected"
       raise ArgumentError, msg
     end

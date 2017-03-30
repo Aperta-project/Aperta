@@ -1,4 +1,4 @@
-// Every kind of card-content has a type and a view component. Mos tof
+// Every kind of card-content has a type and a view component. Most of
 // the time, they share a name. In case they don't, add the exceptions
 // here.
 

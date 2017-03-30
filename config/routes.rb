@@ -77,7 +77,11 @@ Tahi::Application.routes.draw do
     resources :decisions, only: [:create, :update, :show] do
       put :rescind, on: :member
       put :register, on: :member
+      resources :attachments, only: [:index, :create, :update, :destroy], controller: 'decision_attachments' do
+        put :update_attachment, on: :member
+      end
     end
+    resources :decision_attachments, only: [:index, :show, :create, :update, :destroy]
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member
     end
@@ -164,7 +168,7 @@ Tahi::Application.routes.draw do
     end
 
     resources :related_articles, only: [:show, :create, :update, :destroy]
-    resources :reviewer_reports, only: [:show, :create, :update, :destroy]
+    resources :reviewer_reports, only: [:show, :update]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers
@@ -198,7 +202,6 @@ Tahi::Application.routes.draw do
       end
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
-        put :upload_logo, on: :member
       end
     end
 
@@ -222,12 +225,6 @@ Tahi::Application.routes.draw do
     resources :feature_flags, param: :name, only: [:index] do
       put :update, on: :collection
     end
-  end
-
-  # epub/pdf paper download formats
-  #
-  resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, only: [] do
-    get :download, on: :member
   end
 
   get '/invitations/:token',
@@ -270,16 +267,16 @@ Tahi::Application.routes.draw do
   # We need to maintain this route as existing resources have been linked with
   # this scheme.
   get '/resource_proxy/:resource/:token(/:version)',
-    constraints: {
-      resource: /
-        adhoc_attachments
-        | attachments
-        | question_attachments
-        | figures
-        | supporting_information_files
-      /x
-    },
-    to: 'resource_proxy#url', as: :old_resource_proxy
+      constraints: {
+        resource: /
+          adhoc_attachments
+          | attachments
+          | question_attachments
+          | figures
+          | supporting_information_files
+        /x
+      },
+      to: 'resource_proxy#url', as: :old_resource_proxy
 
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315133447) do
+ActiveRecord::Schema.define(version: 20170329140911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,6 +219,9 @@ ActiveRecord::Schema.define(version: 20170315133447) do
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
     t.integer  "card_version_id", null: false
+    t.string   "content_type"
+    t.string   "placeholder"
+    t.jsonb    "possible_values"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -691,6 +694,8 @@ ActiveRecord::Schema.define(version: 20170315133447) do
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
     t.integer  "card_version_id"
+    t.string   "state"
+    t.datetime "submitted_at"
   end
 
   add_index "reviewer_reports", ["task_id", "user_id", "decision_id"], name: "one_report_per_round", unique: true, using: :btree
@@ -825,8 +830,10 @@ ActiveRecord::Schema.define(version: 20170315133447) do
     t.string  "title"
     t.json    "template",             default: [], null: false
     t.integer "position"
+    t.integer "card_id"
   end
 
+  add_index "task_templates", ["card_id"], name: "index_task_templates_on_card_id", using: :btree
   add_index "task_templates", ["journal_task_type_id"], name: "index_task_templates_on_journal_task_type_id", using: :btree
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
@@ -926,4 +933,5 @@ ActiveRecord::Schema.define(version: 20170315133447) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "task_templates", "cards"
 end

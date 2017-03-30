@@ -31,7 +31,7 @@
     {{choose-new-card journalTaskTypes=addableTaskTypes
                       phase=addToPhase
                       isLoading=journalTaskTypes.isPending
-                      addTaskType=(action "addTaskType")
+                      onSave=(action "addTaskType")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 

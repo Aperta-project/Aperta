@@ -1,17 +1,19 @@
 <h1>Add new card to {{journal.name}}</h1>
 
-<div class="admin-new-card-overlay-form">
-  {{forms/labeled-input-with-errors label="Name your new card:" value=cardName enter=(action "complete") errors=errors}}
-  <p class="admin-new-card-overlay-note">Note: this name will not appear to external audiences. It can be edited at any time.</p>
-</div>
+<div class="labeled-input-form">
+  <div class="admin-new-card-overlay-form">
+    {{forms/labeled-input-with-errors type="text" label="Name your new card:" name="name" value=cardName enter=(action "complete") errors=errors required=true autofocus=true}}
+    <p class="admin-new-card-overlay-note">Note: this name will not appear to external audiences. It can be edited at any time.</p>
+  </div>
 
-<div class="overlay-action-buttons">
-  <button class="button-link button--blue admin-new-card-overlay-cancel" {{action "close"}}>
-    cancel
-  </button>
+  <div class="overlay-action-buttons">
+    <button class="button-link button--blue admin-new-card-overlay-cancel" {{action "close"}}>
+      cancel
+    </button>
 
-  <button class="button-primary button--blue admin-new-card-overlay-save" disabled={{if saving true null}} {{action "complete"}}>
-    {{progress-spinner visible=saving color="blue" center=true}}
-    {{#unless saving}}Create new card{{/unless}}
-  </button>
+    <button class="button-primary button--blue admin-new-card-overlay-save" disabled={{if saving true null}} {{action "complete"}}>
+      {{progress-spinner visible=saving color="blue" center=true}}
+      {{#unless saving}}Create new card{{/unless}}
+    </button>
+  </div>
 </div>

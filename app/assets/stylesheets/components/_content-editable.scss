@@ -15,6 +15,9 @@ label[contenteditable=true] {
 div[contenteditable=true] {
   background-color: $aperta-white;
   white-space: pre-wrap;
+  display: list-item;
+  padding-left: 0.5%;
+  margin-bottom: 0.5%;
 }
 
 .two-element-form {

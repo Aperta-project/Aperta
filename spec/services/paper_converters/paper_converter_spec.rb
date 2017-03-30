@@ -2,10 +2,11 @@ require 'rails_helper'
 
 describe PaperConverters::PaperConverter do
   describe '::make' do
-    subject { PaperConverters::PaperConverter.make(versioned_text, export_format) }
+    subject { PaperConverters::PaperConverter.make(versioned_text, export_format, current_user) }
 
     context 'the versioned text type is pdf' do
       let(:versioned_text) { create :versioned_text, file_type: 'pdf' }
+      let(:current_user) { create :user }
 
       context 'the export format is nil' do
         let(:export_format) { nil }
@@ -36,6 +37,7 @@ describe PaperConverters::PaperConverter do
 
     context 'versioned text type is docx' do
       let(:versioned_text) { create :versioned_text, file_type: 'docx' }
+      let(:current_user) { create :user }
 
       context 'the export format is nil' do
         let(:export_format) { nil }
@@ -52,10 +54,7 @@ describe PaperConverters::PaperConverter do
       context 'the export format is pdf' do
         let(:export_format) { 'pdf' }
 
-        # it would be great to move pdf conversion into this PaperConverters doo dad
-        it 'raises an error' do
-          expect { subject }.to raise_error PaperConverters::UnknownConversionError
-        end
+        it { is_expected.to be_an_instance_of PaperConverters::PdfPaperConverter }
       end
 
       context 'the export format is pdf_with_attachments' do

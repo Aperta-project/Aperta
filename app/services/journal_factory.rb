@@ -171,7 +171,7 @@ class JournalFactory
 
     Role.ensure_exists(Role::JOURNAL_SETUP_ROLE, journal: @journal) do |role|
       role.ensure_permission_exists(:create_card, applies_to: Journal)
-      role.ensure_permission_exists(:edit_card, applies_to: Journal)
+      role.ensure_permission_exists(:edit, applies_to: Card)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|

@@ -43,6 +43,14 @@ class VersionedText < ActiveRecord::Base
     )
   end
 
+  def version
+    if major_version.present? && minor_version.present?
+      "v#{major_version}.#{minor_version}"
+    else
+      'latest draft'
+    end
+  end
+
   def submitted?
     submitting_user_id.present?
   end

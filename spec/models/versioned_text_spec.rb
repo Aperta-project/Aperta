@@ -24,6 +24,17 @@ describe VersionedText do
     end
   end
 
+  describe '#version' do
+    let(:new_versioned_text) { FactoryGirl.create :versioned_text }
+    it 'returns semantic version if it is not a draft' do
+      expect(new_versioned_text.version).to eq('v1.0')
+    end
+
+    it 'returns latest draft if it is a draft' do
+      expect(versioned_text.version).to eq('latest draft')
+    end
+  end
+
   context 'validation' do
     context 'versioned text is completed' do
       subject(:versioned_text) { FactoryGirl.build(:versioned_text) }

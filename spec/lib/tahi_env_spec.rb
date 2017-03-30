@@ -48,7 +48,7 @@ describe TahiEnv do
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token',
       REDIS_SENTINEL_ENABLED: 'true',
-      REDIS_SENTINELS: "sentinel://localhost:6379, sentinel://localhost:6379",
+      REDIS_SENTINELS: "sentinel://localhost:6379 sentinel://localhost:6379",
       SENDGRID_USERNAME: 'username',
       SENDGRID_PASSWORD: 'password'
     }
@@ -151,7 +151,7 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'RACK_ENV'
 
   # Redis Sentinel
-  it_behaves_like 'dependent required env var', var: 'REDIS_SENTINELS', dependent_key: 'REDIS_SENTINEL_ENABLED'
+  it_behaves_like 'dependent required array env var', var: 'REDIS_SENTINELS', dependent_key: 'REDIS_SENTINEL_ENABLED'
 
   # Pusher / Slanger
   it_behaves_like 'required env var', var: 'PUSHER_URL'

@@ -99,7 +99,8 @@ class VersionedText < ActiveRecord::Base
   def materialized_content
     doc = Nokogiri::HTML::DocumentFragment.parse text
     doc.css('img').each do |img|
-      token = img.attributes['src'].content.split('/')[2].to_s
+      token = img['src']
+        .match(%r{/resource_proxy/(?:figures\/)?([a-zA-Z0-9]+)})[1]
       detail_url = ResourceToken.find_by_token(token).version_urls['detail']
       signed_url = Attachment.authenticated_url_for_key(detail_url)
       img.attributes['src'].content = signed_url

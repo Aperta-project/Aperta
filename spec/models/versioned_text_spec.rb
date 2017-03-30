@@ -206,14 +206,48 @@ describe VersionedText do
   end
 
   describe '#materialized_content' do
-    versioned_text = FactoryGirl.create(:versioned_text)
-    versioned_text.text = '<h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>'
-    resource_token = FactoryGirl.create(:resource_token)
-    resource_token.version_urls = { 'detail' => 'test.jpg' }
-    it 'should materialize text with corresponding figures' do
-      allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
-      allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
-      expect(versioned_text.materialized_content).to eq('<h1>Hello</h1><img src="https://signed.jpg"><h3>World</h3>')
+    let!(:resource_token) do
+      create(
+        :resource_token,
+        version_urls: { 'detail' => 'test.jpg' }
+      )
+    end
+    let(:versioned_text) do
+      create(:versioned_text).tap { |vt| vt.update!(text: html) }
+    end
+    let(:expected_html) do
+      <<-HTML
+<h1>Hello</h1><img src="https://signed.jpg"><h3>World</h3>
+      HTML
+    end
+
+    context 'a recent versioned text record' do
+      let(:html) do
+        <<-HTML
+<h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>
+        HTML
+      end
+
+      it 'should materialize text with corresponding figures' do
+        allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
+        allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
+        expect(versioned_text.materialized_content).to eq(expected_html)
+      end
+    end
+
+    # 'the embedded resource proxy urls changed at some point'
+    context 'an old versioned text record' do
+      let(:html) do
+        <<-HTML
+<h1>Hello</h1><img src="/resource_proxy/figures/12345/detail"><h3>World</h3>
+        HTML
+      end
+
+      it 'should materialize text with corresponding figures' do
+        allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
+        allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
+        expect(versioned_text.materialized_content).to eq(expected_html)
+      end
     end
   end
 end

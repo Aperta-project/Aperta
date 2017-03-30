@@ -99,6 +99,19 @@ class VersionedText < ActiveRecord::Base
     self == paper.latest_version
   end
 
+  # rubocop:disable Rails/OutputSafety
+  def materialized_content
+    doc = Nokogiri::HTML::DocumentFragment.parse text
+    doc.css('img').each do |img|
+      token = img['src']
+        .match(%r{/resource_proxy/(?:figures\/)?([a-zA-Z0-9]+)})[1]
+      detail_url = ResourceToken.find_by_token(token).version_urls['detail']
+      signed_url = Attachment.authenticated_url_for_key(detail_url)
+      img.attributes['src'].content = signed_url
+    end
+    doc.to_s.html_safe
+  end
+
   private
 
   def only_version_once
@@ -107,6 +120,7 @@ class VersionedText < ActiveRecord::Base
     return if major_version_was.nil?
     errors.add(
       :major_version,
-      "This versioned_text is not a draft. You may not change its version.")
+      "This versioned_text is not a draft. You may not change its version."
+    )
   end
 end

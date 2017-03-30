@@ -65,12 +65,12 @@ class XmlCardLoader
   end
 
   def make_card_content(el, card_version)
-    #text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
+    text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
     content = CardContent.new(
       ident: attr_val(el, 'ident'),
       value_type: attr_val(el, 'value-type'),
       content_type: attr_val(el, 'content-type'),
-      text: attr_val(el, 'text'),
+      text: text,
       card_version: card_version
     )
     el.xpath('content').each do |el1|

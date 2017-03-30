@@ -7,6 +7,7 @@ export default {
   initialize(instance) {
     let flash    = instance.container.lookup('service:flash');
     let logError = instance.container.lookup('logError:main');
+    let bugsnag  = instance.container.lookup('service:bugsnag');
 
     // The global error handler for internal ember errors.
     // In production and staging send the error to bugsnag.
@@ -15,17 +16,11 @@ export default {
     if (!Ember.testing) {
       Ember.onerror = function(error) {
         if (ENV.environment !== 'development') {
-          if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
-            if (error.errors && error.errors.length) {
-              let meta = {
-                errorInfo: {'error.errors': error.errors}
-              };
-
-              Bugsnag.notifyException(error, 'Uncaught Ember Error', meta);
-            } else {
-              Bugsnag.notifyException(error, 'Uncaught Ember Error');
-            }
-          }
+          bugsnag.notifyException(
+            error,
+            'Uncaught Ember Error',
+            {'Error Info': {'error.errors': error.errors}}
+          );
         } else {
           flash.displayRouteLevelMessage('error', error);
           logError(error);

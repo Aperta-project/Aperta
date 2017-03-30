@@ -215,6 +215,34 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 .invitation-item-status {
   width: 18%;
   cursor: pointer;
+
+  .not-bold {
+    font-weight: normal;
+  }
+}
+
+.invitation-item-review-completed-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #F7F7F7;
+  transition: all 0.2s;
+  background: $aperta-green;
+  position: absolute;
+  margin-left: -20px;
+  margin-top: 3px;
+
+  svg {
+    width: 8px;
+  }
+
+  polygon {
+    fill: #fff;
+  }
 }
 
 .invitation-item-actions {

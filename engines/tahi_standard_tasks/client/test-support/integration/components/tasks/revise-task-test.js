@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
@@ -23,6 +24,15 @@ let createTaskWithDecision = function(decisionAttrs) {
   return make('revise-task', {
     id: 1,
     paper: { decisions: [decision] }
+  });
+};
+
+let createTaskWithTwoDecisions = function() {
+  const decision1 = make('decision', {authorResponse: null, latestRegistered: true});
+  const decision2 = make('decision', {authorResponse: null, latestRegistered: false});
+  return make('revise-task', {
+    id: 1,
+    paper: { decisions: [decision1, decision2] }
   });
 };
 
@@ -114,16 +124,15 @@ test('it requires validation on an author response or attachment', function(asse
   });
 });
 
-test('does not requires validation when an attachment is present even if the author response is not present', function(assert) {
+test('does not require validation when an attachment is present even if the author response is not present', function(assert) {
   let testTask = createTaskWithDecision({
     'authorResponse': null,
     'latestRegistered': true
   });
-
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
-
+  $.mockjax({url: '/api/decisions/1', type: 'GET', status: 200, responseText: '{"decision":{"id":1}}'});
   Ember.run(() => {
-    testTask.set('attachments', [make('adhoc-attachment')]);
+    testTask.set('decisions.firstObject.attachments', [make('decision-attachment')]);
   });
 
   this.set('testTask', testTask);
@@ -133,6 +142,26 @@ test('does not requires validation when an attachment is present even if the aut
   let done = assert.async();
   wait().then(() => {
     assert.elementNotFound('.response-to-reviewers .error-message:not(.error-message--hidden)');
+    done();
+  });
+});
+
+test('shows attachments only on associated decisions', function(assert) {
+  let testTask = createTaskWithTwoDecisions();
+  $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
+  $.mockjax({url: '/api/decisions/1', type: 'GET', status: 200, responseText: '{"decision":{"id":1}}'});
+  $.mockjax({url: '/api/decisions/2', type: 'GET', status: 200, responseText: '{"decision":{"id":2}}'});
+  Ember.run(() => {
+    testTask.set('decisions.firstObject.attachments', [make('decision-attachment')]);
+  });
+
+  this.set('testTask', testTask);
+  this.render(template);
+  this.$('.decision-bar-bar').each((_, e) => e.click());
+
+  let done = assert.async();
+  wait().then(() => {
+    assert.equal(this.$('.decision-bar-contents .attachment-file-link').length, 1);
     done();
   });
 });

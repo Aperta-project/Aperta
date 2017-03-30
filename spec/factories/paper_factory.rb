@@ -118,7 +118,8 @@ FactoryGirl.define do
           paper: paper,
           file_type: 'docx',
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
-          s3_dir: 'sample/dir'
+          s3_dir: 'sample/dir',
+          status: 'done'
         )
 
         paper.save!
@@ -275,7 +276,8 @@ FactoryGirl.define do
           paper: paper,
           file_type: 'pdf',
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.pdf')),
-          s3_dir: 'sample/dir'
+          s3_dir: 'sample/dir',
+          status: 'done'
         )
 
         paper.save!

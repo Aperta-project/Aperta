@@ -11,7 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Funders can now be added and updated
 ### Security
 
-## ## [1.39.0] - {2017-03-16}
+## ## [1.39.0] - {2017-03-29}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in
   individual card view

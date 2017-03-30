@@ -14,5 +14,6 @@ class DecisionSerializer < ActiveModel::Serializer
              :verdict
 
   has_many :invitations, embed: :ids, include: true
+  has_many :attachments, include: true
   has_one :paper, embed: :id, include: true
 end

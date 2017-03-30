@@ -47,6 +47,24 @@ describe TahiStandardTasks::ReviseTask do
     end
   end
 
+  describe "Attachments owned by ReviseTask" do
+    let(:attachment) { FactoryGirl.create(:adhoc_attachment, :with_revise_task) }
+
+    it "maintains existence in snapshot after atachment destroyed" do
+      allow(attachment).to receive(:non_expiring_proxy_url).and_return('')
+      allow(attachment.paper).to receive(:major_version).and_return(0)
+      allow(attachment.paper).to receive(:minor_version).and_return(0)
+
+      SnapshotService.new(attachment.paper).snapshot!(attachment)
+      attachment.destroy!
+      attachment = nil
+      file_in_snapshot = Snapshot.last.contents['children'].any? do |child|
+        child['name'] == 'file'
+      end
+      expect(file_in_snapshot).to be(true)
+    end
+  end
+
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
   end

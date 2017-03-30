@@ -23,9 +23,11 @@ more user friendly.
 * Users can now save lists on Safari for Ad Hoc cards
 * Reviewer Report status available on invitation list 
 ### Changed
+* File name for PDF Downloads have been updated to follow the format "[short doi] - [author last name] - [version].pdf"
 ### Deprecated
 ### Removed
 ### Fixed
+* Fixed bug that always returned the latest version of a manuscript regardless of the version that was requested.
 ### Security
 
 ## ## [1.38.0] - {2017-03-09}

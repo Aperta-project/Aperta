@@ -11,7 +11,5 @@ describe PaperConverters::SourcePaperConverter do
     allow(versioned_text).to receive(:sourcefile_filename).and_return 'name.pdf'
   end
 
-  # pending("TMP: APERTA-9385")
-  # real pending not working here so commenting
-  # it_behaves_like 'a redirecting paper converter'
+  it_behaves_like 'a redirecting paper converter'
 end

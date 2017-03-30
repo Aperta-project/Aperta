@@ -159,6 +159,12 @@ describe VersionedText do
         expect(draft.major_version).to be_nil
         expect(draft.minor_version).to be_nil
       end
+
+      it "sets s3_dir and filename" do
+        draft = new_draft!
+        expect(draft.manuscript_s3_path).to be_present
+        expect(draft.manuscript_filename).to be_present
+      end
     end
   end
 

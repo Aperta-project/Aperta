@@ -15,7 +15,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
       serialize Figure, with: Snapshot::AttachmentSerializer
-      serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
+      serialize CardContent, with: Snapshot::CardContentSerializer
       serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
       serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
@@ -31,6 +31,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::ReportingGuidelinesTask, with: Snapshot::ReportingGuidelinesTaskSerializer
       serialize TahiStandardTasks::ReviewerRecommendation, with: Snapshot::ReviewerRecommendationSerializer
       serialize TahiStandardTasks::ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
+      serialize TahiStandardTasks::ReviseTask, with: Snapshot::ReviseTaskSerializer
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer

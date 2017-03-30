@@ -38,11 +38,6 @@ class Task < ActiveRecord::Base
     -> { joins(:role).where(roles: { name: Role::TASK_PARTICIPANT_ROLE }) },
     class_name: 'Assignment',
     as: :assigned_to
-  has_many \
-    :participants,
-    -> { joins(:roles).uniq },
-    through: :participations,
-    source: :user
 
   has_many :permission_requirements, as: :required_on, dependent: :destroy
   has_many \
@@ -179,14 +174,25 @@ class Task < ActiveRecord::Base
   def add_participant(user)
     participations.where(
       user: user,
-      role: journal.task_participant_role
+      role: journal.task_participant_role,
+      assigned_to: self,
     ).first_or_create!
+  end
+
+  def participants
+    participant_ids = participations.map(&:user).uniq.map(&:id)
+    User.where(id: participant_ids)
   end
 
   def participants=(users)
     participations.destroy_all
     save! if new_record?
     users.each { |user| add_participant user }
+  end
+
+  def reviewer
+    assignments.joins(:role)
+      .find_by(roles: { name: Role::REVIEWER_REPORT_OWNER_ROLE }).try(:user)
   end
 
   def update_responder

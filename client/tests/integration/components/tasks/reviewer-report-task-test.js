@@ -41,6 +41,34 @@ test('When the decision is not a draft', function(assert) {
   assert.nElementsFound('textarea', 0, 'The report should not be editable');
 });
 
+test('When the invitation is declined', function(assert) {
+  this.can.allowPermission('edit', this.task);
+  Ember.run(() => {
+    let decision = make('decision', { draft: true });
+    let reviewerReport = make('reviewer-report', 'with_questions',
+                              { status: 'invitation_declined', task: this.task, decision: decision });
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('decisions', [decision]);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.nElementsFound('textarea', 0, 'The report should not be editable');
+  assert.elementNotFound('.reviewer-report-submit-button', 'User cannot submit report');
+});
+
+test('When the invitation is rescinded', function(assert) {
+  this.can.allowPermission('edit', this.task);
+  Ember.run(() => {
+    let decision = make('decision', { draft: true });
+    let reviewerReport = make('reviewer-report', 'with_questions',
+                              { status: 'invitation_rescinded', task: this.task, decision: decision });
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('decisions', [decision]);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.nElementsFound('textarea', 0, 'The report should not be editable');
+  assert.elementNotFound('.reviewer-report-submit-button', 'User cannot submit report');
+});
+
 test('History when there are completed decisions', function(assert) {
   const decisions = [
     make('decision', { majorVersion: null, minorVersion: null, draft: true }),

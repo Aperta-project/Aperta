@@ -16,28 +16,8 @@ module TahiStandardTasks
     def self.restore_defaults
     end
 
-    def reviewer
-      assignments.joins(:role)
-        .where(roles: {name: Role::REVIEWER_REPORT_OWNER_ROLE}).first.try(:user)
-    end
-
     def reviewer_number
       ReviewerNumber.number_for(reviewer, paper)
-    end
-
-    # find_or_build_answer_for(...) will return the associated answer for this
-    # task given :nested_question. For ReviewerReportTask this enforces the
-    # lookup to be scoped to this task's current decision. Answers associated
-    # with previous decisions will not be returned.
-    #
-    # == Optional Parameters
-    #  * decision - ignored if provided, always enforces the task's decision.id
-    #
-    def find_or_build_answer_for(nested_question:, **_kwargs)
-      super(
-        nested_question: nested_question,
-        decision: paper.draft_decision
-      )
     end
 
     def body
@@ -62,16 +42,8 @@ module TahiStandardTasks
       !submitted?
     end
 
-    # overriden to remove the 'submitted' flag from body
-    def incomplete!
-      update!(
-        completed: false,
-        body: body.except("submitted")
-      )
-    end
-
     def submitted?
-      !!body["submitted"]
+      latest_reviewer_report.submitted?
     end
 
     # before save we want to update the reviewer number if neccessary
@@ -97,10 +69,8 @@ module TahiStandardTasks
       self.title = new_title
     end
 
-    private
-
-    def update_body(hsh)
-      self.body = body.merge(hsh)
+    def latest_reviewer_report
+      reviewer_reports.order('created_at DESC').first
     end
   end
 end

@@ -1,5 +1,7 @@
 <%= render_ember_app :client do |head, body| %>
   <% head.append do %>
+    <%= git_commit_id_meta_tag %>
+
     <script type='text/javascript'>
       window.appName = "<%= app_name %>"
     </script>
@@ -25,6 +27,7 @@
       window.pdfviewerPath = "<%= asset_path('pdfviewer.js') %>";
       window.RailsEnv = {};
       window.RailsEnv.orcidConnectEnabled = <%= TahiEnv.orcid_connect_enabled? %>;
+      window.RailsEnv.testing = <%= Rails.env.test? %>;
     </script>
 
     <% if Rails.env.test? %>

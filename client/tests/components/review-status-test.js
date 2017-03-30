@@ -12,7 +12,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
     this.set('report', {
       status: 'not_invited',
       revision: 'v99.0',
-      statusDate: new Date(2020, 0, 1)
+      statusDatetime: new Date(2020, 0, 1)
     });
   }
 });
@@ -121,7 +121,7 @@ test('it shows rescinded', function(assert) {
 });
 
 test('it shows completed', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
   this.set('report.status', 'completed');
 
@@ -129,9 +129,17 @@ test('it shows completed', function(assert) {
     {{reviewer-report-status report=report}}
   `);
 
-  assert.equal(
-    this.$('.report-status').text().trim(),
-    'v99.0 Review\n      Completed January 1, 2020',
+  // First line of output
+  assert.textPresent(
+    '.report-status',
+    'v99.0 Review',
+    'Block template shows invited text with date'
+  );
+  // Second line of output
+  // Why two assertions? To ignore the whitespace inbetween.
+  assert.textPresent(
+    '.report-status',
+    'Completed January 1, 2020',
     'Block template shows invited text with date'
   );
 });

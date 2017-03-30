@@ -17,14 +17,15 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   let!(:inviter) { create :user }
 
-  def create_reviewer_invitation(task)
-    FactoryGirl.create(
+  def create_reviewer_invitation(paper)
+    paper.draft_decision.invitations << FactoryGirl.create(
       :invitation,
       :accepted,
       accepted_at: DateTime.now.utc,
       task: task,
       invitee: reviewer,
-      inviter: inviter
+      inviter: inviter,
+      decision: paper.draft_decision
     )
   end
 
@@ -43,8 +44,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
@@ -53,11 +54,12 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
+
     t.fill_in_report 'reviewer_report--competing_interests--detail' =>
       'I have no competing interests'
     t.submit_report
@@ -68,8 +70,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   end
 
   scenario 'A review can see their previous rounds of review' do
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
+
     # Revision 0
     Page.view_paper paper
 
@@ -86,8 +89,12 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
+
+    invitation = create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
+    reviewer_report_task.reviewer_reports
+      .where(state: 'invitation_not_accepted')
+      .first.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}",
@@ -107,8 +114,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
+
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
@@ -125,8 +133,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     register_paper_decision(paper, "major_revision")
     paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
+
+    create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
-    create_reviewer_invitation(reviewer_report_task)
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)

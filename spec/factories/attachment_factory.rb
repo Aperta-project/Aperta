@@ -40,5 +40,9 @@ FactoryGirl.define do
     trait :with_task do
       association :owner, factory: :ad_hoc_task
     end
+
+    trait :with_revise_task do
+      association :owner, factory: :revise_task
+    end
   end
 end

@@ -24,7 +24,7 @@ export default TaskComponent.extend({
       type: 'presence',
       message: 'Please provide a response or attach a file',
       validation() {
-        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('latestRegisteredDecision.authorResponse'));
+        return !isEmpty(this.get('latestRegisteredDecision.attachments')) || !isEmpty(this.get('latestRegisteredDecision.authorResponse'));
       }
     }]
   },
@@ -49,17 +49,23 @@ export default TaskComponent.extend({
       'editingAuthorResponse',
       isEmpty(this.get('latestRegisteredDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
     );
+    // Each time the Response to Reviewers card is opened, refresh the decision
+    // history. Unfortunately, slanger will not update the RtR card while it is
+    // already open since decisions is a hasMany relationships, and the
+    // notification from Pusher is for a single decision.
+    if (this.get('task.paper.decisions'))
+      this.get('task.paper.decisions').reload();
   },
 
-  attachmentsPath: computed('task.id', function() {
-    return `/api/tasks/${this.get('task.id')}/attachments`;
+  attachmentsPath: computed('latestRegisteredDecision.id', function() {
+    return `/api/decisions/${this.get('latestRegisteredDecision.id')}/attachments`;
   }),
 
   attachmentsRequest(path, method, s3Url, file) {
     const store = this.get('store');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
+      response['decision-attachment'].title = file.name;
       store.pushPayload(response);
     });
   },

@@ -44,7 +44,7 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
-  has_many :nested_question_answers
+  has_many :answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
@@ -543,8 +543,8 @@ class Paper < ActiveRecord::Base
   end
 
   def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
+    answers.includes(:card_content)
+           .find_by(card_contents: { ident: ident })
   end
 
   def in_terminal_state?
@@ -557,6 +557,10 @@ class Paper < ActiveRecord::Base
 
   def all_authors
     author_list_items.map(&:author)
+  end
+
+  def revise_task
+    tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
   end
 
   private

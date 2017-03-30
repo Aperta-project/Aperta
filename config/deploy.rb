@@ -33,7 +33,7 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
   on primary fetch(:migration_role) do
     within release_path do
       with rails_env: fetch(:rails_env) do
-        execute :rake, 'nested-questions:seed'
+        execute :rake, 'cards:load'
         execute :rake, 'roles-and-permissions:seed'
         execute :rake, 'data:update_journal_task_types'
         execute :rake, 'create_feature_flags'

@@ -20,6 +20,7 @@ module Tahi
 
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/lib/cli_utilities)
+    config.autoload_paths += %W(#{config.root}/lib/data_transformation)
     config.autoload_paths += %W(#{config.root}/lib/tahi_reports)
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.autoload_paths += %W(#{config.root}/app/subscribers)

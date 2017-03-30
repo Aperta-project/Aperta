@@ -3,6 +3,10 @@ require 'rails_helper'
 describe TahiStandardTasks::FundersController do
   routes { TahiStandardTasks::Engine.routes }
 
+  before do
+    CardLoader.load("TahiStandardTasks::Funder")
+  end
+
   let(:user) { FactoryGirl.create(:user, :site_admin) }
   let(:task) { FactoryGirl.create(:financial_disclosure_task) }
   let(:additional_comments) { "Darmok and Jalad at Tanagra" }

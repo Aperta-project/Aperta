@@ -25,18 +25,7 @@ export default Ember.Component.extend({
       this.initializeCoauthorshipControls();
     }
   },
-
-  humanizedCoAuthorState: Ember.computed('author.coAuthorState', function(){
-    switch(this.get('author.coAuthorState')) {
-      case "confirmed":
-        return "Confirmed by";
-      case "refuted":
-        return "Refuted By";
-      default:
-        return "Last changed by";
-    }
-  }),
-
+  
   initializeCoauthorshipControls() {
     this.get('author.paper.journal').then( (journal) => {
       this.get('can').can('administer', journal).then( (value) => {

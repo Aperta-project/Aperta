@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TahiStandardTasks::ProductionMetadataTask do
   def create_task_with_answer(ident:, answer:, value_type: 'text')
-    NestedQuestionableFactory.create(
+    AnswerableFactory.create(
       FactoryGirl.create(:production_metadata_task),
       questions: [
         {

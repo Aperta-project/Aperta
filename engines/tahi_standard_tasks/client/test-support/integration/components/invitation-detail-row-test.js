@@ -55,7 +55,7 @@ test('displays invitation information if invitation.accepted is true and report 
                      `Completed ${moment(this.get('completed-date')).format('MMM D, YYYY')}`);
 });
 
-test('does not show review status if there is no review and the invitation is accepted', function(assert){
+test('does not show a pending review status for an accepted invitation unless it is a reviewer invitation', function(assert){
   this.set('invitation.reviewerReport', null);
   this.set('invitation.state', 'accepted');
   this.render(template);

@@ -165,9 +165,6 @@ class TahiEnv
   required :SENDGRID_USERNAME
   required :SENDGRID_PASSWORD
 
-  # Sidekiq
-  optional :SIDEKIQ_CONCURRENCY
-
   def validate!
     unless valid?
       error_message = "Environment validation failed:\n\n"

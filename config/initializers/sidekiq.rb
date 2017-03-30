@@ -1,19 +1,20 @@
+redis_config = if TahiEnv.redis_sentinel_enabled?
+                 {
+                   master_name: 'aperta',
+                   sentinels: TahiEnv.redis_sentinels,
+                   failover_reconnect_timeout: 20,
+                   namespace: "tahi_#{Rails.env}"
+                 }
+               else
+                 {
+                   namespace: "tahi_#{Rails.env}"
+                 }
+               end
 Sidekiq.configure_server do |config|
-  if TahiEnv.redis_sentinel_enabled?
-    config.redis = {
-      master_name: 'aperta',
-      sentinels: TahiEnv.redis_sentinels,
-      failover_reconnect_timeout: 20,
-      namespace: "tahi_#{Rails.env}"
-    }
-  else
-    config.redis = {
-      namespace: "tahi_#{Rails.env}"
-    }
-  end
+  config.redis = redis_config
   # allow configuration of concurrency without redeploy
   # controls the number of redis connections
-  sidekiq_workers = Integer(ENV.fetch 'SIDEKIQ_CONCURRENCY', 25)
+  sidekiq_workers = 25
   config.options[:concurrency] = sidekiq_workers
 
   ActiveSupport.on_load(:active_record) do
@@ -26,16 +27,5 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  if TahiEnv.redis_sentinel_enabled?
-    config.redis = {
-      master_name: 'aperta',
-      sentinels: TahiEnv.redis_sentinels,
-      failover_reconnect_timeout: 20,
-      namespace: "tahi_#{Rails.env}"
-    }
-  else
-    config.redis = {
-      namespace: "tahi_#{Rails.env}"
-    }
-  end
+  config.redis = redis_config
 end

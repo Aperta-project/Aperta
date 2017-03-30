@@ -170,9 +170,6 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
   it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
 
-  # Sidekiq
-  it_behaves_like 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
-
   describe 'when no authentication is enabled' do
     it 'is not valid' do
       ClimateControl.modify CAS_ENABLED: nil, ORCID_LOGIN_ENABLED: nil, PASSWORD_AUTH_ENABLED: nil do

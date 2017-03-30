@@ -12,9 +12,22 @@ feature "session invalidation", js: true do
     )
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let!(:invitation_no_feedback) do
+    FactoryGirl.create(
+      :invitation,
+      :accepted,
+      accepted_at: DateTime.now.utc,
+      task: task,
+      invitee: reviewer,
+      inviter: inviter,
+      decision: paper.draft_decision
+    )
+  end
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
+  let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
+    paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(
       originating_task: task,
       assignee_id: reviewer.id

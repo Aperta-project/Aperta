@@ -1,0 +1,26 @@
+<h2>Journal Settings</h2>
+
+{{#if journalSelected}}
+
+  {{#overlay-fullscreen visible=showEditCSSOverlay
+                        outAnimationComplete=(action "hideEditCSSOverlay")
+                        overlayClass="journal-edit-overlay overlay--blue"
+                        as |overlay|}}
+    {{component editCssOverlayName
+                css=css
+                save=(action "saveCSS")
+                close=(action overlay.animateOut)}}
+  {{/overlay-fullscreen}}
+
+  {{journal-thumbnail journal=journal showForm=true afterSave=(action "showSaveMessage")}}
+
+  <div class="admin-journal-settings-buttons">
+    <button id="edit-pdf-css" class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
+    <button id="edit-manuscript-css" class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
+  </div>
+
+{{ else }}
+
+  <h4>Please select a specific journal to modify.</h4>
+
+{{/if}}

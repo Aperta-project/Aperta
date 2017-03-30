@@ -3,42 +3,7 @@
 
   <div class="journal-thumbnail-edit-form animation-fade-in clearfix">
 
-    <div class="journal-thumbnail-logo-upload">
-      <div class="journal-thumbnail-logo">
-        {{#if logoPreview}}
-          <span class="journal-thumbnail-logo-preview"></span>
-        {{else}}
-          {{#if journal.logoUrl}}
-            <img src={{journal.logoUrl}}>
-          {{else}}
-            {{partial "svg/default-journal-logo"}}
-          {{/if}}
-        {{/if}}
-      </div>
-
-      <span class="button-secondary fileinput-button button--blue knockout">
-        <span>Upload New</span>
-        {{file-uploader id=thumbnailId
-                        accept=".jpg,.jpeg,.tiff,.gif,.png"
-                        start="uploadStarted"
-                        done="uploadFinished"
-                        progress="uploadProgress"
-                        cancel="cancelUploads"
-                        processingDone="showPreview"
-                        uploadReady="uploadReady"
-                        filePrefix="journal/logo"
-                        uploadImmediately=false
-                        railsMethod="PUT"
-                        url=logoUploadUrl}}
-      </span>
-
-      <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
-      {{#if isUploading}}
-        <div class="journal-thumbnail-logo-spinner">
-          {{progress-spinner visible=true color="white"}}
-        </div>
-      {{/if}}
-    </div>
+    {{journal-logo-uploader logoUrl=journal.logoUrl}}
 
     <div class="inset-form-control required {{if validationErrors.name "error"}}">
       <div class="inset-form-control-text">
@@ -46,9 +11,9 @@
         {{error-message message=validationErrors.name displayIcon=true}}
       </div>
       {{input type="text"
-              value=journal.name
-              class="form-control journal-name-edit inset-form-control-input"
-              placeholder="PLOS Yeti"}}
+        value=journal.name
+        class="form-control journal-name-edit inset-form-control-input"
+        placeholder="PLOS Yeti"}}
     </div>
 
     <div class="inset-form-control">

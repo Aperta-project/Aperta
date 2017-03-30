@@ -1,4 +1,45 @@
 namespace :heroku do
+
+  desc <<-DESC.strip_heredoc
+    Allow incremental database migrations upon heroku deployments
+
+    When a Github PR is opened, a heroku review app is automatically created.
+    Heroku will automatically create an empty database with no database tables
+    (equivalent to `db:create`).
+
+    The first time that the PR is deployed to heroku, we want to ensure that
+    the database tables are loaded and properly seeded using `db:setup`.  At a
+    later point if a new migration is added to an existing PR, do not delete
+    any existing data.  Instead, just run any pending migrations.
+
+    This rake task is purposely being used instead of using the 'postdeploy'
+    command in the heroku app.json manifest.  This is because postdeploy is
+    executed only once when the heroku app is first created.  Additionally, it
+    also runs AFTER the release command specified in the `Procfile`.
+    Therefore, the release command cannot simply be `db:migrate` because Aperta
+    does not guarantee that database migrations can be run from scratch on an
+    empty database.  Running `db:migrate` on an empty database will fail.
+    Instead, we only use `db:schema:load`.
+
+    This rake task is expected to be called as part of the release command
+    specified in the `Procfile` with no 'postdeploy' command specified in the
+    heroku `app.json` manifest.
+  DESC
+  task release: :environment do
+    if ActiveRecord::Migrator.current_version > 0
+      # run any new migrations that have been added
+      # since the last heroku deployment
+      puts "Running database migration ..."
+      Rake::Task['db:migrate'].invoke
+    else
+      # perform the initial database schema load
+      puts "Running database setup ..."
+      ['db:schema:load', 'db:data:load'].each do |task|
+        Rake::Task[task].invoke
+      end
+    end
+  end
+
   desc <<-DESC.strip_heredoc
     This deploys to our Heroku environments (defaults to tahi-lean-workflow and tahi-sandbox01).
 

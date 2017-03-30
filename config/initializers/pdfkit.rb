@@ -1,6 +1,5 @@
 PDFKit.configure do |config|
-  config.wkhtmltopdf = if Rails.env.development? &&
-                          RUBY_PLATFORM.match(/darwin/)
+  config.wkhtmltopdf = if RUBY_PLATFORM =~ /darwin/
                          Rails.root.join('bin', 'wkhtmltopdf').to_s
                        else
                          Rails.root.join('bin', 'wkhtmltopdf-linux-amd64').to_s

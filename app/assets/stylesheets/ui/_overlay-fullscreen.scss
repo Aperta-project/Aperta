@@ -2,13 +2,18 @@ $ov--fullscreen-side-pad: 4rem;
 $ov--fullscreen-breakpoint: 780px;
 
 .overlay--fullscreen {
-  background-color: rgba(255,255,255, 0.96);
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  overflow-y: scroll;
+  padding: 40px 0;
 
   .overlay-container {
     position: relative;
-    min-height: 25rem;
-    max-width: 70rem;
-    margin: 0 auto;
+    width: 85rem;
+    margin: auto 75px;
+    background-color: $aperta-grey-xlight;
+    padding: 40px 60px;
   }
 }
 
@@ -23,25 +28,29 @@ $ov--fullscreen-breakpoint: 780px;
 
 .overlay--fullscreen {
   .overlay-close {
-    @include position(fixed, 0px 0px auto auto);
-    width: auto !important; // bootstrap/glyphicon override
-    padding: 0 30px 0 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px; // bootstrap/glyphicon override
     color: $aperta-green;
-    font-size: 80px;
-    line-height: 100%; // bootstrap override
+    font-size: 60px;
+    line-height: 30px; // bootstrap override
     cursor: pointer;
     z-index: z('overlay', 'close-x');
+
+    &:hover {
+      color: shade($aperta-green, 15%);
+    }
   }
 
   .overlay-header {
-    position: relative;
-    text-align: center;
   }
 
   .overlay-header-title {
-    padding: 7.5rem 0;
+    padding: 15px 0 45px 0;
     margin-bottom: 0; // bootstrap override
-    font-size: 4.8rem;
+    font-size: 36px;
+    font-weight: normal;
   }
 
   // -- Grey Theme --------------
@@ -58,6 +67,10 @@ $ov--fullscreen-breakpoint: 780px;
   &.overlay--green {
     color: #fff;
     background-color: rgba(57,163,41, 0.95);
+
+    .overlay-container {
+      background-color: transparent;
+    }
 
     .overlay-close {
       color: #fff;

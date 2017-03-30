@@ -4,12 +4,114 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
+* Similarity Check Task Card (UI Only)
 ### Changed
-* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+* Revise Manuscript card changed to Response to Reviewers, it's attachments are now owned by decisions.
+more user friendly.
 ### Deprecated
 ### Removed
 ### Fixed
+### Security
+
+## ## [1.39.0] - {2017-03-16}
+### Added
+* The footer discussion cannot be seen by Reviewers and other external users in
+  individual card view
+* Billing staff now have more viewing access than just to the Billing card
+* Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list 
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.38.0] - {2017-03-09}
+### Added
+* Users can now change the initial participants on a discussion topic.
+* Source file is sent to APEX along with PDF manuscripts
+* The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
+* Source files show can be downloaded
+* Added "Confirm Authorship" button to email to co authors.
+* Added PDF submissions for PLOS Biology
+* Require source files on PDF manuscripts that are in revision or have major versions greater than 0
+* Warn users to save work externally when server health check fails
+### Changed
+* Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
+* Temporarily disabled coauthor notification
+* Change in figure task workflow to remove period from title
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.37.0] - {2017-02-16}
+### Added
+* Users can now change the initial participants on a discussion topic
+* Feature flags for hiding/showing partial features.
+### Changed
+* Reset review status on revision submission event
+* Don’t automatically destroy resource tokens
+* Changed figure cards for PDF submissions
+* Changes to topic creation (See APERTA-8247)
+### Deprecated
+### Removed
+### Fixed
+* Handle submission as a single transaction (More details in APERTA-8415)
+### Security
+
+## ## [1.36.1] - {2017-02-09}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
+## ## [1.36.0] - {2017-02-07}
+### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+* Aperta can now use the title, abstract, and body HTML extracted from PDFs.
+* Display review status at the top of the task
+### Changed
+* Users can download previous versions of a Manuscript
+### Deprecated
+### Removed
+### Fixed
+* Users can now select and copy text from invitation letters when there is more than one invitation.
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved.
+  (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
+### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
+### Deprecated
+### Removed
+### Fixed
+* ORCID-Connect works with users with accented letters in their names.
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
+### Changed
+* The Discussion participant list displays names in place of avatars
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
+### Deprecated
+### Removed
+### Fixed
+* Show supporting information file upload errors to users
 * Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
 ### Security
 
 ## ## [1.32.0] - {2016-12-16}
@@ -22,12 +124,13 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Reviewer numbers will be automatically assigned to newly created papers
 * Added cap cleanup:dumps & rake db:dump:cleanup
 * An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
 ### Changed
 * Invitations no longer enter their edit state by default
 * Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
   by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
 * A user can now mark a card as incomplete at any time when it is in an editable state
-* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of 
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of
   the parts.
 ### Deprecated
 ### Removed

@@ -1,4 +1,13 @@
-// Config for Ember-CLI addon ember-power-select
+/* Config for Ember-CLI addon ember-power-select
+   Apply `.aperta-select` class to give power-select an Aperta theme:
+   {{#power-select triggerClass="aperta-select"
+                   dropdownClass="aperta-select"}}
+*/
+
+/* If CSS is ever moved from the Rails asset pipeline to Ember-CLI,
+   ember-power-select has SASS varaibles for overriding properties
+*/
+
 .ember-basic-dropdown-content {
   z-index: z('power-select-content');
 }
@@ -7,15 +16,15 @@
   border: 1px solid $aperta-red;
 }
 
-
 .aperta-select {
   .ember-power-select-status-icon {
     right: 0;
     width: 21px;
     height: auto;
-    border: none; // removes default triangle
+    border: none; // removes default dropdown triangle
     background: #39a329;
 
+    // new drop down triangle
     &:before {
       position: absolute;
       left: 6px;
@@ -24,4 +33,21 @@
       font-family: FontAwesome;
     }
   }
+
+  .ember-power-select-option {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    line-height: 1.35;
+  }
+
+  // hover state of select list
+  .ember-power-select-option[aria-current=true] {
+    background: $aperta-green;
+  }
+
+  &.ember-basic-dropdown-content {
+    box-shadow: 0 5px 15px rgba(0,0,0, 0.2);
+  }
+
+  .suggestion-sub-value { opacity: 0.7; }
 }

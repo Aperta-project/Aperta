@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-require 'rails_helper'
-
 describe VersionedTextsController do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:user) { FactoryGirl.create(:user) }
@@ -36,6 +34,7 @@ describe VersionedTextsController do
           minor_version
           version_string
           file_type
+          source_type
         )
         expect(res_body['versioned_text'].keys).to eq(expected_keys)
       end

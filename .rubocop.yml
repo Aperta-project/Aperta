@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'db/schema.rb'
     - 'lib/generators/tahi/task/templates/*'
+  TargetRubyVersion: 2.2
 
 Rails:
   Enabled: true
@@ -11,6 +12,9 @@ Metrics/AbcSize:
   # than occurs in raw ruby, so we bump this number up from the
   # default of 15.
   Max: 20
+
+Metrics/ClassLength:
+  Enabled: false
 
 Metrics/MethodLength:
   # The linux kernel styleguide puts this number at 24; the rubocop
@@ -23,8 +27,17 @@ Metrics/MethodLength:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/MultilineMethodCallIndentation:
+  # Both styles of method call indentation are acceptable, and depending on
+  # folks' editor configurations the default might be to indent a single level
+  # or to align subsequent lines with the first call
+  Enabled: false
+
 Style/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
+  # Both styles of method call indentation are acceptable, and depending on
+  # folks' editor configurations the default might be to indent a single level
+  # or to align subsequent lines with the first parameter
+  Enabled: false
 
 Style/StringLiterals:
   # English text needs double quotes, to avoid escaping the very
@@ -43,24 +56,12 @@ Metrics/LineLength:
 
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.
-    - 'spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/plos_billing/spec/**/*'
-    - 'engines/tahi_standard_tasks/spec/**/*'
-    - 'engines/plos_bio_internal_review/spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/tahi-assign_team/spec/**/*'
+    - '**/spec/**/*'
 
 Style/PredicateName:
   Exclude:
     # has_foo? is idiomatic usage in page objects
-    - 'spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/plos_billing/spec/**/*'
-    - 'engines/tahi_standard_tasks/spec/**/*'
-    - 'engines/plos_bio_internal_review/spec/**/*'
-    - 'engines/plos_bio_tech_check/spec/**/*'
-    - 'engines/tahi-assign_team/spec/**/*'
+    - '**/spec/**/*'
 
 Style/ClassCheck:
   # Sometimes is_a? is better, sometimes 'kind_of?'.
@@ -76,6 +77,14 @@ Style/ClassAndModuleChildren:
   # difficult to disambiguate the long-hand version of
   # Module::Submodule definitions
   Enabled: false
+
+Style/Documentation:
+  # Class-level comments on migrations and serializers often end up being
+  # tautological
+  Exclude:
+    - '**/db/migrate/*'
+    - '**/app/serializers/*'
+    - '**/spec/**/*'
 
 Style/WordArray:
   # If an array is *accidentally* made of single-word strings, being

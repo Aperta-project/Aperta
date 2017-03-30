@@ -47,7 +47,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       return this.get('figure.rank') || 1;
     },
     set(key, value) {
-      this.set('figure.title', `Fig. ${value}`);
+      this.set('figure.title', `Fig ${value}`);
       return value;
     }
   }),
@@ -62,7 +62,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   unlabeledFigureMessage: `
     Sorry, we didn't find a figure label in this filename.
     Please edit to add a label. `,
-
 
   figureUrl: Ember.computed('figure.id', function() {
     return `/api/figures/${this.get('figure.id')}/update_attachment`;

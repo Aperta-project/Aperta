@@ -1,0 +1,33 @@
+.tab-bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  padding-right: 30px;
+  border-bottom: 1px solid $aperta-grey-light;
+  width: 100%;
+}
+
+.tab-bar > a {
+  text-decoration: none;
+  display: block;
+  padding: 15px 7px 5px;
+  margin: 0 15px;
+  font-size: 12px;
+  color: $aperta-blue;
+  border-bottom: 5px solid transparent;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+}
+
+.tab-bar > a i {
+  display: block;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.tab-bar .active {
+  border-bottom: 5px solid $aperta-blue;
+  cursor: default;
+}

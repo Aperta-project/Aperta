@@ -71,7 +71,7 @@ describe TasksController, redis: true do
     subject(:do_request) do
       post :create, format: 'json',
                     task: {
-                      type: 'TahiStandardTasks::AuthorsTask',
+                      type: 'PlosBilling::BillingTask',
                       paper_id: paper.to_param,
                       phase_id: paper.phases.last.id,
                       title: 'Verify Signatures'
@@ -89,6 +89,15 @@ describe TasksController, redis: true do
       end
 
       it "creates a task" do
+        expect { do_request }.to change(Task, :count).by 1
+      end
+
+      it "does not create another billing task if a billing task already exists" do
+        FactoryGirl.create(:billing_task, paper: paper)
+        expect { do_request }.not_to change(Task, :count)
+      end
+
+      it "does create another billing task when there are no billing tasks on the paper" do
         expect { do_request }.to change(Task, :count).by 1
       end
 
@@ -339,16 +348,14 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
-    let(:nested_questions) { [nested_question] }
+    let(:task) { FactoryGirl.create(:cover_letter_task) }
+    let!(:card_content) do
+      root = task.card.content_root_for_version(:latest)
+      root.children.first
+    end
 
     subject(:do_request) do
       get :nested_questions, task_id: task.id, format: "json"
-    end
-
-    before do
-      allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -359,7 +366,6 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-        allow(task).to receive(:nested_questions).and_return nested_questions
       end
 
       it "responds with a list of serialized nested questions" do
@@ -367,8 +373,8 @@ describe TasksController, redis: true do
         response_json = JSON.parse(response.body)
         expect(response_json).to have_key('nested_questions')
         expect(response_json['nested_questions'].first).to eq(
-          NestedQuestionSerializer.new(
-            nested_question
+          CardContentAsNestedQuestionSerializer.new(
+            card_content
           ).as_json[:nested_question].deep_stringify_keys
         )
       end
@@ -392,22 +398,22 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_question_answers" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
-    let(:nested_question_answer) do
-      FactoryGirl.build_stubbed(
-        :nested_question_answer,
-        owner: nested_question
+    let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
+    let(:card_content) do
+      root = Card.find_by(name: task.class.name).content_root_for_version(:latest)
+      FactoryGirl.create(:card_content, parent: root)
+    end
+    let!(:answer) do
+      FactoryGirl.create(
+        :answer,
+        owner: task,
+        card_content: card_content,
+        paper: task.paper
       )
     end
-    let(:nested_question_answers) { [nested_question_answer] }
 
     subject(:do_request) do
       get :nested_question_answers, task_id: task.id, format: "json"
-    end
-
-    before do
-      allow(Task).to receive(:find).with(task.id.to_param).and_return task
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -418,8 +424,6 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-        allow(task).to receive(:nested_question_answers)
-          .and_return nested_question_answers
       end
 
       it "responds with a list of serialized nested question answers" do
@@ -427,8 +431,8 @@ describe TasksController, redis: true do
         response_json = JSON.parse(response.body)
         expect(response_json).to have_key('nested_question_answers')
         expect(response_json['nested_question_answers'].first).to eq(
-          NestedQuestionAnswerSerializer.new(
-            nested_question_answer
+          AnswerAsNestedQuestionAnswerSerializer.new(
+            answer
           ).as_json[:nested_question_answer].deep_stringify_keys
         )
       end

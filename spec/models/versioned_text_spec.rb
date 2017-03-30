@@ -72,6 +72,17 @@ describe VersionedText do
 
       expect(paper.major_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_minor_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_minor_version!
+        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      end
   end
 
   describe "#be_major_version!" do
@@ -95,6 +106,17 @@ describe VersionedText do
 
       expect(paper.minor_version).to be(0)
     end
+
+    it "has matching file and versioned_text s3 directories" do
+        paper.draft.be_major_version!
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        paper.draft.be_major_version!
+        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      end
   end
 
   describe "#new_draft!" do
@@ -102,6 +124,19 @@ describe VersionedText do
 
     context "the versioned_text is a draft" do
       let(:versioned_text) { paper.draft }
+
+      it "has no submitting user" do
+        expect(versioned_text.submitting_user).to be_nil
+      end
+
+      it "has matching file and versioned_text s3 directories" do
+        expect(paper.file.s3_dir).not_to be_nil
+        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+      end
+
+      it "has matching file and versioned_text filenames" do
+        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      end
 
       it "fails" do
         expect { new_draft! }.to raise_error(ActiveRecord::RecordInvalid)
@@ -123,6 +158,12 @@ describe VersionedText do
         draft = new_draft!
         expect(draft.major_version).to be_nil
         expect(draft.minor_version).to be_nil
+      end
+
+      it "sets s3_dir and filename" do
+        draft = new_draft!
+        expect(draft.manuscript_s3_path).to be_present
+        expect(draft.manuscript_filename).to be_present
       end
     end
   end

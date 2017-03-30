@@ -3,10 +3,9 @@ import DS from 'ember-data';
 import Task from 'tahi/models/task';
 
 export default Task.extend({
-  paperReview: DS.belongsTo('paperReview'),
   decisions: DS.hasMany('decision'),
   isSubmitted: DS.attr('boolean'),
-
+  reviewerReports: DS.hasMany('reviewerReport', { inverse: 'task', async: false }),
   previousDecisions: Ember.computed.alias('task.paper.previousDecisions'),
 
   decision: Ember.computed('decisions', function() {

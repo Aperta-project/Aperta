@@ -4,42 +4,51 @@
   {{#if taskStateToggleable}}
     {{#if pdfAllowed}}
       <p>
-        You may upload a manuscript in either Microsoft Word (.docx or .doc) or
-        PDF format. You can upload a replacement manuscript file at any time before
-        you submit.
+        You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format. You can upload a replacement manuscript file at any time before you submit.
       </p>
       <p>
-        <b>Microsoft Word format:</b> Manuscripts uploaded in this format are
-        suitable for production, and can take advantage of automatic inline figure
-        placement and visual version comparison features.
+        <b>Microsoft Word format:</b> Manuscripts uploaded in this format can take advantage of automatic
+        inline figure placement and visual version comparison features.
       </p>
       <p>
-        <b>PDF format:</b> Manuscripts uploaded in this format are suitable for
-        review only and will need to be accompanied by a supplemental upload of your
-        source document. PDF format should be used for LaTeX submissions. Additional
-        checks may be required if your manuscript is accepted. If your manuscript is
-        available in Microsoft Word format, please upload the original file and not a
-        PDF, in order to make use of automated figure placement and version
-        comparison features.
+        <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information
+        can be included in the manuscript and are not required separately for initial assessment.
+        If a revision is invited, separate figure and SI file upload will be required.
+        If preferred, you may upload those files separately before completing your submission.
       </p>
     {{else}}
      You can upload a replacement manuscript file at any time before you
      submit.
     {{/if}}
-    <span id="upload-manuscript" class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
-      Select and upload manuscript
-      {{file-uploader id="upload-files"
-                      railsMethod="PUT"
-                      accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
-                      start="uploadStarted"
-                      progress="uploadProgress"
-                      done="uploadFinished"
-                      addingFileFailed="fileAddError"
-                      error="uploadError"
-                      filePrefix="paper/manuscript"
-                      url=manuscriptUploadUrl
-                      disabled=isNotEditable}}
-    </span>
+      <div>
+    {{#if manuscriptUploaded}}
+        <a href="{{s3Url}}"
+           class="download-docx"
+           title="{{filename}}">
+           {{fa-icon fileTypeClass}} {{filename}}
+        </a>
+    {{else}}
+      <a href={{paper-download-link paper=task.paper}}
+         target="_new">
+         {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
+      </a>
+    {{/if}}
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=manuscriptUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+      </div>
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
   {{/if}}
@@ -62,4 +71,9 @@
       {{/if}}
     </div>
   {{/if}}
+
+  {{#if needsSourcefile}}
+    {{upload-source-file task=task message=validationErrors.hasSourceIfNeeded}}
+  {{/if}}
+
 </div>

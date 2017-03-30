@@ -61,7 +61,7 @@ export default PageObject.create({
       confirmTrash: clickable('.delete-button'),
       editVisible: isVisible('.fa-pencil'),
       deleteVisible: isVisible('.fa-trash'),
-      labelText: contentEditable('label.editable'),
+      labelText: contentEditable('.editable.inline-edit-display'),
       label: text('label:nth(0)'),
       save: clickable('.edit-actions .button-secondary'),
     }
@@ -112,9 +112,9 @@ export default PageObject.create({
       sendConfirmVisible: isVisible('.send-email-action'),
       sendConfirmDisabled: isVisible('.send-email-action.button--disabled'),
       recipients: collection({
-        itemScope: '.select2-search-choice',
+        itemScope: '.participant-selector-user',
         item: {
-          remove: clickable('.select2-search-choice-close')
+          remove: clickable('.participant-selector-user-remove')
         }
       })
     }

@@ -65,6 +65,14 @@ describe Invitation do
       expect(paper.draft_decision.invitations).to include invitation
     end
 
+    it "creates a token on create" do
+      expect(invitation.token).to be_nil
+      expect do
+        invitation.save!
+      end.to change { invitation.token }
+      expect(invitation.token).to_not be_nil
+    end
+
     context 'when there is more than one decision' do
       let!(:completed_decision) { FactoryGirl.create :decision, paper: paper }
       let(:draft_decision) { paper.draft_decision }

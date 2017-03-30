@@ -34,11 +34,12 @@ describe Typesetter::MetadataSerializer do
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
-      our_task.nested_questions.find_by_ident(question_ident)
+      our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
 
   before do
+    CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
 
@@ -127,8 +128,8 @@ describe Typesetter::MetadataSerializer do
   describe 'early_article_posting' do
     context 'with an answer' do
       let!(:answer) do
-        nested_question = NestedQuestion.where(ident: 'early-posting--consent').first
-        FactoryGirl.create(:nested_question_answer, nested_question: nested_question, owner: early_posting_task, value: answer_value, value_type: 'boolean')
+        card_content = CardContent.where(ident: 'early-posting--consent').first
+        FactoryGirl.create(:answer, card_content: card_content, owner: early_posting_task, value: answer_value)
       end
       context 'that is true' do
         let(:answer_value) { true }

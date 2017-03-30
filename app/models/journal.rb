@@ -1,4 +1,6 @@
 class Journal < ActiveRecord::Base
+  include EventStream::Notifiable
+
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
@@ -8,6 +10,7 @@ class Journal < ActiveRecord::Base
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
+  has_many :cards, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
   has_many :discussion_topics, through: :papers, inverse_of: :journal

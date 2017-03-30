@@ -1,11 +1,18 @@
 <div class="flex-form">
   <fieldset>
     <legend class="flex-element">Individual Author</legend>
+      {{#unless authorIsPaperCreator}}
+        {{author-form-coauthor-controls
+          author=author
+          controlsVisible=canChangeCoauthorStatus
+          disabled=isNotEditable
+          setConfirmation=(action "selectAuthorConfirmation")
+        }}
+      {{/unless}}
     {{#if authorIsNotCurrentUser}}
       {{error-message message=validationErrors.orcidIdentifier
                       displayIcon=true
                       displayText=true}}
-      <br><br>
     {{/if}}
 
     <div class="flex-group">
@@ -135,15 +142,15 @@
       </div>
     </div>
 
-    {{#if author.orcidAccount}}
-      <div class="flex-group">
-        <div class="flex-element">
-           {{orcid-connect user=author.user
-                           journal=author.paper.journal
-                           canRemoveOrcid=canRemoveOrcid
-                           errors=validationErrors.orcidIdentifier}}
-        </div>
+    {{#if authorIsPaperCreator}}
+    <div class="flex-group">
+      <div class="flex-element">
+         {{orcid-connect user=author.user
+                         journal=author.paper.journal
+                         canRemoveOrcid=canRemoveOrcid
+                         errors=validationErrors.orcidIdentifier}}
       </div>
+    </div>
     {{/if}}
   </fieldset>
 

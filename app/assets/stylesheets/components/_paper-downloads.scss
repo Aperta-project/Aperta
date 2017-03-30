@@ -1,0 +1,45 @@
+.paper-downloads-component {
+  .downloads-figures-description {
+    display: block;
+    margin-top: 8px;
+    float: right;
+    font-style: italic;
+  }
+
+  .paper-downloads {
+    width: 100%;
+
+    th {
+      padding-bottom: 0.25rem;
+    }
+
+    td {
+      padding: 1rem 0;
+      font-size: 1.4rem;
+    }
+
+    th, td {
+      border-bottom: 2px solid $aperta-grey-lighter;
+    }
+  }
+
+  .paper-downloads-link {
+    &.text-align-right {
+      text-align: right;
+    }
+
+    a {
+      margin-right: 2rem;
+
+      .fa { font-size: 115%; }
+    }
+
+    a:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  .paper-downloads-version {
+    width: 67%;
+  }
+}

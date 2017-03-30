@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import Ember from 'ember';
 
 export default DS.Model.extend({
+  attachments: DS.hasMany('decision-attachment', { async: false }),
   authorResponse: DS.attr('string'),
   // Draft is always != competed, so we only serialize one.
   completed: Ember.computed.not('draft'),
@@ -18,11 +19,13 @@ export default DS.Model.extend({
   registeredAt: DS.attr('date'),
   rescindable: DS.attr('boolean'),
   rescinded: DS.attr('boolean'),
+  reviewerReports: DS.hasMany('reviewerReport', { async: false }),
   verdict: DS.attr('string'),
 
   terminal: Ember.computed.match('verdict', /^(accept|reject)$/),
 
   restless: Ember.inject.service('restless'),
+
   rescind() {
     return this.get('restless')
       .put(`/api/decisions/${this.get('id')}/rescind`)

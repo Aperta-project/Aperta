@@ -26,6 +26,8 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 Author tasks:
 
+- [ ] If I changed the database schema, I enforced database constraints.
+
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 
 If I modified any environment variables:
@@ -34,12 +36,13 @@ If I modified any environment variables:
 
 - [ ] If I made any UI changes, I've let QA know.
 
-If I need to migrate production data:
+If I need to migrate existing data:
 
 - [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
 - [ ] If there are steps to take outside of `rake db:migrate` for Heroku or other environments, I added copy-pastable instructions to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
 - [ ] I verified the data-migration's results on a copy of production data
 - [ ] I've talked through the ramifications of the data-migration with Product Owners in regards to deployment timing
+- [ ] If I created a data migration, I added pre- and post-migration assertions.
 
 Reviewer tasks:
 

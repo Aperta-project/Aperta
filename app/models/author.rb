@@ -1,10 +1,13 @@
 class Author < ActiveRecord::Base
+  include Answerable
   include EventStream::Notifiable
   include NestedQuestionable
+  include Tokenable
+  include CoAuthorConfirmable
 
-  CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
-  CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author"
-  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "author--government-employee"
+  CONTRIBUTIONS_QUESTION_IDENT = "author--contributions".freeze
+  CORRESPONDING_QUESTION_IDENT = "author--published_as_corresponding_author".freeze
+  GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "author--government-employee".freeze
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
@@ -23,11 +26,25 @@ class Author < ActiveRecord::Base
   # Not validated as not all authors have corresponding users.
   belongs_to :user
 
+  # This is to associate specifically with the user that last manually modified
+  # a coauthors status.  We have to track this separately from the standard
+  # non-coauthor updates
+  belongs_to :co_author_state_modified_by, class_name: "User"
+
   delegate :position, to: :author_list_item
 
-  validates :first_name, :last_name, :author_initial, :affiliation, :email, presence: true, if: :task_completed?
-  validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
-  validates :contributions, presence: { message: "one must be selected" }, if: :task_completed?
+  validates :first_name, :last_name, :author_initial,
+    :affiliation, :email, presence: true, if: :task_completed?
+
+  validates :email,
+    format: { with: Devise.email_regexp,
+      message: "needs to be a valid email address" },
+      if: :task_completed?
+
+  validates :contributions,
+    presence: { message: "one must be selected" }, if: :task_completed?
+
+  before_create :set_default_co_author_state
 
   def full_name
     "#{first_name} #{last_name}"
@@ -66,17 +83,22 @@ class Author < ActiveRecord::Base
     answer_for(CORRESPONDING_QUESTION_IDENT).value
   end
 
-  def self.contributions_question
-    NestedQuestion.find_by(
-      owner_id: nil,
-      owner_type: name,
-      ident: CONTRIBUTIONS_QUESTION_IDENT)
+  def self.contributions_content
+    CardContent.find_by(
+      ident: CONTRIBUTIONS_QUESTION_IDENT
+    )
   end
 
   def contributions
-    contributions_question = self.class.contributions_question
-    return [] unless contributions_question
-    question_ids = self.class.contributions_question.children.map(&:id)
-    nested_question_answers.where(nested_question_id: question_ids)
+    contributions_content = self.class.contributions_content
+    return [] unless contributions_content
+    content_ids = self.class.contributions_content.children.map(&:id)
+    answers.where(card_content_id: content_ids)
+  end
+
+  private
+
+  def set_default_co_author_state
+    self.co_author_state ||= 'unconfirmed'
   end
 end

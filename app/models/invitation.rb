@@ -1,6 +1,7 @@
 class Invitation < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
+  include Tokenable
 
   belongs_to :task
   belongs_to :decision
@@ -12,7 +13,6 @@ class Invitation < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'InvitationAttachment', dependent: :destroy
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
-  before_create :set_access_token
 
   scope :where_email_matches,
     ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
@@ -56,25 +56,24 @@ class Invitation < ActiveRecord::Base
     # We add guards for each state transition, as a way for tasks to optionally
     # block a certain transition if desired.
 
-    event(:invite, after: [:set_invitee, :set_invited_at],
-                   after_commit: :notify_invitation_invited) do
+    event(:invite,
+      after_commit: [:set_invitee,
+                     :set_invited_at,
+                     :notify_invitation_invited]) do
       transitions from: :pending, to: :invited, guards: :invite_allowed?
     end
 
     event(:rescind,
-      after: [:set_rescinded_at],
-      after_commit: :notify_invitation_rescinded) do
+      after_commit: [:set_rescinded_at, :notify_invitation_rescinded]) do
       transitions from: [:invited, :accepted], to: :rescinded
     end
 
     event(:accept,
-      after: [:set_accepted_at],
-      after_commit: :notify_invitation_accepted) do
+      after_commit: [:set_accepted_at, :notify_invitation_accepted]) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
-      after: [:set_declined_at],
-      after_commit: :notify_invitation_declined) do
+      after_commit: [:set_declined_at, :notify_invitation_declined]) do
       transitions from: :invited, to: :declined, guards: :decline_allowed?
     end
   end
@@ -145,18 +144,22 @@ class Invitation < ActiveRecord::Base
 
   def notify_invitation_invited
     add_authors_to_information(self)
+    notify(action: 'invited')
     task.invitation_invited(self)
   end
 
   def notify_invitation_accepted
+    notify(action: 'accepted')
     task.invitation_accepted(self)
   end
 
   def notify_invitation_declined
+    notify(action: 'declined')
     task.invitation_declined(self)
   end
 
   def notify_invitation_rescinded
+    notify(action: 'rescinded')
     task.invitation_rescinded(self)
   end
 
@@ -174,21 +177,6 @@ class Invitation < ActiveRecord::Base
 
   def set_rescinded_at
     update!(rescinded_at: Time.current.utc)
-  end
-
-  def set_access_token
-    self.token = generate_token
-  end
-
-  def generate_token
-    max_tries = 5
-    tries = 0
-    loop do
-      token = SecureRandom.hex(10)
-      tries += 1
-      break token unless Invitation.where(token: token).exists?
-      raise "Cannot generate invitation token" if tries > max_tries
-    end
   end
 
   def invite_allowed?

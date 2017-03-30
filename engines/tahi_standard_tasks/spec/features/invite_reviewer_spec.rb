@@ -5,8 +5,7 @@ feature "Invite Reviewer", js: true do
 
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
-    FactoryGirl.create(
-      :paper, :submitted_lite, :with_creator, journal: journal)
+    FactoryGirl.create(:paper, :submitted_lite, :with_creator, journal: journal)
   end
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
@@ -48,6 +47,7 @@ feature "Invite Reviewer", js: true do
     expect(overlay.active_invitations_count(1)).to be true
 
     register_paper_decision(paper, 'minor_revision')
+    paper.tasks.find_by_title("Upload Manuscript").complete!
     paper.submit! paper.creator
 
     overlay.reload
@@ -108,6 +108,18 @@ feature "Invite Reviewer", js: true do
     expect(overlay.find('.invitation-show-body')).to have_text('New body')
   end
 
+  scenario "still able to edit alternate when primary is invited" do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.invited_users = [reviewer1]
+    overlay.fill_in 'invitation-recipient', with: reviewer2.email
+    overlay.find('.invitation-email-entry-button').click
+    overlay.edit_invitation(reviewer2)
+    overlay.select_first_alternate
+    find('.invitation-save-button').click
+    expect(page.find('.alternate-link-icon')).to be_present
+    expect(overlay).to have_no_css('.invitation-item-action-edit.invitation-item-action--disabled')
+  end
+
   scenario "deletes only a pending invitation" do
     overlay = Page.view_task_overlay(paper, task)
 
@@ -140,5 +152,13 @@ feature "Invite Reviewer", js: true do
     email = find_email(reviewer1.email)
     expect(email).to be
     expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
+  end
+
+  scenario 'clicking on an email selects it' do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(reviewer1)
+    find('.invitation-item-email', text: reviewer1.email).click
+    expect(execute_script("return window.getSelection().toString()").strip)
+      .to eq("#{reviewer1.full_name} <#{reviewer1.email}>")
   end
 end

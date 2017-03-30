@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import DocumentDownload from 'tahi/services/document-download';
 import ENV from 'tahi/config/environment';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 
@@ -37,13 +36,6 @@ export default Ember.Mixin.create({
   },
 
   actions: {
-    exportDocument(downloadFormat) {
-      return DocumentDownload.initiate(
-        this.get('model.id'),
-        downloadFormat
-      );
-    },
-
     hideActivityOverlay() {
       this.set('showActivityOverlay', false);
     },

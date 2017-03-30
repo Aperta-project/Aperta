@@ -24,6 +24,12 @@ class TasksController < ApplicationController
 
   def create
     requires_user_can :manage_workflow, paper
+    if does_not_violate_single_billing_task_condition?
+      @task = TaskFactory.create(task_type, new_task_params)
+    else
+      return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
+    end
+
     respond_with(task, location: task_url(task))
   end
 
@@ -34,16 +40,15 @@ class TasksController < ApplicationController
     # it as uncompleted
     if task.completed?
       attrs = params.require(:task).permit(:completed)
-      if attrs.has_key?(:completed)
-        task.update_attribute(:completed, attrs[:completed])
-      end
+      task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else
       task.assign_attributes(task_params(task.class))
       task.save!
     end
 
-    Activity.task_updated! task, user: current_user
     task.after_update
+    Activity.task_updated! task, user: current_user
+
     render task.update_responder.new(task, view_context).response
   end
 
@@ -68,16 +73,22 @@ class TasksController < ApplicationController
 
   def nested_questions
     requires_user_can :view, task
-    respond_with task.nested_questions,
-                 each_serializer: NestedQuestionSerializer,
-                 root: "nested_questions"
+    # Exclude the root node
+    content = task.card.try(:content_for_version_without_root, :latest) || []
+    respond_with(
+      content,
+      each_serializer: CardContentAsNestedQuestionSerializer,
+      root: "nested_questions"
+    )
   end
 
   def nested_question_answers
     requires_user_can :view, task
-    respond_with task.nested_question_answers,
-                 each_serializer: NestedQuestionAnswerSerializer,
-                 root: "nested_question_answers"
+    respond_with(
+      task.answers,
+      each_serializer: AnswerAsNestedQuestionAnswerSerializer,
+      root: "nested_question_answers"
+    )
   end
 
   private
@@ -91,14 +102,21 @@ class TasksController < ApplicationController
     @paper ||= Paper.find_by_id_or_short_doi(paper_id)
   end
 
+  def does_not_violate_single_billing_task_condition?
+    billing_type_string = 'PlosBilling::BillingTask'
+    if task_type.to_s == billing_type_string
+      paper.tasks.where(type: billing_type_string).count.zero?
+    else
+      true
+    end
+  end
+
   def task
     @task ||= begin
       if params[:id].present?
         Task.find(params[:id])
       elsif params[:task_id].present?
         Task.find(params[:task_id])
-      else
-        TaskFactory.create(task_type, new_task_params)
       end
     end
   end

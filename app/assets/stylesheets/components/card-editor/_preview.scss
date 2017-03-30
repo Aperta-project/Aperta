@@ -1,0 +1,33 @@
+.card-editor-preview {
+  padding-bottom: 30px;
+  background-color: $aperta-grey-light;
+  flex: 1;
+
+  .card-editor-preview-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  .card-editor-preview-toggles {
+    button {
+      background-color: transparent;
+      color: $aperta-black;
+      padding: 5px 10px;
+      margin: 7px 7px 7px 0;
+      font-size: 14px;
+      border: 0px;
+      outline: none;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: $aperta-grey;
+      }
+
+      &.active,
+      &:focus {
+        background-color: $aperta-grey;
+      }
+    }
+  }
+}

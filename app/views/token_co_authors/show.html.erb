@@ -1,0 +1,22 @@
+<%= render layout: 'container' do %>
+  <div class="pending-confirmation">
+    <h2 class='confirmation-metadata'><i class="fa fa-envelope email-icon"></i> Co-author Confirmation |
+      <span class="date"><%= @author.created_at.strftime('%b %d, %Y') %></span></h2>
+    <h3 class="dashboard-paper-title"><%= @paper.title.html_safe %></h3>
+
+    <h4>The full authorship list, as submitted is:</h4>
+
+    <%= render partial: 'token_co_authors/author_list',
+       locals: { authors: @authors }
+    %>
+
+    <h4>By agreeing to be listed as an author of this paper, you are confirming that you meet these criteria of authorship:</h4>
+
+    <%= render partial: 'token_co_authors/authorship_criteria' %>
+
+    <%= form_for @author, url: confirm_token_co_author_path(@author.token), method: 'put' do |f| %>
+      <%= f.submit value: 'Confirm Authorship', class: 'button-primary button--green' %>
+    <% end %>
+    <p class="refute-authorship">To refute authorship, please reply to the email you recieved.</p>
+  </div>
+<% end %>

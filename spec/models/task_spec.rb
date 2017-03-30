@@ -26,17 +26,16 @@ describe Task do
     let(:user) { FactoryGirl.create :user }
 
     it 'adds the user as a participant on the task' do
-      expect do
-        task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      expect(task.participants.count).to eq(0)
+      task.add_participant(user)
+      expect(task.participants.count).to eq(1)
     end
 
     it 'does not add them more than once' do
-      expect do
-        task.add_participant(user)
-        task.add_participant(user)
-        task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      task.add_participant(user)
+      task.add_participant(user)
+      task.add_participant(user)
+      expect(task.participants.count).to eq(1)
     end
   end
 
@@ -144,33 +143,34 @@ describe Task do
     end
   end
 
-  describe "#nested_question_answers" do
-    it "destroys nested_question_answers on destroy" do
-      task = FactoryGirl.create(:ad_hoc_task, :with_nested_question_answers)
-      nested_question_answer_ids = task.nested_question_answers.pluck :id
-      expect(nested_question_answer_ids).to have_at_least(1).id
+  describe "Answerable#answers" do
+    it "destroys answers on destroy" do
+      task = FactoryGirl.create(:ad_hoc_task)
+      answer = FactoryGirl.create(:answer, owner: task)
+      expect(task.answers.pluck(:id)).to contain_exactly(answer.id)
 
-      expect do
-        task.destroy
-      end.to change {
-        NestedQuestionAnswer.where(id: nested_question_answer_ids).count
-      }.from(nested_question_answer_ids.count).to(0)
+      task.destroy
+      expect(Answer.count).to eq(0)
     end
   end
 
-  describe "#answer_for" do
+  describe "Answerable#answer_for" do
     subject(:task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations) }
-    let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
-    let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
+    let!(:answer_foo) do
+      FactoryGirl.create(
+        :answer,
+        owner: task,
+        value: "the answer",
+        card_content: FactoryGirl.create(:card_content, ident: "foo")
+      )
+    end
 
     it "returns the answer for the question matching the given ident" do
       expect(task.answer_for("foo")).to eq(answer_foo)
     end
 
-    context "and there is no answer for the given ident" do
-      it "returns nil" do
-        expect(task.answer_for("unknown-ident")).to be(nil)
-      end
+    it "returns nil if there is no answer for the given ident" do
+      expect(task.answer_for("unknown-ident")).to be(nil)
     end
   end
 

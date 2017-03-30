@@ -13,7 +13,7 @@
 #
 # When the object/model being serialized it will try to recursively serialize
 # any of its `nested_questions` and their associated answers. The default method
-# used for doing this is `snapshot_nested_questions`. In most cases you will not
+# used for doing this is `snapshot_card_content`. In most cases you will not
 # need to override this.
 #
 # When the object/model doesn't respond to `nested_questions` this will not
@@ -53,17 +53,22 @@ class Snapshot::BaseSerializer
   private
 
   def snapshot_children
-    snapshot_nested_questions +
+    snapshot_card_content +
       [snapshot_property("id", "integer", model.id)] +
       snapshot_properties
   end
 
-  def snapshot_nested_questions
-    if model.respond_to?(:nested_questions)
-      nested_questions = model.nested_questions.where(parent_id: nil).order('position')
+  # This method will need to change in the future to accomodate card content
+  # without idents, but for now it's been changed around to keep the same
+  # semantics as it had with nested questions
+  def snapshot_card_content
+    if model.try(:card).present?
+      card_contents = model.card
+                           .content_root_for_version(:latest)
+                           .children.order('lft')
 
-      nested_questions.map do |question|
-        Snapshot::NestedQuestionSerializer.new(question, model).as_json
+      card_contents.map do |question|
+        Snapshot::CardContentSerializer.new(question, model).as_json
       end
     else
       []
@@ -77,5 +82,4 @@ class Snapshot::BaseSerializer
   def snapshot_property(name, type, value)
     { name: name, type: type, value: value }
   end
-
 end

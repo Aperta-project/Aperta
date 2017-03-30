@@ -45,7 +45,7 @@ module Typesetter
     def contributions
       object.contributions.map do |contribution|
         if contribution.value_type == 'boolean'
-          contribution.nested_question.text if contribution.value
+          contribution.card_content.text if contribution.value
         elsif contribution.value_type == 'text'
           contribution.value
         else

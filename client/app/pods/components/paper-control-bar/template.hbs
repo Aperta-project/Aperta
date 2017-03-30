@@ -13,17 +13,24 @@
     {{/link-to}}
   {{/if}}
 
-  {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
-    {{fa-icon icon="files-o"}}
-    Versions
-  {{/link-to}}
+  {{#if versioningMode}}
+    <div class="control-bar-button" {{action "showSubNav" "versions"}} id="nav-versions">
+      {{fa-icon icon="files-o"}}
+      Versions
+    </div>
+  {{else}}
+    {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
+      {{fa-icon icon="files-o"}}
+      Versions
+    {{/link-to}}
+  {{/if}}
 
   <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     {{fa-icon icon="user"}}
     Collaborators
   </div>
 
-  <div class="control-bar-button" {{action "showSubNav" "downloads"}} id="nav-downloads">
+  <div class="control-bar-button" {{action "toggleDownloads"}} id="nav-downloads">
     {{fa-icon icon="download"}}
     Downloads
   </div>
@@ -91,30 +98,6 @@
                                setQueryParam=setQueryParam
                                viewingVersion=viewingVersion
                                comparisonVersion=comparisonVersion}}
-      {{/if}}
-
-      {{#if downloadsVisible}}
-        <div class="manuscript-download-links active animation-fade-in">
-
-          {{#if (or (eq paper.fileType "docx") (eq paper.fileType "doc"))}}
-            <a href="#" {{action "exportDocument" paper.fileType}} class="download-docx" title="Download {{unbound paper.fileType}}">
-              Word
-              {{partial "svg/docx-icon"}}
-            </a>
-
-            {{#direct-download-link link=downloadLink extension=".pdf"}}
-              Pdf
-              {{partial "svg/pdf-icon"}}
-            {{/direct-download-link}}
-          {{/if}}
-
-          {{#if (eq paper.fileType "pdf")}}
-            <a href="#" {{action "exportDocument" 'pdf'}} class="download-pdf" title="Download pdf">
-              Pdf
-              {{partial "svg/pdf-icon"}}
-            </a>
-          {{/if}}
-        </div>
       {{/if}}
     </div>
   {{/if}}

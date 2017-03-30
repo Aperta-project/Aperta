@@ -1,3 +1,6 @@
+{{!-- Making changes here? Don't forget to update the preview
+  component in the admin card editor: card-editor/preview/overlay --}}
+
 {{#if visible}}
   {{#ember-wormhole to=to}}
     {{#overlay-animate outAnimationComplete=(action outAnimationComplete)
@@ -10,23 +13,34 @@
             {{#task-load task=task}}
               {{component task.componentName task=task}}
 
+              {{#if (can 'view_discussion_footer' task)}}
               <div class="overlay-discussion-board">
                 <h2>Discussion</h2>
                 {{comment-board comments=task.comments
                                 currentUser=currentUser
                                 postComment=(action "postComment")}}
               </div>
+              {{/if}}
             {{else}}
               {{progress-spinner visible=true size="large" align="middle"}}
             {{/task-load}}
           </div>
           <footer class="overlay-footer">
-            {{participant-selector currentParticipants=participants
-                                   onRemove=(action "removeParticipant")
-                                   onSelect=(action "saveNewParticipant")
-                                   canManage=(can "manage_participant" task)
-                                   label="Following:"
-                                   paperId=task.paper.id}}
+            {{#if (can 'edit_discussion_footer' task)}}
+              {{participant-selector currentParticipants=participants
+                                     paperId=task.paper.id
+                                     label="Following:"
+                                     canManage=(can "manage_participant" task)
+                                     canEditDiscussion=(can "edit_discussion_footer" task)
+                                     onSelect=(action "saveNewParticipant")
+                                     onRemove=(action "removeParticipant")
+                                     searchStarted=(action "searchStarted")
+                                     searchFinished=(action "searchFinished")
+                                     searching=searchingParticipant
+                                     dropdownClass="aperta-select task-following-dropdown"}}
+            {{else}}
+              <span class="participant-selector-label"></span>
+            {{/if}}
             <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
           </footer>
         </div>

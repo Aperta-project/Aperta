@@ -1,6 +1,8 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
 
+  rescue_from AASM::InvalidTransition, with: :render_invalid_transition_error
+
   respond_to :json
 
   def index
@@ -21,7 +23,12 @@ class PapersController < ApplicationController
       :supporting_information_files,
       :journal
     ).find_by_id_or_short_doi(params[:id])
-    requires_user_can(:view, paper)
+
+    if current_user.unaccepted_and_invited_to?(paper: paper)
+      return render status: :forbidden, text: 'To access this manuscript, please accept the invitation below.'
+    end
+
+    requires_user_can(:view, paper, not_found: true)
     respond_with(paper)
   end
 
@@ -69,7 +76,7 @@ class PapersController < ApplicationController
     requires_user_can(:view, paper)
     versions = paper.versioned_texts
       .includes(:submitting_user)
-      .order(updated_at: :desc)
+      .order('major_version DESC, minor_version DESC')
     respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
   end
 
@@ -135,15 +142,16 @@ class PapersController < ApplicationController
   end
 
   ## STATE CHANGES
-
   def submit
     requires_user_can(:submit, paper)
-    if paper.gradual_engagement? && paper.unsubmitted?
-      paper.initial_submit! current_user
-      Activity.paper_initially_submitted! paper, user: current_user
-    else
-      paper.submit! current_user
-      Activity.paper_submitted! paper, user: current_user
+    Paper.transaction do
+      if paper.gradual_engagement? && paper.unsubmitted?
+        paper.initial_submit! current_user
+        Activity.paper_initially_submitted! paper, user: current_user
+      else
+        paper.submit! current_user
+        Activity.paper_submitted! paper, user: current_user
+      end
     end
     render json: paper, status: :ok
   end
@@ -164,6 +172,10 @@ class PapersController < ApplicationController
   end
 
   private
+
+  def render_invalid_transition_error(e)
+    render status: 422, json: { errors: ["Failure to transition to " + e.event_name] }
+  end
 
   def withdrawal_params
     params.permit(:reason)

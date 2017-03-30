@@ -25,6 +25,8 @@ class Paper < ActiveRecord::Base
   has_many :adhoc_attachments, dependent: :destroy
   has_one :file, as: :owner, dependent: :destroy,
     class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy,
+    class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -42,7 +44,7 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
-  has_many :nested_question_answers
+  has_many :answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
@@ -304,7 +306,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      latest_version.update(original_text: new_body)
+      latest_version.update(original_text: new_body, file_type: file_type)
       notify(action: "updated") unless changed?
     end
   end
@@ -326,6 +328,12 @@ class Paper < ActiveRecord::Base
   # Downloads the manuscript from the given URL.
   def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
+    attachment.download!(url, uploaded_by: uploaded_by)
+  end
+
+  # Downloads the sourcefile from the given URL.
+  def download_sourcefile!(url, uploaded_by:)
+    attachment = sourcefile || create_sourcefile
     attachment.download!(url, uploaded_by: uploaded_by)
   end
 
@@ -535,8 +543,8 @@ class Paper < ActiveRecord::Base
   end
 
   def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
+    answers.includes(:card_content)
+           .find_by(card_contents: { ident: ident })
   end
 
   def in_terminal_state?
@@ -545,6 +553,14 @@ class Paper < ActiveRecord::Base
 
   def last_of_task(klass)
     tasks.where(type: klass.to_s).last
+  end
+
+  def all_authors
+    author_list_items.map(&:author)
+  end
+
+  def revise_task
+    tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
   end
 
   private
@@ -580,7 +596,7 @@ class Paper < ActiveRecord::Base
 
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
-    Activity.state_changed! self, to: publishing_state
+    Activity.state_changed! self, to: aasm.to_state
   end
 
   def assign_submitting_user!(submitting_user)

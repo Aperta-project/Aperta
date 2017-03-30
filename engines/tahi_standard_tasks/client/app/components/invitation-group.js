@@ -21,9 +21,14 @@ export default Ember.Component.extend({
     try {
       return yield invitation.changePosition(newPosition);
     } catch (e) {
-      this.get('flash').displayMessage('error', errorText);
+      this.get('flash').displayRouteLevelMessage('error', errorText);
     }
   }).drop(),
+
+  invitationIsExpanded: Ember.computed('activeInvitationState', function() {
+    const state = this.get('activeInvitationState');
+    return (state === 'show' || state === 'edit');
+  }),
 
   actions: {
     changePosition(newPosition, invitation) {
@@ -36,7 +41,7 @@ export default Ember.Component.extend({
     },
 
     displayError() {
-      this.get('flash').displayMessage('error', errorText);
+      this.get('flash').displayRouteLevelMessage('error', errorText);
     }
   }
 });

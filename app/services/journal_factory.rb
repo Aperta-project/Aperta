@@ -168,6 +168,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
 
+    Role.ensure_exists(Role::JOURNAL_SETUP_ROLE, journal: @journal) do |role|
+      role.ensure_permission_exists(:create_card, applies_to: Journal)
+      role.ensure_permission_exists(:edit, applies_to: Card)
+    end
+
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)
@@ -195,13 +200,21 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
+
+      role.ensure_permission_exists(:view, applies_to: Card)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -240,13 +253,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -318,6 +337,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
@@ -346,13 +366,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -392,13 +418,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -456,7 +488,13 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      task_klasses = Task.descendants
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
+
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)

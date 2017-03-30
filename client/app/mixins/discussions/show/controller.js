@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { discussionUsersPath } from 'tahi/lib/api-path-helpers';
+import { discussionUsersPath } from 'tahi/utils/api-path-helpers';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 import { task } from 'ember-concurrency';
 import ENV from 'tahi/config/environment';
@@ -13,6 +13,7 @@ const {
 export default Mixin.create(DiscussionsRoutePathsMixin, {
   storage: Ember.inject.service('discussions-storage'),
   inProgressComment: '',
+  searchingParticipant: false,
 
   participants: computed('model.discussionParticipants.@each.user', function() {
     return this.get('model.discussionParticipants').mapBy('user');
@@ -74,14 +75,19 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
           .destroyRecord();
     },
 
-    saveNewParticipant(newParticipant, availableParticipants) {
-      const participant = availableParticipants.findBy('id', newParticipant.id);
-      const user = this.store.findOrPush('user', participant);
-
+    saveNewParticipant(newParticipantData) {
       this.store.createRecord('discussion-participant', {
         discussionTopic: this.get('model'),
-        user: user,
+        user: this.store.findOrPush('user', newParticipantData),
       }).save();
+    },
+
+    searchStarted() {
+      this.set('searchingParticipant', true);
+    },
+
+    searchFinished() {
+      this.set('searchingParticipant', false);
     }
   }
 });

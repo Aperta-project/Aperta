@@ -25,7 +25,13 @@ describe Figure, redis: true do
   end
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
-    subject(:figure) { FactoryGirl.create(:figure, :with_resource_token, owner: paper) }
+    subject(:figure) do
+      create(
+        :figure,
+        :unprocessed,
+        owner: paper
+      )
+    end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg' }
 
@@ -60,7 +66,7 @@ describe Figure, redis: true do
       it 'sets the figure title and rank from the label' do
         figure.download!(url)
         figure.reload
-        expect(figure.title).to eq('Fig. 1')
+        expect(figure.title).to eq('Fig 1')
         expect(figure.rank).to eq(1)
       end
     end
@@ -183,6 +189,8 @@ describe Figure, redis: true do
   end
 
   describe '#build_title' do
+    let(:figure) { create :figure, :unprocessed }
+
     it 'returns the title if it is set' do
       figure.title = Faker::Lorem.word
       expect(figure.send(:build_title)).to eq(figure.title)
@@ -202,9 +210,9 @@ describe Figure, redis: true do
 
   describe '#title_from_filename' do
     ["Figure 1.tiff", "figure 1.tiff", "fig. 1.tiff", "fig_1.tiff"].each do |filename|
-      it "returns 'Fig. 1' when file is named #{filename}" do
+      it "returns 'Fig 1' when file is named #{filename}" do
         expect(figure.file).to receive(:filename).and_return(filename)
-        expect(figure.send(:title_from_filename)).to eq("Fig. 1")
+        expect(figure.send(:title_from_filename)).to eq("Fig 1")
       end
     end
 

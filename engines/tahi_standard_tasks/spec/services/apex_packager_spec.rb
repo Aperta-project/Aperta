@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe ApexPackager do
+  before do
+    CardLoader.load('TahiStandardTasks::FigureTask')
+  end
+
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let!(:manuscript_file) do
     instance_double(ManuscriptAttachment, filename: 'manuscript_file.docx')
@@ -37,7 +41,6 @@ describe ApexPackager do
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
     allow(manuscript_file).to receive(:url).and_return(
       Rails.root.join('spec/fixtures/about_turtles.docx'))
-    allow(paper).to receive(:file).and_return(manuscript_file)
 
     metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')
@@ -47,12 +50,11 @@ describe ApexPackager do
 
   context 'a well formed paper' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -124,12 +126,11 @@ describe ApexPackager do
 
   context 'a paper with figures' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -176,28 +177,15 @@ describe ApexPackager do
   end
 
   context 'a paper with supporting information' do
-    let!(:task) do
-      paper.tasks.find_by_type('TahiStandardTasks::SupportingInformationTask')
-    end
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
-                         value: 'true',
-                         value_type: 'boolean',
-                         owner: task,
-                         owner_type: 'Task')
-    end
     let!(:figure_task) do
       paper.tasks.find_by_type('TahiStandardTasks::FigureTask')
     end
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
+    let!(:figure_question) { figure_task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:figure_nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
-                         owner: task,
+                         owner: figure_task,
                          owner_type: 'Task')
     end
 
@@ -250,7 +238,7 @@ describe ApexPackager do
 
   context 'a paper with a striking image' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures--complies') }
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:attachment1) do
       double('attachment_model', filename: 'yeti.jpg',
                                  read: 'some bytes')
@@ -259,11 +247,10 @@ describe ApexPackager do
       double('attachment_model', filename: 'yeti2.jpg',
                                  read: 'some other bytes')
     end
-    let!(:nested_question_answer) do
-      FactoryGirl.create(:nested_question_answer,
-                         nested_question: figure_question,
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
                          value: 'true',
-                         value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
@@ -316,6 +303,47 @@ describe ApexPackager do
         file_list = packager.send(:manifest).file_list
         expect(file_list).to eq [striking_image_filename]
       end
+    end
+  end
+
+  context 'a pdf manuscript' do
+    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+        card_content: figure_question,
+        value: 'true',
+        owner: task,
+        owner_type: 'Task')
+    end
+    let!(:pdf_manuscript_file) do
+      instance_double(ManuscriptAttachment, filename: 'manuscript_file.pdf')
+    end
+    let!(:source_file) do
+      instance_double(SourcefileAttachment, filename: 'manuscript_file.docx')
+    end
+
+    before do
+      allow(paper).to receive(:file).and_return(pdf_manuscript_file)
+      allow(paper).to receive(:file_type).and_return('pdf')
+      allow(paper).to receive(:sourcefile).and_return(source_file)
+      allow(pdf_manuscript_file).to receive(:url)
+        .and_return(Rails.root.join('spec/fixtures/about_turtles.pdf'))
+      allow(paper).to receive(:file).and_return(pdf_manuscript_file)
+      allow(source_file).to receive(:url)
+        .and_return(Rails.root.join('spec/fixtures/about_turtles.docx'))
+    end
+
+    it 'creates a zip package for a paper with pdf and docx' do
+      zip_io = ApexPackager.create_zip(paper)
+      expect(zip_filenames(zip_io)).to include('test.0001.docx')
+      expect(
+        zip_contains(zip_io, 'test.0001.docx', Rails.root.join('spec/fixtures/about_turtles.docx'))
+      ).to be(true)
+      expect(zip_filenames(zip_io)).to include('test.0001.pdf')
+      expect(
+        zip_contains(zip_io, 'test.0001.pdf', Rails.root.join('spec/fixtures/about_turtles.pdf'))
+      ).to be(true)
     end
   end
 end

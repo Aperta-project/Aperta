@@ -117,7 +117,9 @@ FactoryGirl.define do
           :manuscript_attachment,
           paper: paper,
           file_type: 'docx',
-          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
+          s3_dir: 'sample/dir',
+          status: 'done'
         )
 
         paper.save!
@@ -147,6 +149,12 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
+        unless Card.exists?
+          start = Time.now
+          CardLoader.load_standard
+          end_time = Time.now
+          puts "seeded cards in test in #{end_time - start} seconds"
+        end
         FactoryGirl.create(:early_posting_task)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
@@ -160,13 +168,15 @@ FactoryGirl.define do
       after(:create) do |paper, evaluator|
         task = FactoryGirl.create(
           :publishing_related_questions_task,
+          :with_card,
           paper: paper
         )
-        nested_question = FactoryGirl.create(
-          :nested_question,
+        card_content = FactoryGirl.create(
+          :card_content,
+          parent: task.card.content_root_for_version(:latest),
           ident: 'publishing_related_questions--short_title'
         )
-        task.find_or_build_answer_for(nested_question: nested_question,
+        task.find_or_build_answer_for(card_content: card_content,
                                       value: evaluator.short_title).save
       end
     end
@@ -174,13 +184,13 @@ FactoryGirl.define do
     trait(:gradual_engagement) do
       after(:create) do |paper|
         task_type_id = JournalTaskType.find_by(title: 'Initial Decision').id.to_s
-        initial_decision_params = {"paper_type"=>"Gradual Engagement", "journal_id"=>paper.journal.id,
-                        "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
-                          "task_templates"=>[
-                            {"title"=>"Initial Decision", "journal_task_type_id"=> task_type_id, "position"=>2}
-                          ]},
-                        {"name"=>"Phase 2", "position"=>2},
-                        {"name"=>"Phase 3", "position"=>3}]}
+        initial_decision_params = { "paper_type" => "Gradual Engagement", "journal_id" => paper.journal.id,
+                                    "phase_templates" => [{ "name" => "Phase 1", "position" => 1,
+                                                            "task_templates" => [
+                                                              { "title" => "Initial Decision", "journal_task_type_id" => task_type_id, "position" => 2 }
+                                                            ] },
+                                                          { "name" => "Phase 2", "position" => 2 },
+                                                          { "name" => "Phase 3", "position" => 3 }] }
         ManuscriptManagerTemplateForm.new(initial_decision_params).create!
         paper.update_column(:paper_type, 'Gradual Engagement')
         PaperFactory.new(paper.reload, paper.creator).add_phases_and_tasks
@@ -238,6 +248,53 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_versions_across_file_types) do
+      transient do
+        first_version_body  'first body'
+        second_version_body 'second body'
+        third_version_body 'third body'
+      end
+
+      after(:create) do |paper, evaluator|
+        # 0.0, 0.1, 0.2, 1.0, Draft
+        paper.body = evaluator.first_version_body
+        paper.save!
+        paper.submit! paper.creator
+
+        paper.major_revision!
+        paper.body = evaluator.second_version_body
+        paper.save!
+
+        paper.draft.be_minor_version!
+        paper.new_draft!
+        paper.draft.be_minor_version!
+        paper.save!
+
+        # New manuscript is a uploaded
+        paper.file = FactoryGirl.create(
+          :manuscript_attachment,
+          paper: paper,
+          file_type: 'pdf',
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.pdf')),
+          s3_dir: 'sample/dir',
+          status: 'done'
+        )
+
+        paper.save!
+
+        paper.versioned_texts.last.update!(
+          file_type: 'pdf'
+        )
+        paper.new_draft!
+
+        paper.submit! paper.creator
+
+        paper.major_revision!
+        paper.body = evaluator.third_version_body
+        paper.save!
+      end
+    end
+
     after(:create) do |paper, evaluator|
       paper.body = evaluator.body
     end
@@ -284,7 +341,7 @@ FactoryGirl.define do
         author = FactoryGirl.create(:author, paper: paper)
         paper.authors = [author]
         paper.creator = FactoryGirl.create(:user)
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           author,
           questions: [
             {
@@ -319,7 +376,7 @@ FactoryGirl.define do
 
         # Financial Disclosure
         financial_task = create(:financial_disclosure_task, funders: [], paper: paper)
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           financial_task,
           questions: [
             {
@@ -331,7 +388,7 @@ FactoryGirl.define do
         )
 
         # Competing interests
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:competing_interests_task, paper: paper),
           questions: [
             {
@@ -350,7 +407,7 @@ FactoryGirl.define do
         )
 
         # data availability
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:data_availability_task, paper: paper),
           questions: [
             {
@@ -366,7 +423,7 @@ FactoryGirl.define do
           ]
         )
 
-        NestedQuestionableFactory.create(
+        AnswerableFactory.create(
           FactoryGirl.create(:production_metadata_task, paper: paper),
           questions: [
             {
@@ -380,7 +437,8 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
-          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
         )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]

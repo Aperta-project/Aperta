@@ -11,18 +11,12 @@ describe EpubConverter do
   end
   let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
-  let(:include_source) { false }
-  let(:include_cover_image) { true }
 
   let(:converter) do
     EpubConverter.new(
       paper,
-      user,
-      include_source: include_source,
-      include_cover_image: include_cover_image)
+      user)
   end
-
-  let(:doc) { Nokogiri::HTML(converter.epub_html) }
 
   def read_epub_stream(stream)
     entries = []
@@ -34,94 +28,9 @@ describe EpubConverter do
     entries
   end
 
-  describe '#epub_html' do
-    context 'a paper' do
-      after { expect(doc.errors.length).to be 0 }
-
-      it 'displays HTML in the papers title' do
-        paper.title = 'This <i>is</i> the Title'
-        epub_doc_title = doc.css('h1').inner_html.to_s
-        expect(epub_doc_title).to eq(paper.display_title(sanitized: false))
-      end
-
-      it 'includes the paper body as-is, unescaped' do
-        expect(converter.epub_html).to include(paper.body)
-      end
-
-      context 'when paper has no supporting information files' do
-        it 'doesnt have supporting information' do
-          expect(paper.supporting_information_files.empty?).to be true
-          expect(doc.css('#si_header').count).to be 0
-        end
-      end
-
-      context 'when paper has supporting information files' do
-        let(:file) do
-          paper.supporting_information_files.create!(
-            resource_tokens: [ResourceToken.new],
-            owner: task,
-            file: ::File.open('spec/fixtures/yeti.tiff')
-          )
-        end
-
-        it 'has have supporting information' do
-          expect(file)
-          expect(paper.supporting_information_files.length).to be 1
-          expect(doc.css('#si_header').count).to be 1
-          expect(doc.css("img#si_preview_#{file.id}").count).to be 1
-          expect(doc.css("a#si_link_#{file.id}").count).to be 1
-        end
-
-        it 'the si_preview urls are full-path non-expiring proxy urls' do
-          expect(file)
-          expect(doc.css('.si_preview').count).to be 1
-          expect(doc.css('.si_preview').first['src'])
-            .to eq(file.non_expiring_proxy_url(
-                     version: :preview, only_path: false))
-        end
-
-        it 'the si_link urls are full-path non-expiring proxy urls' do
-          expect(file)
-          expect(doc.css('.si_link').count).to be 1
-          expect(doc.css('.si_link').first['href'])
-            .to eq file.non_expiring_proxy_url(only_path: false)
-        end
-      end
-
-      context 'when paper has figures' do
-        let(:figure) { paper.figures.first }
-        let(:figure_img) { doc.css('img').first }
-
-        before do
-          paper.figures.create!(
-            resource_tokens: [ResourceToken.new],
-            file: File.open('spec/fixtures/yeti.tiff'),
-            status: Figure::STATUS_DONE
-          )
-
-          paper.update_attributes(body: "<p>Figure 1.</p>")
-        end
-
-        it 'replaces img src urls (which are normally proxied) with resolveable urls' do
-          expected_uri = URI.parse(figure.proxyable_url)
-          actual_uri = URI.parse(figure.proxyable_url)
-
-          expect(actual_uri.scheme).to eq expected_uri.scheme
-          expect(actual_uri.host).to eq expected_uri.host
-          expect(actual_uri.path).to eq expected_uri.path
-          expect(CGI.parse(actual_uri.query).keys).to \
-            contain_exactly(
-              'X-Amz-Expires',
-              'X-Amz-Date',
-              'X-Amz-Algorithm',
-              'X-Amz-Credential',
-              'X-Amz-SignedHeaders',
-              'X-Amz-Signature'
-            )
-        end
-      end
-    end
-  end
+  # These tests previously did some epub HTML DOM interrogation that in reality
+  # should only take place in IHAT. TAHI should no longer be including HTML
+  # content in epubs when sending manuscript content to IHAT
 
   describe '#title' do
     context 'short_title is nil because it has not been set yet' do
@@ -147,17 +56,6 @@ describe EpubConverter do
   end
 
   describe '#epub_stream' do
-    it 'returns a stream of data' do
-      expect(converter.epub_stream.string.length).to be > 0
-    end
-
-    context 'paper with no uploaded source' do
-      it 'has no source in the epub' do
-        entries = read_epub_stream(converter.epub_stream)
-        expect(entries.map(&:name)).to_not include(/source/)
-      end
-    end
-
     context 'paper with uploaded source' do
       let(:file) do
         File.open(Rails.root.join('spec', 'fixtures', 'about_cats.doc'), 'r')
@@ -170,45 +68,30 @@ describe EpubConverter do
           .and_return(Pathname.new(file.path))
       end
 
-      context 'when source is requested' do
-        let(:include_source) { true }
+      it 'returns a stream of data' do
+        expect(converter.epub_stream.string.length).to be > 0
+      end
 
-        it "includes the source file, calling it 'source' with same
+      it "includes the source file, calling it 'source' with same
           file extension" do
+        entries = read_epub_stream(converter.epub_stream)
+        expect(entries.map(&:name)).to include('input/source.doc')
+      end
+
+      context 'when the file is named something.DOC' do
+        before do
+          path = Pathname.new(file.path.gsub(/doc$/, 'DOC'))
+          allow(converter).to receive(:_manuscript_source_path)
+            .and_return(path)
+        end
+
+        it "downcases the extension name" do
           entries = read_epub_stream(converter.epub_stream)
           expect(entries.map(&:name)).to include('input/source.doc')
         end
-
-        context 'when the file is named something.DOC' do
-          before do
-            path = Pathname.new(file.path.gsub(/doc$/, 'DOC'))
-            allow(converter).to receive(:_manuscript_source_path)
-              .and_return(path)
-          end
-
-          it "downcases the extension name" do
-            entries = read_epub_stream(converter.epub_stream)
-            expect(entries.map(&:name)).to include('input/source.doc')
-          end
-        end
       end
 
-      context 'when source is not requested' do
-        let(:include_source) { false }
-
-        it 'does not include the source file' do
-          entries = read_epub_stream(converter.epub_stream)
-          expect(entries.map(&:name)).to_not include('input/source.doc')
-        end
-      end
     end
 
-    describe '#publishing_information_html' do
-      context 'when downloader is not specified' do
-        it 'does not error' do
-          expect(converter.publishing_information_html).to be_a(String)
-        end
-      end
-    end
   end
 end

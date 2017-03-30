@@ -4,79 +4,179 @@ import {
   test
 } from 'ember-qunit';
 
+import customAssertions from '../helpers/custom-assertions';
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from '../helpers/custom-assertions';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('participant-selector', 'Integration | Component | participant selector', {
   integration: true,
   beforeEach() {
     customAssertions();
     this.testUser = Ember.Object.create({
+      email: 'batman@example.com',
       fullName: 'Bruce Wayne',
-      avatarUrl: 'foo',
-      email: 'batman@example.com'
+      id: 1
     });
 
     this.setProperties({
-      currentParticipants: [this.testUser]
+      currentParticipants: [this.testUser],
+      searchingParticipant: false,
+      canManage: true,
+      onRemove() {},
+      onSelect() {},
+      searchStarted() {},
+      searchFinished() {}
     });
+  },
+
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
 test('it renders currentParticipants', function(assert) {
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=false
-    canManage=true}}`);
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=false
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('alt'), 'Bruce Wayne', 'alt is set to user\'s full name');
-  assert.equal(thumb.attr('src'), 'foo', 'src is set to the avatarUrl');
-  assert.equal(thumb.attr('data-toggle'), 'tooltip', 'data-toggle is set when canManage is true');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'title is set and then modified by jquery');
+  const thumb  = $('.participant-selector-user');
+  const name   = thumb.find('.participant-selector-user-name');
+  assert.equal(name.text(), 'Bruce Wayne', 'full name is displayed');
+});
 
+test('remove link', function(assert) {
+  this.get('currentParticipants').pushObject(Ember.Object.create({
+    fullName: 'Barbara Gordon',
+    email: 'barbara@example.com'
+  }));
+
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=false
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
+
+  let thumb  = $('.participant-selector-user:first');
+  let remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(remove.length, 'remove is available when canManage is true and there are more than one participants');
+
+  this.set('canManage', false);
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is false and there are more than one participants');
+
+  this.setProperties({
+    canManage: true,
+    currentParticipants: [this.testUser]
+  });
+  thumb  = $('.participant-selector-user:first');
+  remove = thumb.find('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is true and there is one participant');
 });
 
 test('it renders currentParticipants emails when available', function(assert) {
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=true}}`);
-
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne batman@example.com', 'renders name and email');
-
+  const tooltip = $('.participant-selector-user .tooltip-inner');
+  assert.ok(tooltip.text().match('batman@example.com'), 'renders email');
 });
 
-test('if email is blank it\'s not shown', function(assert) {
+test('it does not display remove link when canManage is false', function(assert) {
+  this.set('canManage', false);
+  this.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url="url"
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
 
-  this.testUser.set('email', null);
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=true}}`);
-
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-original-title'), 'Bruce Wayne', 'renders only name');
-
+  const remove = $('.participant-selector-user-remove');
+  assert.ok(!remove.length, 'remove is not available when canManage is false');
 });
 
-test('it doesn\'t add data-toggle when canManage is false', function(assert) {
-  this.render(hbs`{{participant-selector
-    currentParticipants=currentParticipants
-    url="url"
-    displayEmails=true
-    canManage=false}}`);
+function withUserSuggestions(users, assert, ctx, callback) {
+  ctx.fakeURL = '/people';
+  ctx.searchStarted = () => { ctx.set('searchingParticipant', true); };
+  ctx.render(hbs`
+    {{participant-selector currentParticipants=currentParticipants
+                           url=fakeURL
+                           displayEmails=true
+                           searching=searchingParticipant
+                           onRemove=onRemove
+                           onSelect=onSelect
+                           searchStarted=searchStarted
+                           searchFinished=searchFinished
+                           canManage=canManage}}
+  `);
+  $.mockjax({
+    url: `${ctx.fakeURL}?query=meow`,
+    status: 200,
+    responseText: { users }
+  });
+  ctx.$('.add-participant-button').click();
+  $('.ember-power-select-search-input').val('meow');
+  $('.ember-power-select-search-input').trigger('input');
+  const start = assert.async();
+  wait().then(function() {
+    callback.call();
+    start();
+  });
+}
 
-  let thumb = $('.participant-selector .user-thumbnail-small');
-  assert.equal(thumb.attr('data-toggle'), null, 'data-toggle is not set');
+test('it shows suggestions', function(assert) {
+  const user = {
+    id: '2',
+    full_name: 'Pikachu Pokémon',
+    username: 'pikachu',
+    email: 'pikachu@oak.edu'
+  };
+  withUserSuggestions([user], assert, this, function() {
+    assert.elementFound($('.ember-power-select-option').length);
+    assert.textPresent('.ember-power-select-option .suggestion-sub-value', 'pikachu@oak.edu');
+  });
 });
 
+test('it does not suggest people who are already participants', function(assert) {
+  const user = {
+    id: '1',
+    full_name: 'Pikachu Pokémon',
+    username: 'pikachu',
+    email: 'pikachu@oak.edu'
+  };
+  withUserSuggestions([user], assert, this, function() {
+    assert.textPresent('.ember-power-select-option', 'No results found');
+  });
+});
 
 moduleFor('component:participant-selector', 'Unit | Component | participant selector');
 

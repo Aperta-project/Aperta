@@ -37,8 +37,23 @@ Router.map(function() {
   this.route('profile', { path: '/profile' });
 
   this.route('admin', function() {
-    this.route('journals', function() {});
+    this.route('cc', function() {
+      this.route('journals', function() {
+        this.route('cards');
+        this.route('workflows');
+        this.route('users');
+        this.route('settings');
+      });
+      this.route('card', { path: '/card/:card_id' }, function() {
+        this.route('preview', { path: '/' });
+        this.route('edit');
+        this.route('permissions');
+        this.route('tags');
+        this.route('history');
+      });
+    });
 
+    this.route('journals', function() {});
     this.route('journal', { path: '/journals/:journal_id' }, function() {
       this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
         this.route('new');
@@ -46,6 +61,7 @@ Router.map(function() {
       });
 
     });
+    this.route('feature_flags');
   });
 });
 

@@ -3,6 +3,10 @@ import {
   test
 } from 'ember-qunit';
 
+import {
+  mousedown as powerSelectFocus, mouseup as powerSelectChoose
+} from 'tahi/lib/power-select-event-trigger';
+
 import Ember from 'ember';
 
 import hbs from 'htmlbars-inline-precompile';
@@ -60,13 +64,11 @@ test('input displayed when other option is selected', function(assert) {
 
 
   Ember.run(() => {
-    let event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
-    this.$('.ember-power-select-trigger')[0].dispatchEvent(event);
+    powerSelectFocus(this.$('.ember-power-select-trigger'));
   });
 
   Ember.run(() => {
-    let event = new window.Event('mouseup', { bubbles: true, cancelable: true, view: window });
-    $('.ember-power-select-option:contains("John")')[0].dispatchEvent(event);
+    powerSelectChoose($('.ember-power-select-option:contains("John")'));
   });
 
   Ember.run(() => {

@@ -1,0 +1,37 @@
+.labeled-input-form {
+
+  .input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin-bottom: .5rem;
+
+    label {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 0;
+
+      &.required::after {
+        content: '*';
+        font-size: 16px;
+      }
+    }
+
+    .help-text {
+      color: $aperta-grey;
+    }
+  }
+
+  .note {
+    margin-top: .5rem;
+    color: $aperta-grey;
+    font-style: italic;
+  }
+
+  .labeled-input-with-errors {
+    // spacing between form elements
+    margin-bottom: 15px;
+  }
+
+}

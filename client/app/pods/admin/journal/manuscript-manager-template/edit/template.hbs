@@ -11,10 +11,11 @@
                       outAnimationComplete=(action "hideChooseNewCardOverlay")
                       title="Pick the types of cards to add"
                       as |overlay|}}
-    {{choose-new-card journalTaskTypes=journalTaskTypes
-                      phase=addToPhase
+    {{choose-new-card phase=addToPhase
+                      journalTaskTypes=journalTaskTypes
+                      cards=cards
                       isLoading=journalTaskTypesIsLoading
-                      addTaskType=(action "addTaskType")
+                      onSave=(action "addTaskTemplate")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
@@ -27,10 +28,17 @@
 {{#control-bar}}
   <nav role="navigation" id="control-bar">
     {{#unless showSaveButton}}
-      {{#link-to "admin.journal" journal id="control-bar-journal-back-button"}}
-        {{fa-icon icon="chevron-left"}}
-        Back
-      {{/link-to}}
+      {{#if (feature-flag "CARD_CONFIGURATION")}}
+        {{#link-to "admin.cc.journals.workflows" (query-params journalID=journal.id) id="control-bar-journal-back-button"}}
+          {{fa-icon icon="chevron-left"}}
+          Back
+        {{/link-to}}
+      {{else}}
+        {{#link-to "admin.journal" journal id="control-bar-journal-back-button"}}
+          {{fa-icon icon="chevron-left"}}
+          Back
+        {{/link-to}}
+      {{/if}}
     {{/unless}}
 
     {{#if editingName}}

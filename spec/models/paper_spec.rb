@@ -75,6 +75,13 @@ describe Paper do
     end
   end
 
+  shared_examples_for "state transitioning" do
+    it "creates an activity feed item" do
+      expect { subject }.to change { paper.activities.count }.by(1)
+      expect(paper.activities.last.activity_key).to eq "paper.state_changed.#{paper.reload.publishing_state}"
+    end
+  end
+
   describe 'constants' do
     describe 'STATES' do
       it 'includes all possible states' do
@@ -536,6 +543,7 @@ describe Paper do
         initial_submit: proc { paper.initial_submit! user }
       it_behaves_like 'creates a new draft decision'
       it_behaves_like 'submission'
+      it_behaves_like 'state transitioning'
 
       it 'transitions to initially_submitted' do
         subject
@@ -550,6 +558,7 @@ describe Paper do
         submit: proc { paper.submit!(paper.creator) }
       it_behaves_like 'creates a new draft decision'
       it_behaves_like 'submission'
+      it_behaves_like 'state transitioning'
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
@@ -633,9 +642,11 @@ describe Paper do
 
     describe '#withdraw!' do
       let(:withdrawn_by_user) { FactoryGirl.build_stubbed(:user) }
+      subject { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
 
       it_behaves_like "transitions save state_updated_at",
-        withdraw: proc { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
+        withdraw: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -676,27 +687,33 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
+      subject { paper.invite_full_submission! }
+
       it_behaves_like "transitions save state_updated_at",
-        invite_full_submission: proc { paper.invite_full_submission! }
+        invite_full_submission: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :initially_submitted, journal: journal)
       end
 
       it 'transitions to invited_for_full_submission' do
-        paper.invite_full_submission!
+        subject
         expect(paper.publishing_state).to eq('invited_for_full_submission')
       end
 
       it 'marks the paper editable' do
-        paper.invite_full_submission!
+        subject
         expect(paper).to be_editable
       end
     end
 
     describe '#reactivate!' do
+      subject { paper.reactivate! }
+
       it_behaves_like "transitions save state_updated_at",
-        reactivate: proc { paper.reactivate! }
+        reactivate: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -712,13 +729,13 @@ describe Paper do
 
       it "transitions to the previous state" do
         expect(paper).to be_withdrawn
-        paper.reload.reactivate!
+        subject
         expect(paper).to be_submitted
       end
 
       it "marks the paper with the previous editable state for submitted papers" do
         expect(paper).to_not be_editable
-        paper.reload.reactivate!
+        subject
         expect(paper).to_not be_editable
         expect(paper.submitted?).to eq(true)
       end
@@ -735,15 +752,18 @@ describe Paper do
     end
 
     describe '#minor_check!' do
+      subject { paper.minor_check! }
+
       it_behaves_like "transitions save state_updated_at",
-        minor_check: proc { paper.minor_check! }
+        minor_check: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper editable" do
-        paper.minor_check!
+        subject
         expect(paper).to be_editable
       end
     end
@@ -753,6 +773,7 @@ describe Paper do
 
       it_behaves_like "transitions save state_updated_at",
         submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -794,32 +815,39 @@ describe Paper do
     end
 
     describe '#accept' do
+      subject { paper.accept! }
+
       context 'paper is submitted' do
+        it_behaves_like 'state transitioning'
+
         let(:paper) do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
         it_behaves_like "transitions save state_updated_at",
-          accept: proc { paper.accept! }
+          accept: proc { subject }
 
         it 'transitions to accepted state from submitted' do
-          paper.accept!
+          subject
           expect(paper.accepted?).to be true
         end
       end
     end
 
     describe '#reject' do
+      subject { paper.reject! }
+
       context 'paper is submitted' do
         let(:paper) do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
         it_behaves_like "transitions save state_updated_at",
-          reject: proc { paper.reject! }
+          reject: proc { subject }
+        it_behaves_like 'state transitioning'
 
         it 'transitions to rejected state from submitted' do
-          paper.reject!
+          subject
           expect(paper.rejected?).to be true
         end
 
@@ -828,7 +856,7 @@ describe Paper do
           expect(Notifier).to receive(:notify).with(hash_including(event: "paper:rejected")) do |args|
             expect(args[:data][:record]).to eq(paper)
           end
-          paper.reject!
+          subject
         end
       end
 
@@ -842,31 +870,36 @@ describe Paper do
         end
 
         it_behaves_like "transitions save state_updated_at",
-          reject: proc { paper.reject! }
+          reject: proc { subject }
 
         it 'transitions to rejected state from initially_submitted' do
-          paper.reject!
+          subject
           expect(paper.rejected?).to be true
         end
       end
     end
 
     describe '#publish!' do
+      subject { paper.publish! }
+
       it_behaves_like "transitions save state_updated_at",
-        publish: proc { paper.publish! }
+        publish: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper uneditable" do
-        paper.publish!
+        subject
         expect(paper.published_at).to be_truthy
       end
     end
 
     describe '#rescind_decision!' do
       subject { paper.rescind_decision! }
+
+      it_behaves_like 'state transitioning'
 
       before do
         allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
@@ -929,6 +962,8 @@ describe Paper do
 
     describe '#rescind_initial_submission!' do
       subject { paper.rescind_initial_decision! }
+
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
@@ -1144,6 +1179,9 @@ describe Paper do
       end
 
       context 'and there are authors' do
+        before do
+          CardLoader.load('Author')
+        end
         let(:author_1) do
           FactoryGirl.create(:author, email: 'a1@example.com')
         end

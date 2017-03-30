@@ -7,7 +7,7 @@ machine:
     version:
       2.2.4 # when changing ruby versions, also update the cache_directory path below
   node:
-    version: 4.5.0
+    version: 4.7.1
 
   environment:
     RAILS_ENV: test
@@ -21,6 +21,7 @@ dependencies:
     - "client/bower_components"
 
   pre:
+    - gem update --system
     - gem install bundler -v '1.12.5'
     - bundle config --global jobs 7
     - bundle config --global without staging:production

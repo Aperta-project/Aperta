@@ -22,6 +22,10 @@ class AuthorsController < ApplicationController
     requires_user_can :edit_authors, author.paper
     author.update!(author_params)
 
+    if current_user.can? :administer, author.paper.journal
+      author.update_coauthor_state(author_coauthor_state, current_user.id)
+    end
+
     # render all authors, since position is controlled by acts_as_list
     render json: author_list_payload(author)
   end
@@ -47,6 +51,10 @@ class AuthorsController < ApplicationController
     hash
   end
 
+  def author_coauthor_state
+    params.require(:author).permit(:co_author_state)[:co_author_state]
+  end
+
   def author_params
     params.require(:author).permit(
       :author_initial,
@@ -68,7 +76,8 @@ class AuthorsController < ApplicationController
       :current_address_city,
       :current_address_state,
       :current_address_country,
-      :current_address_postal
+      :current_address_postal,
+      :card_version_id
     )
   end
 end

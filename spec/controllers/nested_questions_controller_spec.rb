@@ -9,21 +9,19 @@ describe NestedQuestionsController do
 
   describe "#index" do
     let!(:questions) { [question1, question2] }
-    let(:question1) { FactoryGirl.create(:nested_question, owner_type: "MyQuestionType", owner_id: nil) }
-    let(:question2) { FactoryGirl.create(:nested_question, owner_type: "MyQuestionType", owner_id: nil) }
+    let!(:card) { FactoryGirl.create(:card, :versioned, name: "My Card") }
+    let(:card_version) { card.card_version(:latest) }
+    let(:root) { card.content_root_for_version(1) }
+    let(:question1) { FactoryGirl.build(:card_content, card_version: card_version).tap { |c| root.children << c } }
+    let(:question2) { FactoryGirl.build(:card_content, card_version: card_version).tap { |c| root.children << c } }
 
     def do_request(params={})
-      get(:index, { type: "MyQuestion" }.merge(params), format: :json)
-    end
-
-    before do
-      allow(NestedQuestion).to receive(:lookup_owner_type).with("MyQuestion").and_return "MyQuestionType"
+      get(:index, { type: "My Card" }.merge(params), format: :json)
     end
 
     it "responds with a list of questions for the given :type" do
       do_request
       json = JSON.parse(response.body)
-
       expected_ids = questions.map(&:id).sort
       actual_ids = json.fetch("nested_questions", []).map { |hsh| hsh["id"] }.sort
 

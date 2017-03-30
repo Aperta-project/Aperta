@@ -36,7 +36,7 @@ class QuestionAttachmentsController < ApplicationController
       if params[:id]
         QuestionAttachment.find_by(id: params[:id])
       elsif attachment_params[:nested_question_answer_id]
-        answer = NestedQuestionAnswer.where(
+        answer = Answer.where(
           id: attachment_params[:nested_question_answer_id]
         ).first!
         answer.attachments.build
@@ -48,15 +48,15 @@ class QuestionAttachmentsController < ApplicationController
   def task_for(question_attachment)
     @task ||= begin
       owner = question_attachment
-      until owner.class <= Task
+      until owner.is_a? Task
         if owner.respond_to?(:owner) && !owner.owner.nil?
           owner = owner.owner
-        elsif owner.respond_to?(:nested_question) && !owner.nested_question.nil?
-          owner = owner.nested_question
-        elsif owner.respond_to? :nested_question_answer
-          owner = owner.nested_question_answer
+        elsif owner.respond_to?(:card_content) && !owner.card_content.nil?
+          owner = owner.card_content
+        elsif owner.respond_to? :answer
+          owner = owner.answer
         else
-          fail ArgumentError "Cannot find task for question attachment"
+          raise ArgumentError, "Cannot find task for question attachment"
         end
       end
     end

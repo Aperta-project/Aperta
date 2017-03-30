@@ -61,6 +61,8 @@
       top: 0px;
       right: 0px;
       border-width: 0 0 0 1px;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
       background-color: $aperta-grey-light;
       height: 100%;
       @include background(linear-gradient(to top, #ccc 0%, #eee 60%));

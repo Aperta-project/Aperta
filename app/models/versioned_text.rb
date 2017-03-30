@@ -7,6 +7,13 @@ class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
 
+  # Base exception class for VersionedText
+  class VersionedTextError < StandardError; end
+
+  # Exception thrown when manuscript attachments aren't `done?` and we're
+  # attempting to copy data from them.
+  class AttachmentNotDone < VersionedTextError; end
+
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
   has_many :figures, through: :paper
@@ -15,6 +22,7 @@ class VersionedText < ActiveRecord::Base
 
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
+  before_save :add_file_info, if: :file?
 
   validates :paper, presence: true
   validate :only_version_once
@@ -23,8 +31,7 @@ class VersionedText < ActiveRecord::Base
   def be_major_version!
     update!(
       major_version: (paper.major_version || -1) + 1,
-      minor_version: 0,
-      file_type: paper.file_type
+      minor_version: 0
     )
   end
 
@@ -32,8 +39,7 @@ class VersionedText < ActiveRecord::Base
   def be_minor_version!
     update!(
       major_version: (paper.major_version || 0),
-      minor_version: (paper.minor_version || -1) + 1,
-      file_type: paper.file_type
+      minor_version: (paper.minor_version || -1) + 1
     )
   end
 
@@ -56,12 +62,10 @@ class VersionedText < ActiveRecord::Base
 
   def new_draft!
     dup.tap do |d|
-      d.update!(
-        major_version: nil,
-        minor_version: nil,
-        submitting_user: nil,
-        file_type: paper.file_type
-      ) # makes duplicate of S3 file
+      d.major_version = nil
+      d.minor_version = nil
+      d.submitting_user = nil
+      d.save! # makes duplicate of VersionedText
     end
   end
 
@@ -69,6 +73,30 @@ class VersionedText < ActiveRecord::Base
     version = major_version.nil? ? "(draft)" : "R#{major_version}.#{minor_version}"
     type = file_type.nil? ? "" : " (#{file_type.upcase})"
     "#{version}#{type} - #{updated_at.strftime('%b %d, %Y')}"
+  end
+
+  def file?
+    paper.file.present?
+  end
+
+  def add_file_info
+    raise AttachmentNotDone unless paper.file.done?
+
+    self.file_type = paper.file_type
+    self.manuscript_s3_path = paper.file.s3_dir
+    self.manuscript_filename = paper.file[:file]
+  end
+
+  def s3_full_path
+    file? ? manuscript_s3_path + '/' + manuscript_filename : nil
+  end
+
+  def s3_full_sourcefile_path
+    file? ? sourcefile_s3_path + '/' + sourcefile_filename : nil
+  end
+
+  def latest_version?
+    self == paper.latest_version
   end
 
   private

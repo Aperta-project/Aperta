@@ -89,23 +89,21 @@ export default Ember.TextField.extend({
         }
       }
 
-      let self = this;
-
       let contentType = file.type;
       this.getS3Credentials(fileName, contentType).then(({url, formData}) => {
         uploadData.url = url;
         uploadData.formData = formData;
 
         let uploadFunction = function() {
-          uploadData.process().done(function(data) {
-            self.sendAction('start', data, uploadData.submit());
+          uploadData.process().done((data) => {
+            this.sendAction('start', data, uploadData.submit());
           });
         };
 
-        if (self.get('uploadImmediately')) {
+        if (this.get('uploadImmediately')) {
           uploadFunction();
         } else {
-          self.sendAction('uploadReady', uploadFunction);
+          this.sendAction('uploadReady', uploadFunction);
         }
       });
 
@@ -143,7 +141,7 @@ export default Ember.TextField.extend({
       } else {
       // without a resourceUrl pass the data up and allow the caller to
       // decide what to do with it.
-        this.sendAction('done', uploadedS3Url, filename);
+        this.sendAction('done', uploadedS3Url, filename, fileData);
       }
     });
     uploader.on('fileuploadprogress', (e, data) => {

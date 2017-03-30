@@ -69,9 +69,8 @@ export default Ember.Component.extend({
       });
     },
 
-    uploadFinished(s3Url, data){
-      const fileName = data.files[0].name,
-        uploads = this.get('fileUploads'),
+    uploadFinished(s3Url, fileName){
+      const uploads = this.get('fileUploads'),
         upload = uploads.findBy('file.name', fileName);
 
       if (this.attrs.uploadFinished) {
@@ -79,10 +78,6 @@ export default Ember.Component.extend({
       }
 
       uploads.removeObject(upload);
-    },
-
-    uploadFailed(reason){
-      throw new Ember.Error(`s3 uploadFailed: ${reason}`);
     }
   }
 });

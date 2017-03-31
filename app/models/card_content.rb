@@ -87,7 +87,8 @@ class CardContent < ActiveRecord::Base
 
   def to_xml(options = {})
     attrs = {
-      'content-type' => content_type
+      'content-type' => content_type,
+      'value-type' => value_type
     }.compact
     setup_builder(options).tag!('content', attrs) do |xml|
       safe_dump_text(xml, 'text', text) if text.present?

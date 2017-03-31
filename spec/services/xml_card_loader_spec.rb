@@ -91,7 +91,7 @@ describe XmlCardLoader do
     let(:opts) { { indent: 0, skip_instruct: 0 } }
 
     it 'works' do
-      expect(card.to_xml(opts)).to eq("<card name=\"#{card.name}\"><content></content></card>")
+      expect(card.to_xml(opts)).to eq("<card name=\"#{card.name}\"><content value-type=\"text\"></content></card>")
     end
   end
 end

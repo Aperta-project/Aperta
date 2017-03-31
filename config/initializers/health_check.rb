@@ -57,17 +57,16 @@ HealthCheck.setup do |config|
       redis_response    = redis.set(scratch_key, what_is_deposited)
       what_is_withdrawn = redis.get(scratch_key)
 
+      redis.del(scratch_key)
+
       if (what_is_withdrawn == what_is_deposited) && (redis_response == "OK")
         "" # an empty string signals success!
       else
         "redis write error"
       end
-
     rescue
       # if there's an exception, then we can assume redis has issues
       'redis error'
-    ensure
-      redis.del(scratch_key)
     end
   end
 

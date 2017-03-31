@@ -30,5 +30,8 @@
         {{{decision.authorResponse}}}
       </div>
     {{/if}}
+    {{#each decision.attachments as |attachment|}}
+      {{attachment-link attachment=attachment}}
+    {{/each}}
   </div>
 {{/unless}}

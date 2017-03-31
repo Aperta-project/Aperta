@@ -24,6 +24,17 @@ describe VersionedText do
     end
   end
 
+  describe '#version' do
+    let(:new_versioned_text) { FactoryGirl.create :versioned_text }
+    it 'returns semantic version if it is not a draft' do
+      expect(new_versioned_text.version).to eq('v1.0')
+    end
+
+    it 'returns latest draft if it is a draft' do
+      expect(versioned_text.version).to eq('latest draft')
+    end
+  end
+
   context 'validation' do
     context 'versioned text is completed' do
       subject(:versioned_text) { FactoryGirl.build(:versioned_text) }
@@ -74,15 +85,15 @@ describe VersionedText do
     end
 
     it "has matching file and versioned_text s3 directories" do
-        paper.draft.be_minor_version!
-        expect(paper.file.s3_dir).not_to be_nil
-        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
-      end
+      paper.draft.be_minor_version!
+      expect(paper.file.s3_dir).not_to be_nil
+      expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+    end
 
-      it "has matching file and versioned_text filenames" do
-        paper.draft.be_minor_version!
-        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
-      end
+    it "has matching file and versioned_text filenames" do
+      paper.draft.be_minor_version!
+      expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+    end
   end
 
   describe "#be_major_version!" do
@@ -108,15 +119,15 @@ describe VersionedText do
     end
 
     it "has matching file and versioned_text s3 directories" do
-        paper.draft.be_major_version!
-        expect(paper.file.s3_dir).not_to be_nil
-        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
-      end
+      paper.draft.be_major_version!
+      expect(paper.file.s3_dir).not_to be_nil
+      expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+    end
 
-      it "has matching file and versioned_text filenames" do
-        paper.draft.be_major_version!
-        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
-      end
+    it "has matching file and versioned_text filenames" do
+      paper.draft.be_major_version!
+      expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+    end
   end
 
   describe "#new_draft!" do
@@ -159,6 +170,12 @@ describe VersionedText do
         expect(draft.major_version).to be_nil
         expect(draft.minor_version).to be_nil
       end
+
+      it "sets s3_dir and filename" do
+        draft = new_draft!
+        expect(draft.manuscript_s3_path).to be_present
+        expect(draft.manuscript_filename).to be_present
+      end
     end
   end
 
@@ -185,13 +202,13 @@ describe VersionedText do
 
     before do
       allow(FigureInserter).to receive(:new)
-        .and_return -> { }
+        .and_return -> {}
     end
 
     it 'should trigger an update of text and figures' do
       expect(FigureInserter).to receive(:new)
         .with('new original text', [figure], {})
-        .and_return -> { }
+        .and_return -> {}
       versioned_text.update!(original_text: 'new original text')
     end
 
@@ -199,9 +216,55 @@ describe VersionedText do
       figure2 = FactoryGirl.create(:figure, owner: paper)
       expect(FigureInserter).to receive(:new)
         .with('new original text', [figure2], {})
-        .and_return -> { }
+        .and_return -> {}
       figure.destroy
       versioned_text.update!(original_text: 'new original text')
+    end
+  end
+
+  describe '#materialized_content' do
+    let!(:resource_token) do
+      create(
+        :resource_token,
+        version_urls: { 'detail' => 'test.jpg' }
+      )
+    end
+    let(:versioned_text) do
+      create(:versioned_text).tap { |vt| vt.update!(text: html) }
+    end
+    let(:expected_html) do
+      <<-HTML.strip
+        <h1>Hello</h1><img src="https://signed.jpg"><h3>World</h3>
+      HTML
+    end
+
+    context 'a recent versioned text record' do
+      let(:html) do
+        <<-HTML.strip
+          <h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>
+        HTML
+      end
+
+      it 'should materialize text with corresponding figures' do
+        allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
+        allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
+        expect(versioned_text.materialized_content).to eq(expected_html)
+      end
+    end
+
+    # 'the embedded resource proxy urls changed at some point'
+    context 'an old versioned text record' do
+      let(:html) do
+        <<-HTML.strip
+          <h1>Hello</h1><img src="/resource_proxy/figures/12345/detail"><h3>World</h3>
+        HTML
+      end
+
+      it 'should materialize text with corresponding figures' do
+        allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
+        allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
+        expect(versioned_text.materialized_content).to eq(expected_html)
+      end
     end
   end
 end

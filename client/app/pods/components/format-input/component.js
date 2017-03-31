@@ -127,6 +127,24 @@ export default Ember.Component.extend({
   disabled: false,
 
   /**
+   * If the value changes optionally send an action.
+   * This observer is a stopgap for backwards compatibility:
+   * consumers can invoke format-input with a readonly value
+   * and use this action to propogate changes rather than
+   * the two-way binding.
+  **/
+  _valueChanged: Ember.observer('value', function() {
+    Ember.run(() => {
+      let action = this.get('valueChanged');
+      if (action) {
+        action(this.get('value'));
+      }
+    });
+  }),
+
+  valueChanged: null, //expected action
+
+  /**
    *  This will pass the formatted content
    *  down to the content-editable component
    *

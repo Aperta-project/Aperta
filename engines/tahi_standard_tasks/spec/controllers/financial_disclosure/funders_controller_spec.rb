@@ -17,6 +17,8 @@ describe TahiStandardTasks::FundersController do
            format: :json,
            funder: {
              task_id: task.id,
+             card_id: nil, # currently being sent from ember
+             card_version_id: nil, # will eventually be sent from ember
              name: "Batelle",
              additional_comments: additional_comments
            }

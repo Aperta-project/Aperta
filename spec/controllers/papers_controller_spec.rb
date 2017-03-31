@@ -214,7 +214,6 @@ describe PapersController do
         expect(Activity).to receive(:paper_edited!).with(paper, user: user)
         do_request
       end
-
     end
 
     context "when the user has access and the paper is NOT editable" do
@@ -253,7 +252,7 @@ describe PapersController do
       get :comment_looks, id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
-    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper)}
+    let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -360,7 +359,7 @@ describe PapersController do
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
-      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:activities) { [manuscript_activity, workflow_activity] }
       let!(:manuscript_activity) do
         FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
       end
@@ -412,7 +411,7 @@ describe PapersController do
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
-      let!(:activities) { [ manuscript_activity, workflow_activity ] }
+      let!(:activities) { [manuscript_activity, workflow_activity] }
       let!(:manuscript_activity) do
         FactoryGirl.create(:activity, subject: paper, feed_name: 'manuscript')
       end
@@ -521,85 +520,6 @@ describe PapersController do
     end
   end
 
-
-  describe "GET download" do
-    subject(:do_request) do
-      get :download, id: paper.id, format: format
-    end
-    let(:format) { :docx }
-
-    let(:url) { "http://theurl.com" }
-    let(:paper) { FactoryGirl.create(:paper) }
-
-    it_behaves_like "an unauthenticated json request"
-
-    context "when the user has access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:view, paper)
-          .and_return true
-      end
-
-      context 'requested format is PDF' do
-        let(:format) { :pdf }
-        let(:pdf_converter) do
-          instance_double(PDFConverter, fs_filename: 'za-file.pdf')
-        end
-
-        it "sends a pdf file back if there's a pdf extension" do
-          expect(PDFConverter).to receive(:new).with(paper, user)
-            .and_return pdf_converter
-          expect(pdf_converter).to receive(:convert)
-            .and_return 'my pdf file contents'
-
-          do_request
-
-          expect(response.body).to eq('my pdf file contents')
-          expect(response.headers['Content-Disposition']).to \
-            include('filename="za-file.pdf"')
-        end
-      end
-
-      context 'requested format is docx' do
-        let(:format) { :docx }
-
-        context 'and no docx was uploaded' do
-          it 'returns 404' do
-            do_request
-            expect(response.status).to eq(404)
-          end
-        end
-
-        context 'and a docx file was uploaded' do
-          let(:docx_url) { 'http://example.com/source.docx' }
-
-          it 'redirects to the docx file' do
-            # Force the controller to use our mocked paper
-            allow(controller).to receive(:paper).and_return(paper)
-            manuscript_file = double('ManuscriptAttachment', url: docx_url)
-            allow(paper).to receive(:file).and_return(manuscript_file)
-
-            do_request
-            expect(response).to redirect_to(docx_url)
-          end
-        end
-      end
-    end
-
-    context "when the user does not have access" do
-      before do
-        stub_sign_in(user)
-        allow(user).to receive(:can?)
-          .with(:view, paper)
-          .and_return false
-        do_request
-      end
-
-      it { is_expected.to responds_with(403) }
-    end
-  end
-
   describe 'PUT toggle_editable' do
     subject(:do_request) do
       put :toggle_editable, id: paper.id, format: :json
@@ -662,7 +582,7 @@ describe PapersController do
 
   describe 'PUT submit' do
     subject(:do_request) do
-       put :submit, id: paper.id, format: :json
+      put :submit, id: paper.id, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -730,7 +650,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error StandardError
+            expect { do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end
@@ -788,7 +708,7 @@ describe PapersController do
               raise
             end
 
-            expect{ do_request }.to raise_error StandardError
+            expect { do_request }.to raise_error StandardError
             expect(paper).to be_unsubmitted
           end
         end
@@ -895,7 +815,7 @@ describe PapersController do
 
   describe 'PUT withdraw' do
     subject(:do_request) do
-       put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
+      put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
     let(:withdrawal_reason) { 'It was a whoopsie' }

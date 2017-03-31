@@ -3,4 +3,8 @@
     .form-control {
         min-height: 100px;
     }
+
+    div[contenteditable] {
+        list-style: none;
+    }
 }

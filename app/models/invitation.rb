@@ -17,6 +17,10 @@ class Invitation < ActiveRecord::Base
   scope :where_email_matches,
     ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
 
+  alias_attribute :body_html, :body
+  alias_attribute :decline_reason_html, :decline_reason
+  alias_attribute :reviewer_suggestions_html, :reviewer_suggestions
+
   before_validation :set_invitee_role
   validates :invitee_role, presence: true
   validates :email, format: /.+@.+/

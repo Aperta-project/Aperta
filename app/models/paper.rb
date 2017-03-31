@@ -61,6 +61,8 @@ class Paper < ActiveRecord::Base
            source: :author
   has_many :author_list_items, -> { order 'position ASC' }, dependent: :destroy
 
+  alias_attribute :abstract_html, :abstract
+  alias_attribute :title_html, :title
   validates :paper_type, presence: true
   validates :journal, presence: true
   validates :title, presence: true

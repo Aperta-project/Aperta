@@ -8,6 +8,7 @@ class DiscussionReply < ActiveRecord::Base
 
   before_create :process_at_mentions!
 
+  alias_attribute :body_html, :body
   def process_at_mentions!
     self.body = user_mentions.decorated_mentions
   end

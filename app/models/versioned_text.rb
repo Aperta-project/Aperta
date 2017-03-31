@@ -13,6 +13,8 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
+  alias_attribute :text_html, :html
+
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
   before_update :add_file_info, if: :file?

@@ -7,6 +7,7 @@
 class RelatedArticle < ActiveRecord::Base
   belongs_to :paper
 
+  alias_attribute :linked_title_html, :linked_title
   # Columns available:
   #
   # linked_doi: the DOI of the related article

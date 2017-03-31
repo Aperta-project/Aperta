@@ -39,6 +39,7 @@ gem 'health_check'
 gem 'kaminari'
 gem 'lograge'
 gem 'mail_safe', require: false
+gem 'migration_comments'
 gem 'migration_data'
 gem 'mini_magick'
 gem 'newrelic_rpm'

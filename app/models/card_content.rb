@@ -31,6 +31,8 @@ class CardContent < ActiveRecord::Base
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
   VALUE_TYPES_FOR_CONTENT =
     { 'display-children': [nil],
+      'display-with-value': [nil],
+      'field-set': [nil],
       'short-input': ['text'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],

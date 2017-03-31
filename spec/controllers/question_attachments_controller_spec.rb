@@ -84,7 +84,7 @@ describe QuestionAttachmentsController do
     subject(:do_request) do
       post :create, format: :json, question_attachment: {
         nested_question_answer_id: answer.id,
-        caption: 'This is a great caption!',
+        caption_html: 'This is a great caption!',
         src: 'http://some.cat.image.gif'
       }
     end
@@ -102,7 +102,7 @@ describe QuestionAttachmentsController do
       it 'creates a new question attachment' do
         expect { do_request }.to change { answer.attachments.count }.by(1)
         attachment = answer.attachments.last
-        expect(attachment.caption).to eq('This is a great caption!')
+        expect(attachment.caption_html).to eq('This is a great caption!')
       end
 
       it 'sets the paper on the question attachment' do
@@ -146,7 +146,7 @@ describe QuestionAttachmentsController do
   describe '#update' do
     subject(:do_request) do
       put :update, format: :json, question_attachment: {
-        caption: 'This is a great caption!', src: 'http://some.cat.image.gif'
+        caption_html: 'This is a great caption!', src: 'http://some.cat.image.gif'
       }, id: question_attachment.id
     end
 
@@ -163,7 +163,7 @@ describe QuestionAttachmentsController do
       it 'updates a question attachment' do
         expect { do_request }.to_not change { answer.attachments.count }
         question_attachment.reload
-        expect(question_attachment.caption).to eq('This is a great caption!')
+        expect(question_attachment.caption_html).to eq('This is a great caption!')
       end
 
       it 'processes the attachment in the background' do

@@ -64,6 +64,6 @@ class AdhocAttachmentsController < ApplicationController
   end
 
   def attachment_params
-    params.require(:attachment).permit(:title, :caption, :kind)
+    params.require(:attachment).permit(:title_html, :caption_html, :kind)
   end
 end

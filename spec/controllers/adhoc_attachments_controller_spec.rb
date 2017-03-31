@@ -146,7 +146,7 @@ describe AdhocAttachmentsController do
 
   describe 'POST #create' do
     subject(:do_request) do
-      post :create, format: 'json', task_id: task.to_param, title: 'Cool'
+      post :create, format: 'json', task_id: task.to_param, title_html: 'Cool'
     end
     let(:url) { 'http://someawesomeurl.com' }
 
@@ -285,8 +285,8 @@ describe AdhocAttachmentsController do
             id: task.attachments.last.id,
             task_id: task.id,
             attachment: {
-              title: "new title",
-              caption: "new caption"
+              title_html: "new title",
+              caption_html: "new caption"
             },
             format: :json
     end
@@ -307,12 +307,12 @@ describe AdhocAttachmentsController do
             .and_return true
         end
 
-        it 'allows updates for title and caption' do
+        it 'allows updates for title_html and caption_html' do
           do_request
 
           attachment = task.attachments.last
-          expect(attachment.caption).to eq('new caption')
-          expect(attachment.title).to eq('new title')
+          expect(attachment.caption_html).to eq('new caption')
+          expect(attachment.title_html).to eq('new title')
         end
       end
 

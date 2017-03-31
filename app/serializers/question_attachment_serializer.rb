@@ -1,3 +1,3 @@
 class QuestionAttachmentSerializer < ActiveModel::Serializer
-  attributes :id, :title, :caption, :status, :filename, :src
+  attributes :id, :title_html, :caption_html, :status, :filename, :src
 end

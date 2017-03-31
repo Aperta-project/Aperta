@@ -6,14 +6,14 @@ class QuestionAttachmentsController < ApplicationController
 
   def create
     requires_user_can :edit, task_for(question_attachment)
-    question_attachment.update(caption: attachment_params[:caption])
+    question_attachment.update(caption_html: attachment_params[:caption_html])
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def update
     requires_user_can :edit, task_for(question_attachment)
-    question_attachment.update caption: attachment_params[:caption]
+    question_attachment.update caption_html: attachment_params[:caption_html]
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
@@ -73,8 +73,8 @@ class QuestionAttachmentsController < ApplicationController
       question_attachment: [
         :nested_question_answer_id,
         :src, :filename,
-        :title,
-        :caption
+        :title_html,
+        :caption_html
       ]
     )[:question_attachment]
   end

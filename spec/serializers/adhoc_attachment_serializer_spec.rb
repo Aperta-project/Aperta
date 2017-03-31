@@ -23,8 +23,8 @@ describe AdhocAttachmentSerializer, serializer_test: true do
     it 'includes the data we expect' do
       expected_contents = hash_including(
         id: attachment.id,
-        title: attachment.title,
-        caption: attachment.caption,
+        title_html: attachment.title_html,
+        caption_html: attachment.caption_html,
         file_type: attachment.file_type,
         src: src,
         status: attachment.status,

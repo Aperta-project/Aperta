@@ -24,6 +24,9 @@ class Snapshot < ActiveRecord::Base
   scope :supporting_information_files, lambda {
     attachments.where("contents ->> 'name' = 'supporting-information-file'")
   }
+  scope :adhoc_attachments, lambda {
+    attachments.where("contents ->> 'name' = 'adhoc-attachment'")
+  }
 
   def source=(new_source)
     super

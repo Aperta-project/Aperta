@@ -77,7 +77,11 @@ Tahi::Application.routes.draw do
     resources :decisions, only: [:create, :update, :show] do
       put :rescind, on: :member
       put :register, on: :member
+      resources :attachments, only: [:index, :create, :update, :destroy], controller: 'decision_attachments' do
+        put :update_attachment, on: :member
+      end
     end
+    resources :decision_attachments, only: [:index, :show, :create, :update, :destroy]
     resources :discussion_topics, only: [:index, :show, :create, :update] do
       get :users, on: :member
     end
@@ -223,12 +227,6 @@ Tahi::Application.routes.draw do
     end
   end
 
-  # epub/pdf paper download formats
-  #
-  resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, only: [] do
-    get :download, on: :member
-  end
-
   get '/invitations/:token',
     to: 'token_invitations#show',
     as: 'confirm_decline_invitation'
@@ -269,16 +267,16 @@ Tahi::Application.routes.draw do
   # We need to maintain this route as existing resources have been linked with
   # this scheme.
   get '/resource_proxy/:resource/:token(/:version)',
-    constraints: {
-      resource: /
-        adhoc_attachments
-        | attachments
-        | question_attachments
-        | figures
-        | supporting_information_files
-      /x
-    },
-    to: 'resource_proxy#url', as: :old_resource_proxy
+      constraints: {
+        resource: /
+          adhoc_attachments
+          | attachments
+          | question_attachments
+          | figures
+          | supporting_information_files
+        /x
+      },
+      to: 'resource_proxy#url', as: :old_resource_proxy
 
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',

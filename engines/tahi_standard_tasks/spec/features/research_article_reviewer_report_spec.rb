@@ -92,6 +92,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     invitation = create_reviewer_invitation(paper)
     reviewer_report_task = create_reviewer_report_task
+    reviewer_report_task.reviewer_reports
+      .where(state: 'invitation_not_accepted')
+      .first.accept_invitation!
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}",

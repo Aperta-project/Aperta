@@ -18,7 +18,7 @@ describe TaskFactory do
 
   it "Sets the default title if is not indicated" do
     task = TaskFactory.create(klass, paper: paper, phase: phase)
-    expect(task.title).to eq('Revise Manuscript')
+    expect(task.title).to eq('Response to Reviewers')
   end
 
   it "Sets the title from params" do

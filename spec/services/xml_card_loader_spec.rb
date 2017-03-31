@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe XmlCardLoader do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:card) { XmlCardLoader.from_xml_string(xml, journal).tap(&:save!) }
@@ -91,7 +93,7 @@ describe XmlCardLoader do
     let(:opts) { { indent: 0, skip_instruct: 0 } }
 
     it 'works' do
-      expect(card.to_xml(opts)).to eq("<card name=\"#{card.name}\"><content value-type=\"text\"></content></card>")
+      expect(card.to_xml(opts)).to be_equivalent_to("<card name=\"#{card.name}\"><content value-type=\"text\"></content></card>")
     end
   end
 end

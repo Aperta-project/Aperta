@@ -15,17 +15,28 @@ more user friendly.
 ### Fixed
 ### Security
 
-## ## [1.39.0] - {2017-03-16}
+## ## [1.39.1] - {2017-03-30}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Funders can now be added and updated
+### Security
+
+## ## [1.39.0] - {2017-03-29}
 ### Added
 * The footer discussion cannot be seen by Reviewers and other external users in
   individual card view
 * Billing staff now have more viewing access than just to the Billing card
 * Users can now save lists on Safari for Ad Hoc cards
-* Reviewer Report status available on invitation list 
+* Reviewer Report status available on invitation list
 ### Changed
+* File name for PDF Downloads have been updated to follow the format "[short doi] - [author last name] - [version].pdf"
 ### Deprecated
 ### Removed
 ### Fixed
+* Fixed bug that always returned the latest version of a manuscript regardless of the version that was requested.
 ### Security
 
 ## ## [1.38.0] - {2017-03-09}

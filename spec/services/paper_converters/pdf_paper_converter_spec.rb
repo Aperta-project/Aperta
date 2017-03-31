@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe PDFConverter do
-  let(:user) { FactoryGirl.create :user }
+describe PaperConverters::PdfPaperConverter do
+  let(:export_format) { 'pdf' }
   let(:journal) do
     FactoryGirl.create(
       :journal,
@@ -9,25 +9,34 @@ describe PDFConverter do
       pdf_css: 'body { background-color: red; }'
     )
   end
-  let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
+  let(:user) { FactoryGirl.create :user }
+  let(:paper) { create(:paper, :version_with_file_type, :with_creator, journal: journal) }
+  let(:versioned_text) { paper.latest_version }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
-  let(:converter) { PDFConverter.new(paper, user) }
+  let(:converter) { PaperConverters::PdfPaperConverter.new(versioned_text, export_format, user) }
 
-  describe '#convert' do
+  it_behaves_like "a synchronous paper converter"
+
+  describe "#output_filename" do
+    subject { converter.output_filename }
+    it { is_expected.to eq "#{paper.short_doi} - #{paper.creator.last_name} - #{versioned_text.version}.pdf" }
+  end
+
+  describe "#output_filetype" do
+    subject { converter.output_filetype }
+    it { is_expected.to eq('application/pdf') }
+  end
+
+  describe '#output_data' do
     it 'uses PDFKit to generate PDF' do
       expect(PDFKit).to receive_message_chain(:new, :to_pdf)
-      converter.convert
+      converter.output_data
     end
   end
 
   describe '.pdf_html' do
     let(:doc) { Nokogiri::HTML(pdf_html) }
     let(:pdf_html) { converter.pdf_html }
-
-    before do
-      # See SupportingInformationFileProxy#preview?
-      allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:exists?).and_return(true)
-    end
 
     after { expect(doc.errors.length).to be 0 }
 
@@ -105,7 +114,7 @@ describe PDFConverter do
       it 'replaces img src urls (which are normally proxied) with resolveable urls' do
         expected_uri = URI.parse(figure.proxyable_url)
         actual_uri = URI.parse(figure.proxyable_url)
-
+        allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
         expect(actual_uri.scheme).to eq expected_uri.scheme
         expect(actual_uri.host).to eq expected_uri.host
         expect(actual_uri.path).to eq expected_uri.path
@@ -121,6 +130,7 @@ describe PDFConverter do
       end
 
       it 'has the proper css class to prevent figures spanning multiple lines' do
+        allow(Attachment).to receive(:authenticated_url_for_key).and_return figure.proxyable_url
         expect(figure_img['class']).to include("pdf-image",
                                                "pdf-image-with-caption")
       end

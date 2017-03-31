@@ -3,16 +3,16 @@ require 'rails_helper'
 describe Typesetter::SupportingInformationFileSerializer do
   subject(:serializer) { described_class.new(si_file) }
 
-  let(:title) { 'My title' }
-  let(:caption) { 'My caption' }
+  let(:title_html) { 'My title' }
+  let(:caption_html) { 'My caption' }
   let(:label) { 'S3' }
   let(:category) { 'Figure' }
   let(:file_name) { 'file_name.csv' }
   let(:si_file) do
     FactoryGirl.create(
       :supporting_information_file,
-      title: title,
-      caption: caption,
+      title_html: title_html,
+      caption_html: caption_html,
       label: label,
       category: category
     )
@@ -26,21 +26,21 @@ describe Typesetter::SupportingInformationFileSerializer do
 
   it 'has the correct fields' do
     expect(output.keys).to contain_exactly(
-      :title,
-      :caption,
+      :title_html,
+      :caption_html,
       :label,
       :file_name)
   end
 
-  describe 'title' do
-    it "is the file's title" do
-      expect(output[:title]).to eq(title)
+  describe 'title_html' do
+    it "is the file's title_html" do
+      expect(output[:title_html]).to eq(title_html)
     end
   end
 
-  describe 'caption' do
-    it "is the file's caption" do
-      expect(output[:caption]).to eq(caption)
+  describe 'caption_html' do
+    it "is the file's caption_html" do
+      expect(output[:caption_html]).to eq(caption_html)
     end
   end
 

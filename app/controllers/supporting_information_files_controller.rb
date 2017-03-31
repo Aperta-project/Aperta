@@ -52,8 +52,8 @@ class SupportingInformationFilesController < ApplicationController
 
   def file_params
     params.require(:supporting_information_file).permit(
-      :title,
-      :caption,
+      :title_html,
+      :caption_html,
       :label,
       :category,
       :publishable,

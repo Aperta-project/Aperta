@@ -11,7 +11,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:decision) do
     paper.decisions.create!(
-      letter: "Body text of a Decision Letter",
+      letter_html: "Body text of a Decision Letter",
       verdict: "accept"
     )
   end

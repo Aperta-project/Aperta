@@ -129,8 +129,8 @@ describe SupportingInformationFilesController, redis: true do
   describe 'PUT #update' do
     subject(:do_request) do
       put :update, id: file.id,
-                   supporting_information_file: { title: 'new title',
-                                                  caption: 'new caption' },
+                   supporting_information_file: { title_html: 'new title',
+                                                  caption_html: 'new caption' },
                    format: :json
     end
 
@@ -144,9 +144,9 @@ describe SupportingInformationFilesController, redis: true do
           .and_return true
       end
 
-      it 'allows updates for title and caption' do
+      it 'allows updates for title_html and caption_html' do
         expect(file).to receive(:update_attributes)
-          .with("title" => "new title", "caption" => "new caption")
+          .with("title_html" => "new title", "caption_html" => "new caption")
 
         do_request
       end

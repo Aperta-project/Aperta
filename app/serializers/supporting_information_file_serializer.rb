@@ -7,8 +7,8 @@ class SupportingInformationFileSerializer < ActiveModel::Serializer
              :status,
              :label,
              :category,
-             :title,
-             :caption,
+             :title_html,
+             :caption_html,
              :publishable,
              :created_at,
              :striking_image

@@ -12,7 +12,7 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  validates :category, :title, presence: true, if: :task_completed?
+  validates :category, :title_html, presence: true, if: :task_completed?
 
   validates :status, acceptance: { accept: STATUS_DONE }, if: :task_completed?
 
@@ -44,7 +44,7 @@ class SupportingInformationFile < Attachment
 
   protected
 
-  def build_title
-    title
+  def build_title_html
+    title_html
   end
 end

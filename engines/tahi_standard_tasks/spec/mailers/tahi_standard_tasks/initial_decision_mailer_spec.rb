@@ -5,7 +5,7 @@ describe TahiStandardTasks::InitialDecisionMailer do
   let(:decision) do
     FactoryGirl.build_stubbed(
       :decision,
-      letter: 'Body text of a Decision Letter',
+      letter_html: 'Body text of a Decision Letter',
       verdict: 'reject',
       paper: paper
     )

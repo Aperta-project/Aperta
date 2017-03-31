@@ -55,8 +55,8 @@ export default Ember.Component.extend({
 
   actions: {
 
-    fileAdded(file){
-      this.get('fileUploads').addObject(FileUpload.create({ file: file }));
+    fileAdded(upload){
+      this.get('fileUploads').addObject(FileUpload.create({ file: upload.files[0] }));
     },
 
     uploadProgress(data) {

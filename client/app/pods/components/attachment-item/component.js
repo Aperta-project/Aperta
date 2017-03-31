@@ -75,8 +75,8 @@ export default Ember.Component.extend({
       }
     },
 
-    fileAdded(file){
-      this.set('fileUpload', FileUpload.create({ file: file }));
+    fileAdded(upload){
+      this.set('fileUpload', FileUpload.create({ file: upload.files[0] }));
     },
 
     triggerFileSelection() {

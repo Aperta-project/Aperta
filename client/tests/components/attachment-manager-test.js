@@ -16,7 +16,7 @@ test('uploading a single file works', function(assert) {
   });
 
   assert.expect(6);
-  component.send('fileAdded', {name: 'hey'});
+  component.send('fileAdded', {files: [{name: 'hey'}]});
   assert.equal(component.get('fileUploads.firstObject.file.name'), 'hey', 'File is set');
 
   component.send('uploadProgress', {
@@ -44,8 +44,8 @@ test('uploading multiple files correctly maintains state', function(assert) {
 
   assert.expect(7);
 
-  component.send('fileAdded', {name: 'hey'});
-  component.send('fileAdded', {name: 'dude'});
+  component.send('fileAdded', {files: [{name: 'hey'}]});
+  component.send('fileAdded', {files: [{name: 'dude'}]});
   assert.equal(component.get('fileUploads.firstObject.file.name'), 'hey', 'File is set');
   assert.equal(component.get('fileUploads.lastObject.file.name'), 'dude', 'File is set');
 

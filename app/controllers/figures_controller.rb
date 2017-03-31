@@ -57,8 +57,8 @@ class FiguresController < ApplicationController
 
   def figure_params
     params.require(:figure).permit(
-      :title,
-      :caption,
+      :title_html,
+      :caption_html,
       :striking_image,
       :attachment,
       attachment: [])

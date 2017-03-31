@@ -225,7 +225,7 @@ describe FiguresController do
       put(
         :update,
         id: figure.to_param,
-        figure: { title: "new title", caption: 'new caption' },
+        figure: { title_html: 'new title', caption_html: 'new caption' },
         format: :json
       )
     end
@@ -244,9 +244,9 @@ describe FiguresController do
           .and_return true
       end
 
-      it "allows updates for title and caption" do
+      it "allows updates for title_html and caption_html" do
         expect(figure).to receive(:update_attributes)
-          .with("title" => "new title", "caption" => "new caption")
+          .with("title_html" => "new title", "caption_html" => "new caption")
 
         do_request
       end

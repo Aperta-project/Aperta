@@ -33,7 +33,7 @@ export default NestedQuestionOwner.extend(Answerable, {
   contactEmail: attr('string'),
 
   coAuthorState: attr('string'),
-  coAuthorStateModified: attr('date'),
+  coAuthorStateModifiedAt: attr('date'),
 
   confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
   refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),

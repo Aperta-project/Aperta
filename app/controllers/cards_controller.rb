@@ -29,7 +29,7 @@ class CardsController < ApplicationController
 
   def update
     requires_user_can(:edit, card)
-    card.xml = params[:card][:xml]
+    card.xml = params[:card][:xml] if params[:card][:xml].present?
     card.update!(card_params)
 
     respond_with card

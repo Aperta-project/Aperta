@@ -6,7 +6,8 @@ class CardContentSerializer < ActiveModel::Serializer
              :content_type,
              :order,
              :placeholder,
-             :possible_values
+             :possible_values,
+             :visible_with_parent_answer
 
   has_many :children,
            embed: :ids,

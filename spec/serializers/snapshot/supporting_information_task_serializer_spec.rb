@@ -8,20 +8,20 @@ describe Snapshot::SupportingInformationTaskSerializer do
     FactoryGirl.create(
       :supporting_information_file,
       :with_resource_token,
-      caption: 'supporting info 1 caption',
+      caption_html: 'supporting info 1 caption',
       owner: task,
       paper: paper,
-      title: 'supporting info 1 title',
+      title_html: 'supporting info 1 title'
     )
   end
   let!(:si_file_2) do
     FactoryGirl.create(
       :supporting_information_file,
       :with_resource_token,
-      caption: 'supporting info 2 caption',
+      caption_html: 'supporting info 2 caption',
       owner: task,
       paper: paper,
-      title: 'supporting info 2 title',
+      title_html: 'supporting info 2 title'
     )
   end
 
@@ -51,11 +51,11 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'id', type: 'integer', value: si_file_1.id },
         { name: 'file', type: 'text', value: si_file_1.filename },
         { name: 'file_hash', type: 'text', value: si_file_1.file_hash },
-        { name: 'title', type: 'text', value: si_file_1.title },
-        { name: 'caption', type: 'text', value: si_file_1.caption },
+        { name: 'title_html', type: 'text', value: si_file_1.title_html },
+        { name: 'caption_html', type: 'text', value: si_file_1.caption_html },
         { name: 'publishable', type: 'boolean', value: si_file_1.publishable },
         { name: 'striking_image', type: 'boolean', value: si_file_1.striking_image },
-        { name: 'url', type: 'url', value: si_file_1.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: si_file_1.non_expiring_proxy_url
       )
 
       expect(si_files_json[1]).to match hash_including(
@@ -66,11 +66,11 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'id', type: 'integer', value: si_file_2.id },
         { name: 'file', type: 'text', value: si_file_2.filename },
         { name: 'file_hash', type: 'text', value: si_file_2.file_hash },
-        { name: 'title', type: 'text', value: si_file_2.title },
-        { name: 'caption', type: 'text', value: si_file_2.caption },
+        { name: 'title_html', type: 'text', value: si_file_2.title_html },
+        { name: 'caption_html', type: 'text', value: si_file_2.caption_html },
         { name: 'publishable', type: 'boolean', value: si_file_2.publishable },
         { name: 'striking_image', type: 'boolean', value: si_file_2.striking_image },
-        { name: 'url', type: 'url', value: si_file_2.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: si_file_2.non_expiring_proxy_url
       )
     end
 

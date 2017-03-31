@@ -6,7 +6,7 @@ describe Snapshot::AttachmentSerializer do
     FactoryGirl.create(
       :attachment,
       :with_resource_token,
-      caption: 'attachment 1 caption',
+      caption_html: 'attachment 1 caption',
       category: 'CategoryOne',
       file_hash: 'abc123',
       label: 'Sputnik Records',
@@ -14,7 +14,7 @@ describe Snapshot::AttachmentSerializer do
       paper: paper,
       publishable: true,
       status: 'processing',
-      title: 'attachment 1 title'
+      title_html: 'attachment 1 title'
     )
   end
   let(:paper) { FactoryGirl.build_stubbed(:paper) }
@@ -30,14 +30,14 @@ describe Snapshot::AttachmentSerializer do
 
       expect(serializer.as_json[:children]).to match array_including(
         { name: 'id', type: 'integer', value: attachment.id },
-        { name: 'caption', type: 'text', value: attachment.caption },
+        { name: 'caption_html', type: 'text', value: attachment.caption_html },
         { name: 'category', type: 'text', value: attachment.category },
         { name: 'file', type: 'text', value: attachment.filename },
         { name: 'file_hash', type: 'text', value: attachment.file_hash },
         { name: 'label', type: 'text', value: attachment.label },
         { name: 'publishable', type: 'boolean', value: attachment.publishable },
         { name: 'status', type: 'text', value: attachment.status },
-        { name: 'title', type: 'text', value: attachment.title },
+        { name: 'title_html', type: 'text', value: attachment.title_html },
         { name: 'url', type: 'url', value: attachment.non_expiring_proxy_url }
       )
     end

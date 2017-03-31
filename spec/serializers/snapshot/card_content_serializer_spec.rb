@@ -134,8 +134,8 @@ describe Snapshot::CardContentSerializer do
         expect(attachments_json[0][:children]).to include(
           { name: 'id', type: 'integer', value: attachment_1.id },
           { name: 'file', type: 'text', value: attachment_1.filename },
-          { name: 'title', type: 'text', value: attachment_1.title },
-          { name: 'caption', type: 'text', value: attachment_1.caption },
+          { name: 'title_html', type: 'text', value: attachment_1.title_html },
+          { name: 'caption_html', type: 'text', value: attachment_1.caption_html },
           { name: 'status', type: 'text', value: attachment_1.status }
         )
 
@@ -146,8 +146,8 @@ describe Snapshot::CardContentSerializer do
         expect(attachments_json[1][:children]).to include(
           { name: 'id', type: 'integer', value: attachment_2.id },
           { name: 'file', type: 'text', value: attachment_2.filename },
-          { name: 'title', type: 'text', value: attachment_2.title },
-          { name: 'caption', type: 'text', value: attachment_2.caption },
+          { name: 'title_html', type: 'text', value: attachment_2.title_html },
+          { name: 'caption_html', type: 'text', value: attachment_2.caption_html },
           { name: 'status', type: 'text', value: attachment_2.status }
         )
       end

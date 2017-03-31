@@ -7,16 +7,16 @@ describe Snapshot::FigureTaskSerializer do
     FactoryGirl.create(
       :figure,
       :with_resource_token,
-      title: 'figure 1 title',
-      caption: 'figure 1 caption',
+      title_html: 'figure 1 title',
+      caption_html: 'figure 1 caption'
     )
   end
   let(:figure_2) do
     FactoryGirl.create(
       :figure,
       :with_resource_token,
-      title: 'figure 2 title',
-      caption: 'figure 2 caption'
+      title_html: 'figure 2 title',
+      caption_html: 'figure 2 caption'
     )
   end
 
@@ -47,9 +47,9 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'id', type: 'integer', value: figure_1.id },
         { name: 'file', type: 'text', value: figure_1.filename },
         { name: 'file_hash', type: 'text', value: figure_1.file_hash },
-        { name: 'title', type: 'text', value: figure_1.title },
+        { name: 'title_html', type: 'text', value: figure_1.title_html },
         { name: 'striking_image', type: 'boolean', value: figure_1.striking_image },
-        { name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url
       )
 
       expect(figures_json[1]).to match hash_including(
@@ -60,9 +60,9 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'id', type: 'integer', value: figure_2.id },
         { name: 'file', type: 'text', value: figure_2.filename },
         { name: 'file_hash', type: 'text', value: figure_2.file_hash },
-        { name: 'title', type: 'text', value: figure_2.title },
+        { name: 'title_html', type: 'text', value: figure_2.title_html },
         { name: 'striking_image', type: 'boolean', value: figure_2.striking_image },
-        { name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url
       )
     end
 

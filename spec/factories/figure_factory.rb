@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :figure, parent: :attachment, class: 'Figure' do
     association :owner, factory: :paper
     status 'done'
-    sequence(:title) { |n| "Fig. #{n}" }
+    sequence(:title_html) { |n| "Fig. #{n}" }
 
     transient do
       resource_token_count 1
@@ -18,7 +18,7 @@ FactoryGirl.define do
 
     trait :unprocessed do
       status nil
-      title nil
+      title_html nil
     end
   end
 end

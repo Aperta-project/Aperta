@@ -63,6 +63,7 @@ class Paper < ActiveRecord::Base
 
   alias_attribute :abstract_html, :abstract
   alias_attribute :title_html, :title
+
   validates :paper_type, presence: true
   validates :journal, presence: true
   validates :title, presence: true
@@ -383,9 +384,12 @@ class Paper < ActiveRecord::Base
   #   # or
   #   # => "some-short-title"
   #
-  # Returns a String.
+  # Returns a String. This method has a particular vulnerability that
+  # makes Michael W. sad, see this ticket for more info:
+  # https://jira.plos.org/jira/browse/APERTA-9521
   def display_title(sanitized: true)
-    sanitized ? strip_tags(title) : title.html_safe
+    # rubocop:disable Rails/OutputSafety
+    sanitized ? strip_tags(title_html) : title.html_safe
   end
 
   # Public: Returns the academic editors assigned to this paper

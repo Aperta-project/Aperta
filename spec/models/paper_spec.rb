@@ -917,7 +917,7 @@ describe Paper do
 
       let(:paper) do
         create(:paper, :submitted_lite, journal: journal).tap do |p|
-          p.draft_decision.update(verdict: verdict, letter: Faker::Hacker.say_something_smart)
+          p.draft_decision.update(verdict: verdict, letter_html: Faker::Hacker.say_something_smart)
           p.draft_decision.register! FactoryGirl.create(:register_decision_task)
         end
       end

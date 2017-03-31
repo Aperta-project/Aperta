@@ -138,8 +138,8 @@ describe ApexPackager do
     let(:figure) do
       FactoryGirl.create(
         :figure,
-        title: 'a figure',
-        caption: 'a caption',
+        title_html: 'a figure',
+        caption_html: 'a caption',
         file: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
       )
     end
@@ -192,8 +192,8 @@ describe ApexPackager do
     let(:supporting_information_file) do
       FactoryGirl.create(
         :supporting_information_file,
-        title: 'a file',
-        caption: 'a caption',
+        title_html: 'a file',
+        caption_html: 'a caption',
         file: File.open(
           Rails.root.join('spec/fixtures/about_turtles.docx')
         )
@@ -257,8 +257,8 @@ describe ApexPackager do
 
     let(:striking_image) do
       stub_model(Figure,
-                 title: 'a figure',
-                 caption: 'a caption',
+                 title_html: 'a figure',
+                 caption_html: 'a caption',
                  paper: paper,
                  filename: 'yeti1.jpg',
                  file: attachment1)
@@ -266,8 +266,8 @@ describe ApexPackager do
 
     let(:figure) do
       stub_model(Figure,
-                 title: 'a title',
-                 caption: 'a caption',
+                 title_html: 'a title',
+                 caption_html: 'a caption',
                  paper: paper,
                  filename: 'yeti2.jpg',
                  file: attachment2)

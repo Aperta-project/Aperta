@@ -5,7 +5,7 @@ class Figure < Attachment
   include CanBeStrikingImage
 
   self.public_resource = true
-  
+
   default_scope { order(:id) }
 
   after_save :insert_figures!, if: :should_insert_figures?
@@ -13,17 +13,21 @@ class Figure < Attachment
 
   delegate :insert_figures!, to: :paper
 
+  # rubocop:disable Style/RegexpLiteral
   def self.acceptable_content_type?(content_type)
-    !!(content_type =~ /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i)
+    regex = /(^image\/(gif|jpe?g|png|tif?f)|application\/postscript)$/i
+    !(!(content_type =~ regex))
   end
 
   def alt
-    filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize if filename.present?
+    if filename.present?
+      filename.split('.').first.gsub(/#{File.extname(filename)}$/, '').humanize
+    end
   end
 
   def rank
-    return 0 unless title
-    number_match = title.match /\d+/
+    return 0 unless title_html
+    number_match = title_html.match(/\d+/)
     if number_match
       number_match[0].to_i
     else
@@ -37,14 +41,14 @@ class Figure < Attachment
 
   protected
 
-  def build_title
-    return title if title.present?
-    title_from_filename || 'Unlabeled'
+  def build_title_html
+    return title_html if title_html.present?
+    title_html_from_filename || 'Unlabeled'
   end
 
   private
 
-  def title_from_filename
+  def title_html_from_filename
     title_rank_regex = /fig(ure)?[^[:alnum:]]*(?<label>\d+)/i
     title_rank_regex.match(file.filename) do |match|
       return "Fig #{match['label']}"
@@ -52,7 +56,7 @@ class Figure < Attachment
   end
 
   def should_insert_figures?
-    title_changed? && !downloading? && all_figures_done? && resource_token
+    title_html_changed? && !downloading? && all_figures_done? && resource_token
   end
 
   def all_figures_done?

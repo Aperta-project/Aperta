@@ -155,14 +155,14 @@ describe Attachment do
   describe '#build_title' do
     it 'should return the title_html if set' do
       subject.title_html = Faker::Lorem.sentence
-      expect(subject.send(:build_title)).to eq(subject.title_html)
+      expect(subject.send(:build_title_html)).to eq(subject.title_html)
     end
 
     it 'should return the filename if not set' do
       subject.title_html = nil
       filename = Faker::Lorem.word
       expect(subject.file).to receive(:filename).and_return(filename)
-      expect(subject.send(:build_title)).to eq(filename)
+      expect(subject.send(:build_title_html)).to eq(filename)
     end
   end
 

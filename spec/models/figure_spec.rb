@@ -46,27 +46,27 @@ describe Figure, redis: true do
     it_behaves_like 'attachment#download! sets the error fields'
     it_behaves_like 'attachment#download! when the attachment is invalid'
 
-    it 'sets the title, status, and rank' do
+    it 'sets the title_html, status, and rank' do
       figure.download!(url)
       figure.reload
-      expect(figure.title).to eq('Unlabeled')
+      expect(figure.title_html).to eq('Unlabeled')
       expect(figure.status).to eq(self.described_class::STATUS_DONE)
       expect(figure.rank).to eq(0)
     end
 
-    it 'does not set the title when it is already set' do
-      figure.update_column(:title, 'Great picture!')
+    it 'does not set the title_html when it is already set' do
+      figure.update_column(:title_html, 'Great picture!')
       expect do
         figure.download!(url)
-      end.to_not change { figure.reload.title }.from('Great picture!')
+      end.to_not change { figure.reload.title_html }.from('Great picture!')
     end
 
     context 'when the figure is labeled', vcr: { cassette_name: 'labeled_figures'} do
       let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/fig-1.jpg' }
-      it 'sets the figure title and rank from the label' do
+      it 'sets the figure title_html and rank from the label' do
         figure.download!(url)
         figure.reload
-        expect(figure.title).to eq('Fig 1')
+        expect(figure.title_html).to eq('Fig 1')
         expect(figure.rank).to eq(1)
       end
     end
@@ -131,24 +131,24 @@ describe Figure, redis: true do
   end
 
   describe 'rank' do
-    it 'coerces the title into an integer if able' do
-      figure = create :figure, title: "Fig 1"
+    it 'coerces the title_html into an integer if able' do
+      figure = create :figure, title_html: "Fig 1"
       expect(figure.rank).to eq 1
 
-      figure.update!(title: "Figure 2")
+      figure.update!(title_html: "Figure 2")
       expect(figure.rank).to eq 2
 
-      figure.update!(title: "42")
+      figure.update!(title_html: "42")
       expect(figure.rank).to eq 42
     end
 
-    it 'is 0 if the title can not be coerced into an integer' do
-      figure = create :figure, title: "I didn't follow instructions"
+    it 'is 0 if the title_html can not be coerced into an integer' do
+      figure = create :figure, title_html: "I didn't follow instructions"
       expect(figure.rank).to eq 0
     end
 
-    it 'is 0 if the title is nil' do
-      figure = create :figure, title: nil
+    it 'is 0 if the title_html is nil' do
+      figure = create :figure, title_html: nil
       expect(figure.rank).to eq 0
     end
   end
@@ -159,11 +159,11 @@ describe Figure, redis: true do
       figure.paper = paper
     end
 
-    it 'triggers when the figure title is updated' do
+    it 'triggers when the figure title_html is updated' do
       allow(figure).to receive(:all_figures_done?).and_return(true)
       expect(paper).to receive(:insert_figures!)
 
-      figure.update!(title: 'new title')
+      figure.update!(title_html: 'new title')
     end
 
     it 'triggers when the figure is destroyed' do
@@ -188,38 +188,38 @@ describe Figure, redis: true do
     end
   end
 
-  describe '#build_title' do
+  describe '#build_title_html' do
     let(:figure) { create :figure, :unprocessed }
 
-    it 'returns the title if it is set' do
-      figure.title = Faker::Lorem.word
-      expect(figure.send(:build_title)).to eq(figure.title)
+    it 'returns the title_html if it is set' do
+      figure.title_html = Faker::Lorem.word
+      expect(figure.send(:build_title_html)).to eq(figure.title_html)
     end
 
-    it 'returns the results of title_from_filename' do
-      title = Faker::Lorem.word
-      expect(figure).to receive(:title_from_filename).and_return(title)
-      expect(figure.send(:build_title)).to eq(title)
+    it 'returns the results of title_html_from_filename' do
+      title_html = Faker::Lorem.word
+      expect(figure).to receive(:title_html_from_filename).and_return(title_html)
+      expect(figure.send(:build_title_html)).to eq(title_html)
     end
 
     it 'returns "Unlabeled" otherwise' do
-      expect(figure).to receive(:title_from_filename).and_return(nil)
-      expect(figure.send(:build_title)).to eq('Unlabeled')
+      expect(figure).to receive(:title_html_from_filename).and_return(nil)
+      expect(figure.send(:build_title_html)).to eq('Unlabeled')
     end
   end
 
-  describe '#title_from_filename' do
+  describe '#title_html_from_filename' do
     ["Figure 1.tiff", "figure 1.tiff", "fig. 1.tiff", "fig_1.tiff"].each do |filename|
       it "returns 'Fig 1' when file is named #{filename}" do
         expect(figure.file).to receive(:filename).and_return(filename)
-        expect(figure.send(:title_from_filename)).to eq("Fig 1")
+        expect(figure.send(:title_html_from_filename)).to eq("Fig 1")
       end
     end
 
     ["1.tiff", "Figure.tiff", "Figure S1.tiff", "Figure ABC.tiff", "abc.tiff", "abc 1.tiff"].each do |filename|
       it "returns nil when file is named #{filename}" do
         expect(figure.file).to receive(:filename).and_return(filename)
-        expect(figure.send(:title_from_filename)).to be_nil
+        expect(figure.send(:title_html_from_filename)).to be_nil
       end
     end
   end

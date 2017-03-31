@@ -13,12 +13,12 @@ describe FigureInserter do
   def caption_and_image_html(figure)
     <<-HTML
       #{image_html(figure)}
-      <p class="paper-body-figure-caption">#{figure.title}.</p>
+        <p class="paper-body-figure-caption">#{figure.title_html}.</p>
     HTML
   end
   describe "#call" do
     let(:figure1) do
-      figure = create :figure, title: "1"
+      figure = create :figure, title_html: "1"
       allow(figure).to receive(:detail_src).and_return('/an/image1.png')
       allow(figure).to receive(:file?).and_return(true)
       figure
@@ -156,7 +156,7 @@ describe FigureInserter do
 
     context "with a figure that has no rank" do
       let(:rankless_figure) do
-        figure = create :figure, title: "some title that won't create a rank"
+        figure = create :figure, title_html: "some title_html that won't create a rank"
         allow(figure).to receive(:detail_src).and_return('/an/image3.png')
         allow(figure).to receive(:file?).and_return(true)
         figure
@@ -184,7 +184,7 @@ describe FigureInserter do
 
     context 'with multiple figures' do
       let(:figure11) do
-        figure = create :figure, title: "11"
+        figure = create :figure, title_html: "11"
         allow(figure).to receive(:detail_src).and_return('/an/image2.png')
         allow(figure).to receive(:file?).and_return(true)
         figure
@@ -241,7 +241,7 @@ describe FigureInserter do
 
       context "when one figure doesn't yet have an attachment" do
         let(:unattached_figure2) do
-          figure = create :figure, title: "2"
+          figure = create :figure, title_html: "2"
           allow(figure).to receive(:detail_src).and_return('/an/image2.png')
           allow(figure).to receive(:file?).and_return(false)
           figure

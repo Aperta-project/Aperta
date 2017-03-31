@@ -65,12 +65,12 @@ describe SupportingInformationFile, redis: true do
   describe '#build_title' do
     it 'returns the title' do
       file.title = Faker::Lorem.sentence
-      expect(file.send(:build_title)).to eq(file.title)
+      expect(file.send(:build_title_html)).to eq(file.title)
     end
 
     it 'returns nil if the title is nil' do
       expect(file.title).to be_nil
-      expect(file.send(:build_title)).to be_nil
+      expect(file.send(:build_title_html)).to be_nil
     end
   end
 end

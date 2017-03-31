@@ -117,7 +117,7 @@ class Attachment < ActiveRecord::Base
 
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
-      self.title_html = build_title
+      self.title_html = build_title_html
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
@@ -256,7 +256,7 @@ class Attachment < ActiveRecord::Base
 
   protected
 
-  def build_title
+  def build_title_html
     title_html || file.filename
   end
 

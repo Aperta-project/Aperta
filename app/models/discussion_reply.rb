@@ -9,17 +9,18 @@ class DiscussionReply < ActiveRecord::Base
   before_create :process_at_mentions!
 
   alias_attribute :body_html, :body
+
   def process_at_mentions!
-    self.body = user_mentions.decorated_mentions
+    self.body_html = user_mentions.decorated_mentions
   end
 
   def user_mentions
     @user_mentions ||=
-      UserMentions.new(body, replier, permission_object: discussion_topic)
+      UserMentions.new(body_html, replier, permission_object: discussion_topic)
   end
 
   def sanitized_body
-    formatted = simple_format(strip_tags(body))
+    formatted = simple_format(strip_tags(body_html))
 
     UserMentions
       .new(formatted, replier, permission_object: discussion_topic)

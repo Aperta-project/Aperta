@@ -90,7 +90,7 @@ class FigureInserter
 
   def node_for_not_found_figure(figure)
     node_for_figure(figure) + <<-HTML
-      <p class="paper-body-figure-caption">#{figure.title}.</p>
+      <p class="paper-body-figure-caption">#{figure.title_html}.</p>
     HTML
   end
 

@@ -87,10 +87,10 @@ class CardContent < ActiveRecord::Base
 
   def to_xml(options = {})
     attrs = {
-      'content-type' => content_type,
-      'text' => text
+      'content-type' => content_type
     }.compact
     setup_builder(options).tag!('content', attrs) do |xml|
+      safe_dump_text(xml, 'text', text) if text.present?
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])

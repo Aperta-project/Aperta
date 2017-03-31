@@ -88,6 +88,21 @@ describe XmlCardLoader do
     end
   end
 
+  context 'with a short-input' do
+    let(:text) { Faker::Lorem.sentence }
+    let(:placeholder) { Faker::Lorem.sentence }
+    let(:content1) { "<content content-type='short-input' value-type='text'><placeholder>#{placeholder}</placeholder><text>#{text}</text></content>" }
+    let(:xml) { "<card name='Foo'>#{content1}</card." }
+
+    it 'sets the text to the value of the element text' do
+      expect(root.text).to eq(text)
+    end
+
+    it 'sets the placeholder to the value of the element placeholder' do
+      expect(root.placeholder).to eq(placeholder)
+    end
+  end
+
   context 'dumping xml' do
     let(:card) { FactoryGirl.create(:card, :versioned, name: Faker::Lorem.word) }
     let(:opts) { { indent: 0, skip_instruct: 0 } }

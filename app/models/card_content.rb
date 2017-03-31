@@ -91,6 +91,7 @@ class CardContent < ActiveRecord::Base
       'value-type' => value_type
     }.compact
     setup_builder(options).tag!('content', attrs) do |xml|
+      safe_dump_text(xml, 'placeholder', placeholder) if placeholder.present?
       safe_dump_text(xml, 'text', text) if text.present?
       if possible_values.present?
         possible_values.each do |item|

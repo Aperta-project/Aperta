@@ -53,9 +53,16 @@
           <value>paragraph-input</value>
         </choice>
       </attribute>
-      <element name="text">
-        <text/>
-      </element>
+      <interleave>
+        <optional>
+          <element name="placeholder">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
+          <text/>
+        </element>
+      </interleave>
     </element>
   </define>
   <!-- Contents -->

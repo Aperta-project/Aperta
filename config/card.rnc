@@ -26,7 +26,8 @@ text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
                  attribute content-type { "short-input" | "paragraph-input" },
-                 element text { text }
+                 (element placeholder { text }? &
+                  element text { text })
              }
 
 # Contents

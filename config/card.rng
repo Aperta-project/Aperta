@@ -16,6 +16,49 @@
       <attribute name="value"/>
     </element>
   </define>
+  <!-- Inputs -->
+  <define name="radio-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>radio</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="text-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <choice>
+          <value>short-input</value>
+          <value>paragraph-input</value>
+        </choice>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+    </element>
+  </define>
+  <!-- Contents -->
   <define name="text-content">
     <element name="content">
       <optional>
@@ -29,51 +72,14 @@
       </element>
     </element>
   </define>
-  <define name="radio-content">
+  <define name="display-children-content">
     <element name="content">
       <optional>
         <attribute name="ident"/>
       </optional>
-      <attribute name="value-type">
-        <value>text</value>
-      </attribute>
       <attribute name="content-type">
-        <value>radio</value>
+        <value>display-children</value>
       </attribute>
-      <zeroOrMore>
-        <ref name="possible-value"/>
-      </zeroOrMore>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
-    </element>
-  </define>
-  <define name="other-content">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <optional>
-        <attribute name="value-type">
-          <choice>
-            <value>attachment</value>
-            <value>boolean</value>
-            <value>text</value>
-            <value>question_set</value>
-          </choice>
-        </attribute>
-      </optional>
-      <attribute name="content-type">
-        <choice>
-          <value>display-children</value>
-          <value>text</value>
-        </choice>
-      </attribute>
-      <optional>
-        <element name="text">
-          <text/>
-        </element>
-      </optional>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -81,9 +87,10 @@
   </define>
   <define name="content">
     <choice>
-      <ref name="radio-content"/>
+      <ref name="radio-input"/>
+      <ref name="text-input"/>
       <ref name="text-content"/>
-      <ref name="other-content"/>
+      <ref name="display-children-content"/>
     </choice>
   </define>
   <start>

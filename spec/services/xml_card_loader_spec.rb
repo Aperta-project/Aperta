@@ -52,7 +52,7 @@ describe XmlCardLoader do
   end
 
   context 'with radio content' do
-    let(:content1) { "<content ident='foo' value-type='text' content-type='radio'><possible-value label=\"one\" value=\"1\"/></content>" }
+    let(:content1) { "<content ident='foo' value-type='text' content-type='radio'><text>Question!</text><possible-value label=\"one\" value=\"1\"/></content>" }
     let(:xml) { "<card name='Foo'>#{content1}</card." }
 
     it 'parses possible values' do

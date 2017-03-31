@@ -16,8 +16,12 @@ namespace :bugsnag do
     response = http.request(request)
 
     parsed_data = JSON.parse(response.body)
-    email_array = parsed_data.map { |event| event['meta_data']['User']['email'] }
-    puts "Affected users:"
-    puts email_array.uniq.join(', ')
+    if response.code.to_i == 200
+      email_array = parsed_data.map { |event| event['meta_data']['User']['email'] }
+      puts "Affected users:"
+      puts email_array.uniq.join(', ')
+    else
+      puts "Response code #{response.code}"
+    end
   end
 end

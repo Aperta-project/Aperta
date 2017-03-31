@@ -10,6 +10,10 @@
   <div class="card-editor-xml-container">
     <div class="card-editor-xml-controls"></div>
     <div class="card-editor-xml">
+      {{#each errors as |error|}}
+        {{error-message message=(concat error.title ": " error.detail)}}
+      {{/each}}
+
       {{textarea value=card.xml autoresize=true rows=10}}
     </div>
   </div>

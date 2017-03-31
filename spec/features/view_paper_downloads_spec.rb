@@ -4,7 +4,6 @@ feature 'Viewing Versions:', js: true, flaky: true do
   let(:creator) { FactoryGirl.create :user }
 
   context 'When viewing a paper with more than one version,' do
-    before { skip "Multiple versions disabled in APERTA-9385" }
     let(:paper) do
       FactoryGirl.create :paper_with_phases,
         :with_integration_journal,

@@ -39,8 +39,8 @@ describe 'downloadable_paper/pdf_with_attachments' do
     do_render
     labels = page.all('figcaption')
     figures.zip(labels).each do |fig, label|
-      expect(fig.title).to be_present
-      expect(label.text).to eq fig.title
+      expect(fig.title_html).to be_present
+      expect(label.text).to eq fig.title_html
     end
   end
 end

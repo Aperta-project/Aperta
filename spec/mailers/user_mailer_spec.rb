@@ -129,7 +129,7 @@ describe UserMailer, redis: true do
       expect(email.body).to include "You've been mentioned by #{comment.commenter.full_name}"
       expect(email.body).to include paper.display_title
       expect(email.body).to include paper.tasks.first.title
-      expect(email.body).to include comment.body
+      expect(email.body).to include comment.body_html
       expect(email.body).to include client_paper_task_url(paper, paper.tasks.first)
     end
   end

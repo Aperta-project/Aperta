@@ -20,7 +20,7 @@ describe PaperConverters::FigureProxy do
     end
 
     describe 'title' do
-      subject { figure_proxy.title }
+      subject { figure_proxy.title_html }
       it { is_expected.to be_present }
     end
 

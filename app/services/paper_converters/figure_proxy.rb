@@ -28,20 +28,20 @@ module PaperConverters
       token = snapshot.get_property("url").split('/').last
       resource_token = ResourceToken.find_by!(token: token)
       new(
-        title: snapshot.get_property("title"),
+        title_html: snapshot.get_property("title_html"),
         href: resource_token.url(:detail)
       )
     end
 
-    def initialize(figure: nil, title: nil, href: nil)
+    def initialize(figure: nil, title_html: nil, href: nil)
       @figure = figure
-      @title = title
+      @title_html = title_html
       @href = href
     end
 
-    def title
-      return @title if @title
-      return @figure.title if @figure
+    def title_html
+      return @title_html if @title_html
+      return @figure.title_html if @figure
     end
 
     def href
@@ -50,8 +50,8 @@ module PaperConverters
     end
 
     def rank
-      return 0 unless title
-      number_match = title.match(/\d+/)
+      return 0 unless title_html
+      number_match = title_html.match(/\d+/)
       if number_match
         number_match[0].to_i
       else

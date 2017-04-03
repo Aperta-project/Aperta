@@ -15,7 +15,7 @@
   "<%= @paper.display_title(sanitized: false) %>".
 </p>
 
-<p><%= @comment.body %></p>
+<p><%= @comment.body_html %></p>
 
 <%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>
 

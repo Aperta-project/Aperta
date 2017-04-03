@@ -29,6 +29,16 @@ class CardContent < ActiveRecord::Base
   validate :content_value_type_combination
 
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+
+  # Note that value_type really refers to the value_type of answers associated
+  # with this piece of card content. In the old NestedQuestion world, both
+  # NestedQuestionAnswer and NestedQuestion had a value_type column, and the
+  # value_type was duplicated between them. In the hash below, we say that the
+  # 'short-input' answers will have a 'text' value type, while 'radio' answers
+  # can either be boolean or text.  The 'text' content_type is really static
+  # text, which will never have an answer associated with it, hence it has no
+  # possible value types.  The same goes for the other container types
+  # (field-set, etc)
   VALUE_TYPES_FOR_CONTENT =
     { 'display-children': [nil],
       'display-with-value': [nil],

@@ -5,6 +5,7 @@
 
 import Ember from 'ember';
 import CardContentTypes from 'tahi/lib/card-content-types';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   tagName: '',
@@ -13,14 +14,19 @@ export default Ember.Component.extend({
     return CardContentTypes.forType(type);
   }),
 
-  // special logic for previewing card content
-  // should key off of the 'preview' flag
-  preview: false,
+  propTypes: {
+    preview: PropTypes.boolean,
+    owner: PropTypes.EmberObject.isRequired
+  },
 
-  owner: null, //must be passed in
+  getDefaultProps() {
+    return { preview: false };
+  },
 
   init() {
     this._super(...arguments);
+    // right now our ember-prop-types is only configured to print warnings,
+    // not throw errors.
     Ember.assert(`you must pass an owner to card-content`,
                  Ember.isPresent(this.get('owner')));
   },

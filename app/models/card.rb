@@ -7,7 +7,11 @@ class Card < ActiveRecord::Base
   has_many :card_versions, inverse_of: :card, dependent: :destroy
   validates :name, presence: { message: "Please give your card a name." }
   validates :name, uniqueness: {
-    message: "That card name is taken. Please give your card a new name."
+    scope: :journal,
+    message:  <<-MSG.strip_heredoc
+      That card name is taken for this journal.
+      Please give your card a new name.
+    MSG
   }
 
   # this method is used in the shim layer between nested questions

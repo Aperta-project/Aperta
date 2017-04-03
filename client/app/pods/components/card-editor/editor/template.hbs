@@ -1,8 +1,10 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
     <button class="button button--blue button-primary editor-save"
-            {{action 'saveCard'}}
-            disabled={{ null }}>Save and Publish</button>
+            onclick={{perform saveCard}}
+            disabled={{saveCard.isRunning}}>
+      Save and Publish
+    </button>
   </div>
 </div>
 

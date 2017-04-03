@@ -1,5 +1,6 @@
 import Ember from 'ember';
-import {PropTypes} from 'ember-prop-types';
+import { PropTypes } from 'ember-prop-types';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   propTypes: {
@@ -10,14 +11,13 @@ export default Ember.Component.extend({
 
   classNames: ['card-editor-editor'],
 
-  actions: {
-    saveCard() {
-      this.get('card').save().then((r)=> {
-        this.set('errors', null);
-        r.reload();
-      }).catch((e)=> {
-        this.set('errors', e.errors);
-      });
+  saveCard: task(function * () {
+    try {
+      let r = yield this.get('card').save();
+      yield r.reload();
+      this.clearErrors();
+    } catch (e) {
+      this.set('errors', e.errors);
     }
-  }
+  })
 });

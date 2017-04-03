@@ -147,7 +147,7 @@ describe InvitationAttachmentsController do
 
   describe 'POST #create' do
     subject(:do_request) do
-      post :create, format: 'json', invitation_id: invitation.to_param, title: 'Cool'
+      post :create, format: 'json', invitation_id: invitation.to_param, title_html: 'Cool'
     end
     let(:url) { 'http://someawesomeurl.com' }
 
@@ -234,8 +234,8 @@ describe InvitationAttachmentsController do
         id: invitation.attachments.last.id,
         invitation_id: invitation.id,
         invitation_attachment: {
-          title: "new title",
-          caption: "new caption"
+          title_html: "new title",
+          caption_html: "new caption"
         },
         format: :json
     end
@@ -256,12 +256,12 @@ describe InvitationAttachmentsController do
             .and_return true
         end
 
-        it 'allows updates for title and caption' do
+        it 'allows updates for title_html and caption_html' do
           do_request
 
           attachment = invitation.attachments.last
-          expect(attachment.caption).to eq('new caption')
-          expect(attachment.title).to eq('new title')
+          expect(attachment.caption_html).to eq('new caption')
+          expect(attachment.title_html).to eq('new title')
         end
       end
 

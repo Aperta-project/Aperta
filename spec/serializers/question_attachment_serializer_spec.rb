@@ -5,7 +5,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
     FactoryGirl.create(
       :question_attachment,
       :with_resource_token,
-      title: 'La Attachment',
+      title_html: 'La Attachment',
       file: File.open('spec/fixtures/yeti.tiff'),
       status: QuestionAttachment::STATUS_DONE
     )
@@ -14,7 +14,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
 
   it 'should serialize succesfully' do
     expect(attachment.id).to_not be(nil)
-    expect(attachment.title).to_not be(nil)
+    expect(attachment.title_html).to_not be(nil)
     expect(attachment.src).to_not be(nil)
     expect(attachment.status).to_not be(nil)
     expect(attachment.filename).to_not be(nil)
@@ -25,7 +25,7 @@ describe QuestionAttachmentSerializer, serializer_test: true do
           question_attachment:
             hash_including(
               id: attachment.id,
-              title: attachment.title,
+              title_html: attachment.title_html,
               src: attachment.src,
               status: attachment.status,
               filename: attachment.filename

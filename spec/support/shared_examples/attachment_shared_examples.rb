@@ -93,8 +93,8 @@ RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
   end
 end
 
-RSpec.shared_examples_for 'attachment#download! sets title to file name' do
-  describe 'sets the title' do
+RSpec.shared_examples_for 'attachment#download! sets title_html to file name' do
+  describe 'sets the title_html' do
     before do
       subject || fail('The calling example was expected to set up the subject, but it did not.')
       url || fail('The calling example was expected to set up a :url, but it did not.')
@@ -103,7 +103,7 @@ RSpec.shared_examples_for 'attachment#download! sets title to file name' do
     it 'is set to the file name' do
       expect do
         subject.download!(url)
-      end.to change { subject.reload.title }.to eq(File.basename(url))
+      end.to change { subject.reload.title_html }.to eq(File.basename(url))
     end
   end
 end

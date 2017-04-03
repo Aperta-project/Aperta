@@ -34,6 +34,7 @@ export default DS.Model.extend({
   sourcefile: attr(),
 
   paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  availableCards: hasMany('card'),
 
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),

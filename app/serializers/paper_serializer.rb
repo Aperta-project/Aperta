@@ -44,7 +44,10 @@ class PaperSerializer < LitePaperSerializer
       decisions: paper_decisions_path(object),
       snapshots: snapshots_paper_path(object),
       related_articles: related_articles_paper_path(object),
-      paper_task_types: paper_task_types_path(object)
+      paper_task_types: paper_task_types_path(object),
+
+      # all possible Cards that can be added to this Paper
+      available_cards: paper_available_cards_path(object)
     }
   end
 end

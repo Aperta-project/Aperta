@@ -132,7 +132,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase = task_manager_page.phase 'Submission Data'
       phase.remove_card('Upload Manuscript')
       within '.overlay' do
-        find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+        find('.submit-action-buttons button', text: 'Yes, Remove this Card'.upcase).click
       end
       expect(task_manager_page).to have_css('.card', count: 8)
     end

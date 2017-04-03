@@ -12,7 +12,7 @@ describe InvitationAttachment do
     it_behaves_like 'attachment#download! stores the file'
     it_behaves_like 'attachment#download! caches the s3 store_dir'
     it_behaves_like 'attachment#download! sets the file_hash'
-    it_behaves_like 'attachment#download! sets title to file name'
+    it_behaves_like 'attachment#download! sets title_html to file name'
     it_behaves_like 'attachment#download! sets the status'
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'

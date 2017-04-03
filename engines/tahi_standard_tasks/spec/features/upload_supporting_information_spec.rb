@@ -46,8 +46,8 @@ feature "Upload Supporting Information", js: true do
     paper.reload
     file = paper.supporting_information_files.last
 
-    expect(file.title).to eq 'new_file_title'
-    expect(file.caption).to eq 'New file caption'
+    expect(file.title_html).to eq 'new_file_title'
+    expect(file.caption_html).to eq 'New file caption'
     expect(file.label).to eq 'F4'
     expect(file.category).to eq 'Figure'
     expect(file.striking_image).to be(true)

@@ -54,8 +54,8 @@
         {{format-input class="form-control si-file-title-input"
                        placeholder="Enter a title"
                        required=true
-                       name="title"
-                       value=file.title
+                       name="titleHtml"
+                       value=file.titleHtml
                        displayBold=false}}
       </div>
     </div>
@@ -63,9 +63,9 @@
     <div class="flex-group">
       <div class="flex-element">
         {{format-input placeholder="Enter a legend (optional)"
-                       name="caption"
+                       name="captionHtml"
                        class="form-control si-file-caption-textbox"
-                       value=file.caption
+                       value=file.captionHtml
                        displayBold=false}}
       </div>
     </div>
@@ -102,11 +102,11 @@
     </a>
 
     <div class="si-file-title">
-      {{file.label}} {{file.category}}{{if file.category "." ""}} {{{file.title}}}
+      {{file.label}} {{file.category}}{{if file.category "." ""}} {{{file.titleHtml}}}
     </div>
 
-    {{#if file.caption}}
-      <div class="si-file-caption">{{{file.caption}}}</div>
+    {{#if file.captionHtml}}
+      <div class="si-file-caption">{{{file.captionHtml}}}</div>
     {{/if}}
 
     {{error-message message=model.validationErrors.save

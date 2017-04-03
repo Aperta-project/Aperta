@@ -8,10 +8,10 @@ export default DS.Model.extend(Snapshottable, {
   filename: DS.attr('string'),
   src: DS.attr('string'),
   status: DS.attr('string'),
-  title: DS.attr('string'),
+  titleHtml: DS.attr('string'),
   category: DS.attr('string'),
   label: DS.attr('string'),
-  caption: DS.attr('string'),
+  captionHtml: DS.attr('string'),
   publishable: DS.attr('boolean'),
   strikingImage: DS.attr('boolean')
 });

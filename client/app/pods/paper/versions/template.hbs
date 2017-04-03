@@ -64,7 +64,7 @@
       <div class="manuscript-container">
         {{#rendered-manuscript paper=model}}
           <div id="paper-body">
-            {{html-diff default=model.body
+            {{html-diff default=model.bodyHtml
             comparisonText=comparisonVersion.text
             viewingText=viewingVersion.text
             manuscriptDiff=true

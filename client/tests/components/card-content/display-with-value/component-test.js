@@ -76,6 +76,27 @@ test(
   }
 );
 test(
+  `it allows visibleWithParentAnswer to be an empty string`,
+  function(assert) {
+    let content = fakeContent.create({
+      visibleWithParentAnswer: '',
+      parent: {
+        answerForOwner() {
+          return {value: ''};
+        }
+      },
+      children: [
+        fakeContent.create({text: 'Child 1'}),
+        fakeContent.create({text: 'Child 2'})
+      ]
+    });
+    this.set('content', content);
+    this.render(template);
+    assert.textPresent('.display-test', 'Child 1');
+    assert.textPresent('.display-test', 'Child 2');
+  }
+);
+test(
   `when the parent's answer value is different than visibleWithParentAnswer, it renders nothing`,
   function(assert) {
     let content = fakeContent.create({
@@ -95,3 +116,41 @@ test(
     assert.textNotPresent('.display-test', 'Child 1');
     assert.textNotPresent('.display-test', 'Child 2');
   });
+test(
+  `it returns false if the parent answer value is null`,
+  function(assert) {
+    let content = fakeContent.create({
+      visibleWithParentAnswer: '1',
+      parent: {
+        answerForOwner() {
+          return {value: null};
+        }
+      },
+      children: [
+        fakeContent.create({text: 'Child 1'}),
+      ]
+    });
+    this.set('content', content);
+    this.render(template);
+    assert.textNotPresent('.display-test', 'Child 1');
+  }
+);
+test(
+  `it returns false if the parent answer value is undefined`,
+  function(assert) {
+    let content = fakeContent.create({
+      visibleWithParentAnswer: '1',
+      parent: {
+        answerForOwner() {
+          return {};
+        }
+      },
+      children: [
+        fakeContent.create({text: 'Child 1'}),
+      ]
+    });
+    this.set('content', content);
+    this.render(template);
+    assert.textNotPresent('.display-test', 'Child 1');
+  }
+);

@@ -11,7 +11,9 @@ export default Ember.Component.extend({
     'parentAnswer.value',
     'content.visibleWithParentAnswer',
     function() {
-      return (this.get('parentAnswer.value') || '').toString() ===
+      let parentValue = this.get('parentAnswer.value');
+      if (parentValue === null || parentValue === undefined) { return false; }
+      return (parentValue).toString() ===
         this.get('content.visibleWithParentAnswer');
     }
   )

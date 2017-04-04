@@ -68,9 +68,9 @@ class QueryParser < QueryLanguageParser
 
   add_simple_expression('AUTHOR IS') do |author_query|
     author_ids = get_author_ids(author_query)
-
-    table = join(AuthorListItem, 'paper_id')
-    table['author_id'].in(author_ids)
+    table = join(AuthorListItem)
+    # Join only against AuthorListItem for invividual authors
+    table['author_id'].in(author_ids).and(table['author_type'].eq('Author'))
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|

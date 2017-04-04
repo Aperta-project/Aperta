@@ -7,33 +7,113 @@
 
   <span class="spacer" aria-hidden="true"></span>
 
+  {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
+    {{fa-icon icon="envelope-open-o"}}
+    Correspondence
+  {{/link-to}}
+
   {{#if (can "manage_workflow" paper)}}
     {{#link-to "paper.workflow" paper class="control-bar-button" id="nav-workflow"}}
-      Go to Workflow
+      {{fa-icon icon="columns"}}
+      Workflow
     {{/link-to}}
   {{/if}}
 
-  {{#if versioningMode}}
-    <div class="control-bar-button" {{action "showSubNav" "versions"}} id="nav-versions">
-      {{fa-icon icon="files-o"}}
-      Versions
+  {{#link-to "paper.index" paper class="control-bar-button" id="nav-manuscript"}}
+    {{fa-icon icon="file-text-o"}}
+    Manuscript
+  {{/link-to}}
+
+  <div class="control-bar-splitter"></div>
+
+  {{#if (eq tab "manuscript")}}
+    {{#if versioningMode}}
+      <div class="control-bar-button" {{action "showSubNav" "versions"}} id="nav-versions">
+        {{fa-icon icon="files-o"}}
+        Versions
+      </div>
+    {{else}}
+      {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
+        {{fa-icon icon="files-o"}}
+        Versions
+      {{/link-to}}
+    {{/if}}
+
+    <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
+      {{fa-icon icon="user"}}
+      Collaborators
     </div>
-  {{else}}
-    {{#link-to "paper.versions" paper class="control-bar-button" id="nav-versions"}}
-      {{fa-icon icon="files-o"}}
-      Versions
-    {{/link-to}}
+
+    <div class="control-bar-button" {{action "toggleDownloads"}} id="nav-downloads">
+      {{fa-icon icon="download"}}
+      Downloads
+    </div>
+
+    {{#basic-popover as |popover|}}
+      {{#popover.trigger class="control-bar-button last more-dropdown-menu"}}
+        {{fa-icon icon="ellipsis-v"}}
+        More
+      {{/popover.trigger}}
+      {{#popover.content}}
+        <div class="popover-menu-content">
+          {{#unless paperWithdrawn}}
+            {{#if (can "withdraw" paper)}}
+              <a href="#" class="popover-menu-item withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
+                <span class="fa fa-trash fa-lg"></span>
+                Withdraw Manuscript
+              </a>
+            {{/if}}
+          {{/unless}}
+        </div>
+      {{/popover.content}}
+    {{/basic-popover}}
+
+
+    {{#basic-dropdown as |dropdown|}}
+      {{#dropdown.content class="popover-menu"}}
+        {{#unless paperWithdrawn}}
+          {{#if (can "withdraw" paper)}}
+            <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
+              <span class="fa fa-trash fa-lg"></span>
+              Withdraw Manuscript
+            </a>
+          {{/if}}
+        {{/unless}}
+      {{/dropdown.content}}
+    {{/basic-dropdown}}
+
+    {{#if submenuVisible}}
+      <div class="control-bar-sub-items">
+        {{#if contributorsVisible}}
+          <div class="contributors active animation-fade-in">
+            {{#if (can "manage_collaborators" paper)}}
+              <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
+            {{/if}}
+
+            {{#each paper.collaborators as |contributor|}}
+              <div class="contributor">{{unbound contributor.fullName}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        {{#if versionsVisible}}
+          {{paper-version-picker paper=paper
+          setQueryParam=setQueryParam
+          viewingVersion=viewingVersion
+          comparisonVersion=comparisonVersion}}
+        {{/if}}
+      </div>
+    {{/if}}
+  {{else if (eq tab "workflow")}}
+    <label id="nav-paper-editable">
+      <span>
+        {{check-box name="paper-editable" checked=model.editable action="toggleEditable"}}
+        Editable
+      </span>
+    </label>
+  {{else if (eq tab "correspondence")}}
+    <div>Put stuff here</div>
   {{/if}}
-
-  <div class="control-bar-button" {{action "showSubNav" "contributors"}} id="nav-collaborators">
-    {{fa-icon icon="user"}}
-    Collaborators
-  </div>
-
-  <div class="control-bar-button" {{action "toggleDownloads"}} id="nav-downloads">
-    {{fa-icon icon="download"}}
-    Downloads
-  </div>
 
   <div class="control-bar-button" {{action "showActivity" "manuscript"}} id="nav-recent-activity">
     {{partial "svg/heartbeat"}}
@@ -46,59 +126,6 @@
     Discussions
   {{/link-to}}
 
-  {{#basic-popover as |popover|}}
-    {{#popover.trigger class="control-bar-button last more-dropdown-menu"}}
-      {{fa-icon icon="ellipsis-v"}}
-      More
-    {{/popover.trigger}}
-    {{#popover.content}}
-      <div class="popover-menu-content">
-        {{#unless paperWithdrawn}}
-          {{#if (can "withdraw" paper)}}
-            <a href="#" class="popover-menu-item withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
-              <span class="fa fa-trash fa-lg"></span>
-              Withdraw Manuscript
-            </a>
-          {{/if}}
-        {{/unless}}
-      </div>
-    {{/popover.content}}
-  {{/basic-popover}}
-
-
-  {{#basic-dropdown as |dropdown|}}
-    {{#dropdown.content class="popover-menu"}}
-      {{#unless paperWithdrawn}}
-        {{#if (can "withdraw" paper)}}
-          <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
-            <span class="fa fa-trash fa-lg"></span>
-            Withdraw Manuscript
-          </a>
-        {{/if}}
-      {{/unless}}
-    {{/dropdown.content}}
-  {{/basic-dropdown}}
-
-  {{#if submenuVisible}}
-    <div class="control-bar-sub-items">
-      {{#if contributorsVisible}}
-        <div class="contributors active animation-fade-in">
-          {{#if (can "manage_collaborators" paper)}}
-            <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
-          {{/if}}
-
-          {{#each paper.collaborators as |contributor|}}
-            <div class="contributor">{{unbound contributor.fullName}}</div>
-          {{/each}}
-        </div>
-      {{/if}}
-
-      {{#if versionsVisible}}
-        {{paper-version-picker paper=paper
-                               setQueryParam=setQueryParam
-                               viewingVersion=viewingVersion
-                               comparisonVersion=comparisonVersion}}
-      {{/if}}
-    </div>
-  {{/if}}
 </nav>
+
+{{flash-messages}}

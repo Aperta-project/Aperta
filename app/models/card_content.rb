@@ -28,12 +28,12 @@ class CardContent < ActiveRecord::Base
 
   validate :content_value_type_combination
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text).freeze
+  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
   VALUE_TYPES_FOR_CONTENT =
     { 'display-children': [nil],
       'short-input': ['text'],
       'text': [nil],
-      'paragraph-input': ['text'],
+      'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types

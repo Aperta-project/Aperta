@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   }),
 
   propTypes: {
-    preview: PropTypes.boolean,
+    preview: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired
   },
 

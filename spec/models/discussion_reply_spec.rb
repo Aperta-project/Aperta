@@ -14,6 +14,13 @@ RSpec.describe DiscussionReply, type: :model, redis: true do
     end
   end
 
+  describe '#strip_body_html' do
+    let(:discussion_reply) { build :discussion_reply, body: '<b>Some discussion</b>' }
+    it 'strips out html tags' do
+      expect(discussion_reply.strip_body_html).to eq '<b>Some discussion</b>'
+    end
+  end
+
   describe "#sanitized_body" do
     let(:input_body) { "hi \n <div>foo</foo> @steve" }
     let(:formatted_body) { "<p>hi \n<br /> foo @steve</p>" }

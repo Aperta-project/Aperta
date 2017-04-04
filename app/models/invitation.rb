@@ -2,6 +2,7 @@ class Invitation < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
   include Tokenable
+  include ActionView::Helpers::SanitizeHelper
 
   belongs_to :task
   belongs_to :decision
@@ -35,6 +36,18 @@ class Invitation < ActiveRecord::Base
   scope :invited, -> { where(state: "invited") }
   scope :grouped_alternates, -> { where.not(primary: nil) }
   scope :newest_first, -> { order(created_at: :desc) }
+
+  def strip_body_html
+    strip_tags(body_html)
+  end
+
+  def strip_decline_reason_html
+    strip_tags(decline_reason_html)
+  end
+
+  def strip_reviewer_suggestions_html
+    strip_tags(reviewer_suggestions_html)
+  end
 
   def ungrouped_primary?
     !has_alternates? && !is_alternate?

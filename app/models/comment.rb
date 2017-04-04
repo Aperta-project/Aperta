@@ -1,6 +1,7 @@
 # Data model that handles the concerns of task comments
 class Comment < ActiveRecord::Base
   include EventStream::Notifiable
+  include ActionView::Helpers::SanitizeHelper
 
   belongs_to :task, inverse_of: :comments
   has_one :paper, through: :task
@@ -13,6 +14,10 @@ class Comment < ActiveRecord::Base
 
   def created_by?(user)
     commenter_id == user.id
+  end
+
+  def strip_body_html
+    strip_tags(body_html)
   end
 
   def notify_mentioned_people

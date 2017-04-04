@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Comment do
-  subject(:comment) { FactoryGirl.build(:comment) }
+  subject(:comment) { FactoryGirl.build(:comment, body_html: '<b>Some comment</b>') }
 
   context 'validation' do
     it 'is valid' do
@@ -16,6 +16,13 @@ describe Comment do
     it 'requires a task' do
       comment.task = nil
       expect(comment.valid?).to be(false)
+    end
+  end
+
+  describe '#strip_body_html' do
+    subject(:comment) { FactoryGirl.create(:comment, body_html: '<b>Some comment</b>') }
+    it 'strips out html tags' do
+      expect(comment.strip_body_html).to eq 'Some comment'
     end
   end
 

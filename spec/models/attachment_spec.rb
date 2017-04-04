@@ -46,6 +46,20 @@ describe Attachment do
     end
   end
 
+  describe '#strip_title_html' do
+    subject(:attachment) { FactoryGirl.create(:attachment, title_html: '<b>Some title</b>') }
+    it 'strip html from title_html' do
+      expect(attachment.strip_title_html).to eq 'Some title'
+    end
+  end
+
+  describe '#strip_title_abstract' do
+    subject(:attachment) { FactoryGirl.create(:attachment, caption_html: '<b>Some caption</b>') }
+    it 'strip html from caption_html' do
+      expect(attachment.strip_caption_html).to eq 'Some caption'
+    end
+  end
+
   describe '#did_file_change?' do
     subject(:attachment) { FactoryGirl.create(:attachment) }
 

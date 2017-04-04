@@ -392,6 +392,10 @@ class Paper < ActiveRecord::Base
     sanitized ? strip_tags(title_html) : title.html_safe
   end
 
+  def strip_abstract_html
+    strip_tags(abstract_html)
+  end
+
   # Public: Returns the academic editors assigned to this paper
   #
   # Examples

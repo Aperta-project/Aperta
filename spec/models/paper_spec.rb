@@ -1526,6 +1526,13 @@ describe Paper do
     end
   end
 
+  describe '#strip_abstract_html' do
+    let(:paper) { FactoryGirl.build(:paper, abstract_html: '<b>my long abstract</b>') }
+    it 'strips out tags from the abstact' do
+      expect(paper.strip_abstract_html).to eq 'my long abstract'
+    end
+  end
+
   describe 'Paper::(UN)EDITABLE_STATES' do
     it 'should contain the right states' do
       expect(Paper::EDITABLE_STATES).to contain_exactly(:unsubmitted, :in_revision, :invited_for_full_submission, :checking)

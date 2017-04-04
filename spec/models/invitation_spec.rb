@@ -5,6 +5,39 @@ describe Invitation do
   let(:paper) { FactoryGirl.create(:paper, :submitted_lite, :with_author) }
   let(:task) { FactoryGirl.create :invitable_task, paper: paper }
 
+  def strip_body_html
+    strip_tags(body_html)
+  end
+
+  def strip_decline_reason_html
+    strip_tags(decline_reason_html)
+  end
+
+  def strip_reviewer_suggestions_html
+    strip_tags(reviewer_suggestions_html)
+  end
+
+  describe '#strip_body_html' do
+    subject(:invitation) { FactoryGirl.build :invitation, task: task, body: '<b>Some body</b>' }
+    it 'strips body_html tags' do
+      expect(invitation.strip_body_html).to eq 'Some body'
+    end
+  end
+
+  describe '#strip_decline_reason_html' do
+    subject(:invitation) { FactoryGirl.build :invitation, task: task, decline_reason: '<b>Some reason</b>' }
+    it 'strips decline_reason_html tags' do
+      expect(invitation.strip_decline_reason_html).to eq 'Some reason'
+    end
+  end
+
+  describe '#strip_reviewer_suggestions_html' do
+    subject(:invitation) { FactoryGirl.build :invitation, task: task, reviewer_suggestions: '<b>Some suggestions</b>' }
+    it 'strips reviewer_suggestions_html tags' do
+      expect(invitation.strip_reviewer_suggestions_html).to eq 'Some body'
+    end
+  end
+
   describe ".invited" do
     let!(:open_invitation_1) { FactoryGirl.create(:invitation, :invited) }
     let!(:open_invitation_2) { FactoryGirl.create(:invitation, :invited) }

@@ -9,6 +9,7 @@ class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
+  include ActionView::Helpers::SanitizeHelper
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif).freeze
 
@@ -167,6 +168,14 @@ class Attachment < ActiveRecord::Base
 
   def filename
     self[:file]
+  end
+
+  def strip_title_html
+    strip_tags(title_html)
+  end
+
+  def strip_caption_html
+    strip_tags(caption_html)
   end
 
   def did_file_change?

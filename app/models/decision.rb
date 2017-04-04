@@ -1,6 +1,7 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include ActionView::Helpers::SanitizeHelper
 
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']
@@ -51,6 +52,10 @@ class Decision < ActiveRecord::Base
               registered_at: DateTime.now.utc
       originating_task.try(:after_register, self)
     end
+  end
+
+  def strip_letter_html
+    strip_tags(letter_html)
   end
 
   # Decisions can be appealed, and if editorial staff agrees the wrong

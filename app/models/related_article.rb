@@ -5,6 +5,8 @@
 # other. Other times, they are related, but not simultaneously
 # published. Those relationships are one-way.
 class RelatedArticle < ActiveRecord::Base
+  include ActionView::Helpers::SanitizeHelper
+
   belongs_to :paper
 
   alias_attribute :linked_title_html, :linked_title
@@ -22,4 +24,8 @@ class RelatedArticle < ActiveRecord::Base
   # send_link_to_apex: bool, true if the relationship should be sent
   # to Apex for publication
   #
+
+  def strip_linked_title_html
+    strip_tags(linked_title_html)
+  end
 end

@@ -6,6 +6,7 @@
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include ActionView::Helpers::SanitizeHelper
 
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
@@ -13,7 +14,8 @@ class VersionedText < ActiveRecord::Base
 
   delegate :figures, to: :paper, allow_nil: true
 
-  alias_attribute :text_html, :html
+  alias_attribute :text_html, :text
+  alias_attribute :original_text_html, :original_text
 
   before_create :insert_figures
   before_update :insert_figures, if: :original_text_changed?
@@ -21,6 +23,14 @@ class VersionedText < ActiveRecord::Base
 
   validates :paper, presence: true
   validate :only_version_once
+
+  def strip_text_html
+    strip_tags(text_html)
+  end
+
+  def strip_original_text_html
+    strip_tags(original_text_html)
+  end
 
   # Give the text a new MAJOR version.
   def be_major_version!

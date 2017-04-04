@@ -29,6 +29,22 @@ describe Decision do
     end
   end
 
+  describe '#strip_letter_html' do
+    subject(:decision) do
+      FactoryGirl.build(
+        :decision,
+        paper: paper,
+        major_version: nil,
+        minor_version: nil,
+        letter_html: '<div><b>Some letter</b></div>'
+      )
+    end
+
+    it 'strips letter_html tags' do
+      expect(decision.strip_letter_html).to eq 'Some letter'
+    end
+  end
+
   describe '#rescind!' do
     context 'when the decision is not initial' do
       subject(:decision) do

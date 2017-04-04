@@ -9,6 +9,20 @@ describe VersionedText do
 
   it_behaves_like 'a thing with major and minor versions', :versioned_text
 
+  describe '#strip_text_html' do
+    it 'strips text_html tags' do
+      versioned_text.text = '<b>some text</b>'
+      expect(versioned_text.strip_text_html).to eq 'some text'
+    end
+  end
+
+  describe '#original_strip_text_html' do
+    it 'strips original_text_html tags' do
+      versioned_text.original_text = '<b>some original text</b>'
+      expect(versioned_text.strip_original_text_html).to eq 'some original text'
+    end
+  end
+
   describe '#version_string' do
     it 'contains file_type' do
       expect(versioned_text.version_string.match('DOCX').to_a.any?).to be(true)

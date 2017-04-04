@@ -19,24 +19,47 @@ export default Ember.Component.extend({
   },
 
   loadPdf: function() {
-    const url = paperDownloadPath({
+  },
+
+  pdfUrl: Ember.computed('paper.id', 'version.id', function() {
+    return paperDownloadPath({
       paperId: this.get('paper.id'),
       format: 'pdf',
       versionedTextId: this.get('version.id')
     });
-    window.PDFJS.webViewerLoad(url);
-  },
+  }),
 
   loadPdfJs: function() {
-    LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
-      this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
+    // uses the current version of pdf.js hosted by mozilla
+    // TODO: self-host these resources
+    var pdfjsroot = 'http://mozilla.github.io/pdf.js/build/pdf.js';
+    const workerSrc = 'http://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-      var pdfjsroot = '/assets/pdfjsviewer/';
-      window.PDFJS.workerSrc = pdfjsroot + 'pdf.worker.js';
-      window.PDFJS.imageResourcesPath = pdfjsroot + 'images/';
-      window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
+    LazyLoader.loadScripts([pdfjsroot]).then(() => {
+      window.PDFJS.workerSrc = workerSrc;
+      window.PDFJS.getDocument(this.get('pdfUrl')).then(function(pdf) {
 
-      this.loadPdf();
+        // Only loads the first page of the PDF.
+        // TODO: make more pages load
+        pdf.getPage(1).then(function(page) {
+
+          var scale = 1.5;
+          var viewport = page.getViewport(scale);
+
+          // Prepare canvas using PDF page dimensions
+          var canvas = document.getElementById('the-canvas');
+          var context = canvas.getContext('2d');
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          // Render PDF page into canvas context
+          var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+          page.render(renderContext);
+        });
+      });
     });
   },
 

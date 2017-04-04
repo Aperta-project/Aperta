@@ -7,7 +7,7 @@ export default DS.Model.extend(Snapshottable, {
   paper: DS.belongsTo('paper', { async: false }),
 
   alt: DS.attr('string'),
-  caption: DS.attr('string'),
+  captionHtml: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   detailSrc: DS.attr('string'),
@@ -15,7 +15,7 @@ export default DS.Model.extend(Snapshottable, {
   previewSrc: DS.attr('string'),
   src: DS.attr('string'),
   status: DS.attr('string'),
-  title: DS.attr('string'),
+  titleHtml: DS.attr('string'),
   strikingImage: DS.attr('boolean'),
   rank: DS.attr('number'),
 

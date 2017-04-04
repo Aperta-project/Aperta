@@ -22,7 +22,7 @@ moduleForComponent(
 test('user can edit an existing file and then cancel', function(assert) {
 
   this.set('fileProxy', Ember.Object.create({
-    object: make('supporting-information-file', {title: 'Old Title', category: 'Figure', status: 'done'})
+    object: make('supporting-information-file', {titleHtml: 'Old Title', category: 'Figure', status: 'done'})
   }));
 
   const template = hbs`{{supporting-information-file isEditable=true model=fileProxy}}`;
@@ -40,7 +40,7 @@ test('user can edit an existing file and then cancel', function(assert) {
 test('validates attributes and updates the file on save', function(assert) {
   assert.expect(2);
   this.set('fileProxy', Ember.Object.create({
-    object: make('supporting-information-file', {title: 'Old Title', category: 'Figure', status: 'done'}),
+    object: make('supporting-information-file', {titleHtml: 'Old Title', category: 'Figure', status: 'done'}),
     validateAll() {
       assert.ok(true, 'validateAll is called');
     },
@@ -66,7 +66,7 @@ test('validates attributes and updates the file on save', function(assert) {
 test('does not validate original attributes on cancel', function(assert) {
 
   this.set('fileProxy', Ember.Object.create({
-    object: make('supporting-information-file', {title: 'Old Title', category: 'Figure', status: 'done'}),
+    object: make('supporting-information-file', {titleHtml: 'Old Title', category: 'Figure', status: 'done'}),
     validateAll() {
       assert.ok(false, 'validateAll should not be called');
     },

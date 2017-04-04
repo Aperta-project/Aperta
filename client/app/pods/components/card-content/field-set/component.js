@@ -1,5 +1,5 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['question-dataset']
+  classNames: ['card-content-field-set']
 });

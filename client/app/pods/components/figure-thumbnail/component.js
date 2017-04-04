@@ -47,7 +47,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       return this.get('figure.rank') || 1;
     },
     set(key, value) {
-      this.set('figure.title', `Fig ${value}`);
+      this.set('figure.titleHtml', `Fig ${value}`);
       return value;
     }
   }),

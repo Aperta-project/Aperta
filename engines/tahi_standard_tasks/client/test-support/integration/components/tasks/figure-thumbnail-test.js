@@ -18,7 +18,7 @@ let template = hbs`{{figure-thumbnail isEditable=true figure=figure destroyFigur
 
 test('it renders stuff when status is done', function(assert) {
   this.set('destroyFigure', function(){});
-  this.set('figure', make('figure', {status: 'done', title: 'My Title'}));
+  this.set('figure', make('figure', {status: 'done', titleHtml: 'My Title'}));
   this.render(template);
 
   assert.textPresent('.title', 'My Title', 'renders the title');
@@ -60,9 +60,9 @@ test('it allows the user to cancel', function(assert) {
 test('it sets figure title to \'Fig [rank]\' on input', function(assert) {
   let newRank = 5;
   this.set('destroyFigure', function(){});
-  this.set('figure', make('figure', {status: 'done', title: 'Fig 2'}));
+  this.set('figure', make('figure', {status: 'done', titleHtml: 'Fig 2'}));
   this.render(template);
   this.$('.fa-pencil').click();
   this.$('input[type=number]').val(newRank).trigger('input');
-  assert.equal(this.get('figure.title'), 'Fig ' + newRank);
+  assert.equal(this.get('figure.titleHtml'), 'Fig ' + newRank);
 });

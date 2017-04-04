@@ -50,7 +50,7 @@
           {{else}}
             <h2 class="title"
               {{action "toggleEditState" on="doubleClick"}}>
-              {{if figure.title figure.title "Figure title"}}
+              {{if figure.titleHtml figure.titleHtml "Figure title"}}
             </h2>
 
             {{error-message message=rankErrorMessage

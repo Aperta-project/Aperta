@@ -26,6 +26,30 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { ident.present? }
 
+  validate :content_value_type_combination
+
+  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  VALUE_TYPES_FOR_CONTENT =
+    { 'display-children': [nil],
+      'short-input': ['text'],
+      'text': [nil],
+      'paragraph-input': ['text', 'html'],
+      'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
+
+  # Although we want to validate the various combinations of content types
+  # and value types, many of the CardContent records that have been created
+  # via the CardLoader don't have a content_type set at all, so we'll skip
+  # validating those
+  def content_value_type_combination
+    return if content_type.blank?
+    unless VALUE_TYPES_FOR_CONTENT.fetch(content_type, []).member?(value_type)
+      errors.add(
+        :content_type,
+        "'#{content_type}' not valid with value_type '#{value_type}'"
+      )
+    end
+  end
+
   # Note that we essentially copied this method over from nested question
   def self.update_all_exactly!(content_hashes)
     # This method runs on a scope and takes and a list of nested property

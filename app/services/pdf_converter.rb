@@ -1,3 +1,4 @@
+# PDF Converter -- Deprecated
 class PDFConverter
   include DownloadablePaper
 

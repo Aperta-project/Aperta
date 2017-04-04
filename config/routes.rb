@@ -137,6 +137,7 @@ Tahi::Application.routes.draw do
         get :new_discussion_users, on: :collection
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
+      resources :available_cards, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create
@@ -227,12 +228,6 @@ Tahi::Application.routes.draw do
     end
   end
 
-  # epub/pdf paper download formats
-  #
-  resources :papers, param: :id, constraints: { id: /(#{Journal::SHORT_DOI_FORMAT})|\d+/ }, only: [] do
-    get :download, on: :member
-  end
-
   get '/invitations/:token',
     to: 'token_invitations#show',
     as: 'confirm_decline_invitation'
@@ -273,16 +268,16 @@ Tahi::Application.routes.draw do
   # We need to maintain this route as existing resources have been linked with
   # this scheme.
   get '/resource_proxy/:resource/:token(/:version)',
-    constraints: {
-      resource: /
-        adhoc_attachments
-        | attachments
-        | question_attachments
-        | figures
-        | supporting_information_files
-      /x
-    },
-    to: 'resource_proxy#url', as: :old_resource_proxy
+      constraints: {
+        resource: /
+          adhoc_attachments
+          | attachments
+          | question_attachments
+          | figures
+          | supporting_information_files
+        /x
+      },
+      to: 'resource_proxy#url', as: :old_resource_proxy
 
   # current resource proxy
   get '/resource_proxy/:token(/:version)', to: 'resource_proxy#url',

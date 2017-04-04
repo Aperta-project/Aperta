@@ -19,7 +19,6 @@ class Author < ActiveRecord::Base
   pg_search_scope \
     :fuzzy_search,
     against: [:first_name, :last_name, :email],
-    associated_against: { user: :username },
     ignoring: :accents,
     using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
 

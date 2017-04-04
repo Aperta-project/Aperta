@@ -30,6 +30,7 @@
 
     {{choose-new-card journalTaskTypes=addableTaskTypes
                       phase=addToPhase
+                      cards=availableCards
                       isLoading=journalTaskTypes.isPending
                       onSave=(action "addTaskType")
                       close=(action overlay.animateOut)}}

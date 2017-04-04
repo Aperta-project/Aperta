@@ -40,7 +40,7 @@ module CardConfiguration
 
         {
           ident: "production_metadata--production_notes",
-          value_type: "text",
+          value_type: "html",
           text: "Production Notes"
         },
 

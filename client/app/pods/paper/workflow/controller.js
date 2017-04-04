@@ -33,10 +33,21 @@ export default Controller.extend({
   showChooseNewCardOverlay: false,
   addToPhase: null,
   journalTaskTypes: reads('model.paperTaskTypes'),
+  availableCards: reads('paper.availableCards'),
   addableTaskTypes: filterBy('journalTaskTypes', 'systemGenerated', false),
 
   taskToDisplay: null,
   showTaskOverlay: false,
+
+  buildTask(emberStoreKey, title, kind, phase, card) {
+    return this.store.createRecord(emberStoreKey, {
+      title: title,
+      type: kind,
+      paper: this.get('paper'),
+      phase: phase,
+      card: card
+    });
+  },
 
   updatePositions(phase) {
     const relevantPhases = this.get('model.phases').filter(function(p) {
@@ -54,20 +65,24 @@ export default Controller.extend({
     this.endPropertyChanges();
   },
 
-  addTaskType: concurrencyTask(function * (phase, taskTypeList) {
-    if (taskTypeList.length == 0) {
+  addTaskType: concurrencyTask(function * (phase, selectedCards) {
+    if (selectedCards.length === 0) {
       this.get('flash').displayRouteLevelMessage('error', "No tasks were selected to add to the workflow.");
       return;
     }
 
-    let promises = taskTypeList.map((task) => {
-      let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
-      let newTask = this.store.createRecord(unNamespacedKind, {
-        phase: phase,
-        type: task.get('kind'),
-        paper: this.get('paper'),
-        title: task.get('title')
-      })
+    let promises = selectedCards.map((item) => {
+      let newTask;
+
+      if(item.constructor.modelName === 'card') {
+        // task will be created from a Card
+        newTask = this.buildTask('CustomCardTask', item.get('name'), 'CustomCardTask', phase, item);
+      } else {
+        // task will be created from a JournalTaskType
+        let unNamespacedKind = deNamespaceTaskType(item.get('kind'));
+        newTask = this.buildTask(unNamespacedKind, item.get('title'), item.get('kind'), phase);
+      }
+
       let newTaskPromise = newTask.save().catch((response) => {
         newTask.destroyRecord();
         this.get('flash').displayRouteLevelMessage('error', response.errors[0].detail);

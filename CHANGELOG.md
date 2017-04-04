@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Edited CSS (color and hover features) for manuscript list on dashboard to be
 * Revise Manuscript card changed to Response to Reviewers, it's attachments are now owned by decisions.
 more user friendly.
+* Updated mathjax cdn to use cloudflare.
 ### Deprecated
 ### Removed
 ### Fixed

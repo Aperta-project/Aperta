@@ -100,7 +100,8 @@ class CardContent < ActiveRecord::Base
   def to_xml(options = {})
     attrs = {
       'content-type' => content_type,
-      'value-type' => value_type
+      'value-type' => value_type,
+      'visible-with-parent-answer' => visible_with_parent_answer
     }.compact
     setup_builder(options).tag!('content', attrs) do |xml|
       safe_dump_text(xml, 'placeholder', placeholder) if placeholder.present?

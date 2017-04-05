@@ -27,6 +27,9 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  # Updates the card from the given xml data.  A 422 likely means that
+  # the xml doesn't conform to the schema in config/card.rng (which is
+  # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
     card.xml = params[:card][:xml] if params[:card][:xml].present?
@@ -36,7 +39,9 @@ class CardsController < ApplicationController
   end
 
   def render_xml_syntax_error(ex)
-    render status: 422, json: { errors: { xml: ex.message } }
+    msg = "line #{ex.line} column #{ex.column}: #{ex.message}"
+    render status: 422,
+           json: { errors: { xml: msg } }
   end
 
   def create

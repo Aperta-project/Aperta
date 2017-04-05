@@ -7,13 +7,14 @@ namespace :bugsnag do
     days_ago = Integer(args[:days_ago]) rescue 1
     time = Time.now - (days_ago * 24 * 3600)
 
-    uri = URI.parse("https://api.bugsnag.com/errors/#{args[:error_id]}/events")
-    uri.query = "per_page=999&start_time=#{time.iso8601}"
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    request = Net::HTTP::Get.new(uri.request_uri)
-    request['Authorization'] = "token #{ENV['BUGSNAG_DATA_API_KEY']}"
-    response = http.request(request)
+    conn = Faraday.new(url: 'https://api.bugsnag.com')
+
+    response = conn.get do |req|
+      req.url "/errors/#{args[:error_id]}/events"
+      req.params['per_page'] = 999
+      req.params['start_time'] = time.iso8601
+      req.headers['Authorization'] = "token #{ENV['BUGSNAG_DATA_API_KEY']}"
+    end
 
     parsed_data = JSON.parse(response.body)
     if response.code.to_i == 200

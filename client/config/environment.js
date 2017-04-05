@@ -28,7 +28,7 @@ module.exports = function(environment) {
 
     // Also set in /app/views/downloadable_paper/pdf.html.erb
     'mathjax': {
-      url: '//cdn.mathjax.org/mathjax/2.6-latest/MathJax.js?config=MML_HTMLorMML-full'
+      url: '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.6.1/MathJax.js?config=MML_HTMLorMML-full'
     },
     'pdfjs': {
       url: '//cdnjs.cloudflare.com/ajax/libs/pdf.js/1.6.319/pdf.min.js'

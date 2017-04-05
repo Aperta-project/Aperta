@@ -68,9 +68,13 @@ class QueryParser < QueryLanguageParser
 
   add_simple_expression('AUTHOR IS') do |author_query|
     author_ids = get_author_ids(author_query)
-    table = join(AuthorListItem)
-    # Join only against AuthorListItem for invividual authors
-    table['author_id'].in(author_ids).and(table['author_type'].eq('Author'))
+    group_author_ids = get_group_author_ids(author_query)
+    arel_queries = [
+      build_author_query('GroupAuthor', group_author_ids),
+      build_author_query('Author', author_ids)
+    ]
+
+    arel_queries.inject(&:or)
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|
@@ -218,6 +222,15 @@ class QueryParser < QueryLanguageParser
 
   def get_author_ids(query)
     Author.fuzzy_search(query).pluck(:id)
+  end
+
+  def get_group_author_ids(query)
+    GroupAuthor.fuzzy_search(query).pluck(:id)
+  end
+
+  def build_author_query(author_type, author_ids)
+    table = join(AuthorListItem)
+    table['author_id'].in(author_ids).and(table['author_type'].eq(author_type))
   end
 
   def join(klass, id = "paper_id", join_id = "papers.id")

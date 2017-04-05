@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <!--
+    card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
+    change this file! This is not actually used by Aperta, but it is far easier to
+    write than XML.
+    
+      trang -I rnc -O rng card.rnc card.rng
+    
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be
+    happier
+  -->
+  <define name="possible-value">
+    <element name="possible-value">
+      <attribute name="label"/>
+      <attribute name="value"/>
+    </element>
+  </define>
+  <!-- Inputs -->
+  <define name="radio-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>radio</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="text-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <choice>
+          <value>short-input</value>
+          <value>paragraph-input</value>
+        </choice>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="placeholder">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
+          <text/>
+        </element>
+      </interleave>
+    </element>
+  </define>
+  <!-- Contents -->
+  <define name="text-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>text</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+    </element>
+  </define>
+  <define name="display-children-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>display-children</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="content">
+    <choice>
+      <ref name="radio-input"/>
+      <ref name="text-input"/>
+      <ref name="text-content"/>
+      <ref name="display-children-content"/>
+    </choice>
+  </define>
+  <start>
+    <element name="card">
+      <attribute name="name"/>
+      <ref name="content"/>
+    </element>
+  </start>
+</grammar>

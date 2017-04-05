@@ -147,7 +147,7 @@ describe CardsController do
     it_behaves_like 'an unauthenticated json request'
 
     context 'and the user is signed in' do
-      context "when the user does not have access" do
+      context "and the user does not have access" do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)
@@ -159,7 +159,7 @@ describe CardsController do
         it { is_expected.to responds_with(403) }
       end
 
-      context 'user has access' do
+      context 'and the user has access' do
         before do
           stub_sign_in user
           allow(user).to receive(:can?)
@@ -172,6 +172,28 @@ describe CardsController do
         it 'returns the updated card' do
           do_request
           expect(res_body['card']['name']).to eq name
+        end
+
+        context 'and the request includes xml' do
+          let(:text) { Faker::Lorem.sentence }
+          let(:xml) { "<card name='#{name}'><content content-type='text'><text>#{text}</text></content></card>" }
+          let(:card_params) do
+            {
+              name: name,
+              journal_id: my_journal.id,
+              xml: xml
+            }
+          end
+
+          it 'updates the card' do
+            expect { do_request }.to change { card.reload.latest_version }
+            expect(card.reload.content_root_for_version(:latest).text).to eq(text)
+          end
+
+          it 'returns the updated card' do
+            do_request
+            expect(res_body['card']['xml']).to be_equivalent_to(xml)
+          end
         end
       end
     end

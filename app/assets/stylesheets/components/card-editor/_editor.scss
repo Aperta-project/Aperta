@@ -9,6 +9,12 @@
   // page is wider than 1120px; and the best way to accomplish the
   // full-remaining-height thing is to flex columns all the way down
   // the component stack :(
+
+  // Erik Hetzner - 4 April 2017: If something in here seems strange
+  // and redundant, please check in webkit/safari before you think
+  // it would look the same without it. Safari has issues with rendering
+  // flex + overflow-y
+
   display: flex;
   flex-direction: column;
 
@@ -39,34 +45,39 @@
     padding: 0 30px;
     display: flex;
     justify-content: center;
-  }
 
-  .card-editor-workspace-container {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding-bottom: 15px;
-    background-color: #fff;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    overflow-y: auto;
-    flex: 1;
+    .card-editor-xml-container {
+      flex-direction: column;
+      flex: 1;
+      display: flex;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      border: 2px solid $aperta-blue;
+      border-bottom: 0;
+      max-width: 1120px;
+      background-color: #fff;
 
-    .card-editor-workspace-component-type-name {
-      text-transform: uppercase;
-      color: $aperta-grey;
-      margin-top: -4px;
-      margin-bottom: 4px;
-      font-size: .9em;
-    }
+      .card-editor-xml-controls {
+        background-color: $aperta-blue;
+        border-top-right-radius: 2px;
+        border-top-left-radius: 2px;
+        height: 30px;
+        width: 100%;
+      }
 
-    .card-editor-workspace-title {
-      background-color: $aperta-grey-xlight;
-      border-radius: 5px;
-      margin: 20px 60px 0px 20px;
-      padding: 10px;
+      .card-editor-xml {
+        max-height: calc(100% - 30px);
+        overflow-y: scroll;
 
-      h1 {
-        margin-left: 20px
+        > textarea {
+          font-family: monospace;
+          display: block;
+          margin: 0;
+          padding: 15px;
+          width: 100%;
+          border: 0;
+          resize: none;
+        }
       }
     }
   }

@@ -9,6 +9,12 @@
   // page is wider than 1120px; and the best way to accomplish the
   // full-remaining-height thing is to flex columns all the way down
   // the component stack :(
+
+  // Erik Hetzner - 4 April 2017: If something in here seems strange
+  // and redundant, please check in webkit/safari before you think
+  // it would look the same without it. Safari has issues with rendering
+  // flex + overflow-y
+
   display: flex;
   flex-direction: column;
 
@@ -41,7 +47,9 @@
     justify-content: center;
 
     .card-editor-xml-container {
+      flex-direction: column;
       flex: 1;
+      display: flex;
       border-top-right-radius: 5px;
       border-top-left-radius: 5px;
       border: 2px solid $aperta-blue;
@@ -54,7 +62,9 @@
         border-top-right-radius: 2px;
         border-top-left-radius: 2px;
         height: 30px;
+        width: 100%;
       }
+
       .card-editor-xml {
         max-height: calc(100% - 30px);
         overflow-y: scroll;

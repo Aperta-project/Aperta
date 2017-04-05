@@ -1,9 +1,10 @@
 {{#overlay-fullscreen visible=showCardDeleteOverlay
                       outAnimationComplete=(action "hideCardDeleteOverlay")
-                      title="You're about to delete this card forever."
+                      title="You're about to remove this card from the workflow."
                       overlayClass="card-delete-overlay"
                       as |overlay|}}
     {{card-delete model=taskToDelete
+                  buttonText="Yes, Remove this Card"
                   close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 

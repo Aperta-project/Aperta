@@ -7,7 +7,12 @@ FactoryGuy.define('card-content', {
     ident: '',
   },
 
-  traits: {}
+  traits: {
+    shortInput: {
+      contentType: 'short-input',
+      text: 'A short input question'
+    }
+  }
 });
 
 

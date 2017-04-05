@@ -11,6 +11,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 * Revise Manuscript card changed to Response to Reviewers, it's attachments are now owned by decisions.
 more user friendly.
 * Updated mathjax cdn to use cloudflare.
+* The confirmation dialogues for removing cards from a paper and a manuscript manager template are
+now clearer about what's going to occur
 ### Deprecated
 ### Removed
 ### Fixed

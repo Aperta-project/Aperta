@@ -7,24 +7,26 @@
 
   <span class="spacer" aria-hidden="true"></span>
 
-  {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
-    {{fa-icon icon="envelope-open-o"}}
-    Correspondence
-  {{/link-to}}
-
   {{#if (can "manage_workflow" paper)}}
-    {{#link-to "paper.workflow" paper class="control-bar-button" id="nav-workflow"}}
-      {{fa-icon icon="columns"}}
-      Workflow
+    {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
+      {{fa-icon icon="envelope-open-o"}}
+      Correspondence
     {{/link-to}}
+
+    {{#if (can "manage_workflow" paper)}}
+      {{#link-to "paper.workflow" paper class="control-bar-button" id="nav-workflow"}}
+        {{fa-icon icon="columns"}}
+        Workflow
+      {{/link-to}}
+    {{/if}}
+
+    {{#link-to "paper.index" paper class="control-bar-button" id="nav-manuscript"}}
+      {{fa-icon icon="file-text-o"}}
+      Manuscript
+    {{/link-to}}
+
+    <div class="control-bar-splitter"></div>
   {{/if}}
-
-  {{#link-to "paper.index" paper class="control-bar-button" id="nav-manuscript"}}
-    {{fa-icon icon="file-text-o"}}
-    Manuscript
-  {{/link-to}}
-
-  <div class="control-bar-splitter"></div>
 
   {{#if (eq tab "manuscript")}}
     {{#if versioningMode}}
@@ -48,39 +50,6 @@
       {{fa-icon icon="download"}}
       Downloads
     </div>
-
-    {{#basic-popover as |popover|}}
-      {{#popover.trigger class="control-bar-button last more-dropdown-menu"}}
-        {{fa-icon icon="ellipsis-v"}}
-        More
-      {{/popover.trigger}}
-      {{#popover.content}}
-        <div class="popover-menu-content">
-          {{#unless paperWithdrawn}}
-            {{#if (can "withdraw" paper)}}
-              <a href="#" class="popover-menu-item withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
-                <span class="fa fa-trash fa-lg"></span>
-                Withdraw Manuscript
-              </a>
-            {{/if}}
-          {{/unless}}
-        </div>
-      {{/popover.content}}
-    {{/basic-popover}}
-
-
-    {{#basic-dropdown as |dropdown|}}
-      {{#dropdown.content class="popover-menu"}}
-        {{#unless paperWithdrawn}}
-          {{#if (can "withdraw" paper)}}
-            <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
-              <span class="fa fa-trash fa-lg"></span>
-              Withdraw Manuscript
-            </a>
-          {{/if}}
-        {{/unless}}
-      {{/dropdown.content}}
-    {{/basic-dropdown}}
 
     {{#if submenuVisible}}
       <div class="control-bar-sub-items">
@@ -126,6 +95,25 @@
     Discussions
   {{/link-to}}
 
+  {{#if (eq tab "manuscript")}}
+    {{#basic-popover as |popover|}}
+      {{#popover.trigger class="control-bar-button last more-dropdown-menu"}}
+        {{fa-icon icon="ellipsis-v"}}
+        More
+      {{/popover.trigger}}
+      {{#popover.content}}
+        <div class="popover-menu-content">
+          {{#unless paperWithdrawn}}
+            {{#if (can "withdraw" paper)}}
+              <a href="#" class="popover-menu-item withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
+                <span class="fa fa-trash fa-lg"></span>
+                Withdraw Manuscript
+              </a>
+            {{/if}}
+          {{/unless}}
+        </div>
+      {{/popover.content}}
+    {{/basic-popover}}
+  {{/if}}
 </nav>
-
 {{flash-messages}}

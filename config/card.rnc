@@ -48,5 +48,6 @@ content = (radio-input | text-input | text-content | display-children-content)
 
 start = element card {
             attribute name { text },
+            attribute required-for-submission { "true" | "false" },
             content
         }

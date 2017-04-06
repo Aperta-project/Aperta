@@ -39,9 +39,7 @@ class CardsController < ApplicationController
   end
 
   def render_xml_syntax_error(ex)
-    msg = "line #{ex.line} column #{ex.column}: #{ex.message}"
-    render status: 422,
-           json: { errors: { xml: msg } }
+    render status: 422, json: { errors: { xml: ex.message } }
   end
 
   def create

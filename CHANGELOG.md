@@ -2,12 +2,13 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [x.x.x] - {yyyy-mm-dd}
+## ## [1.40.1] - {2017-04-07}
 ### Added
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
+Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
 ### Security
 
 ## ## [1.40.0] - {2017-04-06}

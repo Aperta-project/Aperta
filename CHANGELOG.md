@@ -4,6 +4,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## ## [x.x.x] - {yyyy-mm-dd}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.40.0] - {2017-04-06}
+### Added
 * Inject the Git Commit ID in <meta> tag for easier debugging
 * Similarity Check Task Card (UI Only)
 ### Changed

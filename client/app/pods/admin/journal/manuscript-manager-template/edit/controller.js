@@ -21,6 +21,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
 
+  featureFlag: Ember.inject.service(),
+
   showCardDeleteOverlay: false,
   taskToDelete: null,
 
@@ -61,6 +63,21 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   resetProperties(){
     this.setProperties({ editingName: false, pendingChanges: false });
+  },
+
+  redirectToAdminPage(journal){
+    this.get('featureFlag').value('CARD_CONFIGURATION').then((enabled) => {
+      if(enabled) {
+        // redirect to new card config admin screen
+        this.transitionToRoute(
+          'admin.cc.journals.workflows',
+          { queryParams: { journalID: journal.get('id') }}
+        );
+      } else {
+        // redirect to old world
+        this.transitionToRoute('admin.journal', journal);
+      }
+    });
   },
 
   buildTaskTemplate(title, journalTaskType, card, phaseTemplate) {
@@ -230,7 +247,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         const journal = this.get('journal');
         this.get('model').deleteRecord();
         this.resetProperties();
-        this.transitionToRoute('admin.journal', journal);
+        this.redirectToAdminPage(journal);
       } else {
         this.store.unloadAll('task-template');
         this.store.unloadAll('phase-template');

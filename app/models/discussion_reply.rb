@@ -1,6 +1,9 @@
 class DiscussionReply < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
   include EventStream::Notifiable
+  include CustomCastTypes
+
+  attribute :body, HtmlString
 
   belongs_to :discussion_topic, inverse_of: :discussion_replies
   belongs_to :replier, inverse_of: :discussion_replies, class_name: 'User'

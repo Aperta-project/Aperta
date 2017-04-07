@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
-Invite reviewer now shows the correct datetime when in a completed state
+Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
 ### Security
 
 ## ## [1.40.0] - {2017-04-06}

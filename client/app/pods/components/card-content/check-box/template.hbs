@@ -1,0 +1,12 @@
+{{#if content.text}}
+  <p class="content-text">{{{content.text}}}</p>
+{{/if}}
+{{check-box
+  name=name
+  id=name
+  checked=(readonly answer.value)
+  disabled=disabled
+  action="valueChanged"}}
+{{#if content.label}}
+  <label for={{name}}>{{{content.label}}}</label>
+{{/if}}

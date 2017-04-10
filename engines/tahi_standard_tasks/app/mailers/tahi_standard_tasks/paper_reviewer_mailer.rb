@@ -12,7 +12,7 @@ module TahiStandardTasks
       @invitee = @invitation.invitee
       @paper = @invitation.paper
       @task = @invitation.task
-      @subject = "You have been invited as a reviewer" \
+      @subject = "You have been invited as a reviewer " \
         "for the manuscript, \"#{@paper.display_title}\""
       mail(to: @invitation.email,
            subject: @subject,

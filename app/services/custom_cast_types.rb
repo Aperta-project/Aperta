@@ -1,5 +1,6 @@
 # This module contains custom cast types that don't fit within
-# the base stuff we get from ActiveRecord
+# the base stuff we get from ActiveRecord.  We use this
+# see https://tinyurl.com/zurd3ek for details.
 module CustomCastTypes
   # This returns a sanitized HTML string appropriate for
   # client-side consumption

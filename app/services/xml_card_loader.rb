@@ -14,6 +14,9 @@ class XmlCardLoader
     @root ||= @doc.xpath('/card').first
   end
 
+  # We use RelaxNG to validate the xml. The config/card.rng file
+  # is automatically generated from the config/card.rnc file.
+  # Instructions for how to do that are included there.
   def initialize(doc, journal)
     @doc = doc
     @journal = journal
@@ -80,6 +83,7 @@ class XmlCardLoader
       ident: attr_val(el, 'ident'),
       value_type: attr_val(el, 'value-type'),
       content_type: attr_val(el, 'content-type'),
+      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer'),
       placeholder: placeholder,
       text: text,
       possible_values: parse_possible_values(el),

@@ -6,8 +6,11 @@ class CardContentSerializer < ActiveModel::Serializer
              :content_type,
              :order,
              :placeholder,
-             :possible_values
-
+             :possible_values,
+             # when visible_with_parent_answer is set,
+             # if the parent's answer is equal to this value
+             # then render this content's children
+             :visible_with_parent_answer
   has_many :children,
            embed: :ids,
            include: true,

@@ -12,6 +12,10 @@ class Paper < ActiveRecord::Base
   include PgSearch
   include Assignable::Model
   include Snapshottable
+  include CustomCastTypes
+
+  # attribute :title, HtmlSanitized.new
+  attribute :abstract, HtmlString.new
 
   self.snapshottable = true
 

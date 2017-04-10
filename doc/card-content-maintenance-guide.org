@@ -1,0 +1,18 @@
+ The Card Content Maintenance Guide!
+    
+* Steps for adding and updating content
+** Allow new stuff to come in
+1. Update any information in the [[file:../config/card.rnc][card xml schema]] file. Remember that you'll need
+   to use trang to create the card.rng file from the card.rnc
+2. If you're making a new content type, you'll need to update the validation information
+   for the [[file:../app/models/card_content.rb::VALUE_TYPES_FOR_CONTENT%20=][card content value types]] in card_content.rb
+3. Update the XmlCardLoader [[file:../app/services/xml_card_loader.rb::def%20make_card_content(el,%20card_version)][xml card loader ]]so that information from the xml editor will get translated into
+   updated card content
+** Allow new stuff to go out
+1. Update the [[file:../app/models/card_content.rb::def%20to_xml(options%20=%20{})][to_xml]] method of card_content
+2. Update the [[file:../app/serializers/card_content_serializer.rb::attributes%20:id,][card content serializer]]
+3. Update card-content.js with new attributes
+4. Make a new component if needed in the app/pods/components/card-content folder, also update the [[file:../client/app/pods/components/card-content/component.js::export%20default%20Ember.Component.extend({][card content component]] if need be.
+** Update sample data
+- Update data.yml
+- Update the [[file:../lib/tasks/card_loading/configurations/nonstandard_configurations/card_configuration_sampler.rb::module%20CardConfiguration][card config sampler]]

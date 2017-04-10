@@ -114,8 +114,21 @@ class Attachment < ActiveRecord::Base
     Attachment.transaction do
       @downloading = true
       file.download! url
-
+      old_file_hash = file_hash
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
+      if old_file_hash == file_hash
+        Rails.logger.info "sending push notifications"
+        TahiPusher::Channel.delay(queue: :eventstream, retry: false)
+          .push(channel_name: "private-user@#{uploaded_by_id}",
+                event_name: 'flashMessage',
+                payload: { messageType: 'error',
+                           message: "<b>Duplicate file.</b> Please note:
+                            The specified file <i>#{title}</i> has been
+                            re-processed. <br>If you need to make any changes to
+                            your manuscript, you can upload again by clicking
+                            the <i>Replace</i> link." })
+        Rails.logger.info "push notifications should be sent"
+      end
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
 

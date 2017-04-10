@@ -121,7 +121,7 @@ class Attachment < ActiveRecord::Base
         TahiPusher::Channel.delay(queue: :eventstream, retry: false)
           .push(channel_name: "private-user@#{uploaded_by_id}",
                 event_name: 'flashMessage',
-                payload: { messageType: 'error',
+                payload: { messageType: 'alert',
                            message: "<b>Duplicate file.</b> Please note:
                             The specified file <i>#{title}</i> has been
                             re-processed. <br>If you need to make any changes to

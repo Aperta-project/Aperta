@@ -77,6 +77,7 @@ describe DownloadManuscriptWorker, redis: true do
           on: 'flashMessage'
         )
         DownloadManuscriptWorker.download_manuscript(paper, url, user)
+        expect(paper.reload.processing).to eq false
       end
     end
 
@@ -86,6 +87,7 @@ describe DownloadManuscriptWorker, redis: true do
         user = paper.creator
         expect(pusher_channel).to_not receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
         DownloadManuscriptWorker.download_manuscript(paper, url, user)
+        expect(paper.reload.processing).to eq true
       end
     end
   end

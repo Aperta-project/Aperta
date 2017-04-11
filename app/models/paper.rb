@@ -328,7 +328,13 @@ class Paper < ActiveRecord::Base
   # Downloads the manuscript from the given URL.
   def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
+    old_file_hash = attachment.file_hash
     attachment.download!(url, uploaded_by: uploaded_by)
+    if attachment.file_hash == old_file_hash
+      alert_duplicate_file(attachment, uploaded_by)
+      # No need to process attachment, mark the paper record as "done"
+      update(processing: false)
+    end
   end
 
   # Downloads the sourcefile from the given URL.
@@ -643,5 +649,17 @@ class Paper < ActiveRecord::Base
     by_role_hsh.each_with_object({}) do |(role, participation), hsh|
       hsh[role.name] = participation.map(&:user).uniq
     end
+  end
+
+  def alert_duplicate_file(attachment, uploaded_by)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false)
+        .push(channel_name: "private-user@#{uploaded_by.id}",
+              event_name: 'flashMessage',
+              payload: { messageType: 'alert',
+                         message: "<b>Duplicate file.</b> Please note:
+                          The specified file <i>#{attachment.title}</i> has been
+                          reprocessed. <br>If you need to make any changes to
+                          your manuscript, you can upload again by clicking
+                          the <i>Replace</i> link." })
   end
 end

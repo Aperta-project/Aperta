@@ -2,7 +2,8 @@ import FactoryGuy from 'ember-data-factory-guy';
 
 FactoryGuy.define('card-content', {
   default: {
-    contentType: 'text',
+    contentType: 'short-input',
+    valueType: 'text',
     text: 'Answer my question',
     ident: '',
   },
@@ -10,7 +11,13 @@ FactoryGuy.define('card-content', {
   traits: {
     shortInput: {
       contentType: 'short-input',
+      valueType: 'text',
       text: 'A short input question'
+    },
+    text: {
+      contentType: 'text',
+      valueType: null,
+      text: 'Here is a paragraph of unanswerable text'
     }
   }
 });

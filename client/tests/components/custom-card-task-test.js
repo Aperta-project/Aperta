@@ -25,5 +25,5 @@ test('it renders the custom card content', function(assert) {
     {{custom-card-task task=task}}
   `);
 
-  assert.elementFound('.card-content-view-text', 'found the associated card content');
+  assert.elementFound('.card-content-short-input', 'found the associated card content');
 });

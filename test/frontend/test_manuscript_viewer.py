@@ -310,7 +310,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_viewer.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
-    upms.upload_manuscript()
+    upms.replace_manuscript()
     upms.validate_ihat_conversions_success(timeout=45)
     data = {'attach': 2}
     manuscript_viewer.complete_task('Upload Manuscript')

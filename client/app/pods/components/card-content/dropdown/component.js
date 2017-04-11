@@ -1,10 +1,13 @@
 import Ember from 'ember';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-dropdown'],
-  content: null,
-  disabled: null,
-  answer: null,
+  propTypes: {
+    content: PropTypes.EmberObject.isRequired,
+    disabled: PropTypes.bool,
+    answer: PropTypes.EmberObject.isRequired
+  },
 
   selectedValue: Ember.computed(
     'answer.value',

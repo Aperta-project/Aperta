@@ -50,4 +50,43 @@ describe DownloadManuscriptWorker, redis: true do
       described_class.new.perform(paper.id, url, nil)
     end
   end
+
+  describe 'checks for duplicates file' do
+    let(:pusher_channel) { mock_delayed_class(TahiPusher::Channel) }
+    let(:paper_with_file) { create :paper, :ready_for_export }
+    let(:file_bytes) { File.open(Rails.root.join('spec/fixtures/about_turtles.docx')).read }
+    before do
+      VCR.turn_off!
+      stub_request(:get, url).to_return(body: file_bytes)
+    end
+
+    after do
+      VCR.turn_on!
+    end
+
+    it 'displays a message if a duplicated file is uploaded' do
+      Sidekiq::Testing.inline! do
+        paper = paper_with_file
+        user = paper.creator
+        paper.file.update(file_hash: Digest::SHA256.hexdigest(file_bytes))
+        expect(pusher_channel).to receive_push(
+          payload: hash_including(
+            messageType: 'alert'
+          ),
+          down: 'user',
+          on: 'flashMessage'
+        )
+        DownloadManuscriptWorker.download_manuscript(paper, url, user)
+      end
+    end
+
+    it 'doesn\'t displays a message if a duplicated file is uploaded' do
+      Sidekiq::Testing.inline! do
+        paper = paper_with_file
+        user = paper.creator
+        expect(pusher_channel).to_not receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
+        DownloadManuscriptWorker.download_manuscript(paper, url, user)
+      end
+    end
+  end
 end

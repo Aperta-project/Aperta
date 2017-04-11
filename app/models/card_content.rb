@@ -44,6 +44,7 @@ class CardContent < ActiveRecord::Base
   VALUE_TYPES_FOR_CONTENT =
     { 'display-children': [nil],
       'display-with-value': [nil],
+      'dropdown': ['text'],
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['text', 'boolean'],

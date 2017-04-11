@@ -35,6 +35,17 @@ check-box-input = element content {
                 content*
             }
 
+# for now duplicating radio-input for dropdown
+dropdown-input = element content {
+                  attribute ident { text }?,
+                  attribute value-type { "text" },
+                  attribute content-type { "dropdown" },
+                  element text { text },
+                  element placeholder { text }?,
+                  possible-value*,
+                  content*
+              }
+
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
@@ -75,7 +86,9 @@ content = (radio-input |
            display-children-content |
            display-with-value-content |
            field-set |
-           check-box-input)
+           check-box-input |
+           dropdown-input
+          )
 
 start = element card {
             attribute name { text },

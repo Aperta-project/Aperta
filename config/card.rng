@@ -74,6 +74,34 @@
       </zeroOrMore>
     </element>
   </define>
+  <!-- for now duplicating radio-input for dropdown -->
+  <define name="dropdown-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>dropdown</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+      <optional>
+        <element name="placeholder">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="text-input">
     <element name="content">
       <optional>
@@ -163,6 +191,7 @@
       <ref name="display-with-value-content"/>
       <ref name="field-set"/>
       <ref name="check-box-input"/>
+      <ref name="dropdown-input"/>
     </choice>
   </define>
   <start>

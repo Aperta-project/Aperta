@@ -47,7 +47,7 @@ test('displays invitation information if invitation.accepted is true', function(
 
 test('displays invitation information if invitation.accepted is true and report complete', function(assert){
   this.set('invitation.reviewerReport.status', 'completed');
-  this.set('invitation.reviewerReport.statusDateTime', this.get('completed-date'));
+  this.set('invitation.reviewerReport.statusDatetime', this.get('completed-date'));
   this.set('invitation.state', 'accepted');
   this.render(template);
 

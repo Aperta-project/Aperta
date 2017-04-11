@@ -3,9 +3,13 @@
   <!--
     card.rnc: If this file is card.rnc: Do not forget to update card.rng if you
     change this file! This is not actually used by Aperta, but it is far easier to
-    write than XML.
-    
-      trang -I rnc -O rng card.rnc card.rng
+    write than XML. .rnc is the RelaxNG compact schema format. We translate it
+    into the xml format using a utility called `trang`. `trang `is a java utility
+    from RelaxNG. if you're using apt you can install it via `sudo apt-get install
+    trang`, otherwise clone the repo at https://github.com/relaxng/jing-trang and
+    follow the instructions there. Run trang (or the trang.jar file)as follows to
+    translate the compact rnc format to the rng that gets used in the XmlCardLoader
+      `trang -I rnc -O rng card.rnc card.rng`
     
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be
     happier
@@ -92,12 +96,41 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="display-with-value-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>display-with-value</value>
+      </attribute>
+      <attribute name="visible-with-parent-answer"/>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="field-set">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>field-set</value>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
       <ref name="text-input"/>
       <ref name="text-content"/>
       <ref name="display-children-content"/>
+      <ref name="display-with-value-content"/>
+      <ref name="field-set"/>
     </choice>
   </define>
   <start>

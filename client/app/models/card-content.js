@@ -6,7 +6,10 @@ export default DS.Model.extend({
     inverse: 'parent',
     async: false
   }),
-  parent: DS.belongsTo('card-content'),
+  parent: DS.belongsTo('card-content', {
+    async: false,
+    inverse: 'unsortedChildren'
+  }),
   answers: DS.hasMany('answer', { async: false }),
 
   contentType: DS.attr('string'),
@@ -16,6 +19,7 @@ export default DS.Model.extend({
   order: DS.attr('number'),
   text: DS.attr('string'),
   valueType: DS.attr('string'),
+  visibleWithParentAnswer: DS.attr('string'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),

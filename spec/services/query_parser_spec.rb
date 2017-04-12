@@ -351,5 +351,16 @@ describe QueryParser do
           sql: '"papers"."first_submitted_at"'
       end
     end
+
+    context 'Author Queries' do
+      it 'should search both Authors and GroupAuthors' do
+        create(:author, first_name: 'zaphod')
+        create(:group_author, contact_first_name: 'zaphod')
+        parse = QueryParser.new.parse "AUTHOR IS zaphod"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          ("author_list_items_0"."author_id" IN (1) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (1) AND "author_list_items_1"."author_type" = 'Author')
+        SQL
+      end
+    end
   end
 end

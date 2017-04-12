@@ -2,6 +2,16 @@
                task=taskToDisplay
                outAnimationComplete=(action "hideTaskOverlay")}}
 
+{{#overlay-fullscreen visible=showActivityOverlay
+                      outAnimationComplete=(action "hideActivityOverlay")
+                      title="Recent Activity"
+                      overlayClass="activity-overlay"
+                      as |overlay|}}
+    {{paper-activity isLoading=activityIsLoading
+                     model=activityFeed
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 {{#overlay-fullscreen visible=showCardDeleteOverlay
                       outAnimationComplete=(action "hideCardDeleteOverlay")
                       title="You're about to delete this card forever."
@@ -25,6 +35,7 @@
 {{/overlay-fullscreen}}
 
 {{paper-control-bar paper=model
+                    showActivity="showActivityOverlay"
                     tab="workflow"}}
 
 {{withdrawal-banner paper=model}}

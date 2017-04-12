@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This script will set up valdo in a directory next to your tahi project called ops_valdo/
-# when it's done, you'll have to 'cap vagrant deploy:cold' from both tahi and ihat to have
+# when it's done, you'll have to 'cap vagrant deploy' from both tahi and ihat to have
 # a fully functional aperta.
 #
 # This file follows the setup steps outlined in the valdo README
@@ -70,7 +70,7 @@ cd "$APERTA_APP_DIR"
 vagrant up
 
 echo "If you see no errors above, your environment should now be ready for a cap deploy."
-echo "go to your local tahi and ihat repos and run 'cap vagrant deploy:cold'"
+echo "go to your local tahi and ihat repos and run 'cap vagrant deploy'"
 echo "Once you've done the cap deploys, you should see tahi running at http://aperta.vagrant.local and ihat at http://aperta.vagrant.local:8888"
 
 echo "If you see an error about a key mismatch, try 'ssh-keygen -R aperta'"

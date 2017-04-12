@@ -40,8 +40,8 @@ dropdown-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
                   attribute content-type { "dropdown" },
-                  element text { text },
-                  element placeholder { text }?,
+                  (element placeholder { text }? &
+                   element text { text }),
                   possible-value*,
                   content*
               }

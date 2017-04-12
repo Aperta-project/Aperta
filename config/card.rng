@@ -86,14 +86,16 @@
       <attribute name="content-type">
         <value>dropdown</value>
       </attribute>
-      <element name="text">
-        <text/>
-      </element>
-      <optional>
-        <element name="placeholder">
+      <interleave>
+        <optional>
+          <element name="placeholder">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
           <text/>
         </element>
-      </optional>
+      </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
       </zeroOrMore>

@@ -19,6 +19,12 @@ class InviteReviewersCard(InviteCard):
   # POM Actions
 
   def validate_invited_reviewer_report_state(self, invitee, expected_report_state='pending'):
+    """
+    test_invited_reviewer_report_state: Validates if all the elements for a report state are like expected
+    :param invitee: The invited reviewer
+    :param expected_report_state: The expected report state (pending or completed)
+    :return: void function
+    """
     invites = self._gets(self._invitee_listing)
     invite_found = False
     accepted_report_state = ['pending', 'completed']

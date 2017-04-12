@@ -408,7 +408,11 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_email_template_edits()
 
   def test_invited_reviewer_report_state(self):
-    logging.info('Test Invite Reviewers::Invite Rescind Reinvite')
+    """
+    test_invited_reviewer_report_state: Validates the elements for report status on the invite reviewers card
+    :return: void function
+    """
+    logging.info('Test Invite Reviewers::Reviewer Report State')
     # Users logs in and make a submission
     creator_user = random.choice(users)
     dashboard_page = self.cas_login(email=creator_user['email'])

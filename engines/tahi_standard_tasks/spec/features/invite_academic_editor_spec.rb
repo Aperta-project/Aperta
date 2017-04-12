@@ -73,4 +73,21 @@ feature "Invite Academic Editor", js: true do
       expect(page).to have_content('Academic Editor')
     end
   end
+
+  scenario 'attaching files to invitations' do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(editor1)
+    ActiveInvitation.for_user(editor1) do |invite|
+      invite.edit(editor1)
+      invite.upload_attachment('yeti.jpg')
+    end
+    find('.invitation-save-button').click
+
+    # Make sure we get the attachment in the actual email
+    overlay.find('.invitation-item-action-send').click
+    process_sidekiq_jobs
+    email = find_email(editor1.email)
+    expect(email).to be
+    expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
+  end
 end

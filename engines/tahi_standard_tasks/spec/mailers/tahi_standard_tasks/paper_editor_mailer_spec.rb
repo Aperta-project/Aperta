@@ -33,6 +33,23 @@ describe TahiStandardTasks::PaperEditorMailer do
       expect(email.bcc).to be_empty
     end
 
+    it "attaches attachments on the invitation" do
+      invitation.attachments << FactoryGirl.build(
+        :invitation_attachment,
+        file: File.open(Rails.root.join("spec/fixtures/bill_ted1.jpg"))
+      )
+      invitation.attachments << FactoryGirl.build(
+        :invitation_attachment,
+        file: File.open(Rails.root.join("spec/fixtures/yeti.gif"))
+      )
+
+      expect(email.attachments.length).to eq(2)
+      expect(email.attachments.map(&:filename)).to contain_exactly(
+        "bill_ted1.jpg",
+        "yeti.gif"
+      )
+    end
+
     describe "when a bcc email address is provided" do
       before do
         invitation.paper.journal.update(editor_email_bcc: 'editor@example.com')

@@ -137,6 +137,23 @@ feature "Invite Reviewer", js: true do
     expect(overlay).to have_no_css('.invitation-item-header', text: reviewer2.first_name)
   end
 
+  scenario 'attaching files to invitations' do
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.add_to_queue(reviewer1)
+    ActiveInvitation.for_user(reviewer1) do |invite|
+      invite.edit(reviewer1)
+      invite.upload_attachment('yeti.jpg')
+    end
+    find('.invitation-save-button').click
+
+    # Make sure we get the attachment in the actual email
+    overlay.find('.invitation-item-action-send').click
+    process_sidekiq_jobs
+    email = find_email(reviewer1.email)
+    expect(email).to be
+    expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
+  end
+
   scenario 'clicking on an email selects it' do
     overlay = Page.view_task_overlay(paper, task)
     overlay.add_to_queue(reviewer1)

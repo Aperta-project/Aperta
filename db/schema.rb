@@ -567,7 +567,7 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
-    t.boolean  "legends_allowed",                       default: false
+    t.boolean  "legends_allowed",                       default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

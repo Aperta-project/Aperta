@@ -657,7 +657,7 @@ class Paper < ActiveRecord::Base
               event_name: 'flashMessage',
               payload: { messageType: 'alert',
                          message: "<b>Duplicate file.</b> Please note:
-                          The specified file <i>#{attachment.title}</i> has been
+                          The specified file <i>#{title}</i> has been
                           reprocessed. <br>If you need to make any changes to
                           your manuscript, you can upload again by clicking
                           the <i>Replace</i> link." })

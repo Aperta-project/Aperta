@@ -24,6 +24,7 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
+              scope: :deleted_at,
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }
@@ -50,6 +51,7 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
+      'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access

@@ -12,6 +12,8 @@ export default DS.Model.extend({
   }),
   answers: DS.hasMany('answer', { async: false }),
 
+  allowMultipleUploads: DS.attr('boolean'),
+  allowFileCaptions: DS.attr('boolean'),
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   placeholder: DS.attr('string'),

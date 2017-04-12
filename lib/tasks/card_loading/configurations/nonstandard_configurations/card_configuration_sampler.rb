@@ -116,6 +116,13 @@ module CardConfiguration
             content_type: "dropdown",
             placeholder: "Nothing selected yet",
             possible_values: [{ "label" => "Choice 1", "value" => 1 }, { "label" => "Choice 2", "value" => 2 }]
+          },
+          {
+            text: "Eat a hot dog; take a picture; upload it here",
+            value_type: "attachment",
+            content_type: "file-uploader",
+            possible_values: [".tif", ".png"],
+            label: "Ima Button"
           }
         ]
       end

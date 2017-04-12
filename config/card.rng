@@ -136,6 +136,12 @@
   <start>
     <element name="card">
       <attribute name="name"/>
+      <attribute name="required-for-submission">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <ref name="content"/>
     </element>
   </start>

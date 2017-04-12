@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407205359) do
+ActiveRecord::Schema.define(version: 20170411204727) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -223,6 +224,7 @@ ActiveRecord::Schema.define(version: 20170407205359) do
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
     t.string   "label"
+    t.string   "default_answer_value"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

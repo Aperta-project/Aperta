@@ -1,13 +1,14 @@
 require 'rails_helper'
 
-feature "Paper workflow", js: true, selenium: true, skip: true do
+feature "Paper workflow", js: true, selenium: true do
   let(:admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, journal: journal }
+  let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
+
 
   before do
     assign_journal_role(journal, admin, :admin)
-
     login_as(admin, scope: :user)
     visit "/papers/#{paper.id}/workflow"
     wait_for_ajax
@@ -15,6 +16,9 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
 
   describe "navigation" do
     before do
+      # ensure that admin is an active participant on the paper
+      paper.update(creator: admin)
+
       visit root_path
     end
 
@@ -22,7 +26,7 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
       click_link paper.title
       click_link "Workflow"
 
-      expect(current_path).to eq "/papers/#{paper.id}/workflow"
+      expect(current_path).to eq "/papers/#{paper.short_doi}/workflow"
     end
   end
 
@@ -80,20 +84,27 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
     task_manager_page = TaskManagerPage.new
     phase = task_manager_page.phase 'Submission Data'
     expect(task_manager_page).to have_no_application_error
-    before = task_manager_page.card_count
-    expect {
-      phase.remove_card('Upload Manuscript')
-      within '.overlay' do
-        find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
-      end
-    }.to change {
-      task_manager_page.card_count
-    }.by(-1)
+    initial_card_count = task_manager_page.card_count
 
-    dashboard_page = task_manager_page.navigate_to_dashboard
-    paper_page = dashboard_page.view_submitted_paper paper
-    task_manager_page = paper_page.visit_task_manager
-    expect(task_manager_page.card_count).to eq(before - 1)
+    phase.remove_card('Upload Manuscript')
+    within '.overlay' do
+      find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+    end
+    expect(task_manager_page).to_not have_css('.card-title', text: 'Upload Manuscript', visible: false)
+    expect(task_manager_page.card_count).to eq(initial_card_count - 1)
+  end
+
+  scenario "Adding a new CustomCardTask" do
+    task_manager_page = TaskManagerPage.new
+    phase = task_manager_page.phase 'Submission Data'
+    phase.find('a', text: 'ADD NEW CARD').click
+
+    within '.overlay' do
+      find('label', text: card.name).click
+      find('button', text: 'ADD').click
+    end
+
+    expect(task_manager_page).to have_css('.card-title', text: card.name, visible: false)
   end
 
   # Preventing a regression
@@ -108,5 +119,4 @@ feature "Paper workflow", js: true, selenium: true, skip: true do
       expect(task_manager_page).to have_no_application_error
     end
   end
-
 end

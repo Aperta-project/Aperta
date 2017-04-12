@@ -67,6 +67,7 @@ Tahi::Application.routes.draw do
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index, :create, :show, :update]
+    resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do
       put :coauthor_confirmation, on: :member
@@ -137,6 +138,7 @@ Tahi::Application.routes.draw do
         get :new_discussion_users, on: :collection
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
+      resources :available_cards, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create

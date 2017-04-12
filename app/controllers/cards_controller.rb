@@ -5,6 +5,9 @@ class CardsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
+  rescue_from Nokogiri::XML::SyntaxError,
+              with: :render_xml_syntax_error
+
   def index
     journal_ids = current_user.filter_authorized(
       :administer,
@@ -24,11 +27,19 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  # Updates the card from the given xml data.  A 422 likely means that
+  # the xml doesn't conform to the schema in config/card.rng (which is
+  # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
+    card.xml = params[:card][:xml] if params[:card][:xml].present?
     card.update!(card_params)
 
-    respond_with card.reload
+    respond_with card
+  end
+
+  def render_xml_syntax_error(ex)
+    render status: 422, json: { errors: { xml: ex.message } }
   end
 
   def create
@@ -37,7 +48,6 @@ class CardsController < ApplicationController
 
     respond_with Card.create_new!(card_params)
   end
-
 
   private
 

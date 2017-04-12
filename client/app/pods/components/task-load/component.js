@@ -31,6 +31,8 @@ export default Ember.Component.extend({
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
+      task.get('cardVersion'),
+      task.get('answers'),
       this.get('store').findRecord(task._internalModel.modelName, task.get('id'), {reload: true}) // see "NOTE: task find"
     ]);
   })

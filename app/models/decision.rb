@@ -1,6 +1,9 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include CustomCastTypes
+
+  attribute :letter, HtmlString.new
 
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']

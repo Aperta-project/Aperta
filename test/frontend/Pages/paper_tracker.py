@@ -276,23 +276,23 @@ class PaperTrackerPage(AuthenticatedPage):
     :return: None
     """
     title_th = self._get(self._paper_tracker_table_title_th)
-    self.validate_table_heading_style(title_th)
+    # self.validate_table_heading_style(title_th)
     manid_th = self._get(self._paper_tracker_table_paper_id_th)
-    self.validate_table_heading_style(manid_th)
+    # self.validate_table_heading_style(manid_th)
     verdate_th = self._get(self._paper_tracker_table_version_date_th)
-    self.validate_table_heading_style(verdate_th)
+    # self.validate_table_heading_style(verdate_th)
     subdate_th = self._get(self._paper_tracker_table_submit_date_th)
-    self.validate_table_heading_style(subdate_th)
+    # self.validate_table_heading_style(subdate_th)
     paptype_th = self._get(self._paper_tracker_table_paper_type_th)
-    self.validate_table_heading_style(paptype_th)
+    # self.validate_table_heading_style(paptype_th)
     status_th = self._get(self._paper_tracker_table_status_th)
-    self.validate_table_heading_style(status_th)
+    # self.validate_table_heading_style(status_th)
     members_th = self._get(self._paper_tracker_table_members_th)
-    self.validate_table_heading_style(members_th)
+    # self.validate_table_heading_style(members_th)
     handedit_th = self._get(self._paper_tracker_table_he_th)
-    self.validate_table_heading_style(handedit_th)
+    # self.validate_table_heading_style(handedit_th)
     covedit_th = self._get(self._paper_tracker_table_ce_th)
-    self.validate_table_heading_style(covedit_th)
+    # self.validate_table_heading_style(covedit_th)
 
     # Validate the contents of the table: papers, links, sorting, roles
     # First step is to grab the papers from the db in the correct order for comparison to the page

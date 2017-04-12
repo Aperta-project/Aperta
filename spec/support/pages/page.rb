@@ -27,6 +27,10 @@ class Page < PageFragment
       new
     end
 
+    def view_task_overlay(paper, task, opts = {})
+      new.view_task_overlay(paper, task, opts)
+    end
+
     def view_paper(paper)
       new.view_paper(paper)
     end

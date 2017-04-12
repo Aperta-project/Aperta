@@ -79,6 +79,15 @@ module('Integration: Paper Workflow page', {
       JSON.stringify({journals:[]})
     ]);
 
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
     Factory.createPermission('Paper', 1, ['manage_workflow']);
 
   }

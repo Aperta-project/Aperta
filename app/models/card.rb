@@ -16,6 +16,10 @@ class Card < ActiveRecord::Base
     MSG
   }
 
+  has_one :latest_card_version,
+          ->(card) { where(version: card.latest_version) },
+          class_name: 'CardVersion'
+
   # this method is used in the shim layer between nested questions
   # on the front end and card content on the backend.
   # in those cases, we don't need the proper tree of card content,
@@ -60,7 +64,12 @@ class Card < ActiveRecord::Base
   end
 
   def to_xml(options = {})
-    setup_builder(options).card(name: name) do |xml|
+    attrs = {
+      'name' => name,
+      'required-for-submission' =>
+      latest_card_version.required_for_submission
+    }
+    setup_builder(options).card(attrs) do |xml|
       content_root_for_version(:latest).to_xml(
         builder: xml,
         skip_instruct: true

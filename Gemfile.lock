@@ -423,6 +423,8 @@ GEM
     mail_safe (0.3.4)
       actionmailer (>= 3.0.0)
     method_source (0.8.2)
+    migration_comments (0.4.1)
+      activerecord (>= 4.2.0)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
     mime-types (2.99.2)
@@ -750,6 +752,7 @@ DEPENDENCIES
   kaminari
   lograge
   mail_safe
+  migration_comments
   migration_data
   mini_magick
   newrelic_rpm

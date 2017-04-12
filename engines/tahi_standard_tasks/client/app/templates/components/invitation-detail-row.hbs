@@ -24,7 +24,7 @@
               <div class="invitation-item-review-completed-icon">
                 {{partial "svg/check"}}
               </div>
-              <span>Completed {{format-date invitation.reviewerReport.statusDateTime format="MMM D, YYYY"}}</span>
+              <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
             {{else}}
               <span>Pending</span><br>
               <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>

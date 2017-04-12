@@ -47,7 +47,9 @@ class XmlCardLoader
     card.latest_version = new_version
     version = card.card_versions.new(
       version: new_version,
-      card: card
+      card: card,
+      required_for_submission:
+        attr_val(root, 'required-for-submission') == 'true'
     )
     content_root = make_card_content(
       root.xpath('/card/content').first,

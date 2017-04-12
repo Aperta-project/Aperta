@@ -12,8 +12,8 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_BLUE, \
-    APERTA_BLUE_DARK, APERTA_BLUE_LIGHT, WHITE
+from authenticated_page import AuthenticatedPage
+from styles import APPLICATION_TYPEFACE, APERTA_BLUE, APERTA_BLUE_DARK, APERTA_BLUE_LIGHT, WHITE
 
 __author__ = 'jgray@plos.org'
 

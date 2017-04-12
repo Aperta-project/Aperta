@@ -216,7 +216,7 @@ class SendToApexTest(CommonTest):
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', format='pdf')
+    self.create_article(journal='PLOS Wombat', type_='NoCards', format_='pdf')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     # Request title to make sure the required page is loaded

@@ -200,7 +200,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     self.create_article(title='full submit', journal='PLOS Wombat', type_='NoCards',
-                        random_bit=True, format='pdf')
+                        random_bit=True, format_='pdf')
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
@@ -266,7 +266,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert warning.get_attribute('title') == 'Please upload your source file', \
         '{0} not Please upload your source file'.format(warning.get_attribute('title'))
     ms_page.complete_task('Upload Manuscript', data={'source': ''})
-    assert ms_page.is_task_completed('Upload Manuscript') == True
+    time.sleep(1)
+    assert ms_page.is_task_marked_complete('Upload Manuscript')
 
 
 @MultiBrowserFixture
@@ -457,7 +458,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     self.create_article(title='initial submit', journal='PLOS Wombat',
-                        type_='OnlyInitialDecisionCard', random_bit=True, format='pdf')
+                        type_='OnlyInitialDecisionCard', random_bit=True, format_='pdf')
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)

@@ -274,8 +274,7 @@ class ManuscriptViewerTest(CommonTest):
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
-    self.create_article(journal='PLOS Wombat', format='pdf',
-                        type_='NoCards', random_bit=True)
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='pdf')
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.page_ready_post_create()
     short_doi = manuscript_viewer.get_paper_short_doi_from_url()

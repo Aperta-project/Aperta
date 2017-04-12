@@ -506,7 +506,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if task.text == task_name:
         completed_icon = task.find_element_by_css_selector('div div')
         if 'active' in completed_icon.get_attribute('class'):
+          logging.info('Completed is true')
           return True
+    logging.info('Completed is False')
     return False
 
   def is_task_open(self, task_name):

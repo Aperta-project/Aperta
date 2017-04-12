@@ -71,8 +71,7 @@ class UploadManuscriptTest(CommonTest):
     dashboard_page.page_ready()
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
-    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True,
-        format='pdf')
+    self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='pdf')
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready_post_create()
     # get doi

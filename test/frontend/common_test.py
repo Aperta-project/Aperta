@@ -100,19 +100,17 @@ class CommonTest(FrontEndTest):
       return dashboard_page.click_on_existing_manuscript_link_partial_title(title)
 
   def create_article(self, title='', journal='', type_='', document='', random_bit=False,
-                     format='word'):
+                     format_='any'):
     """
     Create a new article. Assumes you have already launched the Create New Submission overlay.
-    :param format:
     :param title: Title of the article.
     :param journal: Journal name of the article.
     :param type_: Type of article
     :param random_bit: If true, append some random string
-    :param format: string indicating whether to choose word or pdf upload or randomly choose.
-       Valid values: 'word' (default), pdf, any.
     :param document: Name of the document to upload. If blank will default to 'random', this will
-    choose
-      one of available papers
+    choose one of available papers
+    :param format_: type of doc to use to create the initial submission. Valid values: 'any', 'pdf',
+      'word'
     :return title: Return the title of the article.
     """
     dashboard = DashboardPage(self.getDriver())
@@ -123,13 +121,13 @@ class CommonTest(FrontEndTest):
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
     # Validate that the selected journal supports pdf if format = pdf or any
-    if format in ('any', 'pdf'):
+    if format_ in ('any', 'pdf'):
       pdf_allowed = PgSQL().query('SELECT pdf_allowed '
                                   'FROM journals '
                                   'WHERE name = %s;', (journal,))[0][0]
       if not pdf_allowed:
         raise ValueError('You specified a potential pdf upload for a journal that does not '
-                      'support them: {0}'.format(journal))
+                         'support them: {0}'.format(journal))
     # This time helps to avoid random upload failures
     time.sleep(3)
     current_path = os.getcwd()
@@ -140,11 +138,11 @@ class CommonTest(FrontEndTest):
     if document:
       fn = os.path.join(current_path, '{0}'.format(document))
     else:
-      if format == 'word':
+      if format_ == 'word':
         doc2upload = random.choice(docs)
-      elif format == 'pdf':
+      elif format_ == 'pdf':
         doc2upload = random.choice(pdfs)
-      elif format == 'any':
+      elif format_ == 'any':
         doc2upload = random.choice(docs + pdfs)
       fn = os.path.join(current_path, '{0}'.format(doc2upload))
     logging.info('Sending document: {0}'.format(fn))

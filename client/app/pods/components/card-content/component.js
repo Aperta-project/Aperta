@@ -6,12 +6,13 @@
 import Ember from 'ember';
 import CardContentTypes from 'tahi/lib/card-content-types';
 import { PropTypes } from 'ember-prop-types';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default Ember.Component.extend({
-  tagName: '',
   templateName: Ember.computed('content.contentType', function() {
     let type = this.get('content.contentType');
-    return CardContentTypes.forType(type);
+    let name = CardContentTypes.forType(type);
+    return name;
   }),
 
   propTypes: {
@@ -23,21 +24,33 @@ export default Ember.Component.extend({
     return { preview: false };
   },
 
+  tagName: '',
+  debouncePeriod: 200, // in ms
+
   init() {
     this._super(...arguments);
-    // right now our ember-prop-types is only configured to print warnings,
-    // not throw errors.
     Ember.assert(`you must pass an owner to card-content`,
                  Ember.isPresent(this.get('owner')));
+    Ember.assert('this component must have content with a contentType',
+                 this.get('content.contentType'));
   },
 
   answer: Ember.computed('content', 'owner', function() {
     return this.get('content').answerForOwner(this.get('owner'));
   }),
 
+  _debouncedSave: concurrencyTask(function * () {
+    yield timeout(this.get('debouncePeriod'));
+    return yield this.get('answer').save();
+  }).restartable(),
+
   actions: {
     updateAnswer(newVal) {
       this.set('answer.value', newVal);
+
+      if(!this.get('preview')) {
+        this.get('_debouncedSave').perform();
+      }
     }
   }
 });

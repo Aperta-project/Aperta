@@ -167,9 +167,10 @@ class DashboardPage(AuthenticatedPage):
     :param title: Title of the publication to accept the invitation
     :return: void function
     """
+    title = self.normalize_spaces(title)
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
-      if title in listing.text:
+      if title in self.normalize_spaces(listing.text):
         yes_btn = listing.find_element(*self._invite_yes_btn)
         yes_btn.click()
         break

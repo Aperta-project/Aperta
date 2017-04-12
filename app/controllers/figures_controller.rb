@@ -13,9 +13,7 @@ class FiguresController < ApplicationController
   def create
     paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     requires_user_can(:edit, paper)
-    figure = paper.figures.create!
-    DownloadAttachmentWorker
-      .download_attachment(figure, params[:url], current_user)
+    figure = paper.figures.create!(status: 'uploading')
     respond_with figure
   end
 

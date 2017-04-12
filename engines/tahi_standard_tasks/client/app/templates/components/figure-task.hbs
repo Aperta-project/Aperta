@@ -51,11 +51,14 @@
     {{file-uploader id="figure_attachment"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
                     url=figureUploadUrl
+                    updateUrlFunc=figureUpdateUrlFunc
                     filePrefix="paper/figures"
                     start="uploadStarted"
                     done="uploadFinished"
                     progress="uploadProgress"
                     multiple=true
-                    disabled=isNotEditable}}
+                    disabled=isNotEditable
+                    error="uploadFailed"
+                    preCreate=true}}
   </span>
 </div>

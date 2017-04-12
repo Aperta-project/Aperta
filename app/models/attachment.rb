@@ -19,11 +19,13 @@ class Attachment < ActiveRecord::Base
   STATUSES = {
     processing: 'processing'.freeze,
     error: 'error'.freeze,
-    done: 'done'.freeze
+    done: 'done'.freeze,
+    uploading: 'uploading'.freeze
   }.freeze
   STATUS_PROCESSING = STATUSES[:processing]
   STATUS_ERROR = STATUSES[:error]
   STATUS_DONE = STATUSES[:done]
+  STATUS_UPLOADING = STATUSES[:uploading]
 
   class_attribute :public_resource
 

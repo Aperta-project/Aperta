@@ -33,7 +33,7 @@ class TaskFactory
 
   def default_options
     {
-      title: task_klass::DEFAULT_TITLE,
+      title: task_klass::DEFAULT_TITLE
     }
   end
 

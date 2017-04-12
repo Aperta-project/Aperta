@@ -35,7 +35,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     this.get('onSave')(
       this.get('phase'),
       this.get('selectedCards')
-    )
+    );
     this.get('close')();
   },
 

@@ -14,15 +14,34 @@ module MailLog::LogToDatabase
         end
       end
 
-      it 'logs the email to the database' do
+      it 'logs the email without attachments to the database' do
         expect do
           interceptor.delivering_email(mail)
-        end.to change { EmailLog.count }.by +1
+        end.to change { EmailLog.count }.by(+1)
         email_log = EmailLog.last
         expect(email_log.sender).to eq 'apertian@plos.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
         expect(email_log.raw_source).to eq mail.to_s
+        expect(email_log.status).to eq 'pending'
+        expect(email_log.sent_at).to be nil
+        expect(email_log.errored_at).to be nil
+        expect(email_log.journal).to be nil
+        expect(email_log.paper).to be nil
+        expect(email_log.task).to be nil
+      end
+
+      it 'logs the email with attachments to the database without storing attachments' do
+        allow(File).to receive(:read).with('doc.docx').and_return(StringIO.new('testing'))
+        mail.attachments['test'] = File.read('doc.docx')
+        expect do
+          interceptor.delivering_email(mail)
+        end.to change { EmailLog.count }.by(+1)
+        email_log = EmailLog.last
+        expect(email_log.sender).to eq 'apertian@plos.org'
+        expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
+        expect(email_log.message_id).to eq 'abc123'
+        expect(email_log.raw_source).to eq mail.without_attachments!.to_s
         expect(email_log.status).to eq 'pending'
         expect(email_log.sent_at).to be nil
         expect(email_log.errored_at).to be nil
@@ -112,12 +131,10 @@ module MailLog::LogToDatabase
 
         it 'sets EmailLog#additional_context to include all of the activerecord models in the mail context' do
           perform_delivering_email
-          expect(email_log.additional_context).to eq({
-            "@task"=>["AdHocTask", task.id],
-            "@paper"=>["Paper", paper.id],
-            "@journal"=>["Journal", journal.id],
-            "@attachment"=>["Attachment", attachment.id]
-          })
+          expect(email_log.additional_context).to eq("@task" => ["AdHocTask", task.id],
+                                                     "@paper" => ["Paper", paper.id],
+                                                     "@journal" => ["Journal", journal.id],
+                                                     "@attachment" => ["Attachment", attachment.id])
           expect(email_log.additional_context.keys).to_not include '@not_activerecord_model'
         end
       end

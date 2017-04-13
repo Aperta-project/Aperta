@@ -14,6 +14,10 @@ class TasksController < ApplicationController
       participations_only: false
     ).objects
 
+    # serialize using the base task serializer which acts as a lightweight
+    # summary of each task rather than each custom task serializer that may
+    # side load an excessive amount of data that is unnecessary for an index
+    # response.
     respond_with tasks, each_serializer: TaskSerializer
   end
 

@@ -8,22 +8,22 @@
   <span class="spacer" aria-hidden="true"></span>
 
   {{#if (can "manage_workflow" paper)}}
-    {{#if correspondenceEnabled}}
-      {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
-        {{fa-icon icon="envelope-open-o"}}
-        Correspondence
-      {{/link-to}}
-    {{/if}}
+    {{#link-to "paper.index" paper class="control-bar-button" id="nav-manuscript"}}
+      {{fa-icon icon="file-text-o"}}
+      Manuscript
+    {{/link-to}}
 
     {{#link-to "paper.workflow" paper class="control-bar-button" id="nav-workflow"}}
       {{fa-icon icon="columns"}}
       Workflow
     {{/link-to}}
 
-    {{#link-to "paper.index" paper class="control-bar-button" id="nav-manuscript"}}
-      {{fa-icon icon="file-text-o"}}
-      Manuscript
-    {{/link-to}}
+    {{#if correspondenceEnabled}}
+      {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
+        {{fa-icon icon="envelope-open-o"}}
+        Correspondence
+      {{/link-to}}
+    {{/if}}
 
     <div class="control-bar-splitter"></div>
   {{/if}}

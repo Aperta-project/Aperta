@@ -20,7 +20,7 @@ module MailLog
           message_id: message.message_id,
           subject: message.subject,
           body: message.body,
-          raw_source: message.without_attachments!.to_s,
+          raw_source: message.to_s,
           status: 'pending',
           task: mail_context.try(:task),
           paper: mail_context.try(:paper),

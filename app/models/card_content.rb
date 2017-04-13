@@ -30,6 +30,7 @@ class CardContent < ActiveRecord::Base
 
   validate :content_value_type_combination
   validate :value_type_for_default_answer_value
+  validate :default_answer_present_in_possible_values
 
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
 
@@ -71,6 +72,18 @@ class CardContent < ActiveRecord::Base
       errors.add(
         :default_answer_value,
         "value type must be present in order to set a default answer value"
+      )
+    end
+  end
+
+  def default_answer_present_in_possible_values
+    return if default_answer_value.blank? || possible_values.blank?
+
+    vals = possible_values.map { |v| v["value"] }
+    unless vals.include? default_answer_value
+      errors.add(
+        :default_answer_value,
+        "must be one of the following values: #{vals}"
       )
     end
   end

@@ -1,5 +1,5 @@
 module MailLog
-  # The LogToDatabase module is responsible for ensuring every emails
+  # The LogToDatabase module is responsible for ensuring all emails
   # sent by the system are logged to the database.
   module LogToDatabase
     def self.attach_handlers!
@@ -20,7 +20,7 @@ module MailLog
           message_id: message.message_id,
           subject: message.subject,
           body: message.body,
-          raw_source: message.to_s,
+          raw_source: message.without_attachments!.to_s,
           status: 'pending',
           task: mail_context.try(:task),
           paper: mail_context.try(:paper),

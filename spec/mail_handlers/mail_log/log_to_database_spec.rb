@@ -33,25 +33,25 @@ module MailLog::LogToDatabase
         expect(email_log.task).to be nil
       end
 
-      # it 'logs the email with attachments to the database without storing attachments' do
-      #  allow(File).to receive(:read).with('doc.docx').and_return(StringIO.new('testing'))
-      #  mail.attachments['test'] = File.read('doc.docx')
-      #  expect do
-      #    interceptor.delivering_email(mail)
-      #  end.to change { EmailLog.count }.by(+1)
-      #  email_log = EmailLog.last
-      #  expect(email_log.sender).to eq 'apertian@plos.org'
-      #  expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
-      #  expect(email_log.message_id).to eq 'abc123'
-      #  expect(email_log.body).to eq 'This is a test email\'s body'
-      #  expect(email_log.raw_source).to eq mail.without_attachments!.to_s
-      #  expect(email_log.status).to eq 'pending'
-      #  expect(email_log.sent_at).to be nil
-      #  expect(email_log.errored_at).to be nil
-      #  expect(email_log.journal).to be nil
-      #  expect(email_log.paper).to be nil
-      #  expect(email_log.task).to be nil
-      # end
+      it 'logs the email with attachments to the database without storing attachments' do
+        allow(File).to receive(:read).with('doc.docx').and_return(StringIO.new('testing'))
+        mail.attachments['test'] = File.read('doc.docx')
+        expect do
+          interceptor.delivering_email(mail)
+        end.to change { EmailLog.count }.by(+1)
+        email_log = EmailLog.last
+        expect(email_log.sender).to eq 'apertian@plos.org'
+        expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
+        expect(email_log.message_id).to eq 'abc123'
+        expect(email_log.body).to eq 'This is a test email\'s body'
+        expect(email_log.raw_source).to eq mail.without_attachments!.to_s
+        expect(email_log.status).to eq 'pending'
+        expect(email_log.sent_at).to be nil
+        expect(email_log.errored_at).to be nil
+        expect(email_log.journal).to be nil
+        expect(email_log.paper).to be nil
+        expect(email_log.task).to be nil
+      end
 
       context 'and additional context is provided for the email' do
         subject(:perform_delivering_email) do

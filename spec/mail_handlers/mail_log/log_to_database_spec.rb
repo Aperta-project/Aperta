@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# rubocop:disable Metrics/ModuleLength
 module MailLog::LogToDatabase
   describe DeliveringEmailInterceptor do
     subject(:interceptor) { described_class }

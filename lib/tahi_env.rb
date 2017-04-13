@@ -119,7 +119,6 @@ class TahiEnv
   required :ITHENTICATE_URL, if: :ithenticate_enabled?
   required :ITHENTICATE_EMAIL, if: :ithenticate_enabled?
   required :ITHENTICATE_PASSWORD, if: :ithenticate_enabled?
-  required :ITHENTICATE_VERSION, if: :ithenticate_enabled?
 
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS

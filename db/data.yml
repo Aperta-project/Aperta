@@ -19992,6 +19992,7 @@ papers:
   - uses_research_article_reviewer_report
   - short_doi
   - number_reviewer_reports
+  - legends_allowed
   records: 
   - - '1'
     - 
@@ -20018,6 +20019,7 @@ papers:
     - true
     - devs.100001
     - false
+    - true
   - - '2'
     - 
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
@@ -20043,6 +20045,7 @@ papers:
     - true
     - devs.100002
     - false
+    - true
   - - '3'
     - 
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -20068,6 +20071,7 @@ papers:
     - true
     - devs.100003
     - false
+    - true
   - - '4'
     - 
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned, reviewer accepted</i>"
@@ -20093,6 +20097,7 @@ papers:
     - true
     - devs.100004
     - false
+    - true
   - - '8'
     - ''
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -20118,6 +20123,7 @@ papers:
     - true
     - devs.100008
     - false
+    - true
   - - '9'
     - ''
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -20143,6 +20149,7 @@ papers:
     - true
     - devs.100009
     - false
+    - true
   - - '10'
     - We've discovered the rain in Spain tends to stay in the plain
     - The most scrumtrulescent scientific paper of 2015.
@@ -20168,6 +20175,7 @@ papers:
     - true
     - devs.100010
     - false
+    - true
   - - '12'
     - 
     - This is a text file
@@ -20193,6 +20201,7 @@ papers:
     - true
     - yetijour.1000002
     - false
+    - true
   - - '13'
     - ''
     - My non-research paper; reviewer invited
@@ -20218,6 +20227,7 @@ papers:
     - false
     - yetijour.1000003
     - false
+    - true
 
 ---
 permission_requirements:

@@ -2,19 +2,24 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-paragraph-input'],
-
+  classNames: ['card-content-check-box'],
   propTypes: {
-    answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
+    answer: PropTypes.EmberObject.isRequired
   },
 
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident') || Ember.guidFor(this);
+
+    return `check-box-${ident}`;
+  }),
+
   actions: {
-    valueChanged(newValue) {
+    valueChanged(newVal) {
       let action = this.get('valueChanged');
       if (action) {
-        action(newValue);
+        action(newVal.checked);
       }
     }
   }

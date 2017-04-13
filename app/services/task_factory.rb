@@ -15,8 +15,7 @@ class TaskFactory
 
     @task_klass = task_klass
     options = default_options.merge(options)
-
-    unless options[:card_version].present?
+    unless options[:card_version].present? || options["card_version"].present?
       options[:card_version] = Card.find_by(name: task_klass.name)
                                  .try(:card_version, :latest)
     end

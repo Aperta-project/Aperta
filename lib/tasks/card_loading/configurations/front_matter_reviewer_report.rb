@@ -29,7 +29,7 @@ module CardConfiguration
           children: [
             {
               ident: "front_matter_reviewer_report--suitable--comment",
-              value_type: "text",
+              value_type: "html",
               text: "Suitable Comment"
             }
           ]

@@ -1,5 +1,7 @@
 namespace :bugsnag do
   desc 'Fetch afflicted user emails for a given bugsnag error'
+  # for more info on keys or integration see
+  # https://confluence.plos.org/confluence/display/TAHI/Bugsnag+Triage
   task :get_users_for_error, [:error_id, :days_ago] do |_, args|
     raise "Missing BUGSNAG_DATA_API_KEY env var" unless ENV['BUGSNAG_DATA_API_KEY']
     raise ArgumentError, "Missing Bugsnag Error ID" unless args[:error_id]
@@ -16,13 +18,13 @@ namespace :bugsnag do
       req.headers['Authorization'] = "token #{ENV['BUGSNAG_DATA_API_KEY']}"
     end
 
-    parsed_data = JSON.parse(response.body)
-    if response.code.to_i == 200
+    if response.status == 200
+      parsed_data = JSON.parse(response.body)
       email_array = parsed_data.map { |event| event['meta_data']['User']['email'] }
       puts "Affected users:"
       puts email_array.uniq.join(', ')
     else
-      puts "Response code #{response.code}"
+      puts "Response code #{response.status}"
     end
   end
 end

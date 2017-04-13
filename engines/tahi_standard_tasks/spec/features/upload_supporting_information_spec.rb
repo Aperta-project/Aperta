@@ -37,6 +37,7 @@ feature "Upload Supporting Information", js: true do
     task.toggle_for_publication
 
     task.save_file_info
+    wait_for_ajax
 
     paper.reload
     file = paper.supporting_information_files.last

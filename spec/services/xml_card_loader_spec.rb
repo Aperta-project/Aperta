@@ -63,7 +63,6 @@ describe XmlCardLoader do
         </content>
       XML
     end
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
 
     it 'parses possible values' do
       expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
@@ -110,7 +109,6 @@ describe XmlCardLoader do
         </content>
       XML
     end
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
 
     it 'sets the text to the value of the element text' do
       expect(root.text).to eq(text)

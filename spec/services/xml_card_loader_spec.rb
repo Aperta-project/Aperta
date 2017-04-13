@@ -78,7 +78,6 @@ describe XmlCardLoader do
         </content>
       XML
     end
-    let(:xml) { "<card name='Foo'>#{content1}</card." }
 
     it 'parses possible values' do
       expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])

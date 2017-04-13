@@ -20,7 +20,7 @@ class InviteReviewersCard(InviteCard):
 
   def validate_invited_reviewer_report_state(self, invitee, expected_report_state='pending'):
     """
-    test_invited_reviewer_report_state: Validates if all the elements for a report state are like expected
+    validate_invited_reviewer_report_state: Validates if all the elements for a report state are like expected
     :param invitee: The invited reviewer
     :param expected_report_state: The expected report state (pending or completed)
     :return: void function
@@ -44,7 +44,7 @@ class InviteReviewersCard(InviteCard):
           assert report_state.text == 'Pending', 'The report state: {0} is not the expected: Pending'.format(report_state.text)
           invite.find_element_by_css_selector('div.invitation-item-status span.not-bold')
         elif expected_report_state == 'completed':
-          assert 'Completed' in report_state.text, 'The report state: {0} has no completion'.format(report_state.text)
+          assert 'Completed' in report_state.text, 'The report state: {0} is not the expected: Completed'.format(report_state.text)
           invite.find_element_by_css_selector('div.invitation-item-status .invitation-item-review-completed-icon')
 
     assert invite_found, 'No invite was found to: {0}'.format(invitee['name'])

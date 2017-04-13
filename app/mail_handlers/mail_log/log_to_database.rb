@@ -7,6 +7,7 @@ module MailLog
       ::ActionMailer::Base.register_observer(DeliveredEmailObserver)
     end
 
+    # Delivering Email Interceptor
     class DeliveringEmailInterceptor
       def self.delivering_email(message)
         message.delivery_handler = EmailExceptionsHandler.new
@@ -18,6 +19,7 @@ module MailLog
           recipients: recipients,
           message_id: message.message_id,
           subject: message.subject,
+          body: message.body,
           raw_source: message.without_attachments!.to_s,
           status: 'pending',
           task: mail_context.try(:task),
@@ -28,6 +30,7 @@ module MailLog
       end
     end
 
+    # Delivered Email Observer
     class DeliveredEmailObserver
       def self.delivered_email(message)
         email_log = EmailLog.find_by!(message_id: message.message_id)
@@ -38,19 +41,19 @@ module MailLog
       end
     end
 
+    # Email Exceptions Handler
+    # rubocop:disable Lint/RescueException
     class EmailExceptionsHandler
-      def deliver_mail(message, &blk)
-        begin
-          yield
-        rescue Exception => ex
-          email_log = EmailLog.find_by!(message_id: message.message_id)
-          email_log.update_columns(
-            error_message: ex.message,
-            errored_at: Time.now.utc,
-            status: 'failed'
-          )
-          raise ex
-        end
+      def deliver_mail(message)
+        yield
+      rescue Exception => ex
+        email_log = EmailLog.find_by!(message_id: message.message_id)
+        email_log.update_columns(
+          error_message: ex.message,
+          errored_at: Time.now.utc,
+          status: 'failed'
+        )
+        raise ex
       end
     end
   end

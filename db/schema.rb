@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407205359) do
+ActiveRecord::Schema.define(version: 20170413084408) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -230,8 +231,8 @@ ActiveRecord::Schema.define(version: 20170407205359) do
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
   create_table "card_versions", force: :cascade do |t|
-    t.integer  "version",    null: false
-    t.integer  "card_id",    null: false
+    t.integer  "version",                                 null: false
+    t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
   end
@@ -344,6 +345,7 @@ ActiveRecord::Schema.define(version: 20170407205359) do
     t.integer  "paper_id"
     t.integer  "journal_id"
     t.jsonb    "additional_context"
+    t.text     "body"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

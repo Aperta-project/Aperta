@@ -11,6 +11,7 @@ module MailLog::LogToDatabase
           to ['curtis@example.com', 'zach@example.com']
           subject 'This is a test email'
           message_id 'abc123'
+          body 'This is a test email\'s body'
         end
       end
 
@@ -22,6 +23,7 @@ module MailLog::LogToDatabase
         expect(email_log.sender).to eq 'apertian@plos.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
+        expect(email_log.body).to eq 'This is a test email\'s body'
         expect(email_log.raw_source).to eq mail.to_s
         expect(email_log.status).to eq 'pending'
         expect(email_log.sent_at).to be nil
@@ -41,6 +43,7 @@ module MailLog::LogToDatabase
         expect(email_log.sender).to eq 'apertian@plos.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
+        expect(email_log.body).to eq 'This is a test email\'s body'
         expect(email_log.raw_source).to eq mail.without_attachments!.to_s
         expect(email_log.status).to eq 'pending'
         expect(email_log.sent_at).to be nil

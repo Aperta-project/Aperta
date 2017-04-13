@@ -67,14 +67,9 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('AUTHOR IS') do |author_query|
-    author_ids = get_author_ids(author_query)
-    group_author_ids = get_group_author_ids(author_query)
-    arel_queries = [
-      build_author_query('GroupAuthor', group_author_ids),
-      build_author_query('Author', author_ids)
-    ]
-
-    arel_queries.inject(&:or)
+    build_author_query(GroupAuthor, author_query).or(
+      build_author_query(Author, author_query)
+    )
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|
@@ -220,17 +215,10 @@ class QueryParser < QueryLanguageParser
     end
   end
 
-  def get_author_ids(query)
-    Author.fuzzy_search(query).pluck(:id)
-  end
-
-  def get_group_author_ids(query)
-    GroupAuthor.fuzzy_search(query).pluck(:id)
-  end
-
-  def build_author_query(author_type, author_ids)
+  def build_author_query(author_type, query)
     table = join(AuthorListItem)
-    table['author_id'].in(author_ids).and(table['author_type'].eq(author_type))
+    ids = author_type.fuzzy_search(query).pluck(:id)
+    table['author_id'].in(ids).and(table['author_type'].eq(author_type.to_s))
   end
 
   def join(klass, id = "paper_id", join_id = "papers.id")

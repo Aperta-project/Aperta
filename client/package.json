@@ -76,6 +76,7 @@
     ]
   },
   "devDependencies": {
+    "ember-autoresize": "0.5.22",
     "ember-exam": "0.6.0"
   }
 }

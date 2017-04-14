@@ -1,6 +1,9 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include CustomCastTypes
+
+  attribute :letter, HtmlString.new
 
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']
@@ -22,6 +25,9 @@ class Decision < ActiveRecord::Base
   # more meaningfully.
   has_many :nested_question_answers
   has_many :reviewer_reports
+  has_many :attachments, as: :owner,
+                         class_name: 'DecisionAttachment',
+                         dependent: :destroy
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 

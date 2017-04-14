@@ -19,14 +19,18 @@
         {{#if invitation.invited}}
           <span>Invited {{format-date invitation.invitedAt format="MMM D, YYYY"}}</span>
         {{else if invitation.accepted}}
-          {{#if (eq invitation.reviewerReport.status 'completed')}}
-            <div class="invitation-item-review-completed-icon">
-              {{partial "svg/check"}}
-            </div>
-            <span>Completed {{format-date invitation.reviewerReport.statusDateTime format="MMM D, YYYY"}}</span>
+          {{#if invitation.reviewerReport}}
+            {{#if (eq invitation.reviewerReport.status 'completed')}}
+              <div class="invitation-item-review-completed-icon">
+                {{partial "svg/check"}}
+              </div>
+              <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
+            {{else}}
+              <span>Pending</span><br>
+              <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+            {{/if}}
           {{else}}
-            <span>Pending</span><br>
-            <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+            <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
           {{/if}}
         {{else if invitation.declined}}
           <span>Declined {{format-date invitation.declinedAt format="MMM D, YYYY"}}</span>

@@ -47,12 +47,20 @@ test('displays invitation information if invitation.accepted is true', function(
 
 test('displays invitation information if invitation.accepted is true and report complete', function(assert){
   this.set('invitation.reviewerReport.status', 'completed');
-  this.set('invitation.reviewerReport.statusDateTime', this.get('completed-date'));
+  this.set('invitation.reviewerReport.statusDatetime', this.get('completed-date'));
   this.set('invitation.state', 'accepted');
   this.render(template);
 
   assert.textPresent('.invitation-item-status',
                      `Completed ${moment(this.get('completed-date')).format('MMM D, YYYY')}`);
+});
+
+test('does not show a pending review status for an accepted invitation unless it is a reviewer invitation', function(assert){
+  this.set('invitation.reviewerReport', null);
+  this.set('invitation.state', 'accepted');
+  this.render(template);
+
+  assert.textNotPresent('.invitation-item-status', 'Pending');
 });
 
 test('displays invitee name and email when present', function(assert){

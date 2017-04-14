@@ -1,0 +1,19 @@
+<label class="content-text">{{{content.text}}}</label>
+<div>
+  {{#each content.possibleValues as |opt|}}
+    <label class="option">
+      {{radio-button
+        selection=answer.value
+        value=opt.value
+        disabled=disabled
+        action=(action "valueChanged")}}
+      <span class="card-content-radio-label">{{{opt.label}}}</span>
+    </label>
+  {{/each}}
+</div>
+
+{{card-content/display-children
+  content=content
+  owner=owner
+  disabled=disabled
+  preview=preview}}

@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323143724) do
-
+ActiveRecord::Schema.define(version: 20170407205359) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -91,8 +90,8 @@ ActiveRecord::Schema.define(version: 20170323143724) do
     t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
-    t.string   "caption"
+    t.string   "title",                                     comment: "Contains HTML"
+    t.string   "caption",                                   comment: "Contains HTML"
     t.string   "status",             default: "processing"
     t.string   "file_type"
     t.text     "s3_dir"
@@ -211,17 +210,19 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",             null: false
-    t.integer  "rgt",             null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id", null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
+    t.string   "visible_with_parent_answer"
+    t.string   "label"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -233,6 +234,7 @@ ActiveRecord::Schema.define(version: 20170323143724) do
     t.integer  "version",    null: false
     t.integer  "card_id",    null: false
     t.datetime "deleted_at"
+    t.boolean  "required_for_submission", default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -260,7 +262,7 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.text     "body"
+    t.text     "body",         comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "commenter_id"
@@ -282,7 +284,7 @@ ActiveRecord::Schema.define(version: 20170323143724) do
 
   create_table "decisions", force: :cascade do |t|
     t.integer  "paper_id"
-    t.text     "letter"
+    t.text     "letter",                                       comment: "Contains HTML"
     t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -308,7 +310,7 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   add_index "discussion_participants", ["user_id"], name: "index_discussion_participants_on_user_id", using: :btree
 
   create_table "discussion_replies", force: :cascade do |t|
-    t.text     "body"
+    t.text     "body",                             comment: "Contains HTML"
     t.integer  "discussion_topic_id"
     t.integer  "replier_id"
     t.datetime "created_at",          null: false
@@ -390,11 +392,11 @@ ActiveRecord::Schema.define(version: 20170323143724) do
     t.datetime "updated_at",                               null: false
     t.integer  "decision_id"
     t.string   "information"
-    t.text     "body"
+    t.text     "body",                                                  comment: "Contains HTML"
     t.integer  "inviter_id"
     t.string   "invitee_role",                             null: false
-    t.text     "decline_reason"
-    t.text     "reviewer_suggestions"
+    t.text     "decline_reason",                                        comment: "Contains HTML"
+    t.text     "reviewer_suggestions",                                  comment: "Contains HTML"
     t.string   "token",                                    null: false
     t.integer  "primary_id"
     t.datetime "invited_at"
@@ -541,8 +543,8 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   end
 
   create_table "papers", force: :cascade do |t|
-    t.text     "abstract",                              default: ""
-    t.text     "title",                                                 null: false
+    t.text     "abstract",                              default: "",                 comment: "Contains HTML"
+    t.text     "title",                                                 null: false, comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -650,7 +652,7 @@ ActiveRecord::Schema.define(version: 20170323143724) do
   create_table "related_articles", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "linked_doi"
-    t.string   "linked_title"
+    t.string   "linked_title",              comment: "Contains HTML"
     t.string   "additional_info"
     t.boolean  "send_manuscripts_together"
     t.text     "send_link_to_apex"
@@ -885,10 +887,10 @@ ActiveRecord::Schema.define(version: 20170323143724) do
     t.integer  "paper_id",                         null: false
     t.integer  "major_version"
     t.integer  "minor_version"
-    t.text     "text",                default: ""
+    t.text     "text",                default: "",              comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "original_text"
+    t.text     "original_text",                                 comment: "Contains HTML"
     t.string   "file_type"
     t.string   "manuscript_s3_path"
     t.string   "manuscript_filename"

@@ -1,22 +1,22 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
     <button class="button button--blue button-primary editor-save"
-            {{action 'saveCard'}}
-            disabled={{if card.adminContentDirty null true}}>Publish</button>
+            onclick={{perform saveCard}}
+            disabled={{saveCard.isRunning}}>
+      Save and Publish
+    </button>
   </div>
 </div>
 
 <div class="card-editor-workspace">
-  <div class="card-editor-workspace-container">
-    <div class="card-editor-workspace-title">
-      <div class="card-editor-workspace-component-type-name">
-        Card Title
-      </div>
-      <h1>{{card.name}}</h1>
+  <div class="card-editor-xml-container">
+    <div class="card-editor-xml-controls"></div>
+    <div class="card-editor-xml">
+      {{#each errors as |error|}}
+        {{error-message message=(concat error.title ": " error.detail)}}
+      {{/each}}
+
+      {{textarea value=card.xml autoresize=true rows=10}}
     </div>
-    <hr />
-
-    {{!-- Put the editor component here --}}
-
   </div>
 </div>

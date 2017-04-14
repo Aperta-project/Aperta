@@ -14,7 +14,7 @@
 
 {{#overlay-fullscreen visible=showCardDeleteOverlay
                       outAnimationComplete=(action "hideCardDeleteOverlay")
-                      title="You're about to delete this card forever."
+                      title="You're about to delete this card from the paper."
                       overlayClass="card-delete-overlay"
                       as |overlay|}}
     {{card-delete model=taskToDelete
@@ -29,6 +29,7 @@
 
     {{choose-new-card journalTaskTypes=addableTaskTypes
                       phase=addToPhase
+                      cards=availableCards
                       isLoading=journalTaskTypes.isPending
                       onSave=(action "addTaskType")
                       close=(action overlay.animateOut)}}

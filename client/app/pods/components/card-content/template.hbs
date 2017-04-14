@@ -1,1 +1,13 @@
-{{component templateName content=content}}
+{{!--
+  This card-content component will be rendered
+  for every node in the tree, wrapping a more specific
+  inner component that depends on the type of the content--}}
+
+{{component
+  templateName
+  content=content
+  disabled=disabled
+  owner=owner
+  answer=answer
+  preview=preview
+  valueChanged=(action 'updateAnswer')}}

@@ -21,7 +21,22 @@ export default Ember.Component.extend({
   },
 
   checked: Ember.computed('selection', 'value', function() {
-    return Ember.isEqual(this.get('selection'), this.get('value'));
+    // When determining if the radio button should be selected or not,
+    // coerce both the html radio button form element value and any
+    // current answer to strings.  This is to protect against the case
+    // where the answered value in the database is being returned as
+    // a non-string datatype (e.g., `true` instead of "true").  At
+    // the html level, the value will always be a string, so do a
+    // string-to-string comparison here to ensure that the radio button
+    // is properly selected or not.
+
+    let s = this.get('selection');
+
+    if (Ember.isEmpty(s)) {
+      return false; // a prior answer does not exist
+    } else {
+      return s.toString() === this.get('value').toString(); // compare
+    }
   }),
 
   change() {

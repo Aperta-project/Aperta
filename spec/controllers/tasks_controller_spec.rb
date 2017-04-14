@@ -68,14 +68,17 @@ describe TasksController, redis: true do
   end
 
   describe "POST #create" do
+    let(:task_params) do
+      {
+        type: 'PlosBilling::BillingTask',
+        paper_id: paper.to_param,
+        phase_id: paper.phases.last.id,
+        title: 'Verify Signatures'
+      }
+    end
+
     subject(:do_request) do
-      post :create, format: 'json',
-                    task: {
-                      type: 'PlosBilling::BillingTask',
-                      paper_id: paper.to_param,
-                      phase_id: paper.phases.last.id,
-                      title: 'Verify Signatures'
-                    }
+      post :create, format: 'json', task: task_params
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -104,6 +107,23 @@ describe TasksController, redis: true do
       it "uses the TaskFactory to create the new task" do
         expect(TaskFactory).to receive(:create).and_call_original
         do_request
+      end
+
+      context "custom cards" do
+        let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
+        let(:task_params) do
+          {
+            type: 'CustomCardTask',
+            paper_id: paper.to_param,
+            phase_id: paper.phases.last.id,
+            title: card.name,
+            card_id: card.id
+          }
+        end
+
+        it "creates a new task from a card template" do
+          expect { do_request }.to change(CustomCardTask, :count).by(1)
+        end
       end
     end
 

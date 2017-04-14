@@ -40,6 +40,7 @@ gem 'kaminari'
 gem 'lograge'
 gem 'mail_safe', require: false
 gem 'migration_data'
+gem 'migration_comments'
 gem 'mini_magick'
 gem 'newrelic_rpm'
 gem 'nokogiri'

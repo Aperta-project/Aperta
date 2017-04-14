@@ -15,6 +15,7 @@ label[contenteditable=true] {
 div[contenteditable=true] {
   background-color: $aperta-white;
   white-space: pre-wrap;
+  min-height: 20px;
 }
 
 .two-element-form {

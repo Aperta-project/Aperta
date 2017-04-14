@@ -3,7 +3,6 @@ module TahiStandardTasks
     include MetadataTask
 
     DEFAULT_TITLE = 'Supporting Info'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
 
     has_many :supporting_information_files, as: :owner, class_name: 'SupportingInformationFile'
 

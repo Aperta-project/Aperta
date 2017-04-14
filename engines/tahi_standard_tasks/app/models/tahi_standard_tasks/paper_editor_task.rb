@@ -3,7 +3,6 @@ module TahiStandardTasks
     include ClientRouteHelper
     include Rails.application.routes.url_helpers
     DEFAULT_TITLE = 'Invite Academic Editor'.freeze
-    DEFAULT_ROLE_HINT = 'admin'.freeze
 
     include Invitable
 

@@ -3,7 +3,6 @@ module PlosBilling
     include SubmissionTask
 
     DEFAULT_TITLE = 'Billing'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
     REQUIRED_PERMISSIONS = [
       { action: 'view', applies_to: 'PlosBilling::BillingTask' },
       { action: 'edit', applies_to: 'PlosBilling::BillingTask' }

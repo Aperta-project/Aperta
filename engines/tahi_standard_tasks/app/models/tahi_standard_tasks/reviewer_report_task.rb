@@ -5,7 +5,6 @@ module TahiStandardTasks
   # ReviewerReportTask.
   class ReviewerReportTask < Task
     DEFAULT_TITLE = 'Reviewer Report'.freeze
-    DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
     has_many :reviewer_reports, inverse_of: :task, foreign_key: :task_id

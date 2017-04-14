@@ -4,7 +4,6 @@ module TahiStandardTasks
   # api to generate a plagiarism report.
   class SimilarityCheckTask < Task
     DEFAULT_TITLE = 'Similarity Check'.freeze
-    DEFAULT_ROLE_HINT = 'admin'.freeze
 
     def active_model_serializer
       TahiStandardTasks::SimilarityCheckTaskSerializer

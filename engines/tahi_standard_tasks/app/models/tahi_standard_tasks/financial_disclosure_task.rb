@@ -3,7 +3,6 @@ module TahiStandardTasks
     include MetadataTask
 
     DEFAULT_TITLE = 'Financial Disclosure'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
 
     has_many(
       :funders,

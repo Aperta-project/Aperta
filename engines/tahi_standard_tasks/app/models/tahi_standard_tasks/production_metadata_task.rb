@@ -1,7 +1,6 @@
 module TahiStandardTasks
   class ProductionMetadataTask < Task
     DEFAULT_TITLE = 'Production Metadata'.freeze
-    DEFAULT_ROLE_HINT = 'admin'.freeze
 
     with_options(if: :newly_complete?) do
       validates :volume_number, :issue_number,

@@ -7,7 +7,7 @@ module PlosBioTechCheck
     # include EventStreamNotifier
 
     DEFAULT_TITLE = 'Changes For Author'.freeze
-    DEFAULT_ROLE_HINT = 'author'.freeze
+
     SYSTEM_GENERATED = true
 
     def active_model_serializer

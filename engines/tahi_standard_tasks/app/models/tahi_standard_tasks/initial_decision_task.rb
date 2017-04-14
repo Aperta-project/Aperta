@@ -1,7 +1,6 @@
 module TahiStandardTasks
   class InitialDecisionTask < Task
     DEFAULT_TITLE = 'Initial Decision'.freeze
-    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     def initial_decision
       paper.decisions.last

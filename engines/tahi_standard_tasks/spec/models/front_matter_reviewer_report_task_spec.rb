@@ -8,11 +8,6 @@ describe TahiStandardTasks::FrontMatterReviewerReportTask do
     it { is_expected.to eq('Front Matter Reviewer Report') }
   end
 
-  context 'DEFAULT_ROLE_HINT' do
-    subject { TahiStandardTasks::FrontMatterReviewerReportTask::DEFAULT_ROLE_HINT }
-    it { is_expected.to eq('reviewer') }
-  end
-
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults does not update title'
   end

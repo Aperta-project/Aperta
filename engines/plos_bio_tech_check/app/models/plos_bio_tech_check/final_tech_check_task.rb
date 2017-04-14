@@ -1,7 +1,7 @@
 module PlosBioTechCheck
   class FinalTechCheckTask < Task
     DEFAULT_TITLE = 'Final Tech Check'.freeze
-    DEFAULT_ROLE_HINT = 'editor'.freeze
+
 
     before_create :initialize_body
 

@@ -4,7 +4,6 @@ module TahiStandardTasks
   # an uploaded docx
   class TitleAndAbstractTask < Task
     DEFAULT_TITLE = 'Title And Abstract'.freeze
-    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     attr_accessor :paper_title, :paper_abstract
     after_save :update_paper

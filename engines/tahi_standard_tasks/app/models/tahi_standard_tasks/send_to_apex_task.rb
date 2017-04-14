@@ -13,6 +13,5 @@ module TahiStandardTasks
     has_many :apex_deliveries, foreign_key: 'task_id', dependent: :destroy
 
     DEFAULT_TITLE = 'Send to Apex'.freeze
-    DEFAULT_ROLE_HINT = 'editor'.freeze
   end
 end

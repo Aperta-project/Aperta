@@ -176,7 +176,15 @@ describe CardsController do
 
         context 'and the request includes xml' do
           let(:text) { Faker::Lorem.sentence }
-          let(:xml) { "<card name='#{name}'><content content-type='text'><text>#{text}</text></content></card>" }
+          let(:xml) do
+            <<-XML
+              <card name='#{name}' required-for-submission='false'>
+                <content content-type='text'>
+                  <text>#{text}</text>
+                </content>
+              </card>
+            XML
+          end
           let(:card_params) do
             {
               name: name,

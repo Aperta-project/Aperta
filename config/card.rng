@@ -43,6 +43,34 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="check-box-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>check-box</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="text-input">
     <element name="content">
       <optional>
@@ -131,11 +159,18 @@
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
       <ref name="field-set"/>
+      <ref name="check-box-input"/>
     </choice>
   </define>
   <start>
     <element name="card">
       <attribute name="name"/>
+      <attribute name="required-for-submission">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <ref name="content"/>
     </element>
   </start>

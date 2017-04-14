@@ -34,6 +34,16 @@ module('Integration: Discussions', {
         users: [{id: 1, full_name: 'Charmander', email: 'fire@oak.edu'}]
       }
     });
+
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
     var paperResponse = paper.toJSON();
     paperResponse.id = 1;
 

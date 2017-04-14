@@ -12,6 +12,7 @@ class CardVersion < ActiveRecord::Base
   validates :card_contents, presence: true
   # the `roots` scope comes from `awesome_nested_set`
   has_one :content_root, -> { roots }, class_name: 'CardContent'
+  scope :required_for_submission, -> { where(required_for_submission: true) }
 
   validates :version, uniqueness: {
     scope: :card_id,

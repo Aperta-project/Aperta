@@ -37,6 +37,15 @@ module('Integration: Inviting an editor', {
       }
     });
 
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
     phase = FactoryGuy.make('phase');
     task  = FactoryGuy.make('paper-editor-task', { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });

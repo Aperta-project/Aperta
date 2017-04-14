@@ -6450,6 +6450,7 @@ card_contents:
   - placeholder
   - possible_values
   - visible_with_parent_answer
+  - label
   records: 
   - - '1'
     - 
@@ -6466,6 +6467,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '2'
     - publishing_related_questions--published_elsewhere
     - '1'
@@ -6478,6 +6480,7 @@ card_contents:
     - '2017-03-14 21:17:07.132689'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6499,6 +6502,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '4'
     - publishing_related_questions--published_elsewhere--upload_related_work
     - '2'
@@ -6512,6 +6516,7 @@ card_contents:
     - '2017-03-14 21:17:07.132689'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6531,6 +6536,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '6'
     - publishing_related_questions--submitted_in_conjunction--corresponding_title
     - '5'
@@ -6542,6 +6548,7 @@ card_contents:
     - '2017-03-14 21:17:07.149561'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6561,6 +6568,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '8'
     - publishing_related_questions--submitted_in_conjunction--corresponding_journal
     - '5'
@@ -6576,6 +6584,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '9'
     - publishing_related_questions--submitted_in_conjunction--handled_together
     - '5'
@@ -6587,6 +6596,7 @@ card_contents:
     - '2017-03-14 21:17:07.18067'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6607,6 +6617,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '11'
     - publishing_related_questions--previous_interactions_with_this_manuscript--submission_details
     - '10'
@@ -6618,6 +6629,7 @@ card_contents:
     - '2017-03-14 21:17:07.201107'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6637,6 +6649,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '13'
     - publishing_related_questions--presubmission_inquiry--submission_details
     - '12'
@@ -6648,6 +6661,7 @@ card_contents:
     - '2017-03-14 21:17:07.220366'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6668,6 +6682,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '15'
     - publishing_related_questions--other_journal_submission--submission_details
     - '14'
@@ -6679,6 +6694,7 @@ card_contents:
     - '2017-03-14 21:17:07.240749'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6695,6 +6711,7 @@ card_contents:
     - '2017-03-14 21:17:07.250579'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6716,6 +6733,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '18'
     - publishing_related_questions--short_title
     - '1'
@@ -6728,6 +6746,7 @@ card_contents:
     - '2017-04-12 17:29:16.956734'
     - 
     - '1'
+    - 
     - 
     - 
     - 
@@ -6747,6 +6766,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '20'
     - figures--complies
     - '19'
@@ -6758,6 +6778,7 @@ card_contents:
     - '2017-03-14 21:17:07.301546'
     - 
     - '2'
+    - 
     - 
     - 
     - 
@@ -6777,6 +6798,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '22'
     - register_decision_questions--selected-template
     - '21'
@@ -6788,6 +6810,7 @@ card_contents:
     - '2017-03-14 21:17:07.329229'
     - 
     - '3'
+    - 
     - 
     - 
     - 
@@ -6807,6 +6830,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '24'
     - register_decision_questions--subject-field
     - '21'
@@ -6818,6 +6842,7 @@ card_contents:
     - '2017-03-14 21:17:07.347295'
     - 
     - '3'
+    - 
     - 
     - 
     - 
@@ -6837,6 +6862,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '26'
     - reviewer_recommendations--recommend_or_oppose
     - '25'
@@ -6848,6 +6874,7 @@ card_contents:
     - '2017-03-14 21:17:07.372312'
     - 
     - '4'
+    - 
     - 
     - 
     - 
@@ -6867,6 +6894,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '28'
     - 
     - 
@@ -6882,6 +6910,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '29'
     - authors--persons_agreed_to_be_named
     - '28'
@@ -6894,6 +6923,7 @@ card_contents:
     - '2017-03-14 21:17:07.40598'
     - 
     - '5'
+    - 
     - 
     - 
     - 
@@ -6914,6 +6944,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '31'
     - authors--authors_agree_to_submission
     - '28'
@@ -6925,6 +6956,7 @@ card_contents:
     - '2017-03-14 21:17:07.424757'
     - 
     - '5'
+    - 
     - 
     - 
     - 
@@ -6944,6 +6976,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '33'
     - funder--had_influence
     - '32'
@@ -6956,6 +6989,7 @@ card_contents:
     - '2017-03-14 21:17:07.460072'
     - 
     - '6'
+    - 
     - 
     - 
     - 
@@ -6976,6 +7010,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '35'
     - 
     - 
@@ -6991,6 +7026,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '36'
     - early-posting--consent
     - '35'
@@ -7002,6 +7038,7 @@ card_contents:
     - '2017-03-14 21:17:07.485991'
     - 
     - '7'
+    - 
     - 
     - 
     - 
@@ -7021,6 +7058,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '38'
     - taxon--zoological
     - '37'
@@ -7032,6 +7070,7 @@ card_contents:
     - '2017-03-14 21:17:07.521851'
     - 
     - '8'
+    - 
     - 
     - 
     - 
@@ -7051,6 +7090,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '40'
     - taxon--botanical
     - '37'
@@ -7062,6 +7102,7 @@ card_contents:
     - '2017-03-14 21:17:07.542455'
     - 
     - '8'
+    - 
     - 
     - 
     - 
@@ -7081,6 +7122,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '42'
     - 
     - 
@@ -7096,6 +7138,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '43'
     - reviewer_report--decision_term
     - '42'
@@ -7107,6 +7150,7 @@ card_contents:
     - '2017-03-14 21:17:07.568844'
     - 
     - '9'
+    - 
     - 
     - 
     - 
@@ -7127,6 +7171,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '45'
     - reviewer_report--competing_interests--detail
     - '44'
@@ -7138,6 +7183,7 @@ card_contents:
     - '2017-03-14 21:17:07.588379'
     - 
     - '9'
+    - 
     - 
     - 
     - 
@@ -7158,6 +7204,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '47'
     - reviewer_report--comments_for_author
     - '42'
@@ -7169,6 +7216,7 @@ card_contents:
     - '2017-04-12 17:29:17.081428'
     - 
     - '9'
+    - 
     - 
     - 
     - 
@@ -7185,6 +7233,7 @@ card_contents:
     - '2017-03-14 21:17:07.634321'
     - 
     - '9'
+    - 
     - 
     - 
     - 
@@ -7206,6 +7255,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '50'
     - reviewer_report--suitable_for_another_journal--journal
     - '49'
@@ -7217,6 +7267,7 @@ card_contents:
     - '2017-03-14 21:17:07.649408'
     - 
     - '9'
+    - 
     - 
     - 
     - 
@@ -7236,6 +7287,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '52'
     - plos_billing--first_name
     - '51'
@@ -7247,6 +7299,7 @@ card_contents:
     - '2017-03-14 21:17:07.672076'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7266,6 +7319,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '54'
     - plos_billing--title
     - '51'
@@ -7277,6 +7331,7 @@ card_contents:
     - '2017-03-14 21:17:07.687611'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7296,6 +7351,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '56'
     - plos_billing--phone_number
     - '51'
@@ -7307,6 +7363,7 @@ card_contents:
     - '2017-03-14 21:17:07.703658'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7326,6 +7383,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '58'
     - plos_billing--address1
     - '51'
@@ -7337,6 +7395,7 @@ card_contents:
     - '2017-03-14 21:17:07.718125'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7356,6 +7415,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '60'
     - plos_billing--city
     - '51'
@@ -7367,6 +7427,7 @@ card_contents:
     - '2017-03-14 21:17:07.732522'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7386,6 +7447,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '62'
     - plos_billing--postal_code
     - '51'
@@ -7397,6 +7459,7 @@ card_contents:
     - '2017-03-14 21:17:07.74656'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7416,6 +7479,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '64'
     - plos_billing--affiliation1
     - '51'
@@ -7427,6 +7491,7 @@ card_contents:
     - '2017-03-14 21:17:07.762139'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7446,6 +7511,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '66'
     - plos_billing--payment_method
     - '51'
@@ -7457,6 +7523,7 @@ card_contents:
     - '2017-03-14 21:17:07.77644'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7477,6 +7544,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '68'
     - plos_billing--pfa_question_1a
     - '51'
@@ -7489,6 +7557,7 @@ card_contents:
     - '2017-03-14 21:17:07.79089'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7510,6 +7579,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '70'
     - plos_billing--pfa_question_2
     - '51'
@@ -7522,6 +7592,7 @@ card_contents:
     - '2017-03-14 21:17:07.805134'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7542,6 +7613,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '72'
     - plos_billing--pfa_question_2b
     - '51'
@@ -7554,6 +7626,7 @@ card_contents:
     - '2017-03-14 21:17:07.820442'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7574,6 +7647,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '74'
     - plos_billing--pfa_question_3a
     - '51'
@@ -7585,6 +7659,7 @@ card_contents:
     - '2017-03-14 21:17:07.834658'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7605,6 +7680,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '76'
     - plos_billing--pfa_question_4a
     - '51'
@@ -7616,6 +7692,7 @@ card_contents:
     - '2017-03-14 21:17:07.848581'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7633,6 +7710,7 @@ card_contents:
     - '2017-03-14 21:17:07.855478'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7655,6 +7733,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '79'
     - plos_billing--pfa_additional_comments
     - '51'
@@ -7667,6 +7746,7 @@ card_contents:
     - '2017-03-14 21:17:07.870889'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7687,6 +7767,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '81'
     - plos_billing--agree_to_collections
     - '51'
@@ -7698,6 +7779,7 @@ card_contents:
     - '2017-03-14 21:17:07.885084'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7717,6 +7799,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '83'
     - plos_billing--ringgold_institution
     - '51'
@@ -7728,6 +7811,7 @@ card_contents:
     - '2017-03-14 21:17:07.898878'
     - 
     - '10'
+    - 
     - 
     - 
     - 
@@ -7747,6 +7831,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '85'
     - production_metadata--publication_date
     - '84'
@@ -7758,6 +7843,7 @@ card_contents:
     - '2017-03-14 21:17:07.922487'
     - 
     - '11'
+    - 
     - 
     - 
     - 
@@ -7777,6 +7863,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '87'
     - production_metadata--issue_number
     - '84'
@@ -7788,6 +7875,7 @@ card_contents:
     - '2017-03-14 21:17:07.9379'
     - 
     - '11'
+    - 
     - 
     - 
     - 
@@ -7807,6 +7895,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '89'
     - production_metadata--production_notes
     - '84'
@@ -7818,6 +7907,7 @@ card_contents:
     - '2017-04-12 17:29:17.206079'
     - 
     - '11'
+    - 
     - 
     - 
     - 
@@ -7837,6 +7927,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '91'
     - 
     - 
@@ -7852,6 +7943,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '92'
     - author--published_as_corresponding_author
     - '91'
@@ -7863,6 +7955,7 @@ card_contents:
     - '2017-03-14 21:17:07.983321'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -7882,6 +7975,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '94'
     - author--contributions
     - '91'
@@ -7893,6 +7987,7 @@ card_contents:
     - '2017-03-14 21:17:08.11249'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -7912,6 +8007,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '96'
     - author--contributions--investigation
     - '94'
@@ -7923,6 +8019,7 @@ card_contents:
     - '2017-03-14 21:17:08.015702'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -7942,6 +8039,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '98'
     - author--contributions--methodology
     - '94'
@@ -7953,6 +8051,7 @@ card_contents:
     - '2017-03-14 21:17:08.032323'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -7972,6 +8071,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '100'
     - author--contributions--supervision
     - '94'
@@ -7983,6 +8083,7 @@ card_contents:
     - '2017-03-14 21:17:08.048237'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -8002,6 +8103,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '102'
     - author--contributions--data-curation
     - '94'
@@ -8013,6 +8115,7 @@ card_contents:
     - '2017-03-14 21:17:08.065008'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -8032,6 +8135,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '104'
     - author--contributions--validation
     - '94'
@@ -8043,6 +8147,7 @@ card_contents:
     - '2017-03-14 21:17:08.080718'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -8062,6 +8167,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '106'
     - author--contributions--writing-review-and-editing
     - '94'
@@ -8073,6 +8179,7 @@ card_contents:
     - '2017-03-14 21:17:08.096161'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -8092,6 +8199,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '108'
     - author--contributions--formal-analysis
     - '94'
@@ -8103,6 +8211,7 @@ card_contents:
     - '2017-03-14 21:17:08.11249'
     - 
     - '12'
+    - 
     - 
     - 
     - 
@@ -8122,6 +8231,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '110'
     - 
     - 
@@ -8137,6 +8247,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '111'
     - front_matter_reviewer_report--decision_term
     - '110'
@@ -8148,6 +8259,7 @@ card_contents:
     - '2017-03-14 21:17:08.141743'
     - 
     - '13'
+    - 
     - 
     - 
     - 
@@ -8168,6 +8280,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '113'
     - front_matter_reviewer_report--suitable
     - '110'
@@ -8184,6 +8297,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '114'
     - front_matter_reviewer_report--suitable--comment
     - '113'
@@ -8195,6 +8309,7 @@ card_contents:
     - '2017-04-12 17:29:17.292915'
     - 
     - '13'
+    - 
     - 
     - 
     - 
@@ -8215,6 +8330,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '116'
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '115'
@@ -8230,6 +8346,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '117'
     - front_matter_reviewer_report--additional_comments
     - '110'
@@ -8241,6 +8358,7 @@ card_contents:
     - '2017-03-14 21:17:08.190484'
     - 
     - '13'
+    - 
     - 
     - 
     - 
@@ -8261,6 +8379,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '119'
     - 
     - 
@@ -8276,6 +8395,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '120'
     - cover_letter--text
     - '119'
@@ -8287,6 +8407,7 @@ card_contents:
     - '2017-04-12 17:29:17.321361'
     - 
     - '14'
+    - 
     - 
     - 
     - 
@@ -8306,6 +8427,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '122'
     - 
     - 
@@ -8321,6 +8443,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '123'
     - financial_disclosures--author_received_funding
     - '122'
@@ -8332,6 +8455,7 @@ card_contents:
     - '2017-03-14 21:17:08.263301'
     - 
     - '15'
+    - 
     - 
     - 
     - 
@@ -8351,6 +8475,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '125'
     - ethics--human_subjects
     - '124'
@@ -8362,6 +8487,7 @@ card_contents:
     - '2017-03-14 21:17:08.292226'
     - 
     - '16'
+    - 
     - 
     - 
     - 
@@ -8383,6 +8509,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '127'
     - ethics--animal_subjects
     - '124'
@@ -8394,6 +8521,7 @@ card_contents:
     - '2017-03-14 21:17:08.317119'
     - 
     - '16'
+    - 
     - 
     - 
     - 
@@ -8413,6 +8541,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '129'
     - ethics--animal_subjects--field_arrive
     - '127'
@@ -8424,6 +8553,7 @@ card_contents:
     - '2017-03-14 21:17:08.317119'
     - 
     - '16'
+    - 
     - 
     - 
     - 
@@ -8444,6 +8574,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '131'
     - ethics--field_study--field_permit_number
     - '130'
@@ -8456,6 +8587,7 @@ card_contents:
     - '2017-03-14 21:17:08.331934'
     - 
     - '16'
+    - 
     - 
     - 
     - 
@@ -8475,6 +8607,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '133'
     - competing_interests--has_competing_interests
     - '132'
@@ -8488,6 +8621,7 @@ card_contents:
     - '2017-03-14 21:17:08.363729'
     - 
     - '17'
+    - 
     - 
     - 
     - 
@@ -8509,6 +8643,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '135'
     - 
     - 
@@ -8521,6 +8656,7 @@ card_contents:
     - 
     - '18'
     - display-children
+    - 
     - 
     - 
     - 
@@ -8539,6 +8675,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '137'
     - reporting_guidelines--systematic_reviews
     - '135'
@@ -8550,6 +8687,7 @@ card_contents:
     - '2017-03-14 21:17:08.405128'
     - 
     - '18'
+    - 
     - 
     - 
     - 
@@ -8570,6 +8708,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '139'
     - reporting_guidelines--meta_analyses
     - '135'
@@ -8581,6 +8720,7 @@ card_contents:
     - '2017-03-14 21:17:08.421536'
     - 
     - '18'
+    - 
     - 
     - 
     - 
@@ -8601,6 +8741,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '141'
     - reporting_guidelines--diagnostic_studies
     - '135'
@@ -8612,6 +8753,7 @@ card_contents:
     - '2017-03-14 21:17:08.428878'
     - 
     - '18'
+    - 
     - 
     - 
     - 
@@ -8631,6 +8773,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '143'
     - reporting_guidelines--microarray_studies
     - '135'
@@ -8642,6 +8785,7 @@ card_contents:
     - '2017-03-14 21:17:08.444466'
     - 
     - '18'
+    - 
     - 
     - 
     - 
@@ -8661,6 +8805,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '145'
     - plos_bio_initial_tech_check--ethics_statement
     - '144'
@@ -8674,6 +8819,7 @@ card_contents:
     - '2017-03-14 21:17:08.466737'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8697,6 +8843,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '147'
     - plos_bio_initial_tech_check--data_availability_blank
     - '144'
@@ -8710,6 +8857,7 @@ card_contents:
     - '2017-03-14 21:17:08.483088'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8731,6 +8879,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '149'
     - plos_bio_initial_tech_check--authors_match
     - '144'
@@ -8748,6 +8897,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '150'
     - plos_bio_initial_tech_check--author_emails
     - '144'
@@ -8759,6 +8909,7 @@ card_contents:
     - '2017-03-14 21:17:08.5069'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8780,6 +8931,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '152'
     - plos_bio_initial_tech_check--competing_interests
     - '144'
@@ -8792,6 +8944,7 @@ card_contents:
     - '2017-03-14 21:17:08.522639'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8809,6 +8962,7 @@ card_contents:
     - '2017-03-14 21:17:08.529908'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8831,6 +8985,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '155'
     - plos_bio_initial_tech_check--collection
     - '144'
@@ -8844,6 +8999,7 @@ card_contents:
     - '2017-03-14 21:17:08.545084'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8865,6 +9021,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '157'
     - plos_bio_initial_tech_check--embedded_captions
     - '144'
@@ -8878,6 +9035,7 @@ card_contents:
     - '2017-03-14 21:17:08.559877'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8898,6 +9056,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '159'
     - plos_bio_initial_tech_check--figures_missing
     - '144'
@@ -8912,6 +9071,7 @@ card_contents:
     - '2017-03-14 21:17:08.574265'
     - 
     - '19'
+    - 
     - 
     - 
     - 
@@ -8935,6 +9095,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '161'
     - 
     - 
@@ -8950,6 +9111,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '162'
     - group-author--contributions
     - '161'
@@ -8961,6 +9123,7 @@ card_contents:
     - '2017-03-14 21:17:08.719114'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -8980,6 +9143,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '164'
     - group-author--contributions--investigation
     - '162'
@@ -8991,6 +9155,7 @@ card_contents:
     - '2017-03-14 21:17:08.620528'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9010,6 +9175,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '166'
     - group-author--contributions--methodology
     - '162'
@@ -9021,6 +9187,7 @@ card_contents:
     - '2017-03-14 21:17:08.637432'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9040,6 +9207,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '168'
     - group-author--contributions--supervision
     - '162'
@@ -9051,6 +9219,7 @@ card_contents:
     - '2017-03-14 21:17:08.654633'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9070,6 +9239,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '170'
     - group-author--contributions--data-curation
     - '162'
@@ -9081,6 +9251,7 @@ card_contents:
     - '2017-03-14 21:17:08.670739'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9100,6 +9271,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '172'
     - group-author--contributions--validation
     - '162'
@@ -9111,6 +9283,7 @@ card_contents:
     - '2017-03-14 21:17:08.686706'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9130,6 +9303,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '174'
     - group-author--contributions--writing-review-and-editing
     - '162'
@@ -9141,6 +9315,7 @@ card_contents:
     - '2017-03-14 21:17:08.703031'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9160,6 +9335,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '176'
     - group-author--contributions--formal-analysis
     - '162'
@@ -9171,6 +9347,7 @@ card_contents:
     - '2017-03-14 21:17:08.719114'
     - 
     - '20'
+    - 
     - 
     - 
     - 
@@ -9190,6 +9367,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '178'
     - 
     - 
@@ -9202,6 +9380,7 @@ card_contents:
     - 
     - '21'
     - display-children
+    - 
     - 
     - 
     - 
@@ -9223,6 +9402,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '180'
     - plos_bio_final_tech_check--human_subjects
     - '178'
@@ -9235,6 +9415,7 @@ card_contents:
     - '2017-03-14 21:17:08.754699'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9256,6 +9437,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '182'
     - plos_bio_final_tech_check--data_available
     - '178'
@@ -9268,6 +9450,7 @@ card_contents:
     - '2017-03-14 21:17:08.770279'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9289,6 +9472,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '184'
     - plos_bio_final_tech_check--dryad_url
     - '178'
@@ -9301,6 +9485,7 @@ card_contents:
     - '2017-03-14 21:17:08.785777'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9321,6 +9506,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '186'
     - plos_bio_final_tech_check--tobacco
     - '178'
@@ -9337,6 +9523,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '187'
     - plos_bio_final_tech_check--figures_legible
     - '178'
@@ -9348,6 +9535,7 @@ card_contents:
     - '2017-03-14 21:17:08.808152'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9368,6 +9556,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '189'
     - plos_bio_final_tech_check--cover_letter
     - '178'
@@ -9380,6 +9569,7 @@ card_contents:
     - '2017-03-14 21:17:08.823276'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9400,6 +9590,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '191'
     - plos_bio_final_tech_check--ethics_statement
     - '178'
@@ -9411,6 +9602,7 @@ card_contents:
     - '2017-03-14 21:17:08.838154'
     - 
     - '21'
+    - 
     - 
     - 
     - 
@@ -9430,6 +9622,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '193'
     - plos_bio_revision_tech_check--open_rejects
     - '192'
@@ -9444,6 +9637,7 @@ card_contents:
     - '2017-03-14 21:17:08.859599'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9467,6 +9661,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '195'
     - plos_bio_revision_tech_check--data_availability_blank
     - '192'
@@ -9480,6 +9675,7 @@ card_contents:
     - '2017-03-14 21:17:08.889477'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9501,6 +9697,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '197'
     - plos_bio_revision_tech_check--authors_match
     - '192'
@@ -9514,6 +9711,7 @@ card_contents:
     - '2017-03-14 21:17:08.90547'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9534,6 +9732,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '199'
     - plos_bio_revision_tech_check--competing_interests
     - '192'
@@ -9546,6 +9745,7 @@ card_contents:
     - '2017-03-14 21:17:08.919991'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9567,6 +9767,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '201'
     - plos_bio_revision_tech_check--human_subjects
     - '192'
@@ -9579,6 +9780,7 @@ card_contents:
     - '2017-03-14 21:17:08.934263'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9600,6 +9802,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '203'
     - plos_bio_revision_tech_check--data_available
     - '192'
@@ -9612,6 +9815,7 @@ card_contents:
     - '2017-03-14 21:17:08.948634'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9633,6 +9837,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '205'
     - plos_bio_revision_tech_check--dryad_url
     - '192'
@@ -9645,6 +9850,7 @@ card_contents:
     - '2017-03-14 21:17:08.962702'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9662,6 +9868,7 @@ card_contents:
     - '2017-03-14 21:17:08.969744'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9684,6 +9891,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '208'
     - plos_bio_revision_tech_check--figures_legible
     - '192'
@@ -9695,6 +9903,7 @@ card_contents:
     - '2017-03-14 21:17:08.983793'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9715,6 +9924,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '210'
     - plos_bio_revision_tech_check--cover_letter
     - '192'
@@ -9731,6 +9941,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '211'
     - plos_bio_revision_tech_check--billing_inquiries
     - '192'
@@ -9743,6 +9954,7 @@ card_contents:
     - '2017-03-14 21:17:09.005928'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9764,6 +9976,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '213'
     - plos_bio_revision_tech_check--figures_viewable
     - '192'
@@ -9777,6 +9990,7 @@ card_contents:
     - '2017-03-14 21:17:09.021243'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9798,6 +10012,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '215'
     - plos_bio_revision_tech_check--captions_missing
     - '192'
@@ -9810,6 +10025,7 @@ card_contents:
     - '2017-03-14 21:17:09.036548'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9832,6 +10048,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '217'
     - plos_bio_revision_tech_check--response_to_reviewers
     - '192'
@@ -9845,6 +10062,7 @@ card_contents:
     - '2017-03-14 21:17:09.050505'
     - 
     - '22'
+    - 
     - 
     - 
     - 
@@ -9864,6 +10082,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '219'
     - data_availability--data_fully_available
     - '218'
@@ -9880,6 +10099,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '220'
     - data_availability--data_location
     - '218'
@@ -9891,6 +10111,7 @@ card_contents:
     - '2017-04-12 17:29:17.64693'
     - 
     - '23'
+    - 
     - 
     - 
     - 
@@ -9912,6 +10133,7 @@ card_contents:
     - 
     - 
     - 
+    - 
   - - '222'
     - data_availability--additional_information_other
     - '218'
@@ -9924,6 +10146,7 @@ card_contents:
     - '2017-03-14 21:17:09.097027'
     - 
     - '23'
+    - 
     - 
     - 
     - 

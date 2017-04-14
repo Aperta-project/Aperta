@@ -21,6 +21,3 @@ FactoryGuy.define('card-content', {
     }
   }
 });
-
-
-

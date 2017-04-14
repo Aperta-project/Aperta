@@ -359,7 +359,7 @@ describe QueryParser do
       it 'should search both Authors and GroupAuthors' do
         parse = QueryParser.new.parse "AUTHOR IS #{name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          ("author_list_items_0"."author_id" IN (#{author.id}) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (#{group_author.id}) AND "author_list_items_1"."author_type" = 'Author')
+          ("author_list_items_0"."author_id" IN (#{group_author.id}) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (#{author.id}) AND "author_list_items_1"."author_type" = 'Author')
         SQL
       end
     end

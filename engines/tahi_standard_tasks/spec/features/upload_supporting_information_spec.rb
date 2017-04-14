@@ -31,17 +31,23 @@ feature "Upload Supporting Information", js: true do
     # edit file
     task.edit_file_info
 
+    task.file_title_input = 'new_file_title'
+    task.file_caption_input = 'New file caption'
     task.file_label_input = 'F4'
     task.file_category_dropdown = 'Figure'
     task.toggle_file_striking_image
     task.toggle_for_publication
 
     task.save_file_info
-    wait_for_ajax
+
+    expect(task.file_title).to eq 'F4 Figure. new_file_title'
+    expect(task.file_caption).to eq 'New file caption'
 
     paper.reload
     file = paper.supporting_information_files.last
 
+    expect(file.title).to eq 'new_file_title'
+    expect(file.caption).to eq 'New file caption'
     expect(file.label).to eq 'F4'
     expect(file.category).to eq 'Figure'
     expect(file.striking_image).to be(true)
@@ -67,7 +73,7 @@ feature "Upload Supporting Information", js: true do
 
     task.save_file_info
 
-    expect(task.error_message).to match(/Please edit/)
+    expect(task.error_message).to eq 'Please edit to add label, category, and optional title and legend'
   end
 
   scenario "Author uploads a broken file and sees error" do

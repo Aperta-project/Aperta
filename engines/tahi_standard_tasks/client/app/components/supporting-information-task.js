@@ -13,7 +13,7 @@ export default TaskComponent.extend(FileUploadMixin, {
     return `/api/supporting_information_files?task_id=${this.get('task.id')}`;
   }),
 
-  saveErrorText: 'Please edit and complete the required fields.',
+  saveErrorText: 'Please edit to add label, category, and optional title and legend',
 
   validateData() {
     const objs = this.get('filesWithErrors');

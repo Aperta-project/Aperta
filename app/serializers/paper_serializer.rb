@@ -3,7 +3,7 @@ class PaperSerializer < LitePaperSerializer
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement,
-             :versions_contain_pdf, :legends_allowed
+             :versions_contain_pdf
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true

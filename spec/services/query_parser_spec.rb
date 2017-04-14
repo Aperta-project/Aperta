@@ -352,13 +352,14 @@ describe QueryParser do
       end
     end
 
-    context 'Author Queries' do
+    describe 'Author Queries' do
+      let(:name) { 'zahphod' }
+      let!(:author) { create(:author, first_name: name) }
+      let!(:group_author) { create(:group_author, contact_first_name: name) }
       it 'should search both Authors and GroupAuthors' do
-        create(:author, first_name: 'zaphod')
-        create(:group_author, contact_first_name: 'zaphod')
-        parse = QueryParser.new.parse "AUTHOR IS zaphod"
+        parse = QueryParser.new.parse "AUTHOR IS #{name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          ("author_list_items_0"."author_id" IN (1) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (1) AND "author_list_items_1"."author_type" = 'Author')
+          ("author_list_items_0"."author_id" IN (#{author.id}) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (#{group_author.id}) AND "author_list_items_1"."author_type" = 'Author')
         SQL
       end
     end

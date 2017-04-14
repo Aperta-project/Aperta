@@ -77,7 +77,6 @@ export default DS.Model.extend({
   withdrawalReason: attr('string'),
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
-  legendsAllowed: attr('boolean'),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),

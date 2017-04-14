@@ -15,7 +15,6 @@ export default Component.extend({
   errorsPresent: alias('model.errorsPresent'),
   isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
-  legendsAllowed: alias('file.paper.legendsAllowed'),
 
   categories: [
     'Table',

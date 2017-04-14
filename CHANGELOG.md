@@ -2,15 +2,8 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [1.40.2] - {2017-04-11}
-### Added
-Alert added to notify users when they upload a duplicate file on a manuscript
-### Changed
-### Deprecated
-### Removed
-### Fixed
-Users can now see the epub version of duplicated file upload instead of the spinner
-### Security
+## As we have other tools to track our changes in each release, we have decided
+## to stop maintaining this file as of April 10, 2017.
 
 ## ## [1.40.1] - {2017-04-07}
 ### Added

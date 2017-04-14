@@ -6,12 +6,13 @@ class CardVersion < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :card
-  has_many :card_contents
+  has_many :card_contents, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true
   # the `roots` scope comes from `awesome_nested_set`
   has_one :content_root, -> { roots }, class_name: 'CardContent'
+  scope :required_for_submission, -> { where(required_for_submission: true) }
 
   validates :version, uniqueness: {
     scope: :card_id,

@@ -1,10 +1,16 @@
 import Ember from 'ember';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-radio'],
-  content: null,
-  disabled: null,
-  answer: null,
+
+  propTypes: {
+    answer: PropTypes.EmberObject.isRequired,
+    content: PropTypes.EmberObject.isRequired,
+    disabled: PropTypes.bool,
+    owner: PropTypes.EmberObject.isRequired,
+    preview: PropTypes.bool
+  },
 
   init() {
     this._super(...arguments);

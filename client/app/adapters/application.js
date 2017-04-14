@@ -8,9 +8,17 @@ export default ActiveModelAdapter.extend({
   headers: function() {
     Ember.assert(`Can't find the pusher service.  Most likely you're seeing this error in a test environment, and
                  Ember is making an ajax request for a resource you haven't stubbed, like a permissions check for a task.
-                 If you go up the stack trace to the restAdapter (rest.js) you can see the url for the request.  If you're trying
-                 to fetch a permission, you can either stub the request itself, or ideally you can use the FakeCanService to prevent
-                 the request from ever going out in the first place.  See \`test/helpers/fake-can-service.js\``, getOwner(this).lookup('pusher:main'));
+                 ----
+                 If you were NOT planning on making an ajax request (to mockjax or whatever):
+                   If you go up the stack trace to the restAdapter (rest.js) you can see the url for the request.  If you're trying
+                   to fetch a permission, you can either stub the request itself, or ideally you can use the FakeCanService to prevent
+                   the request from ever going out in the first place.  See \`test/helpers/fake-can-service.js\`
+                 ----
+                 If you WERE planning on making a request to mockjax:
+                   You're probably in a component integration test and you've forgotten
+                   to use register a stub for the pusher service.  You can do that like this in the beforeEach hook:
+                   this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+                 `, getOwner(this).lookup('pusher:main'));
     return {
       namespace: 'api',
       // Weird capitalization and hyphens are intentional since this is is an

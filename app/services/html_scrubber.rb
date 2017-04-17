@@ -3,13 +3,13 @@
 class HtmlScrubber < Rails::Html::PermitScrubber
   def initialize
     super
-    self.tags = %w(form i sub sup b a div p)
+    self.tags = %w(form i sub sup b a div p h1 h2 h3 h4 h5 h6 ul li oi)
     self.attributes = %w(href class id)
   end
 
   def skip_node?(node)
     # this is a crappy hack to get around Microsoft deciding that adding
-    # comments within style tags is a good idea
+    # HTML style comments within style tags is a good idea
     node.children.remove if node.name == 'style'
 
     node.text?

@@ -58,14 +58,16 @@ class PaperFactory
 
   def create_task_from_template(task_template, phase)
     task_class = Task.safe_constantize(task_template.journal_task_type.kind)
+    card = Card.find_by(name: LookupClassNamespace.lookup_namespace(task_class))
     task = TaskFactory.create(
       task_class,
       phase: phase,
       paper: phase.paper,
       creator: creator,
+      card_version: card.card_version(:latest),
       title: task_template.title,
+      notify: false,
       body: task_template.template,
-      notify: false
     )
     task
   end

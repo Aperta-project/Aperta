@@ -17,6 +17,14 @@ describe Answer do
     end
   end
 
+  context 'html sanitization' do
+    let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
+    subject(:answer) { FactoryGirl.create(:answer, card_content) }
+    it 'scrubs value if value_type is html' do
+      answer.update!("<div>something</div><foo>foo</foo><script>evilThing();</script>")
+    end
+  end
+
   context 'value' do
     def check_coercion(v, expected)
       answer.value = v

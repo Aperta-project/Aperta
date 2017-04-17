@@ -2,7 +2,7 @@
 namespace :data do
   namespace :migrate do
     namespace :html_sanitization do
-      desc 'It goes through every snapshot that has HTML values in '
+      desc 'It goes through every snapshot that has HTML values in it sanitizes it'
       task sanitize_snapshot_html: :environment do
         set = []
         set.push([['adhoc-attachment',
@@ -23,10 +23,28 @@ namespace :data do
           SnapshotMigratorIterator.run!(m)
         end
       end
+      desc 'It goes through every answer that has HTML values in and sanitize it'
+      task sanitize_answer_html: :environment do
+        idents = ['cover_letter--text',
+          'data_availability--data_location',
+          'front_matter_reviewer_report--suitable--comment',
+          'production_metadata--production_notes',
+          'publishing_related_questions--short_title',
+          'reviewer_report--comments_for_author']
+
+        CardContent.where(ident: idents).includes(:answers).each do |cc|
+          puts "migrating card content answers #with #{cc.ident}"
+          cc.answers.each do |answer|
+            value = answer.value
+            answer.update!(value: HtmlScrubber.standalone_scrub!(value))
+          end
+        end
+      end
     end
   end
 end
-# Helper class for APERTA-8656 migration
+
+# Helper class for APERTA-8656 snapshot migration
 class SnapshotMigratorIterator
   def self.run!(arr)
     arr[0].each do |model_name|

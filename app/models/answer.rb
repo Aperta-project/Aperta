@@ -17,6 +17,8 @@ class Answer < ActiveRecord::Base
 
   delegate :value_type, to: :card_content
 
+  before_save :sanitize_html, if: :html_value_type?
+
   def children
     Answer.where(owner: owner, card_content: card_content.children)
   end
@@ -50,4 +52,15 @@ class Answer < ActiveRecord::Base
       ERROR
     end
   end
+
+  private
+
+  def html_value_type?
+    value_type == "html"
+  end
+
+  def sanitize_html
+    HtmlScrubber.standalone_scrub!(value)
+  end
+
 end

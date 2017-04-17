@@ -14,4 +14,11 @@ class HtmlScrubber < Rails::Html::PermitScrubber
 
     node.text?
   end
+
+  def self.standalone_scrub!(value)
+    scrubber = self.new
+    fragment = Loofah.fragment(value)
+    fragment.scrub!(scrubber)
+    fragment.to_html
+  end
 end

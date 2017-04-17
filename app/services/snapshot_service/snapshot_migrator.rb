@@ -12,7 +12,7 @@ class SnapshotMigrator
     Snapshot.where(
       "contents ->> 'name' = '#{@source_type}'"
     ).find_each do |snapshot|
-      Rails.logger("Migrating snapshot #{snapshot.id}")
+      puts "Migrating snapshot #{snapshot.id}"
       @keys.each do |key|
         index = find_index(snapshot, key)
         next unless !index.nil? && source_exists?(snapshot)
@@ -26,7 +26,7 @@ class SnapshotMigrator
   private
 
   def source_exists?(snapshot)
-    index = find_index(snapshot, 'name')
+    index = find_index(snapshot, 'id')
     id = snapshot.contents['children'][index]['value']
     arr ||= @source_type.split('-')
     klass ||= arr.map(&:capitalize).join.constantize

@@ -49,26 +49,19 @@
                            value=file.category}}
       </div>
     </div>
-    <div class="flex-group">
-      <div class="flex-element">
-        {{format-input class="form-control si-file-title-input"
-                       placeholder="Enter a title"
-                       required=true
-                       name="title"
-                       value=file.title
-                       displayBold=false}}
-      </div>
-    </div>
 
-    <div class="flex-group">
-      <div class="flex-element">
-        {{format-input placeholder="Enter a legend (optional)"
-                       name="caption"
-                       class="form-control si-file-caption-textbox"
-                       value=file.caption
-                       displayBold=false}}
+    {{#if legendsAllowed}}
+      <div class="flex-group">
+        <div class="flex-element">
+          {{format-input placeholder="Enter a legend (optional)"
+                         name="caption"
+                         class="form-control si-file-caption-textbox"
+                         value=file.caption
+                         displayBold=false}}
+        </div>
       </div>
-    </div>
+    {{/if}}
+
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
     {{#if (eq file.category "Figure")}}
       <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
@@ -102,7 +95,7 @@
     </a>
 
     <div class="si-file-title">
-      {{file.label}} {{file.category}}{{if file.category "." ""}} {{{file.title}}}
+      {{file.label}} {{file.category}}
     </div>
 
     {{#if file.caption}}

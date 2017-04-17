@@ -48,7 +48,7 @@ class CardContent < ActiveRecord::Base
       'display-with-value': [nil],
       'field-set': [nil],
       'short-input': ['text'],
-      'check-box': ['text', 'boolean'],
+      'check-box': ['boolean'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access

@@ -30,8 +30,8 @@ radio-input = element content {
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
-                attribute value-type { "text" | "boolean" },
                 attribute default-answer-value { text }?,
+                attribute value-type { "boolean" },
                 (element label { text }? &
                 element text { text }?),
                 content*

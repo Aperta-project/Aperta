@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411204727) do
+ActiveRecord::Schema.define(version: 20170412153608) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,8 +233,8 @@ ActiveRecord::Schema.define(version: 20170411204727) do
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
   create_table "card_versions", force: :cascade do |t|
-    t.integer  "version",    null: false
-    t.integer  "card_id",    null: false
+    t.integer  "version",                                 null: false
+    t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
   end
@@ -569,6 +569,7 @@ ActiveRecord::Schema.define(version: 20170411204727) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
+    t.boolean  "legends_allowed",                       default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

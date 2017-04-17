@@ -118,7 +118,6 @@ class Attachment < ActiveRecord::Base
     Attachment.transaction do
       @downloading = true
       file.download! url
-
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title

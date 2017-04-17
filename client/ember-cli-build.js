@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   var args = {
     hinting: false,
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false },
+    emberCliFontAwesome: { includeFontAwesomeAssets: true },
     'ember-cli-qunit': {
       useLintTree: false
     },

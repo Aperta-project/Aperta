@@ -58,7 +58,7 @@ class PaperFactory
 
   def create_task_from_template(task_template, phase)
     task_class = Task.safe_constantize(task_template.journal_task_type.kind)
-    card = Card.find_by(name: LookupClassNamespace.lookup_namespace(task_class))
+    card = Card.find_by_class_name(task_class)
     task = TaskFactory.create(
       task_class,
       phase: phase,

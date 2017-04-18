@@ -35,9 +35,6 @@ class CardAssociator
   end
 
   def find_card(answerable)
-    @card ||= begin
-      card_name = LookupClassNamespace.lookup_namespace(model_klass)
-      Card.find_by(name: card_name)
-    end
+    @card ||= Card.find_by_class_name(model_klass)
   end
 end

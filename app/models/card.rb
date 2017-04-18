@@ -63,6 +63,13 @@ class Card < ActiveRecord::Base
     end
   end
 
+  # useful for pre-card-config answerable models
+  # where the Card name is the name of the answerable class
+  def self.find_by_class_name(klass_name)
+    card_name = LookupClassNamespace.lookup_namespace(klass_name)
+    find_by(name: card_name)
+  end
+
   def to_xml(options = {})
     attrs = {
       'name' => name,

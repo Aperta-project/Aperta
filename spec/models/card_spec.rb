@@ -63,6 +63,29 @@ describe Card do
     end
   end
 
+  describe '.find_by_class_name' do
+    let(:card) { FactoryGirl.create(:card) }
+    let(:card_class_name) { card.class.to_s }
+
+    context 'with successful namespace lookup' do
+      before do
+        expect(LookupClassNamespace).to receive(:lookup_namespace)
+                                    .with(card_class_name)
+                                    .and_return(card.name)
+      end
+
+      it 'finds the card' do
+        expect(Card.find_by_class_name(card_class_name)).to eq(card)
+      end
+    end
+
+    context 'without successful namespace lookup' do
+      it 'does not find the card' do
+        expect(Card.find_by_class_name(card_class_name)).to be_nil
+      end
+    end
+  end
+
   describe '#content_for_version' do
     it 'returns all card content for a given version' do
       old_version.content_root.children << FactoryGirl.create(:card_content)

@@ -97,7 +97,7 @@ test('it requires validation on an SI file label', function(assert) {
   let done = assert.async();
   wait().then(() => {
     assert.elementFound('.si-file .error-message:not(.error-message--hidden)');
-    assert.textPresent('.si-file .error-message', 'Please edit to add label, category, and optional title and legend');
+    assert.textPresent('.si-file .error-message', 'Please edit');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
     done();
   });
@@ -115,7 +115,7 @@ test('it requires validation on an SI file category', function(assert) {
   let done = assert.async();
   wait().then(() => {
     assert.elementFound('.si-file .error-message:not(.error-message--hidden)');
-    assert.textPresent('.si-file .error-message', 'Please edit to add label, category, and optional title and legend');
+    assert.textPresent('.si-file .error-message', 'Please edit');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
     done();
   });

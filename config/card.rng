@@ -52,10 +52,7 @@
         <value>check-box</value>
       </attribute>
       <attribute name="value-type">
-        <choice>
-          <value>text</value>
-          <value>boolean</value>
-        </choice>
+        <value>boolean</value>
       </attribute>
       <interleave>
         <optional>

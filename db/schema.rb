@@ -336,6 +336,7 @@ ActiveRecord::Schema.define(version: 20170413084408) do
     t.string   "subject"
     t.string   "message_id"
     t.text     "raw_source"
+    t.text     "body"
     t.string   "status"
     t.string   "error_message"
     t.datetime "errored_at"

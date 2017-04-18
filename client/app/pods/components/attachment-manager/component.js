@@ -32,6 +32,7 @@ export default Ember.Component.extend({
   multiple: false,
   showDescription: true,
   alwaysShowAddButton: false,
+  preview: false, // used for the card config editor
 
   uploadInProgress: computed.notEmpty('fileUploads'),
   canUploadMoreFiles: computed('attachments.[]', 'multiple', function() {

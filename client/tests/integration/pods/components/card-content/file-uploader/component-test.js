@@ -48,7 +48,17 @@ test(`shows an uploader with text and a button`, function(assert) {
 
   this.set('disabled', true);
   assert.elementFound('.button--disabled', 'disables but still shows the button');
+  assert.textNotPresent(
+    '.description',
+    'Please upload a file',
+    `the description is hidden when the uploader is disabled (like when the task is completed)`
+  );
 
   this.setProperties({disabled: false, preview: true});
   assert.elementFound('.button--disabled', 'preview will also disable the button');
+  assert.textPresent(
+    '.description',
+    'Please upload a file',
+    `the description shows when the uploader is in preview mode (like on the card editor)`
+  );
 });

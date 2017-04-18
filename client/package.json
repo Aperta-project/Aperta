@@ -58,6 +58,7 @@
     "ember-sinon": "0.5.0",
     "ember-truth-helpers": "^1.2.0",
     "ember-wormhole": "0.3.4",
+    "ember-click-outside": "0.1.6",
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "liquid-fire": "0.25.0",

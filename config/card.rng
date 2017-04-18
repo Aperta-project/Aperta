@@ -35,9 +35,9 @@
       <element name="text">
         <text/>
       </element>
-      <zeroOrMore>
+      <oneOrMore>
         <ref name="possible-value"/>
-      </zeroOrMore>
+      </oneOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -93,9 +93,9 @@
           <text/>
         </element>
       </interleave>
-      <zeroOrMore>
+      <oneOrMore>
         <ref name="possible-value"/>
-      </zeroOrMore>
+      </oneOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>

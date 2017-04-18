@@ -22,7 +22,7 @@ radio-input = element content {
                   attribute value-type { "text" },
                   attribute content-type { "radio" },
                   element text { text },
-                  possible-value*,
+                  possible-value+,
                   content*
               }
 
@@ -42,7 +42,7 @@ dropdown-input = element content {
                   attribute content-type { "dropdown" },
                   (element placeholder { text }? &
                    element text { text }),
-                  possible-value*,
+                  possible-value+,
                   content*
               }
 

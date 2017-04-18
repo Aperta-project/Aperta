@@ -2,13 +2,23 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
-moduleForComponent('card-editor/preview', 'Integration | Component | card editor | preview', {
-  integration: true
-});
+moduleForComponent(
+  'card-editor/preview',
+  'Integration | Component | card editor | preview',
+  {
+    integration: true
+  }
+);
 
 const card = Ember.Object.create({
   name: 'Fig',
-  content: Ember.Object.create({ contentType: 'display-children', children: [] })
+  content: Ember.Object.create({
+    contentType: 'display-children',
+    children: [],
+    answerForOwner() {
+      return null;
+    }
+  })
 });
 
 test('it renders a preview (defaults wide)', function(assert) {

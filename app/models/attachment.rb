@@ -9,6 +9,10 @@ class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
+  include CustomCastTypes
+
+  attribute :title, HtmlString.new
+  attribute :caption, HtmlString.new
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
 
@@ -114,7 +118,6 @@ class Attachment < ActiveRecord::Base
     Attachment.transaction do
       @downloading = true
       file.download! url
-
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title

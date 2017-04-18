@@ -26,6 +26,15 @@ radio-input = element content {
                   content*
               }
 
+check-box-input = element content {
+                attribute ident { text }?,
+                attribute content-type { "check-box" },
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }?),
+                content*
+            }
+
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
@@ -65,7 +74,8 @@ content = (radio-input |
            text-content |
            display-children-content |
            display-with-value-content |
-           field-set)
+           field-set |
+           check-box-input)
 
 start = element card {
             attribute name { text },

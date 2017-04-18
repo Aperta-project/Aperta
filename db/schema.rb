@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 20170413084408) do
     t.string   "placeholder"
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
+    t.string   "label"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -568,6 +569,7 @@ ActiveRecord::Schema.define(version: 20170413084408) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
+    t.boolean  "legends_allowed",                       default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

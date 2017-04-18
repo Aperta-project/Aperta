@@ -133,7 +133,9 @@ class CardContent < ActiveRecord::Base
       'content-type' => content_type,
       'value-type' => value_type,
       'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
+      'default-answer-value' => default_answer_value,
+      'allow-multiple-uploads' => allow_multiple_uploads,
+      'allow-file-captions' => allow_file_captions
     }.compact
   end
 

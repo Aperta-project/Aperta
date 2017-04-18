@@ -37,6 +37,8 @@ export default DS.Model.extend({
         owner: owner,
         cardContent: this
       });
+    } else {
+      return null;
     }
   },
 

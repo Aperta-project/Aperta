@@ -11,7 +11,7 @@ class CardAssociator
 
   def initialize(model_klass)
     @model_klass = model_klass
-    raise "#{model_klass} is not answerable" unless model_klass.answerable?
+    raise "#{model_klass} is not an answerable model" unless model_klass.try(:answerable?)
   end
 
   def process

@@ -12,6 +12,10 @@ require_relative "./card_factory"
 # the responsibility of this service class.  That is being handled in a
 # separate data migration rake task.
 #
+# This will not create Cards for non-tasks that are Answerable and associated to
+# a CardVersion (Author, GroupAuthor, ReviewerReport, Funder, ReviewerRecommendation)
+# since it is presumed that these models already have an existing Card.
+#
 class LegacyTaskCardLoader
   attr_accessor :tasks
 

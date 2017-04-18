@@ -3,19 +3,9 @@ require Rails.root.join("lib/tasks/card_loading/support/card_associator.rb")
 namespace :data do
   namespace :migrate do
     desc <<-DESC
-      Create Cards for all Tasks
-    DESC
-    task add_legacy_cards: :environment do
-      STDOUT.puts "-------------------------------------"
-      STDOUT.puts "Adding Cards for legacy Tasks ..."
-      LegacyTaskCardLoader.new.load
-      STDOUT.puts "-------------------------------------"
-    end
-
-    desc <<-DESC
       Assign a CardVersion relationship for all Answerable models.
     DESC
-    task assign_card_version_to_all_answerables: [:environment, :add_legacy_cards] do
+    task assign_card_version_to_all_answerables: [:environment, "cards:load"] do
       STDOUT.puts "-------------------------------------"
 
       answerable_klasses = [

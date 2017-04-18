@@ -1,5 +1,4 @@
 require_relative "./card_factory"
-require_relative "./legacy_task_card_loader"
 Dir[Rails.root.join("lib/tasks/card_loading/configurations/*.rb")].each { |f| require f }
 Dir[Rails.root.join("lib/tasks/card_loading/configurations/nonstandard_configurations/*")].each { |f| require f }
 
@@ -10,7 +9,6 @@ Dir[Rails.root.join("lib/tasks/card_loading/configurations/nonstandard_configura
 class CardLoader
   def self.load_standard(journal: nil)
     CardFactory.new(journal: journal).create(standard_card_configuration_klasses)
-    LegacyTaskCardLoader.new.load
   end
 
   def self.load(owner_klass, journal: nil)

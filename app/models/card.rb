@@ -51,6 +51,22 @@ class Card < ActiveRecord::Base
     card_versions.find_by!(version: to_find)
   end
 
+  # The 'state' of the card reflects the state of its versions. CardVersion has
+  # a 'published' boolean flag that all of this derives from.
+  # * 'draft': the latest version is a draft and there are no published
+  # versions. 'draft' is the default state for newly created cards
+  # * 'published': the latest version is published
+  # * 'published with changes': the latest version is a draft, but published
+  # versions exist. This will be the state of the card after the user starts
+  # prepping some changes but before publishing the latest version
+  #
+  # And now for the special case (of course)
+  # * 'locked': locked cards are those that we (the devs) have created and are
+  # not intended to be altered by end users. They show up in the card catalogue
+  # but they won't open in the editor. **Locked cards do not have a journal_id**
+  def state
+  end
+
   def self.create_new!(attrs)
     Card.transaction do
       card = Card.new(attrs)

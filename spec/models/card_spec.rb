@@ -4,11 +4,9 @@ describe Card do
   let(:card) do
     FactoryGirl.create(
       :card,
-      latest_version: 2
+      :versioned
     )
   end
-  let!(:old_version) { FactoryGirl.create(:card_version, card: card, version: 1) }
-  let!(:new_version) { FactoryGirl.create(:card_version, card: card, version: 2) }
 
   context 'validation' do
     it 'is valid' do
@@ -53,39 +51,71 @@ describe Card do
     end
   end
 
-  describe '#card_version' do
-    it 'returns the card version with the specified number' do
-      expect(card.card_version(1).version).to eq(1)
+  context "a card with multiple versions" do
+    let(:card) do
+      FactoryGirl.create(
+        :card,
+        latest_version: 2
+      )
+    end
+    let!(:old_version) { FactoryGirl.create(:card_version, card: card, version: 1) }
+    let!(:new_version) { FactoryGirl.create(:card_version, card: card, version: 2) }
+    describe '#card_version' do
+      it 'returns the card version with the specified number' do
+        expect(card.card_version(1).version).to eq(1)
+      end
+
+      it 'returns the card version for the latest version' do
+        expect(card.card_version(:latest).version).to eq(2)
+      end
     end
 
-    it 'returns the card version for the latest version' do
-      expect(card.card_version(:latest).version).to eq(2)
+    describe '#content_for_version' do
+      it 'returns all card content for a given version' do
+        old_version.content_root.children << FactoryGirl.create(:card_content)
+        expect(card.content_for_version(1).count).to eq(2)
+      end
+
+      it 'returns all card content for the latest version' do
+        new_version.content_root.children << FactoryGirl.create(:card_content)
+        expect(card.content_for_version(:latest).count).to eq(2)
+      end
+    end
+
+    describe '#content_for_version_without_root' do
+      it 'returns all card content for a given version minus the root' do
+        old_version.content_root.children << FactoryGirl.create(:card_content)
+        expect(card.content_for_version_without_root(1).count).to eq(1)
+        expect(card.content_for_version_without_root(1).first.parent_id).to be_present
+      end
+
+      it 'returns all card content for the latest version minus the root' do
+        new_version.content_root.children << FactoryGirl.create(:card_content)
+        expect(card.content_for_version_without_root(:latest).count).to eq(1)
+        expect(card.content_for_version_without_root(:latest).first.parent_id).to be_present
+      end
     end
   end
 
-  describe '#content_for_version' do
-    it 'returns all card content for a given version' do
-      old_version.content_root.children << FactoryGirl.create(:card_content)
-      expect(card.content_for_version(1).count).to eq(2)
+  describe "#state" do
+    context "the card's latest version is not published" do
+      context "the card has no other versions" do
+        it "is draft"
+      end
+
+      context "the card has previous versions that are published" do
+        it "is published_with_changes"
+      end
     end
 
-    it 'returns all card content for the latest version' do
-      new_version.content_root.children << FactoryGirl.create(:card_content)
-      expect(card.content_for_version(:latest).count).to eq(2)
-    end
-  end
+    context "the card's latest version is published" do
+      context "the card has a journal id" do
+        it "is published"
+      end
 
-  describe '#content_for_version_without_root' do
-    it 'returns all card content for a given version minus the root' do
-      old_version.content_root.children << FactoryGirl.create(:card_content)
-      expect(card.content_for_version_without_root(1).count).to eq(1)
-      expect(card.content_for_version_without_root(1).first.parent_id).to be_present
-    end
-
-    it 'returns all card content for the latest version minus the root' do
-      new_version.content_root.children << FactoryGirl.create(:card_content)
-      expect(card.content_for_version_without_root(:latest).count).to eq(1)
-      expect(card.content_for_version_without_root(:latest).first.parent_id).to be_present
+      context "the card does not have a journal id" do
+        it "is locked"
+      end
     end
   end
 end

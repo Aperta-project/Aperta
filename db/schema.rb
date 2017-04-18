@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412153608) do
+ActiveRecord::Schema.define(version: 20170418204409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,9 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
     t.string   "label"
+    t.string   "default_answer_value"
+    t.boolean  "allow_multiple_uploads"
+    t.boolean  "allow_file_captions"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -236,9 +239,11 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
+    t.boolean  "published",               default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
+  add_index "card_versions", ["published"], name: "index_card_versions_on_published", using: :btree
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
   create_table "cards", force: :cascade do |t|

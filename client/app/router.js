@@ -21,6 +21,8 @@ Router.map(function() {
 
     this.route('versions', { path: '/versions' });
 
+    this.route('correspondence', { path: '/correspondence' });
+
     this.route('workflow', function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });

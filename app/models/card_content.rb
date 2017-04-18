@@ -46,6 +46,7 @@ class CardContent < ActiveRecord::Base
       'display-with-value': [nil],
       'field-set': [nil],
       'short-input': ['text'],
+      'check-box': ['boolean'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
@@ -106,6 +107,7 @@ class CardContent < ActiveRecord::Base
     setup_builder(options).tag!('content', attrs) do |xml|
       safe_dump_text(xml, 'placeholder', placeholder) if placeholder.present?
       safe_dump_text(xml, 'text', text) if text.present?
+      safe_dump_text(xml, 'label', label) if label.present?
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])

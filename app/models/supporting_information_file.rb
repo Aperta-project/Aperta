@@ -12,7 +12,7 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  validates :category, :title, presence: true, if: :task_completed?
+  validates :category, presence: true, if: :task_completed?
 
   validates :status, acceptance: { accept: STATUS_DONE }, if: :task_completed?
 
@@ -20,7 +20,8 @@ class SupportingInformationFile < Attachment
 
   def alt
     if file.present?
-      filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
+      regex = /#{::File.extname(filename)}$/
+      filename.split('.').first.gsub(regex, '').humanize
     else
       "no attachment"
     end

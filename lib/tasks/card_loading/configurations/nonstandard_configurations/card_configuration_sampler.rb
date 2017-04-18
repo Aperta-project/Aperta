@@ -39,6 +39,17 @@ module CardConfiguration
             content_type: "short-input"
           },
           {
+            text: "This is a check box",
+            label: "Check this box if you agree",
+            value_type: "boolean",
+            content_type: "check-box"
+          },
+          {
+            label: "Check this box if you disagree instead",
+            value_type: "boolean",
+            content_type: "check-box"
+          },
+          {
             text: "This is a radio button question.  <b>Please</b> pick a choice",
             value_type: 'text',
             content_type: "radio",

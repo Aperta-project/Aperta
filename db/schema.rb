@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414223303) do
+ActiveRecord::Schema.define(version: 20170414230216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -424,7 +424,6 @@ ActiveRecord::Schema.define(version: 20170414223303) do
     t.integer "journal_id"
     t.string  "title"
     t.string  "kind"
-    t.json    "required_permissions"
     t.boolean "system_generated"
   end
 
@@ -577,16 +576,6 @@ ActiveRecord::Schema.define(version: 20170414223303) do
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
   add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
-
-  create_table "permission_requirements", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "required_on_id"
-    t.string   "required_on_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "permission_requirements", ["permission_id", "required_on_id", "required_on_type"], name: "permission_requirements_uniq_idx", unique: true, using: :btree
 
   create_table "permission_states", force: :cascade do |t|
     t.string   "name",       null: false

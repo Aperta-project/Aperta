@@ -36,12 +36,8 @@ module Authorizations
         project(
           table[:results][:id],
           permission_actions_column
-      ).from( Arel.sql('(' + objects_query.to_sql + ')').as(table[:results].table_name) ).
-        outer_join(table[:permission_requirements]).on(
-          table[:permission_requirements][:required_on_type].eq(klass.name).and(
-            table[:permission_requirements][:required_on_id].eq(table[:results][:id])
-          )
-        )
+        ).from(Arel.sql('(' + objects_query.to_sql + ')')
+                 .as(table[:results].table_name))
     end
 
     def add_permissions_through_roles(query)
@@ -68,10 +64,6 @@ module Authorizations
     def remove_objects_without_matching_required_permissions(query)
       query.where(
         table[:results][:id].not_eq(nil).and(
-          table[:permission_requirements].primary_key.eq(nil).or(
-            table[:permission_requirements][:permission_id].eq(table[:results][:permission_id])
-          )
-        ).and(
           table[:permissions][:applies_to].in(applies_to)
         )
       ).

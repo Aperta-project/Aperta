@@ -24,10 +24,6 @@ module Authorizations
   # The < and > brackets are used above because the table references are
   # dynamic. See the corresponding constructor arguments for more information.
   #
-  # == Note
-  #
-  # This query does not enforce permission requirements. That must be done
-  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
   class ObjectsAuthorizedViaBelongsToQuery
     attr_reader  :assignments_table, :auth_config, :common_query, :target
 

@@ -46,8 +46,6 @@ module Authorizations
     belongs_to :fake_paper, inverse_of: :fake_tasks
     has_one :fake_journal, through: :fake_paper
     has_one :fake_task_thing
-    has_many :permission_requirements, as: :required_on
-    has_many :required_permissions, through: :permission_requirements, source: :permission
     def self.delegate_state_to
       :fake_paper
     end

@@ -113,22 +113,6 @@ describe Task do
     end
   end
 
-  describe '#permission_requirements' do
-    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
-
-    before do
-      FactoryGirl.create(:permission_requirement, required_on: task)
-    end
-
-    context 'on #destroy' do
-      it 'destroy assignments' do
-        expect do
-          task.destroy!
-        end.to change { task.permission_requirements.count }.by(-1)
-      end
-    end
-  end
-
   describe "#invitations" do
     let(:paper) { FactoryGirl.create :paper }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }

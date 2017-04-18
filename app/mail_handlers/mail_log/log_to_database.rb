@@ -13,14 +13,16 @@ module MailLog
         message.delivery_handler = EmailExceptionsHandler.new
         recipients = message.to.join(', ')
         mail_context = message.aperta_mail_context
-
         EmailLog.create!(
           sender: message.from.first,
           recipients: recipients,
           message_id: message.message_id,
           subject: message.subject,
           body: message.body,
-          raw_source: message.without_attachments!.to_s,
+          # we need to do this instead of mail.without_attachments!
+          # because without_attachments! mutates the message
+          # object
+          raw_source: Mail.new(message.encoded).without_attachments!.to_s,
           status: 'pending',
           task: mail_context.try(:task),
           paper: mail_context.try(:paper),

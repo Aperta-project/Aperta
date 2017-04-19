@@ -18053,6 +18053,11 @@
       "from": "ember-wormhole@0.3.4",
       "resolved": "https://registry.npmjs.org/ember-wormhole/-/ember-wormhole-0.3.4.tgz"
     },
+    "ember-click-outside": {
+      "version": "0.1.6",
+      "from": "ember-click-outside@0.1.6",
+      "resolved": "https://registry.npmjs.org/ember-click-outside/-/ember-click-outside-0.1.6.tgz"
+    },
     "express": {
       "version": "4.14.0",
       "from": "express@>=4.8.5 <5.0.0",

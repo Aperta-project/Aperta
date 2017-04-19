@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414230216) do
+ActiveRecord::Schema.define(version: 20170418233607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -843,6 +843,7 @@ ActiveRecord::Schema.define(version: 20170414230216) do
     t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
     t.integer  "card_version_id"
+    t.integer  "card_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -928,4 +929,5 @@ ActiveRecord::Schema.define(version: 20170414230216) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "task_templates", "cards"
+  add_foreign_key "tasks", "cards"
 end

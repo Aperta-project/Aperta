@@ -26,7 +26,7 @@ FactoryGirl.define do
     title "Assign Team"
   end
 
-  factory :custom_card_task do
+  factory :custom_card_task, class: CustomCardTask do
     phase
     paper
     card_version

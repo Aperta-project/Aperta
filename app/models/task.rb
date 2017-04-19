@@ -50,12 +50,24 @@ class Task < ActiveRecord::Base
   belongs_to :phase, inverse_of: :tasks
 
   belongs_to :card_version
+  has_one :card, through: :card_version
 
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
   validates :title, presence: true
   validates :title, length: { maximum: 255 }
+
+  # Although a task belongs_to a card_version and to a card, we denormalize that
+  # card_id here. This is so that we can use `card_id` in a `filter_by` setting
+  # on permissions to allow permissions to apply to a single card.
+  before_validation :set_card_id
+
+  # Lock this so it is only set when the card is initialized.
+  attr_readonly :card_id
+
+  # Validate that the value is consistent
+  validate :card_id_equals_card_version_card_id
 
   class << self
     # Public: Restores the task defaults to all of its instances/models
@@ -261,6 +273,19 @@ class Task < ActiveRecord::Base
   end
 
   private
+
+  def set_card_id
+    return unless new_record?
+    return unless card_version.present? # TODO: Remove after APERTA-9889
+    self[:card_id] = card_version.card_id
+  end
+
+  def card_id_equals_card_version_card_id
+    return unless card_version.present? # TODO: Remove after APERTA-9889
+    unless self[:card_id] == card_version.card_id
+      errors.add(:card_id, 'Must be the same as card_version.card_id')
+    end
+  end
 
   def update_completed_at
     self.completed_at = (Time.zone.now if completed)

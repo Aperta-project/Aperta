@@ -212,4 +212,30 @@ describe Task do
       expect(task.can_change?(double)).to eq(true)
     end
   end
+
+  describe "card_id column" do
+    let(:task) { FactoryGirl.create(:custom_card_task) }
+    let(:card_version) { task.card_version }
+    let(:bad_card_id) { card_version.card_id + 1 }
+
+    it 'is automatically set' do
+      expect(task[:card_id]).to eq(card_version.card_id)
+    end
+
+    it 'cannot be changed' do
+      expect { task.update_attribute(:card_id, bad_card_id) }
+        .to raise_error(ActiveRecord::ActiveRecordError, /marked as readonly/)
+    end
+
+    it 'is validated' do
+      task = FactoryGirl.build(
+        :custom_card_task,
+        card_version: card_version,
+        card_id: bad_card_id
+      )
+      # Override auto-setting the card_id before validation
+      allow(task).to receive(:set_card_id).and_return(true)
+      expect(task).not_to be_valid
+    end
+  end
 end

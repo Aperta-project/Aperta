@@ -22,7 +22,8 @@ class DefaultAuthorCreator
       last_name: creator.last_name,
       email: creator.email,
       paper: paper,
-      user: creator
+      user: creator,
+      card_version: Card.find_by_class_name(Author).latest_card_version
     )
   end
 

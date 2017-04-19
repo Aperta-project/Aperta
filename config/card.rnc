@@ -20,7 +20,7 @@ possible-value = element possible-value {
 radio-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
-                  attribute content-type { "radio" },
+                  attribute content-type { "radio" | "boolean" },
                   element text { text },
                   possible-value+,
                   content*

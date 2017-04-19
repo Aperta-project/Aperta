@@ -30,7 +30,10 @@
         <value>text</value>
       </attribute>
       <attribute name="content-type">
-        <value>radio</value>
+        <choice>
+          <value>radio</value>
+          <value>boolean</value>
+        </choice>
       </attribute>
       <element name="text">
         <text/>

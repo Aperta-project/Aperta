@@ -44,7 +44,8 @@ describe DefaultAuthorCreator do
     end
 
     it 'associates the author with the AuthorsTask on the paper' do
-      authors_task = TahiStandardTasks::AuthorsTask.create(
+      authors_task = FactoryGirl.create(
+        :authors_task,
         title: "Authors",
         paper: paper,
         phase: paper.phases.first

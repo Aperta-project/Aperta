@@ -3,7 +3,7 @@
 class HtmlScrubber < Rails::Html::PermitScrubber
   def initialize
     super
-    self.tags = %w(form i sub sup b a div p h1 h2 h3 h4 h5 h6 ul li oi)
+    self.tags = %w(form i sub sup span b a div p h1 h2 h3 h4 h5 h6 ul li oi)
     self.attributes = %w(href class id)
   end
 

@@ -19,9 +19,16 @@ describe Answer do
 
   context 'html sanitization' do
     let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
-    subject(:answer) { FactoryGirl.create(:answer, card_content) }
+    subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
     it 'scrubs value if value_type is html' do
-      answer.update!("<div>something</div><foo>foo</foo><script>evilThing();</script>")
+      answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")
+      answer.reload
+      expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
+    end
+    it 'leaves certain style attributes that we want to keep' do
+      answer.update!(value: "<span style='font-weight:bold;color: black;'>something</span><foo>foo</foo><script>evilThing();</script>")
+      answer.reload
+      expect(answer.string_value).to eq "<span style='font-weight:bold;'>something</span>fooevilThing();"
     end
   end
 

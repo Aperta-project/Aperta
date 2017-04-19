@@ -28,7 +28,7 @@ module TahiStandardTasks
         if params[:id]
           ReviewerRecommendation.find(params[:id])
         else
-          ReviewerRecommendation.new(reviewer_recommendation_params)
+          ReviewerRecommendation.new(new_reviewer_recommendation_params)
         end
       end
     end
@@ -46,6 +46,11 @@ module TahiStandardTasks
         :ringgold_id,
         :card_version_id
       )
+    end
+
+    def new_reviewer_recommendation_params
+      card_version = Card.find_by_class_name(TahiStandardTasks::ReviewerRecommendation).latest_card_version
+      reviewer_recommendation_params.merge(card_version: card_version)
     end
   end
 end

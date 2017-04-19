@@ -17,7 +17,7 @@ class CardAssociator
   def process
     answerables.find_each do |answerable|
       card = find_card(answerable)
-      raise "Could not find card for #{card_name}" if card.nil?
+      raise "Could not find card for #{model_klass}" if card.nil?
       answerable.update_attribute(:card_version_id, card.latest_card_version.id)
     end
   end

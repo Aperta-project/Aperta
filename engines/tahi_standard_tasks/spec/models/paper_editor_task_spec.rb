@@ -4,19 +4,19 @@ describe TahiStandardTasks::PaperEditorTask do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
+  let(:task) do
+    FactoryGirl.create(
+      :paper_editor_task,
+      paper: paper,
+      phase: paper.phases.first,
+    )
+  end
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
   end
 
   describe "#invitation_invited" do
-    let!(:task) do
-      described_class.create!(
-        paper: paper,
-        phase: paper.phases.first,
-        title: "Invite Editor"
-      )
-    end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
     it_behaves_like 'a task that sends out invitations',
@@ -32,14 +32,6 @@ describe TahiStandardTasks::PaperEditorTask do
   describe "#invitation_accepted" do
     before do
       Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE, journal: journal)
-    end
-
-    let!(:task) do
-      described_class.create!(
-        paper: paper,
-        phase: paper.phases.first,
-        title: "Invite Editor"
-      )
     end
 
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
@@ -58,7 +50,6 @@ describe TahiStandardTasks::PaperEditorTask do
 
   describe "PaperEditorTask.task_added_to_paper" do
     it "creates a queue for the task" do
-      task = FactoryGirl.create(:paper_editor_task)
       task.task_added_to_paper(task)
       expect(task.invitation_queue).to be_present
     end
@@ -71,13 +62,6 @@ describe TahiStandardTasks::PaperEditorTask do
     end
 
     subject(:invitation_template) { task.invitation_template }
-    let!(:task) do
-      described_class.create!(
-        paper: paper,
-        phase: paper.phases.first,
-        title: 'Invite Editor'
-      )
-    end
 
     it 'has a salutation' do
       expect(invitation_template.salutation).to eq 'Dear Dr. [EDITOR NAME],'

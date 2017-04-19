@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329140911) do
+ActiveRecord::Schema.define(version: 20170418181223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -822,6 +822,19 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "updated_at"
     t.string   "ringgold_id"
     t.integer  "card_version_id"
+  end
+
+  create_table "tahi_standard_tasks_similarity_checks", force: :cascade do |t|
+    t.integer  "ithenticate_id"
+    t.integer  "paper_id"
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.integer  "match_percent"
+    t.string   "state"
+    t.string   "report_link"
+    t.string   "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "task_templates", force: :cascade do |t|

@@ -18,8 +18,8 @@ end
 class XMLRPC::Client
   def call2(method, *args)
     request = create().methodCall(method, *args)
-    puts green(">> REQUEST")
-    puts ::Nokogiri::XML(request).to_xml
+    # puts green(">> REQUEST")
+    # puts ::Nokogiri::XML(request).to_xml
     data = do_rpc(request, false)
     parser().parseMethodResponse(data)
   end
@@ -78,12 +78,17 @@ class IthenticateApi
     call(method: 'document.get', id: id)
   end
 
+  def repl
+    puts 'REPL!'
+    binding.pry
+  end
+
   private
 
   def unauthenticated_call(method, **args)
     param = @server.call(method, **args)
-    puts green("<< RESPONSE")
-    puts param
+    # puts green("<< RESPONSE")
+    # puts param
     param
   end
 
@@ -93,8 +98,9 @@ class IthenticateApi
 end
 
 api = IthenticateApi.new(api_opts)
-api.login
-api.get_document(id: 28637223)
+# api.login
+# api.get_document(id: 28637223)
+api.repl
 
 __END__
 api.add_document(

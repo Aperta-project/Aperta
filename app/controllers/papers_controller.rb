@@ -151,6 +151,10 @@ class PapersController < ApplicationController
     render json: paper, status: :ok
   end
 
+  def similarity_check
+    render json: { boop: 'true' }
+  end
+
   private
 
   def render_invalid_transition_error(e)

@@ -1,5 +1,8 @@
+import DS from 'ember-data';
 import Task from 'tahi/models/task';
 
-export default Task.extend({
-  qualifiedType: 'TahiStandardTasks::SimilarityCheckTask'
+var SimilarityCheckTask = Task.extend({
+  similarityChecks: DS.hasMany('similarity-check')
 });
+
+export default SimilarityCheckTask;

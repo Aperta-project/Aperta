@@ -77,6 +77,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     Warden.test_mode!
+    Rake::Task['cards:load'].invoke
   end
 
   config.before(:context) do

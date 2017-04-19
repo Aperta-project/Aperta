@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412153608) do
+ActiveRecord::Schema.define(version: 20170413084408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -346,6 +346,7 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.integer  "paper_id"
     t.integer  "journal_id"
     t.jsonb    "additional_context"
+    t.text     "body"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

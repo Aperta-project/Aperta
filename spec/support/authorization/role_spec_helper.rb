@@ -18,10 +18,11 @@ class RoleSpecHelper
     self
   end
 
-  def has_permission(action:, applies_to:, states: ['*'])
+  def has_permission(action:, applies_to:, states: ['*'], **kwargs)
     permissions = Permission.includes(:states).where(
       action: action,
-      applies_to: applies_to
+      applies_to: applies_to,
+      **kwargs
     ).select do |permission|
       permission.states.map(&:name).map(&:to_s).sort == states.map(&:to_s).sort
     end

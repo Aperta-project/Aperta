@@ -3,8 +3,8 @@ class PermissionSpecHelper
     new(label, &blk).permissions
   end
 
-  def self.create_permission(label, action:, applies_to:, states:)
-    new(label).permission(action: action, applies_to: applies_to, states: states)
+  def self.create_permission(label, action:, applies_to:, states:, **kwargs)
+    new(label).permission(action: action, applies_to: applies_to, states: states, **kwargs)
   end
 
   attr_reader :permissions
@@ -16,9 +16,9 @@ class PermissionSpecHelper
     self
   end
 
-  def permission(action:, applies_to:, states: ['*'])
+  def permission(action:, applies_to:, states: ['*'], **kwargs)
     states = states.map { |state_name| PermissionState.where(name: state_name).first_or_create! }
-    perm = Permission.ensure_exists(action, applies_to: applies_to, states: states)
+    perm = Permission.ensure_exists(action, applies_to: applies_to, states: states, **kwargs)
     @permissions.push perm
     perm
   end

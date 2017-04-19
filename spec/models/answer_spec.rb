@@ -26,9 +26,9 @@ describe Answer do
       expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
     end
     it 'leaves certain style attributes that we want to keep' do
-      answer.update!(value: "<span style='font-weight:bold;color: black;'>something</span><foo>foo</foo><script>evilThing();</script>")
+      answer.update!(value: "<span>something</span><foo>foo</foo><script>evilThing();</script>")
       answer.reload
-      expect(answer.string_value).to eq "<span style='font-weight:bold;'>something</span>fooevilThing();"
+      expect(answer.string_value).to eq "<span>something</span>fooevilThing();"
     end
   end
 

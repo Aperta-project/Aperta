@@ -17,7 +17,6 @@ namespace :data do
         set.push([['invitation'], ['body', 'decline_reason', 'reviewer_suggestions']])
         set.push([['paper'], ['title', 'abstract']])
         set.push([['related-article'], ['linked_title']])
-        set.push([['versioned-text'], ['text', 'original_text']])
 
         set.each do |m|
           SnapshotMigratorIterator.run!(m)

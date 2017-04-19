@@ -7,14 +7,11 @@ class CreateSimilarityChecks < ActiveRecord::Migration
   def change
     create_table :tahi_standard_tasks_similarity_checks do |t|
       t.integer :ithenticate_id
-      t.integer :paper_id
-      t.integer :task_id
-      t.integer :user_id
       t.integer :match_percent
-      t.string :state
+      t.references :versioned_text, foreign_key: true, null: false
       t.string :report_link
-      t.string :error_message
-      t.timestamps
+      t.string :state, null: false
+      t.timestamps null: false
     end
   end
 end

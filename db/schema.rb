@@ -826,15 +826,12 @@ ActiveRecord::Schema.define(version: 20170418181223) do
 
   create_table "tahi_standard_tasks_similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_id"
-    t.integer  "paper_id"
-    t.integer  "task_id"
-    t.integer  "user_id"
     t.integer  "match_percent"
-    t.string   "state"
+    t.integer  "versioned_text_id", null: false
     t.string   "report_link"
-    t.string   "error_message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "state",             null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -946,5 +943,6 @@ ActiveRecord::Schema.define(version: 20170418181223) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "tahi_standard_tasks_similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

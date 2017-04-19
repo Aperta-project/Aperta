@@ -51,6 +51,10 @@ class Card < ActiveRecord::Base
     card_versions.find_by!(version: to_find)
   end
 
+  def previous_versions
+    card_versions.where.not(version: latest_version)
+  end
+
   # The 'state' of the card reflects the state of its versions. CardVersion has
   # a 'published' boolean flag that all of this derives from.
   # * 'draft': the latest version is a draft and there are no published
@@ -65,6 +69,17 @@ class Card < ActiveRecord::Base
   # not intended to be altered by end users. They show up in the card catalogue
   # but they won't open in the editor. **Locked cards do not have a journal_id**
   def state
+    if latest_card_version.published?
+      if journal_id
+        "published"
+      else
+        "locked"
+      end
+    elsif previous_versions.exists?
+      "published_with_changes"
+    else
+      "draft"
+    end
   end
 
   def self.create_new!(attrs)

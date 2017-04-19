@@ -100,21 +100,59 @@ describe Card do
   describe "#state" do
     context "the card's latest version is not published" do
       context "the card has no other versions" do
-        it "is draft"
+        let(:card) do
+          FactoryGirl.create(
+            :card,
+            latest_version: 1
+          )
+        end
+        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: false) }
+        it "is draft" do
+          expect(card.state).to eq("draft")
+        end
       end
 
-      context "the card has previous versions that are published" do
-        it "is published_with_changes"
+      context "the card has previous versions" do
+        let(:card) do
+          FactoryGirl.create(
+            :card,
+            latest_version: 2
+          )
+        end
+        let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: true) }
+        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published: false) }
+        it "is published_with_changes" do
+          expect(card.state).to eq("published_with_changes")
+        end
       end
     end
 
     context "the card's latest version is published" do
-      context "the card has a journal id" do
-        it "is published"
+      let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: true) }
+      let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published: true) }
+      context "the card has a journal" do
+        let(:card) do
+          FactoryGirl.create(
+            :card,
+            latest_version: 2
+          )
+        end
+        it "is published" do
+          expect(card.state).to eq("published")
+        end
       end
 
       context "the card does not have a journal id" do
-        it "is locked"
+        let(:card) do
+          FactoryGirl.create(
+            :card,
+            latest_version: 2,
+            journal: nil
+          )
+        end
+        it "is locked" do
+          expect(card.state).to eq("locked")
+        end
       end
     end
   end

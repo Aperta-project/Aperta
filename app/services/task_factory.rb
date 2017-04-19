@@ -1,3 +1,5 @@
+# TaskFactory is the sole class responsible for actually adding new Task
+# instances to a paper
 class TaskFactory
   attr_reader :task, :task_klass, :creator, :notify
 
@@ -13,6 +15,10 @@ class TaskFactory
 
     @task_klass = task_klass
     options = default_options.merge(options)
+    unless options[:card_version].present? || options["card_version"].present?
+      options[:card_version] = Card.find_by(name: task_klass.name)
+                                 .try(:card_version, :latest)
+    end
     @task = task_klass.new(options)
     set_required_permissions
   end
@@ -26,7 +32,7 @@ class TaskFactory
 
   def default_options
     {
-      title: task_klass::DEFAULT_TITLE,
+      title: task_klass::DEFAULT_TITLE
     }
   end
 

@@ -35,6 +35,9 @@
           <value>boolean</value>
         </choice>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -54,6 +57,14 @@
       <attribute name="content-type">
         <value>check-box</value>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
@@ -89,6 +100,9 @@
       <attribute name="content-type">
         <value>dropdown</value>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">
@@ -121,6 +135,9 @@
           <value>paragraph-input</value>
         </choice>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">

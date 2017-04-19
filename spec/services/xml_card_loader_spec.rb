@@ -57,15 +57,19 @@ describe XmlCardLoader do
   context 'with radio content' do
     let(:content1) do
       <<-XML
-        <content ident='foo' value-type='text' content-type='radio'>
+        <content ident='foo' value-type='text' content-type='radio' default-answer-value="1">
           <text>Question!</text>
-          <possible-value label=\"one\" value=\"1\"/>
+          <possible-value label="one" value="1"/>
         </content>
       XML
     end
 
     it 'parses possible values' do
       expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
+    end
+
+    it 'sets the default answer value if given' do
+      expect(root.default_answer_value).to eq("1")
     end
   end
 
@@ -114,7 +118,7 @@ describe XmlCardLoader do
     let(:placeholder) { Faker::Lorem.sentence }
     let(:content1) do
       <<-XML
-        <content content-type='short-input' value-type='text'>
+        <content content-type='short-input' value-type='text' default-answer-value="foo">
           <placeholder>#{placeholder}</placeholder>
           <text>#{text}</text>
         </content>
@@ -127,6 +131,10 @@ describe XmlCardLoader do
 
     it 'sets the placeholder to the value of the element placeholder' do
       expect(root.placeholder).to eq(placeholder)
+    end
+
+    it 'sets the default answer value if given' do
+      expect(root.default_answer_value).to eq("foo")
     end
   end
 

@@ -54,6 +54,7 @@ class Task < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
+
   belongs_to :card_version
 
   acts_as_list scope: :phase
@@ -146,8 +147,11 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def task_added_to_paper(paper)
-    # no-op to be overriden and used in the paper factory
+  # called in the paper factory both as part of paper creation and when an
+  # individual task is added to the workflow.  Remember to call super when
+  # subclassing
+  def task_added_to_paper(_paper)
+    card_version.try(:create_default_answers, self)
   end
 
   def journal_task_type

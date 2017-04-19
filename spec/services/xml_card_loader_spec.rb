@@ -73,6 +73,21 @@ describe XmlCardLoader do
     end
   end
 
+  context 'with dropdown content' do
+    let(:content1) do
+      <<-XML
+        <content ident='foo' value-type='text' content-type='dropdown'>
+          <text>Question!</text>
+          <possible-value label="one" value="1"/>
+        </content>
+      XML
+    end
+
+    it 'parses possible values' do
+      expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
+    end
+  end
+
   context 'with a text element' do
     let(:text) { 'Foo' }
     let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }

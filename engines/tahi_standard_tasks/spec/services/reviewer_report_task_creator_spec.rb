@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ReviewerReportTaskCreator do
+describe ReviewerReportTaskCreator, load_cards: true do
   let!(:journal) do
     FactoryGirl.create(
       :journal,

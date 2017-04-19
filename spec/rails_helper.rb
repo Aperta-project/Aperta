@@ -84,6 +84,11 @@ RSpec.configure do |config|
     DatabaseCleaner[:active_record].strategy = :transaction
   end
 
+  config.before(:example, load_cards: true) do
+    Rake::Task['cards:load'].reenable
+    Rake::Task['cards:load'].invoke
+  end
+
   config.before(:context, js: true) do
     # :truncation is the strategy we need to use for capybara tests, but do not
     # truncate task_types, cards, and card_contents, we want to keep these tables

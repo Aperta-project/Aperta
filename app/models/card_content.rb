@@ -9,13 +9,13 @@ class CardContent < ActiveRecord::Base
   acts_as_nested_set
   acts_as_paranoid
 
-  belongs_to :card_version
+  belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
 
   validates :card_version, presence: true
   validates :parent_id,
             uniqueness: {
-              scope: :card_version,
+              scope: [:card_version, :deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -24,6 +24,7 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
+              scope: :deleted_at,
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }

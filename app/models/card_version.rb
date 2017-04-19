@@ -6,7 +6,7 @@ class CardVersion < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :card
-  has_many :card_contents, dependent: :destroy
+  has_many :card_contents, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true

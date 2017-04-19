@@ -109,6 +109,10 @@ class Card < ActiveRecord::Base
   end
 
   def xml=(xml)
-    XmlCardLoader.version_from_xml_string(xml, self)
+    if latest_card_version.published?
+      XmlCardLoader.new_version_from_xml_string(xml, self)
+    else
+      XmlCardLoader.replace_draft_from_xml_string(xml, self)
+    end
   end
 end

@@ -155,5 +155,32 @@ describe Card do
         end
       end
     end
+
+    # For now the real meat of the tests are with the XmlCardLoader
+    describe "#xml=" do
+      let(:card) do
+        FactoryGirl.create(
+          :card,
+          :versioned
+        )
+      end
+      context "the latest version is published" do
+        it "has the XmlCardLoader make a new draft version" do
+          card.latest_card_version.update(published: true)
+          allow(XmlCardLoader).to receive(:new_version_from_xml_string)
+          expect(XmlCardLoader).to receive(:new_version_from_xml_string).with("foo", card)
+          card.xml = "foo"
+        end
+      end
+
+      context "the latest version is a draft" do
+        it "has the XmlCardLoader replace the current draft" do
+          card.latest_card_version.update(published: false)
+          allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
+          expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
+          card.xml = "foo"
+        end
+      end
+    end
   end
 end

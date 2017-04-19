@@ -1,9 +1,6 @@
 require 'rails_helper'
 
-describe ApexPackager do
-  before do
-    CardLoader.load('TahiStandardTasks::FigureTask')
-  end
+describe ApexPackager, load_cards: true do
 
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let!(:manuscript_file) do

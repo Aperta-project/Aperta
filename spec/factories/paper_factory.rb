@@ -319,6 +319,7 @@ FactoryGirl.define do
         evaluator.task_params[:title] ||= "Ad Hoc"
         evaluator.task_params[:type] ||= "Task"
         evaluator.task_params[:paper] ||= paper
+        evaluator.task_params[:card_version] ||= FactoryGirl.create(:card_version)
 
         phase.tasks.create(evaluator.task_params)
         paper.reload

@@ -14,24 +14,14 @@ module Answerable
     belongs_to :card_version
 
     has_many :answers, as: :owner, dependent: :destroy
+    validates :card_version_id, presence: true
 
     def owner_type_for_answer
       self.class.name
     end
 
-    # The card method lets us account for both the old and new worlds.
-    # If a task belongs to a new, user-generated card then it will have
-    # a CardVersion, and we can get the card from there.  If it's an old
-    # Task (say, the TahiStandardTasks::ReviewerReportTask) that is still
-    # rendering hardcoded content, the task won't have a CardVersion, and
-    # it should just look up the Card we've generated using the 'card_load:load'
-    # rake task
     def card
-      if card_version_id
-        card_version.card
-      else
-        Card.find_by(name: self.class.name)
-      end
+      card_version.card
     end
 
     def answer_for(ident)

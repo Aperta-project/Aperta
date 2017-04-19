@@ -2,7 +2,7 @@
 # card content for the latest version of the given card is serialized down as a
 # single nested structure
 class CardSerializer < ActiveModel::Serializer
-  attributes :id, :name, :journal_id, :xml
+  attributes :id, :name, :journal_id, :xml, :state
   has_one :content, embed: :id, include: true, root: :card_contents
 
   def content

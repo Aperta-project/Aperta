@@ -28,8 +28,8 @@ class SnapshotMigrator
   def source_exists?(snapshot)
     index = find_index(snapshot, 'id')
     id = snapshot.contents['children'][index]['value']
-    arr ||= @source_type.split('-')
-    klass ||= arr.map(&:capitalize).join.constantize
+    arr = @source_type.split('-')
+    klass = arr.map(&:capitalize).join.constantize
     klass.exists?(id)
   end
 

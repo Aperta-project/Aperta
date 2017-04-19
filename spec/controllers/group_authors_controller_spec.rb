@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GroupAuthorsController do
+describe GroupAuthorsController, load_cards: true do
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }

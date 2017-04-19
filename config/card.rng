@@ -32,6 +32,9 @@
       <attribute name="content-type">
         <value>radio</value>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -51,6 +54,14 @@
       <attribute name="content-type">
         <value>check-box</value>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
@@ -85,6 +96,9 @@
           <value>paragraph-input</value>
         </choice>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">

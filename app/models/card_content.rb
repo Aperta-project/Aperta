@@ -29,6 +29,8 @@ class CardContent < ActiveRecord::Base
             if: -> { ident.present? }
 
   validate :content_value_type_combination
+  validate :value_type_for_default_answer_value
+  validate :default_answer_present_in_possible_values
 
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
 
@@ -61,6 +63,27 @@ class CardContent < ActiveRecord::Base
       errors.add(
         :content_type,
         "'#{content_type}' not valid with value_type '#{value_type}'"
+      )
+    end
+  end
+
+  def value_type_for_default_answer_value
+    if value_type.blank? && default_answer_value.present?
+      errors.add(
+        :default_answer_value,
+        "value type must be present in order to set a default answer value"
+      )
+    end
+  end
+
+  def default_answer_present_in_possible_values
+    return if default_answer_value.blank? || possible_values.blank?
+
+    vals = possible_values.map { |v| v["value"] }
+    unless vals.include? default_answer_value
+      errors.add(
+        :default_answer_value,
+        "must be one of the following values: #{vals}"
       )
     end
   end
@@ -98,16 +121,24 @@ class CardContent < ActiveRecord::Base
     end
   end
 
-  def to_xml(options = {})
-    attrs = {
+  def render_tag(xml, attr_name, attr)
+    safe_dump_text(xml, attr_name, attr) if attr.present?
+  end
+
+  def content_attrs
+    {
       'content-type' => content_type,
       'value-type' => value_type,
-      'visible-with-parent-answer' => visible_with_parent_answer
+      'visible-with-parent-answer' => visible_with_parent_answer,
+      'default-answer-value' => default_answer_value
     }.compact
-    setup_builder(options).tag!('content', attrs) do |xml|
-      safe_dump_text(xml, 'placeholder', placeholder) if placeholder.present?
-      safe_dump_text(xml, 'text', text) if text.present?
-      safe_dump_text(xml, 'label', label) if label.present?
+  end
+
+  def to_xml(options = {})
+    setup_builder(options).tag!('content', content_attrs) do |xml|
+      render_tag(xml, 'placeholder', placeholder)
+      render_tag(xml, 'text', text)
+      render_tag(xml, 'label', label)
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])

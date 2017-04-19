@@ -38,7 +38,7 @@ check-box-input = element content {
 # for now duplicating radio-input for dropdown
 dropdown-input = element content {
                   attribute ident { text }?,
-                  attribute value-type { "text" },
+                  attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
                   (element placeholder { text }? &
                    element text { text }),

@@ -78,7 +78,10 @@
         <attribute name="ident"/>
       </optional>
       <attribute name="value-type">
-        <value>text</value>
+        <choice>
+          <value>text</value>
+          <value>boolean</value>
+        </choice>
       </attribute>
       <attribute name="content-type">
         <value>dropdown</value>

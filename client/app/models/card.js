@@ -8,6 +8,7 @@ export default DS.Model.extend({
 
   name: DS.attr('string'),
   state: DS.attr('string'),
+  addable: DS.attr('boolean'),
   xml: DS.attr('string'),
 
   stateIcon: Ember.computed('state', function() {

@@ -24,6 +24,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   cardSort: ['name:asc'],
   sortedCards: computed.sort('cards', 'cardSort'),
 
+  addableCards: computed.filterBy('sortedCards', 'addable', true),
+
   // pre-card-config
   taskTypeSort: ['title:asc'],
   sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
@@ -35,7 +37,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     this.get('onSave')(
       this.get('phase'),
       this.get('selectedCards')
-    )
+    );
     this.get('close')();
   },
 

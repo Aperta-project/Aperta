@@ -86,6 +86,10 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def addable?
+    state == "published" || state == "publishedWithChanges"
+  end
+
   def publish!
     if latest_card_version.published?
       raise ArgumentError, "Latest card version is already published"

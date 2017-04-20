@@ -7,6 +7,10 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
+  xmlDirty: Ember.computed('card.xml', function() {
+    return this.get('card').changedAttributes()['xml'];
+  }),
+
   errors: null,
 
   classNames: ['card-editor-editor'],

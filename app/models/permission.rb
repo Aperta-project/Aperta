@@ -5,7 +5,13 @@ class Permission < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :states, class_name: 'PermissionState'
 
-  def self.ensure_exists(action, applies_to:, role: nil, states: [Permission::WILDCARD])
+  def self.ensure_exists(
+        action,
+        applies_to:,
+        role: nil,
+        states: [Permission::WILDCARD],
+        **kwargs
+  )
     permission_states = states.map do |state|
       if state.is_a?(PermissionState)
         state
@@ -17,7 +23,8 @@ class Permission < ActiveRecord::Base
     perm = Permission.includes(:states).where(
       action: action,
       applies_to: applies_to.to_s,
-      permission_states: { id: permission_states_ids }
+      permission_states: { id: permission_states_ids },
+      **kwargs
     ).first_or_create!
     perm.states = permission_states
     role.permissions = (role.permissions | [perm]) unless role.nil?

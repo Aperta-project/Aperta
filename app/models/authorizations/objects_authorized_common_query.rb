@@ -127,6 +127,19 @@ module Authorizations
       query
     end
 
+    def add_filter_by_check(query)
+      Authorizations.configuration.filters
+        .select { |f| f.klass == @klass }
+        .each do |filter|
+        filter.block.call(
+          query,
+          table[:permissions][filter.column_name],
+          target_table
+        )
+      end
+      query
+    end
+
     private
 
     # If the @klass uses STI then we need to add conditions which enforces

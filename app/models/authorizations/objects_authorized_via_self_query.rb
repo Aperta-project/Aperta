@@ -58,6 +58,7 @@ module Authorizations
       )
 
       common_query.add_permission_state_check(query)
+      common_query.add_filter_by_check(query)
     end
 
     def to_sql

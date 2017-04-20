@@ -1,19 +1,21 @@
 FactoryGirl.define do
-  factory :task do
 
-    # Default associations
+  # This trait is building a task but using FactoryGirl stubs for associations
+  # it normally depends on. This reduces the time it takes to construct the
+  # task.
+  #
+  # It is placed outside of a particular factory so that it can be reused
+  # from any factories defined within the engines.
+  trait :with_stubbed_associations do
+    paper { FactoryGirl.build_stubbed(:paper) }
+    phase { FactoryGirl.build_stubbed(:phase) }
+    card_version { FactoryGirl.build_stubbed(:card_version) }
+  end
+
+  factory :task do
     paper
     phase
     card_version
-
-    # This trait is building a task but using FactoryGirl stubs for associations
-    # it normally depends on. This reduces the time it takes to construct the
-    # task.
-    trait :with_stubbed_associations do
-      paper { FactoryGirl.build_stubbed(:paper) }
-      phase { FactoryGirl.build_stubbed(:phase) }
-      card_version { FactoryGirl.build_stubbed(:card_version) }
-    end
 
     trait :with_card do
       after(:create) do |task|

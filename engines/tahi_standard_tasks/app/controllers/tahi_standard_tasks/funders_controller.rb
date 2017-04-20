@@ -7,7 +7,7 @@ module TahiStandardTasks
     def create
       task = Task.find(funder_params[:task_id])
       requires_user_can :edit, task
-      funder = task.funders.new(funder_params)
+      funder = task.funders.new(new_funder_params)
       funder.save
       respond_with funder
     end
@@ -36,8 +36,13 @@ module TahiStandardTasks
                 :grant_number,
                 :website,
                 :task_id,
-                :card_version_id,
                 author_ids: [])
+    end
+
+    def new_funder_params
+      funder_params.merge(
+        card_version: Card.find_by_class_name(TahiStandardTasks::Funder).latest_card_version
+      )
     end
   end
 end

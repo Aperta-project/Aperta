@@ -21,18 +21,18 @@ class PaperFactory
   def create
     Paper.transaction do
       return unless paper.valid?
-        if template
-          paper.uses_research_article_reviewer_report =
-            template.uses_research_article_reviewer_report
-          paper.save!
-          # TODO: This requires roles & permissions tables to exist. It should
-          # be possible to create a paper for testing without them.
-          add_creator_assignment!
-          add_phases_and_tasks
-          add_creator_as_author!
-        else
-          paper.errors.add(:paper_type, 'is not valid')
-        end
+      if template
+        paper.uses_research_article_reviewer_report =
+          template.uses_research_article_reviewer_report
+        paper.save!
+        # TODO: This requires roles & permissions tables to exist. It should
+        # be possible to create a paper for testing without them.
+        add_creator_assignment!
+        add_phases_and_tasks
+        add_creator_as_author!
+      else
+        paper.errors.add(:paper_type, 'is not valid')
+      end
     end
   end
 
@@ -57,7 +57,6 @@ class PaperFactory
   end
 
   def create_task_from_template(task_template, phase)
-    journal_task_type = task_template.journal_task_type
     task_class = Task.safe_constantize(task_template.journal_task_type.kind)
     task = TaskFactory.create(
       task_class,

@@ -5,6 +5,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## As we have other tools to track our changes in each release, we have decided
 ## to stop maintaining this file as of April 10, 2017.
 
+## ## [1.40.2] - {2017-04-20}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Collaborators added to a Paper can now add Authors
+### Security
+
 ## ## [1.40.1] - {2017-04-07}
 ### Added
 ### Changed

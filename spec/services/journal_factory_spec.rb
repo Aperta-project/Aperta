@@ -291,7 +291,8 @@ describe JournalFactory do
           let(:paper_actions) do
             [
               'submit',
-              'view'
+              'view',
+              'edit_authors'
             ]
           end
 

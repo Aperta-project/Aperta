@@ -4,11 +4,12 @@ describe SnapshotMigrator do
   let(:converter) { HtmlSanitizationSnapshotConverter.new }
   let(:title) { '<div>Some title</div><foo>Some foo</foo>' }
   let(:caption) { '<div>Some caption</div><foo>Some foo</foo>' }
+  let(:dummy_question_attachment) { FactoryGirl.create(:question_attachment) }
   let(:contents) do
     { 'name' => 'question-attachment',
       'type' => 'properties',
       'children' =>
-      [{ 'name' => 'id', 'type' => 'integer', 'value' => 26_309 },
+      [{ 'name' => 'id', 'type' => 'integer', 'value' => dummy_question_attachment.id.to_s },
        { 'name' => 'caption', 'type' => 'text', 'value' => caption },
        { 'name' => 'category', 'type' => 'text', 'value' => nil },
        { 'name' => 'file', 'type' => 'text', 'value' => 'PLOS+Biology+Cover+Letter.pdf' },

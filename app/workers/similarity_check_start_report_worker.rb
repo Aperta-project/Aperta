@@ -5,10 +5,24 @@ class SimilarityCheckStartReportWorker
   include Sidekiq::Worker
 
   def perform(similarity_check_id)
-    # download file
-    # base64 encode file
-    # call api
-    # save results of call on similarity check model
+    similarity_check = SimilarityCheck.find(similarity_check_id)
+    file = similarity_check.version.paper.file
+    doc = open(file.url, &:read)
+
+    # TODO: add author name
+    response = ithenticate_api.add_document(
+      content: doc,
+      filename: file[:file],
+      title: similarity_check.version.paper.title
+    )
+
+    if response["api_status"] == 200
+      similarity_check.update!(
+        ithenticate_document_id: response["uploaded"].first["id"]
+      )
+    else
+      raise "ithenticate error"
+    end
   end
 
   def ithenticate_api

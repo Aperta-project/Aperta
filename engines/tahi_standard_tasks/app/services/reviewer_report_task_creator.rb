@@ -59,9 +59,12 @@ class ReviewerReportTaskCreator
 
   def reviewer_report_card_class
     if @paper.uses_research_article_reviewer_report
-      ReviewerReport
+      "ReviewerReport"
     else
-      TahiStandardTasks::FrontMatterReviewerReport
+      # note: this AR model does not yet exist, but
+      # is being done as preparatory / consistency for
+      # card config work
+      "TahiStandardTasks::FrontMatterReviewerReport"
     end
   end
 

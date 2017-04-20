@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ReviewerReportTaskCreator, load_cards: true do
+describe ReviewerReportTaskCreator do
   let!(:journal) do
     FactoryGirl.create(
       :journal,
@@ -28,6 +28,13 @@ describe ReviewerReportTaskCreator, load_cards: true do
       originating_task: originating_task,
       assignee_id: assignee.id
     )
+  end
+
+  before do
+    CardLoader.load("ReviewerReport")
+    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReport")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReportTask")
   end
 
   context "when the paper is configured to use the research reviewer report" do

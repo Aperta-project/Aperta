@@ -15,7 +15,11 @@
     <button class="button button--blue button-primary editor-publish"
             onclick={{perform publishCard}}
             disabled={{or saveCard.isRunning publishCard.isRunning}}>
-      Publish
+      {{#if (eq card.state "draft")}}
+        Publish Card
+      {{else}}
+        Publish Changes
+      {{/if}}
     </button>
   </div>
 </div>

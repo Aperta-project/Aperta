@@ -95,11 +95,20 @@ class Card < ActiveRecord::Base
     reload
   end
 
-  def self.create_new!(attrs)
+  def self.create_draft!(attrs)
+    create_new!(attrs: attrs, published: false)
+  end
+
+  def self.create_published!(attrs)
+    create_new!(attrs: attrs, published: true)
+  end
+
+  def self.create_new!(attrs:, published:)
+    published_date = published ? DateTime.now.utc : nil
     Card.transaction do
       card = Card.new(attrs)
       card.card_versions << CardVersion.new(version: 1,
-                                            published_at: DateTime.now.utc)
+                                            published_at: published_date)
       card.card_versions.first.card_contents << CardContent.new(
         content_type: 'display-children'
       )

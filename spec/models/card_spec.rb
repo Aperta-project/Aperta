@@ -26,14 +26,13 @@ describe Card do
     end
   end
 
-  describe 'create_new!' do
-    let(:new_card) { Card.create_new!(name: 'foo') }
+  describe 'create_published!' do
+    let(:new_card) { Card.create_published!(name: 'foo') }
     it 'creates a new card with the given attributes' do
       expect(new_card.name).to eq('foo')
     end
 
     it 'creates a new published card version' do
-      expect(new_card.latest_card_version).to be_present
       expect(new_card.latest_card_version).to be_published
       expect(new_card.latest_card_version).to eq(new_card).latest_published_card_version
     end

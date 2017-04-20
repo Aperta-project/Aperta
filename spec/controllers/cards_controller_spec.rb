@@ -123,9 +123,10 @@ describe CardsController do
 
         it { is_expected.to responds_with 201 }
 
-        it 'returns the serialized card' do
+        it 'returns the serialized draft card' do
           do_request
           expect(res_body['card']['name']).to eq name
+          expect(res_body['card']['state']).to eq 'draft'
         end
       end
     end

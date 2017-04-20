@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['admin-card-thumbnail']
+  classNames: ['admin-card-thumbnail'],
+  card: null
 });

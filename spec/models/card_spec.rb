@@ -32,8 +32,9 @@ describe Card do
       expect(new_card.name).to eq('foo')
     end
 
-    it 'creates a new card version' do
+    it 'creates a new published card version' do
       expect(new_card.card_version(:latest)).to be_present
+      expect(new_card.card_version(:latest)).to be_published
     end
 
     it 'gives the card version a piece of card content' do
@@ -48,6 +49,33 @@ describe Card do
 
     it 'returns the root card content for the latest' do
       expect(card.content_root_for_version(:latest)).to be_present
+    end
+  end
+
+  describe "#publish!" do
+    let(:card) do
+      FactoryGirl.create(
+        :card,
+        latest_version: 1
+      )
+    end
+    let!(:card_version) do
+      FactoryGirl.create(
+        :card_version,
+        card: card,
+        version: 1,
+        published_at: nil
+      )
+    end
+
+    it "sets the published_at on the latest version if it's unset" do
+      card.publish!
+      expect(card_version.reload).to be_published
+    end
+
+    it "blows up if the latest version is already published" do
+      card_version.update(published_at: DateTime.now.utc)
+      expect { card.publish! }.to raise_exception ArgumentError
     end
   end
 
@@ -106,7 +134,7 @@ describe Card do
             latest_version: 1
           )
         end
-        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: false) }
+        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: nil) }
         it "is draft" do
           expect(card.state).to eq("draft")
         end
@@ -119,17 +147,17 @@ describe Card do
             latest_version: 2
           )
         end
-        let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: true) }
-        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published: false) }
-        it "is published_with_changes" do
-          expect(card.state).to eq("published_with_changes")
+        let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc) }
+        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published_at: nil) }
+        it "is publishedWithChanges" do
+          expect(card.state).to eq("publishedWithChanges")
         end
       end
     end
 
     context "the card's latest version is published" do
-      let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published: true) }
-      let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published: true) }
+      let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc) }
+      let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published_at: DateTime.now.utc) }
       context "the card has a journal" do
         let(:card) do
           FactoryGirl.create(
@@ -166,7 +194,7 @@ describe Card do
       end
       context "the latest version is published" do
         it "has the XmlCardLoader make a new draft version" do
-          card.latest_card_version.update(published: true)
+          card.latest_card_version.update(published_at: DateTime.now.utc)
           allow(XmlCardLoader).to receive(:new_version_from_xml_string)
           expect(XmlCardLoader).to receive(:new_version_from_xml_string).with("foo", card)
           card.xml = "foo"
@@ -175,7 +203,7 @@ describe Card do
 
       context "the latest version is a draft" do
         it "has the XmlCardLoader replace the current draft" do
-          card.latest_card_version.update(published: false)
+          card.latest_card_version.update(published_at: nil)
           allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
           expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
           card.xml = "foo"

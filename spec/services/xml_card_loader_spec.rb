@@ -171,6 +171,10 @@ describe XmlCardLoader do
     end
 
     describe ".new_version_from_xml_string" do
+      it "touches the card's timestamp" do
+        expect { XmlCardLoader.new_version_from_xml_string(xml, card) }.to change { card.updated_at }
+      end
+
       it "makes a new version with content from the xml" do
         new_version = XmlCardLoader.new_version_from_xml_string(xml, card)
 
@@ -196,6 +200,9 @@ describe XmlCardLoader do
     end
 
     describe ".replace_version_from_xml_string" do
+      it "touches the card's timestamp" do
+        expect { XmlCardLoader.replace_draft_from_xml_string(xml, card) }.to change { card.updated_at }
+      end
       it "creates content from the new xml and deletes the old content" do
         old_root = old_version.content_root
         updated_version = XmlCardLoader.replace_draft_from_xml_string(xml, card)

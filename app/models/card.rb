@@ -20,6 +20,10 @@ class Card < ActiveRecord::Base
           ->(card) { where(version: card.latest_version) },
           class_name: 'CardVersion'
 
+  def latest_published_card_version
+    card_versions.where.not(published_at: nil).order(version: 'DESC').first
+  end
+
   # this method is used in the shim layer between nested questions
   # on the front end and card content on the backend.
   # in those cases, we don't need the proper tree of card content,
@@ -76,16 +80,26 @@ class Card < ActiveRecord::Base
         "locked"
       end
     elsif previous_versions.exists?
-      "published_with_changes"
+      "publishedWithChanges"
     else
       "draft"
     end
   end
 
+  def publish!
+    if latest_card_version.published?
+      raise ArgumentError, "Latest card version is already published"
+    end
+    latest_card_version.update!(published_at: DateTime.now.utc)
+
+    reload
+  end
+
   def self.create_new!(attrs)
     Card.transaction do
       card = Card.new(attrs)
-      card.card_versions << CardVersion.new(version: 1)
+      card.card_versions << CardVersion.new(version: 1,
+                                            published_at: DateTime.now.utc)
       card.card_versions.first.card_contents << CardContent.new(
         content_type: 'display-children'
       )

@@ -38,6 +38,13 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  def publish
+    requires_user_can(:edit, card)
+    card.publish!
+
+    render json: card
+  end
+
   def render_xml_syntax_error(ex)
     render status: 422, json: { errors: { xml: ex.message } }
   end

@@ -1,9 +1,21 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
+    <div class="card-editor-save-buttons-state">
+      {{fa-icon card.stateIcon}}
+      <span>
+        {{card.stateName}}
+      </span>
+    </div>
     <button class="button button--blue button-primary editor-save"
             onclick={{perform saveCard}}
-            disabled={{saveCard.isRunning}}>
-      Save and Publish
+            disabled={{or saveCard.isRunning publishCard.isRunning}}>
+      Save
+    </button>
+
+    <button class="button button--blue button-primary editor-publish"
+            onclick={{perform publishCard}}
+            disabled={{or saveCard.isRunning publishCard.isRunning}}>
+      Publish
     </button>
   </div>
 </div>

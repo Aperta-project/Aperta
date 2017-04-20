@@ -1,3 +1,7 @@
+{{#unless (eq card.state published)}}
+  {{fa-icon card.stateIcon}}
+{{/unless}}
+{{fa-icon stateIcon}}
 <h4 class="admin-card-thumbnail-name">
   {{card.name}}
 </h4>

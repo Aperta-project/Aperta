@@ -13,9 +13,14 @@ class CardVersion < ActiveRecord::Base
   # the `roots` scope comes from `awesome_nested_set`
   has_one :content_root, -> { roots }, class_name: 'CardContent'
   scope :required_for_submission, -> { where(required_for_submission: true) }
+  scope :published, -> { where.not(published_at: nil) }
 
   validates :version, uniqueness: {
     scope: :card_id,
     message: "Card version numbers are unique for a given card"
   }
+
+  def published?
+    published_at.present?
+  end
 end

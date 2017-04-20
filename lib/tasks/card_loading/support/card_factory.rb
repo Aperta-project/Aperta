@@ -18,6 +18,9 @@ class CardFactory
 
   def create_from_configuration_klass(configuration_klass)
     existing_card = Card.find_by(name: configuration_klass.name, journal: journal, latest_version: 1)
+    # the line below should hypothetically only happen once per environment, but it's more straightforward
+    # to include it here than to make a separate data migration
+    existing_card.publish! if existing_card && !existing_card.published?
     card = existing_card || Card.create_new!(name: configuration_klass.name,
                                              journal: journal)
     card_version = card.card_version(:latest)

@@ -19,5 +19,15 @@ export default Ember.Component.extend({
     } catch (e) {
       this.set('errors', e.errors);
     }
+  }),
+
+  publishCard: task(function * () {
+    try {
+      let r = yield this.get('card').publish();
+      yield r.reload();
+      this.clearErrors();
+    } catch (e) {
+      this.set('errors', e.errors);
+    }
   })
 });

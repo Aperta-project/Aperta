@@ -54,7 +54,7 @@ class XmlCardLoader
                      end
     card.latest_version = new_version_no
     version = card.card_versions.new(
-      version: new_version,
+      version: new_version_no,
       card: card,
       published_at: published_at,
       required_for_submission:

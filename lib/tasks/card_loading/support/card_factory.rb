@@ -23,7 +23,7 @@ class CardFactory
     existing_card.publish! if existing_card && !existing_card.published?
     card = existing_card || Card.create_new!(name: configuration_klass.name,
                                              journal: journal)
-    card_version = card.card_version(:latest)
+    card_version = card.latest_published_card_version
     content_root = card_version.content_root
     new_content = configuration_klass.content
     new_content.each do |c|

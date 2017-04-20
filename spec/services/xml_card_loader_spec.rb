@@ -26,8 +26,8 @@ describe XmlCardLoader do
         expect(card.latest_card_version.required_for_submission).to be(true)
       end
 
-      it "sets the new card version's published flag to true" do
-        expect(card.latest_card_version.published).to be(true)
+      it "the new card version is published" do
+        expect(card.latest_card_version).to be_published
       end
     end
 

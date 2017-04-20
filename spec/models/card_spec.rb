@@ -33,12 +33,13 @@ describe Card do
     end
 
     it 'creates a new published card version' do
-      expect(new_card.card_version(:latest)).to be_present
-      expect(new_card.card_version(:latest)).to be_published
+      expect(new_card.latest_card_version).to be_present
+      expect(new_card.latest_card_version).to be_published
+      expect(new_card.latest_card_version).to eq(new_card).latest_published_card_version
     end
 
     it 'gives the card version a piece of card content' do
-      expect(new_card.card_version(:latest).content_root).to be_present
+      expect(new_card.latest_card_version.content_root).to be_present
     end
   end
 
@@ -94,7 +95,7 @@ describe Card do
       end
 
       it 'returns the card version for the latest version' do
-        expect(card.card_version(:latest).version).to eq(2)
+        expect(card.latest_card_version.version).to eq(2)
       end
     end
 

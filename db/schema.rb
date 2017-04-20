@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 20170413084408) do
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
     t.string   "label"
+    t.string   "default_answer_value"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

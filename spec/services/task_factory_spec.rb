@@ -58,6 +58,33 @@ describe TaskFactory do
     expect(task.participants).to eq(participants)
   end
 
+  describe "setting task's card version" do
+    context "the card version is passed in" do
+      let(:card_version) { FactoryGirl.create(:card_version) }
+      it "assigns the card version to the task" do
+        task = TaskFactory.create(klass, paper: paper, phase: phase, card_version: card_version)
+        expect(task.card_version).to eq(card_version)
+      end
+    end
+
+    context "the card version is not present in the options" do
+      context "a card with the same name as the task exists" do
+        let!(:existing_card) do
+          FactoryGirl.create(:card, :versioned, name: klass.name)
+        end
+        it "uses the latest version of that card" do
+          task = TaskFactory.create(klass, paper: paper, phase: phase)
+          expect(task.card_version).to eq(existing_card.card_version(:latest))
+        end
+      end
+
+      it "sets the card version to 'null' if no card is found" do
+        task = TaskFactory.create(klass, paper: paper, phase: phase)
+        expect(task.card_version).to be_nil
+      end
+    end
+  end
+
   context "roles and permissions exist" do
     let(:journal) { create :journal }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }

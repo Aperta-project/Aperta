@@ -5,6 +5,10 @@ describe TaskFactory do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:klass) { TahiStandardTasks::ReviseTask }
 
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
+  end
+
   it "Creates a task" do
     expect do
       TaskFactory.create(klass, paper: paper, phase: phase)
@@ -68,19 +72,17 @@ describe TaskFactory do
     end
 
     context "the card version is not present in the options" do
-      context "a card with the same name as the task exists" do
+      let(:klass) { TahiStandardTasks::UploadManuscriptTask }
+
+      context "a card with a matching name as the task exists" do
         let!(:existing_card) do
-          FactoryGirl.create(:card, :versioned, name: klass.name)
+          FactoryGirl.create(:card, :versioned, name: klass.name, journal: nil)
         end
+
         it "uses the latest version of that card" do
           task = TaskFactory.create(klass, paper: paper, phase: phase)
-          expect(task.card_version).to eq(existing_card.card_version(:latest))
+          expect(task.card_version).to eq(existing_card.latest_card_version(:latest))
         end
-      end
-
-      it "sets the card version to 'null' if no card is found" do
-        task = TaskFactory.create(klass, paper: paper, phase: phase)
-        expect(task.card_version).to be_nil
       end
     end
   end
@@ -90,6 +92,11 @@ describe TaskFactory do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { FactoryGirl.create(:phase, paper: paper) }
     let(:klass) { PlosBilling::BillingTask }
+
+    before do
+      CardLoader.load("PlosBilling::BillingTask")
+    end
+
     let(:journal_task_type) do
       journal.journal_task_types.find_by(kind: klass.to_s)
     end

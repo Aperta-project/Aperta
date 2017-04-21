@@ -6,7 +6,7 @@ describe HtmlSanitizationSnapshotConverter do
     let(:subject) { HtmlSanitizationSnapshotConverter.new }
 
     it 'sanitizes the html string' do
-      expect(subject.call!).to eq '<div>Some div</div>Some foo'
+      expect(subject.call!(html)).to eq '<div>Some div</div>Some foo'
     end
   end
 end

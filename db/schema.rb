@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412153608) do
+ActiveRecord::Schema.define(version: 20170419140939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
     t.string   "label"
+    t.string   "default_answer_value"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -346,6 +347,7 @@ ActiveRecord::Schema.define(version: 20170412153608) do
     t.integer  "paper_id"
     t.integer  "journal_id"
     t.jsonb    "additional_context"
+    t.text     "body"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

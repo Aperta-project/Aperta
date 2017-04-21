@@ -5,6 +5,8 @@ export default TaskComponent.extend({
   flash: Ember.inject.service(),
   restless: Ember.inject.service(),
   classNames: ['similarity-check-task'],
+  latestVersionedText: Ember.computed.alias('task.paper.latestVersionedText'),
+
   actions: {
     confirmGenerateReport() {
       this.set('confirmVisible', true);
@@ -13,10 +15,13 @@ export default TaskComponent.extend({
       this.set('confirmVisible', false);
     },
     generateReport() {
-      const similarityCheck = this.get('store').createRecord('similarity-check', {
-        task: this.get('task')
+      this.get('task.paper.versionedTexts').then(() => {
+        debugger;
+        const similarityCheck = this.get('store').createRecord('similarity-check', {
+          versionedText: this.get('latestVersionedText')
+        });
+        similarityCheck.save();
       });
-      similarityCheck.save();
     }
   }
 });

@@ -124,6 +124,13 @@ export default DS.Model.extend({
       .reverseObjects();
   }),
 
+  versionAscendingSort: ['isDraft:asc', 'majorVersion:asc', 'minorVersion:asc'],
+  versionedTextsAscending: computed.sort('versionedTexts', 'versionAscendingSort'),
+
+  latestVersionedText: computed('versionedTextsAscending.[]', function() {
+    return this.get('versionedTextsAscending.lastObject');
+  }),
+
   textForVersion(versionString) {
     let versionParts = versionString.split('.');
     return this.get('versionedTexts').find(function(version) {

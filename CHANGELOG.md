@@ -2,7 +2,21 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## ## [x.x.x] - {yyyy-mm-dd}
+## As we have other tools to track our changes in each release, we have decided
+## to stop maintaining this file as of April 10, 2017.
+
+## ## [1.40.1] - {2017-04-07}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
+* Intercept emails without storing attachments
+* Store email bodies in logs so that we can have cleaner correspondence history
+### Security
+
+## ## [1.40.0] - {2017-04-06}
 ### Added
 * Inject the Git Commit ID in <meta> tag for easier debugging
 * Similarity Check Task Card (UI Only)

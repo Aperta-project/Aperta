@@ -20,6 +20,10 @@ class Task < ActiveRecord::Base
   scope :submission, -> { where(type: submission_types.to_a) }
   scope :of_type, -> (task_type) { where(type: task_type) }
 
+  # TODO: Remove in APERTA-9787
+  # Because all tasks should have a card then
+  scope :with_card, -> { where.not(card_version_id: nil) }
+
   # Scopes based on assignment
   scope :unassigned, lambda {
     includes(:assignments).where(assignments: { id: nil })
@@ -50,6 +54,8 @@ class Task < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
+
+  belongs_to :card_version
 
   acts_as_list scope: :phase
 
@@ -141,8 +147,11 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def task_added_to_paper(paper)
-    # no-op to be overriden and used in the paper factory
+  # called in the paper factory both as part of paper creation and when an
+  # individual task is added to the workflow.  Remember to call super when
+  # subclassing
+  def task_added_to_paper(_paper)
+    card_version.try(:create_default_answers, self)
   end
 
   def journal_task_type
@@ -155,8 +164,9 @@ class Task < ActiveRecord::Base
   end
 
   def submission_task?
-    return false if Task.submission_types.blank?
-    Task.submission_types.include?(self.class.name)
+    # TODO: Remove Task.submission_types check in APERTA-9787
+    Task.submission_types.include?(self.class.name) ||
+      (!card_version.nil? && card_version.required_for_submission)
   end
 
   def array_attributes

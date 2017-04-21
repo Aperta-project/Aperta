@@ -3,21 +3,15 @@
 # creating a shared repo.
 
 namespace :deploy do
-  desc 'Load the database schema'
-  task schema_load: [:set_rails_env] do
+  task maybe_schema_load: [:set_rails_env] do
     on primary fetch(:migration_role) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :rake, 'db:schema:load'
+          db_version = capture(:rake, "db:version")
+          execute :rake, 'db:schema:load' if db_version == "Current version: 0"
         end
       end
     end
-  end
-
-  desc 'First deploy: loads database schema'
-  task :cold do
-    before 'deploy:updated', 'deploy:schema_load'
-    invoke 'deploy'
   end
 
   desc 'Copy ember-built assets to public/client'
@@ -183,6 +177,7 @@ before 'deploy:migrate', :create_backup do
   end
 end
 
+before "deploy:migrate", "deploy:maybe_schema_load"
 after 'deploy:publishing', 'deploy:restart'
 after 'deploy:restart', 'deploy:check_statuses'
 

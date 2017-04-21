@@ -38,6 +38,15 @@ module('Integration: Inviting a reviewer', {
     $.mockjax({url: /\/api\/invitations\/1\/rescind/, type: 'PUT', status: 200, responseText: {}});
 
     $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
+    $.mockjax({
       url: /api\/tasks\/\d+\/eligible_users\/reviewers/,
       type: 'GET',
       status: 200,

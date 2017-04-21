@@ -8,6 +8,7 @@ module TahiStandardTasks
     include Invitable
 
     def task_added_to_paper(paper)
+      super
       create_invitation_queue!
     end
 

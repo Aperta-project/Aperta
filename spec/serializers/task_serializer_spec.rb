@@ -39,6 +39,32 @@ describe TaskSerializer, serializer_test: true do
       expect(deserialized_content[:task][:is_submission_task]).to eq(true)
       Task.submission_types.delete('AdHocTask')
     end
+
+    context 'if the task has a card version' do
+      let(:card_version) do
+        FactoryGirl.create(
+          :card_version,
+          required_for_submission: required_for_submission
+        )
+      end
+      let(:task) { FactoryGirl.create(:custom_card_task, paper: paper, card_version: card_version) }
+
+      context 'and the card_version is required_for_submission' do
+        let(:required_for_submission) { true }
+
+        it 'returns true' do
+          expect(deserialized_content[:task][:is_submission_task]).to eq(true)
+        end
+      end
+
+      context 'and the card_version is NOT required_for_submission' do
+        let(:required_for_submission) { false }
+
+        it 'returns false' do
+          expect(deserialized_content[:task][:is_submission_task]).to eq(false)
+        end
+      end
+    end
   end
 
   describe '#assigned_to_me' do

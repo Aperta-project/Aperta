@@ -257,7 +257,7 @@ GEM
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
     fake_ftp (0.1.1)
-    faker (1.6.5)
+    faker (1.7.1)
       i18n (~> 0.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -423,6 +423,8 @@ GEM
     mail_safe (0.3.4)
       actionmailer (>= 3.0.0)
     method_source (0.8.2)
+    migration_comments (0.4.1)
+      activerecord (>= 4.2.0)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
     mime-types (2.99.2)
@@ -750,6 +752,7 @@ DEPENDENCIES
   kaminari
   lograge
   mail_safe
+  migration_comments
   migration_data
   mini_magick
   newrelic_rpm
@@ -819,4 +822,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.14.4
+   1.14.5

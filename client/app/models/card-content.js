@@ -6,7 +6,10 @@ export default DS.Model.extend({
     inverse: 'parent',
     async: false
   }),
-  parent: DS.belongsTo('card-content'),
+  parent: DS.belongsTo('card-content', {
+    async: false,
+    inverse: 'unsortedChildren'
+  }),
   answers: DS.hasMany('answer', { async: false }),
 
   contentType: DS.attr('string'),
@@ -15,16 +18,28 @@ export default DS.Model.extend({
   possibleValues: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),
+  label: DS.attr('string'),
   valueType: DS.attr('string'),
+  visibleWithParentAnswer: DS.attr('string'),
+  answerable: Ember.computed.notEmpty('valueType'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
 
-  answerForOwner(owner) {
-    return this.get('answers').findBy('owner', owner) ||
-      this.get('store').createRecord('answer', {
+  createAnswerForOwner(owner){
+    // only create answers for things that are actually
+    // answerable (i.e., textboxes, radio buttons) and
+    // not things like static text or paragraphs
+    if(this.get('answerable')) {
+      return this.get('store').createRecord('answer', {
         owner: owner,
         cardContent: this
       });
+    }
+  },
+
+  answerForOwner(owner) {
+    return this.get('answers').findBy('owner', owner) ||
+           this.createAnswerForOwner(owner);
   }
 });

@@ -1,0 +1,16 @@
+<label class="content-text">{{{content.text}}}</label>
+{{#power-select placeholder=content.placeholder
+    options=content.possibleValues
+    selected=selectedValue
+    onchange=(action "valueChanged")
+    searchEnabled=false
+    disabled=disabled
+    as |val|}}
+  {{val.label}}
+{{/power-select}}
+
+{{card-content/display-children
+  content=content
+  owner=owner
+  disabled=disabled
+  preview=preview}}

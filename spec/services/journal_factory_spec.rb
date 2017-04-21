@@ -81,6 +81,11 @@ describe JournalFactory do
           PlosBioTechCheck::FinalTechCheckTask.descendants
         )
     end
+    let(:non_billing_task_klasses) do
+      without_anonymous_classes(
+        ::Task.descendants - billing_task_klasses
+      )
+    end
 
     it 'creates a new journal with the given params' do
       expect do
@@ -882,8 +887,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            non_billing_task_klasses.each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
@@ -1010,8 +1014,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            non_billing_task_klasses.each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
@@ -1134,8 +1137,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            non_billing_task_klasses.each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)

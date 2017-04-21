@@ -2,6 +2,11 @@ class Invitation < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
   include Tokenable
+  include CustomCastTypes
+
+  attribute :body, HtmlString.new
+  attribute :decline_reason, HtmlString.new
+  attribute :reviewer_discussions, HtmlString.new
 
   belongs_to :task
   belongs_to :decision

@@ -1,3 +1,7 @@
-{{#each content.children as |content idx|}}
-  {{card-content content=content preview=preview}}
+{{#each content.children as |child|}}
+  {{card-content
+    content=child
+    disabled=disabled
+    owner=owner
+    preview=preview}}
 {{/each}}

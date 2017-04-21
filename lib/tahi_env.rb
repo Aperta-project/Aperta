@@ -115,6 +115,12 @@ class TahiEnv
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
 
+  # iThenticate
+  optional :ITHENTICATE_ENABLED, :boolean, default: false
+  required :ITHENTICATE_URL, if: :ithenticate_enabled?
+  required :ITHENTICATE_EMAIL, if: :ithenticate_enabled?
+  required :ITHENTICATE_PASSWORD, if: :ithenticate_enabled?
+
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
 

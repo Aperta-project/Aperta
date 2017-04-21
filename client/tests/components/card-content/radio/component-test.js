@@ -48,6 +48,12 @@ test(`it checks the button corresponding to the answer's value`, function(assert
   this.render(template);
   assert.equal(this.$('input:checked').val(), 2);
 });
+test(`it checks the button corresponding to the answer's value with different datatypes`, function(assert) {
+  this.set('answer', { value: '2'});
+  this.set('content', this.defaultContent);
+  this.render(template);
+  assert.equal(this.$('input:checked').val(), 2);
+});
 test(`no buttons are checked if the answer's value is blank/null`, function(assert) {
   this.set('answer', { value: null});
   this.set('content', this.defaultContent);

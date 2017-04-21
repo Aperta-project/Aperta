@@ -14,6 +14,18 @@ describe Card do
     it 'is valid' do
       expect(card).to be_valid
     end
+
+    it 'enforces a unique name per journal' do
+      journal_a =  FactoryGirl.create(:journal)
+      journal_b =  FactoryGirl.create(:journal)
+      FactoryGirl.create(:card, name: "Foo", journal: journal_a)
+      new_invalid_card = FactoryGirl.build(:card, name: "Foo", journal: journal_a)
+      expect(new_invalid_card).to_not be_valid
+      expect(new_invalid_card.errors[:name]).to be_present
+
+      new_valid_card = FactoryGirl.build(:card, name: "Foo", journal: journal_b)
+      expect(new_valid_card).to be_valid
+    end
   end
 
   describe 'create_new!' do

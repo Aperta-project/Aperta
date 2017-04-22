@@ -9,20 +9,21 @@ describe SimilarityCheck, type: :model do
     end
   end
 
-  describe "#create" do
-    let(:do_create) { create :similarity_check }
+  describe "#start_report" do
+    let(:similarity_check) { create :similarity_check }
+    subject(:start_report) { similarity_check.start_report }
 
     it "enqueues a SimilarityCheckStartReportWorker job" do
       expect do
-        do_create
+        start_report
       end.to change { SimilarityCheckStartReportWorker.jobs.size }.by(1)
     end
 
     it "enqueues a job with the SimilarityCheck record id as an arg" do
-      similarity_report = do_create
+      start_report
       args = SimilarityCheckStartReportWorker.jobs.first["args"]
-      expect(similarity_report.id).to be_present
-      expect(args).to eq [similarity_report.id]
+      expect(similarity_check.id).to be_present
+      expect(args).to eq [similarity_check.id]
     end
   end
 end

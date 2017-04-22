@@ -6,8 +6,8 @@ class SimilarityCheckStartReportWorker
 
   def perform(similarity_check_id)
     similarity_check = SimilarityCheck.find(similarity_check_id)
-    file = similarity_check.version.paper.file
-    doc = open(file.url, &:read)
+    file = similarity_check.versioned_text.paper.file
+    doc = Faraday.get(file.url).body
 
     # TODO: add author name
     response = ithenticate_api.add_document(

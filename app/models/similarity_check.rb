@@ -11,8 +11,6 @@ class SimilarityCheck < ::ActiveRecord::Base
 
   validates :versioned_text, :state, presence: true
 
-  after_create :start_report
-
   aasm column: :state do
     # It's 'pending' before the job has been started by a worker
     state :pending, initial: true

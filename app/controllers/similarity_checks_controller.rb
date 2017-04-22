@@ -7,6 +7,7 @@ class SimilarityChecksController < ::ApplicationController
   respond_to :json
 
   def create
+    requires_user_can(:perform_similarity_check, paper)
     similarity_check = SimilarityCheck.create!(
       versioned_text: versioned_text
     )
@@ -16,7 +17,12 @@ class SimilarityChecksController < ::ApplicationController
   private
 
   def create_params
-    @create_params ||= params.require(:similarity_check).permit(:versioned_text_id)
+    @create_params ||= params.require(:similarity_check)
+                         .permit(:versioned_text_id)
+  end
+
+  def paper
+    versioned_text.paper
   end
 
   def versioned_text

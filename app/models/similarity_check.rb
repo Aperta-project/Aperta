@@ -7,7 +7,7 @@ class SimilarityCheck < ::ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
 
-  belongs_to :paper
+  belongs_to :versioned_text
 
   validates :versioned_text, :state, presence: true
 

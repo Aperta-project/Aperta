@@ -1,9 +1,16 @@
 require 'rails_helper'
 
 describe SimilarityCheck, type: :model do
+  describe "the factory" do
+    let(:similarity_check) { build :similarity_check }
+
+    it "creates a valid record" do
+      expect(similarity_check).to be_valid
+    end
+  end
+
   describe "#create" do
-    let(:versioned_text) { create :versioned_text }
-    let(:do_create) { SimilarityCheck.create!(versioned_text: versioned_text) }
+    let(:do_create) { create :similarity_check }
 
     it "enqueues a SimilarityCheckStartReportWorker job" do
       expect do

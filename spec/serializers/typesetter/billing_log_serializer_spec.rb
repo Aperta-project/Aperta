@@ -19,17 +19,20 @@ describe Typesetter::BillingLogSerializer do
 
   let(:billing_task) do
     CardLoader.load('PlosBilling::BillingTask')
-    FactoryGirl.create(:billing_task, :with_card_content, paper: paper)
+    card = Card.find_by_class_name("PlosBilling::BillingTask")
+    FactoryGirl.create(:billing_task, :with_card_content, paper: paper, card_version: card.latest_card_version)
   end
 
   let(:financial_disclosure_task) do
     CardLoader.load('TahiStandardTasks::FinancialDisclosureTask')
-    FactoryGirl.create(:financial_disclosure_task, paper: paper)
+    card = Card.find_by_class_name("TahiStandardTasks::FinancialDisclosureTask")
+    FactoryGirl.create(:financial_disclosure_task, paper: paper, card_version: card.latest_card_version)
   end
 
   let(:final_tech_check_task) do
     CardLoader.load('PlosBioTechCheck::FinalTechCheckTask')
-    FactoryGirl.create(:final_tech_check_task, paper: paper)
+    card = Card.find_by_class_name("PlosBioTechCheck::FinalTechCheckTask")
+    FactoryGirl.create(:final_tech_check_task, paper: paper, card_version: card.latest_card_version)
   end
 
   before do

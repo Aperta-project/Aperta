@@ -6,8 +6,16 @@ feature 'Task states permissions', js: true do
   let(:unsubmitted_paper) { FactoryGirl.create(:paper, :unsubmitted, :with_creator, journal: Journal.first) }
   let(:unsubmitted_paper_author) { unsubmitted_paper.creator }
   let(:staff_admin) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:data_availability_task, paper: submitted_paper) }
-  let(:unsubmitted_paper_task) { FactoryGirl.create(:data_availability_task, paper: unsubmitted_paper) }
+  let(:task) do
+    CardLoader.load('PlosBioTechCheck::FinalTechCheckTask')
+    card = Card.find_by_class_name('PlosBioTechCheck::FinalTechCheckTask')
+    FactoryGirl.create(:final_tech_check_task, paper: submitted_paper, card_version: card.latest_card_version)
+  end
+  let(:unsubmitted_paper_task) do
+    CardLoader.load('TahiStandardTasks::DataAvailabilityTask')
+    card = Card.find_by_class_name('TahiStandardTasks::DataAvailabilityTask')
+    FactoryGirl.create(:data_availability_task, paper: unsubmitted_paper, card_version: card.latest_card_version)
+  end
 
   before do
     task.add_participant(submitted_paper_author)

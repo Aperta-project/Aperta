@@ -121,7 +121,7 @@ module CardConfiguration
             text: "Eat a hot dog; take a picture; upload it here",
             value_type: "attachment",
             content_type: "file-uploader",
-            possible_values: [".tif", ".png"],
+            possible_values: [{ "label" => "tif", "value" => ".tif" }, { "label" => "png", "value" => ".png" }],
             label: "Ima Button"
           }
         ]

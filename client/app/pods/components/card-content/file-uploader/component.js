@@ -25,7 +25,9 @@ export default Ember.Component.extend({
     attachment.unloadRecord();
   }),
 
-  acceptedFileTypes: Ember.computed.mapBy('content.possibleValues', 'value'),
+  acceptedFileTypes: Ember.computed('content.possibleValues', function() {
+    return this.get('content.possibleValues').mapBy('value').join(',');
+  }),
 
   actions: {
     cancelUpload(attachment) {

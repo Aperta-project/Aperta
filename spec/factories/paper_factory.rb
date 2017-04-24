@@ -329,7 +329,13 @@ FactoryGirl.define do
         evaluator.task_params[:title] ||= "Ad Hoc"
         evaluator.task_params[:type] ||= "Task"
         evaluator.task_params[:paper] ||= paper
-        evaluator.task_params[:card_version] ||= FactoryGirl.create(:card_version)
+
+        unless evaluator.task_params[:card_version]
+          task_klass_name = evaluator.task_params[:type]
+          CardLoader.load(task_klass_name)
+          card = Card.find_by_class_name(task_klass_name)
+          evaluator.task_params[:card_version] = card.latest_card_version
+        end
 
         phase.tasks.create(evaluator.task_params)
         paper.reload

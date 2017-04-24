@@ -9,7 +9,7 @@ feature "Invite Academic Editor", js: true do
       :paper, :submitted_lite, :with_creator, journal: journal
     )
   end
-  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_task, paper: paper }
 
   let(:staff_admin) { create :user }
   let!(:editor1) { create :user, first_name: 'Henry' }

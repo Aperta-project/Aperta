@@ -14,7 +14,7 @@
 
     <button class="button button--blue button-primary editor-publish"
             onclick={{perform publishCard}}
-            disabled={{or saveCard.isRunning publishCard.isRunning}}>
+            disabled={{or saveCard.isRunning publishCard.isRunning xmlDirty}}>
       {{#if (eq card.state "draft")}}
         Publish Card
       {{else}}

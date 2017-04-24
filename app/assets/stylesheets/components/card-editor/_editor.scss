@@ -22,6 +22,9 @@
 
     .card-editor-save-buttons-state {
       float: left;
+      text-transform: uppercase;
+      margin-top: 10px;
+      color: $aperta-grey-dark;
     }
 
     .card-editor-save-buttons-container {

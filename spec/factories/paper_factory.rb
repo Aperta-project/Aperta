@@ -31,6 +31,16 @@ FactoryGirl.define do
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
 
+    trait :with_phases do
+      transient do
+        phases_count 1
+      end
+
+      after(:create) do |paper, evaluator|
+        paper.phases << FactoryGirl.build_list(:phase, evaluator.phases_count)
+      end
+    end
+
     trait(:active) do
       # noop
     end

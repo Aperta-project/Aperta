@@ -6,7 +6,7 @@ describe InvitationsController do
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_card, paper: paper }
   let!(:queue) { FactoryGirl.create(:invitation_queue, task: task) }
 
   describe 'GET /invitations' do

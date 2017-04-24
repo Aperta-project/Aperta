@@ -33,7 +33,7 @@ FactoryGirl.define do
       end
     end
 
-    factory :ad_hoc_task do
+    factory :ad_hoc_task, class: 'AdHocTask' do
       title "Do something awesome"
     end
 

@@ -23,13 +23,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
 
       scenario "managing tasks" do
-        # create
-        submission_phase.tasks.create(
-          title: "Wicked Awesome Card",
-          type: "AdHocTask",
-          body: text_body,
-          paper: submission_phase.paper
-        )
+        FactoryGirl.create(:ad_hoc_task,
+                           title: "Wicked Awesome Card",
+                           body: text_body,
+                           paper: submission_phase.paper)
+
         expect(page).to have_content "Wicked Awesome Card"
 
         # destroy

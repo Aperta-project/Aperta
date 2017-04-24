@@ -57,3 +57,19 @@
   margin: 0px 5px 10px 10px;
   cursor: pointer;
 }
+
+.paper-submission-wrapper {
+    padding-bottom: 8%;
+
+  .task-list-doi {
+    float: left;
+  }
+
+  .submission-process-link {
+    float: right;
+
+    #submission-panel {
+      text-decoration: none;
+    }
+  }
+}

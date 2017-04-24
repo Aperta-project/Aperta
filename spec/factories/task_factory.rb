@@ -41,6 +41,28 @@ FactoryGirl.define do
       title "Assign Team"
     end
 
+    factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do
+      title "Authors"
+    end
+
+    factory :billing_task, class: 'PlosBilling::BillingTask' do
+      title "Billing"
+      trait :with_card_content do
+        after(:create) do |task|
+          task.card.content_for_version_without_root(:latest).each do |card_content|
+            value = "#{card_content.ident} answer"
+            value = 'bob@example.com' if card_content.ident == 'plos_billing--email'
+            task.find_or_build_answer_for(card_content: card_content, value: value)
+          end
+        end
+      end
+    end
+
+    factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
+      title "Changes for Author"
+      body initialTechCheckBody: 'Default changes for author body'
+    end
+
     factory :custom_card_task, class: 'CustomCardTask' do
       title "Custom Card"
     end
@@ -66,6 +88,10 @@ FactoryGirl.define do
       end
     end
 
+    factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
+      title "Editor Discussion"
+    end
+
     factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do
       title "Ethics"
     end
@@ -78,12 +104,41 @@ FactoryGirl.define do
       title "Financial Disclosure"
     end
 
+    factory :final_tech_check_task, class: 'PlosBioTechCheck::FinalTechCheckTask' do
+      title 'Final Tech Check'
+    end
+
+    factory :front_matter_reviewer_report_task, class: 'TahiStandardTasks::FrontMatterReviewerReportTask' do
+      title "Front Matter Reviewer Report"
+    end
+
+    factory :initial_decision_task, class: 'TahiStandardTasks::InitialDecisionTask' do
+      title "Initial Decision"
+    end
+
+    factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
+      title 'Initial Tech Check'
+    end
+
+    factory :invitable_task, class: 'InvitableTestTask' do
+      paper { FactoryGirl.create(:paper, :submitted_lite) }
+      title "Invitable Task"
+    end
+
+    factory :metadata_task, class: 'MetadataTestTask' do
+      title "Metadata Task"
+    end
+
     factory :paper_editor_task, class: 'TahiStandardTasks::PaperEditorTask' do
       title "Invite Editor"
     end
 
     factory :paper_reviewer_task, class: 'TahiStandardTasks::PaperReviewerTask' do
       title 'Invite Reviewers'
+    end
+
+    factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
+      title "Production Metadata"
     end
 
     factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
@@ -98,71 +153,44 @@ FactoryGirl.define do
       title "Related Articles"
     end
 
-    factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
-      title "Taxon"
+    factory :register_decision_task, class: 'TahiStandardTasks::RegisterDecisionTask' do
+      title "Register Decision"
     end
 
-    factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
-      title 'Initial Tech Check'
+    factory :reviewer_recommendations_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
+      title "Reviewer Candidates"
     end
 
-    factory :final_tech_check_task, class: 'PlosBioTechCheck::FinalTechCheckTask' do
-      title 'Final Tech Check'
+    factory :reviewer_report_task, class: 'TahiStandardTasks::ReviewerReportTask' do
+      title "Reviewer Report"
+    end
+
+    factory :revise_task, class: 'TahiStandardTasks::ReviseTask' do
+      title "Revise Manuscript"
     end
 
     factory :revision_tech_check_task, class: 'PlosBioTechCheck::RevisionTechCheckTask' do
       title 'Revision Tech Check'
     end
 
-    factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
-      title "Changes for Author"
-      body initialTechCheckBody: 'Default changes for author body'
-    end
-
-    factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
-      title "Editor Discussion"
-    end
-
-    factory :invitable_task, class: 'InvitableTestTask' do
-      paper { FactoryGirl.create(:paper, :submitted_lite) }
-      title "Invitable Task"
-    end
-
-    factory :metadata_task, class: 'MetadataTestTask' do
-      title "Metadata Task"
-    end
-
-    factory :billing_task, class: 'PlosBilling::BillingTask' do
-      title "Billing"
-      trait :with_card_content do
-        after(:create) do |task|
-          task.card.content_for_version_without_root(:latest).each do |card_content|
-            value = "#{card_content.ident} answer"
-            value = 'bob@example.com' if card_content.ident == 'plos_billing--email'
-            task.find_or_build_answer_for(card_content: card_content, value: value)
-          end
-        end
-      end
-    end
-
-    factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do
-      title "Authors"
-    end
-
-    factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
-      title "Production Metadata"
-    end
-
-    factory :reviewer_recommendation_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
-      title "Reviewer Candidates"
-    end
-
     factory :send_to_apex_task, class: 'TahiStandardTasks::SendToApexTask' do
       title 'Send to Apex'
     end
 
+    factory :supporting_information_task, class: 'TahiStandardTasks::SupportingInformationTask' do
+      title "Supporting Information"
+    end
+
+    factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
+      title "Taxon"
+    end
+
     factory :title_and_abstract_task, class: 'TahiStandardTasks::TitleAndAbstractTask' do
       title 'Title and Abstract'
+    end
+
+    factory :upload_manuscript_task, class: 'TahiStandardTasks::UploadManuscriptTask' do
+      title "Upload Manuscript"
     end
   end
 end

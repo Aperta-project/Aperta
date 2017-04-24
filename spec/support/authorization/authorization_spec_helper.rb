@@ -5,7 +5,7 @@ module AuthorizationSpecHelper
     def permissions(label=nil, &blk)
       let_name = ['permissions', label].compact.join('_')
       let!(let_name) do
-        PermissionSpecHelper.create_permissions(label, &blk)
+        PermissionSpecHelper.create_permissions(label, self, &blk)
       end
     end
 
@@ -19,7 +19,7 @@ module AuthorizationSpecHelper
     def role(name, participates_in: [], &blk)
       let_name = ['role', name].compact.join('_').gsub(/\s+/, '_')
       let!(let_name) do
-        RoleSpecHelper.create_role(name, participates_in: participates_in, &blk)
+        RoleSpecHelper.create_role(name, self, participates_in: participates_in, &blk)
       end
     end
   end

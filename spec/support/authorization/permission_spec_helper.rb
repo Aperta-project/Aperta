@@ -1,6 +1,6 @@
 class PermissionSpecHelper
-  def self.create_permissions(label=nil, &blk)
-    new(label, &blk).permissions
+  def self.create_permissions(label = nil, context, &blk)
+    new(label, context, &blk).permissions
   end
 
   def self.create_permission(label, action:, applies_to:, states:, **kwargs)
@@ -9,10 +9,10 @@ class PermissionSpecHelper
 
   attr_reader :permissions
 
-  def initialize(label, &blk)
+  def initialize(label, context, &blk)
     @label = label
     @permissions = []
-    instance_exec &blk if blk
+    instance_exec(context, &blk) if blk
     self
   end
 

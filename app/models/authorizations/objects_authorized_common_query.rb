@@ -129,7 +129,7 @@ module Authorizations
 
     def add_filter_by_check(query)
       Authorizations.configuration.filters
-        .select { |f| f.klass == @klass }
+        .select { |f| @klass <= f.klass }
         .each do |filter|
         filter.block.call(
           query,

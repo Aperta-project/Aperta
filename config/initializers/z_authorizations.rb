@@ -67,4 +67,15 @@ Authorizations.configure do |config|
     via: :paper
   )
 
+  # When a permission with applies_to = Task also has a non-NULL
+  # filter_by_card_id value, only apply that permission to tasks that belong to
+  # a card_version that has the same card_id.
+  config.filter(Task, :filter_by_card_id) do |query, column, table|
+    # Use an alias because we may be joining against this table elsewhere in the
+    # query.
+    card_versions = CardVersion.arel_table.alias
+    query
+      .join(card_versions).on(card_versions[:id].eq(table[:card_version_id]))
+      .where(column.eq(nil).or(column.eq(card_versions[:card_id])))
+  end
 end

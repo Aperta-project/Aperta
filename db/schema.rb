@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170418233607) do
+ActiveRecord::Schema.define(version: 20170421164615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -594,10 +594,11 @@ ActiveRecord::Schema.define(version: 20170418233607) do
   add_index "permission_states_permissions", ["permission_state_id", "permission_id"], name: "permission_states_ids_idx", unique: true, using: :btree
 
   create_table "permissions", force: :cascade do |t|
-    t.string   "action",     null: false
-    t.string   "applies_to", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "action",            null: false
+    t.string   "applies_to",        null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "filter_by_card_id"
   end
 
   add_index "permissions", ["action", "applies_to"], name: "index_permissions_on_action_and_applies_to", using: :btree
@@ -928,6 +929,7 @@ ActiveRecord::Schema.define(version: 20170418233607) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "permissions", "cards", column: "filter_by_card_id"
   add_foreign_key "task_templates", "cards"
   add_foreign_key "tasks", "cards"
 end

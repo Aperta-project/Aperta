@@ -9,7 +9,7 @@ class SimilarityChecksController < ::ApplicationController
   def create
     requires_user_can(:perform_similarity_check, task.paper)
     # Make API call here
-    render json: { test_create: true }
+    render json: similarity_check
   end
 
   def show
@@ -33,9 +33,7 @@ class SimilarityChecksController < ::ApplicationController
         SimilarityCheck.includes(:user, :paper, :task).find(params[:id])
       else
         SimilarityCheck.create!(
-          paper: task.paper,
-          task: task,
-          user: current_user
+          versioned_text: task.paper.latest_version
         )
       end
   end

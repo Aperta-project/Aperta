@@ -736,6 +736,16 @@ ActiveRecord::Schema.define(version: 20170418181223) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "similarity_checks", force: :cascade do |t|
+    t.integer  "ithenticate_id"
+    t.integer  "match_percent"
+    t.integer  "versioned_text_id", null: false
+    t.string   "report_link"
+    t.string   "state",             null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -822,16 +832,6 @@ ActiveRecord::Schema.define(version: 20170418181223) do
     t.datetime "updated_at"
     t.string   "ringgold_id"
     t.integer  "card_version_id"
-  end
-
-  create_table "tahi_standard_tasks_similarity_checks", force: :cascade do |t|
-    t.integer  "ithenticate_id"
-    t.integer  "match_percent"
-    t.integer  "versioned_text_id", null: false
-    t.string   "report_link"
-    t.string   "state",             null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -943,6 +943,6 @@ ActiveRecord::Schema.define(version: 20170418181223) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
-  add_foreign_key "tahi_standard_tasks_similarity_checks", "versioned_texts"
+  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

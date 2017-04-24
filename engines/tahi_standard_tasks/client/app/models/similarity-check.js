@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 
 export default DS.Model.extend({
-  paper: DS.belongsTo('paper', { async: true }),
+  versionedText: DS.belongsTo('versioned-text', { async: true }),
   task: DS.belongsTo('similarity-check-task', {
     inverse: 'similarityChecks',
     async: true }),

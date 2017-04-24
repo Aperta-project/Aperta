@@ -7,7 +7,7 @@ describe Snapshot::AuthorTaskSerializer do
   end
 
   subject(:serializer) { described_class.new(task) }
-  let(:task) { FactoryGirl.create(:authors_task) }
+  let(:task) { FactoryGirl.create(:authors_task, :with_loaded_card) }
 
   describe "#as_json" do
     it "serializes to JSON" do

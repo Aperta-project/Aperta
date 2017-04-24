@@ -7,8 +7,16 @@ describe PaperFactory do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
-      tasks = [TahiStandardTasks::DataAvailabilityTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
+
+      # create mmt template from specified task classes
+      task_klasses = [TahiStandardTasks::DataAvailabilityTask]
+
+      # create default cards necessary for a new mmt
+      cards = task_klasses + [Author]
+      cards.each { |klass| CardLoader.load(klass.to_s) }
+
+      # create mmt template
+      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *task_klasses)
 
       # add TaskTemplate using a custom Card
       mmt.phase_templates.first.task_templates.create(card: card, title: card.name)

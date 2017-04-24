@@ -68,6 +68,9 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
         text: "Question 2?"
       )
 
+      # assign the card to the resource
+      resource.update(card_version: card.latest_card_version)
+
       # swap the position of the card content.
       nested_question_2.move_left
       expect(resource.card.content_for_version_without_root(:latest).sort_by(&:id)).to eq([nested_question_1, nested_question_2])

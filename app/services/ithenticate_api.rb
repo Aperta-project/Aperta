@@ -1,5 +1,19 @@
+require 'uri'
+require 'xmlrpc/client'
+
 # Class used for interacting with the Ithenticate API
 class IthenticateApi
+  def self.new_from_tahi_env
+    uri = URI(TahiEnv.ITHENTICATE_URL)
+    new(
+      username: TahiEnv.ITHENTICATE_EMAIL,
+      password: TahiEnv.ITHENTICATE_PASSWORD,
+      host: uri.host,
+      path: uri.path,
+      use_ssl: uri.scheme == "https"
+    )
+  end
+
   def initialize(username:, password:, **opts)
     @username = username
     @password = password

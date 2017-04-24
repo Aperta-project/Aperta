@@ -9,11 +9,13 @@ class SimilarityCheckStartReportWorker
     file = similarity_check.versioned_text.paper.file
     doc = Faraday.get(file.url).body
 
-    # TODO: add author name
     response = ithenticate_api.add_document(
       content: doc,
       filename: file[:file],
-      title: similarity_check.version.paper.title
+      title: similarity_check.versioned_text.paper.title,
+      author_first_name: "ninja", # TODO: fix author name
+      author_last_name: "turtle",
+      folder_id: 1, # TODO: fix folder id
     )
 
     if response["api_status"] == 200
@@ -26,6 +28,6 @@ class SimilarityCheckStartReportWorker
   end
 
   def ithenticate_api
-    @ithenticate_api ||= IthenticateApi.new
+    @ithenticate_api ||= IthenticateApi.new_from_tahi_env
   end
 end

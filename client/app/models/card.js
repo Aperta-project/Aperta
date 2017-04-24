@@ -34,6 +34,11 @@ export default DS.Model.extend({
     return cardStates.icon[this.get('state')];
   }),
 
+  publishable: Ember.computed('state', function() {
+    let state = this.get('state');
+    return state === 'draft' || state === 'publishedWithChanges';
+  }),
+
   stateName: Ember.computed('state', function() {
     return cardStates.name[this.get('state')];
   }),

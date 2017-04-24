@@ -7,31 +7,42 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
-  xmlDirty: Ember.computed('card.xml', function() {
-    return this.get('card').changedAttributes()['xml'];
+  xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
+    let card = this.get('card');
+
+    return card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
   }),
 
   errors: null,
+  showPublishOverlay: false,
 
   classNames: ['card-editor-editor'],
 
-  saveCard: task(function * () {
+  saveCard: task(function*() {
     try {
       let r = yield this.get('card').save();
       yield r.reload();
-      this.clearErrors();
+      this.set('errors', []);
     } catch (e) {
       this.set('errors', e.errors);
     }
   }),
 
-  publishCard: task(function * () {
+  publishCard: task(function*() {
+    let card = this.get('card');
     try {
-      let r = yield this.get('card').publish();
-      yield r.reload();
-      this.clearErrors();
+      yield card.publish();
+      yield card.reload();
+      this.set('showPublishOverlay', false);
+      this.set('errors', []);
     } catch (e) {
       this.set('errors', e.errors);
     }
-  })
+  }),
+
+  actions: {
+    confirmPublish() {
+      this.set('showPublishOverlay', true);
+    }
+  }
 });

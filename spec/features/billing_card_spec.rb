@@ -13,6 +13,7 @@ feature 'Billing card', js: true do
   let!(:billing_task) do
     FactoryGirl.create(
       :billing_task,
+      :with_loaded_card,
       completed: false,
       paper: paper,
       phase: paper.phases.first,

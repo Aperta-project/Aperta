@@ -25,6 +25,14 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_loaded_card do
+      after(:create) do |task|
+        CardLoader.load(task.class.name)
+        card = Card.find_by_class_name(task.class)
+        task.update(card_version: card.latest_card_version)
+      end
+    end
+
     factory :ad_hoc_task do
       title "Do something awesome"
     end

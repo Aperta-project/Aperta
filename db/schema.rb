@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407205359) do
+ActiveRecord::Schema.define(version: 20170419140939) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -222,6 +223,8 @@ ActiveRecord::Schema.define(version: 20170407205359) do
     t.string   "placeholder"
     t.jsonb    "possible_values"
     t.string   "visible_with_parent_answer"
+    t.string   "label"
+    t.string   "default_answer_value"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -230,8 +233,8 @@ ActiveRecord::Schema.define(version: 20170407205359) do
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
   create_table "card_versions", force: :cascade do |t|
-    t.integer  "version",    null: false
-    t.integer  "card_id",    null: false
+    t.integer  "version",                                 null: false
+    t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
   end
@@ -344,6 +347,7 @@ ActiveRecord::Schema.define(version: 20170407205359) do
     t.integer  "paper_id"
     t.integer  "journal_id"
     t.jsonb    "additional_context"
+    t.text     "body"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -566,6 +570,7 @@ ActiveRecord::Schema.define(version: 20170407205359) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
+    t.boolean  "legends_allowed",                       default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

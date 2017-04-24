@@ -78,18 +78,25 @@ class XmlCardLoader
     end
   end
 
+  def tag_text(el, tag)
+    el.xpath(tag).first.try(:text).try(:strip)
+  end
+
   def make_card_content(el, card_version)
-    text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
-    placeholder = el.xpath('placeholder').first.try(:text)
+    text = tag_text(el, 'text') || attr_val(el, 'text')
+    placeholder = tag_text(el, 'placeholder')
+    label = tag_text(el, 'label')
     content = CardContent.new(
-      ident: attr_val(el, 'ident'),
-      value_type: attr_val(el, 'value-type'),
+      card_version: card_version,
       content_type: attr_val(el, 'content-type'),
-      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer'),
+      default_answer_value: attr_val(el, 'default-answer-value'),
+      ident: attr_val(el, 'ident'),
+      label: label,
       placeholder: placeholder,
-      text: text,
       possible_values: parse_possible_values(el),
-      card_version: card_version
+      text: text,
+      value_type: attr_val(el, 'value-type'),
+      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer')
     )
     el.xpath('content').each do |el1|
       content.children << make_card_content(el1, card_version)

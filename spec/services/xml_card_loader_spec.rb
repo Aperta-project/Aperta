@@ -2,9 +2,10 @@ require 'rails_helper'
 
 describe XmlCardLoader do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:card) { XmlCardLoader.from_xml_string(xml, journal).tap(&:save!) }
   let(:content1) { '<content ident="foo" content-type="text"><text>foo</text></content>' }
   let(:content2) { '<content ident="bar" content-type="text"><text>bar</text></content>' }
+  let(:xml) { "<card required-for-submission='true' name='Foo'>#{content1}</card>" }
+  let(:card) { XmlCardLoader.from_xml_string(xml, journal).tap(&:save!) }
   let(:root) { card.content_root_for_version(:latest) }
 
   context 'with bad xml' do
@@ -16,8 +17,6 @@ describe XmlCardLoader do
   end
 
   context 'creating a card' do
-    let(:xml) { "<card required-for-submission='true' name='Foo'>#{content1}</card>" }
-
     it 'sets the card name' do
       expect(card.name).to eq('Foo')
     end
@@ -28,8 +27,6 @@ describe XmlCardLoader do
   end
 
   context 'a card with a single root' do
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
-
     it 'creates a root card content' do
       expect(root.content_type).to eq('text')
       expect(root.ident).to eq('foo')
@@ -58,8 +55,33 @@ describe XmlCardLoader do
   end
 
   context 'with radio content' do
-    let(:content1) { "<content ident='foo' value-type='text' content-type='radio'><text>Question!</text><possible-value label=\"one\" value=\"1\"/></content>" }
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
+    let(:content1) do
+      <<-XML
+        <content ident='foo' value-type='text' content-type='radio' default-answer-value="1">
+          <text>Question!</text>
+          <possible-value label="one" value="1"/>
+        </content>
+      XML
+    end
+
+    it 'parses possible values' do
+      expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
+    end
+
+    it 'sets the default answer value if given' do
+      expect(root.default_answer_value).to eq("1")
+    end
+  end
+
+  context 'with dropdown content' do
+    let(:content1) do
+      <<-XML
+        <content ident='foo' value-type='text' content-type='dropdown'>
+          <text>Question!</text>
+          <possible-value label="one" value="1"/>
+        </content>
+      XML
+    end
 
     it 'parses possible values' do
       expect(root.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
@@ -69,7 +91,6 @@ describe XmlCardLoader do
   context 'with a text element' do
     let(:text) { 'Foo' }
     let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
 
     it 'sets the text to the value of the element text' do
       expect(root.text).to eq(text)
@@ -95,8 +116,14 @@ describe XmlCardLoader do
   context 'with a short-input' do
     let(:text) { Faker::Lorem.sentence }
     let(:placeholder) { Faker::Lorem.sentence }
-    let(:content1) { "<content content-type='short-input' value-type='text'><placeholder>#{placeholder}</placeholder><text>#{text}</text></content>" }
-    let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}</card." }
+    let(:content1) do
+      <<-XML
+        <content content-type='short-input' value-type='text' default-answer-value="foo">
+          <placeholder>#{placeholder}</placeholder>
+          <text>#{text}</text>
+        </content>
+      XML
+    end
 
     it 'sets the text to the value of the element text' do
       expect(root.text).to eq(text)
@@ -104,6 +131,30 @@ describe XmlCardLoader do
 
     it 'sets the placeholder to the value of the element placeholder' do
       expect(root.placeholder).to eq(placeholder)
+    end
+
+    it 'sets the default answer value if given' do
+      expect(root.default_answer_value).to eq("foo")
+    end
+  end
+
+  context 'with a check-box' do
+    let(:text) { Faker::Lorem.sentence }
+    let(:label) { Faker::Lorem.sentence }
+    let(:content1) do
+      <<-XML
+        <content content-type='check-box' value-type='boolean'>
+          <text>#{text}</text>
+          <label>#{label}</label>
+        </content>
+      XML
+    end
+
+    it 'sets the text to the value of the element text' do
+      expect(root.text).to eq(text)
+    end
+    it 'sets the label to the value of the element label' do
+      expect(root.label).to eq(label)
     end
   end
 

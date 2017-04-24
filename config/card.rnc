@@ -20,9 +20,32 @@ possible-value = element possible-value {
 radio-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
-                  attribute content-type { "radio" },
+                  attribute content-type { "radio" | "boolean" },
+                  attribute default-answer-value { text }?,
                   element text { text },
-                  possible-value*,
+                  possible-value+,
+                  content*
+              }
+
+check-box-input = element content {
+                attribute ident { text }?,
+                attribute content-type { "check-box" },
+                attribute default-answer-value { "true" | "false" }?,
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }?),
+                content*
+            }
+
+# for now duplicating radio-input for dropdown
+dropdown-input = element content {
+                  attribute ident { text }?,
+                  attribute value-type { "text" | "boolean" },
+                  attribute content-type { "dropdown" },
+                  attribute default-answer-value { text }?,
+                  (element placeholder { text }? &
+                   element text { text }),
+                  possible-value+,
                   content*
               }
 
@@ -30,6 +53,7 @@ text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
                  attribute content-type { "short-input" | "paragraph-input" },
+                 attribute default-answer-value { text }?,
                  (element placeholder { text }? &
                   element text { text })
              }
@@ -65,7 +89,10 @@ content = (radio-input |
            text-content |
            display-children-content |
            display-with-value-content |
-           field-set)
+           field-set |
+           check-box-input |
+           dropdown-input
+          )
 
 start = element card {
             attribute name { text },

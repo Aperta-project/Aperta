@@ -30,14 +30,92 @@
         <value>text</value>
       </attribute>
       <attribute name="content-type">
-        <value>radio</value>
+        <choice>
+          <value>radio</value>
+          <value>boolean</value>
+        </choice>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <element name="text">
         <text/>
       </element>
-      <zeroOrMore>
+      <oneOrMore>
         <ref name="possible-value"/>
+      </oneOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
       </zeroOrMore>
+    </element>
+  </define>
+  <define name="check-box-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>check-box</value>
+      </attribute>
+      <optional>
+        <attribute name="default-answer-value">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <!-- for now duplicating radio-input for dropdown -->
+  <define name="dropdown-input">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <choice>
+          <value>text</value>
+          <value>boolean</value>
+        </choice>
+      </attribute>
+      <attribute name="content-type">
+        <value>dropdown</value>
+      </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
+      <interleave>
+        <optional>
+          <element name="placeholder">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
+          <text/>
+        </element>
+      </interleave>
+      <oneOrMore>
+        <ref name="possible-value"/>
+      </oneOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -57,6 +135,9 @@
           <value>paragraph-input</value>
         </choice>
       </attribute>
+      <optional>
+        <attribute name="default-answer-value"/>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">
@@ -131,6 +212,8 @@
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
       <ref name="field-set"/>
+      <ref name="check-box-input"/>
+      <ref name="dropdown-input"/>
     </choice>
   </define>
   <start>

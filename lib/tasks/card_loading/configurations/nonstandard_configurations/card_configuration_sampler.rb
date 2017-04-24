@@ -39,6 +39,17 @@ module CardConfiguration
             content_type: "short-input"
           },
           {
+            text: "This is a check box",
+            label: "Check this box if you agree",
+            value_type: "boolean",
+            content_type: "check-box"
+          },
+          {
+            label: "Check this box if you disagree instead",
+            value_type: "boolean",
+            content_type: "check-box"
+          },
+          {
             text: "This is a radio button question.  <b>Please</b> pick a choice",
             value_type: 'text',
             content_type: "radio",
@@ -98,6 +109,13 @@ module CardConfiguration
             text: "Type a paragraph",
             value_type: "text",
             content_type: "paragraph-input"
+          },
+          {
+            text: "This is a dropdown question.  <b>Please</b> pick a choice",
+            value_type: 'text',
+            content_type: "dropdown",
+            placeholder: "Nothing selected yet",
+            possible_values: [{ "label" => "Choice 1", "value" => 1 }, { "label" => "Choice 2", "value" => 2 }]
           }
         ]
       end

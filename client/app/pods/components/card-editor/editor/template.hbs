@@ -42,9 +42,9 @@
 </div>
 {{#overlay-fullscreen visible=showPublishOverlay
    outAnimationComplete=(toggle "showPublishOverlay" this)
-   title="Publish Card"
    overlayClass="publish-card-overlay overlay--blue"
    as |overlay|}}
+  <h1> Publish Card </h1>
   <p>
     Publishing will make this card live. The card will be added to the card catalogue
     and can be added to workflow templates.
@@ -56,7 +56,7 @@
   </p>
 
   <div>
-    <div class="card-editor-confirm-publish-buttons">
+    <div class="overlay-action-buttons">
       <button class="button-link button--blue" {{action overlay.animateOut}}>Not yet, keep editing</button>
       <button class="button-primary button--blue" {{action (perform publishCard)}}>Publish</button>
     </div>

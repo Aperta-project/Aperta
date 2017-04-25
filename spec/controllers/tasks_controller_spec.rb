@@ -368,7 +368,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.create(:cover_letter_task) }
+    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
     let!(:card_content) do
       root = task.card.content_root_for_version(:latest)
       root.children.first

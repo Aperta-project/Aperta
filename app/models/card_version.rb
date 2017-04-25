@@ -23,4 +23,14 @@ class CardVersion < ActiveRecord::Base
   def published?
     published_at.present?
   end
+
+  def create_default_answers(task)
+    card_contents.where.not(default_answer_value: nil).find_each do |content|
+      task.answers.create!(
+        card_content: content,
+        paper: task.paper,
+        value: content.default_answer_value
+      )
+    end
+  end
 end

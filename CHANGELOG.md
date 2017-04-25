@@ -11,7 +11,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Deprecated
 ### Removed
 ### Fixed
-Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
+* Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
+* Intercept emails without storing attachments
+* Store email bodies in logs so that we can have cleaner correspondence history
 ### Security
 
 ## ## [1.40.0] - {2017-04-06}

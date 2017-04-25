@@ -15,7 +15,7 @@ class SimilarityCheckStartReportWorker
       title: similarity_check.versioned_text.paper.title,
       author_first_name: "ninja", # TODO: fix author name
       author_last_name: "turtle",
-      folder_id: 1, # TODO: fix folder id
+      folder_id: 921_380, # TODO: fix folder id
     )
 
     if response["api_status"] == 200
@@ -23,7 +23,7 @@ class SimilarityCheckStartReportWorker
         ithenticate_document_id: response["uploaded"].first["id"]
       )
     else
-      raise "ithenticate error"
+      raise "ithenticate error" # TODO: expose response
     end
   end
 

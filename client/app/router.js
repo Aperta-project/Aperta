@@ -50,7 +50,6 @@ Router.map(function() {
         this.route('preview', { path: '/' });
         this.route('edit');
         this.route('permissions');
-        this.route('tags');
         this.route('history');
       });
     });

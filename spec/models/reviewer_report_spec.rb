@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe ReviewerReport do
-  subject(:reviewer_report) { FactoryGirl.build(:reviewer_report) }
+  subject(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
+  subject(:task) { FactoryGirl.create(:reviewer_report_task, paper: paper) }
+  subject(:reviewer_report) { FactoryGirl.create(:reviewer_report, task: task) }
 
   def add_invitation(state)
     invitation = FactoryGirl.create(:invitation,

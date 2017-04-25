@@ -64,7 +64,7 @@ describe Card do
   end
 
   describe '.find_by_class_name' do
-    let(:card) { FactoryGirl.create(:card) }
+    let(:card) { FactoryGirl.create(:card, journal: nil) }
     let(:card_class_name) { card.class.to_s }
 
     context 'with successful namespace lookup' do

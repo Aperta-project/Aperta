@@ -26,6 +26,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         FactoryGirl.create(:ad_hoc_task,
                            title: "Wicked Awesome Card",
                            body: text_body,
+                           phase: submission_phase,
                            paper: submission_phase.paper)
 
         expect(page).to have_content "Wicked Awesome Card"

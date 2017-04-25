@@ -134,6 +134,11 @@ describe CardsController do
 
   describe "#publish" do
     let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
+    before do
+      # by default the :versioned trait creates a published version and we
+      # need to work with a draft
+      card.latest_card_version.update!(published_at: nil)
+    end
     subject(:do_request) do
       put(:publish, format: 'json', id: card.id)
     end

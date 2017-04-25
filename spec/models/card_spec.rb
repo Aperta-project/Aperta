@@ -70,7 +70,7 @@ describe Card do
 
     it "sets the published_at on the latest version if it's unset" do
       card.publish!
-      expect(card_version.reload).to be_published
+      expect(card_version.reload.published_at).to be_present
     end
 
     it "blows up if the latest version is already published" do

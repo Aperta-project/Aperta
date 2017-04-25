@@ -26,7 +26,17 @@ export default Ember.Component.extend({
   }),
 
   acceptedFileTypes: Ember.computed('content.possibleValues', function() {
-    return this.get('content.possibleValues').mapBy('value').join(',');
+    let vals = this.get('content.possibleValues');
+    if (Ember.isEmpty(vals)) {
+      return null;
+    }
+
+    Ember.assert(
+      `content's possible values must either be null or an array of objects that
+                  have a defined 'value' property`,
+      vals.every(v => Ember.isPresent(Ember.get(v, 'value')))
+    );
+    return vals.mapBy('value').join(',');
   }),
 
   actions: {

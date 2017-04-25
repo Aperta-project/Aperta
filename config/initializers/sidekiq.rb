@@ -2,7 +2,8 @@ redis_config = if TahiEnv.redis_sentinel_enabled?
                  {
                    url: ENV[ENV['REDIS_PROVIDER'] || 'REDIS_URL'],
                    role: :master,
-                   master_name: 'aperta',
+                   # This option is actually the master name, not a host
+                   host: 'aperta',
                    sentinels: TahiEnv.redis_sentinels.map do |s|
                      u = URI.parse(s)
                      { host: u.host, port: (u.port || 26_379) }

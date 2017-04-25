@@ -34,7 +34,7 @@ describe Card do
 
     it 'creates a new published card version' do
       expect(new_card.latest_card_version).to be_published
-      expect(new_card.latest_card_version).to eq(new_card).latest_published_card_version
+      expect(new_card.latest_card_version).to eq(new_card.latest_published_card_version)
     end
 
     it 'gives the card version a piece of card content' do
@@ -122,6 +122,18 @@ describe Card do
         expect(card.content_for_version_without_root(:latest).count).to eq(1)
         expect(card.content_for_version_without_root(:latest).first.parent_id).to be_present
       end
+    end
+  end
+
+  describe "#published?" do
+    it "returns false when the state is 'draft'" do
+      allow(card).to receive(:state).and_return "draft"
+      expect(card).to_not be_published
+    end
+
+    it "returns true when the state is anything but 'draft'" do
+      allow(card).to receive(:state).and_return "anythingButDraft"
+      expect(card).to be_published
     end
   end
 

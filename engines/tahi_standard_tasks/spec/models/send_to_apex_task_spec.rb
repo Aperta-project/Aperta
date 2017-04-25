@@ -5,7 +5,7 @@ describe TahiStandardTasks::SendToApexTask do
     FactoryGirl.create :paper, :with_tasks
   end
   let!(:task) do
-    FactoryGirl.create(:send_to_apex_task, paper: paper)
+    FactoryGirl.create(:send_to_apex_task, :with_loaded_card, paper: paper)
   end
 
   describe '.restore_defaults' do
@@ -14,7 +14,7 @@ describe TahiStandardTasks::SendToApexTask do
 
   describe '#apex_deliveries association' do
     let!(:task) do
-      FactoryGirl.create(:send_to_apex_task, apex_deliveries: [apex_delivery])
+      FactoryGirl.create(:send_to_apex_task, :with_loaded_card, apex_deliveries: [apex_delivery])
     end
     let!(:apex_delivery) { FactoryGirl.create(:apex_delivery) }
 

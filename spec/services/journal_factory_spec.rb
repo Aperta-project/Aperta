@@ -1412,7 +1412,7 @@ describe JournalFactory do
           DESC
             tasks = Task.descendants
             tasks -= [PlosBilling::BillingTask]
-            tasks.each do |task|
+            without_anonymous_classes(tasks).each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)

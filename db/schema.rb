@@ -743,13 +743,13 @@ ActiveRecord::Schema.define(version: 20170419140939) do
   end
 
   create_table "similarity_checks", force: :cascade do |t|
-    t.integer  "ithenticate_id"
+    t.integer  "ithenticate_document_id"
     t.integer  "match_percent"
-    t.integer  "versioned_text_id", null: false
+    t.integer  "versioned_text_id",       null: false
     t.string   "report_link"
-    t.string   "state",             null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.string   "state",                   null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "simple_reports", force: :cascade do |t|

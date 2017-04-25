@@ -41,6 +41,7 @@ Tahi::Application.routes.draw do
     resources :institutional_accounts, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
+
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
@@ -139,6 +140,7 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
+      resources :correspondence, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create

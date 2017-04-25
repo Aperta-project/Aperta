@@ -19,10 +19,6 @@ redis_config = if TahiEnv.redis_sentinel_enabled?
 
 Sidekiq.configure_server do |config|
   config.redis = redis_config
-  # allow configuration of concurrency without redeploy
-  # controls the number of redis connections
-  sidekiq_workers = 25
-  config.options[:concurrency] = sidekiq_workers
 
   ActiveSupport.on_load(:active_record) do
     ar_config = ActiveRecord::Base.configurations[Rails.env]

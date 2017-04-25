@@ -1,4 +1,11 @@
 {{paper-control-bar paper=paper}}
+{{#overlay-fullscreen visible=showCorrespondenceOverlay
+                      outAnimationComplete=(action "hideCorrespondenceOverlay")
+                      title="Correspondence Record"
+                      overlayClass="correspondence-overlay"
+                      as |overlay|}}
+    Hello World
+{{/overlay-fullscreen}}
 <main id="main-content" class="main-content correspondence-history-screen" role="main">
   <div id="correspondence-history" class="main-content-section">
     <div class="base-layout">

@@ -165,7 +165,7 @@ FactoryGirl.define do
           end_time = Time.now
           puts "seeded cards in test in #{end_time - start} seconds"
         end
-        FactoryGirl.create(:early_posting_task)
+        FactoryGirl.create(:early_posting_task, :with_loaded_card)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end

@@ -26,9 +26,4 @@ describe TahiStandardTasks::SendToApexTask do
       expect { apex_delivery.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
-  describe '#send_to_apex' do
-    # It triggers the job to build the zip file and FTP it to APEX
-    pending
-  end
 end

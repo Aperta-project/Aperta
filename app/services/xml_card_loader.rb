@@ -83,10 +83,12 @@ class XmlCardLoader
   end
 
   def make_card_content(el, card_version)
-    text = tag_text(el, 'text') || attr_val(el, 'text')
+    text = tag_text(el, 'text')
     placeholder = tag_text(el, 'placeholder')
     label = tag_text(el, 'label')
     content = CardContent.new(
+      allow_multiple_uploads: attr_val(el, 'allow-multiple-uploads'),
+      allow_file_captions: attr_val(el, 'allow-file-captions'),
       card_version: card_version,
       content_type: attr_val(el, 'content-type'),
       default_answer_value: attr_val(el, 'default-answer-value'),

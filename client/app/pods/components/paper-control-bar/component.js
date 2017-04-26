@@ -19,7 +19,7 @@ export default ControlBar.extend({
     versioningMode: PropTypes.bool,
     submenuVisible: PropTypes.bool,
     // action:
-    toggleDownloads: PropTypes.func.isRequired
+    toggleDownloads: PropTypes.func
   },
 
   getDefaultProps() {

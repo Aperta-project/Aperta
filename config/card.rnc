@@ -37,6 +37,17 @@ check-box-input = element content {
                 content*
             }
 
+file-uploader = element content {
+                    attribute ident { text }?,
+                    attribute content-type { "file-uploader" },
+                    attribute value-type { "attachment" },
+                    attribute allow-multiple-uploads { "true" | "false" }?,
+                    attribute allow-file-captions { "true" | "false" }?,
+                    (element label { text }? &
+                      element text { text }?),
+                    possible-value*
+                }
+
 # for now duplicating radio-input for dropdown
 dropdown-input = element content {
                   attribute ident { text }?,
@@ -91,6 +102,7 @@ content = (radio-input |
            display-with-value-content |
            field-set |
            check-box-input |
+           file-uploader |
            dropdown-input
           )
 

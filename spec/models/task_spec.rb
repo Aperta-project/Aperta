@@ -4,14 +4,7 @@ describe Task do
   it_behaves_like 'is not snapshottable'
 
   describe ".without" do
-    let!(:tasks) do
-      Array.new(2) do
-        Task.create! title: "Paper Admin",
-                     completed: true,
-                     phase_id: 3,
-                     paper_id: 99
-      end
-    end
+    let!(:tasks) { FactoryGirl.create_list(:custom_card_task, 2, :with_stubbed_associations) }
 
     it "excludes task" do
       expect(Task.count).to eq(2)

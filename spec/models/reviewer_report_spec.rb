@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe ReviewerReport do
-  subject(:reviewer_report) { FactoryGirl.build(:reviewer_report) }
+  subject(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
+  subject(:task) { FactoryGirl.create(:reviewer_report_task, paper: paper) }
+  subject(:reviewer_report) { FactoryGirl.create(:reviewer_report, task: task) }
 
   def add_invitation(state)
     invitation = FactoryGirl.create(:invitation,
@@ -136,47 +138,6 @@ describe ReviewerReport do
       subject.decision.minor_version = 2
 
       expect(subject.revision).to eq('v1.2')
-    end
-  end
-
-  describe "#card" do
-    context "the card_version_id is set" do
-      let(:card_version) { FactoryGirl.create(:card_version) }
-      it "returns the card version's card" do
-        reviewer_report.update(card_version_id: card_version.id)
-        expect(reviewer_report.card).to eq(card_version.card)
-      end
-    end
-    context "no card_version_id" do
-      context "the report belongs to a ReviewerReportTask" do
-        before do
-          FactoryGirl.create(:card, name: 'ReviewerReport')
-        end
-        subject(:reviewer_report) do
-          FactoryGirl.build(
-            :reviewer_report,
-            task: FactoryGirl.create(:reviewer_report_task)
-          )
-        end
-        it 'returns the ReviewerReport card' do
-          expect(reviewer_report.card.name).to eq('ReviewerReport')
-        end
-      end
-
-      context "the report belongs to a FrontMatterReviewerReportTask" do
-        before do
-          FactoryGirl.create(:card, name: 'FrontMatterReviewerReport')
-        end
-        subject(:reviewer_report) do
-          FactoryGirl.build(
-            :reviewer_report,
-            task: FactoryGirl.create(:front_matter_reviewer_report_task)
-          )
-        end
-        it 'returns the FrontMatterReviewerReport card' do
-          expect(reviewer_report.card.name).to eq('FrontMatterReviewerReport')
-        end
-      end
     end
   end
 end

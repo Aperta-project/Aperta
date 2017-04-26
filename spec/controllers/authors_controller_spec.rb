@@ -2,9 +2,8 @@ require 'rails_helper'
 
 describe AuthorsController do
   let(:user) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
+  let(:task) { FactoryGirl.create(:authors_task, :with_loaded_card, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:post_request) do
     post :create,
          format: :json,
@@ -13,8 +12,7 @@ describe AuthorsController do
            last_name: "fermi",
            paper_id: paper.id,
            task_id: task.id,
-           position: 1,
-           card_version_id: card.card_version(:latest).id
+           position: 1
          }
   end
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
@@ -24,6 +22,7 @@ describe AuthorsController do
   end
 
   before do
+    CardLoader.load("Author")
     allow(request.env['warden']).to receive(:authenticate!).and_return(user)
     allow(controller).to receive(:current_user).and_return(user)
   end
@@ -40,7 +39,7 @@ describe AuthorsController do
 
     it 'a POST request associates a new author to an existing card version' do
       post_request
-      expect(Author.last.card_version).to eq(card.card_version(:latest))
+      expect(Author.last.card_version).to eq(Author.latest_card_version)
     end
 
     it 'a PUT request updates the author' do

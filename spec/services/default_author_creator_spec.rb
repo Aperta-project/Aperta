@@ -6,6 +6,10 @@ describe DefaultAuthorCreator do
     let(:creator) { FactoryGirl.build_stubbed(:user) }
     let(:paper) { FactoryGirl.create(:paper_with_phases) }
 
+    before do
+      CardLoader.load("Author")
+    end
+
     it 'creates an author on the paper' do
       expect do
         DefaultAuthorCreator.new(paper, creator).create!
@@ -44,7 +48,9 @@ describe DefaultAuthorCreator do
     end
 
     it 'associates the author with the AuthorsTask on the paper' do
-      authors_task = TahiStandardTasks::AuthorsTask.create(
+      authors_task = FactoryGirl.create(
+        :authors_task,
+        :with_loaded_card,
         title: "Authors",
         paper: paper,
         phase: paper.phases.first

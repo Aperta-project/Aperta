@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  showCorrespondenceOverlay: true,
+  showCorrespondenceOverlay: false,
   actions: {
     showCorrespondenceOverlay() {
       this.set('showCorrespondenceOverlay', true);

@@ -14,10 +14,9 @@ class TaskFactory
     @notify = options.delete(:notify) { true }
 
     @task_klass = task_klass
-    options = default_options.merge(options)
-    unless options[:card_version].present? || options["card_version"].present?
-      options[:card_version] = Card.find_by(name: task_klass.name)
-                                 .try(:card_version, :latest)
+    options = HashWithIndifferentAccess.new(default_options.merge(options))
+    if options[:card_version].blank?
+      options[:card_version] = task_klass.latest_card_version
     end
     @task = task_klass.new(options)
     set_required_permissions

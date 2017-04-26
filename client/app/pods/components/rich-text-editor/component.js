@@ -1,10 +1,14 @@
 import Ember from 'ember';
 
+/* tinymce requires snake_case option names */
+/* eslint-disable camelcase */
+
 export default Ember.Component.extend({
   editorStyle: 'expanded',
   editorConfigurations: {
     basic: {
       menubar: false,
+      statusbar: false,
       toolbar: 'italic | subscript superscript | undo redo',
       valid_elements: 'p,br,em/i,sub,sup'
     },
@@ -19,10 +23,12 @@ export default Ember.Component.extend({
     }
   },
 
+/* eslint-enable camelcase */
+
   editorOptions: Ember.computed('editorStyle', 'editorConfigurations', function() {
     let options = this.get('editorConfigurations');
-    let style = this.get('editorStyle');
-    let hash = options[style] || options['expanded'];
+    let style = this.get('editorStyle') || 'expanded';
+    let hash = options[style];
     // hash['placeholder'] = this.get('placeholder');
     return hash;
   }),

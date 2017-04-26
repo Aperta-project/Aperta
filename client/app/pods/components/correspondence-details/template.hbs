@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    Date Sent:
+  </div>
+  <div class="col-sm-10">
+    {{format-date message.date}}
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    Description:
+  </div>
+  <div class="col-sm-10">
+    Reviewer Invitation
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    From:
+  </div>
+  <div class="col-sm-10">
+    {{message.sender}}
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    To:
+  </div>
+  <div class="col-sm-10">
+    {{message.recipient}}
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    Subject:
+  </div>
+  <div class="col-sm-10">
+    {{message.subject}}
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    CC:
+  </div>
+  <div class="col-sm-10">
+
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-sm-2" style="color:grey;">
+    BCC:
+  </div>
+  <div class="col-sm-10">
+
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-sm-12">
+    {{{message.body}}}
+  </div>
+</div>

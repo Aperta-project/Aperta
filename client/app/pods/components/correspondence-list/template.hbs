@@ -4,7 +4,7 @@
                       title="Correspondence Record"
                       overlayClass="correspondence-overlay"
                       as |overlay|}}
-    Hello World
+    {{correspondence-details message=message}}
 {{/overlay-fullscreen}}
   <div class="correspondence-table">
     <table class="table table-hover">
@@ -20,7 +20,7 @@
         {{#each model as |message|}}
           <tr>
             <td>{{format-date message.date}}</td>
-            <td><a {{action "showCorrespondenceOverlay"}}>{{message.subject}}</a></td>
+            <td><a {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>
             <td>{{message.recipient}}</td>
             <td>{{message.sender}}</td>
           </tr>

@@ -24,10 +24,13 @@
 
           {{#if selected.yes}}
             <div class="question-dataset">
-              {{nested-question-textarea ident='competing_interests--statement'
+              {{nested-question-textarea
+                  editorStyle='expanded'
+                  ident='competing_interests--statement'
                   owner=task
                   helpText="Please note that if your manuscript is accepted, this statement will be published."
-                  disabled=isNotEditable}}
+                  disabled=isNotEditable
+              }}
             </div>
           {{/if}}
 

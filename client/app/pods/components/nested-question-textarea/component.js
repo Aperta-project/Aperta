@@ -5,7 +5,7 @@ export default NestedQuestionComponent.extend({
   helpText: null,
   unwrappedHelpText: null,
   displayContent: true,
-  inputClassNames: ['form-control'],
+  inputClassNames: [],
 
   change() {
     return false; // no-op to override parent's behavior

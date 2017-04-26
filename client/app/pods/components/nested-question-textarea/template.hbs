@@ -23,6 +23,10 @@
       {{{unwrappedHelpText}}}
     {{/if}}
 
-    {{rich-text-editor editorStyle=editorStyle value=answer.value name=ident class=inputClassNames placeholder=placeholderText disabled=disabled onContentsChanged=(action "updateAnswer")}}
+    {{rich-text-editor
+      editorStyle=editorStyle
+      onContentsChanged=(action "updateAnswer")
+      value=answer.value name=ident class=inputClassNames placeholder=placeholderText disabled=disabled
+    }}
   {{/if}}
 {{/if}}

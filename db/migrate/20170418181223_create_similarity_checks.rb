@@ -6,7 +6,7 @@
 class CreateSimilarityChecks < ActiveRecord::Migration
   def change
     create_table :similarity_checks do |t|
-      t.integer :ithenticate_id
+      t.integer :ithenticate_document_id
       t.integer :match_percent
       t.references :versioned_text, foreign_key: true, null: false
       t.string :report_link

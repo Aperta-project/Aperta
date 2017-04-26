@@ -16,7 +16,6 @@ export default TaskComponent.extend({
     },
     generateReport() {
       this.get('task.paper.versionedTexts').then(() => {
-        debugger;
         const similarityCheck = this.get('store').createRecord('similarity-check', {
           versionedText: this.get('latestVersionedText')
         });

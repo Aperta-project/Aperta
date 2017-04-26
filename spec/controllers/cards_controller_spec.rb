@@ -177,6 +177,51 @@ describe CardsController do
     end
   end
 
+  describe "#archive" do
+    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
+    subject(:do_request) do
+      put(:archive, format: 'json', id: card.id)
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "and the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'and the user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return(true)
+        end
+
+        it { is_expected.to responds_with 200 }
+
+        it 'calls the CardArchiver' do
+          expect(CardArchiver).to receive(:archive)
+          do_request
+        end
+
+        it 'returns the updated card' do
+          expect(card.state).to eq('published')
+          do_request
+          expect(res_body['card']['state']).to eq('archived')
+        end
+      end
+    end
+  end
+
   describe "#update" do
     let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
     let(:card_params) do

@@ -115,6 +115,7 @@ class Card < ActiveRecord::Base
 
   def archive!
     CardArchiver.archive(self)
+    reload
   end
 
   def self.create_draft!(attrs)

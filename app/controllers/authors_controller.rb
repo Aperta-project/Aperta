@@ -11,6 +11,7 @@ class AuthorsController < ApplicationController
     paper = Paper.find_by_id_or_short_doi(author_params[:paper_id])
     requires_user_can :edit_authors, paper
     author = Author.new(author_params)
+    author.card_version = Author.latest_card_version
     author.save!
     author.author_list_item.move_to_bottom
 

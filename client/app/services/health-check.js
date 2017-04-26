@@ -14,9 +14,13 @@ export default Ember.Service.extend({
   featureFlag: Ember.inject.service('feature-flag'),
 
   start() {
+    if (Ember.testing || window.RailsEnv.testing) { return; }
     this.get('featureFlag').value('HEALTH_CHECK').then((healthCheck) => {
-      if (Ember.testing || window.RailsEnv.testing || !healthCheck) { return; }
-      else { this.get('poll').perform();}
+      if (!healthCheck) {
+        return;
+      } else {
+        this.get('poll').perform();
+      }
     });
   },
 

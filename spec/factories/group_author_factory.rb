@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :group_author do
     paper
+    card_version
 
     contact_first_name "Luke"
     contact_middle_name "J"

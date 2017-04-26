@@ -7,12 +7,15 @@ export default NestedQuestionComponent.extend({
   displayContent: true,
   inputClassNames: ['form-control'],
 
-  input() {
-    this.save();
-  },
-
   change() {
     return false; // no-op to override parent's behavior
+  },
+
+  actions: {
+    updateAnswer(contents) {
+      this.set('answer.value', contents);
+      this.save();
+    }
   },
 
   clearHiddenQuestions: Ember.observer('displayContent', 'disabled', function() {

@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :reviewer_recommendation, class: 'TahiStandardTasks::ReviewerRecommendation' do
+    card_version
+
     first_name "Bob"
     middle_initial "J."
     last_name "Jones"

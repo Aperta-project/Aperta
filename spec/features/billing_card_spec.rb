@@ -11,7 +11,9 @@ feature 'Billing card', js: true do
     )
   end
   let!(:billing_task) do
-    ::PlosBilling::BillingTask.create!(
+    FactoryGirl.create(
+      :billing_task,
+      :with_loaded_card,
       completed: false,
       paper: paper,
       phase: paper.phases.first,

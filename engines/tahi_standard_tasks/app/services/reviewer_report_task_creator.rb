@@ -22,6 +22,7 @@ class ReviewerReportTaskCreator
       @task = reviewer_report_task_class.create!(
         paper: paper,
         phase: default_phase,
+        card_version: reviewer_report_task_class.latest_card_version,
         title: "Review by #{assignee.full_name}"
       )
       assignee.assign_to!(assigned_to: @task, role: paper.journal.reviewer_report_owner_role)
@@ -40,10 +41,17 @@ class ReviewerReportTaskCreator
   end
 
   def create_reviewer_report
+    # note: since a FrontMatterReviewerReport is not an actual AR class,
+    # use the 'deeper' card finder method that accepts a string, rather
+    # than Class to find the latest card version
+    card_version = Card.find_by_class_name!(reviewer_report_card_class)
+                       .latest_card_version
+
     ReviewerReport.create!(
       task: @task,
       decision: @paper.draft_decision,
-      user: assignee
+      user: assignee,
+      card_version: card_version
     ).accept_invitation!
   end
 
@@ -52,6 +60,17 @@ class ReviewerReportTaskCreator
       TahiStandardTasks::ReviewerReportTask
     else
       TahiStandardTasks::FrontMatterReviewerReportTask
+    end
+  end
+
+  def reviewer_report_card_class
+    if @paper.uses_research_article_reviewer_report
+      "ReviewerReport"
+    else
+      # note: this AR model does not yet exist, but
+      # is being done as preparatory / consistency for
+      # card config work
+      "TahiStandardTasks::FrontMatterReviewerReport"
     end
   end
 

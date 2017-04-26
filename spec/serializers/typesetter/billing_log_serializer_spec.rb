@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe Typesetter::BillingLogSerializer do
-  before do
-    CardLoader.load('PlosBilling::BillingTask')
-  end
-
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
   let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
@@ -22,15 +18,15 @@ describe Typesetter::BillingLogSerializer do
   end
 
   let(:billing_task) do
-    FactoryGirl.create(:billing_task, :with_card_content, paper: paper)
+    FactoryGirl.create(:billing_task, :with_loaded_card, :with_card_content, paper: paper)
   end
 
   let(:financial_disclosure_task) do
-    FactoryGirl.create(:financial_disclosure_task, paper: paper)
+    FactoryGirl.create(:financial_disclosure_task, :with_loaded_card, paper: paper)
   end
 
   let(:final_tech_check_task) do
-    FactoryGirl.create(:final_tech_check_task, paper: paper)
+    FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: paper)
   end
 
   before do

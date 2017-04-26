@@ -15,7 +15,10 @@ module TahiStandardTasks
       if existing_revise_task
         existing_revise_task.update(completed: false, phase: phase)
       else
-        TaskFactory.create(self, paper: paper, phase: phase)
+        TaskFactory.create(self,
+                           paper: paper,
+                           phase: phase,
+                           card_version: latest_card_version)
       end
     end
   end

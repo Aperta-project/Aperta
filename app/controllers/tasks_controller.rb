@@ -134,18 +134,18 @@ class TasksController < ApplicationController
       # for all new tasks, assign necessary paper attributes
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
-
-      # for custom cards, assign the latest card version
-      if params[:task][:type] == 'CustomCardTask'
-        new_params[:card_version] = card_version
-      end
+      new_params[:card_version] = card_version
     end
   end
 
   def card_version
     @card_version ||= begin
-      card = paper.journal.cards.find_by(id: params[:task][:card_id])
-      card.card_version(:latest)
+      if task_type.to_s == 'CustomCardTask'
+        card = paper.journal.cards.find_by!(id: params[:task][:card_id])
+        card.latest_card_version
+      else
+        task_type.latest_card_version
+      end
     end
   end
 

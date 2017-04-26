@@ -26,6 +26,7 @@ module TahiStandardTasks
     let(:task) do
       FactoryGirl.create(
         :reviewer_recommendations_task,
+        :with_loaded_card,
         paper: paper,
         phase: paper.phases.last
       )

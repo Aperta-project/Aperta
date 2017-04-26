@@ -7,7 +7,7 @@ feature "Invite Reviewer", js: true do
   let(:paper) do
     FactoryGirl.create(:paper, :submitted_lite, :with_creator, journal: journal)
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
 
   let(:editor) { create :user }
   let!(:reviewer1) { create :user, first_name: 'Henry' }

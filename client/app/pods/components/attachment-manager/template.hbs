@@ -24,6 +24,10 @@
   {{upload-preview upload=f}}
 {{/each}}
 
+<div>
+  {{error-message message=uploadErrorMessage displayIcon=true}}
+</div>
+
 {{#if showAddButton}}
   <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled preview) "button--disabled"}}">
     {{buttonText}}
@@ -33,6 +37,7 @@
                          filePrefix=filePath
                          multiple=multiple
                          disabled=disabled
+                         addingFileFailed=(action "uploadError")
                          progress=(action "uploadProgress")
                          done=(action "uploadFinished")
                          start=(action "fileAdded")}}

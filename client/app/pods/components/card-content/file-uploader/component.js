@@ -3,6 +3,8 @@ import { task as concurrencyTask, timeout } from 'ember-concurrency';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
+  classNames: ['card-content-file-uploader'],
+
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,

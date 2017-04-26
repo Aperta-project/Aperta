@@ -53,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
+  has_many :correspondence
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },

@@ -18,8 +18,8 @@ module MailLog::LogToDatabase
       it 'logs the email without attachments to the database' do
         expect do
           interceptor.delivering_email(mail)
-        end.to change { EmailLog.count }.by(+1)
-        email_log = EmailLog.last
+        end.to change { Correspondence.count }.by(+1)
+        email_log = Correspondence.last
         expect(email_log.sender).to eq 'apertian@plos.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
@@ -38,8 +38,8 @@ module MailLog::LogToDatabase
         mail.attachments['test'] = File.read('doc.docx')
         expect do
           interceptor.delivering_email(mail)
-        end.to change { EmailLog.count }.by(+1)
-        email_log = EmailLog.last
+        end.to change { Correspondence.count }.by(+1)
+        email_log = Correspondence.last
         expect(email_log.sender).to eq 'apertian@plos.org'
         expect(email_log.recipients).to eq 'curtis@example.com, zach@example.com'
         expect(email_log.message_id).to eq 'abc123'
@@ -62,7 +62,7 @@ module MailLog::LogToDatabase
         let(:task) { FactoryGirl.create(:ad_hoc_task) }
         let(:paper) { FactoryGirl.create(:paper) }
         let(:journal) { FactoryGirl.create(:journal) }
-        let(:email_log) { EmailLog.last }
+        let(:email_log) { Correspondence.last }
 
         let(:context_hash) do
           {
@@ -74,12 +74,12 @@ module MailLog::LogToDatabase
           }
         end
 
-        it 'sets the EmailLog#task to the first Task' do
+        it 'sets the Correspondence#task to the first Task' do
           perform_delivering_email
           expect(email_log.task).to eq task
         end
 
-        it 'sets the EmailLog#paper to the first Paper' do
+        it 'sets the Correspondence#paper to the first Paper' do
           perform_delivering_email
           expect(email_log.paper).to eq paper
         end
@@ -89,13 +89,13 @@ module MailLog::LogToDatabase
             context_hash.delete('@paper')
           end
 
-          it "sets the EmailLog#paper to the task's paper when it's available" do
+          it "sets the Correspondence#paper to the task's paper when it's available" do
             perform_delivering_email
             expect(email_log.paper).to eq(task.paper)
             expect(email_log.paper).to_not eq(paper)
           end
 
-          it "sets the EmailLog#paper to the first Paper instance when the instance variable is named something other than /paper/" do
+          it "sets the Correspondence#paper to the first Paper instance when the instance variable is named something other than /paper/" do
             context_hash.delete('@task')
             misnamed_paper = FactoryGirl.create(:paper)
             context_hash['@misnamed'] = misnamed_paper
@@ -105,7 +105,7 @@ module MailLog::LogToDatabase
             expect(email_log.paper).to_not eq(paper)
           end
 
-          it "sets the EmailLog#paper to the first associated paper found when @task.paper and @paper are blank" do
+          it "sets the Correspondence#paper to the first associated paper found when @task.paper and @paper are blank" do
             context_hash.delete('@task')
             attachment.paper = FactoryGirl.create(:paper)
             perform_delivering_email
@@ -115,7 +115,7 @@ module MailLog::LogToDatabase
           end
         end
 
-        it 'sets the EmailLog#journal to the first Journal' do
+        it 'sets the Correspondence#journal to the first Journal' do
           perform_delivering_email
           expect(email_log.journal).to eq journal
         end
@@ -125,14 +125,14 @@ module MailLog::LogToDatabase
             context_hash.delete('@journal')
           end
 
-          it "sets the EmailLog#journal to the paper's journal" do
+          it "sets the Correspondence#journal to the paper's journal" do
             perform_delivering_email
             expect(email_log.journal).to eq(paper.journal)
             expect(email_log.journal).to_not eq(journal)
           end
         end
 
-        it 'sets EmailLog#additional_context to include all of the activerecord models in the mail context' do
+        it 'sets Correspondence#additional_context to include all of the activerecord models in the mail context' do
           perform_delivering_email
           expect(email_log.additional_context).to eq("@task" => ["AdHocTask", task.id],
                                                      "@paper" => ["Paper", paper.id],
@@ -155,7 +155,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        EmailLog.create!(message_id: 'abc123', status: 'pending')
+        Correspondence.create!(message_id: 'abc123', status: 'pending')
       end
 
       it 'marks the logged email record as sent' do
@@ -184,7 +184,7 @@ module MailLog::LogToDatabase
       end
 
       let!(:email_log) do
-        EmailLog.create!(message_id: 'abc123', status: 'sent')
+        Correspondence.create!(message_id: 'abc123', status: 'sent')
       end
 
       it 'yields the given block' do

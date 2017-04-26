@@ -13,7 +13,7 @@ module MailLog
         message.delivery_handler = EmailExceptionsHandler.new
         recipients = message.to.join(', ')
         mail_context = message.aperta_mail_context
-        EmailLog.create!(
+        Correspondence.create!(
           sender: message.from.first,
           recipients: recipients,
           message_id: message.message_id,
@@ -35,7 +35,7 @@ module MailLog
     # Delivered Email Observer
     class DeliveredEmailObserver
       def self.delivered_email(message)
-        email_log = EmailLog.find_by!(message_id: message.message_id)
+        email_log = Correspondence.find_by!(message_id: message.message_id)
         email_log.update_columns(
           status: 'sent',
           sent_at: Time.now.utc
@@ -49,7 +49,7 @@ module MailLog
       def deliver_mail(message)
         yield
       rescue Exception => ex
-        email_log = EmailLog.find_by!(message_id: message.message_id)
+        email_log = Correspondence.find_by!(message_id: message.message_id)
         email_log.update_columns(
           error_message: ex.message,
           errored_at: Time.now.utc,

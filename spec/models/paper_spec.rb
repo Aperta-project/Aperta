@@ -11,6 +11,11 @@ describe Paper do
   let(:user) { FactoryGirl.create :user }
   let(:frozen_time) { 1.day.ago }
 
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
+    CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
+  end
+
   shared_examples_for "submission" do
     it 'should be unsubmitted' do
       expect(paper.publishing_state).to eq("unsubmitted")
@@ -255,7 +260,11 @@ describe Paper do
     end
 
     context "with tasks" do
-      let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
+      let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
+
+      before do
+        FactoryGirl.create(:upload_manuscript_task, paper: paper, phase: paper.phases.first)
+      end
 
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase

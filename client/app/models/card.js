@@ -49,5 +49,8 @@ export default DS.Model.extend({
 
   publish() {
     return this.get('restless').putUpdate(this, `/publish`);
+  },
+  archive() {
+    return this.get('restless').putUpdate(this, `/archive`);
   }
 });

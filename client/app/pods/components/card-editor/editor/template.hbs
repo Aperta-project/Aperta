@@ -1,3 +1,8 @@
+{{#ember-wormhole to="card-editor-action-buttons"}}
+  <button class="button button-secondary button--blue"
+          disabled={{or (not-eq card.state "published") archiveCard.isRunning}}
+          {{action "confirmArchive"}}>Archive</button>
+{{/ember-wormhole}}
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
     <div class="card-editor-save-buttons-state">
@@ -59,6 +64,30 @@
     <div class="overlay-action-buttons">
       <button class="button-link button--blue" {{action overlay.animateOut}}>Not yet, keep editing</button>
       <button class="button-primary button--blue" {{action (perform publishCard)}}>Publish</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showArchiveOverlay
+   outAnimationComplete=(toggle "showArchiveOverlay" this)
+   overlayClass="publish-card-overlay overlay--blue"
+   as |overlay|}}
+  <h1> Archive Card </h1>
+  <p>
+    Archiving a card will remove the card from the card catalogue. Therefore, you will not be able
+    to add this card to existing papers or workflow templates.
+  </p>
+
+  <p>
+    This card will remain attached to active manuscripts that were initiated before archiving this card.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to archive this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>cancel</button>
+      <button class="button-primary button--blue" {{action (perform archiveCard)}}>Yes, Archive</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

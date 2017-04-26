@@ -1,6 +1,15 @@
 {{#link-to "admin.cc.journals.cards" class="card-editor-header-back"}}&lt; Card Catalogue{{/link-to}}
 
 <div class="card-editor-header-container">
-  {{card-editor/name card=card}}
-  {{card-editor/tab-bar card=card}}
+  <div>
+    {{card-editor/name card=card}}
+    {{card-editor/tab-bar card=card}}
+  </div>
+  <div id="card-editor-action-buttons" class="card-editor-action-buttons">
+    {{!-- This empty div only exists as an ember-wormhole target. In the initial
+    use case a child component - the card-editor/editor - needs to add buttons
+    into the DOM higher up for layout and styling, but should manage those
+    buttons in its own template. The wormhole is a perfect fit for that type of
+    thing. --}}
+  </div>
 </div>

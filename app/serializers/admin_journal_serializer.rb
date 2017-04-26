@@ -13,7 +13,10 @@ class AdminJournalSerializer < ActiveModel::Serializer
     :doi_publisher_prefix,
     :last_doi_issued,
     :links
-  has_many :admin_journal_roles, embed: :ids, include: true
+  has_many :admin_journal_roles,
+           embed: :ids,
+           include: true,
+           serializer: AdminJournalRoleSerializer
   has_many :journal_task_types, embed: :ids, include: true
 
   def paper_count

@@ -31,7 +31,7 @@ class ReviewerReportTask(BaseTask):
     self._submit_confirm_yes_btn = (By.CSS_SELECTOR, 'div.reviewer-report-confirmation > button')
     self._submit_confirm_no_btn = (By.CSS_SELECTOR,
                                    'div.reviewer-report-confirmation > button + button')
-    self._submitted_status = (By.CLASS_NAME, 'reviewer-report-feedback')
+    self._submitted_status = (By.CLASS_NAME, 'long-status')
     # Question one is the same regardless front-matter or research type - all other questions differ
     self._q1_accept_label = (By.CSS_SELECTOR, 'div.flex-group > label')
     self._q1_accept_radio = (By.CSS_SELECTOR, 'input[value=\'accept\']')
@@ -468,9 +468,8 @@ class ReviewerReportTask(BaseTask):
     self._wait_for_element(self._get(self._submit_confirm_yes_btn))
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
-    # Note: Check for 'This report has been submitted' to make sure confirm is acknowledged
-    report_submit_status = self._get(self._submitted_status)
-    assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
+    # Note: Wait for 'Completed' to make sure confirm is acknowledged
+    self._wait_for_text_be_present_in_element(self._submitted_status, 'Completed')
     if research_type:
       outdata = [recommendation,
                  q2radval,

@@ -10,7 +10,7 @@ export default Ember.Route.extend({
         users: this.store.query('admin-journal-user', {
           'journal_id': journalID
         }),
-        roles: journal.get('adminJournalRoles'),
+        roles: journal.get('adminJournalLevelRoles'),
         journal: journal
       });
 

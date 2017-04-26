@@ -10,6 +10,7 @@ export default DS.Model.extend({
   manuscriptManagerTemplates: DS.hasMany('manuscript-manager-template'),
   journalTaskTypes: DS.hasMany('journal-task-type', {async: false}),
   adminJournalRoles: DS.hasMany('admin-journal-role', {async: false}),
+  adminJournalLevelRoles: Ember.computed.filterBy('adminJournalRoles', 'assignedToTypeHint', 'Journal'),
   createdAt: DS.attr('date'),
   description: DS.attr('string'),
   logoUrl: DS.attr('string'),

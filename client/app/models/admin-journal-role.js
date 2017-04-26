@@ -3,6 +3,7 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
+  assignedToTypeHint: DS.attr('string'),
 
   selectItem: Ember.computed('id', 'name', function() {
     return {

@@ -1,4 +1,11 @@
 {{#if (can "manage_workflow" paper)}}
+{{#overlay-fullscreen visible=showCorrespondenceOverlay
+                      outAnimationComplete=(action "hideCorrespondenceOverlay")
+                      title="Correspondence Record"
+                      overlayClass="correspondence-overlay"
+                      as |overlay|}}
+    Hello World
+{{/overlay-fullscreen}}
   <div class="correspondence-table">
     <table class="table table-hover">
       <thead>

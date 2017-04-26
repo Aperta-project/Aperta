@@ -43,8 +43,7 @@ module TahiStandardTasks
         :title,
         :department,
         :affiliation,
-        :ringgold_id,
-        :card_version_id
+        :ringgold_id
       )
     end
 

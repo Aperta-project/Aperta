@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :author do
     paper
+    card_version
 
     first_name "Luke"
     middle_initial "J"

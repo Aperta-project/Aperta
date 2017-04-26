@@ -10,6 +10,12 @@ FactoryGirl.define do
       end
     end
 
+    trait :archived do
+      after(:build) do |card|
+        card.archived_at = DateTime.now.utc
+      end
+    end
+
     trait :for_answerable do
       transient do
         answerable TahiStandardTasks::PublishingRelatedQuestionsTask

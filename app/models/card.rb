@@ -22,6 +22,8 @@ class Card < ActiveRecord::Base
           ->(card) { where(version: card.latest_version) },
           class_name: 'CardVersion'
 
+  scope :archived, -> { where.not(archived_at: nil) }
+
   def latest_published_card_version
     card_versions.where.not(published_at: nil).order(version: 'DESC').first
   end
@@ -75,7 +77,9 @@ class Card < ActiveRecord::Base
   # not intended to be altered by end users. They show up in the card catalogue
   # but they won't open in the editor. **Locked cards do not have a journal_id**
   def state
-    if latest_card_version.published?
+    if archived_at.present?
+      "archived"
+    elsif latest_card_version.published?
       if journal_id
         "published"
       else
@@ -96,6 +100,10 @@ class Card < ActiveRecord::Base
     state != "draft"
   end
 
+  def archived?
+    state == "archived"
+  end
+
   def publish!
     if latest_card_version.published?
       raise ArgumentError, "Latest card version is already published"
@@ -103,6 +111,10 @@ class Card < ActiveRecord::Base
     latest_card_version.update!(published_at: DateTime.now.utc)
 
     reload
+  end
+
+  def archive!
+    CardArchiver.archive(self)
   end
 
   def self.create_draft!(attrs)

@@ -8,8 +8,10 @@ export default Ember.Component.extend({
   routing: Ember.inject.service('-routing'),
   cardsSorting: ['name'],
   sortedCards: Ember.computed.sort('filteredCards', 'cardsSorting'),
-  filteredCards: Ember.computed('cards.@each.isNew', function () {
-    return this.get('cards').filterBy('isNew', false);
+  filteredCards: Ember.computed('cards.@each.isNew', function() {
+    return this.get('cards')
+      .filterBy('isNew', false)
+      .reject(card => card.get('state') === 'archived');
   }),
 
   actions: {
@@ -22,10 +24,7 @@ export default Ember.Component.extend({
     },
 
     editCard(card) {
-      this.get('routing')
-        .transitionTo(
-          'admin.cc.card',
-          [card]);
+      this.get('routing').transitionTo('admin.cc.card', [card]);
     }
   }
 });

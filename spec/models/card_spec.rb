@@ -168,7 +168,9 @@ describe Card do
     end
 
     context "the card's latest version is published" do
-      let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc) }
+      let!(:previous_version) do
+        FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc)
+      end
       let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published_at: DateTime.now.utc) }
       context "the card has a journal" do
         let(:card) do
@@ -179,6 +181,11 @@ describe Card do
         end
         it "is published" do
           expect(card.state).to eq("published")
+        end
+
+        it "is archived if archived_at is set" do
+          card.update(archived_at: DateTime.now.utc)
+          expect(card.state).to eq("archived")
         end
       end
 
@@ -192,6 +199,11 @@ describe Card do
         end
         it "is locked" do
           expect(card.state).to eq("locked")
+        end
+
+        it "is archived if archived_at is set" do
+          card.update(archived_at: DateTime.now.utc)
+          expect(card.state).to eq("archived")
         end
       end
     end

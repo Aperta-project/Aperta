@@ -2,6 +2,7 @@
 class Card < ActiveRecord::Base
   include EventStream::Notifiable
   include XmlSerializable
+  include AASM
 
   acts_as_paranoid
 
@@ -76,62 +77,71 @@ class Card < ActiveRecord::Base
   # * 'locked': locked cards are those that we (the devs) have created and are
   # not intended to be altered by end users. They show up in the card catalogue
   # but they won't open in the editor. **Locked cards do not have a journal_id**
-  def state
-    if archived_at.present?
-      "archived"
-    elsif latest_card_version.published?
-      if journal_id
-        "published"
-      else
-        "locked"
-      end
-    elsif previous_versions.exists?
-      "publishedWithChanges"
-    else
-      "draft"
+  aasm column: :state do
+    state :draft, initial: true
+    state :published
+    state :published_with_changes
+    state :archived
+    state :locked
+
+    event :publish do
+      transitions from: [:draft, :published_with_changes],
+                  to: :published,
+                  guard: -> { !latest_card_version.published? },
+                  after: :publish_latest_version!
+    end
+
+    event :save_draft do
+      transitions from: :published,
+                  to: :published_with_changes
+    end
+
+    event :archive do
+      transitions from: :published,
+                  to: :archived,
+                  after: :archive_card!
+    end
+
+    event :lock do
+      transitions from: :published,
+                  to: :locked,
+                  guard: -> { journal_id.blank? }
     end
   end
 
   def addable?
-    state == "published" || state == "publishedWithChanges"
+    published? || published_with_changes?
   end
 
-  def published?
-    state != "draft"
+  def released?
+    !draft?
   end
 
-  def archived?
-    state == "archived"
-  end
-
-  def publish!
-    if latest_card_version.published?
-      raise ArgumentError, "Latest card version is already published"
-    end
+  def publish_latest_version!
     latest_card_version.update!(published_at: DateTime.now.utc)
 
     reload
   end
 
-  def archive!
+  def archive_card!
     CardArchiver.archive(self)
     reload
   end
 
   def self.create_draft!(attrs)
-    create_new!(attrs: attrs, published: false)
+    create_new!(attrs)
   end
 
   def self.create_published!(attrs)
-    create_new!(attrs: attrs, published: true)
+    new_card = create_new!(attrs)
+    new_card.publish!
+    new_card
   end
 
-  def self.create_new!(attrs:, published:)
-    published_date = published ? DateTime.now.utc : nil
+  def self.create_new!(attrs)
     Card.transaction do
       card = Card.new(attrs)
-      card.card_versions << CardVersion.new(version: 1,
-                                            published_at: published_date)
+      card.card_versions << CardVersion.new(version: 1)
       card.card_versions.first.card_contents << CardContent.new(
         content_type: 'display-children'
       )
@@ -154,10 +164,11 @@ class Card < ActiveRecord::Base
     end
   end
 
-  def xml=(xml)
-    if latest_card_version.published?
+  def update_from_xml(xml)
+    if published?
       XmlCardLoader.new_version_from_xml_string(xml, self)
-    else
+      save_draft!
+    elsif published_with_changes? || draft?
       XmlCardLoader.replace_draft_from_xml_string(xml, self)
     end
   end

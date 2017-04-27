@@ -6,14 +6,22 @@ FactoryGirl.define do
 
     trait :versioned do
       after(:build) do |card|
+        card.state = "published"
         card.card_versions << build(:card_version, version: card.latest_version, published_at: DateTime.now.utc) if card.card_versions.count.zero?
       end
     end
 
-    trait :archived do
-      after(:build) do |card|
-        card.archived_at = DateTime.now.utc
+    # draft is intended to be used with versioned.
+    # in our tests it's more common to use published cards,
+    # hence draft is a separate trait that acts after :create
+    trait :draft do
+      after(:create) do |card|
+        card.update(state: "draft")
+        card.latest_card_version.update(published_at: nil)
       end
+    end
+    trait :archived do
+      after(:build, &:archive!)
     end
 
     trait :for_answerable do

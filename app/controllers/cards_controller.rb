@@ -32,7 +32,7 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card.xml = params[:card][:xml] if params[:card][:xml].present?
+    card.update_from_xml(params[:card][:xml]) if params[:card][:xml].present?
     card.update!(card_params)
 
     respond_with card

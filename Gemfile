@@ -66,6 +66,7 @@ gem 'rubyzip', require: 'zip'
 gem 'sass-rails'
 gem 'sdoc'
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
 gem 'timeliness'

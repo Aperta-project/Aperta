@@ -18,13 +18,13 @@ class SimilarityCheckStartReportWorker
       folder_id: 921_380, # TODO: fix folder id
     )
 
-    if response["api_status"] == 200
-      similarity_check.update!(
-        ithenticate_document_id: response["uploaded"].first["id"]
-      )
-    else
+    unless response["api_status"] == 200
       raise "ithenticate error" # TODO: expose response
     end
+
+    id = response["uploaded"].first["id"]
+    similarity_check.ithenticate_document_id = id
+    similarity_check.upload_document!
   end
 
   def ithenticate_api

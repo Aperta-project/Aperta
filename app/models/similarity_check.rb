@@ -13,12 +13,14 @@ class SimilarityCheck < ::ActiveRecord::Base
 
   aasm column: :state do
     # It's 'pending' before the job has been started by a worker
-    state :pending, initial: true
-
-    # It's 'in_progress' once the job has been picked up by a worker
-    state :in_progress
+    state :needs_upload, initial: true
+    state :waiting_for_report
     state :failed
     state :report_complete
+
+    event :upload_document do
+      transitions from: :needs_upload, to: :waiting_for_report
+    end
   end
 
   def start_report

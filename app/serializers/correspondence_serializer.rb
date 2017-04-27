@@ -12,6 +12,5 @@ class CorrespondenceSerializer < ActiveModel::Serializer
 
   def body
     LinkSanitizer.sanitize(object.body)
-    # object.body
   end
 end

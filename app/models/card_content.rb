@@ -19,7 +19,7 @@ class CardContent < ActiveRecord::Base
   # and ident
   validates :parent_id,
             uniqueness: {
-              scope: :card_version,
+              scope: [:card_version, :deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }

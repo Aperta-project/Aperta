@@ -13,6 +13,10 @@ class CardContent < ActiveRecord::Base
   has_one :card, through: :card_version
 
   validates :card_version, presence: true
+
+  # since we use acts_as_paranoid we need to take into account whether a given
+  # piece of card content has been deleted for uniqueness checks on parent_id
+  # and ident
   validates :parent_id,
             uniqueness: {
               scope: [:card_version, :deleted_at],
@@ -29,6 +33,12 @@ class CardContent < ActiveRecord::Base
             },
             if: -> { ident.present? }
 
+  # -- Card Content Validations
+  # Note that the checks present here work in concert with the xml validations
+  # in the config/card.rnc file to assure that card content of a given type
+  # is valid.  In the event that xml input stops being the only way to create
+  # new card data, some of the work done by the xml schema will probably need
+  # to be accounted for here.
   validate :content_value_type_combination
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
@@ -51,6 +61,7 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
+      'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
@@ -132,7 +143,9 @@ class CardContent < ActiveRecord::Base
       'content-type' => content_type,
       'value-type' => value_type,
       'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
+      'default-answer-value' => default_answer_value,
+      'allow-multiple-uploads' => allow_multiple_uploads,
+      'allow-file-captions' => allow_file_captions
     }.compact
   end
 

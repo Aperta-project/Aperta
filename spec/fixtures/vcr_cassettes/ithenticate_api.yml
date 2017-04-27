@@ -1519,57 +1519,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: |
-        <?xml version="1.0" ?><methodCall><methodName>login</methodName><params><param><value><struct><member><name>username</name><value><string>turtle@aperta.tech</string></value></member><member><name>password</name><value><string>notverysecret</string></value></member></struct></value></param></params></methodCall>
-    headers:
-      User-Agent:
-      - XMLRPC::Client (Ruby 2.2.4)
-      Content-Type:
-      - text/xml; charset=utf-8
-      Content-Length:
-      - '313'
-      Connection:
-      - keep-alive
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Cache-Control:
-      - private, no-store, no-cache, must-revalidate
-      Pragma:
-      - no-cache
-      Content-Type:
-      - text/xml; charset=UTF-8
-      Expires:
-      - "-1"
-      X-Frame-Options:
-      - SAMEORIGIN
-      Content-Length:
-      - '656'
-      Date:
-      - Wed, 26 Apr 2017 13:51:30 GMT
-      Connection:
-      - keep-alive
-      Set-Cookie:
-      - ithenticate_session=c0a4a7220544e4048ff599b564498ae51791fd19; path=/; secure;
-        HttpOnly
-    body:
-      encoding: UTF-8
-      string: <?xml version="1.0" encoding="utf-8"?><methodResponse><params><param><value><struct><member><name>api_status</name><value><int>401</int></value></member><member><name>response_timestamp</name><value><dateTime.iso8601>2017-04-26T13:51:31Z</dateTime.iso8601></value></member><member><name>api</name><value><struct><member><name>status</name><value><int>401</int></value></member></struct></value></member><member><name>messages</name><value><array><data><value><string>Sorry,
-        failed to log in.</string></value></data></array></value></member><member><name>status</name><value><int>401</int></value></member></struct></value></param></params></methodResponse>
-    http_version: 
-  recorded_at: Wed, 26 Apr 2017 13:51:30 GMT
-- request:
-    method: post
-    uri: https://api.ithenticate.com/rpc
-    body:
-      encoding: UTF-8
-      string: |
-        <?xml version="1.0" ?><methodCall><methodName>login</methodName><params><param><value><struct><member><name>username</name><value><string>no_id</string></value></member><member><name>password</name><value><string>no_pw</string></value></member></struct></value></param></params></methodCall>
+        <?xml version="1.0" ?><methodCall><methodName>login</methodName><params><param><value><struct><member><name>username</name><value><string>good_creds</string></value></member><member><name>password</name><value><string>good_creds</string></value></member></struct></value></param></params></methodCall>
     headers:
       User-Agent:
       - XMLRPC::Client (Ruby 2.2.4)
@@ -3393,4 +3343,55 @@ http_interactions:
         Documents</string></value></member></struct></value></member><member><name>filename</name><value><string>about_turtles.docx</string></value></member><member><name>mime_type</name><value><string>application/msword</string></value></member></struct></value></data></array></value></member><member><name>response_timestamp</name><value><dateTime.iso8601>20170426T13:59:02</dateTime.iso8601></value></member><member><name>status</name><value><int>200</int></value></member><member><name>api_status</name><value><int>200</int></value></member><member><name>sid</name><value><string>20216cc6983fe10567eeb006c8ccc2a75430e503</string></value></member></struct></value></param></params></methodResponse>
     http_version: 
   recorded_at: Wed, 26 Apr 2017 13:59:01 GMT
+- request:
+    method: post
+    uri: https://api.ithenticate.com/rpc
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" ?><methodCall><methodName>document.get</methodName><params><param><value><struct><member><name>id</name><value><i4>28856178</i4></value></member><member><name>sid</name><value><string>259ea16f002365fb1a796c3fad0e49fa1a7a914b</string></value></member></struct></value></param></params></methodCall>
+    headers:
+      User-Agent:
+      - XMLRPC::Client (Ruby 2.2.4)
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '318'
+      Connection:
+      - keep-alive
+      Cookie:
+      - ithenticate_session=259ea16f002365fb1a796c3fad0e49fa1a7a914b
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private, no-store, no-cache, must-revalidate
+      Pragma:
+      - no-cache
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Expires:
+      - "-1"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '4176'
+      Date:
+      - Thu, 27 Apr 2017 15:10:36 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="utf-8"?><methodResponse><params><param><value><struct><member><name>status</name><value><int>200</int></value></member><member><name>documents</name><value><array><data><value><struct><member><name>is_pending</name><value><int>0</int></value></member><member><name>author_first</name><value><string>turtle</string></value></member><member><name>parts</name><value><array><data><value><struct><member><name>doc_id</name><value><int>28856178</int></value></member><member><name>max_percent_match</name><value><int>84</int></value></member><member><name>words</name><value><int>103</int></value></member><member><name>score</name><value><int>84</int></value></member><member><name>id</name><value><int>28441123</int></value></member></struct></value></data></array></value></member><member><name>processed_time</name><value><dateTime.iso8601>20170426T14:04:20</dateTime.iso8601></value></member><member><name>author_last</name><value><string>expert</string></value></member><member><name>percent_match</name><value><int>84</int></value></member><member><name>id</name><value><int>28856178</int></value></member><member><name>title</name><value><string>About
+        Turtles</string></value></member><member><name>uploaded_time</name><value><dateTime.iso8601>20170426T13:59:02</dateTime.iso8601></value></member></struct></value></data></array></value></member><member><name>response_timestamp</name><value><dateTime.iso8601>20170427T15:10:37</dateTime.iso8601></value></member><member><name>pager</name><value><struct><member><name>current_page</name><value><int>1</int></value></member><member><name>entries_per_page</name><value><int>25</int></value></member><member><name>total_entries</name><value><int>1</int></value></member></struct></value></member><member><name>api_status</name><value><int>200</int></value></member><member><name>sid</name><value><string>259ea16f002365fb1a796c3fad0e49fa1a7a914b</string></value></member><member><name>folder</name><value><struct><member><name>setup_time</name><value><dateTime.iso8601>20170321T20:04:58</dateTime.iso8601></value></member><member><name>description</name><value><string></string></value></member><member><name>folder_group</name><value><int>732648</int></value></member><member><name>exclude_abstracts</name><value><int>0</int></value></member><member><name>collection_detail</name><value><array><data><value><struct><member><name>name</name><value><string>Crossref</string></value></member><member><name>id</name><value><int>34</int></value></member></struct></value><value><struct><member><name>id</name><value><int>33</int></value></member><member><name>name</name><value><string>Internet</string></value></member></struct></value><value><struct><member><name>id</name><value><int>32</int></value></member><member><name>name</name><value><string>Publications</string></value></member></struct></value></data></array></value></member><member><name>minimum_match_word_count</name><value><int>0</int></value></member><member><name>exclude_biblio</name><value><int>0</int></value></member><member><name>exclude_percent</name><value><int>0</int></value></member><member><name>name</name><value><string>My
+        Documents</string></value></member><member><name>exclude_word_count</name><value><int>0</int></value></member><member><name>id</name><value><int>921380</int></value></member><member><name>exclude_quotes</name><value><int>0</int></value></member><member><name>exclude_by_percent</name><value><int>0</int></value></member><member><name>collections</name><value><array><data><value><int>34</int></value><value><int>33</int></value><value><int>32</int></value></data></array></value></member><member><name>exclude_small_matches</name><value><int>0</int></value></member><member><name>exclude_methods</name><value><int>0</int></value></member><member><name>group</name><value><struct><member><name>id</name><value><int>732648</int></value></member><member><name>name</name><value><string>My
+        Folders</string></value></member></struct></value></member><member><name>limit_match_size</name><value><int>0</int></value></member></struct></value></member></struct></value></param></params></methodResponse>
+    http_version: 
+  recorded_at: Thu, 27 Apr 2017 15:10:36 GMT
 recorded_with: VCR 2.9.3

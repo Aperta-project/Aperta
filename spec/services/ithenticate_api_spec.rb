@@ -42,27 +42,21 @@ feature 'iThenticate API', js: true do
         app_method = get_field('methodName', app_request)
         vcr_method = get_field('methodName', vcr_request)
         if app_method == vcr_method
-          if app_method == 'login'
-            # There are two mocked login requests, one with good credentials and
-            # one with bad. They are small requests, hence the string compares.
-            matched = app_request.body == vcr_request.body
-          elsif app_method =~ /\.get$/
+          if app_method =~ /\.get$/
             # In both document.get and report.get requests, the ID you're
             # fetching appears in the "i4" field.
             matched = get_field('i4', app_request) == get_field('i4', vcr_request)
-            # There is one mocked upload, so we only need a method name compare.
-          elsif app_method == 'document.add'
+            # There is one mocked upload in the "good" cassette, and one login
+            # in each cassette, so they only need a method name compare.
+          elsif app_method == 'document.add' || app_method == 'login'
             matched = true
           end
         end
-        # TODO: delete puts here and below once you're confident matching is working as expected
-        puts "Match for iThenticate method #{app_method}" if matched
       else
         matched = app_request.uri == vcr_request.uri || begin
           path = 'tahi-test.s3-us-west-1.amazonaws.com/uploads/paper/1/attachment/1/'
           app_request.uri.index(path) && vcr_request.uri.index(path)
         end
-        puts "Match for #{app_request.uri}" if matched
       end
       matched
     end
@@ -85,9 +79,25 @@ feature 'iThenticate API', js: true do
       match_requests_on: [@post_regex_matcher],
       record: :none
     ) do
-      process_sidekiq_jobs
-      # TODO: wire up behaviors to check once they exist in the UI
-      expect(page).to have_css('.fake_css_selector')
+      # TODO: Change this to expect a web page effect once the card is updated
+      expect { process_sidekiq_jobs }.to_not raise_error
+    end
+  end
+
+  scenario 'Bad iThenticate credentials raises an exception' do
+    similarity_check = SimilarityCheck.where(versioned_text_id: paper.versioned_texts.first.id)
+    expect(similarity_check.count).to be 0
+
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.click_button('Generate Report')
+    overlay.click_button('Generate Report')
+    VCR.use_cassette(
+      'ithenticate_api_bad_creds',
+      allow_playback_repeats: true,
+      match_requests_on: [@post_regex_matcher],
+      record: :none
+    ) do
+      expect { process_sidekiq_jobs }.to raise_error RuntimeError
     end
   end
 end

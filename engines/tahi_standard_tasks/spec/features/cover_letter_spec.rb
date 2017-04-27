@@ -31,11 +31,11 @@ feature 'Cover Letter Task', js: true do
     end
 
     scenario 'I can enter freetext' do
-      find("textarea[name='cover_letter--text']")
-        .send_keys('Here is my letter.', :tab)
+      text = 'Here is my cover letter.'
+      page.execute_script("tinymce.editors[0].setContent('#{text}')")
       wait_for_ajax
-      expect(find("textarea[name='cover_letter--text']").value)
-        .to eq('Here is my letter.')
+      contents = page.evaluate_script("tinymce.editors[0].getContent()")
+      expect(contents).to eq("<p>#{text}</p>")
     end
   end
 end

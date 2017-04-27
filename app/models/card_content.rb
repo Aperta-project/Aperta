@@ -28,7 +28,7 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
-              scope: :deleted_at,
+              scope: [:card_version, :deleted_at],
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }

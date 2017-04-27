@@ -39,11 +39,18 @@ describe SimilarityCheckStartReportWorker, type: :worker, sidekiq: :inline! do
       )
     end
 
-    it "updates the SimilarityCheck record" do
+    it "sets ithenticate_document_id on the SimilarityCheck record" do
       expect do
         perform
       end.to change { similarity_check.reload.ithenticate_document_id }
                .from(nil).to(fake_doc_id)
+    end
+
+    it "updates the AASM state of the SimilarityCheck record" do
+      expect do
+        perform
+      end.to change { similarity_check.reload.state }
+               .from("needs_upload").to("waiting_for_report")
     end
   end
 end

@@ -225,6 +225,14 @@ describe QueryParser do
     end
 
     shared_examples_for "a user query" do
+      before do
+        # Stub this out because fuzzy_search can return strange results when using
+        # random faked user data.
+        allow(User).to receive(:fuzzy_search)
+          .with(user_query)
+          .and_return User.where(id: user.id)
+      end
+
       it "parses USER user_query HAS ROLE x" do
         parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -234,7 +242,7 @@ describe QueryParser do
 
       it 'parses across multiple roles of same name for USER x HAS ROLE x' do
         role2 = create(:role, name: role.name)
-        parse = QueryParser.new(current_user: user).parse "USER #{user.username} HAS ROLE #{role.name}"
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
             "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
           SQL
@@ -268,29 +276,11 @@ describe QueryParser do
       let!(:role) do
         create(:role, name: 'Author')
       end
-      # Not using faker here beacuse sometimes the random data matches the fuzzy
-      # queries
       let!(:user) do
         create(:user,
-          username: 'jdoe',
-          first_name: 'Jane',
-          last_name: 'Doe')
-      end
-
-      before do
-        # Create some confounding data to ensure we are not succeeding by default
-        create(
-          :user,
-          username: 'jroe',
-          first_name: 'Jennifer',
-          last_name: 'Roe'
-        )
-        create(
-          :user,
-          username: 'jsmith',
-          first_name: 'John',
-          last_name: 'Smith'
-        )
+          username: Faker::Lorem.word,
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name)
       end
 
       describe "querying against a user email" do

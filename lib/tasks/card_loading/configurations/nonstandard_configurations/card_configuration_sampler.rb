@@ -109,6 +109,20 @@ module CardConfiguration
             text: "Type a paragraph",
             value_type: "text",
             content_type: "paragraph-input"
+          },
+          {
+            text: "This is a dropdown question.  <b>Please</b> pick a choice",
+            value_type: 'text',
+            content_type: "dropdown",
+            placeholder: "Nothing selected yet",
+            possible_values: [{ "label" => "Choice 1", "value" => 1 }, { "label" => "Choice 2", "value" => 2 }]
+          },
+          {
+            text: "Eat a hot dog; take a picture; upload it here",
+            value_type: "attachment",
+            content_type: "file-uploader",
+            possible_values: [{ "label" => "tif", "value" => ".tif" }, { "label" => "png", "value" => ".png" }],
+            label: "Ima Button"
           }
         ]
       end

@@ -17,7 +17,8 @@ module CardConfiguration
         {
           ident: "early-posting--consent",
           value_type: "boolean",
-          text: "Yes, I agree to publish an early version of my article"
+          text: "Yes, I agree to publish an early version of my article",
+          default_answer_value: "true"
         }
       ]
     end

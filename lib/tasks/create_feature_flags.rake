@@ -9,6 +9,7 @@ task 'create_feature_flags': :environment do
   # See the FeatureFlag model for more usage information.
   #
   FeatureFlag.contain_exactly! [
-    "CARD_CONFIGURATION"
+    "CARD_CONFIGURATION",
+    "HEALTH_CHECK"
   ]
 end

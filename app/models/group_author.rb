@@ -12,6 +12,13 @@ class GroupAuthor < ActiveRecord::Base
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
 
+  include PgSearch
+  pg_search_scope \
+    :fuzzy_search,
+    against: [:contact_first_name, :contact_last_name, :contact_email, :name],
+    ignoring: :accents,
+    using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
+
   # This is to associate specifically with the user that last manually modified
   # a coauthors status.  We have to track this separately from the standard
   # non-coauthor updates

@@ -2,21 +2,24 @@
                   stickySelector=".task-disclosure-heading"
                   sectionSelector=".task-disclosure"}}
   <div class="paper-sidebar-info">
-    {{#if paper.doi}}
-      <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
-    {{/if}}
-
-    <div id="submission-state-information">
+    <div class="paper-submission-wrapper">
+      {{#if paper.doi}}
+        <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
+      {{/if}}
       {{#if paper.isPendingGradualEngagementSubmission}}
         <div id="submission-process-toggle-box">
           <i id="submission-process-toggle"
-             title="Submission Process"
-             class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
+              title="Submission Process"
+              class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
           </i>
-
-          <p><b>{{paper.journal.name}} Submission Process </b></p>
+        </div>
+        <div class="submission-process-link">
+          <a href="#" {{action "toggleSubmissionProcess"}} id="submission-panel">Submission Process Overview</a>
         </div>
       {{/if}}
+    </div>
+
+    <div id="submission-state-information">
 
       {{#if (and paper.isReadyForSubmission (can 'submit' paper))}}
         <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>

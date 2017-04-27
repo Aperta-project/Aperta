@@ -4,12 +4,14 @@
       <h3>DANGER</h3>
       <h4> DO NOT CHANGE THESE SETTINGS. THESE SETTINGS ENABLE FEATURES WHICH ARE INCOMPLETE AND THEIR BEHAVIOR IS UNPREDICTABLE.</h4>
 
+      <div class="feature-flags">
       {{#each-in flags as |name flag|}}
         <label>
           {{input type='checkbox' checked=(mut (get flags name))}}
           {{name}}
         </label>
       {{/each-in}}
+      </div>
 
       <div>
         <br />

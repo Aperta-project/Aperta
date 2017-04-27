@@ -8,4 +8,8 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   def recipient
     object.recipients
   end
+
+  def body
+    object.body
+  end
 end

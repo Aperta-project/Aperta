@@ -1,0 +1,15 @@
+{{attachment-manager filePath="tasks/attachment"
+  attachments=answer.attachments
+  buttonText=content.label
+  description=content.text
+  disabled=disabled
+  preview=preview
+  multiple=content.allowMultipleUploads
+  hasCaption=content.allowFileCaptions
+  accept=acceptedFileTypes
+  alwaysShowAddButton=true
+  cancelUpload=(action "cancelUpload")
+  captionChanged=(action "updateAttachmentCaption")
+  deleteFile=(action "deleteAttachment")
+  uploadFinished=(action "updateAttachment")
+  updateAttachment=(action "updateAttachment")}}

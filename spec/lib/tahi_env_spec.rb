@@ -47,6 +47,8 @@ describe TahiEnv do
       PUSHER_VERBOSE_LOGGING: 'false',
       RAILS_ENV: 'test',
       RAILS_SECRET_TOKEN: 'secret-token',
+      REDIS_SENTINEL_ENABLED: 'true',
+      REDIS_SENTINELS: "sentinel://localhost:6379 sentinel://localhost:6379",
       SENDGRID_USERNAME: 'username',
       SENDGRID_PASSWORD: 'password'
     }
@@ -148,6 +150,9 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'PORT'
   it_behaves_like 'optional env var', var: 'RACK_ENV'
 
+  # Redis Sentinel
+  it_behaves_like 'dependent required array env var', var: 'REDIS_SENTINELS', dependent_key: 'REDIS_SENTINEL_ENABLED'
+
   # Pusher / Slanger
   it_behaves_like 'required env var', var: 'PUSHER_URL'
   it_behaves_like 'required boolean env var', var: 'PUSHER_SSL_VERIFY'
@@ -164,9 +169,6 @@ describe TahiEnv do
   # Sendgrid
   it_behaves_like 'required env var', var: 'SENDGRID_USERNAME'
   it_behaves_like 'required env var', var: 'SENDGRID_PASSWORD'
-
-  # Sidekiq
-  it_behaves_like 'optional env var', var: 'SIDEKIQ_CONCURRENCY'
 
   describe 'when no authentication is enabled' do
     it 'is not valid' do

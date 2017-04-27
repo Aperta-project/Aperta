@@ -1,4 +1,5 @@
 class CorrespondenceSerializer < ActiveModel::Serializer
+  require 'link_sanitizer'
   attributes :id, :date, :subject, :recipient, :sender, :body
 
   def date
@@ -10,6 +11,7 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   end
 
   def body
-    object.body
+    LinkSanitizer.sanitize(object.body)
+    # object.body
   end
 end

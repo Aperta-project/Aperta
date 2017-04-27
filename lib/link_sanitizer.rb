@@ -6,6 +6,7 @@ module LinkSanitizer
       link.replace('[' + link.text + ' (' +
         link.attributes['href'].value + ')]')
     end
+    doc.css('table.btn.btn-primary').remove_attr('class')
     doc.to_s
   end
 end

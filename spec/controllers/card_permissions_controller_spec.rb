@@ -1,9 +1,10 @@
 require "rails_helper"
 
 describe CardPermissionsController do
+  let(:journal) { FactoryGirl.create(:journal) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:card) { FactoryGirl.create(:card) }
-  let(:role) { FactoryGirl.create(:role, name: Faker::Name.title) }
+  let(:card) { FactoryGirl.create(:card, journal: journal) }
+  let(:role) { FactoryGirl.create(:role, journal: journal, name: Faker::Name.title) }
   let!(:permission) do
     FactoryGirl.create(
       :permission,
@@ -15,11 +16,13 @@ describe CardPermissionsController do
   end
 
   let(:permission_json) { { "id" => permission.id, "permission_action" => "edit", "filter_by_card_id" => card.id, "role_ids" => [role.id] } }
-  let(:role_json) { [{ "id" => role.id, "name" => role.name, "journal_id" => role.journal.id }] }
 
   before do
     allow(user).to receive(:can?)
                      .with(:edit, card)
+                     .and_return true
+    allow(user).to receive(:can?)
+                     .with(:administer, card.journal)
                      .and_return true
   end
 
@@ -27,9 +30,11 @@ describe CardPermissionsController do
     subject(:do_request) do
       post :create,
            format: "json",
-           card_id: card.id,
-           permission_action: 'view',
-           role_ids: [role.id]
+           card_permission: {
+             card_id: card.id,
+             permission_action: 'view',
+             role_ids: [role.id]
+           }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -38,6 +43,7 @@ describe CardPermissionsController do
       stub_sign_in user
       expect { do_request }.to change { Permission.count }.by(1)
 
+      expect(response.status).to be(201)
       permission = Permission.find(res_body[:card_permission][:id])
       expect(permission.filter_by_card_id).to eq(card.id)
       expect(permission.action).to eq("view")
@@ -53,7 +59,7 @@ describe CardPermissionsController do
   end
 
   describe "#delete" do
-    subject(:do_request) { delete :destroy, format: "json", card_id: card.id, id: permission.id }
+    subject(:do_request) { delete :destroy, format: "json", id: permission.id }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -63,38 +69,34 @@ describe CardPermissionsController do
     end
   end
 
-  describe "#index" do
-    subject(:do_request) { get :index, format: "json", card_id: card.id }
-
-    it_behaves_like "an unauthenticated json request"
-
-    it "returns a list of the cards permissions" do
-      stub_sign_in user
-      do_request
-      expect(response.status).to be(200)
-      expect(res_body).to match(hash_including("card_permissions" => [permission_json], "roles" => role_json))
-    end
-  end
-
   describe "#show" do
-    subject(:do_request) { get :show, format: "json", card_id: card.id, id: permission.id }
+    subject(:do_request) { get :show, format: "json", id: permission.id }
 
     it_behaves_like "an unauthenticated json request"
 
     it "shows the permission" do
       stub_sign_in user
       do_request
-      expect(res_body).to match("card_permission" => permission_json, "roles" => role_json)
+      expect(res_body).to match("card_permission" => permission_json)
     end
   end
 
   describe "#update" do
-    subject(:do_request) { put :update, format: "json", card_id: card.id, id: permission.id, role_ids: [role.id, other_role.id] }
-    let!(:other_role) { FactoryGirl.create(:role, name: Faker::Name.title) }
+    subject(:do_request) do
+      put :update,
+          format: "json",
+          id: permission.id,
+          card_permission: {
+            card_id: card.id,
+            role_ids: [role.id, other_role.id]
+          }
+    end
+
+    let!(:other_role) { FactoryGirl.create(:role, journal: journal, name: Faker::Name.title) }
 
     it_behaves_like "an unauthenticated json request"
 
-    it "adds the role to the role permissio" do
+    it "adds the role to the role permission" do
       stub_sign_in user
       expect { do_request }.to change { permission.roles.reload.count }
     end

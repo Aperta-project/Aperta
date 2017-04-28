@@ -4,41 +4,34 @@ class CardPermissionsController < ApplicationController
   respond_to :json
 
   def create
-    requires_user_can(:edit, card)
+    requires_user_can(:edit, Card.find(safe_params[:card_id]))
 
     action = safe_params[:permission_action].to_s
     # Limit the actions that can be managed by this controller
     assert(action == 'edit' || action == 'view', "Bad action")
 
-    perm = Permission.ensure_exists(
+    # Override default @permission
+    @permission = Permission.ensure_exists(
       action,
       applies_to: 'Task',
-      filter_by_card_id: card.id
+      filter_by_card_id: safe_params[:card_id]
     )
-    perm.roles += Role.where(id: safe_params[:role_ids])
-    perm.save!
-    respond_with perm, serializer: CardPermissionSerializer
+
+    update_roles
+
+    respond_with permission, serializer: CardPermissionSerializer
   end
 
   def destroy
     requires_user_can(:edit, card)
 
-    respond_with permission.destroy,
-                 serializer: CardPermissionSerializer
-  end
-
-  def index
-    requires_user_can(:edit, card)
-
-    respond_with Permission.where(filter_by_card_id: card.id),
-                 each_serializer: CardPermissionSerializer
+    respond_with permission.destroy, serializer: CardPermissionSerializer
   end
 
   def show
     requires_user_can(:edit, card)
 
-    respond_with permission,
-                 serializer: CardPermissionSerializer
+    respond_with permission, serializer: CardPermissionSerializer
   end
 
   def update
@@ -46,25 +39,37 @@ class CardPermissionsController < ApplicationController
 
     # The only valid thing to do when updating a permission is to change the
     # roles attached to it.
-    permission.roles += Role.where(id: safe_params[:role_ids])
-    permission.save!
+    update_roles
+
     respond_with permission, serializer: CardPermissionSerializer
   end
 
   private
 
+  def update_roles
+    roles = Role.where(id: safe_params[:role_ids])
+    roles.each do |role|
+      assert(
+        role.journal == card.journal,
+        "Cannot add a role to a permission that filters on a card not in the \
+same journal as the permission."
+      )
+    end
+    permission.roles += roles
+    permission.save!
+  end
+
   def safe_params
-    @safe_params ||= params.permit(:permission_action, role_ids: [])
+    @safe_params ||= params.require(:card_permission).permit(
+      :card_id, :permission_action, role_ids: []
+    )
   end
 
   def card
-    @card ||= Card.find(params[:card_id])
+    @card ||= Card.find(permission.filter_by_card_id)
   end
 
   def permission
-    @permission ||= Permission.find(params[:id]).tap do |permission|
-      assert(permission.filter_by_card_id == card.id,
-             "Permission/card id mismatch")
-    end
+    @permission ||= Permission.find(params[:id])
   end
 end

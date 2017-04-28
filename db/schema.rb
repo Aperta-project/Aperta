@@ -225,6 +225,8 @@ ActiveRecord::Schema.define(version: 20170418181223) do
     t.string   "visible_with_parent_answer"
     t.string   "label"
     t.string   "default_answer_value"
+    t.boolean  "allow_multiple_uploads"
+    t.boolean  "allow_file_captions"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

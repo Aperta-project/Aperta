@@ -16,8 +16,8 @@ module TahiStandardTasks
 
     def funding_statement
       return "#{additional_comments}" if only_has_additional_comments?
-      s = "#{name} #{website} (grant number #{grant_number}). "
-      s << "#{additional_comments}." if additional_comments.present?
+      s = "#{name} #{website} (grant number #{grant_number})."
+      s << " #{additional_comments}." if additional_comments.present?
       if influence
         s << " #{influence_description}."
       else

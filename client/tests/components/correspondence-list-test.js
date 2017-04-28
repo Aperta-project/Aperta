@@ -30,7 +30,7 @@ let template = hbs`
 
 test('can manage workflow, list appears', function(assert) {
   let paper = FactoryGuy.make('paper');
-  let correspondence = FactoryGuy.make('correspondence');
+  FactoryGuy.make('correspondence');
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 

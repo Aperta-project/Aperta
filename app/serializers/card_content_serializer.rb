@@ -1,5 +1,7 @@
 class CardContentSerializer < ActiveModel::Serializer
   attributes :id,
+             :allow_multiple_uploads,
+             :allow_file_captions,
              :content_type,
              :ident,
              :label,

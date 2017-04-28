@@ -6,7 +6,6 @@ feature "Paper workflow", js: true, selenium: true do
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, journal: journal }
   let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
 
-
   before do
     assign_journal_role(journal, admin, :admin)
     login_as(admin, scope: :user)

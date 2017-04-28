@@ -1,34 +1,48 @@
 import Ember from 'ember';
 
-/* tinymce requires snake_case option names */
+const basicElements    = 'p,br,strong/i,em/i,u,sub,sup,pre';
+const basicPlugins     = 'code preview';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | code preview';
+
+const expandedElements = ',ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tr,th,td';
+const expandedPlugins  = ' table';
+const expandedToolbar  = ' | bullist numlist table | formatselect';
+
+const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Code=pre';
+
+/* some tinymce options are snake_case */
 /* eslint-disable camelcase */
 
 export default Ember.Component.extend({
   editorStyle: 'expanded',
+
   editorConfigurations: {
     basic: {
-      menubar: false,
-      plugins: 'preview',
+      plugins: basicPlugins,
       statusbar: false,
-      toolbar: 'italic | subscript superscript | undo redo | preview',
-      valid_elements: 'p,br,em/i,sub,sup'
+      toolbar: basicToolbar,
+      valid_elements: basicElements
     },
 
     expanded: {
-      menubar: false,
-      plugins: 'code preview table',
-      block_formats: 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4',
-      toolbar: 'bold italic underline | subscript superscript | \
-                bullist numlist table | undo redo | code preview | formatselect',
-      valid_elements: 'p,br,strong/b,em/i,u,sub,sup,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tr,th,td'
+      plugins: basicPlugins + expandedPlugins,
+      block_formats: blockFormats,
+      toolbar: basicToolbar + expandedToolbar,
+      valid_elements: basicElements + expandedElements
     }
   },
 
 /* eslint-enable camelcase */
 
+  configureCommon(hash) {
+    hash['menubar'] = false;
+    return hash;
+  },
+
   editorOptions: Ember.computed('editorStyle', 'editorConfigurations', function() {
-    let options = this.get('editorConfigurations');
+    let configs = this.get('editorConfigurations');
     let style = this.get('editorStyle') || 'expanded';
-    return options[style];
+    let options = configs[style];
+    return this.configureCommon(options);
   }),
 });

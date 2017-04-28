@@ -40,7 +40,7 @@ feature 'Ethics Task', js: true do
       within '.question-text', text: 'animal research' do
         within(:xpath, '..') do
           choose('Yes')
-          expect(page).to have_field('ethics--animal_subjects--field_permit')
+          expect(page).to have_css('.ethics--animal_subjects--field_permit-question-text')
         end
       end
     end

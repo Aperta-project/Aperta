@@ -32,9 +32,10 @@ feature 'Cover Letter Task', js: true do
 
     scenario 'I can enter freetext' do
       text = 'Here is my cover letter.'
-      page.execute_script("tinymce.editors[0].setContent('#{text}')")
+      page.execute_script("tinymce.activeEditor.setContent('#{text}')")
+      page.execute_script("tinymce.activeEditor.target.triggerSave()")
       wait_for_ajax
-      contents = page.evaluate_script("tinymce.editors[0].getContent()")
+      contents = page.evaluate_script("tinymce.activeEditor.getContent()")
       expect(contents).to eq("<p>#{text}</p>")
     end
   end

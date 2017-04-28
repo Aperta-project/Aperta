@@ -44,7 +44,8 @@ feature "User adding reviewer candidates", js: true do
       find(".last-name input[type=text]").set "AraAnn"
       find(".email input[type=text]").set "barb@example.com"
       choose "Recommend"
-      find("textarea[name*=reason]").set "Because they do good work"
+      page.execute_script("tinymce.activeEditor.setContent('Because they do good work')")
+      page.execute_script("tinymce.activeEditor.target.triggerSave()")
       click_button "done"
     end
 
@@ -52,7 +53,7 @@ feature "User adding reviewer candidates", js: true do
     within ".reviewer" do
       expect(page).to have_selector(".full-name", text: "Barb AraAnn")
       expect(page).to have_selector(".email", text: "barb@example.com")
-      expect(page).to have_selector(".reason", text: "Because they do good work")
+      expect(page).to have_selector(".reason", text: "<p>Because they do good work</p>")
     end
 
     # Edit the reviewer

@@ -8,13 +8,11 @@ class SimilarityChecksController < ::ApplicationController
 
   def create
     requires_user_can(:perform_similarity_check, paper)
-    SimilarityCheck.transaction do
-      similarity_check = SimilarityCheck.create!(
-        versioned_text: versioned_text
-      )
-      similarity_check.start_report
-      respond_with(similarity_check)
-    end
+    similarity_check = SimilarityCheck.create!(
+      versioned_text: versioned_text
+    )
+    similarity_check.start_report
+    respond_with(similarity_check)
   end
 
   private

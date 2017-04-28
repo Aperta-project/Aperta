@@ -26,4 +26,8 @@ class SimilarityCheck < ::ActiveRecord::Base
   def start_report
     SimilarityCheckStartReportWorker.perform_async(id)
   end
+
+  def give_up_if_timed_out!
+    # TODO: do something here
+  end
 end

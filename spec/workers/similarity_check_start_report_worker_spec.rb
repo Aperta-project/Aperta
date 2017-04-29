@@ -23,8 +23,8 @@ describe SimilarityCheckStartReportWorker, type: :worker, sidekiq: :inline! do
     stub_request(:get, stubbed_url).to_return(body: "turtles")
   end
 
-  it "adds a document through the IthenticateApi" do
-    expect(IthenticateApi).to(
+  it "adds a document through the Ithenticate::Api" do
+    expect(Ithenticate::Api).to(
       receive_message_chain(:new_from_tahi_env, :add_document)
         .and_return(fake_ithenticate_response)
     )
@@ -33,7 +33,7 @@ describe SimilarityCheckStartReportWorker, type: :worker, sidekiq: :inline! do
 
   describe "successful ithenticate api calls" do
     before do
-      allow(IthenticateApi).to(
+      allow(Ithenticate::Api).to(
         receive_message_chain(:new_from_tahi_env, :add_document)
           .and_return(fake_ithenticate_response)
       )

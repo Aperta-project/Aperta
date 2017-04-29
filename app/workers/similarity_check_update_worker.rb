@@ -25,6 +25,6 @@ class SimilarityCheckUpdateWorker
   end
 
   def ithenticate_api
-    @ithenticate_api ||= IthenticateApi.new_from_tahi_env
+    @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env
   end
 end

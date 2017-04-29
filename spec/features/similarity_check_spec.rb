@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'iThenticate API', js: true do
+feature 'Similarity Check', js: true do
   include SidekiqHelperMethods
 
   let!(:paper) do

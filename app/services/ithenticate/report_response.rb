@@ -9,8 +9,8 @@ module Ithenticate
       @response_hash["report_url"]
     end
 
-    def score
-      @response_hash["score"]
+    def view_only_url
+      @response_hash["view_only_url"]
     end
   end
 end

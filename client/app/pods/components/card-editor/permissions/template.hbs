@@ -1,0 +1,11 @@
+<div>
+  <ul>
+    {{#each card.journal.adminJournalRoles as |role| }}
+      {{card-editor/permissions/role
+          role=role
+          card=card
+          turnOnPermission=turnOnPermission
+          turnOffPermission=turnOffPermission}}
+    {{/each}}
+  </ul>
+</div>

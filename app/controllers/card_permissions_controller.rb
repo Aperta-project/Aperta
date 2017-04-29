@@ -4,7 +4,7 @@ class CardPermissionsController < ApplicationController
   respond_to :json
 
   def create
-    requires_user_can(:edit, Card.find(safe_params[:card_id]))
+    requires_user_can(:edit, Card.find(safe_params[:filter_by_card_id]))
 
     action = safe_params[:permission_action].to_s
     # Limit the actions that can be managed by this controller
@@ -14,10 +14,10 @@ class CardPermissionsController < ApplicationController
     @permission = Permission.ensure_exists(
       action,
       applies_to: 'Task',
-      filter_by_card_id: safe_params[:card_id]
+      filter_by_card_id: safe_params[:filter_by_card_id]
     )
 
-    update_roles
+    update_roles(true)
 
     respond_with permission, serializer: CardPermissionSerializer
   end
@@ -39,29 +39,26 @@ class CardPermissionsController < ApplicationController
 
     # The only valid thing to do when updating a permission is to change the
     # roles attached to it.
-    update_roles
+    update_roles(false)
 
     respond_with permission, serializer: CardPermissionSerializer
   end
 
   private
 
-  def update_roles
-    roles = Role.where(id: safe_params[:role_ids])
-    roles.each do |role|
-      assert(
-        role.journal == card.journal,
-        "Cannot add a role to a permission that filters on a card not in the \
-same journal as the permission."
-      )
+  def update_roles(append)
+    if append
+      new_roles = roles.select { |role| !permission.roles.include?(role) }
+      permission.roles.concat(*new_roles)
+    else
+      permission.roles.replace(roles)
     end
-    permission.roles += roles
     permission.save!
   end
 
   def safe_params
     @safe_params ||= params.require(:card_permission).permit(
-      :card_id, :permission_action, role_ids: []
+      :filter_by_card_id, :permission_action, role_ids: []
     )
   end
 
@@ -71,5 +68,17 @@ same journal as the permission."
 
   def permission
     @permission ||= Permission.find(params[:id])
+  end
+
+  def roles
+    @roles ||= Role.where(id: safe_params[:role_ids]).tap do |roles|
+      roles.each do |role|
+        assert(
+          role.journal == card.journal,
+          "Cannot add a role to a permission that filters on a card not in the \
+same journal as the permission."
+        )
+      end
+    end
   end
 end

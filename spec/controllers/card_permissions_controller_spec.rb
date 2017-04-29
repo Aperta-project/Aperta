@@ -31,7 +31,7 @@ describe CardPermissionsController do
       post :create,
            format: "json",
            card_permission: {
-             card_id: card.id,
+             filter_by_card_id: card.id,
              permission_action: 'view',
              role_ids: [role.id]
            }
@@ -87,7 +87,7 @@ describe CardPermissionsController do
           format: "json",
           id: permission.id,
           card_permission: {
-            card_id: card.id,
+            filter_by_card_id: card.id,
             role_ids: [role.id, other_role.id]
           }
     end

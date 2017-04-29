@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "User adding reviewer candidates", js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let!(:paper) do
-    create :paper,:with_integration_journal, :with_tasks, creator: admin
+    create :paper, :with_integration_journal, :with_tasks, creator: admin
   end
   let!(:reviewer_recommendations_task) do
     FactoryGirl.create(
@@ -80,5 +80,4 @@ feature "User adding reviewer candidates", js: true do
       expect(page).to have_selector(".full-name", text: "Bob AraAnn")
     end
   end
-
 end

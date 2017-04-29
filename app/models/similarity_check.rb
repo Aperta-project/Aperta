@@ -21,6 +21,10 @@ class SimilarityCheck < ::ActiveRecord::Base
     event :upload_document do
       transitions from: :needs_upload, to: :waiting_for_report
     end
+
+    event :finish_report do
+      transitions from: :waiting_for_report, to: :report_complete
+    end
   end
 
   def start_report

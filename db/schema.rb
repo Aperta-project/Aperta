@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170418181223) do
+ActiveRecord::Schema.define(version: 20170428193457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -746,9 +746,10 @@ ActiveRecord::Schema.define(version: 20170418181223) do
 
   create_table "similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_document_id"
-    t.integer  "match_percent"
+    t.integer  "report_id"
+    t.integer  "score"
     t.integer  "versioned_text_id",       null: false
-    t.string   "report_link"
+    t.string   "report_view_only_url"
     t.string   "state",                   null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false

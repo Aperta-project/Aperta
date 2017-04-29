@@ -6,15 +6,18 @@ class SimilarityCheckUpdateWorker
   # TODO: make this work.
   def perform
     SimilarityCheck.waiting_for_report.each do |similarity_check|
-      document_response = ithenticate_api.get_document(id: similarity_check.ithenticate_document_id)
+      document_response = ithenticate_api.get_document(
+        id: similarity_check.ithenticate_document_id
+      )
 
-      binding.pry
       if document_response.report_complete?
         similarity_check.report_id = document_response.report_id
-        report_response = ithenticate_api.get_report(id: report_id)
+        report_response = ithenticate_api.get_report(
+          id: document_response.report_id
+        )
 
         if report_response.success?
-          similarity_check.report_url = report_response.report_url
+          similarity_check.report_url = report_response.report_view_only_url
           similarity_check.score = report_response.score
           return similarity_check.finish_report!
         end

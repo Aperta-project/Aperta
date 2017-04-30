@@ -34,4 +34,21 @@ class SimilarityCheck < ::ActiveRecord::Base
   def give_up_if_timed_out!
     # TODO: do something here
   end
+
+  def sync_document!
+    raise "Need ithenticate_document_id" unless ithenticate_document_id
+    document_response = ithenticate_api.get_document(
+      id: ithenticate_document_id
+    )
+
+    if document_response.report_complete?
+      self.report_id = document_response.report_id
+      self.score = document_response.score
+      finish_report!
+    end
+  end
+
+  def ithenticate_api
+    @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env
+  end
 end

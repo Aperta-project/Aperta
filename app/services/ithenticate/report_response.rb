@@ -12,5 +12,7 @@ module Ithenticate
     def view_only_url
       @response_hash["view_only_url"]
     end
+
+    # TODO: add view_only expiration
   end
 end

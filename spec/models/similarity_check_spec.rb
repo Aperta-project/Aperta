@@ -26,4 +26,40 @@ describe SimilarityCheck, type: :model do
       expect(args).to eq [similarity_check.id]
     end
   end
+
+  describe "sync_document!" do
+    let(:similarity_check) { create :similarity_check, :waiting_for_report }
+    before do
+      allow_any_instance_of(Ithenticate::Api).to receive(:get_document)
+                                                   .and_return(response_double)
+    end
+
+    context "the document's report is finished" do
+      let(:report_score) { Faker::Number.number(2).to_i }
+      let(:report_id) { Faker::Number.number(8).to_i }
+      let(:response_double) do
+        double("response", report_complete?: true, score: report_score, report_id: report_id)
+      end
+
+      it "updates the similarity check with the report score" do
+        expect do
+          similarity_check.sync_document!
+        end.to change { similarity_check.score }.from(nil).to(report_score)
+      end
+
+      it "updates the similarity check with the report id" do
+        expect do
+          similarity_check.sync_document!
+        end.to change { similarity_check.report_id }.from(nil).to(report_id)
+      end
+
+      it "sets the state of the similarity check" do
+        expect do
+          similarity_check.sync_document!
+        end.to change { similarity_check.state }
+                 .from("waiting_for_report")
+                 .to("report_complete")
+      end
+    end
+  end
 end

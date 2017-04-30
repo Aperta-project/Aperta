@@ -1,11 +1,20 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  showCorrespondenceOverlay: window.location.href.includes('viewcorrespondence'),
+  showCorrespondenceOverlay: false,
+  messageId: () => {
+    if (window.location.href.includes('viewcorrespondence')){
+      let parts = window.location.href.split('/');
+      return parts[parts.length - 1];
+    }
+    else {
+      return null;
+    }
+  },
   baseUrl: () => {
     let parts = window.location.href.split('/');
     if (window.location.href.includes('viewcorrespondence')){
-      return window.location.href.split('/').slice(0,parts.length - 2).join('/');
+      return parts.slice(0,parts.length - 2).join('/');
     }
     else{
       return window.location.href;
@@ -20,6 +29,12 @@ export default Ember.Component.extend({
     hideCorrespondenceOverlay() {
       this.set('showCorrespondenceOverlay', false);
       window.history.replaceState({}, null, this.baseUrl());
+    }
+  },
+  didRender() {
+    let messageId = this.messageId();
+    if (messageId !== null){
+      this.$('#link' + messageId).click();
     }
   }
 });

@@ -20,7 +20,7 @@
         {{#each model as |message|}}
           <tr>
             <td>{{format-date message.date}}</td>
-            <td><a {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>
+            <td><a href="{{this.baseUrl}}/viewcorrespondence/{{message.id}}" {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>
             <td>{{message.recipient}}</td>
             <td>{{message.sender}}</td>
           </tr>

@@ -16,13 +16,9 @@ else
 end
 
 Sidekiq.configure_server do |config|
-  # config.redis = redis_config
-
   ActiveSupport.on_load(:active_record) do
     ar_config = ActiveRecord::Base.configurations[Rails.env]
-    # ar_config['pool'] = sidekiq_workers
+    ar_config['pool'] = config.options[:concurrency]
     ActiveRecord::Base.establish_connection(ar_config)
   end
-
-  # Rails.logger.info "Sidekiq started with WORKERS=#{sidekiq_workers}"
 end

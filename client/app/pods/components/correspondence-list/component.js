@@ -11,7 +11,7 @@ export default Ember.Component.extend({
       return null;
     }
   },
-  baseUrl: () => {
+  baseUrl: Ember.computed(function(){
     let parts = window.location.href.split('/');
     if (window.location.href.includes('viewcorrespondence')){
       return parts.slice(0,parts.length - 2).join('/');
@@ -19,16 +19,16 @@ export default Ember.Component.extend({
     else{
       return window.location.href;
     }
-  },
+  }),
   actions: {
     showCorrespondenceOverlay(message) {
       this.set('showCorrespondenceOverlay', true);
       this.set('message', message);
-      window.history.replaceState({}, null, this.baseUrl() + '/viewcorrespondence/' + message.id);
+      window.history.replaceState({}, null, this.get('baseUrl') + '/viewcorrespondence/' + message.id);
     },
     hideCorrespondenceOverlay() {
       this.set('showCorrespondenceOverlay', false);
-      window.history.replaceState({}, null, this.baseUrl());
+      window.history.replaceState({}, null, this.get('baseUrl'));
     }
   },
   didRender() {

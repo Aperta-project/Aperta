@@ -225,6 +225,14 @@ describe QueryParser do
     end
 
     shared_examples_for "a user query" do
+      before do
+        # Stub this out because fuzzy_search can return strange results when using
+        # random faked user data.
+        allow(User).to receive(:fuzzy_search)
+          .with(user_query)
+          .and_return User.where(id: user.id)
+      end
+
       it "parses USER user_query HAS ROLE x" do
         parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
@@ -234,7 +242,7 @@ describe QueryParser do
 
       it 'parses across multiple roles of same name for USER x HAS ROLE x' do
         role2 = create(:role, name: role.name)
-        parse = QueryParser.new(current_user: user).parse "USER #{user.username} HAS ROLE #{role.name}"
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
             "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
           SQL
@@ -248,7 +256,7 @@ describe QueryParser do
       end
 
       it "parses USER x HAS ROLE x AND NO ONE HAS ROLE y" do
-        role2 = create(:role, name: Faker::Name.title)
+        role2 = create(:role, name: 'Editor')
         parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role2.name} AND NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
             "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
@@ -256,7 +264,7 @@ describe QueryParser do
       end
 
       it "parses USER x HAS ROLE x AND NO ONE HAS ROLE y with extra whitespace" do
-        role2 = create(:role, name: Faker::Name.title)
+        role2 = create(:role, name: 'Fabricator')
         parse = QueryParser.new(current_user: user).parse "\tUSER #{user_query} HAS   \n  ROLE   #{role2.name}   AND NO \rONE\t HAS ROLE  #{role.name}  "
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
@@ -266,23 +274,13 @@ describe QueryParser do
 
     describe 'people queries' do
       let!(:role) do
-        create(:role, name: Faker::Name.title)
+        create(:role, name: 'Author')
       end
       let!(:user) do
         create(:user,
-          username: Faker::Lorem.unique.word,
-          first_name: Faker::Name.unique.first_name,
-          last_name: Faker::Name.unique.last_name)
-      end
-
-      before do
-        # Create some confounding data to ensure we are not succeeding by default
-        5.times do
-          create(:user,
-            username: Faker::Lorem.unique.word,
-            first_name: Faker::Name.unique.first_name,
-            last_name: Faker::Name.unique.last_name)
-        end
+          username: Faker::Lorem.word,
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name)
       end
 
       describe "querying against a user email" do

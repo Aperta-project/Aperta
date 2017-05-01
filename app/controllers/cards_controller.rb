@@ -60,7 +60,7 @@ class CardsController < ApplicationController
     journal = Journal.find(card_params[:journal_id])
     requires_user_can(:create_card, journal)
 
-    respond_with Card.create_draft!(card_params)
+    respond_with Card.create_initial_draft!(card_params)
   end
 
   private

@@ -128,7 +128,7 @@ class Card < ActiveRecord::Base
     reload
   end
 
-  def self.create_draft!(attrs)
+  def self.create_initial_draft!(attrs)
     create_new!(attrs)
   end
 

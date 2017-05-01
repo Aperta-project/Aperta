@@ -8,13 +8,19 @@ class Card < ActiveRecord::Base
   belongs_to :journal, inverse_of: :cards
   has_many :card_versions, inverse_of: :card, dependent: :destroy
   validates :name, presence: { message: "Please give your card a name." }
+  # since we use acts_as_paranoid we need to take into account whether a card
+  # has been deleted for uniqueness checks
   validates :name, uniqueness: {
-    scope: :journal,
+    scope: [:journal, :deleted_at],
     message:  <<-MSG.strip_heredoc
       That card name is taken for this journal.
       Please give your card a new name.
     MSG
   }
+
+  has_one :latest_card_version,
+          ->(card) { where(version: card.latest_version) },
+          class_name: 'CardVersion'
 
   # this method is used in the shim layer between nested questions
   # on the front end and card content on the backend.
@@ -60,7 +66,12 @@ class Card < ActiveRecord::Base
   end
 
   def to_xml(options = {})
-    setup_builder(options).card(name: name) do |xml|
+    attrs = {
+      'name' => name,
+      'required-for-submission' =>
+      latest_card_version.required_for_submission
+    }
+    setup_builder(options).card(attrs) do |xml|
       content_root_for_version(:latest).to_xml(
         builder: xml,
         skip_instruct: true

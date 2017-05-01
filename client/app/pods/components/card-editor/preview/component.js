@@ -9,6 +9,11 @@ export default Ember.Component.extend({
 
   classNames: ['card-editor-preview'],
   sidebar: false,
+  store: Ember.inject.service(),
+
+  cardPreview: Ember.computed(function () {
+    return this.get('store').createRecord('card-preview');
+  }),
 
   actions: {
     showFullscreen() {

@@ -41,6 +41,7 @@ Tahi::Application.routes.draw do
     resources :institutional_accounts, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
+
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
@@ -67,6 +68,7 @@ Tahi::Application.routes.draw do
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index, :create, :show, :update]
+    resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do
       put :coauthor_confirmation, on: :member
@@ -138,6 +140,7 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
+      resources :correspondence, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create

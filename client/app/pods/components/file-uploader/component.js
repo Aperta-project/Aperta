@@ -81,31 +81,29 @@ export default Ember.TextField.extend({
       let fileName = file.name;
       let acceptedFileTypes = this.get('accept');
 
-      if (acceptedFileTypes) {
-        let {acceptedFileType, error, msg} = checkType(fileName, acceptedFileTypes);
+      if (Ember.isPresent(acceptedFileTypes)) {
+        let {acceptedFileType, msg} = checkType(fileName, acceptedFileTypes);
         if (!acceptedFileType) {
           this.sendAction('addingFileFailed', msg, {fileName, acceptedFileTypes});
           return;
         }
       }
 
-      let self = this;
-
       let contentType = file.type;
       this.getS3Credentials(fileName, contentType).then(({url, formData}) => {
         uploadData.url = url;
         uploadData.formData = formData;
 
-        let uploadFunction = function() {
-          uploadData.process().done(function(data) {
-            self.sendAction('start', data, uploadData.submit());
+        let uploadFunction = () => {
+          uploadData.process().done((data) => {
+            this.sendAction('start', data, uploadData.submit());
           });
         };
 
-        if (self.get('uploadImmediately')) {
+        if (this.get('uploadImmediately')) {
           uploadFunction();
         } else {
-          self.sendAction('uploadReady', uploadFunction);
+          this.sendAction('uploadReady', uploadFunction);
         }
       });
 
@@ -143,7 +141,7 @@ export default Ember.TextField.extend({
       } else {
       // without a resourceUrl pass the data up and allow the caller to
       // decide what to do with it.
-        this.sendAction('done', uploadedS3Url, filename);
+        this.sendAction('done', uploadedS3Url, filename, fileData);
       }
     });
     uploader.on('fileuploadprogress', (e, data) => {
@@ -156,6 +154,7 @@ export default Ember.TextField.extend({
       return this.sendAction('processingDone', data.files[0]);
     });
     uploader.on('fileuploadfail', (e, data) => {
+      Ember.getOwner(this).lookup('service:bugsnag').notifyUploadError(e);
       return this.sendAction('error', data);
     });
   }).on('didInsertElement')

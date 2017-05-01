@@ -32,6 +32,8 @@ export default Ember.Component.extend({
   multiple: false,
   showDescription: true,
   alwaysShowAddButton: false,
+  preview: false, // used for the card config editor
+  uploadErrorMessage: null, // set in the uploadError action
 
   uploadInProgress: computed.notEmpty('fileUploads'),
   canUploadMoreFiles: computed('attachments.[]', 'multiple', function() {
@@ -55,8 +57,9 @@ export default Ember.Component.extend({
 
   actions: {
 
-    fileAdded(file){
-      this.get('fileUploads').addObject(FileUpload.create({ file: file }));
+    fileAdded(upload){
+      this.set('uploadErrorMessage', null);
+      this.get('fileUploads').addObject(FileUpload.create({ file: upload.files[0] }));
     },
 
     uploadProgress(data) {
@@ -69,9 +72,12 @@ export default Ember.Component.extend({
       });
     },
 
-    uploadFinished(s3Url, data){
-      const fileName = data.files[0].name,
-        uploads = this.get('fileUploads'),
+    uploadError(message) {
+      this.set('uploadErrorMessage', message);
+    },
+
+    uploadFinished(s3Url, fileName){
+      const uploads = this.get('fileUploads'),
         upload = uploads.findBy('file.name', fileName);
 
       if (this.attrs.uploadFinished) {
@@ -79,10 +85,6 @@ export default Ember.Component.extend({
       }
 
       uploads.removeObject(upload);
-    },
-
-    uploadFailed(reason){
-      throw new Ember.Error(`s3 uploadFailed: ${reason}`);
     }
   }
 });

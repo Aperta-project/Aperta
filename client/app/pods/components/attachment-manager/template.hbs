@@ -1,6 +1,6 @@
 {{#if showDescription}}
   <p class="description">
-    {{#unless disabled}}
+    {{#unless (and disabled (not preview))}}
       {{{description}}}
     {{/unless}}
   </p>
@@ -24,19 +24,23 @@
   {{upload-preview upload=f}}
 {{/each}}
 
+<div>
+  {{error-message message=uploadErrorMessage displayIcon=true}}
+</div>
+
 {{#if showAddButton}}
-  <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled) "button--disabled"}}">
+  <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled preview) "button--disabled"}}">
     {{buttonText}}
     <div class="{{if uploadInProgress "hidden"}}">
-      {{s3-file-uploader class="add-new-attachment"
+      {{file-uploader class="add-new-attachment"
                          accept=accept
-                         filePath=filePath
+                         filePrefix=filePath
                          multiple=multiple
                          disabled=disabled
-                         uploadProgress=(action "uploadProgress")
-                         uploadFinished=(action "uploadFinished")
-                         uploadFailed=(action "uploadFailed")
-                         fileAdded=(action "fileAdded")}}
+                         addingFileFailed=(action "uploadError")
+                         progress=(action "uploadProgress")
+                         done=(action "uploadFinished")
+                         start=(action "fileAdded")}}
     </div>
   </div>
 {{/if}}

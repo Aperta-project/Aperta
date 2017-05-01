@@ -3,7 +3,7 @@ class PaperSerializer < LitePaperSerializer
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement,
-             :versions_contain_pdf
+             :versions_contain_pdf, :legends_allowed
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -19,6 +19,11 @@ class PaperSerializer < LitePaperSerializer
            embed: :ids,
            include: true,
            serializer: AssignmentSerializer
+
+  has_many :correspondence,
+  embed: :ids,
+  include: true,
+  serializer: CorrespondenceSerializer
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
@@ -44,8 +49,8 @@ class PaperSerializer < LitePaperSerializer
       decisions: paper_decisions_path(object),
       snapshots: snapshots_paper_path(object),
       related_articles: related_articles_paper_path(object),
+      correspondence: paper_correspondence_index_path(object),
       paper_task_types: paper_task_types_path(object),
-
       # all possible Cards that can be added to this Paper
       available_cards: paper_available_cards_path(object)
     }

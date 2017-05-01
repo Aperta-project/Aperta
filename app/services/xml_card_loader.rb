@@ -14,6 +14,9 @@ class XmlCardLoader
     @root ||= @doc.xpath('/card').first
   end
 
+  # We use RelaxNG to validate the xml. The config/card.rng file
+  # is automatically generated from the config/card.rnc file.
+  # Instructions for how to do that are included there.
   def initialize(doc, journal)
     @doc = doc
     @journal = journal
@@ -44,7 +47,9 @@ class XmlCardLoader
     card.latest_version = new_version
     version = card.card_versions.new(
       version: new_version,
-      card: card
+      card: card,
+      required_for_submission:
+        attr_val(root, 'required-for-submission') == 'true'
     )
     content_root = make_card_content(
       root.xpath('/card/content').first,
@@ -73,17 +78,27 @@ class XmlCardLoader
     end
   end
 
+  def tag_text(el, tag)
+    el.xpath(tag).first.try(:text).try(:strip)
+  end
+
   def make_card_content(el, card_version)
-    text = el.xpath('text').first.try(:text).try(:strip) || attr_val(el, 'text')
-    placeholder = el.xpath('placeholder').first.try(:text)
+    text = tag_text(el, 'text')
+    placeholder = tag_text(el, 'placeholder')
+    label = tag_text(el, 'label')
     content = CardContent.new(
-      ident: attr_val(el, 'ident'),
-      value_type: attr_val(el, 'value-type'),
+      allow_multiple_uploads: attr_val(el, 'allow-multiple-uploads'),
+      allow_file_captions: attr_val(el, 'allow-file-captions'),
+      card_version: card_version,
       content_type: attr_val(el, 'content-type'),
+      default_answer_value: attr_val(el, 'default-answer-value'),
+      ident: attr_val(el, 'ident'),
+      label: label,
       placeholder: placeholder,
-      text: text,
       possible_values: parse_possible_values(el),
-      card_version: card_version
+      text: text,
+      value_type: attr_val(el, 'value-type'),
+      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer')
     )
     el.xpath('content').each do |el1|
       content.children << make_card_content(el1, card_version)

@@ -12,6 +12,10 @@ class Paper < ActiveRecord::Base
   include PgSearch
   include Assignable::Model
   include Snapshottable
+  include CustomCastTypes
+
+  # attribute :title, HtmlSanitized.new
+  attribute :abstract, HtmlString.new
 
   self.snapshottable = true
 
@@ -49,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
+  has_many :correspondence
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -116,6 +121,7 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
+                  guards: [:required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -130,7 +136,8 @@ class Paper < ActiveRecord::Base
       # so they do not increment that number.
       transitions from: [:in_revision],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -139,7 +146,8 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted,
                          :invited_for_full_submission],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -425,9 +433,16 @@ class Paper < ActiveRecord::Base
     withdrawals.most_recent
   end
 
+  # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.count == tasks.metadata.completed.count
+    tasks.metadata.pluck(:completed).all?
+  end
+
+  def required_for_submission_tasks_completed?(*)
+    tasks.with_card.joins(:card_version).merge(
+      CardVersion.required_for_submission
+    ).pluck(:completed).all?
   end
 
   # Accepts any args the state transition accepts

@@ -112,6 +112,11 @@
 
     button { float: right; }
   }
+
+  .feature-flags {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .admin-user-search-default-state-text {

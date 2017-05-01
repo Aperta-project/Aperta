@@ -4,7 +4,7 @@ module RichTextEditorHelpers
     page.evaluate_script("$(\"#{selector}\").attr('id')")
   end
 
-  def fill_in_rich_text(editor:, with:)
+  def fill_in_rich_text(editor:, with: value)
     id = id_for_editor(editor)
     editor = "tinymce.editors.#{id}"
     page.execute_script("#{editor}.setContent('#{value}')")

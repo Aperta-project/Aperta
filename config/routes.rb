@@ -61,7 +61,11 @@ Tahi::Application.routes.draw do
       put :cancel, on: :member
     end
     resources :manuscript_attachments, only: [:show]
-    resources :similarity_checks, only: [:create, :show]
+    resources :similarity_checks, only: [:create, :show] do
+      member do
+        get 'report_view_only'
+      end
+    end
     resources :sourcefile_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]

@@ -27,7 +27,7 @@ describe SimilarityCheck, type: :model do
     end
   end
 
-  describe "sync_document!" do
+  describe "#sync_document!" do
     let(:similarity_check) { create :similarity_check, :waiting_for_report }
     before do
       allow_any_instance_of(Ithenticate::Api).to receive(:get_document)
@@ -59,6 +59,38 @@ describe SimilarityCheck, type: :model do
         end.to change { similarity_check.state }
                  .from("waiting_for_report")
                  .to("report_complete")
+      end
+    end
+  end
+
+  describe "#report_view_only_url" do
+    context "the similarity check's report is not complete" do
+      let(:similarity_check) { create :similarity_check, :waiting_for_report }
+
+      it "raises an exception" do
+        expect do
+          similarity_check.report_view_only_url
+        end.to raise_exception(SimilarityCheck::IncorrectState)
+      end
+    end
+
+    context "the similarity check's report is complete" do
+      let(:similarity_check) { create :similarity_check, :report_complete }
+      let(:fake_url) { Faker::Internet.url }
+      let(:response_double) do
+        double(Ithenticate::ReportResponse, view_only_url: fake_url)
+      end
+
+      before do
+        allow_any_instance_of(Ithenticate::Api).to(
+          receive(:get_report).with(
+            id: similarity_check.report_id
+          ).and_return(response_double)
+        )
+      end
+
+      it "returns an expiring url to the view_only version of the report" do
+        expect(similarity_check.report_view_only_url).to eq fake_url
       end
     end
   end

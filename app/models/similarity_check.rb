@@ -3,11 +3,14 @@
 # check. The SimilarityCheckTask can have multiple requests. In practice, we
 # should avoid making more than one request per paper.
 #
-class SimilarityCheck < ::ActiveRecord::Base
+class SimilarityCheck < ActiveRecord::Base
+  class IncorrectState < StandardError; end
+
   include EventStream::Notifiable
   include AASM
 
   belongs_to :versioned_text
+  has_one :paper, through: :versioned_text
 
   validates :versioned_text, :state, presence: true
 
@@ -47,6 +50,14 @@ class SimilarityCheck < ::ActiveRecord::Base
       finish_report!
     end
   end
+
+  def report_view_only_url
+    raise IncorrectState, "Report not yet completed" unless report_complete?
+    response = ithenticate_api.get_report(id: report_id)
+    response.view_only_url
+  end
+
+  private
 
   def ithenticate_api
     @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env

@@ -7,10 +7,10 @@ class CreateSimilarityChecks < ActiveRecord::Migration
   def change
     create_table :similarity_checks do |t|
       t.integer :ithenticate_document_id
-      t.integer :report_id
-      t.integer :score
+      t.integer :report_id # TODO: add ithenticate_
+      t.integer :score # TODO: add ithenticate_
       t.references :versioned_text, foreign_key: true, null: false
-      t.string :report_view_only_url
+      t.string :report_view_only_url # TODO: remove this.
       t.string :state, null: false
       t.timestamps null: false
     end

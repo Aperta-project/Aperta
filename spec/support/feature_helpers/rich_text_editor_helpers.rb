@@ -1,7 +1,6 @@
 module RichTextEditorHelpers
   def id_for_editor(name)
     selector = "[data-editor='#{name}']"
-    binding.pry
     page.evaluate_script("$(\"#{selector}\").attr('id')")
   end
 

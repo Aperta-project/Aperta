@@ -2,6 +2,8 @@
 require File.dirname(__FILE__) + '/reviewer_report_task_overlay'
 
 class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay
+  include RichTextEditorHelpers
+
   def fill_in_report(values = {})
     values = values.with_indifferent_access.reverse_merge(
       "front_matter_reviewer_report--competing_interests" => "default competing interests content",
@@ -14,9 +16,8 @@ class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay
 
   def fill_in_fields(values = {})
     values.each_pair do |key, value|
-      element_name = "#{key}"
-      fill_in element_name, with: value
-      page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('input')"
+      editor = key.split('--').last
+      fill_in_rich_text editor: editor, with: value
     end
   end
 

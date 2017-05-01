@@ -4,6 +4,7 @@ import Ember from 'ember';
 export default NestedQuestionComponent.extend({
   helpText: null,
   unwrappedHelpText: null,
+  attributeBindings: ['data-editor'],
   displayContent: true,
   inputClassNames: [],
 

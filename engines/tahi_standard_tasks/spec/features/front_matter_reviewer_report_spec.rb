@@ -61,21 +61,24 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     reviewer_report_task = create_reviewer_report_task
 
     ident = 'front_matter_reviewer_report--competing_interests'
+    editor = 'competing-interests'
+
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+    sleep 5
     answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
 
     # Recreating the error in APERTA-8647
     t.wait_for_sentinel(sentinel_proc) do
-      t.fill_in_report ident => 'Oops, this is the wrong value'
+      t.fill_in_report editor => 'Oops, this is the wrong value'
     end
     t.wait_for_sentinel(sentinel_proc) do
-      t.fill_in_report ident => ''
+      t.fill_in_report editor => ''
     end
     no_compete = 'I have no competing interests with this work.'
     t.wait_for_sentinel(sentinel_proc) do
-      t.fill_in_report ident => no_compete
+      t.fill_in_report editor => no_compete
     end
     t.submit_report
     t.confirm_submit_report

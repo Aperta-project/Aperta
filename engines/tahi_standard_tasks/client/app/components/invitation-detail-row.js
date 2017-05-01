@@ -151,6 +151,12 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
 
   actions: {
+    updateAnswer(contents) {
+      let invitation = this.get('invitation');
+      invitation.set('body', contents);
+      this.save(invitation);
+    },
+
     toggleDetails() {
       if (this.get('uiState') === 'closed') {
         this.get('setRowState')('show');

@@ -14,23 +14,27 @@ class CardFactory
     end
   end
 
-  private
-
   def create_from_configuration_klass(configuration_klass)
-    existing_card = Card.find_by(name: configuration_klass.name, journal: journal, latest_version: 1)
+    create_from_content(name: configuration_klass.name, new_content: configuration_klass.content)
+  end
+
+  def create_from_content(name: nil, new_content: [])
+    existing_card = Card.find_by(name: name, journal: journal, latest_version: 1)
     # the line below should hypothetically only happen once per environment, but it's more straightforward
     # to include it here than to make a separate data migration
-    existing_card.publish! if existing_card && existing_card.draft?
-    card = existing_card || Card.create_published!(name: configuration_klass.name,
+    card = existing_card || Card.create_published!(name: name,
                                                    journal: journal)
     card_version = card.latest_published_card_version
     content_root = card_version.content_root
-    new_content = configuration_klass.content
     new_content.each do |c|
       c[:parent] = content_root
       c[:card_version] = card_version
     end
     CardContent.where(card_version: card_version).where.not(ident: nil)
-               .update_all_exactly!(new_content)
+      .update_all_exactly!(new_content)
+
+    card.publish! if card.draft?
+    card.lock! if journal.blank? && !card.locked?
+    card.reload
   end
 end

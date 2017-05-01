@@ -107,8 +107,6 @@ class CardContent < ActiveRecord::Base
     # hashes. Each hash represents a single piece of card content, and must
     # have at least an `ident` field.
     #
-    # ANY CONTENT IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE DESTROYED.
-    #
     # Any content with hashes but not in scope will be created.
 
     updated_idents = []

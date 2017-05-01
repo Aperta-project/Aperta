@@ -1,5 +1,5 @@
 {{#ember-wormhole to="card-editor-action-buttons"}}
-  <button class="button button-secondary button--blue"
+  <button class="button button-secondary button--blue editor-archive"
           disabled={{or (not-eq card.state "published") archiveCard.isRunning}}
           {{action "confirmArchive"}}>Archive</button>
 {{/ember-wormhole}}
@@ -70,7 +70,7 @@
 
 {{#overlay-fullscreen visible=showArchiveOverlay
    outAnimationComplete=(toggle "showArchiveOverlay" this)
-   overlayClass="publish-card-overlay overlay--blue"
+   overlayClass="publish-card-overlay archive overlay--blue"
    as |overlay|}}
   <h1> Archive Card </h1>
   <p>

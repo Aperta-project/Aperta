@@ -16,8 +16,7 @@ class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay
 
   def fill_in_fields(values = {})
     values.each_pair do |key, value|
-      editor = key.split('--').last
-      fill_in_rich_text editor: editor, with: value
+      fill_in_rich_text editor: key, with: value
     end
   end
 

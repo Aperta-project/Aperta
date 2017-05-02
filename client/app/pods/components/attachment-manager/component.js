@@ -28,7 +28,9 @@ export default Ember.Component.extend({
   disabled: false,
   notDisabled: computed.not('disabled'),
   buttonText: 'Upload File',
-  fileUploads: computed(() => { return []; }),
+  fileUploads: computed(() => {
+    return [];
+  }),
   multiple: false,
   showDescription: true,
   alwaysShowAddButton: false,
@@ -40,12 +42,28 @@ export default Ember.Component.extend({
     return Ember.isEmpty(this.get('attachments')) || this.get('multiple');
   }),
 
+  disableAddButton: computed(
+    'uploadInProgress',
+    'disabled',
+    'preview',
+    function() {
+      return (
+        this.get('uploadInProgress') ||
+        this.get('disabled') ||
+        this.get('preview')
+      );
+    }
+  ),
+
   showAddButton: computed(
     'alwaysShowAddButton',
     'disabled',
     'canUploadMoreFiles',
     function() {
-      return this.get('alwaysShowAddButton') || (this.get('canUploadMoreFiles') && !this.get('disabled'));
+      return (
+        this.get('alwaysShowAddButton') ||
+        (this.get('canUploadMoreFiles') && !this.get('disabled'))
+      );
     }
   ),
 
@@ -56,10 +74,11 @@ export default Ember.Component.extend({
   },
 
   actions: {
-
-    fileAdded(upload){
+    fileAdded(upload) {
       this.set('uploadErrorMessage', null);
-      this.get('fileUploads').addObject(FileUpload.create({ file: upload.files[0] }));
+      this.get('fileUploads').addObject(
+        FileUpload.create({ file: upload.files[0] })
+      );
     },
 
     uploadProgress(data) {
@@ -76,7 +95,7 @@ export default Ember.Component.extend({
       this.set('uploadErrorMessage', message);
     },
 
-    uploadFinished(s3Url, fileName){
+    uploadFinished(s3Url, fileName) {
       const uploads = this.get('fileUploads'),
         upload = uploads.findBy('file.name', fileName);
 

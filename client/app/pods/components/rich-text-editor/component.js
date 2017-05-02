@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/i,em/i,u,sub,sup,pre';
-const basicPlugins     = 'code preview';
-const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | code preview';
+const basicPlugins     = 'code';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | code';
 
 const expandedElements = ',ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tr,th,td';
 const expandedPlugins  = ' table';

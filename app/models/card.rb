@@ -91,6 +91,7 @@ class Card < ActiveRecord::Base
                   after: :publish_latest_version!
     end
 
+    # called when the card's xml is updated
     event :save_draft do
       transitions from: :published,
                   to: :published_with_changes

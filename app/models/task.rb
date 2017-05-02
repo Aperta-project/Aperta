@@ -195,6 +195,8 @@ class Task < ActiveRecord::Base
   end
 
   def participants=(users)
+    raise "KABOOM!  Setting participants here!"
+
     participations.destroy_all
 
     # Saving without validations is a temporary fix until unexpected side

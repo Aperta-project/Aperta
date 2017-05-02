@@ -747,6 +747,7 @@ ActiveRecord::Schema.define(version: 20170428193457) do
   create_table "similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_document_id"
     t.datetime "ithenticate_report_completed_at"
+    t.datetime "timeout_at"
     t.integer  "report_id"
     t.integer  "score"
     t.integer  "versioned_text_id",               null: false

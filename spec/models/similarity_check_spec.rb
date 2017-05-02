@@ -41,6 +41,14 @@ describe SimilarityCheck, type: :model do
         double("response", report_complete?: true, score: report_score, report_id: report_id)
       end
 
+      it "updates the similarity check's state to 'report_complete'" do
+        expect do
+          similarity_check.sync_document!
+        end.to change { similarity_check.state }
+                 .from("waiting_for_report")
+                 .to("report_complete")
+      end
+
       it "updates the similarity check with the report score" do
         expect do
           similarity_check.sync_document!
@@ -68,6 +76,43 @@ describe SimilarityCheck, type: :model do
         end.to change { similarity_check.state }
                  .from("waiting_for_report")
                  .to("report_complete")
+      end
+    end
+
+    context "the document's report is finished" do
+      let(:similarity_check) { create :similarity_check, :waiting_for_report }
+      let(:report_score) { Faker::Number.number(2).to_i }
+      let(:report_id) { Faker::Number.number(8).to_i }
+      let(:response_double) do
+        double("response", report_complete?: false)
+      end
+
+      around :each do |example|
+        Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+          example.run
+        end
+      end
+
+      context "the system time is after the similarity check's timeout_at" do
+        let(:timeout_offset) { 1.second }
+
+        it "updates to similarity check's status to 'failed'" do
+          expect do
+            similarity_check.sync_document!
+          end.to change { similarity_check.state }
+                   .from("waiting_for_report")
+                   .to("failed")
+        end
+      end
+
+      context "the system time is before the similarity check's timeout_at" do
+        let(:timeout_offset) { -1.seconds }
+
+        it "updates to similarity check's status to 'failed'" do
+          expect do
+            similarity_check.sync_document!
+          end.to_not change { similarity_check.state }
+        end
       end
     end
   end

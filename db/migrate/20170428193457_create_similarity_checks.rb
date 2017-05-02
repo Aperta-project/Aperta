@@ -8,6 +8,7 @@ class CreateSimilarityChecks < ActiveRecord::Migration
     create_table :similarity_checks do |t|
       t.integer :ithenticate_document_id
       t.datetime :ithenticate_report_completed_at
+      t.datetime :timeout_at
       t.integer :report_id # TODO: add ithenticate_
       t.integer :score # TODO: add ithenticate_
       t.references :versioned_text, foreign_key: true, null: false

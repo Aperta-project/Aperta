@@ -28,6 +28,10 @@ class SimilarityCheck < ActiveRecord::Base
     event :finish_report do
       transitions from: :waiting_for_report, to: :report_complete
     end
+
+    event :timeout do
+      transitions from: :waiting_for_report, to: :failed
+    end
   end
 
   def start_report
@@ -35,7 +39,7 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   def give_up_if_timed_out!
-    # TODO: do something here
+    timeout! if Time.now.utc > timeout_at
   end
 
   def sync_document!
@@ -49,6 +53,8 @@ class SimilarityCheck < ActiveRecord::Base
       self.score = document_response.score
       self.ithenticate_report_completed_at = Time.now.utc
       finish_report!
+    else
+      give_up_if_timed_out!
     end
   end
 

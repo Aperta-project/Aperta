@@ -1,3 +1,14 @@
+.publish-card-overlay {
+    h1 {
+        font-size: 30px;
+        margin-bottom: 30px;
+        color: $aperta-blue;
+    }
+    .card-editor-confirm-publish-buttons {
+        float: right;
+    }
+}
+
 .card-editor-editor {
   flex: 1;
   background-color: $aperta-grey-light;
@@ -19,6 +30,13 @@
   flex-direction: column;
 
   .card-editor-save-buttons {
+
+    .card-editor-save-buttons-state {
+      float: left;
+      text-transform: uppercase;
+      margin-top: 10px;
+      color: $aperta-grey-dark;
+    }
 
     .card-editor-save-buttons-container {
       max-width: 1180px;

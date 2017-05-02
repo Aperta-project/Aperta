@@ -3,7 +3,8 @@ import Ember from 'ember';
 
 
 export default DS.Model.extend({
-  versionedText: DS.belongsTo('versionedText'),
+  versionedText: DS.belongsTo('versioned-text'),
+  paper: DS.belongsTo('paper'),
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),
   createdAt: DS.attr('date'),

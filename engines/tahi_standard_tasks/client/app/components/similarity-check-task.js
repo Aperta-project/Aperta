@@ -15,8 +15,10 @@ export default TaskComponent.extend({
       this.set('confirmVisible', false);
     },
     generateReport() {
+      this.set('confirmVisible', false);
       this.get('task.paper.versionedTexts').then(() => {
         const similarityCheck = this.get('store').createRecord('similarity-check', {
+          paper: this.get('task.paper'),
           versionedText: this.get('latestVersionedText')
         });
         similarityCheck.save();

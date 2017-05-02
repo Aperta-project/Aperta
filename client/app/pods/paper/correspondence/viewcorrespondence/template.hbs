@@ -1,0 +1,7 @@
+{{#overlay-fullscreen
+  visible=true
+  outAnimationComplete=(action "hideCorrespondenceOverlay")
+  title="Correspondence Record"
+  overlayClass="correspondence-overlay" as |overlay|}}
+  {{correspondence-details message=model}}
+{{/overlay-fullscreen}}

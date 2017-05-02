@@ -74,4 +74,3 @@ test('can not manage workflow, list is hidden', function(assert) {
     done();
   });
 });
-

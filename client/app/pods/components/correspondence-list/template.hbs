@@ -1,11 +1,4 @@
 {{#if (can "manage_workflow" paper)}}
-{{#overlay-fullscreen visible=showCorrespondenceOverlay
-                      outAnimationComplete=(action "hideCorrespondenceOverlay")
-                      title="Correspondence Record"
-                      overlayClass="correspondence-overlay"
-                      as |overlay|}}
-    {{correspondence-details message=message}}
-{{/overlay-fullscreen}}
   <div class="correspondence-table">
     <table class="table table-hover">
       <thead>
@@ -20,7 +13,12 @@
         {{#each model as |message|}}
           <tr>
             <td>{{format-date message.date}}</td>
-            <td><a id='link{{message.id}}' href="{{this.baseUrl}}/viewcorrespondence/{{message.id}}" {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>
+            <!--<td><a id='link{{message.id}}' href="{{this.baseUrl}}/viewcorrespondence/{{message.id}}" {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>-->
+            <td>
+              {{#link-to 'paper.correspondence.viewcorrespondence' paper message}}
+                {{message.subject}}
+              {{/link-to}}
+            </td>
             <td>{{message.recipient}}</td>
             <td>{{message.sender}}</td>
           </tr>

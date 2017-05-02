@@ -22,9 +22,7 @@ Router.map(function() {
     this.route('versions', { path: '/versions' });
 
     this.route('correspondence', { path: '/correspondence' }, function() {
-      this.route('index', { path: '/' }, function() {
-        this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
-      });
+      this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
     });
 
 

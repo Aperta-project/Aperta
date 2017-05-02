@@ -3,11 +3,39 @@ require 'rails_helper'
 describe CardFactory do
   describe "creating cards from configurations" do
     context "there is no card in the db for a given configuration and journal" do
+      let(:journal) { FactoryGirl.create(:journal) }
       it "creates a new card that is published if a journal is provided" do
-        new_card = CardFactory.new(journal: FactoryGirl.create(:journal))
+        new_card = CardFactory.new(journal: journal)
                      .create_from_content(name: "Foo", new_content: [])
         expect(new_card).to be_published
       end
+
+      it "creates new nested content properly" do
+        new_card = CardFactory.new(journal: journal)
+          .create_from_content(
+            name: "New Card",
+            new_content: [
+              {
+                ident: "foo",
+                content_type: "text",
+                text: "new foo text",
+                children: [
+                  {
+                    ident: "bar",
+                    content_type: "text",
+                    text: "child bar text"
+                  }
+                ]
+              }
+            ]
+          )
+
+        version = new_card.latest_card_version
+        expect(version.card_contents.find_by(ident: "foo").text).to eq("new foo text")
+        expect(version.card_contents.find_by(ident: "bar").text).to eq("child bar text")
+        expect(version.card_contents.count).to eq(3)
+      end
+
       it "creates a new card that is locked if no journal is provided" do
         new_card = CardFactory.new(journal: nil)
                      .create_from_content(name: "Foo", new_content: [])
@@ -57,6 +85,31 @@ describe CardFactory do
           expect(version.card_contents.count).to eq(2)
         end
 
+        it "creates nested children of existing content properly" do
+          CardFactory.new(journal: journal)
+            .create_from_content(
+              name: card.name,
+              new_content: [
+                {
+                  ident: "foo",
+                  content_type: "text",
+                  text: "new foo text",
+                  children: [
+                    {
+                      ident: "bar",
+                      content_type: "text",
+                      text: "child bar text"
+                    }
+                  ]
+                }
+              ]
+            )
+
+          expect(version.card_contents.find_by(ident: "foo").text).to eq("new foo text")
+          expect(version.card_contents.find_by(ident: "bar").text).to eq("child bar text")
+          expect(version.card_contents.count).to eq(3)
+        end
+
         it "creates new card content if the ident in the config is blank or different" do
           CardFactory.new(journal: journal)
             .create_from_content(
@@ -93,6 +146,23 @@ describe CardFactory do
               ]
             )
           end.to raise_error RuntimeError
+        end
+
+        it "blows up if the existing card's latest version is > 1" do
+          card.update!(latest_version: 2)
+          expect do
+            CardFactory.new(journal: journal)
+              .create_from_content(
+                name: card.name,
+                new_content: [
+                  {
+                    ident: "bar",
+                    content_type: "text",
+                    text: "bar text"
+                  }
+                ]
+              )
+          end.to raise_error ArgumentError
         end
 
         it "ignores existing card content that does not have an ident" do

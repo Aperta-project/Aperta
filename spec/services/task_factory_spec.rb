@@ -55,13 +55,6 @@ describe TaskFactory do
     expect(task.body).to eq('key' => 'value')
   end
 
-  it "Sets the participants from params" do
-    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
-    participants = [FactoryGirl.create(:user)]
-    task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
-    expect(task.participants).to eq(participants)
-  end
-
   describe "setting task's card version" do
     context "the card version is passed in" do
       let(:card_version) { FactoryGirl.create(:card_version) }

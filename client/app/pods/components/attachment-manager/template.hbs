@@ -29,14 +29,14 @@
 </div>
 
 {{#if showAddButton}}
-  <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled preview) "button--disabled"}}">
+  <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
     {{buttonText}}
     <div class="{{if uploadInProgress "hidden"}}">
       {{file-uploader class="add-new-attachment"
                          accept=accept
                          filePrefix=filePath
                          multiple=multiple
-                         disabled=disabled
+                         disabled=disableAddButton
                          addingFileFailed=(action "uploadError")
                          progress=(action "uploadProgress")
                          done=(action "uploadFinished")

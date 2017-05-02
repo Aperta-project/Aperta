@@ -1,9 +1,31 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
+    <div class="card-editor-save-buttons-state">
+      {{#unless (eq card.state "published")}}
+        {{fa-icon card.stateIcon}}
+        <span>
+          {{card.stateName}}
+        </span>
+      {{/unless}}
+    </div>
     <button class="button button--blue button-primary editor-save"
-            onclick={{perform saveCard}}
-            disabled={{saveCard.isRunning}}>
-      Save and Publish
+ ethics--field_study--field_permit_number           onclick={{perform saveCard}}
+            disabled={{or saveCard.isRunning publishCard.isRunning (not xmlDirty)}}>
+      Save
+    </button>
+
+    <button class="button button--blue button-primary editor-publish"
+            onclick={{action "confirmPublish"}}
+            disabled={{or
+                       saveCard.isRunning
+                       publishCard.isRunning
+                       xmlDirty
+                       (not card.publishable)}}>
+      {{#if (eq card.state "draft")}}
+        Publish Card
+      {{else}}
+        Publish Changes
+      {{/if}}
     </button>
   </div>
 </div>
@@ -20,3 +42,26 @@
     </div>
   </div>
 </div>
+{{#overlay-fullscreen visible=showPublishOverlay
+   outAnimationComplete=(toggle "showPublishOverlay" this)
+   overlayClass="publish-card-overlay overlay--blue"
+   as |overlay|}}
+  <h1> Publish Card </h1>
+  <p>
+    Publishing will make this card live. The card will be added to the card catalogue
+    and can be added to workflow templates.
+  </p>
+
+  <p>
+    NOTE: The changes you made to this card will only be applied to new manuscripts. Manuscripts
+    that were created before these changes will have the previous version of this card.
+  </p>
+
+  <div>
+    <div class="overlay-action-buttons">
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Not yet, keep editing</button>
+      <button class="button-primary button--blue" {{action (perform publishCard)}}>Publish</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+

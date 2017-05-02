@@ -1,4 +1,4 @@
-JIRA issue: link-to-jira
+JIRA issue: https://jira.plos.org/jira/browse/APERTA-
 
 #### What this PR does:
 

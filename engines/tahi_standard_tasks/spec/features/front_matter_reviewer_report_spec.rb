@@ -64,7 +64,10 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    # Wait for rich-text editors to instantiate
     sleep 5
+
     answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
 

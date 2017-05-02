@@ -16,6 +16,12 @@ FactoryGirl.define do
     phase
     card_version
 
+    transient do
+      # any array of participants that are passed in
+      # will be used to set the participants of the task
+      participants nil
+    end
+
     trait :with_card do
       after(:create) do |task|
         # first check to see if there's an existing card we can use
@@ -29,6 +35,13 @@ FactoryGirl.define do
         CardLoader.load(task.class.name)
         card = Card.find_by_class_name(task.class)
         task.update(card_version: card.latest_card_version)
+      end
+    end
+
+    after(:create) do |task, evaluator|
+      if evaluator.participants
+        task.participations.destroy_all
+        evaluator.participants.each { |user| task.add_participant(user) }
       end
     end
 

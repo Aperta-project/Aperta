@@ -3,7 +3,7 @@ require 'rails_helper'
 describe CardArchiver do
   context ".archive" do
     it "sets the archived_at date of the card" do
-      card = FactoryGirl.create(:card)
+      card = FactoryGirl.create(:card, state: "published")
       expect(card.archived_at).to be_nil
       CardArchiver.archive(card)
       expect(card.reload.archived_at).to be_present

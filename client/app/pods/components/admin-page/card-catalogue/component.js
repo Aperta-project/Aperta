@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+const { get } = Ember;
 export default Ember.Component.extend({
   cards: [],
   journal: null,
@@ -11,7 +12,7 @@ export default Ember.Component.extend({
   filteredCards: Ember.computed('cards.@each.isNew', function() {
     return this.get('cards')
       .filterBy('isNew', false)
-      .reject(card => card.get('state') === 'archived');
+      .reject(card => get(card, 'state') === 'archived');
   }),
 
   actions: {

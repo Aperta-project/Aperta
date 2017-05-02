@@ -21,7 +21,10 @@ FactoryGirl.define do
       end
     end
     trait :archived do
-      after(:build, &:archive!)
+      after(:build) do |card|
+        card.state = "archived"
+        card.archived_at = DateTime.now.utc
+      end
     end
 
     trait :for_answerable do

@@ -9,21 +9,85 @@ describe SimilarityCheck, type: :model do
     end
   end
 
-  describe "#start_report" do
+  describe "#start_report_async" do
     let(:similarity_check) { create :similarity_check }
-    subject(:start_report) { similarity_check.start_report }
+    subject(:start_report_async) { similarity_check.start_report_async }
 
     it "enqueues a SimilarityCheckStartReportWorker job" do
       expect do
-        start_report
+        start_report_async
       end.to change { SimilarityCheckStartReportWorker.jobs.size }.by(1)
     end
 
     it "enqueues a job with the SimilarityCheck record id as an arg" do
-      start_report
+      start_report_async
       args = SimilarityCheckStartReportWorker.jobs.first["args"]
       expect(similarity_check.id).to be_present
       expect(args).to eq [similarity_check.id]
+    end
+  end
+
+  describe "#start_report!" do
+    let(:similarity_check) { create :similarity_check }
+    let(:paper) { create :paper, :version_with_file_type }
+    let!(:similarity_check) { create :similarity_check, versioned_text: paper.latest_version }
+    let(:stubbed_url) { paper.file.url }
+    let(:fake_doc_id) { Faker::Number.number(8).to_i }
+    let(:fake_ithenticate_response) do
+      {
+        "api_status" => 200,
+        "uploaded" => [
+          {
+            "id" => fake_doc_id
+          }
+        ]
+      }
+    end
+    subject(:start_report!) { similarity_check.start_report! }
+
+    before do
+      stub_request(:get, stubbed_url).to_return(body: "turtles")
+    end
+
+    it "adds a document through the Ithenticate::Api" do
+      expect(Ithenticate::Api).to(
+        receive_message_chain(:new_from_tahi_env, :add_document)
+          .and_return(fake_ithenticate_response)
+      )
+      start_report!
+    end
+
+    describe "successful ithenticate api calls" do
+      before do
+        allow(Ithenticate::Api).to(
+          receive_message_chain(:new_from_tahi_env, :add_document)
+            .and_return(fake_ithenticate_response)
+        )
+      end
+
+      it "sets ithenticate_document_id on the SimilarityCheck record" do
+        expect do
+          start_report!
+        end.to change { similarity_check.ithenticate_document_id }
+                 .from(nil).to(fake_doc_id)
+      end
+
+      it "updates the AASM state of the SimilarityCheck record" do
+        expect do
+          start_report!
+        end.to change { similarity_check.state }
+                 .from("needs_upload").to("waiting_for_report")
+      end
+
+      it "sets the similarity check's timeout_at" do
+        expect(SimilarityCheck::TIMEOUT_INTERVAL).to be_present
+        Timecop.freeze do |now|
+          expect do
+            start_report!
+          end.to change { similarity_check.timeout_at }
+                   .from(nil).to(now + SimilarityCheck::TIMEOUT_INTERVAL)
+        end
+      end
     end
   end
 

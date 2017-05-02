@@ -11,8 +11,11 @@ class SimilarityCheck < ActiveRecord::Base
 
   belongs_to :versioned_text
   has_one :paper, through: :versioned_text
+  has_one :file, through: :paper
 
   validates :versioned_text, :state, presence: true
+
+  TIMEOUT_INTERVAL = 10.minutes
 
   aasm column: :state do
     # It's 'pending' before the job has been started by a worker
@@ -34,8 +37,27 @@ class SimilarityCheck < ActiveRecord::Base
     end
   end
 
-  def start_report
+  def start_report_async
     SimilarityCheckStartReportWorker.perform_async(id)
+  end
+
+  def start_report!
+    response = ithenticate_api.add_document(
+      content: Faraday.get(file.url).body,
+      filename: file[:file],
+      title: paper.title,
+      author_first_name: "ninja", # TODO: fix author name
+      author_last_name: "turtle",
+      folder_id: 921_380, # TODO: fix folder id
+    )
+
+    unless response["api_status"] == 200
+      raise "ithenticate error" # TODO: expose response
+    end
+
+    self.ithenticate_document_id = response["uploaded"].first["id"]
+    self.timeout_at = Time.now.utc + TIMEOUT_INTERVAL
+    upload_document!
   end
 
   def give_up_if_timed_out!

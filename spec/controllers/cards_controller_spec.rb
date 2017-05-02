@@ -123,9 +123,55 @@ describe CardsController do
 
         it { is_expected.to responds_with 201 }
 
-        it 'returns the serialized card' do
+        it 'returns the serialized draft card' do
           do_request
           expect(res_body['card']['name']).to eq name
+          expect(res_body['card']['state']).to eq 'draft'
+        end
+      end
+    end
+  end
+
+  describe "#publish" do
+    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
+    before do
+      # by default the :versioned trait creates a published version and we
+      # need to work with a draft
+      card.latest_card_version.update!(published_at: nil)
+    end
+    subject(:do_request) do
+      put(:publish, format: 'json', id: card.id)
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "and the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'and the user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return(true)
+        end
+
+        it { is_expected.to responds_with 200 }
+
+        it 'returns the updated card' do
+          expect(card.state).to eq('draft')
+          do_request
+          expect(res_body['card']['state']).to eq('published')
         end
       end
     end

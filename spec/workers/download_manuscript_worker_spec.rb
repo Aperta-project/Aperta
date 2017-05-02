@@ -55,6 +55,7 @@ describe DownloadManuscriptWorker, redis: true do
     let(:pusher_channel) { mock_delayed_class(TahiPusher::Channel) }
     let(:paper) { create :paper, :ready_for_export }
     let(:user) { paper.creator }
+    let(:url) { 'http://tahi.example.com/about_turtles.docx' }
     let(:file_bytes) { File.open(Rails.root.join('spec/fixtures/about_turtles.docx')).read }
     before do
       stub_request(:get, url).to_return(body: file_bytes)
@@ -64,6 +65,11 @@ describe DownloadManuscriptWorker, redis: true do
       paper.file.update(file_hash: Digest::SHA256.hexdigest(file_bytes))
       expect(pusher_channel).to receive_push(
         payload: hash_including(
+          message: "<b>Duplicate file.</b> Please note: " \
+                   "The specified file <i>#{paper.file[:file]}</i> " \
+                   "has been reprocessed. <br>If you need to make any " \
+                   "changes to your manuscript, you can upload again by " \
+                   "clicking the <i>Replace</i> link.",
           messageType: 'alert'
         ),
         down: 'user',

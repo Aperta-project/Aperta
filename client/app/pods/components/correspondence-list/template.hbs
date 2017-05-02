@@ -13,7 +13,6 @@
         {{#each model as |message|}}
           <tr>
             <td>{{format-date message.date}}</td>
-            <!--<td><a id='link{{message.id}}' href="{{this.baseUrl}}/viewcorrespondence/{{message.id}}" {{action "showCorrespondenceOverlay" message}}>{{message.subject}}</a></td>-->
             <td>
               {{#link-to 'paper.correspondence.viewcorrespondence' paper message}}
                 {{message.subject}}

@@ -6,13 +6,15 @@
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
     <div class="card-editor-save-buttons-state">
-      {{fa-icon card.stateIcon}}
-      <span>
-        {{card.stateName}}
-      </span>
+      {{#unless (eq card.state "published")}}
+        {{fa-icon card.stateIcon}}
+        <span>
+          {{card.stateName}}
+        </span>
+      {{/unless}}
     </div>
     <button class="button button--blue button-primary editor-save"
-            onclick={{perform saveCard}}
+ ethics--field_study--field_permit_number           onclick={{perform saveCard}}
             disabled={{or saveCard.isRunning publishCard.isRunning (not xmlDirty)}}>
       Save
     </button>

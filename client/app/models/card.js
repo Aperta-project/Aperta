@@ -14,9 +14,9 @@ let cardStates = {
   },
   description: {
     draft: `This card is a draft. It can only be viewed by admins at this time. This card cannot
-     be added to the workflow until it is published`,
+     be added to the workflow until it is published.`,
     publishedWithChanges: `This card has unpublished changes. You can preview both the published card and the
-     new unpublished draft of this card in the card preview`
+     new unpublished draft of this card in the card preview.`
   }
 };
 

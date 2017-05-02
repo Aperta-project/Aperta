@@ -30,4 +30,9 @@ export default function() {
       use: ['fly-to', {duration: 600, easing: 'easeOutCubic'}]
     })
   );
+
+  this.transition(
+    this.hasClass('card-fade'),
+    this.use('fade', { duration: 300 })
+  );
 }

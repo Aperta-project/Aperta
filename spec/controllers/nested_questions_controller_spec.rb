@@ -10,12 +10,12 @@ describe NestedQuestionsController do
   describe "#index" do
     let!(:questions) { [question1, question2] }
     let!(:card) { FactoryGirl.create(:card, :versioned, name: "My Card") }
-    let(:card_version) { card.card_version(:latest) }
+    let(:card_version) { card.latest_published_card_version }
     let(:root) { card.content_root_for_version(1) }
     let(:question1) { FactoryGirl.build(:card_content, card_version: card_version).tap { |c| root.children << c } }
     let(:question2) { FactoryGirl.build(:card_content, card_version: card_version).tap { |c| root.children << c } }
 
-    def do_request(params={})
+    def do_request(params = {})
       get(:index, { type: "My Card" }.merge(params), format: :json)
     end
 

@@ -47,6 +47,7 @@ class SimilarityCheck < ActiveRecord::Base
     if document_response.report_complete?
       self.report_id = document_response.report_id
       self.score = document_response.score
+      self.ithenticate_report_completed_at = Time.now.utc
       finish_report!
     end
   end

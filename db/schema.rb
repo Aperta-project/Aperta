@@ -746,13 +746,13 @@ ActiveRecord::Schema.define(version: 20170428193457) do
 
   create_table "similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_document_id"
+    t.datetime "ithenticate_report_completed_at"
     t.integer  "report_id"
     t.integer  "score"
-    t.integer  "versioned_text_id",       null: false
-    t.string   "report_view_only_url"
-    t.string   "state",                   null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "versioned_text_id",               null: false
+    t.string   "state",                           null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "simple_reports", force: :cascade do |t|
@@ -952,6 +952,5 @@ ActiveRecord::Schema.define(version: 20170428193457) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
-  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

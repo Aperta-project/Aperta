@@ -53,6 +53,15 @@ describe SimilarityCheck, type: :model do
         end.to change { similarity_check.report_id }.from(nil).to(report_id)
       end
 
+      it "updates the similarity check's ithenticate_report_completed_at" do
+        Timecop.freeze do |now|
+          expect do
+            similarity_check.sync_document!
+          end.to change { similarity_check.ithenticate_report_completed_at }
+                   .from(nil).to(now)
+        end
+      end
+
       it "sets the state of the similarity check" do
         expect do
           similarity_check.sync_document!

@@ -194,21 +194,6 @@ class Task < ActiveRecord::Base
     User.where(id: participant_ids)
   end
 
-  def participants=(users)
-    raise "KABOOM!  Setting participants here!"
-
-    participations.destroy_all
-
-    # Saving without validations is a temporary fix until unexpected side
-    # effects with this method can be removed completely.  Saving a record as
-    # part of a setter method is not a good idea.  This could lead to a
-    # developer doing a Task.new(participants: [something]) and ending up with
-    # a Task that is saved to the database, not just instantiated.
-    save(validate: false) if new_record?
-
-    users.each { |user| add_participant user }
-  end
-
   def reviewer
     assignments.joins(:role)
       .find_by(roles: { name: Role::REVIEWER_REPORT_OWNER_ROLE }).try(:user)

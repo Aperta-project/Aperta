@@ -72,11 +72,6 @@ describe Card do
       card.publish!
       expect(card_version.reload.published_at).to be_present
     end
-
-    it "blows up if the latest version is already published" do
-      card_version.update(published_at: Time.current)
-      expect { card.publish! }.to raise_exception AASM::InvalidTransition
-    end
   end
 
   context "a card with multiple versions" do

@@ -49,7 +49,6 @@ class Card < ActiveRecord::Base
     event :publish do
       transitions from: [:draft, :published_with_changes],
                   to: :published,
-                  guard: -> { !latest_card_version.published? },
                   after: :publish_latest_version!
     end
 

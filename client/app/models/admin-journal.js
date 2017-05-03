@@ -25,7 +25,7 @@ export default DS.Model.extend({
 
   // Card config:
 
-  cards: DS.hasMany('card', {async: true}),
+  cards: DS.hasMany('card'),
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');
   })

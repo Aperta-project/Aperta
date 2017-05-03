@@ -22,6 +22,10 @@ class Card < ActiveRecord::Base
           ->(card) { where(version: card.latest_version) },
           class_name: 'CardVersion'
 
+  def latest_published_card_version
+    card_versions.where.not(published_at: nil).order(version: 'DESC').first
+  end
+
   # this method is used in the shim layer between nested questions
   # on the front end and card content on the backend.
   # in those cases, we don't need the proper tree of card content,
@@ -53,10 +57,68 @@ class Card < ActiveRecord::Base
     card_versions.find_by!(version: to_find)
   end
 
-  def self.create_new!(attrs)
+  def previous_versions
+    card_versions.where.not(version: latest_version)
+  end
+
+  # The 'state' of the card reflects the state of its versions. CardVersion has
+  # a 'published' boolean flag that all of this derives from.
+  # * 'draft': the latest version is a draft and there are no published
+  # versions. 'draft' is the default state for newly created cards
+  # * 'published': the latest version is published
+  # * 'published with changes': the latest version is a draft, but published
+  # versions exist. This will be the state of the card after the user starts
+  # prepping some changes but before publishing the latest version
+  #
+  # And now for the special case (of course)
+  # * 'locked': locked cards are those that we (the devs) have created and are
+  # not intended to be altered by end users. They show up in the card catalogue
+  # but they won't open in the editor. **Locked cards do not have a journal_id**
+  def state
+    if latest_card_version.published?
+      if journal_id
+        "published"
+      else
+        "locked"
+      end
+    elsif previous_versions.exists?
+      "publishedWithChanges"
+    else
+      "draft"
+    end
+  end
+
+  def addable?
+    state == "published" || state == "publishedWithChanges"
+  end
+
+  def published?
+    state != "draft"
+  end
+
+  def publish!
+    if latest_card_version.published?
+      raise ArgumentError, "Latest card version is already published"
+    end
+    latest_card_version.update!(published_at: DateTime.now.utc)
+
+    reload
+  end
+
+  def self.create_draft!(attrs)
+    create_new!(attrs: attrs, published: false)
+  end
+
+  def self.create_published!(attrs)
+    create_new!(attrs: attrs, published: true)
+  end
+
+  def self.create_new!(attrs:, published:)
+    published_date = published ? DateTime.now.utc : nil
     Card.transaction do
       card = Card.new(attrs)
-      card.card_versions << CardVersion.new(version: 1)
+      card.card_versions << CardVersion.new(version: 1,
+                                            published_at: published_date)
       card.card_versions.first.card_contents << CardContent.new(
         content_type: 'display-children'
       )
@@ -80,6 +142,10 @@ class Card < ActiveRecord::Base
   end
 
   def xml=(xml)
-    XmlCardLoader.version_from_xml_string(xml, self)
+    if latest_card_version.published?
+      XmlCardLoader.new_version_from_xml_string(xml, self)
+    else
+      XmlCardLoader.replace_draft_from_xml_string(xml, self)
+    end
   end
 end

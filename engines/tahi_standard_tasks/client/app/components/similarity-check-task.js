@@ -2,10 +2,17 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
 export default TaskComponent.extend({
+  init: function() {
+    this._super(...arguments);
+    this.get('task.paper.similarityChecks');
+  },
   flash: Ember.inject.service(),
   restless: Ember.inject.service(),
   classNames: ['similarity-check-task'],
   latestVersionedText: Ember.computed.alias('task.paper.latestVersionedText'),
+  latestVersionHasChecks: Ember.computed('latestVersionedText.similarityChecks.[]', function() {
+    return 0 < this.get('latestVersionedText.similarityChecks.length');
+  }),
 
   actions: {
     confirmGenerateReport() {

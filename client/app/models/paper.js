@@ -251,6 +251,10 @@ export default DS.Model.extend({
       return latestInitial;
     }),
 
+  hasSimilarityChecks: computed('similarityChecks.[]', function() {
+    return 0 < this.get('similarityChecks.length');
+  }),
+
   restless: Ember.inject.service(),
 
   atMentionableStaffUsers() {

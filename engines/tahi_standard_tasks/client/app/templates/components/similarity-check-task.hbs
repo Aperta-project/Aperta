@@ -1,23 +1,34 @@
- {{partial "task-completed-section"}}
+{{partial "task-completed-section"}}
 
 <div>
+  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
+  {{#if latestVersionHasChecks}}
+    <h3>Similarity Check Report</h3>
+  {{/if}}
+
+  {{#each latestVersionedText.similarityChecks as |check|}}
+    {{similarity-check check=check}}
+  {{/each}}
+
   {{#if confirmVisible}}
-  <div class="confirm-container">
+    <div class="confirm-container">
       <h4>Are you sure?</h4>
       <br>
       <button class="button-link button--white" {{action "cancel"}}>cancel</button>
       <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
-  </div>
+    </div>
   {{else}}
-  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
-  <button class="button-primary button--green" {{ action "confirmGenerateReport" }}>Generate Report</button>
+    <button class="button-primary button--green" disabled={{latestVersionHasChecks}} {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
-  {{#if task.paper.similarityChecks}}
-    <div class="send-to-apex-history-header">iThenticate History</div>
+  {{#if task.paper.hasSimilarityChecks }}
+    <hr>
+    <h3>Report History</h3>
+    {{#each task.paper.versionedTexts as |version|}}
+      {{#if version.hasSimilarityChecks}}
+        {{similarity-check-bar version=version}}
+      {{/if}}
+    {{/each}}
   {{/if}}
 
-  {{#each task.paper.similarityChecks as |check|}}
-    {{similarity-check check=check}}
-  {{/each}}
 </div>

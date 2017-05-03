@@ -7,7 +7,9 @@ export default DS.Model.extend({
   paper: DS.belongsTo('paper'),
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),
-  createdAt: DS.attr('date'),
+  updatedAt: DS.attr('date'),
+  score: DS.attr('string'),
+  reportUrl: DS.attr('string'),
 
   failed: Ember.computed.equal('state', 'failed'),
   succeeded: Ember.computed.equal('state', 'delivered'),

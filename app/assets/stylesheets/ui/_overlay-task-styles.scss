@@ -58,3 +58,14 @@ ol.snapshot-children .nested-level-2:nth-child(n+2) {
   margin-top: 20px;
   padding-top: 20px;
 }
+
+.similarity-check-task-overlay {
+  .progress-spinner-message-text {
+    display: inline;
+  }
+  .score {
+    font-size: large;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+}

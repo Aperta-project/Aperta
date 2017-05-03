@@ -7,6 +7,7 @@ const {
 } = Ember;
 
 export default DS.Model.extend({
+  similarityChecks: DS.hasMany('similarity-check'),
   paper: DS.belongsTo('paper'),
   text: DS.attr('string'),
   majorVersion: DS.attr(),
@@ -17,5 +18,9 @@ export default DS.Model.extend({
   isDraft: computed('majorVersion', 'minorVersion', function() {
     return isEmpty(this.get('majorVersion')) && isEmpty(this.get('minorVersion'));
   }),
-  sourceType: DS.attr('string')
+  sourceType: DS.attr('string'),
+
+  hasSimilarityChecks: Ember.computed('similarityChecks.[]', function() {
+    return 0 < this.get('similarityChecks.length');
+  }),
 });

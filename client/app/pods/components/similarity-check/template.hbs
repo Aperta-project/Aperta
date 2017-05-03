@@ -1,7 +1,24 @@
-<div>
-  {{ check.id }}
-</div>
-
-<div>
-  {{ check.versionedText.id }}
-</div>
+{{#if check.incomplete}}
+  {{#progress-spinner-message visible=true size="mini"}}
+    Pending ...
+  {{/progress-spinner-message}}
+  <p>
+  {{fa-icon icon="info-circle"}}
+  Similarity checks may take up to several minutes to complete. You may close this card and return later to view the report.
+  </p>
+{{else if check.failed}}
+  {{!-- TODO: Real fail message --}}
+  <p>Fail message</p>
+{{else if check.succeeded}}
+  <p>Similarity check completed on {{format-date check.updatedAt}}</p>
+  <p>Similarity Index:
+  <span class="score">{{check.score}} </span>
+  <a href={{check.reportUrl}} target="_blank">
+    View complete iThenticate report
+    <span class="fa fa-external-link"></span>
+  </a>
+  </p>
+{{else}}
+  {{!-- Famous last words: This shouldn't happen --}}
+  <p>Unknown report state</p>
+{{/if}}

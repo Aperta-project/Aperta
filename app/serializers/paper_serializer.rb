@@ -52,7 +52,8 @@ class PaperSerializer < LitePaperSerializer
       correspondence: paper_correspondence_index_path(object),
       paper_task_types: paper_task_types_path(object),
       # all possible Cards that can be added to this Paper
-      available_cards: paper_available_cards_path(object)
+      available_cards: paper_available_cards_path(object),
+      similarity_checks: paper_similarity_checks_path(object)
     }
   end
 end

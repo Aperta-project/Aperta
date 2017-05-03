@@ -7,7 +7,7 @@ const {
 } = Ember;
 
 export default DS.Model.extend({
-  paper: DS.belongsTo('paper', { async: true }),
+  paper: DS.belongsTo('paper'),
   text: DS.attr('string'),
   majorVersion: DS.attr(),
   minorVersion: DS.attr(),

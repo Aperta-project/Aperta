@@ -123,6 +123,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
+    # Wait for rich-text editors to instantiate
+    sleep 2
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
 
     t.submit_report
@@ -144,6 +147,10 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    # Wait for rich-text editors to instantiate
+    sleep 2
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
     t.ensure_review_history(

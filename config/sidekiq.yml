@@ -4,7 +4,4 @@
   - default
   - mailers
   - eventstream
-:schedule:
-  similarity_check_update_worker:
-    cron: '*/10 * * * * *' # runs every 10 seconds
-    class: SimilarityCheckUpdateWorker
+:dynamic: true

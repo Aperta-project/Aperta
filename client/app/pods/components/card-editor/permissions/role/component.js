@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import { permissionExists } from 'tahi/lib/admin-card-permission';
 
 export default Ember.Component.extend({
   propTypes: {
@@ -9,23 +10,8 @@ export default Ember.Component.extend({
     turnOffPermission: PropTypes.func.isRequired
   },
 
-  editPermission: Ember.computed('card', 'role.cardPermissions.[]', function () {
-    return this.getPermissionFor('edit');
-  }),
-
-  viewPermission: Ember.computed('card', 'role.cardPermissions.[]', function () {
-    return this.getPermissionFor('view');
-  }),
-
-  editAllowed: Ember.computed.notEmpty('editPermission'),
-  viewAllowed: Ember.computed.notEmpty('viewPermission'),
-
-  getPermissionFor(permissionAction) {
-    return this.get('role.cardPermissions').find((perm)=>{
-      return perm.get('permissionAction') === permissionAction &&
-        perm.get('filterByCardId') === this.get('card.id');
-    });
-  },
+  editAllowed: permissionExists('card', 'role', 'edit'),
+  viewAllowed: permissionExists('card', 'role', 'view'),
 
   togglePermission(permissionAction) {
     if (this.get(`${permissionAction}Allowed`)) {
@@ -36,11 +22,7 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    toggleEditPermission() {
-      this.togglePermission('edit');
-    },
-    toggleViewPermission() {
-      this.togglePermission('view');
-    }
+    toggleEditPermission() { this.togglePermission('edit'); },
+    toggleViewPermission() { this.togglePermission('view'); }
   }
 });

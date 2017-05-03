@@ -33,6 +33,10 @@ describe TahiStandardTasks::Funder do
       expect(funder.funding_statement).to include(funder.additional_comments)
     end
 
+    it "includes space before funder's additional comments" do
+      expect(funder.funding_statement).to match(/\(grant\s+number\s+[0-9\-]+\)\.\s+\w+/)
+    end
+
     it "only includes the comment if that's all that's provided" do
       expected = "#{comment_only_funder.additional_comments}"
       expect(comment_only_funder.funding_statement).to eq expected

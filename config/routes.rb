@@ -67,7 +67,9 @@ Tahi::Application.routes.draw do
 
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
-    resources :cards, only: [:index, :create, :show, :update]
+    resources :cards, only: [:index, :create, :show, :update] do
+      put :publish, on: :member
+    end
     resources :card_permissions, only: [:create, :destroy, :show, :update], controller: 'card_permissions'
     resources :card_versions, only: [:show]
 

@@ -1,7 +1,13 @@
 namespace :bugsnag do
-  desc 'Fetch afflicted user emails for a given bugsnag error'
-  # for more info on keys or integration see
-  # https://confluence.plos.org/confluence/display/TAHI/Bugsnag+Triage
+  desc <<-DESC
+    Fetch afflicted user emails for a given bugsnag error.
+    First argument is the bugsag error id. The second is
+    an optional integer indicating how long ago the query
+    should search. It defaults to 1 day ago. Requires an API key
+    environmental var for accessing bugsnag data. For more information see
+    https://confluence.plos.org/confluence/display/TAHI/Bugsnag+Integration
+  DESC
+
   task :get_users_for_error, [:error_id, :days_ago] do |_, args|
     raise "Missing BUGSNAG_DATA_API_KEY env var" unless ENV['BUGSNAG_DATA_API_KEY']
     raise ArgumentError, "Missing Bugsnag Error ID" unless args[:error_id]

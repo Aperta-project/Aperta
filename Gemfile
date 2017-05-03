@@ -67,6 +67,7 @@ gem 'sass-rails'
 gem 'sdoc'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+gem 'sidekiq-unique-jobs'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
 gem 'timeliness'

@@ -57,6 +57,7 @@ class SimilarityCheck < ActiveRecord::Base
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
     self.timeout_at = Time.now.utc + TIMEOUT_INTERVAL
+    self.document_s3_url = file.url
     upload_document!
   end
 

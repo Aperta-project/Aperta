@@ -201,14 +201,6 @@ describe CardFactory do
             .create_from_content(name: card.name, new_content: [])
         end
 
-        # let(:new_content_hash) do
-        #   {
-        #     ident: existing_ident,
-        #     value_type: "boolean",
-        #     text: "Yes - I confirm our figures comply with the guidelines."
-        #   }
-        # end
-
         it "does not create a new card" do
           expect do
             update_card

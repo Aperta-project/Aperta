@@ -25,6 +25,75 @@ class Card < ActiveRecord::Base
 
   scope :archived, -> { where.not(archived_at: nil) }
 
+  # A given card can have several states, but be mindful that the 'state' of a
+  # given card also implies something about that card's card_versions.
+  # * 'draft': the latest version is a draft and there are no published
+  # versions. 'draft' is the default state for newly created cards
+  # * 'published': the latest version is published
+  # * 'published with changes': the latest version is a draft, but published
+  # versions exist. This will be the state of the card after the user starts
+  # prepping some changes but before publishing the latest version
+  # * 'archived': the card can't be added to new workflow templates.
+  #
+  # And now for the special case (of course)
+  # * 'locked': locked cards are those that we (the devs) have created and are
+  # not intended to be altered by end users. They show up in the card catalogue
+  # but they won't open in the editor. **Locked cards do not have a journal_id**
+  aasm column: :state do
+    state :draft, initial: true
+    state :published
+    state :published_with_changes
+    state :archived
+    state :locked
+
+    event :publish do
+      transitions from: [:draft, :published_with_changes],
+                  to: :published,
+                  guard: -> { !latest_card_version.published? },
+                  after: :publish_latest_version!
+    end
+
+    # called when the card's xml is updated
+    event :save_draft do
+      transitions from: :published,
+                  to: :published_with_changes
+    end
+
+    event :archive do
+      transitions from: :published,
+                  to: :archived,
+                  after: :archive_card!
+    end
+
+    event :lock do
+      transitions from: :published,
+                  to: :locked,
+                  guard: -> { journal_id.blank? }
+    end
+  end
+
+  def self.create_initial_draft!(attrs)
+    create_new!(attrs)
+  end
+
+  def self.create_published!(attrs)
+    new_card = create_new!(attrs)
+    new_card.publish!
+    new_card
+  end
+
+  def self.create_new!(attrs)
+    Card.transaction do
+      card = Card.new(attrs)
+      card.card_versions << CardVersion.new(version: 1)
+      card.card_versions.first.card_contents << CardContent.new(
+        content_type: 'display-children'
+      )
+      card.save!
+      card
+    end
+  end
+
   def latest_published_card_version
     card_versions.where.not(published_at: nil).order(version: 'DESC').first
   end
@@ -64,91 +133,12 @@ class Card < ActiveRecord::Base
     card_versions.where.not(version: latest_version)
   end
 
-  # The 'state' of the card reflects the state of its versions. CardVersion has
-  # a 'published' boolean flag that all of this derives from.
-  # * 'draft': the latest version is a draft and there are no published
-  # versions. 'draft' is the default state for newly created cards
-  # * 'published': the latest version is published
-  # * 'published with changes': the latest version is a draft, but published
-  # versions exist. This will be the state of the card after the user starts
-  # prepping some changes but before publishing the latest version
-  #
-  # And now for the special case (of course)
-  # * 'locked': locked cards are those that we (the devs) have created and are
-  # not intended to be altered by end users. They show up in the card catalogue
-  # but they won't open in the editor. **Locked cards do not have a journal_id**
-  aasm column: :state do
-    state :draft, initial: true
-    state :published
-    state :published_with_changes
-    state :archived
-    state :locked
-
-    event :publish do
-      transitions from: [:draft, :published_with_changes],
-                  to: :published,
-                  guard: -> { !latest_card_version.published? },
-                  after: :publish_latest_version!
-    end
-
-    # called when the card's xml is updated
-    event :save_draft do
-      transitions from: :published,
-                  to: :published_with_changes
-    end
-
-    event :archive do
-      transitions from: :published,
-                  to: :archived,
-                  after: :archive_card!
-    end
-
-    event :lock do
-      transitions from: :published,
-                  to: :locked,
-                  guard: -> { journal_id.blank? }
-    end
-  end
-
   def addable?
     published? || published_with_changes?
   end
 
-  def released?
-    !draft?
-  end
-
-  def publish_latest_version!
-    latest_card_version.update!(published_at: DateTime.now.utc)
-
-    reload
-  end
-
-  def archive_card!
-    CardArchiver.archive(self)
-    reload
-  end
-
-  def self.create_initial_draft!(attrs)
-    create_new!(attrs)
-  end
-
-  def self.create_published!(attrs)
-    new_card = create_new!(attrs)
-    new_card.publish!
-    new_card
-  end
-
-  def self.create_new!(attrs)
-    Card.transaction do
-      card = Card.new(attrs)
-      card.card_versions << CardVersion.new(version: 1)
-      card.card_versions.first.card_contents << CardContent.new(
-        content_type: 'display-children'
-      )
-      card.save!
-      card
-    end
+  def replaceable?
+    published_with_changes? || draft?
   end
 
   def to_xml(options = {})
@@ -169,8 +159,18 @@ class Card < ActiveRecord::Base
     if published?
       XmlCardLoader.new_version_from_xml_string(xml, self)
       save_draft!
-    elsif published_with_changes? || draft?
+    elsif replaceable?
       XmlCardLoader.replace_draft_from_xml_string(xml, self)
     end
+  end
+
+  private
+
+  def publish_latest_version!
+    latest_card_version.publish!
+  end
+
+  def archive_card!
+    CardArchiver.archive(self)
   end
 end

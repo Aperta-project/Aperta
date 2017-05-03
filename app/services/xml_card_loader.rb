@@ -41,7 +41,7 @@ class XmlCardLoader
         journal: @journal,
         name: attr_val(root, 'name')
       )
-      make_new_version(card, DateTime.now.utc)
+      make_new_version(card, Time.current)
       card
     end
   end

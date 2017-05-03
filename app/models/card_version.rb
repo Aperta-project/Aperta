@@ -5,7 +5,7 @@
 class CardVersion < ActiveRecord::Base
   acts_as_paranoid
 
-  belongs_to :card
+  belongs_to :card, inverse_of: :card_versions
   has_many :card_contents, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
@@ -22,6 +22,10 @@ class CardVersion < ActiveRecord::Base
 
   def published?
     published_at.present?
+  end
+
+  def publish!
+    update!(published_at: Time.current)
   end
 
   def create_default_answers(task)

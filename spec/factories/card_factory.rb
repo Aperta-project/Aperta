@@ -7,7 +7,7 @@ FactoryGirl.define do
     trait :versioned do
       after(:build) do |card|
         card.state = "published"
-        card.card_versions << build(:card_version, version: card.latest_version, published_at: DateTime.now.utc) if card.card_versions.count.zero?
+        card.card_versions << build(:card_version, version: card.latest_version, published_at: Time.current) if card.card_versions.count.zero?
       end
     end
 
@@ -23,7 +23,7 @@ FactoryGirl.define do
     trait :archived do
       after(:build) do |card|
         card.state = "archived"
-        card.archived_at = DateTime.now.utc
+        card.archived_at = Time.current
       end
     end
 

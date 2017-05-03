@@ -74,7 +74,7 @@ describe Card do
     end
 
     it "blows up if the latest version is already published" do
-      card_version.update(published_at: DateTime.now.utc)
+      card_version.update(published_at: Time.current)
       expect { card.publish! }.to raise_exception AASM::InvalidTransition
     end
   end
@@ -159,18 +159,6 @@ describe Card do
         expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
         card.update_from_xml("foo")
       end
-    end
-  end
-
-  describe "#released?" do
-    it "returns false when the state is 'draft'" do
-      allow(card).to receive(:state).and_return "draft"
-      expect(card).to_not be_released
-    end
-
-    it "returns true when the state is anything but 'draft'" do
-      allow(card).to receive(:state).and_return "anythingButDraft"
-      expect(card).to be_released
     end
   end
 end

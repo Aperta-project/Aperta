@@ -11,9 +11,7 @@ describe CardArchiver do
 
     it "does not change the date on already archived cards" do
       card = FactoryGirl.create(:card, :archived)
-      original_date = card.archived_at
-      CardArchiver.archive(card)
-      expect(card.reload.archived_at).to eq(original_date)
+      expect { CardArchiver.archive(card) }.to_not change(card, :archived_at)
     end
 
     context "removing TaskTemplate records" do

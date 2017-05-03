@@ -150,7 +150,7 @@
 </div>
 {{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
-    {{nested-question-textarea
+    {{rich-text-editor
       value=invitation.body
       class="invitation-edit-body"
       onContentsChanged=(action "updateAnswer")

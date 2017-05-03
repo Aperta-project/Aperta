@@ -154,7 +154,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     updateAnswer(contents) {
       let invitation = this.get('invitation');
       invitation.set('body', contents);
-      this.save(invitation);
+      this.get('saveInvite')(invitation);
     },
 
     toggleDetails() {

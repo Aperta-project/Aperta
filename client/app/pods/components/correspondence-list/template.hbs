@@ -14,9 +14,11 @@
           <tr>
             <td>{{format-date message.date}}</td>
             <td>
-              {{#link-to 'paper.correspondence.viewcorrespondence' paper message}}
+              <div class="correspondence{{message.id}}">
+              {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
                 {{message.subject}}
               {{/link-to}}
+              </div>
             </td>
             <td>{{message.recipient}}</td>
             <td>{{message.sender}}</td>

@@ -1,4 +1,4 @@
-/*import Ember from 'ember';
+import Ember from 'ember';
 import {
   test
 } from 'ember-qunit';
@@ -9,12 +9,14 @@ import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 import FactoryGuy from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import formatDate from 'tahi/lib/format-date';
 
-var app, paper, server;
+var app, paper, correspondence, server;
 
 app = null;
 server = null;
 paper = null;
+correspondence = null;
 
 moduleForAcceptance('Integration: Correspondence', {
   afterEach: function() {
@@ -30,7 +32,7 @@ moduleForAcceptance('Integration: Correspondence', {
     TestHelper.setup();
     server = setupMockServer();
 
-    let correspondence = FactoryGuy.make('correspondence');
+    correspondence = FactoryGuy.make('correspondence');
     paper = FactoryGuy.make('paper', {
       correspondence: [correspondence]
     });
@@ -56,11 +58,21 @@ moduleForAcceptance('Integration: Correspondence', {
   }
 });
 
-test('User can click on a correspondence', function(assert) {
-  visit('/papers/' + paper.get('shortDoi') + '/correspondence');
+test('User can view a correspondence record', function(assert) {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
-    click('#link1');
-    assert.elementFound('.correspondence-overlay');
-    assert.ok(find('.overlay-header-title').text, 'Correspondence Record');
+    assert.ok(find('.correspondence-overlay'), 'Correspondence Overlay');
+    assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('date'), {}));
+    assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
+    assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
+    assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
   });
-});*/
+});
+
+test('User can click on a correspondence to view it\'s recodes', function(assert) {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence');
+  click('.correspondence1 a');
+  return andThen(function() {
+    assert.equal(currentURL(), '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
+  });
+});

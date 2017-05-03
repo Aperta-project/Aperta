@@ -59,8 +59,7 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
     time.sleep(.5)
-    self.create_article(title=title, journal='PLOS Wombat',
-                        type_=paper_type, random_bit=True)
+    self.create_article(title=title, journal='PLOS Wombat', type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready_post_create()

@@ -407,5 +407,121 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.add_invitee_to_queue(prod_staff_login)
     invite_reviewers.validate_email_template_edits()
 
+  def test_invited_reviewer_report_state(self):
+    """
+    test_invited_reviewer_report_state: Validates the elements for report status on the invite reviewers card
+    :return: void function
+    """
+    logging.info('Test Invite Reviewers::Reviewer Report State')
+    # Users logs in and make a submission
+    creator_user = random.choice(users)
+    dashboard_page = self.cas_login(email=creator_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_create_new_submission_button()
+    mmt = 'OnlyInitialDecisionCard'
+    self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    manuscript_page.close_infobox()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_modal()
+    # logout and enter as editor
+    manuscript_page.logout()
+
+    # login as editorial user
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;',
+                                     (short_doi,))[0][0]
+    manuscript_title = unicode(manuscript_title,
+                               encoding='utf-8',
+                               errors='strict')
+    invite_reviewers.validate_invite(reviewer_login,
+                                     mmt,
+                                     manuscript_title,
+                                     creator_user,
+                                     short_doi)
+    invite_reviewers.click_close_button()
+    workflow_page.logout()
+
+    # login as reviewer respond to invite
+    dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page.page_ready()
+    dashboard_page.click_view_invites_button()
+    dashboard_page.accept_invitation(manuscript_title)
+    # Wait the accept request is ok
+    time.sleep(2)
+    # logout and enter as editor
+    manuscript_page.logout()
+
+    # login as editorial user
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
+    invite_reviewers.validate_invited_reviewer_report_state(reviewer_login, 'pending')
+    # logout and enter as reviewer
+    workflow_page.logout()
+
+    # login as reviewer to review the paper
+    dashboard_page = self.cas_login(email=reviewer_login['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    paper_viewer.complete_task('Review by')
+    # logout and enter as editor
+    manuscript_page.logout()
+
+    # login as editorial user
+    editorial_user = random.choice(editorial_users)
+    logging.info(editorial_user)
+    dashboard_page = self.cas_login(email=editorial_user['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    self._driver.navigated = True
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # go to wf
+    paper_viewer.click_workflow_link()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_card('invite_reviewers')
+    invite_reviewers = InviteReviewersCard(self.getDriver())
+    invite_reviewers.card_ready()
+    invite_reviewers.validate_invited_reviewer_report_state(reviewer_login,
+                                                            'completed')
+
+
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

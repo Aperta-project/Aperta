@@ -50,7 +50,7 @@ class WorkflowPage(AuthenticatedPage):
     self._remove_cancel_button = (By.XPATH, ".//div[contains(@class, 'delete-card-action-buttons')]\
         /div[2]/button")
     self._add_card_overlay_div = (By.CSS_SELECTOR, 'div.overlay-container')
-    self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
+    self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-4')
     # Card Locators
     self._addl_info_card = (By.CSS_SELECTOR, 'div.publishing-related-questions-task > a')
     self._authors_card = (By.CSS_SELECTOR, 'div.authors-task > a')
@@ -243,7 +243,7 @@ class WorkflowPage(AuthenticatedPage):
     """
     # Get card list
     # APERTA-5513 AC 1 and 2
-    author_col, staff_col = self._gets(self._add_card_overlay_columns)
+    author_col, staff_col, custom_col = self._gets(self._add_card_overlay_columns)
     author_cards = author_col.find_elements_by_tag_name('label')
     assert author_cards[0].text == u'Additional Information', author_cards[0].text
     assert author_cards[1].text == u'Authors', author_cards[1].text
@@ -266,18 +266,20 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[2].text == u'Ad-hoc for Reviewers', staff_cards[2].text
     assert staff_cards[3].text == u'Ad-hoc for Staff Only', staff_cards[3].text
     assert staff_cards[4].text == u'Assign Team', staff_cards[4].text
-    assert staff_cards[5].text == u'Editor Discussion', staff_cards[5].text
-    assert staff_cards[6].text == u'Final Tech Check', staff_cards[6].text
-    assert staff_cards[7].text == u'Initial Decision', staff_cards[7].text
-    assert staff_cards[8].text == u'Initial Tech Check', staff_cards[8].text
-    assert staff_cards[9].text == u'Invite Academic Editor', staff_cards[9].text
-    assert staff_cards[10].text == u'Invite Reviewers', staff_cards[10].text
-    assert staff_cards[11].text == u'Production Metadata', staff_cards[11].text
-    assert staff_cards[12].text == u'Register Decision', staff_cards[12].text
-    assert staff_cards[13].text == u'Related Articles', staff_cards[13].text
-    assert staff_cards[14].text == u'Revision Tech Check', staff_cards[14].text
-    assert staff_cards[15].text == u'Send to Apex', staff_cards[15].text
-    assert staff_cards[16].text == u'Title And Abstract', staff_cards[16].text
+    assert staff_cards[5].text == u'Custom Card', staff_cards[5].text
+    assert staff_cards[6].text == u'Editor Discussion', staff_cards[6].text
+    assert staff_cards[7].text == u'Final Tech Check', staff_cards[7].text
+    assert staff_cards[8].text == u'Initial Decision', staff_cards[8].text
+    assert staff_cards[9].text == u'Initial Tech Check', staff_cards[9].text
+    assert staff_cards[10].text == u'Invite Academic Editor', staff_cards[10].text
+    assert staff_cards[11].text == u'Invite Reviewers', staff_cards[11].text
+    assert staff_cards[12].text == u'Production Metadata', staff_cards[12].text
+    assert staff_cards[13].text == u'Register Decision', staff_cards[13].text
+    assert staff_cards[14].text == u'Related Articles', staff_cards[14].text
+    assert staff_cards[15].text == u'Revision Tech Check', staff_cards[15].text
+    assert staff_cards[16].text == u'Send to Apex', staff_cards[16].text
+    assert staff_cards[17].text == u'Similarity Check', staff_cards[17].text
+    assert staff_cards[18].text == u'Title And Abstract', staff_cards[18].text
     author_cards_text = [x.text for x in author_cards]
     assert u'Changes For Author' not in author_cards_text, author_cards_text
     assert u'Revise Manuscript' not in author_cards_text, author_cards_text

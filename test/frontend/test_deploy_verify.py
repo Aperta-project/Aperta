@@ -59,7 +59,12 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     time.sleep(.5)
     journal_name = os.getenv('JOURNAL', '')
     mmt_type = os.getenv('MMT', '')
-    self.create_article(title='deployment test document', journal=journal_name, type_=mmt_type)
+    # Explicitly creating article in word format as that doesn't require db query to
+    #   see if pdf_allowed=true for journal
+    self.create_article(title='deployment test document',
+                        journal=journal_name,
+                        type_=mmt_type,
+                        format_='word')
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
@@ -83,7 +88,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     short_doi = paper_viewer.get_current_url().split('/')[-1]
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-
+    paper_viewer.complete_task('Upload Manuscript')
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')

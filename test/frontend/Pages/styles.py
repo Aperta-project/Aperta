@@ -80,8 +80,8 @@ class StyledPage(PlosPage):
         title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '48px', \
         title.value_of_css_property('font-size')
-    assert title.value_of_css_property('line-height') == '52px', \
-        title.value_of_css_property('line-height')
+    # assert title.value_of_css_property('line-height') == '52px', \
+    #     title.value_of_css_property('line-height')
     # font-weight is canonically specified as 'normal' whatever that means.
     assert title.value_of_css_property('font-weight') == '500', \
         title.value_of_css_property('font-weight')

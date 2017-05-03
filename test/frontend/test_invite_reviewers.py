@@ -368,7 +368,7 @@ class InviteReviewersCardTest(CommonTest):
     :return: None
     """
     logging.info('Test Invite Reviewers::email templates')
-    current_path = os.getcwd()
+    # current_path = os.getcwd()
     # User log in and makes a submission
     creator_user = random.choice(users)
     logging.info('logging in as {0}'.format(creator_user))
@@ -381,7 +381,7 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page.page_ready_post_create()
     manuscript_page.close_infobox()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    # paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

@@ -567,8 +567,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task_name in task.text and 'active' \
-            not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+        if task_name in task.text and 'active' not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
           self.click_covered_element(task)

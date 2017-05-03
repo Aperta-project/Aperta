@@ -168,7 +168,7 @@ class ProfilePage(AuthenticatedPage):
       orcid_btn = self._get(self._profile_orcid_unlinked_button)
       assert 'CONNECT OR CREATE YOUR ORCID ID' in orcid_btn.text, orcid_btn.text
       orcid_help_icon = self._get(self._profile_orcid_unlinked_help_icon)
-      assert orcid_help_icon.get_attribute('href') == 'https://plos.org/orcid', \
+      assert orcid_help_icon.get_attribute('href') == 'https://www.plos.org/orcid', \
           orcid_help_icon.get_attribute('href')
       assert orcid_help_icon.get_attribute('target') == '_blank', \
           orcid_help_icon.get_attribute('target')
@@ -382,6 +382,7 @@ class ProfilePage(AuthenticatedPage):
     :param user: a user dictionary from Base/Resources.py
     :return: Affiliation definition list as submitted
     """
+    transient = False
     all_affiliations = []
     # Test for existence of "real" affiliation, if present, add a transient, else, add real
     self.set_timeout(1)

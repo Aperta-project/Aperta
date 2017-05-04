@@ -1,5 +1,6 @@
 # PaperReviewerTask and PaperEditorTask both inherit from this overlay
 class BaseInviteUsersOverlay < CardOverlay
+  include RichTextEditorHelpers
   text_assertions :invitee, '.invitation-item-full-name'
 
   def invited_users=(users)
@@ -50,12 +51,7 @@ class BaseInviteUsersOverlay < CardOverlay
   end
 
   def invitation_body=(content)
-    find('.invitation-edit-body')
-    page.execute_script %Q{
-      var content = $('.invitation-edit-body');
-      content.html('#{content}');
-      content.keyup();
-    }
+    fill_in_rich_text(editor: 'invitation-edit-body', text: content)
   end
 
   def has_invitees?(*invitee_names)

@@ -14,6 +14,10 @@ const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Code=p
 /* eslint-disable camelcase */
 
 export default Ember.Component.extend({
+  classNames: ['rich-text-editor'],
+  attributeBindings: ['data-editor'],
+  'data-editor': Ember.computed.alias('ident'),
+
   editorStyle: 'expanded',
 
   editorConfigurations: {

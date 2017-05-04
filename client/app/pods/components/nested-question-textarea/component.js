@@ -6,7 +6,6 @@ export default NestedQuestionComponent.extend({
   unwrappedHelpText: null,
   attributeBindings: ['data-editor'],
   displayContent: true,
-  classNames: ['rich-text-editor'],
   inputClassNames: [],
   'data-editor': Ember.computed.alias('ident'),
 

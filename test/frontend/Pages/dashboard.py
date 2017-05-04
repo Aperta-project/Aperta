@@ -242,7 +242,8 @@ class DashboardPage(AuthenticatedPage):
     logging.info(db_title)
     logging.info(db_abstract)
     db_title = self.normalize_spaces(db_title)
-    db_abstract = self.get_text(db_abstract)
+    if db_abstract:
+      db_abstract = self.get_text(db_abstract)
     page_invite_listings = self._gets(self._view_invites_invite_listing)
     for page_listing in page_invite_listings:
       logging.info(u'Validating Invitation: {0}'.format(page_listing.text))

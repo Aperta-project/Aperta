@@ -11,7 +11,7 @@ class SimilarityChecksController < ::ApplicationController
     similarity_check = SimilarityCheck.create!(
       versioned_text: versioned_text
     )
-    similarity_check.start_report
+    similarity_check.start_report_async
     respond_with(similarity_check)
   end
 

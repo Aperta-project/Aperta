@@ -29,6 +29,11 @@ describe SimilarityChecksController, type: :controller do
           do_request
         end.to change { SimilarityCheck.count }.by(1)
       end
+
+      it "triggers the SimliarityCheck report to start" do
+        expect_any_instance_of(SimilarityCheck).to receive(:start_report_async)
+        do_request
+      end
     end
 
     context "the user can't perform similarity checks" do

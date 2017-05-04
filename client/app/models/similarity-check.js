@@ -9,21 +9,20 @@ export default DS.Model.extend({
   errorMessage: DS.attr('string'),
   updatedAt: DS.attr('date'),
   score: DS.attr('string'),
-  reportUrl: DS.attr('string'),
 
   failed: Ember.computed.equal('state', 'failed'),
-  succeeded: Ember.computed.equal('state', 'delivered'),
+  succeeded: Ember.computed.equal('state', 'report_complete'),
   incomplete: Ember.computed('state', function() {
     let state = this.get('state');
-    return state !== 'delivered' && state !== 'failed';
+    return state !== 'report_complete' && state !== 'failed';
   }),
 
   humanReadableState: Ember.computed('state', function() {
     return {
-      pending: 'is pending',
-      inProgress: 'is in progress',
+      needs_upload: 'is pending',
+      waiting_for_report: 'is in progress',
       failed: 'has failed',
-      delivered: 'succeeded'
+      report_complete: 'succeeded'
     }[this.get('state')];
   })
 });

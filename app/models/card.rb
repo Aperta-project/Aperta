@@ -24,6 +24,8 @@ class Card < ActiveRecord::Base
       MSG
     }
 
+  before_destroy :ensure_destroyable
+
   scope :archived, -> { where.not(archived_at: nil) }
 
   # A given card can have several states, but be mindful that the 'state' of a
@@ -183,5 +185,12 @@ class Card < ActiveRecord::Base
 
   def archive_card!
     CardArchiver.archive(self)
+  end
+
+  def ensure_destroyable
+    unless draft?
+      errors.add(:base, "only draft cards can be destroyed")
+      false # halt callback
+    end
   end
 end

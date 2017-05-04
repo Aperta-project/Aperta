@@ -122,6 +122,23 @@ describe Card do
     end
   end
 
+  describe "#destroy" do
+    context "non-draft cards" do
+      let(:card) { FactoryGirl.create(:card, :versioned, :locked) }
+
+      it "does not destroy" do
+        expect(card.destroy).to be_falsey
+      end
+    end
+    context "draft cards" do
+      let(:card) { FactoryGirl.create(:card, :versioned, :draft) }
+
+      it "destroys" do
+        expect(card.destroy).to be_truthy
+      end
+    end
+  end
+
   context "a card with multiple versions" do
     let(:card) do
       FactoryGirl.create(

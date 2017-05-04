@@ -56,3 +56,13 @@ $sheet-toolbar-height: 60px;
   overflow-y: auto;
   padding: 0 30px;
 }
+
+.sheet-popout {
+    .sheet-content {
+        position: relative;
+    }
+
+    .liquid-container, .liquid-child {
+        overflow: visible;
+    }
+}

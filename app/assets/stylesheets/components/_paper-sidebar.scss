@@ -30,4 +30,7 @@
 
 .paper-sidebar--versions .task-disclosure-heading {
   margin-bottom: 0.5rem;
+  .disabled {
+    color: #878787;
+  }
 }

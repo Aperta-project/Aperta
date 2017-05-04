@@ -18,7 +18,6 @@ export default Ember.Component.extend({
   canRemoveCard: false,
   version1: null,  // Will be a string like "1.2"
   version2: null,  // Will be a string like "1.2"
-
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish
   getRouter() {
@@ -30,8 +29,7 @@ export default Ember.Component.extend({
     if(ENV.environment === 'test' || Ember.testing) { return '#'; }
 
     const paper = this.get('task.paper');
-    if(Ember.isEmpty(paper)) { return '#'; }
-
+    if(Ember.isEmpty(paper) || this.get('disabled')) { return '#'; }
     const router = this.getRouter();
     const args = ['paper.task', paper, this.get('task')];
     return router.generate.apply(router, args);
@@ -64,10 +62,20 @@ export default Ember.Component.extend({
       return false;
     }),
 
+  disabled: Ember.computed(
+    'hasDiff',
+    'versioned',
+    function() {
+      return this.get('versioned') ? !this.get('hasDiff') : false;
+    }
+  ),
+
   actions: {
     viewCard() {
-      let action = this.get('action');
-      if (action) { action(); }
+      if (!this.get('disabled')) {
+        let action = this.get('action');
+        if (action) { action(); }
+      }
     },
 
     promptDelete() {

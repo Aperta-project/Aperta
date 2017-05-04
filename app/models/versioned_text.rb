@@ -83,8 +83,7 @@ class VersionedText < ActiveRecord::Base
 
   def version_string
     version = major_version.nil? ? "(draft)" : "R#{major_version}.#{minor_version}"
-    type = file_type.nil? ? "" : " (#{file_type.upcase})"
-    "#{version}#{type} - #{updated_at.strftime('%b %d, %Y')}"
+    "#{version} - #{updated_at.strftime('%b %d, %Y')}"
   end
 
   def file?

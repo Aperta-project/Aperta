@@ -1,39 +1,41 @@
-{{#if paper.versionsContainPdf}}
-  <p class="versioning-bar-pdf-message">
-    {{fa-icon icon="info-circle"}}
-    Visualized differences between document versions are only available when comparing two Word files. Differences between version metadata can always be viewed in the task cards below.
-  </p>
-{{/if}}
-
 <div class="versioning-bar-content">
-  {{fa-icon icon="files-o"}}
-
-  <label class="bar-item paper-viewing-version">
-    Now viewing:
-    {{#power-select options=paper.versionedTexts
-                    selected=viewingVersion
-                    onchange=(action "setViewingVersion")
-                    searchEnabled=false
-                    triggerClass="aperta-select"
-                    as |version|}}
-      {{version.versionString}}
-    {{/power-select}}
-  </label>
-
-  <label class="bar-item paper-comparison-version">
-    Compare with:
-    {{#power-select options=paper.versionedTexts
-                    selected=comparisonVersion
-                    placeholder="-"
-                    onchange=(action "setComparisonVersion")
-                    searchEnabled=false
-                    triggerClass="aperta-select"
-                    as |version|}}
-      {{version.versionString}}
-    {{/power-select}}
-  </label>
+  <div class="versioning-bar-content-header">
+    {{#link-to "paper.index" paper class="close"}}
+      &times;
+    {{/link-to}}
+    <p>Compare different versions of your submission cards below.</p>
+  </div>
+  <div class="versioning-bar-content-body">
+    <div class="row">
+      <div class="col col-md-6">
+        <label class="bar-item paper-viewing-version">
+          {{fa-icon icon="files-o"}}
+          Now viewing:
+          {{#power-select options=paper.versionedTexts
+                          selected=viewingVersion
+                          onchange=(action "setViewingVersion")
+                          searchEnabled=false
+                          triggerClass="aperta-select"
+                          as |version|}}
+            {{version.versionString}}
+          {{/power-select}}
+        </label>
+      </div>
+      <div class="col col-md-6">
+        <label class="bar-item paper-comparison-version">
+          Compare with:
+          {{#power-select options=paper.versionedTexts
+                          selected=comparisonVersion
+                          placeholder="-"
+                          onchange=(action "setComparisonVersion")
+                          searchEnabled=false
+                          triggerClass="aperta-select"
+                          as |version|}}
+            {{version.versionString}}
+          {{/power-select}}
+        </label>
+      </div>
+    </div>
+  </div>
 </div>
 
-{{#link-to "paper.index" paper class="versioning-bar-close"}}
-  &times;
-{{/link-to}}

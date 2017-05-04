@@ -113,12 +113,6 @@
   margin: 0 1rem;
 }
 
-@include min-screen-width($layout-large-screen) {
-  #main-content.paper-container--versions .split-pane-element {
-    padding-top: 75px;
-  }
-}
-
 .add-new-author-dropdown {
   transform: translate(-20px, -1px);
 }

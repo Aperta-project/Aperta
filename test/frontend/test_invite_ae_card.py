@@ -45,7 +45,6 @@ class InviteAECardTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_=mmt, random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    manuscript_page.close_infobox()
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
     paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)

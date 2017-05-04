@@ -365,6 +365,9 @@ class InviteReviewersCardTest(CommonTest):
     :return: None
     """
     logging.info('Test Invite Reviewers::email templates')
+    # The following line is useful for debugging issues where a previous test fails, leaving us in
+    #   an unexpected directory. We have repeatedly had failures around this, so for the time, I
+    #   would like to leave this in place and commented.
     # current_path = os.getcwd()
     # User log in and makes a submission
     creator_user = random.choice(users)
@@ -377,7 +380,6 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    # paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()

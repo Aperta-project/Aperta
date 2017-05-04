@@ -118,6 +118,18 @@
     "IHAT_URL": {
       "required": true
     },
+    "ITHENTICATE_ENABLED": {
+      "required": true
+    },
+    "ITHENTICATE_EMAIL": {
+      "required": true
+    },
+    "ITHENTICATE_PASSWORD": {
+      "required": true
+    },
+    "ITHENTICATE_URL": {
+      "required": true
+    },
     "MAILSAFE_REPLACEMENT_ADDRESS": {
       "required": true
     },

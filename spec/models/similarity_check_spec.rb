@@ -88,6 +88,13 @@ describe SimilarityCheck, type: :model do
                    .from(nil).to(now + SimilarityCheck::TIMEOUT_INTERVAL)
         end
       end
+
+      it "sets document_s3_url" do
+        expect do
+          start_report!
+        end.to change { similarity_check.document_s3_url }
+                 .from(nil).to(stubbed_url)
+      end
     end
   end
 

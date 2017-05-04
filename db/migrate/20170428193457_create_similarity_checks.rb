@@ -9,6 +9,7 @@ class CreateSimilarityChecks < ActiveRecord::Migration
       t.integer :ithenticate_document_id
       t.datetime :ithenticate_report_completed_at
       t.datetime :timeout_at
+      t.string :document_s3_url
       t.integer :report_id # TODO: add ithenticate_
       t.integer :score # TODO: add ithenticate_
       t.references :versioned_text, foreign_key: true, null: false

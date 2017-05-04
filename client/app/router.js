@@ -40,9 +40,11 @@ Router.map(function() {
   });
 
   this.route('discussions', function() {
-    this.route('index', {path: '/:paper_shortDoi'});
-    this.route('new', { path: '/:paper_shortDoi/new'});
-    this.route('show', { path: '/:paper_shortDoi/:discussion-topic_id' });
+    this.route('paper', {path: '/:paper_shortDoi'}, function() {
+      this.route('index', {path: '/'});
+      this.route('new', { path: '/new'});
+      this.route('show', { path: '/:discussion-topic_id' });
+    });
   });
 
   this.route('profile', { path: '/profile' });

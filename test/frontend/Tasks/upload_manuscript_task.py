@@ -9,6 +9,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.Resources import docs
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'jgray@plos.org'
@@ -92,7 +93,12 @@ class UploadManuscriptTask(BaseTask):
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
-    upload_ms_btn = self._get(self._upload_manuscript_btn)
+    self.set_timeout(3)
+    try:
+      upload_ms_btn = self._get(self._upload_manuscript_btn)
+    except ElementDoesNotExistAssertionError:
+      upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
+    self.restore_timeout()
     upload_ms_btn.click()
     # Time needed for script execution.
     time.sleep(7)

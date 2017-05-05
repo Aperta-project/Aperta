@@ -47,6 +47,12 @@ feature 'Production Metadata Card', js: true do
     end
 
     describe 'filling in the entire card' do
+      comments = {
+        provenance: 'It came from outer space.',
+        production_notes: 'Cheap cardboard sets.',
+        special_handling_instructions: 'Wear radiation suit.'
+      }
+
       it 'persists information' do
         page.fill_in 'production_metadata--publication_date', with: '08/31/2015'
         page.execute_script "$(\"input[name='production_metadata--publication_date']\").trigger('change')"
@@ -55,7 +61,10 @@ feature 'Production Metadata Card', js: true do
         page.fill_in 'production_metadata--issue_number', with: '5678'
         page.execute_script "$(\"input[name='production_metadata--issue_number']\").trigger('change')"
 
-        set_rich_text editor: 'production_metadata--production_notes', text: 'Too cool for school.'
+        comments.each do |key, value|
+          set_rich_text editor: "production_metadata--#{key}", text: value
+        end
+
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
@@ -66,8 +75,10 @@ feature 'Production Metadata Card', js: true do
           expect(page).to have_field('production_metadata--issue_number', with: "5678")
           expect(page).to have_field('production_metadata--publication_date', with: "08/31/2015")
 
-          text = get_rich_text(editor: 'production_metadata--production_notes')
-          expect(text).to eq '<p>Too cool for school.</p>'
+          comments.each do |key, value|
+            text = get_rich_text(editor: "production_metadata--#{key}")
+            expect(text).to eq "<p>#{value}</p>"
+          end
         end
       end
     end

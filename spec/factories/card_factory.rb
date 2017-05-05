@@ -6,7 +6,7 @@ FactoryGirl.define do
 
     trait :versioned do
       after(:build) do |card|
-        card.card_versions << build(:card_version, version: card.latest_version) if card.card_versions.count.zero?
+        card.card_versions << build(:card_version, version: card.latest_version, published_at: DateTime.now.utc) if card.card_versions.count.zero?
       end
     end
 

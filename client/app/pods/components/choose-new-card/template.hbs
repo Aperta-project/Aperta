@@ -23,8 +23,8 @@
 
     <div class="col-md-4 custom-cards">
       <h3>Custom Cards</h3>
-      {{#if sortedCards.length}}
-        {{#each sortedCards as |card|}}
+      {{#if addableCards.length}}
+        {{#each addableCards as |card|}}
           <label>
             {{check-box task=card action="updateList"}} {{card.name}}
           </label>

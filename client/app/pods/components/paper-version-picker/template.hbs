@@ -6,8 +6,8 @@
   </div>
   <div class="versioning-bar-content-body">
     <div class="row">
-      <div class="col col-md-6">
-        <label class="bar-item paper-viewing-version">
+      <div class="col col-md-6 paper-viewing-version">
+        <label class="bar-item ">
           {{fa-icon icon="files-o"}}
           Now viewing:
         </label>
@@ -20,8 +20,8 @@
           {{version.versionString}}
         {{/power-select}}
       </div>
-      <div class="col col-md-6">
-        <label class="bar-item paper-comparison-version">
+      <div class="col col-md-6 paper-comparison-version">
+        <label class="bar-item">
           Compare with:
         </label>
         {{#power-select options=paper.versionedTexts

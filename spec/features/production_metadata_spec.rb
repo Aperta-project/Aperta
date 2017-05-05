@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature 'Production Metadata Card', js: true do
+  include RichTextEditorHelpers
+
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do
@@ -52,8 +54,8 @@ feature 'Production Metadata Card', js: true do
         page.execute_script "$(\"input[name='production_metadata--volume_number']\").trigger('change')"
         page.fill_in 'production_metadata--issue_number', with: '5678'
         page.execute_script "$(\"input[name='production_metadata--issue_number']\").trigger('change')"
-        page.fill_in 'production_metadata--production_notes', with: 'Too cool for school.'
-        page.execute_script "$(\"textarea[name='production_metadata--production_notes']\").trigger('change')"
+
+        fill_in_rich_text editor: 'production_metadata--production_notes', text: 'Too cool for school.'
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"

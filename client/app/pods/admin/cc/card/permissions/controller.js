@@ -5,24 +5,22 @@ export default Ember.Controller.extend({
 
   actions: {
     turnOnPermission(role, card, permissionAction) {
-      const perm = this.get('adminCardPermission').findPermissionOrCreate(card, permissionAction);
-      perm.get('roles').addObject(role);
-      perm.save().catch(() => {
+      const service = this.get('adminCardPermission');
+      const cardId = card.get('id');
+      const perms = service.addRoleToPermissionSensible(role, cardId, permissionAction);
+      Ember.RSVP.all(perms.map((p)=>p.save())).catch(() => {
         // rollbackAttributes does not work with hasMany
-        if (perm.get('isNew')) {
-          perm.deleteRecord();
-        } else {
-          perm.get('roles').removeObject(role);
-        }
+        perms.map((p)=>p.get('roles').removeObject(role));
       });
     },
 
     turnOffPermission(role, card, permissionAction) {
-      const perm = this.get('adminCardPermission').findPermission(card, permissionAction);
-      perm.get('roles').removeObject(role);
+      const service = this.get('adminCardPermission');
+      const cardId = card.get('id');
+      const perm = service.removeRoleFromPermission(role, cardId, permissionAction);
       perm.save().catch(() => {
         // rollbackAttributes does not work with hasMany
-        perm.get('roles').addObject(role);
+        perm.addObject(role);
       });
     }
   }

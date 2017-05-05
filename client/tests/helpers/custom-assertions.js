@@ -255,4 +255,31 @@ export default function() {
   QUnit.assert.selectorHasClasses = function() {
     return this.selectorAttibuteIncludes('class', ...arguments);
   };
+
+  QUnit.assert.arrayEqual = function(actual, expected) {
+    const good =  {
+      result: true,
+      actual: actual,
+      expected: expected,
+      message: `equals: ${actual} and ${expected}`
+    };
+    if (actual === expected) { return this.pushResult(good); }
+    if (actual.length !== expected.length) {
+      return this.pushResult({
+        result: false,
+        actual: actual,
+        expected: expected,
+        message: `different lengths: ${actual} v. ${expected}`});
+    }
+    for (var i = 0; i < actual.length; ++i) {
+      if (actual[i] !== expected[i]) {
+        return this.pushResult({
+          result: false,
+          actual: actual,
+          expected: expected,
+          message: `element ${i} of ${actual} did not match ${expected}`});
+      }
+    }
+    return this.pushResult(good);
+  };
 }

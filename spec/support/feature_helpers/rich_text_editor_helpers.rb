@@ -1,5 +1,4 @@
 module RichTextEditorHelpers
-
   def get_rich_text(editor:)
     instance = editor_instance(editor)
     page.evaluate_script("#{instance}.getContent()")

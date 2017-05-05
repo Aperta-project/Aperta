@@ -72,10 +72,8 @@ export default Ember.Component.extend({
 
   actions: {
     viewCard() {
-      if (!this.get('disabled')) {
-        let action = this.get('action');
-        if (action) { action(); }
-      }
+      let action = this.get('action');
+      if (action && !this.get('disabled')) { action(); }
     },
 
     promptDelete() {

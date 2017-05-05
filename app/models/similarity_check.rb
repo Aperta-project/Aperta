@@ -46,8 +46,8 @@ class SimilarityCheck < ActiveRecord::Base
       content: Faraday.get(file.url).body,
       filename: file[:file],
       title: paper.title,
-      author_first_name: "ninja", # TODO: fix author name
-      author_last_name: "turtle",
+      author_first_name: paper.creator.first_name,
+      author_last_name: paper.creator.last_name,
       folder_id: 921_380, # TODO: fix folder id
     )
 

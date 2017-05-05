@@ -9,7 +9,8 @@ class SimilarityCheckUpdateWorker
   # sidekiq log.
   # https://github.com/mhenrixon/sidekiq-unique-jobs
   sidekiq_options unique: :until_and_while_executing,
-                  log_duplicate_payload: true
+                  log_duplicate_payload: true,
+                  retry: false
 
   def perform
     SimilarityCheck.waiting_for_report.each(&:sync_document!)

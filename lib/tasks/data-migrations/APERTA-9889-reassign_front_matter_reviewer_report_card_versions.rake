@@ -22,7 +22,7 @@ namespace :data do
     DESC
     task reassign_front_matter_reviewer_report_card_versions: :environment do
       latest_card_version = Card.find_by_class_name!("TahiStandardTasks::FrontMatterReviewerReport")
-                                .latest_card_version
+                                .latest_published_card_version
 
       TahiStandardTasks::FrontMatterReviewerReportTask.find_each do |fmrrt|
         fmrrt.reviewer_reports.update_all(card_version_id: latest_card_version)

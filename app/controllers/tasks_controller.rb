@@ -144,7 +144,7 @@ class TasksController < ApplicationController
         card = paper.journal.cards.find_by!(id: params[:task][:card_id])
         card.latest_published_card_version
       else
-        task_type.latest_card_version
+        task_type.latest_published_card_version
       end
     end
   end

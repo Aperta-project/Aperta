@@ -16,7 +16,7 @@ class CardAssociator
 
   def process
     card = Card.find_by_class_name!(model_klass)
-    answerables.update_all(card_version_id: card.latest_card_version.id)
+    answerables.update_all(card_version_id: card.latest_published_card_version.id)
   end
 
   def assert_all_associated!

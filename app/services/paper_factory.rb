@@ -63,7 +63,7 @@ class PaperFactory
       phase: phase,
       paper: phase.paper,
       creator: creator,
-      card_version: task_klass.latest_card_version,
+      card_version: task_klass.latest_published_card_version,
       title: task_template.title,
       body: task_template.template,
       notify: false

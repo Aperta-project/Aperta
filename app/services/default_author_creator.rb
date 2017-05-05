@@ -23,7 +23,7 @@ class DefaultAuthorCreator
       email: creator.email,
       paper: paper,
       user: creator,
-      card_version: Author.latest_card_version
+      card_version: Author.latest_published_card_version
     )
   end
 

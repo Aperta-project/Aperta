@@ -41,7 +41,7 @@ module TahiStandardTasks
 
     def new_funder_params
       funder_params.merge(
-        card_version: TahiStandardTasks::Funder.latest_card_version
+        card_version: TahiStandardTasks::Funder.latest_published_card_version
       )
     end
   end

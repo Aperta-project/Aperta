@@ -18,7 +18,7 @@ module TahiStandardTasks
         TaskFactory.create(self,
                            paper: paper,
                            phase: phase,
-                           card_version: latest_card_version)
+                           card_version: latest_published_card_version)
       end
     end
   end

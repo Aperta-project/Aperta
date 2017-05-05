@@ -39,7 +39,7 @@ describe AuthorsController do
 
     it 'a POST request associates a new author to an existing card version' do
       post_request
-      expect(Author.last.card_version).to eq(Author.latest_card_version)
+      expect(Author.last.card_version).to eq(Author.latest_published_card_version)
     end
 
     it 'a PUT request updates the author' do

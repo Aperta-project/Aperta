@@ -69,7 +69,7 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
       )
 
       # assign the card to the resource
-      resource.update(card_version: card.latest_card_version)
+      resource.update(card_version: card.latest_published_card_version)
 
       # swap the position of the card content.
       nested_question_2.move_left

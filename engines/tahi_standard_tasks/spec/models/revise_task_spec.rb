@@ -45,7 +45,7 @@ describe TahiStandardTasks::ReviseTask do
             subject,
             paper: paper,
             phase: phase,
-            card_version: TahiStandardTasks::ReviseTask.latest_card_version
+            card_version: TahiStandardTasks::ReviseTask.latest_published_card_version
           )
 
         subject.setup_new_revision paper, phase

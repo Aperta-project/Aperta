@@ -9,8 +9,8 @@ module Answerable
       true
     end
 
-    def latest_card_version
-      Card.find_by_class_name!(self).latest_card_version
+    def latest_published_card_version
+      Card.find_by_class_name!(self).latest_published_card_version
     end
   end
 
@@ -29,7 +29,7 @@ module Answerable
       answers.joins(:card_content).find_by(card_contents: { ident: ident })
     end
 
-    def latest_card_version
+    def latest_published_card_version
       Card.find_by_class_name!(self.class).latest_published_card_version
     end
 

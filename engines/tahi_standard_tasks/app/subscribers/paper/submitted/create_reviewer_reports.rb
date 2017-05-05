@@ -16,14 +16,14 @@ class Paper::Submitted::CreateReviewerReports
       )
 
       # assign latest card version if one is not already set
-      card_version = report.card_version || latest_card_version(paper)
+      card_version = report.card_version || latest_published_card_version(paper)
       report.card_version = card_version
 
       report.save!
     end
   end
 
-  def self.latest_card_version(paper)
+  def self.latest_published_card_version(paper)
     klass = if paper.uses_research_article_reviewer_report
               "ReviewerReport"
             else
@@ -33,6 +33,8 @@ class Paper::Submitted::CreateReviewerReports
               "TahiStandardTasks::FrontMatterReviewerReport"
             end
 
-    Card.find_by_class_name(klass).latest_card_version
+    # since a FrontMatterReviewerReport is not yet an actual ActiveRecord
+    # object, purposely not doing `klass.latest_published_card_version` here.
+    Card.find_by_class_name(klass).latest_published_card_version
   end
 end

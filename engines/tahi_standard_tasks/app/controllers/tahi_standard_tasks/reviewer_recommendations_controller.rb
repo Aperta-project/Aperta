@@ -47,8 +47,9 @@ module TahiStandardTasks
       )
     end
 
+    # rubocop:disable Metrics/LineLength
     def new_reviewer_recommendation_params
-      version = TahiStandardTasks::ReviewerRecommendation.latest_card_version
+      version = TahiStandardTasks::ReviewerRecommendation.latest_published_card_version
       reviewer_recommendation_params.merge(card_version: version)
     end
   end

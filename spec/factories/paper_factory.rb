@@ -334,7 +334,7 @@ FactoryGirl.define do
           task_klass_name = evaluator.task_params[:type]
           CardLoader.load(task_klass_name)
           card = Card.find_by_class_name(task_klass_name)
-          evaluator.task_params[:card_version] = card.latest_card_version
+          evaluator.task_params[:card_version] = card.latest_published_card_version
         end
 
         phase.tasks.create(evaluator.task_params)

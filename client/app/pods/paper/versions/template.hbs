@@ -75,7 +75,10 @@
         {{#if model.doi}}
         <div class="task-list-doi"><strong>Manuscript ID:</strong> {{model.manuscript_id}}</div>
         <hr />
-        <h3>Versions:</h3>
+        <div class="versioning-bar-title">
+          <h3>Versions</h3>
+          <p>Compare different versions of your submission cards below.</p>
+        </div>
         {{/if}}
         <div id="paper-metadata-tasks">
           {{paper-version-picker setViewingVersion=(action "setViewingVersion")

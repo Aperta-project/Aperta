@@ -458,7 +458,8 @@ class AuthenticatedPage(StyledPage):
           logging.warning('No conversion result message displayed at all')
     else:
       success_msg = self._get(self._flash_success_msg)
-      assert 'Finished loading Word file.' in success_msg.text, success_msg.text
+      assert 'Finished loading Word file.' or 'Finished loading PDF file.' in success_msg.text, \
+          success_msg.text
     if success_msg or failure_msg:
       try:
         self.close_flash_message()

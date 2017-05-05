@@ -28,7 +28,7 @@ feature 'Viewing Versions:', js: true, flaky: true do
       click_link(paper.title)
     end
 
-    scenario 'the user views an old version of the paper.', selenium: true do
+    scenario 'the user views the most recent version', selenium: true do
       page = PaperPage.new
       page.view_versions
 
@@ -38,35 +38,28 @@ feature 'Viewing Versions:', js: true, flaky: true do
 
       page.select_viewing_version(version_0)
 
-      expect(page.versioned_body).to have_content('OK first body')
+      expect(page.versioned_body).to have_content('OK second body')
     end
 
-    scenario 'the user views an old version of the paper.', selenium: true do
+    scenario 'the user only views the latest paper version', selenium: true do
       page = PaperPage.new
       page.view_versions
       page.select_viewing_version(version_0)
 
       page.select_comparison_version(version_1)
 
-      expect(page.find('#paper-body .added')).to have_content 'first'
-      expect(page.find('#paper-body .removed')).to have_content 'second'
+      expect(page.find('#paper-body')).to have_content 'second'
     end
 
-    scenario 'The user views an old version of a task', selenium: true do
+    scenario 'the overlay is disabled if there is no diff', selenium: true do
       SnapshotService.new(paper).snapshot!(task)
       page = PaperPage.new
       page.view_versions
       page.select_viewing_version(version_0)
 
-      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
-        overlay.expect_version('R0.0')
-      end
+      find('.card-title', text: 'Ethics').click
 
-      page.select_viewing_version(version_1)
-
-      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
-        overlay.expect_version('(draft)')
-      end
+      expect(page).not_to have_selector('.overlay')
     end
 
     scenario 'The user compares two versions of a task', selenium: true do

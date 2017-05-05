@@ -61,7 +61,9 @@
     {{#split-pane-element class="manuscript-pane main-content-section"}}
       <div class="manuscript-container">
         {{#rendered-manuscript paper=model}}
-          {{{model.body}}}
+          <div id="paper-body">
+            {{{model.body}}}
+          </div>
         {{/rendered-manuscript}}
       </div>
     {{/split-pane-element}}

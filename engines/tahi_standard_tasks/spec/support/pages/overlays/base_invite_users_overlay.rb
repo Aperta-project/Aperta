@@ -51,7 +51,7 @@ class BaseInviteUsersOverlay < CardOverlay
   end
 
   def invitation_body=(content)
-    fill_in_rich_text(editor: 'invitation-edit-body', text: content)
+    set_rich_text editor: 'invitation-edit-body', text: content
   end
 
   def has_invitees?(*invitee_names)

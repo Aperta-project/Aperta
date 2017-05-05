@@ -55,7 +55,7 @@ feature 'Production Metadata Card', js: true do
         page.fill_in 'production_metadata--issue_number', with: '5678'
         page.execute_script "$(\"input[name='production_metadata--issue_number']\").trigger('change')"
 
-        fill_in_rich_text editor: 'production_metadata--production_notes', text: 'Too cool for school.'
+        set_rich_text editor: 'production_metadata--production_notes', text: 'Too cool for school.'
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
@@ -64,8 +64,10 @@ feature 'Production Metadata Card', js: true do
         within '.task-main-content' do
           expect(page).to have_field('production_metadata--volume_number', with: "1234")
           expect(page).to have_field('production_metadata--issue_number', with: "5678")
-          expect(page).to have_field('production_metadata--production_notes', with: "Too cool for school.")
           expect(page).to have_field('production_metadata--publication_date', with: "08/31/2015")
+
+          text = get_rich_text(editor: 'production_metadata--production_notes')
+          expect(text).to eq '<p>Too cool for school.</p>'
         end
       end
     end

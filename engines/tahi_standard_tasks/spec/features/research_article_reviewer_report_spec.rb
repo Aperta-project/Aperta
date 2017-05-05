@@ -60,8 +60,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'reviewer_report--competing_interests--detail' => 'I have no competing interests'
     t.submit_report
@@ -79,8 +78,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 0'
 
@@ -103,8 +101,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 1'
 
@@ -124,8 +121,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 2'
 

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do
+  include RichTextEditorHelpers
+
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
     FactoryGirl.create(
@@ -11,8 +13,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       uses_research_article_reviewer_report: false
     )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
+  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
 
@@ -65,8 +67,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
@@ -99,8 +100,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 0'
 
@@ -123,8 +123,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
 
@@ -148,8 +147,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
-    # Wait for rich-text editors to instantiate
-    sleep 2
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 

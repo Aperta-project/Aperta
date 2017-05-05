@@ -43,10 +43,6 @@ export default Ember.Component.extend({
     return hash;
   },
 
-  elementId: Ember.computed('data-editor', function() {
-    return this.getAttr('data-editor');
-  }),
-
   editorOptions: Ember.computed('editorStyle', 'editorConfigurations', function() {
     let configs = this.get('editorConfigurations');
     let style = this.get('editorStyle') || 'expanded';

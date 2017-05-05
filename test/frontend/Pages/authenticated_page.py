@@ -7,6 +7,7 @@ the navigation menu also vital for ensuring style consistency across the applica
 import logging
 import time
 import random
+import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -458,7 +459,14 @@ class AuthenticatedPage(StyledPage):
           logging.warning('No conversion result message displayed at all')
     else:
       success_msg = self._get(self._flash_success_msg)
-      assert 'Finished loading Word file.' in success_msg.text, success_msg.text
+      match_ = re.search('Finished loading (Word|PDF) file.', success_msg.text)
+      if match_:
+        pass
+      else:
+        raise(AssertionError,
+              'Success message: {0} was not the expected text.'.format(success_msg.text))
+      # assert 'Finished loading Word file.' or 'Finished loading PDF file.' in success_msg.text, \
+      #     success_msg.text
     if success_msg or failure_msg:
       try:
         self.close_flash_message()

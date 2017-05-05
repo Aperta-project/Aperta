@@ -11,8 +11,10 @@ module RichTextEditorHelpers
     page.execute_script("#{instance}.target.triggerSave()")
   end
 
-  def wait_for_editors
-    wait_for_ajax
+  def wait_for_editors(timeout: Capybara.default_max_wait_time, count: 1)
+    Timeout.timeout(timeout) do
+      loop until page.evaluate_script("tinymce.editors.length").to_i >= count
+    end
   end
 
   private

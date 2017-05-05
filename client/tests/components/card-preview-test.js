@@ -14,6 +14,7 @@ moduleForComponent('card-preview', 'Integration | Component | card preview', {
       title: 'Example Card',
       commentLooks: [{}, {}]
     });
+    this.set('version1', '1.0');
   }
 });
 
@@ -58,4 +59,14 @@ test('#unread-comments-count badge is removed when commentLooks are "read"', fun
     this.set('task.commentLooks', []);
     assert.equal(this.$('.unread-comments-count').length, 0, 'badge is not displayed');
   });
+});
+
+test('#disabled adds disabled class to title if has versions but no diff', function(assert){
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview task=task version1=version1}}
+  `);
+
+  assert.equal(this.$('.card-title.disabled').length, 1);
 });

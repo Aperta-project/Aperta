@@ -1,5 +1,12 @@
-<div>
-  <ul>
+<table id="permission-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th class="permission">READ<br>Can view the card content</th>
+      <th class="permission">WRITE<br>Can answer questions and interact with the card</th>
+    </tr>
+  </thead>
+  <tbody>
     {{#each card.journal.adminJournalRoles as |role| }}
       {{card-editor/permissions/role
           role=role
@@ -7,5 +14,5 @@
           turnOnPermission=turnOnPermission
           turnOffPermission=turnOffPermission}}
     {{/each}}
-  </ul>
-</div>
+  </tbody>
+</table>

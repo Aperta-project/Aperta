@@ -1,0 +1,26 @@
+#permission-table {
+    $grey-border: 1px solid $aperta-grey-light;
+
+    th {
+        border-collapse: collapse;
+        padding: 1em;
+    }
+
+    th.permission {
+        border: $grey-border;
+        width: 10em;
+    }
+
+    td {
+        border-right: $grey-border;
+        padding: 1em;
+    }
+
+    thead {
+        border-bottom: $grey-border;
+    }
+
+    tbody {
+        border: $grey-border;
+    }
+}

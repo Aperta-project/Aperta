@@ -1,12 +1,16 @@
-<li>{{role.name}}
-  edit: <input type="checkbox"
-               name={{concat role.name "-edit"}}
-               id='foo'
-               checked={{editAllowed}}
-               onclick={{action "toggleEditPermission"}}/>
-  view: <input type="checkbox"
-               name={{concat role.name "-view"}}
-               id='foo'
-               checked={{viewAllowed}}
-               onclick={{action "toggleViewPermission"}}/>
-</li>
+<td>
+  {{role.name}}
+</td>
+<td>
+  {{check-box
+      name=(concat role.name "-edit")
+      checked=(readonly editAllowed)
+      action=(action "toggleEditPermission")}}
+</td>
+<td>
+  {{check-box
+      name=(concat role.name "-view")
+      checked=(readonly viewAllowed)
+      disabled=(readonly editAllowed)
+      action=(action "toggleViewPermission")}}
+</td>

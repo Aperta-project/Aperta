@@ -10,6 +10,8 @@ export default Ember.Component.extend({
     turnOffPermission: PropTypes.func.isRequired
   },
 
+  tagName: 'tr',
+
   editAllowed: permissionExists('card', 'role', 'edit'),
   viewAllowed: permissionExists('card', 'role', 'view'),
 

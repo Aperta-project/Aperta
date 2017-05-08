@@ -118,6 +118,7 @@ class XmlCardLoader
     text = tag_text(el, 'text')
     placeholder = tag_text(el, 'placeholder')
     label = tag_text(el, 'label')
+    validations = make_card_content_validations(el)
     content = CardContent.new(
       allow_multiple_uploads: attr_val(el, 'allow-multiple-uploads'),
       allow_file_captions: attr_val(el, 'allow-file-captions'),
@@ -130,11 +131,27 @@ class XmlCardLoader
       possible_values: parse_possible_values(el),
       text: text,
       value_type: attr_val(el, 'value-type'),
-      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer')
+      visible_with_parent_answer: attr_val(el, 'visible-with-parent-answer'),
+      card_content_validations: validations
     )
     el.xpath('content').each do |el1|
       content.children << make_card_content(el1, card_version)
     end
     content
+  end
+
+  def make_card_content_validations(el)
+    validation_node = el.xpath('validation')
+    validations = []
+    if validation_node.present?
+      validation_node.each do |vn|
+        validations << CardContentValidation.new(
+          validator: tag_text(vn, 'validator'),
+          validation_type: attr_val(vn, 'type'),
+          error_message: tag_text(vn, 'error-message')
+        )
+      end
+    end
+    validations
   end
 end

@@ -5,17 +5,37 @@
 class Answer < ActiveRecord::Base
   acts_as_paranoid
 
+  include Readyable
+
   belongs_to :card_content
   belongs_to :owner, polymorphic: true
   belongs_to :paper
 
-  has_many :attachments, -> { order('id ASC') }, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
+  has_many :attachments, -> { order('id ASC') },
+                              dependent: :destroy,
+                              as: :owner,
+                              class_name: 'QuestionAttachment'
 
   validates :card_content, presence: true
   validates :owner, presence: true
   validates :paper, presence: true
 
   delegate :value_type, to: :card_content
+
+  TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
+
+  validates :value, value: true, on: :ready
+
+  # validates :value,
+  #   on: :ready,
+  #   presence: true,
+  #   if: lambda {
+  #     if card_content.ready_required_check == 'required'
+  #       true
+  #     elsif card_content.ready_required_check == 'if_parent_yes'
+  #       card_content.try(:yes_no_value) == YES
+  #     end
+  #   }
 
   def children
     Answer.where(owner: owner, card_content: card_content.children)

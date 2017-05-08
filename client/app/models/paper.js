@@ -103,6 +103,7 @@ export default DS.Model.extend({
   }),
 
   roleList: computed('roles.[]', function() {
+    debugger;
     return this.get('roles').sort().join(', ');
   }),
 

@@ -1,4 +1,7 @@
 <label class="content-text">{{{content.text}}}</label>
+{{#each answer.readyIssuesArray as |issue|}}
+  <div class="validation-error error-message">{{fa-icon "exclamation-triangle"}}&nbsp;{{issue}}</div>
+{{/each}}
 {{format-input
   value=(readonly answer.value)
   class="form-control"

@@ -15,6 +15,8 @@ class CardContentSerializer < ActiveModel::Serializer
              # then render this content's children
              :visible_with_parent_answer
 
+  has_many :card_content_validations
+
   has_many :children,
            embed: :ids,
            include: true,

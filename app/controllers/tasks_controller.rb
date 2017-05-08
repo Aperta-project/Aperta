@@ -46,14 +46,17 @@ class TasksController < ApplicationController
       attrs = params.require(:task).permit(:completed)
       task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else
-      task.assign_attributes(task_params(task.class))
-      task.save!
+      if task.answers_validated?
+        task.assign_attributes(task_params(task.class))
+        task.save!
+        task.after_update
+        Activity.task_updated! task, user: current_user
+        render task.update_responder.new(task, view_context).response
+      else
+        # Someone is trying to work around the validations, deny them
+        render status: 422
+      end
     end
-
-    task.after_update
-    Activity.task_updated! task, user: current_user
-
-    render task.update_responder.new(task, view_context).response
   end
 
   def destroy

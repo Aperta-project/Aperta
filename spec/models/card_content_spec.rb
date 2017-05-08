@@ -37,6 +37,26 @@ describe CardContent do
         end
       end
     end
+
+    context '#to_xml' do
+      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation) }
+      let(:card) { FactoryGirl.build(:card) }
+      let(:expected_xml) do
+        <<-XML.strip_heredoc
+        <?xml version="1.0" encoding="UTF-8"?>
+        <content value-type="text">
+          <validation type="string-match">
+            <validator>/text/</validator>
+            <error-message>oh noes!</error-message>
+          </validation>
+        </content>
+        XML
+      end
+      it 'generates the expected xml' do
+        xml = card_content.to_xml
+        expect(xml.to_s.strip).to match expected_xml.strip
+      end
+    end
   end
 
   context "root scope" do

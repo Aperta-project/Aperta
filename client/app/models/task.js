@@ -53,6 +53,15 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   type: DS.attr('string'),
   assignedToMe: DS.attr(),
 
+  //Should only be applyable for card config cards.  Non custom cards
+  //will be "validated" under the new model by default
+  taskCompletable: Ember.computed('answers.[]', function(){
+    let answers = this.get('answers');
+    return answers.every(function(answer) {
+      return answer.get('ready') === true;
+    });
+  }),
+
   componentName: Ember.computed('type', function() {
     return Ember.String.dasherize(this.get('type'));
   }),

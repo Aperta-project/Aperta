@@ -106,6 +106,34 @@ describe Task do
     end
   end
 
+  describe '#answers_validated?' do
+    subject(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
+    let(:answer) { FactoryGirl.create(:answer, owner: subject) }
+    let(:card_content) { subject.card.latest_card_version.card_contents.first }
+    let(:card_content_validation) do
+      FactoryGirl.create(:card_content_validation,
+        :with_string_match_validation,
+        card_content: card_content,
+        validator: 'abby')
+    end
+
+    it 'it returns true if all answer validations pass' do
+      answer.value = 'tabby'
+      card_content.update!(answers: [answer], card_content_validations: [card_content_validation])
+      card_content.reload
+      expect(task.answers_validated?).to eq true
+    end
+
+    it 'it returns false if any answer validations fail' do
+      answer.value = 'corgi'
+      card_content.update!(answers: [answer], card_content_validations: [card_content_validation])
+      card_content.reload
+      expect(task.answers_validated?).to eq false
+    end
+
+  end
+
+
   describe '#permission_requirements' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
 

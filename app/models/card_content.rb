@@ -11,6 +11,7 @@ class CardContent < ActiveRecord::Base
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
+  has_many :card_content_validations
 
   validates :card_version, presence: true
 
@@ -43,7 +44,31 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
+  READY_CHECK_TYPES = %w(yes no long_string).freeze
+
+  validates :ready_check, allow_nil: true, inclusion: { in: READY_CHECK_TYPES }
+
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  READY_CHILDREN_CHECK_TYPES = %(one_of).freeze
+  READY_REQUIRED_CHECK_TYPES = %w(required if_parent_yes).freeze
+
+  # ready_required_check is used to check if the value is required (or required
+  # in certain circumstances)
+  validates :ready_required_check,
+    allow_nil: true,
+    inclusion: { in: READY_REQUIRED_CHECK_TYPES }
+
+  # ready_children_check is used to ensure a set of values of the children of
+  # this question
+  validates :ready_children_check,
+    allow_nil: true,
+    inclusion: { in: READY_CHILDREN_CHECK_TYPES }
+
+  # ready_check will check to ensure that the value is of a certain type, e.g.
+  # yes, no, long_string.
+  validates :ready_check,
+    allow_nil: true,
+    inclusion: { in: READY_CHECK_TYPES }
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -121,14 +146,22 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'placeholder', placeholder)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      if card_content_validations.present?
+        card_content_validations.each do |ccv|
+          xml.tag!('validation', type: ccv.validation_type) do
+            xml.tag!('error-message', ccv.error_message)
+            xml.tag!('validator', ccv.validator)
+          end
+        end
+      end
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])
         end
       end
-      children.each do |child|
-        child.to_xml(builder: xml, skip_instruct: true)
-      end
+      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
+
+  private
 end

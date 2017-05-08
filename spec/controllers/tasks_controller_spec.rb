@@ -142,7 +142,7 @@ describe TasksController, redis: true do
 
   describe "PATCH #update" do
     let(:task) do
-      FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)
+      FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first, completed: false)
     end
     let(:task_params) {  { completed: '1' } }
 
@@ -165,9 +165,17 @@ describe TasksController, redis: true do
           .and_return true
       end
 
-      it "updates the task" do
+      it "updates the task if valid" do
         do_request
         expect(task.reload).to be_completed
+      end
+
+      it 'returns the task' do
+        task =
+        task_double = instance_double('Task')
+        allow(task_double).to receive(:answers_validated?).and_return false
+        do_request
+        expect(task.reload).to_not be_completed
       end
 
       it "renders the task id and completed status as JSON" do

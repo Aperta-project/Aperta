@@ -7,12 +7,12 @@ class XmlCardLoader
     XmlCardLoader.new(parse(xml), journal).make_card
   end
 
-  # Called from card.xml= when the card is published
+  # Called from card.update_from_xml when the card is published
   def self.new_version_from_xml_string(xml, card)
     XmlCardLoader.new(parse(xml), card.journal).make_new_version(card, nil)
   end
 
-  # Called from card.xml= when the latest version is a draft
+  # Called from card.update_from_xml when the latest version is a draft
   def self.replace_draft_from_xml_string(xml, card)
     XmlCardLoader.new(parse(xml), card.journal).replace_latest_version(card)
   end
@@ -41,7 +41,7 @@ class XmlCardLoader
         journal: @journal,
         name: attr_val(root, 'name')
       )
-      make_new_version(card, DateTime.now.utc)
+      make_new_version(card, Time.current)
       card
     end
   end

@@ -17,6 +17,7 @@ export default Ember.Component.extend({
   errors: null,
   showPublishOverlay: false,
   showArchiveOverlay: false,
+  showDeleteOverlay: false,
 
   classNames: ['card-editor-editor'],
 
@@ -57,6 +58,21 @@ export default Ember.Component.extend({
     }
   }),
 
+  deleteCard: task(function*() {
+    let card = this.get('card');
+
+    try {
+      let journalID = yield card.get('journal.id');
+      yield card.destroyRecord();
+      this.set('errors', []);
+      this.get('routing').transitionTo('admin.cc.journals.cards', null, {
+        journalID
+      });
+    } catch (e) {
+      this.set('errors', e.errors);
+    }
+  }),
+
   actions: {
     confirmPublish() {
       this.set('showPublishOverlay', true);
@@ -64,6 +80,10 @@ export default Ember.Component.extend({
 
     confirmArchive() {
       this.set('showArchiveOverlay', true);
+    },
+
+    confirmDelete() {
+      this.set('showDeleteOverlay', true);
     }
   }
 });

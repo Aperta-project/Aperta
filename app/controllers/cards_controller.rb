@@ -32,7 +32,7 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card.xml = params[:card][:xml] if params[:card][:xml].present?
+    card.update_from_xml(params[:card][:xml]) if params[:card][:xml].present?
     card.update!(card_params)
 
     respond_with card
@@ -45,6 +45,13 @@ class CardsController < ApplicationController
     render json: card
   end
 
+  def archive
+    requires_user_can(:edit, card)
+    card.archive!
+
+    render json: card
+  end
+
   def render_xml_syntax_error(ex)
     render status: 422, json: { errors: { xml: ex.message } }
   end
@@ -53,7 +60,7 @@ class CardsController < ApplicationController
     journal = Journal.find(card_params[:journal_id])
     requires_user_can(:create_card, journal)
 
-    respond_with Card.create_draft!(card_params)
+    respond_with Card.create_initial_draft!(card_params)
   end
 
   private

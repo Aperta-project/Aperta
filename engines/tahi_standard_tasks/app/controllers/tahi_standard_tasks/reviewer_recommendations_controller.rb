@@ -28,7 +28,7 @@ module TahiStandardTasks
         if params[:id]
           ReviewerRecommendation.find(params[:id])
         else
-          ReviewerRecommendation.new(new_reviewer_recommendation_params)
+          ReviewerRecommendation.new(reviewer_recommendation_params)
         end
       end
     end
@@ -45,12 +45,6 @@ module TahiStandardTasks
         :affiliation,
         :ringgold_id
       )
-    end
-
-    # rubocop:disable Metrics/LineLength
-    def new_reviewer_recommendation_params
-      version = TahiStandardTasks::ReviewerRecommendation.latest_published_card_version
-      reviewer_recommendation_params.merge(card_version: version)
     end
   end
 end

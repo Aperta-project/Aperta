@@ -167,6 +167,28 @@ describe Task do
     end
   end
 
+  describe "Answerable#set_card_version" do
+    before { CardLoader.load("AdHocTask") }
+    let(:latest_card_version) { task.class.latest_published_card_version }
+
+    context "with no card version" do
+      let(:task) { AdHocTask.new }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to change { task.card_version }
+          .from(nil).to(latest_card_version)
+      end
+    end
+
+    context "with card version already set" do
+      let(:task) { AdHocTask.new(card_version: FactoryGirl.build(:card_version)) }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to_not change { task.card_version }
+      end
+    end
+  end
+
   describe 'Task.descendants' do
     it 'includes a new subclass of Task' do
       new_task = Class.new(Task)

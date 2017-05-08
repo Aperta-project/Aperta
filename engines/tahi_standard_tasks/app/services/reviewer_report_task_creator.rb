@@ -22,7 +22,6 @@ class ReviewerReportTaskCreator
       @task = reviewer_report_task_class.create!(
         paper: paper,
         phase: default_phase,
-        card_version: reviewer_report_task_class.latest_published_card_version,
         title: "Review by #{assignee.full_name}"
       )
       assignee.assign_to!(assigned_to: @task, role: paper.journal.reviewer_report_owner_role)

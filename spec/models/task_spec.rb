@@ -167,6 +167,17 @@ describe Task do
     end
   end
 
+  describe "Answerable#set_card_version" do
+    before { CardLoader.load("AdHocTask") }
+    let(:task) { AdHocTask.new }
+    let(:latest_card_version) { task.class.latest_published_card_version }
+
+    it "assigns the latest card version if not set" do
+      expect { task.valid? }.to change { task.card_version }
+        .from(nil).to(latest_card_version)
+    end
+  end
+
   describe 'Task.descendants' do
     it 'includes a new subclass of Task' do
       new_task = Class.new(Task)

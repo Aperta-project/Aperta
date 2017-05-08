@@ -44,8 +44,7 @@ describe TahiStandardTasks::ReviseTask do
           .to receive(:create).with(
             subject,
             paper: paper,
-            phase: phase,
-            card_version: TahiStandardTasks::ReviseTask.latest_published_card_version
+            phase: phase
           )
 
         subject.setup_new_revision paper, phase

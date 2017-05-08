@@ -23,6 +23,14 @@
       {{{unwrappedHelpText}}}
     {{/if}}
 
-    {{textarea name=ident value=answer.value class=inputClassNames placeholder=placeholderText disabled=disabled}}
+    {{rich-text-editor
+      editorStyle=editorStyle
+      data-editor=data-editor
+      onContentsChanged=(action "updateAnswer")
+      class=inputClassNames placeholder=placeholderText
+      name=ident
+      value=answer.value
+      disabled=disabled
+    }}
   {{/if}}
 {{/if}}

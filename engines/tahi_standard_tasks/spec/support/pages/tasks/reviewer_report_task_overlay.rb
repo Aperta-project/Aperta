@@ -34,10 +34,8 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
 
   def fill_in_report(values = {})
     values = values.with_indifferent_access.reverse_merge(
-      "reviewer_report--competing_interests--detail" =>
-        "default competing interests",
-      "reviewer_report--additional_comments" =>
-        "default additional_comments content",
+      "reviewer_report--competing_interests--detail" => "default competing interests",
+      "reviewer_report--additional_comments" => "default additional_comments content",
       "reviewer_report--identity" => "default identity content"
     )
 

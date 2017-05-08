@@ -150,9 +150,11 @@
 </div>
 {{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
-    {{content-editable value=invitation.body
-                       class="invitation-edit-body"
-                       key-up=(action "saveDuringType" invitation)}}
+    {{rich-text-editor
+      value=invitation.body
+      class="invitation-edit-body"
+      onContentsChanged=(action "updateAnswer")
+    }}
 
     {{link-alternate
       invitation=invitation

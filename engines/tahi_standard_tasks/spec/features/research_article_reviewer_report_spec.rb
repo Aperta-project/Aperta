@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Reviewer filling out their research article reviewer report', js: true do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }

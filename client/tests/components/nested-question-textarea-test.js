@@ -6,6 +6,7 @@ import registerCustomAssertions from '../helpers/custom-assertions';
 import FakeCanService from '../helpers/fake-can-service';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+import {setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('nested-question-textarea', 'Integration | Component | nested question textarea', {
   integration: true,
@@ -37,7 +38,7 @@ test('saves on input events', function(assert) {
   `);
 
   $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
-  this.$('textarea').val('new comment').trigger('input');
+  setRichText('foo', 'new comment');
 
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on input');

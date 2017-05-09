@@ -1,25 +1,21 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import {findEditor, getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
 });
 
+
 test('it renders', function(assert) {
+  let saveContents = function () {};
+  this.set('saveContents', saveContents);
+  this.render(hbs`{{rich-text-editor ident='foo' onContentsChanged=saveContents}}`);
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  let editor = findEditor('foo');
+  assert.elementFound(editor);
+  assert.equal(getRichText('foo'), '');
 
-  this.render(hbs`{{rich-text-editor}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#rich-text-editor}}
-      template block text
-    {{/rich-text-editor}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  setRichText('foo', 'abc');
+  assert.equal(getRichText('foo'), '<p>abc</p>');
 });

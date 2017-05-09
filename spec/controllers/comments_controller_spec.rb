@@ -4,6 +4,7 @@ describe CommentsController do
   let(:paper) do
     FactoryGirl.create(
       :paper,
+      :with_tasks,
       creator: user,
       journal: journal
     )

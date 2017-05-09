@@ -194,6 +194,12 @@ class Task < ActiveRecord::Base
     User.where(id: participant_ids)
   end
 
+  def participants=(users)
+    participations.destroy_all
+    save! if new_record?
+    users.each { |user| add_participant user }
+  end
+
   def reviewer
     assignments.joins(:role)
       .find_by(roles: { name: Role::REVIEWER_REPORT_OWNER_ROLE }).try(:user)

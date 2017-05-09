@@ -137,8 +137,8 @@ describe Author do
   end
 
   describe "#task-completed?" do
-    let!(:author) { FactoryGirl.create(:author, :contributions, paper: authors_task.paper) }
     let(:authors_task) { FactoryGirl.create(:authors_task) }
+    let(:author) { Author.create(paper: authors_task.paper) }
 
     it "is true when task is complete" do
       authors_task.completed = true

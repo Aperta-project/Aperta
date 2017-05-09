@@ -17,6 +17,7 @@ describe TahiStandardTasks::ReviseTask do
       let!(:task) do
         FactoryGirl.create(
           :revise_task,
+          :with_loaded_card,
           completed: true,
           paper: paper
         )
@@ -34,6 +35,10 @@ describe TahiStandardTasks::ReviseTask do
     end
 
     context "with no existing revise task" do
+      before do
+        CardLoader.load("TahiStandardTasks::ReviseTask")
+      end
+
       it "creates a new revise task" do
         expect(TaskFactory)
           .to receive(:create).with(

@@ -9,6 +9,10 @@ class CardSerializer < ActiveModel::Serializer
     object.content_root_for_version(:latest)
   end
 
+  def state
+    object.state.camelize(:lower)
+  end
+
   def addable
     object.addable?
   end

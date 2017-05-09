@@ -72,11 +72,6 @@ describe Card do
       card.publish!
       expect(card_version.reload.published_at).to be_present
     end
-
-    it "blows up if the latest version is already published" do
-      card_version.update(published_at: DateTime.now.utc)
-      expect { card.publish! }.to raise_exception ArgumentError
-    end
   end
 
   context "a card with multiple versions" do
@@ -125,101 +120,39 @@ describe Card do
     end
   end
 
-  describe "#published?" do
-    it "returns false when the state is 'draft'" do
-      allow(card).to receive(:state).and_return "draft"
-      expect(card).to_not be_published
+  # For now the real meat of the tests are with the XmlCardLoader
+  describe "#update_from_xml" do
+    let(:card) do
+      FactoryGirl.create(
+        :card,
+        :versioned
+      )
     end
-
-    it "returns true when the state is anything but 'draft'" do
-      allow(card).to receive(:state).and_return "anythingButDraft"
-      expect(card).to be_published
-    end
-  end
-
-  describe "#state" do
-    context "the card's latest version is not published" do
-      context "the card has no other versions" do
-        let(:card) do
-          FactoryGirl.create(
-            :card,
-            latest_version: 1
-          )
-        end
-        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: nil) }
-        it "is draft" do
-          expect(card.state).to eq("draft")
-        end
-      end
-
-      context "the card has previous versions" do
-        let(:card) do
-          FactoryGirl.create(
-            :card,
-            latest_version: 2
-          )
-        end
-        let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc) }
-        let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published_at: nil) }
-        it "is publishedWithChanges" do
-          expect(card.state).to eq("publishedWithChanges")
-        end
+    context "the card is published" do
+      it "has the XmlCardLoader make a new draft version" do
+        allow(XmlCardLoader).to receive(:new_version_from_xml_string)
+        expect(XmlCardLoader).to receive(:new_version_from_xml_string).with("foo", card)
+        card.update_from_xml("foo")
       end
     end
 
-    context "the card's latest version is published" do
-      let!(:previous_version) { FactoryGirl.create(:card_version, card: card, version: 1, published_at: DateTime.now.utc) }
-      let!(:latest_version) { FactoryGirl.create(:card_version, card: card, version: 2, published_at: DateTime.now.utc) }
-      context "the card has a journal" do
-        let(:card) do
-          FactoryGirl.create(
-            :card,
-            latest_version: 2
-          )
-        end
-        it "is published" do
-          expect(card.state).to eq("published")
-        end
-      end
-
-      context "the card does not have a journal id" do
-        let(:card) do
-          FactoryGirl.create(
-            :card,
-            latest_version: 2,
-            journal: nil
-          )
-        end
-        it "is locked" do
-          expect(card.state).to eq("locked")
-        end
+    context "the card is a draft" do
+      it "has the XmlCardLoader replace the current draft" do
+        card.update(state: "draft")
+        card.latest_card_version.update(published_at: nil)
+        allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
+        expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
+        card.update_from_xml("foo")
       end
     end
 
-    # For now the real meat of the tests are with the XmlCardLoader
-    describe "#xml=" do
-      let(:card) do
-        FactoryGirl.create(
-          :card,
-          :versioned
-        )
-      end
-      context "the latest version is published" do
-        it "has the XmlCardLoader make a new draft version" do
-          card.latest_card_version.update(published_at: DateTime.now.utc)
-          allow(XmlCardLoader).to receive(:new_version_from_xml_string)
-          expect(XmlCardLoader).to receive(:new_version_from_xml_string).with("foo", card)
-          card.xml = "foo"
-        end
-      end
-
-      context "the latest version is a draft" do
-        it "has the XmlCardLoader replace the current draft" do
-          card.latest_card_version.update(published_at: nil)
-          allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
-          expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
-          card.xml = "foo"
-        end
+    context "the card is published with changes" do
+      it "has the XmlCardLoader replace the current draft" do
+        card.update(state: "published_with_changes")
+        card.latest_card_version.update(published_at: nil)
+        allow(XmlCardLoader).to receive(:replace_draft_from_xml_string)
+        expect(XmlCardLoader).to receive(:replace_draft_from_xml_string).with("foo", card)
+        card.update_from_xml("foo")
       end
     end
   end

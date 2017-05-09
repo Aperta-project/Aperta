@@ -12,15 +12,16 @@ test('it renders a catalogue', function(assert) {
   assert.elementFound('.admin-page-catalogue');
 });
 
-test('it renders an item for each card given', function(assert) {
+test('it renders an item for each unarchived card given', function(assert) {
   const journal = {name: 'My Journal'};
   const cards = [
     {title: 'Authors', journal: journal, isNew: false},
     {title: 'Tech Check', journal: journal, isNew: false},
-    {title: 'Register Decision', journal: journal, isNew: false}
+    {title: 'Register Decision', journal: journal, isNew: false},
+    {title: 'Archived Card', journal: journal, isNew: false, state: 'archived'}
   ];
   this.set('cards', cards);
 
   this.render(hbs`{{admin-page/card-catalogue cards=cards}}`);
-  assert.nElementsFound('.admin-catalogue-item .admin-card-thumbnail', cards.length);
+  assert.nElementsFound('.admin-catalogue-item .admin-card-thumbnail', 3, `doesn't show archived cards`);
 });

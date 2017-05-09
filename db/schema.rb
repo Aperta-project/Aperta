@@ -252,9 +252,12 @@ ActiveRecord::Schema.define(version: 20170425155538) do
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version", default: 1, null: false
+    t.datetime "archived_at"
+    t.string   "state",                      null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
+  add_index "cards", ["state"], name: "index_cards_on_state", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"

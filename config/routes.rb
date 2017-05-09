@@ -69,6 +69,7 @@ Tahi::Application.routes.draw do
     resources :answers, only: [:create, :destroy, :update]
     resources :cards, only: [:index, :create, :show, :update] do
       put :publish, on: :member
+      put :archive, on: :member
     end
     resources :card_versions, only: [:show]
 

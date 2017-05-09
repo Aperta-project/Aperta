@@ -227,7 +227,7 @@ class DiscussionForumTest(CommonTest):
       # Add Collaborator 1 and Collaborator 2
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,
-        participants=[collaborator_1, collaborator_2])
+                                    participants=[collaborator_1, collaborator_2])
     # Staff user logout
     ms_viewer.logout()
 

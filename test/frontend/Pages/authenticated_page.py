@@ -72,7 +72,8 @@ class AuthenticatedPage(StyledPage):
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._participant_field = (By.CLASS_NAME, 'ember-power-select-search-input')
     self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
-    self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+    self._new_topic_message_body_field = (By.CSS_SELECTOR, 'textarea.discussion-topic-comment-field')
+    self._message_body_field = (By.CSS_SELECTOR, 'textarea.new-comment-field')
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
     self._first_discussion_lnk = (By.CLASS_NAME, 'discussions-index-topic')
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
@@ -714,7 +715,7 @@ class AuthenticatedPage(StyledPage):
       topic_title.send_keys(topic)
     else:
       topic_title.send_keys(generate_paragraph()[2][15])
-    msg_body = self._get(self._message_body_field)
+    msg_body = self._get(self._new_topic_message_body_field)
     if msg:
       msg_body.send_keys(msg + ' ')
     else:

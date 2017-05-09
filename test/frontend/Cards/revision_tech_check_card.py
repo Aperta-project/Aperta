@@ -101,7 +101,7 @@ class RTCCard(BaseCard):
           'please include a description in the box provided.',
                     8: '',
                     9: 'Please respond to all reviewer comments point-by-point in the Revision '
-          'Details section of your Revise Manuscript card.',
+          'Details section of your Response to Reviewers card.',
                     10: '',
                     11: 'We are unable to preview or download Figure [X]. Please upload a higher '
           'quality version, preferably in TIF or EPS format and ensure the uploaded version can be '

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature "User adding reviewer candidates", js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
@@ -44,8 +45,8 @@ feature "User adding reviewer candidates", js: true do
       find(".last-name input[type=text]").set "AraAnn"
       find(".email input[type=text]").set "barb@example.com"
       choose "Recommend"
-      page.execute_script("tinymce.activeEditor.setContent('Because they do good work')")
-      page.execute_script("tinymce.activeEditor.target.triggerSave()")
+      wait_for_editors
+      set_rich_text(editor: 'reviewer_recommendations--reason', text: 'Because they do good work')
       click_button "done"
     end
 

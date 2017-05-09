@@ -2,6 +2,10 @@ require 'rails_helper'
 
 module PlosBioTechCheck
   describe NotifyAuthorOfChangesNeededService do
+    before do
+      CardLoader.load("PlosBioTechCheck::ChangesForAuthorTask")
+    end
+
     subject(:service) do
       described_class.new(task, submitted_by: user)
     end

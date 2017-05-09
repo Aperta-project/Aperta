@@ -2,6 +2,8 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import { task } from 'ember-concurrency';
 
+import { isBlank } from 'tahi/lib/computed';
+
 export default Ember.Component.extend({
   routing: Ember.inject.service('-routing'),
   propTypes: {
@@ -18,9 +20,7 @@ export default Ember.Component.extend({
   showPublishOverlay: false,
   showArchiveOverlay: false,
 
-  historyEntryBlank: Ember.computed('card.historyEntry', function() {
-    return Ember.isBlank(this.get('card.historyEntry'));
-  }),
+  historyEntryBlank: isBlank('card.historyEntry'),
 
   classNames: ['card-editor-editor'],
 

@@ -45,6 +45,9 @@ class CardsController < ApplicationController
 
     card.publish!(history_entry, current_user)
 
+    # respond with the latest card version so that the client can immediately
+    # show the new history entry if needed. The card itself is manually reloaded
+    # by the client after it receives the 'publish' response
     render json: card.latest_card_version
   end
 

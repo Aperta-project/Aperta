@@ -6,10 +6,10 @@ moduleForComponent('rich-text-editor', 'Integration | Component | rich text edit
   integration: true
 });
 
-
 test('it renders', function(assert) {
-  let saveContents = function () {};
+  let saveContents = function() {};
   this.set('saveContents', saveContents);
+
   this.render(hbs`{{rich-text-editor ident='foo' onContentsChanged=saveContents}}`);
 
   let editor = findEditor('foo');

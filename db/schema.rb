@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503152030) do
+ActiveRecord::Schema.define(version: 20170504132418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,9 +240,12 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
+    t.string   "history_entry"
+    t.integer  "published_by_id"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
+  add_index "card_versions", ["published_by_id"], name: "index_card_versions_on_published_by_id", using: :btree
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
   create_table "cards", force: :cascade do |t|

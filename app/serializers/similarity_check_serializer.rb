@@ -1,7 +1,7 @@
 class SimilarityCheckSerializer < ActiveModel::Serializer
   attributes :id,
     :versioned_text_id,
-    :score,
+    :ithenticate_score,
     :state,
     :updated_at
 end

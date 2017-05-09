@@ -11,7 +11,7 @@ module Ithenticate
     end
 
     def report_complete?
-      report_id.present?
+      report_id.present? && first_document['is_pending'].zero?
     end
 
     def report_id

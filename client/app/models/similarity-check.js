@@ -9,7 +9,7 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),
   updatedAt: DS.attr('date'),
-  score: DS.attr('string'),
+  ithenticateScore: DS.attr('string'),
 
   failed: Ember.computed.equal('state', 'failed'),
   succeeded: Ember.computed.equal('state', 'report_complete'),

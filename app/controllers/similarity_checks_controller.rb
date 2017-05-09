@@ -20,6 +20,12 @@ class SimilarityChecksController < ::ApplicationController
     respond_with(paper.similarity_checks)
   end
 
+  def show
+    similarity_check = SimilarityCheck.find(params.require(:id))
+    requires_user_can(:perform_similarity_check, similarity_check.paper)
+    respond_with(similarity_check)
+  end
+
   def report_view_only
     similarity_check = SimilarityCheck.find(params.require(:id))
     requires_user_can(:perform_similarity_check, similarity_check.paper)

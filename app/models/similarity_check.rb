@@ -72,8 +72,8 @@ class SimilarityCheck < ActiveRecord::Base
     )
 
     if document_response.report_complete?
-      self.report_id = document_response.report_id
-      self.score = document_response.score
+      self.ithenticate_report_id = document_response.report_id
+      self.ithenticate_score = document_response.score
       self.ithenticate_report_completed_at = Time.now.utc
       finish_report!
     else
@@ -83,7 +83,7 @@ class SimilarityCheck < ActiveRecord::Base
 
   def report_view_only_url
     raise IncorrectState, "Report not yet completed" unless report_complete?
-    response = ithenticate_api.get_report(id: report_id)
+    response = ithenticate_api.get_report(id: ithenticate_report_id)
     response.view_only_url
   end
 

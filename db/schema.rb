@@ -750,8 +750,8 @@ ActiveRecord::Schema.define(version: 20170428193457) do
     t.datetime "ithenticate_report_completed_at"
     t.datetime "timeout_at"
     t.string   "document_s3_url"
-    t.integer  "report_id"
-    t.integer  "score"
+    t.integer  "ithenticate_report_id"
+    t.integer  "ithenticate_score"
     t.integer  "versioned_text_id",               null: false
     t.string   "state",                           null: false
     t.datetime "created_at",                      null: false
@@ -955,5 +955,6 @@ ActiveRecord::Schema.define(version: 20170428193457) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

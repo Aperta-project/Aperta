@@ -26,7 +26,7 @@
         ident="reviewer_report--competing_interests--detail"
         editorStyle='basic'
         owner=model
-        readOnly=readOnly
+        disabled=readOnly
         displayQuestionText=false
         inputClassNames="reviewer_report--competing_interests--detail"
       }}
@@ -38,7 +38,7 @@
         editorStyle='basic'
         owner=model
         displayContent=true
-        readOnly=readOnly
+        disabled=readOnly
         inputClassNames="reviewer_report--identity"
         helpText="Your name and review will not be published with the manuscript."
       }}
@@ -50,7 +50,7 @@
         editorStyle='basic'
         owner=model
         displayContent=true
-        readOnly=readOnly
+        disabled=readOnly
         inputClassNames="taller reviewer_report--comments_for_author"
         helpText="These comments will be transmitted to the author."
       }}
@@ -60,7 +60,7 @@
       {{nested-question-textarea
         ident="reviewer_report--additional_comments"
         owner=model
-        readOnly=readOnly
+        disabled=readOnly
         displayContent=true
         inputClassNames="reviewer_report--additional_comments"
         helpText="Additional comments may include concerns about dual publication, research or publication ethics.
@@ -83,7 +83,7 @@
         owner=model
         inputClassNames="reviewer_report--suitable_for_another_journal--journal"
         displayQuestionText=false
-        readOnly=readOnly
+        disabled=readOnly
       }}
     </li>
   </ol>

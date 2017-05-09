@@ -16,7 +16,7 @@
         editorStyle='basic'
         owner=model
         displayContent=true
-        readOnly=readOnly
+        disabled=readOnly
         helpText=(concat "<li>
           Please review our <a href='"competingInterestsLink "'>
           Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.
@@ -41,7 +41,7 @@
               displayQuestionText=false
               displayContent=true
               noResponseText=""
-              readOnly=readOnly
+              disabled=readOnly
             }}
           {{/if}}
         {{/nested-question-radio}}
@@ -63,7 +63,7 @@
             noResponseText=""
             displayQuestionText=false
             displayContent=true
-            readOnly=readOnly}}
+            disabled=readOnly}}
         {{/if}}
       {{/nested-question-radio}}
     </li>
@@ -74,7 +74,7 @@
         owner=model
         displayContent=true
         helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
-        readOnly=readOnly
+        disabled=readOnly
       }}
     </li>
 
@@ -85,7 +85,7 @@
         owner=model
         displayContent=true
         helpText="<li>Your name and review will not be published with the manuscript.</li>"
-        readOnly=readOnly
+        disabled=readOnly
       }}
     </li>
   </ol>

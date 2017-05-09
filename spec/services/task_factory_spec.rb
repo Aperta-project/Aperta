@@ -5,10 +5,6 @@ describe TaskFactory do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:klass) { TahiStandardTasks::ReviseTask }
 
-  before do
-    CardLoader.load("TahiStandardTasks::ReviseTask")
-  end
-
   it "Creates a task" do
     expect do
       TaskFactory.create(klass, paper: paper, phase: phase)
@@ -55,6 +51,13 @@ describe TaskFactory do
     expect(task.body).to eq('key' => 'value')
   end
 
+  it "Sets the participants from params" do
+    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
+    participants = [FactoryGirl.create(:user)]
+    task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
+    expect(task.participants).to eq(participants)
+  end
+
   describe "setting task's card version" do
     context "the card version is passed in" do
       let(:card_version) { FactoryGirl.create(:card_version) }
@@ -65,17 +68,19 @@ describe TaskFactory do
     end
 
     context "the card version is not present in the options" do
-      let(:klass) { TahiStandardTasks::UploadManuscriptTask }
-
-      context "a card with a matching name as the task exists" do
+      context "a card with the same name as the task exists" do
         let!(:existing_card) do
-          FactoryGirl.create(:card, :versioned, name: klass.name, journal: nil)
+          FactoryGirl.create(:card, :versioned, name: klass.name)
         end
-
         it "uses the latest version of that card" do
           task = TaskFactory.create(klass, paper: paper, phase: phase)
-          expect(task.card_version).to eq(existing_card.latest_card_version(:latest))
+          expect(task.card_version).to eq(existing_card.card_version(:latest))
         end
+      end
+
+      it "sets the card version to 'null' if no card is found" do
+        task = TaskFactory.create(klass, paper: paper, phase: phase)
+        expect(task.card_version).to be_nil
       end
     end
   end
@@ -85,11 +90,6 @@ describe TaskFactory do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { FactoryGirl.create(:phase, paper: paper) }
     let(:klass) { PlosBilling::BillingTask }
-
-    before do
-      CardLoader.load("PlosBilling::BillingTask")
-    end
-
     let(:journal_task_type) do
       journal.journal_task_types.find_by(kind: klass.to_s)
     end

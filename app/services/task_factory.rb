@@ -1,7 +1,7 @@
 # TaskFactory is the sole class responsible for actually adding new Task
 # instances to a paper
 class TaskFactory
-  attr_reader :task, :task_klass
+  attr_reader :task, :task_klass, :creator, :notify
 
   def self.create(task_klass, options = {})
     task = new(task_klass, options).save
@@ -10,13 +10,16 @@ class TaskFactory
   end
 
   def initialize(task_klass, options = {})
+    @creator = options.delete(:creator)
+    @notify = options.delete(:notify) { true }
+
     @task_klass = task_klass
-
-    task_options = default_options
-                  .merge(options)
-                  .except(:creator, :notify)
-    @task = task_klass.new(task_options)
-
+    options = default_options.merge(options)
+    unless options[:card_version].present? || options["card_version"].present?
+      options[:card_version] = Card.find_by(name: task_klass.name)
+                                 .try(:card_version, :latest)
+    end
+    @task = task_klass.new(options)
     set_required_permissions
   end
 
@@ -28,18 +31,17 @@ class TaskFactory
   private
 
   def default_options
-    HashWithIndifferentAccess.new(
-      title: task_klass::DEFAULT_TITLE,
-      card_version: task_klass.latest_published_card_version
-    )
+    {
+      title: task_klass::DEFAULT_TITLE
+    }
   end
 
   def set_required_permissions
-    return if task.required_permissions.present?
+    return if @task.required_permissions.present?
 
     # custom card permissions have not been defined yet
-    return if task.is_a?(CustomCardTask)
+    return if @task.is_a?(CustomCardTask)
 
-    task.required_permissions = task.journal_task_type.required_permissions
+    @task.required_permissions = @task.journal_task_type.required_permissions
   end
 end

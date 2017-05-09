@@ -3,8 +3,8 @@ class PermissionSpecHelper
     new(label, context, &blk).permissions
   end
 
-  def self.create_permission(label, action:, applies_to:, states:, **kwargs)
-    new(label).permission(action: action, applies_to: applies_to, states: states, **kwargs)
+  def self.create_permission(label, context, action:, applies_to:, states:, **kwargs)
+    new(label, context).permission(action: action, applies_to: applies_to, states: states, **kwargs)
   end
 
   attr_reader :permissions

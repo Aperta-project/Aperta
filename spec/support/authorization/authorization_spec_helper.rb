@@ -12,7 +12,7 @@ module AuthorizationSpecHelper
     def permission(action:, applies_to:, states:, **kwargs)
       let_name = ['permission', action, applies_to].compact.join('_')
       let!(let_name) do
-        PermissionSpecHelper.create_permission(let_name, action: action, applies_to: applies_to, states: states, **kwargs)
+        PermissionSpecHelper.create_permission(let_name, self, action: action, applies_to: applies_to, states: states, **kwargs)
       end
     end
 

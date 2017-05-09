@@ -22,6 +22,9 @@ $sheet-toolbar-height: 60px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
 }
 
+.sheet-pop-out, .sheet-pop-in {
+  font-size: 32px;
+}
 
 .sheet-close-x {
   @include position(absolute, -4px 0px auto auto);

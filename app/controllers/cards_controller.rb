@@ -40,9 +40,12 @@ class CardsController < ApplicationController
 
   def publish
     requires_user_can(:edit, card)
-    card.publish!
 
-    render json: card
+    history_entry = params[:historyEntry]
+
+    card.publish!(history_entry, current_user)
+
+    render json: card.latest_card_version
   end
 
   def archive

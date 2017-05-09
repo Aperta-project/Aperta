@@ -30,7 +30,7 @@ class CardFactory
       card_version
     )
 
-    card.publish! if card.draft?
+    card.publish!("Loaded from a configuration file") if card.draft?
     card.lock! if journal.blank? && !card.locked?
     card.reload
   end

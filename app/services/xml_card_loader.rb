@@ -57,6 +57,7 @@ class XmlCardLoader
       version: new_version_no,
       card: card,
       published_at: published_at,
+      history_entry: 'Loaded from XML',
       required_for_submission:
         attr_val(root, 'required-for-submission') == 'true'
     )

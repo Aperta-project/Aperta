@@ -74,8 +74,10 @@ Authorizations.configure do |config|
     # Use an alias because we may be joining against this table elsewhere in the
     # query.
     card_versions = CardVersion.arel_table.alias
-    query
-      .join(card_versions).on(card_versions[:id].eq(table[:card_version_id]))
+    # When APERTA-9889 is merged, may no longer be necessary to do an outer
+    # join, since all card_version_ids should be set.
+    query.join(card_versions, Arel::Nodes::OuterJoin)
+      .on(card_versions[:id].eq(table[:card_version_id]))
       .where(column.eq(nil).or(column.eq(card_versions[:card_id])))
   end
 end

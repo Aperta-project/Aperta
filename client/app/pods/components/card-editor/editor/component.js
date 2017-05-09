@@ -18,6 +18,10 @@ export default Ember.Component.extend({
   showPublishOverlay: false,
   showArchiveOverlay: false,
 
+  historyEntryBlank: Ember.computed('card.historyEntry', function() {
+    return Ember.isBlank(this.get('card.historyEntry'));
+  }),
+
   classNames: ['card-editor-editor'],
 
   saveCard: task(function*() {

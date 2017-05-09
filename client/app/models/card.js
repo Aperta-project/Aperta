@@ -24,11 +24,15 @@ export default DS.Model.extend({
   restless: Ember.inject.service(),
   journal: DS.belongsTo('admin-journal'),
   content: DS.belongsTo('card-content', { async: false }),
+  cardVersions: DS.hasMany('card-version'),
 
   name: DS.attr('string'),
   state: DS.attr('string'),
   addable: DS.attr('boolean'),
   xml: DS.attr('string'),
+
+  // used by the publish() function, set in the card editor's publish modal
+  historyEntry: '',
 
   stateIcon: Ember.computed('state', function() {
     return cardStates.icon[this.get('state')];
@@ -48,8 +52,14 @@ export default DS.Model.extend({
   }),
 
   publish() {
-    return this.get('restless').putUpdate(this, `/publish`);
+    let historyEntry = this.get('historyEntry');
+    return this.get('restless')
+      .putUpdate(this, `/publish`, { historyEntry })
+      .then(() => {
+        this.set('historyEntry', '');
+      });
   },
+
   archive() {
     return this.get('restless').putUpdate(this, `/archive`);
   }

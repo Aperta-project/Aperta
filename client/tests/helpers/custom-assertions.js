@@ -6,22 +6,45 @@ import QUnit from 'qunit';
 
 export default function() {
   QUnit.assert.mockjaxRequestMade = function(url, type, message){
+    // instead of a url and a type, this assertion can also take an `_.match` style
+    // object that matches a subset of the mockjax object
+
     let actualDescription;
-    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+    let expectedDescription;
+
+    let matcher;
+    let actualDescriptionMapper;
+
+    if (_.isObject(url)) {
+      let matchDef = url;
+      expectedDescription = `#{url}`;
+      matcher = _.matches(matchDef);
+      actualDescriptionMapper = (mockjaxCall) => {
+        return _.pick(mockjaxCall, _.keys(matchDef));
+      };
+
+      // if url is an object, there will only be two arguments total and message will
+      // be the second one
+      message = arguments[1];
+    } else {
+      expectedDescription = `{ url: "${url}" type: "${type}"`;
+      matcher = (mockjaxCall) => {
+        return mockjaxCall.url === url && mockjaxCall.type === type;
+      };
+      actualDescriptionMapper = (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      };
+    }
 
     if(!message){
       message = `Request to server was made thru $.mockjax: ${expectedDescription}`;
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
-    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
-      return mockjaxCall.url === url && mockjaxCall.type === type;
-    });
+    let requestFound = _.find(mockjaxCalls, matcher);
 
     if(!requestFound) {
-      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
-        return { url: mockjaxCall.url, type: mockjaxCall.type };
-      });
+      actualDescription = _.map(mockjaxCalls, actualDescriptionMapper);
     }
 
     return this.push(
@@ -66,10 +89,10 @@ export default function() {
 
     let result = true;
 
-    if(actualArray.length != expectedArray.length){
+    if(actualArray.length !== expectedArray.length){
       result = false;
     }
-    if(_.intersection(actualArray, expectedArray).length != expectedArray.length){
+    if(_.intersection(actualArray, expectedArray).length !== expectedArray.length){
       result = false;
     }
 

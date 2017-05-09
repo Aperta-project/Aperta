@@ -26,7 +26,7 @@ moduleForComponent(
   }
 );
 
-test('publishing requires confirmation', function(assert) {
+test('publishing requires confirmation and a history entry', function(assert) {
   assert.expect(4);
   let card = make('card', { state: 'draft' });
   this.set('card', card);
@@ -54,14 +54,21 @@ test('publishing requires confirmation', function(assert) {
 
   assert.elementFound('.editor-publish');
   this.$('.editor-publish').click();
-  assert.elementFound('.publish-card-overlay .button-primary');
+  assert.elementFound(
+    '.publish-card-overlay .button-primary[disabled]',
+    'the confirm button is disabled'
+  );
+  this.$('.publish-history-entry').val('My reason for changes').change();
   this.$('.publish-card-overlay .button-primary').click();
 
   return wait().then(() => {
     assert.mockjaxRequestMade(
-      `/api/cards/${card.id}/publish`,
-      'PUT',
-      'it posts to publish the card'
+      {
+        url: `/api/cards/${card.id}/publish`,
+        type: 'PUT',
+        data: '{"historyEntry":"My reason for changes"}'
+      },
+      'it posts to publish the card with the history entry'
     );
     assert.mockjaxRequestMade(
       `/api/cards/${card.id}`,

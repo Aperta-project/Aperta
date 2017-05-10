@@ -3,6 +3,7 @@ class AffiliationsController < ApplicationController
   respond_to :json
 
   def index
+    # possible entry point for this error
     query = params.dig(:query)
     if not query
       institutions = []

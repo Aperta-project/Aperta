@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -361,6 +361,19 @@ ActiveRecord::Schema.define(version: 20170503152030) do
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
 
+  create_table "email_templates", force: :cascade do |t|
+    t.integer  "journal_id",             null: false
+    t.integer  "version",    default: 0, null: false
+    t.string   "name",                   null: false
+    t.text     "body"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "email_templates", ["journal_id"], name: "index_email_templates_on_journal_id", using: :btree
+  add_index "email_templates", ["name"], name: "index_email_templates_on_name", using: :btree
+  add_index "email_templates", ["version"], name: "index_email_templates_on_version", using: :btree
+
   create_table "feature_flags", id: false, force: :cascade do |t|
     t.string  "name",   null: false
     t.boolean "active", null: false
@@ -379,7 +392,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -705,7 +718,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                 null: false
     t.string   "state"
     t.datetime "submitted_at"
   end
@@ -814,7 +827,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",     null: false
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -833,7 +846,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -860,7 +873,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.integer  "position",        default: 0
     t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

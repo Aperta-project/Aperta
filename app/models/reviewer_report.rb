@@ -65,6 +65,20 @@ class ReviewerReport < ActiveRecord::Base
     task.paper
   end
 
+  # overrides Answerable to determine the correct Card that should be
+  # assigned when a new ReviewerReport is created
+  def default_card
+    name = if paper.uses_research_article_reviewer_report
+             "ReviewerReport"
+           else
+             # note: this AR model does not yet exist, but
+             # is being done as preparatory / consistency for
+             # card config work
+             "TahiStandardTasks::FrontMatterReviewerReport"
+           end
+    Card.find_by(name: name)
+  end
+
   def computed_status
     case aasm.current_state
     when STATE_INVITATION_NOT_ACCEPTED

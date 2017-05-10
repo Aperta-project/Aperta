@@ -14,27 +14,7 @@ class Paper::Submitted::CreateReviewerReports
         decision: paper.draft_decision,
         user: task.reviewer
       )
-
-      # assign latest card version if one is not already set
-      card_version = report.card_version || latest_published_card_version(paper)
-      report.card_version = card_version
-
       report.save!
     end
-  end
-
-  def self.latest_published_card_version(paper)
-    klass = if paper.uses_research_article_reviewer_report
-              "ReviewerReport"
-            else
-              # note: this AR model does not yet exist, but
-              # is being done as preparatory / consistency for
-              # card config work
-              "TahiStandardTasks::FrontMatterReviewerReport"
-            end
-
-    # since a FrontMatterReviewerReport is not yet an actual ActiveRecord
-    # object, purposely not doing `klass.latest_published_card_version` here.
-    Card.find_by_class_name(klass).latest_published_card_version
   end
 end

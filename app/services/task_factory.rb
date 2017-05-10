@@ -30,7 +30,6 @@ class TaskFactory
   def default_options
     HashWithIndifferentAccess.new(
       title: task_klass::DEFAULT_TITLE,
-      card_version: task_klass.latest_published_card_version
     )
   end
 

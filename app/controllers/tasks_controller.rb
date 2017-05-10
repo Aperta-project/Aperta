@@ -131,20 +131,13 @@ class TasksController < ApplicationController
 
   def new_task_params
     task_params(task_type).dup.tap do |new_params|
-      # for all new tasks, assign necessary paper attributes
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
-      new_params[:card_version] = card_version
-    end
-  end
 
-  def card_version
-    @card_version ||= begin
       if task_type.to_s == 'CustomCardTask'
-        card = paper.journal.cards.find_by!(id: params[:task][:card_id])
-        card.latest_published_card_version
-      else
-        task_type.latest_published_card_version
+        # assign a specific card version
+        card = paper.journal.cards.find(params[:task][:card_id])
+        new_params[:card_version] = card.latest_published_card_version
       end
     end
   end

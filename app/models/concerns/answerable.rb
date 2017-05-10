@@ -8,16 +8,14 @@ module Answerable
     def answerable?
       true
     end
-
-    def latest_published_card_version
-      Card.find_by_class_name!(self).latest_published_card_version
-    end
   end
 
   included do
     belongs_to :card_version
     has_one :card, through: :card_version
     has_many :answers, as: :owner, dependent: :destroy
+
+    delegate :latest_published_card_version, to: :card, allow_nil: true
 
     validates :card_version_id, presence: true
 
@@ -29,6 +27,14 @@ module Answerable
 
     def answer_for(ident)
       answers.joins(:card_content).find_by(card_contents: { ident: ident })
+    end
+
+    # when a new Answerable model is being created, this is the
+    # Card that is used to determine the correct CardVersion.
+    # This method can be overriden by the model, if a custom lookup
+    # is necesssary.
+    def default_card
+      Card.find_by_class_name!(self.class.name)
     end
 
     # find_or_build_answer_for(...) will return the associated answer for this
@@ -45,12 +51,10 @@ module Answerable
 
     private
 
-    # when new card versions are being created, associate the answerable
-    # model to the latest version of the Card.  This is overriden by
-    # CustomCardTask because it is the only answerable that needs to have
-    # its CardVersion explictly set.
+    # when new card versions are being created, associate the Answerable
+    # model to the latest version of the Card.
     def set_card_version
-      self.card_version ||= self.class.latest_published_card_version
+      self.card_version ||= default_card.try(:latest_published_card_version)
     end
   end
 end

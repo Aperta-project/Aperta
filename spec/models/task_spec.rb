@@ -169,7 +169,7 @@ describe Task do
 
   describe "Answerable#set_card_version" do
     before { CardLoader.load("AdHocTask") }
-    let(:latest_card_version) { task.class.latest_published_card_version }
+    let(:latest_card_version) { task.default_card.latest_published_card_version }
 
     context "with no card version" do
       let(:task) { AdHocTask.new }

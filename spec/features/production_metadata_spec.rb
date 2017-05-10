@@ -69,6 +69,7 @@ feature 'Production Metadata Card', js: true do
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
+        wait_for_editors
 
         find('h1', text: 'Production Metadata')
         within '.task-main-content' do

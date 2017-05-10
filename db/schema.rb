@@ -851,7 +851,6 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
     t.integer  "card_version_id"
-    t.integer  "card_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -938,5 +937,4 @@ ActiveRecord::Schema.define(version: 20170503152030) do
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
   add_foreign_key "task_templates", "cards"
-  add_foreign_key "tasks", "cards"
 end

@@ -239,12 +239,12 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
-    ember-cli-rails (0.7.1)
+    ember-cli-rails (0.8.4)
       cocaine (~> 0.5.8)
-      ember-cli-rails-assets (>= 0.6.1)
+      ember-cli-rails-assets (~> 0.6.2)
       html_page (~> 0.1.0)
-      railties (>= 3.2, < 5)
-    ember-cli-rails-assets (0.6.1)
+      railties (>= 3.2)
+    ember-cli-rails-assets (0.6.2)
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
@@ -735,7 +735,7 @@ DEPENDENCIES
   dotenv
   dotenv-rails
   email_spec
-  ember-cli-rails
+  ember-cli-rails (= 0.8.4)
   equivalent-xml
   factory_girl_rails
   fake_ftp
@@ -822,4 +822,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.14.5
+   1.14.6

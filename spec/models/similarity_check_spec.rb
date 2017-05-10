@@ -123,13 +123,13 @@ describe SimilarityCheck, type: :model do
       it "updates the similarity check with the report score" do
         expect do
           similarity_check.sync_document!
-        end.to change { similarity_check.score }.from(nil).to(report_score)
+        end.to change { similarity_check.ithenticate_score }.from(nil).to(report_score)
       end
 
       it "updates the similarity check with the report id" do
         expect do
           similarity_check.sync_document!
-        end.to change { similarity_check.report_id }.from(nil).to(report_id)
+        end.to change { similarity_check.ithenticate_report_id }.from(nil).to(report_id)
       end
 
       it "updates the similarity check's ithenticate_report_completed_at" do
@@ -209,7 +209,7 @@ describe SimilarityCheck, type: :model do
       before do
         allow_any_instance_of(Ithenticate::Api).to(
           receive(:get_report).with(
-            id: similarity_check.report_id
+            id: similarity_check.ithenticate_report_id
           ).and_return(response_double)
         )
       end

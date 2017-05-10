@@ -68,7 +68,7 @@ describe SimilarityChecksController, type: :controller do
     before do
       allow_any_instance_of(Ithenticate::Api).to(
         receive(:get_report).with(
-          id: similarity_check.report_id
+          id: similarity_check.ithenticate_report_id
         ).and_return(response_double)
       )
     end

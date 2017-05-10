@@ -11,7 +11,7 @@ FactoryGirl.define do
     trait :report_complete do
       state :report_complete
       ithenticate_document_id { Faker::Number.number(8).to_i }
-      report_id { Faker::Number.number(8).to_i }
+      ithenticate_report_id { Faker::Number.number(8).to_i }
     end
   end
 end

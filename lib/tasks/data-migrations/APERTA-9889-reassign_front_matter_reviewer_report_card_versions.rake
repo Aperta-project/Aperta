@@ -50,6 +50,9 @@ namespace :data do
         end
         # rubocop:enable Style/Next
       end
+
+      # -- destroy the old card, since everything has moved to the new one
+      Card.find_by_class_name!("FrontMatterReviewerReport").destroy
     end
   end
 end

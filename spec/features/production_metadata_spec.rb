@@ -2,7 +2,6 @@ require 'rails_helper'
 include RichTextEditorHelpers
 
 feature 'Production Metadata Card', js: true do
-
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do

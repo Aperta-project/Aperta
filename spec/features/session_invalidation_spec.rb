@@ -53,7 +53,7 @@ feature "session invalidation", js: true do
       # Ignore error thrown by rich-text helper when it can't find an editor on the page.
       begin
         t.fill_in_fields(ident => "Oops, this is the wrong value")
-      rescue Exception => ex
+      rescue StandardError => ex
         Rails.logger.warn("Unhandled exception: #{ex} ")
       end
 

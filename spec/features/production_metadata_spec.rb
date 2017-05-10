@@ -15,6 +15,7 @@ feature 'Production Metadata Card', js: true do
   before do
     login_as admin
     visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
+    wait_for_editors
   end
 
   describe 'completing a Production Metadata card' do

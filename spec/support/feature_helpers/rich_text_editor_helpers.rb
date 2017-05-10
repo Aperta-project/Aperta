@@ -22,7 +22,7 @@ module RichTextEditorHelpers
     selector = ".rich-text-editor[data-editor='#{name}']"
     find_editor_id = "$(\"#{selector}\").find('iframe').contents().find('body').data('id')"
     id = page.evaluate_script(find_editor_id)
-    throw "missing editor id: #{editor}" if id.blank?
+    throw "missing editor id: #{name}" if id.blank?
     "tinymce.editors.#{id}"
   end
 end

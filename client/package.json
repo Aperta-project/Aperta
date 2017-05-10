@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "ember-autoresize": "0.5.22",
-    "ember-cli-tinymce": "0.1.6",
+    "ember-cli-tinymce": "https://registry.npmjs.org/ember-cli-tinymce/-/ember-cli-tinymce-0.1.6.tgz",
     "ember-exam": "0.6.0"
   }
 }

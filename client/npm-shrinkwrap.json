@@ -13617,7 +13617,7 @@
     },
     "ember-cli-tinymce": {
       "version": "0.1.6",
-      "from": "ember-cli-tinymce@latest",
+      "from": "https://registry.npmjs.org/ember-cli-tinymce/-/ember-cli-tinymce-0.1.6.tgz",
       "resolved": "https://registry.npmjs.org/ember-cli-tinymce/-/ember-cli-tinymce-0.1.6.tgz",
       "dev": true
     },

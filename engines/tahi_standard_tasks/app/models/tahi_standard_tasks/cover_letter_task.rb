@@ -3,6 +3,7 @@ module TahiStandardTasks
     include SubmissionTask
 
     DEFAULT_TITLE = 'Cover Letter'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     self.snapshottable = true
 

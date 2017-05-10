@@ -4,6 +4,7 @@ module Tahi
     # responsible for assigning users to various roles on a paper.
     class AssignTeamTask < Task
       DEFAULT_TITLE = 'Assign Team'.freeze
+      DEFAULT_ROLE_HINT = 'admin'.freeze
 
       def assignable_roles
         [

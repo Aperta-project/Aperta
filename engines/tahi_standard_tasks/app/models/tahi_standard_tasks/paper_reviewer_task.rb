@@ -2,6 +2,7 @@
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
     DEFAULT_TITLE = 'Invite Reviewers'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     include Invitable
 

@@ -6,6 +6,7 @@ class Task < ActiveRecord::Base
   include Snapshottable
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
+  DEFAULT_ROLE_HINT = 'user'.freeze
 
   REQUIRED_PERMISSIONS = {}.freeze
   SYSTEM_GENERATED = false

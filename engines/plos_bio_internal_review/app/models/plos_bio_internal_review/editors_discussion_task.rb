@@ -1,5 +1,6 @@
 class PlosBioInternalReview::EditorsDiscussionTask < Task
   DEFAULT_TITLE = 'Editor Discussion'.freeze
+  DEFAULT_ROLE_HINT = 'admin'.freeze
 
   def active_model_serializer
     PlosBioInternalReview::EditorsDiscussionTaskSerializer

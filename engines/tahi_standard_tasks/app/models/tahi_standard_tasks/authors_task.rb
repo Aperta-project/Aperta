@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class AuthorsTask < Task
     DEFAULT_TITLE = 'Authors'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     include MetadataTask
 

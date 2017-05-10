@@ -431,6 +431,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.string  "title"
     t.string  "kind"
     t.boolean "system_generated"
+    t.string  "role_hint"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree

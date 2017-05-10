@@ -5,6 +5,7 @@ module TahiStandardTasks
     include SubmissionTask
 
     DEFAULT_TITLE = 'Reviewer Candidates'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     self.snapshottable = true
 

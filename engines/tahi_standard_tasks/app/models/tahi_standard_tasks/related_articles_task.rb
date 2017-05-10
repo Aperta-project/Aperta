@@ -4,6 +4,7 @@ module TahiStandardTasks
   # published simultaneously.
   class RelatedArticlesTask < Task
     DEFAULT_TITLE = 'Related Articles'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     def active_model_serializer
       TahiStandardTasks::RelatedArticlesTaskSerializer

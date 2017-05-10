@@ -3,6 +3,7 @@ module TahiStandardTasks
   class RegisterDecisionTask < Task
     include UrlBuilder
     DEFAULT_TITLE = 'Register Decision'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     delegate :letter_templates, to: :journal
 

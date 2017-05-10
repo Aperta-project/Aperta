@@ -8,10 +8,6 @@ class Admin::LetterTemplatesController < ApplicationController
     respond_with LetterTemplate.where(journal_id: params[:journal_id])
   end
 
-  def show
-    respond_with LetterTemplate.find(params[:id])
-  end
-
   private
 
   def authorized_user

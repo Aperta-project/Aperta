@@ -2,7 +2,15 @@ require 'rails_helper'
 
 module PlosBilling
   describe BillingTask do
-    let(:billing_task) { FactoryGirl.create(:billing_task) }
+    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+    let(:billing_task) do
+      ::PlosBilling::BillingTask.create!(
+        completed: true,
+        paper: paper,
+        phase: paper.phases.first,
+        title: "Billing"
+      )
+    end
 
     describe '.restore_defaults' do
       it_behaves_like '<Task class>.restore_defaults update title to the default'

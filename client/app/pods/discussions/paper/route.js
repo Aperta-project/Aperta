@@ -6,5 +6,5 @@ export default Ember.Route.extend({
       .then((results) => {
         return results.get('firstObject');
       });
-  }
+  },
 });

@@ -19,6 +19,10 @@ export default Ember.Route.extend({
     });
   },
 
+  activate() {
+    this.send('updateRoute', 'new');
+  },
+
   // TODO: Remove this when we have routeable components.
   // Controllers are currently singletons and this property sticks around
   setupController(controller, model) {
@@ -36,7 +40,7 @@ export default Ember.Route.extend({
   actions: {
     cancel(topic) {
       topic.deleteRecord();
-      this.transitionTo(this.get('topicsIndexPath'));
+      this.transitionTo('discussions.paper.index');
     }
   }
 });

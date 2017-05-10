@@ -29,6 +29,11 @@ export default Ember.Route.extend({
     this.get('pusher').wire(this, name, ['created', 'updated']);
   },
 
+  activate() {
+    this.send('updateRoute', 'show');
+    this.send('updateDiscussionId', this.get('modelId'));
+  },
+
   deactivate() {
     this.get('pusher').unwire(this, this.channelName);
 

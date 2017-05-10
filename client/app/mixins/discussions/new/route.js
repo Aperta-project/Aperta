@@ -20,6 +20,10 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     });
   },
 
+  activate() {
+    this.send('updatePopoutRoute', 'new');
+  },
+
   // TODO: Remove this when we have routeable components.
   // Controllers are currently singletons and this property sticks around
   setupController(controller, model) {

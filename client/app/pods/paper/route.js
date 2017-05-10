@@ -1,6 +1,7 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
+import PopoutParentRouteMixin from 'ember-popout/mixins/popout-parent-route';
 
-export default AuthorizedRoute.extend({
+export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
 
   model(params) {

@@ -30,6 +30,11 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     this.get('pusher').wire(this, name, ['created', 'updated']);
   },
 
+  activate() {
+    this.send('updatePopoutRoute', 'show');
+    this.send('updateDiscussionId', this.modelId);
+  },
+
   deactivate() {
     this.get('pusher').unwire(this, this.channelName);
 

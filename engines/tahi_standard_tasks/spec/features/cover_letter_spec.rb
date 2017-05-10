@@ -7,7 +7,8 @@ feature 'Cover Letter Task', js: true do
     FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
   end
   let!(:task) do
-    FactoryGirl.create(:cover_letter_task, :with_loaded_card, paper: paper)
+    FactoryGirl.create(:cover_letter_task,
+                       paper: paper)
   end
 
   context 'As creator' do

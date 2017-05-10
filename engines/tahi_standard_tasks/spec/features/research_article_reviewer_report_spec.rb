@@ -11,7 +11,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       journal: journal,
       uses_research_article_reviewer_report: true
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }

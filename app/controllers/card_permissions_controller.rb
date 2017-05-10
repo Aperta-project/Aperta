@@ -17,7 +17,11 @@ class CardPermissionsController < ApplicationController
       filter_by_card_id: safe_params[:filter_by_card_id]
     )
 
-    update_roles(true)
+    # When creating a new permission, append the roles if the permission already
+    # existing and the client did not know about it.
+    new_roles = roles.select { |role| !permission.roles.include?(role) }
+    permission.roles.concat(*new_roles)
+    permission.save!
 
     respond_with permission, serializer: CardPermissionSerializer
   end
@@ -39,22 +43,13 @@ class CardPermissionsController < ApplicationController
 
     # The only valid thing to do when updating a permission is to change the
     # roles attached to it.
-    update_roles(false)
+    permission.roles.replace(roles)
+    permission.save!
 
     respond_with permission, serializer: CardPermissionSerializer
   end
 
   private
-
-  def update_roles(append)
-    if append
-      new_roles = roles.select { |role| !permission.roles.include?(role) }
-      permission.roles.concat(*new_roles)
-    else
-      permission.roles.replace(roles)
-    end
-    permission.save!
-  end
 
   def safe_params
     @safe_params ||= params.require(:card_permission).permit(

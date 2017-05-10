@@ -45,6 +45,7 @@ Router.map(function() {
         this.route('workflows');
         this.route('users');
         this.route('settings');
+        this.route('emails');
       });
       this.route('card', { path: '/card/:card_id' }, function() {
         this.route('preview', { path: '/' });

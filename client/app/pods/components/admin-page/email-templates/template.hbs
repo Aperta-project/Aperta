@@ -1,0 +1,30 @@
+<hr/>
+<h2>Email Templates</h2>
+
+{{#if journal}}
+  <button class="button-primary button--blue">
+    ADD EMAIL TEMPLATE
+  </button>
+{{/if}}
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Subject</th>
+      <th><!-- --></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each templates as |template|}}
+      <tr>
+        <td>{{template.text}}</td>
+        <td>{{template.subject}}</td>
+        <td>
+          <a href="#">{{fa-icon "pencil"}} Edit</a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+

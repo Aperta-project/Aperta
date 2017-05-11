@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import { isPresent } from 'tahi/lib/computed';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   card: DS.belongsTo('card'),
@@ -8,5 +8,5 @@ export default DS.Model.extend({
   historyEntry: DS.attr('string'),
   publishedBy: DS.attr('string'),
 
-  isPublished: isPresent('publishedAt')
+  isPublished: Ember.computed.notEmpty('publishedAt')
 });

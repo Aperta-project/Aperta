@@ -5,9 +5,18 @@ import QUnit from 'qunit';
 /* jshint -W101 */
 
 export default function() {
+  /**
+   * despite its signature mockjaxRequestMade can take two types of
+   * arguments: when called with (url, type, message) it will look
+   * for a completed mockjax request with the given url and type, printing
+   * the message if there isn't a match.
+   *
+   * The second form only takes two arguments: (matcher, message), where the
+   * matcher is an object with keys that match the mockjax request's shape. For instance
+   * assert.mockjaxRequestMade({url: '/foo', type: 'PUT', data: '{"update": true}'})
+   * will find a PUT request to '/foo' with the specified data in the body.
+   */
   QUnit.assert.mockjaxRequestMade = function(url, type, message){
-    // instead of a url and a type, this assertion can also take an `_.match` style
-    // object that matches a subset of the mockjax object
 
     let actualDescription;
     let expectedDescription;

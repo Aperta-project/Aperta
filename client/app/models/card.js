@@ -55,7 +55,7 @@ export default DS.Model.extend({
     let historyEntry = this.get('historyEntry');
     return this.get('restless')
       .putUpdate(this, `/publish`, { historyEntry })
-      .then(() => {
+      .finally(() => {
         this.set('historyEntry', '');
       });
   },

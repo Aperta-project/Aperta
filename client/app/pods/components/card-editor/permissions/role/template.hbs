@@ -1,14 +1,14 @@
 <td>
   {{role.name}}
 </td>
-<td>
+<td class="centered">
   {{check-box
       name=(concat role.name "-view")
       checked=(readonly viewAllowed)
       disabled=(readonly editAllowed)
       action=(action "toggleViewPermission")}}
 </td>
-<td>
+<td class="centered">
   {{check-box
       name=(concat role.name "-edit")
       checked=(readonly editAllowed)

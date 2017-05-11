@@ -1,9 +1,15 @@
 #permission-table {
+    margin: 10px auto;
+
     $grey-border: 1px solid $aperta-grey-light;
 
     th {
         border-collapse: collapse;
         padding: 1em;
+    }
+
+    tr:hover td {
+        background-color: $aperta-grey-lighter;
     }
 
     th.permission {
@@ -14,6 +20,10 @@
     td {
         border-right: $grey-border;
         padding: 1em;
+    }
+
+    .centered {
+        text-align: center;
     }
 
     thead {

@@ -7,7 +7,7 @@ feature 'Production Metadata Card', js: true do
     create :paper, :with_integration_journal, :with_tasks, creator: author
   end
   let(:production_metadata_task) do
-    create :production_metadata_task, paper: paper, phase: paper.phases.first
+    create :production_metadata_task, :with_loaded_card, paper: paper, phase: paper.phases.first
   end
 
   before do

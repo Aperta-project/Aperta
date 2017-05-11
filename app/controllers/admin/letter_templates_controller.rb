@@ -5,12 +5,16 @@ class Admin::LetterTemplatesController < ApplicationController
   respond_to :json
 
   def index
-    respond_with LetterTemplate.where(journal_id: params[:journal_id])
+    respond_with LetterTemplate.where(index_parameters)
   end
 
   private
 
   def authorized_user
     requires_user_can(:administer, Journal)
+  end
+
+  def index_parameters
+    params.permit(:journal_id)
   end
 end

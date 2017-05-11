@@ -10,9 +10,11 @@ export default Ember.Route.extend(PopoutChildRouteMixin,{
   },
   actions: {
     popIn() {
-      this.send('popInDiscussions',
-        {route: this.get('popinRoute'),
-          discussionId: this.get('popinDiscussionId')});
+      let options = {
+        route: this.get('popinRoute'),
+        discussionId: this.get('popinDiscussionId')
+      };
+      this.send('popInDiscussions', options);
       window.close();
     },
     updateRoute(route) {

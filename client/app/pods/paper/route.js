@@ -3,6 +3,7 @@ import PopoutParentRouteMixin from 'ember-popout/mixins/popout-parent-route';
 
 export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
+  popoutParams: { top: 10, left: 10, height: screen.height, width: 900 },
 
   model(params) {
     return this.store.query('paper', { shortDoi: params.paper_shortDoi })
@@ -42,11 +43,37 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
 
   deactivate() {
     this.get('pusher').unwire(this, this.get('channelName'));
+
+    let popout = this.get('popoutParent');
+    popout.closeAll();
   },
 
   _pusherEventsId() {
     // needed for the `wire` and `unwire` method
     // to think we have `ember-pusher/bindings` mixed in
     return this.toString();
+  },
+
+  actions: {
+    openDiscussionsPopout(options) {
+      let paperId = options.paperId;
+      let popout = this.get('popoutParent');
+      if (options.discussionId === null) {
+        popout.open(paperId, options.path, paperId, this.get('popoutParams'));
+      } else {
+        popout.open(paperId, options.path, paperId,
+                    options.discussionId, this.get('popoutParams'));
+      }
+    },
+
+    popInDiscussions(options) {
+      let currentRoute = this.router.currentRouteName;
+      let path = currentRoute.replace(/index$/, 'discussions.' + options.route);
+      if (options.discussionId === null) {
+        this.transitionTo(path);
+      }else{
+        this.transitionTo(path, options.discussionId);
+      }
+    }
   }
 });

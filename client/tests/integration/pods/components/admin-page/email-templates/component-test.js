@@ -12,13 +12,27 @@ const template = {
   subject: 'Yeaahhhh....'
 };
 
+const templates = [template, template];
+
+
 test('it renders tr in the tbody for each template', function(assert) {
-  const templates = [template, template];
   this.set('templates', templates);
+  this.set('journal', {id: 1});
 
   this.render(hbs`
-    {{admin-page/email-templates templates=templates}}
+    {{admin-page/email-templates templates=templates journal=journal}}
   `);
 
   assert.nElementsFound('.admin-email-template-row', templates.length);
+});
+
+test('it does not render a table if there is no journal', function(assert) {
+  this.set('templates', templates);
+  this.set('journal', null);
+
+  this.render(hbs`
+    {{admin-page/email-templates templates=templates journal=journal}}
+  `);
+
+  assert.nElementsFound('.admin-email-template-row', 0);
 });

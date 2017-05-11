@@ -38,6 +38,12 @@ class CardsController < ApplicationController
     respond_with card
   end
 
+  def destroy
+    requires_user_can(:edit, card)
+
+    respond_with card.destroy
+  end
+
   def publish
     requires_user_can(:edit, card)
 

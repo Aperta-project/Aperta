@@ -298,4 +298,55 @@ describe CardsController do
       end
     end
   end
+
+  describe "#destroy" do
+    let(:card) { FactoryGirl.create(:card, :draft, :versioned, name: "Old Name") }
+    let(:card_params) do
+      {
+        format: 'json',
+        id: card.id
+      }
+    end
+
+    subject(:do_request) do
+      delete(:destroy, card_params)
+    end
+
+    context "when the user does has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, card)
+          .and_return true
+      end
+
+      it "deletes the card" do
+        expect do
+          do_request
+        end.to change(Card, :count).by(-1)
+      end
+
+      it "sets deleted_at" do
+        do_request
+        card.reload
+        expect(card.deleted_at).to_not be_nil
+      end
+
+      it "responds with 204" do
+        do_request
+        expect(response.status).to eq(204)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, card)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
+    end
+  end
 end

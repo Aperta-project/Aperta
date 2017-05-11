@@ -3,14 +3,14 @@
 </td>
 <td>
   {{check-box
-      name=(concat role.name "-edit")
-      checked=(readonly editAllowed)
-      action=(action "toggleEditPermission")}}
-</td>
-<td>
-  {{check-box
       name=(concat role.name "-view")
       checked=(readonly viewAllowed)
       disabled=(readonly editAllowed)
       action=(action "toggleViewPermission")}}
+</td>
+<td>
+  {{check-box
+      name=(concat role.name "-edit")
+      checked=(readonly editAllowed)
+      action=(action "toggleEditPermission")}}
 </td>

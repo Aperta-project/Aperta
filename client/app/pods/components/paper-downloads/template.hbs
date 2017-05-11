@@ -14,10 +14,10 @@
             {{#if version.isDraft}}
               Draft
             {{else}}
-              v{{version.majorVersion}}.{{version.minorVersion}}
+              {{version.majorVersion}}.{{version.minorVersion}}
             {{/if}}
           </td>
-          {{#if (or (eq version.fileType "docx") (eq version.fileType "doc"))}}
+          {{#if (or (eq version.fileType "docxsssss") (eq version.fileType "docsssssss"))}}
             <td class="paper-downloads-link paper-downloads-link--docx">
               <a href={{paper-download-link versionedText=version format=version.fileType}}
                  class="download-docx"
@@ -32,7 +32,7 @@
                 {{fa-icon "file-pdf-o"}} PDF
               </a>
             </td>
-          {{else if (eq version.fileType "pdf")}}
+          {{else if (eq version.fileType "pdfsssssssss")}}
             {{#if version.sourceType}}
               <td class="paper-downloads-link paper-downloads-link--sourcetext-align-right">
                 <a href={{paper-download-link versionedText=version format="source"}}
@@ -57,8 +57,24 @@
                 </a>
               </td>
             {{/if}}
-          {{else}}
-            <td colspan="2">Processing...</td>
+          {{else}}            
+            {{#if (eq paper.file.file_type "pdf")}}
+              <td colspan="2" class="text-align-right">
+               <a href={{paper.file.pending_url}}
+                  class="download-pdf"
+                  title="Download PDF">
+                  {{fa-icon "file-pdf-o"}} PDF
+                  </a>
+              </td>
+            {{else}}
+                <td colspan="2" class="text-align-right">               
+                <a href={{paper.file.pending_url}}
+                    class="download-docx"
+                    title="Download {{paper.file.fileType}}">
+                    {{fa-icon "file-word-o"}} Word
+                    </a>
+                </td>
+             {{/if}}   
           {{/if}}
         </tr>
       {{/each}}

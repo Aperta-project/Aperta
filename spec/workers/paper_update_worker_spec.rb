@@ -3,11 +3,11 @@ require 'rails_helper'
 describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }
   let(:paper) { FactoryGirl.create :paper, processing: true }
+  let(:stubbed_url) { "http://s3_url_example" }
+  let(:ihat_job_params) { { state: 'completed', options: { metadata: { paper_id: paper.id } }, outputs: [{ file_type: 'epub', url: stubbed_url }] } }
 
   describe "#perform" do
-    let(:stubbed_url) { "http://s3_url_example" }
     let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'rb').read }
-    let(:ihat_job_params) { { state: 'completed', options: { metadata: { paper_id: paper.id } }, outputs: [{ file_type: 'epub', url: stubbed_url }] } }
 
     before do
       VCR.turn_off!
@@ -28,6 +28,15 @@ describe PaperUpdateWorker do
       expect do
         worker.perform(ihat_job_params)
       end.to change { paper.reload.processing }.from(true).to(false)
+    end
+  end
+
+  describe "#perform on an error" do
+    it "raises an exception when an error occurs" do
+      ihat_job_params[:outputs] = nil
+      expect { worker.perform(ihat_job_params) }.to raise_error(NoMethodError)
+      paper.update!(processing: false)
+      expect(paper.processing).to eq(false)
     end
   end
 

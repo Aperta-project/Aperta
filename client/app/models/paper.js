@@ -78,6 +78,7 @@ export default DS.Model.extend({
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
+  currentUserRoles: attr(),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -192,6 +193,34 @@ export default DS.Model.extend({
   /* True if a decision can be registered in this state. */
   isReadyForDecision: computed('publishingState', function() {
     return DECIDABLE_STATES.includes(this.get('publishingState'));
+  }),
+
+  hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
+  'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
+
+  authorHasErrorOnPreSubmission: computed('isPreSubmission','currentUserRoles', function() {
+    return this.get('isPreSubmission') && this.get('file.status') ===  'errored' 
+    && this.get('currentUserRoles').indexOf('Creator') !== -1;
+  }),
+
+  authorHasErrorOnSubmission: computed('isSubmitted',  function() {
+    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
+    && this.get('currentUserRoles').indexOf('Creator') !== -1;
+  }),
+
+  staffEditorHasErrorOnSubmittedAndEditable: computed('isSubmitted', 'editable', function(){
+    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
+    && (this.get('currentUserRoles').indexOf('Internal Editor') !== -1 
+    || this.get('currentUserRoles').indexOf('Staff Admin') !== -1 
+    || this.get('currentUserRoles').indexOf('Production Staff') !== -1);
+  }),
+
+  otherRolesHasErrorOnSubmitted: computed( function(){
+    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
+    && this.get('currentUserRoles').indexOf('Academic Editor') !== -1 
+    || this.get('currentUserRoles').indexOf('Handling Editor') !== -1 
+    || this.get('currentUserRoles').indexOf('Cover Editor') !== -1 
+    || this.get('currentUserRoles').indexOf('Reviewer') !== -1; 
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){

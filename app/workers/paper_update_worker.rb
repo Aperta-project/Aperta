@@ -15,7 +15,13 @@ class PaperUpdateWorker
     params = ihat_job_params.with_indifferent_access
     job_response = IhatJobResponse.new(params)
     @paper = Paper.find(job_response.paper_id)
-    @pdf = params[:outputs].first[:file_type] == 'pdf'
+    begin
+      @pdf = params[:outputs].first[:file_type] == 'pdf'
+    rescue NoMethodError => e
+      # no need to process since there's was an error
+      @paper.update!(processing: false)
+      Bugsnag.notify(e.message)
+    end
     if job_response.completed?
       @epub_stream = Faraday.get(job_response.format_url(:epub)).body unless @pdf
       sync!

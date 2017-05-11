@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Ihat::JobsController, type: :controller do
-
   describe "POST create" do
     before do
       token = ApiKey.generate!
@@ -33,6 +32,7 @@ describe Ihat::JobsController, type: :controller do
 
     context "the ihat job status is not 'completed'" do
       let(:ihat_job_state) { "errored" }
+      let!(:paper) { create :paper, :ready_for_export, id: "123" }
 
       it "calls the PaperUpdateWorker" do
         expect(PaperUpdateWorker).to receive(:perform_async).with(worker_params)
@@ -43,6 +43,11 @@ describe Ihat::JobsController, type: :controller do
         allow(PaperUpdateWorker).to receive(:perform_async)
         post :create, ihat_job_params
         expect(response.status).to eq(200)
+      end
+
+      it "updates the paper file status" do
+        paper.file.update_column :status, ihat_job_state
+        expect(paper.file.status).to eq('errored')
       end
     end
 

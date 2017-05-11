@@ -6,6 +6,10 @@ module Ihat
     rescue_from ActionController::ParameterMissing, with: :render_invalid_params
 
     def create
+      state = safe_params["state"]
+      paper_id = safe_params["options"]["metadata"]["paper_id"]
+      paper = Paper.find_by(id: paper_id)
+      paper.file.update(status: state) if state.eql? "errored"
       PaperUpdateWorker.perform_async(safe_params)
       head :ok
     end

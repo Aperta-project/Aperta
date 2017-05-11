@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :author do
     paper
+    card_version
 
     first_name "Luke"
     middle_initial "J"
@@ -18,6 +19,15 @@ FactoryGirl.define do
           ident: Author::CORRESPONDING_QUESTION_IDENT
         )
         corresponding_author_question.answers.create(owner: author, paper: author.paper, value: 't')
+      end
+    end
+
+    trait :contributions do
+      after(:create) do |author|
+        contributions_author_question = CardContent.find_by!(
+          ident: Author::CONTRIBUTIONS_QUESTION_IDENT
+        )
+        contributions_author_question.answers.create(owner: author, paper: author.paper, value: 't')
       end
     end
   end

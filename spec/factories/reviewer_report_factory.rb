@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :reviewer_report do
     decision
     user
+    card_version
     association :task, factory: :reviewer_report_task
   end
 end

@@ -8,20 +8,23 @@ class Card < ActiveRecord::Base
 
   belongs_to :journal, inverse_of: :cards
   has_many :card_versions, inverse_of: :card, dependent: :destroy
-  validates :name, presence: { message: "Please give your card a name." }
-  # since we use acts_as_paranoid we need to take into account whether a card
-  # has been deleted for uniqueness checks
-  validates :name, uniqueness: {
-    scope: [:journal, :deleted_at],
-    message:  <<-MSG.strip_heredoc
-      That card name is taken for this journal.
-      Please give your card a new name.
-    MSG
-  }
-
   has_one :latest_card_version,
           ->(card) { where(version: card.latest_version) },
           class_name: 'CardVersion'
+
+  validates :name,
+    presence: {
+      message: "Please give your card a name."
+    },
+    uniqueness: {
+      scope: [:journal, :deleted_at],
+      message:  <<-MSG.strip_heredoc
+        That card name is taken for this journal.
+        Please give your card a new name.
+      MSG
+    }
+
+  before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
 
@@ -182,5 +185,12 @@ class Card < ActiveRecord::Base
 
   def archive_card!
     CardArchiver.archive(self)
+  end
+
+  def ensure_destroyable
+    unless draft?
+      errors.add(:base, "only draft cards can be destroyed")
+      false # halt callback
+    end
   end
 end

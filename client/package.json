@@ -79,6 +79,7 @@
   },
   "devDependencies": {
     "ember-autoresize": "0.5.22",
+    "ember-cli-tinymce": "0.1.6",
     "ember-exam": "0.6.0"
   }
 }

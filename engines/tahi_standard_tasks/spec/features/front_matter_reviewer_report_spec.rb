@@ -14,7 +14,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     )
   end
 
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
 

@@ -30,6 +30,13 @@ describe ReviewerReportTaskCreator do
     )
   end
 
+  before do
+    CardLoader.load("ReviewerReport")
+    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReport")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReportTask")
+  end
+
   context "when the paper is configured to use the research reviewer report" do
     before do
       paper.update_column :uses_research_article_reviewer_report, true

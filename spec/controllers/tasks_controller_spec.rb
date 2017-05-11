@@ -12,7 +12,7 @@ describe TasksController, redis: true do
   let!(:paper) do
     FactoryGirl.create(
       :paper,
-      :with_tasks,
+      :with_phases,
       creator: user,
       journal: journal
     )
@@ -85,6 +85,7 @@ describe TasksController, redis: true do
 
     context "when the user has access" do
       before do
+        CardLoader.load("PlosBilling::BillingTask")
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
@@ -368,7 +369,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.create(:cover_letter_task) }
+    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
     let!(:card_content) do
       root = task.card.content_root_for_version(:latest)
       root.children.first

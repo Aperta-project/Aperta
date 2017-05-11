@@ -43,7 +43,7 @@ class ReviewerReportTaskCreator
     ReviewerReport.create!(
       task: @task,
       decision: @paper.draft_decision,
-      user: assignee
+      user: assignee,
     ).accept_invitation!
   end
 

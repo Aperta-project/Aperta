@@ -11,7 +11,7 @@ feature "session invalidation", js: true do
       uses_research_article_reviewer_report: false
     )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
   let!(:invitation_no_feedback) do
     FactoryGirl.create(
       :invitation,
@@ -27,6 +27,7 @@ feature "session invalidation", js: true do
   let!(:reviewer) { create :user }
   let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
+    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
     paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(
       originating_task: task,

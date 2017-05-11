@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    {{#each card.journal.adminJournalRoles as |role| }}
+    {{#each roles as |role| }}
       {{card-editor/permissions/role
           role=role
           card=card

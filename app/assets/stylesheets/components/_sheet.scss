@@ -23,7 +23,9 @@ $sheet-toolbar-height: 60px;
 }
 
 .sheet-pop-out, .sheet-pop-in {
-  font-size: 32px;
+  padding-top:4px;
+  padding-right: 4px;
+  font-size: 24px;
 }
 
 .sheet-close-x {
@@ -33,6 +35,8 @@ $sheet-toolbar-height: 60px;
   font-size: 42px;
   cursor: pointer;
   z-index: 1;
+  display: flex;
+  align-items: center;
 }
 
 .sheet-toolbar {

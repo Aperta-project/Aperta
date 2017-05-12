@@ -52,6 +52,7 @@ export default Ember.Component.extend({
     try {
       yield card.revert();
       yield card.reload();
+      this.set('showRevertOverlay', false);
       this.set('errors', []);
     } catch (e) {
       this.set('errors', e.errors);

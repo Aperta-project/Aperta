@@ -82,6 +82,12 @@ class Card < ActiveRecord::Base
                   to: :locked,
                   guard: -> { journal_id.blank? }
     end
+
+    event :revert do
+      transitions from: :published_with_changes,
+                  to: :published,
+                  after: :revert_to_last_published_version!
+    end
   end
 
   def self.create_initial_draft!(attrs)
@@ -191,6 +197,13 @@ class Card < ActiveRecord::Base
 
   def publish_latest_version!
     latest_card_version.publish!
+  end
+
+  def revert_to_last_published_version!
+    ordered_card_versions = card_versions.order(:version)
+    latest_version = ordered_card_versions[-2].version
+    ordered_card_versions.last.destroy
+    save
   end
 
   def archive_card!

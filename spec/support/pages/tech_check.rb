@@ -3,6 +3,7 @@ class TechCheckOverlay < CardOverlay
 
   def create_author_changes_card
     click_send_changes_button
+    wait_for_editors
     set_rich_text(editor: 'author-changes-letter', text: 'First round author changes')
     click_send_changes_button
     expect_author_changes_saved
@@ -17,6 +18,7 @@ class TechCheckOverlay < CardOverlay
   end
 
   def letter_text
+    wait_for_editors
     get_rich_text(editor: 'author-changes-letter')
   end
 

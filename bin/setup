@@ -131,10 +131,19 @@ Dir.chdir APP_ROOT do
   else
     puts 'Creating the tahi PostgreSQL user'
     run_pg('createuser -s -r tahi')
+    if $os == :linux
+      # peer auth does not work on linux
+      cmd = "ALTER USER \"tahi\" with password 'tahi';"
+      run_pg("psql -c \"#{cmd}\"")
+    end
   end
 
   header 'Copying sample files'
   copy_template 'config/database.yml.sample', 'config/database.yml'
+  if $os == :linux
+    # peer auth does not work on linux, so set the password
+    system "sed -i 's/password:$/password: tahi/' config/database.yml"
+  end
   copy_template 'Procfile.template', 'Procfile.local'
 
   create_config_file('.foreman') do |f|

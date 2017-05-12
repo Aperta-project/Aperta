@@ -161,7 +161,6 @@ Dir.chdir APP_ROOT do
   system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
 
   header 'Installing javascript dependencies (output logged to setup.log)'
-  system 'npm install >> setup.log'
   system 'bundle exec rake ember:install'
 
   header 'Removing old logs and tempfiles'

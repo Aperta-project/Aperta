@@ -58,12 +58,11 @@
     </p>
 
     <div class="form-group">
-      <span class="text-field-title">Role of sponsors or funders</span>
+      <div class="inset-form-control">Role of sponsors or funders</div>
       {{nested-question-textarea ident="funder--had_influence--role_description"
           owner=model
           displayQuestionText=false
           placeholder="Description"
-          inputClassNames="form-control tall-textarea"
           disabled=disabled}}
     </div>
   {{/if}}

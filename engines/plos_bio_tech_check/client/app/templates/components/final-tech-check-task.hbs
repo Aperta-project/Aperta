@@ -97,9 +97,12 @@
       <span class="text-field-title">
         List all changes the author needs to make:
       </span>
-      {{textarea value=authorChangesLetter
-                 name='author-changes-letter'
-                 class="form-control tall-textarea extra-tall"}}
+      {{rich-text-editor
+        value=authorChangesLetter
+        onContentsChanged=(action 'saveLetterBody')
+        name='author-changes-letter'
+        ident='author-changes-letter'
+      }}
     </div>
 
     <button class="button button--green" {{action "setQuestionSelectedText"}}>

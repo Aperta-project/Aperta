@@ -6,6 +6,7 @@ feature 'Revision Tech Check', js: true do
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :revision_tech_check_task, :with_loaded_card, paper: paper }
+  let(:words) { %w(Data Availability Financial Competing Figure Ethics) }
 
   before do
     assign_journal_role journal, editor, :editor
@@ -42,13 +43,7 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     text = overlay.letter_text
-    expect(text).to include(
-      'Data',
-      'Availability',
-      'Financial',
-      'Competing',
-      'Figure',
-      'Ethics')
+    expect(text).to include(*words)
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first
@@ -67,13 +62,7 @@ feature 'Revision Tech Check', js: true do
     overlay.display_letter
     overlay.click_autogenerate_email_button
     text = overlay.letter_text
-    expect(text).to include(
-      'Data',
-      'Availability',
-      'Financial',
-      'Competing',
-      'Figure',
-      'Ethics')
+    expect(text).to include(*words)
 
     question_elements = all(".question-checkbox")
     first_question = question_elements.first

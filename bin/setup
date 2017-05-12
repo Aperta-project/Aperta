@@ -107,6 +107,8 @@ Dir.chdir APP_ROOT do
       brew_install package
     end
   when :linux
+    # Install node v 4.2
+    system "curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -"
     system "sudo apt-get install -y imagemagick nodejs"
   end
 

@@ -47,6 +47,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Test Admin::validate_components_styles')
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(admin_users)
+    user = user_type['user']
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
@@ -67,10 +68,11 @@ class ApertaAdminTest(CommonTest):
     selected_journal = adm_page.select_journal()
     admin_cards_pane = AdminCardsPage(self.getDriver())
     admin_cards_pane.page_ready()
-    admin_cards_pane.validate_cards_pane(selected_journal)
+    admin_cards_pane.validate_cards_pane(selected_journal, user)
     adm_page.select_admin_top_link('Users')
     # Select a random journal link to validate the Users sub-page
-    selected_journal = adm_page.select_journal()
+    selected_journal = adm_page.select_journal(regular=True)
+    logging.info('Returned journal is {0}'.format(selected_journal))
     admin_users_pane = AdminUsersPage(self.getDriver())
     admin_users_pane.page_ready()
     admin_users_pane.validate_users_pane(selected_journal)

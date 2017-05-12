@@ -40,6 +40,7 @@ feature 'Revision Tech Check', js: true do
   scenario "list the unselected question items in the author changes letter" do
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
+    wait_for_editors
     overlay.display_letter
     overlay.click_autogenerate_email_button
     text = overlay.letter_text
@@ -59,6 +60,7 @@ feature 'Revision Tech Check', js: true do
   scenario "selected questions don't show up in the auto-generated author change letter" do
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
+    wait_for_editors
     overlay.display_letter
     overlay.click_autogenerate_email_button
     text = overlay.letter_text
@@ -76,6 +78,7 @@ feature 'Revision Tech Check', js: true do
   scenario "unchecking a box with no associated text has no effect" do
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
+    wait_for_editors
     overlay.display_letter
     overlay.click_autogenerate_email_button
     text_before = overlay.letter_text

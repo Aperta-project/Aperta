@@ -1,7 +1,9 @@
 class TechCheckOverlay < CardOverlay
+  include RichTextEditorHelpers
+
   def create_author_changes_card
     click_send_changes_button
-    fill_in 'author-changes-letter', with: 'First round author changes'
+    set_rich_text(editor: 'author-changes-letter', text: 'First round author changes')
     click_send_changes_button
     expect_author_changes_saved
   end
@@ -14,8 +16,8 @@ class TechCheckOverlay < CardOverlay
     find(".task-main-content .button-primary").click
   end
 
-  def letter
-    find("textarea[name='author-changes-letter']")
+  def letter_text
+    get_rich_text(editor: 'author-changes-letter')
   end
 
   def click_autogenerate_email_button

@@ -1,7 +1,9 @@
 <h4 class="block-title">FUNDER</h4>
+
 {{#if enabled}}
   <span {{action "removeFunder" isNotEditable}} class="remove-funder fa fa-trash small"></span>
 {{/if}}
+
 <div class="form-group">
   <span class="text-field-title">Funder</span>
   {{input
@@ -36,34 +38,40 @@
 </div>
 
 <div class="form-group">
-  <span class="text-field-title">Additional Comments</span>
-  {{input
-    type="text"
+  <div class="inset-form-control">Additional Comments</div>
+  {{rich-text-editor
     name="additional_comments"
+    ident="additional_comments"
+    onContentsChanged=(action 'saveComments')
     value=model.additionalComments
-    class="form-control tall-text-field"
     placeholder="Additional comments about the funder go here"
-    disabled=disabled}}
+    disabled=disabled
+  }}
 </div>
 
-{{#nested-question-radio ident="funder--had_influence"
-    owner=model
-    disabled=disabled
-    yesAction="userSelectedYesForFunderInfluence"
-    noAction="userSelectedNoForFunderInfluence" as |selected|}}
+{{#nested-question-radio
+  ident="funder--had_influence"
+  owner=model
+  disabled=disabled
+  yesAction="userSelectedYesForFunderInfluence"
+  noAction="userSelectedNoForFunderInfluence" as |selected|}}
 
   {{#if selected.yes}}
     <p class="question-text">
-      {{funderRoleDescriptionQuestion.text}}
+      {{{funderRoleDescriptionQuestion.text}}}
     </p>
 
     <div class="form-group">
       <div class="inset-form-control">Role of sponsors or funders</div>
-      {{nested-question-textarea ident="funder--had_influence--role_description"
-          owner=model
-          displayQuestionText=false
-          placeholder="Description"
-          disabled=disabled}}
+      {{rich-text-editor
+        ident="funder--had_influence--role_description"
+        onContentsChanged=(action 'saveRoleDescription')
+        value=model.funderInfluenceDescription
+        owner=model
+        displayQuestionText=false
+        placeholder="Description"
+        disabled=disabled
+      }}
     </div>
   {{/if}}
 

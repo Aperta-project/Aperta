@@ -158,7 +158,7 @@ Dir.chdir APP_ROOT do
   system 'rm -rf tmp/cache'
 
   header 'Preparing tmp/pids'
-  system 'mkdir tmp/pids'
+  system 'mkdir -p tmp/pids'
 
   header 'setting up overcommit'
   system 'overcommit --install'

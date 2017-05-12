@@ -20,7 +20,6 @@ export default Ember.Component.extend({
   showDeleteOverlay: false,
   showRevertOverlay: false,
 
-
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
   classNames: ['card-editor-editor'],

@@ -5,7 +5,8 @@ class Admin::LetterTemplatesController < ApplicationController
   respond_to :json
 
   def index
-    respond_with LetterTemplate.where(index_parameters)
+    journal_id = letter_template_params[:journal_id]
+    respond_with LetterTemplate.where(journal_id: journal_id)
   end
 
   private
@@ -14,7 +15,7 @@ class Admin::LetterTemplatesController < ApplicationController
     requires_user_can(:administer, Journal)
   end
 
-  def index_parameters
+  def letter_template_params
     params.permit(:journal_id)
   end
 end

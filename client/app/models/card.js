@@ -65,6 +65,10 @@ export default DS.Model.extend({
       });
   },
 
+  revert() {
+    return this.get('restless').putUpdate(this, `/revert`);
+  },
+
   archive() {
     return this.get('restless').putUpdate(this, `/archive`);
   }

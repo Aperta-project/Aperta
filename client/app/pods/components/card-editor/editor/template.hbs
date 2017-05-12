@@ -12,6 +12,7 @@
 
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
+
     <div class="card-editor-save-buttons-state">
       {{#unless (eq card.state "published")}}
         {{fa-icon card.stateIcon}}
@@ -20,9 +21,25 @@
         </span>
       {{/unless}}
     </div>
+
+    <button class="button button--blue button-primary editor-revert"
+            onclick={{action "confirmRevert"}}
+            disabled={{or
+                       saveCard.isRunning
+                       publishCard.isRunning
+                       revertCard.isRunning
+                       (not card.revertable)}}>
+      Revert
+    </button>
+
     <button class="button button--blue button-primary editor-save"
- ethics--field_study--field_permit_number           onclick={{perform saveCard}}
-            disabled={{or saveCard.isRunning publishCard.isRunning (not xmlDirty)}}>
+ ethics--field_study--field_permit_number
+            onclick={{perform saveCard}}
+            disabled={{or
+                       saveCard.isRunning
+                       publishCard.isRunning
+                       revertCard.isRunning
+                       (not xmlDirty)}}>
       Save
     </button>
 
@@ -32,6 +49,7 @@
                        saveCard.isRunning
                        publishCard.isRunning
                        xmlDirty
+                       revertCard.isRunning
                        (not card.publishable)}}>
       {{#if (eq card.state "draft")}}
         Publish Card

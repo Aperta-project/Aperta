@@ -18,6 +18,8 @@ export default Ember.Component.extend({
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
+  showReverOverlay: false,
+
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -43,6 +45,17 @@ export default Ember.Component.extend({
     } catch (e) {
       this.set('errors', e.errors);
     }
+  }),
+
+  revertCard: task(function*() {
+    // let card = this.get('card');
+    // try {
+    //   yield card.resetUnpublishedChanges();
+    //   yield card.reload();
+    //   this.set('errors', []);
+    // } catch (e) {
+    //   this.set('errors', e.errors);
+    // }
   }),
 
   archiveCard: task(function*() {
@@ -86,6 +99,10 @@ export default Ember.Component.extend({
 
     confirmDelete() {
       this.set('showDeleteOverlay', true);
+    },
+
+    confirmRevert() {
+      this.set('showRevertOverlay', true);
     }
   }
 });

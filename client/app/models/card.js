@@ -43,6 +43,11 @@ export default DS.Model.extend({
     return state === 'draft' || state === 'publishedWithChanges';
   }),
 
+  revertable: Ember.computed('state', function() {
+    let state = this.get('state');
+    return state === 'publishedWithChanges';
+  }),
+
   stateName: Ember.computed('state', function() {
     return cardStates.name[this.get('state')];
   }),

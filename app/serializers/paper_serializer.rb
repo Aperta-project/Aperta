@@ -39,9 +39,9 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def current_user_roles
-    return unless current_user
+    return unless scope
     Role.where(journal_id: object.journal).joins(:assignments)
-    .where("assignments.user_id = ?", current_user).pluck(:name).uniq
+    .where("assignments.user_id = ?", scope).pluck(:name).uniq
   end
 
   def links

@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -379,7 +379,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -695,7 +695,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                 null: false
     t.string   "state"
     t.datetime "submitted_at"
   end
@@ -804,7 +804,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",     null: false
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -823,7 +823,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -850,7 +850,7 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.integer  "position",        default: 0
     t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

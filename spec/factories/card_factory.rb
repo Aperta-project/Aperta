@@ -20,6 +20,13 @@ FactoryGirl.define do
         card.latest_card_version.update(published_at: nil)
       end
     end
+
+    trait :locked do
+      after(:build) do |card|
+        card.state = "locked"
+      end
+    end
+
     trait :archived do
       after(:build) do |card|
         card.state = "archived"

@@ -4,14 +4,7 @@ describe Task do
   it_behaves_like 'is not snapshottable'
 
   describe ".without" do
-    let!(:tasks) do
-      Array.new(2) do
-        Task.create! title: "Paper Admin",
-                     completed: true,
-                     phase_id: 3,
-                     paper_id: 99
-      end
-    end
+    let!(:tasks) { FactoryGirl.create_list(:custom_card_task, 2, :with_stubbed_associations) }
 
     it "excludes task" do
       expect(Task.count).to eq(2)
@@ -155,6 +148,28 @@ describe Task do
 
     it "returns nil if there is no answer for the given ident" do
       expect(task.answer_for("unknown-ident")).to be(nil)
+    end
+  end
+
+  describe "Answerable#set_card_version" do
+    before { CardLoader.load("AdHocTask") }
+    let(:latest_card_version) { task.default_card.latest_published_card_version }
+
+    context "with no card version" do
+      let(:task) { AdHocTask.new }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to change { task.card_version }
+          .from(nil).to(latest_card_version)
+      end
+    end
+
+    context "with card version already set" do
+      let(:task) { AdHocTask.new(card_version: FactoryGirl.build(:card_version)) }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to_not change { task.card_version }
+      end
     end
   end
 

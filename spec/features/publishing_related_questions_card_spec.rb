@@ -8,7 +8,7 @@ feature 'Publishing Related Questions Card', js: true do
     FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
   end
   let!(:task) do
-    FactoryGirl.create(:publishing_related_questions_task, paper: paper)
+    FactoryGirl.create(:publishing_related_questions_task, :with_loaded_card, paper: paper)
   end
 
   def short_title_selector

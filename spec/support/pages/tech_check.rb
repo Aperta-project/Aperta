@@ -15,6 +15,7 @@ class TechCheckOverlay < CardOverlay
 
   def display_letter
     find(".task-main-content .button-primary").click
+    wait_for_editors
   end
 
   def letter_text

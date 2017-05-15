@@ -3394,4 +3394,54 @@ http_interactions:
         Folders</string></value></member></struct></value></member><member><name>limit_match_size</name><value><int>0</int></value></member></struct></value></member></struct></value></param></params></methodResponse>
     http_version: 
   recorded_at: Thu, 27 Apr 2017 15:10:36 GMT
+- request:
+    method: post
+    uri: https://api.ithenticate.com/rpc
+    body:
+      encoding: UTF-8
+      string: |
+        <?xml version="1.0" ?><methodCall><methodName>folder.list</methodName><params><param><value><struct><member><name>sid</name><value><string>3b1b865872bac5774d5cfb6fab349e9ffed2879c</string></value></member></struct></value></param></params></methodCall>
+    headers:
+      User-Agent:
+      - XMLRPC::Client (Ruby 2.2.4)
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '253'
+      Connection:
+      - keep-alive
+      Cookie:
+      - ithenticate_session=3b1b865872bac5774d5cfb6fab349e9ffed2879c
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private, no-store, no-cache, must-revalidate
+      Pragma:
+      - no-cache
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Expires:
+      - "-1"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '952'
+      Date:
+      - Mon, 15 May 2017 20:05:09 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="utf-8"?><methodResponse><params><param><value><struct><member><name>sid</name><value><string>3b1b865872bac5774d5cfb6fab349e9ffed2879c</string></value></member><member><name>api_status</name><value><int>200</int></value></member><member><name>response_timestamp</name><value><dateTime.iso8601>20170515T20:05:10</dateTime.iso8601></value></member><member><name>folders</name><value><array><data><value><struct><member><name>id</name><value><int>921380</int></value></member><member><name>name</name><value><string>My
+        Documents</string></value></member><member><name>group</name><value><struct><member><name>name</name><value><string>My
+        Folders</string></value></member><member><name>id</name><value><int>732648</int></value></member></struct></value></member></struct></value></data></array></value></member><member><name>status</name><value><int>200</int></value></member></struct></value></param></params></methodResponse>
+    http_version: 
+  recorded_at: Mon, 15 May 2017 20:05:09 GMT
 recorded_with: VCR 2.9.3

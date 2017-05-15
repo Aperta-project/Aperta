@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe SimilarityCheck, type: :model do
+describe SimilarityCheck, type: :model, redis: true do
   describe "the factory" do
     let(:similarity_check) { build :similarity_check }
 

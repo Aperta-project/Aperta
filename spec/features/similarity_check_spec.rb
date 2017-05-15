@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Similarity Check', js: true do
+feature 'Similarity Check', js: true, redis: true do
   include SidekiqHelperMethods
 
   let!(:paper) do
@@ -48,7 +48,7 @@ feature 'Similarity Check', js: true do
             matched = get_field('i4', app_request) == get_field('i4', vcr_request)
             # There is one mocked upload in the "good" cassette, and one login
             # in each cassette, so they only need a method name compare.
-          elsif app_method == 'document.add' || app_method == 'login'
+          elsif app_method =~ /^document\.add|login|folder\.list$/
             matched = true
           end
         end

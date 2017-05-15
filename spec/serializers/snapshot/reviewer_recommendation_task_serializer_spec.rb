@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Snapshot::ReviewerRecommendationsTaskSerializer do
   subject(:serializer) { described_class.new(task) }
-  let(:task) { FactoryGirl.create(:reviewer_recommendation_task) }
+  let(:task) { FactoryGirl.create(:reviewer_recommendations_task) }
 
   describe "#as_json" do
     it "serializes to JSON" do

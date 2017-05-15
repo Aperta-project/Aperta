@@ -71,7 +71,7 @@
                                       align="middle"}}
             Loading . . .       
           {{/progress-spinner-message}}
-        {{else if model.hasAnyError}}
+        {{else}}
           {{#if model.hasAnyError}}
             {{#if model.authorHasErrorOnPreSubmission}}
               <h3>Your file was uploaded successfully, but we were unable to render a preview at this time.</h3>

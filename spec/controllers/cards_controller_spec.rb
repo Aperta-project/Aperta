@@ -222,18 +222,6 @@ describe CardsController do
             expect(res_body['card']['state']).to eq('published')
           end
         end
-
-        context 'and the card has no unpublished changes' do
-          before do
-            stub_sign_in user
-            allow(user).to receive(:can?)
-              .with(:edit, published_card)
-              .and_return(true)
-            do_no_changes_request
-          end
-
-          it { is_expected.to raise_error("InvalidTransition") }
-        end
       end
     end
   end

@@ -4,7 +4,7 @@ class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :position,
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
-             :card_version_id, :paper_id
+             :card_version_id, :paper_id, :is_workflow_only_task
 
   self.root = :task
 
@@ -18,6 +18,10 @@ class TaskSerializer < ActiveModel::Serializer
 
   def is_snapshot_task
     object.snapshottable?
+  end
+
+  def is_workflow_only_task
+    object.card.workflow_display_only?
   end
 
   def assigned_to_me

@@ -23,7 +23,7 @@ describe TasksController, redis: true do
       get :index, format: 'json',
                   paper_id: paper.to_param
     end
-    let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
+    let(:tasks) { [FactoryGirl.create(:ad_hoc_task)] }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -229,7 +229,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #show" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task) }
     subject(:do_request) { get :show, id: task.id, format: :json }
     let(:format) { :json }
 
@@ -269,7 +269,7 @@ describe TasksController, redis: true do
   end
 
   describe "PUT #send_message" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
+    let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
     before do
       allow(Task).to receive(:find).with(task.id.to_param).and_return task

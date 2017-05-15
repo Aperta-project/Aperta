@@ -37,6 +37,7 @@ gem 'fog', '~> 1.36.0'
 gem 'gepub', '~> 0.7.0beta1'
 gem 'health_check'
 gem 'kaminari'
+gem 'liquid'
 gem 'lograge'
 gem 'mail_safe', require: false
 gem 'migration_data'

@@ -48,7 +48,7 @@ class SimilarityCheck < ActiveRecord::Base
       title: paper.title,
       author_first_name: paper.creator.first_name,
       author_last_name: paper.creator.last_name,
-      folder_id: 921_380, # TODO: fix folder id
+      folder_id: folder_id
     )
 
     unless response["api_status"] == 200
@@ -91,5 +91,18 @@ class SimilarityCheck < ActiveRecord::Base
 
   def ithenticate_api
     @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env
+  end
+
+  def folder_id
+    @folder_id ||= Sidekiq.redis do |redis|
+      folder = redis.get('ithenticate_folder')
+      if folder.nil?
+        response = ithenticate_api.call(method: 'folder.list')
+        raise 'Error getting iThenticate folder' if response['folders'].nil?
+        folder = response['folders'].first['id'].to_i
+        redis.set('ithenticate_folder', folder)
+      end
+      folder
+    end
   end
 end

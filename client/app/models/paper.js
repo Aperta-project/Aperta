@@ -42,7 +42,7 @@ export default DS.Model.extend({
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),
-  tasks: hasMany('task', { async: true, polymorphic: true }),
+  tasks: hasMany('task', { polymorphic: true }),
   versionedTexts: hasMany('versioned-text'),
   similarityChecks: hasMany('similarity-check'),
 
@@ -128,9 +128,7 @@ export default DS.Model.extend({
   versionAscendingSort: ['isDraft:asc', 'majorVersion:asc', 'minorVersion:asc'],
   versionedTextsAscending: computed.sort('versionedTexts', 'versionAscendingSort'),
 
-  latestVersionedText: computed('versionedTextsAscending.[]', function() {
-    return this.get('versionedTextsAscending.lastObject');
-  }),
+  latestVersionedText: computed.reads('versionedTextsAscending.lastObject'),
 
   textForVersion(versionString) {
     let versionParts = versionString.split('.');
@@ -251,9 +249,7 @@ export default DS.Model.extend({
       return latestInitial;
     }),
 
-  hasSimilarityChecks: computed('similarityChecks.[]', function() {
-    return 0 < this.get('similarityChecks.length');
-  }),
+  hasSimilarityChecks: computed.notEmpty('similarityChecks'),
 
   restless: Ember.inject.service(),
 

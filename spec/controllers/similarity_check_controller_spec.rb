@@ -39,6 +39,9 @@ describe SimilarityChecksController, type: :controller do
     context "the user can't perform similarity checks" do
       before do
         stub_sign_in user
+        allow(user).to receive(:can?)
+                         .with(:perform_similarity_check, versioned_text.paper)
+                         .and_return false
       end
 
       it "fails with an HTTP 403" do
@@ -83,6 +86,20 @@ describe SimilarityChecksController, type: :controller do
 
       it "redirects to the view_only_url" do
         expect(do_request).to redirect_to(fake_url)
+      end
+    end
+
+    context "the user can't perform a similarity check" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+                         .with(:perform_similarity_check, paper)
+                         .and_return false
+      end
+
+      it "fails with an HTTP 403" do
+        do_request
+        expect(response.status).to eq 403
       end
     end
   end

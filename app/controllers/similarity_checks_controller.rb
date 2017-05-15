@@ -1,5 +1,7 @@
 #
-# add comments
+# Controller for creating and retrieving SimilarityCheck records. This tries to
+# handle all the permutations of being called with a versioned text or paper
+# param, both of which have many SimilarityChecks.
 #
 class SimilarityChecksController < ::ApplicationController
   before_action :authenticate_user!

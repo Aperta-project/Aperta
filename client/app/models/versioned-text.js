@@ -20,7 +20,5 @@ export default DS.Model.extend({
   }),
   sourceType: DS.attr('string'),
 
-  hasSimilarityChecks: Ember.computed('similarityChecks.[]', function() {
-    return 0 < this.get('similarityChecks.length');
-  }),
+  hasSimilarityChecks: Ember.computed.notEmpty('similarityChecks'),
 });

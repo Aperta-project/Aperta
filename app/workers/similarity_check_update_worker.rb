@@ -8,6 +8,9 @@ class SimilarityCheckUpdateWorker
   # violate that constraint, the job is dropped and a warning appears in the
   # sidekiq log.
   # https://github.com/mhenrixon/sidekiq-unique-jobs
+  #
+  # The rational behind this constraint is to prevent a cascade of API calls to
+  # iThenticate.
   sidekiq_options unique: :until_and_while_executing,
                   log_duplicate_payload: true,
                   retry: false

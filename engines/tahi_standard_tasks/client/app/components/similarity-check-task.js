@@ -10,9 +10,7 @@ export default TaskComponent.extend({
   restless: Ember.inject.service(),
   classNames: ['similarity-check-task'],
   latestVersionedText: Ember.computed.alias('task.paper.latestVersionedText'),
-  latestVersionHasChecks: Ember.computed('latestVersionedText.similarityChecks.[]', function() {
-    return 0 < this.get('latestVersionedText.similarityChecks.length');
-  }),
+  latestVersionHasChecks: Ember.computed.notEmpty('latestVersionedText.similarityChecks.[]'),
 
   actions: {
     confirmGenerateReport() {

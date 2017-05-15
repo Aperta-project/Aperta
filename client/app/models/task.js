@@ -42,6 +42,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   isMetadataTask: DS.attr('boolean'),
   isSnapshotTask: DS.attr('boolean'),
   isSubmissionTask: DS.attr('boolean'),
+  isWorkflowOnlyTask: DS.attr('boolean'),
   isOnlyEditableIfPaperEditable: Ember.computed.or(
     'isMetadataTask',
     'isSubmissionTask'
@@ -70,5 +71,12 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     return questionResponse.get('value');
   },
 
-  isSidebarTask: Ember.computed.or('assignedToMe', 'isSubmissionTask')
+  isSidebarTask: Ember.computed('assignedToMe', 'isSubmissionTask', 'isWorkflowOnlyTask', function(){
+    if (this.get('isWorkflowOnlyTask')) {
+      // this task is configured to ONLY be displayed on the workflow page
+      return false;
+    }
+
+    return this.get('assignedToMe') || this.get('isSubmissionTask');
+  })
 });

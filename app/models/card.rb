@@ -200,10 +200,9 @@ class Card < ActiveRecord::Base
   end
 
   def revert_to_last_published_version!
-    ordered_card_versions = card_versions.order(:version)
-    latest_version = ordered_card_versions[-2].version
-    ordered_card_versions.last.destroy
-    save
+    self.latest_version = latest_published_card_version.version
+    card_versions.order(:version).last.destroy!
+    save!
   end
 
   def archive_card!

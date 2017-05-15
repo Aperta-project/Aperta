@@ -40,6 +40,7 @@
 <div class="form-group">
   <div class="inset-form-control">Additional Comments</div>
   {{rich-text-editor
+    editorStyle='basic'
     name="additional_comments"
     ident="additional_comments"
     onContentsChanged=(action 'saveComments')
@@ -64,6 +65,7 @@
     <div class="form-group">
       <div class="inset-form-control">Role of sponsors or funders</div>
       {{rich-text-editor
+        editorStyle='basic'
         ident="funder--had_influence--role_description"
         onContentsChanged=(action 'saveRoleDescription')
         value=model.funderInfluenceDescription

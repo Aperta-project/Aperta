@@ -14,7 +14,7 @@ moduleForComponent(
   }
 );
 
-let template = hbs`{{figure-thumbnail figure=figure destroyFigure=(action destroyFigure)}}`;
+let template = hbs`{{figure-thumbnail isEditable=true figure=figure destroyFigure=(action destroyFigure)}}`;
 
 test('it renders stuff when status is done', function(assert) {
   this.set('destroyFigure', function(){});
@@ -55,4 +55,14 @@ test('it allows the user to cancel', function(assert) {
   this.$('.upload-cancel-link').click();
 
   assert.textPresent('.progress-text','Upload canceled. Re-upload to try again', 'shows cancel message');
+});
+
+test('it sets figure title to \'Fig [rank]\' on input', function(assert) {
+  let newRank = 5;
+  this.set('destroyFigure', function(){});
+  this.set('figure', make('figure', {status: 'done', title: 'Fig 2'}));
+  this.render(template);
+  this.$('.fa-pencil').click();
+  this.$('input[type=number]').val(newRank).trigger('input');
+  assert.equal(this.get('figure.title'), 'Fig ' + newRank);
 });

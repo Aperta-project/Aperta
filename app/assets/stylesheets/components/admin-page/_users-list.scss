@@ -1,0 +1,92 @@
+.admin-users-list {
+  max-width: 1200px;
+}
+
+.admin-users-list-search {
+  width: 50%;
+  display: flex;
+
+  input, button {
+    color: #2d85de;
+    border: 1px solid $aperta-blue;
+    background: #fff;
+  }
+
+  input {
+    flex-grow: 2;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 1rem;
+    font-size: 1.8rem;
+
+    @include placeholder {
+      color: lighten($aperta-blue, 25%);
+      text-transform: uppercase;
+    }
+  }
+
+  button {
+    flex-basis: 60px;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 2.6rem;
+    cursor: pointer;
+
+    .fa {
+      position: relative;
+      top: -1px;
+    }
+  }
+}
+
+.admin-users-list-list {
+  width: 100%;
+  margin-top: 30px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  padding: 0;
+  table-layout: fixed;
+  clear: both;
+
+  th {
+    font-size: 18px;
+    font-weight: normal;
+    color: $aperta-grey-dark;
+  }
+
+  td {
+    font-size: 16px;
+    padding: 3px;
+    vertical-align: middle;
+
+  }
+
+  tr {
+    color: $aperta-blue;
+    vertical-align: top;
+    &:nth-of-type(2n) {
+      background-color: $aperta-grey-xlight;
+    }
+  }
+
+  tr.user-row {
+    cursor: pointer;
+  }
+
+  .user-role {
+    padding-top: 3px;
+  }
+
+  .admin-users-list-roles {
+    width: 50%;
+  }
+}
+
+.user-detail-overlay {
+  span.save-status {
+    color: $aperta-blue;
+    vertical-align: -6px;
+    font-style: italic;
+  }
+}

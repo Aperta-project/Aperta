@@ -5,11 +5,11 @@ import { task as concurrencyTask, timeout } from 'ember-concurrency';
 const {
   computed,
   inject: {service},
-  isEmpty,
-  on
+  isEmpty
 } = Ember;
 
 export default TaskComponent.extend({
+  classNames: ['revise-manuscript-task'],
   restless: service(),
   store: service(),
 
@@ -17,12 +17,14 @@ export default TaskComponent.extend({
     this.validateAll();
   },
 
+  latestRegisteredDecision: computed.alias('task.paper.latestRegisteredDecision'),
+
   validations: {
     'response': [{
       type: 'presence',
       message: 'Please provide a response or attach a file',
       validation() {
-        return !isEmpty(this.get('task.attachments')) || !isEmpty(this.get('latestDecision.authorResponse'));
+        return !isEmpty(this.get('latestRegisteredDecision.attachments')) || !isEmpty(this.get('latestRegisteredDecision.authorResponse'));
       }
     }]
   },
@@ -37,28 +39,33 @@ export default TaskComponent.extend({
     return this.get('editingAuthorResponse') && this.get('isEditable');
   }),
 
-  latestDecision: computed.alias('task.paper.latestRegisteredDecision'),
-
   previousDecisions: computed.alias('task.paper.previousDecisions'),
 
   editingAuthorResponse: false,
 
-  _editIfResponseIsEmpty: on('didInsertElement', function() {
+  init() {
+    this._super(...arguments);
     this.set(
       'editingAuthorResponse',
-      isEmpty(this.get('latestDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
+      isEmpty(this.get('latestRegisteredDecision.authorResponse')) || isEmpty(this.get('task.attachments'))
     );
-  }),
+    // Each time the Response to Reviewers card is opened, refresh the decision
+    // history. Unfortunately, slanger will not update the RtR card while it is
+    // already open since decisions is a hasMany relationships, and the
+    // notification from Pusher is for a single decision.
+    if (this.get('task.paper.decisions'))
+      this.get('task.paper.decisions').reload();
+  },
 
-  attachmentsPath: computed('task.id', function() {
-    return `/api/tasks/${this.get('task.id')}/attachments`;
+  attachmentsPath: computed('latestRegisteredDecision.id', function() {
+    return `/api/decisions/${this.get('latestRegisteredDecision.id')}/attachments`;
   }),
 
   attachmentsRequest(path, method, s3Url, file) {
     const store = this.get('store');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name;
+      response['decision-attachment'].title = file.name;
       store.pushPayload(response);
     });
   },
@@ -72,7 +79,7 @@ export default TaskComponent.extend({
       this.validateData();
       if(this.validationErrorsPresent()) { return; }
 
-      this.get('latestDecision').save().then(()=> {
+      this.get('latestRegisteredDecision').save().then(()=> {
         this.set('editingAuthorResponse', false);
       });
     },

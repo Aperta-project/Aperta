@@ -1,0 +1,2 @@
+class AdHocForReviewersTaskSerializer < AdHocTaskSerializer
+end

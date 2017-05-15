@@ -12,6 +12,42 @@ describe ManuscriptManagerTemplatesController do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:user) { FactoryGirl.build(:user) }
 
+  describe 'GET index' do
+    let(:mmt) { journal.manuscript_manager_templates.first }
+
+    before do
+      stub_sign_in user
+      allow(user).to receive(:filter_authorized).and_return instance_double(
+        'Authorizations::Query::Result',
+        objects: [journal]
+      )
+    end
+
+    context "without filtering" do
+      subject(:do_request) do
+        get :index, format: 'json'
+      end
+
+      it "renders the given template as json" do
+        do_request
+        expect(res_body).to have_key('manuscript_manager_templates')
+        expect(res_body['manuscript_manager_templates'][0]['id']).to eq(mmt.id)
+      end
+    end
+
+    context "without filtering" do
+      subject(:do_request) do
+        get :index, format: 'json', journal_id: 2
+      end
+
+      it "filters out unauthorized journals" do
+        do_request
+        expect(res_body).to have_key('manuscript_manager_templates')
+        expect(res_body['manuscript_manager_templates'][0]).to be_nil
+      end
+    end
+  end
+
   describe 'POST create' do
     subject(:do_request) do
       post :create, format: 'json', manuscript_manager_template: new_params

@@ -1,37 +1,30 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      You have been added as a collaborator to a manuscript
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @journal.logo_url %>
-        <img class="journal-logo" src="<%= @journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <p>
-      Hello <%= @invitee_name %>,
-    </p>
-    <p>
-      <%= @invitor_name %> just added you as a collaborator to a manuscript titled "<%= @paper.display_title(sanitized: false) %>."
-      Collaborator status does not denote authorship of the manuscript.
-      All authors should be listed in the Authors card, and must meet PLOS Biology’s authorship criteria.
-    </p>
-    <div class="paper-abstract">
-      Visit this link to view the manuscript:
-      <%= link_to client_paper_url(@paper), client_paper_url(@paper) %>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,
-    <br>
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  You have been added as a collaborator to a manuscript
+</h1>
+
+<hr>
+
+<p>Hello <%= @invitee_name %>,</p>
+
+<p>
+  <%= @invitor_name %> just added you as a collaborator to a manuscript titled "<%= @paper.display_title(sanitized: false) %>."
+  Collaborator status does not denote authorship of the manuscript.
+  All authors should be listed in the Authors card, and must meet PLOS Biology’s authorship criteria.
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Manuscript'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>
+
+<hr>
+
+<p>
+  Visit this link to view the manuscript:
+  <%= link_to client_paper_url(@paper), client_paper_url(@paper) %>
+</p>

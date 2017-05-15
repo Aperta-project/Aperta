@@ -1,6 +1,9 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
+  include CustomCastTypes
+
+  attribute :letter, HtmlString.new
 
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']
@@ -16,7 +19,15 @@ class Decision < ActiveRecord::Base
 
   belongs_to :paper
   has_many :invitations
+  has_one :invitation_queue
+  # TODO: APERTA-9226 remove or change. we can probably eliminate
+  # this relationship entirely at this point since answers belong to reports
+  # more meaningfully.
   has_many :nested_question_answers
+  has_many :reviewer_reports
+  has_many :attachments, as: :owner,
+                         class_name: 'DecisionAttachment',
+                         dependent: :destroy
 
   validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
@@ -59,10 +70,6 @@ class Decision < ActiveRecord::Base
       end
       update! rescinded: true
     end
-  end
-
-  def latest?
-    self == paper.decisions.version_asc.last
   end
 
   def latest_registered?

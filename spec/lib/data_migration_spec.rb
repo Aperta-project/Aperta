@@ -16,7 +16,7 @@ describe DataMigration, rake: true do
     end
 
     it 'fails on up' do
-      expect { klass.new.up }.to raise_exception(/RAKE_TASK_UP is not a string/)
+      expect { klass.new.up }.to raise_exception(/RAKE_TASK_UP is not defined/)
     end
   end
 

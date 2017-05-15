@@ -12,7 +12,7 @@ namespace :institutional_accounts do
   end
 
   desc <<-DESC.strip_heredoc
-          Adds a new Institutional Accounts to the database
+          Adds a new Institutional Account to the database
 
           Make sure to update the list above to keep the institution list current
           Example in zsh:

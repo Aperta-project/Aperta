@@ -2,28 +2,64 @@
 
 <div class="task-main-content">
   {{#if taskStateToggleable}}
-    <p>You may upload a manuscript at any time.</p>
-    <span id="upload-manuscript" class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
-      Select and upload a document
-      {{file-uploader id="upload-files"
-                      railsMethod="PUT"
-                      accept=".docx,.doc"
-                      start="uploadStarted"
-                      progress="uploadProgress"
-                      done="uploadFinished"
-                      addingFileFailed="fileAddError"
-                      error="uploadError"
-                      filePrefix="paper/manuscript"
-                      url=manuscriptUploadUrl
-                      disabled=isNotEditable}}
-    </span>
+    {{#if pdfAllowed}}
+      <p>
+        You may upload a manuscript in either Microsoft Word (.docx or .doc) or PDF format. You can upload a replacement manuscript file at any time before you submit.
+      </p>
+      <p>
+        <b>Microsoft Word format:</b> Manuscripts uploaded in this format can take advantage of automatic
+        inline figure placement and visual version comparison features.
+      </p>
+      <p>
+        <b>PDF format:</b> For authors uploading a PDF manuscript file, figures and any SI information
+        can be included in the manuscript and are not required separately for initial assessment.
+        If a revision is invited, separate figure and SI file upload will be required.
+        If preferred, you may upload those files separately before completing your submission.
+      </p>
+    {{else}}
+     You can upload a replacement manuscript file at any time before you
+     submit.
+    {{/if}}
+      <div>
+    {{#if manuscriptUploaded}}
+        <a href="{{s3Url}}"
+           class="download-docx"
+           title="{{filename}}">
+           {{fa-icon fileTypeClass}} {{filename}}
+        </a>
+    {{else}}
+      <a href={{paper-download-link paper=task.paper}}
+         target="_new">
+         {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
+      </a>
+    {{/if}}
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=manuscriptUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+      </div>
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
   {{/if}}
 
   {{#if uploadError}}
     <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
-    <p> Please upload a Microsoft Word file (.docx or .doc).</p>
+    {{#if pdfAllowed}}
+      <p>Please upload a Microsoft Word file (.docx or .doc) or PDF.</p>
+    {{else}}
+      <p>Please upload a Microsoft Word file (.docx or .doc).</p>
+    {{/if}}
   {{/if}}
 
   {{#if isUploading}}
@@ -35,4 +71,9 @@
       {{/if}}
     </div>
   {{/if}}
+
+  {{#if needsSourcefile}}
+    {{upload-source-file task=task message=validationErrors.hasSourceIfNeeded}}
+  {{/if}}
+
 </div>

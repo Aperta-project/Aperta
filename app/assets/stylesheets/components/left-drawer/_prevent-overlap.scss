@@ -1,0 +1,12 @@
+.left-drawer-prevent-overlap {
+  display: flex;
+}
+
+.left-drawer-content-centered {
+  flex: 1;
+  margin: 0 auto;
+}
+
+.left-drawer-width-compensator, .left-drawer-width-compensator-centered {
+  box-sizing: border-box;
+}

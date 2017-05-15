@@ -28,6 +28,9 @@ describe QuestionAttachmentSerializer, serializer_test: true do
               title: attachment.title,
               src: attachment.src,
               status: attachment.status,
-              filename: attachment.filename)))
+              filename: attachment.filename
+            )
+        )
+      )
   end
 end

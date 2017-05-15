@@ -3,7 +3,7 @@ class AttachmentSerializer < ActiveModel::Serializer
   attributes :id,
     :title,
     :caption,
-    :kind,
+    :file_type,
     :src,
     :status,
     :preview_src,

@@ -25,6 +25,9 @@ export default Ember.Component.extend({
     'errorPresent:error',
     '_otherOptionSelected:power-select-other--other-selected'
   ],
+
+  required: false,
+
   errorPresent: Ember.computed.notEmpty('errors'),
 
   /**

@@ -1,12 +1,12 @@
 module PlosBioTechCheck
   class RevisionTechCheckTask < Task
-    DEFAULT_TITLE = 'Revision Tech Check'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Revision Tech Check'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     before_create :initialize_body
 
     def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
+      NestedQuestion.where(owner_id: nil, owner_type: name).all
     end
 
     def active_model_serializer

@@ -1,0 +1,33 @@
+{{#each attachments as |attachment|}}
+  {{attachment-link accept=accept
+                    attachment=attachment
+                    draft=draft
+                    filePath=filePath
+                    hasCaption=hasCaption
+                    caption=attachment.caption
+                    captionChanged=attrs.captionChanged
+                    cancelUpload=attrs.cancelUpload
+                    deleteFile=attrs.deleteFile
+                    noteChanged=attrs.noteChanged
+                    uploadFinished=attrs.updateAttachment}}
+{{/each}}
+
+{{#each fileUploads as |f|}}
+  {{upload-preview upload=f}}
+{{/each}}
+
+{{#if showAddButton}}
+  <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled) "button--disabled"}}">
+    {{buttonText}}
+    <div class="{{if uploadInProgress "hidden"}}">
+      {{file-uploader class="add-new-attachment"
+                         accept=accept
+                         filePrefix=filePath
+                         multiple=multiple
+                         disabled=disabled
+                         progress=(action "uploadProgress")
+                         done=(action "uploadFinished")
+                         start=(action "fileAdded")}}
+    </div>
+  </div>
+{{/if}}

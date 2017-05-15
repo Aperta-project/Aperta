@@ -12,9 +12,23 @@ describe DownloadAttachmentWorker, redis: true do
       it "sets the attachment to processing and queues up sidekiq job" do
         expect(attachment).to receive(:update_attribute)
           .with(:status, Attachment::STATUS_PROCESSING)
-        expect(described_class).to receive(:perform_async)
-          .with(attachment.id, url, user.id)
         described_class.download_attachment(attachment, url, user)
+        expect(DownloadAttachmentWorker).to have_queued_job(attachment.id, url, user.id)
+      end
+    end
+
+    describe ".reprocess" do
+      it "short circuits if `pending_url` is nil" do
+        expect(attachment).to receive(:pending_url).and_return(nil)
+        described_class.reprocess(attachment, user)
+        expect(DownloadAttachmentWorker).to have_empty_queue
+      end
+
+      it "creates a download attachment process" do
+        allow(attachment).to receive(:pending_url).and_return(url)
+        expect(attachment).to receive(:update_attribute).with(:status, Attachment::STATUS_PROCESSING)
+        described_class.reprocess(attachment, user)
+        expect(DownloadAttachmentWorker).to have_queued_job(attachment.id, url, user.id)
       end
     end
 

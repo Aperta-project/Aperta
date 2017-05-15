@@ -32,8 +32,7 @@ module('Integration: PaperIndex', {
     TestHelper.mockFindAll('discussion-topic', 1);
     figureTaskId = 94139;
     records = paperWithTask('FigureTask', {
-      id: figureTaskId,
-      oldRole: "author"
+      id: figureTaskId
     });
     currentPaper = records[0], figureTask = records[1], journal = records[2], phase = records[3];
     nestedQuestion = Factory.createRecord('NestedQuestion', {
@@ -56,12 +55,22 @@ module('Integration: PaperIndex', {
         info: "testroles2, collaborator"
       }
     ];
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
     ]);
-    server.respondWith('GET', "/api/papers/" + currentPaper.id + "/tasks", [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi + "/tasks", [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(tasksPayload.toJSON())
@@ -111,21 +120,20 @@ test('on paper.index as a participant on a task but not author of paper', functi
   records = paperWithTask('Task', {
     id: 1,
     type: 'AdHocTask',
-    title: 'ReviewMe',
-    oldRole: 'reviewer'
+    title: 'ReviewMe'
   });
   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
   paperPayload = Factory.createPayload('paper');
   paperPayload.addRecords(records.concat([fakeUser]));
   paperResponse = paperPayload.toJSON();
   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
-  server.respondWith('GET', '/api/papers/' + currentPaper.id, [
+  server.respondWith('GET', '/api/papers/' + currentPaper.shortDoi, [
     200, {
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .task-disclosure-heading:contains("ReviewMe")').length);
+  return visit('/papers/' + currentPaper.shortDoi).then(function() {
+    return assert.ok(!!find('.task-disclosure-heading:contains("ReviewMe")').length);
   });
 });
 
@@ -134,8 +142,7 @@ test('on paper.index as a participant on a task and author of paper', function(a
   assert.expect(1);
   records = paperWithTask('ReviseTask', {
     id: 1,
-    qualifiedType: "TahiStandardTasks::ReviseTask",
-    oldRole: 'author'
+    qualifiedType: 'TahiStandardTasks::ReviseTask'
   });
   currentPaper = records[0], task = records[1], journal = records[2], litePaper = records[3], phase = records[4];
   paperPayload = Factory.createPayload('paper');
@@ -143,25 +150,26 @@ test('on paper.index as a participant on a task and author of paper', function(a
   paperResponse = paperPayload.toJSON();
   paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
   paperResponse.collaborations = [addUserAsCollaborator(currentPaper, fakeUser)];
-  server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+  server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
     200, {
       "Content-Type": "application/json"
     }, JSON.stringify(paperResponse)
   ]);
-  return visit('/papers/' + currentPaper.id).then(function() {
-    return assert.ok(!!find('#paper-assigned-tasks .card-content:contains("Revise Task")'), "Participant task is displayed in '#paper-assigned-tasks' for author");
+  return visit('/papers/' + currentPaper.shortDoi).then(function() {
+    return assert.ok(!!find('.card-title:contains("Revise Task")'),
+      'Participant task is displayed in the sidebar for author');
   });
 });
 
 test('visiting /paper: Author completes all metadata cards', function(assert) {
   assert.expect(3);
-  visit('/papers/' + currentPaper.id).then(function() {
+  visit('/papers/' + currentPaper.shortDoi).then(function() {
     return assert.ok(!find('#paper-container.sidebar-empty').length, 'The sidebar should NOT be hidden');
   }).then(function() {
     const submitButton = find('button:contains("Submit")');
     return assert.ok(!submitButton.length, 'Submit is disabled');
   }).then(function() {
-    const ref = find('#paper-submission-tasks .card-content');
+    const ref = find('#paper-submission-tasks .card');
     let results = [];
     let i, len;
     for (i = 0, len = ref.length; i < len; i++) {
@@ -179,7 +187,7 @@ test('visiting /paper: Author completes all metadata cards', function(assert) {
 });
 
 test('visiting /paper: Gradual Engagement banner visible', function(assert) {
-  visit('/papers/' + currentPaper.id + '?firstView=true').then(function() {
+  visit('/papers/' + currentPaper.shortDoi + '?firstView=true').then(function() {
     assert.ok(find('#submission-process').length, 'The banner is visible');
   });
 
@@ -187,5 +195,18 @@ test('visiting /paper: Gradual Engagement banner visible', function(assert) {
 
   andThen(function() {
     assert.ok(!find('#submission-process').length, 'The banner is not visible');
+  });
+});
+
+test('visiting /paper: Paper displays for a real url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + '?firstView=true').then(function() {
+    assert.ok(currentRouteName() == 'paper.index.index', 'The shortDoi path is not pointing to the paper.index.index Ember route');
+    assert.ok(find('.manuscript-pane').length, 'The manuscript pane is not visible');
+  });
+});
+
+test('visiting /paper: Redirects to dashboard for malformed url', function(assert) {
+  visit('/papers/' + currentPaper.shortDoi + 'blah').then(function() {
+    assert.ok(currentRouteName() == 'dashboard.loading', 'The dashboard welcome message is not visible');
   });
 });

@@ -168,28 +168,6 @@ describe QueryParser do
         SQL
       end
 
-      it 'parses TASK x HAS BEEN COMPLETE >' do
-        now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
-        one_day_ago = now_time.days_ago(1).to_formatted_s(:db)
-        Timecop.freeze(now_time) do
-          parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETE > 1'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{one_day_ago}'
-          SQL
-        end
-      end
-
-      it 'parses TASK x HAS BEEN COMPLETED >' do
-        now_time = DateTime.new(2016, 3, 28, 1, 0, 0).utc
-        one_day_ago = now_time.days_ago(1).to_formatted_s(:db)
-        Timecop.freeze(now_time) do
-          parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED > 1'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{one_day_ago}'
-          SQL
-        end
-      end
-
       it 'parses ANDed TASK queries as multiple joins' do
         query = 'TASK anytask IS COMPLETE AND TASK someothertask IS INCOMPLETE'
         parse = QueryParser.new.parse query
@@ -246,280 +224,138 @@ describe QueryParser do
       end
     end
 
-    describe 'VERSION DATE queries' do
-      it 'parses VERSION DATE = n DAYS AGO' do
-        Timecop.freeze do
-          start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-          end_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
+    shared_examples_for "a user query" do
+      before do
+        # Stub this out because fuzzy_search can return strange results when using
+        # random faked user data.
+        allow(User).to receive(:fuzzy_search)
+          .with(user_query)
+          .and_return User.where(id: user.id)
+      end
 
-          parse = QueryParser.new.parse 'VERSION DATE = 3 DAYS AGO'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" BETWEEN '#{start_time}' AND '#{end_time}'
+      it "parses USER user_query HAS ROLE x" do
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+            "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
           SQL
-        end
       end
 
-      it 'parses VERSION DATE = mm/dd/yyyy' do
-        Timecop.freeze do
-          start_time = '04/12/2016'.to_date.beginning_of_day.to_formatted_s(:db)
-          end_time = '04/12/2016'.to_date.end_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse 'VERSION DATE = 04/12/2016'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" BETWEEN '#{start_time}' AND '#{end_time}'
+      it 'parses across multiple roles of same name for USER x HAS ROLE x' do
+        role2 = create(:role, name: role.name)
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role.name}"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+            "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role.id}, #{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
           SQL
-        end
       end
 
-      it 'parses VERSION DATE > n DAYS AGO' do
-        Timecop.freeze do
-          start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse 'VERSION DATE > 3 DAYS AGO'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" < '#{start_time}'
+      it "parses USER x HAS ANY ROLE" do
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ANY ROLE"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+            "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
           SQL
-        end
       end
 
-      it 'parses VERSION DATE < n DAYS AGO' do
-        Timecop.freeze do
-          start_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse 'VERSION DATE < 3 DAYS AGO'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{start_time}'
+      it "parses USER x HAS ROLE x AND NO ONE HAS ROLE y" do
+        role2 = create(:role, name: 'Editor')
+        parse = QueryParser.new(current_user: user).parse "USER #{user_query} HAS ROLE #{role2.name} AND NO ONE HAS ROLE #{role.name}"
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+            "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
           SQL
-        end
       end
 
-      it 'parses VERSION DATE < mm/dd/yyyy' do
-        Timecop.freeze do
-          search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
-          search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse "VERSION DATE < #{search_date}"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" < '#{search_date_db}'
-          SQL
-        end
-      end
-
-      it 'parses VERSION DATE > mm/dd/yyyy' do
-        Timecop.freeze do
-          search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
-          search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse "VERSION DATE > #{search_date}"
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{search_date_db}'
-          SQL
-        end
-      end
-
-      it "falls back to today's date when given a bad input date" do
-        Timecop.freeze do
-          start_time = Time.now.utc.end_of_day.to_formatted_s(:db)
-
-          parse = QueryParser.new.parse 'VERSION DATE > bad date'
-          expect(parse.to_sql).to eq(<<-SQL.strip)
-            "papers"."submitted_at" > '#{start_time}'
-          SQL
-        end
-      end
-    end
-
-    describe 'SUBMISSION DATE queries' do
-      describe 'parses SUBMISSION DATE = date' do
-        it 'parses SUBMISSION DATE = n DAYS AGO' do
-          Timecop.freeze do
-            start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-            end_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE = 3 DAYS AGO'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" BETWEEN '#{start_time}' AND '#{end_time}'
-            SQL
-          end
-        end
-
-        it 'parses SUBMISSION DATE = mm/dd/yyyy' do
-          Timecop.freeze do
-            start_time = '04/12/2016'.to_date.beginning_of_day.to_formatted_s(:db)
-            end_time = '04/12/2016'.to_date.end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE = 04/12/2016'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" BETWEEN '#{start_time}' AND '#{end_time}'
-            SQL
-          end
-        end
-      end
-
-      describe 'parses SUBMISSION DATE > date' do
-        it 'parses SUBMISSION DATE > n DAYS AGO' do
-          Timecop.freeze do
-            start_time = Time.now.utc.days_ago(3).beginning_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE > 3 DAYS AGO'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{start_time}'
-            SQL
-          end
-        end
-
-        it 'parses SUBMISSION DATE < n DAYS AGO' do
-          Timecop.freeze do
-            start_time = Time.now.utc.days_ago(3).end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE < 3 DAYS AGO'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{start_time}'
-            SQL
-          end
-        end
-
-        it 'when date is in mm/dd/yy format' do
-          Timecop.freeze do
-            search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
-            search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{search_date_db}'
-            SQL
-          end
-        end
-
-        it 'when date is in yyyy-mm-dd format' do
-          Timecop.freeze do
-            search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
-            search_date_db = 3.days.ago.utc.end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse "SUBMISSION DATE > #{search_date}"
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{search_date_db}'
-            SQL
-          end
-        end
-
-        it "falls back to today's date when given a bad input date" do
-          Timecop.freeze do
-            start_time = Time.now.utc.end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE > bad date'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" > '#{start_time}'
-            SQL
-          end
-        end
-      end
-
-      describe 'parses SUBMISSION DATE < date' do
-        it 'when date is in mm/dd/yy format' do
-          Timecop.freeze do
-            search_date = 3.days.ago.utc.strftime("%m/%d/%Y")
-            search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{search_date_db}'
-            SQL
-          end
-        end
-
-        it 'when date is in yyyy-mm-dd format' do
-          Timecop.freeze do
-            search_date = 3.days.ago.utc.strftime("%Y-%m-%d")
-            search_date_db = 3.days.ago.utc.beginning_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse "SUBMISSION DATE < #{search_date}"
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at" < '#{search_date_db}'
-            SQL
-          end
-        end
-
-        it "falls back to today's date when given a bad input date" do
-          Timecop.freeze do
-            start_time = Time.now.utc.end_of_day.to_formatted_s(:db)
-
-            parse = QueryParser.new.parse 'SUBMISSION DATE > bad date'
-            expect(parse.to_sql).to eq(<<-SQL.strip)
-              "papers"."first_submitted_at\" > '#{start_time}'
-            SQL
-          end
-        end
+      it "parses USER x HAS ROLE x AND NO ONE HAS ROLE y with extra whitespace" do
+        role2 = create(:role, name: 'Fabricator')
+        parse = QueryParser.new(current_user: user).parse "\tUSER #{user_query} HAS   \n  ROLE   #{role2.name}   AND NO \rONE\t HAS ROLE  #{role.name}  "
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" IN (#{user.id}) AND "assignments_0"."role_id" IN (#{role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+        SQL
       end
     end
 
     describe 'people queries' do
-      let!(:president_role) { create(:role, name: 'president') }
-      let!(:user) { create(:user, username: 'someuser') }
-
-      it 'parses USER x HAS ROLE president' do
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
-        SQL
+      let!(:role) do
+        create(:role, name: 'Author')
+      end
+      let!(:user) do
+        create(:user,
+          username: Faker::Lorem.word,
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name)
       end
 
-      it 'parses USER me HAS ROLE president' do
-        parse = QueryParser.new(current_user: user).parse 'USER me HAS ROLE president'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
-        SQL
+      describe "querying against a user email" do
+        it_behaves_like 'a user query' do
+          let(:user_query) { user.email }
+        end
       end
 
-      it 'parses across multiple roles of same name for USER x HAS ROLE president' do
-        president_role2 = create(:role, name: 'president')
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}, #{president_role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
-        SQL
+      describe "querying against a user first name" do
+        it_behaves_like 'a user query' do
+          let(:user_query) { user.first_name }
+        end
       end
 
-      it 'parses USER x HAS ANY ROLE' do
-        parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
-        SQL
+      describe "querying against a user last name" do
+        it_behaves_like 'a user query' do
+          let(:user_query) { user.last_name }
+        end
       end
 
-      it 'parses USER me HAS ANY ROLE' do
-        parse = QueryParser.new(current_user: user).parse 'USER me HAS ANY ROLE'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
-        SQL
+      describe "querying against a username" do
+        it_behaves_like 'a user query' do
+          let(:user_query) { user.username }
+        end
+      end
+
+      describe "querying against 'me' (current user)" do
+        it_behaves_like 'a user query' do
+          let(:user_query) { 'me' }
+        end
       end
 
       it 'parses ANYONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'ANYONE HAS ROLE president'
+        parse = QueryParser.new.parse "ANYONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."role_id" IN (#{role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses NO ONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
+        parse = QueryParser.new.parse "NO ONE HAS ROLE #{role.name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{role.id}) AND "assignments"."assigned_to_type" = 'Paper')
         SQL
       end
+    end
 
-      it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president' do
-        janitor_role = create(:role, name: 'janitor')
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE janitor AND NO ONE HAS ROLE president'
-        expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
-        SQL
+    context 'Date Queries' do
+      describe 'task date queries' do
+        it_behaves_like "a query parser date query",
+          query: "TASK anytask HAS BEEN COMPLETED",
+          sql: '"tasks_0"."title" ILIKE \'anytask\' AND "tasks_0"."completed_at"'
       end
 
-      it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president with extra whitespace' do
-        janitor_role = create(:role, name: 'janitor')
-        parse = QueryParser.new.parse "\tUSER someuser HAS   \n  ROLE   janitor   AND NO \rONE\t HAS ROLE  president  "
+      describe 'VERSION DATE queries' do
+        it_behaves_like "a query parser date query",
+          query: "VERSION DATE",
+          sql: '"papers"."submitted_at"'
+      end
+
+      describe 'SUBMISSION DATE queries' do
+        it_behaves_like "a query parser date query",
+          query: "SUBMISSION DATE",
+          sql: '"papers"."first_submitted_at"'
+      end
+    end
+
+    describe 'Author Queries' do
+      let(:name) { 'zahphod' }
+      let!(:author) { create(:author, first_name: name) }
+      let!(:group_author) { create(:group_author, contact_first_name: name) }
+      it 'should search both Authors and GroupAuthors' do
+        parse = QueryParser.new.parse "AUTHOR IS #{name}"
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+          ("author_list_items_0"."author_id" IN (#{group_author.id}) AND "author_list_items_0"."author_type" = 'GroupAuthor' OR "author_list_items_1"."author_id" IN (#{author.id}) AND "author_list_items_1"."author_type" = 'Author')
         SQL
       end
     end

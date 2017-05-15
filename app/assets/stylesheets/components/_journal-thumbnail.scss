@@ -26,6 +26,13 @@
 
     &:hover { color: $aperta-blue; }
   }
+
+  .journal-logo-uploader .input-header {
+    // removing description so that new logo
+    // upload component can be used, but previous
+    // UI can be maintained
+    display: none;
+  }
 }
 
 .journal-thumbnail-logo {

@@ -25,7 +25,7 @@ describe AdhocAttachmentSerializer, serializer_test: true do
         id: attachment.id,
         title: attachment.title,
         caption: attachment.caption,
-        kind: attachment.kind,
+        file_type: attachment.file_type,
         src: src,
         status: attachment.status,
         filename: attachment.filename,

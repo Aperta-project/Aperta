@@ -6,7 +6,6 @@ export default Ember.Component.extend({
   journal: null, //passed in
 
   journalRoles: null, //passed-in
-  userJournalRoles: Ember.computed.mapBy('user.userRoles', 'oldRole'),
 
   actions: {
     addRole(journalRole) {

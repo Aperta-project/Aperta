@@ -33,6 +33,11 @@ export default TaskComponent.extend(HasBusyStateMixin, {
   cannotRegisterDecision: or('hasNoLetter',
                              'hasNoVerdict',
                              'isTaskCompleted'),
+
+  saveDecision() {
+    return this.get('initialDecision').save();
+  },
+
   actions: {
     registerDecision() {
       const task = this.get('task');
@@ -46,8 +51,13 @@ export default TaskComponent.extend(HasBusyStateMixin, {
       );
     },
 
+    letterChanged() {
+      Ember.run.debounce(this, this.saveDecision, 250);
+    },
+
     setInitialDecisionVerdict(decision) {
       this.get('initialDecision').set('verdict', decision);
+      this.saveDecision();
     }
   }
 });

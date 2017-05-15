@@ -12,6 +12,10 @@ class Paper < ActiveRecord::Base
   include PgSearch
   include Assignable::Model
   include Snapshottable
+  include CustomCastTypes
+
+  # attribute :title, HtmlSanitized.new
+  attribute :abstract, HtmlString.new
 
   self.snapshottable = true
 
@@ -25,13 +29,12 @@ class Paper < ActiveRecord::Base
   has_many :adhoc_attachments, dependent: :destroy
   has_one :file, as: :owner, dependent: :destroy,
     class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy,
+    class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
-  has_many :paper_roles, dependent: :destroy
-  has_many :users, -> { uniq }, through: :paper_roles
-  has_many :old_assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },
            dependent: :destroy,
@@ -45,11 +48,12 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
-  has_many :nested_question_answers
+  has_many :answers
   has_many :assignments, as: :assigned_to
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
+  has_many :correspondence
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -82,10 +86,18 @@ class Paper < ActiveRecord::Base
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
 
+  def file_type
+    file.try(:file_type)
+  end
+
   def manuscript_id
     journal_prefix_and_number = doi.split('/').last.split('.') if doi
     journal_prefix_and_number.try(:shift) # Remove 'journal' text
     journal_prefix_and_number.try(:join, '.')
+  end
+
+  def to_param
+    short_doi
   end
 
   after_create :assign_doi!
@@ -109,6 +121,7 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
+                  guards: [:required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -123,7 +136,8 @@ class Paper < ActiveRecord::Base
       # so they do not increment that number.
       transitions from: [:in_revision],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -132,7 +146,8 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted,
                          :invited_for_full_submission],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
@@ -239,19 +254,19 @@ class Paper < ActiveRecord::Base
   end
 
   # All known paper states
-  STATES = aasm.states.map(&:name)
+  STATES = aasm.states.map(&:name).freeze
   # States which should generally be editable by the creator
   EDITABLE_STATES = [:unsubmitted, :in_revision, :invited_for_full_submission,
-                     :checking]
+                     :checking].freeze
   # States which should generally NOT be editable by the creator
   UNEDITABLE_STATES = [:initially_submitted, :submitted, :accepted, :rejected,
-                       :published, :withdrawn]
+                       :published, :withdrawn].freeze
   # States that represent the creator has submitted their paper
-  SUBMITTED_STATES = [:initially_submitted, :submitted]
+  SUBMITTED_STATES = [:initially_submitted, :submitted].freeze
   # States that represent when a paper can be reviewed by a Reviewer
-  REVIEWABLE_STATES = EDITABLE_STATES + SUBMITTED_STATES
+  REVIEWABLE_STATES = (EDITABLE_STATES + SUBMITTED_STATES).freeze
 
-  TERMINAL_STATES = [:accepted, :rejected]
+  TERMINAL_STATES = [:accepted, :rejected].freeze
 
   def snapshottable_things
     [].concat(tasks)
@@ -268,6 +283,11 @@ class Paper < ActiveRecord::Base
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
       'assignments.assigned_to_type' => 'Paper')
+  end
+
+  def self.find_by_id_or_short_doi(id)
+    return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
+    return find(id)
   end
 
   def inactive?
@@ -294,7 +314,7 @@ class Paper < ActiveRecord::Base
     if latest_version.nil?
       @new_body = new_body
     else
-      latest_version.update(original_text: new_body)
+      latest_version.update(original_text: new_body, file_type: file_type)
       notify(action: "updated") unless changed?
     end
   end
@@ -316,6 +336,18 @@ class Paper < ActiveRecord::Base
   # Downloads the manuscript from the given URL.
   def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
+    old_file_hash = attachment.file_hash
+    attachment.download!(url, uploaded_by: uploaded_by)
+    if attachment.file_hash == old_file_hash
+      alert_duplicate_file(attachment, uploaded_by)
+      # No need to process attachment, mark the paper record as "done"
+      update(processing: false)
+    end
+  end
+
+  # Downloads the sourcefile from the given URL.
+  def download_sourcefile!(url, uploaded_by:)
+    attachment = sourcefile || create_sourcefile
     attachment.download!(url, uploaded_by: uploaded_by)
   end
 
@@ -368,18 +400,6 @@ class Paper < ActiveRecord::Base
     sanitized ? strip_tags(title) : title.html_safe
   end
 
-  # Public: Returns one of the admins from the paper.
-  #
-  # Examples
-  #
-  #   admin
-  #   # => <#124: User>
-  #
-  # Returns a User object.
-  def admin
-    admins.first
-  end
-
   # Public: Returns the academic editors assigned to this paper
   #
   # Examples
@@ -413,9 +433,16 @@ class Paper < ActiveRecord::Base
     withdrawals.most_recent
   end
 
+  # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.count == tasks.metadata.completed.count
+    tasks.metadata.pluck(:completed).all?
+  end
+
+  def required_for_submission_tasks_completed?(*)
+    tasks.with_card.joins(:card_version).merge(
+      CardVersion.required_for_submission
+    ).pluck(:completed).all?
   end
 
   # Accepts any args the state transition accepts
@@ -461,9 +488,11 @@ class Paper < ActiveRecord::Base
   end
 
   def add_collaboration(user)
-    assignments
+    assignment = assignments
       .where(user: user, role: journal.collaborator_role)
       .first_or_create!
+    notify(action: "add_collaboration")
+    assignment
   end
 
   def remove_collaboration(collaboration)
@@ -474,6 +503,8 @@ class Paper < ActiveRecord::Base
     end
 
     collaboration.destroy if collaboration.role == journal.collaborator_role
+    notify(action: "remove_collaboration")
+
     collaboration
   end
 
@@ -490,27 +521,6 @@ class Paper < ActiveRecord::Base
 
   def participants_by_role
     group_participants_by_role(participations)
-  end
-
-  %w(admins).each do |relation|
-    ###
-    # :method: <old_roles>
-    # Public: Return user records by old_role in the paper.
-    #
-    # Examples
-    #
-    #   editors   # => [user1, user2]
-    #
-    # Returns an Array of User records.
-    #
-    # Signature
-    #
-    #   #<old_roles>
-    #
-    # old_role - A old_role name on the paper
-    define_method relation.to_sym do
-      old_assigned_users.merge(PaperRole.send(relation))
-    end
   end
 
   # Return the latest version of this paper.
@@ -533,7 +543,7 @@ class Paper < ActiveRecord::Base
   end
 
   def new_draft_decision!
-    decisions.create unless draft_decision
+    decisions.create.tap(&:create_invitation_queue!) unless draft_decision
   end
 
   def draft
@@ -554,8 +564,8 @@ class Paper < ActiveRecord::Base
   end
 
   def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
+    answers.includes(:card_content)
+           .find_by(card_contents: { ident: ident })
   end
 
   def in_terminal_state?
@@ -564,6 +574,14 @@ class Paper < ActiveRecord::Base
 
   def last_of_task(klass)
     tasks.where(type: klass.to_s).last
+  end
+
+  def all_authors
+    author_list_items.map(&:author)
+  end
+
+  def revise_task
+    tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
   end
 
   private
@@ -599,7 +617,7 @@ class Paper < ActiveRecord::Base
 
   def set_state_updated!
     update!(state_updated_at: Time.current.utc)
-    Activity.state_changed! self, to: publishing_state
+    Activity.state_changed! self, to: aasm.to_state
   end
 
   def assign_submitting_user!(submitting_user)
@@ -607,13 +625,17 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi!
-    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+    raise "Invalid paper Journals are required for papers urls." unless journal
+    update!(doi: journal.next_doi!)
+    doi_parts = doi.split('.')
+    update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end
 
   def create_versioned_texts
     versioned_texts.create! major_version: nil,
                             minor_version: nil,
-                            original_text: (@new_body || '')
+                            original_text: (@new_body || ''),
+                            file_type: file_type
   end
 
   def state_changed?
@@ -642,5 +664,19 @@ class Paper < ActiveRecord::Base
     by_role_hsh.each_with_object({}) do |(role, participation), hsh|
       hsh[role.name] = participation.map(&:user).uniq
     end
+  end
+
+  def alert_duplicate_file(attachment, uploaded_by)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false)
+        .push(channel_name: "private-user@#{uploaded_by.id}",
+              event_name: 'flashMessage',
+              payload: {
+                messageType: 'alert',
+                message: "<b>Duplicate file.</b> Please note: " \
+                  "The specified file <i>#{attachment.file.filename}</i> " \
+                  "has been reprocessed. <br>If you need to make any " \
+                  "changes to your manuscript, you can upload again by " \
+                  "clicking the <i>Replace</i> link."
+              })
   end
 end

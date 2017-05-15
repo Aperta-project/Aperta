@@ -6,7 +6,7 @@ export default NestedQuestionComponent.extend({
   setAnswer: Ember.on('init',
       function() {
         if (this.get('defaultAnswer')) {
-          this.set('model.answer.value', this.get('defaultAnswer'));
+          this.set('answer.value', this.get('defaultAnswer'));
         }
       }),
   classNameBindings: [
@@ -19,8 +19,24 @@ export default NestedQuestionComponent.extend({
   type: 'text',
   clearHiddenQuestions: Ember.observer('displayContent', function() {
     if (!this.get('displayContent')) {
-      this.set('model.answer.value', '');
-      this.get('model.answer').save();
+      this.set('answer.value', '');
+      this.get('answer').save();
     }
-  })
+  }),
+
+  init() {
+    const allowedTypes = ['text', 'number'];
+    const type = this.get('type');
+    // restrict type due to the input event. Ironically, it seems that not all inputs emit it.
+    Ember.assert(`nested-question-input doesn't support type "${type}"`, allowedTypes.includes(type));
+    return this._super(...arguments);
+  },
+
+  input() {
+    this.save();
+  },
+
+  change() {
+    return false; // no-op to override parent's behavior
+  }
 });

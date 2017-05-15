@@ -4,8 +4,8 @@
 
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
-    <h1 class="discussions-show-title {{if validationErrors.title "error"}}">
-      {{#if (can 'edit' model)}}
+    <h1 class="sheet-title discussions-show-title {{if validationErrors.title "error"}}">
+      {{#if (can "edit" model)}}
         {{error-message message=validationErrors.title
                         displayIcon=true
                         displayText=false}}
@@ -19,18 +19,29 @@
                            url=discussionParticipantUrl
                            label="Participants:"
                            displayEmails=true
-                           canManage=(can 'manage_participant' model)
+                           afterOptionsComponent="discussions-participants-help-text"
+                           canManage=(can "manage_participant" model)
+                           onSelect=(action "saveNewParticipant")
                            onRemove=(action "removeParticipantByUserId")
-                           onSelect=(action "saveNewParticipant")}}
+                           searchStarted=(action "searchStarted")
+                           searchFinished=(action "searchFinished")
+                           searching=searchingParticipant}}
   </div>
 
   <div class="discussions-show-form">
-    {{comment-board-form save="postReply" participants=participants atMentionableStaffUsers=atMentionableStaffUsers}}
+    {{comment-board-form save=(action "postReply")
+                         onChange=(action "commentDidChange")
+                         onCancel=(action "commentDidCancel")
+                         comment=inProgressComment
+                         participants=participants
+                         atMentionableStaffUsers=atMentionableStaffUsers}}
   </div>
 
   <br>
 
-  {{#each sortedReplies as |reply|}}
-    {{discussion-reply reply=reply}}
-  {{/each}}
+  <div class="discussions-show-messages">
+    {{#each sortedReplies as |reply|}}
+      {{discussion-reply reply=reply}}
+    {{/each}}
+  </div>
 </div>

@@ -18,6 +18,7 @@ include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
+require_relative '../lib/tasks/card_loading/support/card_loader'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
@@ -85,13 +86,12 @@ RSpec.configure do |config|
 
   config.before(:context, js: true) do
     # :truncation is the strategy we need to use for capybara tests, but do not
-    # truncate task_types and nested_questions, we want to keep these tables
+    # truncate task_types, cards, and card_contents, we want to keep these tables
     # around.
-    # Ensure this come after the generic setup (see above)
+    # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions roles permissions
-                 permission_states permission_states_permissions
-                 permissions_roles) }
+      except: %w(task_types cards card_contents card_versions)
+    }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
@@ -108,6 +108,14 @@ RSpec.configure do |config|
       ENV['SELENIUM_FIREFOX_PATH']
     Capybara.register_driver :selenium do |app|
       profile = Selenium::WebDriver::Firefox::Profile.new
+      ember_inspector_path = Rails.root.join('tmp/addon-470970-latest.xpi')
+      # https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi
+      if File.exist?(ember_inspector_path)
+        profile.add_extension(ember_inspector_path)
+      elsif $stdout.tty?
+        puts "\e[33mEmber inspector not installed in #{ember_inspector_path}\e[0m"
+      end
+
       client = Selenium::WebDriver::Remote::Http::Default.new
       client.timeout = 90
       Capybara::Selenium::Driver
@@ -124,12 +132,11 @@ RSpec.configure do |config|
         "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
     end
 
-    # Load question and roles & permission seeds before any tests start since we don't want them
+    # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    Rake::Task['nested-questions:seed'].reenable
-    Rake::Task['nested-questions:seed'].invoke
-    Rake::Task['roles-and-permissions:seed'].reenable
-    Rake::Task['roles-and-permissions:seed'].invoke
+    Rake::Task['cards:load'].reenable
+    Rake::Task['cards:load'].invoke
+
     $capybara_setup_done = true
     # rubocop:enable Style/GlobalVars
   end
@@ -152,6 +159,8 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     Authorizations.reload_configuration
     Subscriptions.reload
+    Rake::Task['roles-and-permissions:seed'].reenable
+    Rake::Task['roles-and-permissions:seed'].invoke
   end
 
   config.before(:each, type: :controller) do

@@ -5,16 +5,15 @@ FactoryGuy.define('paper', {
     title: '',
     shortTitle: '',
     publishingState: 'unsubmitted',
-    oldRoles: [],
     relatedAtDate: '2014-09-28T13:54:58.028Z',
-    editable: true
+    editable: true,
+    shortDoi: 'dev.dev10001'
   },
 
   paper_with_discussion: {
     title: '',
     shortTitle: '',
     publishingState: 'unsubmitted',
-    oldRoles: [],
     relatedAtDate: '2014-09-28T13:54:58.028Z',
     editable: true,
     discussionTopics: [{
@@ -22,14 +21,7 @@ FactoryGuy.define('paper', {
       title: 'Tech Check Discussion',
       discussionReplies: [],
       discussionParticipants: []
-    }]
-  },
-
-  traits: {
-
-    withRoles: {
-      oldRoles: ['participant']
-    }
-
+    }],
+    shortDoi: 'dev.dev10001'
   }
 });

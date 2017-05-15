@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'Manuscript Manager Templates', js: true, selenium: true do
   let(:journal_admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+  let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
   let(:mmt) { journal.manuscript_manager_templates.first }
   let(:mmt_page) { ManuscriptManagerTemplatePage.new }
   let(:task_manager_page) { TaskManagerPage.new }
@@ -67,7 +68,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
 
   describe 'Task Templates' do
     scenario 'Adding a new Task Template'do
-      phase = task_manager_page.phase 'Get Reviews'
+      phase = task_manager_page.phase('Get Reviews')
       phase.find('a', text: 'ADD NEW CARD').click
 
       expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
@@ -100,10 +101,11 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase.find('a', text: 'ADD NEW CARD').click
 
       within '.overlay' do
-        find('label', text: 'Ad-hoc').click
+        find('label', text: 'Ad-hoc for Staff Only').click
         find('button', text: 'ADD').click
       end
-      expect(page).to have_css('.overlay-body h1.inline-edit.editing',
+
+      expect(page).to have_css('.overlay-body h1.inline-edit',
                                text: 'Ad-hoc',
                                # For some reason, capybara cannot find this
                                # element unless it is marked visible.
@@ -113,12 +115,24 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click
     end
 
+    scenario 'Adding a CustomCard Task' do
+      phase = task_manager_page.phase 'Get Reviews'
+      phase.find('a', text: 'ADD NEW CARD').click
+
+      within '.overlay' do
+        find('label', text: card.name).click
+        find('button', text: 'ADD').click
+      end
+
+      expect(page).to have_css('.card-title', text: card.name)
+    end
+
     scenario 'Removing a task' do
       expect(task_manager_page).to have_css('.card', count: 9)
       phase = task_manager_page.phase 'Submission Data'
       phase.remove_card('Upload Manuscript')
       within '.overlay' do
-        find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
+        find('.submit-action-buttons button', text: 'Yes, Remove this Card'.upcase).click
       end
       expect(task_manager_page).to have_css('.card', count: 8)
     end

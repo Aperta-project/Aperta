@@ -41,3 +41,21 @@
   cursor: pointer;
   @include user-select(none);
 }
+
+.flash-message--critical-error {
+  display: block;
+  border: 1px solid #ce0b24;
+  background: #ce0b24;
+  color: $aperta-grey-xlight;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 14px 0;
+  line-height:2;
+
+  span {
+    font-weight:600;
+    font-size:18px;
+  }
+}
+
+

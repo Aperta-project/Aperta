@@ -2,8 +2,8 @@ module TahiStandardTasks
   class ReviseTask < Task
     include SubmissionTask
 
-    DEFAULT_TITLE = 'Revise Manuscript'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_TITLE = 'Response to Reviewers'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
     SYSTEM_GENERATED = true
 
     def active_model_serializer

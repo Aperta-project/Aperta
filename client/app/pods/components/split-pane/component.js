@@ -1,19 +1,20 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-  eventBus: Ember.inject.service('event-bus'),
+const {
+  Component,
+  inject: { service },
+  run
+} = Ember;
+
+export default Component.extend({
+  eventBus: service('event-bus'),
   classNames: ['split-pane'],
 
   minimumWidthPercent: 25,
 
   flexCss(value) {
     return {
-      'flex': value,
-      '-ms-flex': value,
-      '-moz-flex': value,
-      '-webkit-flex': value,
-      'box-flex': value,
-      '-webkit-box-flex': value
+      'flex': value
     };
   },
 
@@ -21,12 +22,19 @@ export default Ember.Component.extend({
   firstPane() { return this.$('.split-pane-element:first'); },
   lastPane()  { return this.$('.split-pane-element:last'); },
 
-  _go: Ember.on('didInsertElement', function() {
-    Ember.run.scheduleOnce('afterRender', ()=> {
+  didInsertElement() {
+    this._super(...arguments);
+
+    run.scheduleOnce('afterRender', ()=> {
       this._setInitialWidths();
       this._setupDragHandle();
     });
-  }),
+  },
+
+  willDestroyElement() {
+    this._super(...arguments);
+    this.$('.split-pane-drag-handle').off();
+  },
 
   _setInitialWidths() {
     this.firstPane().css(
@@ -38,21 +46,76 @@ export default Ember.Component.extend({
     );
   },
 
+  _setupTouchEvents(handle) {
+    const touchStart = 'touchstart.' + this.elementId;
+    const touchMove  = 'touchmove.'  + this.elementId;
+    const touchEnd   = 'touchend.'   + this.elementId;
+
+    handle.on(touchStart, (e)=> {
+      this.simulateMouseEvent(e, 'mouseover');
+      this.simulateMouseEvent(e, 'mousemove');
+      this.simulateMouseEvent(e, 'mousedown');
+    }).on(touchMove, (e)=> {
+      this.simulateMouseEvent(e, 'mousemove');
+    }).on(touchEnd, (e)=> {
+      this.simulateMouseEvent(e, 'mouseup');
+      this.simulateMouseEvent(e, 'mouseout');
+    });
+  },
+
+  simulateMouseEvent(event, simulatedType) {
+    // Ignore multi-touch events
+    if (event.originalEvent.touches.length > 1) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const touch = event.originalEvent.changedTouches[0];
+    const simulatedEvent = document.createEvent('MouseEvents');
+
+    // Initialize the simulated mouse event using the touch event's coordinates
+    simulatedEvent.initMouseEvent(
+      simulatedType, // type
+      true,          // bubbles
+      true,          // cancelable
+      window,        // view
+      1,             // detail
+      touch.screenX, // screenX
+      touch.screenY, // screenY
+      touch.clientX, // clientX
+      touch.clientY, // clientY
+      false,         // ctrlKey
+      false,         // altKey
+      false,         // shiftKey
+      false,         // metaKey
+      0,             // button
+      null           // relatedTarget
+    );
+
+    // Dispatch the simulated event to the target element
+    event.target.dispatchEvent(simulatedEvent);
+  },
+
   _setupDragHandle() {
-    const handle    = this.handle(),
-          downEvent = 'mousedown.' + this.elementId,
-          moveEvent = 'mousemove.' + this.elementId,
-          upEvent   = 'mouseup.'   + this.elementId;
+    const handle    = this.handle();
+    const downEvent = 'mousedown.'  + this.elementId;
+    const moveEvent = 'mousemove.'  + this.elementId;
+    const upEvent   = 'mouseup.'    + this.elementId;
+
+    if('ontouchend' in document) {
+      this._setupTouchEvents(handle);
+    }
 
     handle.on(downEvent, (e)=> {
       e.preventDefault();
 
-      const handleWidth  = handle.outerWidth(),
-            handleX = handle.offset().left + handleWidth  - e.pageX,
-            doc = $(document),
-            minWidth = this.get('minimumWidthPercent'),
-            firstPane = this.firstPane(),
-            lastPane  = this.lastPane();
+      const handleWidth  = handle.outerWidth();
+      const handleX = handle.offset().left + handleWidth  - e.pageX;
+      const doc = $(document);
+      const minWidth = this.get('minimumWidthPercent');
+      const firstPane = this.firstPane();
+      const lastPane  = this.lastPane();
 
       doc.on(moveEvent, (e)=> {
         const total = firstPane.outerWidth() + lastPane.outerWidth();
@@ -77,9 +140,5 @@ export default Ember.Component.extend({
         doc.off(upEvent);
       });
     });
-  },
-
-  _teardownDragHandle: Ember.on('willDestroyElement', function() {
-    this.$('.split-pane-drag-handle').off();
-  })
+  }
 });

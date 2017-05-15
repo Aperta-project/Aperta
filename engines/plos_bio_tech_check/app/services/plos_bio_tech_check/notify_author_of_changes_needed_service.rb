@@ -34,7 +34,6 @@ module PlosBioTechCheck
       ChangesForAuthorTask.create!({
         body: {},
         title: ChangesForAuthorTask::DEFAULT_TITLE,
-        old_role: ChangesForAuthorTask::DEFAULT_ROLE,
         paper: paper,
         phase: task.phase
       }).tap do |changes_for_author_task|

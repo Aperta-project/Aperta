@@ -35,5 +35,6 @@ cat .ruby-version
 chruby `cat .ruby-version` || exit 1
 fail_unless_env_var TARGET_ENV
 gem install bundler && bundle install && bundle exec cap $TARGET_ENV deploy || exit 1
+ssh-agent -k
 EOF
 

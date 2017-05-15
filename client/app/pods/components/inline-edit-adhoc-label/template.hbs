@@ -1,0 +1,9 @@
+<div class="inline-edit bodypart-display {{if editing "editing"}} {{bodyPartType}}">
+  <div class="item-text">
+    {{{bodyPart.value}}}
+  </div>
+</div>
+
+<div class="inline-edit-form {{if editing "editing"}}">
+  {{content-editable value=bodyPart.value class="editable"}}
+</div>

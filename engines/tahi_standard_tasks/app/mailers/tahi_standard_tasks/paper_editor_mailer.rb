@@ -1,5 +1,6 @@
 module TahiStandardTasks
-  class PaperEditorMailer < ActionMailer::Base
+  # Paper Editor Mailer
+  class PaperEditorMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
     layout "mailer"
@@ -17,8 +18,9 @@ module TahiStandardTasks
       end
       mail(
         to: @invitation.email,
-        subject: "You've been invited as an editor for the manuscript, \"#{@paper.display_title}\"",
-        bcc: 'apertachasing@plos.org'
+        subject: "You've been invited as an editor " \
+          "for the manuscript, \"#{@paper.display_title}\"",
+        bcc: @journal.editor_email_bcc
       )
     end
   end

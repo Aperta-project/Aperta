@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   editing: false,
-  isNew: false,
   bodyPart: null,
   bodyPartType: Ember.computed.alias('bodyPart.type'),
 
@@ -14,15 +13,5 @@ export default Ember.Component.extend({
     set(key, value) {
       return this.set('bodyPart.answer', value);
     }
-  }),
-
-  actions: {
-    saveChanges() {
-      this.attrs.save();
-    },
-
-    deleteItem() {
-      this.attrs['delete']();
-    }
-  }
+  })
 });

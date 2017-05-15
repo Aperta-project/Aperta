@@ -69,7 +69,7 @@ describe 'PaperFactory' do
       end
 
       it 'should be equal' do
-        expect(paper_submitted_lite).to mostly_eq(reference_paper).except('id', 'doi')
+        expect(paper_submitted_lite).to mostly_eq(reference_paper).except('id', 'doi', 'short_doi')
       end
 
       it 'should have equal decisions' do
@@ -142,7 +142,7 @@ describe 'PaperFactory' do
       end
 
       it 'is equal to a paper that has been withdrawn' do
-        expect(paper_withdrawn_lite).to mostly_eq(reference_paper).except('id', 'doi')
+        expect(paper_withdrawn_lite).to mostly_eq(reference_paper).except('id', 'doi', 'short_doi')
       end
 
       it 'have equal withdrawal records' do

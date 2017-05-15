@@ -97,6 +97,9 @@ describe DecisionsController do
         allow(user).to receive(:can?)
           .with(:view_decisions, paper)
           .and_return true
+        allow(user).to receive(:can?)
+          .with(:view, paper.revise_task)
+          .and_return true
         do_request
       end
 
@@ -118,6 +121,9 @@ describe DecisionsController do
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:view_decisions, paper)
+          .and_return false
+        allow(user).to receive(:can?)
+          .with(:view, paper.revise_task)
           .and_return false
       end
 
@@ -334,7 +340,7 @@ describe DecisionsController do
           message: "A decision was made: Accept",
           feed_name: "manuscript")
         expect(Activity).to receive(:create).with hash_including(
-          message: "Paper state changed to submitted",
+          message: "Paper state changed to accepted",
           feed_name: "forensic")
         do_request
       end

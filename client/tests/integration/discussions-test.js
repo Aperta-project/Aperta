@@ -5,18 +5,18 @@ import { make } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
-const { mockFind } = TestHelper;
+const { mockCreate, mockFind } = TestHelper;
 
 let App = null;
 let paper, topic;
 
 module('Integration: Discussions', {
-  afterEach: function() {
+  afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
     Ember.run(App, 'destroy');
   },
 
-  beforeEach: function() {
+  beforeEach() {
     App = startApp();
     TestHelper.setup(App);
 
@@ -32,6 +32,26 @@ module('Integration: Discussions', {
       contentType: 'application/json',
       responseText: {
         users: [{id: 1, full_name: 'Charmander', email: 'fire@oak.edu'}]
+      }
+    });
+
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
+    var paperResponse = paper.toJSON();
+    paperResponse.id = 1;
+
+    $.mockjax({
+      url: '/api/papers/' + paperResponse.shortDoi,
+      status: 200, 
+      responseText: {
+        paper: paperResponse
       }
     });
 
@@ -92,16 +112,42 @@ test('can see a non-editable topic with view permissions', function(assert) {
 });
 
 test('can reply to a topic with view permissions', function(assert) {
+  const replyText = 'test';
+  const topicScreen = '/papers/' + paper.id + '/workflow/discussions/' + topic.get('id');
+
   Factory.createPermission('DiscussionTopic', 1, ['view']);
+  mockFind('discussion-topic').returns({ model: topic });
+  mockCreate('discussion-reply').returns({ body: replyText });
 
-  Ember.run(function() {
-    mockFind('discussion-topic').returns({ model: topic });
-    visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
-
-    andThen(function() {
-      const replyText = find('.comment-body:first').text();
-      assert.ok(replyText, 'Reply is found: ' + replyText);
+  visit(topicScreen).then(function() {
+    triggerEvent(find('.new-comment-field'), 'focus').then(function() {
+      find('.new-comment-field').val(replyText).trigger('change');
+      return triggerEvent(find('.new-comment-submit-button'), 'click');
     });
+  });
+
+  andThen(function() {
+    const text = $('.message-comment:last .comment-body').text();
+    assert.equal(text, replyText, 'Reply is found');
+  });
+});
+
+test('reply is cached if unsaved', function(assert) {
+  const topicScreen = '/papers/' + paper.id + '/workflow/discussions/' + topic.get('id');
+  const replyText = 'test';
+
+  Factory.createPermission('DiscussionTopic', 1, ['view']);
+  mockFind('discussion-topic').returns({ model: topic });
+
+  visit(topicScreen).then(function() {
+    find('.new-comment-field').val(replyText).trigger('keyup');
+    find('.sheet-toolbar-button').click();
+  });
+
+  visit(topicScreen);
+
+  andThen(function() {
+    assert.equal(find('.new-comment-field').val(), replyText, 'Text cached');
   });
 });
 

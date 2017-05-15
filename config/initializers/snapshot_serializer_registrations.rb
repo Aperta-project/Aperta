@@ -15,7 +15,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize AdhocAttachment, with: Snapshot::AttachmentSerializer
       serialize Author, with: Snapshot::AuthorSerializer
       serialize Figure, with: Snapshot::AttachmentSerializer
-      serialize NestedQuestion, with: Snapshot::NestedQuestionSerializer
+      serialize CardContent, with: Snapshot::CardContentSerializer
       serialize QuestionAttachment, with: Snapshot::AttachmentSerializer
       serialize SupportingInformationFile, with: Snapshot::AttachmentSerializer
 
@@ -23,6 +23,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::CompetingInterestsTask, with: Snapshot::CompetingInterestsTaskSerializer
       serialize TahiStandardTasks::DataAvailabilityTask, with: Snapshot::DataAvailabilityTaskSerializer
       serialize TahiStandardTasks::EthicsTask, with: Snapshot::EthicsTaskSerializer
+      serialize TahiStandardTasks::EarlyPostingTask, with: Snapshot::EarlyPostingTaskSerializer
       serialize TahiStandardTasks::FigureTask, with: Snapshot::FigureTaskSerializer
       serialize TahiStandardTasks::FinancialDisclosureTask, with: Snapshot::FinancialDisclosureTaskSerializer
       serialize TahiStandardTasks::Funder, with: Snapshot::FunderSerializer
@@ -30,6 +31,7 @@ ActionDispatch::Reloader.to_prepare do
       serialize TahiStandardTasks::ReportingGuidelinesTask, with: Snapshot::ReportingGuidelinesTaskSerializer
       serialize TahiStandardTasks::ReviewerRecommendation, with: Snapshot::ReviewerRecommendationSerializer
       serialize TahiStandardTasks::ReviewerRecommendationsTask, with: Snapshot::ReviewerRecommendationsTaskSerializer
+      serialize TahiStandardTasks::ReviseTask, with: Snapshot::ReviseTaskSerializer
       serialize TahiStandardTasks::SupportingInformationTask, with: Snapshot::SupportingInformationTaskSerializer
       serialize TahiStandardTasks::TaxonTask, with: Snapshot::TaxonTaskSerializer
       serialize TahiStandardTasks::UploadManuscriptTask, with: Snapshot::UploadManuscriptTaskSerializer

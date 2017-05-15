@@ -2,8 +2,8 @@ import DS from 'ember-data';
 import Task from 'tahi/models/task';
 
 export default Task.extend({
-  academicEditors: DS.belongsTo('user'),
-  relationshipsToSerialize: ['academicEditors', 'participants'],
+  invitationTemplate: DS.attr(),
   inviteeRole: DS.attr('string'),
-  invitationTemplate: DS.attr()
+  relationshipsToSerialize: ['academicEditors', 'participants'],
+  academicEditors: DS.hasMany('user')
 });

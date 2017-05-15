@@ -20,6 +20,8 @@ export default Component.extend(ValidationErrorsMixin, {
   ],
   dataLoading: true,
 
+  completedErrorText: 'Please fix all errors',
+
   init() {
     this._super(...arguments);
     this.set('editAbility', this.get('can').build('edit', this.get('task')));
@@ -51,12 +53,14 @@ export default Component.extend(ValidationErrorsMixin, {
 
   save() {
     this.set('validationErrors.completed', '');
-    if(this.validateData) { this.validateData(); }
+    if(!this.get('skipValidations')) {
+      if(this.validateData) { this.validateData(); }
 
-    if(this.validationErrorsPresent()) {
-      this.set('task.completed', false);
-      this.set('validationErrors.completed', 'Please fix all errors');
-      return;
+      if(this.validationErrorsPresent()) {
+        this.set('task.completed', false);
+        this.set('validationErrors.completed', this.get('completedErrorText'));
+        return new Ember.RSVP.Promise((resolve) => { resolve() });
+      }
     }
 
     return this.get('saveTask').perform();
@@ -115,8 +119,18 @@ export default Component.extend(ValidationErrorsMixin, {
     },
 
     toggleTaskCompletion() {
-      this.toggleProperty('task.completed');
-      this.save();
+      const currentSkipValidations = this.get('skipValidations');
+      const isCompleted = this.toggleProperty('task.completed');
+
+      // if task is now incomplete skip validations
+      this.set('skipValidations', !isCompleted);
+
+      // Save returns an ember-concurrency Task since the actual saving
+      // is asynchronous. Only reset skipValidations when it's done.
+      this.save().finally( () => {
+        // make sure we put skipValidations back its previous state
+        this.set('skipValidations', currentSkipValidations);
+      });
     }
   }
 });

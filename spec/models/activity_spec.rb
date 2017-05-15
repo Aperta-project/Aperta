@@ -66,6 +66,25 @@ describe Activity do
     )}
   end
 
+  describe "#co_author_confirmed!" do
+    subject(:activity) { Activity.co_author_confirmed!(author, user: user) }
+    let(:author) do
+      FactoryGirl.build_stubbed(:author,
+        first_name: "Arthur",
+        last_name: "Author"
+      )
+    end
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "author.co_author_confirmed",
+        subject: author.paper,
+        user: user,
+        message: "Arthur Author confirmed authorship"
+    )}
+  end
+
   describe "#task_sent_to_author!" do
     subject(:activity) { Activity.task_sent_to_author!(task, user: user) }
     let(:task) { FactoryGirl.build_stubbed(:assign_team_task) }

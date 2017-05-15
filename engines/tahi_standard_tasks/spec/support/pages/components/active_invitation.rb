@@ -14,7 +14,8 @@ class ActiveInvitation < PageFragment
     find('.invitation-item-full-name').click
   end
 
-  def edit
+  def edit(user)
+    find('.invitation-item-header').click
     find('.invitation-item-action-edit').click
   end
 

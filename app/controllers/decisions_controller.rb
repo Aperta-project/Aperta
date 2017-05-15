@@ -3,22 +3,28 @@ class DecisionsController < ApplicationController
   respond_to :json
 
   def index
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     requires_user_can(:view, paper)
 
-    decisions = paper.decisions.completed
+    decisions = if current_user.can?(:view_decisions, paper)
+                  paper.decisions
+                else
+                  paper.decisions.completed
+                end
 
-    if current_user.can?(:view_decisions, paper)
-      decisions = paper.decisions
-    end
-
-    render json: decisions,
+    render json: decisions.includes(invitations: [:task, :invitee, :primary, :alternates, :invitation_queue, :attachments]),
            each_serializer: DecisionSerializer,
            root: 'decisions'
   end
 
   def show
-    requires_user_can(:view_decisions, decision.paper)
+    paper = decision.paper
+    revise_task = paper.revise_task
+    if revise_task.present? && !revise_task.completed?
+      requires_user_can :view, revise_task
+    else
+      requires_user_can :view_decisions, paper
+    end
     render json: decision,
            serializer: DecisionSerializer, root: 'decision'
   end

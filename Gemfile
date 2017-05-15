@@ -15,6 +15,7 @@ gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
 gem 'aasm', '~> 4.9.0'
 gem 'active_model_serializers', '0.8.3'
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
+gem 'activerecord-import'
 gem 'activerecord-sqlserver-adapter'
 gem 'acts_as_list'
 gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid',
@@ -23,18 +24,23 @@ gem 'american_date'
 gem 'awesome_nested_set'
 gem 'bootstrap-sass'
 gem 'bourbon'
+gem 'browser'
 gem 'bugsnag'
+gem 'combine_pdf'
 gem 'carrierwave'
 gem 'databasedotcom'
 gem 'devise', '~> 3.5.6'
 gem 'ember-cli-rails'
-gem 'faraday_middleware'
+gem 'faraday'
+gem 'faraday_middleware', '~> 0.10'
 gem 'fog', '~> 1.36.0'
 gem 'gepub', '~> 0.7.0beta1'
+gem 'health_check'
 gem 'kaminari'
 gem 'lograge'
 gem 'mail_safe', require: false
 gem 'migration_data'
+gem 'migration_comments'
 gem 'mini_magick'
 gem 'newrelic_rpm'
 gem 'nokogiri'
@@ -45,6 +51,7 @@ gem 'paper_trail'
 gem 'pdfkit'
 gem 'pg'
 gem 'pg_search'
+gem 'premailer-rails'
 gem 'puma'
 gem 'pusher'
 gem 'rack-timeout'
@@ -69,8 +76,7 @@ gem 'whenever'
 
 # We need any version of yaml_db after 0.3.0 since it will
 # namespace SerializationHelper
-gem 'yaml_db',
-    github: 'yamldb/yaml_db',
+gem 'yaml_db', git: 'https://github.com/yamldb/yaml_db',
     ref: 'f980a67dfcfef76824676f3938b176b68c260e68'
 
 # has_secure_token has been accepted into rails, but isn't yet in the most

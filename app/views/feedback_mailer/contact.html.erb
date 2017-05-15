@@ -1,44 +1,28 @@
-<div class="container">
-  <div class="greeting">
-    <h3 class="user-name">
-      Feedback from: <%= @user.username %>
-    </h3>
-    <p class="message">
-      On the page:
-      <br>
-      <a href="<%= @feedback[:referrer] %>"><%= @feedback[:referrer] %></a>
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="paper-name">
-    </div>
-    <div class="paper-abstract">
-      <p>
-      Current Rails Environment:
-      <br>
-      <%= Rails.env %>
-      </p>
+<h1 class="user-name">
+  Feedback from: <%= @user.username %>
+</h1>
 
-      <p>
-      Body:
-      <br>
-      <%= simple_format @feedback[:remarks] %>
-      </p>
+<p>
+  <b>On the page:</b><br>
+  <a href="<%= @feedback[:referrer] %>"><%= @feedback[:referrer] %></a>
+</p>
 
-      <% if @feedback[:screenshots] %>
-        <p>
-          Attachments:
-          <br>
-          <% @feedback[:screenshots].each do |screenshot| %>
-            <%= link_to screenshot[:filename], screenshot[:url] %>
-            <br>
-          <% end %>
-        </p>
-      <% end %>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-  </div>
-</div>
+<p>
+  <b>Current Rails Environment:</b><br>
+  <%= Rails.env %>
+</p>
+
+<p>
+  <%= simple_format @feedback[:remarks] %>
+</p>
+
+<% if @feedback[:screenshots] %>
+  <p>
+    Attachments:
+    <br>
+    <% @feedback[:screenshots].each do |screenshot| %>
+      <%= link_to screenshot[:filename], screenshot[:url] %>
+      <br>
+    <% end %>
+  </p>
+<% end %>

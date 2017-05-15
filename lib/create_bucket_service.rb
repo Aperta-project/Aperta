@@ -80,6 +80,18 @@ to set up a new bucket: ")
             allowed_origins: [@allowed_origins],
             allowed_methods: ['PUT', 'POST'],
             max_age_seconds: 3600
+          },
+          {
+            allowed_headers: ["*"],
+            allowed_origins: [@allowed_origins],
+            allowed_methods: ['GET'],
+            max_age_seconds: 3600,
+            expose_headers: [
+              'Accept-Ranges',
+              'Content-Range',
+              'Content-Encoding',
+              'Content-Length'
+            ]
           }
         ]
       }

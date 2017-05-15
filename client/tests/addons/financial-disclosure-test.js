@@ -32,8 +32,7 @@ module('Integration: FinancialDisclosure', {
     TestHelper.mockFindAll('discussion-topic', 1);
 
     records = paperWithTask('FinancialDisclosureTask', {
-      id: financialDisclosureTaskId,
-      oldRole: 'author'
+      id: financialDisclosureTaskId
     });
 
     Factory.createPermission(
@@ -76,13 +75,13 @@ module('Integration: FinancialDisclosure', {
     var tasksPayload = Factory.createPayload('tasks');
     tasksPayload.addRecords([financialDisclosureTask]);
 
-    server.respondWith('GET', "/api/papers/" + currentPaper.id, [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
     ]);
 
-    server.respondWith('GET', "/api/papers/" + currentPaper.id + "/tasks", [
+    server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi + "/tasks", [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(tasksPayload.toJSON())
@@ -150,7 +149,7 @@ module('Integration: FinancialDisclosure', {
 });
 
 test('Viewing the card and adding new funder', function(assert) {
-  visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
+  visit("/papers/" + currentPaper.shortDoi + "/tasks/" + financialDisclosureTaskId).then(function() {
     assert.equal(find('.overlay-body-title').text().trim(), 'Financial Disclosure');
     assert.elementFound(
       "label:contains('Yes')",
@@ -174,7 +173,7 @@ test('Viewing the card and adding new funder', function(assert) {
 });
 
 test("Removing an existing funder when there's only 1", function(assert) {
-  visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId);
+  visit("/papers/" + currentPaper.shortDoi + "/tasks/" + financialDisclosureTaskId);
   click("label:contains('Yes')");
   click("span.remove-funder");
   return andThen(function() {

@@ -6,9 +6,9 @@ FactoryGuy.define('supporting-information-file', {
     filename: 'SI_file.doc',
     src: 'si-file-src',
     status: 'processing',
-    title: 'Supporting Info Title',
-    category: null,
-    label: 'Supporting Info Label',
+    title: 'Bioinformatics Distribution',
+    category: 'Table',
+    label: 'S1',
     caption: 'SI caption',
     publishable: true,
     strikingImage: false

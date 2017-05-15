@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 feature "Invite Academic Editor", js: true do
+  include SidekiqHelperMethods
+
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
     FactoryGirl.create(
       :paper, :submitted_lite, :with_creator, journal: journal
     )
   end
-  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_card, paper: paper }
 
   let(:staff_admin) { create :user }
   let!(:editor1) { create :user, first_name: 'Henry' }
@@ -30,6 +32,7 @@ feature "Invite Academic Editor", js: true do
 
     # Using the capybara-select2 helper here doesn't work because... not sure.
     # I think we are using select2 strangely here.
+    overlay.edit_invitation(editor2)
     within(".invitation-item--edit") do
       find('.link-alternate-select.select2-container').click
     end
@@ -75,8 +78,16 @@ feature "Invite Academic Editor", js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.add_to_queue(editor1)
     ActiveInvitation.for_user(editor1) do |invite|
-      invite.edit
+      invite.edit(editor1)
       invite.upload_attachment('yeti.jpg')
     end
+    find('.invitation-save-button').click
+
+    # Make sure we get the attachment in the actual email
+    overlay.find('.invitation-item-action-send').click
+    process_sidekiq_jobs
+    email = find_email(editor1.email)
+    expect(email).to be
+    expect(email.attachments.map(&:filename)).to contain_exactly 'yeti.jpg'
   end
 end

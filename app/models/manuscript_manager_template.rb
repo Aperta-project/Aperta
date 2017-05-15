@@ -7,4 +7,8 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
   validates :paper_type, presence: true
   validates :paper_type, uniqueness: { scope: :journal_id,
                                        case_sensitive: false }
+
+  def papers
+    journal.papers.where(paper_type: paper_type)
+  end
 end

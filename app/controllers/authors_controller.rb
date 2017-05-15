@@ -8,7 +8,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    paper = Paper.find(author_params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(author_params[:paper_id])
     requires_user_can :edit_authors, paper
     author = Author.new(author_params)
     author.save!
@@ -21,6 +21,10 @@ class AuthorsController < ApplicationController
   def update
     requires_user_can :edit_authors, author.paper
     author.update!(author_params)
+
+    if current_user.can? :administer, author.paper.journal
+      author.update_coauthor_state(author_coauthor_state, current_user.id)
+    end
 
     # render all authors, since position is controlled by acts_as_list
     render json: author_list_payload(author)
@@ -45,6 +49,10 @@ class AuthorsController < ApplicationController
     hash = serializer.as_json
     hash.delete("paper")
     hash
+  end
+
+  def author_coauthor_state
+    params.require(:author).permit(:co_author_state)[:co_author_state]
   end
 
   def author_params

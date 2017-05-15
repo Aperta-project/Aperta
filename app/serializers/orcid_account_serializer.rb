@@ -4,13 +4,28 @@ class OrcidAccountSerializer < ActiveModel::Serializer
     :name,
     :profile_url,
     :status,
-    :oauth_authorize_url
+    :oauth_authorize_url,
+    :orcid_connect_enabled
 
-  def id
-    # Returning nil for the ID is an effective way to disable the feature on the
-    # frontend. The connect to orcid button will remain disabled without an
-    # OrcidAccount.
-    return nil unless TahiEnv.orcid_connect_enabled?
-    object.id
+  private
+
+  def include_name?
+    is_current_user?
+  end
+
+  def include_oauth_authorize_url?
+    is_current_user?
+  end
+
+  def include_status?
+    is_current_user?
+  end
+
+  def is_current_user?
+    current_user.id == object.user_id
+  end
+
+  def orcid_connect_enabled
+    TahiEnv.orcid_connect_enabled?
   end
 end

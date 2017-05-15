@@ -73,18 +73,6 @@ describe Decision do
     end
   end
 
-  describe '#latest?' do
-    let(:paper) { FactoryGirl.create :paper, :submitted_lite }
-
-    it 'returns true if it is the latest decision' do
-      paper.decisions.destroy_all
-      early_decision = paper.decisions.create!(registered_at: DateTime.now.utc, minor_version: 0, major_version: 0)
-      latest_decision = paper.decisions.create!
-      expect(early_decision.latest?).to be false
-      expect(latest_decision.latest?).to be true
-    end
-  end
-
   describe '#verdict_valid?' do
     context 'when the verdict is valid' do
       it 'validates for major_revision' do

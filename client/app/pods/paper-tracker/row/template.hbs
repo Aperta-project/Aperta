@@ -5,12 +5,12 @@
     {{/if}}
   </td>
   <td class="paper-tracker-title-column">
-    {{#link-to "paper.index" paper.id}}
+    {{#link-to "paper.index" paper.shortDoi}}
       {{{paper.title}}}
     {{/link-to}}
   </td>
   <td class="paper-tracker-paper-id-column">
-    {{link-to paper.manuscript_id "paper.index" paper.id}}
+    {{link-to paper.manuscript_id "paper.index" paper.shortDoi}}
   </td>
   <td class="paper-tracker-date-column paper-version-date">
     {{format-date paper.submittedAt}}<br>

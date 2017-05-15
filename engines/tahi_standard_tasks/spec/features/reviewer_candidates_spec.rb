@@ -18,7 +18,7 @@ feature "User adding reviewer candidates", js: true do
     TahiStandardTasks::ReviewerRecommendation.nested_questions
 
     login_as(admin, scope: :user)
-    visit "/papers/#{paper.id}/workflow"
+    Page.view_paper_workflow paper
   end
 
   scenario "A user can add reviewer candidates" do

@@ -2,12 +2,13 @@ module TahiPusher
   class ChannelResourceNotFound < StandardError; end
 
   class ChannelName
-    CHANNEL_SEPARATOR = "-"
-    MODEL_SEPARATOR   = "@"
-    PRESENCE          = "presence"
-    PRIVATE           = "private"
-    PUBLIC            = "public"
-    SYSTEM            = "system"
+    CHANNEL_SEPARATOR = "-".freeze
+    MODEL_SEPARATOR   = "@".freeze
+    PRESENCE          = "presence".freeze
+    PRIVATE           = "private".freeze
+    PUBLIC            = "public".freeze
+    SYSTEM            = "system".freeze
+    ADMIN             = "admin".freeze
 
     # <#Paper:1234 @id=4> --> "private-paper@4"
     def self.build(target:, access:)

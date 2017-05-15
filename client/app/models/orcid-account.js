@@ -8,6 +8,7 @@ export default DS.Model.extend({
   profile_url: DS.attr('string'),
   status: DS.attr('string'),
   oauthAuthorizeUrl: DS.attr('string'),
+  orcidConnectEnabled: DS.attr('boolean'),
 
   clearRecord() {
     return this.get('restless').put(`/api/orcid_accounts/${this.get('id')}/clear`)

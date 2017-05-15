@@ -2,8 +2,215 @@
 All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
-## [{version}] - {release_date}
+## As we have other tools to track our changes in each release, we have decided
+## to stop maintaining this file as of April 10, 2017.
+
+## ## [1.40.1] - {2017-04-07}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Invite Reviewer Card invitation row now shows the correct datetime when in a completed state
+* Intercept emails without storing attachments
+* Store email bodies in logs so that we can have cleaner correspondence history
+### Security
+
+## ## [1.40.0] - {2017-04-06}
+### Added
+* Inject the Git Commit ID in <meta> tag for easier debugging
+* Similarity Check Task Card (UI Only)
+### Changed
+* Edited CSS (color and hover features) for manuscript list on dashboard to be
+* Revise Manuscript card changed to Response to Reviewers, it's attachments are now owned by decisions.
+more user friendly.
+* Updated mathjax cdn to use cloudflare.
+* The confirmation dialogues for removing cards from a paper and a manuscript manager template are
+now clearer about what's going to occur
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.39.1] - {2017-03-30}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Funders can now be added and updated
+### Security
+
+## ## [1.39.0] - {2017-03-29}
+### Added
+* The footer discussion cannot be seen by Reviewers and other external users in
+  individual card view
+* Billing staff now have more viewing access than just to the Billing card
+* Users can now save lists on Safari for Ad Hoc cards
+* Reviewer Report status available on invitation list
+### Changed
+* File name for PDF Downloads have been updated to follow the format "[short doi] - [author last name] - [version].pdf"
+### Deprecated
+### Removed
+### Fixed
+* Fixed bug that always returned the latest version of a manuscript regardless of the version that was requested.
+### Security
+
+## ## [1.38.0] - {2017-03-09}
+### Added
+* Users can now change the initial participants on a discussion topic.
+* Source file is sent to APEX along with PDF manuscripts
+* The manuscript upload card prompts for a backing source file if a PDF manuscript is uploaded.
+* Source files show can be downloaded
+* Added "Confirm Authorship" button to email to co authors.
+* Added PDF submissions for PLOS Biology
+* Require source files on PDF manuscripts that are in revision or have major versions greater than 0
+* Warn users to save work externally when server health check fails
+### Changed
+* Changed new manuscript filetype text for pdf-enabled journals to mention the need for a sourcefile upload backing pdf manuscripts
+* Temporarily disabled coauthor notification
+* Change in figure task workflow to remove period from title
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## ## [1.37.0] - {2017-02-16}
+### Added
+* Users can now change the initial participants on a discussion topic
+* Feature flags for hiding/showing partial features.
+### Changed
+* Reset review status on revision submission event
+* Don’t automatically destroy resource tokens
+* Changed figure cards for PDF submissions
+* Changes to topic creation (See APERTA-8247)
+### Deprecated
+### Removed
+### Fixed
+* Handle submission as a single transaction (More details in APERTA-8415)
+### Security
+
+## ## [1.36.1] - {2017-02-09}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+* Reviewer Reports that were accepted, but not submitted prior to 1.36.0 were not covered in the previous data migration.
+  This fix addresses those issues with an additional data migration
+### Security
+
+## ## [1.36.0] - {2017-02-07}
+### Added
+* Logging outbound email sends to database, including status and forensics, to troubleshoot silent failures
+* Aperta can now use the title, abstract, and body HTML extracted from PDFs.
+* Display review status at the top of the task
+### Changed
+* Users can download previous versions of a Manuscript
+### Deprecated
+### Removed
+### Fixed
+* Users can now select and copy text from invitation letters when there is more than one invitation.
+* Paper submissions that are invalid because of missing images are no longer allowed to successfully be saved.
+  (Submission & initial submission are now transactions, so failing activity feed entries cause submission to fail.)
+### Security
+
+## ## [1.34.0] - {2017-01-06}
+### Added
+* Added warning notifications when browser clients are unable to establish a WebSocket connection
+* The first affiliate field on the billing task is now required
+* Added a PDF viewer in the manuscript versions view when the "Now Viewing" version is a PDF file
+### Changed
+* The sign-on page has more specific rules regarding notifying users that they're using unsupported browsers
+### Deprecated
+### Removed
+### Fixed
+* ORCID-Connect works with users with accented letters in their names.
+### Security
+
+## ## [1.33.0] - {2017-01-03}
+### Added
+### Changed
+* The Discussion participant list displays names in place of avatars
+* ORCID-Connect button will re-enable when the ORCID popup is closed before authenticating with ORCID.
+* Changes are automatically saved in the Intitial Decision Task
+### Deprecated
+### Removed
+### Fixed
+* Show supporting information file upload errors to users
+* Recipients are no longer accidentally shared between different email blocks on the same adhoc task
+* Deleting a paper tracker query now updates the dashboard
+### Security
+
+## ## [1.32.0] - {2016-12-16}
+### Added
+* Added the ability for billing staff to view the paper tracker.
+* Added the ability to upload pdfs if the pdf_allowed feature flag is flipped on
+* Added the ability to upload pdfs via the manuscript upload task
+* Added a PDF viewer to display uploaded PDF manuscripts
+* Withdrawn banner now shows on workflow view.
+* Reviewer numbers will be automatically assigned to newly created papers
+* Added cap cleanup:dumps & rake db:dump:cleanup
+* An attachment analysis report will be emailed to the Aperta Dev Team each day so we can identify attachment processing failures sooner.
+* Staff can now view connected ORCID accounts for paper creators
+### Changed
+* Invitations no longer enter their edit state by default
+* Updated URLs to expose the manuscript's short DOI.  Papers can now be referenced
+  by /papers/JOURNAL.DOI .  The app was updated to use these as the preferred links.
+* A user can now mark a card as incomplete at any time when it is in an editable state
+* The entire DOI prefix (publisher + journal) is checked for uniqueness instead of
+  the parts.
+### Deprecated
+### Removed
+### Fixed
+* Do not check validations in DownloadAttachmentWorker
+* Deleting all the text for a question's answer will no longer cause an error on subsequent
+  changes to that that answer.
+* Attached images with capitalized filenames will now preview correctly
+
+## ## [1.31.1] - {2016-12-7}
+### Fixed
+* Emails will be sent to the inviter for when a reviewer accepts/declines an invitation and does not have an account in Aperta.
+* Add back missing attachment blocks for many ad hoc tasks
+* Recipients can be properly removed from adhoc emails.
+* Do not send emails to Staff Admin(s) when Salesforce sync retries are exhausted; reinstate Salesforce syncing errors
+  to email Site Admin(s) instead.
+
+## ## [1.30.1] - {2016-11-29}
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- do not send journal staff admins emails for paper submission, editor invite accepted, tech check fixed events, or salesforce sync'ing errors
+- Do not sync paper data with salesforce if the paper has not been submitted.
+### Security
+
+## [1.30.0] - {2016-11-18}
+### Added
+- Early Article Posting cards have been added to workflows, to allow authors to opt into
+  allowing manuscripts to be published before all proofreading and copyediting is done.
+- Invitations can now be reordered through drag and drop. This also enforces
+  rules automatically for which invitations can be reordered and into which groups
+- A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
+- Display of article type in invitations
+- Caching of unsaved Discussion responses
+- Ad-hoc cards have editing and managing permissions
+- ORCID validation on the Authors Task
+- ORCID IDs are included in the metadata export to Apex
+- ORCID IDs can only be removed by PLOS staff
+### Changed
+### Deprecated
+### Removed
+- Removed 'Assign Admin' card
+- Removed 'Available Task Types' section in journal administration
+### Fixed
+- Emails are properly rendered in all clients
+### Security
+
+## [1.29.0] - {2016-11-03}
+### Added
+* A user can connect their ORCID account with their author profile via the Authors cards on a manuscript
 ### Changed
 ### Deprecated
 ### Removed

@@ -3,13 +3,13 @@ module PlosBioTechCheck
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
-    DEFAULT_TITLE = 'Initial Tech Check'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Initial Tech Check'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     before_create :initialize_round
 
     def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
+      NestedQuestion.where(owner_id: nil, owner_type: name).all
     end
 
     def active_model_serializer

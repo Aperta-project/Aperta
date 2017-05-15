@@ -1,9 +1,18 @@
 require 'rails_helper'
 
-describe JournalFactory, flaky: true do
-  describe '.create' do
-    include AuthorizationSpecHelper
+describe JournalFactory do
+  # This is a helper method for removing anonymous classes from a list of
+  # classes. Usually this is not needed, but Aperta depends on the
+  # inheritance hierarchy of ::Task to do things and so does this test.
+  # To avoid seemingly intermittent errors based on the order of tests being
+  # run we use this helper method to strip them all away. If you see
+  # a direct call to ".descendants" in this file it should likely be wrapped
+  # using this helper method.
+  def without_anonymous_classes(klasses)
+    klasses.select { |klass| klass.name.present? }
+  end
 
+  describe '.create' do
     let(:permissions_on_journal) do
       Permission.joins(:states).where(
         applies_to: 'Journal',
@@ -47,18 +56,18 @@ describe JournalFactory, flaky: true do
     end
     let(:billing_task_klasses) do
       [PlosBilling::BillingTask] +
-        PlosBilling::BillingTask.descendants
+        without_anonymous_classes(PlosBilling::BillingTask.descendants)
     end
     let(:restricted_invite_klasses) do
       [TahiStandardTasks::PaperEditorTask]
     end
     let(:changes_for_author_task_klasses) do
       [PlosBioTechCheck::ChangesForAuthorTask] +
-        PlosBioTechCheck::ChangesForAuthorTask.descendants
+        without_anonymous_classes(PlosBioTechCheck::ChangesForAuthorTask.descendants)
     end
     let(:reviewer_report_klasses) do
       [TahiStandardTasks::ReviewerReportTask] +
-        TahiStandardTasks::ReviewerReportTask.descendants
+        without_anonymous_classes(TahiStandardTasks::ReviewerReportTask.descendants)
     end
     let(:tech_check_klasses) do
       [
@@ -66,20 +75,35 @@ describe JournalFactory, flaky: true do
         PlosBioTechCheck::RevisionTechCheckTask,
         PlosBioTechCheck::FinalTechCheckTask
       ] +
-        PlosBioTechCheck::InitialTechCheckTask.descendants +
-        PlosBioTechCheck::RevisionTechCheckTask.descendants +
-        PlosBioTechCheck::FinalTechCheckTask.descendants
+        without_anonymous_classes(
+          PlosBioTechCheck::InitialTechCheckTask.descendants +
+          PlosBioTechCheck::RevisionTechCheckTask.descendants +
+          PlosBioTechCheck::FinalTechCheckTask.descendants
+        )
+    end
+    let(:non_billing_task_klasses) do
+      without_anonymous_classes(
+        ::Task.descendants - billing_task_klasses
+      )
     end
 
     it 'creates a new journal with the given params' do
       expect do
-        journal = JournalFactory.create(name: 'Journal of the Stars')
+        journal = JournalFactory.create(name: 'Journal of the Stars',
+                                        doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                                        doi_publisher_prefix: 'SHORTJPREFIX1',
+                                        last_doi_issued: '1000001')
         expect(journal.name).to eq('Journal of the Stars')
       end.to change(Journal, :count).by(1)
     end
 
     context 'role hints' do
-      let!(:journal) { JournalFactory.create(name: 'Journal of the Stars') }
+      let!(:journal) do
+        JournalFactory.create(name: 'Journal of the Stars',
+                              doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                              doi_publisher_prefix: 'SHORTJPREFIX1',
+                              last_doi_issued: '1000001')
+      end
 
       it 'assigns hints to discussion topic roles' do
         expect(Role::DISCUSSION_TOPIC_ROLES.sort).to \
@@ -102,9 +126,12 @@ describe JournalFactory, flaky: true do
       end
     end
 
-    context 'creating the default roles and permission for the journal', flaky: true do
+    context 'creating the default roles and permission for the journal' do
       before(:all) do
-        @journal = JournalFactory.create(name: 'Genetics Journal')
+        @journal = JournalFactory.create(name: 'Genetics Journal',
+                                         doi_journal_prefix: 'journal.genetics',
+                                         doi_publisher_prefix: 'genetics',
+                                         last_doi_issued: '100001')
       end
 
       after(:all) do
@@ -158,9 +185,12 @@ describe JournalFactory, flaky: true do
         describe 'permissions on tasks' do
           let(:submission_task_klasses) { ::Task.submission_task_types }
           let(:inaccessible_task_klasses) do
-            ::Task.descendants -
-              submission_task_klasses -
-              changes_for_author_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants -
+                submission_task_klasses -
+                changes_for_author_task_klasses -
+                [AdHocForAuthorsTask]
+            )
           end
 
           it <<-DESC.strip_heredoc do
@@ -213,6 +243,25 @@ describe JournalFactory, flaky: true do
             expect(permissions).to include(*expected_edit_permissions)
           end
 
+          it <<-DESC.strip_heredoc do
+            can :view the AdHocForAuthorTask in any paper state
+            can :edit the AdHocForAuthorTask in editable paper states
+          DESC
+            expected_view_permissions = Permission.joins(:states).where(
+              action: 'view',
+              applies_to: 'AdHocForAuthorTask',
+              permission_states: { name: PermissionState.wildcard.name }
+            ).all
+            expect(permissions).to include(*expected_view_permissions)
+
+            expected_edit_permissions = Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: 'AdHocForAuthorTask',
+              permission_states: { name: Paper::EDITABLE_STATES }
+            ).all
+            expect(permissions).to include(*expected_edit_permissions)
+          end
+
           it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
             submission_task_klasses.each do |klass|
               expect(permissions).to include(
@@ -242,7 +291,8 @@ describe JournalFactory, flaky: true do
           let(:paper_actions) do
             [
               'submit',
-              'view'
+              'view',
+              'edit_authors'
             ]
           end
 
@@ -260,13 +310,18 @@ describe JournalFactory, flaky: true do
             accessible_for_role = ::Task.descendants.select do |klass|
               klass <=> SubmissionTask
             end
-            accessible_for_role - inaccessible_task_klasses
+            accessible_for_role << AdHocForAuthorsTask
+            without_anonymous_classes(
+              accessible_for_role - inaccessible_task_klasses
+            )
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
           end
 
           it 'can :view and :edit all accessible_task_klasses' do
@@ -357,10 +412,12 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) do
-            ::Task.descendants -
-              billing_task_klasses -
-              changes_for_author_task_klasses -
-              restricted_invite_klasses
+            without_anonymous_classes(
+              ::Task.descendants -
+                billing_task_klasses -
+                changes_for_author_task_klasses -
+                restricted_invite_klasses
+            )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
@@ -374,6 +431,7 @@ describe JournalFactory, flaky: true do
 
           it <<-DESC do
             can :add_email_participants on all Tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks
@@ -382,6 +440,7 @@ describe JournalFactory, flaky: true do
             task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage, applies_to: klass.name),
                 Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
@@ -395,12 +454,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|
@@ -485,15 +544,20 @@ describe JournalFactory, flaky: true do
 
         describe 'permissions on tasks' do
           let(:accessible_task_klasses) do
-            accessible_for_role = ::Task.submission_task_types + [TahiStandardTasks::ReviewerReportTask]
+            accessible_for_role = ::Task.submission_task_types
+            accessible_for_role << TahiStandardTasks::ReviewerReportTask
+            accessible_for_role << AdHocForEditorsTask
             accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
+             PlosBioTechCheck::ChangesForAuthorTask,
              TahiStandardTasks::RegisterDecisionTask]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
           end
           let(:editable_state_ids) do
             PermissionState.where(name: Paper::EDITABLE_STATES).pluck(:id)
@@ -510,6 +574,32 @@ describe JournalFactory, flaky: true do
               expect(permissions).to_not include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
+            end
+          end
+
+          it 'can :view all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :edit and :view AdHocForEditorsTask' do
+            ['edit', 'view'].each do |action|
+              permission = journal.academic_editor_role.permissions.includes(:states).where(
+                applies_to: 'AdHocForEditorsTask',
+                action: action,
+                permission_states: { name: PermissionState::WILDCARD }
+              ).first
+              expect(permission).to be
+              expect(permission.states.map(&:name)).to contain_exactly(PermissionState::WILDCARD)
             end
           end
 
@@ -543,6 +633,12 @@ describe JournalFactory, flaky: true do
             ).all
             expect(permissions).not_to include(*tech_check_permissions)
           end
+        end
+
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
         end
       end
 
@@ -605,10 +701,12 @@ describe JournalFactory, flaky: true do
 
         describe 'Task permissions' do
           let(:task_klasses) do
-            ::Task.descendants -
-              billing_task_klasses -
-              changes_for_author_task_klasses -
-              restricted_invite_klasses
+            without_anonymous_classes(
+              ::Task.descendants -
+                billing_task_klasses -
+                changes_for_author_task_klasses -
+                restricted_invite_klasses
+              )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
@@ -622,6 +720,7 @@ describe JournalFactory, flaky: true do
 
           it <<-DESC do
             can :add_email_participants on all Tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks
@@ -630,6 +729,7 @@ describe JournalFactory, flaky: true do
             task_klasses.each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
+                Permission.find_by(action: :manage, applies_to: klass.name),
                 Permission.find_by(action: :manage_invitations, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name),
                 Permission.find_by(action: :view, applies_to: klass.name),
@@ -643,12 +743,12 @@ describe JournalFactory, flaky: true do
             paper is in an editable state
           DESC
             editable_task_klasses_based_on_paper_state.each do |klass|
-              permission = Permission.joins(:states).find_by(
+              permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
                 permission_states: { name: Paper::EDITABLE_STATES }
               )
-              expect(permissions).to include(permission)
+              expect(permission_for_klass).to be
             end
 
             reviewer_report_klasses.each do |klass|
@@ -692,7 +792,8 @@ describe JournalFactory, flaky: true do
               'edit',
               'manage_participant',
               'reply',
-              'view'
+              'view',
+              'be_at_mentioned'
             ]
           end
 
@@ -710,10 +811,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.internal_editor_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -766,6 +871,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -776,15 +882,18 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            non_billing_task_klasses.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -829,10 +938,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.production_staff_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -884,6 +997,7 @@ describe JournalFactory, flaky: true do
           let(:task_actions) do
             [
               'add_email_participants',
+              'manage',
               'edit',
               'manage_invitations',
               'manage_participant',
@@ -895,15 +1009,18 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            non_billing_task_klasses.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -944,10 +1061,14 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.publishing_services_role.permissions }
 
         context 'has Journal permission to' do
-          it ':view_paper_tracker' do
-            expect(permissions).to include(
-              permissions_on_journal.find_by(action: 'view_paper_tracker')
-            )
+          let(:journal_actions) { ['view_paper_tracker', 'remove_orcid'] }
+
+          it 'has journal permissions' do
+            journal_actions.each do |action|
+              expect(permissions).to include(
+                permissions_on_journal.find_by(action: action)
+              )
+            end
           end
         end
 
@@ -1000,6 +1121,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -1010,15 +1132,18 @@ describe JournalFactory, flaky: true do
           it <<-DESC do
             can :add_email_participants on all Tasks
             can :edit on all Tasks except billing tasks
+            can :manage on all Tasks
             can :manage_invitations on all Tasks
             can :manage_participant on all Tasks
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            non_billing_task_klasses.each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1068,7 +1193,9 @@ describe JournalFactory, flaky: true do
 
         describe 'has Task permission to' do
           let(:accessible_task_klasses) do
-            Task.submission_task_types - inaccessible_task_klasses
+            accessible_for_role = Task.submission_task_types
+            accessible_for_role << AdHocForReviewersTask
+            accessible_for_role - inaccessible_task_klasses
           end
           let(:inaccessible_task_klasses) do
             [
@@ -1078,7 +1205,46 @@ describe JournalFactory, flaky: true do
             ]
           end
           let(:all_inaccessible_task_klasses) do
-            ::Task.descendants - accessible_task_klasses
+            without_anonymous_classes(
+              ::Task.descendants - accessible_task_klasses
+            )
+          end
+
+          it 'can :view all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(permissions).to include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :view_participants on all accessible_task_klasses' do
+            accessible_task_klasses.each do |klass|
+              expect(permissions).to include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+
+            all_inaccessible_task_klasses.each do |klass|
+              expect(permissions).to_not include(
+                Permission.find_by(action: :view_participants, applies_to: klass.name)
+              )
+            end
+          end
+
+          it 'can :edit AdHocForReviewersTask' do
+            permission = journal.reviewer_role.permissions.find_by(
+              applies_to: 'AdHocForReviewersTask',
+              action: :edit
+            )
+            expect(permission).to be
+            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
           end
 
           it 'can do nothing on the PlosBilling::BillingTask' do
@@ -1135,14 +1301,20 @@ describe JournalFactory, flaky: true do
       context 'Reviewer Report Owner' do
         describe 'has Task permission to' do
           it 'can :edit assigned ReviewerReportTasks' do
-            permission = Permission.includes(:states).find_by(
+            edit_permission = journal.reviewer_report_owner_role.permissions.where(
               applies_to: 'TahiStandardTasks::ReviewerReportTask',
               action: :edit
             )
-            expect(permission.states.map(&:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
-            expect(journal.reviewer_report_owner_role.permissions).to include(
-              permission
+            expect(edit_permission.count).to eq(1)
+            expect(edit_permission.first.states.map(&:name)).to \
+              contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+
+            view_permission = journal.reviewer_report_owner_role.permissions.where(
+              applies_to: 'TahiStandardTasks::ReviewerReportTask',
+              action: :view
             )
+            expect(view_permission.count).to eq(1)
+            expect(view_permission.first.states.map(&:name)).to contain_exactly('*')
           end
         end
       end
@@ -1151,7 +1323,7 @@ describe JournalFactory, flaky: true do
         let(:permissions) { journal.staff_admin_role.permissions }
 
         context 'has Journal permission to' do
-          let(:journal_actions) { ['administer', 'view_paper_tracker'] }
+          let(:journal_actions) { ['administer', 'view_paper_tracker', 'remove_orcid'] }
 
           it 'has journal permissions' do
             journal_actions.each do |action|
@@ -1222,6 +1394,7 @@ describe JournalFactory, flaky: true do
             [
               'add_email_participants',
               'edit',
+              'manage',
               'manage_invitations',
               'manage_participant',
               'view',
@@ -1230,17 +1403,22 @@ describe JournalFactory, flaky: true do
           end
 
           it <<-DESC do
-            can :add_email_participants on all Tasks
+            can :add_email_participants on all Tasks except billing tasks
             can :edit on all Tasks except billing tasks
-            can :manage_invitations on all Tasks
-            can :manage_participant on all Tasks
-            can :view on all Tasks except billing tasks
-            can :view_participants  on all Tasks
+            can :manage on all Tasks except billing tasks
+            can :manage_invitations on all Tasks except billing tasks
+            can :manage_participant on all Tasks except billing tasks
+            can :view on all Tasks except billing tasks except billing tasks
+            can :view_participants  on all Tasks except billing tasks
           DESC
-            task_actions.each do |action|
-              expect(permissions).to include(
-                permissions_on_task.find_by(action: action)
-              )
+            without_anonymous_classes(
+              Task.descendants - [PlosBilling::BillingTask]
+            ).each do |task|
+              task_actions.each do |action|
+                expect(permissions).to include(
+                  Permission.find_by(action: action.to_s, applies_to: task.to_s)
+                )
+              end
             end
           end
 
@@ -1283,7 +1461,38 @@ describe JournalFactory, flaky: true do
           it 'can :view and :edit' do
             # Sometimes there is more than one 'edit' or 'view' permission for BillingTask so this fixes spec flakiness
             permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
-            expect(permission_strings).to contain_exactly('view', 'edit')
+            expect(permission_strings).to contain_exactly('view', 'edit','view_discussion_footer', 'view_participants')
+          end
+        end
+
+        it 'has all paper tracker permissions' do
+          expect(permissions).to include(
+            permissions_on_journal.find_by(action: 'view_paper_tracker')
+          )
+        end
+
+        it 'has all paper permissions' do
+          expect(permissions).to include(
+            permissions_on_paper.find_by(action: 'view')
+          )
+        end
+      end
+
+      context 'Billing permission' do
+        describe 'billing task cannot be accessed through Task' do
+          # If a role gets Task class permissions they'll be able to see the billing task
+          it 'only site admins and participants on tasks get Task class permissions' do
+            not_allowed_roles = Role.where.not(name: [Role::TASK_PARTICIPANT_ROLE.to_s, Role::SITE_ADMIN_ROLE.to_s])
+            not_allowed_roles.each do |role|
+              expect(role.permissions.where(applies_to: 'Task')).to be_empty
+            end
+          end
+
+          it 'only authors and billing staff have any permission on the billing task' do
+            not_allowed_roles = Role.where.not(name: [Role::CREATOR_ROLE, Role::BILLING_ROLE, Role::SITE_ADMIN_ROLE])
+            not_allowed_roles.each do |role|
+              expect(role.permissions.where(applies_to: 'PlosBilling::BillingTask')).to be_empty
+            end
           end
         end
       end

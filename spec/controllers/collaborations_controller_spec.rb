@@ -7,7 +7,14 @@ describe CollaborationsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:collaborator) { FactoryGirl.create(:user) }
   let(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    FactoryGirl.create(:paper, creator: user, journal: journal)
+  end
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_creator_role,
+      :with_collaborator_role
+    )
   end
 
   describe '#create' do
@@ -37,18 +44,6 @@ describe CollaborationsController do
         expect(paper.assignments.find_by(
           role: paper.journal.collaborator_role,
           user: collaborator
-        )).to be
-      end
-
-      it 'adds the user as a collaborator using paper role' do
-        expect do
-          do_request
-        end.to change(PaperRole, :count).by(1)
-
-        expect(PaperRole.find_by(
-          paper: paper,
-          user: collaborator,
-          old_role: PaperRole::COLLABORATOR
         )).to be
       end
 
@@ -104,23 +99,6 @@ describe CollaborationsController do
         expect(paper.assignments.find_by(
           role: paper.journal.collaborator_role,
           user: collaborator
-        )).to_not be
-      end
-
-      it 'removes the remove as a collaborator using paper role' do
-        PaperRole.create!(
-          paper: paper,
-          user: collaborator,
-          old_role: PaperRole::COLLABORATOR
-        )
-        expect do
-          do_request
-        end.to change(PaperRole, :count).by(-1)
-
-        expect(PaperRole.find_by(
-          paper: paper,
-          user: collaborator,
-          old_role: PaperRole::COLLABORATOR
         )).to_not be
       end
 

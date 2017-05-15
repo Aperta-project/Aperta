@@ -1,11 +1,64 @@
 import Ember from 'ember';
 import QUnit from 'qunit';
-import sinon from 'sinon';
 
 // disable line-length linting for this file.
 /* jshint -W101 */
 
 export default function() {
+  QUnit.assert.mockjaxRequestMade = function(url, type, message){
+    let actualDescription;
+    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+
+    if(!message){
+      message = `Request to server was made thru $.mockjax: ${expectedDescription}`;
+    }
+
+    let mockjaxCalls = $.mockjax.mockedAjaxCalls();
+    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
+      return mockjaxCall.url === url && mockjaxCall.type === type;
+    });
+
+    if(!requestFound) {
+      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      });
+    }
+
+    return this.push(
+      requestFound,
+      actualDescription,
+      expectedDescription,
+      message
+    );
+  };
+
+  QUnit.assert.mockjaxRequestNotMade = function(url, type, message){
+    let actualDescription;
+    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+
+    if(!message){
+      message = `Request to server was not made thru $.mockjax: ${expectedDescription}`;
+    }
+
+    let mockjaxCalls = $.mockjax.mockedAjaxCalls();
+    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
+      return mockjaxCall.url === url && mockjaxCall.type === type;
+    });
+
+    if(requestFound) {
+      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      });
+    }
+
+    return this.push(
+      !requestFound,
+      actualDescription,
+      expectedDescription,
+      message
+    );
+  };
+
   QUnit.assert.arrayContainsExactly = function(actualArray, expectedArray, message){
     if(!message){
       message = `Expected array to contain the contents, but did not`;
@@ -137,6 +190,10 @@ export default function() {
   };
 
   QUnit.assert.spyCalledWith = function(spy, args, message) {
+    if (!spy.called) {
+      return QUnit.assert.spyCalled(spy, message);
+    }
+
     return this.push(
       spy.calledWith(...args),
       spy.lastCall.args,
@@ -150,6 +207,14 @@ export default function() {
       'never called',
       'called',
       message || 'spy should have been called.');
+  };
+
+  QUnit.assert.spyNotCalled = function(spy, message) {
+    return this.push(
+      spy.notCalled,
+      'called',
+      'not called',
+      message || 'spy should not have been called.');
   };
 
   QUnit.assert.selectorAttibuteIncludes = function(attribute, selector, values, message, expectedFoundElementsCount) {
@@ -190,4 +255,4 @@ export default function() {
   QUnit.assert.selectorHasClasses = function() {
     return this.selectorAttibuteIncludes('class', ...arguments);
   };
-};
+}

@@ -19,7 +19,7 @@ describe User do
 
   describe '#created_papers_for_journal' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+    let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
     let!(:other_user) { FactoryGirl.create(:user) }
 
     let!(:created_paper_1) do
@@ -56,7 +56,7 @@ describe User do
   describe '#username' do
     it 'validates username' do
       user = FactoryGirl.build(:user, username: 'mihaly')
-      expect(user.save!).to eq true
+      expect(user).to be_valid
     end
 
     it 'validates a username with dashes' do
@@ -92,9 +92,10 @@ describe User do
 
   describe '#tasks' do
     subject(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal)}
-    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
-    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
+    let!(:participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
+    let!(:not_participating_task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations, paper: paper) }
     let!(:other_role) { FactoryGirl.create(:role) }
 
     before do
@@ -111,7 +112,7 @@ describe User do
     end
   end
 
-  describe '#invitations_from_latest_revision' do
+  describe '#invitations_from_draft_decision' do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
     let(:decision) { paper.draft_decision }
@@ -124,20 +125,20 @@ describe User do
     it 'returns invitiations from multiple tasks' do
       inv1.invite!
       another_task_invitation.invite!
-      expect(user.invitations_from_latest_revision)
+      expect(user.invitations_from_draft_decision)
         .to contain_exactly(inv1, another_task_invitation)
     end
 
     it 'returns invitations from the latest revision cycle' do
       inv1.invite!
-      expect(user.invitations_from_latest_revision).to contain_exactly(inv1)
+      expect(user.invitations_from_draft_decision).to contain_exactly(inv1)
 
       # complete the old decision and create a new one
       decision.update!(major_version: 0, minor_version: 0)
       paper.new_draft_decision!
 
       inv2.invite!
-      expect(user.reload.invitations_from_latest_revision).to contain_exactly(inv2)
+      expect(user.reload.invitations_from_draft_decision).to contain_exactly(inv2)
     end
 
     context 'invitation without a decision' do
@@ -146,16 +147,16 @@ describe User do
 
       it 'returns invitations with decisions from the latest revision cycle' do
         expect(invitation.decision).to be_nil
-        expect(user.invitations_from_latest_revision).to be_empty
+        expect(user.invitations_from_draft_decision).to be_empty
       end
     end
   end
 
   describe ".new_with_session" do
-    let(:personal_details) { {"personal_details" => {"given_names" => "Joe", "family_name" => "Smith"}} }
+    let(:personal_details) { { "personal_details" => { "given_names" => "Joe", "family_name" => "Smith" } } }
     let(:orcid_session) do
-      {"devise.provider" => {"orcid" => {"uid" => "myuid",
-                                         "info" => {"orcid_bio" => personal_details}}}}
+      { "devise.provider" => { "orcid" => { "uid" => "myuid",
+                                            "info" => { "orcid_bio" => personal_details } } } }
     end
 
     it "will prefill new user form with orcid info" do
@@ -217,49 +218,60 @@ describe User do
   end
 
   describe ".fuzzy_search" do
-    it "searches by user's first_name and last_name" do
-      user = create :user, first_name: 'David', last_name: 'Wang'
+    let!(:user)  { create(:user, first_name: 'David', last_name: 'Wang', email: 'dwang@gmail.com', username: 'dwangpwn') }
+    let!(:user2) { create(:user, first_name: 'David', last_name: 'Chan', email: 'dchan@gmail.com', username: 'dchanpwn') }
 
-      expect(User.fuzzy_search(user.first_name).size).to eq 1
-      expect(User.fuzzy_search(user.first_name.downcase).first.id).to eq user.id
+    it "searches by user's first_name and last_name" do
+      expect(User.fuzzy_search(user.first_name).size).to eq 2
+      expect(User.fuzzy_search(user.last_name).size).to eq 1
       expect(User.fuzzy_search(user.last_name.downcase).first.id).to eq user.id
       expect(User.fuzzy_search("#{user.first_name} #{user.last_name.downcase}").first.id).to eq user.id
     end
 
     it "searches by user's email" do
-      user = create :user, email: 'dwang@gmail.com'
+      user3 = create :user, first_name: 'Jeffrey', last_name: 'Gray', email: 'jef+1@example.com'
+      user4 = create :user, first_name: 'Jeffrey', last_name: 'Gray', email: 'jef+2@example.com'
       expect(User.fuzzy_search(user.email).first.id).to eq user.id
+      expect(User.fuzzy_search(user.email).size).to eq 1
     end
 
     it "searches by user's username" do
-      user = create :user, username: 'dwangpwn'
       expect(User.fuzzy_search(user.username).first.id).to eq user.id
     end
 
     it "searches by multiple attributes at once" do
-      user = create :user, username: 'blah', first_name: 'David', last_name: 'Wang', email: 'dwang@gmail.com'
       expect(User.fuzzy_search("#{user.first_name} #{user.username}").first.id).to eq user.id
     end
 
     it "searches attributes with accent marks" do
-      user = create :user, first_name: 'David', last_name: 'Wang'
-      expect(User.fuzzy_search("davïd").first.id).to eq user.id
+      expect(User.fuzzy_search("davïd").size).to eq 2
     end
   end
 
   describe "#journal_admin?" do
-    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
-    let(:journal) { paper.journal }
-    let(:journal_admin) { FactoryGirl.create(:user) }
-    let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
-    let(:regular_user) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:administer_journal_permission) do
+      FactoryGirl.create(
+        :permission,
+        action: :administer,
+        applies_to: Journal.name,
+        states: [PermissionState.wildcard]
+      )
+    end
+
+    before do
+      journal.staff_admin_role.permissions << administer_journal_permission
+    end
 
     it "returns true if user is an admin for a given journal" do
-      expect(journal_admin.can?(:administer, journal)).to be true
+      user.assign_to!(assigned_to: journal, role: journal.staff_admin_role)
+      expect(user.journal_admin?(journal)).to be true
     end
 
     it "returns false if user is not an admin for a given journal" do
-      expect(regular_user.can?(:administer, journal)).to be false
+      expect(user.journal_admin?(journal)).to be false
     end
   end
 
@@ -349,9 +361,9 @@ describe User do
     shared_examples_for 'resigning from a role' do
       it 'can be used to resign a role on a journal' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: journal)
+          user: user,
+          role: role,
+          assigned_to: journal)
         expect(user).to have_role(role, journal)
         expect { user.resign_from!(assigned_to: journal, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -360,9 +372,9 @@ describe User do
 
       it 'can be used to resign a role on a paper' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: paper)
+          user: user,
+          role: role,
+          assigned_to: paper)
         expect(user).to have_role(role, paper)
         expect { user.resign_from!(assigned_to: paper, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -371,9 +383,9 @@ describe User do
 
       it 'can be used to resign a role on a task' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: role,
-                           assigned_to: task)
+          user: user,
+          role: role,
+          assigned_to: task)
         expect(user).to have_role(role, task)
         expect { user.resign_from!(assigned_to: task, role: role_arg) }
           .to change { user.roles.count }.by(-1)
@@ -411,9 +423,9 @@ describe User do
 
       it 'can be used to resign from role to a thing that does not implement the `journal` method' do
         FactoryGirl.create(:assignment,
-                           user: user,
-                           role: user_role,
-                           assigned_to: user)
+          user: user,
+          role: user_role,
+          assigned_to: user)
         expect { user.resign_from!(assigned_to: user, role: user_role) }
           .to change { user.roles.count }.by(-1)
         expect(user).not_to have_role(user_role, user)

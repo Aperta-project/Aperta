@@ -13,20 +13,40 @@
     border-bottom: 2px solid $aperta-grey-light;
   }
 
+  .si-file-error {
+
+    background-color: $aperta-grey-xlight;
+    padding: 20px 40px 20px 20px;
+
+    .error-message {
+      font-size: 14px;
+    }
+    .acknowledge-error-button {
+      color: $aperta-green;
+      font-size: 30px;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+      text-decoration: none;
+    }
+  }
+
   .si-file-viewing {
     padding: 10px 15px;
+
+    .error-message {
+      margin-left: 0; //override base
+    }
   }
 
   .si-file-editor {
     @include clearfix;
     margin: 0;
     padding: 0 20px;
-    transition: max-height 0.1s;
     overflow-y: hidden;
-    max-height: 0px;
+    overflow: auto;
 
     &.visible {
-      max-height: 500px;
       padding: 20px
     }
 
@@ -38,8 +58,9 @@
     .fileinput-button {
       color: $aperta-grey;
       font-size: 1.3rem;
-      display: inline;
-      margin-left: 3px;
+      display: inline-block;
+      vertical-align: sub;
+      margin-left: 6px;
       background: transparent;
       border: none;
       i {
@@ -47,21 +68,23 @@
       }
     }
 
-    .si-file-label-input {
-      max-width: 50px;
-      flex: none;
-    }
-
-    .si-file-category-input {
-      width: 125px;
-    }
-
     textarea {
       width: 100%;
     }
 
     .si-file-title-input {
-      width: 350px;
+      position: relative;
+      .format-input-field {
+        padding-left: 15px;
+        &::before {
+          position: absolute;
+          content: "*";
+          top: 3px;
+          left: 4px;
+          color: $aperta-green;
+          font-size: 24px;
+        }
+      }
       height: auto;
     }
 
@@ -76,7 +99,22 @@
     }
 
     .si-file-label-input {
-      margin-right: 10px;
+      position: relative;
+      max-width: 85px;
+      width: 85px;
+
+      &::before {
+        content: "*";
+        font-size: 24px;
+        position: absolute;
+        top: 3px;
+        left: 11px;
+        color: $aperta-green;
+      }
+
+      input {
+        padding-left: 22px;
+      }
     }
 
     .si-file-striking-image-checkbox {
@@ -110,11 +148,15 @@
   }
 
   .si-file-caption {
+    overflow: auto;
+    max-height: 30rem;
     margin-top: 3px;
     padding-top: 3px;
   }
 
   .si-file-caption-textbox {
+    overflow: auto;
+    max-height: 300px;
     min-height: 100px;
     height: auto;
   }
@@ -125,15 +167,12 @@
     right: -275px;
     background-color: $aperta-green;
     width: 275px;
-    height: 53px;
+    height: 100%;
+    max-height: 53px;
     transition: right 0.1s;
 
     &.visible {
       right: 0;
-    }
-
-    &.si-file-full-height {
-      height: 60px;
     }
 
     button {
@@ -163,5 +202,21 @@
         background-color: darken($aperta-green, 5%);
       }
     }
+  }
+
+  .progress-spinner-message {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+  }
+
+  .progress-spinner-message-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    padding-left: 1rem;
+    color: $aperta-grey-dark;
+    font-size: 1.2em;
   }
 }

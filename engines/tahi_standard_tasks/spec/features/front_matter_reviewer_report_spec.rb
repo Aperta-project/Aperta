@@ -8,13 +8,31 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       :with_creator,
       :submitted_lite,
       journal: journal,
-      uses_research_article_reviewer_report: false)
+      uses_research_article_reviewer_report: false
+    )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
 
-  let(:paper_page){ PaperPage.new }
+  let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
-  let!(:reviewer_report_task) do
+
+  let!(:inviter) { create :user }
+
+  def create_reviewer_invitation(paper)
+    invitation = FactoryGirl.create(
+      :invitation,
+      :accepted,
+      accepted_at: DateTime.now.utc,
+      invitee: reviewer,
+      inviter: inviter,
+      task: task,
+      decision: paper.draft_decision
+    )
+    paper.draft_decision.invitations << invitation
+    invitation
+  end
+
+  def create_reviewer_report_task
     ReviewerReportTaskCreator.new(
       originating_task: task,
       assignee_id: reviewer.id
@@ -26,10 +44,12 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     login_as(reviewer, scope: :user)
     visit "/"
-    visit "/papers/#{paper.id}"
   end
 
   scenario "A paper's creator cannot access the Reviewer Report" do
+    create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+
     ensure_user_does_not_have_access_to_task(
       user: paper.creator,
       task: reviewer_report_task
@@ -37,62 +57,102 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
   end
 
   scenario 'A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses' do
+    create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+
+    ident = 'front_matter_reviewer_report--competing_interests'
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
-    t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'I have no competing interests with this work.'
+    answers = CardContent.find_by(ident: ident).answers
+    sentinel_proc = -> { answers.count }
+
+    # Recreating the error in APERTA-8647
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => 'Oops, this is the wrong value'
+    end
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => ''
+    end
+    no_compete = 'I have no competing interests with this work.'
+    t.wait_for_sentinel(sentinel_proc) do
+      t.fill_in_report ident => no_compete
+    end
     t.submit_report
     t.confirm_submit_report
 
-    expect(page).to have_selector(".answer-text", text: 'I have no competing interests with this work.')
+    expect(page).to have_selector(".answer-text", text: no_compete)
+    expect(answers.count).to eq(1)
+    expect(answers.reload.first.value).to eq('I have no competing interests with this work.')
   end
 
   scenario 'A reviewer can see their previous rounds of review' do
+    create_reviewer_invitation(paper)
+    create_reviewer_report_task
     # Revision 0
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
+
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 0'
 
     # no history yet, since we only have the current round of review
     t.ensure_no_review_history
 
+    t.submit_report
+    t.confirm_submit_report
+
     # Revision 1
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    # Create new report with our reviewer
+    invitation = create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+    reviewer_report_task.latest_reviewer_report.accept_invitation!
+
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
 
+    t.submit_report
+    t.confirm_submit_report
+
     t.ensure_review_history(
-      title: 'Revision 0', answers: ['answer for round 0']
+      title: 'v0.0', answers: ['answer for round 0']
     )
 
     # Revision 2
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    # Create new report with our reviewer
+    invitation = create_reviewer_invitation(paper)
+    reviewer_report_task = create_reviewer_report_task
+    reviewer_report_task.latest_reviewer_report.accept_invitation!
+
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']}
+      { title: 'v0.0', answers: ['answer for round 0'] },
+      title: 'v1.0', answers: ['answer for round 1']
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
     register_paper_decision(paper, "minor_revision")
+    paper.tasks.find_by_title("Upload Manuscript").complete! # a reviewer can't complete this task, so this is a quick workaround
     paper.submit! paper.creator
-    reviewer_report_task.update!(decision: paper.draft_decision)
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
 
     t.ensure_review_history(
-      {title: 'Revision 0', answers: ['answer for round 0']},
-      {title: 'Revision 1', answers: ['answer for round 1']},
-      {title: 'Revision 2', answers: ['answer for round 2']}
+      { title: 'v0.0', answers: ['answer for round 0'] },
+      { title: 'v1.0', answers: ['answer for round 1'] },
+      title: 'v2.0', answers: ['answer for round 2']
     )
   end
 end

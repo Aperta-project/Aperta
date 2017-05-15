@@ -1,13 +1,17 @@
-import Ember from 'ember';
-import { task } from 'ember-concurrency';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
+import Ember from 'ember';
+import { newDiscussionUsersPath } from 'tahi/utils/api-path-helpers';
+import { task } from 'ember-concurrency';
 
 const { Mixin, isEmpty } = Ember;
 
 export default Mixin.create(DiscussionsRoutePathsMixin, {
   replyText: '',
+  participants: [],
+  searchingParticipant: false,
 
   topicCreation: task(function * (topic, replyText) {
+    topic.set('initialDiscussionParticipantIDs', this.get('participants').mapBy('id'));
     yield topic.save();
     if(!isEmpty(replyText)) {
       yield this.createReply(replyText, topic);
@@ -36,6 +40,10 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
     return !isEmpty(this.get('model.title'));
   },
 
+  participantSearchUrl: Ember.computed('model.paperId', function() {
+    return newDiscussionUsersPath(this.get('model.paperId'));
+  }),
+
   actions: {
     validateTitle() {
       this.validateTitle();
@@ -46,6 +54,24 @@ export default Mixin.create(DiscussionsRoutePathsMixin, {
       if(!this.titleIsValid()) { return; }
 
       this.get('topicCreation').perform(topic, replyText);
+    },
+
+    searchStarted() {
+      this.set('searchingParticipant', true);
+    },
+
+    searchFinished() {
+      this.set('searchingParticipant', false);
+    },
+
+    addParticipant(selection) {
+      const user = this.store.findOrPush('user', selection);
+      this.get('participants').pushObject(user);
+    },
+
+    removeParticipant(userID) {
+      const userToRemove = this.get('participants').findBy('id', userID);
+      this.get('participants').removeObject(userToRemove);
     }
   }
 });

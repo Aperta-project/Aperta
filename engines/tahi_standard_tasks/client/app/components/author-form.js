@@ -6,12 +6,14 @@ const {
   Component,
   computed,
   computed: { alias },
-  inject: { service }
+  inject: { service },
+  isEqual
 } = Ember;
 
 export default Component.extend({
   countries: service(),
   store: service(),
+  can: service(),
 
   classNames: ['author-form', 'individual-author-form'],
 
@@ -19,6 +21,11 @@ export default Component.extend({
   authorProxy: null,
   isNewAuthor: false,
   validationErrors: alias('authorProxy.validationErrors'),
+  canRemoveOrcid: null,
+  canChangeCoauthorStatus: null,
+
+  authorshipConfirmed: Ember.computed.alias('author.confirmedAsCoAuthor'),
+  authorshipDeclined: Ember.computed.alias('author.refutedAsCoAuthor'),
 
   init() {
     this._super(...arguments);
@@ -27,13 +34,39 @@ export default Component.extend({
     if(this.get('isNewAuthor')) {
       this.initNewAuthorQuestions().then(() => {
         this.createNewAuthor();
+        this.initializeCoauthorshipControls();
       });
+    } else {
+      this.initializeCoauthorshipControls();
     }
   },
+
+  initializeCoauthorshipControls() {
+    this.get('author.paper.journal').then( (journal) => {
+      this.get('can').can('administer', journal).then( (value) => {
+        Ember.run( () => {
+          this.set('canChangeCoauthorStatus', value);
+        });
+      });
+    });
+  },
+
+  authorIsNotCurrentUser: computed('currentUser', 'author.user', function() {
+    const currentUser = this.get('currentUser');
+    const author = this.get('author.user.content'); // <- promise
+    return !isEqual(currentUser, author);
+  }),
+
+  authorIsPaperCreator: computed('author.user', 'author.paper.creator', function() {
+    const author = this.get('author.user.content');
+    const creator = this.get('author.paper.creator');
+    return isEqual(author, creator);
+  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   initNewAuthorQuestions(){
     const q = { type: 'Author' };
+
     return this.get('store').query('nested-question', q).then(
       (nestedQuestions) => {
         this.set('nestedQuestionsForNewAuthor', nestedQuestions.toArray());
@@ -102,7 +135,7 @@ export default Component.extend({
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
     this.get('author').save().then(() => {
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
 
@@ -117,9 +150,16 @@ export default Component.extend({
         }
       });
 
-      this.attrs.saveSuccess();
+      this.get('saveSuccess')();
     });
   },
+
+  validateOrcid: Ember.observer('author.orcidAccount.identifier', function() {
+    const ident = this.get('author.orcidAccount.identifier');
+    if(ident) {
+      this.send('validateField', 'orcidIdentifier', ident);
+    }
+  }),
 
   actions: {
     cancelEdit() {
@@ -171,10 +211,14 @@ export default Component.extend({
     currentAddressCountrySelected(data) {
       this.set('author.currentAddressCountry', data.text);
     },
+    
+    selectAuthorConfirmation(status) {
+      this.set('author.coAuthorState', status);
+    },
 
     validateField(key, value) {
-      if(this.attrs.validateField) {
-        this.attrs.validateField(key, value);
+      if(this.get('validateField')) {
+        this.get('validateField')(key, value);
       }
     }
   }

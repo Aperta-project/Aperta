@@ -65,14 +65,17 @@ All properties are applied in a media query.
   #nav-workflow {
     justify-content: center;
     margin-right: 1.4rem;
-    padding-right: 2.8rem;
+  }
 
-    .fa { display: none; }
+  .control-bar-button.active {
+    border-bottom: 3px solid green;
+  }
 
+  .control-bar-splitter {
+    padding: 0 1rem;
     &:after {
       position: absolute;
       top: 1.3rem;
-      right: 0;
       content: '';
       width: 1px;
       height: $control-bar-height-large-screen - 2.6rem;
@@ -87,12 +90,18 @@ All properties are applied in a media query.
   margin: 0;
   padding-left: 2rem;
   font-size: 1.4rem;
+  overflow: hidden;
 
-  span { overflow: hidden; }
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 #control-bar-paper-journal-logo {
   padding-left: 2rem;
+  align-self: center;
 }
 
 #control-bar-cover { display: none; }
@@ -126,10 +135,11 @@ All properties are applied in a media query.
 
 
 .control-bar-sub-items {
-  @include position(absolute, $control-bar-height-large-screen - 1 0 auto 0);
+  @include position(absolute, $control-bar-height-large-screen 0 auto 0);
   display: flex;
   justify-content: flex-end;
-  height: $control-bar-height-large-screen;
+  align-items: center;
+  min-height: $control-bar-height-large-screen;
   border-bottom: 1px solid #ddd;
   font-size: 12px;
   box-shadow: 0 7px 7px rgba(0, 0, 0, 0.05);

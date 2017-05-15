@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   var args = {
     hinting: false,
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false },
+    emberCliFontAwesome: { includeFontAwesomeAssets: true },
     'ember-cli-qunit': {
       useLintTree: false
     },
@@ -58,6 +58,9 @@ module.exports = function(defaults) {
   // JsDiff
   app.import(app.bowerDirectory + '/jsdiff/diff.js');
 
+  // lscache
+  app.import(app.bowerDirectory + '/lscache/lscache.js');
+
   // Bootstrap
   app.import(app.bowerDirectory + '/bootstrap/js/collapse.js');
   app.import(app.bowerDirectory + '/bootstrap/js/dropdown.js');
@@ -69,7 +72,6 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');
 
   if (app.env !== 'production') {
-    app.import(app.bowerDirectory + '/sinon/index.js', { type: 'test' });
     app.import(app.bowerDirectory + '/ember/ember-template-compiler.js', { type: 'test' });
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }

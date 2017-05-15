@@ -10,6 +10,9 @@ const PAPER_SUBMITTABLE_STATES = [
   'invited_for_full_submission'
 ];
 
+const TERMINAL_STATES = ['accepted', 'rejected'];
+const DECIDABLE_STATES = ['submitted', 'initially_submitted', 'checking'];
+
 const PAPER_GRADUAL_ENGAGEMENT_STATES = [
   'unsubmitted',
   'initially_submitted', // different than submittable states
@@ -20,15 +23,19 @@ export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
-  decisions: hasMany('decision', { async: true }),
+  decisions: hasMany('decision'),
   discussionTopics: hasMany('discussion-topic', { async: true }),
   figures: hasMany('figure', { inverse: 'paper', async: true }),
   groupAuthors: hasMany('group-author', { async: false }),
   journal: belongsTo('journal', { async: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
 
-  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  file: attr(),
+  sourcefile: attr(),
 
+  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  availableCards: hasMany('card'),
+  correspondence: hasMany('correspondence'),
   phases: hasMany('phase', { async: true }),
   relatedArticles: hasMany('related-article', { async: true }),
   snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
@@ -42,16 +49,18 @@ export default DS.Model.extend({
   body: attr('string'),
   coverEditors: attr(),
   createdAt: attr('date'),
-  creator: belongsTo('user', { async: true }),
+  creator: belongsTo('user', { async: false }),
+  shortDoi: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
+  fileType: attr('string'),
   firstSubmittedAt: attr('date'),
   gradualEngagement: attr('boolean'),
   handlingEditors: attr(),
   manuscript_id: attr('string'),
-  oldRoles: attr(),
+  roles: attr(),
   paperType: attr('string'),
   permissionState: computed.alias('publishingState'),
   processing: attr('boolean'),
@@ -67,7 +76,10 @@ export default DS.Model.extend({
   updatedAt: attr('date'),
   withdrawalReason: attr('string'),
   url: attr('string'),
+  versionsContainPdf: attr('boolean'),
+  legendsAllowed: attr('boolean'),
 
+  paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
   allAuthorsSortingAsc: ['position:asc'],
   allAuthors: computed.sort('allAuthorsUnsorted', 'allAuthorsSortingAsc'),
@@ -90,12 +102,12 @@ export default DS.Model.extend({
     return this.get('collaborations').mapBy('user');
   }),
 
-  roleList: computed('oldRoles.[]', function() {
-    return this.get('oldRoles').sort().join(', ');
+  roleList: computed('roles.[]', function() {
+    return this.get('roles').sort().join(', ');
   }),
 
-  latestDecision: computed('decisions.@each.latest', function() {
-    return this.get('decisions').findBy('latest', true);
+  draftDecision: computed('decisions.@each.draft', function() {
+    return this.get('decisions').findBy('draft', true);
   }),
 
   latestRegisteredDecision: computed(
@@ -107,7 +119,7 @@ export default DS.Model.extend({
 
   previousDecisions: computed('decisions.@each.registeredAt', function() {
     return this.get('decisions')
-      .filterBy('registeredAt')
+      .rejectBy('draft')
       .sortBy('registeredAt')
       .reverseObjects();
   }),
@@ -176,6 +188,11 @@ export default DS.Model.extend({
 
   isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
   isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),
+
+  /* True if a decision can be registered in this state. */
+  isReadyForDecision: computed('publishingState', function() {
+    return DECIDABLE_STATES.includes(this.get('publishingState'));
+  }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {

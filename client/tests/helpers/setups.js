@@ -48,6 +48,7 @@ export function paperWithTask(taskType, taskAttrs) {
     editable: true,
     publishing_state: 'unsubmitted'
   }, Factory.getNewId('paper'));
+  paper.shortDoi = 'test.000' + paper.id;
 
   let phase = Factory.createPhase(paper);
   let task  = Factory.createTask(taskType, paper, phase, taskAttrs);
@@ -66,24 +67,9 @@ export function addUserAsCollaborator(paper, user) {
   return collaboration;
 }
 
-export function paperWithRoles(id, oldRoles) {
-  let journal = Factory.createRecord('Journal', {
-    id: 1
-  });
-
-  let paper = Factory.createRecord('Paper', {
-    journal_id: journal.id,
-    id: id
-  });
-
-  let litePaper = Factory.createLitePaperWithRoles(paper, oldRoles);
-
-  return [paper, journal, litePaper];
-}
-
 export function addNestedQuestionsToTask(nestedQuestions, task){
   nestedQuestions.forEach( (question) => {
-    question.owner = { owner_id: task.id, owner_type: "Task" };
+    question.owner = { owner_id: task.id, owner_type: 'Task' };
   });
   return nestedQuestions;
 }

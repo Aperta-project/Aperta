@@ -11,7 +11,7 @@ describe Typesetter::FinancialDisclosureSerializer do
   let(:output) { serializer.serializable_hash }
 
   before do
-    NestedQuestionableFactory.create(
+    AnswerableFactory.create(
       task,
       questions: [
         {

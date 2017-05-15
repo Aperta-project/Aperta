@@ -1,7 +1,11 @@
-import FactoryGuy from "ember-data-factory-guy";
+import FactoryGuy from 'ember-data-factory-guy';
 
-FactoryGuy.define("invitation", {
+FactoryGuy.define('invitation', {
   default: {
-    state: "invited",
+    state: 'invited',
+    email: FactoryGuy.generate((num) => `user-${num}@example.com`),
+    invitee: {},
+    inviteeRole: 'Reviewer',
+    validNewPositionsForInvitation: [0]
   }
 });

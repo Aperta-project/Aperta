@@ -1,0 +1,2 @@
+class CustomCardTaskSerializer < TaskSerializer
+end

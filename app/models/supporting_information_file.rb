@@ -12,18 +12,16 @@ class SupportingInformationFile < Attachment
 
   scope :publishable, -> { where(publishable: true) }
 
-  validates :category, :title, presence: true, if: :task_completed?
+  validates :category, presence: true, if: :task_completed?
+
+  validates :status, acceptance: { accept: STATUS_DONE }, if: :task_completed?
 
   before_create :set_publishable
 
-  def ensure_striking_image_category_is_figure
-    self.striking_image = false unless category == 'Figure'
-    true
-  end
-
   def alt
     if file.present?
-      filename.split('.').first.gsub(/#{::File.extname(filename)}$/, '').humanize
+      regex = /#{::File.extname(filename)}$/
+      filename.split('.').first.gsub(regex, '').humanize
     else
       "no attachment"
     end
@@ -36,7 +34,18 @@ class SupportingInformationFile < Attachment
     self.publishable = true if publishable.nil?
   end
 
+  def ensure_striking_image_category_is_figure
+    self.striking_image = false unless category == 'Figure'
+    true
+  end
+
   def task_completed?
     task && task.completed?
+  end
+
+  protected
+
+  def build_title
+    title
   end
 end

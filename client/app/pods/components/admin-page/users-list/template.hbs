@@ -1,0 +1,37 @@
+{{#overlay-fullscreen visible=showUserDetailsOverlay
+   outAnimationComplete=(action "hideUserDetailsOverlay")
+   title="User Details"
+   overlayClass="user-detail-overlay overlay--blue"
+   as |overlay|}}
+  {{user-details model=detailsForUser
+    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+<div class="admin-users-list-search admin-user-search">
+  {{input enter="searchUsers"
+    placeholder="SEARCH ALL USERS"
+    value=searchQuery}}
+  <button {{action "searchUsers"}}>{{fa-icon icon="search"}}</button>
+</div>
+
+{{#if adminJournalUsers}}
+  <table class="admin-users-list-list">
+    <tr>
+      <th>Last Name</th>
+      <th>First Name</th>
+      <th>Username</th>
+      {{#if roles }}
+        <th class="admin-users-list-roles">Roles</th>
+      {{/if}}
+    </tr>
+    {{#each adminJournalUsers as |user|}}
+
+      {{admin-journal-user user=user
+        journal=journal
+        journalRoles=roles }}
+    {{/each}}
+  </table>
+{{else}}
+  <p class="admin-user-search-default-state-text">{{placeholderText}}</p>
+{{/if}}

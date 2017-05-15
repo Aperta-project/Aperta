@@ -30,10 +30,6 @@ class RegisterDecisionOverlay < CardOverlay
     find('input[value="accepted"]')
   end
 
-  def disabled?
-    first("input[name=decision]:disabled")
-  end
-
   def click_send_email_button
     find(".button-primary.button--green.send-email-action").click
     # and wait for the flash message to show

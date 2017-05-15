@@ -14,8 +14,6 @@ describe TaskTemplatesController do
                                           journal_task_type: journal.journal_task_types.first) }
   let(:journal_task_type) { journal.journal_task_types.first }
 
-  expect_policy_enforcement
-
   it "creates a record" do
     post :create, format: :json, task_template: { phase_template_id: phase_template.id,
                                                   journal_task_type_id: journal_task_type.id,

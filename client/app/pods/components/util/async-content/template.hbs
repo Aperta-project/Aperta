@@ -1,5 +1,5 @@
-{{#if task.lastSuccessful}}
-  {{yield task.lastSuccessful.value}}
+{{#if concurrencyTask.lastSuccessful}}
+  {{yield concurrencyTask.lastSuccessful.value}}
 {{else}}
   {{yield to="inverse"}}
 {{/if}}

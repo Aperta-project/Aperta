@@ -7,8 +7,6 @@ describe PhaseTemplatesController do
   let(:mmt) { FactoryGirl.create(:manuscript_manager_template) }
   let(:phase_template) { FactoryGirl.create(:phase_template, manuscript_manager_template: mmt) }
 
-  expect_policy_enforcement
-
   it "creates a record" do
     post :create, format: :json, phase_template: { name: "A Phase", manuscript_manager_template_id: mmt.id, position: 0 }
     expect(response.status).to eq(201)

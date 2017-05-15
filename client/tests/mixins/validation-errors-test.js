@@ -11,6 +11,65 @@ module('unit: ValidationErrorsMixin', {
 });
 
 
+// #validate --------------------------------------------------------
+
+test('#validate will validate the presence of a key and its corresponding value', function(assert) {
+  this.object.set('foo', null);
+  this.object.set('validations', { 'foo': ['presence'] });
+
+  this.object.validate('foo', this.object.get('foo'));
+
+  assert.equal(this.object.validationErrorsPresent(), true, 'errors found');
+});
+
+test('#validate will skip validations when skipValidation is true', function(assert) {
+  this.object.set('foo', null);
+  this.object.set('validations', { 'foo': ['presence'] });
+
+  this.object.skipValidations = true;
+  this.object.validate('foo', this.object.get('foo'));
+
+  assert.equal(this.object.validationErrorsPresent(), false, 'no errors found');
+});
+
+test('#validate will run validations when skipValidation is false', function(assert) {
+  this.object.set('foo', null);
+  this.object.set('validations', { 'foo': ['presence'] });
+
+  this.object.skipValidations = true;
+  this.object.validate('foo', this.object.get('foo'));
+
+  assert.equal(this.object.validationErrorsPresent(), false, 'no errors found');
+});
+
+test('#validate will use the results of skipValidations() when it is a function to determine skipping validation', function(assert) {
+  this.object.set('foo', null);
+  this.object.set('validations', { 'foo': ['presence'] });
+
+  let shouldSkip;
+  this.object.skipValidations = () => { return shouldSkip; }
+
+  // skip validations
+  shouldSkip = true;
+  this.object.validate('foo', this.object.get('foo'));
+  assert.equal(this.object.validationErrorsPresent(), false, 'no errors found');
+
+  this.object.clearAllValidationErrors();
+
+  // do not skip validations
+  shouldSkip = false;
+  this.object.validate('foo', this.object.get('foo'));
+  assert.equal(this.object.validationErrorsPresent(), true, 'errors found');
+
+  this.object.clearAllValidationErrors();
+
+  // skip validations
+  shouldSkip = true;
+  this.object.validate('foo', this.object.get('foo'));
+  assert.equal(this.object.validationErrorsPresent(), false, 'no errors found');
+});
+
+
 // #validationErrorsPresent -----------------------------------------
 
 test('#validationErrorsPresent with error', function(assert) {

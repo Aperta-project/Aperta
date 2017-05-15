@@ -19,7 +19,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
         });
       }
       else {
-        this.get('flash').displayMessage('error', 'Enter withdrawal reason');
+        this.get('flash').displayRouteLevelMessage('error', 'Enter withdrawal reason');
       }
     },
 

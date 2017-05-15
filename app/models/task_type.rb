@@ -1,10 +1,9 @@
 class TaskType
   cattr_accessor(:types) { HashWithIndifferentAccess.new }
 
-  def self.register(task_klass, title, role, required_permissions=nil)
+  def self.register(task_klass, title, required_permissions = nil)
     types[task_klass.name] = {
       default_title: title,
-      default_role: role,
       required_permissions: required_permissions
     }
   end

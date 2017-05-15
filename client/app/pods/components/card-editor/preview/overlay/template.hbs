@@ -1,0 +1,35 @@
+<div class="card-editor-preview-overlay-header">
+  <div>
+    <ul>
+      <li>Sample Author</li>
+      <li>samplejournal.1000002</li>
+      <li>Research</li>
+      <li>Unsubmitted</li>
+    </ul>
+    <span class="card-editor-preview-overlay-paper-title">Sample Paper Title: with a clever subtitle</span>
+  </div>
+
+  <div class="button-secondary button--green card-editor-preview-overlay-button" tabindex="-1">Close</div>
+</div>
+<div class="card-editor-preview-overlay-body">
+  <h1 class="card-editor-preview-overlay-title">{{card.name}}</h1>
+  {{yield}}
+</div>
+
+<footer class="card-editor-preview-overlay-footer">
+  <div class="participant-selector">
+    <span class="participant-selector-label">Following:</span>
+    <div class="add-participant-button card-editor-preview-overlay-button" title="Add Someone" tabindex="-1">
+      +
+    </div>
+
+    <br>
+  </div>
+
+  <div>
+    <button name="task_completed" class="button-secondary button--green card-editor-preview-overlay-button" tabindex="-1">
+      I am done with this task
+    </button>
+    <a class="button-secondary button--green card-editor-preview-overlay-button" tabindex="-1">Close</a>
+  </div>
+</footer>

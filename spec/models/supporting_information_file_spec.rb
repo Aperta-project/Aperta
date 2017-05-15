@@ -25,16 +25,12 @@ describe SupportingInformationFile, redis: true do
     it_behaves_like 'attachment#download! stores the file'
     it_behaves_like 'attachment#download! caches the s3 store_dir'
     it_behaves_like 'attachment#download! sets the file_hash'
-    it_behaves_like 'attachment#download! sets title to file name'
     it_behaves_like 'attachment#download! sets the status'
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'
-  end
-
-  describe '#filename' do
-    it 'returns the proper filename' do
-      expect(file.filename).to eq 'yeti.tiff'
-    end
+    it_behaves_like 'attachment#download! sets the updated_at'
+    it_behaves_like 'attachment#download! sets the error fields'
+    it_behaves_like 'attachment#download! when the attachment is invalid'
   end
 
   describe '#alt' do
@@ -63,6 +59,18 @@ describe SupportingInformationFile, redis: true do
         src: file_src,
         id: file.id
       )
+    end
+  end
+
+  describe '#build_title' do
+    it 'returns the title' do
+      file.title = Faker::Lorem.sentence
+      expect(file.send(:build_title)).to eq(file.title)
+    end
+
+    it 'returns nil if the title is nil' do
+      expect(file.title).to be_nil
+      expect(file.send(:build_title)).to be_nil
     end
   end
 end

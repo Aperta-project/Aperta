@@ -51,6 +51,7 @@
 
 .overlay-footer .participant-selector {
   flex-grow: 1;
+  max-width: 60%;
 }
 
 .overlay-action-buttons {
@@ -60,6 +61,12 @@
   .button-primary.button--green {
     width: inherit;
   }
+}
+
+.overlay-message-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
 }
 
 .call-to-action {

@@ -1,59 +1,74 @@
-{{#if isEditing}}
+{{#if (eq file.status "processing")}}
+  {{#progress-spinner-message visible=true
+                              size="small"}}
+    Processing ...
+  {{/progress-spinner-message}}
+{{else if isFileError}}
+  <div class="si-file-error">
+    <a class="acknowledge-error-button" {{action "deleteFile"}} title="Confirm file error">×</a>
+    {{error-message message=uploadErrorMessage
+                    displayIcon=true
+                    dislayText=true}}
+  </div>
+{{else if isEditing}}
   <div class="si-file-editor flex-form visible">
     <div class="si-file-filename">
-      <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
+      <a href="{{file.src}}"><i class="fa {{iconClass}}"></i>{{file.filename}}</a>
 
-      <button class="fileinput-button">
+      <div class="fileinput-button">
         {{fa-icon icon="refresh"}}
         <span>Replace File</span>
         {{file-uploader url=attachmentUrl
                         railsMethod="PUT"
                         multiple=false
                         filePrefix="supporting-info"
+                        done="uploadFinished"
                         cancel="cancelUploads"}}
-      </button>
+      </div>
     </div>
     <div class="flex-group">
-      {{input class="form-control flex-element si-file-label-input"
-              placeholder="E.g. S1"
-              name="label"
-              value=file.label}}
+      <div class="flex-element si-file-label-input {{if model.validationErrors.label "error"}}">
+        {{input class="form-control si-file-label-field"
+                placeholder="E.g. S1"
+                name="label"
+                key-up="validateLabel"
+                value=file.label}}
+      </div>
 
-      {{power-select-other class="form-control flex-element si-file-category-input"
+      <div class="inset-form-control flex-element">
+      {{power-select-other class="form-control si-file-category-input"
                            otherText="Other"
                            selectPlaceholder="Select category"
                            inputPlaceholder="Please specify"
                            name="category"
                            options=categories
+                           required=true
                            errors=model.validationErrors.category
                            searchEnabled=false
                            validate=(action "validateCategory")
                            value=file.category}}
+      </div>
     </div>
-    <div class="flex-group">
-      {{format-input class="form-control flex-element si-file-title-input"
-                     placeholder="Enter a title"
-                     name="title"
-                     value=file.title
-                     focus-out=(action "validateTitle")
-                     errors=model.validationErrors.title
-                     displayBold=false}}
 
-      {{format-input placeholder="Enter a legend (optional)"
-                     name="caption"
-                     class="form-control flex-element si-file-caption-textbox"
-                     value=file.caption
-                     displayBold=false}}
-    </div>
+    {{#if legendsAllowed}}
+      <div class="flex-group">
+        <div class="flex-element">
+          {{format-input placeholder="Enter a legend (optional)"
+                         name="caption"
+                         class="form-control si-file-caption-textbox"
+                         value=file.caption
+                         displayBold=false}}
+        </div>
+      </div>
+    {{/if}}
+
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
     {{#if (eq file.category "Figure")}}
       <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
     {{/if}}
 
     <div class="si-file-actions">
-      {{#if model.validationErrors.save}}
-        {{error-message message=model.validationErrors.save}}
-      {{/if}}
+      {{error-message message=model.validationErrors.save}}
       <button class="button--green button-link si-file-cancel-edit-button"
         {{action "cancelEdit"}}>
         Cancel
@@ -66,8 +81,8 @@
   </div>
 
 {{else}}
-  <div class="si-file-viewing" {{action "enterEditStateIfEditable" on="doubleClick"}}>
 
+  <div class="si-file-viewing" {{action "enterEditStateIfEditable" on="doubleClick"}}>
     {{#if isEditable}}
       <div class="si-file-control-icons">
         <i class="fa fa-pencil si-file-edit-icon" {{action "enterEditStateIfEditable" on="click"}}></i>
@@ -75,21 +90,22 @@
       </div>
     {{/if}}
 
-    <a href="{{file.src}}" class="si-file-filename">
-      <i class="fa {{fileIconClass}}"></i>{{ file.filename }}
+    <a href="{{file.src}}" class="si-file-filename" target="_blank">
+      <i class="fa {{fileIconClass}}"></i>{{file.filename}}
     </a>
 
     <div class="si-file-title">
-      {{ file.label }} {{ file.category }}{{if file.category "." ""}} {{{ file.title }}}
+      {{file.label}} {{file.category}}
     </div>
 
     {{#if file.caption}}
-      <div class="si-file-caption">{{{ file.caption }}}</div>
+      <div class="si-file-caption">{{{file.caption}}}</div>
     {{/if}}
 
-    <div class="{{if (eq uiState "delete") "visible"}}
-                si-file-delete
-                {{if file.caption "" "si-file-full-height"}}">
+    {{error-message message=model.validationErrors.save
+                    displayIcon=true}}
+
+    <div class="{{if (eq uiState "delete") "visible"}} si-file-delete">
       <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
         Cancel
       </button>

@@ -98,12 +98,11 @@ describe SalesforceServices::API do
       task_params = {
         title: 'Billing',
         type: 'PlosBilling::BillingTask',
-        paper_id: paper.id,
-        old_role: 'author'
+        paper_id: paper.id
       }
       FactoryGirl.create(:paper_with_task,
-                         task_params: task_params,
-                         journal: journal)
+        task_params: task_params,
+        journal: journal)
     end
 
     before do
@@ -111,7 +110,7 @@ describe SalesforceServices::API do
       allow(paper).to receive(:creator) { FactoryGirl.build(:user) }
       FactoryGirl.create(:financial_disclosure_task, paper: paper)
       expect(Case).to receive(:soql_conditions_for)
-        .with("Subject" => "#{paper.manuscript_id}")
+        .with("Subject" => paper.manuscript_id.to_s)
     end
 
     context "existing PFA case on salesforce" do
@@ -148,7 +147,5 @@ end
 
 def delete_vcr_file(file) # useful when writing new specs that require vcr, and need the http request need to be made multiple times until correct
   file = "spec/fixtures/vcr_cassettes/#{file}.yml"
-  if File.exists?(file)
-    ap "deleting #{file}" if File.delete(file)
-  end
+  ap "deleting #{file}" if File.exist?(file) && File.delete(file)
 end

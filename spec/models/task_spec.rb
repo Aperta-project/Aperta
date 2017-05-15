@@ -1,20 +1,10 @@
 require 'rails_helper'
 
 describe Task do
-  let(:paper) { FactoryGirl.create :paper, :with_tasks }
-
   it_behaves_like 'is not snapshottable'
 
   describe ".without" do
-    let!(:tasks) do
-      2.times.map do
-        Task.create! title: "Paper Admin",
-          completed: true,
-          old_role: 'admin',
-          phase_id: 3,
-          paper_id: 99
-      end
-    end
+    let!(:tasks) { FactoryGirl.create_list(:custom_card_task, 2, :with_stubbed_associations) }
 
     it "excludes task" do
       expect(Task.count).to eq(2)
@@ -24,26 +14,26 @@ describe Task do
 
   describe '#add_participant' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
     let(:user) { FactoryGirl.create :user }
 
     it 'adds the user as a participant on the task' do
-      expect do
-        task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      expect(task.participants.count).to eq(0)
+      task.add_participant(user)
+      expect(task.participants.count).to eq(1)
     end
 
     it 'does not add them more than once' do
-      expect do
-        task.add_participant(user)
-        task.add_participant(user)
-        task.add_participant(user)
-      end.to change(task.participants, :count).by(1)
+      task.add_participant(user)
+      task.add_participant(user)
+      task.add_participant(user)
+      expect(task.participants.count).to eq(1)
     end
   end
 
   describe '#assignments' do
-    subject(:task) { FactoryGirl.create :ad_hoc_task }
+    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
 
     before do
       Assignment.create!(
@@ -64,7 +54,8 @@ describe Task do
 
   describe '#participations' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -90,7 +81,8 @@ describe Task do
 
   describe '#participants' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, paper: paper }
-    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
+    let(:paper) { FactoryGirl.create :paper, journal: journal }
+    let(:journal) { FactoryGirl.create(:journal, :with_task_participant_role) }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -114,6 +106,22 @@ describe Task do
     end
   end
 
+  describe '#permission_requirements' do
+    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
+
+    before do
+      FactoryGirl.create(:permission_requirement, required_on: task)
+    end
+
+    context 'on #destroy' do
+      it 'destroy assignments' do
+        expect do
+          task.destroy!
+        end.to change { task.permission_requirements.count }.by(-1)
+      end
+    end
+  end
+
   describe "#invitations" do
     let(:paper) { FactoryGirl.create :paper }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }
@@ -121,39 +129,62 @@ describe Task do
 
     context "on #destroy" do
       it "destroy invitations" do
-        expect {
+        expect do
           task.destroy!
-        }.to change { Invitation.count }.by(-1)
+        end.to change { Invitation.count }.by(-1)
       end
     end
   end
 
-  describe "#nested_question_answers" do
-    it "destroys nested_question_answers on destroy" do
-      task = FactoryGirl.create(:ad_hoc_task, :with_nested_question_answers)
-      nested_question_answer_ids = task.nested_question_answers.pluck :id
-      expect(nested_question_answer_ids).to have_at_least(1).id
+  describe "Answerable#answers" do
+    it "destroys answers on destroy" do
+      task = FactoryGirl.create(:ad_hoc_task)
+      answer = FactoryGirl.create(:answer, owner: task)
+      expect(task.answers.pluck(:id)).to contain_exactly(answer.id)
 
-      expect {
-        task.destroy
-      }.to change {
-        NestedQuestionAnswer.where(id: nested_question_answer_ids).count
-      }.from(nested_question_answer_ids.count).to(0)
+      task.destroy
+      expect(Answer.count).to eq(0)
     end
   end
 
-  describe "#answer_for" do
-    subject(:task) { FactoryGirl.create(:ad_hoc_task) }
-    let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
-    let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
+  describe "Answerable#answer_for" do
+    subject(:task) { FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations) }
+    let!(:answer_foo) do
+      FactoryGirl.create(
+        :answer,
+        owner: task,
+        value: "the answer",
+        card_content: FactoryGirl.create(:card_content, ident: "foo")
+      )
+    end
 
     it "returns the answer for the question matching the given ident" do
       expect(task.answer_for("foo")).to eq(answer_foo)
     end
 
-    context "and there is no answer for the given ident" do
-      it "returns nil" do
-        expect(task.answer_for("unknown-ident")).to be(nil)
+    it "returns nil if there is no answer for the given ident" do
+      expect(task.answer_for("unknown-ident")).to be(nil)
+    end
+  end
+
+  describe "Answerable#set_card_version" do
+    before { CardLoader.load("AdHocTask") }
+    let(:latest_card_version) { task.default_card.latest_published_card_version }
+
+    context "with no card version" do
+      let(:task) { AdHocTask.new }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to change { task.card_version }
+          .from(nil).to(latest_card_version)
+      end
+    end
+
+    context "with card version already set" do
+      let(:task) { AdHocTask.new(card_version: FactoryGirl.build(:card_version)) }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to_not change { task.card_version }
       end
     end
   end
@@ -166,10 +197,10 @@ describe Task do
 
     it 'returns all the tasks' do
       tasks_from_source = Dir[Rails.root.join('**/*.rb')]
-        .select { |path| path.match(%r{models/.*task.rb}) }
-        .reject { |path| path.match(/concerns/) }
-        .reject { |path| path.match(%r{models/task.rb}) }
-        .map { |path| path.match(%r{models/(.*).rb})[1] }
+                          .select { |path| path.match(%r{models/.*task.rb}) }
+                          .reject { |path| path.match(/concerns/) }
+                          .reject { |path| path.match(%r{models/task.rb}) }
+                          .map { |path| path.match(%r{models/(.*).rb})[1] }
 
       tasks = Task.descendants.map { |c| c.to_s.underscore }
       expect(tasks).to include(*tasks_from_source)
@@ -205,14 +236,7 @@ describe Task do
 
   describe "#can_change?: associations can use this method to update based on task" do
     let(:task) do
-      FactoryGirl.create(
-        :ad_hoc_task,
-        title: "Paper Admin",
-        completed: true,
-        old_role: 'admin',
-        phase_id: 3,
-        paper_id: 99
-      )
+      FactoryGirl.create(:ad_hoc_task, :with_stubbed_associations)
     end
 
     it "returns true" do

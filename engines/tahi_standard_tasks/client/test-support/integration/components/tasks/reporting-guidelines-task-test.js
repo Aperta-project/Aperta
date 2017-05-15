@@ -1,29 +1,10 @@
 import { test, moduleForComponent } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
+import { createQuestion } from 'tahi/tests/factories/nested-question';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import page from 'tahi/tests/pages/reporting-guidelines-task';
-
-let createQA = (task, ident, questionText, answerValue) => {
-  var answers;
-  if (answerValue) {
-    let answer = make('nested-question-answer', {value: answerValue, owner: task});
-    answers = [answer];
-  } else {
-    answers = [];
-  }
-
-  let question = make('nested-question', {
-    ident: ident,
-    text: questionText,
-    answers: answers,
-    owner: task
-  });
-
-  task.get('nestedQuestions').addObject(question);
-  return question;
-};
 
 moduleForComponent('reporting-guidelines-task', 'Integration | Component | reporting guidelines task', {
   integration: true,
@@ -36,14 +17,14 @@ moduleForComponent('reporting-guidelines-task', 'Integration | Component | repor
     manualSetup(this.container);
     let task = make('reporting-guidelines-task');
 
-    createQA(task, 'reporting_guidelines--clinical_trial', 'Whatever');
-    createQA(task, 'reporting_guidelines--systematic_reviews', 'Check if you can');
-    createQA(task, 'reporting_guidelines--systematic_reviews--checklist', 'Provide a completed PRISMA checklist as supporting information.' );
-    createQA(task, 'reporting_guidelines--meta_analyses', 'Whatever' );
-    createQA(task, 'reporting_guidelines--meta_analyses--checklist', 'Provide a meta analysis checklist');
-    createQA(task, 'reporting_guidelines--diagnostic_studies', 'Whatever' );
-    createQA(task, 'reporting_guidelines--epidemiological_studies', 'Whatever' );
-    createQA(task, 'reporting_guidelines--microarray_studies', 'Whatever' );
+    createQuestion(task, 'reporting_guidelines--clinical_trial', 'Whatever');
+    createQuestion(task, 'reporting_guidelines--systematic_reviews', 'Check if you can');
+    createQuestion(task, 'reporting_guidelines--systematic_reviews--checklist', 'Provide a completed PRISMA checklist as supporting information.' );
+    createQuestion(task, 'reporting_guidelines--meta_analyses', 'Whatever' );
+    createQuestion(task, 'reporting_guidelines--meta_analyses--checklist', 'Provide a meta analysis checklist');
+    createQuestion(task, 'reporting_guidelines--diagnostic_studies', 'Whatever' );
+    createQuestion(task, 'reporting_guidelines--epidemiological_studies', 'Whatever' );
+    createQuestion(task, 'reporting_guidelines--microarray_studies', 'Whatever' );
 
     // All task components check if the user has permission to edit
     this.registry.register('service:can', FakeCanService);

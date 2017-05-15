@@ -14,6 +14,8 @@ Ember.MODEL_FACTORY_INJECTIONS = true;
 App = Ember.Application.extend({
   modulePrefix: config.modulePrefix,
   podModulePrefix: config.podModulePrefix,
+  //  Uncomment for helpful debugging when you see a blank Ember page
+  //  LOG_TRANSITIONS_INTERNAL: true,
   Resolver
 });
 

@@ -65,6 +65,14 @@ describe Invitation do
       expect(paper.draft_decision.invitations).to include invitation
     end
 
+    it "creates a token on create" do
+      expect(invitation.token).to be_nil
+      expect do
+        invitation.save!
+      end.to change { invitation.token }
+      expect(invitation.token).to_not be_nil
+    end
+
     context 'when there is more than one decision' do
       let!(:completed_decision) { FactoryGirl.create :decision, paper: paper }
       let(:draft_decision) { paper.draft_decision }
@@ -100,7 +108,7 @@ describe Invitation do
     end
 
     it "does not set the state to 'rescinded' from 'pending'" do
-      expect { invitation.rescind! }.to raise_exception
+      expect { invitation.rescind! }.to raise_error(AASM::InvalidTransition)
       expect(invitation.state).not_to eq('rescinded')
     end
 
@@ -130,12 +138,12 @@ describe Invitation do
       expect(authors_list).to_not be_empty
       invitation.invite!
       expect(invitation.information)
-        .to eq("#{authors_list}")
+        .to eq(authors_list.to_s)
     end
   end
 
   describe "#accept!" do
-    it "sends an old_role invitation email" do
+    it "sends an invitation email" do
       invitation.invite!
       expect(task).to receive(:accept_allowed?).with(invitation).and_return(true)
       expect(task).to receive(:invitation_accepted).with(invitation)
@@ -203,8 +211,7 @@ describe Invitation do
       [no_invite_user,
        pending_invite_user,
        accepted_invite_user,
-       declined_invite_user
-      ]
+       declined_invite_user]
     end
     context 'Users with invites in various states' do
       before do

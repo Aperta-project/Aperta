@@ -1,25 +1,36 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
+import pusherConcerns from 'tahi/mixins/controllers/pusher-concerns';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(pusherConcerns, {
   can: Ember.inject.service('can'),
   delayedSave: false,
-  isLoading: false,
   isLoggedIn: Ember.computed.notEmpty('currentUser'),
   canViewAdminLinks: false,
   showOverlay: false,
   showFeedbackOverlay: false,
   journals: null,
   canViewPaperTracker: false,
+  healthCheck: Ember.inject.service('health-check'),
 
-  init() {
-    Ember.assert('Application name is required for proper display', window.appName);
-    this.store.findAll('journal').then( (journals) => {
-      this.set('journals', journals);
-      this.setCanViewPaperTracker();
-    });
-    return this._super(...arguments);
+  init: function() {
+    this._super(...arguments);
+    this.get('healthCheck').start();
   },
+
+  pusherConnectionStatusChanged: function() {
+    this.set('pusherConnectionState', this.pusher.connection.connection.state);
+
+    if (this.pusher.connection.connection.state === 'connecting') {
+      this.handlePusherConnecting();
+    } else {
+      this.handlePusherConnectionSuccess();
+    }
+    if (this.pusher.get('isDisconnected')) {
+      this.handlePusherConnectionFailure();
+    }
+  }.observes('pusher.isDisconnected').on('init'),
+
 
   setCanViewPaperTracker: function() {
     if (this.journals === null) {

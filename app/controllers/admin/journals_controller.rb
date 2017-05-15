@@ -7,7 +7,6 @@ class Admin::JournalsController < ApplicationController
     journals = current_user.administered_journals do |journal_query|
       journal_query.includes(
         :journal_task_types,
-        :old_roles,
         manuscript_manager_templates: {
           phase_templates: {
             task_templates: :journal_task_type
@@ -19,35 +18,34 @@ class Admin::JournalsController < ApplicationController
   end
 
   def show
-    j = Journal.where(id: journal.id).includes(:journal_task_types, :old_roles, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
+    j = Journal.where(id: journal.id).includes(:journal_task_types,
+      manuscript_manager_templates:
+      {
+        phase_templates: { task_templates: :journal_task_type }
+      }).first!
     requires_user_can(:administer, j)
     respond_with(j, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def authorization
-    fail AuthorizationError unless current_user.administered_journals.any?
+    raise AuthorizationError unless current_user.administered_journals.any?
     head 204
   end
 
   def create
     requires_user_can(:administer, journal)
     journal.save!
+    process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
   def update
     requires_user_can(:administer, journal)
     journal.update(journal_params)
+    process_pending_logo(params[:admin_journal][:logo_url])
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
-  def upload_logo
-    requires_user_can(:administer, journal)
-    journal_with_logo = DownloadLogo.call(journal, params[:url])
-    respond_with(journal_with_logo) do |format|
-      format.json { render json: journal_with_logo, serializer: AdminJournalSerializer, status: :ok }
-    end
-  end
 
   private
 
@@ -66,7 +64,19 @@ class Admin::JournalsController < ApplicationController
       :description,
       :manuscript_css,
       :name,
-      :pdf_css
+      :pdf_css,
+      :last_doi_issued,
+      :doi_journal_prefix,
+      :doi_publisher_prefix
     )
+  end
+
+  def process_pending_logo(url)
+    return unless url.present?
+
+    if url.include?("/pending/")
+      # logo is waiting to be processed in s3 pending bucket
+      DownloadJournalLogoWorker.perform_async(journal.id, url)
+    end
   end
 end

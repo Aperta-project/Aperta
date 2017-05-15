@@ -3,6 +3,9 @@ class PaperFactory
 
   def self.create(paper_params, creator)
     paper_params[:title] = 'Untitled' if paper_params[:title].blank?
+    # number_reviewer_reports is applied for all new papers as of APERTA-7810.
+    # it's not exposed to the client.
+    paper_params[:number_reviewer_reports] = true
     paper = Paper.new(paper_params)
 
     pf = new(paper, creator)
@@ -18,18 +21,18 @@ class PaperFactory
   def create
     Paper.transaction do
       return unless paper.valid?
-        if template
-          paper.uses_research_article_reviewer_report =
-            template.uses_research_article_reviewer_report
-          paper.save!
-          # TODO: This requires roles & permissions tables to exist. It should
-          # be possible to create a paper for testing without them.
-          add_creator_assignment!
-          add_phases_and_tasks
-          add_creator_as_author!
-        else
-          paper.errors.add(:paper_type, 'is not valid')
-        end
+      if template
+        paper.uses_research_article_reviewer_report =
+          template.uses_research_article_reviewer_report
+        paper.save!
+        # TODO: This requires roles & permissions tables to exist. It should
+        # be possible to create a paper for testing without them.
+        add_creator_assignment!
+        add_phases_and_tasks
+        add_creator_as_author!
+      else
+        paper.errors.add(:paper_type, 'is not valid')
+      end
     end
   end
 
@@ -37,7 +40,11 @@ class PaperFactory
     template.phase_templates.each do |phase_template|
       phase = paper.phases.create!(name: phase_template['name'])
       phase_template.task_templates.each do |task_template|
-        create_task_from_template(task_template, phase)
+        if task_template.card
+          create_task_from_card(task_template, phase)
+        else
+          create_task_from_template(task_template, phase)
+        end
       end
     end
   end
@@ -50,17 +57,30 @@ class PaperFactory
   end
 
   def create_task_from_template(task_template, phase)
-    journal_task_type = task_template.journal_task_type
+    task_klass = Task.safe_constantize(task_template.journal_task_type.kind)
     task = TaskFactory.create(
-      Task.safe_constantize(task_template.journal_task_type.kind),
+      task_klass,
       phase: phase,
       paper: phase.paper,
       creator: creator,
       title: task_template.title,
       body: task_template.template,
-      old_role: journal_task_type.old_role,
-      notify: false)
-    task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
+      notify: false
+    )
+    task
+  end
+
+  def create_task_from_card(task_template, phase)
+    task = TaskFactory.create(
+      CustomCardTask,
+      phase: phase,
+      paper: phase.paper,
+      creator: creator,
+      card_version: task_template.card.latest_published_card_version,
+      title: task_template.title,
+      notify: false
+    )
+    task
   end
 
   def add_creator_assignment!

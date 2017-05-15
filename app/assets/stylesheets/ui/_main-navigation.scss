@@ -24,6 +24,7 @@ On small screens, main navigation is positioned absolutely off screen.
   display: flex;
   justify-content: flex-end;
   height: $main-nav-height-large-screen;
+  flex-shrink: 0;
   color: #fff;
   background: #454545;
   z-index: z('main-nav');

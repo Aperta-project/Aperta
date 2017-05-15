@@ -14,7 +14,12 @@ export default function(date, todaysMoment) {
     // Moment doesn't have a way to *insist* that the delta be
     // displayed in days; it will round to months/years and we want
     // DAYS, specifically.
-    return Math.floor(ago/msPerDay) + ' days ago';
+    const days = Math.floor(ago/msPerDay);
+    if (days === 1) {
+      return '1 day ago';
+    } else {
+      return days + ' days ago';
+    }
   }
   return moment(date.toISOString()).fromNow();
 }

@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
+import Answerable from 'tahi/mixins/answerable';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import Snapshottable from 'tahi/mixins/snapshottable';
 
-export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, {
+export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
   attachments: DS.hasMany('adhoc-attachment', {
     async: true,
     inverse: 'task'
@@ -52,6 +53,10 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, 
   type: DS.attr('string'),
   assignedToMe: DS.attr(),
 
+  componentName: Ember.computed('type', function() {
+    return Ember.String.dasherize(this.get('type'));
+  }),
+
   paperTitle: Ember.computed('paper', function() {
     return this.get('paper.displayTitle');
   }),
@@ -63,5 +68,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, Snapshottable, 
   responseToQuestion(key) {
     var questionResponse = (this.answerForQuestion(key) || Ember.ObjectProxy.create());
     return questionResponse.get('value');
-  }
+  },
+
+  isSidebarTask: Ember.computed.or('assignedToMe', 'isSubmissionTask')
 });

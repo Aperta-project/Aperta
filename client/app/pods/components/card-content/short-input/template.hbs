@@ -1,0 +1,8 @@
+<label class="content-text">{{{content.text}}}</label>
+{{input
+  value=(readonly answer.value)
+  class="form-control"
+  placeholder=content.placeholder
+  change=(action "valueChanged")
+  input=(action "valueChanged")
+  disabled=disabled}}

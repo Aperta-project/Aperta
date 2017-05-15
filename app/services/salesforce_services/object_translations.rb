@@ -89,12 +89,18 @@ module SalesforceServices
         @paper.answer_for(ident).try(:value)
       end
 
+      def value_or_nil(ident)
+        value = @paper.answer_for(ident).try(:value)
+        return nil if value.nil?
+        yield value
+      end
+
       def float_answer_for(ident)
-        @paper.answer_for(ident).try(:float_value)
+        value_or_nil(ident, &:to_f)
       end
 
       def yes_no_answer_for(ident)
-        @paper.answer_for(ident).try(:yes_no_value)
+        value_or_nil(ident) { |value| value == true ? 'Yes' : 'No' }
       end
     end
   end

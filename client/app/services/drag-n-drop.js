@@ -12,7 +12,7 @@ import Ember from 'ember';
 
   export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     dragStart: function(e) {
-      DragNDrop.dragItem = this.get('model');
+      DragNDrop.set('dragItem', this.get('model'));
 
       // REQUIRED for Firefox to let something drag
       // http://html5doctor.com/native-drag-and-drop
@@ -48,7 +48,7 @@ import Ember from 'ember';
       this.removeDragStyles();
       this.sendAction('somethingImportant', DragNDrop.dragItem);
       // Cleanup:
-      DragNDrop.dragItem = null;
+      DragNDrop.set('dragItem', null);
       // Prevent bubblbing:
       return DragNDrop.cancel(e);
     }
@@ -75,7 +75,7 @@ const {
   on
 } = Ember;
 
-export default {
+export default Ember.Object.create({
   /**
     @property dragItem
     @type Whatever String, array, Ember class, whatever. Used to pass data from drag object to drop object.
@@ -106,7 +106,7 @@ export default {
     /**
       ```
       dragStart: function(e) {
-        DragNDrop.dragItem = this.get('model');
+        DragNDrop.set('dragItem', this.get('model'));
 
         // REQUIRED for Firefox to let something drag
         // http://html5doctor.com/native-drag-and-drop
@@ -163,4 +163,4 @@ export default {
 
     drop() { throw new Error('Implement drop'); }
   })
-};
+});

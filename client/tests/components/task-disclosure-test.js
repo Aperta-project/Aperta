@@ -11,17 +11,19 @@ moduleForComponent('task-disclosure', 'Integration | Component | task disclosure
   beforeEach() {
     this.set('task', {
       completed: false,
-      title: 'Cat'
+      title: 'Cat',
+      type: 'TabbyCat'
     });
   }
 });
 
 test('it renders', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
   this.render(hbs`
     {{#task-disclosure completed=task.completed
-                       title=task.title }}
+                       title=task.title
+                       type=task.type }}
       Meow
     {{/task-disclosure}}
   `);
@@ -31,6 +33,8 @@ test('it renders', function(assert) {
     this.get('task.title'),
     'displays a title'
   );
+
+  assert.ok(this.$('.task-disclosure').hasClass('task-type-tabby-cat'));
 });
 
 test('it toggles body display', function(assert) {
@@ -38,7 +42,8 @@ test('it toggles body display', function(assert) {
 
   this.render(hbs`
     {{#task-disclosure completed=task.completed
-                       title=task.title }}
+                       title=task.title
+                       type=task.type }}
       Meow
     {{/task-disclosure}}
   `);

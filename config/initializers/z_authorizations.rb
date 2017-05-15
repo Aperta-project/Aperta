@@ -11,7 +11,7 @@
 # The only exception to this rule right are the System-level assignments.
 # This is because the System-level assignment is only used for Site Admins (aka _superusers_).
 # The authorization sub-system does not need to look up these routes for site admins
-# even though the routes for them are supplied below. 
+# even though the routes for them are supplied below.
 #
 Authorizations.configure do |config|
   #
@@ -27,6 +27,12 @@ Authorizations.configure do |config|
     Journal,
     authorizes: Task,
     via: :tasks
+  )
+
+  config.assignment_to(
+    Journal,
+    authorizes: Card,
+    via: :cards
   )
 
   config.assignment_to(

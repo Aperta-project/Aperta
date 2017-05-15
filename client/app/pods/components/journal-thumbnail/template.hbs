@@ -3,52 +3,17 @@
 
   <div class="journal-thumbnail-edit-form animation-fade-in clearfix">
 
-    <div class="journal-thumbnail-logo-upload">
-      <div class="journal-thumbnail-logo">
-        {{#if logoPreview}}
-          <span class="journal-thumbnail-logo-preview"></span>
-        {{else}}
-          {{#if journal.logoUrl}}
-            <img src={{journal.logoUrl}}>
-          {{else}}
-            {{partial "svg/default-journal-logo"}}
-          {{/if}}
-        {{/if}}
-      </div>
-
-      <span class="button-secondary fileinput-button button--blue knockout">
-        <span>Upload New</span>
-        {{file-uploader id=thumbnailId
-                        accept=".jpg,.jpeg,.tiff,.gif,.png"
-                        start="uploadStarted"
-                        done="uploadFinished"
-                        progress="uploadProgress"
-                        cancel="cancelUploads"
-                        processingDone="showPreview"
-                        uploadReady="uploadReady"
-                        filePrefix="journal/logo"
-                        uploadImmediately=false
-                        railsMethod="PUT"
-                        url=logoUploadUrl}}
-      </span>
-
-      <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
-      {{#if isUploading}}
-        <div class="journal-thumbnail-logo-spinner">
-          {{progress-spinner visible=true color="white"}}
-        </div>
-      {{/if}}
-    </div>
+    {{journal-logo-uploader logoUrl=journal.logoUrl}}
 
     <div class="inset-form-control required {{if validationErrors.name "error"}}">
       <div class="inset-form-control-text">
         <label>Journal Title</label>
-        {{error-message message=validationErrors.name}}
+        {{error-message message=validationErrors.name displayIcon=true}}
       </div>
       {{input type="text"
-              value=journal.name
-              class="form-control journal-name-edit inset-form-control-input"
-              placeholder="PLOS Yeti"}}
+        value=journal.name
+        class="form-control journal-name-edit inset-form-control-input"
+        placeholder="PLOS Yeti"}}
     </div>
 
     <div class="inset-form-control">
@@ -60,9 +25,41 @@
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
 
+    <div class="inset-form-control required {{if validationErrors.doiJournalPrefix "error"}}">
+      <div class="inset-form-control-text">
+        <label>DOI Journal Prefix</label>
+        {{error-message message=validationErrors.doiJournalPrefix displayIcon=true}}
+      </div>
+      {{textarea value=journal.doiJournalPrefix
+                 class="journal-doi-journal-prefix-edit inset-form-control-input"
+                 placeholder="journal.yetipub"}}
+    </div>
+
+    <div class="inset-form-control {{if validationErrors.doiPublisherPrefix "error"}}">
+      <div class="inset-form-control-text">
+        <label>DOI Publisher Prefix</label>
+        {{error-message message=validationErrors.doiPublisherPrefix displayIcon=true}}
+      </div>
+      {{textarea value=journal.doiPublisherPrefix
+                 class="journal-doi-publisher-prefix-edit inset-form-control-input"
+                 placeholder="yetipub"}}
+    </div>
+
+    <div class="inset-form-control required {{if validationErrors.lastDoiIssued "error"}}">
+      <div class="inset-form-control-text">
+        <label>Last DOI Issued</label>
+        {{error-message message=validationErrors.lastDoiIssued displayIcon=true}}
+      </div>
+      {{textarea value=journal.lastDoiIssued
+                 class="journal-last-doi-edit inset-form-control-input"
+                 placeholder="1000001"}}
+    </div>
+
+
     <div class="journal-edit-buttons">
       <a href="#" class="button-link button--white" {{action "cancel"}}>cancel</a>
-      <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
+      <a href="#" class="button-secondary button--blue knockout {{if journal.isSaving "hidden"}}" {{action "saveJournalDetails"}}>Save</a>
+      {{progress-spinner visible=journal.isSaving}}
     </div>
 
   </div>

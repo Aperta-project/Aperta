@@ -6,6 +6,15 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   # Choose what kind of storage to use for this uploader:
   storage Rails.application.config.carrierwave_storage
 
+  # image? is used both here and in Attachment
+  def self.image?(file)
+    if file.respond_to?('content_type')
+      ["image/tiff", "application/postscript", "image/x-eps", "image/jpeg", "image/png", "image/gif"].include?(file.content_type)
+    else
+      !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
+    end
+  end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
@@ -68,16 +77,22 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   def density_arguments
     return [] unless image.details['Total ink density']
     ['-density', image.details['Total ink density']]
+  rescue NoMethodError
+    # See https://github.com/minimagick/minimagick/issues/379
+    []
   end
 
   def colorspace_arguments
     return [] unless image.details['Colorspace']
     ['-colorspace', image.details['Colorspace']]
+  rescue NoMethodError
+    # See https://github.com/minimagick/minimagick/issues/379
+    []
   end
 
   def format
-    fail 'Cannot identify image format' unless image.details['Base filename']
-    image.details['Base filename'].split('.').last
+    raise 'Cannot identify image format' unless image['%[base]']
+    image['%[base]'].split('.').last
   end
 
   def needs_transcoding?(file)
@@ -92,10 +107,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   def image?(file)
-    if file.respond_to?('content_type')
-      ["image/tiff", "application/postscript", "image/x-eps", "image/jpeg", "image/png", "image/gif"].include?(file.content_type)
-    else
-      !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
-    end
+    self.class.image?(file)
   end
 end

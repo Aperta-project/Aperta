@@ -1,0 +1,80 @@
+
+<div class="paper-source-upload">
+
+  <p class="flex-form">
+    <h4>Please Upload Your Source File</h4>
+    Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.
+  {{#if sourcefileUploaded}}
+    <div>
+      <a href="{{s3Url}}"
+         class="download-docx"
+         title="{{filename}}" target="_new">
+         {{fa-icon fileTypeClass}} {{filename}}
+      </a>
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=sourceFileUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+    </div>
+  {{else if task.paper.sourcefile.filename}}
+    <div>
+      <a href={{paper-download-link paper=task.paper format="source"}}
+         class="download-docx"
+         title="{{filename}}" target="_new">
+         {{fa-icon fileTypeClass}} {{task.paper.sourcefile.filename}}
+      </a>
+      <span class="fileinput-button manuscript-task">
+        {{fa-icon icon="refresh"}}
+        <span>Replace</span>
+        {{file-uploader id="upload-files"
+                        railsMethod="PUT"
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        addingFileFailed="fileAddError"
+                        error="uploadError"
+                        filePrefix="paper/manuscript"
+                        url=sourceFileUploadUrl
+                        disabled=isNotEditable}}
+      </span>
+    </div>
+  {{else}}
+    <p><span id="upload-sourcefile" class="button-secondary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
+      Upload source file
+      {{file-uploader id="upload-source-file"
+      railsMethod="PUT"
+      start="uploadStarted"
+      progress="uploadProgress"
+      done="uploadFinished"
+      addingFileFailed="fileAddError"
+      error="uploadError"
+      filePrefix="paper/source"
+      url=sourceFileUploadUrl
+      disabled=isNotEditable}}
+    </span>
+    {{error-message message=message displayIcon=true}}
+  </p>
+  {{/if}}
+  </p>
+
+  {{#if isUploading}}
+    <div id="paper-source-upload">
+      {{#if showProgress}}
+        <div class="progress">
+          <div class="progress-bar" style={{progressBarStyle}}></div>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+
+</div>

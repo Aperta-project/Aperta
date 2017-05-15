@@ -24,6 +24,7 @@ class ApexPackager
         add_supporting_information(package)
         add_metadata(package)
         add_manuscript(package)
+        add_sourcefile_if_needed(package)
       end
     end
   end
@@ -41,10 +42,25 @@ class ApexPackager
                                    apex_delivery_id: @apex_delivery_id
   end
 
+  def add_sourcefile_if_needed(package)
+    if @paper.file_type == 'pdf'
+      url = @paper.sourcefile.url
+      add_file_to_package package,
+        source_filename,
+        open(url, &:read)
+    end
+  end
+
   def add_manuscript(package)
+    url = @paper.file.url
     add_file_to_package package,
-                        manuscript_filename,
-                        open(@paper.file.url, &:read)
+      manuscript_filename,
+      open(url, &:read)
+  end
+
+  def source_filename
+    extension = @paper.sourcefile.filename.split('.').last
+    "#{@paper.manuscript_id}.#{extension}"
   end
 
   def manuscript_filename

@@ -35,7 +35,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
             message = 'There was a problem saving. Please reload.';
         }
 
-        this.get('flash').displayMessage('error', message);
+        this.get('flash').displayRouteLevelMessage('error', message);
       });
     },
 

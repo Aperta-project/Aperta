@@ -1,7 +1,7 @@
 module TahiStandardTasks
   class AuthorsTask < Task
-    DEFAULT_TITLE = 'Authors'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_TITLE = 'Authors'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     include MetadataTask
 
@@ -9,9 +9,9 @@ module TahiStandardTasks
     has_many :group_authors, through: :paper
 
     validates_with AssociationValidator,
-                   association: :authors,
-                   fail: :set_completion_error,
-                   if: :completed?
+      association: :authors,
+      fail: :set_completion_error,
+      if: :completed?
 
     def active_model_serializer
       TahiStandardTasks::AuthorsTaskSerializer
@@ -20,7 +20,7 @@ module TahiStandardTasks
     private
 
     def set_completion_error
-      self.errors.add(:completed, "Please fix validation errors above.")
+      errors.add(:completed, "Please fix validation errors above.")
     end
   end
 end

@@ -1,7 +1,7 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <h3>Enter Payee Details</h3>
+  <h3>Enter Payer Details</h3>
 
   <div class="flex-form">
     <div class="flex-group flex-group--divider">
@@ -47,10 +47,11 @@
     </div>
 
     <div class="flex-group flex-group--divider">
-      <div class="flex-element">
+      <div class="flex-element plos_billing--affiliation1 {{if validationErrors.plos_billing--affiliation1 "error"}}">
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
-                             placeholder="Affiliation"
+                             validate=(action "validateQuestion")
+                             placeholder="* Affiliation"
                              disabled=isNotEditable}}
       </div>
 

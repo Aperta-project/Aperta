@@ -1,4 +1,4 @@
-{{#util/async-content task=taskLoad as |content|}}
+{{#util/async-content concurrencyTask=taskLoad as |content|}}
   <div class="animation-fade-in">
     {{yield content}}
   </div>

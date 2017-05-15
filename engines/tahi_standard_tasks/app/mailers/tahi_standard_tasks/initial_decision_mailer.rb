@@ -1,5 +1,5 @@
 module TahiStandardTasks
-  class InitialDecisionMailer < ActionMailer::Base
+  class InitialDecisionMailer < ApplicationMailer
     include Rails.application.routes.url_helpers
     add_template_helper ClientRouteHelper
     layout "mailer"
@@ -9,7 +9,7 @@ module TahiStandardTasks
     def notify(decision_id:)
       @decision = Decision.find(decision_id)
       @paper = @decision.paper
-      @recipient = User.find(@paper.creator.id)
+      @recipient = @paper.creator
 
       mail(to: @recipient.email,
            subject: "A decision has been registered on the manuscript, \"#{@paper.display_title}\"")

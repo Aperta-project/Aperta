@@ -20,8 +20,10 @@
 
 .paper-new-label {
   margin-bottom: 0.85rem;
-  color: $aperta-grey;
-  font-size: 18px;
+  color: $aperta-black;
+  font-size: 16px;
+  margin-bottom: .5rem;
+  font-weight: bold;
 }
 
 .paper-new-input {
@@ -71,8 +73,7 @@
 
   .format-input-field {
     min-height: 20px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-radius: 5px;
     padding: 15px 0 15px 15px;
   }
 

@@ -11,6 +11,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
   errorsPresent: false,
   validations: null,
   questionValidations: null,
+  saveErrorText: 'Please fix the errors above',
 
   isNew: Ember.computed.reads('object.isNew'),
 
@@ -48,7 +49,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
     this.set('errorsPresent', errorsPresent);
 
     if(errorsPresent) {
-      this.set('validationErrors.save', 'Please fix the errors above');
+      this.set('validationErrors.save', this.get('saveErrorText'));
     }
   },
 

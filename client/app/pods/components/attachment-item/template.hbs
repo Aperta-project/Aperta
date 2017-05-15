@@ -51,13 +51,12 @@
                 focus-out="captionChanged" name="attachment-caption"}}
       {{/if}}
 
-      {{s3-file-uploader accept=accept
-                         filePath=filePath
+      {{file-uploader accept=accept
+                         filePrefix=filePath
                          class="s3-file-uploader"
-                         uploadProgress=(action "uploadProgress")
-                         uploadFinished=(action "uploadFinished")
-                         uploadFailed=(action "uploadFailed")
-                         fileAdded=(action "fileAdded")}}
+                         progress=(action "uploadProgress")
+                         done=(action "uploadFinished")
+                         start=(action "fileAdded")}}
     {{/if}}
   {{/if}}
 {{/if}}

@@ -20,23 +20,52 @@ import FileUpload from 'tahi/models/file-upload';
  *  ```
 **/
 
+let { computed } = Ember;
 export default Ember.Component.extend({
   classNames: ['attachment-manager'],
   classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
   disabled: false,
-  notDisabled: Ember.computed.not('disabled'),
+  notDisabled: computed.not('disabled'),
   buttonText: 'Upload File',
-  fileUploads: Ember.computed(() => { return []; }),
+  fileUploads: computed(() => {
+    return [];
+  }),
   multiple: false,
   showDescription: true,
+  alwaysShowAddButton: false,
+  preview: false, // used for the card config editor
+  uploadErrorMessage: null, // set in the uploadError action
 
-  uploadInProgress: Ember.computed.notEmpty('fileUploads'),
-  canUploadFile: Ember.computed('attachments.[]', 'multiple', function() {
+  uploadInProgress: computed.notEmpty('fileUploads'),
+  canUploadMoreFiles: computed('attachments.[]', 'multiple', function() {
     return Ember.isEmpty(this.get('attachments')) || this.get('multiple');
   }),
 
-  showAddButton: Ember.computed.and('notDisabled', 'canUploadFile'),
+  disableAddButton: computed(
+    'uploadInProgress',
+    'disabled',
+    'preview',
+    function() {
+      return (
+        this.get('uploadInProgress') ||
+        this.get('disabled') ||
+        this.get('preview')
+      );
+    }
+  ),
+
+  showAddButton: computed(
+    'alwaysShowAddButton',
+    'disabled',
+    'canUploadMoreFiles',
+    function() {
+      return (
+        this.get('alwaysShowAddButton') ||
+        (this.get('canUploadMoreFiles') && !this.get('disabled'))
+      );
+    }
+  ),
 
   init() {
     this._super(...arguments);
@@ -45,9 +74,11 @@ export default Ember.Component.extend({
   },
 
   actions: {
-
-    fileAdded(file){
-      this.get('fileUploads').addObject(FileUpload.create({ file: file }));
+    fileAdded(upload) {
+      this.set('uploadErrorMessage', null);
+      this.get('fileUploads').addObject(
+        FileUpload.create({ file: upload.files[0] })
+      );
     },
 
     uploadProgress(data) {
@@ -60,9 +91,12 @@ export default Ember.Component.extend({
       });
     },
 
-    uploadFinished(s3Url, data){
-      const fileName = data.files[0].name,
-        uploads = this.get('fileUploads'),
+    uploadError(message) {
+      this.set('uploadErrorMessage', message);
+    },
+
+    uploadFinished(s3Url, fileName) {
+      const uploads = this.get('fileUploads'),
         upload = uploads.findBy('file.name', fileName);
 
       if (this.attrs.uploadFinished) {
@@ -70,10 +104,6 @@ export default Ember.Component.extend({
       }
 
       uploads.removeObject(upload);
-    },
-
-    uploadFailed(reason){
-      throw new Ember.Error(`s3 uploadFailed: ${reason}`);
     }
   }
 });

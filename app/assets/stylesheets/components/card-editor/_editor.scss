@@ -1,0 +1,102 @@
+.publish-card-overlay {
+    h1 {
+        font-size: 30px;
+        margin-bottom: 30px;
+        color: $aperta-blue;
+    }
+    .card-editor-confirm-publish-buttons {
+        float: right;
+    }
+}
+
+.card-editor-editor {
+  flex: 1;
+  background-color: $aperta-grey-light;
+
+  // Look, I know there's more flexing here than on venice beach, but
+  // the goal is to have the workspace itself (the white area) take up
+  // *all* the remaining height on the page, *scroll* when it contains
+  // more content than will fit, AND be centered on the page when the
+  // page is wider than 1120px; and the best way to accomplish the
+  // full-remaining-height thing is to flex columns all the way down
+  // the component stack :(
+
+  // Erik Hetzner - 4 April 2017: If something in here seems strange
+  // and redundant, please check in webkit/safari before you think
+  // it would look the same without it. Safari has issues with rendering
+  // flex + overflow-y
+
+  display: flex;
+  flex-direction: column;
+
+  .card-editor-save-buttons {
+
+    .card-editor-save-buttons-state {
+      float: left;
+      text-transform: uppercase;
+      margin-top: 10px;
+      color: $aperta-grey-dark;
+    }
+
+    .card-editor-save-buttons-container {
+      max-width: 1180px;
+      text-align: right;
+      padding: 10px 30px;
+      margin: 0 auto;
+    }
+
+    .button {
+      margin-left: 10px;
+    }
+
+    .editor-save {
+      min-width: 100px;
+    }
+
+    .button:disabled.button-primary, :disabled.button-primary, .button--disabled.button-primary {
+      background-color: $aperta-grey-dark
+    }
+  }
+
+  .card-editor-workspace {
+    flex: 1;
+    padding: 0 30px;
+    display: flex;
+    justify-content: center;
+
+    .card-editor-xml-container {
+      flex-direction: column;
+      flex: 1;
+      display: flex;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      border: 2px solid $aperta-blue;
+      border-bottom: 0;
+      max-width: 1120px;
+      background-color: #fff;
+
+      .card-editor-xml-controls {
+        background-color: $aperta-blue;
+        border-top-right-radius: 2px;
+        border-top-left-radius: 2px;
+        height: 30px;
+        width: 100%;
+      }
+
+      .card-editor-xml {
+        max-height: calc(100% - 30px);
+        overflow-y: scroll;
+
+        > textarea {
+          font-family: monospace;
+          display: block;
+          margin: 0;
+          padding: 15px;
+          width: 100%;
+          border: 0;
+          resize: none;
+        }
+      }
+    }
+  }
+}

@@ -22,8 +22,19 @@ describe BillingFTPUploader do
   #
   # Constructor parameters
   #
-  let(:logger) { Logger.new(logger_io) }
+  let(:logger) do
+    log = Logger.new(logger_io)
+    # override default logger formatter since we don't care what the
+    # format for the application is set to, just that we're logging
+    # correctly
+    log.formatter = lambda do |severity, datetime, progname, msg|
+      "#{severity}: #{msg}\n"
+    end
+    log
+  end
   let(:logger_io) { StringIO.new }
+  let(:logged_content) { logger_io.tap(&:rewind).read }
+
 
   #
   # Collaborating service object
@@ -143,23 +154,15 @@ describe BillingFTPUploader do
 
     context 'when billing ftp is not enabled' do
       let(:ftp_enabled) { 'false' }
-      let(:logged_content) { logger_io.tap(&:rewind).read }
 
       it 'does not upload anything' do
         expect(FtpUploaderService).to_not receive(:new)
       end
 
       it 'logs that it did not upload anything' do
-        # override default logger formatter since we don't care what the
-        # format for the application is set to, just that we're logging
-        # correctly
-        logger.formatter = lambda do |severity, datetime, progname, msg|
-          "#{severity}: #{msg}"
-        end
-
         Timecop.freeze do
           billing_ftp_uploader.upload
-          expect(logged_content).to eq "WARN: Billing FTP is not enabled."
+          expect(logged_content).to match "WARN: Billing FTP is not enabled."
         end
       end
 

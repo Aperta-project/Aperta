@@ -1,0 +1,24 @@
+{{#if (can "manage_workflow" paper)}}
+  <div class="correspondence-table">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="correspondence-date-column">Date</th>
+          <th class="correspondence-subject-column">Subject</th>
+          <th class="correspondence-recipient-column">Recipient</th>
+          <th class="correspondence-sender-column">Initiator</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model as |message|}}
+          <tr>
+            <td>{{format-date message.date}}</td>
+            <td>{{message.subject}}</td>
+            <td>{{message.recipient}}</td>
+            <td>{{message.sender}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+{{/if}}

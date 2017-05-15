@@ -5,18 +5,18 @@ http_interactions:
     uri: https://sandbox.orcid.org/oauth/token
     body:
       encoding: UTF-8
-      string: client_id=Bogus-key&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&grant_type=authorization_code&code=C3b6Z2
+      string: client_id=Bogus-key&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=C3b6Z2&grant_type=authorization_code
     headers:
+      User-Agent:
+      - Faraday v0.9.1
       Accept:
       - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Content-Length:
-      - '112'
+      Accept-Charset:
+      - UTF-8
       Content-Type:
       - application/x-www-form-urlencoded
-      User-Agent:
-      - Ruby
+      Accept-Encoding:
+      - gzip,deflate
   response:
     status:
       code: 401
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Fri, 07 Oct 2016 15:26:28 GMT
+      - Fri, 06 Jan 2017 15:50:40 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -43,5 +43,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"error":"invalid_client","error_description":"Client not found: Bogus-key"}'
     http_version: 
-  recorded_at: Fri, 07 Oct 2016 15:26:28 GMT
+  recorded_at: Fri, 06 Jan 2017 15:50:40 GMT
 recorded_with: VCR 2.9.3

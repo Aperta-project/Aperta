@@ -35,6 +35,9 @@ feature "Journal Administration", js: true, flaky: true do
       new_journal_form = admin_page.create_journal
       new_journal_form.name = 'New Journal Cool Cool'
       new_journal_form.description = 'New journal description cool cool'
+      new_journal_form.journal_prefix = 'journal.prefix'
+      new_journal_form.publisher_prefix = 'prefix'
+      new_journal_form.last_doi_issued = '1000001'
       new_journal_form.save
 
       expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')

@@ -1,20 +1,21 @@
 require 'rails_helper'
 
 describe PlosBilling::BillingSalesforceMailer do
-  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:admin1) { FactoryGirl.create(:user) }
-  let(:admin2) { FactoryGirl.create(:user) }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:site_admin_role) { FactoryGirl.create(:role, :site_admin) }
+  let(:the_system) { System.create! }
+  let!(:admin1) { FactoryGirl.create(:user) }
+  let!(:admin2) { FactoryGirl.create(:user) }
 
-  describe "#notify_journal_admin_sfdc_error" do
+  describe "#notify_site_admins_of_syncing_error" do
     let(:message) { "Error! Bad things happened. Contact a Developer" }
     let(:email) do
-      described_class.notify_journal_admin_sfdc_error(paper.id, message)
+      described_class.notify_site_admins_of_syncing_error(paper.id, message)
     end
 
     before do
-      assign_journal_role journal, admin1, :admin
-      assign_journal_role journal, admin2, :admin
+      admin1.assign_to! assigned_to: the_system, role: site_admin_role
+      admin2.assign_to! assigned_to: the_system, role: site_admin_role
     end
 
     it "displays the error message for developers" do
@@ -25,7 +26,7 @@ describe PlosBilling::BillingSalesforceMailer do
       expect(email.body).to include(paper.doi)
     end
 
-    it "is sent to the correct people" do
+    it "is sent to the users assigned as site admins" do
       expect(email.to).to contain_exactly(admin1.email, admin2.email)
     end
   end

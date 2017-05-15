@@ -18,6 +18,22 @@ RSpec.shared_examples_for 'AttachmentUploader: standard attachment image transco
       expect(preview.type).to eq("PNG")
     end
 
+    it "transcodes TIFFS" do
+      uploader = AttachmentUploader.new(model, :file)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti2.TIFF')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
+
+      expect(preview.type).to eq("PNG")
+    end
+
+    it "does not transcode jpg" do
+      uploader = AttachmentUploader.new(model, :file)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
+
+      expect(preview.type).to eq("JPEG")
+    end
+
     it "transcodes eps" do
       uploader = AttachmentUploader.new(model, :file)
       uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'HTML5_Logo.eps')))
@@ -44,6 +60,14 @@ RSpec.shared_examples_for 'AttachmentUploader: standard attachment image transco
 
       color = color_of_pixel(uploader.preview.path, 0, 0)
       expect(color).to include('#FFFFFF')
+    end
+
+    it "works around bugs in mini_magick" do
+      # See https://github.com/minimagick/minimagick/issues/379
+      uploader = AttachmentUploader.new(model, :file)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'metadata_newline.tiff')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
+      expect(preview.type).to eq("PNG")
     end
 
     it "does not transcode other images" do

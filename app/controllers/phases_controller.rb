@@ -3,12 +3,12 @@ class PhasesController < ApplicationController
   respond_to :json
 
   def index
-    paper = Paper.find(params[:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:paper_id])
     respond_with paper.phases
   end
 
   def create
-    paper = Paper.find(params[:phase][:paper_id])
+    paper = Paper.find_by_id_or_short_doi(params[:phase][:paper_id])
     phase = paper.phases.create!(new_phase_params)
     respond_with phase
   end

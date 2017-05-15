@@ -262,21 +262,6 @@ Factory = {
     };
     return Factory.createRecord('LitePaper', paperAttrs);
   },
-  createLitePaperWithRoles: function(paper, oldRoles) {
-    var id, lp, paperAttrs, paper_id, publishingState, short_title, title;
-    short_title = paper.short_title, title = paper.title, id = paper.id, publishingState = paper.publishingState;
-    paper_id = id;
-    paperAttrs = {
-      short_title: short_title,
-      title: title,
-      id: id,
-      publishingState: publishingState,
-      paper_id: paper_id
-    };
-    lp = Factory.createRecord('LitePaper', paperAttrs);
-    lp.oldRoles = oldRoles;
-    return lp;
-  },
   createPhase: function(paper, attrs) {
     var newPhase;
     if (attrs == null) {
@@ -358,17 +343,6 @@ Factory = {
     return this.createRecord('TaskTemplate', {
       phase_template: phase_template
     });
-  },
-  createJournalOldRole: function(journal, oldRoleAttrs) {
-    var oldRole;
-    if (oldRoleAttrs == null) {
-      oldRoleAttrs = {};
-    }
-    oldRole = this.createRecord('OldRole', oldRoleAttrs);
-    this.addHasMany(journal, [oldRole], {
-      inverse: 'journal'
-    });
-    return oldRole;
   }
 };
 
@@ -382,7 +356,18 @@ FactoryAttributes.User = {
   username: 'fakeuser',
   email: 'fakeuser@example.com',
   siteAdmin: false,
-  affiliation_ids: []
+  affiliation_ids: [],
+  orcid_account_id: 1
+};
+
+FactoryAttributes.OrcidAccount = {
+  _rootKey: 'orcid_account',
+  id: null,
+  identifier: null,
+  name: null,
+  oauth_authorize_url: null,
+  profile_url: null,
+  status: 'unauthenticated'
 };
 
 FactoryAttributes.Journal = {
@@ -393,7 +378,6 @@ FactoryAttributes.Journal = {
   paper_types: ['Research'],
   journal_task_type_ids: [],
   manuscript_manager_template_ids: [],
-  old_role_ids: [],
   manuscript_css: null,
   doi_publisher_prefix: null,
   doi_journal_prefix: null,
@@ -408,23 +392,10 @@ FactoryAttributes.AdminJournal = {
   paper_types: ['Research'],
   journal_task_type_ids: [],
   manuscript_manager_template_ids: [],
-  old_role_ids: [],
   manuscript_css: null,
   doi_publisher_prefix: null,
   doi_journal_prefix: null,
   last_doi_issued: null
-};
-
-FactoryAttributes.OldRole = {
-  _rootKey: 'old_role',
-  id: null,
-  name: null,
-  kind: null,
-  required: true,
-  can_administer_journal: false,
-  can_view_assigned_manuscript_managers: false,
-  can_view_all_manuscript_managers: false,
-  journal_id: null
 };
 
 FactoryAttributes.Author = {
@@ -463,7 +434,6 @@ FactoryAttributes.LitePaper = {
   paper_id: null,
   short_title: 'Paper',
   publishing_state: 'submitted',
-  oldRoles: []
 };
 
 FactoryAttributes.MessageTask = {
@@ -474,7 +444,6 @@ FactoryAttributes.MessageTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  oldRole: 'author',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -491,7 +460,6 @@ FactoryAttributes.Task = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  oldRole: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -509,7 +477,6 @@ FactoryAttributes.AdHocTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  oldRole: 'user',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -517,6 +484,13 @@ FactoryAttributes.AdHocTask = {
   assigned_to_me: true,
   participant_ids: [],
   comment_ids: []
+};
+
+FactoryAttributes.ReviewerReport = {
+  _rootKey: 'reviewerReport',
+  id: null,
+  type: 'ReviewerReport',
+  task_id: null
 };
 
 FactoryAttributes.ReviewerReportTask = {
@@ -527,7 +501,6 @@ FactoryAttributes.ReviewerReportTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  old_role: 'reviewer',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -544,13 +517,13 @@ FactoryAttributes.FrontMatterReviewerReportTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  old_role: 'reviewer',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
   assignee_ids: [],
   participant_ids: [],
-  comment_ids: []
+  comment_ids: [],
+  reviewer_report_ids: []
 };
 
 FactoryAttributes.ReviseTask = {
@@ -561,13 +534,13 @@ FactoryAttributes.ReviseTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
   assignee_ids: [],
   participant_ids: [],
-  comment_ids: []
+  comment_ids: [],
+  reviewer_report_ids: []
 };
 
 FactoryAttributes.BillingTask = {
@@ -578,7 +551,6 @@ FactoryAttributes.BillingTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -598,7 +570,6 @@ FactoryAttributes.FigureTask = {
   completed: false,
   body: [],
   paper_title: 'Foo',
-  old_role: 'admin',
   phase_id: null,
   paper_id: null,
   lite_paper_id: null,
@@ -623,7 +594,6 @@ FactoryAttributes.FinancialDisclosureTask = {
   participation_ids: [],
   phase_id: null,
   question_ids: [],
-  old_role: 'author',
   title: 'Financial Disclosure',
   type: 'FinancialDisclosureTask'
 };
@@ -653,7 +623,6 @@ FactoryAttributes.ReportingGuidelinesTask = {
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: 'author',
   title: 'Reporting Guidelines',
   type: 'ReportingGuidelinesTask'
 };
@@ -671,7 +640,6 @@ FactoryAttributes.AuthorsTask = {
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: 'author',
   title: 'Authors',
   type: 'AuthorsTask'
 };
@@ -689,7 +657,6 @@ FactoryAttributes.TitleAndAbstractTask = {
   phase_id: null,
   question_ids: [],
   assigned_to_me: true,
-  old_role: 'editor',
   title: 'Title And Abstract',
   type: 'TitleAndAbstractTask'
 };
@@ -744,7 +711,6 @@ FactoryAttributes.JournalTaskType = {
   task_type_id: null,
   title: null,
   journal_id: null,
-  old_role: null
 };
 
 FactoryAttributes.TaskTemplate = {
@@ -780,8 +746,8 @@ FactoryAttributes.NestedQuestion = {
   _rootKey: 'nested_question',
   id: null,
   owner: {
-    owner_id: null,
-    owner_type: null
+    id: null,
+    type: null
   },
   ident: 'some_ident',
   parent_id: null,

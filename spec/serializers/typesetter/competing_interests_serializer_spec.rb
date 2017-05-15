@@ -2,9 +2,8 @@ require 'rails_helper'
 
 describe Typesetter::CompetingInterestsSerializer do
   subject(:serializer) { described_class.new(task) }
-
   let!(:task) do
-    NestedQuestionableFactory.create(
+    AnswerableFactory.create(
       FactoryGirl.create(:competing_interests_task),
       questions: [
         {
@@ -50,7 +49,7 @@ describe Typesetter::CompetingInterestsSerializer do
 
   describe 'no competing interests statement' do
     let!(:no_competing_task) do
-      NestedQuestionableFactory.create(
+      AnswerableFactory.create(
         FactoryGirl.create(:competing_interests_task),
         questions: [
           {

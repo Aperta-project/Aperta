@@ -15,21 +15,25 @@ label[contenteditable=true] {
 div[contenteditable=true] {
   background-color: $aperta-white;
   white-space: pre-wrap;
+  min-height: 20px;
 }
 
 .two-element-form {
   overflow: hidden;
   margin-bottom: 5px;
 
-  label {
+  .inline-edit-display {
     float: left;
-    width: 870px;
+    width: 95%;
     margin: 3px;
+    display: list-item;    
+    padding: 5px;
   }
 
   input[type=checkbox] {
     margin-top: 10px;
   }
+
 }
 
 .content-editable-muted {

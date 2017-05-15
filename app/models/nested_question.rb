@@ -25,6 +25,8 @@ class NestedQuestion < ActiveRecord::Base
       TahiStandardTasks::Funder
     when "ReviewerRecommendation"
       TahiStandardTasks::ReviewerRecommendation
+    when "ReviewerReport"
+      ReviewerReport
     else
       raise "Don't know how to lookup owner_type: #{owner_type}"
     end

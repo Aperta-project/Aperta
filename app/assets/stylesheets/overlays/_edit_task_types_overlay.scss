@@ -7,31 +7,6 @@
   }
 }
 
-.edit-task-types-overlay.overlay--fullscreen {
-  .task-headers h3 {
-    display: inline-block;
-
-    &:nth-child(2) {
-      float: right;
-    }
-  }
-
-  .individual-task-type {
-    position: relative;
-    margin-top: 20px;
-
-    p { display: inline-block; }
-
-    .role-dropdown {
-      float: right;
-    }
-  }
-
-  .overlay-container {
-    width: 500px;
-  }
-}
-
 .admin-roles-table {
   width: 100%;
 }

@@ -3,6 +3,12 @@ module Invitable
 
   included do
     has_many :invitations, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
+    has_one :invitation_queue, inverse_of: :task, foreign_key: :task_id, dependent: :destroy
+  end
+
+  def active_invitation_queue
+    # noop - To be implemented by other tasks whether invitation queues
+    #        are tied to decision or task
   end
 
   # Public: after transition hook for custom task behavior upon

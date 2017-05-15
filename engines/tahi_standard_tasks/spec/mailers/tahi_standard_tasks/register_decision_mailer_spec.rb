@@ -30,7 +30,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
         expect(email_with_no_fields_specified.subject).to eq "A decision has been registered on the manuscript, \"#{paper.title}\""
       end
 
-      it "email body is paper.decision_letter" do
+      it "email body is the decision's letter" do
         expect(email_with_no_fields_specified.body.raw_source).to match(decision.letter)
       end
     end
@@ -47,7 +47,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
         expect(email_to_arbitrary.subject).to eq 'Your Submission'
       end
 
-      it "email body is paper.decision_letter" do
+      it "email body is the decision's letter" do
         expect(email_to_arbitrary.body.raw_source).to match(decision.letter)
       end
     end

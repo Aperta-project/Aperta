@@ -33,9 +33,14 @@ module Authorizations
     end
 
     def can?(permission, target)
-      filter_authorized(
+      !filter_authorized(
         permission, target, participations_only: false
-      ).objects.length > 0
+      ).objects.empty?
+    end
+
+    def unaccepted_and_invited_to?(paper:)
+      return false if paper.blank? || paper.draft_decision.nil?
+      paper.draft_decision.invitations.where(state: 'invited', invitee_id: id).exists?
     end
 
     def filter_authorized(permission, target, participations_only: :default)
@@ -72,12 +77,12 @@ module Authorizations
 
     def site_admin?
       assignments.includes(:permissions)
-        .where(
-          permissions: {
-            action: Permission::WILDCARD,
-            applies_to: System.name
-          }
-        ).exists?
+                 .where(
+                   permissions: {
+                     action: Permission::WILDCARD,
+                     applies_to: System.name
+                   }
+                 ).exists?
     end
 
     private
@@ -90,7 +95,7 @@ module Authorizations
       # role_name is a string, need to get the right role for the journal
       journal = thing.is_a?(Journal) ? thing : thing.try(:journal)
       unless journal
-        fail <<-ERROR.strip_heredoc
+        raise <<-ERROR.strip_heredoc
           Expected #{thing} to be a journal or respond to journal method
         ERROR
       end

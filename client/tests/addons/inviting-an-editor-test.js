@@ -37,10 +37,19 @@ module('Integration: Inviting an editor', {
       }
     });
 
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
     phase = FactoryGuy.make('phase');
     task  = FactoryGuy.make('paper-editor-task', { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
-    TestHelper.mockFind('paper').returns({ model: paper });
+    TestHelper.mockPaperQuery(paper);
     TestHelper.mockFindAll('discussion-topic', 1);
 
     Factory.createPermission('Paper', 1, ['manage_workflow']);
@@ -52,8 +61,8 @@ module('Integration: Inviting an editor', {
 test('disables the Compose Invite button until a user is selected', function(assert) {
   Ember.run(function(){
     TestHelper.mockFind('task').returns({ model: task });
-    visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
+    click('.card-title:contains("Invite Editor")');
 
     andThen(function(){
       assert.elementFound(
@@ -84,8 +93,8 @@ test('can delete a pending invitation', function(assert) {
     TestHelper.mockFind('task').returns({model: task});
     TestHelper.mockDelete('invitation', invitation.id);
 
-    visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
+    click(".card-title:contains('Invite Editor')");
 
     andThen(function() {
       assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');
@@ -107,8 +116,8 @@ test('can not delete an invited invitation', function(assert) {
     task.set('invitations', [invitation]);
     TestHelper.mockFind('task').returns({model: task});
 
-    visit(`/papers/${paper.id}/workflow`);
-    click(".card-content:contains('Invite Editor')");
+    visit(`/papers/${paper.get('shortDoi')}/workflow`);
+    click(".card-title:contains('Invite Editor')");
 
     andThen(function() {
       assert.elementFound(`.invitation-item:contains('${invitation.get('email')}')`, 'has pending invitation');

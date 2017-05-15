@@ -11,6 +11,11 @@ describe Paper do
   let(:user) { FactoryGirl.create :user }
   let(:frozen_time) { 1.day.ago }
 
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
+    CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
+  end
+
   shared_examples_for "submission" do
     it 'should be unsubmitted' do
       expect(paper.publishing_state).to eq("unsubmitted")
@@ -25,8 +30,8 @@ describe Paper do
       Timecop.freeze(Time.current.utc) do |now|
         expect { subject }
           .to change { paper.latest_version.reload.updated_at }
-          .from(within_db_precision.of frozen_time)
-          .to(within_db_precision.of now)
+          .from(within_db_precision.of(frozen_time))
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -35,7 +40,7 @@ describe Paper do
         expect { subject }
           .to change { paper.submitted_at }
           .from(nil)
-          .to(within_db_precision.of now)
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -44,7 +49,7 @@ describe Paper do
         expect { subject }
           .to change { paper.first_submitted_at }
           .from(nil)
-          .to(within_db_precision.of now)
+          .to(within_db_precision.of(now))
       end
     end
 
@@ -58,7 +63,7 @@ describe Paper do
       Timecop.freeze(1.day.from_now) do |time|
         expect { subject }
           .to change { draft.reload.updated_at }
-          .to(within_db_precision.of time)
+          .to(within_db_precision.of(time))
       end
     end
 
@@ -72,6 +77,13 @@ describe Paper do
       expect { subject }
         .to change { paper.major_version }.from(nil).to(0)
         .and change { paper.minor_version }.from(nil).to(0)
+    end
+  end
+
+  shared_examples_for "state transitioning" do
+    it "creates an activity feed item" do
+      expect { subject }.to change { paper.activities.count }.by(1)
+      expect(paper.activities.last.activity_key).to eq "paper.state_changed.#{paper.reload.publishing_state}"
     end
   end
 
@@ -165,7 +177,7 @@ describe Paper do
         paper                   = FactoryGirl.create :paper, journal: journal
 
         expect(paper.doi).to be_truthy
-        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) #is incremented in journal
+        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) # is incremented in journal
         expect(journal.last_doi_issued).to eq(paper.doi.split('.').last)
       end
     end
@@ -248,7 +260,11 @@ describe Paper do
     end
 
     context "with tasks" do
-      let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
+      let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
+
+      before do
+        FactoryGirl.create(:upload_manuscript_task, paper: paper, phase: paper.phases.first)
+      end
 
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase
@@ -256,7 +272,7 @@ describe Paper do
         paper.destroy
 
         expect(Phase.where(paper_id: paper.id).count).to be 0
-        expect(Task.count).to be 0
+        expect(Task.where(paper_id: paper.id).count).to be 0
       end
     end
   end
@@ -300,14 +316,87 @@ describe Paper do
       end
     end
 
+    describe 'required_for_submission_tasks_completed?' do
+      subject { paper.required_for_submission_tasks_completed? }
+
+      context 'the paper has custom tasks' do
+        let(:card_version_a) do
+          FactoryGirl.create(
+            :card_version,
+            required_for_submission: required_for_submission_a
+          )
+        end
+
+        let(:card_version_b) do
+          FactoryGirl.create(
+            :card_version,
+            required_for_submission: required_for_submission_b
+          )
+        end
+        let!(:task_a) do
+          FactoryGirl.create(
+            :custom_card_task,
+            completed: task_completed_a,
+            paper: paper,
+            card_version: card_version_a # { required_for_submission: required_for_submission_a },
+          )
+        end
+        let!(:task_b) { FactoryGirl.create(:custom_card_task, completed: task_completed_b, paper: paper, card_version: card_version_b) }
+
+        context 'and the card_versions are required_for_submission' do
+          let(:required_for_submission_a) { true }
+          let(:required_for_submission_b) { true }
+
+          context 'and all the tasks are completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(true) }
+          end
+
+          context 'and one task is not completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { false }
+
+            it { is_expected.to be(false) }
+          end
+        end
+
+        context 'and some are required_for_submission' do
+          let(:required_for_submission_a) { true }
+          let(:required_for_submission_b) { false }
+
+          context 'and all the tasks are completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(true) }
+          end
+
+          context 'and the nonrequired task is completed' do
+            let(:task_completed_a) { false }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(false) }
+          end
+
+          context 'and the required task is completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { false }
+
+            it { is_expected.to be(true) }
+          end
+        end
+      end
+    end
+
     describe '#short_title' do
       let(:title) { "Hi! I'm a title!" }
       let(:paper) do
         FactoryGirl.create(:paper,
           :with_short_title,
           journal: journal,
-          short_title: title
-        )
+          short_title: title)
       end
 
       it 'fetches short title from a NestedQuestionAnswer' do
@@ -537,6 +626,7 @@ describe Paper do
         initial_submit: proc { paper.initial_submit! user }
       it_behaves_like 'creates a new draft decision'
       it_behaves_like 'submission'
+      it_behaves_like 'state transitioning'
 
       it 'transitions to initially_submitted' do
         subject
@@ -551,6 +641,7 @@ describe Paper do
         submit: proc { paper.submit!(paper.creator) }
       it_behaves_like 'creates a new draft decision'
       it_behaves_like 'submission'
+      it_behaves_like 'state transitioning'
 
       it 'sets the first_submitted_at only once' do
         original_now = Time.current
@@ -564,6 +655,11 @@ describe Paper do
 
       it 'does not transition when metadata tasks are incomplete' do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
+        expect { subject }.to raise_error(AASM::InvalidTransition)
+      end
+
+      it 'does not transition when required for submission cars are incomplete' do
+        expect(paper).to receive(:required_for_submission_tasks_completed?).and_return(false)
         expect { subject }.to raise_error(AASM::InvalidTransition)
       end
 
@@ -634,9 +730,11 @@ describe Paper do
 
     describe '#withdraw!' do
       let(:withdrawn_by_user) { FactoryGirl.build_stubbed(:user) }
+      subject { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
 
       it_behaves_like "transitions save state_updated_at",
-        withdraw: proc { paper.withdraw! 'A withdrawal reason', withdrawn_by_user }
+        withdraw: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -677,27 +775,33 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
+      subject { paper.invite_full_submission! }
+
       it_behaves_like "transitions save state_updated_at",
-        invite_full_submission: proc { paper.invite_full_submission! }
+        invite_full_submission: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :initially_submitted, journal: journal)
       end
 
       it 'transitions to invited_for_full_submission' do
-        paper.invite_full_submission!
+        subject
         expect(paper.publishing_state).to eq('invited_for_full_submission')
       end
 
       it 'marks the paper editable' do
-        paper.invite_full_submission!
+        subject
         expect(paper).to be_editable
       end
     end
 
     describe '#reactivate!' do
+      subject { paper.reactivate! }
+
       it_behaves_like "transitions save state_updated_at",
-        reactivate: proc { paper.reactivate! }
+        reactivate: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -713,13 +817,13 @@ describe Paper do
 
       it "transitions to the previous state" do
         expect(paper).to be_withdrawn
-        paper.reload.reactivate!
+        subject
         expect(paper).to be_submitted
       end
 
       it "marks the paper with the previous editable state for submitted papers" do
         expect(paper).to_not be_editable
-        paper.reload.reactivate!
+        subject
         expect(paper).to_not be_editable
         expect(paper.submitted?).to eq(true)
       end
@@ -736,15 +840,18 @@ describe Paper do
     end
 
     describe '#minor_check!' do
+      subject { paper.minor_check! }
+
       it_behaves_like "transitions save state_updated_at",
-        minor_check: proc { paper.minor_check! }
+        minor_check: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper editable" do
-        paper.minor_check!
+        subject
         expect(paper).to be_editable
       end
     end
@@ -754,6 +861,7 @@ describe Paper do
 
       it_behaves_like "transitions save state_updated_at",
         submit_minor_check: proc { paper.submit_minor_check!(paper.creator) }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
@@ -795,32 +903,39 @@ describe Paper do
     end
 
     describe '#accept' do
+      subject { paper.accept! }
+
       context 'paper is submitted' do
+        it_behaves_like 'state transitioning'
+
         let(:paper) do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
         it_behaves_like "transitions save state_updated_at",
-          accept: proc { paper.accept! }
+          accept: proc { subject }
 
         it 'transitions to accepted state from submitted' do
-          paper.accept!
+          subject
           expect(paper.accepted?).to be true
         end
       end
     end
 
     describe '#reject' do
+      subject { paper.reject! }
+
       context 'paper is submitted' do
         let(:paper) do
           FactoryGirl.create(:paper, :submitted, journal: journal)
         end
 
         it_behaves_like "transitions save state_updated_at",
-          reject: proc { paper.reject! }
+          reject: proc { subject }
+        it_behaves_like 'state transitioning'
 
         it 'transitions to rejected state from submitted' do
-          paper.reject!
+          subject
           expect(paper.rejected?).to be true
         end
 
@@ -829,7 +944,7 @@ describe Paper do
           expect(Notifier).to receive(:notify).with(hash_including(event: "paper:rejected")) do |args|
             expect(args[:data][:record]).to eq(paper)
           end
-          paper.reject!
+          subject
         end
       end
 
@@ -843,31 +958,36 @@ describe Paper do
         end
 
         it_behaves_like "transitions save state_updated_at",
-          reject: proc { paper.reject! }
+          reject: proc { subject }
 
         it 'transitions to rejected state from initially_submitted' do
-          paper.reject!
+          subject
           expect(paper.rejected?).to be true
         end
       end
     end
 
     describe '#publish!' do
+      subject { paper.publish! }
+
       it_behaves_like "transitions save state_updated_at",
-        publish: proc { paper.publish! }
+        publish: proc { subject }
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         FactoryGirl.create(:paper, :submitted, journal: journal)
       end
 
       it "marks the paper uneditable" do
-        paper.publish!
+        subject
         expect(paper.published_at).to be_truthy
       end
     end
 
     describe '#rescind_decision!' do
       subject { paper.rescind_decision! }
+
+      it_behaves_like 'state transitioning'
 
       before do
         allow(paper).to receive_message_chain('last_completed_decision.initial').and_return(false)
@@ -930,6 +1050,8 @@ describe Paper do
 
     describe '#rescind_initial_submission!' do
       subject { paper.rescind_initial_decision! }
+
+      it_behaves_like 'state transitioning'
 
       let(:paper) do
         create(:paper, publishing_state: :initially_submitted, journal: journal).tap(&:reject!)
@@ -1072,8 +1194,8 @@ describe Paper do
 
     it "assigns all author tasks to the paper's creator" do
       paper.save!
-      author_tasks = Task.where(old_role: 'author', phase_id: paper.phases.pluck(:id))
-      other_tasks = Task.where("old_role != 'author'", phase_id: paper.phases.pluck(:id))
+      author_tasks = Task.where(phase_id: paper.phases.pluck(:id))
+      other_tasks = Task.where(phase_id: paper.phases.pluck(:id))
       expect(author_tasks.all? { |t| t.assignee == creator }).to eq true
       expect(other_tasks.all? { |t| t.assignee != creator }).to eq true
     end
@@ -1145,6 +1267,9 @@ describe Paper do
       end
 
       context 'and there are authors' do
+        before do
+          CardLoader.load('Author')
+        end
         let(:author_1) do
           FactoryGirl.create(:author, email: 'a1@example.com')
         end
@@ -1471,7 +1596,8 @@ describe Paper do
           :with_short_title,
           journal: journal,
           short_title: '<b>my paper</b>',
-          title: '<b>my long paper</b>')
+          title: '<b>my long paper</b>'
+        )
       end
 
       context "with sanitization" do
@@ -1511,6 +1637,11 @@ describe Paper do
       expect { paper.send(:new_draft_decision!) }
         .not_to change { paper.decisions.count }
     end
+
+    it 'creates an invitation queue for the decision' do
+      paper.new_draft_decision!
+      expect(paper.decisions.last.invitation_queue).to be_present
+    end
   end
 
   describe '#last_of_task' do
@@ -1539,7 +1670,6 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(false)
-
     end
 
     it "returns true when the last completed decision has been rescinded" do
@@ -1547,8 +1677,6 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(true)
-
     end
   end
-
 end

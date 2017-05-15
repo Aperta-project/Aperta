@@ -1,0 +1,7 @@
+<p>Dear
+  <% if author.try(:last_name) %>
+   Dr <%= author.last_name %>,
+  <% else %>
+   <%= author.name %>,
+  <% end %>
+</p>

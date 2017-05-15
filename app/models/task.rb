@@ -1,23 +1,28 @@
 class Task < ActiveRecord::Base
+  include Answerable
   include EventStream::Notifiable
   include NestedQuestionable
   include Commentable
   include Snapshottable
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
-  DEFAULT_ROLE = 'user'.freeze
+  DEFAULT_ROLE_HINT = 'user'.freeze
 
-  REQUIRED_PERMISSIONS = {}
+  REQUIRED_PERMISSIONS = {}.freeze
   SYSTEM_GENERATED = false
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
 
-  before_save :update_completed_at, if: :completed_changed?
+  before_save :on_completion, if: :completed_changed?
 
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
   scope :of_type, -> (task_type) { where(type: task_type) }
+
+  # TODO: Remove in APERTA-9787
+  # Because all tasks should have a card then
+  scope :with_card, -> { where.not(card_version_id: nil) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -37,13 +42,8 @@ class Task < ActiveRecord::Base
     -> { joins(:role).where(roles: { name: Role::TASK_PARTICIPANT_ROLE }) },
     class_name: 'Assignment',
     as: :assigned_to
-  has_many \
-    :participants,
-    -> { joins(:roles).uniq },
-    through: :participations,
-    source: :user
 
-  has_many :permission_requirements, as: :required_on
+  has_many :permission_requirements, as: :required_on, dependent: :destroy
   has_many \
     :required_permissions,
     through: :permission_requirements,
@@ -55,36 +55,23 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
+  belongs_to :card_version
+
   acts_as_list scope: :phase
 
   validates :paper_id, presence: true
-  validates :title, :old_role, presence: true
+  validates :title, presence: true
   validates :title, length: { maximum: 255 }
 
   class << self
     # Public: Restores the task defaults to all of its instances/models
     #
     # * restores title to DEFAULT_TITLE
-    # * restores old_role to DEFAULT_ROLE
     #
-    # Note: this will not restore the +title+ or +old_role+ on ad-hoc tasks.
+    # Note: this will not restore the +title+ on ad-hoc tasks.
     def restore_defaults
       return if self == Task
-      update_all(old_role: self::DEFAULT_ROLE, title: self::DEFAULT_TITLE)
-    end
-
-    # Public: Scopes the tasks with a given old_role
-    #
-    # old_role  - The String of old_role name.
-    #
-    # Examples
-    #
-    #   for_old_role('editor')
-    #   # => #<ActiveRecord::Relation [<#Task:123>]>
-    #
-    # Returns ActiveRecord::Relation with tasks.
-    def for_old_role(old_role)
-      where(old_role: old_role)
+      update_all(title: self::DEFAULT_TITLE)
     end
 
     # Public: Scopes the tasks for a given paper
@@ -154,10 +141,17 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      fail StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, 'Attempted to constantize disallowed value' \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end
+  end
+
+  # called in the paper factory both as part of paper creation and when an
+  # individual task is added to the workflow.  Remember to call super when
+  # subclassing
+  def task_added_to_paper(_paper)
+    card_version.try(:create_default_answers, self)
   end
 
   def journal_task_type
@@ -170,8 +164,9 @@ class Task < ActiveRecord::Base
   end
 
   def submission_task?
-    return false if Task.submission_types.blank?
-    Task.submission_types.include?(self.class.name)
+    # TODO: Remove Task.submission_types check in APERTA-9787
+    Task.submission_types.include?(self.class.name) ||
+      (!card_version.nil? && card_version.required_for_submission)
   end
 
   def array_attributes
@@ -189,14 +184,19 @@ class Task < ActiveRecord::Base
   def add_participant(user)
     participations.where(
       user: user,
-      role: journal.task_participant_role
+      role: journal.task_participant_role,
+      assigned_to: self,
     ).first_or_create!
   end
 
-  def participants=(users)
-    participations.destroy_all
-    save! if new_record?
-    users.each { |user| add_participant user }
+  def participants
+    participant_ids = participations.map(&:user).uniq.map(&:id)
+    User.where(id: participant_ids)
+  end
+
+  def reviewer
+    assignments.joins(:role)
+      .find_by(roles: { name: Role::REVIEWER_REPORT_OWNER_ROLE }).try(:user)
   end
 
   def update_responder
@@ -205,6 +205,12 @@ class Task < ActiveRecord::Base
 
   # Implement this method for Cards that inherit from Task
   def after_update
+  end
+
+  # This hook runs before the task saves. Note that this hook will run
+  # both when the task was just marked completed or uncompleted
+  def on_completion
+    update_completed_at
   end
 
   def notify_new_participant(current_user, participation)
@@ -247,18 +253,17 @@ class Task < ActiveRecord::Base
     "Override me"
   end
 
-  private
-
-  def on_card_completion?
-    previous_changes['completed'] == [false, true]
+  # Overrides Answerable.  Since Tasks are STI the client needs to be able to
+  # save an Answer with the expected owner type (Task) rather than the specific
+  # subclass type (ie TahiStandardTasks::ReviewerReportTask)
+  def owner_type_for_answer
+    'Task'
   end
 
+  private
+
   def update_completed_at
-    if completed
-      self.completed_at = Time.zone.now
-    else
-      self.completed_at = nil
-    end
+    self.completed_at = (Time.zone.now if completed)
   end
 end
 

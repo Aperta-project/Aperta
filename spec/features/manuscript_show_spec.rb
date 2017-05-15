@@ -24,5 +24,11 @@ feature 'Viewing manuscript control bar', js: true do
     scenario 'can not view the Go to Workflow link' do
       expect(page).to_not have_css('#nav-workflow')
     end
+
+    scenario 'visit the paper by id instead of short_doi' do
+      page = Page.new
+      page.visit("/papers/#{paper.id}")
+      expect(page.current_path).to eq("/papers/#{paper.short_doi}")
+    end
   end
 end

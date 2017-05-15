@@ -9,6 +9,15 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
   taskToDisplay: null,
   showTaskOverlay: false,
   previousURL: null,
+  showPdfManuscript: Ember.computed('model.fileType', 'viewingVersion.fileType',
+    function(){
+      return this.get('viewingVersion.fileType') ?
+        this.get('viewingVersion.fileType') === 'pdf' :
+        this.get('model.fileType') === 'pdf';
+    }
+  ),
+  comparisonIsPdf: Ember.computed.equal('comparisonVersion.fileType', 'pdf'),
+  downloadsVisible: false,
 
   generateTaskVersionURL(task) {
     return this.get('routing.router.router').generate(
@@ -75,6 +84,10 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
 
     setQueryParam(key, value) {
       this.set(key, value);
+    },
+
+    toggleDownloads() {
+      this.toggleProperty('downloadsVisible');
     }
   }
 });

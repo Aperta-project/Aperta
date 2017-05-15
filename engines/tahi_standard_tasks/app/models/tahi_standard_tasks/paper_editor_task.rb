@@ -2,10 +2,15 @@ module TahiStandardTasks
   class PaperEditorTask < Task
     include ClientRouteHelper
     include Rails.application.routes.url_helpers
-    DEFAULT_TITLE = 'Invite Academic Editor'
-    DEFAULT_ROLE = 'admin'
+    DEFAULT_TITLE = 'Invite Academic Editor'.freeze
+    DEFAULT_ROLE_HINT = 'admin'.freeze
 
     include Invitable
+
+    def task_added_to_paper(paper)
+      super
+      create_invitation_queue!
+    end
 
     def academic_editors
       paper.academic_editors
@@ -19,10 +24,6 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       add_invitee_as_academic_editor_on_paper!(invitation)
-      PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(
-        paper_id:  invitation.paper.id,
-        editor_id: invitation.invitee.id
-      )
     end
 
     def invitation_rescinded(invitation)
@@ -30,6 +31,10 @@ module TahiStandardTasks
         invitation.invitee.resign_from!(assigned_to: invitation.task.journal,
                                         role: invitation.invitee_role)
       end
+    end
+
+    def active_invitation_queue
+      self.invitation_queue || InvitationQueue.create(task: self)
     end
 
     def invitee_role
@@ -46,7 +51,8 @@ module TahiStandardTasks
     def add_invitation_link(invitation)
       old_invitation_url = client_dashboard_url
       new_invitation_url = client_dashboard_url(
-        invitation_token: invitation.token)
+        invitation_token: invitation.token
+      )
       invitation.body.gsub old_invitation_url, new_invitation_url
     end
 
@@ -56,7 +62,7 @@ module TahiStandardTasks
     # its own file, but we're not sure where. It's here, instead of a
     # mailer template, because users can edit the text before it gets
     # sent out.
-    # rubocop:disable Metrics/LineLength, Metrics/MethodLength
+    # rubocop:disable Metrics/MethodLength
     def invitation_body
       template = <<-TEXT.strip_heredoc
         I am writing to seek your advice as the academic editor on a manuscript entitled '%{manuscript_title}'. The corresponding author is %{author_name}, and the manuscript is under consideration at %{journal_name}.
@@ -76,6 +82,8 @@ module TahiStandardTasks
         %{journal_name}
 
         ***************** CONFIDENTIAL *****************
+
+        %{paper_type}
 
         Manuscript Title:
         %{manuscript_title}
@@ -103,6 +111,7 @@ module TahiStandardTasks
     def template_data
       {
         manuscript_title: paper.display_title(sanitized: false),
+        paper_type: paper.paper_type,
         journal_name: paper.journal.name,
         author_name: paper.creator.full_name,
         authors: AuthorsList.authors_list(paper),

@@ -4,6 +4,7 @@
       classNames="new-comment-field"
       focus-in=(action 'startEditing')
       value=comment
+      onChange=(action "onChange")
       placeholder="Type your message here"}}
 {{/expanding-textarea}}
 

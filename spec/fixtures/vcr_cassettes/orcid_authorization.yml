@@ -5,18 +5,18 @@ http_interactions:
     uri: https://sandbox.orcid.org/oauth/token
     body:
       encoding: UTF-8
-      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&grant_type=authorization_code&code=C3b6Z2
+      string: client_id=APP-PLM33GS3DKZ60O79&client_secret=056cab03-aebe-4cb2-86d1-0011184af5ee&code=4LJmXp&grant_type=authorization_code
     headers:
+      User-Agent:
+      - Faraday v0.9.1
       Accept:
       - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Content-Length:
-      - '123'
+      Accept-Charset:
+      - UTF-8
       Content-Type:
       - application/x-www-form-urlencoded
-      User-Agent:
-      - Ruby
+      Accept-Encoding:
+      - gzip,deflate
   response:
     status:
       code: 200
@@ -25,17 +25,69 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 06 Oct 2016 18:12:28 GMT
+      - Fri, 06 Jan 2017 16:08:29 GMT
       Content-Type:
       - application/json;charset=UTF-8
-      Content-Length:
-      - '228'
+      Transfer-Encoding:
+      - chunked
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"access_token":"77ca0753-a8ac-491b-a1c4-0dbaa0c486d0","token_type":"bearer","refresh_token":"1acd31de-908e-45e8-9251-e16cfae3821a","expires_in":631138518,"scope":"/read-limited","name":"AJ
-        Hekman","orcid":"0000-0002-8398-4521"}'
+      string: '{"access_token":"b5b6e490-5276-4a65-aadd-7dc9e0094787","token_type":"bearer","refresh_token":"f3c697e2-c37f-4195-b82f-8d9cbb0cdca4","expires_in":631138518,"scope":"/read-limited","name":"Aperta
+        Test","orcid":"0000-0001-7532-4518"}'
     http_version: 
-  recorded_at: Thu, 06 Oct 2016 18:12:28 GMT
+  recorded_at: Fri, 06 Jan 2017 16:08:29 GMT
+- request:
+    method: get
+    uri: https://api.sandbox.orcid.org/v1.2/0000-0001-7532-4518/orcid-profile
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.9.1
+      Accept:
+      - application/json
+      Authorization:
+      - Bearer b5b6e490-5276-4a65-aadd-7dc9e0094787
+      Accept-Charset:
+      - UTF-8
+      Accept-Encoding:
+      - gzip,deflate
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Fri, 06 Jan 2017 16:08:29 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA3VTTW/bMAz9LzpPTZw2TZrbhnm37pBt50GRaZuYbBkUndUo
+        9t9H+TNIUgM2YPK9x0dSelcVhGAK0GeggL5WB5U8bNQn5cliphvyOTpQh/ch
+        oA5169yUvf2HmjFHoEg4G9fCBGgJRbpkbg6rVTB1dvJvDz1LvsVqLY+WN9G7
+        7eNGP22TvXhoDJfCup8sfWBJ3mipf5OdDBoCaxiubEo0B4LaQog+nbcmtqjS
+        7wu3xMCeupi3BIZlNLoCLr1oqdf09Ut6/H1Mv6XHY/pVzFhfNQ56VCYFp3qh
+        PVUYwhKep5I87R93yf55u9nvdlLVmcC68lmcXvYB+GX9sl4/C9g6g1XsakYw
+        tSCJ4Fuyc/UMjGU8mxtbsuuhDlQG3YVMblyIOjOgIawMdR8DMeAJHXI3aM/z
+        O6GP8EZOla+Nk12wKPTzLvAMta5NNYx/VFSfBctG3dXMTYWu6zmXlJ8gR+Au
+        QXaWIY+EcfdcAk1lR5i4LMg0ZTeBCAIYshHZkgtT2PqaZZZLF0P4D3R/PWXz
+        P7wxUOx2uQhhWYaDol/FfDisb+BqbP3CkBHC1c2qB+Upyl2kql8/0qMMoCDf
+        NnqIjYYdioOL0Fxh6E9Lo63jxTmRJ2kv2BH+HzWxOj8ZBAAA
+    http_version: 
+  recorded_at: Fri, 06 Jan 2017 16:08:29 GMT
 recorded_with: VCR 2.9.3

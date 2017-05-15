@@ -12,7 +12,7 @@ describe TasksController, redis: true do
   let!(:paper) do
     FactoryGirl.create(
       :paper,
-      :with_tasks,
+      :with_phases,
       creator: user,
       journal: journal
     )
@@ -20,12 +20,10 @@ describe TasksController, redis: true do
 
   describe "GET #index" do
     subject(:do_request) do
-      get :index, {
-             format: 'json',
-             paper_id: paper.to_param,
-           }
+      get :index, format: 'json',
+                  paper_id: paper.to_param
     end
-    let(:tasks){ [FactoryGirl.build_stubbed(:ad_hoc_task)] }
+    let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -70,22 +68,24 @@ describe TasksController, redis: true do
   end
 
   describe "POST #create" do
-    subject(:do_request) do
-      post :create, {
-        format: 'json',
-        task: {
-          type: 'TahiStandardTasks::AuthorsTask',
-          paper_id: paper.to_param,
-          phase_id: paper.phases.last.id,
-          title: 'Verify Signatures'
-        }
+    let(:task_params) do
+      {
+        type: 'PlosBilling::BillingTask',
+        paper_id: paper.to_param,
+        phase_id: paper.phases.last.id,
+        title: 'Verify Signatures'
       }
+    end
+
+    subject(:do_request) do
+      post :create, format: 'json', task: task_params
     end
 
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
+        CardLoader.load("PlosBilling::BillingTask")
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:manage_workflow, paper)
@@ -94,6 +94,37 @@ describe TasksController, redis: true do
 
       it "creates a task" do
         expect { do_request }.to change(Task, :count).by 1
+      end
+
+      it "does not create another billing task if a billing task already exists" do
+        FactoryGirl.create(:billing_task, paper: paper)
+        expect { do_request }.not_to change(Task, :count)
+      end
+
+      it "does create another billing task when there are no billing tasks on the paper" do
+        expect { do_request }.to change(Task, :count).by 1
+      end
+
+      it "uses the TaskFactory to create the new task" do
+        expect(TaskFactory).to receive(:create).and_call_original
+        do_request
+      end
+
+      context "custom cards" do
+        let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
+        let(:task_params) do
+          {
+            type: 'CustomCardTask',
+            paper_id: paper.to_param,
+            phase_id: paper.phases.last.id,
+            title: card.name,
+            card_id: card.id
+          }
+        end
+
+        it "creates a new task from a card template" do
+          expect { do_request }.to change(CustomCardTask, :count).by(1)
+        end
       end
     end
 
@@ -113,14 +144,15 @@ describe TasksController, redis: true do
     let(:task) do
       FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)
     end
+    let(:task_params) {  { completed: '1' } }
 
     subject(:do_request) do
       xhr(
         :patch,
-        :update, {
-          format: 'json',
-          paper_id: paper.to_param,
-          id: task.to_param, task: { completed: '1' } } )
+        :update, format: 'json',
+                 paper_id: paper.to_param,
+                 id: task.to_param, task: task_params
+      )
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -143,76 +175,62 @@ describe TasksController, redis: true do
         expect(response.status).to eq(200)
       end
 
-      context "when the task is assigned to the user" do
-        let(:new_assignee) { FactoryGirl.create(:user) }
-
-        before do
-          task.add_participant(user)
-        end
-
-        it "updates the task" do
-          do_request
-          expect(task.reload).to be_completed
-        end
+      it "does not raises an error" do
+        do_request
+        expect(response.body).not_to include "This paper cannot be edited at this time."
       end
 
-      context "when the user cannot edit the task" do
-        subject(:do_unauthorized_request) do
-          xhr :patch, :update, {
-            format: 'json',
-            paper_id: paper.to_param,
-            id: task.to_param,
-            task: { completed: '1' }
-          }
-        end
-
+      context "and the task is marked as complete" do
         before do
-          allow(user).to receive(:can?)
-            .with(:edit, task)
-            .and_return false
+          task.update_column :completed, true
         end
 
-        describe "a submission card" do
-          it "returns a 403" do
-            do_unauthorized_request
-            expect(response.status).to eq 403
-          end
-
-          it "does not update the task" do
-            do_unauthorized_request
-            expect(task.reload).not_to be_completed
-          end
+        it "allows the task to be marked as incomplete" do
+          expect do
+            task_params.merge!(completed: '0', title: 'vernors')
+            do_request
+          end.to change { task.reload.completed }.from(true).to(false)
         end
 
-        describe "the user can edit the task" do
-          before do
-            allow_any_instance_of(User).to receive(:can?)
-              .with(:edit, task)
-              .and_return true
-          end
-
-          it "returns a 200" do
+        it "does not incomplete the task when the completed param is not a part of the request" do
+          expect do
+            task_params.merge!(title: 'vernors')
             do_request
-            expect(response.status).to eq 200
-          end
+          end.to_not change { task.reload.completed }
+        end
 
-          it "does update the task" do
+        it "does not update anything else on the task" do
+          expect do
             do_request
-            expect(task.reload).to be_completed
-          end
-
-          it "does not raises an error" do
-            do_request
-            expect(response.body).not_to include "This paper cannot be edited at this time."
-          end
+          end.to_not change { task.reload.title }
         end
       end
     end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to eq 403
+      end
+
+      it "does not update the task" do
+        do_request
+        expect(task.reload).not_to be_completed
+      end
+    end
+
   end
 
   describe "GET #show" do
     let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    subject(:do_request) { get :show, { id: task.id, format: :json } }
+    subject(:do_request) { get :show, id: task.id, format: :json }
     let(:format) { :json }
 
     before do
@@ -258,14 +276,12 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      put :send_message, {
-        id: task.id, format: "json",
-        task: {
-          subject: "Hello",
-          body: "Greetings from Vulcan!",
-          recipients: [user.id]
-        }
-      }
+      put :send_message, id: task.id, format: "json",
+                         task: {
+                           subject: "Hello",
+                           body: "Greetings from Vulcan!",
+                           recipients: [user.id]
+                         }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -288,12 +304,12 @@ describe TasksController, redis: true do
 
         expect do
           put :send_message,
-              id: task.id, format: "json",
-              task: {
-                subject: "Hello",
-                body: "Greetings from Vulcan!",
-                recipients: [user.id, user2.id]
-              }
+            id: task.id, format: "json",
+            task: {
+              subject: "Hello",
+              body: "Greetings from Vulcan!",
+              recipients: [user.id, user2.id]
+            }
         end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(2)
       end
     end
@@ -314,7 +330,7 @@ describe TasksController, redis: true do
     let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
     subject(:do_request) do
-      delete :destroy, { id: task.id, format: "json" }
+      delete :destroy, id: task.id, format: "json"
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -353,16 +369,14 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
-    let(:nested_questions) { [ nested_question ] }
-
-    subject(:do_request) do
-      get :nested_questions, { task_id: task.id, format: "json" }
+    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
+    let!(:card_content) do
+      root = task.card.content_root_for_version(:latest)
+      root.children.first
     end
 
-    before do
-      allow(Task).to receive(:find).with(task.id.to_param).and_return task
+    subject(:do_request) do
+      get :nested_questions, task_id: task.id, format: "json"
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -373,7 +387,6 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-        allow(task).to receive(:nested_questions).and_return nested_questions
       end
 
       it "responds with a list of serialized nested questions" do
@@ -381,8 +394,8 @@ describe TasksController, redis: true do
         response_json = JSON.parse(response.body)
         expect(response_json).to have_key('nested_questions')
         expect(response_json['nested_questions'].first).to eq(
-          NestedQuestionSerializer.new(
-            nested_question
+          CardContentAsNestedQuestionSerializer.new(
+            card_content
           ).as_json[:nested_question].deep_stringify_keys
         )
       end
@@ -406,25 +419,25 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_question_answers" do
-    let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    let(:nested_question) { FactoryGirl.build_stubbed(:nested_question) }
-    let(:nested_question_answer) do
-      FactoryGirl.build_stubbed(
-        :nested_question_answer,
-        owner: nested_question
+    let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
+    let(:card_content) do
+      root = Card.find_by(name: task.class.name).content_root_for_version(:latest)
+      FactoryGirl.create(:card_content, parent: root)
+    end
+    let!(:answer) do
+      FactoryGirl.create(
+        :answer,
+        owner: task,
+        card_content: card_content,
+        paper: task.paper
       )
     end
-    let(:nested_question_answers) { [ nested_question_answer ] }
 
     subject(:do_request) do
-      get :nested_question_answers, { task_id: task.id, format: "json" }
+      get :nested_question_answers, task_id: task.id, format: "json"
     end
 
-    before do
-      allow(Task).to receive(:find).with(task.id.to_param).and_return task
-    end
-
-    it_behaves_like "an unauthenticated json request"    
+    it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
       before do
@@ -432,8 +445,6 @@ describe TasksController, redis: true do
         allow(user).to receive(:can?)
           .with(:view, task)
           .and_return true
-        allow(task).to receive(:nested_question_answers)
-          .and_return nested_question_answers
       end
 
       it "responds with a list of serialized nested question answers" do
@@ -441,8 +452,8 @@ describe TasksController, redis: true do
         response_json = JSON.parse(response.body)
         expect(response_json).to have_key('nested_question_answers')
         expect(response_json['nested_question_answers'].first).to eq(
-          NestedQuestionAnswerSerializer.new(
-          nested_question_answer
+          AnswerAsNestedQuestionAnswerSerializer.new(
+            answer
           ).as_json[:nested_question_answer].deep_stringify_keys
         )
       end
@@ -464,5 +475,4 @@ describe TasksController, redis: true do
       it { is_expected.to responds_with(403) }
     end
   end
-
 end

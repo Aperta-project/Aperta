@@ -1,17 +1,19 @@
-<label>
+<label class={{concat yesClass "-label"}}>
   {{radio-button selection=selection
                  name=name
                  id=idYes
+                 class=yesClass
                  value=yesValue
                  action=(action "selectYes")
                  disabled=disabled}}
   {{yesLabel}}
 </label>
 
-<label>
+<label class={{concat noClass "-label"}}>
   {{radio-button selection=selection
                  name=name
                  id=idNo
+                 class=noClass
                  value=noValue
                  action=(action "selectNo")
                  disabled=disabled}}

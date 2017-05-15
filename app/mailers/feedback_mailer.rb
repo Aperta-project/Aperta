@@ -1,4 +1,4 @@
-class FeedbackMailer < ActionMailer::Base
+class FeedbackMailer < ApplicationMailer
   include MailerHelper
   layout "mailer"
 

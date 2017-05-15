@@ -10,7 +10,8 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at,
              :invitee_id,
-             :information
+             :information,
+             :paper_type
 
   has_one :task, embed: :id, polymorphic: true
 
@@ -20,5 +21,9 @@ class InvitationIndexSerializer < ActiveModel::Serializer
 
   def abstract
     object.paper.abstract
+  end
+
+  def paper_type
+    object.paper.paper_type
   end
 end

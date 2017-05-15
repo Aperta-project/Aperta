@@ -9,6 +9,7 @@ module JournalServices
         phase = mmt.phase_templates.create! name: "Submission Data"
         make_tasks phase, task_types,
           TahiStandardTasks::FigureTask,
+          TahiStandardTasks::EarlyPostingTask,
           TahiStandardTasks::SupportingInformationTask,
           TahiStandardTasks::AuthorsTask,
           TahiStandardTasks::UploadManuscriptTask,
@@ -16,8 +17,7 @@ module JournalServices
 
         phase = mmt.phase_templates.create! name: "Invite Editor"
         make_tasks phase, task_types,
-          TahiStandardTasks::PaperEditorTask,
-          TahiStandardTasks::PaperAdminTask
+          TahiStandardTasks::PaperEditorTask
 
         phase = mmt.phase_templates.create! name: "Invite Reviewers"
         make_tasks phase, task_types, TahiStandardTasks::PaperReviewerTask

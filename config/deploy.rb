@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'tahi'
-set :assets_roles, [:web]
+set :assets_roles, [:web, :app, :worker]
 set :chruby_exec, '/usr/bin/chruby-exec'
 set :chruby_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__)).strip
 set :linked_dirs, ['log', 'tmp/pids', 'tmp/cache', 'tmp/sockets',
@@ -33,9 +33,10 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
   on primary fetch(:migration_role) do
     within release_path do
       with rails_env: fetch(:rails_env) do
-        execute :rake, 'nested-questions:seed'
+        execute :rake, 'cards:load'
         execute :rake, 'roles-and-permissions:seed'
         execute :rake, 'data:update_journal_task_types'
+        execute :rake, 'create_feature_flags'
       end
     end
   end

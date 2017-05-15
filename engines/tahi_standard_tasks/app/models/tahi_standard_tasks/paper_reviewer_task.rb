@@ -1,8 +1,8 @@
 # coding: utf-8
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
-    DEFAULT_TITLE = 'Invite Reviewers'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Invite Reviewers'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     include Invitable
 
@@ -15,20 +15,11 @@ module TahiStandardTasks
         originating_task: self,
         assignee_id: invitation.invitee_id
       ).process
-      ReviewerMailer.delay.reviewer_accepted(
-        invite_reviewer_task_id: id,
-        assigner_id: invitation.inviter_id,
-        reviewer_id: invitation.invitee_id
-      )
+      ReviewerMailer.delay.reviewer_accepted(invitation_id: invitation.id)
     end
 
     def invitation_declined(invitation)
-      ReviewerMailer.delay.reviewer_declined(
-        invite_reviewer_task_id: id,
-        invitation_id: invitation.id,
-        assigner_id: invitation.inviter_id,
-        reviewer_id: invitation.invitee_id
-      )
+      ReviewerMailer.delay.reviewer_declined(invitation_id: invitation.id)
     end
 
     def invitation_rescinded(invitation)
@@ -36,6 +27,11 @@ module TahiStandardTasks
         invitation.invitee.resign_from!(assigned_to: invitation.task.journal,
                                         role: invitation.invitee_role)
       end
+    end
+
+    def active_invitation_queue
+      paper.draft_decision.invitation_queue ||
+        InvitationQueue.create(task: self, decision: paper.draft_decision)
     end
 
     def array_attributes
@@ -78,6 +74,8 @@ module TahiStandardTasks
 
         ***************** CONFIDENTIAL *****************
 
+        %{paper_type}
+
         Manuscript Title:
         %{manuscript_title}
 
@@ -93,10 +91,10 @@ module TahiStandardTasks
 
     def template_data
       { manuscript_title: paper.display_title(sanitized: false),
+        paper_type: paper.paper_type,
         journal_name: paper.journal.name,
         abstract: abstract,
-        authors:  AuthorsList.authors_list(paper)
-      }
+        authors:  AuthorsList.authors_list(paper) }
     end
 
     def abstract

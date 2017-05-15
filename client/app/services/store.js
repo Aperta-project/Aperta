@@ -60,5 +60,21 @@ export default DS.Store.extend({
         return memo;
       };
     })(this), []);
+  },
+
+  // These are helper methods to get an answer from the already fetched, stored,
+  // answers based on the ident and owner. Useful because many answer
+  // relationships are async, this does not return a promise.
+  peekAnswer(ident, owner) {
+    let content = this.peekCardContent(ident);
+    return this.peekAll('answer').find((a) => {
+      return a.get('cardContent') === content && a.get('owner') === owner;
+    });
+  },
+  peekCard(name) {
+    return this.peekAll('card').findBy('name', name);
+  },
+  peekCardContent(ident) {
+    return this.peekAll('card-content').findBy('ident', ident);
   }
 });

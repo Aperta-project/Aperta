@@ -22,7 +22,8 @@
           <h2>{{model.email}}</h2>
         </div>
 
-        {{orcid-connect user=model}}
+        {{orcid-connect user=model
+                        notConnectedMessage="No ORCID ID has been linked with this user."}}
 
         {{user-affiliation user=model}}
 

@@ -16,6 +16,7 @@ export default {
     instance.registry.injection('controller', 'currentUser', 'user:current');
     instance.registry.injection('route',      'currentUser', 'user:current');
     instance.registry.injection('component', 'currentUser', 'user:current');
+    instance.registry.injection('model:author', 'currentUser', 'user:current');
     instance.registry.injection('service:notifications', 'currentUser',  'user:current');
   }
 };

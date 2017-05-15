@@ -2,10 +2,13 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
 export default TaskComponent.extend({
-  latestDecision: Ember.computed.alias('task.paper.latestDecision'),
-
-  previousDecisions: Ember.computed('task.paper.decisions', function() {
-    return this.get('task.previousDecisions');
+  currentReviewerReport: Ember.computed.alias('task.reviewerReports.firstObject'),
+  previousReviewerReports: Ember.computed('task.reviewerReports.@each.reviewerReport', 'task.paper.decision', function(){
+    if (this.get('currentReviewerReport.decision.draft')) {
+      return this.get('task.reviewerReports').slice(1);
+    } else {
+      return this.get('task.reviewerReports');
+    }
   }),
 
   actions: {
@@ -18,9 +21,12 @@ export default TaskComponent.extend({
     },
 
     submitReport() {
-      this.set('task.body.submitted', true);
-      this.set('task.completed', true);
-      this.get('task').save();
+      let report = this.get('currentReviewerReport');
+      report.set('submitted', true);
+      report.save().then(() => {
+        this.set('task.completed', true);
+        this.get('task').save();
+      });
     }
   }
 });

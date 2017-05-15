@@ -1,38 +1,32 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      Thank you for submitting your manuscript,
-      <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
-      Our staff will be in touch with next steps.
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @journal.logo_url %>
-        <img class="journal-logo" src="<%= @journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @journal.name %>
-        </div>
-      <% end %>
-    </div>
-    <p>
-      Hello <%= @author.full_name %>,
-    </p>
-    <p class="message">
-      Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
-      to <%= @journal.name %>.
-      Your submission is complete, and our staff will be in touch with next steps.
-    </p>
-    <p>
-      You will be able to check on the progress of your paper by logging in here:
-      <%= link_to client_dashboard_url, client_dashboard_url %>.
-    </p>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  Thank you for submitting your manuscript,
+  <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
+  Our staff will be in touch with next steps.
+</h1>
+
+<hr>
+
+<p>Hello <%= @author.full_name %>,</p>
+
+<p>
+  Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
+  to <%= @journal.name %>.
+  Your submission is complete, and our staff will be in touch with next steps.
+</p>
+
+<%= render partial: 'email/button', locals: {
+  href: client_dashboard_url,
+  text: 'Check Paper Progress'
+} %>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>
+
+<hr>
+
+<p>
+  You will be able to check on the progress of your paper by logging in here:
+  <%= link_to client_dashboard_url, client_dashboard_url %>.
+</p>

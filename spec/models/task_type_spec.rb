@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TaskType do
-  class SampleTaskForTestingTaskType ; end
+  class SampleTaskForTestingTaskType; end
 
   after do
     TaskType.deregister(SampleTaskForTestingTaskType)
@@ -9,14 +9,14 @@ describe TaskType do
 
   describe ".register" do
     it "will add to the list of task types" do
-      TaskType.register(SampleTaskForTestingTaskType, "title", "old_role")
+      TaskType.register(SampleTaskForTestingTaskType, "title")
       expect(TaskType.types.keys).to include("SampleTaskForTestingTaskType")
     end
   end
 
   describe ".deregister" do
     before do
-      TaskType.register(SampleTaskForTestingTaskType, "title", "old_role")
+      TaskType.register(SampleTaskForTestingTaskType, "title")
     end
 
     it "will remove the class from the list of registered task types" do
@@ -28,7 +28,7 @@ describe TaskType do
   describe ".constantize!" do
     context "with a registered class" do
       before do
-        TaskType.register(SampleTaskForTestingTaskType, "title", "old_role")
+        TaskType.register(SampleTaskForTestingTaskType, "title")
       end
 
       it "constantizes" do
@@ -43,5 +43,4 @@ describe TaskType do
       end
     end
   end
-
 end

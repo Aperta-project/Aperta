@@ -19,5 +19,5 @@ describe Snapshot::FunderSerializer do
     )
   end
 
-  it_behaves_like "snapshot serializes related nested questions", resource: :funder
+  it_behaves_like "snapshot serializes related answers as nested questions", resource: :funder
 end

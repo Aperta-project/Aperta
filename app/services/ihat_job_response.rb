@@ -1,12 +1,13 @@
 # Models a response from ihat.
 class IhatJobResponse
-  attr_reader :outputs, :state, :metadata, :job_id
+  attr_reader :outputs, :state, :metadata, :job_id, :recipe_name
 
   def initialize(params = {})
     @state = params[:state].to_sym
     @outputs = params[:outputs]
     @metadata = params[:options][:metadata] || {}
     @job_id = params[:id]
+    @recipe_name = params[:options][:recipe_name]
   end
 
   def paper_id

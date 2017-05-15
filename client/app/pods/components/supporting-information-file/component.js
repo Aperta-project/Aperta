@@ -1,25 +1,21 @@
 import Ember from 'ember';
 
-const { Component, computed } = Ember;
+const {
+  Component,
+  computed,
+  computed: { alias, equal }
+} = Ember;
 
 export default Component.extend({
   classNames: ['si-file'],
   classNameBindings: ['uiStateClass'],
-  file: computed.alias('model.object'),
+  file: alias('model.object'),
   isEditable: false, // passed-in
   uiState: 'view', // view, edit, delete
-  errorsPresent: computed.alias('model.errorsPresent'),
-
-  isEditing: computed('errorsPresent', 'uiState', function(){
-    if (this.get('errorsPresent')) {
-      this.set('uiState', 'edit');
-      return true;
-    }
-
-    if (this.get('uiState') === 'edit') { return true; }
-
-    return false;
-  }),
+  errorsPresent: alias('model.errorsPresent'),
+  isFileError: equal('file.status', 'error'),
+  isEditing: equal('uiState', 'edit'),
+  legendsAllowed: alias('file.paper.legendsAllowed'),
 
   categories: [
     'Table',
@@ -48,14 +44,23 @@ export default Component.extend({
             '/update_attachment');
   }),
 
+  uploadErrorMessage: Ember.computed('file.filename', function() {
+    const filename = this.get('file.filename') || 'your file';
+    return `There was an error while processing ${filename}. Please try again
+    or contact Aperta staff.`;
+  }),
+
   actions: {
     enterDeleteState() {
       this.set('uiState', 'delete');
     },
 
     deleteFile() {
-      this.attrs.deleteFile(this.get('file'));
-      this.set('uiState', 'view');
+      this.get('deleteFile')(this.get('file'));
+      this.setProperties({
+        uiState: 'view',
+        deleting: true
+      });
     },
 
     cancelDelete() {
@@ -68,12 +73,12 @@ export default Component.extend({
       }
     },
 
-    validateTitle() {
-      this.get('model').validateProperty('title');
-    },
-
     validateCategory() {
       this.get('model').validateProperty('category');
+    },
+
+    validateLabel() {
+      this.get('model').validateProperty('label');
     },
 
     cancelEdit(){
@@ -85,8 +90,12 @@ export default Component.extend({
       this.get('model').validateAll();
       if(this.get('model').validationErrorsPresent()) { return; }
 
-      this.attrs.updateFile(this.get('file'));
+      this.get('updateFile')(this.get('file'));
       this.set('uiState', 'view');
-    }
+    },
+
+    uploadFinished() {
+      this.get('model').validateAll();
+    },
   }
 });

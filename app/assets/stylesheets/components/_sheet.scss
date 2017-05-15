@@ -46,8 +46,13 @@ $sheet-toolbar-height: 60px;
   line-height: $sheet-toolbar-height;
 }
 
+.sheet-title {
+  font-size: 3.6rem;
+  text-align: center;
+}
 
 .sheet-content {
   @include position(absolute, $sheet-toolbar-height 0px 0px 0px);
   overflow-y: auto;
+  padding: 0 30px;
 }

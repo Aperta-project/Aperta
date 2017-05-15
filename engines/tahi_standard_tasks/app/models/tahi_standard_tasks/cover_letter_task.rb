@@ -2,8 +2,8 @@ module TahiStandardTasks
   class CoverLetterTask < Task
     include SubmissionTask
 
-    DEFAULT_TITLE = 'Cover Letter'
-    DEFAULT_ROLE = 'author'
+    DEFAULT_TITLE = 'Cover Letter'.freeze
+    DEFAULT_ROLE_HINT = 'author'.freeze
 
     self.snapshottable = true
 

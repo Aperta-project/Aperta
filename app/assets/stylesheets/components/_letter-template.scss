@@ -1,6 +1,7 @@
 .letter-template {
+  overflow: hidden;
   min-height: 20px;
-  padding: 30px 33px 68px 33px;
+  padding: 30px 33px;
   margin-bottom: 20px;
   background-color: $aperta-grey-lighter;
   border: 1px solid #e3e3e3;

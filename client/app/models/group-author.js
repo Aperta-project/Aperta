@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
+import Answerable from 'tahi/mixins/answerable';
 
 const { attr, belongsTo } = DS;
 
@@ -22,13 +23,20 @@ export const contributionIdents = [
 ];
 
 
-export default NestedQuestionOwner.extend({
+export default NestedQuestionOwner.extend(Answerable, {
   paper: belongsTo('paper', { async: false }),
+  coAuthorStateModifiedBy: belongsTo('user'),
 
   contactFirstName: attr('string'),
   contactLastName: attr('string'),
   contactMiddleName: attr('string'),
   contactEmail: attr('string'),
+
+  coAuthorState: attr('string'),
+  coAuthorStateModifiedAt: attr('date'),
+
+  confirmedAsCoAuthor: Ember.computed.equal('coAuthorState', 'confirmed'),
+  refutedAsCoAuthor: Ember.computed.equal('coAuthorState', 'refuted'),
 
   name: attr('string'),
   initial: attr('string'),
@@ -58,10 +66,13 @@ export default NestedQuestionOwner.extend({
       type: 'presence',
       message: 'One must be selected',
       validation() {
+        // NOTE: the validations for contributions is the same as in author.js. If you make changes
+        // here please also check to see if changes need to be made there.
         const author = this.get('object');
-
         return _.some(contributionIdents, (ident) => {
-          return author.answerForQuestion(ident).get('value');
+          let answer = author.answerForQuestion(ident);
+          Ember.assert(`Tried to find an answer for question with ident, ${ident}, but none was found`, answer);
+          return answer.get('value');
         });
       }
     }]

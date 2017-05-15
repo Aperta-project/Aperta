@@ -50,7 +50,9 @@ class JournalFactory
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
       task_klasses << PlosBioTechCheck::ChangesForAuthorTask
+      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -61,10 +63,12 @@ class JournalFactory
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types
       task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -102,8 +106,10 @@ class JournalFactory
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
@@ -144,10 +150,12 @@ class JournalFactory
         TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
+      task_klasses << AdHocForReviewersTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name)
         role.ensure_permission_exists(:view_participants, applies_to: klass.name)
       end
+      role.ensure_permission_exists(:edit, applies_to: AdHocForReviewersTask.name, states: Paper::REVIEWABLE_STATES)
     end
 
     # This role exists to give a reviewer the ability to edit their reviewer
@@ -162,10 +170,16 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
 
+    Role.ensure_exists(Role::JOURNAL_SETUP_ROLE, journal: @journal) do |role|
+      role.ensure_permission_exists(:create_card, applies_to: Journal)
+      role.ensure_permission_exists(:edit, applies_to: Card)
+    end
+
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:administer, applies_to: Journal)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
@@ -188,12 +202,21 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
+
+      role.ensure_permission_exists(:view, applies_to: Card)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -232,12 +255,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -278,8 +308,10 @@ class JournalFactory
       ]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
@@ -308,11 +340,13 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
       # Journal
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
@@ -335,12 +369,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -349,7 +390,6 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
-      role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
@@ -358,6 +398,7 @@ class JournalFactory
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
       # Journals
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:remove_orcid, applies_to: Journal)
 
       # Paper
       role.ensure_permission_exists(:assign_roles, applies_to: Paper)
@@ -380,12 +421,19 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
 
       # Tasks
-      role.ensure_permission_exists(:add_email_participants, applies_to: Task)
-      role.ensure_permission_exists(:edit, applies_to: Task)
-      role.ensure_permission_exists(:manage_invitations, applies_to: Task)
-      role.ensure_permission_exists(:manage_participant, applies_to: Task)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      role.ensure_permission_exists(:view_participants, applies_to: Task)
+      task_klasses = Task.descendants
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:add_email_participants, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:manage, applies_to: klass)
+        role.ensure_permission_exists(:manage_invitations, applies_to: klass)
+        role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -410,8 +458,7 @@ class JournalFactory
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
                        journal: @journal,
-                       participates_in: [Paper],
-                       delete_stray_permissions: true) do |role|
+                       participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
       task_klasses = Task.submission_task_types
@@ -428,6 +475,11 @@ class JournalFactory
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
+
+      AdHocForEditorsTask.tap do |klass|
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+      end
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
@@ -439,8 +491,16 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask)
+      task_klasses = Task.descendants
+      task_klasses.each do |klass|
+        role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass)
+      end
+
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: Paper)
     end
   end
 end

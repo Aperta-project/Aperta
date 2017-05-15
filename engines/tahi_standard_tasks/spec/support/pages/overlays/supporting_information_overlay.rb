@@ -4,9 +4,19 @@ class SupportingInfoOverlay < CardOverlay
   end
 
   def attach_supporting_information
-    session.execute_script "$('#file_attachment').css('position', 'relative')"
-    attach_file('file_attachment', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
-    session.execute_script "$('#file_attachment').css('position', 'absolute')"
+    upload_file(
+      element_id: 'file_attachment',
+      file_name: 'yeti.jpg',
+      sentinel: -> { SupportingInformationFile.count }
+    )
+  end
+
+  def attach_bad_supporting_information
+    upload_file(
+      element_id: 'file_attachment',
+      file_name: 'bad_yeti.tiff',
+      sentinel: -> { SupportingInformationFile.count }
+    )
   end
 
   def edit_file_info
@@ -17,20 +27,8 @@ class SupportingInfoOverlay < CardOverlay
     find('.si-file-save-edit-button').click
   end
 
-  def file_title_input=(new_title)
-    title = find('.si-file-title-input .format-input-field')
-    title.click
-    title.send_keys new_title
-  end
-
-  def file_caption_input=(new_caption)
-    caption = find('.si-file-caption-textbox .format-input-field')
-    caption.click
-    caption.send_keys new_caption
-  end
-
   def file_label_input=(new_label)
-    label = find('.si-file-label-input')
+    label = find('.si-file-label-field')
     label.set new_label
   end
 
@@ -46,6 +44,18 @@ class SupportingInfoOverlay < CardOverlay
   def toggle_for_publication
     checkbox = find('.si-file-publishable-checkbox')
     checkbox.click
+  end
+
+  def error_message
+    find('.si-file-actions .error-message').text
+  end
+
+  def file_error_message
+    find('.si-file-error .error-message').text
+  end
+
+  def dismiss_file_error
+    find('.si-file-error .acknowledge-error-button').click
   end
 
   def file_title

@@ -4,33 +4,20 @@ module TahiStandardTasks
   # up in the "ALL REVIEWS COMPLETE" query, it should inherit from
   # ReviewerReportTask.
   class ReviewerReportTask < Task
-    DEFAULT_TITLE = 'Reviewer Report'
-    DEFAULT_ROLE = 'reviewer'
+    DEFAULT_TITLE = 'Reviewer Report'.freeze
+    DEFAULT_ROLE_HINT = 'reviewer'.freeze
     SYSTEM_GENERATED = true
 
-    before_create :assign_to_draft_decision
-    has_many :decisions, -> { uniq }, through: :paper
+    has_many :reviewer_reports, inverse_of: :task, foreign_key: :task_id
 
-    # Overrides Task#restore_defaults to be only restore +old_role+. This
+    # Overrides Task#restore_defaults to not restore +title+. This
     # will never update +title+ as that is dynamically determined. If you
     # need to change the reviewer report title write a data migration.
     def self.restore_defaults
-      update_all(old_role: self::DEFAULT_ROLE)
     end
 
-    # find_or_build_answer_for(...) will return the associated answer for this
-    # task given :nested_question. For ReviewerReportTask this enforces the
-    # lookup to be scoped to this task's current decision. Answers associated
-    # with previous decisions will not be returned.
-    #
-    # == Optional Parameters
-    #  * decision - ignored if provided, always enforces the task's decision.id
-    #
-    def find_or_build_answer_for(nested_question:, **_kwargs)
-      super(
-        nested_question: nested_question,
-        decision: decision
-      )
+    def reviewer_number
+      ReviewerNumber.number_for(reviewer, paper)
     end
 
     def body
@@ -55,61 +42,35 @@ module TahiStandardTasks
       !submitted?
     end
 
-    def incomplete!
-      assign_to_draft_decision
-      update!(
-        completed: false,
-        body: body.except("submitted")
-      )
-    end
-
-    # +decision+ returns the _relevant_ decision to this task. This is so
-    # the appropriate questions and responses for this task can be determined.
-    #
-    # This is impacted by the concept of "latest decision" in the app as it's
-    # not always the latest rendered decision by an Academic Editor.
-    def decision
-      paper.decisions.find(body["decision_id"]) if body["decision_id"]
-    end
-
-    def decision=(new_decision)
-      previous_decision_ids = body["previous_decision_ids"] || []
-      current_decision_id = body["decision_id"]
-
-      if current_decision_id
-        previous_decision_ids.push current_decision_id
-      end
-
-      update_body(
-        "decision_id" => new_decision.try(:id),
-        "previous_decision_ids" => previous_decision_ids
-      )
-    end
-
-    def previous_decision_ids
-      if body["previous_decision_ids"]
-        body["previous_decision_ids"]
-      else
-        []
-      end
-    end
-
-    def previous_decisions
-      paper.decisions.where(id: previous_decision_ids)
-    end
-
     def submitted?
-      !!body["submitted"]
+      latest_reviewer_report.submitted?
     end
 
-    private
-
-    def assign_to_draft_decision
-      self.decision = paper.draft_decision
+    # before save we want to update the reviewer number if neccessary
+    def on_completion
+      super
+      return unless persisted? # don't assign reviewer numbers to newly created tasks
+      assign_reviewer_number if completed?
     end
 
-    def update_body(hsh)
-      self.body = body.merge(hsh)
+    def assign_reviewer_number
+      return if reviewer_number.present? || !paper.number_reviewer_reports
+      add_number_to_title(new_reviewer_number)
+    end
+
+    def new_reviewer_number
+      ReviewerNumber.assign_new(reviewer, paper)
+    end
+
+    # this is meant to run in a `before_save` hook so don't
+    # call `save` in the method body
+    def add_number_to_title(new_number)
+      new_title = title + " (##{new_number})"
+      self.title = new_title
+    end
+
+    def latest_reviewer_report
+      reviewer_reports.order('created_at DESC').first
     end
   end
 end

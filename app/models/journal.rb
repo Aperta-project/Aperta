@@ -1,31 +1,45 @@
 class Journal < ActiveRecord::Base
+  include EventStream::Notifiable
+
+  PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
+  SUFFIX_FORMAT           = %r{journal[^\/]+}
+  DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
+  SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
+
+  class InvalidDoiError < ::StandardError ; end
+
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
+  has_many :cards, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
   has_many :discussion_topics, through: :papers, inverse_of: :journal
   has_many :letter_templates
 
-  # Old Roles and Permissions
-  has_many :old_roles, inverse_of: :journal
-  has_many :user_roles, through: :old_roles
-  has_many :users, through: :user_roles
-
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 
-  validates :name, presence: { message: 'Please include a journal name' }
-  validates :doi_journal_prefix, uniqueness: {
-    scope: [:doi_publisher_prefix],
-    if: proc do |journal|
-      journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
-    end
-  }
-  validate :has_valid_doi_information?
+  validates :name, presence: { message: 'Please include a journal name' }, uniqueness: true
+  validates :doi_publisher_prefix,
+    presence: { message: 'Please include a DOI Publisher Prefix' },
+    format: {
+      with: PUBLISHER_PREFIX_FORMAT,
+      message: 'The DOI Publisher Prefix is not valid. It can only contain word characters, numbers, -, and .',
+      if: proc { |journal| journal.doi_publisher_prefix.present? }
+    }
+  validates :doi_journal_prefix,
+    presence: { message: 'Please include a DOI Journal Prefix' },
+    format: {
+      with: SUFFIX_FORMAT,
+      message: 'The DOI Journal Prefix is not valid. It must begin with \'journal\' and can contain any characters except /',
+      if: proc { |journal| journal.doi_journal_prefix.present? }
+    },
+    uniqueness: { scope: :doi_publisher_prefix,
+                  message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
+  validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
-  before_destroy :destroy_roles
 
   mount_uploader :logo, LogoUploader
 
@@ -74,16 +88,12 @@ class Journal < ActiveRecord::Base
     all.flat_map(&:staff_admins)
   end
 
-  def admins
-    users.merge(OldRole.admins)
+  def self.valid_doi?(doi)
+    !!(doi =~ DOI_FORMAT)
   end
 
   def staff_admins
     User.with_role(staff_admin_role, assigned_to: self)
-  end
-
-  def reviewers
-    users.merge(OldRole.reviewers)
   end
 
   def logo_url
@@ -100,47 +110,35 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.order('id asc').pluck(:paper_type)
   end
 
-  def valid_old_roles
-    PaperRole::ALL_ROLES | old_roles.map(&:name)
-  end
-
   # Try to block other services from directly updating last_doi_issued to avoid
   # issues where last_doi_issued gets out-of-sync.
-  # instead those services should call #next_doi_number!
+  # instead those services should call #next_doi!
   def last_doi_issued=(*args)
     return unless new_record?
     super(*args)
   end
 
-  def next_doi_number!
+  # Returns the next DOI string for this journal incrementing the
+  # last_doi_issued column in the process
+  def next_doi!
     with_lock do
-      last_doi_issued.succ.tap do |next_number|
+      next_number = last_doi_issued.succ
+      next_doi = "#{doi_publisher_prefix}/#{doi_journal_prefix}.#{next_number}"
+      if self.class.valid_doi?(next_doi)
         update_column :last_doi_issued, next_number
+        return next_doi
+      else
+        raise InvalidDoiError, "Attempted to generate the next DOI, but it was in an invalid DOI format: #{next_doi}"
       end
     end
   end
 
   private
 
-  def has_valid_doi_information?
-    ds = DoiService.new(journal: self)
-    return unless ds.journal_has_doi_prefixes?
-    return if ds.journal_doi_info_valid?
-    errors.add(:doi, "The DOI you specified is not valid.")
-  end
-
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)
-    JournalServices::CreateDefaultRoles.call(self)
     JournalServices::CreateDefaultTaskTypes.call(self)
     JournalServices::CreateDefaultManuscriptManagerTemplates.call(self)
-  end
-
-  def destroy_roles
-    # old_roles that are marked as 'required' are prevented from being destroyed, so you cannot use
-    # a dependent_destroy on the AR relationship.
-    mark_for_destruction
-    old_roles.destroy_all
   end
 
   def confirm_no_papers

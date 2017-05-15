@@ -1,6 +1,31 @@
 RSpec.shared_examples_for 'a reviewer report task' do |factory:|
-  let(:paper) { create :paper, :submitted_lite }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { create :paper, :submitted_lite, journal: journal }
   let(:task) { FactoryGirl.create(factory, paper: paper) }
+  let(:body) { { "submitted" => false } }
+  let!(:reviewer_user) do
+    reviewer = FactoryGirl.create(:user)
+    role = journal.create_reviewer_report_owner_role!
+    reviewer.assign_to!(assigned_to: task, role: role)
+    reviewer
+  end
+  let!(:reviewer_report) do
+    invitation = FactoryGirl.create(
+      :invitation,
+      :accepted,
+      accepted_at: DateTime.now.utc,
+      task: task,
+      invitee: reviewer_user,
+      decision: paper.draft_decision
+    )
+    paper.draft_decision.invitations << invitation
+    report = FactoryGirl.create(:reviewer_report,
+                                task: task,
+                                decision: paper.draft_decision,
+                                user: reviewer_user)
+    report.accept_invitation!
+    report
+  end
 
   describe "#body" do
     context "when it has a custom value" do
@@ -18,141 +43,102 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
     end
   end
 
-  describe '#create' do
-    before do
-      expect(task.paper.draft_decision).to be
-    end
-
-    it "belongs to the paper's latest decision" do
-      task.save!
-
-      expect(task.decision).to eq(task.paper.draft_decision)
-      expect(task.reload.decision).to eq(task.paper.draft_decision)
-
-      # find again to make sure everything is loaded from the DB without
-      # any in-memory values sticking around
-      refreshed_task = Task.find(task.id)
-      expect(refreshed_task.decision).to eq(task.paper.draft_decision)
-      expect(refreshed_task.reload.decision).to eq(task.paper.draft_decision)
-    end
-  end
-
-  describe "#find_or_build_answer_for" do
-    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
-    let(:nested_question) { FactoryGirl.create(:nested_question) }
-
-    before do
-      task.update(decision: decision)
-    end
-
-    context "when there is no answer for the given question" do
-      it "returns a new answer for the question and current decision" do
-        answer = task.find_or_build_answer_for(
-          nested_question: nested_question
-        )
-        expect(answer).to be_kind_of(NestedQuestionAnswer)
-        expect(answer.new_record?).to be(true)
-        expect(answer.owner).to eq(task)
-        expect(answer.nested_question).to eq(nested_question)
-        expect(answer.decision).to eq(task.decision)
-      end
-    end
-
-    context "when there is an answer for the given question and current decision" do
-      let!(:existing_answer) do
-        FactoryGirl.create(
-          :nested_question_answer,
-          nested_question: nested_question,
-          owner: task,
-          decision: task.decision
-        )
-      end
-
-      it "returns the existing answer" do
-        answer = task.find_or_build_answer_for(nested_question: nested_question)
-        expect(answer).to eq(existing_answer)
-      end
-    end
-  end
-
-  describe "#decision" do
-    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
-
-    it "returns the current decision" do
-      task.decision = decision
-      task.save!
-      expect(task.decision).to eq(decision)
-    end
-
-    context "when there is no decision set" do
-      it "returns nil" do
-        task.decision = nil
-        task.save!
-        expect(task.decision).to be(nil)
-      end
-    end
-  end
-
-  describe "#previous_decisions" do
-    let(:decision_1) { FactoryGirl.create(:decision, paper: paper) }
-    let(:decision_2) { FactoryGirl.create(:decision, paper: paper) }
-    let(:decision_3) { FactoryGirl.create(:decision, paper: paper) }
-
-    before do
-      task.update(body: {})
-    end
-
-    it "returns the previous decisions that this task was assigned to" do
-      task.update!(decision: decision_1)
-      expect(task.previous_decisions).to eq([])
-      expect(task.previous_decision_ids).to eq([])
-
-      task.update!(decision: decision_2)
-      expect(task.previous_decisions).to eq([decision_1])
-      expect(task.previous_decision_ids).to eq([decision_1.id])
-
-      task.update!(decision: decision_3)
-      expect(task.previous_decision_ids.sort).to eq([decision_1, decision_2].map(&:id).sort)
-    end
-  end
-
   describe "#can_change?" do
-    let!(:answer) { FactoryGirl.build(:nested_question_answer) }
+    let!(:answer) { FactoryGirl.build(:answer) }
 
     it "returns true when the task is not submitted" do
-      task.update! body: { submitted: false }
       expect(task.can_change?(answer)).to be(true)
     end
 
     it "returns false when the task is submitted" do
-      task.update! body: { submitted: true }
+      reviewer_report.submit!
       expect(task.can_change?(answer)).to be(false)
-    end
-  end
-
-  describe "#incomplete!" do
-    before do
-      task.update! body: { "submitted" => true }, completed: true
-    end
-
-    it "makes the task incomplete" do
-      expect { task.incomplete! }.to change(task, :completed).to false
-    end
-
-    it "makes the task unsubmitted" do
-      expect { task.incomplete! }.to change(task, :submitted?).to false
     end
   end
 
   describe "#submitted?" do
     it "returns true when it's submitted" do
-      task.body = { "submitted" => true }
+      reviewer_report.submit!
       expect(task.submitted?).to be(true)
     end
 
     it "returns false otherwise" do
-      task.body = {}
       expect(task.submitted?).to be(false)
+    end
+  end
+
+  describe "#on_completion" do
+    let(:task) do
+      FactoryGirl.create(factory, paper: paper, title: "Review by Steve", completed: completed, body: body)
+    end
+
+    let(:result) do
+      task.on_completion
+      task.save!
+      task.reload
+    end
+
+    context "the task is complete" do
+      let(:completed) { true }
+      context "the task's paper has its number_reviewer_reports flag set to true" do
+        let(:paper) { create :paper, :submitted_lite, journal: journal, number_reviewer_reports: true }
+        context "the task has a reviewer number" do
+          let!(:reviewer_number) { FactoryGirl.create(:reviewer_number, user: reviewer_user, paper: paper, number: 2) }
+          it "does not change the existing number" do
+            expect(result.reviewer_number).to eq(2)
+          end
+
+          it "does not update the title" do
+            expect(result.title).to eq("Review by Steve")
+          end
+        end
+        context "the task does not have a reviewer number" do
+          let(:body) { { "submitted" => false } }
+          context "other numbered reviewers for the paper exist" do
+            before do
+              FactoryGirl.create(:reviewer_number, paper: paper, number: 1)
+              FactoryGirl.create(:reviewer_number, paper: paper, number: 2)
+            end
+
+            it "sets the reviewer number to be one higher than the max of the other tasks" do
+              expect(result.reviewer_number).to eq(3)
+            end
+
+            it "appends the reviewer number to the task title" do
+              expect(result.title).to eq("Review by Steve (#3)")
+            end
+          end
+          context "it's the only completed reviewer report task for the paper" do
+            before do
+              FactoryGirl.create(factory, paper: paper, completed: false)
+            end
+            it "sets the reviewer number to be one 1" do
+              expect(result.reviewer_number).to eq(1)
+              expect(task.title).to eq("Review by Steve (#1)")
+            end
+          end
+        end
+      end
+      context "the task's paper has its number_reviewer_reports flag set to false" do
+        let(:paper) { create :paper, :submitted_lite, journal: journal, number_reviewer_reports: false }
+        let(:body) { { "submitted" => false } }
+        it "does not assign a number" do
+          expect(result.reviewer_number).to eq(nil)
+        end
+      end
+    end
+    context "the task is not complete" do
+      let(:completed) { false }
+      let(:body) { { "submitted" => false } }
+      it "does not change the task body" do
+        expect(result.body).to eq(body)
+      end
+      it "does not assign a number" do
+        expect(result.reviewer_number).to eq(nil)
+      end
+      it "does not update the title" do
+        expect(result.title).to eq("Review by Steve")
+      end
     end
   end
 end

@@ -1,0 +1,14 @@
+.card-content-radio {
+  margin-top: 15px;
+  .option {
+    display: block;
+    input {
+      margin: 0px 5px;
+      vertical-align: -1px;
+    }
+    .card-content-radio-label {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}

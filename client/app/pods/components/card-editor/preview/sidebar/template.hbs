@@ -1,0 +1,22 @@
+<div class="task-disclosure task-disclosure--open">
+  <div class="task-disclosure-heading">
+    <div class="task-disclosure-completed-icon">
+      {{partial "svg/check"}}
+    </div>
+    {{card.name}}
+  </div>
+  <div class="task-disclosure-body">
+    <div class="task">
+      <span class="task-completed-section">
+        <button name="task_completed" class="card-editor-preview-sidebar-button button-secondary button--green">
+          I am done with this task
+        </button>
+      </span>
+
+      <div class="task-main-content">
+        {{yield}}
+
+      </div>
+    </div>
+  </div>
+</div>

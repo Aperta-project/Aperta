@@ -1,14 +1,23 @@
 import Ember from 'ember';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
+import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 
 const { computed } = Ember;
 
 export default Ember.Component.extend(EscapeListenerMixin, {
+  fileTypes: computed('pdfEnabled', function() {
+    if (this.get('pdfEnabled')) {
+      return '.doc,.docx,.pdf'
+    } else {
+      return '.doc,.docx'
+    }
+  }),
   restless: Ember.inject.service(),
   flash: Ember.inject.service(),
   journals: null,
   paper: null,
   isSaving: false,
+  pdfEnabled: computed.reads('paper.journal.pdfAllowed'),
   journalEmpty: computed.empty('paper.journal.content'),
   hasTitle: computed.notEmpty('paper.title'),
 
@@ -31,15 +40,20 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       this.set('paper.paperType', null);
     },
 
-    fileAdded(file){
-      this.set('isSaving', true);
+    fileAdded(upload){
+      let check = checkType(upload.files[0].name, this.get('fileTypes'));
+      if (!check.error) {
+        this.set('paper.fileType', check['acceptedFileType']);
+        this.set('isSaving', true);
+      } else {
+        this.set('isSaving', false);
+        this.get('flash').displayRouteLevelMessage(check.msg);
+      }
     },
 
-    addingFileFailed(reason, {fileName, acceptedFileTypes}) {
+    addingFileFailed(reason, message, {fileName, acceptedFileTypes}) {
       this.set('isSaving', false);
-      let msg = `We're sorry, '${fileName}' is not a valid file type.
-      Please upload a Microsoft Word file (.docx or .doc).`
-      this.get('flash').displayMessage('error', msg);
+      this.get('flash').displayRouteLevelMessage('error', message);
     },
 
     uploadFinished(s3Url){
@@ -56,7 +70,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
     uploadFailed(reason){
       this.set('isSaving', false);
-      this.get('flash').displayMessage('error', reason);
+      this.get('flash').displayRouteLevelMessage('error', reason);
       console.log(reason);
     },
 

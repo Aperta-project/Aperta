@@ -2,8 +2,14 @@ require 'rails_helper'
 
 describe DiscussionTopic, type: :model do
   let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:topic_a) { paper.discussion_topics.create!(title: "Topic A") }
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_discussion_participant_role
+    )
+  end
 
   describe "#has_participant?" do
     let(:user2) { FactoryGirl.create(:user) }

@@ -19,14 +19,14 @@ export default TaskComponent.extend({
     submitTechChanges() {
       if (this.get('isNotEditable')) { return; }
       if (!this.get('allSubmissionTasksCompleted')) {
-        this.flash.displayMessage('error', 'At least one required Task remains incomplete. Please complete all required Tasks.');
+        this.flash.displayRouteLevelMessage('error', 'At least one required Task remains incomplete. Please complete all required Tasks.');
       } else {
         this.set('isLoading', true);
         const taskId = this.get('task.id');
         const path = '/api/changes_for_author/' + taskId + '/submit_tech_check';
 
         this.get('restless').post(path).then(()=> {
-          this.get('flash').displayMessage('success', this.successText());
+          this.get('flash').displayRouteLevelMessage('success', this.successText());
           this.set('task.completed', true);
         });
       }

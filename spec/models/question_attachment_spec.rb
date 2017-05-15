@@ -11,7 +11,7 @@ describe QuestionAttachment do
   end
   let(:paper) { FactoryGirl.create(:paper_with_phases) }
   let(:answer) do
-    FactoryGirl.create(:nested_question_answer, owner: task, paper: paper)
+    FactoryGirl.create(:answer, owner: task, paper: paper)
   end
   let(:task) do
     FactoryGirl.create(:ad_hoc_task, paper: paper)
@@ -27,6 +27,9 @@ describe QuestionAttachment do
     it_behaves_like 'attachment#download! sets the status'
     it_behaves_like 'attachment#download! always keeps snapshotted files on s3'
     it_behaves_like 'attachment#download! manages resource tokens'
+    it_behaves_like 'attachment#download! sets the updated_at'
+    it_behaves_like 'attachment#download! sets the error fields'
+    it_behaves_like 'attachment#download! when the attachment is invalid'
   end
 
   describe '#paper' do

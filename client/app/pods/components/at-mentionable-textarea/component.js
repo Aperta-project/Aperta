@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import AtWhoSupport from 'ember-cli-at-js/mixins/at-who-support';
-import {PropTypes} from 'ember-prop-types'
+import {PropTypes} from 'ember-prop-types';
 
 export default Ember.TextArea.extend(AtWhoSupport, {
   propTypes: {
@@ -20,7 +20,7 @@ export default Ember.TextArea.extend(AtWhoSupport, {
 
   settings: Ember.computed('atWhoUsers.[]', function() {
     const settings = {
-      at: "@",
+      at: '@',
       data: this.get('atWhoUsers'),
       displayTpl: this.displayTpl,
       callbacks: {
@@ -28,13 +28,25 @@ export default Ember.TextArea.extend(AtWhoSupport, {
         sorter: this.sorter.bind(this),
         highlighter: this.highlighter.bind(this)
       },
-      insertTpl: "${atwho-at}${username}"
+      insertTpl: '${atwho-at}${username}'
     };
     return settings;
   }),
 
+  didInsertElement() {
+    this._super(...arguments);
+
+    const action = this.get('onChange');
+    if(Ember.isEmpty(action)) { return; }
+
+    this.$().on('keyup', function() {
+      action(this.value);
+    });
+  },
+
   willDestroyElement() {
     this.$().atwho('destroy');
+    this.$().off('keyup');
     this._super(...arguments);
   },
 
@@ -68,7 +80,7 @@ export default Ember.TextArea.extend(AtWhoSupport, {
     if (!query) {
       return li;
     }
-    const escapedQuery = query.replace("+", "\\+");
+    const escapedQuery = query.replace('+', '\\+');
     const regex = new RegExp(`(.*?)(${escapedQuery})`, 'i');
     const node = $(li);
     node.find('span').each(function(_, nameElement) {
@@ -92,7 +104,7 @@ export default Ember.TextArea.extend(AtWhoSupport, {
   },
 
   containsString(string, substring) {
-    return (this.indexOfString(string, substring) != -1);
+    return (this.indexOfString(string, substring) !== -1);
   },
 
   displayTpl: '<li>' +

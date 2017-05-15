@@ -6,8 +6,11 @@ export default Ember.Component.extend({
   classNames: ['flash-messages'],
 
   actions: {
-    removeMessage(message) {
-      this.flash.removeMessage(message);
+    removeRouteMessage(message) {
+      this.flash.removeRouteLevelMessage(message);
+    },
+    removeSystemMessage(message) {
+      this.flash.removeSystemLevelMessage(message);
     }
   }
 });

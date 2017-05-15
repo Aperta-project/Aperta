@@ -1,33 +1,25 @@
-<div class="container">
-  <div class="greeting">
-    <p class="message">
-      You've been mentioned on a manuscript
-    </p>
-  </div>
-  <hr>
-  <div class="paper-info">
-    <div class="paper-abstract">
-      <p>
-        Hello <%= @commentee.full_name %>,
-      </p>
-      <p>
-        You've been mentioned by <%= @commenter.full_name %>
-        on the <%= @task.title %> for the manuscript
-        "<%= @paper.display_title(sanitized: false) %>".
-      </p>
-      <p>
-        <%= @comment.body %>
-      </p>
-      <p>
-        View the card here:
-        <%= link_to client_paper_task_url(@paper, @task), client_paper_task_url(@paper, @task) %>.
-      </p>
-    </div>
-  </div>
-  <hr>
-  <div class="footer">
-    Sincerely,
-    <br>
-    <%= @journal.name %> Team
-  </div>
-</div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
+
+<h1>
+  You've been mentioned on a manuscript
+</h1>
+
+<hr>
+
+<p>Hello <%= @commentee.full_name %>,</p>
+
+<p>
+  You've been mentioned by <%= @commenter.full_name %>
+  on the <%= @task.title %> for the manuscript
+  "<%= @paper.display_title(sanitized: false) %>".
+</p>
+
+<p><%= @comment.body %></p>
+
+<%= render partial: 'email/journal_signature', locals: { journal: @paper.journal } %>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_task_url(@paper, @task),
+  text: 'View Card'
+} %>

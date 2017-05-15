@@ -2,12 +2,25 @@ require 'rails_helper'
 
 describe PaperFactory do
   let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
-      tasks = [TahiStandardTasks::PaperAdminTask, TahiStandardTasks::DataAvailabilityTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
+
+      # create mmt template from specified task classes
+      task_klasses = [TahiStandardTasks::DataAvailabilityTask]
+
+      # create default cards necessary for a new mmt
+      required_task_klasses = task_klasses + [Author]
+      required_task_klasses.each { |klass| CardLoader.load(klass.to_s) }
+
+      # create mmt template
+      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *task_klasses)
+
+      # add TaskTemplate using a custom Card
+      mmt.phase_templates.first.task_templates.create(card: card, title: card.name)
+
       journal.manuscript_manager_templates = [mmt]
       journal.save!
     end
@@ -38,6 +51,11 @@ describe PaperFactory do
       end
     end
 
+    it "sets the paper's number_reviewer_reports attribute to true" do
+      new_paper = PaperFactory.create(paper_attrs, user)
+      expect(new_paper.number_reviewer_reports).to eq(true)
+    end
+
     it "makes the creator a collaborator on the paper" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.collaborators.first).to eq(user)
@@ -62,7 +80,7 @@ describe PaperFactory do
     it "reifies the tasks for the given paper from the correct MMT" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.tasks.size).to eq(2)
-      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperAdminTask', 'TahiStandardTasks::DataAvailabilityTask'])
+      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask', 'CustomCardTask'])
     end
 
     it "adds correct positions to new tasks" do
@@ -70,6 +88,11 @@ describe PaperFactory do
       new_paper.phases.each do |phase|
         expect(phase.tasks.pluck(:position).uniq.count).to eq(phase.tasks.count)
       end
+    end
+
+    it "calls the task_added_to_paper hook for each task" do
+      expect_any_instance_of(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_paper)
+      subject
     end
 
     it "sets the creator" do

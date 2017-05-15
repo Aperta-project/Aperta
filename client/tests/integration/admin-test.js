@@ -55,7 +55,7 @@ module('Integration: Admin Test', {
 });
 
 test('site admin can see the Add New Journal button', function(assert) {
-  visit("/admin/").then(function() {
+  visit('/admin/journals').then(function() {
     return Ember.run((function(_this) {
       return function() {
         return getCurrentUser().set('siteAdmin', true);
@@ -69,7 +69,7 @@ test('site admin can see the Add New Journal button', function(assert) {
 });
 
 test('journal admin can not see the Add New Journal button', function(assert) {
-  visit("/admin/");
+  visit('/admin/journals');
   return andThen(function() {
     assert.ok(find('.journal-thumbnail').length, 'Journals visible');
     return assert.ok(!find('.add-new-journal').length, 'Add New Journal button not visible');

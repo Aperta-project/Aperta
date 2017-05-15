@@ -1,12 +1,12 @@
 module PlosBioTechCheck
   class FinalTechCheckTask < Task
-    DEFAULT_TITLE = 'Final Tech Check'
-    DEFAULT_ROLE = 'editor'
+    DEFAULT_TITLE = 'Final Tech Check'.freeze
+    DEFAULT_ROLE_HINT = 'editor'.freeze
 
     before_create :initialize_body
 
     def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
+      NestedQuestion.where(owner_id: nil, owner_type: name).all
     end
 
     def active_model_serializer

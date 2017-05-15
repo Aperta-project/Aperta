@@ -13,11 +13,12 @@
                    startDragging=attrs.startDragging
                    stopDragging=attrs.stopDragging}}
     {{#each sortedTasks as |task|}}
-      {{card-preview  task=task
-                      canRemoveCard=true
-                      removeTask="removeRecord"
-                      showDeleteConfirm="showDeleteConfirm"
-                      action=(action attrs.editTaskTemplate task)}}
+      {{card-preview task=task
+                     taskTemplate=true
+                     canRemoveCard=true
+                     removeTask="removeRecord"
+                     showDeleteConfirm="showDeleteConfirm"
+                     action=(action attrs.editTaskTemplate task)}}
     {{/each}}
   {{/sortable-list}}
  <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>

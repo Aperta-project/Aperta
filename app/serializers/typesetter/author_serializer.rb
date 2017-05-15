@@ -4,9 +4,26 @@ module Typesetter
   class AuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :type, :first_name, :last_name, :middle_initial, :email,
                :department, :title, :corresponding, :deceased, :affiliation,
-               :secondary_affiliation, :contributions, :government_employee
+               :secondary_affiliation, :contributions, :government_employee,
+               :orcid_profile_url, :orcid_authenticated
 
     private
+
+    def include_orcid_profile_url?
+      TahiEnv.orcid_connect_enabled?
+    end
+
+    def include_orcid_authenticated?
+      TahiEnv.orcid_connect_enabled?
+    end
+
+    def orcid_profile_url
+      orcid_account.try(:profile_url)
+    end
+
+    def orcid_authenticated
+      orcid_account.try(:authenticated?)
+    end
 
     def type
       "author"
@@ -28,7 +45,7 @@ module Typesetter
     def contributions
       object.contributions.map do |contribution|
         if contribution.value_type == 'boolean'
-          contribution.nested_question.text if contribution.value
+          contribution.card_content.text if contribution.value
         elsif contribution.value_type == 'text'
           contribution.value
         else
@@ -36,6 +53,10 @@ module Typesetter
                "Unknown contribution type #{contribution.value_type}"
         end
       end.compact
+    end
+
+    def orcid_account
+      object.user.try(:orcid_account)
     end
   end
 end

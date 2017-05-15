@@ -9,14 +9,28 @@ class Attachment < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
   include Snapshottable
+  include CustomCastTypes
+
+  attribute :title, HtmlString.new
+  attribute :caption, HtmlString.new
 
   IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
 
-  STATUS_PROCESSING = 'processing'.freeze
-  STATUS_ERROR = 'error'.freeze
-  STATUS_DONE = 'done'.freeze
+  STATUSES = {
+    processing: 'processing'.freeze,
+    error: 'error'.freeze,
+    done: 'done'.freeze
+  }.freeze
+  STATUS_PROCESSING = STATUSES[:processing]
+  STATUS_ERROR = STATUSES[:error]
+  STATUS_DONE = STATUSES[:done]
 
   class_attribute :public_resource
+
+  scope :processing, -> { where(status: STATUS_PROCESSING) }
+  scope :error, -> { where(status: STATUS_ERROR) }
+  scope :done, -> { where(status: STATUS_DONE) }
+  scope :unknown, -> { where.not(status: STATUSES.values) }
 
   def public_resource
     value = @public_resource
@@ -97,23 +111,21 @@ class Attachment < ActiveRecord::Base
     # event isn't fired until the transaction completes and all of the work is
     # finished.
 
-    # Store off the url in case of any failures
+    # Store the url and uploaded_by now in case of any failures
     update_column :pending_url, url
+    update_column :uploaded_by_id, uploaded_by.try(:id)
 
     Attachment.transaction do
       @downloading = true
       file.download! url
-
       self.file_hash = Digest::SHA256.hexdigest(file.file.read)
       self.s3_dir = file.generate_new_store_dir
       self.title = build_title
-      self.uploaded_by = uploaded_by
-      self.updated_at = Time.zone.now
 
       # Using save! instead of update_attributes because the above are not the
       # only attributes that have been updated. We want to persist all changes
-      save!
-      refresh_resource_token!(file) if public_resource
+      save!(validate: false)
+      create_resource_token!(file) if public_resource
 
       # Do not mark as done until all of the steps that go into downloading a
       # file, creating resource tokens, etc are completed. This is to avoid
@@ -125,12 +137,10 @@ class Attachment < ActiveRecord::Base
       on_download_complete
     end
   rescue Exception => ex
-    update_attributes!(
-      status: STATUS_ERROR,
-      error_message: ex.message,
-      error_backtrace: ex.backtrace.join("\n"),
-      errored_at: Time.zone.now
-    )
+    update_columns(status: STATUS_ERROR,
+                   error_message: ex.message,
+                   error_backtrace: ex.backtrace.join("\n"),
+                   errored_at: Time.zone.now)
     on_download_failed(ex)
   ensure
     @downloading = false
@@ -139,11 +149,6 @@ class Attachment < ActiveRecord::Base
 
   def public_url(*args)
     non_expiring_proxy_url(*args) if public_resource
-  end
-
-  def destroy_resource_token!
-    return if snapshotted?
-    super
   end
 
   def downloading?
@@ -247,11 +252,9 @@ class Attachment < ActiveRecord::Base
   end
 
   def image?
-    if file.file
-      IMAGE_TYPES.include? file.file.extension
-    else
-      false
-    end
+    file_path = self['file']
+    return false if file_path.blank?
+    AttachmentUploader.image?(file_path)
   end
 
   protected

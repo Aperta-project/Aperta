@@ -1,15 +1,16 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_view_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
+    requires_user_can :view, task
     respond_with task.comments, root: :comments
   end
 
   def create
+    requires_user_can :view, task
     unless current_user.can?(:administer, task.paper.journal)
       ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
     end
@@ -18,6 +19,7 @@ class CommentsController < ApplicationController
   end
 
   def show
+    requires_user_can :view, task
     respond_with comment
   end
 
@@ -51,9 +53,5 @@ class CommentsController < ApplicationController
 
   def render_404
     head 404
-  end
-
-  def must_be_able_to_view_task
-    fail AuthorizationError unless current_user.can?(:view, task)
   end
 end

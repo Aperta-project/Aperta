@@ -7,7 +7,7 @@ namespace :data do
       JournalServices::CreateDefaultTaskTypes.call(journal)
     end
 
-    Rails.logger.info 'Updating existing tasks title and old_role attributes...'
+    Rails.logger.info 'Updating existing task titles...'
     JournalServices::UpdateDefaultTasks.call
   end
 

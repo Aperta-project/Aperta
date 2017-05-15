@@ -4,7 +4,7 @@ describe Typesetter::DataAvailabilitySerializer do
   subject(:serializer) { described_class.new(task) }
 
   let!(:task) do
-    NestedQuestionableFactory.create(
+    AnswerableFactory.create(
       FactoryGirl.create(:data_availability_task),
       questions: [
         {

@@ -23,6 +23,12 @@ class PaperAuthorSerializer < ActiveModel::Serializer
   # the highest ID is first. This is sloppy and confusing, and we
   # apologize. Sam and Jerry <sam@mutuallyhuman.com>
   # <jerry@mutuallyhuman.com>
+  #
+  #
+  # in ember: store.createRecord('author').save()
+  #
+  # response: {author: {id: 1, blah}}
+  # response: {authors: [{id: 1, blah}, {id: 2, position: 2}]}
   def authors
     object.authors.reorder(id: :desc)
   end

@@ -1,6 +1,17 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
+
+const isAdHocTask = function(kind) {
+  const adHocTaskTypes = [
+    'AdHocTask',
+    'AdHocForAuthorsTask',
+    'AdHocForEditorsTask',
+    'AdHocForReviewersTask'
+  ];
+  return adHocTaskTypes.includes(kind);
+};
+
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   pendingChanges: false,
   editingName: false,
@@ -9,6 +20,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
+
+  featureFlag: Ember.inject.service(),
 
   showCardDeleteOverlay: false,
   taskToDelete: null,
@@ -19,6 +32,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showChooseNewCardOverlay: false,
   addToPhase: null,
   journalTaskTypes: [],
+  cards: [],
   journalTaskTypesIsLoading: false,
 
   saveTemplate(transition){
@@ -51,6 +65,31 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.setProperties({ editingName: false, pendingChanges: false });
   },
 
+  redirectToAdminPage(journal){
+    this.get('featureFlag').value('CARD_CONFIGURATION').then((enabled) => {
+      if(enabled) {
+        // redirect to new card config admin screen
+        this.transitionToRoute(
+          'admin.cc.journals.workflows',
+          { queryParams: { journalID: journal.get('id') }}
+        );
+      } else {
+        // redirect to old world
+        this.transitionToRoute('admin.journal', journal);
+      }
+    });
+  },
+
+  buildTaskTemplate(title, journalTaskType, card, phaseTemplate) {
+    return this.store.createRecord('task-template', {
+      title: title,
+      journalTaskType: journalTaskType,
+      card: card,
+      phaseTemplate: phaseTemplate,
+      template: []
+    });
+  },
+
   actions: {
     toggleResearchArticleReviewerReport(value) {
       this.set('model.usesResearchArticleReviewerReport', value);
@@ -74,6 +113,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.store.findRecord('admin-journal', journalId).then(adminJournal => {
         this.setProperties({
           journalTaskTypes: adminJournal.get('journalTaskTypes'),
+          cards: adminJournal.get('cards'),
           journalTaskTypesIsLoading: false
         });
       });
@@ -85,19 +125,26 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('showChooseNewCardOverlay', false);
     },
 
-    addTaskType(phaseTemplate, taskTypeList) {
-      if (!taskTypeList) { return; }
+    addTaskTemplate(phaseTemplate, selectedCards) {
+      if (!selectedCards) { return; }
+
       let hasAdHocType = false;
 
-      taskTypeList.forEach((taskType) => {
-        const newTaskTemplate = this.store.createRecord('task-template', {
-          title: taskType.get('title'),
-          journalTaskType: taskType,
-          phaseTemplate: phaseTemplate,
-          template: []
-        });
+      selectedCards.forEach((item) => {
+        let newTaskTemplate;
 
-        if (taskType.get('kind') === 'AdHocTask') {
+        if(item.constructor.modelName === 'card') {
+          // task template from a Card
+          newTaskTemplate = this.buildTaskTemplate(item.get('name'), null, item, phaseTemplate);
+        } else {
+          // task template from a JournalTaskType
+          newTaskTemplate = this.buildTaskTemplate(item.get('title'), item, null, phaseTemplate);
+        }
+
+        // reposition phases
+        this.updateTaskPositions(phaseTemplate.get('taskTemplates'));
+
+        if (isAdHocTask(item.get('kind'))) {
           hasAdHocType = true;
           this.set('adHocTaskToDisplay', newTaskTemplate);
         }
@@ -187,7 +234,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     editTaskTemplate(taskTemplate){
-      if (taskTemplate.get('kind') === 'AdHocTask') {
+      if (isAdHocTask(taskTemplate.get('kind'))) {
         this.setProperties({
           showAdHocTaskOverlay: true,
           adHocTaskToDisplay: taskTemplate
@@ -197,9 +244,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     cancel(){
       if (this.get('model.isNew')){
+        const journal = this.get('journal');
         this.get('model').deleteRecord();
         this.resetProperties();
-        this.transitionToRoute('admin.journal', this.get('journal'));
+        this.redirectToAdminPage(journal);
       } else {
         this.store.unloadAll('task-template');
         this.store.unloadAll('phase-template');

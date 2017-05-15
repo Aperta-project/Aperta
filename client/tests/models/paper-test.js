@@ -40,13 +40,10 @@ test('displayTitle displays title if present', function(assert) {
   assert.equal(paper.get('displayTitle'), title);
 });
 
-test('previousDecisions returns decisions that have registeredAt set', function(assert){
-  var noVerdictDecision = FactoryGuy.make(
-    'decision', { registeredAt: null });
-  var acceptedDecision = FactoryGuy.make(
-    'decision', { registeredAt: new Date() });
-  var rejectedDecision = FactoryGuy.make(
-    'decision', { registeredAt: new Date() });
+test('previousDecisions returns decisions that are not drafts', function(assert){
+  var noVerdictDecision = FactoryGuy.make('decision', 'draft');
+  var acceptedDecision = FactoryGuy.make('decision');
+  var rejectedDecision = FactoryGuy.make('decision');
 
   var paper = FactoryGuy.make('paper', {
     decisions: [noVerdictDecision, acceptedDecision, rejectedDecision]
@@ -72,4 +69,27 @@ test('simplifiedRelatedUsers contains no collaborators', function(assert) {
   assert.equal(paper.get('simplifiedRelatedUsers.length'), 1);
   let remaining = paper.get('simplifiedRelatedUsers').objectAt(0).name;
   assert.equal(remaining, 'Creator');
+});
+
+
+
+['accepted',
+  'in_revision',
+  'invited_for_full_submission',
+  'published',
+  'rejected',
+  'unsubmitted',
+  'withdrawn'].forEach((state)=>{
+    test(`isReadyForDecision is false when publishingState is ${state}`, (assert)=>{
+      let paper = FactoryGuy.make('paper', { publishingState: state });
+      assert.notOk(paper.get('isReadyForDecision'));
+    });
+  });
+
+
+['submitted', 'initially_submitted', 'checking'].forEach((state)=>{
+  test(`isReadyForDecision is true when publishingState is ${state}`, (assert)=>{
+    let paper = FactoryGuy.make('paper', { publishingState: state });
+    assert.ok(paper.get('isReadyForDecision'));
+  });
 });

@@ -5,7 +5,7 @@ feature 'Initial Tech Check', js: true do
   let(:editor) { create :user }
   let(:author) { create :user }
   let(:paper) { create :paper, :checking, journal: journal, creator: author }
-  let(:task) { create :initial_tech_check_task, paper: paper }
+  let(:task) { create :initial_tech_check_task, :with_loaded_card, paper: paper }
 
   before do
     assign_journal_role journal, editor, :editor
@@ -31,7 +31,7 @@ feature 'Initial Tech Check', js: true do
     overlay.dismiss
 
     # Creator cannot access initial tech check task
-    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    Page.view_task task
     expect(page).to have_content("You don't have access to that content")
   end
 

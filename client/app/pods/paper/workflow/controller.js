@@ -1,11 +1,27 @@
 import Ember from 'ember';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
+import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
+import { task as concurrencyTask } from 'ember-concurrency';
 
-export default Ember.Controller.extend({
-  restless: Ember.inject.service('restless'),
-  routing: Ember.inject.service('-routing'),
+const {
+  Controller,
+  inject: { service },
+  computed: {
+    sort,
+    alias,
+    reads,
+    filterBy
+  }
+} = Ember;
+
+export default Controller.extend({
+  flash: Ember.inject.service(),
+  restless: service('restless'),
+  routing: service('-routing'),
   positionSort: ['position:asc'],
-  sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
+  sortedPhases: sort('model.phases', 'positionSort'),
+
+  paper: alias('model'),
 
   activityIsLoading: false,
   showActivityOverlay: false,
@@ -16,11 +32,22 @@ export default Ember.Controller.extend({
 
   showChooseNewCardOverlay: false,
   addToPhase: null,
-  journalTaskTypes: Ember.computed.reads('model.paperTaskTypes'),
-  addableTaskTypes: Ember.computed.filterBy('journalTaskTypes', 'systemGenerated', false),
+  journalTaskTypes: reads('model.paperTaskTypes'),
+  availableCards: reads('paper.availableCards'),
+  addableTaskTypes: filterBy('journalTaskTypes', 'systemGenerated', false),
 
   taskToDisplay: null,
   showTaskOverlay: false,
+
+  buildTask(emberStoreKey, title, kind, phase, card) {
+    return this.store.createRecord(emberStoreKey, {
+      title: title,
+      type: kind,
+      paper: this.get('paper'),
+      phase: phase,
+      card: card
+    });
+  },
 
   updatePositions(phase) {
     const relevantPhases = this.get('model.phases').filter(function(p) {
@@ -38,6 +65,33 @@ export default Ember.Controller.extend({
     this.endPropertyChanges();
   },
 
+  addTaskType: concurrencyTask(function * (phase, selectedCards) {
+    if (selectedCards.length === 0) {
+      this.get('flash').displayRouteLevelMessage('error', "No tasks were selected to add to the workflow.");
+      return;
+    }
+
+    let promises = selectedCards.map((item) => {
+      let newTask;
+
+      if(item.constructor.modelName === 'card') {
+        // task will be created from a Card
+        newTask = this.buildTask('CustomCardTask', item.get('name'), 'CustomCardTask', phase, item);
+      } else {
+        // task will be created from a JournalTaskType
+        let unNamespacedKind = deNamespaceTaskType(item.get('kind'));
+        newTask = this.buildTask(unNamespacedKind, item.get('title'), item.get('kind'), phase);
+      }
+
+      let newTaskPromise = newTask.save().catch((response) => {
+        newTask.destroyRecord();
+        this.get('flash').displayRouteLevelMessage('error', response.errors[0].detail);
+      });
+      return newTaskPromise;
+    });
+    yield Ember.RSVP.all(promises);
+  }).drop(),
+
   actions: {
     viewCard(task) {
       const r = this.get('routing.router.router');
@@ -49,15 +103,12 @@ export default Ember.Controller.extend({
     hideTaskOverlay() {
       const r = this.get('routing.router.router');
       const lastRoute = r.currentHandlerInfos[r.currentHandlerInfos.length - 1];
-      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('id')));
+      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('shortDoi')));
       this.set('showTaskOverlay', false);
     },
 
     showChooseNewCardOverlay(phase) {
-      this.setProperties({
-        addToPhase: phase
-      });
-
+      this.set('addToPhase', phase);
       this.set('showChooseNewCardOverlay', true);
     },
 
@@ -66,7 +117,7 @@ export default Ember.Controller.extend({
     },
 
     addTaskType(phase, taskTypeList) {
-      this.send('addTaskTypeToPhase', phase, taskTypeList);
+      return this.get('addTaskType').perform(phase, taskTypeList);
     },
 
     showCardDeleteOverlay(task) {
@@ -120,6 +171,13 @@ export default Ember.Controller.extend({
       phase.rollbackAttributes();
     },
 
+   /**
+    *  @method taskMovedWithinList
+    *  @param {Object} item DS.Model Task
+    *  @param {Number} oldIndex
+    *  @param {Number} newIndex
+    *  @param {Array}  itemList Array of DS.Model Task
+    **/
     taskMovedWithinList(item, oldIndex, newIndex, itemList) {
       itemList.removeAt(oldIndex);
       itemList.insertAt(newIndex, item);
@@ -127,10 +185,19 @@ export default Ember.Controller.extend({
       item.save();
     },
 
-    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+   /**
+    *  @method taskMovedBetweenList
+    *  @param {Object} item DS.Model Task
+    *  @param {Number} oldIndex
+    *  @param {Number} newIndex
+    *  @param {Object} newPhase DS.Model Phase
+    *  @param {Array}  sourceItems Array of DS.Model Task
+    *  @param {Array}  newItems Array of DS.Model Task
+    **/
+    taskMovedBetweenList(item, oldIndex, newIndex, newPhase, sourceItems, newItems) {
       sourceItems.removeAt(oldIndex);
       newItems.insertAt(newIndex, item);
-      item.set('phase', newList);
+      item.set('phase', newPhase);
 
       this.updateTaskPositions(sourceItems);
       this.updateTaskPositions(newItems);
@@ -149,23 +216,22 @@ export default Ember.Controller.extend({
     },
 
     toggleEditable() {
-      const model = this.get('model');
-      const url   = '/toggle_editable';
+      const url = '/toggle_editable';
 
-      this.get('restless').putUpdate(model, url).catch((arg) => {
-        let model   = arg.model;
-        let message = (function() {
+      this.get('restless').putUpdate(this.get('model'), url).catch((arg) => {
+        const model = arg.model;
+        const message = (function() {
           switch (arg.status) {
-            case 422:
-              return model.get('errors.messages') + ' You should probably reload.';
-            case 403:
-              return "You weren't authorized to do that";
-            default:
-              return 'There was a problem saving.  Please reload.';
+          case 422:
+            return model.get('errors.messages') + ' You should probably reload.';
+          case 403:
+            return "You weren't authorized to do that";
+          default:
+            return 'There was a problem saving. Please reload.';
           }
         })();
 
-        this.flash.displayMessage('error', message);
+        this.flash.displayRouteLevelMessage('error', message);
       });
     }
   }

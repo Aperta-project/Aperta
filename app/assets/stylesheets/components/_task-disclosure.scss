@@ -1,24 +1,34 @@
 $task-disclosure-radius: 4px;
+$task-disclosure-font-size: 1.8rem;
 
 .task-disclosure {
   position: relative;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   padding-top: 40px;
 }
 
 .task-disclosure-heading {
-  @include position(absolute, 0px 0px auto 0px);
-  height: 4.0rem;
+  position: relative;
+  display: flex;
+  align-items: center;
   border-radius: $task-disclosure-radius;
-  padding: 0 2rem 0 4.75rem;
+  padding: 0 1.3rem 0 1.3rem;
   color: #222;
-  font-size: 1.8rem;
-  line-height: 4.0rem;
-  cursor: pointer;
+  font-size: $task-disclosure-font-size;
+  line-height: $task-disclosure-font-size * 1.25;
   background: $aperta-grey-lighter;
   z-index: 1;
-  @include ellipsis;
   @include user-select(none);
+
+  a {
+    display: flex;
+    align-items: center;
+    padding-top: 0.8rem;
+    padding-bottom: 0.9rem;
+    width: 100%;
+    color: #222;
+    text-decoration: none;
+  }
 }
 
 .task-disclosure--open .task-disclosure-heading {
@@ -34,21 +44,19 @@ $task-disclosure-radius: 4px;
 }
 
 .task-disclosure-completed-icon {
-  position: absolute;
-  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   width: 22px;
   height: 22px;
-  left: 1.25rem;
-  margin-top: -11px;
+  margin-right: 1.3rem;
   border-radius: 50%;
   background: #F7F7F7;
   transition: all 0.2s;
 
   svg {
-    position: relative;
-    top: -6px;
     width: 16px;
-    left: 3px;
   }
 
   polygon {

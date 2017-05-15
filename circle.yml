@@ -7,7 +7,7 @@ machine:
     version:
       2.2.4 # when changing ruby versions, also update the cache_directory path below
   node:
-    version: 4.5.0
+    version: 4.7.1
 
   environment:
     RAILS_ENV: test
@@ -16,12 +16,13 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.4@tahi"
+    - "/opt/circleci/.rvm/gems/ruby-2.2.4@tahi"
     - "client/node_modules"
     - "client/bower_components"
 
   pre:
-    - gem install bundler -v '1.10.6'
+    - gem update --system
+    - gem install bundler -v '1.12.5'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
 
@@ -48,12 +49,12 @@ database:
 test:
   override:
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
-    - bundle exec rspec -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
+    - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true
         files:
           - "**/spec/**/*_spec.rb"
-    - bundle exec rspec -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+    - bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
         timeout: 1800
         parallel: true
         files:

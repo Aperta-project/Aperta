@@ -5,7 +5,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
   let(:paper) do
     FactoryGirl.create(:paper, :with_integration_journal, :submitted)
   end
-  let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+  let(:task) { FactoryGirl.create(:register_decision_task, :with_loaded_card, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let(:accept_template) { FactoryGirl.create(:letter_template, :accept) }
@@ -34,7 +34,6 @@ feature "Register Decision", js: true, sidekiq: :inline! do
         wait_for_ajax
         expect(task.reload.completed?).to be true
         expect(overlay).to have_success_state_message
-        expect(overlay).to be_disabled
       end
 
       scenario "persist the decision radio button" do
@@ -49,7 +48,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
       context "With assigned and invited reviewers" do
         let(:reviewer_task) do
-          FactoryGirl.create :paper_reviewer_task, paper: paper
+          FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper
         end
         let!(:invitation) do
           FactoryGirl.create(:invitation, :invited, task: reviewer_task)
@@ -114,7 +113,7 @@ feature "Register Decision", js: true, sidekiq: :inline! do
     scenario "Participant cannot register a decision on the paper" do
       overlay = Page.view_task_overlay(paper, task)
       expect(overlay.invalid_state_message).to be true
-      expect(overlay).to have_content("No decision has been registered")
+      expect(overlay).to have_content("A decision cannot be registered at this time")
     end
   end
 

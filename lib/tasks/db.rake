@@ -19,6 +19,10 @@ namespace :db do
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
 
     with_config do |app, host, db, user, password|
+      # ensure that there is no connection to the database since we're
+      # about to drop and recreate it.
+      ActiveRecord::Base.connection.disconnect!
+
       drop_cmd = system("dropdb #{db} && createdb #{db}")
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 
@@ -44,6 +48,14 @@ namespace :db do
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
     end
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
+  end
+
+  desc "Cleans up the database dump files in ~, leaving the 2 newest"
+  namespace :dump do
+    task cleanup: :environment do
+      require 'tahi_utilities/sweeper'
+      TahiUtilities::Sweeper.remove_old_files(from_folder: '~', matching_glob: 'aperta-????-??-??T??:??:??Z.dump', keeping_newest: 2)
+    end
   end
 
   desc "Restores the database dump at LOCATION"

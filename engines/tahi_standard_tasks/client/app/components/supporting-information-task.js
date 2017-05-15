@@ -6,29 +6,48 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
+  uploadCount: null, // defined by component
   classNames: ['supporting-information-task'],
   files: computed.alias('task.paper.supportingInformationFiles'),
   uploadUrl: computed('task', function() {
     return `/api/supporting_information_files?task_id=${this.get('task.id')}`;
   }),
 
+  saveErrorText: 'Please edit and complete the required fields.',
+
   validateData() {
     const objs = this.get('filesWithErrors');
     objs.invoke('validateAll');
 
-    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
+    if (this.get('uploadCount')) {
+      errors = true;
+    }
 
     if(errors) {
-      this.set('validationErrors.completed', 'Please fix all errors');
+      this.set(
+        'validationErrors.completed',
+        this.get('completedErrorText')
+      );
     }
   },
 
   filesWithErrors: computed('files.[]', function() {
-    return this.get('files').map(function(f) {
+    return this.get('files').map((f)=> {
       return ObjectProxyWithErrors.create({
+        saveErrorText: this.get('saveErrorText'),
         object: f,
+        skipValidations: () => { return this.get('skipValidations') },
         validations: {
-          'title': ['presence'],
+          processed: [{
+            type: 'processingFinished',
+            message: 'All files must be done processing to save.',
+            validation() {
+              const file = this.get('object');
+              return file.get('status') === 'done';
+            }
+          }],
+          'label': ['presence'],
           'category': ['presence']
         }
       });
@@ -36,9 +55,26 @@ export default TaskComponent.extend(FileUploadMixin, {
   }),
 
   actions: {
+    uploadStarted(data, filename) {
+      if (this.get('uploadCount')) {
+        this.set('uploadCount', this.get('uploadCount') + 1);
+      } else {
+        this.set('uploadCount', 1);
+      }
+      this.uploadStarted(data, filename);
+    },
+
     uploadFinished(data, filename) {
+      this.set('uploadCount', this.get('uploadCount') - 1);
+      const id = data.supporting_information_file.id;
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);
+
+      const siFile = this.get('store')
+                         .peekRecord('supporting-information-file', id);
+
+      const proxyObject = this.get('filesWithErrors').findBy('object', siFile);
+      proxyObject.validateAll();
     },
 
     deleteFile(file) {

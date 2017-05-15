@@ -16,12 +16,24 @@ class DiscussionTopic < ActiveRecord::Base
     participants.include? user
   end
 
-  def add_discussion_participant(discussion_participant)
+  def add_discussion_participant(participant)
+    discussion_participant = participant
+    discussion_participant = DiscussionParticipant.new(user: participant) unless
+      participant.is_a?(DiscussionParticipant)
+
     assignments.create(
       user: discussion_participant.user,
       role: journal.discussion_participant_role
     )
-    discussion_participant.save
+
+    discussion_participants.append(discussion_participant)
+  end
+
+  def add_discussion_participants_by_id(user_ids)
+    user_ids.each do |id|
+      user = User.find(id)
+      add_discussion_participant(user)
+    end
   end
 
   def remove_discussion_participant(discussion_participant)

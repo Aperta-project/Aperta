@@ -1,31 +1,33 @@
 require 'rails_helper'
 
 describe TaskFactory do
-
   let(:paper) { FactoryGirl.create(:paper) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:klass) { TahiStandardTasks::ReviseTask }
 
-  it "Creates a task" do
-    expect {
-      TaskFactory.create(klass, paper: paper, phase: phase)
-    }.to change{ Task.count }.by(1)
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
   end
 
-  it "Sets the default title and old_role if is not indicated" do
+  it "Creates a task" do
+    expect do
+      TaskFactory.create(klass, paper: paper, phase: phase)
+    end.to change { Task.count }.by(1)
+  end
+
+  it "calls the task's task_added_to_paper hook" do
+    expect_any_instance_of(klass).to receive(:task_added_to_paper)
+    TaskFactory.create(klass, paper: paper, phase: phase)
+  end
+
+  it "Sets the default title if is not indicated" do
     task = TaskFactory.create(klass, paper: paper, phase: phase)
-    expect(task.title).to eq('Revise Manuscript')
-    expect(task.old_role).to eq('author')
+    expect(task.title).to eq('Response to Reviewers')
   end
 
   it "Sets the title from params" do
     task = TaskFactory.create(klass, paper: paper, phase: phase, title: 'Test')
     expect(task.title).to eq('Test')
-  end
-
-  it "Sets the old_role from params" do
-    task = TaskFactory.create(klass, paper: paper, phase: phase, old_role: 'editor')
-    expect(task.old_role).to eq('editor')
   end
 
   it "Sets the phase on the task" do
@@ -49,15 +51,33 @@ describe TaskFactory do
   end
 
   it "Sets the body from params" do
-    task = TaskFactory.create(klass, paper: paper, phase: phase, body: {key: 'value'})
-    expect(task.body).to eq({'key' => 'value'})
+    task = TaskFactory.create(klass, paper: paper, phase: phase, body: { key: 'value' })
+    expect(task.body).to eq('key' => 'value')
   end
 
-  it "Sets the participants from params" do
-    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
-    participants = [FactoryGirl.create(:user)]
-    task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
-    expect(task.participants).to eq(participants)
+  describe "setting task's card version" do
+    context "the card version is passed in" do
+      let(:card_version) { FactoryGirl.create(:card_version) }
+      it "assigns the card version to the task" do
+        task = TaskFactory.create(klass, paper: paper, phase: phase, card_version: card_version)
+        expect(task.card_version).to eq(card_version)
+      end
+    end
+
+    context "the card version is not present in the options" do
+      let(:klass) { TahiStandardTasks::UploadManuscriptTask }
+
+      context "a card with a matching name as the task exists" do
+        let!(:existing_card) do
+          FactoryGirl.create(:card, :versioned, name: klass.name, journal: nil)
+        end
+
+        it "uses the latest version of that card" do
+          task = TaskFactory.create(klass, paper: paper, phase: phase)
+          expect(task.card_version).to eq(existing_card.latest_card_version(:latest))
+        end
+      end
+    end
   end
 
   context "roles and permissions exist" do
@@ -65,6 +85,11 @@ describe TaskFactory do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { FactoryGirl.create(:phase, paper: paper) }
     let(:klass) { PlosBilling::BillingTask }
+
+    before do
+      CardLoader.load("PlosBilling::BillingTask")
+    end
+
     let(:journal_task_type) do
       journal.journal_task_types.find_by(kind: klass.to_s)
     end
@@ -79,6 +104,19 @@ describe TaskFactory do
       expect(task_type_perms).to include(*expected_permissions)
       task = TaskFactory.create(klass, paper: paper, phase: phase)
       expect(task.required_permissions).to include(*expected_permissions)
+    end
+  end
+
+  context "roles and permissions do not exist" do
+    let(:journal) { create :journal }
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
+    let(:card_version) { FactoryGirl.create(:card_version) }
+    let(:klass) { CustomCardTask }
+
+    it "does not set permissions" do
+      task = TaskFactory.create(klass, card_version: card_version, paper: paper, phase: phase)
+      expect(task.required_permissions).to be_empty
     end
   end
 end

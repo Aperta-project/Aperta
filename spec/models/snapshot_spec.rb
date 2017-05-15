@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Snapshot, type: :model do
-  subject(:snapshot){ FactoryGirl.build(:snapshot) }
+  subject(:snapshot) { FactoryGirl.build(:snapshot) }
 
   describe "validations" do
     it "is valid" do
@@ -64,4 +64,48 @@ describe Snapshot, type: :model do
     end
   end
 
+  describe "#get_property" do
+    context "the requested property exists" do
+      let(:key_name) { "my_key_name" }
+      let(:key_value) { "my_key_value" }
+      let(:snapshot) do
+        create(:snapshot).tap do |snap|
+          contents = {
+            "children": [
+              {
+                "name" => key_name,
+                "value" => key_value
+              }
+            ]
+          }
+          snap.update! contents: contents
+        end
+      end
+
+      subject { snapshot.get_property(key_name) }
+
+      it "returns the value of that property" do
+        expect(subject).to eq key_value
+      end
+    end
+
+    context "the requested property does not exist" do
+      let(:key_name) { "my_key_name" }
+      let(:key_value) { "my_key_value" }
+      let(:snapshot) do
+        create(:snapshot).tap do |snap|
+          contents = {
+            "children": []
+          }
+          snap.update! contents: contents
+        end
+      end
+
+      subject { snapshot.get_property(key_name) }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+  end
 end

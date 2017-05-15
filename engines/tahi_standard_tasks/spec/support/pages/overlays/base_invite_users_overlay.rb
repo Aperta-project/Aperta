@@ -10,7 +10,6 @@ class BaseInviteUsersOverlay < CardOverlay
 
       # Invite
       find('.invitation-email-entry-button').click
-      find('.invitation-save-button').click
       row = find('.active-invitations .invitation-item-header', text: invitee.full_name)
       row.find('.invite-send').click
 
@@ -23,7 +22,6 @@ class BaseInviteUsersOverlay < CardOverlay
   def invite_new_user(email)
     fill_in "invitation-recipient", with: email
     find('.invitation-email-entry-button').click
-    find('.invitation-save-button').click
     row = find('.active-invitations .invitation-item-header', text: email)
     row.find('.invite-send').click
   end
@@ -32,10 +30,13 @@ class BaseInviteUsersOverlay < CardOverlay
     fill_in "invitation-recipient", with: invitee.email
     find(".auto-suggest-item", text: "#{invitee.full_name} <#{invitee.email}>").click
 
-    # compose invite button
-    find('.invitation-email-entry-button').click
     # add to queue button
-    find('.invitation-save-button').click
+    find('.invitation-email-entry-button').click
+  end
+
+  def edit_invitation(invitee)
+    find('.invitation-item-header', text: invitee.first_name).click
+    find('.invitation-item-action-edit').click
   end
 
   def select_first_alternate

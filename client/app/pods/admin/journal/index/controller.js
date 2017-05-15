@@ -9,8 +9,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   adminJournalUsers: null,
 
-  showEditTaskTypesOverlay: false,
-
   showEditCSSOverlay: false,
   editCssOverlayName: null,
 
@@ -58,14 +56,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         pdfCssSaveStatus: '',
         manuscriptCssSaveStatus: ''
       });
-    },
-
-    showEditTaskTypesOverlay() {
-      this.set('showEditTaskTypesOverlay', true);
-    },
-
-    hideEditTaskTypesOverlay() {
-      this.set('showEditTaskTypesOverlay', false);
     },
 
     editCSS(type) {

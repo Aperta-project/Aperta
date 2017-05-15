@@ -1,27 +1,16 @@
-<div class="container">
-  <div class="paper-info">
-    <div class="journal-info">
-      <% if @paper.journal.logo_url %>
-        <img class="journal-logo" src="<%= @paper.journal.logo_url %>">
-      <% else %>
-        <div class="journal-name">
-          <%= @paper.journal.name %>
-        </div>
-      <% end %>
-    </div>
+<%= render partial: 'email/journal_logo_or_name', locals: { journal: @paper.journal } %>
+<br><br>
 
-    <div class="custom-email">
-      <%= simple_format @invitation.body %>
-    </div>
-
-    <p>
-      <a class="button" href="<%= client_dashboard_url({ invitation_token: @invitation.token }) %>" target="_blank">
-        Accept Invitation
-      </a>
-      <span class="spacer">|</span>
-      <a class="button" href="<%= confirm_decline_invitation_url({ token: @invitation.token }) %>" target="_blank">
-        Decline
-      </a>
-    </p>
-  </div>
+<div>
+  <%= simple_format @invitation.body %>
 </div>
+
+<%= render partial: 'email/button', locals: {
+  href: client_dashboard_url({ invitation_token: @invitation.token }),
+  text: 'Accept Invitation'
+} %>
+
+<%= render partial: 'email/button', locals: {
+  href: confirm_decline_invitation_url({ token: @invitation.token }),
+  text: 'Decline'
+} %>

@@ -8,8 +8,7 @@ feature "Upload paper", js: true, sidekiq: :inline! do
       creator: author,
       task_params: {
         title: "Upload Manuscript",
-        type: "TahiStandardTasks::UploadManuscriptTask",
-        old_role: "author"
+        type: "TahiStandardTasks::UploadManuscriptTask"
       }
   end
 
@@ -25,7 +24,22 @@ feature "Upload paper", js: true, sidekiq: :inline! do
 
     wait_for_ajax
 
-    visit "/papers/#{paper.id}"
+    Page.view_paper paper
+    edit_paper_page = PaperPage.new
+
+    expect(edit_paper_page).to be_loading_paper
+  end
+
+  scenario "Author uploads paper in PDF format" do
+    paper.journal.update(pdf_allowed: true)
+    overlay = Page.view_task_overlay(paper, paper.tasks.first)
+    overlay.upload_pdf
+
+    wait_for_ajax
+
+    expect(overlay).to have_no_content('not a valid file type')
+
+    Page.view_paper paper
     edit_paper_page = PaperPage.new
 
     expect(edit_paper_page).to be_loading_paper

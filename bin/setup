@@ -48,30 +48,6 @@ def brew_install package, options=nil
   end
 end
 
-def ensure_postgres_setup
-  if !cmd_available?('psql')
-    puts "psql isn't available."
-    puts "Would you like to install it right now? y/n"
-    if gets.match /y/i
-      case $os
-      when :darwin
-        system "brew install postgresql"
-      when :linux
-        system "apt-get install postgresql"
-      end
-    else
-      puts "Please ensure postgresql is installed and configured."
-      exit 1
-    end
-  end
-
-  puts "Checking to see if postgres is running and accessible..."
-
-  if run_pg("psql -l")
-    puts "Success!"
-  end
-end
-
 def copy_template source, dest
   if File.exist?(dest)
     puts "Not copying from #{source} (#{dest} already exists)."
@@ -96,20 +72,18 @@ end
 Dir.chdir APP_ROOT do
   system "rm -f setup.log"
 
-  header 'Checking database setup'
-  ensure_postgres_setup
-
-  header 'Installing other package dependencies'
+  header 'Installing packages'
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(node qt).each do |package|
+    %w(node redis wget postgresql).each do |package|
       brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick nodejs qt5-default libqt5webkit5-dev"
+    # Install node v 4.2
+    system "curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -"
+    system "sudo apt-get install -y imagemagick nodejs wget redis-server postgresql"
   end
-
   header 'Installing gems'
   system 'gem install bundler --conservative'
   system 'bundle install'
@@ -131,10 +105,19 @@ Dir.chdir APP_ROOT do
   else
     puts 'Creating the tahi PostgreSQL user'
     run_pg('createuser -s -r tahi')
+    if $os == :linux
+      # peer auth does not work on linux
+      cmd = "ALTER USER \"tahi\" with password 'tahi';"
+      run_pg("psql -c \"#{cmd}\"")
+    end
   end
 
   header 'Copying sample files'
   copy_template 'config/database.yml.sample', 'config/database.yml'
+  if $os == :linux
+    # peer auth does not work on linux, so set the password
+    system "sed -i 's/password:$/password: tahi/' config/database.yml"
+  end
   copy_template 'Procfile.template', 'Procfile.local'
 
   create_config_file('.foreman') do |f|
@@ -149,8 +132,7 @@ Dir.chdir APP_ROOT do
   header 'Preparing testing database (output logged to setup.log)'
   system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
 
-  header 'Installing javascript dependencies (output logged to setup.log)'
-  system 'npm install >> setup.log'
+  header 'Installing javascript dependencies'
   system 'bundle exec rake ember:install'
 
   header 'Removing old logs and tempfiles'
@@ -158,7 +140,7 @@ Dir.chdir APP_ROOT do
   system 'rm -rf tmp/cache'
 
   header 'Preparing tmp/pids'
-  system 'mkdir tmp/pids'
+  system 'mkdir -p tmp/pids'
 
   header 'setting up overcommit'
   system 'overcommit --install'

@@ -131,6 +131,7 @@ group :test do
   gem 'email_spec'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'fakeredis'
   gem 'fake_ftp'
   gem 'rspec-retry'
   gem 'generator_spec'

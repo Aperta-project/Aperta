@@ -244,3 +244,36 @@ test('deleting requires confirmation', function(assert) {
     );
   });
 });
+
+test('reversion button is only present when the card is published with changes and reverts card', function(assert) {
+  let card = make('card', { state: 'published' });
+  this.set('card', card);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card}}`
+  );
+
+  assert.elementNotFound('.editor-revert',
+                         'the revert button is not present when card is not publishedWithChanges');
+
+  this.set('card.state', 'publishedWithChanges');
+  assert.elementFound('.editor-revert',
+                      'the revert button is present when card is publishedWithChanges');
+
+  $.mockjax({
+    url: `/api/cards/${card.id}/revert`,
+    method: 'PUT',
+  });
+
+  this.$('.editor-revert').click();
+
+  return wait().then(() => {
+    assert.mockjaxRequestMade(
+      `/api/cards/${card.id}/revert`,
+      'PUT',
+      'it reverts the card'
+    );
+  });
+});

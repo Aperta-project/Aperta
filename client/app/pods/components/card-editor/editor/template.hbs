@@ -22,14 +22,16 @@
       {{/unless}}
     </div>
 
-    <button class="button button--blue button-primary editor-revert {{unless card.revertable 'hidden'}}"
-            onclick={{action (perform revertCard)}}
-            disabled={{or
-                       saveCard.isRunning
-                       publishCard.isRunning
-                       revertCard.isRunning}}>
-      Revert
-    </button>
+    {{#if card.revertable}}
+      <button class="button button--blue button-primary editor-revert"
+              onclick={{action (perform revertCard)}}
+              disabled={{or
+                         saveCard.isRunning
+                         publishCard.isRunning
+                         revertCard.isRunning}}>
+        Revert
+      </button>
+    {{/if}}
 
     <button class="button button--blue button-primary editor-save"
  ethics--field_study--field_permit_number

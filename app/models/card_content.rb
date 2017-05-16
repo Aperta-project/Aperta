@@ -9,13 +9,17 @@ class CardContent < ActiveRecord::Base
   acts_as_nested_set
   acts_as_paranoid
 
-  belongs_to :card_version
+  belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
 
   validates :card_version, presence: true
+
+  # since we use acts_as_paranoid we need to take into account whether a given
+  # piece of card content has been deleted for uniqueness checks on parent_id
+  # and ident
   validates :parent_id,
             uniqueness: {
-              scope: :card_version,
+              scope: [:card_version, :deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -24,10 +28,17 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
+              scope: [:card_version, :deleted_at],
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }
 
+  # -- Card Content Validations
+  # Note that the checks present here work in concert with the xml validations
+  # in the config/card.rnc file to assure that card content of a given type
+  # is valid.  In the event that xml input stops being the only way to create
+  # new card data, some of the work done by the xml schema will probably need
+  # to be accounted for here.
   validate :content_value_type_combination
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
@@ -50,6 +61,7 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
+      'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
@@ -89,39 +101,6 @@ class CardContent < ActiveRecord::Base
     end
   end
 
-  # Note that we essentially copied this method over from nested question
-  def self.update_all_exactly!(content_hashes)
-    # This method runs on a scope and takes and a list of nested property
-    # hashes. Each hash represents a single piece of card content, and must
-    # have at least an `ident` field.
-    #
-    # ANY CONTENT IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE DESTROYED.
-    #
-    # Any content with hashes but not in scope will be created.
-
-    updated_idents = []
-
-    # Refresh the living, welcome the newly born
-    update_nested!(content_hashes, nil, updated_idents)
-
-    existing_idents = all.map(&:ident)
-    for_deletion = existing_idents - updated_idents
-    raise "You forgot some questions: #{for_deletion}" \
-      unless for_deletion.empty?
-  end
-
-  def self.update_nested!(content_hashes, parent_id, idents)
-    content_hashes.map do |hash|
-      idents.append(hash[:ident])
-      child_hashes = hash.delete(:children) || []
-      content = CardContent.find_or_initialize_by(ident: hash[:ident])
-      content.parent_id = parent_id
-      content.update!(hash)
-      update_nested!(child_hashes, content.id, idents)
-      content
-    end
-  end
-
   def render_tag(xml, attr_name, attr)
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
@@ -131,7 +110,9 @@ class CardContent < ActiveRecord::Base
       'content-type' => content_type,
       'value-type' => value_type,
       'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value
+      'default-answer-value' => default_answer_value,
+      'allow-multiple-uploads' => allow_multiple_uploads,
+      'allow-file-captions' => allow_file_captions
     }.compact
   end
 

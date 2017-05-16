@@ -85,6 +85,50 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="file-uploader">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>file-uploader</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>attachment</value>
+      </attribute>
+      <optional>
+        <attribute name="allow-multiple-uploads">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="allow-file-captions">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <!-- for now duplicating radio-input for dropdown -->
   <define name="dropdown-input">
     <element name="content">
@@ -213,6 +257,7 @@
       <ref name="display-with-value-content"/>
       <ref name="field-set"/>
       <ref name="check-box-input"/>
+      <ref name="file-uploader"/>
       <ref name="dropdown-input"/>
     </choice>
   </define>

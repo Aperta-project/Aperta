@@ -46,28 +46,24 @@ HealthCheck.setup do |config|
 
   config.add_custom_check('redis-writability') do
     begin
+      Sidekiq.redis do |redis|
+        what_is_deposited = rand(42_000).to_s
+        scratch_key       = "scratch_key_#{what_is_deposited}"
+        redis_response    = redis.set(scratch_key, what_is_deposited)
+        what_is_withdrawn = redis.get(scratch_key)
 
-      # use any custom redis url that was provided using env convention
-      # with fallback to localhost if custom url is not provided
-      custom_redis_url = ENV[ENV['REDIS_PROVIDER'] || 'REDIS_URL']
-      redis = Redis.new(url: custom_redis_url)
+        redis.del(scratch_key)
 
-      what_is_deposited = rand(42_000).to_s
-      scratch_key       = "scratch_key_#{what_is_deposited}"
-      redis_response    = redis.set(scratch_key, what_is_deposited)
-      what_is_withdrawn = redis.get(scratch_key)
-
-      redis.del(scratch_key)
-
-      if (what_is_withdrawn == what_is_deposited) && (redis_response == "OK")
-        "" # an empty string signals success!
-      else
-        "redis write error"
+        if (what_is_withdrawn != what_is_deposited) || (redis_response != "OK")
+          return "redis write error"
+        end
       end
-    rescue
-      # if there's an exception, then we can assume redis has issues
-      'redis error'
+    rescue StandardError => ex
+      # Catch this exception outside of the Sidekiq.redis block because that
+      # block will catch and re-raise an exception and remove the stale
+      # connection from the pool.
+      return ex.to_s
     end
+    "" # an empty string signals success!
   end
-
 end

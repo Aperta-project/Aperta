@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170419140939) do
+ActiveRecord::Schema.define(version: 20170503152030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -225,6 +225,8 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.string   "visible_with_parent_answer"
     t.string   "label"
     t.string   "default_answer_value"
+    t.boolean  "allow_multiple_uploads"
+    t.boolean  "allow_file_captions"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -237,6 +239,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
+    t.datetime "published_at"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -249,9 +252,12 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version", default: 1, null: false
+    t.datetime "archived_at"
+    t.string   "state",                      null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
+  add_index "cards", ["state"], name: "index_cards_on_state", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
@@ -373,7 +379,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -699,7 +705,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                 null: false
     t.string   "state"
     t.datetime "submitted_at"
   end
@@ -808,7 +814,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",     null: false
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -827,7 +833,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -854,7 +860,7 @@ ActiveRecord::Schema.define(version: 20170419140939) do
     t.integer  "position",        default: 0
     t.integer  "paper_id",                         null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

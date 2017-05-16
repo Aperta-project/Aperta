@@ -21,7 +21,10 @@ Router.map(function() {
 
     this.route('versions', { path: '/versions' });
 
-    this.route('correspondence', { path: '/correspondence' });
+    this.route('correspondence', { path: '/correspondence' }, function() {
+      this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
+    });
+
 
     this.route('workflow', function() {
       this.route('discussions', function() {
@@ -50,7 +53,6 @@ Router.map(function() {
         this.route('preview', { path: '/' });
         this.route('edit');
         this.route('permissions');
-        this.route('tags');
         this.route('history');
       });
     });

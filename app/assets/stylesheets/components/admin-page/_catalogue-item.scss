@@ -20,3 +20,11 @@
     background-color: $aperta-blue-dark;
   }
 }
+
+.admin-catalogue-item.draft {
+    color: $aperta-blue-dark;
+    background-color: $aperta-blue-lighter;
+    &:hover, &:focus {
+        background-color: $aperta-blue-light;
+    }
+}

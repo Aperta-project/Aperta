@@ -1,6 +1,19 @@
-<h4 class="admin-card-thumbnail-name">
-  {{card.name}}
-</h4>
-<div class="admin-card-thumbnail-journal">
-  {{card.journal.name}}
+<div class="admin-card-thumbnail-icon" {{action "toggleDescription" true on="mouseEnter"}} {{action "toggleDescription" false on="mouseLeave"}}>
+  {{#unless (eq card.state "published")}}
+    {{fa-icon card.stateIcon}}
+  {{/unless}}
+</div>
+<div class="admin-card-thumbnail">
+  {{#liquid-if (and showDescription card.stateDescription) class="card-fade"}}
+    <span class="admin-card-thumbnail-info">
+      {{card.stateDescription}}
+    </span>
+  {{else}}
+    <h4 class="admin-card-thumbnail-name">
+      {{card.name}}
+    </h4>
+    <div class="admin-card-thumbnail-journal">
+      {{card.journal.name}}
+    </div>
+  {{/liquid-if}}
 </div>

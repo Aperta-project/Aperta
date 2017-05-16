@@ -43,7 +43,7 @@ describe PhasesController do
       context "and the phase has tasks" do
         before do
           phase.update!(
-            tasks: [Task.new(title: "task", paper: paper)]
+            tasks: [FactoryGirl.build(:ad_hoc_task, :with_loaded_card, paper: paper)]
           )
         end
 

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   sequence :email do |n|
-    "test-user-#{n}@example.com"
+    "#{n}#{Faker::Internet.unique.email}"
   end
 
   sequence :username do |n|

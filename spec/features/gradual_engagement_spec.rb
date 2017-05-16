@@ -42,8 +42,7 @@ feature 'Gradual Engagement', js: true do
 
     context 'and the paper has never been submitted and still has submittable
              tasks' do
-      scenario 'the sidebar submission text shows journal name, message to fill
-                out info and INITIAL submission state information' do
+      scenario 'the sidebar submission text shows manuscript ID message and INITIAL submission state information' do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
                                    :with_tasks,
@@ -51,12 +50,18 @@ feature 'Gradual Engagement', js: true do
                                    creator: user
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
-          .to have_content(paper.journal.name)
+          .not_to have_content(paper.journal.name)
         expect(find('.gradual-engagement-presubmission-messaging.initial'))
           .to have_content('Please provide the following information to submit')
         expect(find('.gradual-engagement-presubmission-messaging.initial'))
           .to have_content('Initial Submission')
         expect(page).to have_selector('#submission-process-toggle')
+        expect(page).to have_link('Submission Process Overview')
+        click_link 'Submission Process Overview'
+
+        expect(find('#submission-process'))
+        find('#sp-close').click
+        expect(page).not_to have_selector('#submission-process')
       end
     end
 
@@ -87,8 +92,8 @@ feature 'Gradual Engagement', js: true do
 
     context 'and the paper has been invited for full submission and still has
              submittable tasks' do
-      scenario 'the sidebar submission text shows journal name and message to
-                fill out info and FULL submission state information' do
+      scenario 'the sidebar submission text manuscript ID and submission process overview link
+                and FULL submission state information' do
         paper = FactoryGirl
                 .create :paper,
                         :with_integration_journal,
@@ -98,11 +103,17 @@ feature 'Gradual Engagement', js: true do
                         publishing_state: :invited_for_full_submission
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
-          .to have_content(paper.journal.name)
+          .not_to have_content(paper.journal.name)
         expect(find('.gradual-engagement-presubmission-messaging.full'))
           .to have_content('Please provide the following information to submit
             your manuscript for Full Submission')
         expect(page).to have_selector('#submission-process-toggle')
+        expect(page).to have_link('Submission Process Overview')
+        click_link 'Submission Process Overview'
+
+        expect(find('#submission-process'))
+        find('#main-content').click
+        expect(page).not_to have_selector('#submission-process')
       end
     end
 
@@ -121,6 +132,7 @@ feature 'Gradual Engagement', js: true do
           .to have_content('Please provide the following information to submit
             your manuscript.')
         expect(page).not_to have_selector('#submission-process-toggle')
+        expect(page).not_to have_link('Submission Process Overview')
       end
     end
 

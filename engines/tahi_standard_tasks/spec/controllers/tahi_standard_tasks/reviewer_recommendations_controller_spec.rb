@@ -5,6 +5,7 @@ module TahiStandardTasks
     routes { TahiStandardTasks::Engine.routes }
     before do
       CardLoader.load("TahiStandardTasks::Funder")
+      CardLoader.load("TahiStandardTasks::ReviewerRecommendation")
     end
 
     let(:user) { FactoryGirl.create :user }
@@ -26,6 +27,7 @@ module TahiStandardTasks
     let(:task) do
       FactoryGirl.create(
         :reviewer_recommendations_task,
+        :with_loaded_card,
         paper: paper,
         phase: paper.phases.last
       )

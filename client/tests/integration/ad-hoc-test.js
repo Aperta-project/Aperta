@@ -65,6 +65,7 @@ test('Changing the title on an AdHoc Task', function(assert) {
 
   andThen(function() {
     assert.equal(page.title, 'Shazam!', 'title is changed');
+    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
   });
 });
 

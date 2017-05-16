@@ -15,6 +15,13 @@ class Author < ActiveRecord::Base
           through: :author_list_item,
           inverse_of: :authors
 
+  include PgSearch
+  pg_search_scope \
+    :fuzzy_search,
+    against: [:first_name, :last_name, :email],
+    ignoring: :accents,
+    using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
+
   # Not validated as not all authors have corresponding users.
   belongs_to :user
 

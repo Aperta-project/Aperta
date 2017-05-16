@@ -1,11 +1,6 @@
 require 'rails_helper'
 
 describe "plos_billing namespace rake task" do
-  before :all do
-    Rake::Task.define_task(:environment)
-    CardLoader.load("PlosBilling::BillingTask")
-  end
-
   let(:journal) { FactoryGirl.create(:journal, :with_academic_editor_role) }
   let(:paper) do
     FactoryGirl.create(
@@ -37,6 +32,7 @@ describe "plos_billing namespace rake task" do
   end
 
   before do
+    CardLoader.load("PlosBilling::BillingTask")
     paper.phases.first.tasks.push(*[billing_task,
                                     financial_disclosure_task,
                                     final_tech_check_task])

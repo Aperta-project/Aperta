@@ -29,7 +29,7 @@ class AnswerableFactory
 
       card_content.tap do |cc|
         cc.parent = parent
-        cc.card_version = card.card_version(:latest)
+        cc.card_version = card.latest_published_card_version
         cc.text = question_hash[:text]
         cc.ident = question_hash[:ident]
         cc.value_type = question_hash[:value_type]

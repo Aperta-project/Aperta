@@ -13451,6 +13451,11 @@
       "from": "ember-cli-test-loader@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/ember-cli-test-loader/-/ember-cli-test-loader-1.1.1.tgz"
     },
+    "ember-click-outside": {
+      "version": "0.1.6",
+      "from": "ember-click-outside@latest",
+      "resolved": "https://registry.npmjs.org/ember-click-outside/-/ember-click-outside-0.1.6.tgz"
+    },
     "ember-composable-helpers": {
       "version": "1.2.0",
       "from": "ember-composable-helpers@>=1.1.2 <2.0.0",

@@ -63,6 +63,7 @@ class JournalFactory
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types

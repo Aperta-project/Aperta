@@ -123,6 +123,7 @@ export default Ember.Component.extend({
 
     setTitle(title) {
       this.set('title', title);
+      this.saveBlocks();
     },
 
     addLabel(){

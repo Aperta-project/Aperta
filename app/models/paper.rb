@@ -53,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
+  has_many :correspondence
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -669,11 +670,13 @@ class Paper < ActiveRecord::Base
     TahiPusher::Channel.delay(queue: :eventstream, retry: false)
         .push(channel_name: "private-user@#{uploaded_by.id}",
               event_name: 'flashMessage',
-              payload: { messageType: 'alert',
-                         message: "<b>Duplicate file.</b> Please note:
-                          The specified file <i>#{title}</i> has been
-                          reprocessed. <br>If you need to make any changes to
-                          your manuscript, you can upload again by clicking
-                          the <i>Replace</i> link." })
+              payload: {
+                messageType: 'alert',
+                message: "<b>Duplicate file.</b> Please note: " \
+                  "The specified file <i>#{attachment.file.filename}</i> " \
+                  "has been reprocessed. <br>If you need to make any " \
+                  "changes to your manuscript, you can upload again by " \
+                  "clicking the <i>Replace</i> link."
+              })
   end
 end

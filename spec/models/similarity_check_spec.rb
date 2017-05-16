@@ -50,6 +50,7 @@ describe SimilarityCheck, type: :model, redis: true do
     end
 
     it "adds a document through the Ithenticate::Api" do
+      Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
       expect(Ithenticate::Api).to(
         receive_message_chain(:new_from_tahi_env, :add_document)
           .and_return(fake_ithenticate_response)
@@ -66,6 +67,7 @@ describe SimilarityCheck, type: :model, redis: true do
       end
 
       it "sets ithenticate_document_id on the SimilarityCheck record" do
+        Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
         expect do
           start_report!
         end.to change { similarity_check.ithenticate_document_id }
@@ -73,6 +75,7 @@ describe SimilarityCheck, type: :model, redis: true do
       end
 
       it "updates the AASM state of the SimilarityCheck record" do
+        Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
         expect do
           start_report!
         end.to change { similarity_check.state }
@@ -80,6 +83,7 @@ describe SimilarityCheck, type: :model, redis: true do
       end
 
       it "sets the similarity check's timeout_at" do
+        Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
         expect(SimilarityCheck::TIMEOUT_INTERVAL).to be_present
         Timecop.freeze do |now|
           expect do
@@ -90,6 +94,7 @@ describe SimilarityCheck, type: :model, redis: true do
       end
 
       it "sets document_s3_url" do
+        Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
         expect do
           start_report!
         end.to change { similarity_check.document_s3_url }

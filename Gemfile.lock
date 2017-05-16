@@ -261,6 +261,8 @@ GEM
     fake_ftp (0.1.1)
     faker (1.7.1)
       i18n (~> 0.5)
+    fakeredis (0.6.0)
+      redis (~> 3.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.1)
@@ -753,6 +755,7 @@ DEPENDENCIES
   factory_girl_rails
   fake_ftp
   faker
+  fakeredis
   faraday
   faraday_middleware (~> 0.10)
   fog (~> 1.36.0)

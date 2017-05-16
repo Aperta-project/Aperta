@@ -32,15 +32,28 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card.xml = params[:card][:xml] if params[:card][:xml].present?
+    card.update_from_xml(params[:card][:xml]) if params[:card][:xml].present?
     card.update!(card_params)
 
     respond_with card
   end
 
+  def destroy
+    requires_user_can(:edit, card)
+
+    respond_with card.destroy
+  end
+
   def publish
     requires_user_can(:edit, card)
     card.publish!
+
+    render json: card
+  end
+
+  def archive
+    requires_user_can(:edit, card)
+    card.archive!
 
     render json: card
   end
@@ -53,7 +66,7 @@ class CardsController < ApplicationController
     journal = Journal.find(card_params[:journal_id])
     requires_user_can(:create_card, journal)
 
-    respond_with Card.create_draft!(card_params)
+    respond_with Card.create_initial_draft!(card_params)
   end
 
   private

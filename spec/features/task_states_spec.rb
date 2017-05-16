@@ -6,8 +6,12 @@ feature 'Task states permissions', js: true do
   let(:unsubmitted_paper) { FactoryGirl.create(:paper, :unsubmitted, :with_creator, journal: Journal.first) }
   let(:unsubmitted_paper_author) { unsubmitted_paper.creator }
   let(:staff_admin) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:data_availability_task, paper: submitted_paper) }
-  let(:unsubmitted_paper_task) { FactoryGirl.create(:data_availability_task, paper: unsubmitted_paper) }
+  let(:task) do
+    FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: submitted_paper)
+  end
+  let(:unsubmitted_paper_task) do
+    FactoryGirl.create(:data_availability_task, :with_loaded_card, paper: unsubmitted_paper)
+  end
 
   before do
     task.add_participant(submitted_paper_author)

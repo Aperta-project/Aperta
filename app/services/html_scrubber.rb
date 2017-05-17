@@ -1,28 +1,28 @@
 # A Scrubber that scrubs out bad HTML and text we don't want
 # https://github.com/rails/rails-html-sanitizer for more details
 class HtmlScrubber < Rails::Html::PermitScrubber
-  EXPANDED_TAGS = [:i,
-                   :sub,
-                   :sup,
-                   :b,
-                   :code,
-                   :table,
-                   :tr,
-                   :td,
-                   :th,
-                   :thead,
-                   :tfoot,
-                   :div,
-                   :p,
-                   :h1,
-                   :h2,
-                   :h3,
-                   :h4,
-                   :h5,
-                   :h6,
-                   :ul,
-                   :li,
-                   :oi].freeze
+  EXPANDED_TAGS = %w( i
+                      sub
+                      sup
+                      b
+                      code
+                      table
+                      tr
+                      td
+                      th
+                      thead
+                      tfoot
+                      div
+                      p
+                      h1
+                      h2
+                      h3
+                      h4
+                      h5
+                      h6
+                      ul
+                      li
+                      oi).freeze
 
   def initialize(tags: %w(i sub sup b code))
     super()

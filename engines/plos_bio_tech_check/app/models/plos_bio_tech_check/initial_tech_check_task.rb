@@ -7,6 +7,7 @@ module PlosBioTechCheck
     DEFAULT_ROLE_HINT = 'editor'.freeze
 
     before_create :initialize_round
+    before_save   :sanitize_html
 
     def self.nested_questions
       NestedQuestion.where(owner_id: nil, owner_type: name).all
@@ -37,6 +38,12 @@ module PlosBioTechCheck
 
     def initialize_round
       self.body = { round: 1 }
+    end
+
+    def sanitize_html
+      body["initialTechCheckBody"] =
+        HtmlScrubber.standalone_scrub!(body["initialTechCheckBody"],
+                                         "html-expanded")
     end
   end
 end

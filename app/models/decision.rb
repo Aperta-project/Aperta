@@ -3,7 +3,8 @@ class Decision < ActiveRecord::Base
   include Versioned
   include CustomCastTypes
 
-  attribute :letter, HtmlString.new
+  attribute :letter, HtmlStringExpanded.new
+  attribute :author_response, HtmlStringExpanded.new
 
   REVISION_VERDICTS = ['major_revision', 'minor_revision']
   TERMINAL_VERDICTS = ['accept', 'reject']

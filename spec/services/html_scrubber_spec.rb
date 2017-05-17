@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe HtmlScrubber do
-  let(:subject) { HtmlScrubber.new }
+  let(:subject) { HtmlScrubber.new(tags: HtmlScrubber::EXPANDED_TAGS) }
 
   describe 'HTML Scrubber' do
     let(:bad_html) { Loofah.fragment('<script>doNaughtything();</script><div><i>stuff</i><blockquote>quote</blockquote></div>') }

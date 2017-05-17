@@ -12,7 +12,8 @@ Subscriptions.configure do
   add 'paper:submitted', \
       Paper::Submitted::EmailCreator,
       Paper::Submitted::SnapshotPaper,
-      Paper::Submitted::EmailCoauthors
+      Paper::Submitted::EmailCoauthors,
+      Paper::Submitted::SimilarityCheck
 
   add 'paper:initially_submitted', \
       Paper::Submitted::SnapshotPaper,

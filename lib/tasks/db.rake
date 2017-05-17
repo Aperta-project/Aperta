@@ -99,11 +99,8 @@ namespace :db do
   task :reset_passwords => [:environment] do |t, args|
     fail "This can only be run in a development environment" unless Rails.env.development?
     Journal.update_all(logo: nil)
-    User.update_all(avatar: nil)
-    User.all.each do |u|
-      u.password = "password" # must be set explicitly
-      u.save
-    end
+    encrypted_password = User.new(password: "password").encrypted_password
+    User.update_all(encrypted_password: encrypted_password, avatar: nil)
   end
 
   private

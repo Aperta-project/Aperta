@@ -7,6 +7,9 @@ export default Ember.Component.extend({
     turnOnPermission: PropTypes.func.isRequired,
     turnOffPermission: PropTypes.func.isRequired
   },
+
+  classNames: ['card-editor-permissions'],
+
   roleSort: ['name:asc'],
   roles: Ember.computed.sort('card.journal.adminJournalRoles', 'roleSort')
 });

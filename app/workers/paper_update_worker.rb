@@ -11,19 +11,28 @@ class PaperUpdateWorker
   # state hours or days after it was fixed.
   sidekiq_options :retry => false
 
+  # define an error class for Ihat jobs
+  class IhatJobError < StandardError
+  end
+
   def perform(ihat_job_params)
     params = ihat_job_params.with_indifferent_access
     job_response = IhatJobResponse.new(params)
     @paper = Paper.find(job_response.paper_id)
+    state = params["state"]
     begin
-      @pdf = params[:outputs].first[:file_type] == 'pdf'
-    rescue NoMethodError => e
-      # no need to process since there's was an error
-      @paper.update!(processing: false)
-      Bugsnag.notify(e.message)
+      if job_response.errored?
+        @paper.update!(processing: false)
+        @paper.file.update(status: state)
+        raise IhatJobError, job_response.job_state
+      end
+    # only throw the exception to notify bugsnag, then proceed
+    rescue IhatJobError => e
+      Bugsnag.notify(e)
     end
     if job_response.completed?
-      @epub_stream = Faraday.get(job_response.format_url(:epub)).body unless @pdf
+      @epub_stream = Faraday
+      .get(job_response.format_url(:epub)).bodyunless job_response.pdf?
       sync!
     end
     Notifier.notify(event: "paper:data_extracted", data: { record: job_response })

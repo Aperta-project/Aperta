@@ -198,29 +198,23 @@ export default DS.Model.extend({
   hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
   'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
 
-  authorHasErrorOnPreSubmission: computed('isPreSubmission','currentUserRoles', function() {
-    return this.get('isPreSubmission') && this.get('file.status') ===  'errored' 
-    && this.get('currentUserRoles').indexOf('Creator') !== -1;
+  authorHasErrorOnPreSubmission: computed('isPreSubmission', function() {
+    return this.stateHasErrorsForRole('isPreSubmission', ['Creator']);
   }),
 
-  authorHasErrorOnSubmission: computed('isSubmitted',  function() {
-    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
-    && this.get('currentUserRoles').indexOf('Creator') !== -1;
+  authorHasErrorOnSubmission: computed('isSubmitted', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isSubmitted', ['Creator']);
   }),
 
-  staffEditorHasErrorOnSubmittedAndEditable: computed('isSubmitted', 'editable', function(){
-    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
-    && (this.get('currentUserRoles').indexOf('Internal Editor') !== -1 
-    || this.get('currentUserRoles').indexOf('Staff Admin') !== -1 
-    || this.get('currentUserRoles').indexOf('Production Staff') !== -1);
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isSubmitted', 'editable', 
+  'file.status', function(){
+    let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray) && this.get('editable');
   }),
 
-  otherRolesHasErrorOnSubmitted: computed( function(){
-    return this.get('isSubmitted') && this.get('file.status') ===  'errored' 
-    && this.get('currentUserRoles').indexOf('Academic Editor') !== -1 
-    || this.get('currentUserRoles').indexOf('Handling Editor') !== -1 
-    || this.get('currentUserRoles').indexOf('Cover Editor') !== -1 
-    || this.get('currentUserRoles').indexOf('Reviewer') !== -1; 
+  otherRolesHasErrorOnSubmitted: computed('currentUserRoles','isSubmitted', function(){
+    let roleArray = ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray);
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
@@ -273,6 +267,14 @@ export default DS.Model.extend({
     }),
 
   restless: Ember.inject.service(),
+
+  stateHasErrorsForRole(state, roleArray) {
+    return this.get(state) &&
+    this.get('file.status') ===  'errored'
+    && roleArray.any((role) => {
+      return this.get('currentUserRoles').includes(role);
+    });
+  },
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

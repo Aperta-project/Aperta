@@ -62,7 +62,7 @@
   {{#if (and showPdfManuscript (not model.processing))}}
     {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
   {{else}}
-    {{#split-pane-element id="preview-pane" class="manuscript-pane main-content-section" hasError=model.hasAnyError}}
+    {{#split-pane-element id="preview-pane" class=(concat "manuscript-pane main-content-section ember-view split-pane-element" (if model.hasAnyError ' errored-upload'))}}
       {{#rendered-manuscript paper=model}}
         {{#if model.processing}}
           {{#progress-spinner-message class="paper-index-progress-spinner"
@@ -81,7 +81,7 @@
                     and try uploading again. You may also upload your manuscript as a PDF.</p>
               <p>Refer to our <a href="http://journals.plos.org/plosbiology/s/aperta-user-guide-for-authors#loc-figures" 
               target="_blank">submission guide</a> for information about uploading figures in Aperta.
-              If you would like to contact us, you can reach us via our <a href="#">Feedback form</a></p>
+              If you would like to contact us, you can reach us via our <a href="#">Feedback form</a></p> 
             {{else if model.authorHasErrorOnSubmission}}  
               <h3>Preview for this manuscript is unavailable.</h3>
               <p><b>Please Note:</b> You cannot upload a new manuscript while your submission is under review.</p>

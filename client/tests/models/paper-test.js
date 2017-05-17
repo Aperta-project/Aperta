@@ -149,6 +149,7 @@ test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
     {
       data: {
         isSubmitted: true,
+        editable: true,
         file: {
           status: 'errored'
         },

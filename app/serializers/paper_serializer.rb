@@ -39,7 +39,7 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def current_user_roles
-    return unless scope
+    return [] unless scope
     Role.where(journal_id: object.journal).joins(:assignments)
     .where("assignments.user_id = ?", scope).pluck(:name).uniq
   end

@@ -35,7 +35,6 @@ FactoryGirl.define do
     trait :published_with_changes do
       after(:build) do |card|
         card.state = "published_with_changes"
-        # does this need to verify that the last card is published?
         card.card_versions << build(:card_version, version: card.latest_version, published_at: Time.current) if card.card_versions.count.zero?
         card.card_versions << build(:card_version, version: card.latest_version + 1, published_at: nil)
       end

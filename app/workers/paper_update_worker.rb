@@ -2,6 +2,7 @@
 # Explicitly require any dependencies outside of app/. See a9a6cc for more info.
 require_dependency 'notifier'
 
+# paper update worker perfrom async
 class PaperUpdateWorker
   include Sidekiq::Worker
 
@@ -9,7 +10,7 @@ class PaperUpdateWorker
 
   # Retries here are would be confusing.  A paper could revert to an older
   # state hours or days after it was fixed.
-  sidekiq_options :retry => false
+  sidekiq_options retry: false
 
   # define an error class for Ihat jobs
   class IhatJobError < StandardError
@@ -31,11 +32,13 @@ class PaperUpdateWorker
       Bugsnag.notify(e)
     end
     if job_response.completed?
-      @epub_stream = Faraday
-      .get(job_response.format_url(:epub)).bodyunless job_response.pdf?
+      @epub_stream = Faraday.get(
+        job_response.format_url(:epub)
+      ).body unless job_response.pdf?
       sync!
     end
-    Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
+    Notifier.notify(event: "paper:data_extracted",
+                    data: { record: job_response })
   end
 
   def sync!

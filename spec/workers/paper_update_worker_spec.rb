@@ -4,7 +4,8 @@ describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }
   let(:paper) { FactoryGirl.create :paper, processing: true }
   let(:stubbed_url) { "http://s3_url_example" }
-  let(:ihat_job_params) { { state: 'completed', options: { metadata: { paper_id: paper.id } }, outputs: [{ file_type: 'epub', url: stubbed_url }] } }
+  let(:job_state) { 'completed' }
+  let(:ihat_job_params) { { state: job_state, options: { metadata: { paper_id: paper.id } }, outputs: [{ file_type: 'epub', url: stubbed_url }] } }
 
   describe "#perform" do
     let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'rb').read }
@@ -32,11 +33,25 @@ describe PaperUpdateWorker do
   end
 
   describe "#perform on an error" do
+    before do
+      paper.file = FactoryGirl.create(
+        :manuscript_attachment,
+          paper: paper,
+          file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
+      )
+    end
+    let(:job_state) { 'errored' }
+    let(:job_response) { IhatJobResponse.new(ihat_job_params) }
     it "raises an exception when an error occurs" do
-      ihat_job_params[:outputs] = nil
-      expect { worker.perform(ihat_job_params) }.to raise_error(NoMethodError)
-      paper.update!(processing: false)
-      expect(paper.processing).to eq(false)
+      worker.perform(ihat_job_params)
+      expect(paper.reload.processing).to eq(false)
+      expect(paper.file.reload.status).to eq(job_state)
+    end
+
+    it "notifies bugsnag" do
+      expect(Bugsnag).to receive(:notify)
+      worker.perform(ihat_job_params)
     end
   end
 

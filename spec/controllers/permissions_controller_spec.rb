@@ -16,6 +16,16 @@ describe PermissionsController do
   before { sign_in user }
 
   describe '#show' do
+    context 'user is not logged' do
+      it 'throws error' do
+        sign_out user
+        get :show, id: "Paper+#{paper.id}", format: :json
+
+        expect(response.status).to eq(401)
+        expect(response.body).not_to include("permissions")
+      end
+    end
+
     context 'has one assignment to the object' do
       let!(:withdraw_permission_for_creator_role) do
         journal.creator_role.ensure_permission_exists(

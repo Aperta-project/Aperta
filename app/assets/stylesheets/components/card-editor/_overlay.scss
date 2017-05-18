@@ -1,10 +1,14 @@
-.card-editor-preview-overlay {
+.card-editor-preview-overlay, .card-editor-history-overlay {
   background-color: #fff;
   margin: 0 auto;
   min-height: 100px;
   transition: max-width .25s, border-radius .25s;
   max-width: 1120px;
   border-radius: 5px;
+}
+
+.card-editor-history-overlay {
+    margin-top: 44px;
 }
 
 .card-editor-preview-overlay-header {

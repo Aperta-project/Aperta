@@ -188,7 +188,7 @@ describe CardFactory do
 
       describe "updating an existing card's state" do
         let!(:card) do
-          c = FactoryGirl.create(:card, :versioned, name: "TestCard", journal: journal, state: "draft")
+          c = FactoryGirl.create(:card, :versioned, :draft, name: "TestCard", journal: journal)
           # Unset the ident for the root element to avoid problems with updating the content
           c.content_root_for_version(:latest).update(ident: nil)
           c
@@ -208,8 +208,12 @@ describe CardFactory do
         end
 
         context "with a journal" do
-          it "publishes the card if it's not published" do
-            expect(update_card).to be_published
+          it "publishes the card with a message if it's not published" do
+            expect(card).to be_draft
+            updated = update_card
+            expect(updated).to be_published
+            expect(updated.latest_card_version.history_entry).to \
+              eq("Loaded from a configuration file")
           end
         end
 

@@ -143,7 +143,7 @@ Dir.chdir APP_ROOT do
   system 'mkdir -p tmp/pids'
 
   header 'setting up overcommit'
-  system 'overcommit --install'
+  system 'bundle exec overcommit --install'
 
   header 'downloading ember inspector'
   system 'cd tmp && rm -f addon-470970-latest.xpi && wget https://addons.mozilla.org/firefox/downloads/latest/ember-inspector/addon-470970-latest.xpi'

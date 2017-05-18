@@ -101,6 +101,9 @@ namespace :db do
     Journal.update_all(logo: nil)
     encrypted_password = User.new(password: "password").encrypted_password
     User.update_all(encrypted_password: encrypted_password, avatar: nil)
+    unless User.all.all? { |u| u.valid_password?("password") } # time-consuming safety check
+      fail "Some passwords were not reset successfully."
+    end
   end
 
   private

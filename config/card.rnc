@@ -111,3 +111,10 @@ start = element card {
             attribute required-for-submission { "true" | "false" },
             content
         }
+
+date-picker = element content {
+                  attribute ident { text }?,
+                  attribute value-type { "text" },
+                  attribute content-type { "date-picker },
+                  element text { text },
+              }

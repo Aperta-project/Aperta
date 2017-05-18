@@ -65,7 +65,8 @@ class CardContent < ActiveRecord::Base
       'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
-      'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
+      'radio': ['boolean', 'text'],
+      'date-picker': ['text'] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created

@@ -3,8 +3,6 @@
 #
 # For event stream subscriptions, check out event_stream_subscribers.rb
 #
-
-# rubocop:disable Style/AlignParameters
 Subscriptions.configure do
   add '.*', \
       EventLogger
@@ -13,11 +11,12 @@ Subscriptions.configure do
       Paper::Submitted::EmailCreator,
       Paper::Submitted::SnapshotPaper,
       Paper::Submitted::EmailCoauthors,
-      Paper::Submitted::SimilarityCheck
+      Paper::Submitted::AutomatedSimilarityCheck
 
   add 'paper:initially_submitted', \
       Paper::Submitted::SnapshotPaper,
-      Paper::Submitted::EmailCreator
+      Paper::Submitted::EmailCreator,
+      Paper::Submitted::AutomatedSimilarityCheck
 
   add 'paper:updated', \
       Paper::Updated::MarkTitleAndAbstractIncomplete
@@ -39,4 +38,3 @@ Subscriptions.configure do
   add 'manuscript_attachment:updated', \
       ManuscriptAttachment::ProcessManuscript
 end
-# rubocop:enable Style/AlignParameters

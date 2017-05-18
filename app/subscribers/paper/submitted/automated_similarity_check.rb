@@ -1,5 +1,5 @@
 # fill me in
-class Paper::Submitted::SimilarityCheck
+class Paper::Submitted::AutomatedSimilarityCheck
   def self.call(_event_name, event_data)
     paper = event_data[:record]
     previous_state = paper.previous_changes[:publishing_state][0]

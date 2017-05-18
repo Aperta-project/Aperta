@@ -39,11 +39,8 @@ class AutomatedSimilarityCheck
           type: "TahiStandardTasks::SimilarityCheckTask"
         )
 
-        if check_task
-          nil
-        else
-          check_task.task_template.setting('ithenticate')
-        end
+        return nil unless check_task
+        check_task.task_template.setting('ithenticate')
       end
   end
 

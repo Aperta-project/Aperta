@@ -5,6 +5,8 @@ class HtmlScrubber < Rails::Html::PermitScrubber
                       sub
                       sup
                       b
+                      a
+                      span
                       code
                       table
                       tr
@@ -22,7 +24,7 @@ class HtmlScrubber < Rails::Html::PermitScrubber
                       h6
                       ul
                       li
-                      oi).freeze
+                      oi ).freeze
 
   def initialize(tags: %w(i sub sup b code))
     super()

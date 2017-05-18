@@ -27,7 +27,46 @@ module PaperConverters
     end
 
     def parsed_uploaded_pdf
-      CombinePDF.parse(uploaded_pdf_data, allow_optional_content: true)
+      cleaned_pdf = remove_object_streams(uploaded_pdf_data)
+      CombinePDF.parse(cleaned_pdf, allow_optional_content: true)
+    end
+
+    def remove_object_streams(a_pdf)
+      # Persist file to disk
+      src_loc = Rails.root.join("tmp/#{object_id}.pdf")
+      cleaned_loc = Rails.root.join("#{object_id}-qpdf.pdf")
+      File.open(src_loc, 'wb') { |fp| fp.write a_pdf }
+
+      unless pdf_may_have_object_stream?(src_loc)
+        File.unlink(src_loc)
+        return a_pdf
+      end
+
+      # QPDF
+      call_qpdf(src_loc, cleaned_loc)
+
+      # read PDF back into memory as was before the cleaning process began
+      cleaned_pdf = IO.read(cleaned_loc, mode: 'rb')
+      cleaned_pdf = cleaned_pdf.force_encoding(Encoding::ASCII_8BIT)
+
+      # delete the tmp files from the server
+      File.unlink(src_loc)
+      File.unlink(cleaned_loc)
+
+      cleaned_pdf
+    end
+
+    # QPDF is the commandline tool which removes object streams for PDFs.
+    def call_qpdf(in_file_path, out_file_path)
+      system "qpdf --object-streams=disable #{in_file_path} #{out_file_path}"
+    end
+
+    def pdf_may_have_object_stream?(pdf_file_path)
+      # PDF may have object streams if the version of the PDF is 1.5+
+      o = Origami::PDF.read(pdf_file_path)
+      oh = o.header
+
+      oh.major_version >= 1 && oh.minor_version >= 5
     end
 
     def merge_pdfs(pdfs)

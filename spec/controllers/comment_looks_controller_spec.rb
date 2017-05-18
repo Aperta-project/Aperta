@@ -1,58 +1,47 @@
 require 'rails_helper'
 
 describe CommentLooksController do
-  include AuthorizationSpecHelper
-
   let(:user) { FactoryGirl.create :user }
-
-  before { sign_in user }
+  let(:comment) { FactoryGirl.create :comment }
 
   describe '#index' do
-    it "throw an error if not logged" do
-      sign_out user
-      get :index, format: :json
-      expect(response.status).to eq(401)
-      expect(response.body).not_to include("comment_looks")
-    end
+    subject(:do_request) { get :index, format: :json }
+
+    it_behaves_like "an unauthenticated json request"
 
     it "lists all the comment_looks for the user" do
-      FactoryGirl.create_list :comment_look, 5, user: user
-      get :index, format: :json
+      stub_sign_in(user)
+      FactoryGirl.create_list :comment_look, 5, user: user, comment: comment
+      do_request
       expect(response.status).to eq(200)
       expect(res_body['comment_looks'].count).to eq(5)
     end
   end
 
   describe '#show' do
-    let!(:comment_look) { FactoryGirl.create :comment_look, user: user }
+    let!(:comment_look) { FactoryGirl.create :comment_look, user: user, comment: comment }
+    subject(:do_request) { get :show, format: :json, id: comment_look.id }
 
-    it "throw an error if not logged" do
-      sign_out user
-      get :show, format: :json, id: comment_look.id
-      expect(response.status).to eq(401)
-      expect(response.body).not_to include("comment_look")
-    end
+    it_behaves_like "an unauthenticated json request"
 
     it "returns the comment look" do
-      get :show, format: :json, id: comment_look.id
+      stub_sign_in(user)
+      do_request
       expect(response.status).to eq(200)
       expect(res_body['comment_look']['id']).to eq(comment_look.id)
     end
   end
 
   describe '#destroy' do
-    let!(:comment_look) { FactoryGirl.create :comment_look, user: user }
+    let!(:comment_look) { FactoryGirl.create :comment_look, user: user, comment: comment }
+    subject(:do_request) { delete :destroy, format: :json, id: comment_look.id }
 
-    it "throw an error if not logged" do
-      sign_out user
-      delete :destroy, id: comment_look.id, format: :json
-      expect(response.status).to eq(401)
-      expect(response.body).not_to include("comment_look")
-    end
+    it_behaves_like "an unauthenticated json request"
 
     it "remove the comment_look" do
+      stub_sign_in(user)
       expect do
-        delete :destroy, id: comment_look.id, format: :json
+        do_request
       end.to change { CommentLook.all.count }.from(1).to(0)
       expect(response.status).to eq(204)
     end

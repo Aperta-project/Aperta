@@ -115,6 +115,6 @@ start = element card {
 date-picker = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
-                  attribute content-type { "date-picker },
-                  element text { text },
+                  attribute content-type { "date-picker" },
+                  element text { text }
               }

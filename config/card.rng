@@ -273,4 +273,20 @@
       <ref name="content"/>
     </element>
   </start>
+  <define name="date-picker">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>date-picker</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+    </element>
+  </define>
 </grammar>

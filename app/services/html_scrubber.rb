@@ -26,7 +26,7 @@ class HtmlScrubber < Rails::Html::PermitScrubber
                       li
                       oi ).freeze
 
-  def initialize(tags: %w(i sub sup b code))
+  def initialize(tags: %w(i sub sup b a code))
     super()
     self.tags = tags
     self.attributes = %w(href class id)

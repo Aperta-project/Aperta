@@ -50,6 +50,16 @@ class Card < ActiveRecord::Base
     state :locked
 
     event :publish do
+      before do |history_entry, published_by|
+        if history_entry.blank?
+          raise ArgumentError,
+                "The :publish event must be called with a history entry"
+        end
+        latest_card_version.update!(
+          history_entry: history_entry,
+          published_by: published_by
+        )
+      end
       transitions from: [:draft, :published_with_changes],
                   to: :published,
                   after: :publish_latest_version!
@@ -80,7 +90,7 @@ class Card < ActiveRecord::Base
 
   def self.create_published!(attrs)
     new_card = create_new!(attrs)
-    new_card.publish!
+    new_card.publish!("Loaded from a configuration file")
     new_card
   end
 

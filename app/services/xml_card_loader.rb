@@ -9,7 +9,7 @@ class XmlCardLoader
 
   # Called from card.update_from_xml when the card is published
   def self.new_version_from_xml_string(xml, card)
-    XmlCardLoader.new(parse(xml), card.journal).make_new_version(card, nil)
+    XmlCardLoader.new(parse(xml), card.journal).make_new_version(card, nil, nil)
   end
 
   # Called from card.update_from_xml when the latest version is a draft
@@ -41,12 +41,12 @@ class XmlCardLoader
         journal: @journal,
         name: attr_val(root, 'name')
       )
-      make_new_version(card, Time.current)
+      make_new_version(card, Time.current, "Created by XML card loader")
       card
     end
   end
 
-  def make_new_version(card, published_at)
+  def make_new_version(card, published_at, history_entry)
     new_version_no = if card.card_versions.count.zero?
                        1
                      else
@@ -57,6 +57,7 @@ class XmlCardLoader
       version: new_version_no,
       card: card,
       published_at: published_at,
+      history_entry: history_entry,
       required_for_submission:
         attr_val(root, 'required-for-submission') == 'true'
     )

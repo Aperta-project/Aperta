@@ -33,8 +33,10 @@ describe Card do
     end
 
     it 'creates a new published card version' do
-      expect(new_card.latest_card_version).to be_published
-      expect(new_card.latest_card_version).to eq(new_card.latest_published_card_version)
+      latest_version = new_card.latest_card_version
+      expect(latest_version).to be_published
+      expect(latest_version).to eq(new_card.latest_published_card_version)
+      expect(latest_version.history_entry).to eq("Loaded from a configuration file")
     end
 
     it 'gives the card version a piece of card content' do
@@ -69,8 +71,23 @@ describe Card do
     end
 
     it "sets the published_at on the latest version if it's unset" do
-      card.publish!
+      card.publish!("foo")
       expect(card_version.reload.published_at).to be_present
+    end
+
+    it "assigns the provided history_entry to the latest card version" do
+      card.publish!("foo")
+      expect(card_version.reload.history_entry).to eq("foo")
+    end
+
+    it "sets the published_by when provided" do
+      user = FactoryGirl.create(:user)
+      card.publish!("foo", user)
+      expect(card_version.reload.published_by).to eq(user)
+    end
+
+    it "blows up if not invoked with a new history entry" do
+      expect { card.publish! }.to raise_error(ArgumentError)
     end
   end
 

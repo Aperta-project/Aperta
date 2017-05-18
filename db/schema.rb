@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170516204235) do
+ActiveRecord::Schema.define(version: 20170518211532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -883,22 +883,24 @@ ActiveRecord::Schema.define(version: 20170516204235) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                            null: false
-    t.string   "type",            default: "Task"
-    t.integer  "phase_id",                         null: false
-    t.boolean  "completed",       default: false,  null: false
+    t.string   "title",                             null: false
+    t.string   "type",             default: "Task"
+    t.integer  "phase_id",                          null: false
+    t.boolean  "completed",        default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",            default: [],     null: false
-    t.integer  "position",        default: 0
-    t.integer  "paper_id",                         null: false
+    t.json     "body",             default: [],     null: false
+    t.integer  "position",         default: 0
+    t.integer  "paper_id",                          null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id",                  null: false
+    t.integer  "card_version_id",                   null: false
+    t.integer  "task_template_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["task_template_id"], name: "index_tasks_on_task_template_id", using: :btree
   add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|

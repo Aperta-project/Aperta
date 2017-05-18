@@ -54,6 +54,7 @@ class Task < ActiveRecord::Base
   has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
+  belongs_to :task_template
 
   belongs_to :card_version
 

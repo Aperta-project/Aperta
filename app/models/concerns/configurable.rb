@@ -6,8 +6,11 @@ module Configurable
     has_many :settings, as: :owner
   end
 
+  # registered settings for a given key will be global ones (where journal id is
+  # nil) or ones where journal is this Configurable's journal
   def registered_settings
-    RegisteredSetting.where(key: registered_settings_key)
+    RegisteredSetting.where(key: registered_settings_key,
+                            journal: [nil, journal])
   end
 
   def registered_settings_key

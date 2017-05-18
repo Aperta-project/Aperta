@@ -3,8 +3,9 @@ class Setting::Ithenticate < Setting
   POSSIBLE_VALUES = [
     "off",
     "at_first_full_submission",
-    "after_first_major_revise_decision",
-    "after_any_first_revise_decision"
+    "after_any_first_revise_decision",
+    "after_first_minor_revise_decision",
+    "after_first_major_revise_decision"
   ].freeze
 
   def on?

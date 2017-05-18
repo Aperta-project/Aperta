@@ -1,4 +1,4 @@
-namespace :data do
+namespace :settings do
   desc "create registry entries in the registered_settings table"
   task seed_registered_settings: :environment do
     [{ journal: nil,

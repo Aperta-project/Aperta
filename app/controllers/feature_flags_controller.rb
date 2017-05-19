@@ -3,10 +3,12 @@
 # destroyed by the API; only toggled.
 #
 class FeatureFlagsController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!
   respond_to :json
 
   def index
+    # must have site admin permission
+    raise AuthorizationError unless current_user.site_admin?
     render json: FeatureFlag.to_hash
   end
 

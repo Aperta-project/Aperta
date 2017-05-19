@@ -10,11 +10,28 @@ describe FeatureFlagsController do
       get :index, format: :json
     end
 
-    it 'responds with the list of feature flags' do
-      do_request
-      expect(res_body.keys.count).to eq(2)
-      expect(res_body[feature_flag1.name]).to eq(true)
-      expect(res_body[feature_flag2.name]).to eq(true)
+    context 'when the user has no access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:site_admin?).and_return(false)
+      end
+      it { is_expected.to responds_with(403) }
+    end
+
+    context 'when the user has access' do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:site_admin?).and_return(true)
+      end
+
+      it { is_expected.to responds_with(200) }
+
+      it 'responds with the list of feature flags' do
+        do_request
+        expect(res_body.keys.count).to eq(2)
+        expect(res_body[feature_flag1.name]).to eq(true)
+        expect(res_body[feature_flag2.name]).to eq(true)
+      end
     end
   end
 

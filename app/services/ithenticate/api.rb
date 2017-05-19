@@ -50,7 +50,7 @@ module Ithenticate
             author_last: author_last_name,
             author_first: author_first_name,
             filename: filename,
-            title: title,
+            title: title.truncate(500),
             upload: b64_document
           }
         ]

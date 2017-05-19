@@ -6,10 +6,6 @@
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
-  include CustomCastTypes
-
-  attribute :text, HtmlString.new
-  attribute :original_text, HtmlString.new
 
   # Base exception class for VersionedText
   class VersionedTextError < StandardError; end

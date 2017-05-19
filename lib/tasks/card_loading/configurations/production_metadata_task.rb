@@ -34,19 +34,19 @@ module CardConfiguration
 
         {
           ident: "production_metadata--provenance",
-          value_type: "text",
+          value_type: "html",
           text: "Provenance"
         },
 
         {
           ident: "production_metadata--production_notes",
-          value_type: "html",
+          value_type: "html-expanded",
           text: "Production Notes"
         },
 
         {
           ident: "production_metadata--special_handling_instructions",
-          value_type: "text",
+          value_type: "html-expanded",
           text: "Special Handling Instructions"
         }
       ]

@@ -4,8 +4,8 @@ class Invitation < ActiveRecord::Base
   include Tokenable
   include CustomCastTypes
 
-  attribute :body, HtmlString.new
-  attribute :decline_reason, HtmlString.new
+  attribute :body, HtmlStringExpanded.new
+  attribute :decline_reason, HtmlStringExpanded.new
   attribute :reviewer_discussions, HtmlString.new
 
   belongs_to :task

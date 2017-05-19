@@ -129,6 +129,24 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="date-picker">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>text</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>date-picker</value>
+      </attribute>
+      <zeroOrMore>
+        <element name="text">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
   <!-- for now duplicating radio-input for dropdown -->
   <define name="dropdown-input">
     <element name="content">
@@ -259,6 +277,7 @@
       <ref name="check-box-input"/>
       <ref name="file-uploader"/>
       <ref name="dropdown-input"/>
+      <ref name="date-picker"/>
     </choice>
   </define>
   <start>
@@ -273,20 +292,4 @@
       <ref name="content"/>
     </element>
   </start>
-  <define name="date-picker">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <value>text</value>
-      </attribute>
-      <attribute name="content-type">
-        <value>date-picker</value>
-      </attribute>
-      <element name="text">
-        <text/>
-      </element>
-    </element>
-  </define>
 </grammar>

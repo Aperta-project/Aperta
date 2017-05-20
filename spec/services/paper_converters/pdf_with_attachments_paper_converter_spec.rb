@@ -59,18 +59,6 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
     it { is_expected.to be_an_instance_of CombinePDF::PDF }
   end
 
-  describe "#remove_object_streams" do
-    let(:object_streams_pdf) do
-      File.read(Rails.root.join('spec/fixtures/object_streams.pdf'))
-    end
-    subject { converter.remove_object_streams(object_streams_pdf) }
-    # it { is_expected.to receive(:system).with('qpdf') }
-    it 'calls the system' do
-      allow(converter).to receive(:system).with(/qpdf --object-streams=disable .*/).and_return(true)
-      converter.remove_object_streams(object_streams_pdf)
-    end
-  end
-
   describe "#call_qpdf" do
     let(:in_file_path) { Rails.root.join('/tmp/infile.pdf') }
     let(:out_file_path) { Rails.root.join('/tmp/outfile.pdf') }

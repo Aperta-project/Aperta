@@ -73,6 +73,12 @@ describe Paper do
       subject
     end
 
+    it 'call the AutomatedSimilarityCheck' do
+      Subscriptions.reload
+      expect(Paper::Submitted::AutomatedSimilarityCheck).to receive(:call)
+      subject
+    end
+
     it 'sets the version numbers of the draft to 0.0' do
       expect { subject }
         .to change { paper.major_version }.from(nil).to(0)

@@ -17,6 +17,8 @@ class Decision < ActiveRecord::Base
 
   VERDICTS = PUBLISHING_STATE_BY_VERDICT.keys
 
+  scope :revisions, -> { where(verdict: REVISION_VERDICTS) }
+
   belongs_to :paper
   has_many :invitations
   has_one :invitation_queue

@@ -135,7 +135,7 @@ describe CardsController do
   describe "#publish" do
     let(:card) { FactoryGirl.create(:card, :versioned, :draft, name: "Old Name") }
     subject(:do_request) do
-      put(:publish, format: 'json', id: card.id)
+      put(:publish, format: 'json', id: card.id, historyEntry: "Foo")
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -163,10 +163,16 @@ describe CardsController do
 
         it { is_expected.to responds_with 200 }
 
-        it 'returns the updated card' do
+        it 'publishes the card with the history entry and the current user' do
+          allow(Card).to receive(:find).and_return card
+          expect(card).to receive(:publish!).with("Foo", user)
+          do_request
+        end
+
+        it 'serializes the latest card version' do
           expect(card.state).to eq('draft')
           do_request
-          expect(res_body['card']['state']).to eq('published')
+          expect(res_body['card_version']['published_at']).to be_present
         end
       end
     end

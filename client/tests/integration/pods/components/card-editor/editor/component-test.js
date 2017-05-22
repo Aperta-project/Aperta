@@ -277,3 +277,22 @@ test('reversion button is only present when the card is published with changes a
     );
   });
 });
+
+test('reversion button is disabled when card xml is dirty', function(assert) {
+  let card = make('card', { state: 'publishedWithChanges' });
+  this.set('card', card);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card}}`
+  );
+
+  assert.equal($('.editor-revert').attr('disabled'), undefined,
+                      'the revert button is enabled without dirty xml');
+
+  this.set('card.xml', 'Bar');
+
+  assert.equal($('.editor-revert').attr('disabled'), 'disabled',
+                      'the revert button is disbaled without dirty xml');
+});

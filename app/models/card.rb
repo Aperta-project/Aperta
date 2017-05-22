@@ -168,7 +168,9 @@ class Card < ActiveRecord::Base
     attrs = {
       'name' => name,
       'required-for-submission' =>
-      latest_card_version.required_for_submission
+        latest_card_version.required_for_submission,
+      'workflow-display-only' =>
+        workflow_display_only
     }
     setup_builder(options).card(attrs) do |xml|
       content_root_for_version(:latest).to_xml(

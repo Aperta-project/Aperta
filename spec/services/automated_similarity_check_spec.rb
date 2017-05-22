@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe AutomatedSimilarityCheck do
   describe "should_run?" do
     context "the paper has a SimilarityCheckTask" do

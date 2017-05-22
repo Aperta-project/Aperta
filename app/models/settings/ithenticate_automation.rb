@@ -1,5 +1,5 @@
 # specific settings for Ithenticate
-class Setting::Ithenticate < Setting
+class Setting::IthenticateAutomation < Setting
   POSSIBLE_VALUES = [
     "off",
     "at_first_full_submission",

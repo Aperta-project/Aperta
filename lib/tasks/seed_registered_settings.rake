@@ -4,8 +4,8 @@ namespace :settings do
     [{ journal: nil,
        key: "TaskTemplate:TahiStandardTasks::SimilarityCheckTask",
        global: true,
-       setting_klass: "Setting::Ithenticate",
-       setting_name: "ithenticate" }].each do |hash|
+       setting_klass: "Setting::IthenticateAutomation",
+       setting_name: "ithenticate_automation" }].each do |hash|
       RegisteredSetting.find_or_create_by!(hash)
     end
   end

@@ -2,10 +2,6 @@
 class AutomatedSimilarityCheck
   attr_reader :paper, :previous_paper_state
 
-  def self.run(paper, previous_paper_state)
-    new(paper, previous_paper_state).run
-  end
-
   def initialize(paper, previous_paper_state)
     @paper = paper
     @previous_paper_state = previous_paper_state
@@ -40,7 +36,7 @@ class AutomatedSimilarityCheck
         )
 
         return nil unless check_task
-        check_task.task_template.setting('ithenticate')
+        check_task.task_template.setting('ithenticate_automation')
       end
   end
 

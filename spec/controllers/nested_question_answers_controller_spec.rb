@@ -151,9 +151,9 @@ describe NestedQuestionAnswersController do
         expect(answer.additional_data).to eq("institution-id" => "234")
       end
 
-      it "responds with 200 OK" do
+      it "returns 204" do
         do_request
-        expect(response.status).to eq(200)
+        expect(response.status).to eq(204)
       end
     end
 

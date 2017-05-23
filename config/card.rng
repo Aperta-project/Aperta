@@ -131,9 +131,7 @@
   </define>
   <define name="date-picker">
     <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
+      <attribute name="ident"/>
       <attribute name="value-type">
         <value>text</value>
       </attribute>

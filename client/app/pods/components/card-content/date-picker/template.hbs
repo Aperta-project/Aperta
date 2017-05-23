@@ -1,7 +1,8 @@
-<h3>{{content.text}}</h3>
+<h3 class="picker-title">{{{content.text}}}</h3>
 
 {{date-picker
-    name=content.ident
+    name=name
     type="text"
     class="inset-form-control-input"
-    placeholder=content.placeholder}}
+    placeholder=content.placeholder
+    dateChanged="dateChanged"}}

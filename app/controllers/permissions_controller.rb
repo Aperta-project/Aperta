@@ -4,6 +4,8 @@
 # and the given object.
 #
 class PermissionsController < ApplicationController
+  before_action :authenticate_user!
+
   respond_to :json
 
   def show

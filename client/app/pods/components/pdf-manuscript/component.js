@@ -29,9 +29,9 @@ export default Ember.Component.extend({
 
   loadPdfJs: function() {
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
-      this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
+      this.get('eventBus').subscribe('split-pane-resize', this, window.webViewerResize);
 
-      var pdfjsroot = '/assets/pdfjsviewer/';
+      var pdfjsroot = '/pdf.js-viewer/';
       window.PDFJS.workerSrc = pdfjsroot + 'pdf.worker.js';
       window.PDFJS.imageResourcesPath = pdfjsroot + 'images/';
       window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';

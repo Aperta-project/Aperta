@@ -19,13 +19,18 @@ export default Ember.Component.extend({
   }.observes('editing').on('didInsertElement'),
 
   actions: {
-    toggleEdit() {
+    edit() {
       this.createSnapshot();
 
       if (this.get('editing')) {
         this.sendAction('setTitle', this.get('snapshot'));
       }
 
+      this.toggleProperty('editing');
+    },
+
+    cancel() {
+      this.set('title', this.get('snapshot'));
       this.toggleProperty('editing');
     },
 

@@ -4,8 +4,8 @@ module LinkSanitizer
     doc = Nokogiri::HTML(text)
     doc.css('a').each do |link|
       if link.attributes['href'].present?
-      link.replace('[' + link.text + ' (' +
-        link.attributes['href'].value + ')]')
+        link.replace('[' + link.text + ' (' +
+          link.attributes['href'].value + ')]')
       else
         link.replace(link.text)
       end

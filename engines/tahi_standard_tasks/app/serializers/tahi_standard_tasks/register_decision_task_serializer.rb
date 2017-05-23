@@ -6,8 +6,9 @@ module TahiStandardTasks
              include: true
 
     def letter_templates
+      context = RegisterDecisionContext.new(object.paper)
       object.letter_templates.map do |t|
-        t.render(manuscript: object.paper)
+        t.render(context)
       end
     end
   end

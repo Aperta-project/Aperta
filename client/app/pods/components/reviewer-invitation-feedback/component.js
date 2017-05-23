@@ -11,11 +11,11 @@ export default Ember.Component.extend({
 
   actions: {
     updateDeclineReason(contents) {
-      this.set('declineReason', contents);
+      this.set('invitation.declineReason', contents);
     },
 
     updateReviewerSuggestions(contents) {
-      this.set('reviewerSuggestions', contents);
+      this.set('invitation.reviewerSuggestions', contents);
     },
 
     declineFeedback(invitation) {

@@ -10,13 +10,13 @@
 
 <label class="feedback-request">
   Please give your reasons for declining this invitation.
+
   {{rich-text-editor
     editorStyle='basic'
     value=invitation.declineReason
     name="declineReason"
     ident="declineReason"
     onContentsChanged=(action "updateDeclineReason")
-    class=inputClassNames
     classNames="feedback-textarea declineReason"
   }}
 </label>
@@ -31,7 +31,6 @@
     name="reviewerSuggestions"
     ident="reviewerSuggestions"
     onContentsChanged=(action "updateReviewerSuggestions")
-    class=inputClassNames
     classNames="feedback-textarea reviewerSuggestions"
   }}
 </label>

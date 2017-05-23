@@ -69,10 +69,18 @@
     that were created before these changes will have the previous version of this card.
   </p>
 
+  <p>
+    <b>What was the reason for creating or revising this card?</b>
+    <p><em>These notes will be seen on the versions tab of the card. (For admin use only.)</em></p>
+    <div>
+      {{textarea class="form-control publish-history-entry" value=card.historyEntry}}
+    </div>
+  </p>
+
   <div>
     <div class="overlay-action-buttons">
       <button class="button-link button--blue" {{action overlay.animateOut}}>Not yet, keep editing</button>
-      <button class="button-primary button--blue" {{action (perform publishCard)}}>Publish</button>
+      <button class="button-primary button--blue" disabled={{historyEntryBlank}} {{action (perform publishCard)}}>Publish</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

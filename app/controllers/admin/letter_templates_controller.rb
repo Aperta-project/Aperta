@@ -6,7 +6,20 @@ class Admin::LetterTemplatesController < ApplicationController
 
   def index
     journal_id = letter_template_params[:journal_id]
-    respond_with LetterTemplate.where(journal_id: journal_id)
+    letter_templates = LetterTemplate.where(journal_id: journal_id)
+    respond_with(letter_templates, only: [:id, :subject, :text])
+  end
+
+  def show
+    letter_template = LetterTemplate.find(params[:id])
+    respond_with(letter_template, serializer: LetterTemplateSerializer)
+  end
+
+  def update
+    letter_template = LetterTemplate.find(params[:id])
+    update_params = letter_template_params[:letter_template]
+    letter_template.update(update_params)
+    respond_with(letter_template, serializer: LetterTemplateSerializer)
   end
 
   private
@@ -16,6 +29,6 @@ class Admin::LetterTemplatesController < ApplicationController
   end
 
   def letter_template_params
-    params.permit(:journal_id)
+    params.permit(:journal_id, letter_template: [:letter, :subject])
   end
 end

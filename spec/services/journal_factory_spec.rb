@@ -660,6 +660,7 @@ describe JournalFactory do
               'edit_related_articles',
               'manage_collaborators',
               'manage_workflow',
+              'perform_similarity_check',
               'register_decision',
               'rescind_decision',
               'search_academic_editors',

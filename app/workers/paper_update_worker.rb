@@ -23,8 +23,16 @@ class PaperUpdateWorker
     state = params["state"]
     begin
       if job_response.errored?
+        # adding this since processing doesn't ever get updated to false
+        # when we are replacing(updating) a file on an existing paper
         @paper.update!(processing: false)
         @paper.file.update(status: state)
+
+        # this will by pass the if: :changes_committed? in the notifiable.rb
+        # in order to trigger the pusher method that gets our record updated
+        # from the server side to our client
+        Notifier.notify(event: 'paper:updated',
+                        data: @paper.event_payload(action: 'updated'))
         raise IhatJobError, job_response.job_state
       end
     # only throw the exception to notify bugsnag, then proceed

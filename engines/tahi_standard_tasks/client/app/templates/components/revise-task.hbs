@@ -1,9 +1,18 @@
+<span id="top"></span>
 {{partial "task-completed-section"}}
 
 
 <div class="task-main-content">
   <div class="response-to-reviewers">
-    <h3>Response to Reviewers</h3>
+    <h3>Response to Reviewers 
+      <small class="pull-right" style="margin-top: 6px;">
+        <a class="link_ref" href="#decision">
+          <i class="fa fa-arrow-down"></i> 
+          See Decision Letter below
+        </a>
+      </small>
+    </h3>
+
     {{error-message message=validationErrors.response
                     displayIcon=true}}
     <p>
@@ -30,7 +39,7 @@
 
     <p>
       Please upload <strong>an additional version</strong> of your manuscript that highlights the changes you’ve made.
-      You may also upload your point by point 'response to reviewers' file (e.g. .doc, .pdf, .rtf) or other relevant files.
+      You may also upload your point by point "response to reviewers" file (e.g. .doc, .pdf, .rtf) or other relevant files.
     </p>
     {{decision-attachment-manager filePath="decisions/attachment"
                           attachments=latestRegisteredDecision.attachments
@@ -43,8 +52,8 @@
                           updateAttachment=(action "updateAttachment")}}
   </div>
   <br><br>
-
-  <h3>Decision Letter</h3>
+  
+  <h3 id="decision">Decision Letter</h3>
 
   <div class="decision">
     <p>
@@ -60,6 +69,15 @@
 
     <p class="preserve-line-breaks letter">
       {{{latestRegisteredDecision.letter}}}
+    </p>
+  </div>
+
+  <div style="overflow: hidden">
+    <p class="pull-right">
+      <a href="#top" class="link_ref"> 
+        <i class="fa fa-arrow-up"></i> 
+        Back to top
+      </a>
     </p>
   </div>
 

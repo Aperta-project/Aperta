@@ -208,8 +208,6 @@ class Card < ActiveRecord::Base
         'workflow-display-only must be set to false when required-for-submission flag is set to true'
       )
     end
-  rescue ActiveRecord::RecordNotFound
-    return
   end
 
   private

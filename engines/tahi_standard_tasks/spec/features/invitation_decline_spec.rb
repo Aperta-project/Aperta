@@ -13,7 +13,8 @@ feature "Invite Reviewer", js: true do
       :invited,
       task: task,
       invitee: editor,
-      inviter: inviter)
+      inviter: inviter
+    )
   end
   let!(:invitation) do
     FactoryGirl.create(
@@ -21,7 +22,8 @@ feature "Invite Reviewer", js: true do
       :invited,
       task: task,
       invitee: editor,
-      inviter: inviter)
+      inviter: inviter
+    )
   end
 
   let(:dashboard) { DashboardPage.new }

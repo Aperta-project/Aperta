@@ -8,7 +8,7 @@ class LetterTemplate < ActiveRecord::Base
   validates :subject, presence: true
 
   def render_attr(template, context)
-    Liquid::Template.parse(template).render!(context)
+    Liquid::Template.parse(template).render(context)
   end
 
   def render(context)

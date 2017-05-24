@@ -19,7 +19,7 @@ module CustomCastTypes
     include ActionView::Helpers::SanitizeHelper
 
     def cast_value(value)
-      scrubber = HtmlScrubber.new(tags: HtmlScrubber::EXPANDED_TAGS)
+      scrubber = HtmlScrubber.new
       sanitize(value, scrubber: scrubber)
     end
   end

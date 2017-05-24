@@ -55,12 +55,12 @@ class Answer < ActiveRecord::Base
 
   private
 
+  HTML_TYPES = Set.new(%w(html html-expanded))
   def html_value_type?
-    value_type == "html" || "html-expanded"
+    value_type.in?(HTML_TYPES)
   end
 
   def sanitize_html
-    self[:value] = HtmlScrubber.standalone_scrub!(string_value, value_type)
+    self[:value] = HtmlScrubber.standalone_scrub!(string_value)
   end
-
 end

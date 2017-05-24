@@ -26,40 +26,20 @@ moduleForComponent('nested-question-textarea', 'Integration | Component | nested
   }
 });
 
-test('saves on input events', function(assert) {
+test('saves on change events', function(assert) {
   let task =  make('ad-hoc-task');
   let fake = this.container.lookup('service:can');
+  let url = '/api/nested_questions/1/answers';
+
   fake.allowPermission('edit', task);
   createQuestion(task, 'foo');
   this.set('task', task);
 
-  this.render(hbs`
-    {{nested-question-textarea ident="foo" owner=task}}
-  `);
-
-  $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
+  this.render(hbs`{{nested-question-textarea ident="foo" owner=task}}`);
+  $.mockjax({url: url, type: 'POST', status: 204, responseText: '{}'});
   setRichText('foo', 'new comment');
 
   return wait().then(() => {
-    assert.mockjaxRequestMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on input');
-  });
-});
-
-test('does not save on change events', function(assert) {
-  let task =  make('ad-hoc-task');
-  let fake = this.container.lookup('service:can');
-  fake.allowPermission('edit', task);
-  createQuestion(task, 'foo');
-  this.set('task', task);
-
-  this.render(hbs`
-    {{nested-question-textarea ident="foo" owner=task}}
-  `);
-
-  $.mockjax({url: '/api/nested_questions/1/answers', type: 'POST', status: 204, responseText: '{}'});
-  this.$('textarea').val('new comment').trigger('change');
-
-  return wait().then(() => {
-    assert.mockjaxRequestNotMade('/api/nested_questions/1/answers', 'POST', 'it saves the new answer on input');
+    assert.mockjaxRequestMade(url, 'POST', 'it saves the new answer on change');
   });
 });

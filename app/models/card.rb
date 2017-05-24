@@ -24,6 +24,12 @@ class Card < ActiveRecord::Base
       MSG
     }
 
+  # This validation call checks that both the card.workflow_only flag
+  # and the latest_card_version.required_for_submission flag are not
+  # both set to true
+
+  validate :required_for_submission_and_workflow_only_cant_both_be_true
+
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
@@ -186,6 +192,19 @@ class Card < ActiveRecord::Base
       save_draft!
     elsif replaceable?
       XmlCardLoader.replace_draft_from_xml_string(xml, self)
+    end
+  end
+
+  # This method checks to see if both the card.workflow_only flag
+  # and the latest_card_version.required_for_submission flag are set to true
+
+  def required_for_submission_and_workflow_only_cant_both_be_true
+    lastcard = card_version(:latest)
+    unless workflow_display_only == false || lastcard.required_for_submission == false
+      errors.add(
+        :workflow_display_only,
+        'workflow-display-only must be set to false when required-for-submission flag is set to true'
+      )
     end
   end
 

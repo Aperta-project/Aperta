@@ -194,7 +194,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def done?
-    status == STATUS_DONE
+    status == STATUS_DONE || status == "errored"
   end
 
   def owner=(new_owner)

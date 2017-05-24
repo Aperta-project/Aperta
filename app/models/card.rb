@@ -199,6 +199,7 @@ class Card < ActiveRecord::Base
   # and the latest_card_version.required_for_submission flag are set to true
 
   def required_for_submission_and_workflow_only_cant_both_be_true
+    return if card_versions.empty?
     lastcard = card_version(:latest)
     unless workflow_display_only == false || lastcard.required_for_submission == false
       errors.add(

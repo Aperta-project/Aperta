@@ -140,7 +140,9 @@ class TitleAbstractTest(CommonTest):
     paper_viewer.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
-    upms.click_completion_button()
+    completed = upms.completed_state()
+    if completed:
+      upms.click_completion_button()
     upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
     upms.upload_manuscript()
     upms.validate_ihat_conversions_success(timeout=45)

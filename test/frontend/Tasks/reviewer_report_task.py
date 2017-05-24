@@ -201,7 +201,7 @@ class ReviewerReportTask(BaseTask):
     assert confirm_yes.text == u'YES, I\u2019M SURE', confirm_yes.text
     self.validate_primary_big_green_button_style(confirm_yes)
     confirm_no = self._get(self._submit_confirm_no_btn)
-    assert confirm_no.text == 'NOPE', confirm_no.text
+    assert confirm_no.text == 'NO', confirm_no.text
     self.validate_secondary_big_green_button_style(confirm_no)
     confirm_no.click()
 

@@ -7,6 +7,7 @@ the navigation menu also vital for ensuring style consistency across the applica
 import logging
 import time
 import random
+import re
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -71,7 +72,8 @@ class AuthenticatedPage(StyledPage):
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._participant_field = (By.CLASS_NAME, 'ember-power-select-search-input')
     self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
-    self._message_body_field = (By.CSS_SELECTOR, 'textarea')
+    self._new_topic_message_body_field = (By.CSS_SELECTOR, 'textarea.discussion-topic-comment-field')
+    self._message_body_field = (By.CSS_SELECTOR, 'textarea.new-comment-field')
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
     self._first_discussion_lnk = (By.CLASS_NAME, 'discussions-index-topic')
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
@@ -458,7 +460,14 @@ class AuthenticatedPage(StyledPage):
           logging.warning('No conversion result message displayed at all')
     else:
       success_msg = self._get(self._flash_success_msg)
-      assert 'Finished loading Word file.' in success_msg.text, success_msg.text
+      match_ = re.search('Finished loading (Word|PDF) file.', success_msg.text)
+      if match_:
+        pass
+      else:
+        raise(AssertionError,
+              'Success message: {0} was not the expected text.'.format(success_msg.text))
+      # assert 'Finished loading Word file.' or 'Finished loading PDF file.' in success_msg.text, \
+      #     success_msg.text
     if success_msg or failure_msg:
       try:
         self.close_flash_message()
@@ -706,7 +715,7 @@ class AuthenticatedPage(StyledPage):
       topic_title.send_keys(topic)
     else:
       topic_title.send_keys(generate_paragraph()[2][15])
-    msg_body = self._get(self._message_body_field)
+    msg_body = self._get(self._new_topic_message_body_field)
     if msg:
       msg_body.send_keys(msg + ' ')
     else:

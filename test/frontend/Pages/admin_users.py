@@ -51,6 +51,7 @@ class AdminUsersPage(BaseAdminPage):
   # POM Actions
   def page_ready(self):
     """"Ensure the page is ready to test"""
+    self._admin_users_search_field = (By.CSS_SELECTOR, 'div.admin-user-search > input')
     self._wait_for_element(self._get(self._admin_users_search_field))
 
   def validate_users_pane(self, selected_jrnl):

@@ -79,11 +79,11 @@ class RTCCardTest(CommonTest):
       if not checked and rtc_card.email_text[index]:
         assert rtc_card.email_text[index] in issues_text, \
             '{0} (Not checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
-                index, issues_text)
+                                                            index, issues_text)
       elif checked and rtc_card.email_text[index]:
         assert rtc_card.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(rtc_card.email_text[index],
-                index, issues_text)
+                                                        index, issues_text)
     time.sleep(2)
     rtc_card.click_send_changes_btn()
     all_success_messages = rtc_card.get_flash_success_messages()

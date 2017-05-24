@@ -241,6 +241,9 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rev_cand_task = ReviewerCandidatesTask(self.getDriver())
     rev_cand_task.complete_reviewer_cand_form(reviewer)
     rev_cand_task.click_completion_button()
+    # Closing Reviewer Candidates Task before moving on so that we don't get confused about
+    #   completion state of Upload Manuscript
+    manuscript_page.click_task('Reviewer Candidates')
     manuscript_page.check_for_flash_error()
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()

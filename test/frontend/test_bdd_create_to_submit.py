@@ -181,7 +181,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
-  def test_validate_pdf_full_submit(self, init=True):
+  def test_validate_pdf_full_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
@@ -256,7 +256,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     self._driver.navigated = True
     ms_page = ManuscriptViewerPage(self.getDriver())
     ms_page.page_ready()
-    #paper_viewer.
     ms_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
@@ -266,9 +265,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     assert warning.get_attribute('title') == 'Please upload your source file', \
         '{0} not Please upload your source file'.format(warning.get_attribute('title'))
     ms_page.complete_task('Upload Manuscript', data={'source': ''})
-    time.sleep(1)
-    assert ms_page.is_task_marked_complete('Upload Manuscript')
-
 
 @MultiBrowserFixture
 class ApertaBDDCreatetoInitialSubmitTest(CommonTest):

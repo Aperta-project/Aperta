@@ -340,6 +340,7 @@ class AdminPage(AuthenticatedPage):
         last_doi_issued_field.send_keys(last_doi_issued)
         logo_input = self._iget(self._base_admin_journals_edit_logo_input_field)
         current_path = os.getcwd()
+        logging.info(current_path)
         logo_path = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(logo))
         logo_input.send_keys(logo_path)
         save_button.click()

@@ -68,7 +68,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
         context 'finds the specified template' do
           it 'does things' do
-            expect(LetterTemplate).to receive(:find).with(letter_template.id)
+            expect(LetterTemplate).to receive(:find).with(letter_template.id.to_s)
             get :show, format: 'json', id: letter_template.id
           end
         end

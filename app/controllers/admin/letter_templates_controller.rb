@@ -11,15 +11,14 @@ class Admin::LetterTemplatesController < ApplicationController
   end
 
   def show
-    letter_template = LetterTemplate.find(params[:id])
-    respond_with(letter_template, serializer: LetterTemplateSerializer)
+    respond_with LetterTemplate.find(params[:id])
   end
 
   def update
     letter_template = LetterTemplate.find(params[:id])
     update_params = letter_template_params[:letter_template]
     letter_template.update(update_params)
-    respond_with(letter_template, serializer: LetterTemplateSerializer)
+    respond_with letter_template
   end
 
   private

@@ -46,10 +46,11 @@ class BaseAdminPage(AuthenticatedPage):
     # Admin Toolbar Elements
     self._base_admin_workflows_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(1)')
     self._base_admin_cards_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(2)')
+    self._base_admin_emails_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(3)')
     self._base_admin_users_link = (By.CSS_SELECTOR,
-                                   'div.tab-bar > a.ember-view:nth-of-type(3)')
+                                   'div.tab-bar > a.ember-view:nth-of-type(4)')
     self._base_admin_settings_link = (By.CSS_SELECTOR,
-                                      'div.tab-bar > a.ember-view:nth-of-type(4)')
+                                      'div.tab-bar > a.ember-view:nth-of-type(5)')
     self._base_admin_toolbar_active_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view.active')
 
   # POM Actions

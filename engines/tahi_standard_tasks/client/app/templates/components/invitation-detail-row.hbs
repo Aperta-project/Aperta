@@ -41,7 +41,7 @@
     </div>
     <div class="invitation-item-body-preview">
       {{#if invitation.declined}}
-        {{strip-html invitation.declineReason}}
+        {{{invitation.declineReason}}}
       {{else}}
         {{strip-html invitation.body}}
       {{/if}}
@@ -124,11 +124,11 @@
       <div class="invitation-item-decline-info">
         <p>
           <div class="invitation-item-decline-title">Reasons</div>
-          {{unbound invitation.declineReason}}
+          {{{invitation.declineReason}}}
         </p>
         <p>
           <div class="invitation-item-decline-title">Reviewer Suggestions</div>
-          {{unbound invitation.reviewerSuggestions}}
+          {{{invitation.reviewerSuggestions}}}
         </p>
       </div>
       <hr>

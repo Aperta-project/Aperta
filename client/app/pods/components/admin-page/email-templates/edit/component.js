@@ -11,10 +11,6 @@ export default Ember.Component.extend({
     return !this.get('template.subject') || !this.get('template.letter');
   }),
   unsaved: true,
-  buttonClasses: Ember.computed('disabled', function(){
-    var colorClass = this.get('disabled') ? 'button-disabled' : 'button--blue';
-    return `button-primary ${colorClass}`;
-  }),
   actions: {
     save: function() {
       if (this.get('disabled')) {

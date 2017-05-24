@@ -64,6 +64,13 @@ class CardsController < ApplicationController
     render json: card
   end
 
+  def revert
+    requires_user_can(:edit, card)
+    card.revert!
+
+    render json: card
+  end
+
   def render_xml_syntax_error(ex)
     render status: 422, json: { errors: { xml: ex.message } }
   end

@@ -70,7 +70,9 @@ Tahi::Application.routes.draw do
     resources :cards do
       put :publish, on: :member
       put :archive, on: :member
+      put :revert, on: :member
     end
+
     resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do

@@ -20,7 +20,6 @@ moduleForComponent(
 let template = hbs`{{card-content/date-picker
 answer=answer
 content=content
-disabled=disabled
 valueChanged=(action actionStub)
 }}`;
 
@@ -44,13 +43,3 @@ test('includes the ident in the name and id if present', function(assert) {
   this.render(template);
   assert.equal(this.$('input').attr('name'), 'date-picker-test');
 });
-
-// test(`it sends 'valueChanged' on change`, function(assert) {
-//   assert.expect(1);
-//   this.set('actionStub', function(newVal) {
-//     assert.equal(newVal, true, 'it calls the action with the new value');
-//   });
-//   this.render(template);
-//   this.$('input').click();
-//   assert.async()
-// });

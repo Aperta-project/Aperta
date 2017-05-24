@@ -7,7 +7,6 @@ export default Ember.Component.extend({
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
-    owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool
   },
 
@@ -17,10 +16,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    dateChanged(newVal) {
+    valueChanged(newVal) {
       let action = this.get('valueChanged');
       if (action) {
-        action(Ember.get(newVal, 'value'));
+        action(newVal);
       }
     }
   }

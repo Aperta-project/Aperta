@@ -196,10 +196,11 @@ class Card < ActiveRecord::Base
   end
 
   # This method checks to see if both the card.workflow_only flag
-  # and the latest_card_version.required_for_submission flag are set to true
+  # and the latest_card_version.required_for_submission flag are
+  # both set to true. If there is no card_version available
+  # abort the check.
 
   def required_for_submission_and_workflow_only_cant_both_be_true
-    return if card_versions.empty?
     lastcard = card_version(:latest)
     unless workflow_display_only == false || lastcard.required_for_submission == false
       errors.add(
@@ -207,6 +208,8 @@ class Card < ActiveRecord::Base
         'workflow-display-only must be set to false when required-for-submission flag is set to true'
       )
     end
+  rescue ActiveRecord::RecordNotFound
+    return
   end
 
   private

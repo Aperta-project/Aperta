@@ -5,7 +5,7 @@ const { Component, computed } = Ember;
 
 export default Component.extend({
   inputClassNames: null,
-  debouncePeriod: 200, // in ms
+  debouncePeriod: 500, // in ms
   disabled: false,
   noResponseText: '[No response]',
   additionalData: null,

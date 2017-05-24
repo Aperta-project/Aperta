@@ -21,8 +21,7 @@ let template = hbs`{{reviewer-invitation-feedback
                       decline=(action decline invitation)
                       }}`;
 
-let setThenTest = function (context, field, text, assertion) {
-  context.render(template);
+let setThenTest = function (field, text, assertion) {
   setRichText(field, text);
   Ember.run.next(assertion);
 };
@@ -35,7 +34,8 @@ test('displays paper title', function(assert){
 
 test('can set decline reason', function(assert) {
   let text = 'Too busy!';
-  setThenTest(this, 'declineReason', text, () => {
+  this.render(template);
+  setThenTest('declineReason', text, () => {
     assert.equal(this.get('invitation.declineReason'), `<p>${text}</p>`);
   });
 });
@@ -43,7 +43,7 @@ test('can set decline reason', function(assert) {
 test('can set reviewer suggestions', function(assert){
   let text = 'Other guy is great';
   this.render(template);
-  setThenTest(this, 'reviewerSuggestions', () => {
+  setThenTest('reviewerSuggestions', text, () => {
     assert.equal(this.get('invitation.reviewerSuggestions'), `<p>${text}</p>`);
   });
 });

@@ -21,6 +21,9 @@ class PaperUpdateWorker
       sync!
     end
     Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
+    if error
+      paper.update!(processing: false)
+    end
   end
 
   def sync!

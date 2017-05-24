@@ -112,6 +112,7 @@ group :development do
   gem 'bullet'
   gem 'capistrano-chruby'
   gem 'capistrano-rails'
+  gem 'diffy'
   gem 'foreman', require: false
   gem 'overcommit'
   gem 'rubocop'

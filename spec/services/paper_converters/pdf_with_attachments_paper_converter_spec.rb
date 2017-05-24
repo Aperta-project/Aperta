@@ -72,10 +72,23 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
     let(:object_streams_pdf) do
       Rails.root.join('spec/fixtures/object_streams.pdf')
     end
+    let(:no_object_streams_pdf) do
+      Rails.root.join('spec/fixtures/no_object_streams.pdf')
+    end
 
-    subject { converter.pdf_may_have_object_stream?(object_streams_pdf) }
+    context "when PDF has object streams" do
+      subject { converter.pdf_may_have_object_stream?(object_streams_pdf) }
+      it 'should be true' do
+        subject.should be(true)
+      end
+    end
 
-    it { should be(true) }
+    context "when PDF has no object streams" do
+      subject { converter.pdf_may_have_object_stream?(no_object_streams_pdf) }
+      it 'should be false' do
+        subject.should be(false)
+      end
+    end
   end
 
   describe "#figures" do

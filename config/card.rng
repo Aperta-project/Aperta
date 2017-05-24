@@ -149,6 +149,9 @@
         <element name="text">
           <text/>
         </element>
+        <element name="label">
+          <text/>
+        </element>
       </interleave>
     </element>
   </define>

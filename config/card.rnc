@@ -53,7 +53,8 @@ date-picker = element content {
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
                  (element placeholder { text }? &
-                  element text { text })
+                  element text { text } &
+                  element label { text })
               }
 
 # for now duplicating radio-input for dropdown

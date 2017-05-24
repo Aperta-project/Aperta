@@ -270,7 +270,7 @@ export default DS.Model.extend({
 
   stateHasErrorsForRole(state, roleArray) {
     return this.get(state) &&
-    this.get('file.status') ===  'errored'
+    this.get('file.status') ===  'error'
     && roleArray.any((role) => {
       return this.get('currentUserRoles').includes(role);
     });

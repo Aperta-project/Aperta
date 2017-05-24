@@ -38,20 +38,51 @@ describe PaperUpdateWorker do
         :manuscript_attachment,
           paper: paper,
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
-          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx',
+          status: 'error'
       )
     end
     let(:job_state) { 'errored' }
     let(:job_response) { IhatJobResponse.new(ihat_job_params) }
-    it "raises an exception when an error occurs" do
-      worker.perform(ihat_job_params)
-      expect(paper.reload.processing).to eq(false)
-      expect(paper.file.reload.status).to eq(job_state)
+
+    context "paper.processing=true" do
+      it "expect processing to be true when the worker has not been initiated" do
+        expect(paper.processing).to eq(true)
+        expect(paper.file.status).to eq('error')
+      end
+
+      it "sends a notification to the paper:updated event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:updated")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        worker.perform(ihat_job_params)
+      end
     end
 
-    it "notifies bugsnag" do
-      expect(Bugsnag).to receive(:notify)
-      worker.perform(ihat_job_params)
+    context "paper.processing=false" do
+      before do
+        paper.update processing: false
+      end
+
+      it "raises an exception when an error occurs" do
+        worker.perform(ihat_job_params)
+        expect(paper.reload.processing).to eq(false)
+        expect(paper.file.reload.status).to eq('error')
+      end
+
+      it "notifies bugsnag" do
+        expect(Bugsnag).to receive(:notify)
+        worker.perform(ihat_job_params)
+      end
+
+      it "sends a notification to the paper:updated event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:updated")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        worker.perform(ihat_job_params)
+      end
     end
   end
 

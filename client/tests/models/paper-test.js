@@ -79,7 +79,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
       data: {
         isUnsubmitted: true,
         file: {
-          status: 'errored'
+          status: 'error'
         },
         currentUserRoles: ['Creator'],
       },
@@ -104,7 +104,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
       data: {
         isUnsubmitted: true,
         file: {
-          status: 'errored'
+          status: 'error'
         },
         currentUserRoles: ['CLient'],
       },
@@ -128,7 +128,7 @@ test('authorHasErrorOnSubmission', function(assert) {
       data: {
         isSubmitted: true,
         file: {
-          status: 'errored'
+          status: 'error'
         },
         currentUserRoles: ['Creator'],
       },
@@ -151,7 +151,7 @@ test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
         isSubmitted: true,
         editable: true,
         file: {
-          status: 'errored'
+          status: 'error'
         },
         currentUserRoles: ['Internal Editor', 'Staff Admin', 'Production Staff'],
       },
@@ -173,7 +173,7 @@ test('otherRolesHasErrorOnSubmitted', function(assert) {
       data: {
         isSubmitted: true,
         file: {
-          status: 'errored'
+          status: 'error'
         },
         currentUserRoles: ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'],
       },

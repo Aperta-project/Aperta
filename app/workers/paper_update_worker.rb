@@ -20,13 +20,12 @@ class PaperUpdateWorker
     params = ihat_job_params.with_indifferent_access
     job_response = IhatJobResponse.new(params)
     @paper = Paper.find(job_response.paper_id)
-    state = params["state"]
     begin
       if job_response.errored?
         # adding this since processing doesn't ever get updated to false
         # when we are replacing(updating) a file on an existing paper
         @paper.update!(processing: false)
-        @paper.file.update(status: state)
+        @paper.file.update(status: Attachment::STATUS_ERROR)
 
         # this will by pass the if: :changes_committed? in the notifiable.rb
         # in order to trigger the pusher method that gets our record updated

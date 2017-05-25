@@ -189,6 +189,12 @@ FactoryGirl.define do
       title 'Send to Apex'
     end
 
+    factory :similarity_check_task, class: 'TahiStandardTasks::SimilarityCheckTask' do
+      phase
+      paper
+      title 'Similarity Check'
+    end
+
     factory :supporting_information_task, class: 'TahiStandardTasks::SupportingInformationTask' do
       title "Supporting Information"
     end

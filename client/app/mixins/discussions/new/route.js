@@ -6,7 +6,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   currentUser: Ember.inject.service(),
 
   beforeModel(transition){
-    this.get('can').can('start_discussion', this.modelFor('paper')).then( (value)=> {
+    this.get('can').can('start_discussion', this.paperModel()).then( (value)=> {
       if (!value){
         return this.handleUnauthorizedRequest(transition);
       }
@@ -15,7 +15,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   model() {
     return this.store.createRecord('discussion-topic', {
-      paperId: this.modelFor('paper').get('id').toString(),
+      paperId: this.paperModel().get('id').toString(),
       title: ''
     });
   },
@@ -24,12 +24,16 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     this.send('updatePopoutRoute', 'new');
   },
 
+  setupAtMentionables(controller) {
+    const discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
+    const discussionModel =  this.modelFor(discussionRouteName);
+    controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
+  },
+
   // TODO: Remove this when we have routeable components.
   // Controllers are currently singletons and this property sticks around
   setupController(controller, model) {
-    const discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
-    const discussionModel = this.modelFor(discussionRouteName);
-    controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
+    this.setupAtMentionables(controller);
     controller.set('replyText', '');
     controller.set('validationErrors', {});
     controller.set('participants', [this.get('currentUser')]);

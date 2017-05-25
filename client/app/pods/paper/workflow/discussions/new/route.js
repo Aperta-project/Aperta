@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import DiscussionsNewRouteMixin from 'tahi/mixins/discussions/new/route';
 import AuthorizedRoute from 'tahi/routes/authorized';
 

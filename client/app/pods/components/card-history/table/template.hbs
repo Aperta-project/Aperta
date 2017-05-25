@@ -1,0 +1,18 @@
+<table class="table table-hover card-history-table">
+  <thead>
+    <tr>
+      <td>Date Published</td>
+      <td>Published By</td>
+      <td>Reason</td>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each sortedVersions as |cardVersion|}}
+      <tr>
+        <td class="published-at">{{format-date cardVersion.publishedAt format="MMM D, YYYY"}}</td>
+        <td class="published-by">{{cardVersion.publishedBy}}</td>
+        <td class="history-entry">{{or cardVersion.historyEntry "Current Unpublished Version"}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

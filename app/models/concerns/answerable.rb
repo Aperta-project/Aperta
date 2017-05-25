@@ -12,30 +12,29 @@ module Answerable
 
   included do
     belongs_to :card_version
-
+    has_one :card, through: :card_version
     has_many :answers, as: :owner, dependent: :destroy
+
+    delegate :latest_published_card_version, to: :card, allow_nil: true
+
+    validates :card_version_id, presence: true
+
+    before_validation :set_card_version
 
     def owner_type_for_answer
       self.class.name
     end
 
-    # The card method lets us account for both the old and new worlds.
-    # If a task belongs to a new, user-generated card then it will have
-    # a CardVersion, and we can get the card from there.  If it's an old
-    # Task (say, the TahiStandardTasks::ReviewerReportTask) that is still
-    # rendering hardcoded content, the task won't have a CardVersion, and
-    # it should just look up the Card we've generated using the 'card_load:load'
-    # rake task
-    def card
-      if card_version_id
-        card_version.card
-      else
-        Card.find_by(name: self.class.name)
-      end
-    end
-
     def answer_for(ident)
       answers.joins(:card_content).find_by(card_contents: { ident: ident })
+    end
+
+    # when a new Answerable model is being created, this is the
+    # Card that is used to determine the correct CardVersion.
+    # This method can be overriden by the model, if a custom lookup
+    # is necesssary.
+    def default_card
+      Card.find_by_class_name!(self.class.name)
     end
 
     # find_or_build_answer_for(...) will return the associated answer for this
@@ -48,6 +47,14 @@ module Answerable
       answer.paper = paper if respond_to?(:paper)
 
       answer
+    end
+
+    private
+
+    # when new card versions are being created, associate the Answerable
+    # model to the latest version of the Card.
+    def set_card_version
+      self.card_version ||= default_card.try(:latest_published_card_version)
     end
   end
 end

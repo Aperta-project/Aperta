@@ -67,9 +67,12 @@ Tahi::Application.routes.draw do
 
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
-    resources :cards, only: [:index, :create, :show, :update] do
+    resources :cards do
       put :publish, on: :member
+      put :archive, on: :member
+      put :revert, on: :member
     end
+
     resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do
@@ -209,6 +212,7 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
+      resources :letter_templates, only: [:index]
     end
 
     # ihat endpoints

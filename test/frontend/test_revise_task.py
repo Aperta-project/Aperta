@@ -86,7 +86,7 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     data = {'attach': 2}
-    paper_viewer.complete_task('Revise Manuscript', data=data)
+    paper_viewer.complete_task('Response to Reviewers', data=data)
     return self
 
 if __name__ == '__main__':

@@ -282,7 +282,7 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[18].text == u'Title And Abstract', staff_cards[18].text
     author_cards_text = [x.text for x in author_cards]
     assert u'Changes For Author' not in author_cards_text, author_cards_text
-    assert u'Revise Manuscript' not in author_cards_text, author_cards_text
+    assert u'Response to Reviewers' not in author_cards_text, author_cards_text
     assert u'Reviewer Report' not in author_cards_text, author_cards_text
 
     # APERTA-5513 AC 3

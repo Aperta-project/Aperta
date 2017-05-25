@@ -16,15 +16,16 @@
     {{fa-icon icon="refresh"}}
     Replace
   </span>
-  {{file-uploader class="update-attachment"
-                         accept=accept
-                         filePrefix=filePath
-                         multiple=multiple
-                         disabled=disabled
-                         progress=attrs.progress
-                         done=(action 'uploadFinished')
-                         start=attrs.start }}
-
+  {{#if reviseTask}}
+    {{file-uploader class="update-attachment"
+                           accept=accept
+                           filePrefix=filePath
+                           multiple=multiple
+                           disabled=disabled
+                           progress=attrs.progress
+                           done=(action 'uploadFinished')
+                           start=attrs.start }}
+  {{/if}}
   <span {{action "deleteFile"}} class="file-action delete-attachment">
     {{fa-icon icon="trash"}}
     Delete

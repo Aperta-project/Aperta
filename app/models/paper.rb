@@ -34,6 +34,7 @@ class Paper < ActiveRecord::Base
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
+  has_many :similarity_checks, through: :versioned_texts
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
   has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },

@@ -15,7 +15,7 @@ class Paper < ActiveRecord::Base
   include CustomCastTypes
 
   attribute :title, HtmlString.new
-  attribute :abstract, HtmlStringExpanded.new
+  attribute :abstract, HtmlString.new
 
   self.snapshottable = true
 

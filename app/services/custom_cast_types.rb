@@ -12,15 +12,4 @@ module CustomCastTypes
       sanitize(value, scrubber: scrubber)
     end
   end
-
-  # This returns a sanitized HTML string with an expanded set of tags
-  # appropriate for client-side consumption
-  class HtmlStringExpanded < ActiveRecord::Type::String
-    include ActionView::Helpers::SanitizeHelper
-
-    def cast_value(value)
-      scrubber = HtmlScrubber.new
-      sanitize(value, scrubber: scrubber)
-    end
-  end
 end

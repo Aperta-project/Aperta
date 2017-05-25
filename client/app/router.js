@@ -43,7 +43,7 @@ Router.map(function() {
     this.route('paper', {path: '/:paper_shortDoi'}, function() {
       this.route('index', {path: '/'});
       this.route('new', { path: '/new'});
-      this.route('show', { path: '/:discussion-topic_id' });
+      this.route('show', { path: '/:topic_id' });
     });
   });
 

@@ -18,7 +18,7 @@ describe Answer do
   end
 
   context 'html sanitization' do
-    let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html-expanded') }
+    let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
     subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
     it 'scrubs value if value_type is html' do
       answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")

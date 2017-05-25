@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 20170601164644) do
     t.datetime "published_at"
     t.string   "history_entry"
     t.integer  "published_by_id"
+    t.boolean  "workflow_display_only",   default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree

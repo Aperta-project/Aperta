@@ -3,3 +3,4 @@
   - default
   - mailers
   - eventstream
+:dynamic: true

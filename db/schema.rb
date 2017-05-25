@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504132418) do
+ActiveRecord::Schema.define(version: 20170515190746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(version: 20170504132418) do
     t.integer  "latest_version", default: 1, null: false
     t.datetime "archived_at"
     t.string   "state",                      null: false
+    t.boolean  "workflow_display_only", default: false, null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree

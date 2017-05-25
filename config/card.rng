@@ -270,6 +270,12 @@
           <value>false</value>
         </choice>
       </attribute>
+      <attribute name="workflow-display-only">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <ref name="content"/>
     </element>
   </start>

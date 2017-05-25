@@ -96,4 +96,26 @@ describe TaskSerializer, serializer_test: true do
       end
     end
   end
+
+  describe '#is_workflow_only_task' do
+    context 'associated card is configured as only displaying on workflow page' do
+      before do
+        task.card.update(workflow_display_only: true)
+      end
+
+      it 'returns true' do
+        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(true)
+      end
+    end
+
+    context 'associated card is configured as not restricted to workflow page' do
+      before do
+        task.card.update(workflow_display_only: false)
+      end
+
+      it 'returns false' do
+        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(false)
+      end
+    end
+  end
 end

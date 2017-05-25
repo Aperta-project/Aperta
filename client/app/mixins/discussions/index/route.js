@@ -4,7 +4,7 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   model() {
-    return this.modelFor('paper').get('discussionTopics');
+    return this.paperModel().get('discussionTopics');
   },
 
   paperModel() {

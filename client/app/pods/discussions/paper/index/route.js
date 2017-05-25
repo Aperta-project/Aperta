@@ -1,19 +1,19 @@
 import Ember from 'ember';
+import DiscussionsIndexRouteMixin from 'tahi/mixins/discussions/index/route';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(DiscussionsIndexRouteMixin, {
 
-  filteredTopics: Ember.computed.alias('model.discussionTopics'),
+  paperModel(){
+    return this.modelFor('discussions.paper');
+  },
 
-  topicSort: ['createdAt:desc'],
-
-  topicsShowPath: 'discussions.paper.show',
-  topicsNewPath: 'discussions.paper.new',
-
-  paperTopics: Ember.computed.sort('filteredTopics', 'topicSort'),
+  // required to generate route paths:
+  topicsBasePath() {
+    return 'discussions.paper.';
+  },
 
   activate() {
     this.send('updateRoute', 'index');
     this.send('updateDiscussionId', null);
   }
-
 });

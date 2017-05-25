@@ -1,14 +1,9 @@
 import Ember from 'ember';
+import DiscussionsIndexControllerMixin from 'tahi/mixins/discussions/index/controller';
 
-export default Ember.Controller.extend({
-
-  filteredTopics: Ember.computed.alias('model.discussionTopics'),
-
-  topicSort: ['createdAt:desc'],
-
-  topicsShowPath: 'discussions.paper.show',
-  topicsNewPath: 'discussions.paper.new',
-
-  paperTopics: Ember.computed.sort('filteredTopics', 'topicSort')
-
+export default Ember.Controller.extend(DiscussionsIndexControllerMixin, {
+  // required to generate route paths:
+  topicsBasePath() {
+    return 'discussions.paper.';
+  }
 });

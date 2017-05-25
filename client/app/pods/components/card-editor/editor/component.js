@@ -45,6 +45,17 @@ export default Ember.Component.extend({
     }
   }),
 
+  revertCard: task(function*() {
+    let card = this.get('card');
+    try {
+      yield card.revert();
+      yield card.reload();
+      this.set('errors', []);
+    } catch (e) {
+      this.set('errors', e.errors);
+    }
+  }),
+
   archiveCard: task(function*() {
     let card = this.get('card');
 

@@ -8,8 +8,8 @@ export default AuthorizedRoute.extend(DiscussionsShowRouteMixin, {
   },
 
   // required to generate route paths:
-  topicsBasePath() {
-    return 'discussions.paper.';
+  makeBasePath() {
+    return 'discussions.paper';
   },
 
   activate() {

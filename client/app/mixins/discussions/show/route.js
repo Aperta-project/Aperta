@@ -52,7 +52,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   setupController(controller, model) {
-    let discussionRouteName = this.get('topicsIndexPath');
+    let discussionRouteName = this.get('topicsBasePath');
     const discussionModel = this.modelFor(discussionRouteName);
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});

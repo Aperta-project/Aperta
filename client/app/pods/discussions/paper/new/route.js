@@ -7,8 +7,8 @@ export default AuthorizedRoute.extend(DiscussionsNewRouteMixin, {
   },
 
   // required to generate route paths:
-  topicsBasePath() {
-    return 'discussions.paper.';
+  makeBasePath() {
+    return 'discussions.paper';
   },
 
   setupAtMentionables(controller) {

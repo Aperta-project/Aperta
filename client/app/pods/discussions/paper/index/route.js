@@ -8,8 +8,8 @@ export default Ember.Route.extend(DiscussionsIndexRouteMixin, {
   },
 
   // required to generate route paths:
-  topicsBasePath() {
-    return 'discussions.paper.';
+  makeBasePath() {
+    return 'discussions.paper';
   },
 
   activate() {

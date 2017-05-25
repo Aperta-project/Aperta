@@ -40,8 +40,7 @@ export default Ember.Mixin.create({
     },
 
     hideDiscussions() {
-      let path = this.routeName.replace(/\.discussions$/,'');
-      this.transitionTo(path);
+      this.transitionTo(this.get('topicsParentPath'));
     }
   }
 });

@@ -3,7 +3,7 @@ import DiscussionsIndexControllerMixin from 'tahi/mixins/discussions/index/contr
 
 export default Ember.Controller.extend(DiscussionsIndexControllerMixin, {
   // required to generate route paths:
-  topicsBasePath() {
-    return 'discussions.paper.';
+  makeBasePath() {
+    return 'discussions.paper';
   }
 });

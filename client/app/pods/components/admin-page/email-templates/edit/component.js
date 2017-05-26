@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   unsaved: true,
   actions: {
     save: function() {
-      if (this.get('disabled')) {
+      if (this.get('disabled') || this.get('template.isSaving')) {
         this.set('unsaved', false);
       } else {
         this.get('template').save().then(() => {

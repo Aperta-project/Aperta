@@ -751,6 +751,19 @@ ActiveRecord::Schema.define(version: 20170524163648) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "similarity_checks", force: :cascade do |t|
+    t.integer  "ithenticate_document_id"
+    t.datetime "ithenticate_report_completed_at"
+    t.datetime "timeout_at"
+    t.string   "document_s3_url"
+    t.integer  "ithenticate_report_id"
+    t.integer  "ithenticate_score"
+    t.integer  "versioned_text_id",               null: false
+    t.string   "state",                           null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -948,5 +961,6 @@ ActiveRecord::Schema.define(version: 20170524163648) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

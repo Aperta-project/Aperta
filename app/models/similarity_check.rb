@@ -42,6 +42,8 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   def start_report!
+    raise "Manuscript file not found" unless file.url
+
     response = ithenticate_api.add_document(
       content: Faraday.get(file.url).body,
       filename: file[:file],
@@ -51,7 +53,7 @@ class SimilarityCheck < ActiveRecord::Base
       folder_id: folder_id
     )
 
-    unless response["api_status"] == 200
+    if response.blank? || response["api_status"] != 200
       raise "ithenticate error" # TODO: expose response
     end
 

@@ -93,10 +93,15 @@ module Authorizations
 
       # construct the join from tasks table to the papers table
       query.outer_join(klass.arel_table).on(
-        klass.arel_table[reflection.foreign_key].eq(
-          through_klass.arel_table.primary_key
-        )
-      )
+        if klass.column_names.member?(reflection.foreign_key)
+          # has_one on the through_klass
+          klass.arel_table[reflection.foreign_key]
+            .eq(through_klass.arel_table.primary_key)
+        else
+          # belongs_to on the through_klass
+          klass.arel_table.primary_key
+            .eq(through_klass.arel_table[reflection.foreign_key])
+        end)
 
       common_query.add_column_condition(
         query: query,

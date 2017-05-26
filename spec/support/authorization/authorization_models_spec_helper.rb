@@ -22,9 +22,14 @@ module AuthorizationModelsSpecHelper
         t.string :name
         t.integer :fake_paper_id
         t.string :type, default: 'Authorizations::FakeTask'
+        t.integer :fake_card_version_id
       end
 
       create_table :fake_task_things, force: true do |t|
+        t.integer :fake_task_id
+      end
+
+      create_table :fake_card_versions, force: true do |t|
         t.integer :fake_task_id
       end
     end
@@ -40,6 +45,7 @@ module Authorizations
     belongs_to :fake_journal
     has_many :fake_tasks
     has_many :fake_task_things, through: :fake_tasks, inverse_of: :fake_paper
+    has_many :fake_card_versions, through: :fake_tasks
   end
 
   class FakeTask < ActiveRecord::Base
@@ -49,6 +55,7 @@ module Authorizations
     def self.delegate_state_to
       :fake_paper
     end
+    belongs_to :fake_card_version
     delegate :publishing_state, to: :fake_paper
   end
 
@@ -61,5 +68,8 @@ module Authorizations
   class FakeTaskThing < ActiveRecord::Base
     belongs_to :fake_task
     has_one :fake_paper, through: :fake_task
+  end
+
+  class FakeCardVersion < ActiveRecord::Base
   end
 end

@@ -128,14 +128,15 @@ module Authorizations
     end
 
     def add_filter_by_check(query)
-      Authorizations.configuration.filters
-        .select { |f| @klass <= f.klass }
-        .each do |filter|
-        filter.block.call(
-          query,
-          table[:permissions][filter.column_name],
-          target_table
-        )
+      filters = Authorizations.configuration.filters
+      unless filters.nil?
+        filters.select { |f| @klass <= f.klass }.each do |filter|
+          filter.block.call(
+            query,
+            table[:permissions][filter.column_name],
+            target_table
+          )
+        end
       end
       query
     end

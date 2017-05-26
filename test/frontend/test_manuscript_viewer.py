@@ -63,7 +63,7 @@ class ManuscriptViewerTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready_post_create()
+    manuscript_viewer.page_ready()
     manuscript_viewer.close_infobox()
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)

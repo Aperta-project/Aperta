@@ -19,6 +19,7 @@
           placeholder="Select Date..."}}
       </div>
     </div>
+
     <div class="form-group">
       <div class="inset-form-control required volume-number {{if validationErrors.volumeNumber "error"}}">
         <div class="inset-form-control-text">
@@ -55,8 +56,7 @@
       <label>
         {{nested-question-display ident="production_metadata--provenance" owner=task}}
       </label>
-      {{nested-question-textarea
-        editorStyle='basic'
+      {{nested-question-input
         ident="production_metadata--provenance"
         owner=task
         displayQuestionText=false

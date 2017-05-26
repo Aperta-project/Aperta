@@ -34,7 +34,7 @@ module CardConfiguration
 
         {
           ident: "production_metadata--provenance",
-          value_type: "html",
+          value_type: "text",
           text: "Provenance"
         },
 

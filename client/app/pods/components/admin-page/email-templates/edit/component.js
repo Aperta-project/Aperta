@@ -20,9 +20,6 @@ export default Ember.Component.extend({
           this.get('routing').transitionTo('admin.cc.journals.emailtemplates');
         });
       }
-    },
-    resetTemplate: function() {
-      this.get('template').rollbackAttributes();
     }
   }
 });

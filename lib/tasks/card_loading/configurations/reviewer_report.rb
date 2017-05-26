@@ -41,7 +41,7 @@ module CardConfiguration
 
         {
           ident: "reviewer_report--comments_for_author",
-          value_type: "html-expanded",
+          value_type: "html",
           text: "Add your comments to authors below."
         },
 

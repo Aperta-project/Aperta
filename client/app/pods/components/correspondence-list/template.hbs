@@ -1,4 +1,10 @@
 {{#if (can "manage_workflow" paper)}}
+  {{#link-to
+    'paper.correspondence.new-external'
+    paper
+    id='add-external-correspondence'}}
+    {{fa-icon icon="plus-square-o"}} &nbsp; Add Correspondence
+  {{/link-to}}
   <div class="correspondence-table">
     <table class="table table-hover">
       <thead>

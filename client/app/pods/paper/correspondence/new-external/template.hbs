@@ -3,6 +3,5 @@
   outAnimationComplete=(action "hideCorrespondenceOverlay")
   title="Add Correspondence to History"
   overlayClass="correspondence-overlay" as |overlay|}}
-  lipsum
-  <!-- {{correspondence-details message=model}} -->
+  {{external-correspondence-form message=model close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

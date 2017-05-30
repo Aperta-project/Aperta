@@ -6,7 +6,8 @@
 class CardContent < ActiveRecord::Base
   include XmlSerializable
 
-  acts_as_nested_set
+  # Scope matches deleted_at IS NULL, that is, non-deleted records
+  acts_as_nested_set scope: [:deleted_at]
   acts_as_paranoid
 
   belongs_to :card_version, inverse_of: :card_contents
@@ -28,7 +29,7 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
-              scope: :deleted_at,
+              scope: [:card_version, :deleted_at],
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }
@@ -98,39 +99,6 @@ class CardContent < ActiveRecord::Base
         :default_answer_value,
         "must be one of the following values: #{vals}"
       )
-    end
-  end
-
-  # Note that we essentially copied this method over from nested question
-  def self.update_all_exactly!(content_hashes)
-    # This method runs on a scope and takes and a list of nested property
-    # hashes. Each hash represents a single piece of card content, and must
-    # have at least an `ident` field.
-    #
-    # ANY CONTENT IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE DESTROYED.
-    #
-    # Any content with hashes but not in scope will be created.
-
-    updated_idents = []
-
-    # Refresh the living, welcome the newly born
-    update_nested!(content_hashes, nil, updated_idents)
-
-    existing_idents = all.map(&:ident)
-    for_deletion = existing_idents - updated_idents
-    raise "You forgot some questions: #{for_deletion}" \
-      unless for_deletion.empty?
-  end
-
-  def self.update_nested!(content_hashes, parent_id, idents)
-    content_hashes.map do |hash|
-      idents.append(hash[:ident])
-      child_hashes = hash.delete(:children) || []
-      content = CardContent.find_or_initialize_by(ident: hash[:ident])
-      content.parent_id = parent_id
-      content.update!(hash)
-      update_nested!(child_hashes, content.id, idents)
-      content
     end
   end
 

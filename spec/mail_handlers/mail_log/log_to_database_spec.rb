@@ -36,6 +36,7 @@ module MailLog::LogToDatabase
       it 'logs the email with attachments to the database without storing attachments' do
         allow(File).to receive(:read).with('doc.docx').and_return(StringIO.new('testing'))
         mail.attachments['test'] = File.read('doc.docx')
+        mail.html_part = 'This is a test email\'s body'
         expect do
           interceptor.delivering_email(mail)
         end.to change { Correspondence.count }.by(+1)

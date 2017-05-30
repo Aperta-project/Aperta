@@ -13,7 +13,13 @@
         {{#each model as |message|}}
           <tr>
             <td>{{format-date message.date}}</td>
-            <td>{{message.subject}}</td>
+            <td>
+              <div class="correspondence{{message.id}}">
+              {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
+                {{message.subject}}
+              {{/link-to}}
+              </div>
+            </td>
             <td>{{message.recipient}}</td>
             <td>{{message.sender}}</td>
           </tr>

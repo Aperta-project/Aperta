@@ -21,7 +21,10 @@ Router.map(function() {
 
     this.route('versions', { path: '/versions' });
 
-    this.route('correspondence', { path: '/correspondence' });
+    this.route('correspondence', { path: '/correspondence' }, function() {
+      this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
+    });
+
 
     this.route('workflow', function() {
       this.route('discussions', function() {
@@ -45,6 +48,7 @@ Router.map(function() {
         this.route('workflows');
         this.route('users');
         this.route('settings');
+        this.route('emailtemplates');
       });
       this.route('card', { path: '/card/:card_id' }, function() {
         this.route('preview', { path: '/' });

@@ -133,14 +133,9 @@ describe CardsController do
   end
 
   describe "#publish" do
-    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
-    before do
-      # by default the :versioned trait creates a published version and we
-      # need to work with a draft
-      card.latest_card_version.update!(published_at: nil)
-    end
+    let(:card) { FactoryGirl.create(:card, :versioned, :draft, name: "Old Name") }
     subject(:do_request) do
-      put(:publish, format: 'json', id: card.id)
+      put(:publish, format: 'json', id: card.id, historyEntry: "Foo")
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -168,10 +163,109 @@ describe CardsController do
 
         it { is_expected.to responds_with 200 }
 
-        it 'returns the updated card' do
+        it 'publishes the card with the history entry and the current user' do
+          allow(Card).to receive(:find).and_return card
+          expect(card).to receive(:publish!).with("Foo", user)
+          do_request
+        end
+
+        it 'serializes the latest card version' do
           expect(card.state).to eq('draft')
           do_request
-          expect(res_body['card']['state']).to eq('published')
+          expect(res_body['card_version']['published_at']).to be_present
+        end
+      end
+    end
+  end
+
+  describe "#revert" do
+    let(:published_card) { FactoryGirl.create(:card, :versioned, :published_with_changes, name: "Published") }
+    let(:unpublished_changes_card) { FactoryGirl.create(:card, :versioned, :published_with_changes, name: "Published with changes") }
+
+    subject(:do_no_changes_request) do
+      put(:revert, format: 'json', id: published_card.id)
+    end
+
+    subject(:do_request) do
+      put(:revert, format: 'json', id: unpublished_changes_card.id)
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "and the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, unpublished_changes_card)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'and the user has access' do
+        context 'and the card had unpublished changes' do
+          before do
+            stub_sign_in user
+            allow(user).to receive(:can?)
+              .with(:edit, unpublished_changes_card)
+              .and_return(true)
+          end
+
+          it { is_expected.to responds_with 200 }
+
+          it 'returns the updated card' do
+            expect(unpublished_changes_card.state).to eq('published_with_changes')
+            do_request
+            expect(res_body['card']['state']).to eq('published')
+          end
+        end
+      end
+    end
+  end
+
+  describe "#archive" do
+    let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
+    subject(:do_request) do
+      put(:archive, format: 'json', id: card.id)
+    end
+
+    it_behaves_like 'an unauthenticated json request'
+
+    context 'and the user is signed in' do
+      context "and the user does not have access" do
+        before do
+          stub_sign_in(user)
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return false
+          do_request
+        end
+
+        it { is_expected.to responds_with(403) }
+      end
+
+      context 'and the user has access' do
+        before do
+          stub_sign_in user
+          allow(user).to receive(:can?)
+            .with(:edit, card)
+            .and_return(true)
+        end
+
+        it { is_expected.to responds_with 200 }
+
+        it 'calls the CardArchiver' do
+          expect(CardArchiver).to receive(:archive)
+          do_request
+        end
+
+        it 'returns the updated card' do
+          expect(card.state).to eq('published')
+          do_request
+          expect(res_body['card']['state']).to eq('archived')
         end
       end
     end
@@ -250,6 +344,57 @@ describe CardsController do
           end
         end
       end
+    end
+  end
+
+  describe "#destroy" do
+    let(:card) { FactoryGirl.create(:card, :draft, :versioned, name: "Old Name") }
+    let(:card_params) do
+      {
+        format: 'json',
+        id: card.id
+      }
+    end
+
+    subject(:do_request) do
+      delete(:destroy, card_params)
+    end
+
+    context "the user has access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, card)
+          .and_return true
+      end
+
+      it "deletes the card" do
+        expect do
+          do_request
+        end.to change(Card, :count).by(-1)
+      end
+
+      it "sets deleted_at" do
+        do_request
+        card.reload
+        expect(card.deleted_at).to_not be_nil
+      end
+
+      it "responds with 204" do
+        do_request
+        expect(response.status).to eq(204)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        stub_sign_in user
+        allow(user).to receive(:can?)
+          .with(:edit, card)
+          .and_return false
+      end
+
+      it { is_expected.to responds_with(403) }
     end
   end
 end

@@ -31,6 +31,16 @@ FactoryGirl.define do
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
 
+    trait :with_phases do
+      transient do
+        phases_count 1
+      end
+
+      after(:create) do |paper, evaluator|
+        paper.phases << FactoryGirl.build_list(:phase, evaluator.phases_count)
+      end
+    end
+
     trait(:active) do
       # noop
     end
@@ -155,7 +165,7 @@ FactoryGirl.define do
           end_time = Time.now
           puts "seeded cards in test in #{end_time - start} seconds"
         end
-        FactoryGirl.create(:early_posting_task)
+        FactoryGirl.create(:early_posting_task, :with_loaded_card)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end
@@ -320,6 +330,13 @@ FactoryGirl.define do
         evaluator.task_params[:type] ||= "Task"
         evaluator.task_params[:paper] ||= paper
 
+        unless evaluator.task_params[:card_version]
+          task_klass_name = evaluator.task_params[:type]
+          CardLoader.load(task_klass_name)
+          card = Card.find_by_class_name(task_klass_name)
+          evaluator.task_params[:card_version] = card.latest_published_card_version
+        end
+
         phase.tasks.create(evaluator.task_params)
         paper.reload
       end
@@ -345,27 +362,27 @@ FactoryGirl.define do
           author,
           questions: [
             {
-              ident: 'other',
+              ident: 'authors--other',
               answer: 'footstool',
               value_type: 'text'
             },
             {
-              ident: 'desceased',
+              ident: 'authors--desceased',
               answer: false,
               value_type: 'boolean'
             },
             {
-              ident: 'published_as_corresponding_author',
+              ident: 'authors--published_as_corresponding_author',
               answer: true,
               value_type: 'boolean'
             },
             {
-              ident: 'contributions',
+              ident: 'authors--contributions',
               answer: true,
               value_type: 'boolean',
               questions: [
                 {
-                  ident: 'made_cookie_dough',
+                  ident: 'authors--made_cookie_dough',
                   answer: true,
                   value_type: 'boolean'
                 }
@@ -380,7 +397,7 @@ FactoryGirl.define do
           financial_task,
           questions: [
             {
-              ident: 'author_received_funding',
+              ident: 'financial_disclosure--author_received_funding',
               answer: false,
               value_type: 'boolean'
             }
@@ -392,12 +409,12 @@ FactoryGirl.define do
           FactoryGirl.create(:competing_interests_task, paper: paper),
           questions: [
             {
-              ident: 'competing_interests',
+              ident: 'competing_interests--competing_interests',
               answer: 'true',
               value_type: 'boolean',
               questions: [
                 {
-                  ident: 'statement',
+                  ident: 'competing_interests--statement',
                   answer: 'entered statement',
                   value_type: 'text'
                 }
@@ -411,12 +428,12 @@ FactoryGirl.define do
           FactoryGirl.create(:data_availability_task, paper: paper),
           questions: [
             {
-              ident: 'data_fully_available',
+              ident: 'data_availability--data_fully_available',
               answer: 'true',
               value_type: 'boolean'
             },
             {
-              ident: 'data_location',
+              ident: 'data_availability--data_location',
               answer: 'holodeck',
               value_type: 'text'
             }
@@ -427,7 +444,7 @@ FactoryGirl.define do
           FactoryGirl.create(:production_metadata_task, paper: paper),
           questions: [
             {
-              ident: 'publication_date',
+              ident: 'production_metadata--publication_date',
               answer: '12/15/2025',
               value_type: 'text'
             }

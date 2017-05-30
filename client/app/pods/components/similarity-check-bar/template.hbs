@@ -1,0 +1,15 @@
+<div class="similarity-check-bar-bar"
+     id="similarity-check-{{unbound decision.id}}"
+     {{action "fold"}}>
+  <h4 class="similarity-check-bar-verdict">
+    <div class="similarity-check-bar-revision-number">
+      {{version.majorVersion}}.{{version.minorVersion}}
+    </div>
+  </h4>
+</div>
+
+{{#unless folded}}
+  {{#each version.similarityChecks as |check|}}
+    {{similarity-check check=check}}
+  {{/each}}
+{{/unless}}

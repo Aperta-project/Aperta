@@ -41,3 +41,7 @@ export function paperDownloadPath({paperId, versionedTextId, format}) {
   }
   return path;
 }
+
+export function similarityCheckReportPath(similarityCheckId) {
+  return `/api/similarity_checks/${similarityCheckId}/report_view_only`;
+}

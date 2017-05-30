@@ -53,6 +53,17 @@
     {{#if legendsAllowed}}
       <div class="flex-group">
         <div class="flex-element">
+          {{format-input class="form-control si-file-title-input"
+                         placeholder="Enter a title"
+                         required=true
+                         name="title"
+                         value=file.title
+                         displayBold=false}}
+        </div>
+      </div>
+
+      <div class="flex-group">
+        <div class="flex-element">
           {{format-input placeholder="Enter a legend (optional)"
                          name="caption"
                          class="form-control si-file-caption-textbox"
@@ -97,6 +108,14 @@
     <div class="si-file-title">
       {{file.label}} {{file.category}}
     </div>
+
+    {{!-- legendsAllowed is effectively a datemarker for May,9th
+      see APERTA-10180 and APERTA-8412--}}
+    {{#if legendsAllowed}}
+      <div class="si-file-title">
+        {{{file.title}}}
+      </div>
+    {{/if}}
 
     {{#if file.caption}}
       <div class="si-file-caption">{{{file.caption}}}</div>

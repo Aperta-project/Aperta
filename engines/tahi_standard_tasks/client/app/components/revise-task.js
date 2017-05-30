@@ -66,7 +66,7 @@ export default TaskComponent.extend({
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
       if (response['decision-attachment'])
-        response['decision-attachment'].title = file;
+        response['decision-attachment'].title = file.name;
       else
         response['attachment'].title = file;
       store.pushPayload(response);

@@ -26,7 +26,7 @@ moduleForComponent(
   }
 );
 
-test('publishing requires confirmation', function(assert) {
+test('publishing requires confirmation and a history entry', function(assert) {
   assert.expect(4);
   let card = make('card', { state: 'draft' });
   this.set('card', card);
@@ -54,14 +54,21 @@ test('publishing requires confirmation', function(assert) {
 
   assert.elementFound('.editor-publish');
   this.$('.editor-publish').click();
-  assert.elementFound('.publish-card-overlay .button-primary');
+  assert.elementFound(
+    '.publish-card-overlay .button-primary[disabled]',
+    'the confirm button is disabled'
+  );
+  this.$('.publish-history-entry').val('My reason for changes').change();
   this.$('.publish-card-overlay .button-primary').click();
 
   return wait().then(() => {
     assert.mockjaxRequestMade(
-      `/api/cards/${card.id}/publish`,
-      'PUT',
-      'it posts to publish the card'
+      {
+        url: `/api/cards/${card.id}/publish`,
+        type: 'PUT',
+        data: '{"historyEntry":"My reason for changes"}'
+      },
+      'it posts to publish the card with the history entry'
     );
     assert.mockjaxRequestMade(
       `/api/cards/${card.id}`,
@@ -234,6 +241,39 @@ test('deleting requires confirmation', function(assert) {
       `/api/cards/${card.id}`,
       'DELETE',
       'it deletes the card'
+    );
+  });
+});
+
+test('reversion button is only present when the card is published with changes and reverts card', function(assert) {
+  let card = make('card', { state: 'published' });
+  this.set('card', card);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card}}`
+  );
+
+  assert.elementNotFound('.editor-revert',
+                         'the revert button is not present when card is not publishedWithChanges');
+
+  this.set('card.state', 'publishedWithChanges');
+  assert.elementFound('.editor-revert',
+                      'the revert button is present when card is publishedWithChanges');
+
+  $.mockjax({
+    url: `/api/cards/${card.id}/revert`,
+    method: 'PUT',
+  });
+
+  this.$('.editor-revert').click();
+
+  return wait().then(() => {
+    assert.mockjaxRequestMade(
+      `/api/cards/${card.id}/revert`,
+      'PUT',
+      'it reverts the card'
     );
   });
 });

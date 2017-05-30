@@ -7,7 +7,12 @@ FactoryGirl.define do
     trait :versioned do
       after(:build) do |card|
         card.state = "published"
-        card.card_versions << build(:card_version, version: card.latest_version, published_at: Time.current) if card.card_versions.count.zero?
+        card.card_versions << build(
+          :card_version,
+          version: card.latest_version,
+          published_at: Time.current,
+          history_entry: "test version"
+        ) if card.card_versions.count.zero?
       end
     end
 
@@ -17,13 +22,21 @@ FactoryGirl.define do
     trait :draft do
       after(:create) do |card|
         card.update(state: "draft")
-        card.latest_card_version.update(published_at: nil)
+        card.latest_card_version.update(published_at: nil, history_entry: nil)
       end
     end
 
     trait :locked do
       after(:build) do |card|
         card.state = "locked"
+      end
+    end
+
+    trait :published_with_changes do
+      after(:build) do |card|
+        card.state = "published_with_changes"
+        card.card_versions << build(:card_version, version: card.latest_version, published_at: Time.current, history_entry: "entry") if card.card_versions.count.zero?
+        card.card_versions << build(:card_version, version: card.latest_version + 1, published_at: nil)
       end
     end
 

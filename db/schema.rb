@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503152030) do
+ActiveRecord::Schema.define(version: 20170524163648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,9 +240,12 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
+    t.string   "history_entry"
+    t.integer  "published_by_id"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
+  add_index "card_versions", ["published_by_id"], name: "index_card_versions_on_published_by_id", using: :btree
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
   create_table "cards", force: :cascade do |t|
@@ -748,6 +751,19 @@ ActiveRecord::Schema.define(version: 20170503152030) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "similarity_checks", force: :cascade do |t|
+    t.integer  "ithenticate_document_id"
+    t.datetime "ithenticate_report_completed_at"
+    t.datetime "timeout_at"
+    t.string   "document_s3_url"
+    t.integer  "ithenticate_report_id"
+    t.integer  "ithenticate_score"
+    t.integer  "versioned_text_id",               null: false
+    t.string   "state",                           null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "simple_reports", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -945,5 +961,6 @@ ActiveRecord::Schema.define(version: 20170503152030) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

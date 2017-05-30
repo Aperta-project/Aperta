@@ -4,8 +4,10 @@
 # card content
 class CardVersion < ActiveRecord::Base
   acts_as_paranoid
+  validates_as_paranoid
 
   belongs_to :card, inverse_of: :card_versions
+  belongs_to :published_by, class_name: 'User'
   has_many :card_contents, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
@@ -15,10 +17,11 @@ class CardVersion < ActiveRecord::Base
   scope :required_for_submission, -> { where(required_for_submission: true) }
   scope :published, -> { where.not(published_at: nil) }
 
-  validates :version, uniqueness: {
+  validates_uniqueness_of_without_deleted :version,
     scope: :card_id,
     message: "Card version numbers are unique for a given card"
-  }
+
+  validates :history_entry, presence: true, if: -> { published? }
 
   def published?
     published_at.present?

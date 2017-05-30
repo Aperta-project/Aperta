@@ -5,5 +5,17 @@ FactoryGirl.define do
     after(:build) do |c|
       c.card_version = build(:card_version, card_contents: [c]) unless c.card_version.present?
     end
+
+    trait :root do
+      parent_id nil
+    end
+
+    trait :with_child do
+      after(:create) do |root_content|
+        child = FactoryGirl.create(:card_content)
+        child.move_to_child_of(root_content)
+        root_content.reload
+      end
+    end
   end
 end

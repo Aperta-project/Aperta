@@ -5,4 +5,5 @@ export default DS.Model.extend({
   subject: DS.attr('string'),
   recipient: DS.attr('string'),
   sender: DS.attr('string'),
+  body: DS.attr('string')
 });

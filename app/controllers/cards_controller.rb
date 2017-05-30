@@ -46,14 +46,27 @@ class CardsController < ApplicationController
 
   def publish
     requires_user_can(:edit, card)
-    card.publish!
 
-    render json: card
+    history_entry = params[:historyEntry]
+
+    card.publish!(history_entry, current_user)
+
+    # respond with the latest card version so that the client can immediately
+    # show the new history entry if needed. The card itself is manually reloaded
+    # by the client after it receives the 'publish' response
+    render json: card.latest_card_version
   end
 
   def archive
     requires_user_can(:edit, card)
     card.archive!
+
+    render json: card
+  end
+
+  def revert
+    requires_user_can(:edit, card)
+    card.revert!
 
     render json: card
   end

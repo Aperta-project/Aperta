@@ -19,6 +19,8 @@ export default Ember.Component.extend({
   showArchiveOverlay: false,
   showDeleteOverlay: false,
 
+  historyEntryBlank: Ember.computed.empty('card.historyEntry'),
+
   classNames: ['card-editor-editor'],
 
   saveCard: task(function*() {
@@ -37,6 +39,17 @@ export default Ember.Component.extend({
       yield card.publish();
       yield card.reload();
       this.set('showPublishOverlay', false);
+      this.set('errors', []);
+    } catch (e) {
+      this.set('errors', e.errors);
+    }
+  }),
+
+  revertCard: task(function*() {
+    let card = this.get('card');
+    try {
+      yield card.revert();
+      yield card.reload();
       this.set('errors', []);
     } catch (e) {
       this.set('errors', e.errors);

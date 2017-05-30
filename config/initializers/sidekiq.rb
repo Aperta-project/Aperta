@@ -12,7 +12,10 @@ if TahiEnv.redis_sentinel_enabled?
     namespace: "tahi_#{Rails.env}"
   }
 else
-  Sidekiq.redis = { namespace: "tahi_#{Rails.env}" }
+  redis_options = { namespace: "tahi_#{Rails.env}" }
+  # Use fakeredis in the test environment
+  redis_options[:driver] = Redis::Connection::Memory if Rails.env.test?
+  Sidekiq.redis = redis_options
 end
 
 Sidekiq.configure_server do |config|

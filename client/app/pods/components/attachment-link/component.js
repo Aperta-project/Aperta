@@ -11,7 +11,7 @@ export default Ember.Component.extend({
 
   actions: {
     triggerFileSelection() {
-      this.$().find('input').click();
+      this.$().find('input.update-attachment').click();
       return false;
     },
 

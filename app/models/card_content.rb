@@ -6,7 +6,8 @@
 class CardContent < ActiveRecord::Base
   include XmlSerializable
 
-  acts_as_nested_set
+  # Scope matches deleted_at IS NULL, that is, non-deleted records
+  acts_as_nested_set scope: [:deleted_at]
   acts_as_paranoid
 
   belongs_to :card_version, inverse_of: :card_contents

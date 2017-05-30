@@ -47,8 +47,8 @@ feature 'Production Metadata Card', js: true do
     end
 
     describe 'filling in the entire card' do
+      provenance = 'It came from outer space.'
       comments = {
-        provenance: 'It came from outer space.',
         production_notes: 'Cheap cardboard sets.',
         special_handling_instructions: 'Wear radiation suit.'
       }
@@ -60,6 +60,8 @@ feature 'Production Metadata Card', js: true do
         page.execute_script "$(\"input[name='production_metadata--volume_number']\").trigger('change')"
         page.fill_in 'production_metadata--issue_number', with: '5678'
         page.execute_script "$(\"input[name='production_metadata--issue_number']\").trigger('change')"
+        page.fill_in 'production_metadata--provenance', with: provenance
+        page.execute_script "$(\"input[name='production_metadata--provenance']\").trigger('change')"
 
         comments.each do |key, value|
           set_rich_text editor: "production_metadata--#{key}", text: value
@@ -75,6 +77,7 @@ feature 'Production Metadata Card', js: true do
           expect(page).to have_field('production_metadata--volume_number', with: "1234")
           expect(page).to have_field('production_metadata--issue_number', with: "5678")
           expect(page).to have_field('production_metadata--publication_date', with: "08/31/2015")
+          expect(page).to have_field('production_metadata--provenance', with: provenance)
 
           comments.each do |key, value|
             text = get_rich_text(editor: "production_metadata--#{key}")

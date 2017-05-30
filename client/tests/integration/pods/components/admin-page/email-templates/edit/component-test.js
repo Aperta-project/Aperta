@@ -46,6 +46,28 @@ test('it prevents the model from saving if a field is blank and displays validat
   assert.equal(template.save.called, false);
 });
 
+test('model receives save call when valid', function(assert){
+  assert.expect(1);
+
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', letter: ''});
+  var saveStub = sinon.stub(template, 'save');
+
+  // Reject the promise because routing isnt working here, this is easier.
+  saveStub.returns(Ember.RSVP.Promise.reject());
+
+  this.set('template', template);
+
+  this.render(hbs`
+    {{admin-page/email-templates/edit template=template}}
+  `);
+
+  Ember.run(() => {
+    this.$('#letter').val('baz').trigger('input');
+    this.$('.button-primary').click();
+  });
+  assert.equal(template.save.called, true);
+});
+
 test('after attempted save it dynamically warns user if input field has invalid content', function(assert) {
   assert.expect(2);
 

@@ -3,8 +3,12 @@ module LinkSanitizer
   def self.sanitize(text)
     doc = Nokogiri::HTML(text)
     doc.css('a').each do |link|
-      link.replace('[' + link.text + ' (' +
-        link.attributes['href'].value + ')]')
+      if link.attributes['href'].present?
+        link.replace('[' + link.text + ' (' +
+          link.attributes['href'].value + ')]')
+      else
+        link.replace(link.text)
+      end
     end
     doc.css('table.btn.btn-primary').each do |table|
       table.attributes['class'].value = 'btn'

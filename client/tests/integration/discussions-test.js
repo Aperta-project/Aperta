@@ -298,12 +298,11 @@ test('cannot persist empty title', function(assert) {
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
-      const titleField = find('.discussions-show-title input');
+      const titleFieldSelector = '.discussions-show-title input';
+      const titleField = find(titleFieldSelector);
       const titleFieldContainer = find('.discussions-show-title');
 
-      titleField.focus();
-      titleField.val('');
-      titleField.blur();
+      fillIn(titleFieldSelector, '');
 
       triggerEvent(titleField, 'blur').then(()=> {
         assert.ok(titleFieldContainer.hasClass('error'), 'Error is displayed on title');
@@ -320,12 +319,11 @@ test('cannot persist empty title for /discussions', function(assert) {
     visit('/discussions/' + paper.id + '/' + topic.get('id'));
 
     andThen(function() {
-      const titleField = find('.discussions-show-title input');
+      const titleFieldSelector = '.discussions-show-title input';
+      const titleField = find(titleFieldSelector);
       const titleFieldContainer = find('.discussions-show-title');
 
-      titleField.focus();
-      titleField.val('');
-      titleField.blur();
+      fillIn(titleFieldSelector, '');
 
       triggerEvent(titleField, 'blur').then(()=> {
         assert.ok(titleFieldContainer.hasClass('error'), 'Error is displayed on title');

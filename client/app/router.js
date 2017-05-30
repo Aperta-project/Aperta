@@ -56,6 +56,7 @@ Router.map(function() {
         this.route('permissions');
         this.route('history');
       });
+      this.route('edit_email', { path: 'journals/emailtemplates/:email_id/edit' });
     });
 
     this.route('journals', function() {});

@@ -9,6 +9,7 @@ git checkout -
 bundle exec rake db:migrate
 bundle exec rake cards:load
 bundle exec rake roles-and-permissions:seed
+bundle exec rake settings:seed_registered_settings
 bundle exec rake data:update_journal_task_types
 bundle exec rake institutional_accounts:add_seed_accounts
 bundle exec rake create_feature_flags

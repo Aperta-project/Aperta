@@ -22,7 +22,6 @@ export default ControlBar.extend({
     toggleDownloads: PropTypes.func
   },
 
-
   getDefaultProps() {
     return {
       contributorsVisible: false,

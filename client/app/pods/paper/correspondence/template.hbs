@@ -4,6 +4,15 @@
     <div class="base-layout">
       <h1>Correspondence History</h1>
 
+      {{#if (can "manage_workflow" paper)}}
+        {{#link-to
+          'paper.correspondence.new-external'
+          paper
+          id='add-external-correspondence'}}
+          {{fa-icon icon="plus-square-o"}} &nbsp; Add Correspondence
+        {{/link-to}}
+      {{/if}}
+
       {{correspondence-list model=model paper=paper}}
     </div>
   </div>

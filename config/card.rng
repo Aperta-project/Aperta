@@ -195,7 +195,7 @@
         </optional>
         <optional>
           <element name="validation">
-            <attribute name="type">
+            <attribute name="validation-type">
               <value>string-match</value>
             </attribute>
             <element name="error-message">

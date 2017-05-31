@@ -28,12 +28,6 @@ module Readyable
     end
   end
 
-  # included do
-  #   def self.validates_associated_with_context(*attr_names)
-  #     validates_with AssociatedValidatorWithContext, _merge_attributes(attr_names)
-  #   end
-  # end
-
   attr_accessor :ready_issues
 
   # Check if this thing is "ready" (for submission, for completion, for

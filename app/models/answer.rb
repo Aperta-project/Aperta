@@ -26,17 +26,6 @@ class Answer < ActiveRecord::Base
 
   validates :value, value: true, on: :ready
 
-  # validates :value,
-  #   on: :ready,
-  #   presence: true,
-  #   if: lambda {
-  #     if card_content.ready_required_check == 'required'
-  #       true
-  #     elsif card_content.ready_required_check == 'if_parent_yes'
-  #       card_content.try(:yes_no_value) == YES
-  #     end
-  #   }
-
   def children
     Answer.where(owner: owner, card_content: card_content.children)
   end

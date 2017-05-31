@@ -45,9 +45,9 @@ describe CardContent do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
         <content value-type="text">
-          <validation type="string-match">
-            <validator>/text/</validator>
+          <validation validation-type="string-match">
             <error-message>oh noes!</error-message>
+            <validator>/text/</validator>
           </validation>
         </content>
         XML

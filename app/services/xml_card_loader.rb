@@ -147,7 +147,7 @@ class XmlCardLoader
       validation_node.each do |vn|
         validations << CardContentValidation.new(
           validator: tag_text(vn, 'validator'),
-          validation_type: attr_val(vn, 'type'),
+          validation_type: attr_val(vn, 'validation-type'),
           error_message: tag_text(vn, 'error-message')
         )
       end

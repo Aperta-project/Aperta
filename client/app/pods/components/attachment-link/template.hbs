@@ -16,7 +16,6 @@
     {{fa-icon icon="refresh"}}
     Replace
   </span>
-  {{#if reviseTask}}
     {{file-uploader class="update-attachment"
                            accept=accept
                            filePrefix=filePath
@@ -25,7 +24,6 @@
                            progress=attrs.progress
                            done=(action 'uploadFinished')
                            start=attrs.start }}
-  {{/if}}
   <span {{action "deleteFile"}} class="file-action delete-attachment">
     {{fa-icon icon="trash"}}
     Delete

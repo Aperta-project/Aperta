@@ -65,6 +65,8 @@ export default TaskComponent.extend({
     const store = this.get('store');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
+      // The controller responds with a json that has decision-attachment or
+      // attachment as the root, depending on the action called.
       if (response['decision-attachment'])
         response['decision-attachment'].title = file.name;
       else

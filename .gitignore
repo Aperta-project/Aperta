@@ -52,5 +52,3 @@ engines/*/Gemfile.lock
 
 # Database dumps
 *.dat
-
-.DS_Store

@@ -24,7 +24,7 @@
 
     {{#if card.revertable}}
       <button class="button button--blue button-primary editor-revert"
-              onclick={{action (perform revertCard)}}
+              onclick={{action "confirmRevert"}}
               disabled={{or
                          saveCard.isRunning
                          publishCard.isRunning
@@ -144,6 +144,25 @@
     <div>
       <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
       <button class="button-primary button--blue" {{action (perform deleteCard)}}>Yes, Delete</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showRevertOverlay
+   outAnimationComplete=(toggle "showRevertOverlay" this)
+   overlayClass="publish-card-overlay revert overlay--blue"
+   as |overlay|}}
+  <h1> Revert Card </h1>
+  <p>
+    Reverting a card will permanently revert the card to its last published state. Changes will not be recoverable.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to revert this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform revertCard)}}>Yes, Revert</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

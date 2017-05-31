@@ -169,7 +169,7 @@ describe XmlCardLoader do
         <content content-type='short-input' value-type='text'>
           <placeholder>Test</placeholder>
           <text>Question!</text>
-          <validation type="string-match">
+          <validation validation-type="string-match">
             <error-message>Oh noes!</error-message>
             <validator>/test/</validator>
           </validation>
@@ -189,9 +189,6 @@ describe XmlCardLoader do
     end
   end
 
-  context 'dumping xml' do
-    let(:card) { FactoryGirl.create(:card, :versioned, name: Faker::Lorem.word) }
-    let(:opts) { { indent: 0, skip_instruct: 0 } }
     context 'dumping xml' do
       let(:card) { FactoryGirl.create(:card, :versioned, name: Faker::Lorem.word) }
       let(:opts) { { indent: 0, skip_instruct: 0 } }

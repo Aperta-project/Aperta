@@ -10,7 +10,13 @@ describe CardContentValidation do
       let(:answer) { FactoryGirl.create(:answer, :with_task_owner, value: 'corgi')}
       let!(:card_content) { FactoryGirl.create(:card_content, answers: [answer], card_content_validations: [card_content_validation]) }
 
-      it 'is valid if the string matches' do
+      it 'is valid if the string matches a simple regex' do
+        expect(card_content_validation.validate_answer(answer)).to eq true
+      end
+
+      it 'is valid with a more complex regex' do
+        subject.update!(validator: '^\w{4}\.\d{7}$')
+        answer.update(value: 'pbio.1000000')
         expect(card_content_validation.validate_answer(answer)).to eq true
       end
 

@@ -238,9 +238,6 @@ ActiveRecord::Schema.define(version: 20170524163648) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "ready_required_check"
-    t.string   "ready_children_check"
-    t.string   "ready_check"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

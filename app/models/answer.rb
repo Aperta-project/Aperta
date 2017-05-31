@@ -22,6 +22,9 @@ class Answer < ActiveRecord::Base
 
   delegate :value_type, to: :card_content
 
+  # The 'value: true' option means it's validating value using
+  # the value validator.
+  # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
   validates :value, value: true, on: :ready
 
   def children

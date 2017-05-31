@@ -1,4 +1,3 @@
-
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
@@ -168,10 +167,6 @@ class Task < ActiveRecord::Base
     # TODO: Remove Task.submission_types check in APERTA-9787
     Task.submission_types.include?(self.class.name) ||
       (!card_version.nil? && card_version.required_for_submission)
-  end
-
-  def answers_validated?
-    completed? || answers.all?(&:ready?)
   end
 
   def array_attributes

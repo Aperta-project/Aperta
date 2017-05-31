@@ -170,14 +170,6 @@ describe TasksController, redis: true do
         expect(task.reload).to be_completed
       end
 
-      it 'returns the task' do
-        task =
-        task_double = instance_double('Task')
-        allow(task_double).to receive(:answers_validated?).and_return false
-        do_request
-        expect(task.reload).to_not be_completed
-      end
-
       it "renders the task id and completed status as JSON" do
         do_request
         expect(response.status).to eq(200)

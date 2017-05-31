@@ -8,9 +8,8 @@ module CustomCastTypes
     include ActionView::Helpers::SanitizeHelper
 
     def cast_value(value)
-      # This should be replace with something more useful
-      # in APERTA-8656
-      value
+      scrubber = HtmlScrubber.new
+      sanitize(value, scrubber: scrubber)
     end
   end
 end

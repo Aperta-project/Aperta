@@ -9,12 +9,23 @@ class AnswersController < ApplicationController
 
   def create
     answer = Answer.create(answer_params.merge(paper: owner.paper))
+    puts "=============================="
+    puts "=============================="
+    puts "creating answer"
+    puts "=============================="
+    puts "=============================="
+
     respond_with answer
   end
 
   def update
     answer = Answer.find(params[:id])
     answer.update!(answer_params)
+    puts "=============================="
+    puts "=============================="
+    puts "updating answer"
+    puts "=============================="
+    puts "=============================="
     render json: answer
   end
 

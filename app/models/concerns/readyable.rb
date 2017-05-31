@@ -13,9 +13,20 @@ module Readyable
   # See https://github.com/rails/rails/pull/24135
   class ValueValidator < ActiveModel::EachValidator #:nodoc:
     def validate_each(answer, _attribute, _value)
-      answer.card_content.card_content_validations.each do |ccv|
-        if !ccv.validate_answer(answer)
-          answer.errors.add(:value, ccv.validation_type.underscore.to_sym, message: ccv.error_message)
+      if answer.kind_of? QuestionAttachment
+      binding.pry
+        answer.owner.card_content.card_content_validations.each do |ccv|
+          if !ccv.validate_answer(answer)
+            answer.errors.add(:value, ccv.validation_type.underscore.to_sym, message: ccv.error_message)
+          end
+        end
+      else
+      binding.pry
+
+        answer.card_content.card_content_validations.each do |ccv|
+          if !ccv.validate_answer(answer)
+            answer.errors.add(:value, ccv.validation_type.underscore.to_sym, message: ccv.error_message)
+          end
         end
       end
     end
@@ -45,6 +56,7 @@ module Readyable
     if @ready_issues.present?
       false
     elsif valid?(:ready)
+      binding.pry
       true
     else
       @ready_issues = errors.dup

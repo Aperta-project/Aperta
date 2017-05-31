@@ -5,13 +5,24 @@ class QuestionAttachmentsController < ApplicationController
   respond_to :json
 
   def create
+        puts "=============================="
+    puts "=============================="
+    puts "creating question_attachment"
+    puts "=============================="
+    puts "=============================="
     requires_user_can :edit, task_for(question_attachment)
     question_attachment.update(caption: attachment_params[:caption])
+    question_attachment.ready?
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def update
+    puts "=============================="
+    puts "=============================="
+    puts "updating question_attachment"
+    puts "=============================="
+    puts "=============================="
     requires_user_can :edit, task_for(question_attachment)
     question_attachment.update caption: attachment_params[:caption]
     # This check is the result of a timeboxed fix for a bug that manifests

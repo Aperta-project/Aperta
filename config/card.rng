@@ -114,6 +114,19 @@
       </optional>
       <interleave>
         <optional>
+          <element name="validation">
+            <attribute name="validation-type">
+              <value>file-name</value>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
+          </element>
+        </optional>
+        <optional>
           <element name="label">
             <text/>
           </element>

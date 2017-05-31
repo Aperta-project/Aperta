@@ -5,6 +5,7 @@ module S3
     before_action :authenticate_user!
 
     def sign
+      # one option for validation
       render json: { url: ENV['S3_URL'], formData: signer.params }, status: :ok
     end
 

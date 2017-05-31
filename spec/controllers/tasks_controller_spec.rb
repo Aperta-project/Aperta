@@ -142,7 +142,7 @@ describe TasksController, redis: true do
 
   describe "PATCH #update" do
     let(:task) do
-      FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first, completed: false)
+      FactoryGirl.create(:ad_hoc_task, paper: paper, phase: paper.phases.first)
     end
     let(:task_params) {  { completed: '1' } }
 
@@ -165,7 +165,7 @@ describe TasksController, redis: true do
           .and_return true
       end
 
-      it "updates the task if valid" do
+      it "updates the task" do
         do_request
         expect(task.reload).to be_completed
       end

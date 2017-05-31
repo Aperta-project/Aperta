@@ -61,6 +61,11 @@ Tahi::Application.routes.draw do
       put :cancel, on: :member
     end
     resources :manuscript_attachments, only: [:show]
+    resources :similarity_checks, only: [:create, :show] do
+      member do
+        get 'report_view_only'
+      end
+    end
     resources :sourcefile_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
@@ -70,7 +75,9 @@ Tahi::Application.routes.draw do
     resources :cards do
       put :publish, on: :member
       put :archive, on: :member
+      put :revert, on: :member
     end
+
     resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do
@@ -144,6 +151,7 @@ Tahi::Application.routes.draw do
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
       resources :correspondence, only: :index
+      resources :similarity_checks, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create
@@ -210,7 +218,7 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
-      resources :letter_templates, only: [:index]
+      resources :letter_templates, only: [:index, :show, :update]
     end
 
     # ihat endpoints

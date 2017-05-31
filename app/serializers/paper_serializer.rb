@@ -3,7 +3,7 @@ class PaperSerializer < LitePaperSerializer
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement,
-             :versions_contain_pdf, :legends_allowed
+             :versions_contain_pdf, :legends_allowed, :current_user_roles
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -38,6 +38,12 @@ class PaperSerializer < LitePaperSerializer
     object.versioned_texts.any? { |vt| vt.file_type == "pdf" }
   end
 
+  def current_user_roles
+    return [] unless scope
+    Role.where(journal_id: object.journal).joins(:assignments)
+    .where("assignments.user_id = ?", scope).pluck(:name).uniq
+  end
+
   def links
     {
       comment_looks: comment_looks_paper_path(object),
@@ -52,7 +58,8 @@ class PaperSerializer < LitePaperSerializer
       correspondence: paper_correspondence_index_path(object),
       paper_task_types: paper_task_types_path(object),
       # all possible Cards that can be added to this Paper
-      available_cards: paper_available_cards_path(object)
+      available_cards: paper_available_cards_path(object),
+      similarity_checks: paper_similarity_checks_path(object)
     }
   end
 end

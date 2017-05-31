@@ -22,28 +22,29 @@ const PAPER_GRADUAL_ENGAGEMENT_STATES = [
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
-  commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
+  commentLooks: hasMany('comment-look', { inverse: 'paper' }),
   decisions: hasMany('decision'),
-  discussionTopics: hasMany('discussion-topic', { async: true }),
-  figures: hasMany('figure', { inverse: 'paper', async: true }),
+  discussionTopics: hasMany('discussion-topic'),
+  figures: hasMany('figure', { inverse: 'paper' }),
   groupAuthors: hasMany('group-author', { async: false }),
-  journal: belongsTo('journal', { async: true }),
-  manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+  journal: belongsTo('journal'),
+  manuscriptPageTasks: hasMany('task', { polymorphic: true }),
 
   file: attr(),
   sourcefile: attr(),
 
-  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  paperTaskTypes: hasMany('paper-task-type'),
   availableCards: hasMany('card'),
   correspondence: hasMany('correspondence'),
-  phases: hasMany('phase', { async: true }),
-  relatedArticles: hasMany('related-article', { async: true }),
-  snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
+  phases: hasMany('phase'),
+  relatedArticles: hasMany('related-article'),
+  snapshots: hasMany('snapshot', { inverse: 'paper' }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),
-  tasks: hasMany('task', { async: true, polymorphic: true }),
-  versionedTexts: hasMany('versioned-text', { async: true }),
+  tasks: hasMany('task', { polymorphic: true }),
+  versionedTexts: hasMany('versioned-text'),
+  similarityChecks: hasMany('similarity-check'),
 
   active: attr('boolean'),
   body: attr('string'),
@@ -78,6 +79,7 @@ export default DS.Model.extend({
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
+  currentUserRoles: attr(),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -124,6 +126,11 @@ export default DS.Model.extend({
       .sortBy('registeredAt')
       .reverseObjects();
   }),
+
+  versionAscendingSort: ['isDraft:asc', 'majorVersion:asc', 'minorVersion:asc'],
+  versionedTextsAscending: computed.sort('versionedTexts', 'versionAscendingSort'),
+
+  latestVersionedText: computed.reads('versionedTextsAscending.lastObject'),
 
   textForVersion(versionString) {
     let versionParts = versionString.split('.');
@@ -195,6 +202,28 @@ export default DS.Model.extend({
     return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
 
+  hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
+  'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
+
+  authorHasErrorOnPreSubmission: computed('isUnsubmitted', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isUnsubmitted', ['Creator']);
+  }),
+
+  authorHasErrorOnSubmission: computed('isSubmitted', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isSubmitted', ['Creator']);
+  }),
+
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isSubmitted', 'editable', 
+  'file.status', function(){
+    let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray) && this.get('editable');
+  }),
+
+  otherRolesHasErrorOnSubmitted: computed('currentUserRoles','isSubmitted', function(){
+    let roleArray = ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray);
+  }),
+
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
       return "initial";
@@ -244,7 +273,17 @@ export default DS.Model.extend({
       return latestInitial;
     }),
 
+  hasSimilarityChecks: computed.notEmpty('similarityChecks'),
+
   restless: Ember.inject.service(),
+
+  stateHasErrorsForRole(state, roleArray) {
+    return this.get(state) &&
+    this.get('file.status') ===  'error'
+    && roleArray.any((role) => {
+      return this.get('currentUserRoles').includes(role);
+    });
+  },
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

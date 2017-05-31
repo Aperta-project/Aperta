@@ -43,6 +43,8 @@ export default DS.Model.extend({
     return state === 'draft' || state === 'publishedWithChanges';
   }),
 
+  revertable: Ember.computed.equal('state', 'publishedWithChanges'),
+
   stateName: Ember.computed('state', function() {
     return cardStates.name[this.get('state')];
   }),
@@ -58,6 +60,10 @@ export default DS.Model.extend({
       .finally(() => {
         this.set('historyEntry', '');
       });
+  },
+
+  revert() {
+    return this.get('restless').putUpdate(this, `/revert`);
   },
 
   archive() {

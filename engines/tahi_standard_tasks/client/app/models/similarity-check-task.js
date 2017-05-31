@@ -1,5 +1,3 @@
 import Task from 'tahi/models/task';
 
-export default Task.extend({
-  qualifiedType: 'TahiStandardTasks::SimilarityCheckTask'
-});
+export default Task.extend();

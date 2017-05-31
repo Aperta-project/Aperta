@@ -14,6 +14,7 @@ require 'rspec/rails'
 require 'sidekiq/testing'
 require 'webmock/rspec'
 require 'rake'
+require 'fakeredis/rspec'
 include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,

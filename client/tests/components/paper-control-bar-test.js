@@ -35,7 +35,7 @@ moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control
 
 let template = hbs`
   <div id="mobile-nav"></div>
-  {{paper-control-bar paper=paper tab="manuscript" topicsIndexPath="paper"}}
+  {{paper-control-bar paper=paper tab="manuscript"}}
 `;
 
 test('can manage workflow, correspondence enabled, all icons show', function(assert) {

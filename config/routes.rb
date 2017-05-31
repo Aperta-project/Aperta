@@ -209,6 +209,8 @@ Tahi::Application.routes.draw do
     resources :user_roles, only: [:index, :create, :destroy]
     resources :versioned_texts, only: [:show]
 
+    resources :correspondence, only: :create
+
     # Internal Admin API
     #
     namespace :admin do

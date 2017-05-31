@@ -3,5 +3,6 @@
   outAnimationComplete=(action "hideCorrespondenceOverlay")
   title="Add Correspondence to History"
   overlayClass="correspondence-overlay" as |overlay|}}
-  {{external-correspondence-form message=model close=(action overlay.animateOut)}}
+  {{external-correspondence-form model=model
+                                 close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

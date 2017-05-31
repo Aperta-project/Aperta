@@ -6,12 +6,6 @@
   </div>
 </div>
 <div class="row">
-  <!-- {{input type="text"
-                value=author.email
-                class="author-email inset-form-control-input"
-                disabled=isNotEditable
-                focus-out=(action "validateField" "email")
-                placeholder="jane.doe@example.com"}} -->
   <div class="col-sm-6 col-md-3">
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
@@ -20,14 +14,8 @@
                         displayIcon=true
                         displayText=false}}
       </div>
-      <!-- {{input type="text"
-              value=''
-              class="external-correspondence-date-sent inset-form-control-input"
-              placeholder="Select date ..."}} -->
-      {{date-picker name=ident
-                    group=group
-                    type="text"
-                    role=role
+      {{date-picker name='external-correspondence-date-sent'
+                    value=model.dateSent
                     class="external-correspondence-date-sent inset-form-control-input"
                     placeholder="Select date"}}
     </div>
@@ -41,7 +29,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name="external-correspondence-time-sent"
+              value=model.timeSent
               class="external-correspondence-time-sent inset-form-control-input"
               placeholder="Select time ..."}}
     </div>
@@ -57,7 +46,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-description'
+              value=model.description
               class="external-correspondence-description inset-form-control-input"
               placeholder="Enter a brief description of the purpose of the correspondence..."}}
     </div>
@@ -68,12 +58,13 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>From</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.sender
                         displayIcon=true
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-from'
+              value=model.sender
               class="external-correspondence-from inset-form-control-input"
               placeholder="Sender's name and/or email address..."}}
     </div>
@@ -89,7 +80,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-to'
+              value=model.recipient
               class="external-correspondence-to inset-form-control-input"
               placeholder="Recipient names and/or email address(es)..."}}
     </div>
@@ -105,7 +97,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-subject'
+              value=model.subject
               class="external-correspondence-subject inset-form-control-input"
               placeholder="Enter of copy-paste the subject line of the correspondence..."}}
     </div>
@@ -121,7 +114,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-cc'
+              value=model.cc
               class="external-correspondence-cc inset-form-control-input"
               placeholder="Recipient names and/or email address(es)..."}}
     </div>
@@ -137,7 +131,8 @@
                         displayText=false}}
       </div>
       {{input type="text"
-              value=''
+              name='external-correspondence-bcc'
+              value=model.bcc
               class="external-correspondence-bcc inset-form-control-input"
               placeholder="Recipient names and/or email address(es)..."}}
     </div>
@@ -169,8 +164,8 @@
       </div>
       {{#expanding-textarea}}
       {{textarea class="inset-form-control-textarea external-correspondence-contents"
-                 name="remarks"
-                 value=''
+                 name="external-correspondence-contents"
+                 value=model.body
                  placeholder="Enter or copy-paste the contents of the correspondence."
                  autofocus="autofocus"}}
       {{/expanding-textarea}}
@@ -187,6 +182,6 @@
     {{#if close}}
       <button class="button-link button--green" {{action close}}>cancel</button>
     {{/if}}
-    <button class="button button--green button-primary external-correspondence-submit" {{action "submit"}}>ADD TO HISTORY</button>
+    <button class="button button--green button-primary" {{action "submit" model}}>ADD TO HISTORY</button>
   </div>
 </div>

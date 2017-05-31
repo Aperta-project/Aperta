@@ -1,8 +1,13 @@
+import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
+  store: Ember.inject.service(),
   model() {
-    // return this.store.peekRecord('correspondence', params.id);
+    let paper = this.modelFor('paper');
+    return this.store.createRecord('external-correspondence', {
+      paper: paper
+    });
   },
   actions: {
     removeCorrespondenceOverlay() {

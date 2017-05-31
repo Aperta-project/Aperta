@@ -5,11 +5,22 @@ import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import wait from 'ember-test-helpers/wait';
+import Ember from 'ember';
 
 moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control Bar', {
   integration: true,
   beforeEach() {
     manualSetup(this.container);
+    this.routeActions = {
+      showOrRaiseDiscussions(arg) {
+        return Ember.RSVP.resolve({arg});
+      }
+    };
+    this.container
+      .registry
+      .registrations['helper:route-action'] = Ember.Helper.helper((arg) => {
+        return this.routeActions[arg[0]];
+      });
     $.mockjax({
       type: 'GET',
       url: '/api/notifications/',
@@ -24,7 +35,7 @@ moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control
 
 let template = hbs`
   <div id="mobile-nav"></div>
-  {{paper-control-bar paper=paper tab="manuscript"}}
+  {{paper-control-bar paper=paper tab="manuscript" topicsIndexPath="paper"}}
 `;
 
 test('can manage workflow, correspondence enabled, all icons show', function(assert) {

@@ -40,8 +40,8 @@ feature 'Initial Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter
     overlay.click_autogenerate_email_button
-    textarea = overlay.letter
-    expect(textarea.value).to include "In the Ethics statement card, you have selected Yes to one of the questions."
+    text = overlay.letter_text
+    expect(text).to include "In the Ethics statement card, you have selected Yes to one of the questions."
   end
 
   scenario "selected questions don't show up in the auto-generated author change letter" do
@@ -54,8 +54,8 @@ feature 'Initial Tech Check', js: true do
     first_question.find("input").click
     overlay.click_autogenerate_email_button
 
-    textarea = overlay.letter
-    expect(textarea.value).to_not include "In the Ethics statement card, you have selected Yes to one of the questions."
+    text = overlay.letter_text
+    expect(text).to_not include "In the Ethics statement card, you have selected Yes to one of the questions."
   end
 
   scenario "unchecking a box with no associated text has no effect" do
@@ -63,14 +63,14 @@ feature 'Initial Tech Check', js: true do
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter
     overlay.click_autogenerate_email_button
-    textarea_before = overlay.letter
+    text_before = overlay.letter_text
 
     question_elements = all(".question-checkbox")
     question = question_elements[1]
     question.find("input").click
     overlay.click_autogenerate_email_button
 
-    textarea_after = overlay.letter
-    expect(textarea_before.value).to eq(textarea_after.value)
+    text_after = overlay.letter_text
+    expect(text_before).to eq(text_after)
   end
 end

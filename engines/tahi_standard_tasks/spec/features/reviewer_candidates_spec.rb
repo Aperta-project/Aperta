@@ -1,10 +1,11 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature "User adding reviewer candidates", js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
-  let!(:paper) do
-    create :paper,:with_integration_journal, :with_tasks, creator: admin
-  end
+  let!(:paper) { create :paper, :with_integration_journal, :with_tasks, creator: admin }
+  let(:reason) { 'Because they do good work' }
+
   let!(:reviewer_recommendations_task) do
     FactoryGirl.create(
       :reviewer_recommendations_task,
@@ -44,7 +45,8 @@ feature "User adding reviewer candidates", js: true do
       find(".last-name input[type=text]").set "AraAnn"
       find(".email input[type=text]").set "barb@example.com"
       choose "Recommend"
-      find("textarea[name*=reason]").set "Because they do good work"
+      wait_for_editors
+      set_rich_text(editor: 'reviewer_recommendations--reason', text: reason)
       click_button "done"
     end
 
@@ -52,7 +54,7 @@ feature "User adding reviewer candidates", js: true do
     within ".reviewer" do
       expect(page).to have_selector(".full-name", text: "Barb AraAnn")
       expect(page).to have_selector(".email", text: "barb@example.com")
-      expect(page).to have_selector(".reason", text: "Because they do good work")
+      expect(page).to have_selector(".reason", text: reason)
     end
 
     # Edit the reviewer
@@ -79,5 +81,4 @@ feature "User adding reviewer candidates", js: true do
       expect(page).to have_selector(".full-name", text: "Bob AraAnn")
     end
   end
-
 end

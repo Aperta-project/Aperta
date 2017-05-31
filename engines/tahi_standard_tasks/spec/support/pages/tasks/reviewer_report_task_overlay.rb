@@ -1,6 +1,8 @@
 # Helper class for running specs
 # coding: utf-8
 class ReviewerReportTaskOverlay < PaperTaskOverlay
+  include RichTextEditorHelpers
+
   def ensure_no_review_history
     expect(page).to_not have_selector(".review-history")
   end
@@ -34,17 +36,17 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
 
   def fill_in_report(values = {})
     values = values.with_indifferent_access.reverse_merge(
-      "reviewer_report--competing_interests--detail" =>
-        "default competing interests",
-      "reviewer_report--additional_comments" =>
-        "default additional_comments content",
+      "reviewer_report--competing_interests--detail" => "default competing interests",
+      "reviewer_report--additional_comments" => "default additional_comments content",
       "reviewer_report--identity" => "default identity content"
     )
 
+    fill_in_fields(values)
+  end
+
+  def fill_in_fields(values = {})
     values.each_pair do |key, value|
-      element_name = key.to_s
-      fill_in element_name, with: value
-      page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('input')"
+      set_rich_text editor: key, text: value
     end
   end
 

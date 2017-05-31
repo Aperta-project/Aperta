@@ -20,6 +20,11 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
     this._super(...arguments);
     this.setupPusher(model);
     model.get('commentLooks');
+
+    let popout = this.get('popoutParent');
+    $(window).on('beforeunload.popout', function(){
+      popout.closeAll();
+    });
   },
 
   redirect(model, transition) {

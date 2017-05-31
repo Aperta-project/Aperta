@@ -41,6 +41,7 @@ class Paper < ActiveRecord::Base
            dependent: :destroy,
            inverse_of: :paper
   has_many :tasks, inverse_of: :paper
+  has_many :card_versions, through: :tasks
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal

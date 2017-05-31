@@ -57,5 +57,38 @@ describe CustomCardTask do
         end
       end
     end
+
+    context 'with a role than can view a card version' do
+      permissions do |context|
+        permission(
+          action: 'view',
+          applies_to: CardVersion.name,
+          filter_by_card_id: context.card.id
+        )
+      end
+
+      role :with_access do |context|
+        has_permission(
+          action: 'view',
+          applies_to: CardVersion.name,
+          filter_by_card_id: context.card.id
+        )
+      end
+
+      describe "when a user is assigned to that role on a paper" do
+        before(:each) do
+          assign_user user, to: paper, with_role: role_with_access
+        end
+
+        it "the user can view the card version" do
+          expect(user).to be_able_to(:view, card_version)
+        end
+
+        it "the user can not view another card version" do
+          pending("APERTA-10226")
+          expect(user).not_to be_able_to(:view, other_task.card_version)
+        end
+      end
+    end
   end
 end

@@ -31,6 +31,12 @@ Authorizations.configure do |config|
 
   config.assignment_to(
     Journal,
+    authorizes: CardVersion,
+    via: :card_versions
+  )
+
+  config.assignment_to(
+    Journal,
     authorizes: Card,
     via: :cards
   )
@@ -40,7 +46,6 @@ Authorizations.configure do |config|
     authorizes: DiscussionTopic,
     via: :discussion_topics
   )
-
 
   #
   # Paper level access
@@ -57,6 +62,11 @@ Authorizations.configure do |config|
     via: :discussion_topics
   )
 
+  config.assignment_to(
+    Paper,
+    authorizes: CardVersion,
+    via: :card_versions
+  )
 
   #
   # Task level access
@@ -65,6 +75,12 @@ Authorizations.configure do |config|
     Task,
     authorizes: Paper,
     via: :paper
+  )
+
+  config.assignment_to(
+    Task,
+    authorizes: CardVersion,
+    via: :card_version
   )
 
   # When a permission with applies_to = Task also has a non-NULL
@@ -80,4 +96,10 @@ Authorizations.configure do |config|
       .on(card_versions[:id].eq(table[:card_version_id]))
       .where(column.eq(nil).or(column.eq(card_versions[:card_id])))
   end
+
+  # TODO: APERTA-10226
+  # This code was generating a SQL error. To be fixed in APERTA-10226.
+  # config.filter(CardVersion, :filter_by_card_id) do |query, column, table|
+  #   query.where(table[:card_id].eq(column).or(column.eq(nil)))
+  # end
 end

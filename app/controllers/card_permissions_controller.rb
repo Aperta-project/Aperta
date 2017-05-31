@@ -10,32 +10,41 @@ class CardPermissionsController < ApplicationController
     # Limit the actions that can be managed by this controller
     assert(action == 'edit' || action == 'view', "Bad action")
 
-    # Override default @permission
-    @permission = Permission.ensure_exists(
+    # Override default @task_permission, @card_permission
+    @task_permission = Permission.ensure_exists(
       action,
       applies_to: 'Task',
       filter_by_card_id: safe_params[:filter_by_card_id]
     )
 
+    @card_permission = Permission.ensure_exists(
+      'view',
+      applies_to: 'CardVersion',
+      filter_by_card_id: safe_params[:filter_by_card_id]
+    )
+
     # When creating a new permission, append the roles if the permission already
     # existing and the client did not know about it.
-    new_roles = roles.select { |role| !permission.roles.include?(role) }
-    permission.roles.concat(*new_roles)
-    permission.save!
+    task_permission.roles.concat(*(roles - task_permission.roles))
+    card_permission.roles.concat(*(roles - card_permission.roles))
+    task_permission.save!
+    card_permission.save!
 
-    respond_with permission, serializer: CardPermissionSerializer
+    respond_with task_permission, serializer: CardPermissionSerializer
   end
 
   def destroy
     requires_user_can(:edit, card)
 
-    respond_with permission.destroy, serializer: CardPermissionSerializer
+    task_permission.destroy
+    card_permission.destroy if task_permission.action == 'view'
+    respond_with :empty, serializer: CardPermissionSerializer
   end
 
   def show
     requires_user_can(:edit, card)
 
-    respond_with permission, serializer: CardPermissionSerializer
+    respond_with task_permission, serializer: CardPermissionSerializer
   end
 
   def update
@@ -43,10 +52,12 @@ class CardPermissionsController < ApplicationController
 
     # The only valid thing to do when updating a permission is to change the
     # roles attached to it.
-    permission.roles.replace(roles)
-    permission.save!
+    task_permission.roles.replace(roles)
+    card_permission.roles.replace(roles)
+    task_permission.save!
+    card_permission.save!
 
-    respond_with permission, serializer: CardPermissionSerializer
+    respond_with task_permission, serializer: CardPermissionSerializer
   end
 
   private
@@ -58,15 +69,24 @@ class CardPermissionsController < ApplicationController
   end
 
   def card
-    @card ||= Card.find(permission.filter_by_card_id)
+    @card ||= Card.find(task_permission.filter_by_card_id)
   end
 
-  def permission
-    @permission ||= Permission.find(params[:id])
+  def task_permission
+    @task_permission ||= Permission.find(params[:id])
+  end
+
+  def card_permission
+    @card_permission ||= Permission.where(
+      applies_to: 'CardVersion',
+      action: 'view',
+      filter_by_card_id: task_permission.filter_by_card_id
+    ).first
   end
 
   def roles
-    @roles ||= Role.where(id: safe_params[:role_ids]).tap do |roles|
+    @roles ||= Role.where(id: safe_params[:role_ids])
+                 .includes(:journal).tap do |roles|
       roles.each do |role|
         assert(
           role.journal == card.journal,

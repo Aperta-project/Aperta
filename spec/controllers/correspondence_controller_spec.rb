@@ -1,5 +1,12 @@
 require 'rails_helper'
 
+def correspondence_rbac(access)
+  stub_sign_in user
+  allow(user).to receive(:can?)
+    .with(:manage_workflow, paper)
+    .and_return access
+end
+
 describe CorrespondenceController do
   let(:user) { FactoryGirl.create(:user) }
   let(:journal) { FactoryGirl.create(:journal) }
@@ -12,33 +19,27 @@ describe CorrespondenceController do
     end
 
     context 'when user has access' do
-      let!(:first_correspondence) do
-        FactoryGirl.create(:external_correspondence, paper: paper)
-      end
-      let!(:second_correspondence) do
-        FactoryGirl.create(:external_correspondence, paper: paper)
-      end
+      let!(:ex_corr_1) { FactoryGirl.create(:external_correspondence, paper: paper) }
+      let!(:ex_corr_2) { FactoryGirl.create(:external_correspondence, paper: paper) }
 
       before do
-        stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_workflow, paper)
-          .and_return true
+        correspondence_rbac(true)
       end
 
       it "returns the paper's correspondences" do
         do_request
         expect(res_body['correspondence'].count).to eq(2)
-        expect(res_body['correspondence'][0]['id']).to eq(second_correspondence.id)
+        expect(res_body['correspondence'][0]['id']).to eq(ex_corr_2.id)
+      end
+
+      it 'returns status code 200' do
+        is_expected.to have_http_status(200)
       end
     end
 
     context "when user does not have access" do
       before do
-        stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_workflow, paper)
-          .and_return false
+        correspondence_rbac(false)
       end
 
       it { is_expected.to responds_with(403) }
@@ -61,10 +62,7 @@ describe CorrespondenceController do
 
     context 'when user has access' do
       before do
-        stub_sign_in user
-        allow(user).to receive(:can?)
-          .with(:manage_workflow, paper)
-          .and_return true
+        correspondence_rbac true
       end
 
       context 'when record is valid' do

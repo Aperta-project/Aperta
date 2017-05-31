@@ -7,11 +7,5 @@ class ExternalCorrespondence < Correspondence
 
   belongs_to :paper
 
-  def serialize_copied_recipients
-    # Make sure the copied recipients fit into a string
-  end
-
-  def unserialize_copied_recipients
-    # build the string into a list of copied recipients, if needed
-  end
+  alias_attribute :content, :body
 end

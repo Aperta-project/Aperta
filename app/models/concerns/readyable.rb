@@ -1,4 +1,10 @@
-# Module to include
+# This module deals with a rather specific type of validation state we need
+# to support in the new Card Config world.  'Ready' is a state that is
+# meant to represent whether or not an answer has any validation related issues.
+# We need to do this separate from the standard Rails validations
+# because we want to allow our users to save invalid data, but still
+# know whether to show errors and whether or not a user is allowed
+# to complete a task
 module Readyable
   extend ActiveSupport::Concern
   include ActiveModel::Validations::HelperMethods

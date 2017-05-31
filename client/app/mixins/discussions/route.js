@@ -20,10 +20,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin,{
 
   actions: {
     popOutDiscussions() {
-      let paperId = this.modelFor('paper').id;
-
       let options = {
-        paperId: paperId,
         discussionId: this.get('popoutDiscussionId'),
         path: 'discussions.paper.' + this.get('popoutRoute')
       };

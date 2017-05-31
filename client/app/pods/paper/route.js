@@ -62,12 +62,12 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
 
   actions: {
     openDiscussionsPopout(options) {
-      let paperId = options.paperId;
+      let paper = this.get('controller').model;
       let popout = this.get('popoutParent');
       if (options.discussionId === null) {
-        popout.open(paperId, options.path, paperId, this.get('popoutParams'));
+        popout.open(paper.id, options.path, paper.id, this.get('popoutParams'));
       } else {
-        popout.open(paperId, options.path, paperId,
+        popout.open(paper.id, options.path, paper.id,
                     options.discussionId, this.get('popoutParams'));
       }
     },

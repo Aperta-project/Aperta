@@ -2,8 +2,7 @@ import Ember from 'ember';
 
 export function capitalizeWords(params) {
   let string = params[0];
-  return string
-          .split(' ')
+  return Ember.String.w(string)
           .map((word) => Ember.String.capitalize(word)).join(' ');
 }
 

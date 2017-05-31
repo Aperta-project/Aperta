@@ -93,7 +93,9 @@ class VersionedText < ActiveRecord::Base
   end
 
   def add_file_info
-    raise AttachmentNotDone unless paper.file.done?
+    unless paper.file.errored?
+      raise AttachmentNotDone unless paper.file.done?
+    end
 
     self.file_type = paper.file_type
     self.manuscript_s3_path = paper.file.s3_dir

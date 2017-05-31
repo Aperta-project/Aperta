@@ -46,7 +46,8 @@ export function paperWithTask(taskType, taskAttrs) {
   let paper = Factory.createRecord('Paper', {
     journal_id: journal.id,
     editable: true,
-    publishing_state: 'unsubmitted'
+    publishing_state: 'unsubmitted',
+    current_user_roles: ['Creator']
   }, Factory.getNewId('paper'));
   paper.shortDoi = 'test.000' + paper.id;
 

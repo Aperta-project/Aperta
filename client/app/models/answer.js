@@ -17,6 +17,6 @@ export default DS.Model.extend({
   }),
 
   readyIssuesArray: Ember.computed('readyIssues.[]', function(){
-    return (this.get('readyIssues')) ? this.get('readyIssues').value : [];
+    return this.getWithDefault('readyIssues', []);
   })
 });

@@ -3,4 +3,6 @@
 # would be useful.
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
+  validates :letter, presence: true
+  validates :subject, presence: true
 end

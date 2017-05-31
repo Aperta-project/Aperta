@@ -22,8 +22,6 @@ class Answer < ActiveRecord::Base
 
   delegate :value_type, to: :card_content
 
-  TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
-
   validates :value, value: true, on: :ready
 
   def children

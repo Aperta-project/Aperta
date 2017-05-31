@@ -1,5 +1,6 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
 import PopoutParentRouteMixin from 'ember-popout/mixins/popout-parent-route';
+import Ember from 'ember';
 
 export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
@@ -78,6 +79,17 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
         this.transitionTo(path);
       }else{
         this.transitionTo(path, options.discussionId);
+      }
+    },
+
+    showOrRaiseDiscussions(path){
+      let paper = this.get('controller').model;
+      let popout = this.get('popoutParent');
+
+      if (Ember.isEmpty(popout.popoutNames)){
+        this.transitionTo(path);
+      } else {
+        popout.popouts[paper.id].focus();
       }
     }
   }

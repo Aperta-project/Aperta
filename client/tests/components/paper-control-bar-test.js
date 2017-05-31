@@ -5,22 +5,19 @@ import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import wait from 'ember-test-helpers/wait';
+import stubRouteAction from 'tahi/tests/helpers/stub-route-action';
 import Ember from 'ember';
 
 moduleForComponent('paper-control-bar', 'Integration | Component | Paper Control Bar', {
   integration: true,
   beforeEach() {
     manualSetup(this.container);
-    this.routeActions = {
+    let routeActions = {
       showOrRaiseDiscussions(arg) {
         return Ember.RSVP.resolve({arg});
       }
     };
-    this.container
-      .registry
-      .registrations['helper:route-action'] = Ember.Helper.helper((arg) => {
-        return this.routeActions[arg[0]];
-      });
+    stubRouteAction(this.container, routeActions);
     $.mockjax({
       type: 'GET',
       url: '/api/notifications/',

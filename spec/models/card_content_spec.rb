@@ -40,10 +40,31 @@ describe CardContent do
   end
 
   context "root scope" do
-    let!(:root_content) { FactoryGirl.create(:card_content, parent: nil) }
+    let!(:root_content) { FactoryGirl.create(:card_content, :root) }
 
     it 'returns all roots' do
       expect(CardContent.all.root.id).to be(root_content.id)
+    end
+  end
+
+  context "properly ignored soft-deleted records" do
+    let(:root_content) { FactoryGirl.create(:card_content, :root, :with_child) }
+
+    it 'returns self and all child content' do
+      expect(root_content.children.length).to eq(1)
+      expect(root_content.self_and_descendants.length).to eq(2)
+    end
+
+    context "with deleted child content" do
+      before do
+        root_content.children.each(&:destroy)
+        root_content.reload
+      end
+
+      it 'has no children' do
+        expect(root_content.children.length).to eq(0)
+        expect(root_content.self_and_descendants.length).to eq(1)
+      end
     end
   end
 end

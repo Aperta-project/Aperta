@@ -53,6 +53,9 @@ export default Ember.Component.extend({
   canEdit: true,
   canManage: true,
   classNames: ['ad-hoc-body'],
+  isAdhocStaff: Ember.computed('task.data.title', function() {
+    return this.get('task.data.title') === 'Ad-hoc for Staff Only';
+  }),
 
   // BuildsTaskTemplate stuff
   emailSentStates: Ember.computed(() => { return []; }),

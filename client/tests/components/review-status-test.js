@@ -12,7 +12,8 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
     this.set('report', {
       status: 'not_invited',
       revision: 'v99.0',
-      statusDatetime: new Date(2020, 0, 1)
+      statusDatetime: new Date(2020, 0, 1),
+      dueAt: new Date(2020, 1, 25)
     });
   }
 });
@@ -25,7 +26,7 @@ test('it shows not invited', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
     'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
@@ -37,7 +38,7 @@ test('it shows not invited', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
     'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
@@ -54,8 +55,8 @@ test('it shows pending', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
-    'Pending: Invitation to review v99.0 accepted January 1, 2020',
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Pending: review of v99.0 due February 25, 2020 12:00 am Invitation accepted January 1, 2020',
     'Block template shows pending text with date'
   );
 
@@ -66,8 +67,8 @@ test('it shows pending', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
-    'Pending: Invitation to review v99.0 accepted January 1, 2020',
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Pending: review of v99.0 due February 25, 2020 12:00 am Invitation accepted January 1, 2020',
     'Block template shows pending text with date'
   );
 });
@@ -82,8 +83,8 @@ test('it shows invited', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
-    'Invited: Invitation to review v99.0 sent on January 1, 2020',
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Invited: review of v99.0 due February 25, 2020 12:00 am Invitation sent on January 1, 2020',
     'Block template shows invited text with date'
   );
 });
@@ -98,8 +99,8 @@ test('it shows declined', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
-    'Declined: Invitation to review v99.0 declined January 1, 2020',
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Declined: review of v99.0 due February 25, 2020 12:00 am Invitation declined January 1, 2020',
     'Block template shows declined text with date'
   );
 });
@@ -114,8 +115,8 @@ test('it shows rescinded', function(assert) {
   `);
 
   assert.equal(
-    this.$('.report-status').text().trim(),
-    'Rescinded: Invitation to review v99.0 rescinded January 1, 2020',
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Rescinded: review of v99.0 due February 25, 2020 12:00 am Invitation rescinded January 1, 2020',
     'Block template shows rescinded text with date'
   );
 });

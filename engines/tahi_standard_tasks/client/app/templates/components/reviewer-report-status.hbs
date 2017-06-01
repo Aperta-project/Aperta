@@ -8,7 +8,8 @@
   <h3>{{report.revision}} Review</h3>
     Completed {{statusDate}}
   {{else}}
-  <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
+  <strong>{{reviewerStatus}}:</strong> {{statusMessage}}<br>
+  <span class='sub-message'>{{statusSubMessage}}</span>
   {{/if}}
   </div>
 {{/if}}

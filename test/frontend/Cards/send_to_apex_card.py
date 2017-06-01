@@ -219,23 +219,22 @@ class SendToApexCard(BaseCard):
       shutil.rmtree(directory_path)
 
   @staticmethod
-  def validate_source_file_in_zip(filename, directory_path, doc2upload, hash_file, short_doi):
+  def validate_source_file_in_zip(filename, directory_path, hash_file, short_doi, file_ext):
     """
     This method compares the hash of the uploaded source file against the hash of the file
     contained in the zip retrieved from FTP
     :param filename: The name of the file to extract
     :param directory_path: The path of the folder
-    :param doc2upload: The uploaded source file
     :param hash_file: Is the hash number of the uploaded source file
     :param short_doi: Is the manuscript ID
+    :param file_ext: Is the file's extention
     :return: None
     """
     zip_ref = zipfile.ZipFile(r'{0}/{1}'.format(directory_path, filename))
     zip_ref.extractall(r'{0}'.format(directory_path))
     zip_ref.close()
 
-    source_file_name, file_ext = os.path.splitext(doc2upload)
-    extracted_source_file = os.path.join(directory_path, '{0}{1}'.format(short_doi, file_ext))
+    extracted_source_file = os.path.join(directory_path, '{0}.{1}'.format(short_doi, file_ext))
     hash_file_extracted = hashlib.sha256(open(extracted_source_file, 'rb').read()).hexdigest()
 
     try:

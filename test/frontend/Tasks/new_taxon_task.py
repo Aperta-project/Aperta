@@ -62,6 +62,8 @@ class NewTaxonTask(BaseTask):
         
         if question_scenario['compliance']:
           compliance_checkbox.click()
+    #Time needed for the system to save all the selected checkboxes
+    time.sleep(3)
 
   def validate_task_elements(self, scenario):
     """

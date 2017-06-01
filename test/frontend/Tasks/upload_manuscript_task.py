@@ -130,6 +130,7 @@ class UploadManuscriptTask(BaseTask):
     """
     uploaded_pdf = self._get(self._uploaded_pdf)
     file_name, file_ext = os.path.splitext(uploaded_pdf.text)
+    full_file_name = '{0}{1}'.format(file_name, file_ext)
     return file_name
 
   def upload_source_file(self, file_name='random'):
@@ -150,13 +151,24 @@ class UploadManuscriptTask(BaseTask):
       doc2upload = random.choice(docs)
       fn = os.path.join(os.getcwd(), doc2upload)
     else:
-      doc2upload = file_name
-      fn = os.path.join(os.getcwd(), file_name)
-    with open(fn, 'rb') as fh:
-      hash_file = hashlib.sha256(fh.read()).hexdigest()
-    logging.info('Sending document: {0}'.format(fn))
-    time.sleep(1)
-    self._driver.find_element_by_id('upload-source-file').send_keys(fn)
+      doc2upload = 'frontend/assets/docs/{0}'.format(file_name)
+      current_path = os.getcwd()
+      fn_doc = '{0}/{1}.doc'.format(current_path, doc2upload)
+      fn_docx = '{0}/{1}.docx'.format(current_path, doc2upload)
+    try:
+      with open(fn_doc, 'rb') as fh:
+        hash_file = hashlib.sha256(fh.read()).hexdigest()
+      logging.info('Sending document: {0}'.format(fn_doc))
+      time.sleep(1)
+      self._driver.find_element_by_id('upload-source-file').send_keys(fn_doc)
+      file_ext = 'doc'
+    except IOError:
+      with open(fn_docx, 'rb') as fh:
+        hash_file = hashlib.sha256(fh.read()).hexdigest()
+      logging.info('Sending document: {0}'.format(fn_docx))
+      time.sleep(1)
+      self._driver.find_element_by_id('upload-source-file').send_keys(fn_docx)
+      file_ext = 'docx'
     # Time needed for script execution (file upload).
     time.sleep(7)
-    return doc2upload, hash_file
+    return file_name, hash_file, file_ext

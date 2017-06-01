@@ -5,13 +5,22 @@ class ReviewerReport < ActiveRecord::Base
 
   default_scope { order('decision_id DESC') }
 
+  has_one :due_datetime, as: :due
+
   belongs_to :task, foreign_key: :task_id
   belongs_to :user
   belongs_to :decision
+  has_one :paper, through: :task
 
   validates :task,
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
                   message: 'Only one report allowed per reviewer per decision' }
+
+  delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
+
+  def set_due_datetime(length_of_time: 10.days)
+    DueDatetime.set_for(self, length_of_time: length_of_time)
+  end
 
   def self.for_invitation(invitation)
     reports = ReviewerReport.where(user: invitation.invitee,
@@ -28,6 +37,7 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
+          after_commit: [:set_due_datetime],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end

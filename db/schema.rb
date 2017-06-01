@@ -354,6 +354,17 @@ ActiveRecord::Schema.define(version: 20170713223217) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "due_datetimes", force: :cascade do |t|
+    t.integer  "due_id"
+    t.string   "due_type"
+    t.datetime "due_at"
+    t.datetime "originally_due_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "due_datetimes", ["due_type", "due_id"], name: "index_due_datetimes_on_due_type_and_due_id", using: :btree
+
   create_table "email_logs", force: :cascade do |t|
     t.string   "sender"
     t.string   "recipients"

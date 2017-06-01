@@ -79,6 +79,7 @@ export default DS.Model.extend({
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
+  currentUserRoles: attr(),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -200,6 +201,28 @@ export default DS.Model.extend({
     return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
 
+  hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
+  'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
+
+  authorHasErrorOnPreSubmission: computed('isUnsubmitted', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isUnsubmitted', ['Creator']);
+  }),
+
+  authorHasErrorOnSubmission: computed('isSubmitted', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isSubmitted', ['Creator']);
+  }),
+
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isSubmitted', 'editable', 
+  'file.status', function(){
+    let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray) && this.get('editable');
+  }),
+
+  otherRolesHasErrorOnSubmitted: computed('currentUserRoles','isSubmitted', function(){
+    let roleArray = ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'];
+    return this.stateHasErrorsForRole('isSubmitted', roleArray);
+  }),
+
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
       return "initial";
@@ -252,6 +275,14 @@ export default DS.Model.extend({
   hasSimilarityChecks: computed.notEmpty('similarityChecks'),
 
   restless: Ember.inject.service(),
+
+  stateHasErrorsForRole(state, roleArray) {
+    return this.get(state) &&
+    this.get('file.status') ===  'error'
+    && roleArray.any((role) => {
+      return this.get('currentUserRoles').includes(role);
+    });
+  },
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

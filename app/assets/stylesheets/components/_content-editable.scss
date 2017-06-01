@@ -32,10 +32,16 @@ div[contenteditable=true] {
 
   input[type=checkbox] {
     margin-top: 10px;
+    height: 40px;
   }
 
 }
 
 .content-editable-muted {
   color: #aaa;
+}
+
+div[contenteditable=true].author-response {
+  height: 100px;
+  border-radius: 4px;
 }

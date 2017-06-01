@@ -224,7 +224,7 @@ class SendToApexTest(CommonTest):
     upload_manuscript_task = UploadManuscriptTask(self.getDriver())
     manuscript_page.click_task('Upload Manuscript')
     source_file_name = upload_manuscript_task.take_name_of_pdf_file()
-    doc2upload, hash_file = upload_manuscript_task.upload_source_file(source_file_name)
+    doc2upload, hash_file, file_ext = upload_manuscript_task.upload_source_file(source_file_name)
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -254,8 +254,8 @@ class SendToApexTest(CommonTest):
     # Connecting to FTP
     logging.info('Connecting to FTP and taking the file')
     filename, directory_path = send_to_apex_card.connect_to_aperta_ftp(short_doi)
-    send_to_apex_card.validate_source_file_in_zip(filename, directory_path, doc2upload, hash_file,
-                                                  short_doi)
+    send_to_apex_card.validate_source_file_in_zip(filename, directory_path, hash_file, short_doi,
+                                                  file_ext)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

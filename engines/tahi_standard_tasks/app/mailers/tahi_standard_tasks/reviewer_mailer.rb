@@ -47,6 +47,8 @@ module TahiStandardTasks
       @journal = @paper.journal
       @assignee = User.find_by(id: assignee_id)
       @assignee_name = display_name(@assignee)
+      @reviewer_report = @assignee.reviewer_reports.joins( :task, :paper).where(papers: {id: paper_id}).first
+      @review_due_at = @reviewer_report.due_at
 
       mail(
         to: @assignee.try(:email),

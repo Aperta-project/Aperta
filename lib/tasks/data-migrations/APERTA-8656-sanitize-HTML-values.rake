@@ -5,28 +5,6 @@ require 'differ'
 namespace :data do
   namespace :migrate do
     namespace :html_sanitization do
-      desc 'It goes through every snapshot that has HTML values in it sanitizes it'
-      task sanitize_snapshot_html: :environment do
-        # list = [
-        #   [['adhoc-attachment',      'decision-attachment',
-        #     'invitation-attachment', 'manuscript-attachment',
-        #     'question-attachment',   'sourcefile-attachment', 'figure'
-        #    ],
-        #    ['caption', 'title']
-        #   ],
-        #   [['decision'], ['letter']],
-        #   [['discussion-reply'], ['letter']],
-        #   [['invitation'], ['body', 'decline_reason', 'reviewer_suggestions']],
-        #   [['paper'], ['title', 'abstract']],
-        #   [['related-article'], ['linked_title']],
-        # ]
-
-        # APERTA-8566: Snapshots will not be migrated
-        # dry = ENV['DRY_RUN'] == 'true'
-        # list.each do |m|
-        #   SnapshotMigratorIterator.run!(m, dry_run: dry)
-        # end
-      end
 
       desc 'It goes through every HTML database column and sanitizes it'
       task sanitize_database_html: :environment do
@@ -105,16 +83,6 @@ namespace :data do
           end
         end
       end
-    end
-  end
-end
-
-# Helper class for APERTA-8656 snapshot migration
-class SnapshotMigratorIterator
-  def self.run!(arr, dry_run: false)
-    arr[0].each do |model_name|
-      sm = SnapshotMigrator.new(model_name, arr[1], HtmlSanitizationSnapshotConverter.new, dry_run: dry_run)
-      sm.call!
     end
   end
 end

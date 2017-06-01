@@ -21,19 +21,18 @@ out. Does the reviewer have to run a rake task?
 
 Reviewer tasks:
 
-- [ ] I skimmed the code; it makes sense
 - [ ] I read the code; it looks good
-- [ ] I ran the code (in the review environment or ci)
-- [ ] I performed a 5 minute walkthrough of the site looking for oddities
-- [ ] I have found the tests to be sufficient and complete
-- [ ] I agree the code fulfills the Acceptance Criteria
+- [ ] I ran the code (against a review environment, ci or other common environment)
+- [ ] If the PR changes code on which any other tests are dependent, I ran the dependent tests
+- [ ] I have found the tests to address all explicit and implicit AC or other test standards
 - [ ] I agree the author has fulfilled their tasks
 - [ ] All asserts output the failing attribute, ideally in context
 - [ ] All functions, classes have docstrings with all params and returns specified
-- [ ] Does not rely on dynamic, or excessively positional locators (or bug filed)
+- [ ] Does not rely on dynamic, or excessively positional (more than two relations) locators
 - [ ] Does not rely on explicit sleeps except where absolutely necessary or dictated by the 
         complexity of working around such use. Comment why when used.
 - [ ] Follows first PLOS style guidelines for Python, then PEP-8
+- [ ] Code is implemented in a Python 2/3 agnostic way
 
 #### After the Code Review:
 

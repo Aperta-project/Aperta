@@ -9,6 +9,8 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :created_at,
     :status,
     :status_datetime,
+    :due_at,
+    :originally_due_at,
     :revision
   has_one :task
 

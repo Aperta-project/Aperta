@@ -30,13 +30,6 @@ test(`it displays content.text as unescaped html in a <p>`, function(assert) {
   assert.elementFound('.card-content-date-picker b.foo');
 });
 
-test(`it displays content.label as unescaped html in a <p>`, function(assert) {
-  this.set('content', Ember.Object.create({ label: '<b class="bar">Bar</b>' }));
-
-  this.render(template);
-  assert.elementFound('.card-content-date-picker b.bar');
-});
-
 test(`it renders a date picker with a title`, function(assert) {
   this.set('content', Ember.Object.create({ text: 'Title' }));
 

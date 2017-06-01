@@ -41,7 +41,6 @@ module CardConfiguration
           {
             ident: "submision-date",
             text: "A Title",
-            label: "Submission Date",
             placeholder: "Enter a date",
             value_type: "text",
             content_type: "date-picker"

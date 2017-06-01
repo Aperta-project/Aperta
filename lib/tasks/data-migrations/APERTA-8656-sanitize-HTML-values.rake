@@ -5,7 +5,6 @@ require 'differ'
 namespace :data do
   namespace :migrate do
     namespace :html_sanitization do
-
       desc 'It goes through every HTML database column and sanitizes it'
       task sanitize_database_html: :environment do
         paper    = -> (record) { record.id }

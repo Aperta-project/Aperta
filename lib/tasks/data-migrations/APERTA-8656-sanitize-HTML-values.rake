@@ -63,7 +63,6 @@ namespace :data do
               next if before.strip == after.strip
               if dry
                 diffs = Differ.diff_by_word(after, before).to_s.gsub(/\s/, ' ')
-                diffs = after.to_s.gsub(/\s/, ' ')
                 puts "PAPER #{paper_id} - COLUMN #{model} #{field} [#{record.id}]: #{diffs}"
               else
                 record[field] = after

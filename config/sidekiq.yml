@@ -5,3 +5,7 @@
   - mailers
   - eventstream
 :dynamic: true
+:schedule:
+  plos_billing_log_export:
+    cron: 'TBD'
+    class: PlosBillingLogExport

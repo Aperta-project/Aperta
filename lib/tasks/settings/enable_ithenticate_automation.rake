@@ -16,7 +16,10 @@
 #    after_first_minor_revise_decision
 #    after_first_major_revise_decision
 #
-
+# To find the manuscript manager template id, go to edit a manuscript manager
+# template in the admin screen, and check the url. For instance:
+# https://plos-ciagent-pr-3094.herokuapp.com/admin/journals/1/manuscript_manager_templates/4/edit
+# This is the manuscript manager template id ----------------------------------------------^
 namespace :settings do
   desc "Enable Similarity Check automation by given manuscript manager template"
   task :enable_ithenticate_automation, [:id, :value] => :environment do |_, args|

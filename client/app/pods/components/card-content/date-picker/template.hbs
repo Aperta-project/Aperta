@@ -1,0 +1,13 @@
+<div class="form-group">
+  <p class="picker-title">{{{content.text}}}</p>
+  <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
+
+    {{date-picker
+        name=name
+        type="text"
+        value=answer.value
+        date=answer.value
+        placeholder=content.placeholder
+        dateChanged="valueChanged"}}
+  </div>
+</div>

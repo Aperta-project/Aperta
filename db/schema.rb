@@ -739,6 +739,7 @@ ActiveRecord::Schema.define(version: 20170606190255) do
     t.string   "state",                           null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "error_message"
   end
 
   create_table "simple_reports", force: :cascade do |t|

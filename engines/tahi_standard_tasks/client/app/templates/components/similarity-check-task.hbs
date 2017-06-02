@@ -6,6 +6,11 @@
     <h3>Similarity Check Report</h3>
   {{/if}}
 
+  {{#each latestVersionFailedChecks as |check|}}
+    {{flash-message remove="removeRouteMessage"
+                    message=check}}
+  {{/each}}
+
   {{#each latestVersionedText.similarityChecks as |check|}}
     {{similarity-check check=check}}
   {{/each}}

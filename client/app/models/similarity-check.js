@@ -11,6 +11,12 @@ export default DS.Model.extend({
   updatedAt: DS.attr('date'),
   ithenticateScore: DS.attr('string'),
 
+  text: Ember.computed('state', function() {
+    return 'some message';
+  }),
+  type:    Ember.computed('errorMessage', function() {
+    return 'error';
+  }),
   failed: Ember.computed.equal('state', 'failed'),
   succeeded: Ember.computed.equal('state', 'report_complete'),
   incomplete: Ember.computed('state', function() {

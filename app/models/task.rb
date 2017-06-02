@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
   include NestedQuestionable
   include Commentable
   include Snapshottable
+  include CustomCastTypes
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
   DEFAULT_ROLE_HINT = 'user'.freeze

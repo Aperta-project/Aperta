@@ -1,14 +1,28 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  _setupTopicsPaths: Ember.on('init', function() {
-    let base = 'paper.' + this.get('subRouteName') + '.discussions.';
+  init() {
+    this._setupTopicsPaths();
+    this._super(...arguments);
+  },
+
+  paperModel() {
+    return this.modelFor('paper');
+  },
+
+  makeBasePath() {
+    return 'paper.' + this.get('subRouteName') + '.discussions';
+  },
+
+  _setupTopicsPaths() {
+    let base = this.makeBasePath();
 
     this.setProperties({
       topicsParentPath: 'paper.' + this.get('subRouteName'),
-      topicsIndexPath:  base + 'index',
-      topicsNewPath:    base + 'new',
-      topicsShowPath:   base + 'show'
+      topicsBasePath:   base,
+      topicsIndexPath:  base + '.index',
+      topicsNewPath:    base + '.new',
+      topicsShowPath:   base + '.show'
     });
-  })
+  }
 });

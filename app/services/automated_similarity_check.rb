@@ -9,10 +9,8 @@ class AutomatedSimilarityCheck
 
   # I could use a hash of procs for this, but folks will probably
   # think it's way more weird than a case statement
-  # rubocop:disable Metrics/CyclomaticComplexity
   def should_run?
-    return false unless setting
-    case setting.value
+    case setting_value
     when 'off'
       false
     when 'at_first_full_submission'
@@ -25,18 +23,17 @@ class AutomatedSimilarityCheck
       submitted_after_first_major_revise_decision?
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
-  def setting
-    @setting ||=
+  def setting_value
+    @setting_value ||=
       begin
         # does the paper have a similarity check task?
         check_task = paper.tasks.find_by(
           type: "TahiStandardTasks::SimilarityCheckTask"
         )
 
-        return nil unless check_task && check_task.task_template
-        check_task.task_template.setting('ithenticate_automation')
+        return 'off' unless check_task && check_task.task_template
+        check_task.task_template.setting('ithenticate_automation').value
       end
   end
 
@@ -47,7 +44,7 @@ class AutomatedSimilarityCheck
       )
       Rails.logger.info <<-HERE
         Performing automated similarity check
-        #{similarity_check.id} for paper #{paper.id}. Checks are set to run #{setting.value}
+        #{similarity_check.id} for paper #{paper.id}. Checks are set to run #{setting_value}
       HERE
       similarity_check.start_report_async
       similarity_check

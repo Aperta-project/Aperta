@@ -51,7 +51,8 @@ export default TaskComponent.extend(HasBusyStateMixin, {
       );
     },
 
-    letterChanged() {
+    letterChanged(contents) {
+      this.set('initialDecision.letter', contents);
       Ember.run.debounce(this, this.saveDecision, 250);
     },
 

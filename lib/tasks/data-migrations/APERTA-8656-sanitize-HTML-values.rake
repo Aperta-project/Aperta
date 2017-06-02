@@ -37,7 +37,7 @@ namespace :data do
             next unless paper_id.in?(current_papers)
 
             counter = processed_papers[paper_id]
-            counter.kinds << model.name
+            counter.kinds << (record.try(:type) || model.name)
 
             fields.each do |field|
               before = record[field]
@@ -64,10 +64,11 @@ namespace :data do
 
         processed_papers.keys.sort.each do |paper_id|
           counter = processed_papers[paper_id]
+          next if counter.fields.zero?
           counter.kinds.sort.each do |kind|
-            next if counter.fields.zero?
             puts "Paper [#{paper_id}] migrated #{counter.fields} HTML #{kind} field(s) in #{counter.records} record(s)"
           end
+          puts "\n"
         end
       end
 

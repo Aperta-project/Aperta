@@ -5,11 +5,6 @@ class QuestionAttachmentsController < ApplicationController
   respond_to :json
 
   def create
-        puts "=============================="
-    puts "=============================="
-    puts "creating question_attachment"
-    puts "=============================="
-    puts "=============================="
     requires_user_can :edit, task_for(question_attachment)
     question_attachment.update(caption: attachment_params[:caption])
     question_attachment.ready?
@@ -18,11 +13,6 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def update
-    puts "=============================="
-    puts "=============================="
-    puts "updating question_attachment"
-    puts "=============================="
-    puts "=============================="
     requires_user_can :edit, task_for(question_attachment)
     question_attachment.update caption: attachment_params[:caption]
     # This check is the result of a timeboxed fix for a bug that manifests
@@ -45,6 +35,7 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def show
+    question_attachment.ready?
     requires_user_can :view, task_for(question_attachment)
     respond_with question_attachment
   end

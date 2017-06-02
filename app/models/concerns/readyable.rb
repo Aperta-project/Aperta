@@ -14,18 +14,24 @@ module Readyable
   class ValueValidator < ActiveModel::EachValidator #:nodoc:
     def validate_each(answer, _attribute, _value)
       if answer.kind_of? QuestionAttachment
-      binding.pry
-        answer.owner.card_content.card_content_validations.each do |ccv|
-          if !ccv.validate_answer(answer)
-            answer.errors.add(:value, ccv.validation_type.underscore.to_sym, message: ccv.error_message)
+        # QuestionAttachment
+        attachment = answer
+        attachment.owner.card_content.card_content_validations.each do |ccv|
+          unless ccv.validate_answer(attachment)
+            attachment.ready = false
+            attachment.ready_issues = ccv.error_message
+            answer.errors.add(:title,
+                              ccv.validation_type.underscore.to_sym,
+                              message: ccv.error_message)
           end
         end
       else
-      binding.pry
-
+        # Answer
         answer.card_content.card_content_validations.each do |ccv|
-          if !ccv.validate_answer(answer)
-            answer.errors.add(:value, ccv.validation_type.underscore.to_sym, message: ccv.error_message)
+          unless ccv.validate_answer(answer)
+            answer.errors.add(:value,
+                              ccv.validation_type.underscore.to_sym,
+                              message: ccv.error_message)
           end
         end
       end
@@ -46,6 +52,7 @@ module Readyable
   end
 
   attr_accessor :ready_issues
+  attr_accessor :ready
 
   # Check if this thing is "ready" (for submission, for completion, for
   # registration)
@@ -56,7 +63,6 @@ module Readyable
     if @ready_issues.present?
       false
     elsif valid?(:ready)
-      binding.pry
       true
     else
       @ready_issues = errors.dup

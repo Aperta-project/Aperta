@@ -35,9 +35,7 @@ class UserMentions
 
   def tag_for_user(user)
     <<-HTML.gsub!(/\s+/, " ").strip
-      <a class="discussion-at-mention"
-         data-user-id="#{user.id}"
-         title="#{user.full_name}">@#{user.username}</a>
+      <a title="#{user.full_name}">@#{user.username}</a>
     HTML
   end
 end

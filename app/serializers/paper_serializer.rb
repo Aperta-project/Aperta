@@ -3,7 +3,7 @@ class PaperSerializer < LitePaperSerializer
              :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement,
-             :versions_contain_pdf, :legends_allowed
+             :versions_contain_pdf, :legends_allowed, :current_user_roles
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -36,6 +36,12 @@ class PaperSerializer < LitePaperSerializer
 
   def versions_contain_pdf
     object.versioned_texts.any? { |vt| vt.file_type == "pdf" }
+  end
+
+  def current_user_roles
+    return [] unless scope
+    Role.where(journal_id: object.journal).joins(:assignments)
+    .where("assignments.user_id = ?", scope).pluck(:name).uniq
   end
 
   def links

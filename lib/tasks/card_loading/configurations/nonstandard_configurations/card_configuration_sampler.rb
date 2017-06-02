@@ -39,6 +39,13 @@ module CardConfiguration
             content_type: "short-input"
           },
           {
+            ident: "submision-date",
+            text: "A Title",
+            placeholder: "Enter a date",
+            value_type: "text",
+            content_type: "date-picker"
+          },
+          {
             text: "This is a check box",
             label: "Check this box if you agree",
             value_type: "boolean",

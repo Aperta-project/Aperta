@@ -8,13 +8,13 @@ export default Ember.TextArea.extend(AtWhoSupport, {
   },
 
   atWhoUsers: Ember.computed('atMentionableUsers.[]', function() {
-    return this.get('atMentionableUsers').map(function(user) {
-      const user_obj = {
+    return this.getWithDefault('atMentionableUsers',[]).map(function(user) {
+      const userObj = {
         name: user.get('name'),
         email: user.get('email'),
         username: user.get('username')
       };
-      return user_obj;
+      return userObj;
     });
   }),
 

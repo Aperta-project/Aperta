@@ -1,5 +1,4 @@
 <h2>Email Templates</h2>
-
 {{#if journal}}
   <button class="button-primary button--blue">
     ADD EMAIL TEMPLATE
@@ -18,7 +17,9 @@
           <td>{{template.text}}</td>
           <td>{{template.subject}}</td>
           <td>
-            <a href="#">{{fa-icon "pencil"}} Edit</a>
+            {{#link-to 'admin.cc.edit_email' template.id}}
+              {{fa-icon "pencil"}} Edit
+            {{/link-to}}
           </td>
         </tr>
       {{/each}}

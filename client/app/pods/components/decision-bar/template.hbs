@@ -5,7 +5,7 @@
     <div class="decision-bar-revision-number">
       {{decision.revisionNumber}}
     </div>
-    {{humanize decision.verdict}}
+    {{capitalize-words (humanize decision.verdict)}}
   </h4>
 
   {{#if decision.rescinded}}

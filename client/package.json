@@ -79,7 +79,8 @@
   },
   "devDependencies": {
     "ember-autoresize": "0.5.22",
-    "ember-cli-tinymce": "0.1.6",
-    "ember-exam": "0.6.0"
+    "ember-exam": "0.6.0",
+    "ember-popout": "1.0.0",
+    "ember-route-action-helper": "2.0.3"
   }
 }

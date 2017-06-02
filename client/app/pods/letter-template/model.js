@@ -5,5 +5,6 @@ export default DS.Model.extend({
   templateDecision: DS.attr('string'),
   to: DS.attr('string'),
   subject: DS.attr('string'),
-  letter: DS.attr('string')
+  letter: DS.attr('string'),
+  journalId: DS.attr('number')
 });

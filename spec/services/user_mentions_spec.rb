@@ -63,9 +63,7 @@ describe UserMentions do
 
     it 'returns the body with decorated at-mentions' do
       expected_html = parse_html <<-HTML.gsub!(/\s+/, " ").strip
-       <a class="discussion-at-mention"
-          data-user-id="#{user_a.id}"
-          title="#{user_a.full_name}">@#{user_a.username}</a>
+       <a title="#{user_a.full_name}">@#{user_a.username}</a>
       HTML
       expect(parse_html(decorated_mentions)).to be_equivalent_to expected_html
     end

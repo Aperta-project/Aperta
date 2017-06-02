@@ -4,7 +4,7 @@ import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 import { manualSetup, make, makeList } from 'ember-data-factory-guy';
-import setupMockServer from 'tahi/tests/helpers/mock-server';
+import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
   'register-decision-task',
@@ -86,12 +86,17 @@ moduleForComponent(
   }
 );
 
+function compareText(assert, field, regex) {
+  let text = getRichText('decision-letter-field');
+  assert.ok(regex.test(text), 'text matches');
+}
+
 test('it renders decision selections', function(assert) {
   assert.elementsFound('.decision-label', 4);
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'Dear');
+    compareText(assert, 'decision-letter-field', /Dear/);
   });
 });
 
@@ -99,10 +104,10 @@ test('it does not update the letter contents on change of verdict unless templat
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'who Accepts');
+    compareText(assert, 'decision-letter-field', /who Accepts/);
     this.selectDecision('Reject');
     return wait().then(()=>{
-      assert.inputContains('.decision-letter-field', 'who Accepts');
+      compareText(assert, 'decision-letter-field', /who Accepts/);
     });
   });
 });
@@ -111,12 +116,12 @@ test('it switches the letter contents on change', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'who Accepts');
+    compareText(assert, 'decision-letter-field', /who Accepts/);
     this.selectDecision('Reject');
     return wait().then(()=>{
       this.select2('Editor Reject');
       return wait().then(()=>{
-        assert.inputContains('.decision-letter-field', 'who Rejects');
+        compareText(assert, 'decision-letter-field', /who Rejects/);
       });
     });
   });
@@ -126,7 +131,7 @@ test('it replaces [LAST NAME] with the authors last name', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
+    compareText(assert, 'decision-letter-field', /Dear Dr\. Jones/);
   });
 });
 
@@ -134,7 +139,7 @@ test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
+    compareText(assert, 'decision-letter-field', /staffpeople@plos\.org/);
   });
 });
 
@@ -143,7 +148,7 @@ test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
   this.select2('RA Accept');
   return wait().then(()=>{
     const journalName = this.task.get('paper.journal.name');
-    assert.inputContains('.decision-letter-field', journalName);
+    compareText(assert, 'decision-letter-field', new RegExp(journalName));
   });
 });
 
@@ -151,7 +156,7 @@ test('it replaces [PAPER TITLE] with the paper title', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'GREAT TITLE');
+    compareText(assert, 'decision-letter-field', /GREAT TITLE/);
   });
 });
 

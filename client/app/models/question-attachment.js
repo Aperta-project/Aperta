@@ -11,4 +11,8 @@ export default DS.Model.extend({
   caption: DS.attr('string'),
   ready: DS.attr('boolean'),
   readyIssues: DS.attr(),
+
+  readyIssuesArray: Ember.computed('readyIssues.[]', function(){
+    return this.getWithDefault('readyIssues', []);
+  })
 });

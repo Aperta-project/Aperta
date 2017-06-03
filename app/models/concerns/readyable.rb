@@ -14,19 +14,20 @@ module Readyable
   class ValueValidator < ActiveModel::EachValidator #:nodoc:
     def validate_each(answer, _attribute, _value)
       if answer.kind_of? QuestionAttachment
-        # QuestionAttachment
         attachment = answer
         attachment.owner.card_content.card_content_validations.each do |ccv|
           unless ccv.validate_answer(attachment)
-            attachment.ready = false
-            attachment.ready_issues = ccv.error_message
-            answer.errors.add(:title,
+            @ready = false
+            @ready_issues = []
+            attachment.errors.add(:title,
                               ccv.validation_type.underscore.to_sym,
                               message: ccv.error_message)
+            attachment.errors.each do |error, message|
+              @ready_issues << message
+            end
           end
         end
       else
-        # Answer
         answer.card_content.card_content_validations.each do |ccv|
           unless ccv.validate_answer(answer)
             answer.errors.add(:value,

@@ -1,7 +1,3 @@
-{{#each answer.attachments as |attachment|}}
-  {{card-content/validation-errors errors= attachment.readyIssuesArray}}
-{{/each}}
-
 {{attachment-manager filePath="tasks/attachment"
   attachments=answer.attachments
   buttonText=content.label

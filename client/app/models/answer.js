@@ -7,6 +7,7 @@ export default DS.Model.extend({
 
   attachments: DS.hasMany('question-attachment', { async: false }),
   cardContent: DS.belongsTo('card-content', { async: false }),
+  // can ready and ready issues be pulled into a module?
   ready: DS.attr('boolean'),
   readyIssues: DS.attr(),
   owner: DS.belongsTo('answerable', { async: false, polymorphic: true }),

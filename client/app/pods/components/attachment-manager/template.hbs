@@ -7,6 +7,8 @@
 {{/if}}
 
 {{#each attachments as |attachment|}}
+  {{card-content/validation-errors errors= attachment.readyIssuesArray}}
+
   {{attachment-item accept=accept
                     attachment=attachment
                     disabled=disabled

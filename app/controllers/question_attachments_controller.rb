@@ -7,7 +7,6 @@ class QuestionAttachmentsController < ApplicationController
   def create
     requires_user_can :edit, task_for(question_attachment)
     question_attachment.update(caption: attachment_params[:caption])
-    question_attachment.ready?
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
@@ -35,7 +34,6 @@ class QuestionAttachmentsController < ApplicationController
   end
 
   def show
-    question_attachment.ready?
     requires_user_can :view, task_for(question_attachment)
     respond_with question_attachment
   end

@@ -11,17 +11,17 @@ class CardContentValidation < ActiveRecord::Base
   private
 
   def validate_by_string_match(answer)
-    regex = Regexp.new(validator)
-    result = answer.value =~ regex
-    result.present?
+    check_string_match(validator, answer.value)
   end
 
   def validate_by_file_name(attachment)
-    return true if attachment.kind_of? Answer || !attachment.title
+    #prevent from failing before upload finished and on parent answer
+    return true if attachment.kind_of?(Answer) || !attachment.title
+    check_string_match(validator, attachment.title)
+  end
 
+  def check_string_match(validator, target)
     regex = Regexp.new(validator)
-    title = attachment.title
-    result = title =~ regex
-    result.present?
+    (target =~ regex).present?
   end
 end

@@ -10,15 +10,6 @@ class AnswerSerializer < ActiveModel::Serializer
   has_one :card_content, embed: :id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments
 
-  # can ready and ready issues be pulled into a module?
-  def ready
-    object.ready?
-  end
-
-  def ready_issues
-    object.ready_issues.try(:messages).as_json
-  end
-
   def owner
     # Polymorphic assocations and STI do not play perfectly well with each other, as per
     # http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#label-Polymorphic+Associations

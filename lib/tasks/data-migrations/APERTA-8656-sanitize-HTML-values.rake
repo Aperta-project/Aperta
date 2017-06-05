@@ -1,6 +1,6 @@
 # Migration for handling snapshot HTML sanitization for APERTA-8656
 
-require 'differ'
+require 'differ' if Rails.env.development?
 
 namespace :data do
   namespace :migrate do

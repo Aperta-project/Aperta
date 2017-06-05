@@ -39,6 +39,14 @@ Router.map(function() {
     });
   });
 
+  this.route('discussions', function() {
+    this.route('paper', {path: '/:paper_shortDoi'}, function() {
+      this.route('index', {path: '/'});
+      this.route('new', { path: '/new'});
+      this.route('show', { path: '/:topic_id' });
+    });
+  });
+
   this.route('profile', { path: '/profile' });
 
   this.route('admin', function() {

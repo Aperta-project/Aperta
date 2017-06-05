@@ -22,6 +22,11 @@ $sheet-toolbar-height: 60px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
 }
 
+.sheet-pop-out, .sheet-pop-in {
+  padding-top:4px;
+  padding-right: 4px;
+  font-size: 24px;
+}
 
 .sheet-close-x {
   @include position(absolute, -4px 0px auto auto);
@@ -30,6 +35,8 @@ $sheet-toolbar-height: 60px;
   font-size: 42px;
   cursor: pointer;
   z-index: 1;
+  display: flex;
+  align-items: center;
 }
 
 .sheet-toolbar {
@@ -55,4 +62,14 @@ $sheet-toolbar-height: 60px;
   @include position(absolute, $sheet-toolbar-height 0px 0px 0px);
   overflow-y: auto;
   padding: 0 30px;
+}
+
+.sheet-popout {
+    .sheet-content {
+        position: relative;
+    }
+
+    .liquid-container, .liquid-child {
+        overflow: visible;
+    }
 }

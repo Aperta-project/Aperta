@@ -246,11 +246,14 @@ test('deleting requires confirmation', function(assert) {
 });
 
 test('reversion button is only present when the card is published with changes and reverts card', function(assert) {
+  assert.expect(6);
+
   let card = make('card', { state: 'published' });
   this.set('card', card);
 
   this.render(
     hbs`
+      <div id='overlay-drop-zone'></div>
       <div id='card-editor-action-buttons'></div>
       {{card-editor/editor card=card}}`
   );
@@ -262,12 +265,23 @@ test('reversion button is only present when the card is published with changes a
   assert.elementFound('.editor-revert',
                       'the revert button is present when card is publishedWithChanges');
 
+  this.set('card.xml', 'Bar');
+  assert.equal($('.editor-revert').attr('disabled'), 'disabled',
+                      'the revert button is disbaled with dirty xml');
+
+  this.set('card.xml', undefined);
+  assert.equal($('.editor-revert').attr('disabled'), undefined,
+                      'the revert button is enabled without dirty xml');
+
+  this.$('button.editor-revert').click();
+  assert.elementFound('.publish-card-overlay.revert .button-primary');
+
   $.mockjax({
     url: `/api/cards/${card.id}/revert`,
     method: 'PUT',
   });
 
-  this.$('.editor-revert').click();
+  this.$('.publish-card-overlay.revert .button-primary').click();
 
   return wait().then(() => {
     assert.mockjaxRequestMade(

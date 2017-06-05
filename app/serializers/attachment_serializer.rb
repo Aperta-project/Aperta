@@ -9,5 +9,6 @@ class AttachmentSerializer < ActiveModel::Serializer
     :preview_src,
     :detail_src,
     :filename,
-    :type
+    :type,
+    :pending_url
 end

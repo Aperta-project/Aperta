@@ -1,4 +1,7 @@
 <div class="sheet sheet--visible">
-  <span class="sheet-close-x" {{action "hideDiscussions"}}>&times;</span>
+  <div class="sheet-close-x">
+    <span class="sheet-pop-out" {{action "popOutDiscussions"}}>&#8598;</span>
+    <span {{action "hideDiscussions"}}>&times;</span>
+  </div>
   {{liquid-outlet}}
 </div>

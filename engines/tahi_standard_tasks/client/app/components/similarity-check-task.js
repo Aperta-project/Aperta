@@ -14,6 +14,7 @@ export default TaskComponent.extend({
   latestVersionSuccessfulChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'report_complete'),
   latestVersionHasSuccessfulChecks: Ember.computed.notEmpty('latestVersionSuccessfulChecks.[]'),
   latestVersionFailedChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'failed'),
+  latestVersionPrimaryFailedChecks: Ember.computed.filterBy('latestVersionFailedChecks', 'dismissed', false),
 
   actions: {
     confirmGenerateReport() {
@@ -31,6 +32,10 @@ export default TaskComponent.extend({
         });
         similarityCheck.save();
       });
+    },
+    dismissMessage(message) {
+      message.set('dismissed', true);
+      message.save();
     }
   }
 });

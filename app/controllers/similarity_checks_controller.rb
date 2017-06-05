@@ -17,6 +17,14 @@ class SimilarityChecksController < ::ApplicationController
     respond_with(similarity_check)
   end
 
+  def update
+    similarity_check = SimilarityCheck.find(params.require(:id))
+    requires_user_can(:perform_similarity_check, paper)
+    similarity_check.update(update_params)
+    similarity_check.save!
+    respond_with(similarity_check)
+  end
+
   def index
     requires_user_can(:perform_similarity_check, paper)
     respond_with(paper.similarity_checks)
@@ -39,6 +47,10 @@ class SimilarityChecksController < ::ApplicationController
   def create_params
     @create_params ||= params.require(:similarity_check)
                          .permit(:versioned_text_id)
+  end
+
+  def update_params
+    @update_params ||= params.require(:similarity_check).permit(:dismissed)
   end
 
   def paper

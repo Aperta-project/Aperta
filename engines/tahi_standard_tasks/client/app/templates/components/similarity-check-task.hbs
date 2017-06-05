@@ -6,8 +6,8 @@
     <h3>Similarity Check Report</h3>
   {{/if}}
 
-  {{#each latestVersionFailedChecks as |check|}}
-    {{flash-message remove="removeRouteMessage"
+  {{#each latestVersionPrimaryFailedChecks as |check|}}
+    {{flash-message remove=(action "dismissMessage")
                     message=check}}
   {{/each}}
 

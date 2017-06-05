@@ -48,9 +48,4 @@ module Readyable
 
   attr_accessor :ready_issues
   attr_accessor :ready
-
-  included do
-    # run ready validations on each presentation
-    after_find -> { valid?(:ready) }
-  end
 end

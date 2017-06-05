@@ -1,11 +1,10 @@
-class AnswerSerializer < ActiveModel::Serializer
+class AnswerSerializer < ReadyableSerializer
+
   attributes :id,
     :value,
     :additional_data,
     :paper_id,
-    :owner,
-    :ready,
-    :ready_issues
+    :owner
 
   has_one :card_content, embed: :id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments

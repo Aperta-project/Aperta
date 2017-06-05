@@ -42,8 +42,8 @@ export default Controller.extend(PaperBase, Discussions, {
   showPdfManuscript: computed('model.journal.pdfAllowed', 'model.fileType',
     function(){
       return (this.get('model.journal.pdfAllowed') &&
-             (this.get('model.fileType') === 'pdf')) &&
-             (!this.get('model.file.status') === 'error');
+             (this.get('model.fileType') === 'pdf'));
+            //  (this.get('model.file.status') !== 'error');
     }
   ),
 

@@ -7,6 +7,7 @@ import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';;
 var app, currentPaper, fakeUser, server;
+import { make } from 'ember-data-factory-guy';
 
 app = null;
 
@@ -208,5 +209,13 @@ test('visiting /paper: Paper displays for a real url', function(assert) {
 test('visiting /paper: Redirects to dashboard for malformed url', function(assert) {
   visit('/papers/' + currentPaper.shortDoi + 'blah').then(function() {
     assert.ok(currentRouteName() == 'dashboard.loading', 'The dashboard welcome message is not visible');
+  });
+});
+
+
+test('visiting /paper: error', function(assert) {
+  const paper = make('paper_with_file_error');
+  visit('/papers/' + paper.shortDoi + '?firstView=true').then(function() {
+    assert.ok(currentRouteName() === 'dashboard.loading', 'The dashboard welcome message is not visible');
   });
 });

@@ -50,8 +50,7 @@ feature "session invalidation", js: true do
         $("head meta[name='csrf-token']").attr("content", "bad token")
       JS
 
-      # Ignore error thrown by rich-text helper when it can't find an editor on the page.
-      t.fill_in_fields(ident => "Oops, this is the wrong value") rescue nil
+      t.fill_in_fields(ident => "Oops, this is the wrong value")
 
       # Verify that we're looking at the login screen
       find("h1", text: "Welcome to Aperta")

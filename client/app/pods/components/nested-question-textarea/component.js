@@ -7,7 +7,7 @@ export default NestedQuestionComponent.extend({
   attributeBindings: ['data-editor'],
   displayContent: true,
   inputClassNames: [],
-  'data-editor': Ember.computed.alias('ident'),
+  'data-editor': Ember.computed.reads('ident'),
 
   change() {
     return false; // no-op to override parent's behavior

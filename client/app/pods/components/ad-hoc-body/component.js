@@ -53,8 +53,11 @@ export default Ember.Component.extend({
   canEdit: true,
   canManage: true,
   classNames: ['ad-hoc-body'],
-  isAdhocStaff: Ember.computed('task.data.title', function() {
-    return this.get('task.data.title') === 'Ad-hoc for Staff Only';
+  isAdhocStaff: Ember.computed('task.type', function() {
+    return (
+      this.get('task.type') === 'AdHocTask' ||
+      this.get('task.type') === 'ad-hoc-task'
+    );
   }),
 
   // BuildsTaskTemplate stuff

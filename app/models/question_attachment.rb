@@ -2,6 +2,6 @@
 # It will have an owner of NestedQuestionAnswer.
 class QuestionAttachment < Attachment
   include Readyable
-  validates :title, value: true, on: :ready
+  validates :filename, value: true, on: :ready
   self.public_resource = true
 end

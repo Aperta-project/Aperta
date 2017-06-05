@@ -47,7 +47,7 @@ file-uploader = element content {
                       attribute validation-type { "file-name" },
                       element error-message { text },
                       element validator { text }
-                    }? &
+                    }* &
                     element label { text }? &
                     element text { text }?),
                     possible-value*

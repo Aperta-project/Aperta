@@ -113,7 +113,7 @@
         </attribute>
       </optional>
       <interleave>
-        <optional>
+        <zeroOrMore>
           <element name="validation">
             <attribute name="validation-type">
               <value>file-name</value>
@@ -125,7 +125,7 @@
               <text/>
             </element>
           </element>
-        </optional>
+        </zeroOrMore>
         <optional>
           <element name="label">
             <text/>

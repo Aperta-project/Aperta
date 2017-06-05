@@ -49,11 +49,12 @@ export default Ember.Component.extend({
     updateAttachment(s3Url, file, attachment) {
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');
-
       const answer = this.get('answer');
       const store = this.get('store');
+
       answer.save().then(savedAnswer => {
-        if (!attachment) {
+        if (attachment) {
+        } else {
           attachment = store.createRecord('question-attachment');
           savedAnswer.get('attachments').addObject(attachment);
         }

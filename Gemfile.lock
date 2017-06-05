@@ -195,6 +195,7 @@ GEM
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
+    colorize (0.8.1)
     combine_pdf (0.2.34)
       ruby-rc4 (>= 0.1.5)
     concurrent-ruby (1.0.2)
@@ -468,6 +469,8 @@ GEM
       omniauth (~> 1.2)
     ordinalize (0.0.3)
       humanize
+    origami (2.0.2)
+      colorize (~> 0.7)
     orm_adapter (0.5.0)
     overcommit (0.28.0)
       childprocess (~> 0.5.6)
@@ -780,6 +783,7 @@ DEPENDENCIES
   omniauth-cas
   omniauth-oauth2
   ordinalize
+  origami
   overcommit
   paper_trail
   pdfkit

@@ -89,11 +89,11 @@
     Recent Activity
   </div>
 
-  {{#link-to topicsIndexPath paper class="control-bar-button"  id="nav-discussions"}}
+  <div {{action (route-action 'showOrRaiseDiscussions' topicsIndexPath)}} class="control-bar-button" id="nav-discussions">
     {{fa-icon icon="comments"}}
     {{notification type="paper" id=paper.id}}
     Discussions
-  {{/link-to}}
+  </div>
 
   {{#if (eq tab "manuscript")}}
     {{#basic-popover as |popover|}}

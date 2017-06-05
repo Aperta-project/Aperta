@@ -1,3 +1,6 @@
+{{#if minimalChrome}}
+  {{outlet}}
+{{else}}
 <a href="#main-content" id="skip-to-main-content">Skip to content</a>
 
 <nav id="main-navigation" role="navigation">
@@ -58,4 +61,5 @@
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>
+{{/if}}
 {{/if}}

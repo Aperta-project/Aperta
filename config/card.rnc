@@ -48,6 +48,14 @@ file-uploader = element content {
                     possible-value*
                 }
 
+date-picker = element content {
+                  attribute ident { text }?,
+                  attribute value-type { "text" },
+                  attribute content-type { "date-picker" },
+                  (element placeholder { text }? &
+                  element text { text })
+              }
+
 # for now duplicating radio-input for dropdown
 dropdown-input = element content {
                   attribute ident { text }?,
@@ -108,7 +116,8 @@ content = (radio-input |
            field-set |
            check-box-input |
            file-uploader |
-           dropdown-input
+           dropdown-input |
+           date-picker
           )
 
 start = element card {

@@ -93,6 +93,7 @@ class XmlCardLoader
   def self.parse(xml_string)
     Nokogiri::XML.parse(xml_string)
   end
+
   private_class_method :parse
 
   private

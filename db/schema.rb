@@ -240,8 +240,8 @@ ActiveRecord::Schema.define(version: 20170524163648) do
     t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
-    t.string   "history_entry"
     t.integer  "published_by_id"
+    t.string   "history_entry"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -363,19 +363,6 @@ ActiveRecord::Schema.define(version: 20170524163648) do
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
-
-  create_table "email_templates", force: :cascade do |t|
-    t.integer  "journal_id",             null: false
-    t.integer  "version",    default: 0, null: false
-    t.string   "name",                   null: false
-    t.text     "body"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "email_templates", ["journal_id"], name: "index_email_templates_on_journal_id", using: :btree
-  add_index "email_templates", ["name"], name: "index_email_templates_on_name", using: :btree
-  add_index "email_templates", ["version"], name: "index_email_templates_on_version", using: :btree
 
   create_table "feature_flags", id: false, force: :cascade do |t|
     t.string  "name",   null: false

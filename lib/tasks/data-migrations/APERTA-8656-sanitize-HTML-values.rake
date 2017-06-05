@@ -45,7 +45,8 @@ namespace :data do
               after = HtmlScrubber.standalone_scrub!(before)
               next if before.strip == after.strip
               if dry
-                diffs = Differ.diff_by_word(after, before).to_s.gsub(/\s/, ' ')
+                # diffs = Differ.diff_by_word(after, before).to_s.gsub(/\s/, ' ')
+                diffs = Diffy::Diff.new(before, after, context: 1).to_s(:html).to_s.gsub(/\s/, ' ')
                 puts "PAPER #{paper_id} - COLUMN #{model} #{field} [#{record.id}]: #{diffs}"
               else
                 record[field] = after

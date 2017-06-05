@@ -108,6 +108,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'equivalent-xml'
   gem 'differ'
+  gem 'diffy'
 end
 
 group :development do

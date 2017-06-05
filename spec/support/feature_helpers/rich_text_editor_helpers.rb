@@ -12,7 +12,8 @@ module RichTextEditorHelpers
 
   def wait_for_editors(timeout: Capybara.default_max_wait_time, count: 1)
     Timeout.timeout(timeout) do
-      loop until page.evaluate_script("tinymce.editors.length").to_i >= count
+      sleep 0.5
+      loop until page.evaluate_script("$('iframe').length").to_i >= count
     end
   end
 

@@ -45,6 +45,7 @@ class ReviewerReportTaskOverlay < PaperTaskOverlay
   end
 
   def fill_in_fields(values = {})
+    wait_for_editors
     values.each_pair do |key, value|
       set_rich_text editor: key, text: value
     end

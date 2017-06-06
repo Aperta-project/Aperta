@@ -211,9 +211,24 @@
             <text/>
           </element>
         </optional>
-        <element name="text">
-          <text/>
-        </element>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="validation">
+            <attribute name="validation-type">
+              <value>string-match</value>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
+          </element>
+        </optional>
       </interleave>
     </element>
   </define>

@@ -163,21 +163,17 @@ describe SimilarityCheck, type: :model, redis: true do
         double("response", report_complete?: false)
       end
 
-      around :each do |example|
-        Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
-          example.run
-        end
-      end
-
       context "the system time is after the similarity check's timeout_at" do
         let(:timeout_offset) { 1.second }
 
         it "updates to similarity check's status to 'failed'" do
-          expect do
-            similarity_check.sync_document!
-          end.to change { similarity_check.state }
-                   .from("waiting_for_report")
-                   .to("failed")
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+            expect do
+              similarity_check.sync_document!
+            end.to change { similarity_check.state }
+                     .from("waiting_for_report")
+                     .to("failed")
+          end
         end
       end
 
@@ -185,9 +181,11 @@ describe SimilarityCheck, type: :model, redis: true do
         let(:timeout_offset) { -1.seconds }
 
         it "updates to similarity check's status to 'failed'" do
-          expect do
-            similarity_check.sync_document!
-          end.to_not change { similarity_check.state }
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+            expect do
+              similarity_check.sync_document!
+            end.to_not change { similarity_check.state }
+          end
         end
       end
     end

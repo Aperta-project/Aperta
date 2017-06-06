@@ -106,6 +106,18 @@ describe Task do
     end
   end
 
+  describe '#answers_validated?' do
+    subject(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
+    let(:answer) { FactoryGirl.create(:answer, owner: subject) }
+    let(:card_content) { subject.card.latest_card_version.card_contents.first }
+    let(:card_content_validation) do
+      FactoryGirl.create(:card_content_validation,
+        :with_string_match_validation,
+        card_content: card_content,
+        validator: 'abby')
+    end
+  end
+
   describe '#permission_requirements' do
     subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
 

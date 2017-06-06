@@ -162,6 +162,33 @@ describe XmlCardLoader do
       end
     end
 
+  context 'with validations' do
+    let(:content) do
+      <<-XML
+      <content content-type='display-children'>
+        <content content-type='short-input' value-type='text'>
+          <placeholder>Test</placeholder>
+          <text>Question!</text>
+          <validation validation-type="string-match">
+            <error-message>Oh noes!</error-message>
+            <validator>/test/</validator>
+          </validation>
+        </content>
+      </content>
+      XML
+    end
+    let(:xml) { "<card required-for-submission='false' name='Foo' >#{content}</card>" }
+    let(:card) { XmlCardLoader.from_xml_string(xml, journal).tap(&:save!) }
+
+    it 'creates string match card content validations' do
+      validation = card.card_versions.last.card_contents.last.card_content_validations.first
+      expect(validation).to be_present
+      expect(validation.validation_type).to eq 'string-match'
+      expect(validation.validator).to eq '/test/'
+      expect(validation.error_message).to eq 'Oh noes!'
+    end
+  end
+
     context 'dumping xml' do
       let(:card) { FactoryGirl.create(:card, :versioned, name: Faker::Lorem.word) }
       let(:opts) { { indent: 0, skip_instruct: 0 } }

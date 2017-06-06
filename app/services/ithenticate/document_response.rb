@@ -14,6 +14,10 @@ module Ithenticate
       report_id.present? && first_document['is_pending'].zero?
     end
 
+    def error
+      first_document["error"]
+    end
+
     def report_id
       return unless first_part
       first_part["id"]

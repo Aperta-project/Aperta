@@ -12,8 +12,8 @@ export default DS.Model.extend({
   ithenticateScore: DS.attr('string'),
   dismissed: DS.attr('boolean'),
 
-  text: Ember.computed('state', function() {
-    return 'some message';
+  text: Ember.computed('errorMessage', function() {
+    return this.get('errorMessage');
   }),
   type:    Ember.computed('errorMessage', function() {
     return 'error';

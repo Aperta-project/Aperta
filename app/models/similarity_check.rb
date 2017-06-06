@@ -72,6 +72,11 @@ class SimilarityCheck < ActiveRecord::Base
     document_response = ithenticate_api.get_document(
       id: ithenticate_document_id
     )
+    self.error_message = document_response.error
+    if error_message.present?
+      self.save
+      timeout! #Timeout immediately if there is an error
+    end
 
     if document_response.report_complete?
       self.ithenticate_report_id = document_response.report_id

@@ -47,8 +47,8 @@ export default Controller.extend(PaperBase, Discussions, {
     }
   ),
 
-  checkFileType: computed('fileType', function(){
-    if (this.fileType === 'pdf') {
+  checkFileType: computed('model.fileType', function(){
+    if (this.get('model.fileType') === 'pdf'){
       return 'fa-file-pdf-o';
     }
     else {

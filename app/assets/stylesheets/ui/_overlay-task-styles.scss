@@ -40,7 +40,6 @@
   line-height: 1.2;
 
   .manuscript-icon {
-    @include position(absolute, 2px auto auto 0px);
     path, rect { fill: $aperta-green; }
   }
 }

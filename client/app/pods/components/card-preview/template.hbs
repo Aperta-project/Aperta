@@ -13,7 +13,7 @@
       </div>
     {{/unless}}
   {{/if}}
-  <span class="card-title">{{task.title}}</span>
+  <span class="card-title {{if disabled "disabled"}}">{{task.title}}</span>
 </a>
 
 {{#if canRemoveCard}}

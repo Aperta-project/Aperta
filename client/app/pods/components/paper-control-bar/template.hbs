@@ -64,13 +64,6 @@
             {{/each}}
           </div>
         {{/if}}
-
-        {{#if versionsVisible}}
-          {{paper-version-picker paper=paper
-          setQueryParam=setQueryParam
-          viewingVersion=viewingVersion
-          comparisonVersion=comparisonVersion}}
-        {{/if}}
       </div>
     {{/if}}
   {{else if (eq tab "workflow")}}

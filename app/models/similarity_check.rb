@@ -67,8 +67,10 @@ class SimilarityCheck < ActiveRecord::Base
 
   def give_up_if_timed_out!
     self.update_column(:error_message, 'Report timed out after 10 minutes.')
-    fail_report! if Time.now.utc > timeout_at
-    raise error_message
+    if Time.now.utc > timeout_at
+      fail_report!
+      raise error_message
+    end
   end
 
   def sync_document!

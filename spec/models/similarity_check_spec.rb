@@ -171,9 +171,8 @@ describe SimilarityCheck, type: :model, redis: true do
           Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
             expect do
               similarity_check.sync_document!
-            end.to change { similarity_check.state }
-                     .from("waiting_for_report")
-                     .to("failed")
+            end.to raise_error('Report timed out after 10 minutes.')
+            expect(similarity_check.state).to eq('failed')
           end
         end
 
@@ -182,9 +181,8 @@ describe SimilarityCheck, type: :model, redis: true do
 
             expect do
               similarity_check.sync_document!
-            end.to change { similarity_check.error_message }
-                     .from(nil)
-                     .to("Report timed out after 10 minutes.")
+            end.to raise_error('Report timed out after 10 minutes.')
+            expect(similarity_check.error_message).to eq("Report timed out after 10 minutes.")
           end
         end
       end

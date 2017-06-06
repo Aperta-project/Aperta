@@ -122,46 +122,6 @@ test('it switches the letter contents on change', function(assert) {
   });
 });
 
-test('it replaces [LAST NAME] with the authors last name', function(assert) {
-  this.selectDecision('Accept');
-  this.select2('RA Accept');
-  return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'Dear Dr. Jones');
-  });
-});
-
-test('it replaces [JOURNAL STAFF EMAIL] with the journal staff email', function(assert) {
-  this.selectDecision('Accept');
-  this.select2('RA Accept');
-  return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'staffpeople@plos.org');
-  });
-});
-
-test('it replaces [JOURNAL NAME] with the journal name', function(assert) {
-  this.selectDecision('Accept');
-  this.select2('RA Accept');
-  return wait().then(()=>{
-    const journalName = this.task.get('paper.journal.name');
-    assert.inputContains('.decision-letter-field', journalName);
-  });
-});
-
-test('it replaces [PAPER TITLE] with the paper title', function(assert) {
-  this.selectDecision('Accept');
-  this.select2('RA Accept');
-  return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'GREAT TITLE');
-  });
-});
-
-test('it replaces [AUTHOR EMAIL] with the author email', function(assert) {
-  this.selectDecision('Accept');
-  this.select2('RA Accept');
-  return wait().then(()=>{
-    assert.inputContains('.to-field', 'author@example.com');
-  });
-});
 
 ['unsubmitted', 'in_revision', 'invited_for_full_submission', 'accepted', 'rejected'].forEach((state)=>{
   test(`when the paper is ${state}, do not show register stuff`, function(assert) {

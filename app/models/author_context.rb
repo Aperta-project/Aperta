@@ -1,5 +1,4 @@
 # Provides a template context for Authors
-class AuthorContext < TemplateContext
-  whitelist :first_name, :last_name, :author_initial,
-            :affiliation, :email
+class AuthorContext < UserContext
+  whitelist :author_initial, :affiliation
 end

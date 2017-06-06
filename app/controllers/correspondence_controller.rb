@@ -18,7 +18,6 @@ class CorrespondenceController < ApplicationController
     paper = Paper.find params[:external_correspondence][:paper_id]
     requires_user_can(:manage_workflow, paper)
     c = ExternalCorrespondence.new correspondence_params
-    c.recipients = params[:external_correspondence][:recipient]
     c.paper_id = params[:external_correspondence][:paper_id]
     c.sent_at = params[:external_correspondence][:date]
     return_location = "/papers/#{paper}/correspondence"
@@ -40,7 +39,7 @@ class CorrespondenceController < ApplicationController
       :cc,
       :bcc,
       :sender,
-      # :recipient,
+      :recipients,
       :description,
       :subject,
       :body,

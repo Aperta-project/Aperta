@@ -1,6 +1,7 @@
 class CorrespondenceSerializer < ActiveModel::Serializer
   require 'link_sanitizer'
-  attributes :id, :date, :subject, :recipient, :sender, :body, :sent_at
+  attributes :id, :date, :subject, :recipient,
+             :recipients, :sender, :body, :sent_at
 
   def date
     object.updated_at

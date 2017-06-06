@@ -48,8 +48,6 @@ test('can manage workflow, list appears', function(assert) {
   this.render(template);
   wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
-    assert.equal(this.$('#add-external-correspondence').length, 1);
-    assert.textPresent('#add-external-correspondence', 'Add Correspondence');
     done();
   });
 });

@@ -46,11 +46,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     let minutes = parseInt(parts[2], 10);
 
-    // timezone stuff
-    let today = new Date();
-    let tzOffset = -(today.getTimezoneOffset() / 60);
-
-    return [hours + tzOffset, minutes];
+    return [hours, minutes];
   },
 
   actions: {

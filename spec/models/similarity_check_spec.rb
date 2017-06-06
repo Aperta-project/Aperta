@@ -43,6 +43,7 @@ describe SimilarityCheck, type: :model, redis: true do
         ]
       }
     end
+
     subject(:start_report!) { similarity_check.start_report! }
 
     before do
@@ -114,7 +115,7 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", report_complete?: true, score: report_score, report_id: report_id)
+        double("response", error: nil, report_complete?: true, score: report_score, report_id: report_id)
       end
 
       it "updates the similarity check's state to 'report_complete'" do
@@ -160,7 +161,7 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", report_complete?: false)
+        double("response", report_complete?: false, error: nil)
       end
 
       context "the system time is after the similarity check's timeout_at" do
@@ -173,6 +174,17 @@ describe SimilarityCheck, type: :model, redis: true do
             end.to change { similarity_check.state }
                      .from("waiting_for_report")
                      .to("failed")
+          end
+        end
+
+        it "adds an error_message to similarity check" do
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+
+            expect do
+              similarity_check.sync_document!
+            end.to change { similarity_check.error_message }
+                     .from(nil)
+                     .to("Report timed out after 10 minutes.")
           end
         end
       end

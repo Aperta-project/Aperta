@@ -1,0 +1,22 @@
+.edit-email-backsplash {
+  padding-top: 20px;
+  background-color: $aperta-grey-light;
+}
+
+.edit-email-well {
+  background-color: white;
+}
+
+.admin-email-template-row {
+  a {
+    color: $aperta-blue;
+  }
+}
+
+.email-editor-header-back {
+  color: $aperta-blue;
+  cursor: pointer;
+  &:hover {
+    color: $aperta-blue;
+  };
+}

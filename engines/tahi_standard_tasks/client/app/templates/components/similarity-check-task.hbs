@@ -8,7 +8,7 @@
 
   {{#each latestVersionPrimaryFailedChecks as |check|}}
     {{flash-message remove=(action "dismissMessage")
-                    message=check}}
+                    message=(format-report-error check)}}
   {{/each}}
 
   {{#each latestVersionedText.similarityChecks as |check|}}

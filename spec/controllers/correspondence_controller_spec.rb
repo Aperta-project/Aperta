@@ -53,8 +53,11 @@ describe CorrespondenceController do
                   external_correspondence: {
                     sender: "#{Faker::Name.name} <#{Faker::Internet.safe_email}>",
                     recipients: "#{Faker::Name.name} <#{Faker::Internet.safe_email}>",
+                    cc: "#{Faker::Name.name} <#{Faker::Internet.safe_email}>",
+                    bcc: "#{Faker::Name.name} <#{Faker::Internet.safe_email}>",
                     sent_at: DateTime.now.in_time_zone.as_json,
                     description: "A bleak description",
+                    subject: Faker::Lorem.sentence,
                     body: Faker::Lorem.paragraph,
                     paper_id: paper.id
                   }

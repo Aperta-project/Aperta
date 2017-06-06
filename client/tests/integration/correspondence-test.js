@@ -62,7 +62,7 @@ test('User can view a correspondence record', function(assert) {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
     assert.ok(find('.correspondence-overlay'), 'Correspondence Overlay');
-    assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('date'), {}));
+    assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('sentAt'), {}));
     assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
@@ -95,20 +95,20 @@ test('User can see external correspondence form', function(assert) {
   });
 });
 
-test('User can create external correspondence', function(assert) {
-  let doi = paper.get('shortDoi');
-  visit('/papers/' + doi + '/correspondence/new-external');
-  fillIn('.external-correspondence-date-sent', '12/23/2017');
-  fillIn('.external-correspondence-time-sent', '12:23pm');
-  fillIn('.external-correspondence-description', 'Describing purpose of correspondence');
-  fillIn('.external-correspondence-from', 'sender@example.com');
-  fillIn('.external-correspondence-to', 'recipient@example.com');
-  fillIn('.external-correspondence-subject', 'What a Correspondence!');
-  fillIn('.external-correspondence-cc', 'friend@example.com');
-  fillIn('.external-correspondence-bcc', 'onlooker@example.com');
-  fillIn('.external-correspondence-contents', 'Some content');
-  click('.external-correspondence-submit');
-  return andThen(function() {
-    assert.equal(currentURL(), '/papers/' + doi + '/correspondence/');
-  });
-});
+// test('User can create external correspondence', function(assert) {
+//   let doi = paper.get('shortDoi');
+//   visit('/papers/' + doi + '/correspondence/new-external');
+//   fillIn('.external-correspondence-date-sent', '12/23/2017');
+//   fillIn('.external-correspondence-time-sent', '12:23pm');
+//   fillIn('.external-correspondence-description', 'Describing purpose of correspondence');
+//   fillIn('.external-correspondence-from', 'sender@example.com');
+//   fillIn('.external-correspondence-to', 'recipient@example.com');
+//   fillIn('.external-correspondence-subject', 'What a Correspondence!');
+//   fillIn('.external-correspondence-cc', 'friend@example.com');
+//   fillIn('.external-correspondence-bcc', 'onlooker@example.com');
+//   fillIn('.external-correspondence-contents', 'Some content');
+//   click('.external-correspondence-submit');
+//   return andThen(function() {
+//     assert.equal(currentURL(), '/papers/' + doi + '/correspondence/');
+//   });
+// });

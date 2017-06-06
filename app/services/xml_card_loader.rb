@@ -1,6 +1,20 @@
+require "jing"
+require 'tempfile'
+
 # Class to load cards from an XML configuration format.
 class XmlCardLoader
   class ParseException < StandardError; end
+
+  # custom validation error class contains positional info for better debugging
+  class XMLValidationError < StandardError
+    attr_reader :line
+    attr_reader :col
+    def initialize(msg = "Error validating XML", line = -1, column = -1)
+      @line = line
+      @column = column
+      super(msg)
+    end
+  end
 
   # Used for making completely new cards via the xml card loader
   def self.from_xml_string(xml, journal)
@@ -21,17 +35,27 @@ class XmlCardLoader
     @root ||= @doc.xpath('/card').first
   end
 
-  # We use RelaxNG to validate the xml. The config/card.rng file
+  # We use RelaxNG (via ruby-jing) to validate the xml. The config/card.rng file
   # is automatically generated from the config/card.rnc file.
   # Instructions for how to do that are included there.
   def initialize(doc, journal)
     @doc = doc
     @journal = journal
-    rng_file = Rails.root.join('config', 'card.rng')
-    @schema = Nokogiri::XML::RelaxNG(File.open(rng_file))
-    @schema.validate(@doc).each do |error|
-      raise error
+
+    schema_path = Rails.root.join('config', 'card.rng').to_s
+    @schema = Jing.new(schema_path)
+
+    # create a temp file for xml content (required by Jing validator API)
+    temproot = Rails.root.join('tmp').to_s
+    tempfile = Tempfile.new('card_xml', temproot)
+    tempfile.write(@doc)
+    tempfile.close
+
+    @schema.validate(tempfile.path).each do |error|
+      raise XMLValidationError.new(error[:message], error[:line], error[:column])
     end
+  ensure
+    tempfile.unlink
   end
 
   # Make card makes a new card with a published version.

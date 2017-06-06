@@ -13,7 +13,7 @@ describe XmlCardLoader do
       let(:xml) { '<foo/>' }
 
       it 'throws an exception' do
-        expect { card }.to raise_exception(Nokogiri::XML::SyntaxError, 'Expecting element card, got foo')
+        expect { card }.to raise_exception(XmlCardLoader::XMLValidationError, 'element "foo" not allowed anywhere; expected element "card"')
       end
     end
 
@@ -42,7 +42,7 @@ describe XmlCardLoader do
       let(:xml) { "<card required-for-submission='true' name='Foo' >#{content1}#{content2}</card>" }
 
       it 'throws an exception' do
-        expect { card }.to raise_exception(Nokogiri::XML::SyntaxError, 'Element card has extra content: content')
+        expect { card }.to raise_exception(XmlCardLoader::XMLValidationError, 'element "content" not allowed here; expected the element end-tag')
       end
     end
 

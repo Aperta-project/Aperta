@@ -4,6 +4,16 @@ AllCops:
     - 'lib/generators/tahi/task/templates/*'
   TargetRubyVersion: 2.2
 
+Layout/AlignHash:
+  Description: >-
+                 Align the elements of a hash literal if they span more than
+                 one line.
+  Enabled: false
+
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
 Rails:
   Enabled: true
 
@@ -17,12 +27,9 @@ Metrics/ClassLength:
   Enabled: false
 
 Metrics/MethodLength:
-  # The linux kernel styleguide puts this number at 24; the rubocop
-  # default is 10 (!). Seeking a happy medium; particularly for those
-  # methods which are all one case statement, or return a single
-  # (but long) hash.
-  CountComments: false
-  Max: 20
+  Description: 'Avoid methods longer than 10 lines of code.'
+  StyleGuide: '#short-methods'
+  Enabled: false
 
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
@@ -49,14 +56,13 @@ Style/StringLiteralsInInterpolation:
   Enabled: false
 
 Metrics/LineLength:
-  Exclude:
-    # Nested questions contain, mostly, long strings of english text,
-    # which need consistent spacing.
-    - 'lib/tasks/**/*'
+  Description: 'Limit lines to 80 characters.'
+  StyleGuide: '#80-character-limits'
+  Enabled: false
 
-    # The it 'some string' line of specs should be allowed to be as
-    # long as neccessary to describe the test.
-    - '**/spec/**/*'
+Metrics/ModuleLength:
+  Description: 'Avoid modules longer than 100 lines of code.'
+  Enabled: false
 
 Style/PredicateName:
   Exclude:

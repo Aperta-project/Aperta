@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
+    t.string   "history_entry"
     t.boolean  "workflow_display_only",   default: false, null: false
     t.string   "history_entry"
   end
@@ -371,13 +372,11 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
-    t.boolean  "external"
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"
-  end
+    t.string   "manuscript_version_status"
 
-  add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree

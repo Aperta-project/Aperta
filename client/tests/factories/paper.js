@@ -7,8 +7,7 @@ FactoryGuy.define('paper', {
     publishingState: 'unsubmitted',
     relatedAtDate: '2014-09-28T13:54:58.028Z',
     editable: true,
-    shortDoi: 'dev.dev10001',
-    currentUserRoles: ['Creator']
+    shortDoi: 'dev.dev10001'
   },
 
   paper_with_discussion: {

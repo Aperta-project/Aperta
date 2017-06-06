@@ -197,10 +197,6 @@ class Attachment < ActiveRecord::Base
     status == STATUS_DONE
   end
 
-  def errored?
-    status == STATUS_ERROR
-  end
-
   def owner=(new_owner)
     super
     set_paper

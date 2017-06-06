@@ -68,3 +68,21 @@ test('docx versions display download links', function(assert) {
   assert.equal(this.$('.download-pdf').length, 1);
 });
 
+test('pdf versions display download links', function(assert) {
+  this.render(hbs`
+    {{paper-downloads paper=pdfPaper}}
+  `);
+
+  assert.equal(this.$('.download-docx').length, 0);
+  assert.equal(this.$('.download-pdf').length, 1);
+});
+
+test('pdf versions with sources display source and download links', function(assert) {
+  this.render(hbs`
+    {{paper-downloads paper=pdfAndSourcePaper}}
+  `);
+
+  assert.equal(this.$('.download-docx').length, 0);
+  assert.equal(this.$('.download-source').length, 1);
+  assert.equal(this.$('.download-pdf').length, 1);
+});

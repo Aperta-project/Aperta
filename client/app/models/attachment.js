@@ -5,6 +5,10 @@ import Snapshottable from 'tahi/mixins/snapshottable';
 export default DS.Model.extend(Snapshottable, {
   restless: Ember.inject.service('restless'),
   task: DS.belongsTo('task', { async: false, polymorphic: true, inverse: 'attachments' }),
+  externalCorrespondence: DS.belongsTo('external-correspondence', {
+    async: false,
+    polymorphic: true,
+  }),
   caption: DS.attr('string'),
   filename: DS.attr('string'),
   fileType: DS.attr('string'),

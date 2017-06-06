@@ -10,12 +10,13 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>Date sent</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.dateSent
                         displayIcon=true
                         displayText=false}}
       </div>
       {{date-picker name='external-correspondence-date-sent'
-                    value=model.dateSent
+                    value=dateSent
+                    date=dateSent
                     class="external-correspondence-date-sent inset-form-control-input"
                     placeholder="Select date"}}
     </div>
@@ -24,15 +25,14 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>Time sent</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.timeSent
                         displayIcon=true
                         displayText=false}}
       </div>
-      {{input type="text"
-              name="external-correspondence-time-sent"
-              value=model.timeSent
-              class="external-correspondence-time-sent inset-form-control-input"
-              placeholder="Select time ..."}}
+      {{time-picker class="timepicker inset-form-control-input external-correspondence-time-sent"
+                    name='external-correspondence-time-sent'
+                    value=timeSent
+                    placeholder="Select time..."}}
     </div>
   </div>
 </div>
@@ -41,7 +41,7 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>Description</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.description
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -75,7 +75,7 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>To</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.recipient
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -92,7 +92,7 @@
     <div class="inset-form-control">
       <div class="inset-form-control-text">
         <label>Subject</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.subject
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -109,7 +109,7 @@
     <div class="inset-form-control">
       <div class="inset-form-control-text">
         <label>CC</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.cc
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -126,7 +126,7 @@
     <div class="inset-form-control">
       <div class="inset-form-control-text">
         <label>BCC</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.bcc
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -143,10 +143,9 @@
     <div class="button-secondary button--green feedback-form-screenshot-uploader fileinput-button">
       Attach Files
       {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.doc,.pages"
-                      start="uploadStarted"
-                      done="uploadFinished"
-                      multiple="true"
-                      filePrefix="ext-correspondence-attachment"}}
+                      start=(action "uploadStarted")
+                      done=(action "uploadFinished")
+                      filePrefix="correspondence_attachment"}}
     </div>
   </div>
 </div>
@@ -158,7 +157,7 @@
     <div class="inset-form-control required">
       <div class="inset-form-control-text">
         <label>Contents</label>
-        {{error-message message=validationErrors.title
+        {{error-message message=validationErrors.body
                         displayIcon=true
                         displayText=false}}
       </div>
@@ -182,6 +181,6 @@
     {{#if close}}
       <button class="button-link button--green" {{action close}}>cancel</button>
     {{/if}}
-    <button class="button button--green button-primary" {{action "submit" model}}>ADD TO HISTORY</button>
+    <button class="button button--green button-primary external-correspondence-submit" {{action "submit" model}}>ADD TO HISTORY</button>
   </div>
 </div>

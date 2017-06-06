@@ -99,15 +99,16 @@ test('User can create external correspondence', function(assert) {
   let doi = paper.get('shortDoi');
   visit('/papers/' + doi + '/correspondence/new-external');
   fillIn('.external-correspondence-date-sent', '12/23/2017');
-  fillIn('.external-correspondence-time-sent', '12:23:54');
+  fillIn('.external-correspondence-time-sent', '12:23pm');
   fillIn('.external-correspondence-description', 'Describing purpose of correspondence');
   fillIn('.external-correspondence-from', 'sender@example.com');
   fillIn('.external-correspondence-to', 'recipient@example.com');
   fillIn('.external-correspondence-subject', 'What a Correspondence!');
   fillIn('.external-correspondence-cc', 'friend@example.com');
   fillIn('.external-correspondence-bcc', 'onlooker@example.com');
+  fillIn('.external-correspondence-contents', 'Some content');
   click('.external-correspondence-submit');
   return andThen(function() {
-    assert.textPresent('External Correspondence Created', '.flash-message');
+    assert.equal(currentURL(), '/papers/' + doi + '/correspondence/');
   });
 });

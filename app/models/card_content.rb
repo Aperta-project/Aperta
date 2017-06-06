@@ -12,6 +12,7 @@ class CardContent < ActiveRecord::Base
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
+  has_many :card_content_validations, dependent: :destroy
 
   validates :card_version, presence: true
 
@@ -124,16 +125,20 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'placeholder', placeholder)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      if card_content_validations.present?
+        card_content_validations.each do |ccv|
+          xml.tag!('validation', 'validation-type': ccv.validation_type) do
+            xml.tag!('error-message', ccv.error_message)
+            xml.tag!('validator', ccv.validator)
+          end
+        end
+      end
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])
         end
       end
-      children.each do |child|
-        child.to_xml(builder: xml, skip_instruct: true)
-      end
+      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
-
-
 end

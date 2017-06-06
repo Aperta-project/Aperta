@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170524163648) do
+ActiveRecord::Schema.define(version: 20170601164644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,6 +207,19 @@ ActiveRecord::Schema.define(version: 20170524163648) do
   add_index "billing_logs", ["documentid"], name: "index_billing_logs_on_documentid", using: :btree
   add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
+
+  create_table "card_content_validations", force: :cascade do |t|
+    t.string   "validator"
+    t.string   "validation_type", null: false
+    t.text     "error_message"
+    t.integer  "card_content_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+  end
+
+  add_index "card_content_validations", ["card_content_id"], name: "index_card_content_validations_on_card_content_id", using: :btree
+  add_index "card_content_validations", ["deleted_at"], name: "index_card_content_validations_on_deleted_at", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
@@ -952,6 +965,7 @@ ActiveRecord::Schema.define(version: 20170524163648) do
   add_foreign_key "answers", "card_contents"
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
+  add_foreign_key "card_content_validations", "card_contents"
   add_foreign_key "card_versions", "cards"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

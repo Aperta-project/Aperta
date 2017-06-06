@@ -1,19 +1,41 @@
 require 'rails_helper'
 
 describe Answer do
+  let(:card_content) { FactoryGirl.build(:card_content) }
   subject(:answer) do
-    FactoryGirl.build(:answer, card_content: card_content)
+    FactoryGirl.build(
+      :answer,
+      card_content: card_content
+    )
   end
 
-  let(:card_content) do
-    FactoryGirl.build(:card_content, value_type: value_type)
-  end
+  context 'ReadyValidator - data-driven validations' do
+    context 'string-match validation' do
+      let(:card_content_validation) do
+        FactoryGirl.create(:card_content_validation,
+          :with_string_match_validation,
+          card_content: card_content,
+          validator: 'abby')
+      end
 
-  let(:value_type) { 'boolean' }
+      subject!(:answer) do
+        FactoryGirl.create(
+          :answer,
+          value: 'tabby'
+        )
+      end
+      it 'is valid when answer value matches the card content validator string' do
+        subject.card_content.card_content_validations << card_content_validation
+        subject.card_content.answers << answer
+        expect(subject.ready?).to eq true
+      end
 
-  context 'validation' do
-    it 'is valid' do
-      expect(answer).to be_valid
+      it 'is not valid when answer value doesnt matches the card content validator string' do
+        card_content_validation.update!(validator: 'notfindable')
+        subject.card_content.card_content_validations << card_content_validation
+        subject.card_content.answers << answer
+        expect(subject.ready?).to eq false
+      end
     end
   end
 
@@ -39,6 +61,8 @@ describe Answer do
     end
 
     context 'the answer type is boolean' do
+      let(:card_content) { FactoryGirl.create(:card_content, value_type: 'boolean') }
+
       it 'coerces truthy looking strings to true' do
         check_coercion('t', true)
         check_coercion('true', true)

@@ -216,7 +216,7 @@
             <text/>
           </element>
         </optional>
-        <optional>
+        <zeroOrMore>
           <element name="validation">
             <attribute name="validation-type">
               <value>string-match</value>
@@ -228,7 +228,7 @@
               <text/>
             </element>
           </element>
-        </optional>
+        </zeroOrMore>
       </interleave>
     </element>
   </define>

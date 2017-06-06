@@ -79,7 +79,7 @@ text-input = element content {
                    attribute validation-type { "string-match" },
                    element error-message { text },
                    element validator { text }
-                 }?)
+                 }*)
              }
 
 # Contents

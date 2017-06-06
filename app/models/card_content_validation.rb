@@ -15,4 +15,14 @@ class CardContentValidation < ActiveRecord::Base
     result = answer.value =~ regex
     result.present?
   end
+
+  def validate_by_string_length_minimum(answer)
+    return false if validator !~ /^[0-9]+$/
+    answer.value.length >= validator.to_i
+  end
+
+  def validate_by_string_length_maximum(answer)
+    return false if validator !~ /^[0-9]+$/
+    answer.value.length <= validator.to_i
+  end
 end

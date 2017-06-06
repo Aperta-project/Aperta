@@ -68,7 +68,7 @@ text-input = element content {
                  (element placeholder { text }? &
                   element text { text }? &
                   element validation {
-                   attribute validation-type { "string-match" },
+                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                    element error-message { text },
                    element validator { text }
                  }?)

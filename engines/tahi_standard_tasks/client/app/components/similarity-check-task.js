@@ -9,12 +9,14 @@ export default TaskComponent.extend({
   flash: Ember.inject.service(),
   restless: Ember.inject.service(),
   classNames: ['similarity-check-task'],
+  sortProps: ['id:desc'],
   latestVersionedText: Ember.computed.alias('task.paper.latestVersionedText'),
-  latestVersionSimilarityChecks: Ember.computed.alias('latestVersionedText.similarityChecks'),
+  latestVersionSimilarityChecks: Ember.computed.alias('latestVersionedText.similarityChecks.[]'),
   latestVersionSuccessfulChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'report_complete'),
   latestVersionHasSuccessfulChecks: Ember.computed.notEmpty('latestVersionSuccessfulChecks.[]'),
   latestVersionFailedChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'failed'),
   latestVersionPrimaryFailedChecks: Ember.computed.filterBy('latestVersionFailedChecks', 'dismissed', false),
+  sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
 
   actions: {
     confirmGenerateReport() {

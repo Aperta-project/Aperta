@@ -11,7 +11,7 @@
                     message=(format-report-error check)}}
   {{/each}}
 
-  {{#each latestVersionedText.similarityChecks as |check|}}
+  {{#each sortedChecks as |check|}}
     {{similarity-check check=check}}
   {{/each}}
 

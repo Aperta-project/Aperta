@@ -56,7 +56,7 @@ class SimilarityCheck < ActiveRecord::Base
     if response.blank? || response["api_status"] != 200
       self.update_column(:error_message, 'Error connecting to the Ithenticate server.')
       fail_report!
-      raise "Error connecting to the Ithenticate server"
+      raise error_message
     end
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
@@ -68,12 +68,14 @@ class SimilarityCheck < ActiveRecord::Base
   def give_up_if_timed_out!
     self.update_column(:error_message, 'Report timed out after 10 minutes.')
     fail_report! if Time.now.utc > timeout_at
+    raise error_message
   end
 
   def sync_document!
     if ithenticate_document_id.blank?
       self.update_column(:error_message, 'Unable to sync document without ithenticate_id.')
       fail_report!
+      raise error_message
     end
 
     document_response = ithenticate_api.get_document(
@@ -82,7 +84,8 @@ class SimilarityCheck < ActiveRecord::Base
     self.error_message = document_response.error
     if error_message.present?
       self.save
-      timeout! #Timeout immediately if there is an error
+      fail_report!
+      raise error_message
     end
 
     if document_response.report_complete?

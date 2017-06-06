@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://theurl.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/html
+      Last-Modified:
+      - Wed, 26 Mar 2014 08:32:23 GMT
+      Accept-Ranges:
+      - bytes
+      Etag:
+      - '"f6d012e9cd48cf1:0"'
+      Server:
+      - Microsoft-IIS/8.0
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Fri, 07 Apr 2017 09:00:32 GMT
+      Content-Length:
+      - '2185'
+      Age:
+      - '156'
+      X-Cache:
+      - HIT from m00180A4E6D2C
+      X-Cache-Lookup:
+      - HIT from m00180A4E6D2C:3128
+      Via:
+      - 1.1 m00180A4E6D2C (squid/3.5.23)
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\r\n\r\n<html>\r\n\r\n\t<head>\r\n<title>THEURL
+        Leimholzbau, Theurl, Leimholz, Fichte, Kiefer, Tanne, Keilzinkware, Leisten,
+        Holzwerkstoff, Holz, MDF</title>\r\n\t\t<meta name=\"keywords\" content=\"Theurl,
+        Leimholz, Fichte, Kiefer, Tanne, Keilzinkware, Leisten, Holzwerkstoff, Holz,
+        MDF\">\r\n\t\t<link href=\"theurl.css\" rel=\"stylesheet\" type=\"text/css\"
+        media=\"all\">\r\n\t\t\r\n\t\t\t\t<SCRIPT LANGUAGE=\"JavaScript1.1\" TYPE=\"text/javascript\">
+        \r\n<!-- \r\nvar ignore_1=\"abc\";\r\nif ((document.referrer.length > 0) &&
+        (document.images) && (document.referrer.toLowerCase().indexOf(ignore_1) <
+        0)) { \r\nrefstat=new Image(1,1);\r\nrefstat.src=\"http://www.webhits.de/cgi/refstat?df=90540&ref=\"+escape(document.referrer);\r\n}\r\n//-->\r\n</SCRIPT>\r\n\t<script>\r\n
+        \r\n(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\r\n
+        \ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new\r\nDate();a=s.createElement(o),\r\n
+        \r\nm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a\r\n,m)\r\n
+        \r\n})(window,document,'script','//www.google-analytics.com/analytics.js','ga');\r\n\r\n
+        \ ga('create', 'UA-49294703-1', 'theurl.com');\r\n  ga('send', 'pageview');\r\n\r\n</script>\r\n\r\n\t\r\n\t\r\n\t</head>\r\n\t<body
+        bgcolor=\"#ffffff\" leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\"
+        topmargin=\"0\">\r\n\t\t<table width=\"100%\" border=\"0\" cellspacing=\"0\"
+        cellpadding=\"0\" height=\"100%\">\r\n\t\t\t<tr>\r\n\t\t\t\t<td align=\"center\"
+        valign=\"middle\"><br>\r\n\t\t\t\t\t<img src=\"images/logo_start_neu1.gif\"
+        alt=\"\" height=\"68\" width=\"275\" border=\"0\"><br>\r\n\t\t\t\t\t<br>\r\n\t\t\t\t\t<img
+        src=\"images/foto_start.jpg\" alt=\"\" height=\"372\" width=\"331\" border=\"0\">\r\n\t\t\t\t\t<p><b>THEURL
+        LEIMHOLZBAU GmbH<br>\r\n\t\t\t\t\t\t</b>Thal-Wilfern 35<br>\r\n\t\t\t\t\t\t\tAUSTRIA
+        - 9911 Assling<br>\r\n\t\t\t\t\t\t\tTel. +43 4855 8900<br>\r\n\t\t\t\t\t\t\tFax
+        +43 4855 8900-2<br>\r\n\t\t\t\t\t\t\te-mail: <a href=\"mailto:office@theurl.com\">office@theurl.com<br>\r\n\t\t\t\t\t\t\t<br>\r\n\t\t\t\t\t\t</a><a
+        href=\"default.asp\">DEUTSCH</a> | <a href=\"english/default.asp\">ENGLISH</a>
+        | <a href=\"espanol/default.asp\">ESPANOL</a> | <a href=\"fran%e7ais/default.asp\">FRANCAIS</a>
+        | <a href=\"italiano/default.asp\">ITALIANO</a> |<br>\r\n\t\t\t\t\t\t<br>\r\n\t\t\t\t\t</p>\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t</table>\r\n\t</body>\r\n\r\n
+        \ </html> "
+    http_version: 
+  recorded_at: Fri, 07 Apr 2017 09:03:08 GMT
+recorded_with: VCR 2.9.3

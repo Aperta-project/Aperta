@@ -4,11 +4,16 @@ describe TahiStandardTasks::UploadManuscriptController do
   routes { TahiStandardTasks::Engine.routes }
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
+  let(:file) { FactoryGirl.create(:manuscript_attachment) }
   let(:task) { FactoryGirl.create(:upload_manuscript_task, paper: paper) }
 
   describe 'PUT upload_manuscript' do
     subject(:do_request) do
-      put :upload_manuscript, id: task.id, url: url, format: :json
+      paper.file = file
+      paper.save
+      VCR.use_cassette("upload_manuscript") do
+        put :upload_manuscript, id: task.id, url: url, format: :json
+      end
     end
     let(:url) { "http://theurl.com" }
 

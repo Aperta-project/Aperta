@@ -106,6 +106,34 @@ describe Task do
     end
   end
 
+  describe '#answers_validated?' do
+    subject(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
+    let(:answer) { FactoryGirl.create(:answer, owner: subject) }
+    let(:card_content) { subject.card.latest_card_version.card_contents.first }
+    let(:card_content_validation) do
+      FactoryGirl.create(:card_content_validation,
+        :with_string_match_validation,
+        card_content: card_content,
+        validator: 'abby')
+    end
+  end
+
+  describe '#permission_requirements' do
+    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
+
+    before do
+      FactoryGirl.create(:permission_requirement, required_on: task)
+    end
+
+    context 'on #destroy' do
+      it 'destroy assignments' do
+        expect do
+          task.destroy!
+        end.to change { task.permission_requirements.count }.by(-1)
+      end
+    end
+  end
+
   describe "#invitations" do
     let(:paper) { FactoryGirl.create :paper }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }

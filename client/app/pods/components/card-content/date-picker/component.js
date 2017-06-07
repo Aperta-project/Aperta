@@ -2,22 +2,24 @@ import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
-  classNames: ['card-content-paragraph-input'],
-
-  hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
-  classNameBindings: ['hasErrors:has-error'],
+  classNames: ['card-content-date-picker'],
 
   propTypes: {
-    answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
+    preview: PropTypes.bool
   },
 
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident') || Ember.guidFor(this);
+    return `date-picker-${ident}`;
+  }),
+
   actions: {
-    valueChanged(newValue) {
+    valueChanged(newVal) {
       let action = this.get('valueChanged');
       if (action) {
-        action(newValue);
+        action(newVal);
       }
     }
   }

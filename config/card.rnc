@@ -48,6 +48,14 @@ file-uploader = element content {
                     possible-value*
                 }
 
+date-picker = element content {
+                  attribute ident { text }?,
+                  attribute value-type { "text" },
+                  attribute content-type { "date-picker" },
+                  (element placeholder { text }? &
+                  element text { text })
+              }
+
 # for now duplicating radio-input for dropdown
 dropdown-input = element content {
                   attribute ident { text }?,
@@ -66,7 +74,12 @@ text-input = element content {
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute default-answer-value { text }?,
                  (element placeholder { text }? &
-                  element text { text })
+                  element text { text }? &
+                  element validation {
+                   attribute validation-type { "string-match" },
+                   element error-message { text },
+                   element validator { text }
+                 }?)
              }
 
 # Contents
@@ -103,11 +116,13 @@ content = (radio-input |
            field-set |
            check-box-input |
            file-uploader |
-           dropdown-input
+           dropdown-input |
+           date-picker
           )
 
 start = element card {
             attribute name { text },
             attribute required-for-submission { "true" | "false" },
+            attribute workflow-display-only { "true" | "false" },
             content
         }

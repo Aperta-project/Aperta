@@ -86,8 +86,11 @@ export default Ember.Controller.extend({
 
     acceptInvitation(invitation) {
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
-        // Force the user's papers to load
-        this.store.findAll('paper');
+        this.hideInvitationsOverlay();
+        this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
+          let msg = `Thank you for agreeing to review for ${invitation.get('journalName')}.`;
+          this.flash.displayRouteLevelMessage('success', msg);
+        });
       });
     },
 

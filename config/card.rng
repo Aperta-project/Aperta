@@ -219,7 +219,11 @@
         <zeroOrMore>
           <element name="validation">
             <attribute name="validation-type">
-              <value>string-match</value>
+              <choice>
+                <value>string-match</value>
+                <value>string-length-minimum</value>
+                <value>string-length-maximum</value>
+              </choice>
             </attribute>
             <element name="error-message">
               <text/>

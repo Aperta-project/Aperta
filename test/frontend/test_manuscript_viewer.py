@@ -63,7 +63,7 @@ class ManuscriptViewerTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready_post_create()
+    manuscript_viewer.page_ready()
     manuscript_viewer.close_infobox()
     manuscript_viewer.validate_independent_scrolling()
     manuscript_viewer.validate_nav_toolbar_elements(user)
@@ -201,7 +201,6 @@ class ManuscriptViewerTest(CommonTest):
     figures_task = FiguresTask(self.getDriver())
     figures_task.task_ready()
     manuscript_page.complete_task('Figures')
-    manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Upload Manuscript')
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
@@ -313,7 +312,7 @@ class ManuscriptViewerTest(CommonTest):
     upms.validate_ihat_conversions_success(timeout=45)
     data = {'attach': 2}
     manuscript_viewer.complete_task('Upload Manuscript')
-    manuscript_viewer.complete_task('Revise Manuscript', data=data)
+    manuscript_viewer.complete_task('Response to Reviewers', data=data)
     # Make new submission
     manuscript_viewer.click_submit_btn()
     manuscript_viewer.confirm_submit_btn()

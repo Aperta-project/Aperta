@@ -31,7 +31,7 @@ class ReviseManuscriptCard(BaseCard):
     """
 
     card_title = self._get(self._card_title)
-    assert card_title.text == 'Revise Manuscript'
+    assert card_title.text == 'Response to Reviewers'
     subtitle_1, subtitle_2 = self._gets(self._subtitle)
     assert subtitle_1.text == 'Current Revision'
     assert subtitle_2.text == 'Revision Details:'

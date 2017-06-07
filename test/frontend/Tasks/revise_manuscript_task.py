@@ -42,8 +42,10 @@ class ReviseManuscriptTask(BaseTask):
     assert subtitle_2.text.lower() == 'response to reviewers:', subtitle_2.text
     assert subtitle_3.text.lower() == 'decision history', subtitle_3.text
     response_field = self._get(self._response_field)
-    assert response_field.get_attribute('placeholder') == ("Please detail the changes "
-      "you've made to your submission here"), response_field.get_attribute('placeholder')
+    expected_placeholder = "You may respond to the reviewer and editor comments point by point here. " \
+                           "Alternatively, you may upload your response as a text file (e.g. .doc, .pdf, .rtf) below."
+    assert response_field.get_attribute('placeholder') == expected_placeholder, response_field.get_attribute('placeholder')
+
     save_btn = self._get(self._save_btn)
     assert save_btn.text == "SAVE", \
       '{0} is different from {1}'.format(save_btn.text, "SAVE")

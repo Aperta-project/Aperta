@@ -50,6 +50,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._withdraw_banner_reactivate_button = (By.CSS_SELECTOR,
                                                'div.withdrawal-banner > button.button-secondary')
     self._manuscript_pane = (By.CLASS_NAME, 'manuscript-pane')
+    self._manuscript_pdf_viewer_container = (By.ID, 'viewerContainer')
     self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
 
     # Sidebar Items
@@ -59,6 +60,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
+    self._tb_versions_pdf_message = (By.CLASS_NAME, 'versioning-bar-pdf-message')
     self._tb_versions_closer = (By.CLASS_NAME, 'versioning-bar-close')
     self._tb_collaborators_link = (By.ID, 'nav-collaborators')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
@@ -195,7 +197,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def validate_independent_scrolling(self):
     """Ensure both the manuscript and accordion panes scroll independently"""
     logging.info('Validating Scrollbar presence')
-    manuscript_pane = self._get(self._manuscript_pane)
+    try:
+      manuscript_pane = self._get(self._manuscript_pane)
+    except ElementDoesNotExistAssertionError:
+      manuscript_pane = self._get(self._manuscript_pdf_viewer_container)
     accordion_pane = self._get(self._accordion_pane)
     assert manuscript_pane.value_of_css_property('overflow-y') == 'auto', \
         manuscript_pane.value_of_css_property('overflow-y')
@@ -208,7 +213,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     version_btn = self._get(self._tb_versions_link)
     version_btn.click()
-    self._get(self._tb_versions_diff_div)
+    try:
+      self._get(self._tb_versions_diff_div)
+    except ElementDoesNotExistAssertionError:
+      self._get(self._tb_versions_pdf_message)
+
     bar_items = self._gets(self._bar_items)
     assert 'Now viewing:' in bar_items[0].text, bar_items[0].text
     assert 'Compare with:' in bar_items[1].text, bar_items[1].text
@@ -614,7 +623,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         # close task
         task.click()
       time.sleep(1)
-    elif task_name == 'Revise Manuscript':
+    elif task_name == 'Response to Reviewers':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
       revise_manuscript.validate_empty_response()
@@ -927,38 +936,24 @@ class ManuscriptViewerPage(AuthenticatedPage):
     get_manuscript_versions: Returns the list of versions for this manuscript
     :return: A list of version objects
     """
-    version_btn = self._get(self._tb_versions_link)
-    version_btn.click()
-    # Waits for versioning box be visible
-    self._wait_for_element(
-      self._gets(self._bar_items)[0])
-
-    bar_items = self._gets(self._bar_items)
-    version_select = bar_items[0].find_element_by_class_name(
-      'ember-power-select-trigger')
-    version_select.click()
-    version_select_id = version_select.get_attribute('id')
-    items_holder_selector = (By.ID, version_select_id.replace('trigger', 'content'))
-    items_holder = self._get(items_holder_selector)
-    versions_el = items_holder.find_elements_by_class_name(
-      'ember-power-select-option')
-
+    short_doi = self.get_short_doi()
     versions = []
-
-    for version_el in versions_el:
-      version_data = version_el.text.split(' - ')
-      version_number_format = version_data[0].replace('R', '')\
-        .replace('(', '')\
-        .replace(')', '')\
-        .split(' ')
+    results = PgSQL().query("select id,major_version,minor_version,created_at,paper_id,file_type from "
+                            "versioned_texts where paper_id = (SELECT ID from papers "
+                            "where short_doi = '{0}') order by id DESC;".format(short_doi))
+    for version in results:
+      if version[1] is None:
+        version_number = 'draft'
+      else:
+        version_number = '{0}.{1}'.format(version[1], version[2])
 
       versions.append({
-        'version': version_number_format[0],
-        'date': version_data[1],
-        'format': version_number_format[1]
+        'id': version[0],
+        'version': version_number,
+        'date': version[3],
+        'paper_id': version[4],
+        'format': version[5]
       })
-
-    self._get(self._tb_versions_closer).click()
 
     return versions
 
@@ -1066,19 +1061,41 @@ class ManuscriptViewerPage(AuthenticatedPage):
       newest_file = files[-1]
       logging.debug(newest_file.split('.')[-1])
     logging.debug(newest_file)
-    if format == 'pdf':
-      logging.info('PDF to validate: {0}'.format(newest_file))
-      pdf_valid = PdfUtil.validate_pdf(newest_file)
-    else:
-      pdf_valid = True
 
-    os.remove(newest_file)
-    os.chdir(original_dir)
+    pdf_valid = False
+    try:
+      if format == 'pdf':
+        logging.info('PDF to validate: {0}'.format(newest_file))
+        pdf_valid = PdfUtil.validate_pdf(newest_file)
+      else:
+        pdf_valid = True
+    finally:
+      os.remove(newest_file)
+      os.chdir(original_dir)
 
     # Raising error just after move to the original working dir
     if not pdf_valid:
       logging.error('PDF file: {0} is invalid'.format(newest_file))
       raise ('Invalid PDF generated for {0}'.format(newest_file))
+
+  def validate_version_download_link(self, version_data, link, link_format):
+    """
+    validate_version_download_link: Validates the download link url for a manuscript version
+    :param version_data: The version data object. Object
+    :param link: The URL to validate. String
+    :param link_format: The format of the link to validate (doc or pdf). String
+    :return: void function
+    """
+    expected_paper_id = 'paper_downloads/{0}'.format(version_data['paper_id'])
+    assert expected_paper_id in link, 'The paper id {0} is not on the link {1}'.format(expected_paper_id, link)
+
+    expected_export_format = 'export_format={0}'.format(link_format)
+    assert expected_export_format in link, 'The export format {0} is not on the link {1}'.format(
+      expected_export_format, link)
+
+    expected_version_id = 'versioned_text_id={0}'.format(version_data['id'])
+    assert expected_version_id in link, 'The version id {0} is not on the link {1}'.format(
+      expected_version_id, link)
 
   def validate_download_btn_actions(self):
     """
@@ -1098,33 +1115,24 @@ class ManuscriptViewerPage(AuthenticatedPage):
       version_data = ms_versions[key]
       item_version_name = version_data['version']
 
-      word_formats = ['DOC', 'DOCX']
+      word_formats = ['doc', 'docx']
       pdf_link = table_item.find_element_by_class_name('download-pdf')
 
       if version_data['format'] in word_formats:
         word_link = table_item.find_element_by_class_name('download-docx')
         logging.info('Validating word format file for version {0}'.format(
           item_version_name))
+        self.validate_version_download_link(version_data,
+                                            word_link.get_attribute('href'),
+                                            'doc')
         self.validate_manuscript_downloaded_file(word_link, format='word')
-        pdf_link_href = pdf_link.get_attribute('href')
-        pdf_file = pdf_link_href.split('/')[-1]
-
-        expected_pdf_file = 'download.pdf'
-
-        if item_version_name != 'draft':
-          expected_pdf_file = '{0}?version={1}'.format(expected_pdf_file, item_version_name)
-
-        assert pdf_file == expected_pdf_file, \
-            'The PDF file {0} for item {1} is not the expected {2}'.format(
-              pdf_file, key, expected_pdf_file)
-      else:
-        pdf_link_href = pdf_link.get_attribute('href')
-        expected_pdf_link_href = '{0}#'.format(self.get_current_url())
-        assert pdf_link_href == expected_pdf_link_href, 'The PDF link {0} for item {1} is not the ' \
-                                'expected {2}'.format(pdf_link_href, key, expected_pdf_link_href)
 
       logging.info('Validating pdf format file for version {0}'.format(
         item_version_name))
+
+      self.validate_version_download_link(version_data,
+                                          pdf_link.get_attribute('href'),
+                                          'pdf')
       self.validate_manuscript_downloaded_file(pdf_link)
 
     self._get(self._download_drawer_close_btn).click()

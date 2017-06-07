@@ -55,7 +55,8 @@ describe CardPermissionsController do
         roles: [role],
         applies_to: "Task",
         action: :edit,
-        filter_by_card_id: card.id
+        filter_by_card_id: card.id,
+        states: [PermissionState.wildcard]
       )
     end
 
@@ -65,7 +66,8 @@ describe CardPermissionsController do
         roles: [role],
         applies_to: "Task",
         action: :view,
-        filter_by_card_id: card.id
+        filter_by_card_id: card.id,
+        states: [PermissionState.wildcard]
       )
     end
 
@@ -75,36 +77,12 @@ describe CardPermissionsController do
         roles: [role],
         applies_to: "CardVersion",
         action: :view,
-        filter_by_card_id: card.id
+        filter_by_card_id: card.id,
+        states: [PermissionState.wildcard]
       )
     end
 
     let(:permission_json) { { "id" => edit_permission.id, "permission_action" => "edit", "filter_by_card_id" => card.id, "admin_journal_role_ids" => [role.id] } }
-
-    describe "#delete" do
-      subject(:do_request) { delete :destroy, format: "json", id: edit_permission.id }
-
-      it_behaves_like "an unauthenticated json request"
-
-      it "deletes the permission" do
-        stub_sign_in user
-        expect { do_request }.to change { Permission.count }.by(-1)
-      end
-
-      it "does not delete the card version view permission" do
-        stub_sign_in user
-        expect { do_request }.not_to(change { card_version_view_permission.roles.reload.count })
-      end
-
-      context 'when the permission is a view permission' do
-        subject(:do_request) { delete :destroy, format: "json", id: view_permission.id }
-
-        it "does delete the card version view permission" do
-          stub_sign_in user
-          expect { do_request }.to(change { card_version_view_permission.roles.reload.count }.by(-1))
-        end
-      end
-    end
 
     describe "#show" do
       subject(:do_request) { get :show, format: "json", id: edit_permission.id }
@@ -135,7 +113,7 @@ describe CardPermissionsController do
 
       it "adds the role to the role permission" do
         stub_sign_in user
-        expect { do_request }.to(change { edit_permission.roles.reload.count }.by(1))
+        expect { do_request }.to(change { edit_permission.roles.reload.count }.from(1).to(2))
       end
 
       it "adds the role to the card version view permission" do

@@ -3,10 +3,20 @@ class AnswerSerializer < ActiveModel::Serializer
     :value,
     :additional_data,
     :paper_id,
-    :owner
+    :owner,
+    :ready,
+    :ready_issues
 
   has_one :card_content, embed: :id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments
+
+  def ready
+    object.ready?
+  end
+   
+  def ready_issues
+    object.ready_issues.try(:messages).as_json
+  end
 
   def owner
     # Polymorphic assocations and STI do not play perfectly well with each other, as per

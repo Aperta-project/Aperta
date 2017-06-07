@@ -98,6 +98,44 @@ test('canManage=true adding new blocks', function(assert) {
   assert.equal(savecount, 5, `expected number of times to call save`);
 });
 
+test('Other Adhoc cards, email widget is not present', function(assert) {
+  //AdHocForEditorsTask
+  let task = make('ad-hoc-task', {body: [], type: 'AdHocForEditorsTask'});
+
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('add_email_participants', task);
+
+  this.set('task', task);
+  this.set('fakeSave', function() {});
+  this.set('canEdit', true);
+  this.set('canManage', true);
+
+  this.render(template);
+  page.toolbar.open();
+  assert.elementNotFound(
+    'adhoc-toolbar-item--email fa-envelope', 
+    'email widget is not present in AdHocForEditors'
+  );
+
+  //AdHocForReviewersTask
+  task = make('ad-hoc-task', {body: [], type: 'AdHocForReviewersTask'});
+  this.render(template);
+  page.toolbar.open();
+  assert.elementNotFound(
+    'adhoc-toolbar-item--email fa-envelope', 
+    'email widget is not present in AdHocForReviewersTask'
+  );
+
+  //AdHocForAuthorsTask
+  task = make('ad-hoc-task', {body: [], type: 'AdHocForAuthorsTask'});
+  this.render(template);
+  page.toolbar.open();
+  assert.elementNotFound(
+    'adhoc-toolbar-item--email fa-envelope', 
+    'email widget is not present in AdHocForAuthorsTask'
+  );
+});
+
 let taskWithBlocks = function(blocks) {
   let checkBoxBlock = [{type: 'checkbox', value: 'foo', answer: 'true'}];
   let textBlock = [{type: 'text',  value: 'text value'}];

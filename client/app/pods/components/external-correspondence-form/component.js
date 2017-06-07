@@ -13,19 +13,14 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let re = /(?:\.([^.]+))?$/;
     return re.exec(this.get('attachment').filename)[1];
   }),
-  dateUnavailable: Ember.computed('dateSent', function() {
-    return Ember.isEmpty(this.get('dateSent'));
-  }),
-  timeUnavailable: Ember.computed('timeSent', function() {
-    return Ember.isEmpty(this.get('timeSent'));
-  }),
+  dateUnavailable: Ember.computed.empty(this.get('dateSent')),
+  timeUnavailable: Ember.computed.empty(this.get('timeSent')),
   linkedPaper: Ember.computed('model', function() {
     return this.get('store')
                .findRecord('paper', this.get('model').get('paper').get('id'));
   }),
 
   formClientValidates() {
-    // -- I should use this to make the submit button work or not work.
     if (this.get('timeUnavailable')) {
       this.set('validationErrors.timeSent', 'cannot be blank');
     }
@@ -66,7 +61,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     submit(model) {
 
-      // Make sure date is properly formed
+      // Make sure date is properly formed.
+      // In the Correspondence object here, what is sent is the date. However
+      // the form allows people specify date and time separately. This block of
+      // code makes sure to resolve this back to the datetime object which the
+      // model currently understands.
       let computedDate = new Date(this.get('dateSent'));
       let timeSegments = this.parseTime(this.get('timeSent'));
       computedDate.setHours(timeSegments[0]);

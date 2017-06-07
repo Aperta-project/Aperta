@@ -15,7 +15,7 @@ module Ithenticate
     end
 
     def error
-      first_document["error"]
+      first_document && first_document["error"]
     end
 
     def report_id

@@ -13,8 +13,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let re = /(?:\.([^.]+))?$/;
     return re.exec(this.get('attachment').filename)[1];
   }),
-  dateUnavailable: Ember.computed.empty(this.get('dateSent')),
-  timeUnavailable: Ember.computed.empty(this.get('timeSent')),
+  dateUnavailable: Ember.computed.empty('dateSent'),
+  timeUnavailable: Ember.computed.empty('timeSent'),
   linkedPaper: Ember.computed('model', function() {
     return this.get('store')
                .findRecord('paper', this.get('model').get('paper').get('id'));

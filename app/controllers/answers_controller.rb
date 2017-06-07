@@ -13,8 +13,9 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answer = Answer.find(params[:id]).update_attributes(answer_params)
-    respond_with answer
+    answer = Answer.find(params[:id])
+    answer.update!(answer_params)
+    render json: answer
   end
 
   def destroy

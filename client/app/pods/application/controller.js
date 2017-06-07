@@ -12,6 +12,7 @@ export default Ember.Controller.extend(pusherConcerns, {
   journals: null,
   canViewPaperTracker: false,
   healthCheck: Ember.inject.service('health-check'),
+  minimalChrome: false,
 
   init: function() {
     this._super(...arguments);

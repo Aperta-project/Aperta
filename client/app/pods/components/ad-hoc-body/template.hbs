@@ -71,9 +71,12 @@
         <span class="fa fa-paragraph"></span>
       </div>
 
-      <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
-        <span class="fa fa-envelope"></span>
-      </div>
+      <!-- only displayb the email widget if it is an Adhoc For Staffs only task-->
+      {{#if isAdhocStaff}}
+        <div class="button-secondary button--green adhoc-toolbar-item--email" {{action "addEmail"}}>
+          <span class="fa fa-envelope"></span>
+        </div>
+      {{/if}}
 
       <div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachments"}}>
         <span class="fa fa-paperclip"></span>

@@ -1,7 +1,8 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
-  before_action :redirect_unless_declined, except: [:show, :decline]
+  before_action :redirect_unless_declined, except: [:show, :decline, :accept]
+  before_action :authenticate_user!, only: [:accept]
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
@@ -12,9 +13,9 @@ class TokenInvitationsController < ApplicationController
   end
 
   def accept
-    unless invitation.accepted?
+    if !invitation.accepted? and current_user.email == invitation.email
       invitation.accept!
-      Activity.invitation_accepted!(invitation)
+      Activity.invitation_accepted!(invitation, user: current_user)
       journal_name = invitation.paper.journal.name
       flash[:notice] = "Thank you for agreeing to review for #{journal_name}"
     end

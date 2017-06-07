@@ -83,8 +83,9 @@ class SimilarityCheck < ActiveRecord::Base
     document_response = ithenticate_api.get_document(
       id: ithenticate_document_id
     )
-    self.error_message = document_response.error
-    if error_message.present?
+
+    if document_response.error
+      self.error_message = document_response.error
       self.save
       fail_report!
       raise error_message

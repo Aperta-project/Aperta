@@ -71,4 +71,5 @@ test('it displays error messages if present', function(assert){
   assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
   assert.equal(this.$('.validation-error').eq(0).text(), errorsArr[0], 'First error text matches');
   assert.equal(this.$('.validation-error').eq(1).text(), errorsArr[1], 'Second error text matches');
+  assert.ok(this.$('.card-content-short-input').hasClass('has-error'), 'error class present on parent element');
 });

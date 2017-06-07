@@ -21,7 +21,7 @@ class VersionedText < ActiveRecord::Base
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
   has_many :figures, through: :paper
-  has_many :similarity_checks
+  has_many :similarity_checks, dependent: :destroy
 
   delegate :figures, to: :paper, allow_nil: true
 

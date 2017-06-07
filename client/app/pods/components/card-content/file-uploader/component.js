@@ -53,8 +53,7 @@ export default Ember.Component.extend({
       const store = this.get('store');
 
       answer.save().then(savedAnswer => {
-        if (attachment) {
-        } else {
+        if (!attachment) {
           attachment = store.createRecord('question-attachment');
           savedAnswer.get('attachments').addObject(attachment);
         }

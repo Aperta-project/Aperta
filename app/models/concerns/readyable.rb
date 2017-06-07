@@ -27,11 +27,12 @@ module Readyable
   # Associated validation that passes down context
   # See https://github.com/rails/rails/pull/24135
   class ValueValidator < ActiveModel::EachValidator #:nodoc:
-    def validate_each(obj, _attribute, _value)
+    def validate_each(obj, _attr, _value)
       obj.ready_init
       validation_owner = obj.kind_of?(QuestionAttachment) ? obj.owner : obj
-      validation_owner.card_content.card_content_validations.each do |ccv|
-        obj.add_errors(ccv, _attribute) unless ccv.validate_answer(obj)
+      card_content = validation_owner.card_content
+      card_content.card_content_validations.each do |validation|
+        obj.add_errors(validation, _attr) unless validation.validate_answer(obj)
       end
       obj.errors.each { |error, message| obj.ready_issues << message }
     end
@@ -39,7 +40,9 @@ module Readyable
     private
 
     def valid_object?(record, parent_validation_context)
-      (record.respond_to?(:marked_for_destruction?) && record.marked_for_destruction?) || valid_with_context?(record, parent_validation_context)
+      (record.respond_to?(:marked_for_destruction?) &&
+        record.marked_for_destruction?) ||
+        valid_with_context?(record, parent_validation_context)
     end
 
     def valid_with_context?(record, parent_validation_context)
@@ -49,5 +52,4 @@ module Readyable
       record.valid?(validation_context)
     end
   end
-
 end

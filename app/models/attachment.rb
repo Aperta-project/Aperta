@@ -264,7 +264,7 @@ class Attachment < ActiveRecord::Base
   protected
 
   def build_title
-    file.filename || title
+    title || file.filename
   end
 
   private

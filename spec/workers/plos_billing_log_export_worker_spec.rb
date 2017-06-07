@@ -45,7 +45,7 @@ describe PlosBillingLogExportWorker do
 
   it "creates BillingLogReport, FTPs resulting csv and adds Activity log" do
     BillingLogReport.any_instance.should_receive :save_and_send_to_s3!
-    BillingFTPUploader.any_instance.should_receive :upload
+    BillingFTPUploader.any_instance.should_receive(:upload) { true }
     Activity.should_receive(:create).with(hash_including(subject: paper))
     PlosBillingLogExportWorker.new.perform
   end

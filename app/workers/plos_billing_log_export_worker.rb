@@ -8,18 +8,17 @@ class PlosBillingLogExportWorker
     date = Time.zone.now.utc.days_ago(1).beginning_of_day
     # if its retrying we dont want to create a new report
     report = BillingLogReport.first_or_create!(from_date: date)
-
-    report.print unless Rails.env.test?
     # if retrying don't upload to S3 again
     report.save_and_send_to_s3! unless report.csv_file.file
-    BillingFTPUploader.new(report).upload
-    report.papers_to_process.each do |paper|
-      Activity.create(
-        feed_name: "forensic",
-        activity_key: "plos_billing.ftp_uploaded",
-        subject: paper,
-        message: 'Billing uploaded to FTP Server'
-      )
+    if BillingFTPUploader.new(report).upload
+      report.papers_to_process.each do |paper|
+        Activity.create(
+          feed_name: "forensic",
+          activity_key: "plos_billing.ftp_uploaded",
+          subject: paper,
+          message: 'Billing uploaded to FTP Server'
+        )
+      end
     end
   end
 end

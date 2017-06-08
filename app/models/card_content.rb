@@ -123,7 +123,8 @@ class CardContent < ActiveRecord::Base
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
       'allow-file-captions' => allow_file_captions,
-      'allow-annotations' => allow_annotations
+      'allow-annotations' => allow_annotations,
+      'ident' => ident
     }.compact
   end
 

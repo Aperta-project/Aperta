@@ -68,8 +68,7 @@
       {{#each errors as |error|}}
         {{error-message message=(concat error.title "[line:" error.detail.line "; col:" error.detail.col "]: " error.detail.message)}} <br/>
       {{/each}}
-
-      {{textarea value=card.xml autoresize=true rows=10}}
+      {{ivy-codemirror value=card.xml valueUpdated=(action "updateXML") options=(hash mode="application/xml" theme="eclipse" lineNumbers=true)}}
     </div>
   </div>
 </div>

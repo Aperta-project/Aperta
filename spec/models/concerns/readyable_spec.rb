@@ -24,7 +24,6 @@ describe Readyable do
   end
 
   describe 'an including class' do
-    # think this should be tested more but struggling with it
     it "doesn't have ready and ready_issues properties by default" do
       expect(ready_obj.ready).to be_falsey
       expect(ready_obj.ready_issues).to be_falsey

@@ -29,6 +29,8 @@ describe Answer do
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
         expect(subject.ready?).to eq true
+        expect(subject.ready).to eq true
+        expect(subject.ready_issues).to eq []
       end
 
       it 'is not valid when answer value doesnt matches the card content validator string' do
@@ -36,6 +38,8 @@ describe Answer do
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
         expect(subject.ready?).to eq false
+        expect(subject.ready).to eq false
+        expect(subject.ready_issues).to eq([card_content_validation.error_message])
       end
     end
   end

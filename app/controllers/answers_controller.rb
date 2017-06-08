@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
   def update
     answer = Answer.find(params[:id])
     answer.update!(answer_params)
-    render json: answer
+    render json: answer, serializer: LightAnswerSerializer, root: 'answer'
   end
 
   def destroy

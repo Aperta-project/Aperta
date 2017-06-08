@@ -1,4 +1,5 @@
-class QuestionAttachmentSerializer < ReadyableSerializer
+class QuestionAttachmentSerializer < ActiveModel::Serializer
+  include ReadySerializable
 
   attributes :id,
              :title,

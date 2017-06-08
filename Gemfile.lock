@@ -219,8 +219,6 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
-    differ (0.1.2)
-    diffy (3.2.0)
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
@@ -752,8 +750,6 @@ DEPENDENCIES
   database_cleaner
   databasedotcom
   devise (~> 3.5.6)
-  differ
-  diffy
   dotenv
   dotenv-rails
   email_spec

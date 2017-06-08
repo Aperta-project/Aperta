@@ -53,10 +53,8 @@ class SimilarityCheck < ActiveRecord::Base
       folder_id: folder_id
     )
 
-    if response.blank? || response["api_status"] != 200
-      self.update_column(:error_message, 'Error connecting to the Ithenticate server.')
-      fail_report!
-      raise error_message
+    if ithenticate_api.errors?
+      record_and_raise_error(ithenticate_api.errors.join(' '))
     end
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
@@ -66,35 +64,23 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   def give_up_if_timed_out!
-    self.update_column(:error_message, 'Report timed out after 10 minutes.')
-    if Time.now.utc > timeout_at
-      fail_report!
-      raise error_message
-    end
+    message = "Report timed out after #{TIMEOUT_INTERVAL/60} minutes."
+    record_and_raise_error(message) if Time.current.utc > timeout_at
   end
 
   def sync_document!
-    if ithenticate_document_id.blank?
-      self.update_column(:error_message, 'Unable to sync document without ithenticate_id.')
-      fail_report!
-      raise error_message
-    end
+    message = 'Unable to sync document without ithenticate_id.'
+    record_and_raise_error(message) if ithenticate_document_id.blank?
 
     document_response = ithenticate_api.get_document(
       id: ithenticate_document_id
     )
-
-    if document_response.error
-      self.error_message = document_response.error
-      self.save
-      fail_report!
-      raise error_message
-    end
+    record_and_raise_error(document_response.error) if document_response.error
 
     if document_response.report_complete?
       self.ithenticate_report_id = document_response.report_id
       self.ithenticate_score = document_response.score
-      self.ithenticate_report_completed_at = Time.now.utc
+      self.ithenticate_report_completed_at = Time.current.utc
       paper.tasks_for_type(TahiStandardTasks::SimilarityCheckTask)
         .each(&:complete!)
       finish_report!
@@ -110,6 +96,12 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   private
+
+  def record_and_raise_error(message)
+    self.update_column(:error_message, message)
+    fail_report!
+    # raise error_message
+  end
 
   def ithenticate_api
     @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env

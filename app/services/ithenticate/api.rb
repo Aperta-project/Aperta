@@ -56,7 +56,13 @@ module Ithenticate
         ]
       }
 
-      call(method: 'document.add', **args)
+      response = call(method: 'document.add', **args)
+      if response.blank?
+        errors << "Error connecting to the iThenticate server."
+      elsif response['api_status'] != 200
+        errors << "Uploading #{filename} to the iThenticate resulted in an error."
+      end
+      response
     end
     # rubocop:enable Metrics/ParameterLists
 
@@ -68,6 +74,14 @@ module Ithenticate
     def get_document(id:)
       response = call(method: 'document.get', id: id)
       DocumentResponse.new(response)
+    end
+
+    def errors?
+      errors.any?
+    end
+
+    def errors
+      @errors ||= []
     end
 
     private

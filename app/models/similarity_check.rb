@@ -100,7 +100,7 @@ class SimilarityCheck < ActiveRecord::Base
   def record_and_raise_error(message)
     self.update_column(:error_message, message)
     fail_report!
-    # raise error_message
+    raise error_message
   end
 
   def ithenticate_api

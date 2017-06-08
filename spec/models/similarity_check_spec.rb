@@ -48,14 +48,18 @@ describe SimilarityCheck, type: :model, redis: true do
 
     before do
       stub_request(:get, stubbed_url).to_return(body: "turtles")
+      allow(Ithenticate::Api).to receive_message_chain(:new_from_tahi_env, :errors?)
+                                             .and_return(false)
     end
 
     it "adds a document through the Ithenticate::Api" do
       Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
+
       expect(Ithenticate::Api).to(
         receive_message_chain(:new_from_tahi_env, :add_document)
           .and_return(fake_ithenticate_response)
       )
+
       start_report!
     end
 

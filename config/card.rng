@@ -27,13 +27,13 @@
         <attribute name="ident"/>
       </optional>
       <attribute name="value-type">
-        <value>text</value>
-      </attribute>
-      <attribute name="content-type">
         <choice>
-          <value>radio</value>
+          <value>text</value>
           <value>boolean</value>
         </choice>
+      </attribute>
+      <attribute name="content-type">
+        <value>radio</value>
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>

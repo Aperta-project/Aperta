@@ -115,7 +115,8 @@ class CardContent < ActiveRecord::Base
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions
+      'allow-file-captions' => allow_file_captions,
+      'ident' => ident
     }.compact
   end
 

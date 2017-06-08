@@ -29,15 +29,16 @@ describe CardPermissionsController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it "creates a new permission with the correct values" do
+    it "creates 4 new permission with the correct values (one each for creators, reviewers and the rest, and one ffor the card)" do
       stub_sign_in user
-      expect { do_request }.to change { Permission.count }.by(2)
+      expect { do_request }.to change { Permission.count }.by(4)
 
       expect(response.status).to be(201)
-      permission = Permission.find(res_body['card_permissions'][0][:id])
-      expect(permission.filter_by_card_id).to eq(card.id)
-      expect(permission.action).to eq("view")
-      expect(permission.roles).to eq([role])
+      permissions = Permission.where(id: res_body['card_permissions'].map { |p| p[:id] })
+      expect(permissions.count).to be(3)
+      expect(permissions.map(&:filter_by_card_id).uniq).to contain_exactly(card.id)
+      expect(permissions.map(&:action).uniq).to contain_exactly("view")
+      expect(permissions.flat_map(&:roles)).to eq([role])
     end
 
     it "attaches the new permission to the role" do

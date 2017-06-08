@@ -7,32 +7,34 @@ class CardPermissions
     rest: [Permission::WILDCARD]
   }.freeze
 
-  # Give the roles permission action on a given card.
-  # If the permission already has roles
+  # Append to the roles that can perform action on a card.
+  # Also, add the "view" permission for the card (form) itself.
   def self.add_roles(card, action, roles)
-    append_roles_and_save(get_card_permission(card), roles)
+    append_roles_and_save(get_view_card_permission(card), roles)
 
     grouped_roles = group_roles(card, roles)
     STATES.keys.map do |key|
-      append_task_permission(card, action, STATES[key], grouped_roles[key])
+      get_task_permission(card, action, STATES[key]).tap do |task_permission|
+        append_roles_and_save(task_permission, (grouped_roles[key] || []))
+      end
     end
   end
 
+  # Set the roles that can perform action on a card.
+  # Also, add the "view" permission for the card (form) itself.
   def self.set_roles(card, action, roles)
-    replace_roles_and_save(get_card_permission(card), roles)
+    replace_roles_and_save(get_view_card_permission(card), roles)
 
     grouped_roles = group_roles(card, roles)
     STATES.keys.map do |key|
-      replace_task_permission(card, action, STATES[key], grouped_roles[key])
+      get_task_permission(card, action, STATES[key]).tap do |task_permission|
+        replace_roles_and_save(task_permission, grouped_roles[key] || [])
+      end
     end
   end
 
-  def self.replace_task_permission(card, action, states, roles)
-    get_task_permission(card, action, states).tap do |task_permission|
-      replace_roles_and_save(task_permission, (roles || []))
-    end
-  end
-
+  # Return a task-level permission for an action on a given card in the given
+  # states, or create one if none exists.
   def self.get_task_permission(card, action, states)
     Permission.ensure_exists(
       action,
@@ -42,10 +44,14 @@ class CardPermissions
     )
   end
 
-  def self.append_task_permission(card, action, states, roles)
-    get_task_permission(card, action, states).tap do |task_permission|
-      append_roles_and_save(task_permission, (roles || []))
-    end
+  # Return the view card permission for a given card, or create one if none
+  # exists.
+  def self.get_view_card_permission(card)
+    Permission.ensure_exists(
+      'view',
+      applies_to: 'CardVersion',
+      filter_by_card_id: card.id
+    )
   end
 
   def self.replace_roles_and_save(permission, roles)
@@ -56,14 +62,6 @@ class CardPermissions
   def self.append_roles_and_save(permission, roles)
     permission.roles.concat(*(roles - permission.roles))
     permission.save!
-  end
-
-  def self.get_card_permission(card)
-    Permission.ensure_exists(
-      'view',
-      applies_to: 'CardVersion',
-      filter_by_card_id: card.id
-    )
   end
 
   # Group roles into a hash with different keys:

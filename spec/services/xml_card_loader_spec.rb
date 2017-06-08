@@ -13,7 +13,7 @@ describe XmlCardLoader do
       let(:xml) { '<foo/>' }
 
       it 'throws an exception' do
-        expect { xml_card_loader.load(xml) }.to raise_exception(Nokogiri::XML::SyntaxError, 'Expecting element card, got foo')
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "foo" not allowed anywhere; expected element "card"' }
       end
     end
 
@@ -21,7 +21,7 @@ describe XmlCardLoader do
       let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}#{content2}</card>" }
 
       it 'throws an exception' do
-        expect { xml_card_loader.load(xml) }.to raise_exception(Nokogiri::XML::SyntaxError, 'Element card has extra content: content')
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
       end
     end
   end

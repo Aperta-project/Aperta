@@ -32,9 +32,7 @@ class XmlCardLoader
   private
 
   def xml_card_document(xml)
-    doc = XmlCardDocument.new(xml)
-    doc.validate!
-    doc
+    XmlCardDocument.new(xml)
   end
 
   def latest_card_version(replace:)

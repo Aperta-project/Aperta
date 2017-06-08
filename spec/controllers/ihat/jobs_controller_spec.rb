@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Ihat::JobsController, type: :controller do
+
   describe "POST create" do
     before do
       token = ApiKey.generate!

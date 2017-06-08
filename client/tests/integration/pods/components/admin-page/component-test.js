@@ -17,6 +17,7 @@ moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
   beforeEach: function() {
     this.register('service:feature-flag', featureFlagServiceStub);
     this.inject.service('feature-flag', { as: 'feature-flag' });
+  }
 });
 
 test('it has a tab bar', function(assert) {

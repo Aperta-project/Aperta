@@ -1,41 +1,30 @@
 # Utility class to handle the permissions for a card and its instances.
 class CardPermissions
+  # Map of state groups to the states they can edit in
+  STATES = {
+    editable: Paper::EDITABLE_STATES,
+    reviewer: Paper::REVIEWABLE_STATES,
+    rest: [Permission::WILDCARD]
+  }.freeze
+
   # Give the roles permission action on a given card.
   # If the permission already has roles
   def self.add_roles(card, action, roles)
-    grouped_roles = group_roles(card, roles)
-
     append_roles_and_save(get_card_permission(card), roles)
 
-    [
-      append_task_permission(
-        card, action, Paper::EDITABLE_STATES, grouped_roles[:editable]
-      ),
-      append_task_permission(
-        card, action, Paper::REVIEWABLE_STATES, grouped_roles[:reviewer]
-      ),
-      append_task_permission(
-        card, action, [Permission::WILDCARD], grouped_roles[:rest]
-      )
-    ]
+    grouped_roles = group_roles(card, roles)
+    STATES.keys.map do |key|
+      append_task_permission(card, action, STATES[key], grouped_roles[key])
+    end
   end
 
   def self.set_roles(card, action, roles)
-    grouped_roles = group_roles(card, roles)
-
     replace_roles_and_save(get_card_permission(card), roles)
 
-    [
-      replace_task_permission(
-        card, action, Paper::EDITABLE_STATES, grouped_roles[:editable]
-      ),
-      replace_task_permission(
-        card, action, Paper::REVIEWABLE_STATES, grouped_roles[:reviewer]
-      ),
-      replace_task_permission(
-        card, action, [Permission::WILDCARD], grouped_roles[:rest]
-      )
-    ]
+    grouped_roles = group_roles(card, roles)
+    STATES.keys.map do |key|
+      replace_task_permission(card, action, STATES[key], grouped_roles[key])
+    end
   end
 
   def self.replace_task_permission(card, action, states, roles)

@@ -28,14 +28,14 @@ describe Answer do
       it 'is valid when answer value matches the card content validator string' do
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
-        expect(subject.valid?(:ready)).to eq true
+        expect(subject.ready?).to eq true
       end
 
       it 'is not valid when answer value doesnt matches the card content validator string' do
         card_content_validation.update!(validator: 'notfindable')
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
-        expect(subject.valid?(:ready)).to eq false
+        expect(subject.ready?).to eq false
       end
     end
   end

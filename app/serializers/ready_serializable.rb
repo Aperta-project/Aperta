@@ -8,7 +8,7 @@ module ReadySerializable
     def initialize(object, options)
       super(object, options)
       # run validation within the :ready namespace
-      object.valid?(:ready)
+      object.ready?
     end
 
     attributes  :ready,

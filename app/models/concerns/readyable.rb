@@ -9,6 +9,10 @@ module Readyable
   extend ActiveSupport::Concern
   include ActiveModel::Validations::HelperMethods
 
+  def ready?
+    valid?(:ready)
+  end
+
   def ready_init
     self.ready = true
     self.ready_issues = []

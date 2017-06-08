@@ -2,6 +2,7 @@
   {{attachment-link accept=accept
                     attachment=attachment
                     draft=draft
+                    reviseTask="reviseTask"
                     filePath=filePath
                     hasCaption=hasCaption
                     caption=attachment.caption
@@ -9,7 +10,11 @@
                     cancelUpload=attrs.cancelUpload
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment}}
+                    uploadFinished=attrs.updateAttachment
+                    progress=uploadProgress
+                    start=fileAdded
+                    multiple=multiple
+                    disabled=disabled }}
 {{/each}}
 
 {{#each fileUploads as |f|}}

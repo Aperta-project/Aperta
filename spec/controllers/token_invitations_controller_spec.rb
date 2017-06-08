@@ -173,4 +173,67 @@ describe TokenInvitationsController do
       end
     end
   end
+
+  describe 'GET /invitations/:token/accept' do
+    subject(:do_request) { get :accept, token: invitation.token }
+    context 'there is no user logged in' do
+      context 'when the token points to an "invited" invitation' do
+        let(:email) { 'some_account@plos.org' }
+        let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: email) }
+        it 'redirects user to login page' do
+          do_request
+          expect(response).to redirect_to(new_user_session_url)
+        end
+      end
+    end
+
+    context 'there is a user logged in' do
+      before { stub_sign_in user }
+      context 'when the invitation hasn\'t been accepted' do
+        context 'when invitation and current user emails are the same' do
+          let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: user.email) }
+          it 'creates an Activity' do
+            expect(Activity).to receive(:invitation_accepted!)
+            do_request
+          end
+
+          it 'accepts the user\'s invitation' do
+            expect_any_instance_of(Invitation).to receive(:accept!)
+            do_request
+          end
+
+          it 'redirects user to the manuscript and sets a flash notice' do
+            do_request
+            expect(response).to redirect_to("/papers/#{invitation.paper.short_doi}")
+            expect(flash[:notice]).to be_present
+          end
+        end
+        context 'when invitation and current user emails are not the same' do
+          let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: 'phished@plos.org') }
+
+          it 'does not accept the user\'s invitation' do
+            expect_any_instance_of(Invitation).to_not receive(:accept!)
+            do_request
+          end
+
+          it 'redirects user to the manuscript' do
+            do_request
+            expect(response).to redirect_to("/papers/#{invitation.paper.short_doi}")
+          end
+        end
+      end
+    end
+
+    context 'when the invitation has been accepted' do
+      before { stub_sign_in user }
+      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: user.email) }
+      it 'does not try to accept again and redirects to manuscript' do
+        expect_any_instance_of(Invitation).to receive(:accepted?).and_return(true)
+        expect_any_instance_of(Invitation).to_not receive(:accept!)
+        expect(Activity).to_not receive(:invitation_accepted!)
+        do_request
+        expect(response).to redirect_to("/papers/#{invitation.paper.short_doi}")
+      end
+    end
+  end
 end

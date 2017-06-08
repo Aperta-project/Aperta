@@ -40,6 +40,8 @@ class XmlCardDocument
 
     errors = schema.validate(tempfile.path)
     raise XmlValidationError, errors unless errors.empty?
+  ensure
+    tempfile.unlink
   end
 
   def card

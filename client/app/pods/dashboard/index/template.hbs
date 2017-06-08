@@ -16,10 +16,14 @@
                       overlayClass="invitations-overlay"
                       as |overlay|}}
     {{flash-messages}}
-    {{invitations-x invitations=invitationsNeedsUserUpdate
-                    accept=(action "acceptInvitation")
-                    close=(action overlay.animateOut)
-                    decline=(action "declineInvitation")}}
+    {{#if invitationsLoading}}
+      {{progress-spinner visible=true color="green" size="large" align="middle"}}
+    {{else}}
+      {{invitations-x invitations=invitationsNeedsUserUpdate
+                      accept=(action "acceptInvitation")
+                      close=(action overlay.animateOut)
+                      decline=(action "declineInvitation")}}
+    {{/if}}
 {{/overlay-fullscreen}}
 
 {{flash-messages}}

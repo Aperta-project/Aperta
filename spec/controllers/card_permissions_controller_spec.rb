@@ -34,7 +34,7 @@ describe CardPermissionsController do
       expect { do_request }.to change { Permission.count }.by(2)
 
       expect(response.status).to be(201)
-      permission = Permission.find(res_body[:card_permission][:id])
+      permission = Permission.find(res_body['card_permissions'][0][:id])
       expect(permission.filter_by_card_id).to eq(card.id)
       expect(permission.action).to eq("view")
       expect(permission.roles).to eq([role])

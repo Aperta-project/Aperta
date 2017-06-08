@@ -14,8 +14,9 @@ class CardPermissionsController < ApplicationController
 
     check_roles(card)
 
-    respond_with CardPermissions.add_roles(card, action, roles),
-                 serializer: CardPermissionSerializer
+    render status: :created,
+           json: CardPermissions.add_roles(card, action, roles),
+           each_serializer: CardPermissionSerializer
   end
 
   def show
@@ -31,11 +32,13 @@ class CardPermissionsController < ApplicationController
     card = Card.find(permission.filter_by_card_id)
     requires_user_can(:edit, card)
     check_roles(card)
-    task_permission = CardPermissions.set_roles(
+    task_permissions = CardPermissions.set_roles(
       card, Permission.find(params[:id]).action,
       roles
     )
-    respond_with task_permission, serializer: CardPermissionSerializer
+    render status: :ok,
+           json: task_permissions,
+           each_serializer: CardPermissionSerializer
   end
 
   private

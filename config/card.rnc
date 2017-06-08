@@ -123,5 +123,6 @@ content = (radio-input |
 start = element card {
             attribute name { text },
             attribute required-for-submission { "true" | "false" },
+            attribute workflow-display-only { "true" | "false" },
             content
         }

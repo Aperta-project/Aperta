@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TaskSerializer, serializer_test: true do
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
+  let(:task) { FactoryGirl.create(:ad_hoc_task, :with_loaded_card, paper: paper) }
   let(:object_for_serializer) { task }
 
   describe '#is_metadata_task' do
@@ -93,6 +93,28 @@ describe TaskSerializer, serializer_test: true do
 
       it 'returns true if current_user exists in the context' do
         expect(deserialized_content[:task][:assigned_to_me]).to eq(true)
+      end
+    end
+  end
+
+  describe '#is_workflow_only_task' do
+    context 'associated card is configured as only displaying on workflow page' do
+      before do
+        task.card.latest_published_card_version.update(workflow_display_only: true)
+      end
+
+      it 'returns true' do
+        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(true)
+      end
+    end
+
+    context 'associated card is configured as not restricted to workflow page' do
+      before do
+        task.card.latest_published_card_version.update(workflow_display_only: false)
+      end
+
+      it 'returns false' do
+        expect(deserialized_content[:task][:is_workflow_only_task]).to eq(false)
       end
     end
   end

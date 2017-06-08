@@ -77,7 +77,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
   var scenarios = [
     {
       data: {
-        isReadyForSubmission: true,
+        isInSubmittableState: true,
         file: {
           status: 'error'
         },
@@ -87,13 +87,13 @@ test('authorHasErrorOnPreSubmission', function(assert) {
     },
     {
       data: {
-        isReadyForSubmission: false,
+        isInSubmittableState: false,
       },
       expectation: false,
     },
     {
       data: {
-        isReadyForSubmission: true,
+        isInSubmittableState: true,
         file: {
           status: 'ok'
         },
@@ -102,7 +102,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
     },
     {
       data: {
-        isReadyForSubmission: true,
+        isInSubmittableState: true,
         file: {
           status: 'error'
         },

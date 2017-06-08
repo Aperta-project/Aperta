@@ -221,8 +221,8 @@ export default DS.Model.extend({
   hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
   'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
 
-  authorHasErrorOnPreSubmission: computed('isReadyForSubmission', 'file.status', 'currentUserRoles', function() {
-    return this.stateHasErrorsForRole('isReadyForSubmission', ['Creator']);
+  authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);
   }),
 
   authorHasErrorOnSubmission: computed('isPartialSubmittedState', 'file.status', 'currentUserRoles', function() {

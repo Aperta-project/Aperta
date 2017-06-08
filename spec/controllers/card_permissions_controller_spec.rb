@@ -112,7 +112,7 @@ describe CardPermissionsController do
 
       it_behaves_like "an unauthenticated json request"
 
-      it "adds the role to the role permission" do
+      it "adds the role to the edit permission" do
         stub_sign_in user
         expect { do_request }.to(change { edit_permission.roles.reload.count }.from(1).to(2))
       end

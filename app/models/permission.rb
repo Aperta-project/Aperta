@@ -12,22 +12,20 @@ class Permission < ActiveRecord::Base
         states: [Permission::WILDCARD],
         **kwargs
   )
-    permission_states = states.map do |state|
-      if state.is_a?(PermissionState)
-        state
-      else
-        PermissionState.where(name: state).first_or_create!
-      end
-    end
-    permission_states_ids = permission_states.map(&:id)
-    perm = Permission.includes(:states).where(
+    permission_states = PermissionState.from_strings(states)
+
+    Permission.joins(:states).where(
       action: action,
       applies_to: applies_to.to_s,
-      permission_states: { id: permission_states_ids },
       **kwargs
-    ).first_or_create!
-    perm.states = permission_states
-    role.permissions = (role.permissions | [perm]) unless role.nil?
-    perm
+    ).group('permissions.id')
+    .having(
+      'ARRAY[?] = ARRAY_AGG(permission_states.id ORDER
+         BY permission_states.id)',
+      permission_states.map(&:id).sort
+    ).first_or_create!.tap do |perm|
+      perm.states = permission_states
+      role.permissions = (role.permissions | [perm]) unless role.nil?
+    end
   end
 end

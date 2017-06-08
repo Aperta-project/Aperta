@@ -121,6 +121,10 @@ describe XmlCardLoader do
                 <error-message>First Validation</error-message>
                 <validator>/test-one/</validator>
               </validation>
+              <validation validation-type='string-match'>
+                <error-message>Second Validation</error-message>
+                <validator>/second-one/</validator>
+              </validation>
             </content>
           </content>
         </card>
@@ -129,10 +133,15 @@ describe XmlCardLoader do
 
     it 'creates string match card content validations' do
       xml_card_loader.load(xml)
-      expect(validations.count).to eq(1)
+      expect(validations.count).to eq(2)
+
       expect(validations.first.validation_type).to eq 'string-match'
       expect(validations.first.error_message).to eq 'First Validation'
       expect(validations.first.validator).to eq '/test-one/'
+
+      expect(validations.second.validation_type).to eq 'string-match'
+      expect(validations.second.error_message).to eq 'Second Validation'
+      expect(validations.second.validator).to eq '/second-one/'
     end
   end
 

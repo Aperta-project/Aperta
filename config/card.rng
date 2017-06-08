@@ -216,20 +216,23 @@
             <text/>
           </element>
         </optional>
-        <optional>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>string-match</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
-        </optional>
+        <zeroOrMore>
+          <ref name="validation"/>
+        </zeroOrMore>
       </interleave>
+    </element>
+  </define>
+  <define name="validation">
+    <element name="validation">
+      <attribute name="validation-type">
+        <value>string-match</value>
+      </attribute>
+      <element name="error-message">
+        <text/>
+      </element>
+      <element name="validator">
+        <text/>
+      </element>
     </element>
   </define>
   <!-- Contents -->

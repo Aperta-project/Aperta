@@ -1,24 +1,22 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+const featureFlagServiceStub = Ember.Service.extend ({
+  flags: {
+    CARD_CONFIGURATION: true,
+    ADMIN_EMAIL_TEMPLATES: true
+  },
+
+  value(flag){
+    return this.get('flags')[flag];
+  } 
+});
+
 moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
   integration: true,
-
   beforeEach: function() {
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        // CARD_CONFIGURATION: true,
-        // ADMIN_EMAIL_TEMPLATES: true
-        BLAHBLAH: true
-      }
-    });
-  },
-  afterEach: function() {
-    $.mockjax.clear();
-  }
+    this.register('service:feature-flag', featureFlagServiceStub);
+    this.inject.service('feature-flag', { as: 'feature-flag' });
 });
 
 test('it has a tab bar', function(assert) {

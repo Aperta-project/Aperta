@@ -53,8 +53,6 @@ class XmlCardLoader
     end
   end
 
-  private
-
   def build_card_contents(card_version)
     xml.contents.map do |content|
       build_card_content(content, card_version)

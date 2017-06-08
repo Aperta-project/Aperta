@@ -7,7 +7,6 @@ describe XmlCardLoader do
   let(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
-
   describe 'error handling' do
     context 'xml does not adhere to xml schema' do
       let(:xml) { '<foo/>' }

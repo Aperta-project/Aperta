@@ -80,11 +80,13 @@ text-input = element content {
                  attribute default-answer-value { text }?,
                  (element placeholder { text }? &
                   element text { text }? &
-                  element validation {
-                   attribute validation-type { "string-match" },
-                   element error-message { text },
-                   element validator { text }
-                 }?)
+                  validation*)
+             }
+
+validation = element validation {
+                 attribute validation-type { "string-match" },
+                 element error-message { text },
+                 element validator { text }
              }
 
 # Contents
@@ -128,5 +130,6 @@ content = (radio-input |
 start = element card {
             attribute name { text },
             attribute required-for-submission { "true" | "false" },
+            attribute workflow-display-only { "true" | "false" },
             content
         }

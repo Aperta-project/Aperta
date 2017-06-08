@@ -29,9 +29,7 @@ module Readyable
   class ValueValidator < ActiveModel::EachValidator #:nodoc:
     def validate_each(obj, _attr, _value)
       obj.ready_init
-      validation_owner = obj.kind_of?(QuestionAttachment) ? obj.owner : obj
-      card_content = validation_owner.card_content
-      card_content.card_content_validations.each do |validation|
+      obj.card_content.card_content_validations.each do |validation|
         obj.add_errors(validation, _attr) unless validation.validate_answer(obj)
       end
       obj.errors.each { |error, message| obj.ready_issues << message }

@@ -20,6 +20,18 @@ export default TaskComponent.extend({
 
   automatedReportsDisabled: false,
 
+  versionedTextDescriptor: Ember.computed('latestVersionedText', function() {
+    if (true) {
+      return 'first full submission';
+    } else if (false) {
+      return 'first major revision';
+    } else if (false) {
+      return 'first minor revision';
+    } else if (false) {
+      return 'any first revision';
+    }
+  }),
+
   actions: {
     confirmGenerateReport() {
       this.set('confirmVisible', true);
@@ -29,7 +41,14 @@ export default TaskComponent.extend({
     },
     generateReport() {
       this.set('confirmVisible', false);
-      this.get('task.paper.versionedTexts').then(() => {
+      const paper = this.get('task.paper');
+      // make sure manuallyChecked is serialized in both directions and migrations exist to support it
+      // if (! paper.get('manuallyChecked')) {
+      //   paper.set('manuallyChecked', true)
+      //   paper.save();
+
+      // }
+      paper.get('versionedTexts').then(() => {
         const similarityCheck = this.get('store').createRecord('similarity-check', {
           paper: this.get('task.paper'),
           versionedText: this.get('latestVersionedText')

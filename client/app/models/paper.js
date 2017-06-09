@@ -294,6 +294,8 @@ export default DS.Model.extend({
     });
   },
 
+  manuallyChecked: true,
+
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';
     const data = { on_paper_id: this.get('id') };

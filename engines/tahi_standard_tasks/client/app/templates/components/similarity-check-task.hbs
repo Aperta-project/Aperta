@@ -9,7 +9,10 @@
   {{#unless (or automatedReportsDisabled confirmVisible)}}
     <div class="automated-report-status">
       <div class="messages">
-       <p>Automated similarity check is active: This manuscript will be sent to iThenticate on first full submission.</p>
+       <p>
+          <i class="fa fa-gear"></i>
+          <strong>Automated similarity check is active:</strong> This manuscript will be sent to iThenticate on {{versionedTextDescriptor}}.
+        </p>
        <p>Manually generating a report below will disable the automated similarity check for this manuscript.</p>
       </div>
     </div>
@@ -33,7 +36,7 @@
         <br>
         <button class="button-link button--white" {{action "cancel"}}>cancel</button>
         <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
-      {{#else }}
+      {{else }}
         <h4>Manually generating the report will disable the automated similarity check for this manuscript</h4>
         <br>
         <button class="button-link button--white" {{action "cancel"}}>cancel</button>

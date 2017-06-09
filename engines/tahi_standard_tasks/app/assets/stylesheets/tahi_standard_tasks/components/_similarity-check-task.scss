@@ -5,4 +5,14 @@
     text-align:center;
     padding:10px 0px;
   }
+  .automated-report-status {
+    background-color: #edffed;
+    border: 1px solid #d3f3d3;
+    border-radius: 2px;
+    margin: 10px;
+
+    .messages {
+      margin: 10px 10px;
+    }
+  }
 }

@@ -18,6 +18,8 @@ export default TaskComponent.extend({
   latestVersionPrimaryFailedChecks: Ember.computed.filterBy('latestVersionFailedChecks', 'dismissed', false),
   sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
 
+  automatedReportsDisabled: false,
+
   actions: {
     confirmGenerateReport() {
       this.set('confirmVisible', true);

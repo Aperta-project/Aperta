@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20170601164644) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
+    t.boolean  "workflow_display_only",   default: false, null: false
     t.string   "history_entry"
   end
 

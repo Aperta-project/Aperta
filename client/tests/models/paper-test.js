@@ -77,7 +77,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
   var scenarios = [
     {
       data: {
-        isUnsubmitted: true,
+        isInSubmittableState: true,
         file: {
           status: 'error'
         },
@@ -87,13 +87,13 @@ test('authorHasErrorOnPreSubmission', function(assert) {
     },
     {
       data: {
-        isUnsubmitted: false,
+        isInSubmittableState: false,
       },
       expectation: false,
     },
     {
       data: {
-        isUnsubmitted: true,
+        isInSubmittableState: true,
         file: {
           status: 'ok'
         },
@@ -102,7 +102,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
     },
     {
       data: {
-        isUnsubmitted: true,
+        isInSubmittableState: true,
         file: {
           status: 'error'
         },
@@ -126,7 +126,7 @@ test('authorHasErrorOnSubmission', function(assert) {
   var scenarios = [
     {
       data: {
-        isSubmitted: true,
+        isPartialSubmittedState: true,
         file: {
           status: 'error'
         },
@@ -148,7 +148,7 @@ test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
   var scenarios = [
     {
       data: {
-        isSubmitted: true,
+        isPartialSubmittedState: true,
         editable: true,
         file: {
           status: 'error'
@@ -171,7 +171,7 @@ test('otherRolesHasErrorOnSubmitted', function(assert) {
   var scenarios = [
     {
       data: {
-        isSubmitted: true,
+        isPartialSubmittedState: true,
         file: {
           status: 'error'
         },

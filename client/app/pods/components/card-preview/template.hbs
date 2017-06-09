@@ -1,3 +1,6 @@
+{{# if settingsEnabled}}
+<i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;
+{{/if}}
 <a href={{href}} {{action "viewCard"}} data-id="{{task.id}}">
   {{#if unreadCommentsCount}}
     <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>

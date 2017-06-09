@@ -17,8 +17,8 @@ export default TaskComponent.extend({
   latestVersionFailedChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'failed'),
   latestVersionPrimaryFailedChecks: Ember.computed.filterBy('latestVersionFailedChecks', 'dismissed', false),
   sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
-
-  automatedReportsDisabled: false,
+  latestVersionHasChecks: Ember.computed.notEmpty('latestVersionedText.similarityChecks.[]'),
+  automatedReportsDisabled: Ember.computed.alias('task.paper.manuallySimilarityChecked'),
 
   versionedTextDescriptor: Ember.computed('latestVersionedText', function() {
     if (true) {
@@ -42,15 +42,15 @@ export default TaskComponent.extend({
     generateReport() {
       this.set('confirmVisible', false);
       const paper = this.get('task.paper');
-      // make sure manuallyChecked is serialized in both directions and migrations exist to support it
-      // if (! paper.get('manuallyChecked')) {
-      //   paper.set('manuallyChecked', true)
-      //   paper.save();
 
-      // }
+      if (! paper.get('manuallySimilarityChecked')) {
+        paper.set('manuallySimilarityChecked', true);
+        paper.save();
+      }
+
       paper.get('versionedTexts').then(() => {
         const similarityCheck = this.get('store').createRecord('similarity-check', {
-          paper: this.get('task.paper'),
+          paper: paper,
           versionedText: this.get('latestVersionedText')
         });
         similarityCheck.save();

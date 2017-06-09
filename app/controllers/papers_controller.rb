@@ -189,6 +189,7 @@ class PapersController < ApplicationController
       :paper_type,
       :journal_id,
       :striking_image_id,
+      :manually_similarity_checked,
       reviewer_ids: [],
       phase_ids: [],
       assignee_ids: [],

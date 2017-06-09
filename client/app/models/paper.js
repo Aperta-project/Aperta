@@ -88,7 +88,11 @@ export default DS.Model.extend({
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
+<<<<<<< 847dad8c2d82246b6ccf5bdf41923e29e9ea95be
   currentUserRoles: attr(),
+=======
+  manuallySimilarityChecked: attr('boolean'),
+>>>>>>> disables auto sim check on ui manual check
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -293,8 +297,6 @@ export default DS.Model.extend({
       return this.get('currentUserRoles').includes(role);
     });
   },
-
-  manuallyChecked: true,
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

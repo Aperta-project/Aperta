@@ -72,10 +72,14 @@ export default Ember.Component.extend({
 
     promptDelete() {
       this.sendAction('showDeleteConfirm', this.get('task'));
+    },
+
+    openSettings() {
+      alert('open alert ooooo!');
     }
   },
 
   settingsEnabled: Ember.computed('task.title', function() {
-    return this.get('task.title') === 'Similarity Check'; 
+    return this.get('task.title') === 'Similarity Check';
   })
 });

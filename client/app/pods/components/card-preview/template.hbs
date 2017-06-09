@@ -1,6 +1,3 @@
-{{# if settingsEnabled}}
-<i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;
-{{/if}}
 <a href={{href}} {{action "viewCard"}} data-id="{{task.id}}">
   {{#if unreadCommentsCount}}
     <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>
@@ -15,6 +12,9 @@
         {{partial "svg/check"}}
       </div>
     {{/unless}}
+  {{/if}}
+  {{# if settingsEnabled}}
+  <span {{action "openSettings" bubbles=false}} title="Settings"><i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;</span>
   {{/if}}
   <span class="card-title">{{task.title}}</span>
 </a>

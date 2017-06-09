@@ -16,6 +16,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    titleChanged: function (contents) {
+      this.set('relatedArticle.linkedTitle', contents);
+    },
+
     edit: function() {
       this.set('editState', true);
     },

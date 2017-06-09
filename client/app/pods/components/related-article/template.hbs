@@ -1,14 +1,14 @@
 {{#if editState}}
   <div class="inset-form-control">
-    <div class="inset-form-control-text">
-      <label>Title</label>
-    </div>
-    {{input
-        type="text"
-        value=relatedArticle.linkedTitle
-        class="related-article-title-input inset-form-control-input"
-        disabled=isNotEditable
-        placeholder="Submission Title"}}
+    {{rich-text-editor
+      editorStyle='basic'
+      value=relatedArticle.linkedTitle
+      ident='related-article-title-input'
+      class='related-article-title-input'
+      onContentsChanged=(action 'titleChanged')
+      placeholder="Submission Title"
+      disabled=isNotEditable
+    }}
   </div>
 
   <div class="inset-form-control">
@@ -63,7 +63,7 @@
   </div>
 
   <div class="related-article-title">
-    Title: {{relatedArticle.linkedTitle}}
+    Title: {{{relatedArticle.linkedTitle}}}
   </div>
 
   <div class="related-article-doi">

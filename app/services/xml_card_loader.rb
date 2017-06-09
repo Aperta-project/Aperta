@@ -32,9 +32,7 @@ class XmlCardLoader
   private
 
   def xml_card_document(xml)
-    doc = XmlCardDocument.new(xml)
-    doc.validate!
-    doc
+    XmlCardDocument.new(xml)
   end
 
   def latest_card_version(replace:)
@@ -54,8 +52,6 @@ class XmlCardLoader
       card_version.card_contents << build_card_contents(card_version)
     end
   end
-
-  private
 
   def build_card_contents(card_version)
     xml.contents.map do |content|

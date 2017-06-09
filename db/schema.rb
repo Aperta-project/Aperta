@@ -593,6 +593,7 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.boolean  "manually_similarity_checked",           default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

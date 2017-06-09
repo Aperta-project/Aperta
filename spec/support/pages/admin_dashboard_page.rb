@@ -20,7 +20,7 @@ class AdminDashboardPage < Page
   end
 
   def has_journal_name?(name)
-    page.has_css?('.journal-thumbnail-name', text: name)
+    page.has_css?('.admin-drawer-item-title', text: name)
   end
 
   def has_journal_names?(*names)

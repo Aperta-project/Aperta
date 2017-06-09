@@ -20,6 +20,10 @@ export default Ember.Component.extend({
       this.set('relatedArticle.linkedTitle', contents);
     },
 
+    infoChanged: function (contents) {
+      this.set('relatedArticle.additionalInfo', contents);
+    },
+
     edit: function() {
       this.set('editState', true);
     },

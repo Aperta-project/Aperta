@@ -1,5 +1,9 @@
 {{#if editState}}
   <div class="inset-form-control">
+    <div>
+      <label>Title</label>
+    </div>
+
     {{rich-text-editor
       editorStyle='basic'
       value=relatedArticle.linkedTitle
@@ -24,15 +28,19 @@
   </div>
 
   <div class="inset-form-control">
-    <div class="inset-form-control-text">
+    <div>
       <label>Additional info</label>
     </div>
-    {{input
-        type="text"
-        value=relatedArticle.additionalInfo
-        class="related-article-additional-info-input inset-form-control-input"
-        disabled=isNotEditable
-        placeholder="Add a link or other helpful info here"}}
+
+    {{rich-text-editor
+      editorStyle='basic'
+      value=relatedArticle.additionalInfo
+      ident='related-article-additional-info-input'
+      class='related-article-additional-info-input'
+      onContentsChanged=(action 'infoChanged')
+      placeholder="Add a link or other helpful info here"
+      disabled=isNotEditable
+    }}
   </div>
 
   <div class="related-article-publish-together-input">

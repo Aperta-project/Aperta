@@ -140,7 +140,8 @@ class CoverLetterTaskTest(CommonTest):
     workflow_page.click_card('cover_letter')
     cover_letter_card = CoverLetterCard(self.getDriver())
     cover_letter_card.card_ready()
-    cover_letter_card.validate_uploaded_file_download(cover_letter_task.get_last_uploaded_letter_file())
+    cover_letter_card.validate_uploaded_file_download(
+        cover_letter_task.get_last_uploaded_letter_file())
 
   def test_cover_letter_file_replace(self):
     """

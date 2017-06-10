@@ -177,7 +177,6 @@ class CoverLetterCard(BaseCard):
     # original one
     try:
       files = filter(os.path.isfile, os.listdir('/tmp'))
-      # files = [os.path.join('/tmp', f) for f in files]  # add path to each file
       files.sort(key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
       logging.info(newest_file)
@@ -190,7 +189,8 @@ class CoverLetterCard(BaseCard):
     # Generate MD5 hashes for original and downloaded file to compare if is the same
     uploaded_file_md5 = hashlib.md5(
       open(os.path.join(
-        original_working_dir + '/frontend/assets/coverletters/', urllib.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
+        original_working_dir + '/frontend/assets/coverletters/',
+        urllib.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(os.path.join('/tmp', newest_file), 'rb').read()).hexdigest()
 

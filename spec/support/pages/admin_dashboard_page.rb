@@ -27,14 +27,6 @@ class AdminDashboardPage < Page
     names.all? { |name_text| has_journal_name? name_text }
   end
 
-  def has_journal_description?(description)
-    page.has_css? '.journal-thumbnail-show p', text: description
-  end
-
-  def has_journal_descriptions?(*descriptions)
-    descriptions.all? { |description| has_journal_description?(description) }
-  end
-
   def has_journal_paper_count?(count)
     count_text = count == 1 ? "#{count} article" : "#{count} articles"
     find('.journal-thumbnail-paper-count', text: count_text)
@@ -44,14 +36,9 @@ class AdminDashboardPage < Page
     counts.all? { |count| has_journal_paper_count?(count) }
   end
 
-  def create_journal
-    click_on 'Add new journal'
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
-  end
-
   def edit_journal(journal_name)
-    find('.journal-thumbnail', text: journal_name).find('.edit-icon').click
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
+    within('.left-drawer') { click_on journal_name }
+    EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
 
   def visit_journal(journal)
@@ -67,7 +54,7 @@ class AdminDashboardPage < Page
   def search_results
     session.has_content? 'Username'
     all('.admin-users .user-row').map do |el|
-      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
+      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 

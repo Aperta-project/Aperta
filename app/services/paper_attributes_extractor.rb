@@ -13,7 +13,7 @@ class PaperAttributesExtractor
     paper.update!(
       body: extract_file('body'),
       abstract: extract_abstract,
-      title: extract_file('title') || paper.title
+      title: paper.title
     )
   end
 

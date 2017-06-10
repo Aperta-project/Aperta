@@ -20,18 +20,9 @@ describe PaperAttributesExtractor do
       end
     end
 
-    context "updating title" do
-      let(:content) { "My title" }
-
-      before do
-        allow(extractor).to receive(:extract_file) do |filename|
-          content if filename == "title"
-        end
-      end
-
-      it "updates the paper title" do
-        extractor.sync!(paper)
-        expect(paper.reload.title).to eq(content)
+    context "tahi scraping is not included with title" do
+      it "updates title with user input" do
+        expect(paper.reload.title).to eq(paper.title)
       end
     end
 

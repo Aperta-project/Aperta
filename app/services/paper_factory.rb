@@ -2,7 +2,6 @@ class PaperFactory
   attr_reader :paper, :creator
 
   def self.create(paper_params, creator)
-    paper_params[:title] = 'Untitled' if paper_params[:title].blank?
     # number_reviewer_reports is applied for all new papers as of APERTA-7810.
     # it's not exposed to the client.
     paper_params[:number_reviewer_reports] = true

@@ -1041,7 +1041,7 @@ class DashboardPage(AuthenticatedPage):
     """
     A fuction to validate that the dashboard page is loaded before interacting with it
     """
-    self.set_timeout(10)
+    self.set_timeout(5)
     try:
       self._wait_for_element(self._get(self._dash_inactive_section_title))
     except ElementDoesNotExistAssertionError:

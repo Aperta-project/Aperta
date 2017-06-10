@@ -150,23 +150,19 @@ class CoverLetterTask(BaseTask):
     """
     textarea = self._get(self._cover_letter_textarea)
     sample_text = self.get_textarea_sample_text()
-
     textarea.send_keys(sample_text)
-
     self.click_completion_button()
 
   def upload_letter(self, letter='random'):
     """
     upload_letter: Upload the cover letter file
     :param letter: The full path and filename of the letter to upload. A string.
-    :return: void function
+    :return: the relative path/filename of the uploaded letter (Matches format of the cover_letters
+      list in Base/Resources)
     """
     if letter == 'random':
-      letter2upload = random.choice(cover_letters)
-      fn = os.path.join(os.getcwd(), letter2upload)
-    else:
-      fn = os.path.join(os.getcwd(), letter)
-
+      letter = random.choice(cover_letters)
+    fn = os.path.join(os.getcwd(), letter)
     logging.info('Sending cover letter: {0}'.format(fn))
     input_selector = self._iget(self._upload_cover_letter_filename_input)
     input_selector.send_keys(fn)
@@ -178,6 +174,7 @@ class CoverLetterTask(BaseTask):
     # Wait until the uploaded item link have the formatted name
     self._wait_for_text_be_present_in_element(
       self._uploaded_attachment_item_link, formatted_file_name)
+    return letter
 
   def _get_uploaded_item_element(self):
     """
@@ -194,37 +191,40 @@ class CoverLetterTask(BaseTask):
     _get_uploaded_item_element: Get the last uploaded file path
     :return: String
     """
-    return self._last_uploaded_letter_file
+    letter_attachment = self._get(self._uploaded_attachment_item_link)
+    return letter_attachment.text
 
-  def replace_letter(self, letter='random'):
+  def replace_letter(self, letter='random', exclude=''):
     """
     upload_letter: Replaces an uploaded cover letter file by another new one
     :param letter: The new file full path and filename. A string.
-    :return: void function
+    :param exclude: The path/filename to exclude from the list so we don't replace a file
+      with itself
+    :return: the path/filename of the letter that replaced the original file - formatted as per
+      the cover_letters list in Base/Resources
     """
+    if exclude:
+      cover_letters.remove(exclude)
     uploaded_item = self._get_uploaded_item_element()
 
     if letter == 'random':
-      letter2upload = random.choice(cover_letters)
-      fn = os.path.join(os.getcwd(), letter2upload)
-    else:
-      fn = os.path.join(os.getcwd(), letter)
+      letter = random.choice(cover_letters)
+    fn = os.path.join(os.getcwd(), letter)
 
-    logging.info('Replacing cover letter by: {0}'.format(fn))
+    logging.info('Replacing cover letter with: {0}'.format(fn))
     replace_file_input = self._iget(self._uploaded_attachment_item_replace_file_input)
 
     # # Making file input visible, using JavaScript, to Selenium be able to interact with this.
     # # A ticket to front end fix is was filed: APERTA-8960
-    js_cmd = "$('<style>{0}.attachment-manager .s3-file-uploader {{ display:block !important; }}</style>').appendTo('body');".format(self._task_body_base_locator)
+    js_cmd = "$('<style>{0}.attachment-manager " \
+             ".s3-file-uploader {{ display:block !important; }}</style>').appendTo('body');"\
+        .format(self._task_body_base_locator)
     self._driver.execute_script(js_cmd)
     # replace_file_input = uploaded_item.find_element_by_class_name(
     #   's3-file-uploader')
     replace_file_input.send_keys(fn)
     expected_file_name = fn.split("/")[-1]
-    page_file_name = self._get(self._uploaded_attachment_item_link).text
-    assert page_file_name == expected_file_name or urllib.quote_plus(expected_file_name), \
-        'The page presented file name: {0} is not what we expected: ' \
-        '{1}'.format(page_file_name, expected_file_name)
+    return letter
 
   def remove_letter(self):
     """
@@ -237,7 +237,7 @@ class CoverLetterTask(BaseTask):
 
     remove_button.click()
 
-    self._wait_for_not_element(self._uploaded_attachment_item, 2)
+    self._wait_for_not_element(self._uploaded_attachment_item, .1)
 
   def download_letter(self):
     """
@@ -290,7 +290,7 @@ class CoverLetterTask(BaseTask):
 
     # Generate MD5 hashes for original and downloaded file to compare if is the same
     original_file_md5 = hashlib.md5(
-      open(original_file_path, 'rb').read()).hexdigest()
+      open(os.path.join(original_working_dir + '/frontend/assets/coverletters/' + urllib.unquote_plus(original_file_path)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(newest_file, 'rb').read()).hexdigest()
 

@@ -6,6 +6,7 @@ This test case validates the Cover Letter Task.
 
 import logging
 import random
+import urllib
 
 import time
 
@@ -139,8 +140,7 @@ class CoverLetterTaskTest(CommonTest):
     workflow_page.click_card('cover_letter')
     cover_letter_card = CoverLetterCard(self.getDriver())
     cover_letter_card.card_ready()
-    cover_letter_card.validate_uploaded_file_download(
-        cover_letter_task.get_last_uploaded_letter_file())
+    cover_letter_card.validate_uploaded_file_download(cover_letter_task.get_last_uploaded_letter_file())
 
   def test_cover_letter_file_replace(self):
     """
@@ -154,11 +154,18 @@ class CoverLetterTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
+    logging.info('Paper is {0}'.format(manuscript_page.get_current_url()))
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
-    cover_letter_task.upload_letter()
-    cover_letter_task.replace_letter()
+    exclude_letter = cover_letter_task.upload_letter()
+    replacement_file = cover_letter_task.replace_letter(exclude=exclude_letter)
+    cover_letter_task = CoverLetterTask(self.getDriver())
+    cover_letter_task.task_ready()
+    current_attachment = cover_letter_task.get_last_uploaded_letter_file()
+    assert current_attachment in replacement_file, \
+        'The page presented file name: {0} is not what we expected: ' \
+        '{1}'.format(current_attachment, urllib.quoteplus(replacement_file))
 
   def test_cover_letter_file_delete(self):
     """
@@ -190,6 +197,7 @@ class CoverLetterTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
+    logging.info(manuscript_page.get_current_url())
     manuscript_page.click_task('Cover Letter')
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
@@ -213,14 +221,18 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
     cover_letter_task.validate_letter_textarea()
-    cover_letter_task.logout()
+    # Close the cover letter task - previously the logout wasn't always being executed
+    manuscript_page.click_task('Cover Letter')
+    manuscript_page.logout()
 
     # Test card
     staff_user = random.choice(editorial_users)
     dashboard_page = self.cas_login(email=staff_user['email'])
+    logging.info(dashboard_page.get_current_url())
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
+    logging.info(dashboard_page.get_current_url())
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     # go to wf

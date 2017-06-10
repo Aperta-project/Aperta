@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import hashlib
+import logging
 import os
 import urllib
 
@@ -151,17 +152,17 @@ class CoverLetterCard(BaseCard):
     :param uploaded_file: The uploaded file path. A string.
     :return: void function
     """
-
+    uploaded_file = str(uploaded_file)
+    logging.info(uploaded_file)
     if self.completed_state():
       self.click_completion_button()
 
     download_button = self._get(self._uploaded_attachment_item_link)
-    formatted_file_name = urllib.quote_plus(uploaded_file.split("/")[-1])
     original_working_dir = os.getcwd()
 
-    assert download_button.text == formatted_file_name, \
+    assert download_button.text == uploaded_file, \
         'The formatted file name: {0} is not the expected: {1}'.format(download_button.text,
-                                                                       formatted_file_name)
+                                                                       uploaded_file)
 
     download_button.click()
 
@@ -176,9 +177,10 @@ class CoverLetterCard(BaseCard):
     # original one
     try:
       files = filter(os.path.isfile, os.listdir('/tmp'))
-      files = [os.path.join('/tmp', f) for f in files]  # add path to each file
+      # files = [os.path.join('/tmp', f) for f in files]  # add path to each file
       files.sort(key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
+      logging.info(newest_file)
     except IndexError:
       newest_file = None
     finally:
@@ -187,9 +189,10 @@ class CoverLetterCard(BaseCard):
 
     # Generate MD5 hashes for original and downloaded file to compare if is the same
     uploaded_file_md5 = hashlib.md5(
-      open(uploaded_file, 'rb').read()).hexdigest()
+      open(os.path.join(
+        original_working_dir + '/frontend/assets/coverletters/', urllib.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
-      open(newest_file, 'rb').read()).hexdigest()
+      open(os.path.join('/tmp', newest_file), 'rb').read()).hexdigest()
 
     assert uploaded_file_md5 == downloaded_file_md5, \
         'The downloaded file ({0}) MD5 hash (Hash: {1}) does not match the ' \

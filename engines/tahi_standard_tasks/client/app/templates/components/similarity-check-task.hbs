@@ -35,17 +35,17 @@
         <h4>Are you sure?</h4>
         <br>
         <button class="button-link button--white" {{action "cancel"}}>cancel</button>
-        <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
+        <button class="button-secondary button--green generate-report" {{action "generateReport"}}>Generate Report</button>
       {{else }}
         <h4>Manually generating the report will disable the automated similarity check for this manuscript</h4>
         <br>
         <button class="button-link button--white" {{action "cancel"}}>cancel</button>
-        <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
+        <button class="button-secondary button--green generate-report" {{action "generateReport"}}>Generate Report</button>
       {{/if}}
     </div>
 
   {{else}}
-    <button class="button-primary button--green" {{ action "confirmGenerateReport" }}>Generate Report</button>
+    <button class="button-primary button--green generate-confirm" disabled={{latestVersionHasChecks}} {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
   {{#if task.paper.hasSimilarityChecks }}

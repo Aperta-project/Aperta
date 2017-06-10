@@ -216,10 +216,14 @@
             <text/>
           </element>
         </optional>
-        <optional>
+        <zeroOrMore>
           <element name="validation">
             <attribute name="validation-type">
-              <value>string-match</value>
+              <choice>
+                <value>string-match</value>
+                <value>string-length-minimum</value>
+                <value>string-length-maximum</value>
+              </choice>
             </attribute>
             <element name="error-message">
               <text/>
@@ -228,8 +232,21 @@
               <text/>
             </element>
           </element>
-        </optional>
+        </zeroOrMore>
       </interleave>
+    </element>
+  </define>
+  <define name="validation">
+    <element name="validation">
+      <attribute name="validation-type">
+        <value>string-match</value>
+      </attribute>
+      <element name="error-message">
+        <text/>
+      </element>
+      <element name="validator">
+        <text/>
+      </element>
     </element>
   </define>
   <!-- Contents -->

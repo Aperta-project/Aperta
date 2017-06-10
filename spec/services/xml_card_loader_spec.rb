@@ -7,13 +7,12 @@ describe XmlCardLoader do
   let(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
-
   describe 'error handling' do
     context 'xml does not adhere to xml schema' do
       let(:xml) { '<foo/>' }
 
       it 'throws an exception' do
-        expect { xml_card_loader.load(xml) }.to raise_exception(Nokogiri::XML::SyntaxError, 'Expecting element card, got foo')
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "foo" not allowed anywhere; expected element "card"' }
       end
     end
 
@@ -21,7 +20,7 @@ describe XmlCardLoader do
       let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}#{content2}</card>" }
 
       it 'throws an exception' do
-        expect { xml_card_loader.load(xml) }.to raise_exception(Nokogiri::XML::SyntaxError, 'Element card has extra content: content')
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
       end
     end
   end
@@ -122,6 +121,10 @@ describe XmlCardLoader do
                 <error-message>First Validation</error-message>
                 <validator>/test-one/</validator>
               </validation>
+              <validation validation-type='string-match'>
+                <error-message>Second Validation</error-message>
+                <validator>/second-one/</validator>
+              </validation>
             </content>
           </content>
         </card>
@@ -130,10 +133,15 @@ describe XmlCardLoader do
 
     it 'creates string match card content validations' do
       xml_card_loader.load(xml)
-      expect(validations.count).to eq(1)
+      expect(validations.count).to eq(2)
+
       expect(validations.first.validation_type).to eq 'string-match'
       expect(validations.first.error_message).to eq 'First Validation'
       expect(validations.first.validator).to eq '/test-one/'
+
+      expect(validations.second.validation_type).to eq 'string-match'
+      expect(validations.second.error_message).to eq 'Second Validation'
+      expect(validations.second.validator).to eq '/second-one/'
     end
   end
 

@@ -45,7 +45,7 @@
     </div>
 
   {{else}}
-    <button class="button-primary button--green generate-confirm" disabled={{latestVersionHasChecks}} {{ action "confirmGenerateReport" }}>Generate Report</button>
+    <button class="button-primary button--green generate-confirm" disabled={{disableReports}} {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
   {{#if task.paper.hasSimilarityChecks }}

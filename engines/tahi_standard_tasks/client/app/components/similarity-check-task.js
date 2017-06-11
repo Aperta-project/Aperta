@@ -32,7 +32,7 @@ export default TaskComponent.extend({
     }
   }),
 
-  canGenerateReports: Ember.computed('latestVersionHasChecks', 'automatedReportsDisabled', function() {
+  disableReports: Ember.computed('latestVersionHasChecks', 'automatedReportsDisabled', function() {
     return this.get('latestVersionHasChecks') &&  !this.get('automatedReportsDisabled');
   }),
 

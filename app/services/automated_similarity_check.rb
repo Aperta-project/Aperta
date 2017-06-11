@@ -11,6 +11,7 @@ class AutomatedSimilarityCheck
   # I could use a hash of procs for this, but folks will probably
   # think it's way more weird than a case statement
   def should_run?
+    return false if paper.manually_similarity_checked
     case setting_value
     when 'off'
       false

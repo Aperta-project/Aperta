@@ -183,6 +183,19 @@ describe AutomatedSimilarityCheck do
           expect(result.class).to eq(SimilarityCheck)
         end
       end
+
+      context "the paper has had a manually generated report" do
+        let!(:setting) do
+          FactoryGirl.create(:ithenticate_automation_setting,
+                                            :after_first_major_revise_decision, owner: task_template)
+        end
+
+        it "does not create a SimilarityCheck record" do
+          paper.manually_similarity_checked = true
+          result = described_class.call("tahi:paper:submitted", record: paper)
+          expect(result).to be_nil
+        end
+      end
     end
   end
 end

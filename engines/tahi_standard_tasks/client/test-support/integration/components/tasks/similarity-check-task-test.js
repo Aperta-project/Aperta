@@ -4,16 +4,15 @@ import Ember from 'ember';
 // Pretend like you're in client/tests
 import FakeCanService from '../../../helpers/fake-can-service';
 
-var template = hbs`{{similarity-check-task task=task }}`;
-// var template = hbs`{{similarity-check-task task=task can=can container=container}}`;
+var template = hbs`{{similarity-check-task task=task can=can container=container}}`;
 
 var setupEditableTask = function(context, task) {
   task = task || newTask();
-  // var can = FakeCanService.create();
-  // can.allowPermission('edit', task);
+  var can = FakeCanService.create();
+  can.allowPermission('edit', task);
 
   context.setProperties({
-    // can: can,
+    can: can,
     task: task
   });
 
@@ -21,67 +20,69 @@ var setupEditableTask = function(context, task) {
 };
 
 
-var newTask = function(completed, paperEditable) {
+var newTask = function(completed, paper) {
   return {
     id: 2,
     title: 'Title and Abstract',
     type: 'TahiStandardTasks::TitleAndAbstractTask',
     completed: completed,
     isMetadataTask: false,
-    isSubmissionTask: false,
-    assignedToMe: false,
-    paper: {
-      title: 'Paper title',
-      abstract: 'Paper abstract',
-      editable: paperEditable
-    }
+    isSubmissionTask: true,
+    assignedToMe: true,
+    paper: paper
   };
 };
 
+var paperStub = {
+  title: 'Paper title',
+  abstract: 'Paper abstract',
+  editable: true,
+  manuallySimilarityChecked: false
+}
+
 moduleForComponent(
   'similarity-check-task',
-  'Integration | Components | Tasks | Title and Abstract', {
-  integration: true,
-  beforeEach() {}
+  'Integration | Components | Tasks | Similarity Check Task', {
+  integration: true
 });
 
 test('proper state for a non manually generated check', function(assert) {
-  var task = newTask(false, true);
+  let task = newTask(false, paperStub);
   setupEditableTask(this, task);
-
   assert.elementFound('.similarity-check-task',
                        'the similarity check renders');
-
   assert.elementFound('.automated-report-status',
                        'it has an automated report status by default');
-
   assert.elementFound('.generate-confirm',
                        'it has a generate report button');
 
-  click('.generate-confirm')
-  andThen(function() {
-      assert.elementFound('.confirm-container',
-                       'it has a generate report button');
+  $('.generate-confirm').click()
 
-      assert.textFound(this isnt real replace)('Manually generating the report will disable the automated similarity check for this manuscript')
-  })
+  assert.elementFound('.confirm-container',
+                   'it has a generate report button');
+  assert.equal($('.confirm-container h4').html(),
+                   'Manually generating the report will disable the automated similarity check for this manuscript',
+                   'has the correct text');
 });
 
 test('proper state for a manually generated check', function(assert) {
-  var task = newTask(false, true);
+  let paper = paperStub;
+  paper.manuallySimilarityChecked = true
+  var task = newTask(false, paper);
   setupEditableTask(this, task);
 
   assert.elementFound('.similarity-check-task',
                        'the similarity check renders');
-
   assert.elementNotFound('.automated-report-status',
                        'it has an automated report status by default');
-
   assert.elementFound('.generate-confirm',
                        'it has a generate report button');
 
-  click('.generate-confirm')
-  andThen(function() {
-    assert.textFound(this isnt real replace)('Generate Report')
-  })
+  $('.generate-confirm').click()
+
+  assert.elementFound('.confirm-container',
+                   'it has a generate report button');
+  assert.equal($('.confirm-container h4').html(),
+                   `Are you sure?`,
+                   'has the correct text');
 });

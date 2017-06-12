@@ -1,15 +1,15 @@
 {{partial "task-completed-section"}}
 
 <div>
-  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
-  {{#if latestVersionHasSuccessfulChecks}}
-    <h3>Similarity Check Report</h3>
-  {{/if}}
-
   {{#each latestVersionPrimaryFailedChecks as |check|}}
     {{flash-message remove=(action "dismissMessage")
                     message=(format-report-error check)}}
   {{/each}}
+
+  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
+  {{#if latestVersionHasSuccessfulChecks}}
+    <h3>Similarity Check Report</h3>
+  {{/if}}
 
   {{#each sortedChecks as |check|}}
     {{similarity-check check=check}}

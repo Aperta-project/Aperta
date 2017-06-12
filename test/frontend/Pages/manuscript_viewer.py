@@ -627,7 +627,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
       revise_manuscript.validate_empty_response()
-      #revise_manuscript.response_to_reviewers(data)
+      revise_manuscript.response_to_reviewers(data)
       # complete revise task
       if not base_task.completed_state():
         base_task.click_completion_button()

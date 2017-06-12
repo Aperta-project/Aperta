@@ -82,7 +82,7 @@ class ReviseManuscriptTask(BaseTask):
       logging.info('Sending documents: {0}'.format(fn))
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672
-      self._driver.find_element_by_tag_name('input').send_keys(fn)
+      self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
       self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
       self._get(self._upload_btn).click()
       # Give time to upload.

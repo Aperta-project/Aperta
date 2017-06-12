@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq-scheduler/web'
 
 # rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do

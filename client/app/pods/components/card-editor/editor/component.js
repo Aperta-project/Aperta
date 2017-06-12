@@ -88,6 +88,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    updateXML(code) {
+      this.set('card.xml', code);
+    },
+
     confirmPublish() {
       this.set('showPublishOverlay', true);
     },

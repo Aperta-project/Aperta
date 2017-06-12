@@ -4,6 +4,7 @@ class PaperSerializer < LitePaperSerializer
              :editable, :links, :manuscript_id, :created_at, :editable,
              :submitted_at, :gradual_engagement,
              :versions_contain_pdf, :legends_allowed, :current_user_roles
+             :manually_similarity_checked
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -29,6 +30,10 @@ class PaperSerializer < LitePaperSerializer
   has_one :striking_image, embed: :id
   has_one :file, embed: :object, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :object, serializer: AttachmentSerializer
+
+  def manually_similarity_checked
+    object.manually_similarity_checked
+  end
 
   def paper_task_types
     paper.journal.journal_task_types

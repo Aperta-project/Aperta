@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::PaperReviewerContext do
+describe TahiStandardTasks::PaperReviewerScenario do
   subject(:context) do
-    TahiStandardTasks::PaperReviewerContext.new(invitation)
+    TahiStandardTasks::PaperReviewerScenario.new(invitation)
   end
 
   let(:paper) do

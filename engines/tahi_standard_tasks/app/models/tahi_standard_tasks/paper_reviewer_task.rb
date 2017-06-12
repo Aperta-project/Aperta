@@ -90,7 +90,7 @@ module TahiStandardTasks
       # Note that this will become a LetterTemplate. When that
       # happens, the rendering part below simplifies to a call on the
       # LetterTemplate object.
-      context = PaperReviewerContext.new(self)
+      context = PaperReviewerScenario.new(self)
       Liquid::Template.parse(template).render(context)
     end
   end

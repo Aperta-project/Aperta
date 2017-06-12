@@ -54,8 +54,8 @@ class SimilarityCheck < ActiveRecord::Base
       folder_id: folder_id
     )
 
-    if ithenticate_api.errors?
-      record_and_raise_error(ithenticate_api.errors.join(' '))
+    if ithenticate_api.error?
+      record_and_raise_error(ithenticate_api.error_string)
     end
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
@@ -75,7 +75,7 @@ class SimilarityCheck < ActiveRecord::Base
     document_response = ithenticate_api.get_document(
       id: ithenticate_document_id
     )
-    record_and_raise_error(document_response.error) if document_response.error
+    record_and_raise_error(document_response.error_string) if document_response.error?
 
     if document_response.report_complete?
       self.ithenticate_report_id = document_response.report_id
@@ -92,14 +92,23 @@ class SimilarityCheck < ActiveRecord::Base
   def report_view_only_url
     raise IncorrectState, "Report not yet completed" unless report_complete?
     response = ithenticate_api.get_report(id: ithenticate_report_id)
-    response.view_only_url
+    if ithenticate_api.error?
+      record_error(ithenticate_api.error_string)
+      return nil
+    else
+      response.view_only_url
+    end
   end
 
   private
 
-  def record_and_raise_error(message)
+  def record_error(message)
     self.update_column(:error_message, message)
     fail_report!
+  end
+
+  def record_and_raise_error(message)
+    record_error(message)
     raise error_message
   end
 

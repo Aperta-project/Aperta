@@ -39,7 +39,7 @@ class SimilarityChecksController < ::ApplicationController
   def report_view_only
     similarity_check = SimilarityCheck.find(params.require(:id))
     requires_user_can(:perform_similarity_check, similarity_check.paper)
-    redirect_to similarity_check.report_view_only_url
+    redirect_to similarity_check.report_view_only_url || :back
   end
 
   private

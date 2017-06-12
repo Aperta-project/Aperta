@@ -2,7 +2,7 @@ module Ithenticate
   # Adapter for document response from Ithenticate
   class DocumentResponse < Response
     def first_document
-      @response_hash["documents"].try(:first)
+      @response_hash["documents"].try(:first) if @response_hash.present?
     end
 
     def first_part

@@ -46,12 +46,6 @@ export default TaskComponent.extend({
     generateReport() {
       this.set('confirmVisible', false);
       const paper = this.get('task.paper');
-
-      if (! paper.get('manuallySimilarityChecked')) {
-        paper.set('manuallySimilarityChecked', true);
-        paper.save();
-      }
-
       paper.get('versionedTexts').then(() => {
         const similarityCheck = this.get('store').createRecord('similarity-check', {
           paper: paper,

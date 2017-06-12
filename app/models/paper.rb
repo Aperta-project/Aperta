@@ -602,6 +602,10 @@ class Paper < ActiveRecord::Base
     tasks.each { |t| t.after_paper_submitted self }
   end
 
+  def manually_similarity_checked
+    similarity_checks.any? { |sim_check| sim_check.automatic == true }
+  end
+
   private
 
   def new_major_version!

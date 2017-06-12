@@ -593,7 +593,6 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
-    t.boolean  "manually_similarity_checked",           default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -811,6 +810,7 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.datetime "updated_at",                                      null: false
     t.string   "error_message"
     t.boolean  "dismissed",                       default: false
+    t.boolean  "automatic",                       default: false, null: false
   end
 
   create_table "simple_reports", force: :cascade do |t|

@@ -60,9 +60,24 @@
 
   .card-editor-workspace {
     flex: 1;
+    flex-direction: column;
     padding: 0 30px;
     display: flex;
     justify-content: center;
+
+    .card-editor-xml-errors {
+      flex-direction: column;
+      flex: 1;
+      display: flex;
+      border-radius: 5px;
+      border: 2px solid $aperta-red;
+      margin-bottom : 15px;
+      padding: 10px;
+      max-width: 1120px;
+      max-height: 220px;
+      overflow-y: scroll;
+      background-color: #fff;
+    }
 
     .card-editor-xml-container {
       flex-direction: column;

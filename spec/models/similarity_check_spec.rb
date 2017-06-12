@@ -48,7 +48,7 @@ describe SimilarityCheck, type: :model, redis: true do
 
     before do
       stub_request(:get, stubbed_url).to_return(body: "turtles")
-      allow(Ithenticate::Api).to receive_message_chain(:new_from_tahi_env, :errors?)
+      allow(Ithenticate::Api).to receive_message_chain(:new_from_tahi_env, :error?)
                                              .and_return(false)
     end
 
@@ -119,7 +119,7 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", error: nil, report_complete?: true, score: report_score, report_id: report_id)
+        double("response", error: nil, report_complete?: true, score: report_score, report_id: report_id, error?: false)
       end
 
       it "updates the similarity check's state to 'report_complete'" do
@@ -165,7 +165,7 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", report_complete?: false, error: nil)
+        double("response", report_complete?: false, error: nil, error?: false)
       end
 
       context "the system time is after the similarity check's timeout_at" do

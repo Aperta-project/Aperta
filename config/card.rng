@@ -217,7 +217,21 @@
           </element>
         </optional>
         <zeroOrMore>
-          <ref name="validation"/>
+          <element name="validation">
+            <attribute name="validation-type">
+              <choice>
+                <value>string-match</value>
+                <value>string-length-minimum</value>
+                <value>string-length-maximum</value>
+              </choice>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
+          </element>
         </zeroOrMore>
       </interleave>
     </element>

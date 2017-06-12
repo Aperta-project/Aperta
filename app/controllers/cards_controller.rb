@@ -5,8 +5,8 @@ class CardsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  rescue_from Nokogiri::XML::SyntaxError,
-              with: :render_xml_syntax_error
+  rescue_from XmlCardDocument::XmlValidationError,
+              with: :render_xml_validation_errors
 
   def index
     journal_ids = current_user.filter_authorized(
@@ -71,8 +71,8 @@ class CardsController < ApplicationController
     render json: card
   end
 
-  def render_xml_syntax_error(ex)
-    render status: 422, json: { errors: { xml: ex.message } }
+  def render_xml_validation_errors(ex)
+    render status: 422, json: { errors: { xml: ex.errors } }
   end
 
   def create

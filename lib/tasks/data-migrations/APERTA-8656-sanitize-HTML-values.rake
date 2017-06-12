@@ -1,7 +1,5 @@
 # Migration for handling snapshot HTML sanitization for APERTA-8656
 
-require 'differ' if Rails.env.development?
-
 namespace :data do
   namespace :migrate do
     namespace :html_sanitization do
@@ -27,6 +25,7 @@ namespace :data do
         current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).map(&:to_i).to_set
         counters = Struct.new(:kinds, :records, :fields)
         processed_papers = Hash.new { |h, k| h[k] = counters.new(Set.new, 0, 0) }
+        clean = -> (text) { text.to_s.gsub(/\s+/, ' ').strip }
 
         list.each do |(model, locator, fields)|
           records = model.all
@@ -38,16 +37,15 @@ namespace :data do
 
             counter = processed_papers[paper_id]
             counter.kinds << (record.try(:type) || model.name)
-
             fields.each do |field|
               before = record[field]
               next if before.blank?
               after = HtmlScrubber.standalone_scrub!(before)
               next if before.strip == after.strip
               if dry
-                # diffs = Differ.diff_by_word(after, before).to_s.gsub(/\s/, ' ')
-                diffs = Diffy::Diff.new(before, after, context: 1).to_s(:html).to_s.gsub(/\s/, ' ')
-                puts "PAPER #{paper_id} - COLUMN #{model} #{field} [#{record.id}]: #{diffs}"
+                header = "PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
+                puts "<p>#{header} BEFORE: #{clean[before]}<br/>"
+                puts "#{header}  AFTER: #{clean[after]}<br/></p>"
               else
                 record[field] = after
                 counter.fields += 1
@@ -78,6 +76,7 @@ namespace :data do
         dry = ENV['DRY_RUN'] == 'true'
         inactive_states = %w(rejected withdrawn accepted)
         current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).to_set
+        clean = -> (text) { text.to_s.gsub(/\s+/, ' ').strip }
 
         idents = [
           'cover_letter--text',
@@ -97,8 +96,9 @@ namespace :data do
             after = HtmlScrubber.standalone_scrub!(before)
             next if before.strip == after.strip
             if dry
-              diffs = Differ.diff_by_word(after, before).to_s.gsub(/\s/, ' ')
-              puts "CARD_CONTENT [#{answer.paper_id}] #{cc.ident}: #{diffs}"
+              header = "CARD_CONTENT [#{answer.paper_id}] #{cc.ident}"
+              puts "<p>#{header} BEFORE: #{clean[before]}<br/>"
+              puts "#{header}  AFTER: #{clean[after]}<br/></p>"
             else
               answer.update!(value: after)
               field_counts[cc.ident] += 1

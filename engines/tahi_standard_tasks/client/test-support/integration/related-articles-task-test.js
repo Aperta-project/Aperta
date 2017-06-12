@@ -32,9 +32,8 @@ test('User can add a new related article', function(assert){
   this.$('.related-article-task-add').click();
 
   assert.elementFound('.related-article', 'New related article is visible');
-
   assert.elementFound(
-    '.related-article .related-article-title-input',
+    '.related-article .related-article-title-input.rich-text-editor',
     'New article is opened for editing');
 });
 

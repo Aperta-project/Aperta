@@ -18,6 +18,14 @@ module Ithenticate
       first_document && first_document["error"]
     end
 
+    def error?
+      error.present?
+    end
+
+    def error_string
+      error
+    end
+
     def report_id
       return unless first_part
       first_part["id"]

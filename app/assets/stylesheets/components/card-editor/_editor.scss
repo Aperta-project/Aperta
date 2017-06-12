@@ -66,15 +66,12 @@
     justify-content: center;
 
     .card-editor-xml-errors {
-      flex-direction: column;
-      flex: 1;
-      display: flex;
       border-radius: 5px;
       border: 2px solid $aperta-red;
       margin-bottom : 15px;
       padding: 10px;
       max-width: 1120px;
-      max-height: 220px;
+      height: 120px;
       overflow-y: scroll;
       background-color: #fff;
     }
@@ -85,7 +82,8 @@
       display: flex;
       border-top-right-radius: 5px;
       border-top-left-radius: 5px;
-      border: 2px solid $aperta-blue;
+      border: 2px solid;
+      border-color: $aperta-blue;
       border-bottom: 0;
       max-width: 1120px;
       background-color: #fff;
@@ -96,6 +94,14 @@
         border-top-left-radius: 2px;
         height: 30px;
         width: 100%;
+      }
+
+      .error-bar {
+        background-color: $aperta-red;
+      }
+
+      .error-border {
+        border-color: $aperta-red;
       }
 
       .card-editor-xml {

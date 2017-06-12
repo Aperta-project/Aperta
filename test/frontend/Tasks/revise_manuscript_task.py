@@ -13,7 +13,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
 __author__ = 'sbassi@plos.org'
 
 class ReviseManuscriptTask(BaseTask):
@@ -30,6 +29,7 @@ class ReviseManuscriptTask(BaseTask):
     self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
     self._error_messages = (By.CLASS_NAME, 'error-message')
     self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
+    self._response_texts = (By.CSS_SELECTOR, 'div.response-to-reviewers > p')
 
   def validate_styles(self):
     """
@@ -38,13 +38,18 @@ class ReviseManuscriptTask(BaseTask):
     # Without the following time, it grabs an empty string
     time.sleep(4)
     subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
-    assert subtitle_1.text.lower() == 'current revision', subtitle_1.text
-    assert subtitle_2.text.lower() == 'response to reviewers:', subtitle_2.text
+    assert subtitle_1.text.lower() == 'response to reviewers', subtitle_1.text
+    assert subtitle_2.text.lower() == 'decision letter', subtitle_2.text
     assert subtitle_3.text.lower() == 'decision history', subtitle_3.text
-    response_field = self._get(self._response_field)
-    expected_placeholder = "You may respond to the reviewer and editor comments point by point here. " \
-                           "Alternatively, you may upload your response as a text file (e.g. .doc, .pdf, .rtf) below."
-    assert response_field.get_attribute('placeholder') == expected_placeholder, response_field.get_attribute('placeholder')
+    description_text, additional_version_text = self._gets(self._response_texts)
+    expected_text = 'Please upload an additional version of your ' \
+      'manuscript that highlights the changes you’ve made. You may also upload your point ' \
+      'by point “response to reviewers” file (e.g. .doc, .pdf, .rtf) here.'
+    assert description_text.text == 'You may respond to the reviewer and editor comments point by' \
+      ' point here. Alternatively, you may upload your response as a file below.', \
+      description_text.text
+    assert additional_version_text.text.encode('utf-8') == expected_text, \
+      additional_version_text.text
 
     save_btn = self._get(self._save_btn)
     assert save_btn.text == "SAVE", \

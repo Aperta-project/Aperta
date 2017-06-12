@@ -23,7 +23,7 @@
       <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
     </div>
   {{else}}
-    <button class="button-primary button--green" disabled={{latestVersionHasSuccessfulChecks}} {{ action "confirmGenerateReport" }}>Generate Report</button>
+    <button class="button-primary button--green" {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
   {{#if task.paper.hasSimilarityChecks }}

@@ -1,6 +1,7 @@
 {{partial "task-completed-section"}}
 
 <div>
+<<<<<<< c1f12a353eaf6d2e0d8a8549eea8e135c2e9559b
   {{#each latestVersionPrimaryFailedChecks as |check|}}
     {{flash-message remove=(action "dismissMessage")
                     message=(format-report-error check)}}
@@ -14,19 +15,35 @@
           <strong>Automated similarity check is active:</strong> This manuscript will be sent to iThenticate on {{versionedTextDescriptor}}.
         </p>
        <p>Manually generating a report below will disable the automated similarity check for this manuscript.</p>
+=======
+  {{#unless confirmVisible}}
+
+    {{#if automatedReportsOff}}
+      <p><strong>Automated similarity check is disabled:</strong></p>
+    {{else if (not automatedReportsDisabled)}}
+      <div class="automated-report-status">
+        <div class="messages">
+         <p>
+            <i class="fa fa-gear"></i>
+            <strong>Automated similarity check is active:</strong> This manuscript will be sent to iThenticate on {{versionedTextDescriptor}}.
+          </p>
+         <p>Manually generating a report below will disable the automated similarity check for this manuscript.</p>
+        </div>
       </div>
-    </div>
+    {{/if}}
 
     <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
   {{/unless}}
 
   {{#if latestVersionHasChecks}}
-    <h3>Similarity Check Report</h3>
-  {{/if}}
+    <div class="latest-versioned-text">
+      <h3>Similarity Check Report</h3>
 
-  {{#each sortedChecks as |check|}}
-    {{similarity-check check=check}}
-  {{/each}}
+      {{#each sortedChecks as |check|}}
+        {{similarity-check check=check}}
+      {{/each}}
+    </div>
+  {{/if}}
 
   {{#if confirmVisible}}
     <div class="confirm-container">

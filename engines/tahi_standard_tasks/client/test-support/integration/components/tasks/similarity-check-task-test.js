@@ -18,7 +18,6 @@ var setupEditableTask = function(context, task) {
   context.render(template);
 };
 
-
 var newTask = function(completed, paper) {
   return {
     id: 2,

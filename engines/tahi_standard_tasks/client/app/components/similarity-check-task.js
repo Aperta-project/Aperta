@@ -19,12 +19,11 @@ export default TaskComponent.extend({
   sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
   latestVersionHasChecks: Ember.computed.notEmpty('latestVersionedText.similarityChecks.[]'),
   automatedReportsDisabled: Ember.computed.alias('task.paper.manuallySimilarityChecked'),
+  automatedReportsOff: Ember.computed.equal('task.currentSettingValue', 'off'),
 
-  versionedTextDescriptor: Ember.computed('latestVersionedText', function() {
+  versionedTextDescriptor: Ember.computed('task.currentSettingValue', function() {
     const setting = this.get('task.currentSettingValue');
-    if (setting === 'off') {
-      return 'fix me';
-    } else if (setting === 'at_first_full_submission') {
+    if (setting === 'at_first_full_submission') {
       return 'first full submission';
     } else if (setting === 'after_first_major_revise_decision') {
       return 'first major revision';
@@ -56,6 +55,8 @@ export default TaskComponent.extend({
         });
         similarityCheck.save();
       });
+      // force paper to recalculate if auto reports are disabled
+      paper.reload();
     },
     dismissMessage(message) {
       message.set('dismissed', true);

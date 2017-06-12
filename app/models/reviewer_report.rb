@@ -1,7 +1,6 @@
 # This class represents the reviewer reports per decision round
 class ReviewerReport < ActiveRecord::Base
   include Answerable
-  include NestedQuestionable
   include AASM
 
   default_scope { order('decision_id DESC') }

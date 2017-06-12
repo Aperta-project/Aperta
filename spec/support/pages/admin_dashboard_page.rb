@@ -38,6 +38,7 @@ class AdminDashboardPage < Page
 
   def edit_journal(journal_name)
     within('.left-drawer') { click_on journal_name }
+    find('.admin-nav-settings').click
     EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
 
@@ -47,6 +48,7 @@ class AdminDashboardPage < Page
   end
 
   def search(query)
+    find(".admin-nav-users").click
     find(".admin-user-search input").set(query)
     find(".admin-user-search button").click
   end

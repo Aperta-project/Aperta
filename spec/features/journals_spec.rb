@@ -47,7 +47,7 @@ feature "Journal Administration", js: true, flaky: true do
   end
 
   describe "editing a journal thumbnail", selenium: true do
-    scenario "shows edit form after clicking on pencil icon" do
+    scenario "shows edit form after clicking on journal in sidebar, then settings" do
       journal_edit_form = admin_page.edit_journal journal.name
       journal_edit_form.name = "Edited journal"
       journal_edit_form.description = "Edited journal description"

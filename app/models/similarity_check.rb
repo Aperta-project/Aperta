@@ -44,6 +44,7 @@ class SimilarityCheck < ActiveRecord::Base
   def start_report!
     raise "Manuscript file not found" unless file.url
 
+    self.timeout_at = Time.current.utc + TIMEOUT_INTERVAL
     response = ithenticate_api.add_document(
       content: Faraday.get(file.url).body,
       filename: file[:file],
@@ -58,7 +59,6 @@ class SimilarityCheck < ActiveRecord::Base
     end
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
-    self.timeout_at = Time.now.utc + TIMEOUT_INTERVAL
     self.document_s3_url = file.url
     upload_document!
   end

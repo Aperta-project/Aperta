@@ -21,13 +21,16 @@ export default TaskComponent.extend({
   automatedReportsDisabled: Ember.computed.alias('task.paper.manuallySimilarityChecked'),
 
   versionedTextDescriptor: Ember.computed('latestVersionedText', function() {
-    if (true) {
+    const setting = this.get('task.currentSettingValue');
+    if (setting === 'off') {
+      return 'fix me';
+    } else if (setting === 'at_first_full_submission') {
       return 'first full submission';
-    } else if (false) {
+    } else if (setting === 'after_first_major_revise_decision') {
       return 'first major revision';
-    } else if (false) {
+    } else if (setting === 'after_first_minor_revise_decision') {
       return 'first minor revision';
-    } else if (false) {
+    } else if (setting === 'after_any_first_revise_decision') {
       return 'any first revision';
     }
   }),

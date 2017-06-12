@@ -5,11 +5,16 @@
 class Answer < ActiveRecord::Base
   acts_as_paranoid
 
+  include Readyable
+
   belongs_to :card_content
   belongs_to :owner, polymorphic: true
   belongs_to :paper
 
-  has_many :attachments, -> { order('id ASC') }, dependent: :destroy, as: :owner, class_name: 'QuestionAttachment'
+  has_many :attachments, -> { order('id ASC') },
+                              dependent: :destroy,
+                              as: :owner,
+                              class_name: 'QuestionAttachment'
 
   validates :card_content, presence: true
   validates :owner, presence: true
@@ -18,6 +23,10 @@ class Answer < ActiveRecord::Base
   delegate :value_type, to: :card_content
 
   before_save :sanitize_html, if: :html_value_type?
+  # The 'value: true' option means it's validating value using
+  # the value validator.
+  # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
+  validates :value, value: true, on: :ready
 
   def children
     Answer.where(owner: owner, card_content: card_content.children)

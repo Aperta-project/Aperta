@@ -15,9 +15,6 @@ feature "User adding reviewer candidates", js: true do
   end
 
   before do
-    # load nested questions
-    TahiStandardTasks::ReviewerRecommendation.nested_questions
-
     login_as(admin, scope: :user)
     Page.view_paper_workflow paper
   end

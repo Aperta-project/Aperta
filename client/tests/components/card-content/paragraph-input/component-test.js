@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
@@ -54,4 +55,14 @@ test(`it sends 'valueChanged' on keyup`, function(assert) {
   this.render(template);
   this.$('div[contenteditable]').html('New');
   this.$('div[contenteditable]').trigger('keyup');
+});
+test('it displays error messages if present', function(assert){
+  let errorsArr = ['Oh Noes', 'You fool!'];
+  this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr}));
+  this.render(template);
+  assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
+  assert.equal(this.$('.validation-error').eq(0).text(), errorsArr[0], 'First error text matches');
+  assert.equal(this.$('.validation-error').eq(1).text(), errorsArr[1], 'Second error text matches');
+  let text = 'Error class present on parent element';
+  assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), text);
 });

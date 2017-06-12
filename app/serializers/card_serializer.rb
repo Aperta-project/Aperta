@@ -19,6 +19,6 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def xml
-    object.to_xml
+    object.to_xml.chomp
   end
 end

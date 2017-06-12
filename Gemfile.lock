@@ -465,6 +465,7 @@ GEM
     omniauth-oauth2 (1.3.1)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
+    optout (0.0.2)
     ordinalize (0.0.3)
       humanize
     origami (2.0.2)
@@ -616,6 +617,8 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
+    ruby-jing (0.0.1)
+      optout (>= 0.0.2)
     ruby-progressbar (1.8.1)
     ruby-rc4 (0.1.5)
     ruby_dig (0.0.2)
@@ -813,6 +816,7 @@ DEPENDENCIES
   rspec-retry
   rspec_junit_formatter
   rubocop
+  ruby-jing
   ruby_dig
   rubyzip
   sass-rails
@@ -844,4 +848,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.14.6
+   1.15.0

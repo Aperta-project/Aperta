@@ -5,3 +5,9 @@
   - mailers
   - eventstream
 :dynamic: true
+:schedule:
+  plos_billing_log_export:
+    # This cron syntax has seconds resolution
+    # https://github.com/moove-it/sidekiq-scheduler#schedule-types
+    cron: '0 1 0 * * * America/Los_Angeles'
+    class: PlosBillingLogExportWorker

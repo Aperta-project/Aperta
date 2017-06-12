@@ -12,6 +12,7 @@ export default Controller.extend(PaperBase, Discussions, {
   //sent by paper-new on creation, used to show submission process 1st view
   queryParams: ['firstView'],
   downloadsVisible: false,
+  showFeedbackOverlay: false,
 
   isGradualEngagement: equal('model.gradualEngagement', true),
   renderEngagementBanner: computed('isGradualEngagement', 'model.isWithdrawn',
@@ -38,13 +39,23 @@ export default Controller.extend(PaperBase, Discussions, {
     }
   ),
 
-  showPdfManuscript: computed('model.journal.pdfAllowed', 'model.fileType',
+  showPdfManuscript: computed('model.journal.pdfAllowed', 'model.fileType', 'model.file.status',
     function(){
       return (this.get('model.journal.pdfAllowed') &&
-             (this.get('model.fileType') === 'pdf'));
+             (this.get('model.fileType') === 'pdf')) &&
+             (this.get('model.file.status') !== 'error');
     }
   ),
 
+  checkFileType: computed('model.fileType', function(){
+    if (this.get('model.fileType') === 'pdf'){
+      return 'fa-file-pdf-o';
+    }
+    else {
+      return 'fa-file-word-o';
+    }
+  }),
+  
   showPaperSubmitOverlay: false,
 
   actions: {
@@ -62,6 +73,14 @@ export default Controller.extend(PaperBase, Discussions, {
 
     toggleDownloads() {
       this.toggleProperty('downloadsVisible');
-    }
+    },
+
+    showFeedbackOverlay() { 
+      this.set('showFeedbackOverlay', true); 
+    },
+
+    hideFeedbackOverlay() { 
+      this.set('showFeedbackOverlay', false); 
+    },
   }
 });

@@ -248,7 +248,7 @@ test('deleting requires confirmation', function(assert) {
 test('reversion button is only present when the card is published with changes and reverts card', function(assert) {
   assert.expect(6);
 
-  let card = make('card', { state: 'published' });
+  let card = make('card', { xml: '', state: 'published' });
   this.set('card', card);
 
   this.render(
@@ -267,9 +267,9 @@ test('reversion button is only present when the card is published with changes a
 
   this.set('card.xml', 'Bar');
   assert.equal($('.editor-revert').attr('disabled'), 'disabled',
-                      'the revert button is disbaled with dirty xml');
+                      'the revert button is disabled with dirty xml');
 
-  this.set('card.xml', undefined);
+  this.set('card.xml', '');
   assert.equal($('.editor-revert').attr('disabled'), undefined,
                       'the revert button is enabled without dirty xml');
 

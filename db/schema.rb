@@ -676,6 +676,16 @@ ActiveRecord::Schema.define(version: 20170601164644) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "registered_settings", force: :cascade do |t|
+    t.string  "key"
+    t.string  "setting_klass"
+    t.string  "setting_name"
+    t.boolean "global"
+    t.integer "journal_id"
+  end
+
+  add_index "registered_settings", ["key"], name: "index_registered_settings_on_key", using: :btree
+
   create_table "related_articles", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "linked_doi"
@@ -761,6 +771,16 @@ ActiveRecord::Schema.define(version: 20170601164644) do
 
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name"
+    t.string   "value"
+    t.string   "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -880,22 +900,24 @@ ActiveRecord::Schema.define(version: 20170601164644) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                            null: false
-    t.string   "type",            default: "Task"
-    t.integer  "phase_id",                         null: false
-    t.boolean  "completed",       default: false,  null: false
+    t.string   "title",                             null: false
+    t.string   "type",             default: "Task"
+    t.integer  "phase_id",                          null: false
+    t.boolean  "completed",        default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",            default: [],     null: false
-    t.integer  "position",        default: 0
-    t.integer  "paper_id",                         null: false
+    t.json     "body",             default: [],     null: false
+    t.integer  "position",         default: 0
+    t.integer  "paper_id",                          null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id",                  null: false
+    t.integer  "card_version_id",                   null: false
+    t.integer  "task_template_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["task_template_id"], name: "index_tasks_on_task_template_id", using: :btree
   add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|

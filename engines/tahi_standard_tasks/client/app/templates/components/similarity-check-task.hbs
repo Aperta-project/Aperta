@@ -18,7 +18,9 @@
 =======
   {{#unless confirmVisible}}
     {{#if automatedReportsOff}}
-      <p><strong>Automated similarity check is disabled:</strong></p>
+      <div class="auto-report-off">
+        <p><strong>Automated similarity check is disabled:</strong></p>
+      </div>
     {{else if (not automatedReportsDisabled)}}
       <div class="automated-report-status">
         <div class="messages">

@@ -18,7 +18,7 @@ var setupEditableTask = function(context, task) {
   context.render(template);
 };
 
-var newTask = function(completed, paper) {
+var newTask = function(completed, paper, setting) {
   return {
     id: 2,
     title: 'Title and Abstract',
@@ -27,7 +27,8 @@ var newTask = function(completed, paper) {
     isMetadataTask: false,
     isSubmissionTask: true,
     assignedToMe: true,
-    paper: paper
+    paper: paper,
+    currentSettingValue: setting || 'at_first_full_submission'
   };
 };
 
@@ -83,4 +84,17 @@ test('proper state for a manually generated check', function(assert) {
   assert.textPresent('.confirm-container h4',
                    `Are you sure?`,
                    'has the correct text');
+});
+
+test('proper state for auto check off via admin', function(assert) {
+  let task = newTask(false, paperStub, 'off');
+  setupEditableTask(this, task);
+  assert.elementFound('.auto-report-off',
+                       'does not have an auto report status block');
+
+  $('.generate-confirm').click();
+  assert.elementFound('.confirm-container',
+                   'it has a generate report button');
+  assert.elementNotFound('.auto-report-off',
+                       'report status disapears on confirm');
 });

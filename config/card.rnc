@@ -121,7 +121,8 @@ field-set = element content {
 
 export-paper = element content {
                 attribute ident { text }?,
-                attribute content-type { "export-paper" }
+                attribute content-type { "export-paper" },
+                element text { text }
 }
 
 content = (

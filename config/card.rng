@@ -321,6 +321,9 @@
       <attribute name="content-type">
         <value>export-paper</value>
       </attribute>
+      <element name="text">
+        <text/>
+      </element>
     </element>
   </define>
   <define name="content">

@@ -32,7 +32,7 @@ describe SalesforceServices do
         allow(SalesforceServices::BillingSync).to receive(:sync!)
         allow(paper).to receive(:answer_for)
           .with('plos_billing--payment_method')
-          .and_return instance_double(NestedQuestionAnswer, value: 'pfa')
+          .and_return instance_double(Answer, value: 'pfa')
       end
 
       it 'syncs the paper, then the billing information' do
@@ -61,7 +61,7 @@ describe SalesforceServices do
         allow(SalesforceServices::PaperSync).to receive(:sync!)
         allow(paper).to receive(:answer_for)
           .with('plos_billing--payment_method')
-          .and_return instance_double(NestedQuestionAnswer, value: 'not-pfa')
+          .and_return instance_double(Answer, value: 'not-pfa')
       end
 
       it 'syncs the paper, but not the billing information' do

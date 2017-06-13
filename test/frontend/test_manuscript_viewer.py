@@ -152,18 +152,14 @@ class ManuscriptViewerTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Note that the following method closes the infobox as well as the success/failure flash alert
     manuscript_page.page_ready_post_create()
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {0}'.format(paper_url))
-    # AC1 Test for info box
-    infobox = manuscript_page.get_infobox()
     # AC5 Test for Message for initial submission
     assert 'Please provide the following information to submit your manuscript for Initial ' \
            'Submission.' in manuscript_page.get_submission_status_initial_submission_todo(), \
            manuscript_page.get_submission_status_initial_submission_todo()
-    # AC2 Test closing the infobox
-    infobox.find_element_by_id('sp-close').click()
-    time.sleep(1)
     manuscript_page.set_timeout(1)
     try:
       manuscript_page.get_infobox()

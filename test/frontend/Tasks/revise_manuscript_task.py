@@ -13,7 +13,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
 __author__ = 'sbassi@plos.org'
 
 class ReviseManuscriptTask(BaseTask):
@@ -32,6 +31,7 @@ class ReviseManuscriptTask(BaseTask):
     self._btn_done = (By.CSS_SELECTOR, 'span.task-completed-section button')
     self._error_messages = (By.CLASS_NAME, 'error-message')
     self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
+    self._response_texts = (By.CSS_SELECTOR, 'div.response-to-reviewers > p')
 
   def validate_styles(self):
     """
@@ -82,7 +82,7 @@ class ReviseManuscriptTask(BaseTask):
       logging.info('Sending documents: {0}'.format(fn))
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672
-      self._driver.find_element_by_tag_name('input').send_keys(fn)
+      self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
       self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
       self._get(self._upload_btn).click()
       # Give time to upload.

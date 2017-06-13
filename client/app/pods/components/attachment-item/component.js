@@ -76,6 +76,7 @@ export default Ember.Component.extend({
     },
 
     fileAdded(upload){
+      this.set('attachment.readyIssues', []);
       this.set('fileUpload', FileUpload.create({ file: upload.files[0] }));
     },
 

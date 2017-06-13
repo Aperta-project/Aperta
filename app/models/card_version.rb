@@ -12,6 +12,8 @@ class CardVersion < ActiveRecord::Base
 
   validates :card, presence: true
   validates :card_contents, presence: true
+  validate :submittable_state
+
   # the `roots` scope comes from `awesome_nested_set`
   has_one :content_root, -> { roots }, class_name: 'CardContent'
   scope :required_for_submission, -> { where(required_for_submission: true) }
@@ -38,6 +40,17 @@ class CardVersion < ActiveRecord::Base
         paper: task.paper,
         value: content.default_answer_value
       )
+    end
+  end
+
+  private
+
+  def submittable_state
+    # prevent case where the card is hidden from sidebar, but required to
+    # be completed in order to submit the paper.
+    if workflow_display_only? && required_for_submission?
+      msg = "cannot be both workflow only and required for submission"
+      errors.add(:workflow_display_only, msg)
     end
   end
 end

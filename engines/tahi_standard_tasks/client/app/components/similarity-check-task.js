@@ -35,6 +35,7 @@ export default TaskComponent.extend({
   }),
 
   disableReports: Ember.computed('latestVersionHasChecks', 'automatedReportsDisabled', function() {
+    //dont ever disable disable manual generation button if auto reports are disabled.
     return this.get('latestVersionHasChecks') &&  !this.get('automatedReportsDisabled');
   }),
 

@@ -17,7 +17,7 @@ describe XmlCardLoader do
     end
 
     context 'xml has two content roots' do
-      let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}#{content2}</card>" }
+      let(:xml) { "<card name='Foo' required-for-submission='false' workflow-display-only='true'>#{content1}#{content2}</card>" }
 
       it 'throws an exception' do
         expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
@@ -44,7 +44,7 @@ describe XmlCardLoader do
   end
 
   describe 'creating or replacing a card_version using :replace_latest_version flag' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card name='Foo' required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
 
     it 'when true, it replaces current card_version' do
       expect {
@@ -64,7 +64,7 @@ describe XmlCardLoader do
   end
 
   describe 'setting card attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card name='Foo' required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
 
     it 'sets #name' do
       expect {
@@ -76,10 +76,10 @@ describe XmlCardLoader do
   end
 
   describe 'setting card_version attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card name='Foo' required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
 
     before do
-      card.latest_card_version.update(required_for_submission: false, workflow_display_only: false)
+      card.latest_card_version.update(required_for_submission: true, workflow_display_only: false)
     end
 
     it 'sets #required_for_submission' do
@@ -87,7 +87,7 @@ describe XmlCardLoader do
         xml_card_loader.load(xml)
       }.to change {
         card.reload.latest_card_version.required_for_submission
-      }.from(false).to(true)
+      }.from(true).to(false)
     end
 
     it 'increments #version' do
@@ -113,13 +113,17 @@ describe XmlCardLoader do
     let(:validations) { child_content.card_content_validations }
     let(:xml) do
       <<-XML
-        <card name='Foo' required-for-submission='true' workflow-display-only='true'>
+        <card name='Foo' required-for-submission='false' workflow-display-only='true'>
           <content content-type='display-children'>
             <content ident='foo' content-type='short-input' value-type='text'>
               <text>foo</text>
               <validation validation-type='string-match'>
                 <error-message>First Validation</error-message>
                 <validator>/test-one/</validator>
+              </validation>
+              <validation validation-type='string-match'>
+                <error-message>Second Validation</error-message>
+                <validator>/second-one/</validator>
               </validation>
             </content>
           </content>
@@ -129,21 +133,26 @@ describe XmlCardLoader do
 
     it 'creates string match card content validations' do
       xml_card_loader.load(xml)
-      expect(validations.count).to eq(1)
+      expect(validations.count).to eq(2)
+
       expect(validations.first.validation_type).to eq 'string-match'
       expect(validations.first.error_message).to eq 'First Validation'
       expect(validations.first.validator).to eq '/test-one/'
+
+      expect(validations.second.validation_type).to eq 'string-match'
+      expect(validations.second.error_message).to eq 'Second Validation'
+      expect(validations.second.validator).to eq '/second-one/'
     end
   end
 
   describe 'setting card_content attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card name='Foo' required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
     let(:root_content) { card.reload.latest_card_version.card_contents.root }
 
     context 'with nested contents' do
       let(:xml) do
         <<-XML
-          <card name='Foo' required-for-submission='true' workflow-display-only='true'>
+          <card name='Foo' required-for-submission='false' workflow-display-only='true'>
             <content content-type='display-children'>
               #{content1}
               #{content2}

@@ -11,8 +11,27 @@ class CardContentValidation < ActiveRecord::Base
   private
 
   def validate_by_string_match(answer)
+    check_string_match(validator, answer.value)
+  end
+
+  def validate_by_file_name(attachment)
+    # prevent from failing before upload finished and on parent answer
+    return true if attachment.kind_of?(Answer) || !attachment.title
+    check_string_match(validator, attachment.filename)
+  end
+
+  def check_string_match(validator, string)
     regex = Regexp.new(validator)
-    result = answer.value =~ regex
-    result.present?
+    (string =~ regex).present?
+  end
+
+  def validate_by_string_length_minimum(answer)
+    return false unless validator =~ /^[0-9]+$/
+    answer.value.length >= validator.to_i
+  end
+
+  def validate_by_string_length_maximum(answer)
+    return false unless validator =~ /^[0-9]+$/
+    answer.value.length <= validator.to_i
   end
 end

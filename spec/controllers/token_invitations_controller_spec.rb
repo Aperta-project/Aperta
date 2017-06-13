@@ -194,7 +194,7 @@ describe TokenInvitationsController do
         context 'when invitation and current user emails are the same' do
           before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
           let(:invitation_double) do
-            double('Invitation', accepted?: false, email: user.email, accept!: true, paper: task.paper)
+            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper)
           end
 
           it 'creates an Activity' do
@@ -214,7 +214,7 @@ describe TokenInvitationsController do
         end
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
-            double('Invitation', accepted?: false, email: 'phished@plos.org', accept!: true, paper: task.paper)
+            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper)
           end
           it 'does not accept the user\'s invitation' do
             expect(invitation_double).not_to receive(:accept!)
@@ -229,10 +229,10 @@ describe TokenInvitationsController do
       end
       context 'when the invitation has been accepted' do
         let(:invitation_double) do
-          double('Invitation', accepted?: true, email: user.email, paper: task.paper)
+          double('Invitation', invited?: false, email: user.email, paper: task.paper)
         end
         it 'does not try to accept again and redirects to manuscript' do
-          expect(invitation_double).to receive(:accepted?)
+          expect(invitation_double).to receive(:invited?)
           expect(invitation_double).not_to receive(:accept!)
           expect(Activity).not_to receive(:invitation_accepted!)
           do_request

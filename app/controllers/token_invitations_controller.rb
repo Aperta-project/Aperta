@@ -13,7 +13,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def accept
-    if !invitation.accepted? and current_user.email == invitation.email
+    if invitation.invited? and current_user.email == invitation.email
       invitation.accept!
       Activity.invitation_accepted!(invitation, user: current_user)
       journal_name = invitation.paper.journal.name

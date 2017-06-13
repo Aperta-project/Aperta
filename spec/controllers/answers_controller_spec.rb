@@ -25,8 +25,8 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return true
+                         .with(:edit, owner)
+                         .and_return true
       end
 
       it "creates an answer for the question" do
@@ -50,8 +50,8 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return false
+                         .with(:edit, owner)
+                         .and_return false
       end
 
       it { is_expected.to responds_with(403) }
@@ -59,17 +59,16 @@ describe AnswersController do
   end
 
   describe "#update" do
-    let!(:answer) { FactoryGirl.create(:answer, value: "Hi", card_content: card_content, owner: owner) }
+    let!(:answer) { FactoryGirl.create(:answer, value: 'initial', card_content: card_content, owner: owner) }
     let(:card_content) { FactoryGirl.create(:card_content) }
 
     subject(:do_request) do
       put_params = {
         format: 'json',
         id: answer.to_param,
+        card_content_id: card_content.to_param,
         answer: {
-          value: "Bye",
-          owner_id: owner.id,
-          owner_type: owner.type
+          value: 'after'
         }
       }
       put(:update, put_params)
@@ -81,22 +80,25 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return true
+                         .with(:edit, owner)
+                         .and_return true
       end
 
-      it "updates the answer for the question" do
+      it 'updates the answer for the question' do
         expect do
           do_request
         end.to_not change(Answer, :count)
 
+        json = JSON.parse(response.body)
+        expect(json['answer']['value']).to_not be_present
+
         answer.reload
-        expect(answer.value).to eq("Bye")
+        expect(answer.value).to eq('after')
       end
 
-      it "returns 204" do
+      it "returns 200" do
         do_request
-        expect(response.status).to eq(204)
+        expect(response.status).to eq(200)
       end
     end
 
@@ -104,8 +106,8 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return false
+                         .with(:edit, owner)
+                         .and_return false
       end
 
       it { is_expected.to responds_with(403) }
@@ -130,8 +132,8 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return true
+                         .with(:edit, owner)
+                         .and_return true
       end
 
       it "deletes the answer for the question" do
@@ -156,8 +158,8 @@ describe AnswersController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:edit, owner)
-          .and_return false
+                         .with(:edit, owner)
+                         .and_return false
       end
 
       it { is_expected.to responds_with(403) }

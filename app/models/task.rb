@@ -1,7 +1,6 @@
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
-  include NestedQuestionable
   include Commentable
   include Snapshottable
 

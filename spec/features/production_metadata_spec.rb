@@ -6,7 +6,7 @@ feature 'Production Metadata Card', js: true do
   let!(:paper) do
     create :paper, :with_integration_journal, :with_tasks, creator: author
   end
-  let(:production_metadata_task) do
+  let!(:production_metadata_task) do
     create :production_metadata_task, :with_loaded_card, paper: paper, phase: paper.phases.first
   end
 
@@ -45,6 +45,9 @@ feature 'Production Metadata Card', js: true do
     end
 
     describe 'filling in the entire card' do
+      # This spec tests both that that answers are properly saved and that they are
+      # properly serialized back down to the client.  It's the only feature spec
+      # that checks the entire round trip for generic nested question answers.
       it 'persists information' do
         page.fill_in 'production_metadata--publication_date', with: '08/31/2015'
         page.execute_script "$(\"input[name='production_metadata--publication_date']\").trigger('change')"
@@ -70,7 +73,7 @@ feature 'Production Metadata Card', js: true do
 
     context 'clicking complete' do
       describe 'with invalid input in required fields' do
-        it 'shows an error'do
+        it 'shows an error' do
           find('.task-completed').click
           expect(find(".volume-number")).to have_text("Must be a whole number")
           expect(find(".issue-number")).to have_text("Must be a whole number")

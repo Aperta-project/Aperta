@@ -291,3 +291,27 @@ test('reversion button is only present when the card is published with changes a
     );
   });
 });
+
+test('xml validation errors appear if errors are present', function(assert) {
+  assert.expect(3);
+
+  let card = make('card', { xml: '', state: 'draft' });
+  this.set('card', card);
+
+  const expectedErrors = [
+      {detail: {message: 'this is a test error message #1', line: 2, col: 90}},
+      {detail: {message: 'this is a test error message #2', line: 3, col: 91}}];
+
+  this.set('errors', expectedErrors);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+  );
+
+  let displayedErrors = $('[data-test-selector="xml-error"]');
+  assert.elementFound('.card-editor-xml-errors', 'xml error panel present');
+  assert.elementFound('.error-message', 'xml error header present');
+  assert.equal(displayedErrors.length, 2, 'itemized xml errors are present');
+});

@@ -66,7 +66,12 @@
     "liquid-fire": "0.25.0",
     "loader.js": "^4.0.1",
     "npm-install-retry": "^1.0.2",
-    "yuidocjs": "^0.10.2"
+    "yuidocjs": "^0.10.2",
+    "ember-autoresize": "0.5.22",
+    "ember-exam": "0.6.0",
+    "ember-popout": "1.0.0",
+    "ember-route-action-helper": "2.0.3",
+    "ivy-codemirror": "2.1.0"
   },
   "ember-addon": {
     "paths": [
@@ -78,10 +83,5 @@
     ]
   },
   "devDependencies": {
-    "ember-autoresize": "0.5.22",
-    "ember-exam": "0.6.0",
-    "ember-popout": "1.0.0",
-    "ember-route-action-helper": "2.0.3",
-    "ivy-codemirror": "2.1.0"
   }
 }

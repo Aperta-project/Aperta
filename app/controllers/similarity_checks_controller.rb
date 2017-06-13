@@ -12,7 +12,7 @@ class SimilarityChecksController < ::ApplicationController
     requires_user_can(:perform_similarity_check, paper)
     similarity_check = SimilarityCheck.create!(
       versioned_text: versioned_text,
-      automatic: true
+      automatic: false
     )
     similarity_check.start_report_async
     respond_with(similarity_check)

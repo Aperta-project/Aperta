@@ -603,7 +603,7 @@ class Paper < ActiveRecord::Base
   end
 
   def manually_similarity_checked
-    similarity_checks.any? { |sim_check| sim_check.automatic == true }
+    similarity_checks.exists? { |sim_check| sim_check.automatic == false }
   end
 
   private

@@ -1,7 +1,7 @@
 # rubocop:disable LineLength
 module SalesforceServices
   module ObjectTranslations
-
+    # This class extracts salesforce manuscript data from a paper
     class ManuscriptTranslator
       def initialize(user_id:, paper:)
         @user_id = user_id
@@ -17,7 +17,8 @@ module SalesforceServices
           "DOI__c"                     => @paper.doi,
           "Name"                       => @paper.manuscript_id,
           "Abstract__c"                => @paper.abstract,
-          "Current_Editorial_Status__c" => editorial[:status]
+          "Current_Editorial_Status__c" => editorial[:status],
+          "Co_Authors__c"               => co_authors_to_string(@paper)
         }
 
         if new_sfdc_record?
@@ -47,8 +48,24 @@ module SalesforceServices
       def new_sfdc_record?
         !@paper.salesforce_manuscript_id
       end
+
+      def co_authors_to_string(paper)
+        co_authors_string = ""
+        paper_co_authors(paper).each do |a|
+          co_authors_string += "#{a.first_name} #{a.last_name}, #{a.email}, #{a.affiliation}; "
+        end
+        co_authors_string[0...-2]
+      end
+
+      def paper_co_authors(paper)
+        creator = paper.assignments.find { |assignment| assignment.role.name == 'Creator' }.user
+        co_authors = paper.authors.select do |author|
+          author.first_name != creator.first_name && author.last_name != creator.last_name
+        end
+      end
     end
 
+    # This class extracts salesforce billing data from a paper
     class BillingTranslator
       def initialize(paper:)
         @paper = paper

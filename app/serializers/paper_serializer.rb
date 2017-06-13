@@ -31,10 +31,6 @@ class PaperSerializer < LitePaperSerializer
   has_one :file, embed: :object, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :object, serializer: AttachmentSerializer
 
-  def manually_similarity_checked
-    object.manually_similarity_checked
-  end
-
   def paper_task_types
     paper.journal.journal_task_types
   end

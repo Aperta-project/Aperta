@@ -18,20 +18,19 @@ export default TaskComponent.extend({
   latestVersionPrimaryFailedChecks: Ember.computed.filterBy('latestVersionFailedChecks', 'dismissed', false),
   sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
   latestVersionHasChecks: Ember.computed.notEmpty('latestVersionedText.similarityChecks.[]'),
-  automatedReportsDisabled: Ember.computed.alias('task.paper.manuallySimilarityChecked'),
+  automatedReportsDisabled: Ember.computed.reads('task.paper.manuallySimilarityChecked'),
   automatedReportsOff: Ember.computed.equal('task.currentSettingValue', 'off'),
 
   versionedTextDescriptor: Ember.computed('task.currentSettingValue', function() {
     const setting = this.get('task.currentSettingValue');
-    if (setting === 'at_first_full_submission') {
-      return 'first full submission';
-    } else if (setting === 'after_first_major_revise_decision') {
-      return 'first major revision';
-    } else if (setting === 'after_first_minor_revise_decision') {
-      return 'first minor revision';
-    } else if (setting === 'after_any_first_revise_decision') {
-      return 'any first revision';
-    }
+    let settingNames = {
+      at_first_full_submission: 'first full submission',
+      after_first_major_revise_decision: 'first major revision',
+      after_first_minor_revise_decision: 'first minor revision',
+      after_any_first_revise_decision: 'any first revision'
+    };
+
+    return settingNames[setting];
   }),
 
   disableReports: Ember.computed('latestVersionHasChecks', 'automatedReportsDisabled', function() {
@@ -55,9 +54,10 @@ export default TaskComponent.extend({
           versionedText: this.get('latestVersionedText')
         });
         similarityCheck.save();
+      }).then(() => {
+        // force paper to recalculate if auto reports are disabled
+        paper.reload();
       });
-      // force paper to recalculate if auto reports are disabled
-      paper.reload();
     },
     dismissMessage(message) {
       message.set('dismissed', true);

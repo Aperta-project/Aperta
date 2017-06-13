@@ -58,7 +58,7 @@ test('proper state for a non manually generated check', function(assert) {
 
   assert.elementFound('.confirm-container',
                    'it has a generate report button');
-  assert.equal($('.confirm-container h4').html(),
+  assert.textPresent('.confirm-container h4',
                    'Manually generating the report will disable the automated similarity check for this manuscript',
                    'has the correct text');
 });
@@ -80,7 +80,7 @@ test('proper state for a manually generated check', function(assert) {
 
   assert.elementFound('.confirm-container',
                    'it has a generate report button');
-  assert.equal($('.confirm-container h4').html(),
+  assert.textPresent('.confirm-container h4',
                    `Are you sure?`,
                    'has the correct text');
 });

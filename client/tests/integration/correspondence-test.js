@@ -97,3 +97,13 @@ test('Unauthorized User cannot see the "Add Correspondence" button', (assert) =>
     assert.equal(find('#add-correspondence-button').length, 0);
   });
 });
+
+test('"Add Correspondence" opens a form overlay', (assert) => {
+  let doi = paper.get('shortDoi');
+  visit('/papers/' + doi + '/correspondence');
+  click('#add-correspondence-button');
+  return andThen(() => {
+    assert.textPresent('.correspondence-overlay', 'Add Correspondence to History');
+    assert.equal(currentURL(), '/papers/' + doi + '/correspondence/new');
+  });
+});

@@ -371,6 +371,10 @@ ActiveRecord::Schema.define(version: 20170606190255) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.string   "type"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

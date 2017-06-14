@@ -64,6 +64,7 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
+      'tech-check-widget': ['boolean'],
       'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],

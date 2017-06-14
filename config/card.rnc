@@ -28,6 +28,15 @@ radio-input = element content {
                   content*
               }
 
+sendback-reason = element content {
+                attribute ident { text }?,
+                attribute content-type { "check-box" },
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }? &
+                text-input)
+}
+
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
@@ -157,7 +166,8 @@ content = (
            dropdown-input |
            date-picker |
            tech-check |
-           list-content
+           list-content |
+           sendback-reason
           )
 
 start = element card {

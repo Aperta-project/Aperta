@@ -45,6 +45,10 @@ export default Ember.Component.extend({
 
     showDeleteConfirm(task) {
       this.sendAction('showDeleteConfirm', task);
+    },
+
+    showSettings(task) {
+      this.sendAction('showSettings', task);
     }
   }
 });

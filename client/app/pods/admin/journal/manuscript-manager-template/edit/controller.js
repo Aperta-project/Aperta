@@ -26,6 +26,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showCardDeleteOverlay: false,
   taskToDelete: null,
 
+  showSettingsOverlay: false,
+  taskToConfigure: null,
+
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,
 
@@ -164,6 +167,15 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     hideCardDeleteOverlay() {
       this.set('showCardDeleteOverlay', false);
+    },
+
+    showSettingsOverlay(task) {
+      this.set('taskToConfigure', task);
+      this.set('showSettingsOverlay', true);
+    },
+
+    hideSettingsOverlay() {
+      this.set('showSettingsOverlay', false);
     },
 
     editMmtName(){

@@ -32,8 +32,8 @@ class SimilarityCheck < ActiveRecord::Base
       transitions from: :waiting_for_report, to: :report_complete
     end
 
-    event :timeout do
-      transitions from: :waiting_for_report, to: :failed
+    event :fail_report do
+      transitions to: :failed
     end
   end
 
@@ -42,6 +42,9 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   def start_report!
+    raise "Manuscript file not found" unless file.url
+
+    self.timeout_at = Time.current.utc + TIMEOUT_INTERVAL
     response = ithenticate_api.add_document(
       content: Faraday.get(file.url).body,
       filename: file[:file],
@@ -51,30 +54,33 @@ class SimilarityCheck < ActiveRecord::Base
       folder_id: folder_id
     )
 
-    unless response["api_status"] == 200
-      raise "ithenticate error" # TODO: expose response
+    if ithenticate_api.error?
+      record_and_raise_error(ithenticate_api.error_string)
     end
 
     self.ithenticate_document_id = response["uploaded"].first["id"]
-    self.timeout_at = Time.now.utc + TIMEOUT_INTERVAL
     self.document_s3_url = file.url
     upload_document!
   end
 
   def give_up_if_timed_out!
-    timeout! if Time.now.utc > timeout_at
+    message = "Report timed out after #{TIMEOUT_INTERVAL/60} minutes."
+    record_and_raise_error(message) if Time.current.utc > timeout_at
   end
 
   def sync_document!
-    raise "Need ithenticate_document_id" unless ithenticate_document_id
+    message = 'Unable to sync document without ithenticate_id.'
+    record_and_raise_error(message) if ithenticate_document_id.blank?
+
     document_response = ithenticate_api.get_document(
       id: ithenticate_document_id
     )
+    record_and_raise_error(document_response.error_string) if document_response.error?
 
     if document_response.report_complete?
       self.ithenticate_report_id = document_response.report_id
       self.ithenticate_score = document_response.score
-      self.ithenticate_report_completed_at = Time.now.utc
+      self.ithenticate_report_completed_at = Time.current.utc
       paper.tasks_for_type(TahiStandardTasks::SimilarityCheckTask)
         .each(&:complete!)
       finish_report!
@@ -86,10 +92,25 @@ class SimilarityCheck < ActiveRecord::Base
   def report_view_only_url
     raise IncorrectState, "Report not yet completed" unless report_complete?
     response = ithenticate_api.get_report(id: ithenticate_report_id)
-    response.view_only_url
+    if ithenticate_api.error?
+      record_error(ithenticate_api.error_string)
+      return nil
+    else
+      response.view_only_url
+    end
   end
 
   private
+
+  def record_error(message)
+    self.update_column(:error_message, message)
+    fail_report!
+  end
+
+  def record_and_raise_error(message)
+    record_error(message)
+    raise error_message
+  end
 
   def ithenticate_api
     @ithenticate_api ||= Ithenticate::Api.new_from_tahi_env

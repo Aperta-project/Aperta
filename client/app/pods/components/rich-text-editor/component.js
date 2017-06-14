@@ -36,10 +36,6 @@ export default Ember.Component.extend({
     }
   },
 
-  didRender: function () {
-    Ember.run.next(() => window.tinymce.activeEditor.focus());
-  },
-
 /* eslint-enable camelcase */
 
   configureCommon(hash) {

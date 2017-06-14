@@ -76,3 +76,24 @@ test('User can click on a correspondence to view it\'s recodes', function(assert
     assert.equal(currentURL(), '/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   });
 });
+
+test('Authorized User can see the "Add Correspondence" button', (assert) => {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence');
+  return andThen(() => {
+    assert.textPresent('#add-correspondence-button', 'Add Correspondence');
+  });
+});
+
+test('Unauthorized User cannot see the "Add Correspondence" button', (assert) => {
+  Factory.createPermission('Paper', paper.id, ['submit']);
+  $.mockjax({
+    url: `/api/papers/${paper.get('shortDoi')}`,
+    type: 'put',
+    status: 204
+  });
+
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence');
+  return andThen(() => {
+    assert.equal(find('#add-correspondence-button').length, 0);
+  });
+});

@@ -47,8 +47,8 @@ namespace :data do
 
               if dry
                 header = "PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
-                puts "<p>#{header} BEFORE: #{clean[before]}<br/>"
-                puts "#{header}  AFTER: #{clean[after]}<br/></p>"
+                puts "#{header} BEFORE: #{clean[before]}"
+                puts "#{header} AFTER: #{clean[after]}"
               else
                 record[field] = after
                 counter.fields += 1

@@ -1,13 +1,14 @@
 # rubocop:disable Style/PredicateName
 # Represents the main page of the app
 class DashboardPage < Page
+  include RichTextEditorHelpers
   path :root
   text_assertions :welcome_message, '.welcome-message'
   text_assertions :submitted_paper, '.dashboard-submitted-papers li'
 
   def fill_in_new_manuscript_fields(paper_title, journal, paper_type)
     page.execute_script('$(".format-input-field").focus()')
-    find('.format-input-field').set paper_title
+    set_rich_text(editor: 'new-paper-title', text: paper_title)
     power_select "#paper-new-journal-select", journal
     power_select "#paper-new-paper-type-select", paper_type
   end

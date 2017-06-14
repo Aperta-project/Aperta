@@ -98,10 +98,12 @@ describe CardPermissionsController do
     end
 
     describe "#update" do
+      let(:permission) { edit_permission }
+
       subject(:do_request) do
         put :update,
             format: "json",
-            id: edit_permission.id,
+            id: permission.id,
             card_permission: {
               filter_by_card_id: card.id,
               role_ids: [role.id, other_role.id]
@@ -117,14 +119,22 @@ describe CardPermissionsController do
         expect { do_request }.to(change { edit_permission.roles.reload.count }.from(1).to(2))
       end
 
-      it "adds the role to the card version view permission" do
+      it "does not add the role to the card version view permission" do
         stub_sign_in user
-        expect { do_request }.to(change { card_version_view_permission.roles.reload.count }.by(1))
+        expect { do_request }.not_to(change { card_version_view_permission.roles.reload.count })
       end
 
       it "does not add a new role" do
         stub_sign_in user
         expect { do_request }.not_to(change { Role.count })
+      end
+
+      context 'when the action is view' do
+        let(:permission) { view_permission }
+        it "adds the role to the card version view permission" do
+          stub_sign_in user
+          expect { do_request }.to(change { card_version_view_permission.roles.reload.count }.by(1))
+        end
       end
     end
   end

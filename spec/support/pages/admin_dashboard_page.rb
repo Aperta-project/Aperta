@@ -2,7 +2,7 @@ class AdminDashboardPage < Page
   text_assertions :journal_name, '.journal-thumbnail-name'
 
   def self.path
-    "/admin/cc/journals"
+    "/admin/journals"
   end
 
   def self.visit

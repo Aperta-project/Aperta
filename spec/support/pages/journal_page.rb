@@ -2,7 +2,7 @@ class JournalPage < Page
   text_assertions :mmt_name, ".admin-workflow-thumbnail .admin-workflow-thumbnail-header"
 
   def self.visit(journal)
-    page.visit "/admin/cc/journals?journalID=#{journal.id}"
+    page.visit "/admin/journals/#{journal.id}"
     new
   end
 

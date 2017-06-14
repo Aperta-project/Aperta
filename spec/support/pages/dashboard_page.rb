@@ -114,7 +114,7 @@ class DashboardPage < Page
     end
   end
 
-  def view_invitations(&block)
+  def view_invitations
     press_view_invitations_button
 
     if block_given?

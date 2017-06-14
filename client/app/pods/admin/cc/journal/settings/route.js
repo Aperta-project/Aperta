@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    var journalModel = this.modelFor('admin.cc.journals');
+    var journalModel = this.modelFor('admin.cc.journal');
 
     if (journalModel.journals.get('length') === 1) {
       // User has only one journal, so use this one

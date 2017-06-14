@@ -329,6 +329,10 @@ class Paper < ActiveRecord::Base
     corresponding_authors.compact
   end
 
+  def co_authors
+    authors.reject { |author| author.user == creator }
+  end
+
   # Returns the corresponding author emails. When there are no authors
   # marked as corresponding then it defaults to the creator's email address.
   def corresponding_author_emails

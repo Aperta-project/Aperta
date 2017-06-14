@@ -118,8 +118,8 @@ class DashboardPage < Page
     press_view_invitations_button
 
     if block_given?
-      block.call(pending_invitations.map do |invitation|
-        PendingInvitationFragment.new invitation
+      yield(pending_invitations.map do |invitation|
+        PendingInvitationFragment.new(invitation)
       end)
     else
       pending_invitations

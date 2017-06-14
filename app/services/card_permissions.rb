@@ -7,10 +7,11 @@ class CardPermissions
     rest: [Permission::WILDCARD]
   }.freeze
 
-  # Append to the roles that can perform action on a card.
-  # Also, add the "view" permission for the card (form) itself.
+  # Append to the roles that can perform action on a card. Also, add the "view"
+  # permission for the card (form) itself if the action is 'view'.
   def self.add_roles(card, action, roles)
-    append_roles_and_save(get_view_card_permission(card), roles)
+    append_roles_and_save(get_view_card_permission(card), roles) \
+      if action == 'view'
 
     grouped_roles = group_roles(card, roles)
     STATES.keys.map do |key|
@@ -20,10 +21,11 @@ class CardPermissions
     end
   end
 
-  # Set the roles that can perform action on a card.
-  # Also, add the "view" permission for the card (form) itself.
+  # Set the roles that can perform action on a card. Also, add the "view"
+  # permission for the card (form) itself if the action is 'view'.
   def self.set_roles(card, action, roles)
-    replace_roles_and_save(get_view_card_permission(card), roles)
+    replace_roles_and_save(get_view_card_permission(card), roles) \
+      if action == 'view'
 
     grouped_roles = group_roles(card, roles)
     STATES.keys.map do |key|

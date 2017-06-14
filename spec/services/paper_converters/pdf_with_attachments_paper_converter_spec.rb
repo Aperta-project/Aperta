@@ -59,6 +59,38 @@ describe PaperConverters::PdfWithAttachmentsPaperConverter do
     it { is_expected.to be_an_instance_of CombinePDF::PDF }
   end
 
+  describe "#call_qpdf" do
+    let(:in_file_path) { Rails.root.join('/tmp/infile.pdf') }
+    let(:out_file_path) { Rails.root.join('/tmp/outfile.pdf') }
+    it 'performs a system call' do
+      expect(converter).to receive(:system).with(/\Aqpdf/)
+      converter.call_qpdf(in_file_path, out_file_path)
+    end
+  end
+
+  describe "#pdf_may_have_object_stream?" do
+    let(:object_streams_pdf) do
+      Rails.root.join('spec/fixtures/object_streams.pdf')
+    end
+    let(:no_object_streams_pdf) do
+      Rails.root.join('spec/fixtures/no_object_streams.pdf')
+    end
+
+    context "when PDF has object streams" do
+      subject { converter.pdf_may_have_object_stream?(object_streams_pdf) }
+      it 'should be true' do
+        subject.should be(true)
+      end
+    end
+
+    context "when PDF has no object streams" do
+      subject { converter.pdf_may_have_object_stream?(no_object_streams_pdf) }
+      it 'should be false' do
+        subject.should be(false)
+      end
+    end
+  end
+
   describe "#figures" do
     subject { converter.figures }
 

@@ -113,6 +113,19 @@
         </attribute>
       </optional>
       <interleave>
+        <zeroOrMore>
+          <element name="validation">
+            <attribute name="validation-type">
+              <value>file-name</value>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
+          </element>
+        </zeroOrMore>
         <optional>
           <element name="label">
             <text/>
@@ -211,10 +224,42 @@
             <text/>
           </element>
         </optional>
-        <element name="text">
-          <text/>
-        </element>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+        <zeroOrMore>
+          <element name="validation">
+            <attribute name="validation-type">
+              <choice>
+                <value>string-match</value>
+                <value>string-length-minimum</value>
+                <value>string-length-maximum</value>
+              </choice>
+            </attribute>
+            <element name="error-message">
+              <text/>
+            </element>
+            <element name="validator">
+              <text/>
+            </element>
+          </element>
+        </zeroOrMore>
       </interleave>
+    </element>
+  </define>
+  <define name="validation">
+    <element name="validation">
+      <attribute name="validation-type">
+        <value>string-match</value>
+      </attribute>
+      <element name="error-message">
+        <text/>
+      </element>
+      <element name="validator">
+        <text/>
+      </element>
     </element>
   </define>
   <!-- Contents -->
@@ -289,6 +334,12 @@
     <element name="card">
       <attribute name="name"/>
       <attribute name="required-for-submission">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
+      <attribute name="workflow-display-only">
         <choice>
           <value>true</value>
           <value>false</value>

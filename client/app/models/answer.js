@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import Readyable from 'tahi/mixins/models/readyable';
 
-export default DS.Model.extend({
+export default DS.Model.extend(Readyable, {
   additionalData: DS.attr(),
   value: DS.attr(),
 

@@ -1,14 +1,13 @@
 module TahiStandardTasks
   class Funder < ActiveRecord::Base
     include Answerable
-    include NestedQuestionable
 
     belongs_to :task, foreign_key: :task_id
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
 
-    # NestedQuestionable will save the paper_id to newly created answers if
-    # an answer's owner responds to :paper.  This method is needed by
+    # NestedQuestionAnswersController will save the paper_id to newly created
+    # answers if an answer's owner responds to :paper. This method is needed by
     # the NestedQuestionAnswersController#fetch_answer method, among others
     def paper
       task.paper

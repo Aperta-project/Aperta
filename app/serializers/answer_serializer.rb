@@ -1,4 +1,5 @@
 class AnswerSerializer < ActiveModel::Serializer
+  include ReadySerializable
   attributes :id,
     :value,
     :additional_data,

@@ -29,7 +29,7 @@
 {{#control-bar}}
   <nav role="navigation" id="control-bar">
     {{#unless showSaveButton}}
-      {{#link-to "admin.cc.journals.workflows" (query-params journalID=journal.id) id="control-bar-journal-back-button"}}
+      {{#link-to "admin.cc.journal.workflows" journal.id id="control-bar-journal-back-button"}}
         {{fa-icon icon="chevron-left"}}
         Back
       {{/link-to}}

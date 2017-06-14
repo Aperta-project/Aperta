@@ -4,6 +4,8 @@ export default Ember.Controller.extend({
   // correspondence: Ember.computed.alias('model')
 
   actions: {
-    hideCorrespondenceOverlay() {}
+    hideCorrespondenceOverlay() {
+      this.send('removeCorrespondenceOverlay');
+    }
   }
 });

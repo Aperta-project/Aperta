@@ -49,6 +49,36 @@ describe CardPermissions do
         expect(new_role.permissions.reload.where(query).count).to be(1)
       end
     end
+
+    context 'when the role is creator' do
+      let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Creator') }
+
+      it "should assign the role to limted states permission" do
+        subject
+        perm = role.permissions.where(action: 'eat').first
+        expect(perm.states.pluck(:name)).to contain_exactly(*Paper::EDITABLE_STATES.map(&:to_s))
+      end
+    end
+
+    context 'when the role is a collaborator' do
+      let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Collaborator') }
+
+      it "should assign the role to editable states permission" do
+        subject
+        perm = role.permissions.where(action: 'eat').first
+        expect(perm.states.pluck(:name)).to contain_exactly(*Paper::EDITABLE_STATES.map(&:to_s))
+      end
+    end
+
+    context 'when the role is a reviewer' do
+      let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Reviewer') }
+
+      it "should assign the role to editable states permission" do
+        subject
+        perm = role.permissions.where(action: 'eat').first
+        expect(perm.states.pluck(:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))
+      end
+    end
   end
 
   describe '.set_roles' do

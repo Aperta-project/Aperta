@@ -2,7 +2,7 @@
 class CardPermissions
   # Map of state groups to the states they can edit in
   STATES = {
-    editable: Paper::EDITABLE_STATES,
+    creator: Paper::EDITABLE_STATES,
     reviewer: Paper::REVIEWABLE_STATES,
     rest: [Permission::WILDCARD]
   }.freeze
@@ -60,7 +60,7 @@ class CardPermissions
   end
 
   def self.append_roles_and_save(permission, roles)
-    permission.roles.concat(*(roles - permission.roles))
+    permission.roles.replace(roles | permission.roles)
     permission.save!
   end
 

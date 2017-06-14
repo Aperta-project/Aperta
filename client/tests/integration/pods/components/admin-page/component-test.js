@@ -44,8 +44,7 @@ test('it has a drawer showing all persisted journals', function(assert) {
     {{/admin-page}}
   `);
 
-  // "All My Journals" will be shown for multiple journals
-  assert.nElementsFound('.admin-drawer-item', journals.length + 1);
+  assert.nElementsFound('.admin-drawer-item', journals.length);
 });
 
 test('it does not show unpersisted journals in the drawer', function(assert) {
@@ -83,43 +82,7 @@ test('it alphabetizes the list of journals', function(assert) {
   }).get();
   let expectedOrderedJournalNames = journals.mapBy('name').sort();
 
-  // "All My Journals" will be shown for multiple journals
-  expectedOrderedJournalNames.unshift('All My Journals');
-
   assert.deepEqual(actualOrderedJournalNames, expectedOrderedJournalNames, 'journals not in alphabetical order');
-});
-
-test('it has a drawer with "all journals" for multiple journals', function(assert) {
-  const journals = [
-    { name: 'My Journal', initials: 'MJ', id: 1, isNew: false },
-    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false },
-  ];
-
-  this.set('journals', journals);
-
-  this.render(hbs`
-    {{#admin-page journals=journals}}
-      Some interesting text.
-    {{/admin-page}}
-  `);
-
-  assert.textPresent('.left-drawer-page', 'All My Journals');
-});
-
-test('it has a drawer without "all journals" for single journal', function(assert) {
-  const journals = [
-    { name: 'My Secondary', initials: 'MS', id: 2, isNew: false }
-  ];
-
-  this.set('journals', journals);
-
-  this.render(hbs`
-    {{#admin-page journals=journals}}
-      Some interesting text.
-    {{/admin-page}}
-  `);
-
-  assert.textNotPresent('.left-drawer-page', 'All My Journals');
 });
 
 test('it renders the admin page', function(assert) {

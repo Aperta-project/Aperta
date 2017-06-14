@@ -8,7 +8,15 @@
   <h3>{{report.revision}} Review</h3>
     Completed {{statusDate}}
   {{else}}
-  <strong>{{reviewerStatus}}:</strong> {{statusMessage}}<br>
+  <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
+  {{#if (can 'manage_workflow' report.task.paper)}}
+    {{date-picker-link
+      linkText="Change due date"
+      startDate=report.originallyDueAt
+      dateChanged="changeDueDate"
+    }}
+  {{/if}}
+  <br>
   <span class='sub-message'>{{statusSubMessage}}</span>
   {{/if}}
   </div>

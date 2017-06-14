@@ -42,7 +42,7 @@ export default Ember.Component.extend({
 
   reviewDueAt: Ember.computed('report.dueAt', function(){
     const date = this.get('report.dueAt');
-    const format = 'MMMM D, YYYY  hh:mm a';
+    const format = 'MMMM D, YYYY [at] hh:mm a';
     return moment(date).format(format);
   }),
 
@@ -61,4 +61,12 @@ export default Ember.Component.extend({
     return statuses[status];
   }),
 
+  actions: {
+    changeDueDate(newDate) {
+      var hours = this.get('report.dueAt').getHours();
+      newDate.setHours(hours);
+      this.set('report.dueAt', newDate);
+      this.get('report').save();
+    }
+  }
 });

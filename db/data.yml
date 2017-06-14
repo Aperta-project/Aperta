@@ -3978,7 +3978,7 @@ answers:
     - '2016-04-12 18:52:23.933072'
     - 
   - - '170'
-    - '133'
+    - '256'
     - '26'
     - Task
     - '2'
@@ -3988,7 +3988,7 @@ answers:
     - '2016-01-26 17:38:10.691757'
     - 
   - - '171'
-    - '133'
+    - '256'
     - '47'
     - Task
     - '3'
@@ -3998,7 +3998,7 @@ answers:
     - '2016-01-26 17:38:10.987968'
     - 
   - - '172'
-    - '133'
+    - '256'
     - '68'
     - Task
     - '4'
@@ -4008,7 +4008,7 @@ answers:
     - '2016-01-26 17:38:11.110813'
     - 
   - - '173'
-    - '133'
+    - '256'
     - '174'
     - Task
     - '12'
@@ -4018,7 +4018,7 @@ answers:
     - '2016-04-12 19:01:43.30766'
     - 
   - - '174'
-    - '134'
+    - '259'
     - '26'
     - Task
     - '2'
@@ -4028,7 +4028,7 @@ answers:
     - '2016-01-26 17:38:10.684296'
     - 
   - - '175'
-    - '134'
+    - '259'
     - '47'
     - Task
     - '3'
@@ -4045,7 +4045,7 @@ answers:
     - '2016-01-26 17:38:10.982384'
     - 
   - - '176'
-    - '134'
+    - '259'
     - '68'
     - Task
     - '4'
@@ -4056,7 +4056,7 @@ answers:
     - '2016-01-26 17:38:11.105159'
     - 
   - - '177'
-    - '134'
+    - '259'
     - '174'
     - Task
     - '12'
@@ -8988,72 +8988,11 @@ card_contents:
     - 
     - false
     - false
-  - - '132'
-    - 
-    - 
-    - '263'
-    - '268'
-    - 
-    - 
-    - '2017-03-14 21:17:08.344022'
-    - '2017-03-14 21:17:08.363729'
-    - 
-    - '17'
-    - display-children
-    - 
-    - 
-    - 
-    - 
-    - 
-    - false
-    - false
-  - - '133'
-    - competing_interests--has_competing_interests
-    - '132'
-    - '264'
-    - '267'
-    - Do any authors of this manuscript have competing interests (as described in
-      the <a target='_blank' href='http://journals.plos.org/plosbiology/s/competing-interests'>PLOS
-      Policy on Declaration and Evaluation of Competing Interests</a>)?
-    - boolean
-    - '2017-03-14 21:17:08.35105'
-    - '2017-03-14 21:17:08.363729'
-    - 
-    - '17'
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - false
-    - false
-  - - '134'
-    - competing_interests--statement
-    - '133'
-    - '265'
-    - '266'
-    - 'Please provide details about any and all competing interests in the box below.
-      Your response should begin with this statement: "I have read the journal''s
-      policy and the authors of this manuscript have the following competing interests."'
-    - text
-    - '2017-03-14 21:17:08.360037'
-    - '2017-03-14 21:17:08.363729'
-    - 
-    - '17'
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
-    - false
-    - false
   - - '135'
     - 
     - 
-    - '269'
-    - '286'
+    - '263'
+    - '280'
     - 
     - 
     - '2017-03-14 21:17:08.376074'
@@ -9071,8 +9010,8 @@ card_contents:
   - - '136'
     - reporting_guidelines--clinical_trial
     - '135'
-    - '270'
-    - '271'
+    - '264'
+    - '265'
     - Clinical Trial
     - boolean
     - '2017-03-14 21:17:08.382893'
@@ -9090,8 +9029,8 @@ card_contents:
   - - '137'
     - reporting_guidelines--systematic_reviews
     - '135'
-    - '272'
-    - '275'
+    - '266'
+    - '269'
     - Systematic Reviews
     - boolean
     - '2017-03-14 21:17:08.392174'
@@ -9109,8 +9048,8 @@ card_contents:
   - - '138'
     - reporting_guidelines--systematic_reviews--checklist
     - '137'
-    - '273'
-    - '274'
+    - '267'
+    - '268'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
@@ -9129,8 +9068,8 @@ card_contents:
   - - '139'
     - reporting_guidelines--meta_analyses
     - '135'
-    - '276'
-    - '279'
+    - '270'
+    - '273'
     - Meta-analyses
     - boolean
     - '2017-03-14 21:17:08.410009'
@@ -9148,8 +9087,8 @@ card_contents:
   - - '140'
     - reporting_guidelines--meta_analyses--checklist
     - '139'
-    - '277'
-    - '278'
+    - '271'
+    - '272'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
@@ -9168,8 +9107,8 @@ card_contents:
   - - '141'
     - reporting_guidelines--diagnostic_studies
     - '135'
-    - '280'
-    - '281'
+    - '274'
+    - '275'
     - Diagnostic studies
     - boolean
     - '2017-03-14 21:17:08.425756'
@@ -9187,8 +9126,8 @@ card_contents:
   - - '142'
     - reporting_guidelines--epidemiological_studies
     - '135'
-    - '282'
-    - '283'
+    - '276'
+    - '277'
     - Epidemiological studies
     - boolean
     - '2017-03-14 21:17:08.433245'
@@ -9206,8 +9145,8 @@ card_contents:
   - - '143'
     - reporting_guidelines--microarray_studies
     - '135'
-    - '284'
-    - '285'
+    - '278'
+    - '279'
     - Microarray studies
     - boolean
     - '2017-03-14 21:17:08.440987'
@@ -9225,8 +9164,8 @@ card_contents:
   - - '144'
     - 
     - 
-    - '287'
-    - '320'
+    - '281'
+    - '314'
     - 
     - 
     - '2017-03-14 21:17:08.456929'
@@ -9244,8 +9183,8 @@ card_contents:
   - - '145'
     - plos_bio_initial_tech_check--ethics_statement
     - '144'
-    - '288'
-    - '289'
+    - '282'
+    - '283'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
       this from them.
@@ -9265,8 +9204,8 @@ card_contents:
   - - '146'
     - plos_bio_initial_tech_check--data_availability_confidential
     - '144'
-    - '290'
-    - '291'
+    - '284'
+    - '285'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
       to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
       or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
@@ -9288,8 +9227,8 @@ card_contents:
   - - '147'
     - plos_bio_initial_tech_check--data_availability_blank
     - '144'
-    - '292'
-    - '293'
+    - '286'
+    - '287'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
@@ -9309,8 +9248,8 @@ card_contents:
   - - '148'
     - plos_bio_initial_tech_check--data_availability_dryad
     - '144'
-    - '294'
-    - '295'
+    - '288'
+    - '289'
     - 'In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them. '
@@ -9330,8 +9269,8 @@ card_contents:
   - - '149'
     - plos_bio_initial_tech_check--authors_match
     - '144'
-    - '296'
-    - '297'
+    - '290'
+    - '291'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
@@ -9351,8 +9290,8 @@ card_contents:
   - - '150'
     - plos_bio_initial_tech_check--author_emails
     - '144'
-    - '298'
-    - '299'
+    - '292'
+    - '293'
     - If we don't have unique email addresses for all authors, send it back.
     - boolean
     - '2017-03-14 21:17:08.503379'
@@ -9370,8 +9309,8 @@ card_contents:
   - - '151'
     - plos_bio_initial_tech_check--author_removed
     - '144'
-    - '300'
-    - '301'
+    - '294'
+    - '295'
     - If the author list has changed between initial and full submission, pass it
       through if an author was added and flag it to the editor/initiate our COPE process
       if an author was removed.
@@ -9391,8 +9330,8 @@ card_contents:
   - - '152'
     - plos_bio_initial_tech_check--competing_interests
     - '144'
-    - '302'
-    - '303'
+    - '296'
+    - '297'
     - Check that the Competing Interest card has been filled out correctly. If the
       authors have selected Yes and not provided an explanation, send it back.
     - boolean
@@ -9411,8 +9350,8 @@ card_contents:
   - - '153'
     - plos_bio_initial_tech_check--financial_disclosure
     - '144'
-    - '304'
-    - '305'
+    - '298'
+    - '299'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
       the authors have provided a description of the roles of the funder, if they
       responded Yes to our standard statement.
@@ -9432,8 +9371,8 @@ card_contents:
   - - '154'
     - plos_bio_initial_tech_check--tobacco
     - '144'
-    - '306'
-    - '307'
+    - '300'
+    - '301'
     - " If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, start a 'MetaData' discussion and ping the handling editor. See <a
       href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
@@ -9454,8 +9393,8 @@ card_contents:
   - - '155'
     - plos_bio_initial_tech_check--collection
     - '144'
-    - '308'
-    - '309'
+    - '302'
+    - '303'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
@@ -9475,8 +9414,8 @@ card_contents:
   - - '156'
     - plos_bio_initial_tech_check--figures_viewable
     - '144'
-    - '310'
-    - '311'
+    - '304'
+    - '305'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
@@ -9496,8 +9435,8 @@ card_contents:
   - - '157'
     - plos_bio_initial_tech_check--embedded_captions
     - '144'
-    - '312'
-    - '313'
+    - '306'
+    - '307'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
@@ -9517,8 +9456,8 @@ card_contents:
   - - '158'
     - plos_bio_initial_tech_check--captions_missing
     - '144'
-    - '314'
-    - '315'
+    - '308'
+    - '309'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
@@ -9537,8 +9476,8 @@ card_contents:
   - - '159'
     - plos_bio_initial_tech_check--figures_missing
     - '144'
-    - '316'
-    - '317'
+    - '310'
+    - '311'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
@@ -9559,8 +9498,8 @@ card_contents:
   - - '160'
     - plos_bio_initial_tech_check--open_reject
     - '144'
-    - '318'
-    - '319'
+    - '312'
+    - '313'
     - For any resubmissions after an Open Reject decision, ensure the authors have
       uploaded A 'Response to Reviewer's document. If this information is provided
       in the cover letter or another part of the submission, ask the authors to upload
@@ -9582,8 +9521,8 @@ card_contents:
   - - '161'
     - 
     - 
-    - '321'
-    - '354'
+    - '315'
+    - '348'
     - 
     - 
     - '2017-03-14 21:17:08.593773'
@@ -9601,8 +9540,8 @@ card_contents:
   - - '162'
     - group-author--contributions
     - '161'
-    - '322'
-    - '351'
+    - '316'
+    - '345'
     - Author Contributions
     - question-set
     - '2017-03-14 21:17:08.600564'
@@ -9620,8 +9559,8 @@ card_contents:
   - - '163'
     - group-author--contributions--conceptualization
     - '162'
-    - '323'
-    - '324'
+    - '317'
+    - '318'
     - Conceptualization
     - boolean
     - '2017-03-14 21:17:08.609064'
@@ -9639,8 +9578,8 @@ card_contents:
   - - '164'
     - group-author--contributions--investigation
     - '162'
-    - '325'
-    - '326'
+    - '319'
+    - '320'
     - Investigation
     - boolean
     - '2017-03-14 21:17:08.617268'
@@ -9658,8 +9597,8 @@ card_contents:
   - - '165'
     - group-author--contributions--visualization
     - '162'
-    - '327'
-    - '328'
+    - '321'
+    - '322'
     - Visualization
     - boolean
     - '2017-03-14 21:17:08.625426'
@@ -9677,8 +9616,8 @@ card_contents:
   - - '166'
     - group-author--contributions--methodology
     - '162'
-    - '329'
-    - '330'
+    - '323'
+    - '324'
     - Methodology
     - boolean
     - '2017-03-14 21:17:08.633865'
@@ -9696,8 +9635,8 @@ card_contents:
   - - '167'
     - group-author--contributions--resources
     - '162'
-    - '331'
-    - '332'
+    - '325'
+    - '326'
     - Resources
     - boolean
     - '2017-03-14 21:17:08.642332'
@@ -9715,8 +9654,8 @@ card_contents:
   - - '168'
     - group-author--contributions--supervision
     - '162'
-    - '333'
-    - '334'
+    - '327'
+    - '328'
     - Supervision
     - boolean
     - '2017-03-14 21:17:08.651463'
@@ -9734,8 +9673,8 @@ card_contents:
   - - '169'
     - group-author--contributions--software
     - '162'
-    - '335'
-    - '336'
+    - '329'
+    - '330'
     - Software
     - boolean
     - '2017-03-14 21:17:08.659283'
@@ -9753,8 +9692,8 @@ card_contents:
   - - '170'
     - group-author--contributions--data-curation
     - '162'
-    - '337'
-    - '338'
+    - '331'
+    - '332'
     - Data Curation
     - boolean
     - '2017-03-14 21:17:08.667433'
@@ -9772,8 +9711,8 @@ card_contents:
   - - '171'
     - group-author--contributions--project-administration
     - '162'
-    - '339'
-    - '340'
+    - '333'
+    - '334'
     - Project Administration
     - boolean
     - '2017-03-14 21:17:08.675743'
@@ -9791,8 +9730,8 @@ card_contents:
   - - '172'
     - group-author--contributions--validation
     - '162'
-    - '341'
-    - '342'
+    - '335'
+    - '336'
     - Validation
     - boolean
     - '2017-03-14 21:17:08.683424'
@@ -9810,8 +9749,8 @@ card_contents:
   - - '173'
     - group-author--contributions--writing-original-draft
     - '162'
-    - '343'
-    - '344'
+    - '337'
+    - '338'
     - Writing - Original Draft
     - boolean
     - '2017-03-14 21:17:08.691598'
@@ -9829,8 +9768,8 @@ card_contents:
   - - '174'
     - group-author--contributions--writing-review-and-editing
     - '162'
-    - '345'
-    - '346'
+    - '339'
+    - '340'
     - Writing - Review and Editing
     - boolean
     - '2017-03-14 21:17:08.699618'
@@ -9848,8 +9787,8 @@ card_contents:
   - - '175'
     - group-author--contributions--funding-acquisition
     - '162'
-    - '347'
-    - '348'
+    - '341'
+    - '342'
     - Funding Acquisition
     - boolean
     - '2017-03-14 21:17:08.707862'
@@ -9867,8 +9806,8 @@ card_contents:
   - - '176'
     - group-author--contributions--formal-analysis
     - '162'
-    - '349'
-    - '350'
+    - '343'
+    - '344'
     - Formal Analysis
     - boolean
     - '2017-03-14 21:17:08.716'
@@ -9886,8 +9825,8 @@ card_contents:
   - - '177'
     - group-author--government-employee
     - '161'
-    - '352'
-    - '353'
+    - '346'
+    - '347'
     - Is this group a United States Government agency, department or organization?
     - boolean
     - '2017-03-14 21:17:08.722999'
@@ -9905,8 +9844,8 @@ card_contents:
   - - '178'
     - 
     - 
-    - '355'
-    - '382'
+    - '349'
+    - '376'
     - 
     - 
     - '2017-03-14 21:17:08.737442'
@@ -9924,8 +9863,8 @@ card_contents:
   - - '179'
     - plos_bio_final_tech_check--open_rejects
     - '178'
-    - '356'
-    - '357'
+    - '350'
+    - '351'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
@@ -9946,8 +9885,8 @@ card_contents:
   - - '180'
     - plos_bio_final_tech_check--human_subjects
     - '178'
-    - '358'
-    - '359'
+    - '352'
+    - '353'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
@@ -9966,8 +9905,8 @@ card_contents:
   - - '181'
     - plos_bio_final_tech_check--ethics_needed
     - '178'
-    - '360'
-    - '361'
+    - '354'
+    - '355'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
@@ -9987,8 +9926,8 @@ card_contents:
   - - '182'
     - plos_bio_final_tech_check--data_available
     - '178'
-    - '362'
-    - '363'
+    - '356'
+    - '357'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
@@ -10007,8 +9946,8 @@ card_contents:
   - - '183'
     - plos_bio_final_tech_check--supporting_information
     - '178'
-    - '364'
-    - '365'
+    - '358'
+    - '359'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
@@ -10028,8 +9967,8 @@ card_contents:
   - - '184'
     - plos_bio_final_tech_check--dryad_url
     - '178'
-    - '366'
-    - '367'
+    - '360'
+    - '361'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
@@ -10048,8 +9987,8 @@ card_contents:
   - - '185'
     - plos_bio_final_tech_check--financial_disclosure
     - '178'
-    - '368'
-    - '369'
+    - '362'
+    - '363'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
@@ -10068,8 +10007,8 @@ card_contents:
   - - '186'
     - plos_bio_final_tech_check--tobacco
     - '178'
-    - '370'
-    - '371'
+    - '364'
+    - '365'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
@@ -10088,8 +10027,8 @@ card_contents:
   - - '187'
     - plos_bio_final_tech_check--figures_legible
     - '178'
-    - '372'
-    - '373'
+    - '366'
+    - '367'
     - If any figures are completely illegible, contact the author.
     - boolean
     - '2017-03-14 21:17:08.80412'
@@ -10107,8 +10046,8 @@ card_contents:
   - - '188'
     - plos_bio_final_tech_check--cited
     - '178'
-    - '374'
-    - '375'
+    - '368'
+    - '369'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
@@ -10127,8 +10066,8 @@ card_contents:
   - - '189'
     - plos_bio_final_tech_check--cover_letter
     - '178'
-    - '376'
-    - '377'
+    - '370'
+    - '371'
     - Have the authors asked any content in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
@@ -10147,8 +10086,8 @@ card_contents:
   - - '190'
     - plos_bio_final_tech_check--billing_inquiries
     - '178'
-    - '378'
-    - '379'
+    - '372'
+    - '373'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
@@ -10167,8 +10106,8 @@ card_contents:
   - - '191'
     - plos_bio_final_tech_check--ethics_statement
     - '178'
-    - '380'
-    - '381'
+    - '374'
+    - '375'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
     - '2017-03-14 21:17:08.835036'
@@ -10186,8 +10125,8 @@ card_contents:
   - - '192'
     - 
     - 
-    - '383'
-    - '434'
+    - '377'
+    - '428'
     - 
     - 
     - '2017-03-14 21:17:08.849946'
@@ -10205,8 +10144,8 @@ card_contents:
   - - '193'
     - plos_bio_revision_tech_check--open_rejects
     - '192'
-    - '384'
-    - '385'
+    - '378'
+    - '379'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
@@ -10227,8 +10166,8 @@ card_contents:
   - - '194'
     - plos_bio_revision_tech_check--data_availability_confidential
     - '192'
-    - '386'
-    - '387'
+    - '380'
+    - '381'
     - In the Data Availability card, if the answer to Q1 is 'No' or if the answer
       to Q2 is 'Data are from the XXX study whose authors may be contacted at XXX'
       or 'Data are available from the XXX Institutional Data Access/ Ethics Committee
@@ -10250,8 +10189,8 @@ card_contents:
   - - '195'
     - plos_bio_revision_tech_check--data_availability_blank
     - '192'
-    - '388'
-    - '389'
+    - '382'
+    - '383'
     - In the Data Availability card, if the authors have not selected one of the reasons
       listed in Q2 and pasted it into the text box, please request that they complete
       this section.
@@ -10271,8 +10210,8 @@ card_contents:
   - - '196'
     - plos_bio_revision_tech_check--data_availability_dryad
     - '192'
-    - '390'
-    - '391'
+    - '384'
+    - '385'
     - In the Data Availability card, if the authors have mentioned data submitted
       to Dryad, check that the author has provided the Dryad reviewer URL and if not,
       request it from them.
@@ -10292,8 +10231,8 @@ card_contents:
   - - '197'
     - plos_bio_revision_tech_check--authors_match
     - '192'
-    - '392'
-    - '393'
+    - '386'
+    - '387'
     - Compare the author list between the manuscript file and the Authors card. If
       the author list does not match, request the authors to update whichever section
       is missing information. Ignore omissions of middle initials.
@@ -10313,8 +10252,8 @@ card_contents:
   - - '198'
     - plos_bio_revision_tech_check--author_removed
     - '192'
-    - '394'
-    - '395'
+    - '388'
+    - '389'
     - If the author list has changed (author(s) being added or removed), flag it to
       the editor/initiate our COPE process if an author was removed.
     - boolean
@@ -10333,8 +10272,8 @@ card_contents:
   - - '199'
     - plos_bio_revision_tech_check--competing_interests
     - '192'
-    - '396'
-    - '397'
+    - '390'
+    - '391'
     - 'If any competing interests are listed, please add a manuscript note. ex: ''Initials
       Date: Note to Editor - COI statement present, please see COI field.'''
     - boolean
@@ -10353,8 +10292,8 @@ card_contents:
   - - '200'
     - plos_bio_revision_tech_check--collection
     - '192'
-    - '398'
-    - '399'
+    - '392'
+    - '393'
     - If the authors mention submitting their paper to a collection in the cover letter
       or Additional Information card, alert Jenni Horsley by pinging her through the
       discussion of the ITC card.
@@ -10374,8 +10313,8 @@ card_contents:
   - - '201'
     - plos_bio_revision_tech_check--human_subjects
     - '192'
-    - '400'
-    - '401'
+    - '394'
+    - '395'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
@@ -10394,8 +10333,8 @@ card_contents:
   - - '202'
     - plos_bio_revision_tech_check--ethics_needed
     - '192'
-    - '402'
-    - '403'
+    - '396'
+    - '397'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
@@ -10415,8 +10354,8 @@ card_contents:
   - - '203'
     - plos_bio_revision_tech_check--data_available
     - '192'
-    - '404'
-    - '405'
+    - '398'
+    - '399'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
@@ -10435,8 +10374,8 @@ card_contents:
   - - '204'
     - plos_bio_revision_tech_check--supporting_information
     - '192'
-    - '406'
-    - '407'
+    - '400'
+    - '401'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
@@ -10456,8 +10395,8 @@ card_contents:
   - - '205'
     - plos_bio_revision_tech_check--dryad_url
     - '192'
-    - '408'
-    - '409'
+    - '402'
+    - '403'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
@@ -10476,8 +10415,8 @@ card_contents:
   - - '206'
     - plos_bio_revision_tech_check--financial_disclosure
     - '192'
-    - '410'
-    - '411'
+    - '404'
+    - '405'
     - Check that the Financial Disclosure card has been filled out correctly. Ensure
       the authors have provided a description of the roles of the funder, if they
       responded Yes to our standard statement.
@@ -10497,8 +10436,8 @@ card_contents:
   - - '207'
     - plos_bio_revision_tech_check--tobacco
     - '192'
-    - '412'
-    - '413'
+    - '406'
+    - '407'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, start a 'MetaData' discussion and ping the handling editor. See <a
       href='http://en.wikipedia.org/wiki/Category:Tobacco_companies_of_the_United_States'>this
@@ -10519,8 +10458,8 @@ card_contents:
   - - '208'
     - plos_bio_revision_tech_check--figures_legible
     - '192'
-    - '414'
-    - '415'
+    - '408'
+    - '409'
     - If any figures are completely illegible, contact the author.
     - boolean
     - '2017-03-14 21:17:08.980658'
@@ -10538,8 +10477,8 @@ card_contents:
   - - '209'
     - plos_bio_revision_tech_check--cited
     - '192'
-    - '416'
-    - '417'
+    - '410'
+    - '411'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
@@ -10558,8 +10497,8 @@ card_contents:
   - - '210'
     - plos_bio_revision_tech_check--cover_letter
     - '192'
-    - '418'
-    - '419'
+    - '412'
+    - '413'
     - Have the authors asked any content in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
@@ -10578,8 +10517,8 @@ card_contents:
   - - '211'
     - plos_bio_revision_tech_check--billing_inquiries
     - '192'
-    - '420'
-    - '421'
+    - '414'
+    - '415'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
@@ -10598,8 +10537,8 @@ card_contents:
   - - '212'
     - plos_bio_revision_tech_check--ethics_statement
     - '192'
-    - '422'
-    - '423'
+    - '416'
+    - '417'
     - Make sure the ethics statement looks complete. If the authors have responded
       Yes to any question, but have not provided approval information, please request
       this from them.
@@ -10619,8 +10558,8 @@ card_contents:
   - - '213'
     - plos_bio_revision_tech_check--figures_viewable
     - '192'
-    - '424'
-    - '425'
+    - '418'
+    - '419'
     - Make sure you can view and download all files uploaded to your Figures card.
       Check against figure citations in the manuscript to ensure there are no missing
       figures.
@@ -10640,8 +10579,8 @@ card_contents:
   - - '214'
     - plos_bio_revision_tech_check--embedded_captions
     - '192'
-    - '426'
-    - '427'
+    - '420'
+    - '421'
     - If main figures or supporting information captions are only available in the
       file itself (and not in the manuscript), request that the author remove the
       captions from the file and instead place them in the manuscript file.
@@ -10661,8 +10600,8 @@ card_contents:
   - - '215'
     - plos_bio_revision_tech_check--captions_missing
     - '192'
-    - '428'
-    - '429'
+    - '422'
+    - '423'
     - If main figures or supporting information captions are missing entirely, ask
       the author to provide them in the manuscript file.
     - boolean
@@ -10681,8 +10620,8 @@ card_contents:
   - - '216'
     - plos_bio_revision_tech_check--figures_missing
     - '192'
-    - '430'
-    - '431'
+    - '424'
+    - '425'
     - If any files or figures are cited in the manuscript but not included in the
       Figures or Supporting Information cards, ask the author to provide the missing
       information. (Search Fig, Table, Text, Movie and check that they are in the
@@ -10703,8 +10642,8 @@ card_contents:
   - - '217'
     - plos_bio_revision_tech_check--response_to_reviewers
     - '192'
-    - '432'
-    - '433'
+    - '426'
+    - '427'
     - For any resubmissions that have previously gone through review, ensure the authors
       have responded to the reviewer comments in the Revision Details box of the Revise
       Manuscript card. If this information is not present, request it from author.
@@ -10724,8 +10663,8 @@ card_contents:
   - - '218'
     - 
     - 
-    - '435'
-    - '444'
+    - '429'
+    - '438'
     - 
     - 
     - '2017-03-14 21:17:09.063309'
@@ -10743,8 +10682,8 @@ card_contents:
   - - '219'
     - data_availability--data_fully_available
     - '218'
-    - '436'
-    - '437'
+    - '430'
+    - '431'
     - Do the authors confirm that all the data underlying the findings described in
       their manuscript are fully available without restriction?
     - boolean
@@ -10763,8 +10702,8 @@ card_contents:
   - - '220'
     - data_availability--data_location
     - '218'
-    - '438'
-    - '439'
+    - '432'
+    - '433'
     - Please describe where your data may be found, writing in full sentences.
     - html
     - '2017-03-14 21:17:09.077848'
@@ -10782,8 +10721,8 @@ card_contents:
   - - '221'
     - data_availability--additional_information_doi
     - '218'
-    - '440'
-    - '441'
+    - '434'
+    - '435'
     - Tick here if the URLs/accession numbers/DOIs will be available only after acceptance
       of the manuscript for publication so that we can ensure their inclusion before
       publication.
@@ -10803,8 +10742,8 @@ card_contents:
   - - '222'
     - data_availability--additional_information_other
     - '218'
-    - '442'
-    - '443'
+    - '436'
+    - '437'
     - Tick here if your circumstances are not covered by the content above and you
       need the journal’s help to make your data available.
     - boolean
@@ -10823,8 +10762,8 @@ card_contents:
   - - '223'
     - 
     - 
-    - '445'
-    - '446'
+    - '439'
+    - '440'
     - 
     - 
     - '2017-05-08 20:54:47.887039'
@@ -10842,8 +10781,8 @@ card_contents:
   - - '224'
     - 
     - 
-    - '447'
-    - '448'
+    - '441'
+    - '442'
     - 
     - 
     - '2017-05-08 20:54:47.918216'
@@ -10861,8 +10800,8 @@ card_contents:
   - - '225'
     - 
     - 
-    - '449'
-    - '450'
+    - '443'
+    - '444'
     - 
     - 
     - '2017-05-08 20:54:47.940035'
@@ -10880,8 +10819,8 @@ card_contents:
   - - '226'
     - 
     - 
-    - '451'
-    - '452'
+    - '445'
+    - '446'
     - 
     - 
     - '2017-05-08 20:54:47.961735'
@@ -10899,8 +10838,8 @@ card_contents:
   - - '227'
     - 
     - 
-    - '453'
-    - '454'
+    - '447'
+    - '448'
     - 
     - 
     - '2017-05-08 20:54:47.983922'
@@ -10918,8 +10857,8 @@ card_contents:
   - - '228'
     - 
     - 
-    - '455'
-    - '456'
+    - '449'
+    - '450'
     - 
     - 
     - '2017-05-08 20:54:48.197422'
@@ -10937,8 +10876,8 @@ card_contents:
   - - '229'
     - 
     - 
-    - '457'
-    - '458'
+    - '451'
+    - '452'
     - 
     - 
     - '2017-05-08 20:54:48.259719'
@@ -10956,8 +10895,8 @@ card_contents:
   - - '230'
     - 
     - 
-    - '459'
-    - '476'
+    - '453'
+    - '470'
     - 
     - 
     - '2017-05-08 20:54:48.357865'
@@ -10975,8 +10914,8 @@ card_contents:
   - - '231'
     - front_matter_reviewer_report--decision_term
     - '230'
-    - '460'
-    - '461'
+    - '454'
+    - '455'
     - 'Please provide your publication recommendation:'
     - text
     - '2017-05-08 20:54:48.370082'
@@ -10994,8 +10933,8 @@ card_contents:
   - - '232'
     - front_matter_reviewer_report--competing_interests
     - '230'
-    - '462'
-    - '463'
+    - '456'
+    - '457'
     - Do you have any potential or perceived competing interests that may influence
       your review?
     - text
@@ -11014,8 +10953,8 @@ card_contents:
   - - '233'
     - front_matter_reviewer_report--suitable
     - '230'
-    - '464'
-    - '467'
+    - '458'
+    - '461'
     - Is this manuscript suitable in principle for the magazine section of <em>PLOS
       Biology</em>?
     - boolean
@@ -11034,8 +10973,8 @@ card_contents:
   - - '234'
     - front_matter_reviewer_report--suitable--comment
     - '233'
-    - '465'
-    - '466'
+    - '459'
+    - '460'
     - Suitable Comment
     - html
     - '2017-05-08 20:54:48.394652'
@@ -11053,8 +10992,8 @@ card_contents:
   - - '235'
     - front_matter_reviewer_report--includes_unpublished_data
     - '230'
-    - '468'
-    - '471'
+    - '462'
+    - '465'
     - 'If previously unpublished data are included to support the conclusions, please
       note in the box below whether:'
     - boolean
@@ -11073,8 +11012,8 @@ card_contents:
   - - '236'
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '235'
-    - '469'
-    - '470'
+    - '463'
+    - '464'
     - Includes Published Data Explanation
     - text
     - '2017-05-08 20:54:48.410252'
@@ -11092,8 +11031,8 @@ card_contents:
   - - '237'
     - front_matter_reviewer_report--additional_comments
     - '230'
-    - '472'
-    - '473'
+    - '466'
+    - '467'
     - "(Optional) Please offer any additional confidential comments to the editor"
     - text
     - '2017-05-08 20:54:48.417908'
@@ -11111,8 +11050,8 @@ card_contents:
   - - '238'
     - front_matter_reviewer_report--identity
     - '230'
-    - '474'
-    - '475'
+    - '468'
+    - '469'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
       include your name here."
     - text
@@ -11131,8 +11070,8 @@ card_contents:
   - - '239'
     - 
     - 
-    - '477'
-    - '478'
+    - '471'
+    - '472'
     - 
     - 
     - '2017-05-08 20:54:48.442643'
@@ -11150,8 +11089,8 @@ card_contents:
   - - '240'
     - 
     - 
-    - '479'
-    - '480'
+    - '473'
+    - '474'
     - 
     - 
     - '2017-05-08 20:54:48.52252'
@@ -11169,8 +11108,8 @@ card_contents:
   - - '241'
     - 
     - 
-    - '481'
-    - '482'
+    - '475'
+    - '476'
     - 
     - 
     - '2017-05-08 20:54:48.593902'
@@ -11188,8 +11127,8 @@ card_contents:
   - - '242'
     - 
     - 
-    - '483'
-    - '484'
+    - '477'
+    - '478'
     - 
     - 
     - '2017-05-08 20:54:48.614585'
@@ -11207,8 +11146,8 @@ card_contents:
   - - '243'
     - 
     - 
-    - '485'
-    - '486'
+    - '479'
+    - '480'
     - 
     - 
     - '2017-05-08 20:54:48.735094'
@@ -11226,8 +11165,8 @@ card_contents:
   - - '244'
     - 
     - 
-    - '487'
-    - '488'
+    - '481'
+    - '482'
     - 
     - 
     - '2017-05-08 20:54:48.792694'
@@ -11245,8 +11184,8 @@ card_contents:
   - - '245'
     - 
     - 
-    - '489'
-    - '490'
+    - '483'
+    - '484'
     - 
     - 
     - '2017-05-08 20:54:48.839987'
@@ -11264,8 +11203,8 @@ card_contents:
   - - '246'
     - 
     - 
-    - '491'
-    - '492'
+    - '485'
+    - '486'
     - 
     - 
     - '2017-05-08 20:54:48.860358'
@@ -11283,8 +11222,8 @@ card_contents:
   - - '247'
     - 
     - 
-    - '493'
-    - '494'
+    - '487'
+    - '488'
     - 
     - 
     - '2017-05-08 20:54:48.956139'
@@ -11302,8 +11241,8 @@ card_contents:
   - - '248'
     - 
     - 
-    - '495'
-    - '496'
+    - '489'
+    - '490'
     - 
     - 
     - '2017-05-08 20:54:48.97685'
@@ -11321,8 +11260,8 @@ card_contents:
   - - '249'
     - 
     - 
-    - '497'
-    - '498'
+    - '491'
+    - '492'
     - 
     - 
     - '2017-05-08 20:54:48.997555'
@@ -11340,8 +11279,8 @@ card_contents:
   - - '250'
     - 
     - 
-    - '499'
-    - '500'
+    - '493'
+    - '494'
     - 
     - 
     - '2017-05-08 20:54:49.033605'
@@ -11359,8 +11298,8 @@ card_contents:
   - - '251'
     - 
     - 
-    - '501'
-    - '502'
+    - '495'
+    - '496'
     - 
     - 
     - '2017-05-08 20:54:49.053972'
@@ -11378,8 +11317,8 @@ card_contents:
   - - '252'
     - 
     - 
-    - '503'
-    - '504'
+    - '497'
+    - '498'
     - 
     - 
     - '2017-05-08 20:54:49.074367'
@@ -11397,8 +11336,8 @@ card_contents:
   - - '253'
     - 
     - 
-    - '505'
-    - '506'
+    - '499'
+    - '500'
     - 
     - 
     - '2017-05-08 20:54:49.094813'
@@ -11408,6 +11347,168 @@ card_contents:
     - display-children
     - 
     - 
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '255'
+    - 
+    - 
+    - '501'
+    - '516'
+    - 
+    - 
+    - '2017-06-14 20:29:44.342121'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - display-children
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '256'
+    - competing_interests--has_competing_interests
+    - '255'
+    - '502'
+    - '515'
+    - <ol class="question-list"><li class="question"><div class="question-text"><p>You
+      are responsible for recognizing and disclosing on behalf of all authors any
+      competing interest that could be perceived to bias their work, acknowledging
+      all financial support and any other relevant financial or non-financial competing
+      interests.</p>Do any authors of this manuscript have competing interests (as
+      described in the <a target="_blank" href="http://journals.plos.org/plosbiology/s/competing-interests">PLOS
+      Policy on Declaration and Evaluation of Competing Interests</a>)?</div></li>
+    - text
+    - '2017-06-14 20:29:44.354762'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - radio
+    - 
+    - '[{"label": "Yes", "value": "t"}, {"label": "No", "value": "f"}]'
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '257'
+    - 
+    - '256'
+    - '503'
+    - '508'
+    - 
+    - 
+    - '2017-06-14 20:29:44.362496'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - display-with-value
+    - 
+    - "[]"
+    - t
+    - 
+    - 
+    - false
+    - false
+  - - '258'
+    - 
+    - '257'
+    - '504'
+    - '507'
+    - 
+    - 
+    - '2017-06-14 20:29:44.368948'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - field-set
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '259'
+    - competing_interests--statement
+    - '258'
+    - '505'
+    - '506'
+    - 'Please provide details about any and all competing interests in the box below.
+      Your response should begin with this statement: "I have read the journal''s
+      policy and the authors of this manuscript have the following competing interests.'
+    - text
+    - '2017-06-14 20:29:44.374074'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - paragraph-input
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '260'
+    - 
+    - '256'
+    - '509'
+    - '514'
+    - 
+    - 
+    - '2017-06-14 20:29:44.40374'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - display-with-value
+    - 
+    - "[]"
+    - f
+    - 
+    - 
+    - false
+    - false
+  - - '261'
+    - 
+    - '260'
+    - '510'
+    - '513'
+    - 
+    - 
+    - '2017-06-14 20:29:44.408504'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - field-set
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+  - - '262'
+    - 
+    - '261'
+    - '511'
+    - '512'
+    - |-
+      Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
+      Please note that if your manuscript is accepted, this statement will be published.
+    - 
+    - '2017-06-14 20:29:44.41237'
+    - '2017-06-14 20:29:44.441745'
+    - 
+    - '48'
+    - text
+    - 
+    - "[]"
     - 
     - 
     - 
@@ -11568,15 +11669,6 @@ card_versions:
     - 
     - false
     - '2017-05-03 15:50:02.043142'
-    - 
-    - false
-    - 
-  - - '17'
-    - '1'
-    - '42'
-    - 
-    - false
-    - '2017-05-03 15:50:01.851498'
     - 
     - false
     - 
@@ -11841,6 +11933,15 @@ card_versions:
     - 
     - false
     - 
+  - - '48'
+    - '1'
+    - '72'
+    - 
+    - true
+    - '2017-06-14 20:29:44.460532'
+    - 
+    - false
+    - Initial version
 
 ---
 cards:
@@ -11995,15 +12096,6 @@ cards:
     - '2017-05-03 15:50:02.058285'
     - 
     - TahiStandardTasks::EthicsTask
-    - 
-    - '1'
-    - 
-    - locked
-  - - '42'
-    - '2017-03-14 21:17:08.33993'
-    - '2017-05-03 15:50:01.86372'
-    - 
-    - TahiStandardTasks::CompetingInterestsTask
     - 
     - '1'
     - 
@@ -12269,6 +12361,15 @@ cards:
     - '1'
     - 
     - locked
+  - - '72'
+    - '2017-06-14 20:29:43.275581'
+    - '2017-06-14 20:29:44.464579'
+    - 
+    - Competing Interests
+    - '1'
+    - '1'
+    - 
+    - published
 
 ---
 comments:
@@ -37469,7 +37570,7 @@ tasks:
     - '10'
   - - '5'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '1'
     - false
     - '2015-10-29 20:16:37.538292'
@@ -37478,7 +37579,7 @@ tasks:
     - '5'
     - '1'
     - 
-    - '17'
+    - '48'
   - - '6'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -37721,7 +37822,7 @@ tasks:
     - '10'
   - - '26'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '6'
     - false
     - '2015-10-30 19:43:28.585311'
@@ -37730,7 +37831,7 @@ tasks:
     - '5'
     - '2'
     - 
-    - '17'
+    - '48'
   - - '27'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -37986,7 +38087,7 @@ tasks:
     - '10'
   - - '47'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '11'
     - true
     - '2015-11-02 14:04:03.046654'
@@ -37995,7 +38096,7 @@ tasks:
     - '5'
     - '3'
     - '2016-02-02 19:33:00'
-    - '17'
+    - '48'
   - - '48'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38245,7 +38346,7 @@ tasks:
     - '10'
   - - '68'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '16'
     - true
     - '2015-11-02 14:46:23.953399'
@@ -38254,7 +38355,7 @@ tasks:
     - '5'
     - '4'
     - '2016-02-02 19:33:00'
-    - '17'
+    - '48'
   - - '69'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38507,7 +38608,7 @@ tasks:
     - '10'
   - - '89'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '21'
     - false
     - '2015-11-03 22:59:21.079375'
@@ -38516,7 +38617,7 @@ tasks:
     - '5'
     - '8'
     - 
-    - '17'
+    - '48'
   - - '90'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38759,7 +38860,7 @@ tasks:
     - '10'
   - - '110'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '26'
     - false
     - '2015-11-03 23:02:06.936789'
@@ -38768,7 +38869,7 @@ tasks:
     - '5'
     - '9'
     - 
-    - '17'
+    - '48'
   - - '111'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39011,7 +39112,7 @@ tasks:
     - '10'
   - - '131'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '31'
     - false
     - '2015-11-10 22:27:27.373549'
@@ -39020,7 +39121,7 @@ tasks:
     - '5'
     - '10'
     - 
-    - '17'
+    - '48'
   - - '132'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39263,7 +39364,7 @@ tasks:
     - '10'
   - - '174'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '41'
     - true
     - '2016-04-12 18:43:34.805154'
@@ -39272,7 +39373,7 @@ tasks:
     - '5'
     - '12'
     - '2016-04-12 19:02:01.049585'
-    - '17'
+    - '48'
   - - '175'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39527,7 +39628,7 @@ tasks:
     - '10'
   - - '195'
     - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
+    - CustomCardTask
     - '46'
     - false
     - '2016-06-02 13:43:23.259435'
@@ -39536,7 +39637,7 @@ tasks:
     - '4'
     - '13'
     - 
-    - '17'
+    - '48'
   - - '196'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask

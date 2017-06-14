@@ -293,16 +293,14 @@ test('reversion button is only present when the card is published with changes a
 });
 
 test('xml validation errors appear if errors are present', function(assert) {
-  assert.expect(3);
+  assert.expect(6);
 
   let card = make('card', { xml: '', state: 'draft' });
   this.set('card', card);
 
-  const expectedErrors = [
-      {detail: {message: 'this is a test error message #1', line: 2, col: 90}},
-      {detail: {message: 'this is a test error message #2', line: 3, col: 91}}];
+  // check for absence of error panel as initial state
 
-  this.set('errors', expectedErrors);
+  this.set('errors', []);
 
   this.render(
     hbs`
@@ -310,8 +308,33 @@ test('xml validation errors appear if errors are present', function(assert) {
       {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
   );
 
-  let displayedErrors = $('[data-test-selector="xml-error"]');
-  assert.elementFound('.card-editor-xml-errors', 'xml error panel present');
-  assert.elementFound('.error-message', 'xml error header present');
-  assert.equal(displayedErrors.length, 2, 'itemized xml errors are present');
+  let displayedErrorsPre = $('[data-test-selector="xml-error"]');
+  assert.elementNotFound('.card-editor-xml-errors',
+    'xml error panel not visible when errors absent');
+  assert.elementNotFound('.error-message',
+    'xml error header not visible when errors absent');
+  assert.equal(displayedErrorsPre.length, 0,
+    'itemized xml errors not visible when errors absent');
+
+  // check for presence of error panel when errors exist
+
+  const mockErrors = [
+      {detail: {message: 'this is a test error message #1', line: 2, col: 90}},
+      {detail: {message: 'this is a test error message #2', line: 3, col: 91}}];
+
+  this.set('errors', mockErrors);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+  );
+
+  let displayedErrorsPost = $('[data-test-selector="xml-error"]');
+  assert.elementFound('.card-editor-xml-errors',
+    'xml error panel visible when errors present');
+  assert.elementFound('.error-message',
+    'xml error header visible when errors present');
+  assert.equal(displayedErrorsPost.length, 2,
+    'itemized xml errors visible when errors present');
 });

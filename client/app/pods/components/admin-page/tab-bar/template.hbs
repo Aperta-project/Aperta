@@ -1,29 +1,29 @@
 {{#tab-bar}}
-  {{#link-to 'admin.cc.journal.workflows' class='admin-nav-workflows'}}
+  {{#link-to 'admin.journal.workflows' class='admin-nav-workflows'}}
     {{fa-icon "columns"}}
     Workflows
   {{/link-to}}
 
   {{#if (feature-flag "CARD_CONFIGURATION")}}
-    {{#link-to 'admin.cc.journal.cards' class='admin-nav-cards'}}
+    {{#link-to 'admin.journal.cards' class='admin-nav-cards'}}
       {{fa-icon "clone"}}
       Cards
     {{/link-to}}
   {{/if}}
 
   {{#if (feature-flag "ADMIN_EMAIL_TEMPLATES")}}
-    {{#link-to 'admin.cc.journal.emailtemplates' class='admin-nav-emails'}}
+    {{#link-to 'admin.journal.emailtemplates' class='admin-nav-emails'}}
       {{fa-icon "envelope"}}
       Emails
     {{/link-to}}
   {{/if}}
 
-  {{#link-to 'admin.cc.journal.users' class='admin-nav-users'}}
+  {{#link-to 'admin.journal.users' class='admin-nav-users'}}
     {{fa-icon "users"}}
     Users
   {{/link-to}}
 
-  {{#link-to 'admin.cc.journal.settings' class='admin-nav-settings'}}
+  {{#link-to 'admin.journal.settings' class='admin-nav-settings'}}
     {{fa-icon "cog"}}
     Settings
   {{/link-to}}

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:admin.cc.journals', 'Unit | Route | Journal', {
+moduleFor('route:admin.journals', 'Unit | Route | Journal', {
 });
 
 test('with one journal, redirects to specific journal route', function(assert) {

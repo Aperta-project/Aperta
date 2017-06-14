@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    var journal = this.modelFor('admin.cc.journal').journal;
+    var journal = this.modelFor('admin.journal').journal;
     var journalID = (journal && journal.get('id'));
     var params = {'journal_id': journalID};
     return Ember.RSVP.hash({

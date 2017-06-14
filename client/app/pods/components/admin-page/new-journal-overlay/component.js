@@ -28,7 +28,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
 
   redirectToJournal(journal) {
     this.get('routing').transitionTo(
-      'admin.cc.journals',
+      'admin.journals',
       null,
       { journalID: journal.id });
   },

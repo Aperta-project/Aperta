@@ -4,6 +4,6 @@ export default Ember.Route.extend({
   featureFlag: Ember.inject.service(),
 
   beforeModel() {
-    this.transitionTo('admin.cc.journals'); 
+    this.transitionTo('admin.journals'); 
   }
 });

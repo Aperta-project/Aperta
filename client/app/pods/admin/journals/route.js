@@ -11,6 +11,6 @@ export default Ember.Route.extend({
   },
 
   afterModel(model) {
-    this.transitionTo('admin.cc.journal.workflows', model.journal.id);
+    this.transitionTo('admin.journal.workflows', model.journal.id);
   }
 });

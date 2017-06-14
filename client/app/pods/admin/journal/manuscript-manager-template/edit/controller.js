@@ -67,7 +67,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   redirectToAdminPage(journal){
     this.transitionToRoute(
-      'admin.cc.journal.workflows', journal.get('id'));
+      'admin.journal.workflows', journal.get('id'));
   },
 
   buildTaskTemplate(title, journalTaskType, card, phaseTemplate) {

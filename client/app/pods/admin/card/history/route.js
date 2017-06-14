@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.modelFor('admin.cc.card').get('cardVersions');
+    return this.modelFor('admin.card').get('cardVersions');
   }
 });

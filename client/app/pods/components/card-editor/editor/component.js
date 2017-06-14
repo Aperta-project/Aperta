@@ -64,7 +64,7 @@ export default Ember.Component.extend({
       yield card.archive();
       this.set('errors', []);
       let journalID = yield card.get('journal.id');
-      this.get('routing').transitionTo('admin.cc.journals.cards', null, {
+      this.get('routing').transitionTo('admin.journals.cards', null, {
         journalID
       });
     } catch (e) {
@@ -79,7 +79,7 @@ export default Ember.Component.extend({
       let journalID = yield card.get('journal.id');
       yield card.destroyRecord();
       this.set('errors', []);
-      this.get('routing').transitionTo('admin.cc.journals.cards', null, {
+      this.get('routing').transitionTo('admin.journals.cards', null, {
         journalID
       });
     } catch (e) {

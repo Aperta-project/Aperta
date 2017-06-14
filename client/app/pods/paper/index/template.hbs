@@ -62,17 +62,44 @@
   {{#if (and showPdfManuscript (not model.processing))}}
     {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
   {{else}}
-    {{#split-pane-element class="manuscript-pane main-content-section"}}
+    {{#split-pane-element id="preview-pane" class=(concat "manuscript-pane main-content-section ember-view split-pane-element" (if model.hasAnyError ' errored-upload'))}}
       {{#rendered-manuscript paper=model}}
         {{#if model.processing}}
           {{#progress-spinner-message class="paper-index-progress-spinner"
                                       visible=true
                                       size="large"
                                       align="middle"}}
-            Loading . . .
+            Loading . . .       
           {{/progress-spinner-message}}
         {{else}}
-          {{{model.body}}}
+          {{#if model.hasAnyError}}
+            {{#if model.authorHasErrorOnPreSubmission}}
+              <h3>Your file was uploaded successfully, but we were unable to render a preview at this time.</h3>
+              <p><i id="errored-file-icon" class="fa {{checkFileType}}"></i>{{model.file.filename}}</p>
+              <p><b>Next Steps:</b> You may complete your submission as is.  If you prefer to preview
+                    your file, please remove any embedded images, audio, video, etc.,  
+                    and try uploading again. You may also upload your manuscript as a PDF.</p>
+              <p>Refer to our <a href="http://journals.plos.org/plosbiology/s/aperta-user-guide-for-authors#loc-figures" 
+              target="_blank">submission guide</a> for information about uploading figures in Aperta.
+              If you would like to contact us, you can reach us via our 
+              <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.
+              </p> 
+            {{else if model.authorHasErrorOnSubmission}}  
+              <h3>Preview for this manuscript is unavailable.</h3>
+              <p><b>Please Note:</b> You cannot upload a new manuscript while your submission is under review.</p>
+              <p>If you would like to contact us, you can reach us via our 
+                <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>
+              </p>          
+            {{else if model.staffEditorHasErrorOnSubmittedAndEditable}}  
+              <h3>Preview for this manuscript is unavailable.</h3>
+              <p><b>Please Note:</b> You can download and replace the source file under the <i>Upload Manuscript</i> card to the right.</p>
+            {{else if model.otherRolesHasErrorOnSubmitted}}
+              <h3>Preview for this manuscript is unavailable.</h3>
+              <p><b>Please Note:</b> You can access the source file under <i>Downloads</i> in the menu above.</p>
+            {{/if}}
+          {{else}}
+            {{{model.body}}}
+          {{/if}}
         {{/if}}
       {{/rendered-manuscript}}
     {{/split-pane-element}}
@@ -87,3 +114,10 @@
 {{/split-pane}}
 
 {{outlet}}
+
+{{#overlay-fullscreen visible=showFeedbackOverlay
+                      outAnimationComplete=(action "hideFeedbackOverlay")
+                      overlayClass="feedback-overlay"
+                      as |overlay|}}
+    {{feedback-form close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

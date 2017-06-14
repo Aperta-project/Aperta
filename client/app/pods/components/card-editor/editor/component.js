@@ -50,6 +50,7 @@ export default Ember.Component.extend({
     try {
       yield card.revert();
       yield card.reload();
+      this.set('showRevertOverlay', false);
       this.set('errors', []);
     } catch (e) {
       this.set('errors', e.errors);
@@ -87,6 +88,10 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    updateXML(code) {
+      this.set('card.xml', code);
+    },
+
     confirmPublish() {
       this.set('showPublishOverlay', true);
     },
@@ -97,6 +102,10 @@ export default Ember.Component.extend({
 
     confirmDelete() {
       this.set('showDeleteOverlay', true);
+    },
+
+    confirmRevert() {
+      this.set('showRevertOverlay', true);
     }
   }
 });

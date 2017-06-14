@@ -5,21 +5,27 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   notifications: Ember.inject.service(),
   storage: Ember.inject.service('discussions-storage'),
   channelName: null,
+  can: Ember.inject.service('can'),
 
   model(params) {
     return this.store.findRecord('discussion-topic', params.topic_id);
   },
 
   redirect(model) {
-    var paperId = this.modelFor('paper').get('id');
+    var paperId = this.paperModel().get('id');
 
     if (model.get('paperId') !== paperId) {
-      this.transitionTo('paper.index.discussions');
+      this.transitionTo(this.get('topicsIndexPath'));
     }
   },
 
-  afterModel(model) {
-    this.setModelChannel(model);
+  afterModel(topic, transition){
+    return this.get('can').can('view', topic).then( (value)=> {
+      if (!value){
+        return this.handleUnauthorizedRequest(transition);
+      }
+      this.setModelChannel(topic);
+    });
   },
 
   setModelChannel(model) {
@@ -28,6 +34,11 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
     this.set('channelName', name);
     this.get('pusher').wire(this, name, ['created', 'updated']);
+  },
+
+  activate() {
+    this.send('updatePopoutRoute', 'show');
+    this.send('updateDiscussionId', this.modelId);
   },
 
   deactivate() {
@@ -41,7 +52,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   setupController(controller, model) {
-    let discussionRouteName = `paper.${this.get('subRouteName')}.discussions`;
+    let discussionRouteName = this.get('topicsBasePath');
     const discussionModel = this.modelFor(discussionRouteName);
     controller.set('atMentionableStaffUsers', discussionModel.atMentionableStaffUsers);
     controller.set('validationErrors', {});

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
 import { task as concurrencyTask } from 'ember-concurrency';
+import Discussions from 'tahi/mixins/discussions/route-paths';
 
 const {
   Controller,
@@ -14,7 +15,7 @@ const {
   }
 } = Ember;
 
-export default Controller.extend({
+export default Controller.extend(Discussions, {
   flash: Ember.inject.service(),
   restless: service('restless'),
   routing: service('-routing'),
@@ -22,6 +23,7 @@ export default Controller.extend({
   sortedPhases: sort('model.phases', 'positionSort'),
 
   paper: alias('model'),
+  subRouteName: 'workflow',
 
   activityIsLoading: false,
   showActivityOverlay: false,

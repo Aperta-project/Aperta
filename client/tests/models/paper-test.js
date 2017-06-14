@@ -7,7 +7,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 var App;
 
 moduleForModel('paper', 'Unit: Paper Model', {
-  needs: ['model:author', 'model:user', 'model:figure', 'model:journal', 'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment', 'model:question-attachment', 'model:comment-look', 'model:discussion-topic', 'model:versioned-text', 'model:discussion-participant', 'model:discussion-reply', 'model:phase', 'model:task', 'model:comment', 'model:participation', 'model:card-thumbnail', 'model:nested-question-owner', 'model:nested-question', 'model:nested-question-answer', 'model:collaboration', 'model:supporting-information-file'],
+  needs: ['model:author','model:group-author','model:card', 'model:correspondence', 'model:snapshot','model:related-article','model:paper-task-type', 'model:user', 'model:figure', 'model:journal', 'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment', 'model:question-attachment', 'model:comment-look', 'model:discussion-topic', 'model:versioned-text', 'model:discussion-participant', 'model:discussion-reply', 'model:phase', 'model:task', 'model:comment', 'model:participation', 'model:card-thumbnail', 'model:nested-question-owner', 'model:nested-question', 'model:nested-question-answer', 'model:collaboration', 'model:supporting-information-file','model:similarity-check'],
   afterEach: function() {
     Ember.run(function() {
       return TestHelper.teardown();
@@ -71,6 +71,121 @@ test('simplifiedRelatedUsers contains no collaborators', function(assert) {
   assert.equal(remaining, 'Creator');
 });
 
+test('authorHasErrorOnPreSubmission', function(assert) {
+  const paper = this.subject();
+  
+  var scenarios = [
+    {
+      data: {
+        isInSubmittableState: true,
+        file: {
+          status: 'error'
+        },
+        currentUserRoles: ['Creator'],
+      },
+      expectation: true,
+    },
+    {
+      data: {
+        isInSubmittableState: false,
+      },
+      expectation: false,
+    },
+    {
+      data: {
+        isInSubmittableState: true,
+        file: {
+          status: 'ok'
+        },
+      },
+      expectation: false,
+    },
+    {
+      data: {
+        isInSubmittableState: true,
+        file: {
+          status: 'error'
+        },
+        currentUserRoles: ['CLient'],
+      },
+      expectation: false,
+    }
+  ];
+
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      paper.setProperties(scenario.data);
+    }),
+    assert.equal(paper.get('authorHasErrorOnPreSubmission'), scenario.expectation);
+  });
+});
+
+test('authorHasErrorOnSubmission', function(assert) {
+  const paper = this.subject();
+  
+  var scenarios = [
+    {
+      data: {
+        isPartialSubmittedState: true,
+        file: {
+          status: 'error'
+        },
+        currentUserRoles: ['Creator'],
+      },
+    },
+  ];
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      paper.setProperties(scenario.data);
+    }),
+    assert.equal(paper.get('authorHasErrorOnSubmission'), true);
+  });
+}); 
+
+test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
+  const paper = this.subject();
+  
+  var scenarios = [
+    {
+      data: {
+        isPartialSubmittedState: true,
+        editable: true,
+        file: {
+          status: 'error'
+        },
+        currentUserRoles: ['Internal Editor', 'Staff Admin', 'Production Staff'],
+      },
+    },
+  ];
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      paper.setProperties(scenario.data);
+    }),
+    assert.equal(paper.get('staffEditorHasErrorOnSubmittedAndEditable'), true);
+  });
+}); 
+
+test('otherRolesHasErrorOnSubmitted', function(assert) {
+  const paper = this.subject();
+  
+  var scenarios = [
+    {
+      data: {
+        isPartialSubmittedState: true,
+        file: {
+          status: 'error'
+        },
+        currentUserRoles: ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'],
+      },
+    },
+  ];
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      paper.setProperties(scenario.data);
+    }),
+    assert.equal(paper.get('otherRolesHasErrorOnSubmitted'), true);
+  });
+}); 
 
 
 ['accepted',

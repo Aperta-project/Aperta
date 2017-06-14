@@ -43,18 +43,23 @@ describe SimilarityCheck, type: :model, redis: true do
         ]
       }
     end
+
     subject(:start_report!) { similarity_check.start_report! }
 
     before do
       stub_request(:get, stubbed_url).to_return(body: "turtles")
+      allow(Ithenticate::Api).to receive_message_chain(:new_from_tahi_env, :error?)
+                                             .and_return(false)
     end
 
     it "adds a document through the Ithenticate::Api" do
       Sidekiq.redis { |redis| redis.set('ithenticate_folder', 1) }
+
       expect(Ithenticate::Api).to(
         receive_message_chain(:new_from_tahi_env, :add_document)
           .and_return(fake_ithenticate_response)
       )
+
       start_report!
     end
 
@@ -114,7 +119,7 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", report_complete?: true, score: report_score, report_id: report_id)
+        double("response", error: nil, report_complete?: true, score: report_score, report_id: report_id, error?: false)
       end
 
       it "updates the similarity check's state to 'report_complete'" do
@@ -160,24 +165,29 @@ describe SimilarityCheck, type: :model, redis: true do
       let(:report_score) { Faker::Number.number(2).to_i }
       let(:report_id) { Faker::Number.number(8).to_i }
       let(:response_double) do
-        double("response", report_complete?: false)
-      end
-
-      around :each do |example|
-        Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
-          example.run
-        end
+        double("response", report_complete?: false, error: nil, error?: false)
       end
 
       context "the system time is after the similarity check's timeout_at" do
         let(:timeout_offset) { 1.second }
 
         it "updates to similarity check's status to 'failed'" do
-          expect do
-            similarity_check.sync_document!
-          end.to change { similarity_check.state }
-                   .from("waiting_for_report")
-                   .to("failed")
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+            expect do
+              similarity_check.sync_document!
+            end.to raise_error('Report timed out after 10 minutes.')
+            expect(similarity_check.state).to eq('failed')
+          end
+        end
+
+        it "adds an error_message to similarity check" do
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+
+            expect do
+              similarity_check.sync_document!
+            end.to raise_error('Report timed out after 10 minutes.')
+            expect(similarity_check.error_message).to eq("Report timed out after 10 minutes.")
+          end
         end
       end
 
@@ -185,9 +195,11 @@ describe SimilarityCheck, type: :model, redis: true do
         let(:timeout_offset) { -1.seconds }
 
         it "updates to similarity check's status to 'failed'" do
-          expect do
-            similarity_check.sync_document!
-          end.to_not change { similarity_check.state }
+          Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
+            expect do
+              similarity_check.sync_document!
+            end.to_not change { similarity_check.state }
+          end
         end
       end
     end

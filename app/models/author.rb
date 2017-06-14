@@ -1,7 +1,6 @@
 class Author < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
-  include NestedQuestionable
   include Tokenable
   include CoAuthorConfirmable
 

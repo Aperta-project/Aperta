@@ -16,6 +16,10 @@ module.exports = function(defaults) {
     },
     babel: {
       includePolyfill: true
+    },
+    codemirror: {
+      modes: ['xml'],
+      themes: ['eclipse']
     }
   };
 

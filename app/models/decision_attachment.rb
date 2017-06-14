@@ -11,4 +11,11 @@ class DecisionAttachment < Attachment
   def decision
     owner
   end
+
+  protected
+
+  def build_title
+    file.filename || title
+  end
+
 end

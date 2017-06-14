@@ -23,7 +23,7 @@ test('shows the decision verdict when closed', function(assert) {
   setup(this, { decision });
   assert.textPresent(
     '.decision-bar-verdict',
-    'Major revision',
+    'Major Revision',
     'shows verdict');
 
   assert.elementNotFound('.decision-bar-letter', 'does not show letter');

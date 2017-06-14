@@ -24,7 +24,7 @@
 
     {{#if card.revertable}}
       <button class="button button--blue button-primary editor-revert"
-              onclick={{action (perform revertCard)}}
+              onclick={{action "confirmRevert"}}
               disabled={{or
                          saveCard.isRunning
                          publishCard.isRunning
@@ -66,10 +66,9 @@
     <div class="card-editor-xml-controls"></div>
     <div class="card-editor-xml">
       {{#each errors as |error|}}
-        {{error-message message=(concat error.title ": " error.detail)}}
+        {{error-message message=(concat error.title "[line:" error.detail.line "; col:" error.detail.col "]: " error.detail.message)}} <br/>
       {{/each}}
-
-      {{textarea value=card.xml autoresize=true rows=10}}
+      {{ivy-codemirror value=card.xml valueUpdated=(action "updateXML") options=(hash mode="application/xml" theme="eclipse" lineNumbers=true)}}
     </div>
   </div>
 </div>
@@ -144,6 +143,25 @@
     <div>
       <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
       <button class="button-primary button--blue" {{action (perform deleteCard)}}>Yes, Delete</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showRevertOverlay
+   outAnimationComplete=(toggle "showRevertOverlay" this)
+   overlayClass="publish-card-overlay revert overlay--blue"
+   as |overlay|}}
+  <h1> Revert Card </h1>
+  <p>
+    Reverting a card will permanently revert the card to its last published state. Changes will not be recoverable.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to revert this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform revertCard)}}>Yes, Revert</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

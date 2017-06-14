@@ -40,7 +40,8 @@
                       owner=model
                       unwrappedHelpText="<ul class=\"question-help\"><li>The data have been generated rigorously with relevant controls, replication and sample sizes, if applicable.</li><li>The data provided support the conclusions that are drawn.</li></ul>These comments will be communicated to the authors."
                       wrapperClass="yes-no-with-comments"
-                      readOnly=readOnly as |radio|}}
+                      readOnly=readOnly
+                      showUnwrappedHelpText=true as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
         {{nested-question-textarea ident="front_matter_reviewer_report--includes_unpublished_data--explanation"
             owner=model

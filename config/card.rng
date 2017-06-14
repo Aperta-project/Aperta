@@ -60,6 +60,51 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="tech-check-widget">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <attribute name="content-type">
+        <value>tech-check-widget</value>
+      </attribute>
+      <element name="text">
+        <text/>
+      </element>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>check-box</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+        <ref name="text-input"/>
+      </interleave>
+    </element>
+  </define>
   <define name="check-box-input">
     <element name="content">
       <optional>

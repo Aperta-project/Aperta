@@ -23,6 +23,10 @@ class XmlCardDocument
         }
       end
     end
+
+    def message
+      errors
+    end
   end
 
   def initialize(xml_string)
@@ -39,7 +43,7 @@ class XmlCardDocument
     tempfile.close
 
     errors = schema.validate(tempfile.path)
-    raise XmlValidationError, errors unless errors.empty?
+    raise(XmlValidationError, errors) unless errors.empty?
   ensure
     tempfile.unlink
   end

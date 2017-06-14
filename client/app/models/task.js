@@ -6,6 +6,9 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import Snapshottable from 'tahi/mixins/snapshottable';
 
 export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
+  apexDeliveries: DS.hasMany('apex-delivery', {
+    inverse: 'task'
+  }),
   attachments: DS.hasMany('adhoc-attachment', {
     async: true,
     inverse: 'task'

@@ -4,9 +4,10 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: true }),
-  task: DS.belongsTo('send-to-apex-task', {
+  task: DS.belongsTo('task', {
     inverse: 'apexDeliveries',
-    async: true }),
+    polymorphic: true
+  }),
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),
   createdAt: DS.attr('date'),

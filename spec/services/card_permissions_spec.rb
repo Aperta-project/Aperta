@@ -24,6 +24,10 @@ describe CardPermissions do
       subject
       expect(role.permissions.where(action: 'view', applies_to: 'CardVersion', filter_by_card_id: card.id).count).to be(1)
     end
+
+    it 'should return the permissions' do
+      expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task'))
+    end
   end
 
   describe ".add_roles" do

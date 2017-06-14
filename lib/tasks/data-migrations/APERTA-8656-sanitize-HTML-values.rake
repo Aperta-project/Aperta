@@ -40,8 +40,11 @@ namespace :data do
             fields.each do |field|
               before = record[field]
               next if before.blank?
+
+              before = before.gsub("\n", "<br/>") if model == Decision
               after = HtmlScrubber.standalone_scrub!(before)
               next if before.strip == after.strip
+
               if dry
                 header = "PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
                 puts "<p>#{header} BEFORE: #{clean[before]}<br/>"

@@ -8,6 +8,18 @@ describe CardPermissions do
   let(:role) { FactoryGirl.create(:role, journal: journal, name: Faker::Name.title) }
   let(:query) { { action: action, applies_to: 'Task', filter_by_card_id: card.id } }
 
+  shared_examples_for "a non-state-limited permission for view" do
+    context 'and the action is view' do
+      let(:action) { 'view' }
+
+      it 'should not limit the permission by state' do
+        subject
+        perm = role.permissions.where(query).first
+        expect(perm.states.pluck(:name)).to contain_exactly('*')
+      end
+    end
+  end
+
   shared_examples_for "permission creator" do
     it "should create 3 permissions" do
       expect do
@@ -28,7 +40,9 @@ describe CardPermissions do
     context 'when the role is creator' do
       let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Creator') }
 
-      it "should assign the role to limted states permission" do
+      it_should_behave_like 'a non-state-limited permission for view'
+
+      it "should assign the role to editable states permission only" do
         subject
         perm = role.permissions.where(action: action).first
         expect(perm.states.pluck(:name)).to contain_exactly(*Paper::EDITABLE_STATES.map(&:to_s))
@@ -38,7 +52,9 @@ describe CardPermissions do
     context 'when the role is a collaborator' do
       let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Collaborator') }
 
-      it "should assign the role to editable states permission" do
+      it_should_behave_like 'a non-state-limited permission for view'
+
+      it "should assign the role to editable states permission only" do
         subject
         perm = role.permissions.where(action: action).first
         expect(perm.states.pluck(:name)).to contain_exactly(*Paper::EDITABLE_STATES.map(&:to_s))
@@ -48,7 +64,9 @@ describe CardPermissions do
     context 'when the role is a reviewer' do
       let(:role) { FactoryGirl.create(:role, journal: journal, name: 'Reviewer') }
 
-      it "should assign the role to editable states permission" do
+      it_should_behave_like 'a non-state-limited permission for view'
+
+      it "should assign the role to editable states permission only" do
         subject
         perm = role.permissions.where(action: action).first
         expect(perm.states.pluck(:name)).to contain_exactly(*Paper::REVIEWABLE_STATES.map(&:to_s))

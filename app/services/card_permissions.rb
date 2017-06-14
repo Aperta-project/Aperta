@@ -10,13 +10,18 @@ class CardPermissions
   # Append to the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.
   def self.add_roles(card, action, roles)
-    append_roles_and_save(get_view_card_permission(card), roles) \
-      if action == 'view'
-
-    grouped_roles = group_roles(card, roles)
-    STATES.keys.map do |key|
-      get_task_permission(card, action, STATES[key]).tap do |task_permission|
-        append_roles_and_save(task_permission, (grouped_roles[key] || []))
+    if action == 'view'
+      append_roles_and_save(get_view_card_permission(card), roles)
+      append_roles_and_save(
+        get_task_permission(card, action, [Permission::WILDCARD]), roles
+      )
+    else
+      # Non-view roles are state-limited
+      grouped_roles = group_roles(card, roles)
+      STATES.keys.map do |key|
+        append_roles_and_save(
+          get_task_permission(card, action, STATES[key]), grouped_roles[key]
+        )
       end
     end
   end
@@ -24,13 +29,16 @@ class CardPermissions
   # Set the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.
   def self.set_roles(card, action, roles)
-    replace_roles_and_save(get_view_card_permission(card), roles) \
-      if action == 'view'
-
-    grouped_roles = group_roles(card, roles)
-    STATES.keys.map do |key|
-      get_task_permission(card, action, STATES[key]).tap do |task_permission|
-        replace_roles_and_save(task_permission, grouped_roles[key] || [])
+    if action == 'view'
+      replace_roles_and_save(get_view_card_permission(card), roles)
+      replace_roles_and_save(
+        get_task_permission(card, action, [Permission::WILDCARD]), roles
+      )
+    else
+      grouped_roles = group_roles(card, roles)
+      STATES.keys.map do |key|
+        replace_roles_and_save(get_task_permission(card, action, STATES[key]),
+                               grouped_roles[key])
       end
     end
   end
@@ -57,13 +65,17 @@ class CardPermissions
   end
 
   def self.replace_roles_and_save(permission, roles)
+    roles ||= []
     permission.roles.replace(roles)
     permission.save!
+    permission
   end
 
   def self.append_roles_and_save(permission, roles)
+    roles ||= []
     permission.roles.replace(roles | permission.roles)
     permission.save!
+    permission
   end
 
   # Group roles into a hash with different keys:

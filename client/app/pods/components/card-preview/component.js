@@ -75,11 +75,11 @@ export default Ember.Component.extend({
     },
 
     openSettings() {
-      alert('open alert ooooo!');
+      
     }
   },
 
-  settingsEnabled: Ember.computed('task.title', function() {
-    return this.get('task.title') === 'Similarity Check';
+  settingsEnabled: Ember.computed('task.settings', function() {
+    return this.get('task.settings').length > 0;
   })
 });

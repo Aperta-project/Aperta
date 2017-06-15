@@ -18,6 +18,7 @@
                       as |overlay|}}
     {{flash-messages}}
     {{invitations-x invitations=invitationsNeedsUserUpdate
+                    loading=invitationsLoading
                     accept=(action "acceptInvitation")
                     close=(action overlay.animateOut)
                     decline=(action "declineInvitation")}}

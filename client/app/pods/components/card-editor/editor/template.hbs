@@ -60,14 +60,20 @@
     </button>
   </div>
 </div>
-
 <div class="card-editor-workspace">
-  <div class="card-editor-xml-container">
-    <div class="card-editor-xml-controls"></div>
+
+  {{#if errors.length}}
+    <div class="card-editor-xml-errors">
+        <p> {{error-message message="Please fix the following errors:" displayIcon=true}} </p>
+        {{#each errors as |error|}}
+          <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+        {{/each}}
+    </div>
+  {{/if}}
+
+  <div class="card-editor-xml-container {{if errors.length 'error-border'}}">
+    <div class="card-editor-xml-controls {{if errors.length 'error-bar'}}"></div>
     <div class="card-editor-xml">
-      {{#each errors as |error|}}
-        {{error-message message=(concat error.title "[line:" error.detail.line "; col:" error.detail.col "]: " error.detail.message)}} <br/>
-      {{/each}}
       {{ivy-codemirror value=card.xml valueUpdated=(action "updateXML") options=(hash mode="application/xml" theme="eclipse" lineNumbers=true)}}
     </div>
   </div>

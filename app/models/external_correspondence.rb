@@ -1,0 +1,2 @@
+class ExternalCorrespondence < Correspondence
+end

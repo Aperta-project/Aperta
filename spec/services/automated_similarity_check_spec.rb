@@ -184,16 +184,36 @@ describe AutomatedSimilarityCheck do
         end
       end
 
-      context "the paper has had a manually generated report" do
+      context "regarding similarity check automation" do
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
                                             :after_first_major_revise_decision, owner: task_template)
         end
 
-        it "does not create a SimilarityCheck record" do
-          paper.manually_similarity_checked = true
-          result = described_class.call("tahi:paper:submitted", record: paper)
-          expect(result).to be_nil
+        context "the paper has had a manually generated report" do
+          before do
+            versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
+            sim_check = FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: false)
+            paper.versioned_texts << versioned_text
+          end
+
+          it "does not create a SimilarityCheck record" do
+            result = described_class.call("tahi:paper:submitted", record: paper)
+            expect(result).to be_nil
+          end
+        end
+
+        context "the paper is automaticlaly checked" do
+          before do
+            versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
+            sim_check = FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: true)
+            paper.versioned_texts << versioned_text
+          end
+
+          it "it creates a SimilarityCheck record" do
+            result = described_class.call("tahi:paper:submitted", record: paper)
+            expect(result.class).to eq(SimilarityCheck)
+          end
         end
       end
     end

@@ -107,3 +107,18 @@ test('"Add Correspondence" opens a form overlay', (assert) => {
     assert.equal(currentURL(), '/papers/' + doi + '/correspondence/new');
   });
 });
+
+test('"Add Correspondence" form jinjin', (assert) => {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
+  return andThen(() => {
+    assert.textPresent('.inset-form-control-text', 'Date sent');
+    assert.textPresent('.inset-form-control-text', 'Time sent');
+    assert.textPresent('.inset-form-control-text', 'Description');
+    assert.textPresent('.inset-form-control-text', 'From');
+    assert.textPresent('.inset-form-control-text', 'To');
+    assert.textPresent('.inset-form-control-text', 'Subject');
+    assert.textPresent('.inset-form-control-text', 'CC');
+    assert.textPresent('.inset-form-control-text', 'BCC');
+    assert.textPresent('.inset-form-control-text', 'Contents');
+  });
+});

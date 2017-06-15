@@ -265,6 +265,10 @@ Tahi::Application.routes.draw do
     to: 'token_invitations#thank_you',
     as: 'invitation_thank_you'
 
+  get '/invitations/:token/accept',
+    to: 'token_invitations#accept',
+    as: 'invitation_accept'
+
   get '/co_authors_token/:token',
     to: 'token_co_authors#show',
     as: 'show_token_co_author'

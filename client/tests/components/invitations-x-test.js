@@ -27,9 +27,11 @@ var template = hbs`{{invitations-x invitations=invitations
                       close=(action close invitation)
                       decline=(action decline invitation)
                       update=(action update invitation)
+                      loading=loading
                       }}`;
 
 test('pending invitation loads with accept/decline options', function(assert){
+  this.set('loading', false);
   this.render(template);
 
   assert.textPresent('h2', 'Reviewer Invitation');
@@ -37,4 +39,11 @@ test('pending invitation loads with accept/decline options', function(assert){
   assert.textPresent('button.invitation-decline', 'Decline');
   assert.elementFound('.pending-invitation', 'flagged as pending invitation');
   assert.elementFound('.dashboard-paper-title', 'has paper title');
+});
+
+test('shows spinner when loading prop is true', function(assert){
+  this.set('loading', true);
+  this.render(template);
+
+  assert.elementFound('.progress-spinner', 'has progress spinner');
 });

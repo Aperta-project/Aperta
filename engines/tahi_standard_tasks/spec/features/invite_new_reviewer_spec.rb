@@ -29,8 +29,7 @@ feature "Inviting a new reviewer", js: true do
     reviewer = create :user, email: 'malz@example.com'
     login_as(reviewer, scope: :user)
     visit_in_email root_path
-    dashboard_page = DashboardPage.new
-    expect(page).to have_content("You have 1 invitation")
+    expect(page).to have_content("Thank you for agreeing to review for #{paper.journal.name}.")
   end
 
   scenario "Reviewer can decline without logging in" do
@@ -63,22 +62,17 @@ feature "Inviting a new reviewer", js: true do
     ensure_email_got_sent_to "malz@example.com"
     Page.new.sign_out
 
-    open_email "malz@example.com"
-    invitation_link = root_path
-    visit_in_email invitation_link
+    visit '/'
 
     dashboard_page = sign_up_as("malz@example.com")
     dashboard_page.accept_invitation_for_paper(paper)
-    expect(dashboard_page).to have_submission(paper.title)
     dashboard_page.sign_out
 
-    visit invitation_link
-    expect(page).to have_content(
-      "Welcome to Aperta Submit & manage manuscripts."
-    )
+    open_email "malz@example.com"
+    reviewer = create :user, email: 'a-malz-imposter@example.com'
+    login_as(reviewer, scope: :user)
+    visit_in_email root_path
 
-    dashboard_page = sign_up_as("a-malz-imposter@example.com")
-    expect(dashboard_page).to have_no_content('View invitations')
-    expect(dashboard_page).to have_no_submission(paper.title)
+    expect(page).to have_content("Sorry, we're unable to find the page you requested.")
   end
 end

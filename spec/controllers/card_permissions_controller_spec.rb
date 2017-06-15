@@ -22,30 +22,58 @@ describe CardPermissionsController do
             format: "json",
             card_permission: {
               filter_by_card_id: card.id,
-              permission_action: 'view',
+              permission_action: action,
               role_ids: [role.id]
             }
     end
 
-    it_behaves_like "an unauthenticated json request"
+    context 'when the action is edit' do
+      let(:action) { 'edit' }
 
-    it "creates 4 new permission with the correct values (one each for creators, reviewers and the rest, and one ffor the card)" do
-      stub_sign_in user
-      expect { do_request }.to change { Permission.count }.by(4)
+      it_behaves_like "an unauthenticated json request"
 
-      expect(response.status).to be(201)
-      permissions = Permission.where(id: res_body['card_permissions'].map { |p| p[:id] })
-      expect(permissions.count).to be(3)
-      expect(permissions.map(&:filter_by_card_id).uniq).to contain_exactly(card.id)
-      expect(permissions.map(&:action).uniq).to contain_exactly("view")
-      expect(permissions.flat_map(&:roles)).to eq([role])
+      it "creates 3 new permission with the correct values (one each for creators, reviewers and the rest, and one ffor the card)" do
+        stub_sign_in user
+        expect { do_request }.to change { Permission.count }.by(3)
+
+        expect(response.status).to be(201)
+        permissions = Permission.where(id: res_body['card_permissions'].map { |p| p[:id] })
+        expect(permissions.count).to be(3)
+        expect(permissions.map(&:filter_by_card_id).uniq).to contain_exactly(card.id)
+        expect(permissions.map(&:action).uniq).to contain_exactly(action)
+        expect(permissions.flat_map(&:roles)).to eq([role])
+      end
+
+      it "attaches the new permission to the role" do
+        stub_sign_in user
+        expect { do_request }.to change { role.permissions.reload.count }.by(1)
+        # Check deduplication
+        expect { do_request }.not_to(change { role.permissions.reload.count })
+      end
     end
 
-    it "attaches the new permission to the role" do
-      stub_sign_in user
-      expect { do_request }.to change { role.permissions.reload.count }.by(2)
-      # Check deduplication
-      expect { do_request }.not_to(change { role.permissions.reload.count })
+    context 'when the action is view' do
+      let(:action) { 'view' }
+      it_behaves_like "an unauthenticated json request"
+
+      it "creates 2 new permissions, one for viewing the card and one for the task" do
+        stub_sign_in user
+        expect { do_request }.to change { Permission.count }.by(2)
+
+        expect(response.status).to be(201)
+        permissions = Permission.where(id: res_body['card_permissions'].map { |p| p[:id] })
+        expect(permissions.count).to be(1)
+        expect(permissions.map(&:filter_by_card_id).uniq).to contain_exactly(card.id)
+        expect(permissions.map(&:action).uniq).to contain_exactly(action)
+        expect(permissions.flat_map(&:roles)).to eq([role])
+      end
+
+      it "attaches the 2 new permissions to the role" do
+        stub_sign_in user
+        expect { do_request }.to change { role.permissions.reload.count }.by(2)
+        # Check deduplication
+        expect { do_request }.not_to(change { role.permissions.reload.count })
+      end
     end
   end
 

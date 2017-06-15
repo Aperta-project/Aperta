@@ -25,6 +25,8 @@ export default DS.Model.extend({
   decision: DS.belongsTo('decision', {async: false}),
   title: DS.attr('string'),
   reviewerReport: DS.belongsTo('reviewer_report'),
+  paperShortDoi: DS.attr('string'),
+  journalName: DS.attr('string'),
 
   isAlternate: Ember.computed.notEmpty('primary'),
   isPrimary: Ember.computed.notEmpty('alternates'),

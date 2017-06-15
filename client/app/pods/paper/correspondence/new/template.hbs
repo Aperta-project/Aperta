@@ -4,5 +4,6 @@
   title="Add Correspondence to History"
   overlayClass="correspondence-overlay" as |overlay|}}
   {{correspondence-form model=model
+                        paper=linkedPaper
                         close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}

@@ -39,7 +39,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     submit(model) {
       if (this.get('isUploading')) return;
 
+      // The way Correspondence was originally serialized makes this necessary
       this.prepareModelDate();
+
+      // Setup the association late because, any earlier and this model would
+      // be added to the correspondence list as it is being created.
+      model.set('paper', this.get('paper'));
 
       model.save().then(() => {
         this.clearAllValidationErrors();

@@ -1,11 +1,18 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
+
   model() {
     return this.store.createRecord('correspondence', {
-      paper: this.modelFor('paper')
+      // paper: this.modelFor('paper')
     });
   },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('linkedPaper', this.modelFor('paper'));
+  },
+
 
   actions: {
     removeCorrespondenceOverlay() {

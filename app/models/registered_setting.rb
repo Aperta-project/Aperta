@@ -12,6 +12,7 @@
 # that key ('Setting::IthenticateAutomation' and 'ithenticate')
 #
 # Defaults for a given setting are handled by the Setting subclass itself.
+# RegisteredSetting does not hold any information about defaults or validations.
 # RegisteredSetting is just a mapping to a Setting class and name Note that some
 # settings will be 'global', and some will be associated to a specific journal.
 # Initially we're only using global settings.

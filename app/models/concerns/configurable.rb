@@ -2,6 +2,9 @@
 module Configurable
   extend ActiveSupport::Concern
 
+  # even though a configurable has_many settings,
+  # accessing any given setting shouldn't happen through the
+  # has_many directly, but rather through the `setting` method
   included do
     has_many :settings, as: :owner
   end
@@ -18,6 +21,13 @@ module Configurable
     raise NotImplementedError, e
   end
 
+  # A Configurable will have many settings. A given setting can be accessed by
+  # its name. Settings are lazily created when they are needed. To look up a
+  # setting, a configurable has a registered_settings_key that needs to be
+  # defined first. Check `TaskTemplate` for an example. The defaults and
+  # validations for a given type of setting are handled by the Setting class
+  # itself. The RegisteredSetting is just a simple mapping between a string key
+  # and the Setting class name.
   def setting(name)
     settings.find_by(name: name) || begin
 

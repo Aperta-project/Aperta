@@ -6,6 +6,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   close: null,
   doneUploading: false,
   isUploading: false,
+  restless: Ember.inject.service(),
 
   prepareModelDate() {
     let date = this.get('dateSent');
@@ -45,6 +46,15 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       // Setup the association late because, any earlier and this model would
       // be added to the correspondence list as it is being created.
       model.set('paper', this.get('paper'));
+
+      if (this.get('attachment')) {
+        let paperId = this.get('model.paper.id');
+        let correspondenceId = this.get('model.id');
+        let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
+        this.get('restless').post(postUrl, {
+          url: this.get('attachment.data')
+        });
+      }
 
       model.save().then(() => {
         this.clearAllValidationErrors();

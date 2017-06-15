@@ -55,7 +55,7 @@ class AuthenticatedPage(StyledPage):
     self._editable_checkbox = (By.CSS_SELECTOR, 'label#nav-paper-editable > span > input')
     self._recent_activity = (By.ID, 'nav-recent-activity')
     self._discussion_link = (By.ID, 'nav-discussions')
-    self._discussions_icon = (By.CSS_SELECTOR, 'a#nav-discussions > i')
+    self._discussions_icon = (By.CSS_SELECTOR, 'div#nav-discussions > i')
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-button')
     self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar label.bar-item')

@@ -17,6 +17,10 @@ describe CardPermissions do
         perm = role.permissions.where(query).first
         expect(perm.states.pluck(:name)).to contain_exactly('*')
       end
+
+      it 'should return the permissions' do
+        expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task'))
+      end
     end
   end
 

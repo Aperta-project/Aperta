@@ -12,9 +12,10 @@ class CardPermissions
   def self.add_roles(card, action, roles)
     if action == 'view'
       append_roles_and_save(get_view_card_permission(card), roles)
-      append_roles_and_save(
+      # Return an array
+      [append_roles_and_save(
         get_task_permission(card, action, [Permission::WILDCARD]), roles
-      )
+      )]
     else
       # Non-view roles are state-limited
       grouped_roles = group_roles(card, roles)
@@ -31,9 +32,10 @@ class CardPermissions
   def self.set_roles(card, action, roles)
     if action == 'view'
       replace_roles_and_save(get_view_card_permission(card), roles)
-      replace_roles_and_save(
+      # Return an array
+      [replace_roles_and_save(
         get_task_permission(card, action, [Permission::WILDCARD]), roles
-      )
+      )]
     else
       grouped_roles = group_roles(card, roles)
       STATES.keys.map do |key|

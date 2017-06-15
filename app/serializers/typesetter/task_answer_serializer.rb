@@ -8,8 +8,17 @@ module Typesetter
       object.tasks.where(type: task_type)
     end
 
+    def custom_task(task_name)
+      tasks = object.tasks.where(type: 'CustomCardType', name: task_name)
+      first_if_single(tasks)
+    end
+
     def task(task_type)
       tasks = tasks_by_type(task_type)
+      first_if_single(tasks)
+    end
+
+    def first_if_single(tasks)
       if tasks.length == 1
         tasks.first
       elsif tasks.length > 1

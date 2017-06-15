@@ -87,7 +87,7 @@ test('archiving requires confirmation', function(assert) {
     transitionTo(route, _whatever, queryParams) {
       assert.equal(
         route,
-        'admin.journals.cards',
+        'admin.journal.cards',
         'transitions to the card catalog'
       );
       assert.equal(
@@ -200,7 +200,7 @@ test('deleting requires confirmation', function(assert) {
     transitionTo(route, _whatever, queryParams) {
       assert.equal(
         route,
-        'admin.journals.cards',
+        'admin.journal.cards',
         'transitions to the card catalog'
       );
       assert.equal(

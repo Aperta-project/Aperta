@@ -58,6 +58,15 @@ moduleForAcceptance('Integration: Correspondence', {
   }
 });
 
+function stubEndpointRequestResponse(url, status, json) {
+  $.mockjax({
+    url: url,
+    status: status,
+    dataType: 'json',
+    responseText: json
+  });
+}
+
 test('User can view a correspondence record', function(assert) {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
@@ -77,14 +86,14 @@ test('User can click on a correspondence to view it\'s recodes', function(assert
   });
 });
 
-test('Authorized User can see the "Add Correspondence" button', (assert) => {
+test(`Authorized User can see the 'Add Correspondence' button`, (assert) => {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence');
   return andThen(() => {
     assert.textPresent('#add-correspondence-button', 'Add Correspondence');
   });
 });
 
-test('Unauthorized User cannot see the "Add Correspondence" button', (assert) => {
+test(`Unauthorized User cannot see the 'Add Correspondence' button`, (assert) => {
   Factory.createPermission('Paper', paper.id, ['submit']);
   $.mockjax({
     url: `/api/papers/${paper.get('shortDoi')}`,
@@ -98,7 +107,7 @@ test('Unauthorized User cannot see the "Add Correspondence" button', (assert) =>
   });
 });
 
-test('"Add Correspondence" opens a form overlay', (assert) => {
+test(`'Add Correspondence' opens a form overlay`, (assert) => {
   let doi = paper.get('shortDoi');
   visit('/papers/' + doi + '/correspondence');
   click('#add-correspondence-button');
@@ -108,7 +117,7 @@ test('"Add Correspondence" opens a form overlay', (assert) => {
   });
 });
 
-test('"Add Correspondence" form jinjin', (assert) => {
+test(`'Add Correspondence' form`, (assert) => {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
   return andThen(() => {
     assert.textPresent('.inset-form-control-text', 'Date sent');
@@ -120,5 +129,39 @@ test('"Add Correspondence" form jinjin', (assert) => {
     assert.textPresent('.inset-form-control-text', 'CC');
     assert.textPresent('.inset-form-control-text', 'BCC');
     assert.textPresent('.inset-form-control-text', 'Contents');
+  });
+});
+
+test('Authorized User can create external correspondence', (assert) => {
+  let doi = paper.get('shortDoi');
+
+  stubEndpointRequestResponse('/api/papers/' + doi + '/correspondence', 'success', {
+    'correspondence': {
+      'id': 23,
+      'date': '2001-02-13T12:34:00.000Z',
+      'subject': 'Physics',
+      'recipient': 'to@example.com',
+      'sender': 'from@example.com',
+      'body': 'This is a very long body message~~~~'
+    }
+  });
+
+  visit('/papers/' + doi + '/correspondence/new');
+
+  fillIn('.correspondence-date-sent', '02/13/2001');
+  fillIn('.correspondence-time-sent', '12:34pm');
+  fillIn('.correspondence-description', 'Good Description');
+  fillIn('.correspondence-from', 'from@example.com');
+  fillIn('.correspondence-to', 'to@example.com');
+  fillIn('.correspondence-subject', 'Physics');
+  fillIn('.correspondence-cc', 'cc@example.com');
+  fillIn('.correspondence-bcc', 'bcc@example.com');
+  fillIn('.correspondence-body', 'This is a very long body message~~~~');
+  assert.ok(find('.correspondence-submit'));
+
+  // Still haven't figured out how to do this testing in Ember.
+  andThen(() => {
+    // assert.ok(true);
+    // assert.equal(currentURL(), '/papers/' + doi + '/correspondence');
   });
 });

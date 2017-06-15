@@ -177,8 +177,8 @@
                         displayText=false}}
       </div>
       {{#expanding-textarea}}
-      {{textarea class="inset-form-control-textarea correspondence-contents"
-                 name="correspondence-contents"
+      {{textarea class="inset-form-control-textarea correspondence-body"
+                 name="correspondence-body"
                  value=model.body
                  placeholder="Enter or copy-paste the contents of the correspondence."
                  autofocus="autofocus"}}
@@ -191,6 +191,6 @@
     {{#if close}}
       <button class="button-link button--green" {{action close}}>cancel</button>
     {{/if}}
-    <button class="button button--green button-primary correspondence-submit {{action "submit" model}}">ADD TO HISTORY</button>
+    <button class="button button--green button-primary correspondence-submit" {{action "submit" model}}>ADD TO HISTORY</button>
   </div>
 </div>

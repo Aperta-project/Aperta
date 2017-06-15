@@ -8,5 +8,6 @@ export default DS.Model.extend({
   recipient: DS.attr('string'),
   sender: DS.attr('string'),
   body: DS.attr('string'),
+  external: DS.attr('boolean', { defaultValue: false }),
   sentAt: DS.attr('string')
 });

@@ -20,6 +20,7 @@ FactoryGirl.define do
       bcc         Faker::Internet.safe_email
       cc          Faker::Internet.safe_email
       description Faker::Lorem.sentence
+      external    true
     end
   end
 end

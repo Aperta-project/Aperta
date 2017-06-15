@@ -42,7 +42,7 @@ export default Ember.Component.extend({
 
   reviewDueAt: Ember.computed('report.dueAt', function(){
     const date = this.get('report.dueAt');
-    const format = 'MMMM D, YYYY [at] hh:mm a';
+    const format = 'MMMM D [at] hA';
     return moment(date).format(format);
   }),
 

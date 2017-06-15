@@ -20,6 +20,8 @@ namespace :data do
           [RelatedArticle,  indirect, %i(linked_title additional_info)]
         ]
 
+        break_fields = Set.new(%i(letter author_response decline_reason reviewer_suggestions))
+
         dry = ENV['DRY_RUN'] == 'true'
         inactive_states = %w(rejected withdrawn accepted)
         current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).map(&:to_i).to_set
@@ -41,7 +43,7 @@ namespace :data do
               before = record[field]
               next if before.blank?
 
-              before = before.gsub("\n", "<br/>") if model == Decision
+              before = before.gsub("\n", "<br/>") if field.in?(break_fields)
               after = HtmlScrubber.standalone_scrub!(before)
               next if before.strip == after.strip
 

@@ -43,12 +43,12 @@ namespace :data do
               before = record[field]
               next if before.blank?
 
-              before = before.gsub("\n", "<br/>") if field.in?(break_fields)
+              before = before.gsub("\n", "<br>") if field.in?(break_fields)
               after = HtmlScrubber.standalone_scrub!(before)
               next if before.strip == after.strip
 
               if dry
-                header = "PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
+                header = "<br>PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
                 puts "#{header} BEFORE: #{clean[before]}"
                 puts "#{header} AFTER: #{clean[after]}"
               else
@@ -102,8 +102,8 @@ namespace :data do
             next if before.strip == after.strip
             if dry
               header = "CARD_CONTENT [#{answer.paper_id}] #{cc.ident}"
-              puts "<p>#{header} BEFORE: #{clean[before]}<br/>"
-              puts "#{header}  AFTER: #{clean[after]}<br/></p>"
+              puts "#{header} BEFORE: #{clean[before]}"
+              puts "#{header} AFTER: #{clean[after]}"
             else
               answer.update!(value: after)
               field_counts[cc.ident] += 1

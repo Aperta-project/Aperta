@@ -4,7 +4,7 @@ export default AuthorizedRoute.extend({
 
   model() {
     return this.store.createRecord('correspondence', {
-      // paper: this.modelFor('paper')
+      external: true
     });
   },
 
@@ -12,7 +12,6 @@ export default AuthorizedRoute.extend({
     this._super(controller, model);
     controller.set('linkedPaper', this.modelFor('paper'));
   },
-
 
   actions: {
     removeCorrespondenceOverlay() {

@@ -6,6 +6,8 @@ class Correspondence < ActiveRecord::Base
   belongs_to :task
   belongs_to :journal
 
+  has_many :attachments, as: :owner
+
   with_options if: :external? do |correspondence|
     correspondence.validates :description,
                              :sender,

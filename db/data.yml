@@ -3978,7 +3978,7 @@ answers:
     - '2016-04-12 18:52:23.933072'
     - 
   - - '170'
-    - '256'
+    - '265'
     - '26'
     - Task
     - '2'
@@ -3988,7 +3988,7 @@ answers:
     - '2016-01-26 17:38:10.691757'
     - 
   - - '171'
-    - '256'
+    - '265'
     - '47'
     - Task
     - '3'
@@ -3998,7 +3998,7 @@ answers:
     - '2016-01-26 17:38:10.987968'
     - 
   - - '172'
-    - '256'
+    - '265'
     - '68'
     - Task
     - '4'
@@ -4008,7 +4008,7 @@ answers:
     - '2016-01-26 17:38:11.110813'
     - 
   - - '173'
-    - '256'
+    - '265'
     - '174'
     - Task
     - '12'
@@ -4018,7 +4018,7 @@ answers:
     - '2016-04-12 19:01:43.30766'
     - 
   - - '174'
-    - '259'
+    - '268'
     - '26'
     - Task
     - '2'
@@ -4028,7 +4028,7 @@ answers:
     - '2016-01-26 17:38:10.684296'
     - 
   - - '175'
-    - '259'
+    - '268'
     - '47'
     - Task
     - '3'
@@ -4045,7 +4045,7 @@ answers:
     - '2016-01-26 17:38:10.982384'
     - 
   - - '176'
-    - '259'
+    - '268'
     - '68'
     - Task
     - '4'
@@ -4056,7 +4056,7 @@ answers:
     - '2016-01-26 17:38:11.105159'
     - 
   - - '177'
-    - '259'
+    - '268'
     - '174'
     - Task
     - '12'
@@ -11352,17 +11352,17 @@ card_contents:
     - 
     - false
     - false
-  - - '255'
+  - - '264'
     - 
     - 
     - '501'
     - '516'
     - 
     - 
-    - '2017-06-14 20:29:44.342121'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:17:59.985722'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - display-children
     - 
     - "[]"
@@ -11371,9 +11371,9 @@ card_contents:
     - 
     - false
     - false
-  - - '256'
+  - - '265'
     - competing_interests--has_competing_interests
-    - '255'
+    - '264'
     - '502'
     - '515'
     - <ol class="question-list"><li class="question"><div class="question-text"><p>You
@@ -11384,10 +11384,10 @@ card_contents:
       described in the <a target="_blank" href="http://journals.plos.org/plosbiology/s/competing-interests">PLOS
       Policy on Declaration and Evaluation of Competing Interests</a>)?</div></li>
     - text
-    - '2017-06-14 20:29:44.354762'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:17:59.99651'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - radio
     - 
     - '[{"label": "Yes", "value": "t"}, {"label": "No", "value": "f"}]'
@@ -11396,17 +11396,17 @@ card_contents:
     - 
     - false
     - false
-  - - '257'
+  - - '266'
     - 
-    - '256'
+    - '265'
     - '503'
     - '508'
     - 
     - 
-    - '2017-06-14 20:29:44.362496'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.004116'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - display-with-value
     - 
     - "[]"
@@ -11415,17 +11415,17 @@ card_contents:
     - 
     - false
     - false
-  - - '258'
+  - - '267'
     - 
-    - '257'
+    - '266'
     - '504'
     - '507'
     - 
     - 
-    - '2017-06-14 20:29:44.368948'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.010709'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - field-set
     - 
     - "[]"
@@ -11434,19 +11434,19 @@ card_contents:
     - 
     - false
     - false
-  - - '259'
+  - - '268'
     - competing_interests--statement
-    - '258'
+    - '267'
     - '505'
     - '506'
     - 'Please provide details about any and all competing interests in the box below.
       Your response should begin with this statement: "I have read the journal''s
       policy and the authors of this manuscript have the following competing interests.'
     - text
-    - '2017-06-14 20:29:44.374074'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.016886'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - paragraph-input
     - 
     - "[]"
@@ -11455,17 +11455,17 @@ card_contents:
     - 
     - false
     - false
-  - - '260'
+  - - '269'
     - 
-    - '256'
+    - '265'
     - '509'
     - '514'
     - 
     - 
-    - '2017-06-14 20:29:44.40374'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.046042'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - display-with-value
     - 
     - "[]"
@@ -11474,17 +11474,17 @@ card_contents:
     - 
     - false
     - false
-  - - '261'
+  - - '270'
     - 
-    - '260'
+    - '269'
     - '510'
     - '513'
     - 
     - 
-    - '2017-06-14 20:29:44.408504'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.050787'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - field-set
     - 
     - "[]"
@@ -11493,19 +11493,19 @@ card_contents:
     - 
     - false
     - false
-  - - '262'
+  - - '271'
     - 
-    - '261'
+    - '270'
     - '511'
     - '512'
     - |-
       Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
       Please note that if your manuscript is accepted, this statement will be published.
     - 
-    - '2017-06-14 20:29:44.41237'
-    - '2017-06-14 20:29:44.441745'
+    - '2017-06-15 15:18:00.054001'
+    - '2017-06-15 15:18:00.08009'
     - 
-    - '48'
+    - '50'
     - text
     - 
     - "[]"
@@ -11933,12 +11933,12 @@ card_versions:
     - 
     - false
     - 
-  - - '48'
+  - - '50'
     - '1'
-    - '72'
+    - '73'
     - 
     - true
-    - '2017-06-14 20:29:44.460532'
+    - '2017-06-15 15:18:00.100042'
     - 
     - false
     - Initial version
@@ -12361,9 +12361,9 @@ cards:
     - '1'
     - 
     - locked
-  - - '72'
-    - '2017-06-14 20:29:43.275581'
-    - '2017-06-14 20:29:44.464579'
+  - - '73'
+    - '2017-06-15 15:17:59.598564'
+    - '2017-06-15 15:18:00.104093'
     - 
     - Competing Interests
     - '1'
@@ -37140,12 +37140,12 @@ task_templates:
     - '4'
     - 
   - - '185'
-    - '3'
+    - 
     - '61'
     - Competing Interests
     - "[]"
     - '5'
-    - 
+    - '73'
   - - '186'
     - '4'
     - '61'
@@ -37280,12 +37280,12 @@ task_templates:
     - '3'
     - 
   - - '205'
-    - '3'
+    - 
     - '66'
     - Competing Interests
     - "[]"
     - '4'
-    - 
+    - '73'
   - - '206'
     - '5'
     - '66'
@@ -37579,7 +37579,7 @@ tasks:
     - '5'
     - '1'
     - 
-    - '48'
+    - '50'
   - - '6'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -37831,7 +37831,7 @@ tasks:
     - '5'
     - '2'
     - 
-    - '48'
+    - '50'
   - - '27'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38096,7 +38096,7 @@ tasks:
     - '5'
     - '3'
     - '2016-02-02 19:33:00'
-    - '48'
+    - '50'
   - - '48'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38355,7 +38355,7 @@ tasks:
     - '5'
     - '4'
     - '2016-02-02 19:33:00'
-    - '48'
+    - '50'
   - - '69'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38617,7 +38617,7 @@ tasks:
     - '5'
     - '8'
     - 
-    - '48'
+    - '50'
   - - '90'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -38869,7 +38869,7 @@ tasks:
     - '5'
     - '9'
     - 
-    - '48'
+    - '50'
   - - '111'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39121,7 +39121,7 @@ tasks:
     - '5'
     - '10'
     - 
-    - '48'
+    - '50'
   - - '132'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39373,7 +39373,7 @@ tasks:
     - '5'
     - '12'
     - '2016-04-12 19:02:01.049585'
-    - '48'
+    - '50'
   - - '175'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -39637,7 +39637,7 @@ tasks:
     - '4'
     - '13'
     - 
-    - '48'
+    - '50'
   - - '196'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask

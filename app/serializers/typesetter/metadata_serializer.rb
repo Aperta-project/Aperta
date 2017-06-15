@@ -58,7 +58,7 @@ module Typesetter
     end
 
     def competing_interests
-      task('TahiStandardTasks::CompetingInterestsTask')
+      custom_task('Competing Interests')
     end
 
     def financial_disclosure

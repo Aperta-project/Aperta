@@ -1,5 +1,7 @@
 # This class represents a customized Task built with CardContent
 class CustomCardTask < Task
+  # TODO: Verify that all custom cards need to include MetadataTask
+  include MetadataTask
   DEFAULT_TITLE = 'Custom Card'.freeze
 
   # unlike other answerables, a CustomCardTask class does not have

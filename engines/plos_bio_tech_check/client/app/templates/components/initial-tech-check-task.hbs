@@ -128,14 +128,18 @@
 
     {{#if authoringMode}}
     <div class="form-group">
-      <span class="text-field-title">
-        List all changes the author needs to make:
-      </span>
+      {{#if isEditable}}
+        <div>
+          List all changes the author needs to make:
+        </div>
+      {{/if}}
+
       {{rich-text-editor
         value=authorChangesLetter
         onContentsChanged=(action 'saveLetterBody')
         name='author-changes-letter'
         ident='author-changes-letter'
+        disabled=isNotEditable
       }}
     </div>
 

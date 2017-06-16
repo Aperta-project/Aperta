@@ -18,6 +18,14 @@ export default Ember.Component.extend({
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
 
+  bodyCSS: `
+    .mce-content-body {
+      color: #333;
+      font-family: "Source Sans Pro", "source-sans-pro", helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+    }`,
+
   editorStyle: 'expanded',
 
   editorConfigurations: {
@@ -40,6 +48,7 @@ export default Ember.Component.extend({
 
   configureCommon(hash) {
     hash['menubar'] = false;
+    hash['content_style'] = this.get('bodyCSS');
     return hash;
   },
 

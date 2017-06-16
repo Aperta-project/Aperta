@@ -19,7 +19,7 @@ module TahiStandardTasks
     validates :paper, presence: true
     validates :task, presence: true
     validates :destination, presence: true, inclusion: {
-      in: %w(apex router preprint)
+      in: %w(apex em preprint)
     }
 
     aasm column: :state do

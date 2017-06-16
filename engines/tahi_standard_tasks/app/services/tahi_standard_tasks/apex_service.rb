@@ -14,11 +14,12 @@ module TahiStandardTasks
 
     attr_reader :apex_delivery
 
-    def initialize(apex_delivery:, ftp_url: TahiEnv.apex_ftp_url)
+    def initialize(apex_delivery:, ftp_url: TahiEnv.apex_ftp_url, router_url: TahiEnv.router_url)
       @apex_delivery = apex_delivery
       @paper = @apex_delivery.paper
       @task = @apex_delivery.task
       @ftp_url = ftp_url
+      @router_url = router_url
     end
 
     def make_delivery!
@@ -26,8 +27,8 @@ module TahiStandardTasks
         packager = ApexPackager.new @paper,
                                     archive_filename: package_filename,
                                     apex_delivery_id: apex_delivery.id
-        upload_file(packager.zip_file, package_filename)
-        upload_file(packager.manifest_file, manifest_filename)
+        upload_file(packager.zip_file, package_filename, destination: apex_delivery.destination)
+        upload_file(packager.manifest_file, manifest_filename, destination: apex_delivery.destination)
       end
     end
 
@@ -57,13 +58,23 @@ module TahiStandardTasks
       fail ApexServiceError, "Paper is missing manuscript_id"
     end
 
-    def upload_file(file_io, final_filename)
-      FtpUploaderService.new(
-        file_io: file_io,
-        final_filename: final_filename,
-        email_on_failure: @paper.journal.staff_admins.pluck(:email),
-        url: @ftp_url
-      ).upload
+    def upload_file(file_io, final_filename, destination:)
+      if destination == 'apex'
+        FtpUploaderService.new(
+          file_io: file_io,
+          final_filename: final_filename,
+          email_on_failure: @paper.journal.staff_admins.pluck(:email),
+          url: @ftp_url
+        ).upload
+      elsif destination == 'preprint'
+        RouterUploaderService.new(
+          file_io: file_io,
+          final_filename: final_filename,
+          email_on_failure: @paper.journal.staff_admins.pluck(:email),
+          url: @router_url
+        ).upload
+      elsif destination == 'em'
+      end
     end
   end
 end

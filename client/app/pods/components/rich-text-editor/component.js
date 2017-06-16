@@ -32,6 +32,7 @@ export default Ember.Component.extend({
     basic: {
       plugins: basicPlugins,
       statusbar: false,
+      height: '4em',
       toolbar: basicToolbar,
       valid_elements: basicElements
     },

@@ -29,7 +29,8 @@ class CorrespondenceController < ApplicationController
       :recipients,
       :description,
       :subject,
-      :body
+      :body,
+      :external
     )
   end
 

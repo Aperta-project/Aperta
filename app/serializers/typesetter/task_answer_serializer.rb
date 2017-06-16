@@ -9,7 +9,7 @@ module Typesetter
     end
 
     def custom_task(task_name)
-      tasks = object.tasks.where(type: 'CustomCardType', name: task_name)
+      tasks = object.tasks.where(type: 'CustomCardType', title: task_name)
       first_if_single(tasks)
     end
 

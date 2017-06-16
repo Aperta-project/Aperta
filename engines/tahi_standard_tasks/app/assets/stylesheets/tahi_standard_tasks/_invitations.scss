@@ -55,14 +55,11 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitation-show-body,
 .invitation-edit-body {
-  padding: 0.75rem 1.5rem;
   white-space: pre-wrap;
 }
 
 .invitation-edit-body {
   overflow: auto;
-  border: 1px solid #bababa;
-  border-radius: 5px;
 }
 
 

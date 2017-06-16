@@ -133,22 +133,21 @@ test(`'Add Correspondence' form`, (assert) => {
 });
 
 test('Authorized User can create external correspondence', (assert) => {
-  let doi = paper.get('shortDoi');
-
-  stubEndpointRequestResponse('/api/papers/' + doi + '/correspondence', 'success', {
+  stubEndpointRequestResponse('/api/papers/' + paper.get('id') + '/correspondence', 201, [{
     'correspondence': {
       'id': 23,
       'date': '2001-02-13T12:34:00.000Z',
       'subject': 'Physics',
       'recipient': 'to@example.com',
       'sender': 'from@example.com',
-      'body': 'This is a very long body message~~~~'
+      'body': 'This is a very long body message~~~~',
+      'sent_at':'2001-02-13T12:34:00.000Z'
     }
-  });
+  }]);
 
-  visit('/papers/' + doi + '/correspondence/new');
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
 
-  fillIn('.correspondence-date-sent', '02/13/2001');
+  fillIn('.correspondence-date-sent', '02/13/1789');
   fillIn('.correspondence-time-sent', '12:34pm');
   fillIn('.correspondence-description', 'Good Description');
   fillIn('.correspondence-from', 'from@example.com');
@@ -157,11 +156,9 @@ test('Authorized User can create external correspondence', (assert) => {
   fillIn('.correspondence-cc', 'cc@example.com');
   fillIn('.correspondence-bcc', 'bcc@example.com');
   fillIn('.correspondence-body', 'This is a very long body message~~~~');
-  assert.ok(find('.correspondence-submit'));
+  click('.correspondence-submit');
 
-  // Still haven't figured out how to do this testing in Ember.
   andThen(() => {
-    // assert.ok(true);
-    // assert.equal(currentURL(), '/papers/' + doi + '/correspondence');
+    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
   });
 });

@@ -371,7 +371,7 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
-    t.string   "type"
+    t.boolean  "external"
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"

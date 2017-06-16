@@ -62,7 +62,7 @@ Tahi::Application.routes.draw do
       put :cancel, on: :member
     end
     resources :manuscript_attachments, only: [:show]
-    resources :similarity_checks, only: [:create, :show] do
+    resources :similarity_checks, only: [:create, :show, :update] do
       member do
         get 'report_view_only'
       end
@@ -263,6 +263,10 @@ Tahi::Application.routes.draw do
   get '/invitations/:token/thank_you',
     to: 'token_invitations#thank_you',
     as: 'invitation_thank_you'
+
+  get '/invitations/:token/accept',
+    to: 'token_invitations#accept',
+    as: 'invitation_accept'
 
   get '/co_authors_token/:token',
     to: 'token_co_authors#show',

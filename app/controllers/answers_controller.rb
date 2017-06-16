@@ -1,3 +1,4 @@
+# CRUD on Answer
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
@@ -15,7 +16,7 @@ class AnswersController < ApplicationController
   def update
     answer = Answer.find(params[:id])
     answer.update!(answer_params)
-    render json: answer
+    render json: answer, serializer: LightAnswerSerializer, root: 'answer'
   end
 
   def destroy
@@ -24,8 +25,9 @@ class AnswersController < ApplicationController
 
   private
 
-  # since `index` action doesn't work with the `answer_params` the owner type could
-  # come from two possible places, and `raw_owner_type` is where we account for it.
+  # since `index` action doesn't work with the `answer_params`
+  # the owner type could come from two possible places, and
+  # `raw_owner_type` is where we account for it.
   def raw_owner_type
     params[:owner_type] || answer_params[:owner_type]
   end
@@ -46,6 +48,9 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:owner_type, :owner_id, :value, :card_content_id)
+    params.require(:answer).permit(:owner_type,
+                                   :owner_id,
+                                   :value,
+                                   :card_content_id)
   end
 end

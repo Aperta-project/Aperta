@@ -7,8 +7,9 @@
   Similarity checks may take up to several minutes to complete. You may close this card and return later to view the report.
   </p>
 {{else if check.failed}}
-  {{!-- TODO: Real fail message --}}
-  <p>Fail message</p>
+  {{#if check.dismissed}}
+    <p><strong>Report not available:</strong> <i>{{check.errorMessage}}</i> on {{format-date check.updatedAt}}</p>
+  {{/if}}
 {{else if check.succeeded}}
   <p>Similarity check completed on {{format-date check.updatedAt}}</p>
   <p>Similarity Index:

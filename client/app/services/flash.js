@@ -70,7 +70,7 @@ export default Ember.Service.extend({
    @default []
    */
 
-  systemLevelMessages: Ember.A(),
+  systemLevelMessages: Ember.A(window.flashMessages),
   /**
     Create a single route level message.
 

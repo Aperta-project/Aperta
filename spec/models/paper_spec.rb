@@ -399,7 +399,7 @@ describe Paper do
           short_title: title)
       end
 
-      it 'fetches short title from a NestedQuestionAnswer' do
+      it 'fetches short title from an Answer' do
         expect(paper.short_title).to eq(title)
       end
     end

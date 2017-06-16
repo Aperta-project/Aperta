@@ -2,7 +2,6 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import { similarityCheckReportPath } from 'tahi/utils/api-path-helpers';
 
-
 export default DS.Model.extend({
   versionedText: DS.belongsTo('versioned-text'),
   paper: DS.belongsTo('paper'),
@@ -15,7 +14,7 @@ export default DS.Model.extend({
   text: Ember.computed('errorMessage', function() {
     return this.get('errorMessage');
   }),
-  type:    Ember.computed('errorMessage', function() {
+  type: Ember.computed('errorMessage', function() {
     return 'error';
   }),
   failed: Ember.computed.equal('state', 'failed'),

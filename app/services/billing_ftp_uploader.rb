@@ -68,7 +68,7 @@ class BillingFTPUploader
     if billing_log_report.papers_to_process.any?
       Journal.staff_admins_for_papers(
         billing_log_report.papers_to_process
-      ).map(&:email)
+      ).map(&:email).uniq
     else
       Journal.staff_admins_across_all_journals
       .map(&:email)

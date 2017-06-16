@@ -173,4 +173,72 @@ describe TokenInvitationsController do
       end
     end
   end
+
+  describe 'GET /invitations/:token/accept' do
+    subject(:do_request) { get :accept, token: 'soCrypticMuchMystery' }
+    context 'there is no user logged in' do
+      context 'when the token points to an "invited" invitation' do
+        it 'redirects user to login page' do
+          do_request
+          expect(response).to redirect_to(new_user_session_url)
+        end
+      end
+    end
+
+    context 'there is a user logged in' do
+      before do
+        stub_sign_in user
+        expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+      end
+      context 'when the invitation hasn\'t been accepted' do
+        context 'when invitation and current user emails are the same' do
+          before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
+          let(:invitation_double) do
+            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper)
+          end
+
+          it 'creates an Activity' do
+            do_request
+          end
+
+          it 'accepts the user\'s invitation' do
+            expect(invitation_double).to receive(:accept!)
+            do_request
+          end
+
+          it 'redirects user to the manuscript and sets a flash notice' do
+            do_request
+            expect(response).to redirect_to("/papers/#{invitation_double.paper.short_doi}")
+            expect(flash[:notice]).to be_present
+          end
+        end
+        context 'when invitation and current user emails are not the same' do
+          let(:invitation_double) do
+            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper)
+          end
+          it 'does not accept the user\'s invitation' do
+            expect(invitation_double).not_to receive(:accept!)
+            do_request
+          end
+
+          it 'redirects user to the manuscript' do
+            do_request
+            expect(response).to redirect_to("/papers/#{invitation_double.paper.short_doi}")
+          end
+        end
+      end
+      context 'when the invitation has been accepted' do
+        let(:invitation_double) do
+          double('Invitation', invited?: false, email: user.email, paper: task.paper)
+        end
+        it 'does not try to accept again and redirects to manuscript' do
+          expect(invitation_double).to receive(:invited?)
+          expect(invitation_double).not_to receive(:accept!)
+          expect(Activity).not_to receive(:invitation_accepted!)
+          do_request
+          expect(response).to redirect_to("/papers/#{invitation_double.paper.short_doi}")
+        end
+      end
+    end
+  end
 end

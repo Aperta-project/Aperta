@@ -28,6 +28,7 @@
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   .card-editor-save-buttons {
 
@@ -60,9 +61,22 @@
 
   .card-editor-workspace {
     flex: 1;
+    flex-direction: column;
     padding: 0 30px;
+    width: 80%;
+    max-width: 1120px;
     display: flex;
-    justify-content: center;
+    margin: auto;
+
+    .card-editor-xml-errors {
+      border-radius: 5px;
+      border: 2px solid $aperta-red;
+      margin-bottom : 15px;
+      padding: 10px;
+      height: 120px;
+      overflow-y: scroll;
+      background-color: #fff;
+    }
 
     .card-editor-xml-container {
       flex-direction: column;
@@ -72,8 +86,11 @@
       border-top-left-radius: 5px;
       border: 2px solid $aperta-blue;
       border-bottom: 0;
-      max-width: 1120px;
       background-color: #fff;
+
+      &.error-border {
+        border-color: $aperta-red;
+      }
 
       .card-editor-xml-controls {
         background-color: $aperta-blue;
@@ -81,6 +98,10 @@
         border-top-left-radius: 2px;
         height: 30px;
         width: 100%;
+
+        &.error-bar {
+          background-color: $aperta-red;
+        }
       }
 
       .card-editor-xml {
@@ -99,4 +120,8 @@
       }
     }
   }
+}
+
+.CodeMirror {
+  height: auto;
 }

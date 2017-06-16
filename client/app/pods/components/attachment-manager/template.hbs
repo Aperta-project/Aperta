@@ -7,6 +7,10 @@
 {{/if}}
 
 {{#each attachments as |attachment|}}
+  {{#if attachment.readyIssuesArray.length}}
+    {{card-content/validation-errors errors=attachment.readyIssuesArray}}
+  {{/if}}
+
   {{attachment-item accept=accept
                     attachment=attachment
                     disabled=disabled

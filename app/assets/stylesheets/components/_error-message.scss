@@ -3,6 +3,12 @@
   font-size: 12px;
   display: inline-block;
   margin-left: 15px;
+
+  &.validation-error {
+    i {
+      padding-right: 3px;
+    }
+  }
 }
 
 .error-message--hidden {

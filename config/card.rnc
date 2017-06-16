@@ -43,8 +43,13 @@ file-uploader = element content {
                     attribute value-type { "attachment" },
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
-                    (element label { text }? &
-                      element text { text }?),
+                    (element validation {
+                      attribute validation-type { "file-name" },
+                      element error-message { text },
+                      element validator { text }
+                    }* &
+                    element label { text }? &
+                    element text { text }?),
                     possible-value*
                 }
 
@@ -76,10 +81,10 @@ text-input = element content {
                  (element placeholder { text }? &
                   element text { text }? &
                   element validation {
-                   attribute validation-type { "string-match" },
+                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                    element error-message { text },
                    element validator { text }
-                 }?)
+                 }*)
              }
 
 # Contents
@@ -123,5 +128,6 @@ content = (radio-input |
 start = element card {
             attribute name { text },
             attribute required-for-submission { "true" | "false" },
+            attribute workflow-display-only { "true" | "false" },
             content
         }

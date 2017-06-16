@@ -217,8 +217,7 @@ export default DS.Model.extend({
     return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
 
-  hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
-  'staffEditorHasErrorOnSubmittedAndEditable'),
+  hasAnyError: computed.equal('file.status', 'error'),
 
   authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
     return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);

@@ -218,7 +218,7 @@ export default DS.Model.extend({
   }),
 
   hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
-  'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
+  'staffEditorHasErrorOnSubmittedAndEditable'),
 
   authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
     return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);
@@ -232,11 +232,6 @@ export default DS.Model.extend({
   'file.status', function(){
     let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
     return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray) && this.get('editable');
-  }),
-
-  otherRolesHasErrorOnSubmitted: computed('currentUserRoles','isPartialSubmittedState', function(){
-    let roleArray = ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'];
-    return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray);
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){

@@ -7,8 +7,7 @@ const { attr, belongsTo, hasMany } = DS;
 const PAPER_SUBMITTABLE_STATES = [
   'unsubmitted',
   'in_revision',
-  'invited_for_full_submission',
-  'checking'
+  'invited_for_full_submission'
 ];
 
 const TERMINAL_STATES = ['accepted', 'rejected'];
@@ -229,7 +228,7 @@ export default DS.Model.extend({
     return this.stateHasErrorsForRole('isPartialSubmittedState', ['Creator']);
   }),
 
-  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable', 
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable',
   'file.status', function(){
     let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
     return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray) && this.get('editable');

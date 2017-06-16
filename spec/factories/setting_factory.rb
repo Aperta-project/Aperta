@@ -4,7 +4,7 @@ FactoryGirl.define do
     value "off"
   end
 
-  factory :ithenticate_automation_setting, class: "Setting::IthenticateAutomation" do
+  factory :ithenticate_automation_setting, class: "Setting" do
     name "ithenticate_automation"
     value "off"
 

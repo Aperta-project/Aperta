@@ -23,8 +23,7 @@ class JournalPage < Page
 
   def visit_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
-    thumb.hover
-    thumb.find('.fa-pencil').click
+    thumb.click
     ManuscriptManagerTemplatePage.new
   end
 

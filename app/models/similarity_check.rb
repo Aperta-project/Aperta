@@ -103,6 +103,7 @@ class SimilarityCheck < ActiveRecord::Base
   private
 
   def record_error(message)
+    Rails.logger.warn("SimilarityCheckError: #{message}")
     self.update_column(:error_message, message)
     fail_report!
   end

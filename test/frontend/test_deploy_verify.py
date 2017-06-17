@@ -18,19 +18,14 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5
+from Base.Resources import prod_verify_login
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 
 __author__ = 'jgray@plos.org'
 
-users = [creator_login1,
-         creator_login2,
-         creator_login3,
-         creator_login4,
-         creator_login5,
+users = [prod_verify_login
          ]
 
 user_pw = os.getenv('VALID_PW', '')
@@ -83,8 +78,6 @@ class ApertaBDDDeployVerifyTest(CommonTest):
         keep_waiting = False
 
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    # check for flash message
-    paper_viewer.validate_ihat_conversions_success(timeout=45)
     short_doi = paper_viewer.get_current_url().split('/')[-1]
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))

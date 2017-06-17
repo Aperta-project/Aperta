@@ -60,6 +60,11 @@ oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
 # Accounts for CAS permissions scheme
+prod_verify_login = {'user'               : 'jgrayplos',
+                     'name'               : 'Jeffrey Gray',
+                     'initials'           : 'jgp',
+                     'email'              : 'jgray@plos.org'
+                     }
 creator_login1 = {'user'               : 'aauthor1',
                   'name'               : 'atest author1',
                   'initials'           : 'aa1',

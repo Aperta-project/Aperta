@@ -12,6 +12,7 @@ export default Ember.Component.extend({
   removeRecord: null,
   rollbackPhase: null,
   showDeleteConfirm: null,
+  showSettings: null,
   chooseNewCardTypeOverlay: null,
 
   nextPosition: Ember.computed('phaseTemplate.position', function() {

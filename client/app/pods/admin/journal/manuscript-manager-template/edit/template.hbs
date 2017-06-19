@@ -21,9 +21,20 @@
 {{/overlay-fullscreen}}
 {{#overlay-fullscreen visible=showSettingsOverlay
                       outAnimationComplete=(action "hideSettingsOverlay")
-                      title="Settings"
+                      title=settingsTitle
                       as |overlay|}}
-  Settings Card is here ... :-D
+  <h3>Automatic Checks</h3><br>
+  <span>Send manuscript to iThenticate:</span><br>
+  <input type="radio" name="option" value="" checked>&nbsp;&nbsp;on first full submission<br>
+  <input type="radio" name="option" value="">&nbsp;&nbsp;after&nbsp;&nbsp;
+  <span>
+    {{select-2-single
+        class="similarity-options"
+        source=selectableOptions
+        selectedData=selectedOption
+        value=""
+        width="200px"}}
+  </span>
 {{/overlay-fullscreen}}
 
 {{#if showAdHocTaskOverlay}}

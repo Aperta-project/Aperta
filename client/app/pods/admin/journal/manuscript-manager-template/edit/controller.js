@@ -21,6 +21,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
 
+
+  settingsTitle: Ember.computed('taskToConfigure', function() {
+    return this.get('taskToConfigure.title') + ': Settings';
+  }),
+
   featureFlag: Ember.inject.service(),
 
   showCardDeleteOverlay: false,
@@ -28,6 +33,25 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   showSettingsOverlay: false,
   taskToConfigure: null,
+
+  selectableOptions: [
+    {
+      id: 'after_first_major_revise_decision',
+      text: 'first major revision'
+    },
+    {
+      id: 'after_first_minor_revise_decision',
+      text: 'first minor revision'
+    },
+    {
+      id: 'after_any_first_revise_decision',
+      text: 'any first revision'
+    }
+  ],
+  selectedOption:{
+    id: 'after_first_major_revise_decision',
+    text: 'first major revision'
+  },
 
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,

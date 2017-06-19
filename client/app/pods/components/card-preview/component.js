@@ -80,6 +80,6 @@ export default Ember.Component.extend({
   },
 
   settingsEnabled: Ember.computed('task.settings', function() {
-    return this.get('task.settings').length > 0;
+    return this.get('task.settings') !== undefined ? this.get('task.settings').length > 0 : false;
   })
 });

@@ -193,7 +193,7 @@ describe AutomatedSimilarityCheck do
         context "the paper has had a manually generated report" do
           before do
             versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
-            sim_check = FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: false)
+            FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: false)
             paper.versioned_texts << versioned_text
           end
 
@@ -203,10 +203,10 @@ describe AutomatedSimilarityCheck do
           end
         end
 
-        context "the paper is automaticlaly checked" do
+        context "the paper is automatically checked" do
           before do
             versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
-            sim_check = FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: true)
+            FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: true)
             paper.versioned_texts << versioned_text
           end
 

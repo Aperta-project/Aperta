@@ -15,7 +15,7 @@ class CorrespondenceController < ApplicationController
     if correspondence.save
       render json: correspondence, status: :ok
     else
-      render json: correspondence, status: :unprocessable_entity
+      respond_with correspondence, status: :unprocessable_entity
     end
   end
 

@@ -9,5 +9,8 @@ export default DS.Model.extend({
   sender: DS.attr('string'),
   body: DS.attr('string'),
   external: DS.attr('boolean', { defaultValue: false }),
-  sentAt: DS.attr('string')
+  description: DS.attr('string'),
+  cc: DS.attr('string'),
+  bcc: DS.attr('string'),
+  sentAt: DS.attr('date')
 });

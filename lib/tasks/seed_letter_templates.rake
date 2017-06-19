@@ -1,3 +1,4 @@
+# coding: utf-8
 # rubocop:disable all
 
 namespace :seed do
@@ -166,52 +167,60 @@ namespace :seed do
 
         text   = 'RA Major Revision'
         letter = <<-TEXT.strip_heredoc
-          **choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***
 
-          Dear Dr. [LAST NAME],
+Dear {% for author in manuscript.corresponding_authors %}Dr. {{author.last_name}},{% endfor %}
 
-          ***EITHER****
+Thank you very much for submitting your manuscript “{{ manuscript.title }}” for consideration at {{ journal.name }}. Your manuscript has been evaluated by the {{ journal.name }} editorial staff, by an Academic Editor with relevant expertise, and by several independent reviewers.
 
-          Thank you very much for submitting your manuscript “[PAPER TITLE]” for consideration at [JOURNAL NAME]. Your manuscript has been evaluated by the [JOURNAL NAME] editorial staff, by an Academic Editor with relevant expertise, and by several independent reviewers.
+In light of the reviews, we will not be able to accept the current version of the manuscript, but we would welcome resubmission of a much-revised version that takes into account the reviewers' comments. We cannot make any decision about publication until we have seen the revised manuscript and your response to the reviewers' comments. Your revised manuscript is also likely to be sent for further evaluation by the reviewers.
 
-          ****OR (if previous OPEN REJECT)****
+Your revisions should address the specific points made by each reviewer. Please also submit a cover letter and a point-by-point response to all of the reviewers' comments that indicates the changes you have made to the manuscript. You should also cite any additional relevant literature that has been published since the original submission and mention any additional citations in your response.
 
-          Thank you very much for submitting a revised version of your manuscript "[PAPER TITLE]" for consideration at [JOURNAL NAME]. This revised version of your manuscript has been evaluated by the [JOURNAL NAME] editorial staff, an Academic Editor and reviewers.
+Please note that as a condition of publication {{ journal.name }}'s data policy requires that you make available all data used to draw conclusions in papers published in {{ journal.name }}. If you have not already done so, you must include any data used in your manuscript either in appropriate repositories, within the body of the manuscript, or as supporting information (NB this includes any numerical values that were used to generate graphs, histograms etc.). For an example see here: http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5.
 
-          ****
+Upon resubmission, the editors will assess the advance your revised manuscript represents over work published prior to its resubmission in reaching a decision regarding further consideration. The editors also will assess the revisions you have made and decide whether to consult further with an Academic Editor. If the editors and Academic Editor feel that the revised manuscript remains appropriate for the journal and that the revisions are sufficient to warrant further consideration, we generally will send the manuscript for re-review. We aim to consult the same Academic Editor and reviewers for revised manuscripts but may consult others if needed.
 
-          In light of the reviews, we will not be able to accept the current version of the manuscript, but we would welcome resubmission of a much-revised version that takes into account the reviewers' comments. We cannot make any decision about publication until we have seen the revised manuscript and your response to the reviewers' comments. Your revised manuscript is also likely to be sent for further evaluation by the reviewers.
+We expect to receive your revised manuscript within two months. Please email us ({{ journal.staff_email }}) to discuss this if you have any questions or concerns, or would like to request an extension.
 
-          Your revisions should address the specific points made by each reviewer. Please also submit a cover letter and a point-by-point response to all of the reviewers' comments that indicates the changes you have made to the manuscript. You should also cite any additional relevant literature that has been published since the original submission and mention any additional citations in your response.
+At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at {{ journal.name }}. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.
 
-          Please note that as a condition of publication PLOS’ data policy requires that you make available all data used to draw conclusions in papers published in PLOS journals. If you have not already done so, you must include any data used in your manuscript either in appropriate repositories, within the body of the manuscript, or as supporting information (NB this includes any numerical values that were used to generate graphs, histograms etc.). For an example see here: http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5.
+Please notify us by email if you do not wish to revise your manuscript for {{ journal.name }} and instead wish to pursue publication elsewhere, so that we may end consideration of the manuscript at {{ journal.name }}.
 
-          Upon resubmission, the editors will assess the advance your revised manuscript represents over work published prior to its resubmission in reaching a decision regarding further consideration. The editors also will assess the revisions you have made and decide whether to consult further with an Academic Editor. If the editors and Academic Editor feel that the revised manuscript remains appropriate for the journal and that the revisions are sufficient to warrant further consideration, we generally will send the manuscript for re-review. We aim to consult the same Academic Editor and reviewers for revised manuscripts but may consult others if needed.
+If you do still intend to submit a revised version of your manuscript, please log in at http://www.aperta.tech. On the ‘Your Manuscripts’ page, click the title of your manuscript to access and edit your submission.
 
-          We expect to receive your revised manuscript within two months. Please email us ([JOURNAL STAFF EMAIL]) to discuss this if you have any questions or concerns, or would like to request an extension.
+Before you revise your manuscript, we ask that you please review the following {{ journal.name }} policy and formatting requirements checklist PDF: https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing. It’s helpful for you to take a look through this at this stage, and to align your revision with our requirements; should your paper be eventually accepted, this will save everyone time at the acceptance stage.
 
-          At this stage, your manuscript remains formally under active consideration at our journal. Please note that unless we receive the revised manuscript within this timeframe, your submission may be closed and the manuscript would no longer be ‘under consideration’ at [JOURNAL NAME]. We will of course be in touch before this action is taken. Please rest assured that this is merely an administrative step - you may still submit your revised submission after your file is closed, but will need to do so as a new submission, referencing the previous tracking number.
+Thank you again for your submission to our journal. We hope that our editorial process has been constructive thus far, and we welcome your feedback at any time. Please don't hesitate to contact us if you have any questions or comments. 
 
-          Please notify us by email if you do not wish to revise your manuscript for [JOURNAL NAME] and instead wish to pursue publication elsewhere, so that we may end consideration of the manuscript at [JOURNAL NAME].
+Sincerely,
+{{%- if manuscript.editor -%}}
+{{ manuscript.editor.first_name }} {{ manuscript.editor.last_name }}
+{{%- else -%}}
+[EDITOR NAME]
+{{%- endif -%}}
+{{ journal.name }}
 
-          If you do still intend to submit a revised version of your manuscript, please log in at http://www.aperta.tech.  On the ‘Your Manuscripts’ page, click the title of your manuscript to access and edit your submission.
+------------------------------------------------------------------------
 
-          Before you revise your manuscript, we ask that you please review the following PLOS policy and formatting requirements checklist PDF: https://drive.google.com/file/d/0B_7IflO1bmDTYlZBdmJCT1FUWG8/view?usp=sharing. It’s helpful for you to take a look through this at this stage, and to align your revision with our requirements; should your paper be eventually accepted, this will save everyone time at the acceptance stage.
+Reviewer Notes: 
 
-          Thank you again for your submission to our journal. We hope that our editorial process has been constructive thus far, and we welcome your feedback at any time. Please don't hesitate to contact us if you have any questions or comments.
-          Sincerely,
+{% for review in reviews %}
+{%- if review.status == 'completed' -%}
+Reviewer Report {{ review.reviewer_number | default '' }}
+{% for answer in review.answers %}
+Q: {{ answer.question}}
+A: {{ answer.value }}
+{%- endfor -%}
+{% endif %}
+----------
+{% endfor %}
 
-          [EDITOR NAME]
-          [EDITOR TITLE]
-          [JOURNAL NAME]
+------------------------------------------------------------------------
 
-          ------------------------------------------------------------------------
-
-          Reviewer Notes:
-          [REVIEWER COMMENTS]
+{{ manuscript.url }}
           TEXT
-        subject = 'Your [JOURNAL NAME] submission'
-        to_field = '[AUTHOR EMAIL]'
+        subject = 'A decision has been registered on the manuscript, "{{ manuscript.title }}"'
+        to_field = '{% assign emails = manuscript.corresponding_authors | map: "email" %}{{ emails | join "," }}'
         LetterTemplate.where(template_decision: 'major_revision', text: text, journal: journal).first_or_create!(to: to_field, subject: subject, letter: letter)
 
         text   = 'RA Minor Revision'

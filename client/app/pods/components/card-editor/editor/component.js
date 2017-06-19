@@ -10,9 +10,21 @@ export default Ember.Component.extend({
 
   xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
     let card = this.get('card');
+    // copy pasted
+    let isDirty = card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
 
-    return card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
+    if(isDirty) {
+      $(window).on('beforeunload.dirtyXml', function() {return true;});
+    } else {
+      $(window).off('beforeunload.dirtyXml');
+    }
+
+    return isDirty;
   }),
+
+  willDestroyElement() {
+    $(window).off('beforeunload.dirtyXml');
+  },
 
   errors: null,
   showPublishOverlay: false,

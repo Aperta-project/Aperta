@@ -78,6 +78,7 @@
     </div>
   </div>
 </div>
+
 {{#overlay-fullscreen visible=showPublishOverlay
    outAnimationComplete=(toggle "showPublishOverlay" this)
    overlayClass="publish-card-overlay overlay--blue"
@@ -168,6 +169,23 @@
     <div>
       <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
       <button class="button-primary button--blue" {{action (perform revertCard)}}>Yes, Revert</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   overlayClass="dirty-card-overlay dirty overlay--blue"
+   as |overlay|}}
+  <p>
+    There are unsaved changes. Are you sure you want to leave this page
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

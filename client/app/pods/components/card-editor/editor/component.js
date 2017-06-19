@@ -18,6 +18,7 @@ export default Ember.Component.extend({
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
+  showDirtyOverlay: false,
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -87,7 +88,14 @@ export default Ember.Component.extend({
     }
   }),
 
+  allowStoppedTransition: 'allowStoppedTransition',
+
   actions: {
+    cleanCard() {
+      this.get('card').rollbackAttributes('xml');
+      this.sendAction('allowStoppedTransition');
+    },
+
     updateXML(code) {
       this.set('card.xml', code);
     },

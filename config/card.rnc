@@ -73,6 +73,15 @@ dropdown-input = element content {
                   content*
               }
 
+tech-check = element content {
+                attribute ident { text }?,
+                attribute content-type { "tech-check" },
+                attribute default-answer-value { "true" | "false" }?,
+                attribute value-type { "boolean" },
+                element text { text }?,
+                content*
+            }
+
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
@@ -122,7 +131,8 @@ content = (radio-input |
            check-box-input |
            file-uploader |
            dropdown-input |
-           date-picker
+           date-picker |
+           tech-check
           )
 
 start = element card {

@@ -201,6 +201,35 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="tech-check">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>tech-check</value>
+      </attribute>
+      <optional>
+        <attribute name="default-answer-value">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <optional>
+        <element name="text">
+          <text/>
+        </element>
+      </optional>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <define name="text-input">
     <element name="content">
       <optional>
@@ -247,19 +276,6 @@
           </element>
         </zeroOrMore>
       </interleave>
-    </element>
-  </define>
-  <define name="validation">
-    <element name="validation">
-      <attribute name="validation-type">
-        <value>string-match</value>
-      </attribute>
-      <element name="error-message">
-        <text/>
-      </element>
-      <element name="validator">
-        <text/>
-      </element>
     </element>
   </define>
   <!-- Contents -->
@@ -328,6 +344,7 @@
       <ref name="file-uploader"/>
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
+      <ref name="tech-check"/>
     </choice>
   </define>
   <start>

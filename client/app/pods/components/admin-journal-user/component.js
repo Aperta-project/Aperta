@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: 'tr',
-  classNames: ['user-row'],
   journal: null, //passed in
 
   journalRoles: null, //passed-in

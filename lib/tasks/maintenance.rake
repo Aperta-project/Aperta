@@ -88,7 +88,7 @@ namespace :maintenance do
 
       "/admin/journals",
       "/admin/journals/1",
-      "/admin/journals/1/manuscript_manager_templates/1/edit"
+      "/admin/journal_mmt/1/manuscript_manager_templates/1/edit"
     ]
 
     urls = urls.map { |url| "#{base_path}#{url}" }

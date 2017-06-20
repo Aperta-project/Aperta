@@ -47,17 +47,18 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       // be added to the correspondence list as it is being created.
       model.set('paper', this.get('paper'));
 
-      if (this.get('attachment')) {
-        let paperId = this.get('model.paper.id');
-        let correspondenceId = this.get('model.id');
-        let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
-        this.get('restless').post(postUrl, {
-          url: this.get('attachment.data')
-        });
-      }
-
       model.save().then(() => {
         this.clearAllValidationErrors();
+
+        if (this.get('attachment')) {
+          let paperId = this.get('model.paper.id');
+          let correspondenceId = this.get('model.id');
+          let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
+          this.get('restless').post(postUrl, {
+            url: this.get('attachment.data')
+          });
+        }
+        
         this.sendAction('close');
       }, (failure) => {
         this.displayValidationErrorsFromResponse(failure);

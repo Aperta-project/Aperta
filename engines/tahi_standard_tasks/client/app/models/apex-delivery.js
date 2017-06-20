@@ -11,6 +11,7 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),
   createdAt: DS.attr('date'),
+  destination: DS.attr('string'),
 
   failed: Ember.computed.equal('state', 'failed'),
   succeeded: Ember.computed.equal('state', 'delivered'),

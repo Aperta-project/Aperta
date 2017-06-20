@@ -26,6 +26,12 @@ describe TahiStandardTasks::ApexDeliveriesController do
         expect(response).to have_http_status(200)
       end.to change { TahiStandardTasks::ApexDelivery.count }.by 1
     end
+
+    it "saves the destination on the apex delivery" do
+      do_request
+      expect(res_body['apex_delivery']['destination']).to eq('apex')
+    end
+
   end
 
   context "the current user can't send to apex" do

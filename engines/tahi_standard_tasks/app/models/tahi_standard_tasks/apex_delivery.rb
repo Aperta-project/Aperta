@@ -18,6 +18,9 @@ module TahiStandardTasks
     validates :user, presence: true
     validates :paper, presence: true
     validates :task, presence: true
+    validates :destination, presence: true, inclusion: {
+      in: %w(apex router preprint)
+    }
 
     aasm column: :state do
       # It's 'pending' before the job has been started by a worker

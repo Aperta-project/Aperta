@@ -5,7 +5,7 @@ export default Ember.Route.extend({
   actions: {
     willTransition(transition) {
       let card = this.get('controller.model');
-      let hasDirtyXml = card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
+      let hasDirtyXml = !!(card.get('hasDirtyAttributes') && card.changedAttributes()['xml']);
 
       if(hasDirtyXml) {
         this.set('previousTransition', transition);

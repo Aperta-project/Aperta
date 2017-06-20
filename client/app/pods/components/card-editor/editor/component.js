@@ -8,22 +8,18 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
-  xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
-    let card = this.get('card');
-    let hasDirtyXml = card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
-
-    if(hasDirtyXml) {
-      $(window).on('beforeunload.dirtyXml', function() {return true;});
-    } else {
-      $(window).off('beforeunload.dirtyXml');
-    }
-
-    return hasDirtyXml;
-  }),
+  didInsertElement() {
+    $(window).on('beforeunload.dirtyXml', () => { if (this.get('xmlDirty')) { return true }; });
+  },
 
   willDestroyElement() {
     $(window).off('beforeunload.dirtyXml');
   },
+
+  xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
+    let card = this.get('card');
+    return !!(card.get('hasDirtyAttributes') && card.changedAttributes()['xml']);
+  }),
 
   errors: null,
   showPublishOverlay: false,

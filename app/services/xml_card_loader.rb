@@ -117,6 +117,8 @@ class XmlCardLoader
         content.attr_value('allow-file-captions'),
       allow_multiple_uploads:
         content.attr_value('allow-multiple-uploads'),
+      allow_annotations:
+        content.attr_value('allow-annotations'),
       content_type:
         content.attr_value('content-type'),
       default_answer_value:

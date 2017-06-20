@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606190255) do
+ActiveRecord::Schema.define(version: 20170619162849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,16 @@ ActiveRecord::Schema.define(version: 20170606190255) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
+  create_table "annotations", force: :cascade do |t|
+    t.string   "contents"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "annotations", ["owner_type", "owner_id"], name: "index_annotations_on_owner_type_and_owner_id", using: :btree
+
   create_table "answers", force: :cascade do |t|
     t.integer  "card_content_id"
     t.integer  "owner_id"
@@ -60,6 +70,7 @@ ActiveRecord::Schema.define(version: 20170606190255) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
+    t.string   "annotation"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -240,6 +251,7 @@ ActiveRecord::Schema.define(version: 20170606190255) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.boolean  "allow_annotations"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

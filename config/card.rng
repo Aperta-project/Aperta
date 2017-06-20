@@ -221,6 +221,14 @@
         <value>boolean</value>
       </attribute>
       <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
         <element name="text">
           <text/>
         </element>

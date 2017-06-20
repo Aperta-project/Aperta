@@ -78,6 +78,7 @@ tech-check = element content {
                 attribute content-type { "tech-check" },
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
+                attribute allow-annotations { "true" | "false" }?,
                 element text { text }?,
                 content*
             }

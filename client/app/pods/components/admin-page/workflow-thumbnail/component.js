@@ -10,6 +10,9 @@ export default Ember.Component.extend({
     toggleConfirmDestroy() {
       this.toggleProperty('confirmDestroy');
     },
+    hideConfirmDestroy() {
+      this.set('confirmDestroy', false);
+    },
 
     destroyTemplate() {
       // this.attrs.destroyTemplate(this.get('model'));

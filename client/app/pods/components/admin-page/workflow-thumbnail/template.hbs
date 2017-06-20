@@ -1,29 +1,31 @@
 
-<div class="admin-workflow-thumbnail-icon" {{action "toggleConfirmDestroy" bubbles=false}}>
-    {{fa-icon "trash"}}
-</div>
-<div class="admin-workflow-thumbnail">
-  <div class="admin-workflow-thumbnail-header">
-    <h4 class="admin-workflow-thumbnail-name">
-      {{workflow.paperType}}
-    </h4>
-    <div class="admin-workflow-thumbnail-journal">
-      {{ workflow.journal.name }}
-    </div>
+<div onmouseleave={{action "hideConfirmDestroy"}}>
+  <div class="admin-workflow-thumbnail-icon" {{action "toggleConfirmDestroy" bubbles=false}}>
+      {{fa-icon "trash"}}
   </div>
-  <div class="admin-workflow-thumbnail-footer">
-    <div class="admin-workflow-thumbnail-updated">
-      Last updated: {{ format-date workflow.updatedAt format='MMM D, YYYY'}}
+  <div class="admin-workflow-thumbnail">
+    <div class="admin-workflow-thumbnail-header">
+      <h4 class="admin-workflow-thumbnail-name">
+        {{workflow.paperType}}
+      </h4>
+      <div class="admin-workflow-thumbnail-journal">
+        {{ workflow.journal.name }}
+      </div>
     </div>
-    <div class="admin-workflow-thumbnail-active-manuscripts">
-      {{ workflow.activePaperCount }} Active {{ pluralize-string count=workflow.activePaperCount string="Manuscript" }}
+    <div class="admin-workflow-thumbnail-footer">
+      <div class="admin-workflow-thumbnail-updated">
+        Last updated: {{ format-date workflow.updatedAt format='MMM D, YYYY'}}
+      </div>
+      <div class="admin-workflow-thumbnail-active-manuscripts">
+        {{ workflow.activePaperCount }} Active {{ pluralize-string count=workflow.activePaperCount string="Manuscript" }}
+      </div>
     </div>
+    {{#if confirmDestroy}}
+      <div class="admin-workflow-thumbnail-overlay admin-workflow-thumbnail-overlay-confirm-destroy">
+        <p>This will permanently delete your template. Are you sure?</p>
+        <button class="button-secondary button--blue knockout" {{action "toggleConfirmDestroy" bubbles=false}}>Cancel</button>
+        <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyTemplate" bubbles=false}}>Delete</button>
+      </div>
+    {{/if}}
   </div>
-  {{#if confirmDestroy}}
-    <div class="admin-workflow-thumbnail-overlay admin-workflow-thumbnail-overlay-confirm-destroy">
-      <p>This will permanently delete your template. Are you sure?</p>
-      <button class="button-secondary button--blue knockout" {{action "toggleConfirmDestroy" bubbles=false}}>Cancel</button>
-      <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyTemplate" bubbles=false}}>Delete</button>
-    </div>
-  {{/if}}
 </div>

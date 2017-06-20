@@ -1,0 +1,79 @@
+.card-content-toggle-switch {
+  .switch {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+
+    &.small {
+      width: 50px;
+      height: 28px;
+    }
+
+    &.medium {
+      width: 60px;
+      height: 34px;
+    }
+
+    &.large {
+      width: 80px;
+      height: 44px;
+    }
+  }
+
+  // hide the native checkbox, so that it
+  // can be replaced by the toggle UI
+  .switch input { display: none; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $aperta-grey;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 83%;
+    width: 46%;
+    left: 3%;
+    bottom: 8%;
+    background-color: $aperta-white;
+    transition: .4s;
+  }
+
+  input:disabled + .slider {
+    cursor: not-allowed;
+  }
+
+  input:checked + .slider {
+    background-color: $aperta-green;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px green;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(100%);
+  }
+
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+  .switch .checked-label-text {
+    position: absolute;
+    left: 120%;
+    top: 25%;
+    white-space: nowrap;
+  }
+}

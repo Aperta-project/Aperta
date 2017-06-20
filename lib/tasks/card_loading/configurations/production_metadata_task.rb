@@ -46,7 +46,7 @@ module CardConfiguration
 
         {
           ident: "production_metadata--special_handling_instructions",
-          value_type: "text",
+          value_type: "html",
           text: "Special Handling Instructions"
         }
       ]

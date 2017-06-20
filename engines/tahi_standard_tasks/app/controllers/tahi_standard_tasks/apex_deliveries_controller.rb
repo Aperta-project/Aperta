@@ -10,6 +10,7 @@ module TahiStandardTasks
 
     def create
       requires_user_can(:send_to_apex, task.paper)
+
       ApexService.delay(retry: false)
         .make_delivery(apex_delivery_id: apex_delivery.id)
 
@@ -37,6 +38,7 @@ module TahiStandardTasks
           ApexDelivery.includes(:user, :paper, :task).find(params[:id])
         else
           ApexDelivery.create!(
+            destination: params.require(:apex_delivery).permit(:destination),
             paper: task.paper,
             task: task,
             user: current_user)

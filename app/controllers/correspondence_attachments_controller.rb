@@ -2,6 +2,8 @@
 class CorrespondenceAttachmentsController < ApplicationController
   before_action :authenticate_user!, :ensure_correspondence
 
+  respond_to :json
+
   def create
     @attachment = @correspondence.attachments.create
     DownloadAttachmentWorker.perform_async(
@@ -9,7 +11,7 @@ class CorrespondenceAttachmentsController < ApplicationController
       params[:url],
       current_user.id
     )
-    respond_with attachment, root: 'correspondence-attachment'
+    render json: @attachment, status: :ok
   end
 
   private

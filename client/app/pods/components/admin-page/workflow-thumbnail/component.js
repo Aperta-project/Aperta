@@ -15,7 +15,7 @@ export default Ember.Component.extend({
     },
 
     destroyTemplate() {
-      // this.attrs.destroyTemplate(this.get('model'));
+      this.attrs.destroyTemplate(this.get('workflow'));
     }
   }
 });

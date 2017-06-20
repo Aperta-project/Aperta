@@ -1,8 +1,10 @@
 
 <div onmouseleave={{action "hideConfirmDestroy"}}>
-  <div class="admin-workflow-thumbnail-icon" {{action "toggleConfirmDestroy" bubbles=false}}>
-      {{fa-icon "trash"}}
-  </div>
+  {{#if canDestroy}}
+    <div class="admin-workflow-thumbnail-icon" {{action "toggleConfirmDestroy" bubbles=false}}>
+        {{fa-icon "trash"}}
+    </div>
+  {{/if}}
   <div class="admin-workflow-thumbnail">
     <div class="admin-workflow-thumbnail-header">
       <h4 class="admin-workflow-thumbnail-name">
@@ -21,10 +23,10 @@
       </div>
     </div>
     {{#if confirmDestroy}}
-      <div class="admin-workflow-thumbnail-overlay admin-workflow-thumbnail-overlay-confirm-destroy">
+      <div class="admin-workflow-thumbnail-overlay">
         <p>This will permanently delete your template. Are you sure?</p>
-        <button class="button-secondary button--blue knockout" {{action "toggleConfirmDestroy" bubbles=false}}>Cancel</button>
-        <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyTemplate" bubbles=false}}>Delete</button>
+        <button class="button-secondary button--blue knockout" {{action "hideConfirmDestroy" bubbles=false}}>Cancel</button>
+        <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyWorkflow" bubbles=false}}>Delete</button>
       </div>
     {{/if}}
   </div>

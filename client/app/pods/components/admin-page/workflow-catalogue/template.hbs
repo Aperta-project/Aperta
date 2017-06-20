@@ -9,7 +9,9 @@
 {{#admin-page/catalogue}}
   {{#each sortedWorkflows as |workflow|}}
     {{#admin-page/catalogue/item action=(action "editWorkflow" workflow.journal.id workflow.id)}}
-      {{admin-page/workflow-thumbnail workflow=workflow}}
+      {{admin-page/workflow-thumbnail workflow=workflow 
+                                      canDestroy=canDestroyWorkflows
+                                      destroyWorkflow=(action "destroyWorkflow")}}
     {{/admin-page/catalogue/item}}
   {{/each}}
 {{/admin-page/catalogue}}

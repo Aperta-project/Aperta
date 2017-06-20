@@ -183,6 +183,14 @@
       <optional>
         <attribute name="default-answer-value"/>
       </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">

@@ -67,6 +67,7 @@ dropdown-input = element content {
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
                   attribute default-answer-value { text }?,
+                  attribute allow-annotations { "true" | "false" }?,
                   (element placeholder { text }? &
                    element text { text }),
                   possible-value+,

@@ -175,17 +175,17 @@
 
 {{#overlay-fullscreen visible=showDirtyOverlay
    outAnimationComplete=(toggle "showDirtyOverlay" this)
-   overlayClass="dirty-card-overlay dirty overlay--blue"
+   overlayClass="dirty-card-overlay dirty overlay--blue--bg"
    as |overlay|}}
-  <p>
+  <h3>
     There are unsaved changes. Are you sure you want to leave this page
-  </p>
+  </h3>
 
   <br/>
   <div class="overlay-message-footer">
     <div>
-      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
-      <button class="button-primary button--blue" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
+      <button class="button-link" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

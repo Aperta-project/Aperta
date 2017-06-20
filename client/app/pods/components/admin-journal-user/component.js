@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: '',
   journal: null, //passed in
 
   journalRoles: null, //passed-in

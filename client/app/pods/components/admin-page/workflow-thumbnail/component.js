@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   workflow: {},
-
   classNames: [],
   confirmDestroy: false,
 
@@ -13,7 +12,6 @@ export default Ember.Component.extend({
     hideConfirmDestroy() {
       this.set('confirmDestroy', false);
     },
-
     destroyTemplate() {
       this.attrs.destroyTemplate(this.get('workflow'));
     }

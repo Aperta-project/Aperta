@@ -5,6 +5,13 @@ export default Ember.Component.extend(Participants, {
   store: Ember.inject.service(),
   to: 'overlay-drop-zone',
 
+  hasAnnotation: Ember.computed('task.nestedQuestions.[]', function() {
+    let cardContents = this.get('task.cardVersion.contentRoot.unsortedChildren');
+    return cardContents.any((cardContent) => {
+      return cardContent.get('allowAnnotations');
+    });
+  }),
+
   searchingParticipant: false,
 
   /**

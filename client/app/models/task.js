@@ -52,6 +52,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
+  allowAnnotations: DS.attr('boolean'),
   assignedToMe: DS.attr(),
 
   componentName: Ember.computed('type', function() {

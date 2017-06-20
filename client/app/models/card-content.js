@@ -23,6 +23,7 @@ export default DS.Model.extend({
   label: DS.attr('string'),
   valueType: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
+  allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
   childrenSort: ['order:asc'],

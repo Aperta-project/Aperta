@@ -108,11 +108,14 @@
   </div>
 
   <div class="form-group">
-    {{nested-question-textarea ident="reviewer_recommendations--reason"
-                               owner=reviewerRecommendation
-                               displayContent=true
-                               disabled=isNotEditable
-                               displayQuestionAsPlaceholder=true}}
+    {{nested-question-textarea
+      editorStyle='basic'
+      ident="reviewer_recommendations--reason"
+      owner=reviewerRecommendation
+      displayContent=true
+      disabled=isNotEditable
+      displayQuestionAsPlaceholder=true
+    }}
   </div>
 
   <div class="author-form-buttons control-buttons">

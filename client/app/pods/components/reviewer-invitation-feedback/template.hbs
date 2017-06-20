@@ -1,4 +1,4 @@
-<h4 class="feedback-reviewer-invitation">Reviewer Invitation</h4>
+<h2 class="feedback-reviewer-invitation">Reviewer Invitation Declined</h2>
 {{partial "svg/manuscript-icon"}}
 <h3 class="feedback-invitation-title">{{{invitation.title}}}</h3>
 
@@ -8,20 +8,30 @@
   and would appreciate your feedback below.
 </h4>
 
-<label class="feedback-request">Please give your reasons for declining this invitation.
-  {{textarea
-    name="declineReason"
-    classNames="feedback-textarea form-control declineReason"
+<label class="feedback-request">
+  Please give your reasons for declining this invitation.
+
+  {{rich-text-editor
+    editorStyle='basic'
     value=invitation.declineReason
+    name="declineReason"
+    ident="declineReason"
+    onContentsChanged=(action "updateDeclineReason")
+    classNames="feedback-textarea declineReason"
   }}
 </label>
 
-<label class="feedback-request">We would value your suggestions of alternative reviewers for this manuscript.
-  {{textarea
-    name="reviewerSuggestions"
-    classNames="feedback-textarea form-control reviewerSuggestions"
+<label class="feedback-request">
+    We would value your suggestions of alternative reviewers for this manuscript.
+    Please provide reviewers' names, institutions, and email addresses if known.
+
+  {{rich-text-editor
+    editorStyle='basic'
     value=invitation.reviewerSuggestions
-    placeholder="Please provide reviewers' names, institutions, and email adresses if known."
+    name="reviewerSuggestions"
+    ident="reviewerSuggestions"
+    onContentsChanged=(action "updateReviewerSuggestions")
+    classNames="feedback-textarea reviewerSuggestions"
   }}
 </label>
 

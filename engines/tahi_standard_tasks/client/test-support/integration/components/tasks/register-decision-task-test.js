@@ -4,7 +4,7 @@ import wait from 'ember-test-helpers/wait';
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 import { manualSetup, make, makeList } from 'ember-data-factory-guy';
-import setupMockServer from 'tahi/tests/helpers/mock-server';
+import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
   'register-decision-task',
@@ -86,12 +86,17 @@ moduleForComponent(
   }
 );
 
+function compareText(assert, field, regex) {
+  let text = getRichText('decision-letter-field');
+  assert.ok(regex.test(text), 'text matches');
+}
+
 test('it renders decision selections', function(assert) {
   assert.elementsFound('.decision-label', 4);
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'Dear');
+    compareText(assert, 'decision-letter-field', /Dear/);
   });
 });
 
@@ -99,10 +104,10 @@ test('it does not update the letter contents on change of verdict unless templat
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'who Accepts');
+    compareText(assert, 'decision-letter-field', /who Accepts/);
     this.selectDecision('Reject');
     return wait().then(()=>{
-      assert.inputContains('.decision-letter-field', 'who Accepts');
+      compareText(assert, 'decision-letter-field', /who Accepts/);
     });
   });
 });
@@ -111,17 +116,16 @@ test('it switches the letter contents on change', function(assert) {
   this.selectDecision('Accept');
   this.select2('RA Accept');
   return wait().then(()=>{
-    assert.inputContains('.decision-letter-field', 'who Accepts');
+    compareText(assert, 'decision-letter-field', /who Accepts/);
     this.selectDecision('Reject');
     return wait().then(()=>{
       this.select2('Editor Reject');
       return wait().then(()=>{
-        assert.inputContains('.decision-letter-field', 'who Rejects');
+        compareText(assert, 'decision-letter-field', /who Rejects/);
       });
     });
   });
 });
-
 
 ['unsubmitted', 'in_revision', 'invited_for_full_submission', 'accepted', 'rejected'].forEach((state)=>{
   test(`when the paper is ${state}, do not show register stuff`, function(assert) {

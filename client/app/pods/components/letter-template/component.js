@@ -22,5 +22,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
           };
         });
     }),
-  inputClassNames: ['form-control']
+
+  inputClassNames: ['form-control'],
+
+  actions: {
+    updateAnswer(contents) {
+      this.set('letterValue', contents);
+    }
+  }
 });

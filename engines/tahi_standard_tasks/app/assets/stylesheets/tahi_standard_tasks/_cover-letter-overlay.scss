@@ -4,12 +4,8 @@
   }
 
   .cover-letter-field {
-    overflow: auto;
-    height: 250px;
+    height: 100%;
     margin-bottom: 15px;
-    border: 1px solid #b1b1b1;
-    border-radius: 4px;
-    padding: 0.5rem;
     font-size: 15px;
 
     &:focus {
@@ -20,4 +16,9 @@
 
 .cover-letter {
   margin: 15px;
+}
+
+.cover_letter--text-question-text + .answer-text {
+  padding: 1em;
+  background-color: $aperta-grey-xlight;
 }

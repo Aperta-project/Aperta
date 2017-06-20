@@ -63,6 +63,8 @@ export default Ember.TextArea.extend(AtWhoSupport, {
     });
   },
 
+  /* eslint-disable camelcase */
+
   sorter(query, items) {
     if (!query) {
       return items;
@@ -75,6 +77,8 @@ export default Ember.TextArea.extend(AtWhoSupport, {
       return a.atwho_order - b.atwho_order;
     });
   },
+
+  /* eslint-enable camelcase */
 
   highlighter(li, query) {
     if (!query) {
@@ -112,5 +116,4 @@ export default Ember.TextArea.extend(AtWhoSupport, {
     '<span class="at-who-username">${atwho-at}${username}</span> ' +
     '<span class="at-who-email">${email}</span>' +
   '</li>',
-
 });

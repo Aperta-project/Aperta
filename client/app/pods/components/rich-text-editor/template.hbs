@@ -1,0 +1,12 @@
+{{#if disabled}}
+  {{{value}}}
+{{else}}
+  {{tinymce-editor
+    class=class
+    name=name
+    onValueChanged=(action onContentsChanged)
+    options=editorOptions
+    placeholder=placeholder
+    value=value
+  }}
+{{/if}}

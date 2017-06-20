@@ -41,11 +41,15 @@
     <div class="letter-template animation-fade-in">
       <p>Please write your decision letter in the area below:</p>
 
-      {{textarea onEvent="keyPress"
-                 action="letterChanged"
-                 class="decision-letter-field"
-                 disabled=nonPublishable
-                 value=initialDecision.letter}}
+     {{rich-text-editor
+        ident="decision-letter-field"
+        inputClassNames='decision-letter-field'
+        onContentsChanged=(action "letterChanged")
+        placeholder="Please type or paste your cover letter into this text field, or attach a file below"
+        owner=task
+        value=initialDecision.letter
+        disabled=nonPublishable
+      }}
 
       <button class="button-primary button--green send-email-action {{if cannotRegisterDecision "button--disabled"}}"
               disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>

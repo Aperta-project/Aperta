@@ -52,3 +52,5 @@ engines/*/Gemfile.lock
 
 # Database dumps
 *.dat
+
+diffs.txt

@@ -20,6 +20,16 @@ export default  Ember.Component.extend({
   },
 
   actions: {
+    saveRoleDescription(contents) {
+      this.setFunderRoleDescriptionAnswer(contents);
+      this.change();
+    },
+
+    saveComments(contents) {
+      this.get('model').set('additionalComments', contents);
+      this.change();
+    },
+
     userSelectedYesForFunderInfluence(){
       this.setFunderRoleDescriptionAnswer('');
     },
@@ -28,11 +38,10 @@ export default  Ember.Component.extend({
       this.setFunderRoleDescriptionAnswer('');
     },
 
-    removeFunder(disabled) {
-      if (this.get('disabled')) {
-        return;
+    removeFunder() {
+      if (this.get('enabled')) {
+        return this.get('model').destroyRecord();
       }
-      return this.get('model').destroyRecord();
     }
   }
 });

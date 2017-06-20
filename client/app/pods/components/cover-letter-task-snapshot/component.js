@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { 
+import {
   namedComputedProperty,
 } from 'tahi/lib/snapshots/snapshot-named-computed-property';
 import namedComputedAttachmentProperty
@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   classNames: ['cover-letter-snapshot'],
 
   attachment1: namedComputedAttachmentProperty('snapshot1', 'cover_letter--attachment'),
-  attachment2: namedComputedAttachmentProperty('snapshot2', 'cover_letter--attachment'), 
+  attachment2: namedComputedAttachmentProperty('snapshot2', 'cover_letter--attachment'),
 
   text1: namedComputedProperty('snapshot1', 'cover_letter--text'),
   text2: namedComputedProperty('snapshot2', 'cover_letter--text'),

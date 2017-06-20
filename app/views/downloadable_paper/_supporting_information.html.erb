@@ -13,8 +13,11 @@
           </a>
         </p>
       <% end %>
-
-      <p><a class='si_link' id='si_link_<%= file.id %>' href='<%= file.href(is_proxied: true, only_path: false) %>'><%= file.filename %></a></p>
+      <% if file.href(is_proxied: true, only_path: false) == '' %>
+          <p><span class='si_link' id='si_link_<%= file.id %>'><%= file.filename %></span></p>
+        <% else %>
+          <p><a class='si_link' id='si_link_<%= file.id %>' href='<%= file.href(is_proxied: true, only_path: false) %>'><%= file.filename %></a></p>
+      <% end %>
     <% end %>
   </div>
 <% end %>

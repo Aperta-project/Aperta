@@ -43,8 +43,13 @@ file-uploader = element content {
                     attribute value-type { "attachment" },
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
-                    (element label { text }? &
-                      element text { text }?),
+                    (element validation {
+                      attribute validation-type { "file-name" },
+                      element error-message { text },
+                      element validator { text }
+                    }* &
+                    element label { text }? &
+                    element text { text }?),
                     possible-value*
                 }
 
@@ -68,6 +73,15 @@ dropdown-input = element content {
                   content*
               }
 
+tech-check = element content {
+                attribute ident { text }?,
+                attribute content-type { "tech-check" },
+                attribute default-answer-value { "true" | "false" }?,
+                attribute value-type { "boolean" },
+                element text { text }?,
+                content*
+            }
+
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
@@ -76,10 +90,10 @@ text-input = element content {
                  (element placeholder { text }? &
                   element text { text }? &
                   element validation {
-                   attribute validation-type { "string-match" },
+                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                    element error-message { text },
                    element validator { text }
-                 }?)
+                 }*)
              }
 
 # Contents
@@ -117,7 +131,8 @@ content = (radio-input |
            check-box-input |
            file-uploader |
            dropdown-input |
-           date-picker
+           date-picker |
+           tech-check
           )
 
 start = element card {

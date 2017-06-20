@@ -8,10 +8,6 @@ module PlosBioTechCheck
 
     before_create :initialize_round
 
-    def self.nested_questions
-      NestedQuestion.where(owner_id: nil, owner_type: name).all
-    end
-
     def active_model_serializer
       PlosBioTechCheck::InitialTechCheckTaskSerializer
     end
@@ -26,6 +22,7 @@ module PlosBioTechCheck
     end
 
     def letter_text=(text)
+      text = HtmlScrubber.standalone_scrub!(text)
       self.body = body.merge("initialTechCheckBody" => text)
     end
 

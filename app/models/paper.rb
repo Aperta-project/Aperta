@@ -14,7 +14,7 @@ class Paper < ActiveRecord::Base
   include Snapshottable
   include CustomCastTypes
 
-  # attribute :title, HtmlSanitized.new
+  attribute :title, HtmlString.new
   attribute :abstract, HtmlString.new
 
   self.snapshottable = true
@@ -326,6 +326,10 @@ class Paper < ActiveRecord::Base
     corresponding_authors = authors.select { |au| au.corresponding? }
     corresponding_authors << creator if corresponding_authors.empty?
     corresponding_authors.compact
+  end
+
+  def co_authors
+    authors.reject { |author| author.user == creator }
   end
 
   # Returns the corresponding author emails. When there are no authors

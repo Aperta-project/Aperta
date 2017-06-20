@@ -7,7 +7,8 @@ module TahiStandardTasks
     DEFAULT_ROLE_HINT = 'editor'.freeze
 
     attr_accessor :paper_title, :paper_abstract
-    after_save :update_paper
+
+    after_save    :update_paper
 
     def paper_title
       @paper_title || paper.title
@@ -30,7 +31,6 @@ module TahiStandardTasks
     def update_paper
       paper.title = paper_title
       paper.abstract = (paper_abstract.blank? ? nil : paper_abstract)
-
       paper.save!
     end
   end

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Initial Decision', js: true, sidekiq: :inline! do
   given(:admin) { FactoryGirl.create(:user, :site_admin) }
@@ -36,21 +37,25 @@ feature 'Initial Decision', js: true, sidekiq: :inline! do
   end
 
   scenario 'Registers a decision on the paper' do
+    text = 'Accepting this because I can'
     expect(TahiStandardTasks::InitialDecisionMailer)
       .to receive_message_chain(:delay, :notify)
     choose('Invite for full submission')
-    find('.decision-letter-field').set('Accepting this because I can')
+    wait_for_editors
+    set_rich_text(editor: 'decision-letter-field', text: text)
     wait_for_ajax
 
     # Expect the radio button and textfield to persist across reload
     visit current_path
+    wait_for_editors
     expect(find('input[value=invite_full_submission]')).to be_checked
-    expect(find('.decision-letter-field').value).to eq('Accepting this because I can')
+
+    contents = get_rich_text(editor: 'decision-letter-field')
+    expect(contents).to eq("<p>#{text}</p>")
 
     find('.send-email-action').click
     expect(page).to have_selector('.rescind-decision', text: 'A decision of')
     expect(page).to have_selector(".task-is-completed")
-    expect(first('.decision-letter-field')).to be_disabled
     expect(first('input[type=radio]')).to be_disabled
   end
 end

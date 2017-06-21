@@ -4,10 +4,12 @@
     Workflows
   {{/link-to}}
 
-  {{#link-to 'admin.cc.journals.cards' class='admin-nav-cards'}}
-    {{fa-icon "clone"}}
-    Cards
-  {{/link-to}}
+  {{#if (feature-flag "CARD_CONFIGURATION")}}
+    {{#link-to 'admin.cc.journals.cards' class='admin-nav-cards'}}
+      {{fa-icon "clone"}}
+      Cards
+    {{/link-to}}
+  {{/if}}
 
   {{#link-to 'admin.cc.journals.emailtemplates' class='admin-nav-emails'}}
     {{fa-icon "envelope"}}

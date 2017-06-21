@@ -23,8 +23,10 @@
                       outAnimationComplete=(action "hideSettingsOverlay")
                       title=settingsTitle
                       as |overlay|}}
-  <h3>Automatic Checks</h3><br>
-  <span>Send manuscript to iThenticate:</span><br>
+  <h3>Automatic Checks</h3>
+  <span>Send manuscript to iThenticate:</span>&nbsp;&nbsp;
+  {{bootstrap-switch checked=switchState on-text="Yes" off-text="No" off-color="#878787" on-color="green" off-color="gray"}}
+  <br>
   <input type="radio" name="option" value="" checked>&nbsp;&nbsp;on first full submission<br>
   <input type="radio" name="option" value="">&nbsp;&nbsp;after&nbsp;&nbsp;
   <span>

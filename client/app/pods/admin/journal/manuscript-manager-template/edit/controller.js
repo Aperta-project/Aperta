@@ -53,6 +53,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     text: 'first major revision'
   },
 
+  switchState: false,
+
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,
 

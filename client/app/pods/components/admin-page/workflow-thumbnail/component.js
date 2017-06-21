@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   classNames: [],
   confirmDestroy: false,
   canDestroy: Ember.computed('workflow', 'workflows.[]', function() {
-    let journal_id = this.get('workflow').get('journal').get('id');
+    let journal_id = this.get('workflow.journal.id');
     return this.get('workflows').filterBy('journal.id', journal_id).length > 1;
   }),
 

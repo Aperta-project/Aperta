@@ -8,7 +8,6 @@ module JournalServices
           jtt.title = klass::DEFAULT_TITLE
           jtt.role_hint = klass::DEFAULT_ROLE_HINT
           jtt.system_generated = klass::SYSTEM_GENERATED
-          jtt.required_permissions = klass::REQUIRED_PERMISSIONS
           jtt.save!
         end
       end

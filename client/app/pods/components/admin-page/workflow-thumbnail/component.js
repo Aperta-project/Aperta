@@ -12,8 +12,8 @@ export default Ember.Component.extend({
     hideConfirmDestroy() {
       this.set('confirmDestroy', false);
     },
-    destroyTemplate() {
-      this.attrs.destroyTemplate(this.get('workflow'));
+    destroyWorkflow() {
+      this.attrs.destroyWorkflow(this.get('workflow'));
     }
   }
 });

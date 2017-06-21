@@ -19,29 +19,17 @@ class RouterUploaderService
       faraday.adapter :net_http
     end
 
-    tempfile = Tempfile.new('temp_package')
-    tempfile.write(Zip::File.open(@file_io.first))
-
-    params = {
-      # client id and secret are Aperta's id and secret, NOT the end user's
-      # 'client_id' => TahiEnv.orcid_key,
-      # 'client_secret' => TahiEnv.orcid_secret,
-      # 'grant_type' => 'authorization_code',
-      # 'code' => code
+    payload = {
+      metadata_filename: 'metadata.json',
+      aperta_id: 'some id',
+      files: 'something.pdf, something.png',
+      destination: 'em',
+      journal_code: 'pcompbiol',
+      # The archive_filename is not a string but the file itself.
+      archive_filename: Faraday::UploadIO.new(@file_io.first, '')
     }
-    binding.pry
-    response = conn.post("/api/delivery", params) do |request|
-      request.body = { archive_filename: @final_filename,
-                       metadata_filename: 'metadata.json',
-                       file: Faraday::UploadIO.new(tempfile.path, 'zip'),
-                       files:'pbio.pdf',
-                       aperta_id: 'some id',
-                       destination: 'em',
-                       journal_code: 'pcompbiol'
-                     }
-      request.headers['Accept'] = 'application/json'
-      request.headers['Accept-Charset'] = "UTF-8"
+    response = conn.post("/api/delivery") do |request|
+      request.body = payload
     end
-    tempfile.close
   end
 end

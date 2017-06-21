@@ -24,6 +24,9 @@ export default Ember.Component.extend({
         journalId: this.get('journal.id')
       });
       user.save();
+    },
+    displayDialog() {
+      this.sendAction('displayDialog');
     }
   }
 });

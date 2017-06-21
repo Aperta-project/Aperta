@@ -11,7 +11,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   before do
     assign_journal_role journal, journal_admin, :admin
     login_as(journal_admin, scope: :user)
-    visit "/admin/journals/#{journal.id}/manuscript_manager_templates/#{mmt.id}/edit"
+    visit "/admin/journalmmt/#{journal.id}/manuscript_manager_templates/#{mmt.id}/edit"
   end
 
   scenario 'Choosing a Reviewer Report Type' do
@@ -67,7 +67,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   end
 
   describe 'Task Templates' do
-    scenario 'Adding a new Task Template'do
+    scenario 'Adding a new Task Template' do
       phase = task_manager_page.phase('Get Reviews')
       phase.find('a', text: 'ADD NEW CARD').click
 
@@ -81,7 +81,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       expect(task_manager_page).to have_css('.card', count: 10)
     end
 
-    scenario 'Adding multiple Task Templates'do
+    scenario 'Adding multiple Task Templates' do
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
@@ -96,7 +96,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       expect(task_manager_page).to have_css('.card', count: 11)
     end
 
-    scenario 'Adding a new Ad-Hoc Task Template'do
+    scenario 'Adding a new Ad-Hoc Task Template' do
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 

@@ -58,7 +58,7 @@ Router.map(function() {
       this.route('settings');
       this.route('emailtemplates');
     });
-    this.route('journal_mmt', { path: '/journal_mmt/:journal_id' }, function() {
+    this.route('journalmmt', { path: '/journalmmt/:journal_id' }, function() {
       this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
         this.route('new');
         this.route('edit', { path: '/:manuscript_manager_template_id/edit' });

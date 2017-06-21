@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  controllerName: 'admin.journal_mmt.manuscript_manager_template.edit',
+  controllerName: 'admin.journalmmt.manuscript_manager_template.edit',
 
   model() {
 
@@ -37,7 +37,7 @@ export default Ember.Route.extend({
   },
 
   renderTemplate(){
-    this.render('admin/journal_mmt/manuscript_manager_template/edit');
+    this.render('admin/journalmmt/manuscript_manager_template/edit');
   },
 
   actions: {

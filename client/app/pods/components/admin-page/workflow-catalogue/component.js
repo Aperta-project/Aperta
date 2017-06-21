@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     editWorkflow(journal, workflow) {
       this.get('routing')
         .transitionTo(
-          'admin.journal_mmt.manuscript_manager_template.edit',
+          'admin.journalmmt.manuscript_manager_template.edit',
           [journal, workflow]);
     }
   }

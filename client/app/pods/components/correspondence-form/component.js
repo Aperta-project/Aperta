@@ -11,8 +11,28 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   prepareModelDate() {
     let date = this.get('dateSent');
     let time = this.get('timeSent');
-    let m = moment.utc(date + ' ' + time, 'DD/MM/YYYY hh:mm a');
+    let m = moment.utc(date + ' ' + time, 'MM/DD/YYYY hh:mm a');
     this.get('model').set('date', m.local().toJSON());
+  },
+
+  validateDate() {
+    let dateIsValid = moment(this.get('dateSent'), 'MM/DD/YYYY').isValid();
+
+    if (!dateIsValid) {
+      this.set('validationErrors.dateSent', 'Invalid Date. Format MM/DD/YYYY');
+    }
+
+    return dateIsValid;
+  },
+
+  validateTime() {
+    let timeIsValid = moment(this.get('timeSent'), 'hh:mm a').isValid();
+
+    if (!timeIsValid) {
+      this.set('validationErrors.timeSent', 'Invalid Time. Format hh:mm a');
+    }
+
+    return timeIsValid;
   },
 
   actions: {
@@ -40,6 +60,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     submit(model) {
       if (this.get('isUploading')) return;
 
+      let dateIsValid = this.validateDate();
+      let timeIsValid = this.validateTime();
+      if (!(dateIsValid && timeIsValid)) {
+        return;
+      }
+
       // The way Correspondence was originally serialized makes this necessary
       this.prepareModelDate();
 
@@ -58,9 +84,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
             url: this.get('attachment.data')
           });
         }
-        
+
         this.sendAction('close');
       }, (failure) => {
+        // Break the association to remove this from the index.
+        model.set('paper', this.get('paper'));
         this.displayValidationErrorsFromResponse(failure);
       });
     }

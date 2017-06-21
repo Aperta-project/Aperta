@@ -162,3 +162,65 @@ test('Authorized User can create external correspondence', (assert) => {
     assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
   });
 });
+
+test('Date and Time [format] are properly validated', (assert) => {
+
+  // Context: Absent Date && Absent Time
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
+  fillIn('.correspondence-description', 'Good Description');
+  fillIn('.correspondence-from', 'from@example.com');
+  fillIn('.correspondence-to', 'to@example.com');
+  fillIn('.correspondence-subject', 'Physics');
+  fillIn('.correspondence-cc', 'cc@example.com');
+  fillIn('.correspondence-bcc', 'bcc@example.com');
+  fillIn('.correspondence-body', 'This is a very long body message~~~~');
+  click('.correspondence-submit');
+
+  andThen(() => {
+    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date. Format MM/DD/YYYY');
+    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(1)).attr('title'), 'Invalid Time. Format hh:mm a');
+  });
+
+  // Context: Incorrect Date && Incorrect Time
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
+  fillIn('.correspondence-date-sent', 'some date');
+  fillIn('.correspondence-time-sent', 'some time');
+  fillIn('.correspondence-description', 'Good Description');
+  fillIn('.correspondence-from', 'from@example.com');
+  fillIn('.correspondence-to', 'to@example.com');
+  fillIn('.correspondence-subject', 'Physics');
+  fillIn('.correspondence-cc', 'cc@example.com');
+  fillIn('.correspondence-bcc', 'bcc@example.com');
+  fillIn('.correspondence-body', 'This is a very long body message~~~~');
+  click('.correspondence-submit');
+
+  andThen(() => {
+    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(0)).attr('title'), 'Invalid Date. Format MM/DD/YYYY');
+    assert.equal($($('.inset-form-control .fa-exclamation-triangle').get(1)).attr('title'), 'Invalid Time. Format hh:mm a');
+  });
+});
+
+test('Invalid Records are not on list when process is aborted', (assert) => {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
+  fillIn('.correspondence-date-sent', 'some date');
+  fillIn('.correspondence-time-sent', 'some time');
+  fillIn('.correspondence-description', 'Gooder Description');
+  fillIn('.correspondence-from', ''); // Invalidates the record on server
+  fillIn('.correspondence-to', 'to@example.com');
+  fillIn('.correspondence-subject', 'Physics');
+  fillIn('.correspondence-cc', 'cc@example.com');
+  fillIn('.correspondence-bcc', 'bcc@example.com');
+  fillIn('.correspondence-body', 'This is a very long body message~~~~');
+  click('.correspondence-submit'); //
+
+  andThen(() => {
+    // Validation failed so the form should remain on the same page
+    assert.equal(currentURL(), '/papers/' + paper.get('shortDoi') + '/correspondence/new');
+    click('.overlay-close');
+
+    andThen(() => {
+      // When the form is closed, the filled record should not be on the list
+      assert.textNotPresent('.td:nth-child(2)', 'Gooder Description');
+    });
+  });
+});

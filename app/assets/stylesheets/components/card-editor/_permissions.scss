@@ -1,0 +1,55 @@
+.card-editor-permissions {
+    background-color: $aperta-grey-lighter;
+}
+
+#permission-table {
+    background-color: $aperta-white;
+    margin: 10px auto;
+    border-spacing: 0px;
+    border-collapse: collapse;
+
+    $grey-border: 1px solid $aperta-grey-light;
+
+    th {
+        padding: 1em;
+    }
+
+    tr:hover td {
+        background-color: $aperta-blue-light;
+    }
+
+    th.permission {
+        width: 10em;
+        background-color: $aperta-white;
+        border: $grey-border;
+    }
+
+    th {
+        background-color: $aperta-grey-lighter;
+    }
+
+    td {
+        padding: 1em;
+    }
+
+    .centered {
+        text-align: center;
+    }
+
+    tr td {
+        border-right: $grey-border;
+        border-left: $grey-border;
+    }
+
+    tr:first-child td {
+        border-top: $grey-border;
+    }
+
+    tr:last-child td {
+        border-bottom: $grey-border;
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.5);
+    }
+}

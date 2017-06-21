@@ -78,6 +78,7 @@ Tahi::Application.routes.draw do
       put :archive, on: :member
       put :revert, on: :member
     end
+    resources :card_permissions, only: [:create, :show, :update], controller: 'card_permissions'
 
     resources :card_versions, only: [:show]
 

@@ -8,8 +8,6 @@ export default Ember.Component.extend({
 
   routing: Ember.inject.service('-routing'),
   classNames: ['admin-workflow-catalogue'],
-  canDestroyWorkflows:
-    Ember.computed.gt('workflows.length', 1),
 
   actions: {
     editWorkflow(journal, workflow) {
@@ -17,12 +15,6 @@ export default Ember.Component.extend({
         .transitionTo(
           'admin.journal.manuscript_manager_template.edit',
           [journal, workflow]);
-    },
-
-    destroyWorkflow(workflow) {
-      if (this.get('canDestroyWorkflows')) {
-        return workflow.destroyRecord();
-      }
     }
   }
 });

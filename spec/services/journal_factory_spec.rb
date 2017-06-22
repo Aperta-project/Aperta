@@ -670,6 +670,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper'
             ]
           end
@@ -843,6 +844,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -971,6 +973,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -1095,6 +1098,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]

@@ -6,4 +6,14 @@ class PermissionState < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :permissions
+
+  def self.from_strings(strings)
+    strings.map do |state|
+      if state.is_a?(PermissionState)
+        state
+      else
+        PermissionState.where(name: state).first_or_create!
+      end
+    end
+  end
 end

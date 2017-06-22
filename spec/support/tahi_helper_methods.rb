@@ -1,6 +1,6 @@
 module TahiHelperMethods
   def res_body
-    JSON.parse(response.body)
+    JSON.parse(response.body).with_indifferent_access
   end
 
   def user_select_hash(user)

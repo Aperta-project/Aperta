@@ -84,14 +84,14 @@ test('archiving requires confirmation', function(assert) {
   this.set('card', card);
 
   this.set('fakeRouting', {
-    transitionTo(route, _whatever, queryParams) {
+    transitionTo(route, modelId, _whatever) { //eslint-disable-line no-unused-vars
       assert.equal(
         route,
         'admin.cc.journals.cards',
         'transitions to the card catalog'
       );
       assert.equal(
-        queryParams.journalID,
+        modelId,
         1,
         `sets the query param to the card's journal id`
       );
@@ -197,14 +197,14 @@ test('deleting requires confirmation', function(assert) {
   this.set('card', card);
 
   this.set('fakeRouting', {
-    transitionTo(route, _whatever, queryParams) {
+    transitionTo(route, modelId, _whatever) { //eslint-disable-line no-unused-vars
       assert.equal(
         route,
         'admin.cc.journals.cards',
         'transitions to the card catalog'
       );
       assert.equal(
-        queryParams.journalID,
+        modelId,
         1,
         `sets the query param to the card's journal id`
       );

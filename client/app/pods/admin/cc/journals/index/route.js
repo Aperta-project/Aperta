@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  redirect() {
-    this.transitionTo('admin.cc.journals.workflows');
+  redirect(params) {
+    this.transitionTo('admin.cc.journals.workflows', params);
   }
 
 });

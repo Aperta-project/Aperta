@@ -51,7 +51,7 @@ Router.map(function() {
 
   this.route('admin', function() {
     this.route('cc', function() {
-      this.route('journals', function() {
+      this.route('journals', { path: '/journals/:journal_id' }, function() {
         this.route('cards');
         this.route('workflows');
         this.route('users');

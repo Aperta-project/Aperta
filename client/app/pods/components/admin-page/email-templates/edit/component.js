@@ -17,7 +17,7 @@ export default Ember.Component.extend({
         this.set('unsaved', false);
       } else {
         this.get('template').save().then(() => {
-          this.get('routing').transitionTo('admin.cc.journals.emailtemplates');
+          this.get('routing').transitionTo('admin.cc.journals.emailtemplates', this.get('template.journal.id'));
         });
       }
     }

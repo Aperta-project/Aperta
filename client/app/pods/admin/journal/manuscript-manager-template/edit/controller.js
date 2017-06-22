@@ -69,10 +69,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     this.get('featureFlag').value('CARD_CONFIGURATION').then((enabled) => {
       if(enabled) {
         // redirect to new card config admin screen
-        this.transitionToRoute(
-          'admin.cc.journals.workflows',
-          { queryParams: { journalID: journal.get('id') }}
-        );
+        this.transitionToRoute('admin.cc.journals.workflows', journal);
       } else {
         // redirect to old world
         this.transitionToRoute('admin.journal', journal);

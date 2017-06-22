@@ -56,6 +56,8 @@ Select2Component = Ember.TextField.extend({
     })(this));
   },
 
+
+
   setSelectedData: (function() {
     return this.$().select2('val', this.get('selectedData').mapBy('id'));
   }).observes('selectedData'),

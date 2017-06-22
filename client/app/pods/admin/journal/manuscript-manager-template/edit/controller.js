@@ -20,7 +20,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
-
+  submissionOption: false,
 
   settingsTitle: Ember.computed('taskToConfigure', function() {
     return this.get('taskToConfigure.title') + ': Settings';
@@ -48,12 +48,27 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       text: 'any first revision'
     }
   ],
-  selectedOption:{
-    id: 'after_first_major_revise_decision',
-    text: 'first major revision'
-  },
+
+  selectedOption: Ember.computed('submissionOption', function() {
+    return this.get('selectableOptions')[0];
+  }),
+
+  selectEnabled: Ember.computed('submissionOption', function() {
+    return this.get('submissionOption');
+  }),
+
+  fullSubmissionState: Ember.computed('submissionOption', function() {
+    return this.get('submissionOption') ? '' : 'checked';
+  }),
+
+  afterState: Ember.computed('submissionOption', function() {
+    return this.get('submissionOption') ? 'checked' : '';
+  }),
 
   switchState: false,
+  optionsVisible: Ember.computed('switchState', function() {
+    return this.get('switchState') ? 'show`' : 'hide';
+  }),
 
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,
@@ -294,6 +309,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
           this.resetProperties();
         });
       }
+    },
+
+    clickOption (value) {
+      this.set('submissionOption', value);
     }
   }
 });

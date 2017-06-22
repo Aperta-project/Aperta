@@ -313,6 +313,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     clickOption (value) {
       this.set('submissionOption', value);
+    },
+
+    saveSettings () {
+
     }
   }
 });

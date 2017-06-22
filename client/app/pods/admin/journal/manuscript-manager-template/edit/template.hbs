@@ -22,6 +22,7 @@
 {{#overlay-fullscreen visible=showSettingsOverlay
                       outAnimationComplete=(action "hideSettingsOverlay")
                       title=settingsTitle
+                      enableClose=false
                       as |overlay|}}
   <h3>Automatic Checks</h3>
   <span>Send manuscript to iThenticate:</span>&nbsp;&nbsp;
@@ -41,7 +42,7 @@
   </div>
   <div class="overlay-action-buttons">
     <button class="button-link button--green cancel" {{action overlay.animateOut}}>cancel</button>
-    <button class="button-primary button--green" {{action "throttledSave"}}>SAVE</button>
+    <button class="button-primary button--green" {{action "saveSettings"}}>SAVE</button>
   </div>
 
 {{/overlay-fullscreen}}

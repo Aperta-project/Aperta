@@ -97,7 +97,7 @@ class PapersController < ApplicationController
   end
 
   def manuscript_activities
-    requires_user_can(:view_recent_activities, paper)
+    requires_user_can(:view_recent_activity, paper)
     activities = Activity.includes(:user).feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end

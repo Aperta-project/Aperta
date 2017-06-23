@@ -9,7 +9,7 @@ class RouterUploaderService
     @filenames = filenames,
     @final_filename = final_filename,
     @paper = paper,
-    @url = 'http://aa-dev.plos.org'
+    @url = url
   end
 
   def upload
@@ -26,7 +26,7 @@ class RouterUploaderService
       metadata_filename: 'metadata.json',
       aperta_id: @paper.short_doi,
       files: @filenames.join(','),
-      destination: @destination,
+      destination: @destination.first,
       journal_code: @paper.journal.journal_prefix,
       # The archive_filename is not a string but the file itself.
       archive_filename: Faraday::UploadIO.new(@file_io, '')

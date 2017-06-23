@@ -53,6 +53,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._manuscript_pdf_viewer_container = (By.ID, 'viewerContainer')
     self._accordion_pane = (By.CSS_SELECTOR, 'div.split-pane-element + div.split-pane-element')
 
+    # Paper Viewer (manuscript) pane
+    self._failed_conversion_heading = (By.CSS_SELECTOR, 'div#preview-pane > div > h3')
     # Sidebar Items
     self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
     self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
@@ -172,8 +174,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
       new manuscript
     :return: void function
     """
-    self.check_for_flash_success(timeout=120)
+    failed_conversion = False
+    try:
+      self.check_for_flash_success(timeout=60)
+    except ElementDoesNotExistAssertionError:
+      self.check_for_flash_error()
+      failed_conversion = True
     self.close_flash_message()
+    if failed_conversion:
+      self.check_failed_conversion_text(status='unsubmitted')
     self._wait_for_element(self._get(self._generic_task_item))
 
   def validate_page_elements_styles_functions(self, user='', admin=''):
@@ -1216,3 +1225,25 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert tooltip.text == tooltip_expected_text, \
         'The handle box tooltip text {0} is not the expected {1}'.format(
           tooltip.text, tooltip_expected_text)
+
+  def check_failed_conversion_text(self, status=''):
+    """
+    A method to check if the correct failed conversion method is presented in the preview pane
+    :param status: string, valid values are 'unsubmitted' or 'submitted' (case insensitive)
+    :return True if conversion message asserts, False if no, or incorrect, status passed to function
+    """
+    failed_conversion_heading = self._get(self._failed_conversion_heading)
+    if not status or status.lower() not in ('unsubmitted', 'submitted'):
+      logging.warning('You must pass a paper state of "unsubmitted" or "submitted" when calling '
+                      'check_faied_conversion_text')
+      return False
+    elif status.lower() == 'unsubmitted':
+      # validate unsubmitted failed conversion message - see APERTA-8858
+      assert failed_conversion_heading.text == 'Your file was uploaded successfully, but we were ' \
+                                               'unable to render a preview at this time.', \
+          failed_conversion_heading.text
+    else: #  status.lower() == 'submitted'
+      # validate submitted failed conversion message - see APERTA-8858
+      assert failed_conversion_heading.text == 'Preview for this manuscript is unavailable.', \
+          failed_conversion_heading.text
+    return True

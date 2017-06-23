@@ -4,7 +4,7 @@ const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicPlugins     = '';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo';
 
-const anchorElement      = ',a[href|rel|target|title]';
+const anchorElement    = ',a[href|rel|target|title]';
 const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' code codesample link table';
 const expandedToolbar  = ' | bullist numlist | table link | codesample code | formatselect';

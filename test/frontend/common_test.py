@@ -118,7 +118,16 @@ class CommonTest(FrontEndTest):
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
     logging.info('Creating paper in {0} journal, in {1} type with {2} as title'.format(journal,
                  type_, title))
-    dashboard.enter_title_field(title)
+    # To work with the new TinyMCE instances, you must identify the data-editor value for
+    #  div.rich-text-editor element within which your "field" is located and pass it as a value
+    #  to the get_rich_text_editor_instance() call
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        dashboard.get_rich_text_editor_instance('new-paper-title')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    dashboard.tmce_set_rich_text(tinymce_editor_instance_iframe, content=title)
+    # Gratuitous verification
+    temp_title = dashboard.tmce_get_rich_text(tinymce_editor_instance_iframe)
+    logging.info('Temporary Paper Title is: {0}'.format(temp_title))
     dashboard.select_journal_and_type(journal, type_)
     # Validate that the selected journal supports pdf if format = pdf or any
     if format_ in ('any', 'pdf'):

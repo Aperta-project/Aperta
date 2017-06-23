@@ -890,3 +890,58 @@ class AuthenticatedPage(StyledPage):
     close_btn.click()
     # time to allow the modal to animate away
     time.sleep(1)
+
+  def get_rich_text_editor_instance(self, name):
+    """"
+    A function to return the dynamic rich text editor id of one of the damned TinyMCE editor iframe
+      instances.
+    :param name: the data-editor value of the div.rich-text-editor element you wish to interact with
+    :return rte_id: the dynamic data-id of the tinymce instance you may wish to use with a setter
+     or getter
+    :return iframe: the webelement for the iframe - that is necessary to traverse into the frame
+     for setting or getting actions
+    """
+    self._rich_text_editor = (By.CSS_SELECTOR,
+                              '.rich-text-editor[data-editor="{0}"]'.format(name))
+    self._rte_frame = (By.TAG_NAME, 'iframe')
+    rte = self._get(self._rich_text_editor)
+    iframe = rte.find_element(*self._rte_frame)
+    self.traverse_to_frame(iframe)
+    self._iframe_body = (By.TAG_NAME, 'body')
+    try:
+      rte_id = self._get(self._iframe_body).get_attribute('data-id')
+    # In the case of any exception, ensure we traverse back to the parent context
+    finally:
+      self.traverse_from_frame()
+    return rte_id, iframe
+
+  def tmce_get_rich_text(self, iframe):
+    """
+    Get the text out of the rich text editor referred to by editor id with frame iframe
+    :param iframe: the iframe webelement returned from get_rich_text_editor_instance()
+    :return content: text of editor
+    """
+    self.traverse_to_frame(iframe)
+    try:
+      self._iframe_body = (By.TAG_NAME, 'body')
+      content = self._get(self._iframe_body).text
+    finally:
+      self.traverse_from_frame()
+    return content
+
+  def tmce_set_rich_text(self, iframe, content=''):
+    """
+    Set the text of the rich text editor refered to by editory id with fram iframe
+    :param iframe: the iframe webelement returned from get_rich_text_editor_instance()
+    :param content: The text to set into the rich text editor
+    :return: void function
+    """
+    self.traverse_to_frame(iframe)
+    try:
+      self._iframe_body = (By.TAG_NAME, 'body')
+      text_entry_field = self._get(self._iframe_body)
+      text_entry_field.send_keys(content)
+    finally:
+      self.traverse_from_frame()
+    return
+

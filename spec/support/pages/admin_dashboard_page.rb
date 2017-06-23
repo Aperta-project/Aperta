@@ -2,7 +2,7 @@ class AdminDashboardPage < Page
   text_assertions :journal_name, '.journal-thumbnail-name'
 
   def self.path
-    "/admin/journals"
+    "/admin/cc/journals/all"
   end
 
   def self.visit
@@ -20,19 +20,11 @@ class AdminDashboardPage < Page
   end
 
   def has_journal_name?(name)
-    page.has_css?('.journal-thumbnail-name', text: name)
+    page.has_css?('.admin-drawer-item-title', text: name)
   end
 
   def has_journal_names?(*names)
     names.all? { |name_text| has_journal_name? name_text }
-  end
-
-  def has_journal_description?(description)
-    page.has_css? '.journal-thumbnail-show p', text: description
-  end
-
-  def has_journal_descriptions?(*descriptions)
-    descriptions.all? { |description| has_journal_description?(description) }
   end
 
   def has_journal_paper_count?(count)
@@ -44,14 +36,10 @@ class AdminDashboardPage < Page
     counts.all? { |count| has_journal_paper_count?(count) }
   end
 
-  def create_journal
-    click_on 'Add new journal'
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
-  end
-
   def edit_journal(journal_name)
-    find('.journal-thumbnail', text: journal_name).find('.edit-icon').click
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
+    within('.left-drawer') { click_on journal_name }
+    find('.admin-nav-settings').click
+    EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
 
   def visit_journal(journal)
@@ -60,6 +48,7 @@ class AdminDashboardPage < Page
   end
 
   def search(query)
+    find(".admin-nav-users").click
     find(".admin-user-search input").set(query)
     find(".admin-user-search button").click
   end
@@ -67,7 +56,7 @@ class AdminDashboardPage < Page
   def search_results
     session.has_content? 'Username'
     all('.admin-users .user-row').map do |el|
-      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
+      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 

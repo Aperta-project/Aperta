@@ -41,6 +41,12 @@
 
   label { color: $aperta-grey; }
 
+  .rich-text-label {
+    font-size: 14pt;
+    color: black;
+    font-weight: 500;
+  }
+
   &.required {
     label { padding-left: 12px; }
 

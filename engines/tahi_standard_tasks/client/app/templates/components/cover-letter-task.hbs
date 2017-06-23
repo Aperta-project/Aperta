@@ -29,10 +29,12 @@
 
     {{nested-question-textarea
       ident='cover_letter--text'
-      inputClassNames='form-control cover-letter-field'
+      editorStyle='expanded'
+      inputClassNames='cover-letter-field'
       placeholder="Please type or paste your cover letter into this text field, or attach a file below"
       owner=task
-      disabled=isNotEditable}}
+      disabled=isNotEditable
+    }}
 
     {{nested-question-uploader-manager
       buttonText="attach file"

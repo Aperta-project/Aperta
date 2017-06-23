@@ -5,10 +5,15 @@
     Give your paper a title
   </label>
 
-  {{format-input value=paper.title
-                 id="new-paper-title"
-                 placeholder="Crystalized Magnificence in the Modern World"
-                 displayBold=false}}
+  {{rich-text-editor
+    editorStyle='basic'
+    value=paper.title
+    ident='new-paper-title'
+    class='new-paper-title'
+    onContentsChanged=(action 'titleChanged')
+    placeholder="Crystalized Magnificence in the Modern World"
+    disabled=false
+  }}
 
   {{#if hasTitle}}
     <span class="paper-new-valid-icon animation-fade-in">{{fa-icon icon="check"}}</span>

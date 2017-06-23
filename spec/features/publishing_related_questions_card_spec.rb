@@ -2,47 +2,32 @@ require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
   include AuthorizationSpecHelper
+  include RichTextEditorHelpers
+
+  let(:selector) { 'publishing_related_questions--short_title' }
+  let(:title) { 'This is a short title' }
 
   let(:creator) { create :user, first_name: 'Creator' }
-  let!(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
-  end
-  let!(:task) do
-    FactoryGirl.create(:publishing_related_questions_task, :with_loaded_card, paper: paper)
-  end
-
-  def short_title_selector
-    '.publishing-related-questions-short-title .format-input-field'
-  end
+  let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal, creator: creator) }
+  let!(:task) { FactoryGirl.create(:publishing_related_questions_task, :with_loaded_card, paper: paper) }
 
   context 'As creator' do
     before do
       login_as(creator, scope: :user)
-      Capybara.current_session.visit_without_waiting "/papers/#{paper.id}"
+      visit "/papers/#{paper.id}"
     end
 
     let!(:overlay) { Page.view_task_overlay(paper, task) }
 
     scenario 'sets the short title properly' do
-      content_editable = find(short_title_selector)
-
-      # <br> tags are only added when the space key is hit. So we clear the
-      content_editable.set('T')
-      content_editable.send_keys('his is a short title', :tab)
-      # we need to have the field save after pressing the tab key
-      # but there is no DOM change in the browser that we can use to determine
-      # that, so we resort to wait_for_ajax.  it's a more stable option than
-      # checking on the database end
-      # Hack to wait for change in db
-      10.times do
-        sleep 1
-        next unless paper.reload.short_title.match(/short title/)
-        expect(paper.short_title).not_to include('<br')
-        expect(paper.short_title).to eq('This is a short title')
-      end
+      wait_for_editors
+      set_rich_text(editor: selector, text: title)
+      wait_for_ajax
+      text = get_rich_text(editor: selector)
+      expect(text).to eq("<p>#{title}</p>")
     end
 
-    scenario 'upload attachent' do
+    scenario 'upload attachment' do
       within '#published-elsewhere' do
         choose 'Yes'
         find('.fileinput-button').click

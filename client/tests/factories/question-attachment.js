@@ -6,6 +6,7 @@ FactoryGuy.define('question-attachment', {
     src: 's3/test.jpg',
     status: 'done',
     title: 'Test file',
-    caption: 'A test file'
+    caption: 'A test file',
+    readyIssues: []
   }
 });

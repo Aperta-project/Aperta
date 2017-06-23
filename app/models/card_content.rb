@@ -45,7 +45,8 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES =
+    %w(attachment boolean question-set text html).freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -67,6 +68,7 @@ class CardContent < ActiveRecord::Base
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'],
+      'tech-check': ['boolean'],
       'date-picker': ['text'] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -140,5 +142,4 @@ class CardContent < ActiveRecord::Base
       children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
-
 end

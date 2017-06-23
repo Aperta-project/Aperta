@@ -45,11 +45,14 @@ feature "session invalidation", js: true do
     scenario "the user is logged out and returned to the login screen" do
       ident = "front_matter_reviewer_report--competing_interests"
       t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
       # Mess up the CSRF token
       execute_script <<-JS
         $("head meta[name='csrf-token']").attr("content", "bad token")
       JS
+
       t.fill_in_fields(ident => "Oops, this is the wrong value")
+
       # Verify that we're looking at the login screen
       find("h1", text: "Welcome to Aperta")
     end

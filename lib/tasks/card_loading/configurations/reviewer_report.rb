@@ -27,7 +27,7 @@ module CardConfiguration
           children: [
             {
               ident: "reviewer_report--competing_interests--detail",
-              value_type: "text",
+              value_type: "html",
               text: "Comment"
             }
           ]
@@ -35,7 +35,7 @@ module CardConfiguration
 
         {
           ident: "reviewer_report--identity",
-          value_type: "text",
+          value_type: "html",
           text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
         },
 
@@ -47,7 +47,7 @@ module CardConfiguration
 
         {
           ident: "reviewer_report--additional_comments",
-          value_type: "text",
+          value_type: "html",
           text: "(Optional) If you have any additional confidential comments to the editor, please add them below."
         },
 
@@ -58,7 +58,7 @@ module CardConfiguration
           children: [
             {
               ident: "reviewer_report--suitable_for_another_journal--journal",
-              value_type: "text",
+              value_type: "html",
               text: "Other Journal"
             }
           ]

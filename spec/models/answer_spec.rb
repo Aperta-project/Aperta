@@ -24,10 +24,13 @@ describe Answer do
           value: 'tabby'
         )
       end
+
       it 'is valid when answer value matches the card content validator string' do
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
         expect(subject.ready?).to eq true
+        expect(subject.ready).to eq true
+        expect(subject.ready_issues).to eq []
       end
 
       it 'is not valid when answer value doesnt matches the card content validator string' do
@@ -35,7 +38,24 @@ describe Answer do
         subject.card_content.card_content_validations << card_content_validation
         subject.card_content.answers << answer
         expect(subject.ready?).to eq false
+        expect(subject.ready).to eq false
+        expect(subject.ready_issues).to eq([card_content_validation.error_message])
       end
+    end
+  end
+
+  context 'html sanitization' do
+    let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
+    subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
+    it 'scrubs value if value_type is html' do
+      answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")
+      answer.reload
+      expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
+    end
+    it 'leaves certain style attributes that we want to keep' do
+      answer.update!(value: "<span>something</span><foo>foo</foo><script>evilThing();</script>")
+      answer.reload
+      expect(answer.string_value).to eq "<span>something</span>fooevilThing();"
     end
   end
 

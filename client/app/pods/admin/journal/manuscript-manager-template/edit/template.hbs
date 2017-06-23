@@ -25,9 +25,21 @@
                       enableClose=false
                       as |overlay|}}
   <h3>Automatic Checks</h3>
-  <span>Send manuscript to iThenticate:</span>&nbsp;&nbsp;
-  {{bootstrap-switch checked=switchState on-text="Yes" off-text="No" off-color="#878787" on-color="green" off-color="gray"}}
-  <br><br>
+  <br>
+  <div class="row">
+    <div class="col-xs-5">
+      <h4>Send manuscript to iThenticate:</h4>&nbsp;&nbsp;
+    </div>
+    <div class="col-xs-7">
+      {{card-content/toggle-switch
+        content=content name="toogle"
+        labelText="ON" answer=switchState
+        size="small"
+        valueChanged=(action 'saveAnswer')}}
+    </div>
+  </div>
+
+
   <div class="{{optionsVisible}}">
     <input onClick={{action "clickOption" false}} type="radio" name="submissionOption" checked/>&nbsp;&nbsp;on first full submission<br><br>
     <input onClick={{action "clickOption" true}} type="radio" name="submissionOption" />&nbsp;&nbsp;after&nbsp;&nbsp;

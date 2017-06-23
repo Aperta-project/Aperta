@@ -44,12 +44,15 @@
   }}
 </div>
 
-{{textarea
-    onEvent="false"
-    class="decision-letter-field"
-    placeholder="A boilerplate decision letter will appear here"
+ {{rich-text-editor
+    ident="decision-letter-field"
+    inputClassNames='decision-letter-field'
+    onContentsChanged=(action "updateAnswer")
+    placeholder="Please type or paste your cover letter into this text field, or attach a file below"
+    owner=task
+    value=letterValue
     disabled=disabled
-    value=letterValue}}
+  }}
 
 {{#unless disabled}}
   <button class="button-primary button--green send-email-action"

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Production Metadata Card', js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
@@ -6,13 +7,14 @@ feature 'Production Metadata Card', js: true do
   let!(:paper) do
     create :paper, :with_integration_journal, :with_tasks, creator: author
   end
-  let(:production_metadata_task) do
+  let!(:production_metadata_task) do
     create :production_metadata_task, :with_loaded_card, paper: paper, phase: paper.phases.first
   end
 
   before do
     login_as admin
     visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
+    wait_for_editors
   end
 
   describe 'completing a Production Metadata card' do
@@ -45,6 +47,12 @@ feature 'Production Metadata Card', js: true do
     end
 
     describe 'filling in the entire card' do
+      provenance = 'It came from outer space.'
+      comments = {
+        production_notes: 'Cheap cardboard sets.',
+        special_handling_instructions: 'Wear radiation suit.'
+      }
+
       it 'persists information' do
         page.fill_in 'production_metadata--publication_date', with: '08/31/2015'
         page.execute_script "$(\"input[name='production_metadata--publication_date']\").trigger('change')"
@@ -52,25 +60,36 @@ feature 'Production Metadata Card', js: true do
         page.execute_script "$(\"input[name='production_metadata--volume_number']\").trigger('change')"
         page.fill_in 'production_metadata--issue_number', with: '5678'
         page.execute_script "$(\"input[name='production_metadata--issue_number']\").trigger('change')"
-        page.fill_in 'production_metadata--production_notes', with: 'Too cool for school.'
-        page.execute_script "$(\"textarea[name='production_metadata--production_notes']\").trigger('change')"
+        page.fill_in 'production_metadata--provenance', with: provenance
+        page.execute_script "$(\"input[name='production_metadata--provenance']\").trigger('change')"
+
+        comments.each do |key, value|
+          set_rich_text editor: "production_metadata--#{key}", text: value
+        end
+
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
+        wait_for_editors
 
         find('h1', text: 'Production Metadata')
         within '.task-main-content' do
           expect(page).to have_field('production_metadata--volume_number', with: "1234")
           expect(page).to have_field('production_metadata--issue_number', with: "5678")
-          expect(page).to have_field('production_metadata--production_notes', with: "Too cool for school.")
           expect(page).to have_field('production_metadata--publication_date', with: "08/31/2015")
+          expect(page).to have_field('production_metadata--provenance', with: provenance)
+
+          comments.each do |key, value|
+            text = get_rich_text(editor: "production_metadata--#{key}")
+            expect(text).to eq "<p>#{value}</p>"
+          end
         end
       end
     end
 
     context 'clicking complete' do
       describe 'with invalid input in required fields' do
-        it 'shows an error'do
+        it 'shows an error' do
           find('.task-completed').click
           expect(find(".volume-number")).to have_text("Must be a whole number")
           expect(find(".issue-number")).to have_text("Must be a whole number")

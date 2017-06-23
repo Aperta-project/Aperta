@@ -93,6 +93,16 @@ describe 'SeedHelpers' do
       expect(perm.reload.states.map(&:name)).to match(['*'])
     end
 
+    it 'creates a new permission for the set of states' do
+      first = Permission.ensure_exists('view', applies_to: Task,
+                                               states: ['one', 'two'])
+      second = Permission.ensure_exists('view', applies_to: Task,
+                                                states: ['two', 'three'])
+      expect(first.states.reload.map(&:name)).to contain_exactly('one', 'two')
+      expect(second.states.reload.map(&:name)).to contain_exactly('two', 'three')
+      expect(first).not_to eq(second)
+    end
+
     it 'sets role' do
       role = FactoryGirl.create(:role)
       perm = Permission.ensure_exists('view', role: role, applies_to: Task)

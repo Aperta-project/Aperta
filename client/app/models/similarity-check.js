@@ -10,7 +10,14 @@ export default DS.Model.extend({
   errorMessage: DS.attr('string'),
   updatedAt: DS.attr('date'),
   ithenticateScore: DS.attr('string'),
+  dismissed: DS.attr('boolean'),
 
+  text: Ember.computed('errorMessage', function() {
+    return this.get('errorMessage');
+  }),
+  type:    Ember.computed('errorMessage', function() {
+    return 'error';
+  }),
   failed: Ember.computed.equal('state', 'failed'),
   succeeded: Ember.computed.equal('state', 'report_complete'),
   incomplete: Ember.computed('state', function() {

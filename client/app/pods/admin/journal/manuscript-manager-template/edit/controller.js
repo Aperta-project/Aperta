@@ -316,6 +316,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('submissionOption', value);
     },
 
+    saveAnswer(newVal) {
+      this.set('switchState', newVal);
+    },
+
     selectionSelected(selection) {
       this.set('selectedOption', selection);
     },

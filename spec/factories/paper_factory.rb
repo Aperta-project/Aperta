@@ -255,6 +255,17 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_co_authors) do
+      after(:create) do |paper|
+        FactoryGirl.create(
+          :assignment,
+          role: FactoryGirl.create(:role, :creator),
+          user: FactoryGirl.build(:user),
+          assigned_to: paper
+        )
+      end
+    end
+    
     trait(:with_versions) do
       transient do
         first_version_body  'first body'

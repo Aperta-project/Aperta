@@ -110,4 +110,5 @@ Subscriptions.configure do
   # Similarity Checks:
 
   add 'similarity_check:updated', stream_to_paper_channel
+  add 'similarity_check:created', stream_to_paper_channel
 end

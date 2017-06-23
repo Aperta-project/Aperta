@@ -66,7 +66,7 @@ module TahiStandardTasks
           email_on_failure: @paper.journal.staff_admins.pluck(:email),
           url: @ftp_url
         ).upload
-      elsif destination == 'preprint'
+      else
         RouterUploaderService.new(
           destination: destination,
           email_on_failure: @paper.journal.staff_admins.pluck(:email),
@@ -76,7 +76,6 @@ module TahiStandardTasks
           paper: @paper,
           url: @router_url
         ).upload
-      elsif destination == 'em'
       end
     end
   end

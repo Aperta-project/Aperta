@@ -15,12 +15,28 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    Ember.assert(
-      `the content must define an array of possibleValues
+    if(this.get('content.valueType') === 'text') {
+      Ember.assert(
+        `the content must define an array of possibleValues
       that contains at least one object with the shape { label, value } `,
-      Ember.isPresent(this.get('content.possibleValues'))
-    );
+        Ember.isPresent(this.get('content.possibleValues'))
+      );
+    }
   },
+
+  radioTemplate: Ember.computed('content.valueType', function() {
+    if(this.get('content.valueType') === 'text') {
+      return 'components/card-content/radio/radio-text';
+    }
+    else {
+      return 'components/card-content/radio/radio-boolean';
+    }
+  }),
+
+  yesValue: 't',
+  noValue: 'f',
+  yesLabel: 'Yes',
+  noLabel: 'No',
 
   actions: {
     valueChanged(newVal) {

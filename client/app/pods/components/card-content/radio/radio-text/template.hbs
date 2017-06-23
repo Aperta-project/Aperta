@@ -1,0 +1,10 @@
+{{#each content.possibleValues as |opt|}}
+  <label class="option">
+    {{radio-button
+      selection=answer.value
+      value=opt.value
+      disabled=disabled
+      action=(action "valueChanged")}}
+    <span class="card-content-radio-label">{{{opt.label}}}</span>
+  </label>
+{{/each}}

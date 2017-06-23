@@ -29,7 +29,11 @@ describe ReviewerReportsController do
   end
 
   describe 'PUT #update' do
-    let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
+    let(:due_datetime) { FactoryGirl.create(:due_datetime) }
+    let(:reviewer_report) do
+      FactoryGirl.create(:reviewer_report,
+                         due_datetime: due_datetime)
+    end
 
     subject(:do_request) do
       xhr :put, :update, format: :json, id: reviewer_report.id, reviewer_report: { task_id: reviewer_report.task.id }
@@ -45,10 +49,9 @@ describe ReviewerReportsController do
           .and_return true
       end
 
-      it 'returns the reviewer report' do
+      it 'returns a 204' do
         do_request
-        expect(response.status).to eq(200)
-        expect(res_body.keys).to include 'reviewer_reports'
+        expect(response.status).to eq(204)
       end
     end
   end

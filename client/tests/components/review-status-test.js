@@ -3,19 +3,58 @@ import {
   test
 } from 'ember-qunit';
 
+import FactoryGuy from 'ember-data-factory-guy';
+import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleForComponent('review-status', 'Integration | Component | review status', {
   integration: true,
 
   beforeEach() {
+    manualSetup(this.container);
+    this.registry.register('service:can', FakeCanService);
+
+    let paper = FactoryGuy.make('paper');
+    let task = FactoryGuy.make('task');
     this.set('report', {
       status: 'not_invited',
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
-      dueAt: new Date(2020, 1, 25)
+      dueAt: new Date(2020, 1, 25),
+      task: task
     });
+    this.set('report.task.paper', paper);
   }
+});
+
+test('No due_at unless accepted', function(assert) {
+  assert.expect(2);
+  let fake = this.container.lookup('service:can');
+  let paper = this.get('report.task.paper');
+  fake.allowPermission('manage_workflow', paper);
+
+  this.render(hbs`
+    {{reviewer-report-status report=report}}
+  `);
+
+  assert.equal(
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Not yet invited: This candidate has not been invited to v99.0',
+    'Block template shows not invited text'
+  );
+
+  this.set('report.status', 'invitation_accepted');
+
+  this.render(hbs`
+    {{reviewer-report-status report=report}}
+  `);
+
+  assert.equal(
+    this.$('.report-status').text().trim().replace(/\s+/g,' '),
+    'Pending: review of v99.0 due February 25, 2020 12:00 am Change due date Invitation accepted January 1, 2020',
+    'Block template shows not invited text'
+  );
 });
 
 test('it shows not invited', function(assert) {
@@ -42,7 +81,6 @@ test('it shows not invited', function(assert) {
     'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
-
 });
 
 test('it shows pending', function(assert) {

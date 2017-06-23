@@ -13,6 +13,7 @@ const isAdHocTask = function(kind) {
 };
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
+  restless: Ember.inject.service('restless'),
   pendingChanges: false,
   editingName: false,
   positionSort: ['position:asc'],
@@ -315,8 +316,29 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('submissionOption', value);
     },
 
-    saveSettings () {
+    selectionSelected(selection) {
+      this.set('selectedOption', selection);
+    },
 
+    saveSettings () {
+      var settingValue = null;
+      var taskTemplateId = this.get('taskToConfigure.id');
+      if (this.get('switchState')){
+        if (this.get('submissionOption')){
+          settingValue = this.get('selectedOption').id;
+        }
+        else{
+          settingValue = 'at_first_full_submission';
+        }
+      }
+      else{
+        settingValue = 'off';
+      }
+      this.get('restless').post('/api/task_templates/' + taskTemplateId + '/similarity_check_settings', {
+        value: settingValue
+      }).then(()=> {
+        this.set('showSettingsOverlay', false);
+      });
     }
   }
 });

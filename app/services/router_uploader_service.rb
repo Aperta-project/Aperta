@@ -24,12 +24,12 @@ class RouterUploaderService
 
     payload = {
       metadata_filename: 'metadata.json',
-      aperta_id: 'some id',
-      destination: 'em',
-      journal_code: 'pcompbiol',
+      aperta_id: @paper.short_doi,
       files: @filenames.join(','),
+      destination: @destination,
+      journal_code: @paper.journal.journal_prefix,
       # The archive_filename is not a string but the file itself.
-      archive_filename: Faraday::UploadIO.new(@file_io.first, '')
+      archive_filename: Faraday::UploadIO.new(@file_io, '')
     }
     response = conn.post("/api/delivery") do |request|
       request.body = payload

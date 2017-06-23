@@ -51,6 +51,6 @@ class TaskTemplatesController < ApplicationController
                          TaskTemplate.find(params[:id])
                        else
                          TaskTemplate.new(task_template_params)
-                      end
+                       end
   end
 end

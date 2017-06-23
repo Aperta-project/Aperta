@@ -24,11 +24,11 @@ module TahiStandardTasks
 
     def make_delivery!
       while_notifying_delivery do
-        packager = ApexPackager.new @paper,
+        @packager = ApexPackager.new @paper,
                                     archive_filename: package_filename,
                                     apex_delivery_id: apex_delivery.id
-        upload_file(packager.zip_file, package_filename, destination: apex_delivery.destination)
-        upload_file(packager.manifest_file, manifest_filename, destination: apex_delivery.destination)
+        upload_file(@packager.zip_file, package_filename, destination: apex_delivery.destination)
+        upload_file(@packager.manifest_file, manifest_filename, destination: apex_delivery.destination)
       end
     end
 
@@ -68,9 +68,12 @@ module TahiStandardTasks
         ).upload
       elsif destination == 'preprint'
         RouterUploaderService.new(
+          destination: destination,
+          email_on_failure: @paper.journal.staff_admins.pluck(:email),
           file_io: file_io,
           final_filename: final_filename,
-          email_on_failure: @paper.journal.staff_admins.pluck(:email),
+          filenames: @packager.manifest.file_list,
+          paper: @paper,
           url: @router_url
         ).upload
       elsif destination == 'em'

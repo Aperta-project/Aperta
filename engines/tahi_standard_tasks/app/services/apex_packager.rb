@@ -35,13 +35,13 @@ class ApexPackager
     manifest.file
   end
 
-  private
-
   def manifest
     @manifest ||= ApexManifest.new archive_filename: @archive_filename,
                                    metadata_filename: METADATA_FILENAME,
                                    apex_delivery_id: @apex_delivery_id
   end
+
+  private
 
   def add_sourcefile_if_needed(package)
     if @paper.file_type == 'pdf' && @paper.sourcefile

@@ -4,7 +4,8 @@ const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicPlugins     = '';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo';
 
-const expandedElements = ',a,div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
+const anchorElement      = ',a[href|rel|target|title]';
+const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' code codesample link table';
 const expandedToolbar  = ' | bullist numlist | table link | codesample code | formatselect';
 
@@ -41,7 +42,7 @@ export default Ember.Component.extend({
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
       toolbar: basicToolbar + expandedToolbar,
-      valid_elements: basicElements + expandedElements
+      valid_elements: basicElements + anchorElement + expandedElements
     }
   },
 

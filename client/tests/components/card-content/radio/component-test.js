@@ -10,6 +10,7 @@ moduleForComponent(
       this.set('actionStub', function() {});
       this.defaultContent = {
         text: `<b class='foo'>Foo</b>`,
+        valueType: 'text',
         possibleValues: [{ label: 'Choice 1', value: 1 }, { label: '<b>Choice</b> 2', value: 2}]
       };
     }

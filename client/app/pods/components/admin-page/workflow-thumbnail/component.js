@@ -21,6 +21,9 @@ export default Ember.Component.extend({
       if (this.get('canDestroy')) {
         return this.get('workflow').destroyRecord();
       }
+    },
+    doNothing(){
+      // prevent action of underlying element with bubbles=false
     }
   }
 });

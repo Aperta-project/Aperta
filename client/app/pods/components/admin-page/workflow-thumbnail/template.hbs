@@ -1,5 +1,12 @@
+{{#if confirmDestroy}}
+  <div class="admin-workflow-thumbnail-overlay" {{action "doNothing" bubbles=false}}>
+    <p>This will permanently delete your template. Are you sure?</p>
+    <button class="button-secondary button--blue knockout" {{action "hideConfirmDestroy" bubbles=false}}>Cancel</button>
+    <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyWorkflow" bubbles=false}}>Delete</button>
+  </div>
+{{/if}}
 
-<div onmouseleave={{action "hideConfirmDestroy"}}>
+<div class="admin-workflow-thumbnail-outer">
   {{#if canDestroy}}
     <div class="admin-workflow-thumbnail-icon" {{action "toggleConfirmDestroy" bubbles=false}}>
         {{fa-icon "trash"}}
@@ -22,12 +29,5 @@
         {{ workflow.activePaperCount }} Active {{ pluralize-string count=workflow.activePaperCount string="Manuscript" }}
       </div>
     </div>
-    {{#if confirmDestroy}}
-      <div class="admin-workflow-thumbnail-overlay">
-        <p>This will permanently delete your template. Are you sure?</p>
-        <button class="button-secondary button--blue knockout" {{action "hideConfirmDestroy" bubbles=false}}>Cancel</button>
-        <button class="button-secondary button--blue knockout admin-workflow-thumbnail-delete-button" {{action "destroyWorkflow" bubbles=false}}>Delete</button>
-      </div>
-    {{/if}}
   </div>
 </div>

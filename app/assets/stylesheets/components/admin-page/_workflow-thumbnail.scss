@@ -27,9 +27,16 @@
 
 .admin-workflow-thumbnail-overlay {
   position: absolute;
+  height: 100%;
+  width: 100%;
   text-align: center;
   padding: 15px 10px;
   line-height: 1.2;
   background-color: $aperta-blue-dark;
+  z-index: z('overlay-verification');
+  cursor: auto;
 }
 
+.admin-workflow-thumbnail-outer {
+  padding: 15px;
+}

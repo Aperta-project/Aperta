@@ -135,7 +135,13 @@ class AITask(BaseTask):
     logging.debug('The answers to question 5 is {0}'.format(q5ans))
     if q5ans:
       time.sleep(1)
-      questions[4].find_element_by_class_name('format-input-field').send_keys(q5ans)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('publishing_related_questions--short_title')
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5ans)
+      # Gratuitous verification
+      q5_answer = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+      logging.info('Add\'l Info Q5 answer is: {0}'.format(q5_answer))
 
     manuscript_id = self._get(self._paper_sidebar_state_information)
     self.scroll_element_into_view_below_toolbar(manuscript_id)

@@ -20,11 +20,10 @@ class InitialDecisionCard(BaseCard):
 
     # Locators - Instance members
     self._card_title = (By.TAG_NAME, 'h1')
-    self._intro_text = (By.TAG_NAME, 'p')
+    self._intro_text = (By.CSS_SELECTOR, 'div.letter-template >p')
     self._reject_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label > input')
     self._invite_radio_button = (By.CSS_SELECTOR, 'div.decision-selections > label + label > input')
-    self._decision_letter_textarea = (By.CLASS_NAME, 'decision-letter-field')
-    self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
+    self._register_decision_btn = (By.CSS_SELECTOR, 'button.send-email-action')
     self._decision_alert = (By.CLASS_NAME, 'rescind-decision-container')
     self._decision_verdict = (By.CLASS_NAME, 'rescind-decision-verdict')
     self._rescind_button = (By.CLASS_NAME, 'rescind-decision-button')
@@ -45,7 +44,6 @@ class InitialDecisionCard(BaseCard):
         intro_text.text
     self._get(self._reject_radio_button)
     self._get(self._invite_radio_button)
-    self._get(self._decision_letter_textarea)
     reg_dcn_btn = self._get(self._register_decision_btn)
     # disabling due to APERTA-6224
     # self.validate_primary_big_disabled_button_style(reg_dcn_btn)
@@ -62,24 +60,22 @@ class InitialDecisionCard(BaseCard):
       choice = random.choice(choices)
       logging.info('Since choice was random, new choice is {0}'.format(choice))
     time.sleep(2)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('decision-letter-field')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
       time.sleep(1)
-      decision_letter_input = self._get(self._decision_letter_textarea)
-      # AC 2
-      assert decision_letter_input.text == '', 'Initial decision letter is ' \
-                                               'not blank: {0}'.format(decision_letter_input.text)
-      decision_letter_input.send_keys('Rejected')
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content='Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
       time.sleep(1)
-      decision_letter_input = self._get(self._decision_letter_textarea)
-      # AC 2
-      assert decision_letter_input.text == '', 'Initial decision letter is ' \
-                                               'not blank: {0}'.format(decision_letter_input.text)
-      decision_letter_input.send_keys('Invited')
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content='Invited')
+    # Gratuitous verification
+    dec_letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+    logging.info('Decision Letter Text is: {0}'.format(dec_letter_text))
     # Time to allow the button to change to clickable state
     time.sleep(1)
     self._get(self._register_decision_btn).click()

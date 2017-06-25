@@ -959,12 +959,9 @@ class DashboardPage(AuthenticatedPage):
     assert overlay_title.text == 'Create a New Submission'
     manuscript_title_field_label = self._get(self._cns_manuscript_title_label)
     assert manuscript_title_field_label.text == 'Give your paper a title'
-    manuscript = self._get(self._cns_manuscript_title_field)
-    assert manuscript.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
-    # For the time being only validating the presence of these as they may be removed
-    self._get(self._cns_manuscript_italic_icon)
-    self._get(self._cns_manuscript_superscript_icon)
-    self._get(self._cns_manuscript_subscript_icon)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe =\
+        self.get_rich_text_editor_instance('new-paper-title')
+    assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'Title Input field missing'
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, \
         journal_chooser_label.text

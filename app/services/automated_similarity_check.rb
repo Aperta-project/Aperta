@@ -1,10 +1,11 @@
 # Service class that automates similarity checks
 class AutomatedSimilarityCheck
-  attr_reader :paper, :previous_paper_state
+  attr_reader :task, :paper, :previous_paper_state
 
-  def initialize(paper, previous_paper_state)
+  def initialize(task, paper)
+    @task = task
     @paper = paper
-    @previous_paper_state = previous_paper_state
+    @previous_paper_state = paper.previous_changes[:publishing_state][0]
   end
 
   # I could use a hash of procs for this, but folks will probably
@@ -25,15 +26,14 @@ class AutomatedSimilarityCheck
   end
 
   def setting_value
+    # this gets called by `should_run?` and in the Rails.logger call, so
+    # memoizing it won't hurt
     @setting_value ||=
       begin
-        # does the paper have a similarity check task?
-        check_task = paper.tasks.find_by(
-          type: "TahiStandardTasks::SimilarityCheckTask"
-        )
-
-        return 'off' unless check_task && check_task.task_template
-        check_task.task_template.setting('ithenticate_automation').value
+        return 'off' unless task.task_template
+        # task_template.setting() will either find or create the ithenticate
+        # automation setting in the db.
+        task.task_template.setting('ithenticate_automation').value
       end
   end
 

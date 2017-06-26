@@ -21,7 +21,7 @@ module Configurable
     raise NotImplementedError, e
   end
 
-  # A Configurable will have many settings. A given setting can be accessed by
+  # A Configurable can have many settings. A given setting can be accessed by
   # its name. Settings are lazily created when they are needed. To look up a
   # setting, a configurable has a setting_template_key that needs to be
   # defined first. Check `TaskTemplate` for an example. The defaults and

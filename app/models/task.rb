@@ -51,7 +51,10 @@ class Task < ActiveRecord::Base
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
-  has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
+  has_many :attachments,
+           as: :owner,
+           class_name: 'AdhocAttachment',
+           dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
   belongs_to :task_template
@@ -186,7 +189,7 @@ class Task < ActiveRecord::Base
     participations.where(
       user: user,
       role: journal.task_participant_role,
-      assigned_to: self,
+      assigned_to: self
     ).first_or_create!
   end
 
@@ -203,6 +206,16 @@ class Task < ActiveRecord::Base
   def update_responder
     UpdateResponders::Task
   end
+
+  ########### Paper Lifecycle Hooks ########
+  # A Task can add specific functionality to a paper via a method on the task
+  # instance itself rather than having to rely on ActiveSupport::Notifications
+  # The paper is passed in directly to maintain any attributes that might be
+  # set on the paper in memory, for instance ``
+  def after_paper_submitted(paper)
+    # no-op for Task
+  end
+  ##########################################
 
   # Implement this method for Cards that inherit from Task
   def after_update

@@ -73,16 +73,18 @@ describe Paper do
       subject
     end
 
-    it 'call the AutomatedSimilarityCheck' do
-      Subscriptions.reload
-      expect(Paper::Submitted::AutomatedSimilarityCheck).to receive(:call)
-      subject
-    end
-
     it 'sets the version numbers of the draft to 0.0' do
       expect { subject }
         .to change { paper.major_version }.from(nil).to(0)
         .and change { paper.minor_version }.from(nil).to(0)
+    end
+
+    context "with tasks" do
+      it "calls `after_paper_submitted` on each task" do
+        FactoryGirl.create(:ad_hoc_task, paper: paper)
+        expect_any_instance_of(AdHocTask).to receive(:after_paper_submitted).with(paper)
+        subject
+      end
     end
   end
 

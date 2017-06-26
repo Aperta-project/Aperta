@@ -8,16 +8,24 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
+  didInsertElement() {
+    $(window).on('beforeunload.dirtyXml', () => { if (this.get('xmlDirty')) { return true }; });
+  },
+
+  willDestroyElement() {
+    $(window).off('beforeunload.dirtyXml');
+  },
+
   xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
     let card = this.get('card');
-
-    return card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
+    return !!(card.get('hasDirtyAttributes') && card.changedAttributes()['xml']);
   }),
 
   errors: null,
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
+  showDirtyOverlay: false,
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -83,7 +91,14 @@ export default Ember.Component.extend({
     }
   }),
 
+  allowStoppedTransition: 'allowStoppedTransition',
+
   actions: {
+    cleanCard() {
+      this.get('card').rollbackAttributes('xml');
+      this.sendAction('allowStoppedTransition');
+    },
+
     updateXML(code) {
       this.set('card.xml', code);
     },

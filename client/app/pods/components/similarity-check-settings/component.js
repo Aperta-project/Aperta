@@ -18,10 +18,31 @@ export default Ember.Component.extend({
     }
   ],
 
-  submissionOption: false,
+  initialSetting: Ember.computed('initialSetting', function() {
+    var setting = this.get('taskToConfigure.settings')
+      .filter((x) => {
+        return x.name === 'ithenticate_automation';
+      });
+    return setting.length > 0 ? setting[0].value : null;
+  }),
+
+  submissionOption: Ember.computed('submissionOption', function() {
+    return this.get('initialSetting') !== 'at_first_full_submission';
+  }),
 
   selectedOption: Ember.computed('submissionOption', function() {
-    return this.get('selectableOptions')[0];
+    var setting = this.get('initialSetting');
+    if (setting === 'after_first_major_revise_decision'
+        || setting === 'after_first_minor_revise_decision'
+        || setting === 'after_any_first_revise_decision'){
+      return this.get('selectableOptions')
+        .filter((x) => {
+          return x.id === setting;
+        })[0];
+    }
+    else{
+      return this.get('selectableOptions')[0];
+    }
   }),
 
   selectEnabled: Ember.computed('submissionOption', function() {
@@ -36,15 +57,26 @@ export default Ember.Component.extend({
     return this.get('submissionOption') ? 'checked' : '';
   }),
 
-  switchState: false,
+  switchState: Ember.computed('switchState', function(){
+    var setting = this.get('initialSetting');
+    var state = Ember.Object.create({value: true});
+    if (setting === null || setting === 'off'){
+      state.set('value', false);
+    }
+    return state;
+  }),
+
+  content: Ember.Object.create({
+    text: 'Automatic Checks'
+  }),
 
   optionsVisible: Ember.computed('switchState', function() {
-    return this.get('switchState') ? 'show`' : 'hide';
+    return this.get('switchState').value ? 'show' : 'hide';
   }),
 
   actions: {
     saveAnswer(newVal) {
-      this.set('switchState', newVal);
+      this.set('switchState', Ember.Object.create({value: newVal}));
     },
     clickOption (value) {
       this.set('submissionOption', value);
@@ -58,7 +90,7 @@ export default Ember.Component.extend({
     saveSettings () {
       var settingValue = null;
       var taskTemplateId = this.get('taskToConfigure.id');
-      if (this.get('switchState')){
+      if (this.get('switchState').value){
         if (this.get('submissionOption')){
           settingValue = this.get('selectedOption').id;
         }

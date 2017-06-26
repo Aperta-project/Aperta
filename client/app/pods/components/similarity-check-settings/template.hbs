@@ -1,22 +1,22 @@
-<h3>Automatic Checks</h3>
-<br>
 <div class="row">
   <div class="col-xs-5">
-    <h4>Send manuscript to iThenticate:</h4>&nbsp;&nbsp;
+    <h3>Automatic Checks:</h3>&nbsp;&nbsp;
   </div>
   <div class="col-xs-7">
     {{card-content/toggle-switch
       name="toogle"
-      labelText="ON" answer=switchState
+      labelText="ON"
+      answer=switchState
+      content=content
       size="small"
       valueChanged=(action 'saveAnswer')}}
   </div>
 </div>
 
-
 <div class="{{optionsVisible}}">
-  <input onClick={{action "clickOption" false}} type="radio" name="submissionOption" checked/>&nbsp;&nbsp;on first full submission<br><br>
-  <input onClick={{action "clickOption" true}} type="radio" name="submissionOption" />&nbsp;&nbsp;after&nbsp;&nbsp;
+  <h4>Send Manuscript to iThenticate</h4>
+  <input onClick={{action "clickOption" false}} type="radio" name="submissionOption" checked={{fullSubmissionState}}/>&nbsp;&nbsp;on first full submission<br><br>
+  <input onClick={{action "clickOption" true}} type="radio" name="submissionOption" checked={{afterState}}/>&nbsp;&nbsp;after&nbsp;&nbsp;
   <span>
     {{select-2-single
         enable=selectEnabled

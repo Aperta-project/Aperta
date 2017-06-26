@@ -66,11 +66,12 @@ Router.map(function() {
       });
       this.route('edit_email', { path: 'journals/emailtemplates/:email_id/edit' });
     });
-
-    this.route('journal', { path: '/journals/:journal_id' }, function() {
-      this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
-        this.route('new');
-        this.route('edit', { path: '/:manuscript_manager_template_id/edit' });
+    this.route('mmt', function() {
+      this.route('journal', { path: '/journals/:journal_id' }, function() {
+        this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
+          this.route('new');
+          this.route('edit', { path: '/:manuscript_manager_template_id/edit' });
+        });
       });
     });
     this.route('feature_flags');

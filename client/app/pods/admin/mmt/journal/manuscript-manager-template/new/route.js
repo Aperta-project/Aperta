@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  controllerName: 'admin.journal.manuscript_manager_template.edit',
+  controllerName: 'admin.mmt.journal.manuscript_manager_template.edit',
 
   model() {
 
-    let journal = this.modelFor('admin.journal');
+    let journal = this.modelFor('admin.mmt.journal');
 
     let newTemplate = this.store.createRecord('manuscript-manager-template', {
       journal: journal,
@@ -32,12 +32,12 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     controller.set('model', model);
-    controller.set('journal', this.modelFor('admin.journal'));
+    controller.set('journal', this.modelFor('admin.mmt.journal'));
     controller.set('editingName', true);
   },
 
   renderTemplate(){
-    this.render('admin/journal/manuscript_manager_template/edit');
+    this.render('admin/mmt/journal/manuscript_manager_template/edit');
   },
 
   actions: {
@@ -45,7 +45,7 @@ export default Ember.Route.extend({
     didRollBack(){
       let newTemplate = this.get('newTemplate');
       this.get('journal.manuscriptManagerTemplates').removeObject(newTemplate);
-      this.transitionTo('admin.journal');
+      this.transitionTo('admin.mmt.journal');
     }
   }
 });

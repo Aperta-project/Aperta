@@ -7,8 +7,7 @@ const { attr, belongsTo, hasMany } = DS;
 const PAPER_SUBMITTABLE_STATES = [
   'unsubmitted',
   'in_revision',
-  'invited_for_full_submission',
-  'checking'
+  'invited_for_full_submission'
 ];
 
 const TERMINAL_STATES = ['accepted', 'rejected'];
@@ -218,8 +217,7 @@ export default DS.Model.extend({
     return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
 
-  hasAnyError: computed.or('authorHasErrorOnPreSubmission', 'authorHasErrorOnSubmission',
-  'staffEditorHasErrorOnSubmittedAndEditable', 'otherRolesHasErrorOnSubmitted'),
+  hasAnyError: computed.equal('file.status', 'error'),
 
   authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
     return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);
@@ -229,15 +227,10 @@ export default DS.Model.extend({
     return this.stateHasErrorsForRole('isPartialSubmittedState', ['Creator']);
   }),
 
-  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable', 
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable',
   'file.status', function(){
     let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
     return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray) && this.get('editable');
-  }),
-
-  otherRolesHasErrorOnSubmitted: computed('currentUserRoles','isPartialSubmittedState', function(){
-    let roleArray = ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'];
-    return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray);
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){

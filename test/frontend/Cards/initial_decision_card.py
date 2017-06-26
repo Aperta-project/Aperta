@@ -60,18 +60,21 @@ class InitialDecisionCard(BaseCard):
       choice = random.choice(choices)
       logging.info('Since choice was random, new choice is {0}'.format(choice))
     time.sleep(2)
-    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-        self.get_rich_text_editor_instance('decision-letter-field')
-    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
       time.sleep(1)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('decision-letter-field')
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content='Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
       time.sleep(1)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('decision-letter-field')
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content='Invited')
     # Gratuitous verification
     dec_letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)

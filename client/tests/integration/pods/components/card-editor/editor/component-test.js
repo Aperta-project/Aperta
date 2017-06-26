@@ -87,7 +87,7 @@ test('archiving requires confirmation', function(assert) {
     transitionTo(route, modelId, _whatever) { //eslint-disable-line no-unused-vars
       assert.equal(
         route,
-        'admin.cc.journals.cards',
+        'admin.journals.cards',
         'transitions to the card catalog'
       );
       assert.equal(
@@ -200,7 +200,7 @@ test('deleting requires confirmation', function(assert) {
     transitionTo(route, modelId, _whatever) { //eslint-disable-line no-unused-vars
       assert.equal(
         route,
-        'admin.cc.journals.cards',
+        'admin.journals.cards',
         'transitions to the card catalog'
       );
       assert.equal(

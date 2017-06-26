@@ -18,7 +18,7 @@ export default Ember.Route.extend({
     //
 
     if (!model.journal && model.journals.get('length') === 1) {
-      this.transitionTo('admin.cc.journals.workflows', model.journals.get('firstObject.id'));
+      this.transitionTo('admin.journals.workflows', model.journals.get('firstObject.id'));
     }
   }
 });

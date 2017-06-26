@@ -13,7 +13,6 @@ const isAdHocTask = function(kind) {
 };
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
-  restless: Ember.inject.service('restless'),
   pendingChanges: false,
   editingName: false,
   positionSort: ['position:asc'],
@@ -21,7 +20,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
-  submissionOption: false,
 
   settingsTitle: Ember.computed('taskToConfigure', function() {
     return this.get('taskToConfigure.title') + ': Settings';
@@ -34,29 +32,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   showSettingsOverlay: false,
   taskToConfigure: null,
-
-
-
-  selectedOption: Ember.computed('submissionOption', function() {
-    return this.get('selectableOptions')[0];
-  }),
-
-  selectEnabled: Ember.computed('submissionOption', function() {
-    return this.get('submissionOption');
-  }),
-
-  fullSubmissionState: Ember.computed('submissionOption', function() {
-    return this.get('submissionOption') ? '' : 'checked';
-  }),
-
-  afterState: Ember.computed('submissionOption', function() {
-    return this.get('submissionOption') ? 'checked' : '';
-  }),
-
-  switchState: false,
-  optionsVisible: Ember.computed('switchState', function() {
-    return this.get('switchState') ? 'show`' : 'hide';
-  }),
 
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,
@@ -297,35 +272,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
           this.resetProperties();
         });
       }
-    },
-
-    clickOption (value) {
-      this.set('submissionOption', value);
-    },
-
-    selectionSelected(selection) {
-      this.set('selectedOption', selection);
-    },
-
-    saveSettings () {
-      var settingValue = null;
-      var taskTemplateId = this.get('taskToConfigure.id');
-      if (this.get('switchState')){
-        if (this.get('submissionOption')){
-          settingValue = this.get('selectedOption').id;
-        }
-        else{
-          settingValue = 'at_first_full_submission';
-        }
-      }
-      else{
-        settingValue = 'off';
-      }
-      this.get('restless').post('/api/task_templates/' + taskTemplateId + '/similarity_check_settings', {
-        value: settingValue
-      }).then(()=> {
-        this.set('showSettingsOverlay', false);
-      });
     }
   }
 });

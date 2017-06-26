@@ -87,6 +87,14 @@ $ov--card-breakpoint: 900px;
     position: relative;
     padding: 4rem $ov--card-side-pad;
 
+    .answer-container {
+      display: flex;
+      flex: 1 0 50%;
+      //width: 100%;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
 
     // TODO: These need another home:
     label {

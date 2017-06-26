@@ -1,0 +1,85 @@
+.aside .panel-body {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2em;
+  position: relative;
+}
+.aside .nav-tabs > li.active > a,
+.aside .nav-tabs > li.active > a:hover,
+.aside .nav-tabs > li.active > a:focus {
+  border: 1px solid #ccc;
+  border-bottom-color: transparent;
+  background-color: #fff;
+}
+.aside .nav-tabs > li {
+  float: left;
+  margin-left: -1px;
+}
+.aside .tab-pane .panel-body {
+  border-top: none;
+}
+.aside .nav-tabs > li > a,
+.aside .nav-tabs > li > a:hover,
+.aside .nav-tabs > li > a:focus {
+  border: 1px solid #ccc;}
+
+.aside .nav-tabs {
+  border-bottom: 1px solid #ccc;
+}
+
+.aside .tabs-left .tab-pane .panel-body,
+.aside .tabs-right .tab-pane .panel-body {
+  border-top: 1px solid #ccc;
+}
+.aside .nav-tabs > li a:hover {
+  background: #eee;
+}
+.aside .tabs-below > .nav-tabs,
+.aside .tabs-right > .nav-tabs,
+.aside .tabs-left > .nav-tabs {
+  border-bottom: 0;
+}
+.aside .tabs-left .panel-body {
+  position: static;
+}
+.aside .tabs-left > .nav-tabs,
+.aside .tabs-right > .nav-tabs {
+  width: 10%;
+}
+
+.aside .tabs-right .panel-body {
+  width: 90%;
+  margin-right: 10%;
+}
+.aside .tab-content > .tab-pane {
+  display: none;
+}
+.aside .tab-content > .active,
+.aside .pill-content > .active {
+  display: block;
+}
+.aside .tabs-right > .nav-tabs > li {
+  float: none;
+}
+.aside .tabs-right > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+.aside .tabs-right > .nav-tabs {
+  float: right;
+  margin-left: 19px;
+}
+.aside .tabs-right > .nav-tabs > li > a {
+  margin-left: -1px;
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+.aside .tabs-right > .nav-tabs > a,
+.aside .tabs-right > .nav-tabs > a:hover,
+.aside .tabs-right > .nav-tabs > a:focus {
+  border-color: #ccc #ccc #ccc transparent;
+  z-index: 1;
+}

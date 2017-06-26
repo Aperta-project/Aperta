@@ -1,0 +1,25 @@
+
+<div class="aside">
+    <div class="tabs-right">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#"><i class="fa fa-edit"></i></a>
+            </li>
+            <li class="">
+                <a href="#"><i class="fa fa-battery-full"></i></a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content ">
+        <div id="tab-1" class="tab-pane active">
+            <div class="panel-body">
+               {{textarea change=(action attrs.annotationChanged) value=annotation}}
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+            annotation mode!
+            </div>
+        </div>
+    </div>
+</div>

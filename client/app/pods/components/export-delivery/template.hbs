@@ -1,26 +1,13 @@
-{{!-- <div class="export-delivery-date">
+<td colspan="2" class="export-delivery-message">
+  Export <strong>{{ delivery.humanReadableState }}</strong>. {{ delivery.errorMessage }}
+</td>
+
+<td class="export-delivery-date">
   {{format-date delivery.createdAt }}
-</div>
+</td>
 
-<div class="export-delivery-icon">
-  {{#if delivery.incomplete}}
-    {{progress-spinner visible=true size="small"}}
-  {{/if}}
-
-  {{#if delivery.failed}}
-    <i class="fa fa-times fa-2x red"></i>
-  {{/if}}
-
-  {{#if delivery.succeeded}}
-    <i class="fa fa-check fa-2x green"></i>
-  {{/if}}
-</div>
-
-<div class="export-delivery-message">
-  Export Upload <strong>{{ delivery.humanReadableState }}</strong>. {{ delivery.errorMessage }}
-</div> --}}
-<tr>
-  <td>1</td>
-  <td>2</td>
-  <td>3</td>
-</tr>
+{{#if delivery.failed}}
+  <td class="export-delivery-date">
+    <i class="fa fa-exclamation-triangle red"></i>
+  </td>
+{{/if}}

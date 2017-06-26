@@ -1,39 +1,19 @@
 .export-delivery {
   @include clearfix;
-  border: 1px solid #ddd;
+  border-top: 1px solid #ddd;
   border-radius: 4px;
-  height: 65px;
+  height: 40px;
   margin-top: 5px;
 
-  .export-delivery-icon {
-    float: left;
-    margin: 0 20px 0 20px;
-    line-height: 70px;
-
-    .green {
-      color: $aperta-green;
-    }
-
-    .red {
-      color: $aperta-red;
-      padding: 0 4px;
-    }
-
-    .progress-spinner {
-      position: relative;
-      top: 7px;
-    }
-  }
-
   .export-delivery-message {
-    line-height: 65px;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 
   .export-delivery-date {
-    line-height: 65px;
-    float: right;
-    color: #999;
     margin-right: 25px;
+  }
+
+  .fa-exclamation-triangle {
+    color: red;
   }
 }

@@ -1,4 +1,6 @@
 # Serves as the method for non-users to decline without having to sign in.
+require 'jwt'
+
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
@@ -16,8 +18,7 @@ class TokenInvitationsController < ApplicationController
     if invitation.invited? and current_user.email == invitation.email
       invitation.accept!
       Activity.invitation_accepted!(invitation, user: current_user)
-      journal_name = invitation.paper.journal.name
-      flash[:notice] = "Thank you for agreeing to review for #{journal_name}."
+      flash[:notice] = thank_you_message
     end
     redirect_to "/papers/#{invitation.paper.to_param}"
   end
@@ -83,10 +84,22 @@ class TokenInvitationsController < ApplicationController
     @invitation ||= Invitation.find_by_token!(token)
   end
 
+  def thank_you_message
+    journal_name = invitation.paper.journal.name
+    "Thank you for agreeing to review for #{journal_name}."
+  end
+
+  def use_authentication?
+    NedUser.new.email_has_account?(invitation.email) or
+      !TahiEnv.cas_phased_signup_url or
+      !FeatureFlag['AKITA_INTEGRATION']
+  end
+
   def ensure_user!
     # first we check if the user is already in our db
     # or if we even have that CAS_PHASED_SIGNUP_URL in this env
-    if NedUser.new.email_has_account?(invitation.email) or !TahiEnv.cas_phased_signup_url
+    # or if the feature flag is set
+    if use_authentication?
       # so they should login via regular means
       authenticate_user!
     else
@@ -100,40 +113,41 @@ class TokenInvitationsController < ApplicationController
       # use for setting our sweet flash message.
 
       # url inception ahead, beware
-      cas_uri = URI.parse(ENV.fetch("CAS_SIGNUP_URL") || 'https://locahost:5000')
-      invitation_accept_url = url_for(
-        controller: 'token_invitations',
-        action: 'accept',
-        token: invitation.token,
-        new_user: true
-      )
-      omniauth_callback = url_for(
-        controller: 'tahi_devise/omniauth_callbacks',
-        action: 'cas',
-        url: invitation_accept_url
-      )
+      cas_uri = URI.parse(TahiEnv.cas_phased_signup_url)
 
-      redirect_params = {
-        service: omniauth_callback,
-        token: jwt_encoded_payload
-      }
-      cas_uri.query = redirect_params.to_query
+      cas_uri.query = { token: jwt_encoded_payload }.to_query
       redirect_to cas_uri.to_s
     end
   end
 
-  def jwt_encoded_payload
-    # payload = {
-    #   email: invitation.email,
-    #   heading: "Thank you for agreeing to review for PLOS Biology",
-    #   subheading:
-    #     "Before you begin your review in Aperta,\
-    #     please take a moment to create your PLOS account."
-    # }
-    # # get key from env? Abstract this into its own service?
-    # private_key = OpenSSL::PKey::EC.new(TahiEnv.phased_ec_key, nil)
-    # JWT.encode(payload, private_key, 'ES256')
-    SecureRandom.hex(20)
+  def akita_invitation_accept_url
+    url_for(
+      controller: 'token_invitations',
+      action: 'accept',
+      token: invitation.token,
+      new_user: true
+    )
   end
 
+  def akita_omniauth_callback_url
+    url_for(
+      controller: 'tahi_devise/omniauth_callbacks',
+      action: 'cas',
+      url: akita_invitation_accept_url
+    )
+  end
+
+  def jwt_encoded_payload
+    payload = {
+      destination: akita_omniauth_callback_url,
+      email: invitation.email,
+      heading: thank_you_message,
+      subheading:
+        "Before you begin your review in Aperta,\
+        please take a moment to create your PLOS account."
+    }
+    # get key from env? Abstract this into its own service?
+    private_key = OpenSSL::PKey::EC.new(TahiEnv.phased_ec_private_key, nil)
+    JWT.encode(payload, private_key, 'ES256')
+  end
 end

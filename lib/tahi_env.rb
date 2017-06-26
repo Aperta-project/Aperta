@@ -98,6 +98,8 @@ class TahiEnv
   required :CAS_SERVICE_VALIDATE_URL, if: :cas_enabled?
   required :CAS_SSL, :boolean, if: :cas_enabled?
   optional :CAS_CALLBACK_URL
+  optional :CAS_PHASED_SIGNUP_URL
+  optional :PHASED_EC_PRIVATE_KEY
 
   # EM / Editorial Manager
   optional :EM_DATABASE

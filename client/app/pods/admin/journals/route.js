@@ -3,22 +3,17 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model(params) {
     return this.store.findAll('admin-journal').then((journals) => {
+      let journal = journals.find(j => j.id === params.journal_id);
+      // For users with only one journal, transition to 
+      // that journal rather than 'all journals'.
+      if (!journal && journals.get('length') === 1) {
+        journal = journals.get('firstObject');
+      }
+
       return {
         journals: journals,
-        journal: journals.find(j => j.id === params.journal_id)
+        journal: journal
       };
     });
-  },
-
-  afterModel(model) {
-    //
-    // for users with only one journal, transition to a route that
-    // specifies a specific journal rather than behaving like
-    // 'all journals'.
-    //
-
-    if (!model.journal && model.journals.get('length') === 1) {
-      this.transitionTo('admin.journals.workflows', model.journals.get('firstObject.id'));
-    }
   }
 });

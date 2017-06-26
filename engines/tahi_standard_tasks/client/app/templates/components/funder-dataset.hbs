@@ -38,13 +38,12 @@
 </div>
 
 <div class="form-group">
-  <div class="inset-form-control">Additional Comments</div>
-  {{rich-text-editor
-    editorStyle='basic'
+  <span class="text-field-title">Additional Comments</span>
+  {{input
+    type="text"
     name="additional_comments"
-    ident="additional_comments"
-    onContentsChanged=(action 'saveComments')
     value=model.additionalComments
+    class="form-control tall-text-field"
     placeholder="Additional comments about the funder go here"
     disabled=disabled
   }}
@@ -63,15 +62,15 @@
     </p>
 
     <div class="form-group">
-      <div class="inset-form-control">Role of sponsors or funders</div>
-      {{rich-text-editor
-        editorStyle='basic'
-        ident="funder--had_influence--role_description"
-        onContentsChanged=(action 'saveRoleDescription')
-        value=model.funderInfluenceDescription
+      <span class="text-field-title">Role of sponsors or funders</span>
+      {{input
+        type="text"
+        name="additional_comments"
         owner=model
-        displayQuestionText=false
+        value=model.funderInfluenceDescription
+        class="form-control tall-text-field"
         placeholder="Description"
+        displayQuestionText=false
         disabled=disabled
       }}
     </div>

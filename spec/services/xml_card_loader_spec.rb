@@ -238,7 +238,6 @@ describe XmlCardLoader do
         let(:content1) do
           <<-XML
             <content content-type='short-input' value-type='text' default-answer-value="foo">
-              <placeholder>#{placeholder}</placeholder>
               <text>#{text}</text>
             </content>
           XML

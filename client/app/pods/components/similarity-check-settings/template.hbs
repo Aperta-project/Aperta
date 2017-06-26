@@ -1,0 +1,33 @@
+<h3>Automatic Checks</h3>
+<br>
+<div class="row">
+  <div class="col-xs-5">
+    <h4>Send manuscript to iThenticate:</h4>&nbsp;&nbsp;
+  </div>
+  <div class="col-xs-7">
+    {{card-content/toggle-switch
+      content=content name="toogle"
+      labelText="ON" answer=switchState
+      size="small"
+      valueChanged=(action 'saveAnswer')}}
+  </div>
+</div>
+
+
+<div class="{{optionsVisible}}">
+  <input onClick={{action "clickOption" false}} type="radio" name="submissionOption" checked/>&nbsp;&nbsp;on first full submission<br><br>
+  <input onClick={{action "clickOption" true}} type="radio" name="submissionOption" />&nbsp;&nbsp;after&nbsp;&nbsp;
+  <span>
+    {{select-2-single
+        enable=selectEnabled
+        class="similarity-options"
+        source=selectableOptions
+        selectionSelected="selectionSelected"
+        selectedData=selectedOption
+        width="200px"}}
+  </span>
+</div>
+<div class="overlay-action-buttons">
+  <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
+  <button class="button-primary button--green" {{action "saveSettings"}}>SAVE</button>
+</div>

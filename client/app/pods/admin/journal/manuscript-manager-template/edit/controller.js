@@ -35,20 +35,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showSettingsOverlay: false,
   taskToConfigure: null,
 
-  selectableOptions: [
-    {
-      id: 'after_first_major_revise_decision',
-      text: 'first major revision'
-    },
-    {
-      id: 'after_first_minor_revise_decision',
-      text: 'first minor revision'
-    },
-    {
-      id: 'after_any_first_revise_decision',
-      text: 'any first revision'
-    }
-  ],
+
 
   selectedOption: Ember.computed('submissionOption', function() {
     return this.get('selectableOptions')[0];
@@ -314,10 +301,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     clickOption (value) {
       this.set('submissionOption', value);
-    },
-
-    saveAnswer(newVal) {
-      this.set('switchState', newVal);
     },
 
     selectionSelected(selection) {

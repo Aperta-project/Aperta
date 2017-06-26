@@ -44,7 +44,7 @@ class ApexPackager
   end
 
   def add_sourcefile_if_needed(package)
-    if @paper.file_type == 'pdf' && !@paper.sourcefile.nil?
+    if @paper.file_type == 'pdf' && @paper.sourcefile
       url = @paper.sourcefile.url
       add_file_to_package package,
         source_filename,

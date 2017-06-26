@@ -945,3 +945,19 @@ class AuthenticatedPage(StyledPage):
       self.traverse_from_frame()
     return
 
+  def tmce_clear_rich_text(self, iframe):
+    """
+    Set the text of the rich text editor refered to by editory id with fram iframe
+    :param iframe: the iframe webelement returned from get_rich_text_editor_instance()
+    :return: void function
+    """
+    self.traverse_to_frame(iframe)
+    try:
+      self._iframe_body = (By.TAG_NAME, 'body')
+      text_entry_field = self._get(self._iframe_body)
+      text_entry_field.clear()
+    finally:
+      self.traverse_from_frame()
+    return
+
+

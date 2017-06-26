@@ -24,7 +24,7 @@ class CoverLetterCard(BaseCard):
     self._instructions_text_first_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:first-of-type')
     self._instructions_text_last_p = (By.CSS_SELECTOR, '.edit-cover-letter > p:last-of-type')
     self._instructions_text_questions_ul = (By.CSS_SELECTOR, '.edit-cover-letter > ul')
-    self._cover_letter_textarea = (By.CLASS_NAME, 'cover-letter-field')
+    self._cover_letter_textarea_noneditable = (By.CSS_SELECTOR, 'div.answer-text')
     self._uploaded_attachment_item_link = (By.CSS_SELECTOR, 'a.file-link')
 
   def validate_styles(self):
@@ -91,30 +91,33 @@ class CoverLetterCard(BaseCard):
         i, question.text,
         expected_instructions_questions[i])
       self.validate_application_body_text(question)
+    card_state = self.completed_state()
+    if not card_state:
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('cover_letter--text')
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+      assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'Cover letter text ' \
+                                                                            'input is not present '\
+                                                                            'in the task!'
 
-    # Validate textarea state
-    textarea = self._get(self._cover_letter_textarea)
-
-    expected_textarea_placeholder = 'Please type or paste your cover letter into this text ' \
-                                    'field, or attach a file below'
-    assert textarea.get_attribute('placeholder') == expected_textarea_placeholder, \
-        'The textarea placeholder: {0} is not the expected: ' \
-        '{1}'.format(textarea.get_attribute('placeholder'), expected_textarea_placeholder)
-    # APERTA-8903
-    # self.validate_textarea_style(textarea)
-
-  def validate_textarea_submitted_text(self, submitted_text):
+  def validate_submitted_text(self, submitted_text, completed=False):
     """
-    validate_textarea_submitted_text: Validates display of the submitted cover letter text
+    validate_submitted_text: Validates display of the submitted cover letter text
     :param submitted_text: The submitted cover letter text. A string.
+    :param completed: boolean True if state of card is completed, default False
     :return: void function
     """
-
-    textarea = self._get(self._cover_letter_textarea)
-
-    assert textarea.get_attribute('value') == submitted_text, \
-        'The textarea text: {0} do not match the submitted: ' \
-        '{1}'.format(textarea.get_attribute('value'), submitted_text)
+    if not completed:
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('cover_letter--text')
+      logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+      cover_ltr_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+      logging.info('Cover Letter text is: {0}'.format(cover_ltr_text))
+    else:
+      cover_ltr_text = self._get(self._cover_letter_textarea_noneditable).text
+    assert cover_ltr_text == submitted_text, \
+        'The page presented text: {0} does not match the submitted text: ' \
+        '{1}'.format(cover_ltr_text, submitted_text)
 
   def validate_textarea_text_editing(self):
     """
@@ -125,25 +128,21 @@ class CoverLetterCard(BaseCard):
     if self.completed_state():
       self.click_completion_button()
 
-    textarea = self._get(self._cover_letter_textarea)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('cover_letter--text')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     textarea_edited_text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ' \
                            'iaculis, nisl volutpat dignissim tempus, urna risus semper lectus, ' \
                            'non fermentum quam neque sed magna. Morbi in velit ac arcu ' \
                            'scelerisque lobortis nec et mauris. Vestibulum nec mauris sapien. ' \
                            'Aenean ac'
-
-    assert textarea.is_enabled(), 'The textarea is not enabled when it ' \
-                                  'should be'
-
-    textarea.clear()
-
-    textarea.send_keys(textarea_edited_text)
-
+    self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=textarea_edited_text)
     self.click_completion_button()
-
-    assert textarea.get_attribute('value') == textarea_edited_text, \
-        'The edited text: {0} is not the expected: {1}'.format(textarea.get_attribute('value'),
-                                                               textarea_edited_text)
+    new_page_text = self._get(self._cover_letter_textarea_noneditable).text
+    assert new_page_text == textarea_edited_text, \
+        'The new page text: {0} is not the expected: {1}'.format(new_page_text,
+                                                                 textarea_edited_text)
 
   def validate_uploaded_file_download(self, uploaded_file):
     """

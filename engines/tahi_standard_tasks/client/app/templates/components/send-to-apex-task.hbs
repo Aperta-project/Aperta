@@ -4,8 +4,6 @@
   <div class="export-history">
     <h3 class="export-history-header">Export History</h3>
 
-    {{#each task.apexDeliveries as |delivery|}}
-      {{apex-delivery delivery=delivery}}
-    {{/each}}
+    {{export-group exports=task.apexDeliveries}}
   </div>
 {{/if}}

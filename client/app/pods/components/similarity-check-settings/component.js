@@ -1,7 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  restless: Ember.inject.service('restless'),
+  restless: Ember.inject.service(),
+  store: Ember.inject.service(),
+
   classNames: ['similarity-check-settings'],
   selectableOptions: [
     {
@@ -106,8 +108,9 @@ export default Ember.Component.extend({
       }
       this.get('restless').post('/api/task_templates/' + taskTemplateId + '/similarity_check_settings', {
         value: settingValue
-      }).then(()=> {
-        location.reload();
+      }).then((data)=> {
+        this.get('store').pushPayload(data);
+        this.attrs.close();
       });
     }
   }

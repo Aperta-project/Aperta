@@ -32,9 +32,7 @@ export default Ember.Component.extend({
 
   selectedOption: Ember.computed('submissionOption', function() {
     var setting = this.get('initialSetting');
-    if (setting === 'after_first_major_revise_decision'
-        || setting === 'after_first_minor_revise_decision'
-        || setting === 'after_any_first_revise_decision'){
+    if (this.get('selectableOptions').map((x) => x.id).includes(setting)){
       return this.get('selectableOptions')
         .filter((x) => {
           return x.id === setting;
@@ -60,7 +58,7 @@ export default Ember.Component.extend({
   switchState: Ember.computed('switchState', function(){
     var setting = this.get('initialSetting');
     var state = Ember.Object.create({value: true});
-    if (setting === null || setting === 'off'){
+    if (['off',null].includes(setting)){
       state.set('value', false);
     }
     return state;
@@ -76,6 +74,11 @@ export default Ember.Component.extend({
 
   actions: {
     saveAnswer(newVal) {
+      if (newVal){
+        this.set('fullSubmissionState','checked');
+        this.set('afterState','');
+        this.set('submissionOption', false);
+      }
       this.set('switchState', Ember.Object.create({value: newVal}));
     },
     clickOption (value) {
@@ -104,7 +107,7 @@ export default Ember.Component.extend({
       this.get('restless').post('/api/task_templates/' + taskTemplateId + '/similarity_check_settings', {
         value: settingValue
       }).then(()=> {
-        this.attrs.close();
+        location.reload();
       });
     }
   }

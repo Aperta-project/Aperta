@@ -15,17 +15,12 @@ describe TahiStandardTasks::ReviewerMailer do
       decision: paper.draft_decision
     )
   end
-
   let(:report) do
     FactoryGirl.create(
       :reviewer_report,
       decision: paper.draft_decision,
       user: reviewer
     )
-  end
-
-  before do
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
   end
 
   describe ".welcome_reviewer" do
@@ -37,7 +32,7 @@ describe TahiStandardTasks::ReviewerMailer do
       it "contains the due date" do
         report.set_due_datetime
         expect(report.due_at).to_not be_nil
-        expect(email.body).to match(report.due_at.to_s)
+        expect(email.body).to match(report.due_at.strftime("%B %-d, %Y %H:%M %Z"))
       end
     end
   end

@@ -47,7 +47,7 @@
                           message=validationErrors.plos_billing--pfa_question_1b}}
         {{/if}}
         {{#if selected.no}}
-          {{nested-question-textarea ident="plos_billing--pfa_question_1a"
+          {{nested-question-input ident="plos_billing--pfa_question_1a"
                                      owner=task
                                      disabled=isNotEditable
                                      textClassNames=""}}
@@ -72,7 +72,7 @@
                           message=validationErrors.plos_billing--pfa_question_2b}}
         {{/if}}
         {{#if selected.no}}
-          {{nested-question-textarea ident="plos_billing--pfa_question_2a"
+          {{nested-question-input ident="plos_billing--pfa_question_2a"
                                      owner=task
                                      disabled=isNotEditable
                                      textClassNames=""}}
@@ -135,7 +135,7 @@
       <br>
 
       <div>
-        {{nested-question-textarea ident="plos_billing--pfa_additional_comments"
+        {{nested-question-input ident="plos_billing--pfa_additional_comments"
                                    disabled=isNotEditable
                                    owner=task}}
       </div>

@@ -33,8 +33,8 @@ export default Ember.Component.extend({
     }
   }),
 
-  yesValue: 't',
-  noValue: 'f',
+  yesValue: true,
+  noValue: false,
   yesLabel: 'Yes',
   noLabel: 'No',
 

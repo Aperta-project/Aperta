@@ -10,7 +10,7 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-
+    
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be
     happier
   -->
@@ -27,13 +27,13 @@
         <attribute name="ident"/>
       </optional>
       <attribute name="value-type">
-        <value>text</value>
-      </attribute>
-      <attribute name="content-type">
         <choice>
-          <value>radio</value>
+          <value>text</value>
           <value>boolean</value>
         </choice>
+      </attribute>
+      <attribute name="content-type">
+        <value>radio</value>
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
@@ -41,9 +41,9 @@
       <element name="text">
         <text/>
       </element>
-      <oneOrMore>
+      <zeroOrMore>
         <ref name="possible-value"/>
-      </oneOrMore>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>

@@ -586,11 +586,11 @@ class Paper < ActiveRecord::Base
     author_list_items.includes(:author).map(&:author)
   end
 
+  # rubocop:disable Metrics/LineLength, Style/SpaceInsideBlockBraces
+
   def all_author_emails
     fields = [[authors, :email], [group_authors, :contact_email]]
-    Set.new.tap do |set|
-      fields.each { |assoc, field| set.merge(assoc.pluck(field)) }
-    end
+    Set.new.tap {|set| fields.each {|assoc, field| set.merge(assoc.pluck(field))}}
   end
 
   def revise_task

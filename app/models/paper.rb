@@ -288,8 +288,7 @@ class Paper < ActiveRecord::Base
   end
 
   def self.find_by_id_or_short_doi(id)
-    return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
-    return find(id)
+    id.to_s =~ Journal::SHORT_DOI_FORMAT ? find_by_short_doi(id) : find(id)
   end
 
   def inactive?

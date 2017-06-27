@@ -39,6 +39,8 @@ class Author < ActiveRecord::Base
       message: "needs to be a valid email address" },
       if: :task_completed?
 
+  validate :email, :check_duplicate_email
+
   validates :contributions,
     presence: { message: "one must be selected" }, if: :task_completed?
 
@@ -62,6 +64,12 @@ class Author < ActiveRecord::Base
 
   def ensured_author_list_item
     author_list_item || build_author_list_item
+  end
+
+  # rubocop:disable Metrics/LineLength
+  def check_duplicate_email
+    paper = Paper.find(paper_id)
+    errors.add(:email, 'Duplicate email address') if email.in?(paper.all_author_emails)
   end
 
   def self.for_paper(paper)

@@ -19,6 +19,15 @@ const PAPER_GRADUAL_ENGAGEMENT_STATES = [
   'invited_for_full_submission'
 ];
 
+const PARTIAL_SUBMITTED_STATES = [
+  'accepted',
+  'rejected',
+  'initially_submitted',
+  'submitted',
+  'published',
+  'withdrawn'
+];
+
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
@@ -79,6 +88,7 @@ export default DS.Model.extend({
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
+  currentUserRoles: attr(),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -185,6 +195,13 @@ export default DS.Model.extend({
     }
   ),
 
+  isPartialSubmittedState: computed(
+    'publishingState',
+    function() {
+      return PARTIAL_SUBMITTED_STATES.includes(this.get('publishingState'));
+    }
+  ),
+
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
@@ -198,6 +215,22 @@ export default DS.Model.extend({
   /* True if a decision can be registered in this state. */
   isReadyForDecision: computed('publishingState', function() {
     return DECIDABLE_STATES.includes(this.get('publishingState'));
+  }),
+
+  hasAnyError: computed.equal('file.status', 'error'),
+
+  authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);
+  }),
+
+  authorHasErrorOnSubmission: computed('isPartialSubmittedState', 'file.status', 'currentUserRoles', function() {
+    return this.stateHasErrorsForRole('isPartialSubmittedState', ['Creator']);
+  }),
+
+  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable',
+  'file.status', function(){
+    let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
+    return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray) && this.get('editable');
   }),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
@@ -252,6 +285,14 @@ export default DS.Model.extend({
   hasSimilarityChecks: computed.notEmpty('similarityChecks'),
 
   restless: Ember.inject.service(),
+
+  stateHasErrorsForRole(state, roleArray) {
+    return this.get(state) &&
+    this.get('file.status') ===  'error'
+    && roleArray.any((role) => {
+      return this.get('currentUserRoles').includes(role);
+    });
+  },
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

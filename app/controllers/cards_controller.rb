@@ -5,8 +5,8 @@ class CardsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  rescue_from Nokogiri::XML::SyntaxError,
-              with: :render_xml_syntax_error
+  rescue_from XmlCardDocument::XmlValidationError,
+              with: :render_xml_validation_errors
 
   def index
     journal_ids = current_user.filter_authorized(
@@ -32,9 +32,10 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card.update_from_xml(params[:card][:xml]) if params[:card][:xml].present?
-    card.update!(card_params)
-
+    card_attrs = card_params(xml: true)
+    xml = card_attrs.delete(:xml)
+    card.update!(card_attrs)
+    card.update_from_xml(xml) unless xml.blank?
     respond_with card
   end
 
@@ -71,8 +72,8 @@ class CardsController < ApplicationController
     render json: card
   end
 
-  def render_xml_syntax_error(ex)
-    render status: 422, json: { errors: { xml: ex.message } }
+  def render_xml_validation_errors(ex)
+    render status: 422, json: { errors: { xml: ex.errors } }
   end
 
   def create
@@ -88,10 +89,9 @@ class CardsController < ApplicationController
     @card ||= Card.find(params[:id])
   end
 
-  def card_params
-    params.require(:card).permit(
-      :name,
-      :journal_id
-    )
+  def card_params(xml: false)
+    keys = %i(name journal_id)
+    keys << :xml if xml
+    params.require(:card).permit(*keys)
   end
 end

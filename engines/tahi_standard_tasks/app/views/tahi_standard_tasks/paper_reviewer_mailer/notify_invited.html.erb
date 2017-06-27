@@ -2,11 +2,11 @@
 <br><br>
 
 <div>
-  <%= simple_format @invitation.body %>
+  <%= @invitation.body.html_safe %>
 </div>
 
 <%= render partial: 'email/button', locals: {
-  href: client_dashboard_url({ invitation_token: @invitation.token }),
+  href: invitation_accept_url({ token: @invitation.token }),
   text: 'Accept Invitation'
 } %>
 

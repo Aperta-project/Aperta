@@ -21,7 +21,7 @@ module CardConfiguration
           children: [
             {
               ident: "competing_interests--statement",
-              value_type: "text",
+              value_type: "html",
               text: "Please provide details about any and all competing interests in the box below. Your response should begin with this statement: \"I have read the journal's policy and the authors of this manuscript have the following competing interests.\""
             }
           ]

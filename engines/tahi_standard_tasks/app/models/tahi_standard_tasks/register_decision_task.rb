@@ -31,16 +31,5 @@ module TahiStandardTasks
         decision_id: paper.decisions.completed.last.id
       )
     end
-
-    private
-
-    def template_data
-      {
-        author_last_name: paper.creator.last_name,
-        manuscript_title: paper.display_title(sanitized: false),
-        journal_name: paper.journal.name,
-        your_name: '[YOUR NAME]'
-      }
-    end
   end
 end

@@ -12,6 +12,7 @@ class CardContent < ActiveRecord::Base
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
+  has_many :card_content_validations, dependent: :destroy
 
   validates :card_version, presence: true
 
@@ -44,7 +45,8 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES =
+    %w(attachment boolean question-set text html).freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -65,7 +67,9 @@ class CardContent < ActiveRecord::Base
       'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
-      'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
+      'radio': ['boolean', 'text'],
+      'tech-check': ['boolean'],
+      'date-picker': ['text'] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
@@ -122,14 +126,20 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'placeholder', placeholder)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
+      if card_content_validations.present?
+        card_content_validations.each do |ccv|
+          xml.tag!('validation', 'validation-type': ccv.validation_type) do
+            xml.tag!('error-message', ccv.error_message)
+            xml.tag!('validator', ccv.validator)
+          end
+        end
+      end
       if possible_values.present?
         possible_values.each do |item|
           xml.tag!('possible-value', label: item['label'], value: item['value'])
         end
       end
-      children.each do |child|
-        child.to_xml(builder: xml, skip_instruct: true)
-      end
+      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
 end

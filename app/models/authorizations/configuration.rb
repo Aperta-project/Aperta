@@ -6,7 +6,7 @@ module Authorizations
 
     # 'authorizations' returns the collection of authorization(s) that have \
     # been configured
-    attr_accessor :authorizations
+    attr_accessor :authorizations, :filters
 
     # Creates an authorization thru the given assignment_to object and
     # options.
@@ -19,9 +19,19 @@ module Authorizations
       )
     end
 
+    def filter(klass, column_name, &block)
+      @filters ||= []
+      @filters << Authorizations::Filter.new(
+        klass: klass,
+        column_name: column_name,
+        block: block
+      )
+    end
+
     # Clears out any currently configured Authorizations.
     def reset
       @authorizations = []
+      @filters = []
     end
 
     # Reloads the application's default Authorizations from

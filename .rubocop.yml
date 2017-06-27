@@ -24,8 +24,18 @@ Metrics/MethodLength:
   CountComments: false
   Max: 20
 
+Style/BlockDelimiters:
+  # It is acceptable and encouraged that if you are chaining a method
+  # on the end of a multiline block, you will want to use braces and
+  # not a do/end.  Seeing a brace at the beginning of a mult-line block
+  # should be your clue that more is going to happen at the end of it.
+  Enabled: false
+
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
+
+Style/RescueModifier:
+  Enabled: false
 
 Style/MultilineMethodCallIndentation:
   # Both styles of method call indentation are acceptable, and depending on

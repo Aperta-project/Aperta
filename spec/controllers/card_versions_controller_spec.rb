@@ -17,7 +17,7 @@ describe CardVersionsController do
         before do
           stub_sign_in(user)
           allow(user).to receive(:can?)
-            .with(:view, card)
+            .with(:view, card_version)
             .and_return(false)
           do_request
         end
@@ -28,7 +28,7 @@ describe CardVersionsController do
       context 'user has access' do
         before do
           stub_sign_in user
-          allow(user).to receive(:can?).with(:view, card).and_return(true)
+          allow(user).to receive(:can?).with(:view, card_version).and_return(true)
         end
 
         it { is_expected.to responds_with 200 }

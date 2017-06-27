@@ -6,10 +6,6 @@
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
-  include CustomCastTypes
-
-  attribute :text, HtmlString.new
-  attribute :original_text, HtmlString.new
 
   # Base exception class for VersionedText
   class VersionedTextError < StandardError; end
@@ -21,7 +17,7 @@ class VersionedText < ActiveRecord::Base
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
   has_many :figures, through: :paper
-  has_many :similarity_checks
+  has_many :similarity_checks, dependent: :destroy
 
   delegate :figures, to: :paper, allow_nil: true
 
@@ -93,7 +89,9 @@ class VersionedText < ActiveRecord::Base
   end
 
   def add_file_info
-    raise AttachmentNotDone unless paper.file.done?
+    unless paper.file.errored?
+      raise AttachmentNotDone unless paper.file.done?
+    end
 
     self.file_type = paper.file_type
     self.manuscript_s3_path = paper.file.s3_dir

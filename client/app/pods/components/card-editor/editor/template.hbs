@@ -24,7 +24,7 @@
 
     {{#if card.revertable}}
       <button class="button button--blue button-primary editor-revert"
-              onclick={{action (perform revertCard)}}
+              onclick={{action "confirmRevert"}}
               disabled={{or
                          saveCard.isRunning
                          publishCard.isRunning
@@ -60,19 +60,25 @@
     </button>
   </div>
 </div>
-
 <div class="card-editor-workspace">
-  <div class="card-editor-xml-container">
-    <div class="card-editor-xml-controls"></div>
-    <div class="card-editor-xml">
-      {{#each errors as |error|}}
-        {{error-message message=(concat error.title ": " error.detail)}}
-      {{/each}}
 
-      {{textarea value=card.xml autoresize=true rows=10}}
+  {{#if errors.length}}
+    <div class="card-editor-xml-errors">
+        <p> {{error-message message="Please fix the following errors:" displayIcon=true}} </p>
+        {{#each errors as |error|}}
+          <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+        {{/each}}
+    </div>
+  {{/if}}
+
+  <div class="card-editor-xml-container {{if errors.length 'error-border'}}">
+    <div class="card-editor-xml-controls {{if errors.length 'error-bar'}}"></div>
+    <div class="card-editor-xml">
+      {{ivy-codemirror value=card.xml valueUpdated=(action "updateXML") options=(hash mode="application/xml" theme="eclipse" lineNumbers=true)}}
     </div>
   </div>
 </div>
+
 {{#overlay-fullscreen visible=showPublishOverlay
    outAnimationComplete=(toggle "showPublishOverlay" this)
    overlayClass="publish-card-overlay overlay--blue"
@@ -144,6 +150,42 @@
     <div>
       <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
       <button class="button-primary button--blue" {{action (perform deleteCard)}}>Yes, Delete</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showRevertOverlay
+   outAnimationComplete=(toggle "showRevertOverlay" this)
+   overlayClass="publish-card-overlay revert overlay--blue"
+   as |overlay|}}
+  <h1> Revert Card </h1>
+  <p>
+    Reverting a card will permanently revert the card to its last published state. Changes will not be recoverable.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to revert this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform revertCard)}}>Yes, Revert</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   overlayClass="dirty-card-overlay dirty overlay--blue--bg"
+   as |overlay|}}
+  <h3>
+    There are unsaved changes. Are you sure you want to leave this page?
+  </h3>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <div>
+      <button class="button-link" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
     </div>
   </div>
 {{/overlay-fullscreen}}

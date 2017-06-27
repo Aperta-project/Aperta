@@ -5,7 +5,7 @@
     <div class="decision-bar-revision-number">
       {{decision.revisionNumber}}
     </div>
-    {{humanize decision.verdict}}
+    {{capitalize-words (humanize decision.verdict)}}
   </h4>
 
   {{#if decision.rescinded}}
@@ -19,7 +19,7 @@
       Letter sent to Author:
     </h4>
     <div class="decision-bar-letter">
-      {{break-to-tag decision.letter}}
+      {{{decision.letter}}}
     </div>
 
     {{#if decision.authorResponse}}

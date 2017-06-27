@@ -1,14 +1,18 @@
 {{#if editState}}
   <div class="inset-form-control">
-    <div class="inset-form-control-text">
-      <label>Title</label>
+    <div>
+      <label class='rich-text-label'>Title</label>
     </div>
-    {{input
-        type="text"
-        value=relatedArticle.linkedTitle
-        class="related-article-title-input inset-form-control-input"
-        disabled=isNotEditable
-        placeholder="Submission Title"}}
+
+    {{rich-text-editor
+      editorStyle='basic'
+      value=relatedArticle.linkedTitle
+      ident='related-article-title-input'
+      class='related-article-title-input'
+      onContentsChanged=(action 'titleChanged')
+      placeholder="Submission Title"
+      disabled=isNotEditable
+    }}
   </div>
 
   <div class="inset-form-control">
@@ -24,15 +28,19 @@
   </div>
 
   <div class="inset-form-control">
-    <div class="inset-form-control-text">
-      <label>Additional info</label>
+    <div>
+      <label class='rich-text-label'>Additional Info</label>
     </div>
-    {{input
-        type="text"
-        value=relatedArticle.additionalInfo
-        class="related-article-additional-info-input inset-form-control-input"
-        disabled=isNotEditable
-        placeholder="Add a link or other helpful info here"}}
+
+    {{rich-text-editor
+      editorStyle='basic'
+      value=relatedArticle.additionalInfo
+      ident='related-article-additional-info-input'
+      class='related-article-additional-info-input'
+      onContentsChanged=(action 'infoChanged')
+      placeholder="Add a link or other helpful info here"
+      disabled=isNotEditable
+    }}
   </div>
 
   <div class="related-article-publish-together-input">
@@ -63,7 +71,7 @@
   </div>
 
   <div class="related-article-title">
-    Title: {{relatedArticle.linkedTitle}}
+    Title: {{{relatedArticle.linkedTitle}}}
   </div>
 
   <div class="related-article-doi">
@@ -71,7 +79,7 @@
   </div>
 
   <div class="related-article-additional-info">
-    {{relatedArticle.additionalInfo}}
+    {{{relatedArticle.additionalInfo}}}
   </div>
 
   <ul>

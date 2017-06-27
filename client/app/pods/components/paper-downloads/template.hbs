@@ -57,8 +57,24 @@
                 </a>
               </td>
             {{/if}}
-          {{else}}
-            <td colspan="2">Processing...</td>
+          {{else}}  
+            {{#if (eq paper.fileType "pdf")}}
+              <td colspan="2" class="text-align-right">
+               <a href={{paper.file.pending_url}}
+                  class="download-pdf"
+                  title="Download PDF">
+                  {{fa-icon "file-pdf-o"}} PDF
+                  </a>
+              </td>
+            {{else}}
+                <td colspan="2" class="text-align-right">               
+                <a href={{paper.file.pending_url}}
+                    class="download-docx"
+                    title="Download {{paper.fileType}}">
+                    {{fa-icon "file-word-o"}} Word
+                    </a>
+                </td>
+             {{/if}}   
           {{/if}}
         </tr>
       {{/each}}

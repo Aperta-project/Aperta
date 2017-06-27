@@ -6,6 +6,7 @@ import registerCustomAssertions from '../helpers/custom-assertions';
 import FakeCanService from '../helpers/fake-can-service';
 import Ember from 'ember';
 import wait from 'ember-test-helpers/wait';
+
 moduleForComponent('nested-question-input', 'Integration | Component | nested question input', {
   integration: true,
   beforeEach() {

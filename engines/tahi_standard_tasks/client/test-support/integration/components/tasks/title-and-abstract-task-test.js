@@ -1,47 +1,51 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
+
 // Pretend like you're in client/tests
 import FakeCanService from '../../../helpers/fake-can-service';
 import wait from 'ember-test-helpers/wait';
-
+import {findEditor} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
   'title-and-abstract-task',
   'Integration | Components | Tasks | Title and Abstract', {
-  integration: true
-});
+    integration: true
+  });
 
 test('User can edit the title and abstract', function(assert) {
   var task = newTask(false, true);
   setupEditableTask(this, task);
-  assert.elementsFound('.form-textarea.ember-view.format-input',
-                       2,
-                       'User can edit the title and abstract');
+  let title = findEditor('article-title-input');
+  let abstract = findEditor('article-abstract-input');
+  assert.ok(title);
+  assert.ok(abstract);
 });
 
-test('Title and abstract are not editable when the paper is not', function(assert) {
+test('Title/abstract not editable when paper is not', function(assert) {
   var task = newTask(false, false);
   setupEditableTask(this, task);
-  assert.elementsFound('.form-textarea.ember-view.format-input',
-                       2,
-                       'User cannot edit the title and abstract');
+  let title = findEditor('article-title-input');
+  let abstract = findEditor('article-abstract-input');
+  assert.ok(!title);
+  assert.ok(!abstract);
 });
 
-test('Title and abstract are not editable when the task is complete', function(assert) {
+test('Title/abstract not editable when task is complete', function(assert) {
   var task = newTask(true, true);
   setupEditableTask(this, task);
-  assert.elementsFound('.form-textarea.ember-view.format-input.read-only',
-                       2,
-                       'User can edit the title and abstract');
+  let title = findEditor('article-title-input');
+  let abstract = findEditor('article-abstract-input');
+  assert.ok(!title);
+  assert.ok(!abstract);
 });
 
-test('Title and abstract are not editable when the task is complete and paper is not editable', function(assert) {
+test('Title/abstract not editable when task is complete and paper not editable', function(assert) {
   var task = newTask(true, false);
   setupEditableTask(this, task);
-  assert.elementsFound('.form-textarea.ember-view.format-input.read-only',
-                       2,
-                       'User can edit the title and abstract');
+  let title = findEditor('article-title-input');
+  let abstract = findEditor('article-abstract-input');
+  assert.ok(!title);
+  assert.ok(!abstract);
 });
 
 test('Title and abstract needs to be present', function(assert) {
@@ -88,7 +92,6 @@ var newTask = function(completed, paperEditable) {
     }
   };
 };
-
 
 var template = hbs`{{title-and-abstract-task task=task can=can container=container}}`;
 

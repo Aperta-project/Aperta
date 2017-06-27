@@ -21,7 +21,7 @@ module CardConfiguration
           children: [
             {
               ident: "ethics--human_subjects--participants",
-              value_type: "text",
+              value_type: "html",
               text: "Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."
             }
           ]
@@ -34,7 +34,7 @@ module CardConfiguration
           children: [
             {
               ident: "ethics--animal_subjects--field_permit",
-              value_type: "text",
+              value_type: "html",
               text: "Please enter your statement below:"
             },
             {
@@ -52,7 +52,7 @@ module CardConfiguration
           children: [
             {
               ident: "ethics--field_study--field_permit_number",
-              value_type: "text",
+              value_type: "html",
               text: "Please provide your field permit number and indicate the institution or relevant body that granted permission for use of the land or materials collected."
             }
           ]

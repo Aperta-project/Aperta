@@ -172,7 +172,6 @@ class Card < ActiveRecord::Base
 
   def to_xml(options = {})
     attrs = {
-      'name' => name,
       'required-for-submission' =>
         latest_card_version.required_for_submission,
       'workflow-display-only' =>

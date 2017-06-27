@@ -41,7 +41,7 @@
     </div>
     <div class="invitation-item-body-preview">
       {{#if invitation.declined}}
-        {{strip-html invitation.declineReason}}
+        {{{invitation.declineReason}}}
       {{else}}
         {{strip-html invitation.body}}
       {{/if}}
@@ -124,11 +124,11 @@
       <div class="invitation-item-decline-info">
         <p>
           <div class="invitation-item-decline-title">Reasons</div>
-          {{unbound (break-to-tag invitation.declineReason)}}
+          {{{invitation.declineReason}}}
         </p>
         <p>
           <div class="invitation-item-decline-title">Reviewer Suggestions</div>
-          {{unbound (break-to-tag invitation.reviewerSuggestions)}}
+          {{{invitation.reviewerSuggestions}}}
         </p>
       </div>
       <hr>
@@ -150,9 +150,13 @@
 </div>
 {{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
-    {{content-editable value=invitation.body
-                       class="invitation-edit-body"
-                       key-up=(action "saveDuringType" invitation)}}
+    {{rich-text-editor
+      value=invitation.body
+      data-editor='invitation-edit-body'
+      class="invitation-edit-body"
+      onContentsChanged=(action "updateAnswer")
+      disabled=owner.completed
+    }}
 
     {{link-alternate
       invitation=invitation

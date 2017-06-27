@@ -14,7 +14,7 @@ class Paper < ActiveRecord::Base
   include Snapshottable
   include CustomCastTypes
 
-  # attribute :title, HtmlSanitized.new
+  attribute :title, HtmlString.new
   attribute :abstract, HtmlString.new
 
   self.snapshottable = true
@@ -41,6 +41,7 @@ class Paper < ActiveRecord::Base
            dependent: :destroy,
            inverse_of: :paper
   has_many :tasks, inverse_of: :paper
+  has_many :card_versions, through: :tasks
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal

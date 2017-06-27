@@ -4,7 +4,7 @@ import Ember from 'ember';
 
 export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
   channelName: null,
-  popoutParams: { top: 10, left: 10, height: screen.height, width: 900 },
+  popoutParams: { top: 10, left: 10, height: window.screen.height, width: 900 },
 
   model(params) {
     return this.store.query('paper', { shortDoi: params.paper_shortDoi })
@@ -13,9 +13,13 @@ export default AuthorizedRoute.extend(PopoutParentRouteMixin,{
     });
   },
 
+/* eslint-disable camelcase */
+
   serialize(model) {
     return { paper_shortDoi: model.get('shortDoi') };
   },
+
+/* eslint-emable camelcase */
 
   setupController(controller, model) {
     this._super(...arguments);

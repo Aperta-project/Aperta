@@ -8,10 +8,10 @@
 </p>
 
 <p class="decline_reason">
-  <strong>Reason:</strong> <%= simple_format @invitation.decline_reason %>
+  <strong>Reason:</strong> <%= @invitation.decline_reason.html_safe %>
 </p>
 <p class="reviewer_suggestions">
-  <strong>Reviewer Suggestions:</strong> <%= simple_format @invitation.reviewer_suggestions %>
+  <strong>Reviewer Suggestions:</strong> <%= @invitation.reviewer_suggestions.html_safe %>
 </p>
 
 <%= render partial: 'email/button', locals: {

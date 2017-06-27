@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
+import Ember from 'ember';
 
 const taskValidations = {
   'paperTitle': ['presence'],
@@ -8,7 +9,9 @@ const taskValidations = {
 
 export default TaskComponent.extend({
   paperNotEditable: Ember.computed.not('task.paper.editable'),
-  isNotEditable: Ember.computed.alias('task.completed'),
+  isNotEditable: Ember.computed('task.completed', 'paperNotEditable', function () {
+    return this.get('task.completed') || this.get('paperNotEditable');
+  }),
   validations: taskValidations,
 
   validateData() {
@@ -21,6 +24,14 @@ export default TaskComponent.extend({
   },
 
   actions: {
+    titleChanged(contents) {
+      this.set('task.paperTitle', contents);
+    },
+
+    abstractChanged(contents) {
+      this.set('task.paperAbstract', contents);
+    },
+
     focusOut() {
       this.set('validationErrors.completed', '');
       this.validateAll();

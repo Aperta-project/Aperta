@@ -23,10 +23,6 @@ module Authorizations
   # The < and > brackets are used above because the table references are
   # dynamic. See the corresponding constructor arguments for more information.
   #
-  # == Note
-  #
-  # This query does not enforce permission requirements. That must be done
-  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
   class ObjectsAuthorizedViaSelfQuery
     attr_reader :target, :assignments_table, :common_query, :common_arel, :klass
 
@@ -62,6 +58,7 @@ module Authorizations
       )
 
       common_query.add_permission_state_check(query)
+      common_query.add_filter_by_check(query)
     end
 
     def to_sql

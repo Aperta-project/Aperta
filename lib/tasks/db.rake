@@ -29,7 +29,7 @@ namespace :db do
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 
       ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db}) && rake db:reset_passwords"
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db})"
       result = system(cmd)
       if result
         STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
@@ -39,6 +39,7 @@ namespace :db do
 
       # run any post import tasks
       ActiveRecord::Base.establish_connection
+      Rake::Task['db:reset_passwords'].invoke
       Rake::Task['db:setup_role_accounts'].invoke
     end
   end
@@ -94,7 +95,8 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    system("`(heroku pg:pull DATABASE_URL tahi_development --app #{source_db}) && rake db:reset_passwords`")
+    system("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
+    Rake::Task['db:reset_passwords'].invoke
     Rake::Task['db:setup_role_accounts'].invoke
   end
 

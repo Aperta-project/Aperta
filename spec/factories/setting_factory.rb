@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :setting do
     name "override_me"
     value "off"
+    value_type "string"
   end
 
   factory :ithenticate_automation_setting, class: "Setting" do

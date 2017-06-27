@@ -9,7 +9,7 @@ class Setting < ActiveRecord::Base
 
   belongs_to :setting_template
 
-  after_initialize :set_default_value
+  before_validation :set_default_value
 
   delegate :possible_setting_values, to: :setting_template, allow_nil: true
 
@@ -20,6 +20,7 @@ class Setting < ActiveRecord::Base
             if: -> { possible_setting_values.present? }
 
   def set_default_value
-    self.value ||= setting_template.value if setting_template_id.present?
+    return if value.present? || setting_template.nil?
+    self.value ||= setting_template.value
   end
 end

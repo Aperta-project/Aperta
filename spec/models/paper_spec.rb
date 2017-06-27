@@ -80,9 +80,12 @@ describe Paper do
     end
 
     context "with tasks" do
-      it "calls `after_paper_submitted` on each task" do
+      it "calls `after_paper_submitted` on each task, and the paper has valid aasm states to work with" do
         FactoryGirl.create(:ad_hoc_task, paper: paper)
-        expect_any_instance_of(AdHocTask).to receive(:after_paper_submitted).with(paper)
+        expect_any_instance_of(AdHocTask).to receive(:after_paper_submitted) do |_task, p|
+          expect(p.aasm.from_state).to be_present
+          expect([:submitted, :initially_submitted]).to include(p.aasm.to_state)
+        end
         subject
       end
     end

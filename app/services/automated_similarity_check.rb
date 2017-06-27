@@ -5,7 +5,7 @@ class AutomatedSimilarityCheck
   def initialize(task, paper)
     @task = task
     @paper = paper
-    @previous_paper_state = paper.previous_changes[:publishing_state][0]
+    @previous_paper_state = paper.aasm.from_state.to_s
   end
 
   # I could use a hash of procs for this, but folks will probably

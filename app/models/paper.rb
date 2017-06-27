@@ -128,7 +128,8 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
 
     event(:submit) do

@@ -22,7 +22,7 @@ describe AutomatedSimilarityCheck do
       end
 
       before do
-        allow(paper).to receive(:previous_changes).and_return(publishing_state: ["unsubmitted", "submitted"])
+        allow(paper).to receive_message_chain(:aasm, :from_state).and_return(:unsubmitted)
       end
 
       it "returns nil" do
@@ -47,9 +47,7 @@ describe AutomatedSimilarityCheck do
       end
 
       before do
-        allow(paper).to receive(:previous_changes).and_return(
-          publishing_state: ["unsubmitted", "submitted"]
-        )
+        allow(paper).to receive_message_chain(:aasm, :from_state).and_return(:unsubmitted)
       end
 
       context "the task is configured to never run" do
@@ -93,9 +91,7 @@ describe AutomatedSimilarityCheck do
 
       before do
         allow(paper).to receive_message_chain('tasks.find_by').and_return task
-        allow(paper).to receive(:previous_changes).and_return(
-          publishing_state: ["in_revision", "submitted"]
-        )
+        allow(paper).to receive_message_chain(:aasm, :from_state).and_return(:in_revision)
       end
 
       context "the task is configured to run on the submission after any first revision" do
@@ -105,6 +101,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "creates a SimilarityCheck record" do
+          puts "paper.aasm.from_state #{paper.aasm.from_state}"
           expect(result.class).to eq(SimilarityCheck)
         end
       end
@@ -151,9 +148,7 @@ describe AutomatedSimilarityCheck do
 
       before do
         allow(paper).to receive_message_chain('tasks.find_by').and_return task
-        allow(paper).to receive(:previous_changes).and_return(
-          publishing_state: ["in_revision", "submitted"]
-        )
+        allow(paper).to receive_message_chain(:aasm, :from_state).and_return(:in_revision)
       end
 
       context "the task is configured to run on the submission after any first revision" do

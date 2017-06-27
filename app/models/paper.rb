@@ -583,7 +583,14 @@ class Paper < ActiveRecord::Base
   end
 
   def all_authors
-    author_list_items.map(&:author)
+    author_list_items.includes(:author).map(&:author)
+  end
+
+  def all_author_emails
+    fields = [[authors, :email], [group_authors, :contact_email]]
+    Set.new.tap do |set|
+      fields.each { |assoc, field| set.merge(assoc.pluck(field)) }
+    end
   end
 
   def revise_task

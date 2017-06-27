@@ -58,7 +58,7 @@ class GroupAuthorsController < ApplicationController
   end
 
   def group_author_params
-    params.require(:group_author).permit(
+    @group_author_params ||= params.require(:group_author).permit(
       :initial,
       :contact_first_name,
       :contact_middle_name,

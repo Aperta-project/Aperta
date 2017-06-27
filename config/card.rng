@@ -313,19 +313,30 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="export-paper">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>export-paper</value>
+      </attribute>
+    </element>
+  </define>
   <define name="content">
     <choice>
-      <ref name="radio-input"/>
-      <ref name="text-input"/>
-      <ref name="text-content"/>
+      <ref name="check-box-input"/>
+      <ref name="date-picker"/>
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
-      <ref name="field-set"/>
-      <ref name="check-box-input"/>
-      <ref name="file-uploader"/>
       <ref name="dropdown-input"/>
-      <ref name="date-picker"/>
+      <ref name="export-paper"/>
+      <ref name="field-set"/>
+      <ref name="file-uploader"/>
+      <ref name="radio-input"/>
       <ref name="tech-check"/>
+      <ref name="text-content"/>
+      <ref name="text-input"/>
     </choice>
   </define>
   <start>

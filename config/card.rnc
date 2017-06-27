@@ -119,17 +119,24 @@ field-set = element content {
                 content*
             }
 
-content = (radio-input |
-           text-input |
-           text-content |
+export-paper = element content {
+                attribute ident { text }?,
+                attribute content-type { "export-paper" }
+}
+
+content = (
+           check-box-input |
+           date-picker |
            display-children-content |
            display-with-value-content |
-           field-set |
-           check-box-input |
-           file-uploader |
            dropdown-input |
-           date-picker |
-           tech-check
+           export-paper |
+           field-set |
+           file-uploader |
+           radio-input |
+           tech-check |
+           text-content |
+           text-input
           )
 
 start = element card {

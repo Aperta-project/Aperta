@@ -36,11 +36,6 @@ test(`it disables the by marking it read-only if disabled=true`, function(assert
   this.render(template);
   assert.elementFound('.read-only');
 });
-test(`it shows a placeholder from content.placeholder`, function(assert) {
-  this.set('content', {placeholder: 'Foo'});
-  this.render(template);
-  assert.textPresent('.format-input', 'Foo');
-});
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);

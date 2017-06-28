@@ -31,7 +31,6 @@ feature "Journal Administration", js: true do
         # refresh page since we've assigned the journal role
         visit "/"
 
-        admin_page
         expect(admin_page).to have_journal_names(journal.name)
       end
     end

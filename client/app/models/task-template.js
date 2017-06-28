@@ -10,5 +10,6 @@ export default DS.Model.extend({
   title: DS.attr('string'),
   type: Ember.computed.readOnly('kind'),
   kind: Ember.computed.readOnly('journalTaskType.kind'),
-  settings: DS.attr()
+  settings: DS.attr(),
+  settingsEnabled: DS.attr()
 });

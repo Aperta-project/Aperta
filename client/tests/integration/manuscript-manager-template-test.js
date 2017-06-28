@@ -158,3 +158,63 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
     return assert.elementNotFound('.ad-hoc-template-overlay', 'Clicking any other card has no effect');
   });
 });
+
+test('Updating similarity check setting', function(assert) {
+  var adminJournal, journalTaskType, mmt, pt;
+  journalTaskType = FactoryGuy.make('journal-task-type', {
+    id: 1,
+    kind: "TahiStandardTasks::SimilarityCheckTask",
+    title: "Similarity Check"
+  });
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1,
+    journalTaskTypes: [journalTaskType]
+  });
+  mmt = FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  pt = FactoryGuy.make('phase-template', {
+    id: 1,
+    manuscriptManagerTemplate: mmt,
+    name: "Phase 1"
+  });
+  TestHelper.mockFind('admin-journal').returns({
+    model: adminJournal
+  });
+  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  click('.button--green:contains("Add New Card")');
+  click('label:contains("Similarity Check")');
+  click('.overlay .button--green:contains("Add")');
+  click('.card--settings');
+  andThen(function() {
+    assert.elementFound('h1.overlay-header-title:contains("Similarity Check: Settings")');
+  });
+  /*click('label:contains("Ad Hoc")');
+  click('.overlay .button--green:contains("Add")');
+  andThen(function() {
+    assert.elementFound('h1.inline-edit:contains("Ad Hoc")');
+    assert.notOk(find('h1.inline-edit').hasClass('editing'), 'The title should not be editable to start');
+  });
+
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--label');
+  fillInContentEditable('.inline-edit-form div[contenteditable]', 'New contenteditable, yahoo!');
+  click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  andThen(function() {
+    return assert.textPresent('.inline-edit', 'yahoo', 'text is still correct');
+  });
+  click('.inline-edit-body-part .fa-trash');
+  andThen(function() {
+    return assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+  });
+  click('.inline-edit-body-part .delete-button');
+  andThen(function() {
+    return assert.textNotPresent('.inline-edit', 'yahoo', 'Deleted text is gone');
+  });
+  click('.overlay-close-button');
+  click('.card-title');
+  return andThen(function() {
+    return assert.elementFound('h1.inline-edit:contains("Ad Hoc")', 'User can edit the existing ad-hoc card');
+  });*/
+});

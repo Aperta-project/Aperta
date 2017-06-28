@@ -15,7 +15,7 @@ module.exports = function(defaults) {
       extensions: ['js']
     },
     babel: {
-      includePolyfill: false
+      includePolyfill: true
     },
     codemirror: {
       modes: ['xml'],

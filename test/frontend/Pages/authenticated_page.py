@@ -931,7 +931,7 @@ class AuthenticatedPage(StyledPage):
 
   def tmce_set_rich_text(self, iframe, content=''):
     """
-    Set the text of the rich text editor refered to by editory id with fram iframe
+    Set the text of the rich text editor refered to by editory id with frame iframe
     :param iframe: the iframe webelement returned from get_rich_text_editor_instance()
     :param content: The text to set into the rich text editor
     :return: void function

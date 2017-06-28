@@ -36,11 +36,12 @@ feature "Journal Administration", js: true, flaky: true do
         fill_in "doiPublisherPrefix", with: "prefix"
         fill_in "lastDoiIssued", with: "1000001"
         click_on "Save"
-        # Creating a journal takes time
-        wait_for_ajax timeout: 60
       end
 
-      expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
+      using_wait_time(60) do # Creating a journal takes time
+        expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
+      end
+
       admin_page.reload sync_on: 'Add new journal'
       expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
     end

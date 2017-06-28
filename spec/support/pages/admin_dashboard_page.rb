@@ -135,8 +135,7 @@ class EditJournalFragment < PageFragment
     # Creating a journal takes time to initialize everything it needs, e.g.
     # its roles and permissions, MMTs, task templates, etc. So be kind to
     # journal and allot it some more time to get set up.
-    wait_for_ajax timeout: 60
-    session.has_content? @name
+    Capybara.using_wait_time(60) { session.has_content? @name }
   end
 
   def cancel

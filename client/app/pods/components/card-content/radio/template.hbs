@@ -1,6 +1,34 @@
 <label class="content-text">{{{content.text}}}</label>
 <div>
-    {{partial radioTemplate}}
+  {{#if isText}}
+    {{#each content.possibleValues as |opt|}}
+      <label class="option">
+        {{radio-button
+          selection=answer.value
+          value=opt.value
+          disabled=disabled
+          action=(action "valueChanged")}}
+        <span class="card-content-radio-label">{{{opt.label}}}</span>
+      </label>
+    {{/each}}
+  {{else }}
+    <label class="option">
+      {{radio-button
+        selection=answer.value
+        value=true
+        disabled=disabled
+        action=(action "valueChanged")}}
+      <span class="card-content-radio-label">Yes</span>
+    </label>
+    <label class="option">
+      {{radio-button
+        selection=answer.value
+        value=false
+        disabled=disabled
+        action=(action "valueChanged")}}
+      <span class="card-content-radio-label">No</span>
+    </label>
+  {{/if}}
 </div>
 
 {{card-content/display-children

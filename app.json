@@ -180,9 +180,6 @@
     },
     "PASSWORD_AUTH_ENABLED": "true",
     "PUMA_WORKERS": "1",
-    "PUSHER_URL": {
-      "required": true
-    },
     "PUSHER_VERBOSE_LOGGING": {
       "required": true
     },

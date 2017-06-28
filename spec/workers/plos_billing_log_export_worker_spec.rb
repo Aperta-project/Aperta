@@ -33,6 +33,7 @@ describe PlosBillingLogExportWorker do
   end
 
   before do
+    FactoryGirl.create(:billing_log_report)
     CardLoader.load("PlosBilling::BillingTask")
     paper.phases.first.tasks.concat(
       [
@@ -47,6 +48,7 @@ describe PlosBillingLogExportWorker do
     BillingLogReport.any_instance.should_receive :save_and_send_to_s3!
     BillingFTPUploader.any_instance.should_receive(:upload) { true }
     Activity.should_receive(:create).with(hash_including(subject: paper))
-    PlosBillingLogExportWorker.new.perform
+    worker = PlosBillingLogExportWorker.new
+    expect { worker.perform }.to change { BillingLogReport.count }.by(1)
   end
 end

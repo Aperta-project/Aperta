@@ -35,6 +35,32 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return timeIsValid;
   },
 
+  validateMandatoryPresence() {
+    // This mimics the presence validations on the client side.
+    let isValid = true;
+    let mandatoryFields = ['description', 'sender', 'recipients', 'body'];
+    for (let i = 0; i < mandatoryFields.length; i++) {
+      let mandatoryFieldValue = this.get('model.' + mandatoryFields[i]);
+      if (mandatoryFieldValue === '' ||
+          mandatoryFieldValue === null) {
+        this.set('validationErrors.' + mandatoryFields[i], 'cannot be blank');
+        isValid = false;
+      }
+    }
+    return isValid;
+  },
+
+  validateFields() {
+    let dateIsValid = this.validateDate();
+    let timeIsValid = this.validateTime();
+    let mandatoryPresence = this.validateMandatoryPresence();
+    if (!(dateIsValid &&
+          timeIsValid &&
+          mandatoryPresence)) {
+      return;
+    }
+  },
+
   actions: {
     removeAttachment() {
       this.setProperties({
@@ -57,14 +83,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         }
       });
     },
+
     submit(model) {
       if (this.get('isUploading')) return;
 
-      let dateIsValid = this.validateDate();
-      let timeIsValid = this.validateTime();
-      if (!(dateIsValid && timeIsValid)) {
-        return;
-      }
+      // Client-side validations
+      if (!this.validateFields()) return;
 
       // The way Correspondence was originally serialized makes this necessary
       this.prepareModelDate();

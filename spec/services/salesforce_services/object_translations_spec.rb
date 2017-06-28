@@ -8,7 +8,7 @@ describe SalesforceServices::ObjectTranslations do
     paper.submit! user
   end
 
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_co_authors) }
   let(:user) { FactoryGirl.create(:user) }
 
   describe "ManuscriptTranslator#paper_to_manuscript_hash" do
@@ -60,7 +60,8 @@ describe SalesforceServices::ObjectTranslations do
         "Name"                       => paper.manuscript_id,
         "Initial_Date_Submitted__c"  => submit_time,
         "Abstract__c"                => paper.abstract,
-        "Current_Editorial_Status__c" => "Manuscript Submitted"
+        "Current_Editorial_Status__c" => "Manuscript Submitted",
+        "Co_Authors__c"               => ""
       }
 
       expect(mt.paper_to_manuscript_hash).to eq(hash)

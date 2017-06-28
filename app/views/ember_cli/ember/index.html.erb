@@ -28,6 +28,10 @@
       window.RailsEnv = {};
       window.RailsEnv.orcidConnectEnabled = <%= TahiEnv.orcid_connect_enabled? %>;
       window.RailsEnv.testing = <%= Rails.env.test? %>;
+      window.flashMessages = [];
+      <% if flash[:notice] %>
+        window.flashMessages.push({type: 'success', text: "<%= flash[:notice] %>" });
+      <% end %>
     </script>
 
     <% if Rails.env.test? %>

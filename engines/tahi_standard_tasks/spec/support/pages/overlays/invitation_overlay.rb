@@ -3,6 +3,8 @@
 # used by the application.
 #
 class InvitationOverlay < Page
+  include RichTextEditorHelpers
+
   def expect_pending_invitation_count(count)
     expect(all_pending_invitations.count).to eq(count)
   end
@@ -24,11 +26,11 @@ class InvitationOverlay < Page
   end
 
   def enter_decline_reason
-    fill_in "declineReason", with: 'reason for decline'
+    set_rich_text editor: 'declineReason', text: 'reason for decline'
   end
 
   def enter_reviewer_suggestions
-    fill_in "reviewerSuggestions", with: 'new reviewer suggestions'
+    set_rich_text editor: 'reviewerSuggestions', text: 'new reviewer suggestions'
   end
 
   def press_send_feedback

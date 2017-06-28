@@ -41,6 +41,10 @@ export default TaskComponent.extend({
       return this.set('authoringMode', true);
     },
 
+    saveLetterBody(contents) {
+      this.set('authorChangesLetter', contents);
+    },
+
     saveLetter() {
       return this.setLetter(function() {});
     },

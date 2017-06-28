@@ -56,6 +56,8 @@ test('#filter', function(assert) {
   testCase('charmander', [charmander], 'filtering on username');
 });
 
+/* eslint-disable camelcase */
+
 test('#sorter', function(assert){
   const data = [squirtle, bulbasaur];
   const component = this.subject({ atMentionableUsers: data });
@@ -66,11 +68,15 @@ test('#sorter', function(assert){
     assert.deepEqual(sorted_names, expected_names, msg);
   };
 
+/* eslint-enable camelcase */
+
   testCase('Bulbasaur', [bulbasaur, squirtle],
     'it should sort by matches in the username first');
   testCase('oak.edu', [squirtle, bulbasaur],
     'it sorts by the index of the match in the user\'s concatenated details');
 });
+
+/* eslint-disable max-len */
 
 test('#highlighter', function(assert){
   const component = this.subject({ atMentionableUsers: userList });
@@ -79,3 +85,6 @@ test('#highlighter', function(assert){
   const expected = '<li><span class="at-who-name"><strong>Char</strong>mander Pokémon</span> <span class="at-who-username">@j<strong>char</strong>mander</span> <span class="at-who-email">fire@oak.edu</span></li>';
   assert.equal(component.highlighter(li, query), expected);
 });
+
+/* eslint-enable max-len */
+

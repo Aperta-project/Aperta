@@ -58,7 +58,7 @@ class DiscussionsPage < Page
   def expect_reply_mentioning_user(by:, mentioned:)
     author = most_recent_reply.find('.comment-name')
     expect(author).to have_content(by.full_name)
-    user_mention = most_recent_reply.find('.comment-body .discussion-at-mention')
+    user_mention = most_recent_reply.find('.comment-body')
     expect(user_mention).to have_content(mentioned.username)
   end
 

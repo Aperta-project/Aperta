@@ -20,5 +20,14 @@ FactoryGirl.define do
         )
       end
     end
+
+    trait :creator do
+      name Role::CREATOR_ROLE
+      after(:create) do |role|
+        role.ensure_permission_exists(
+          Permission::WILDCARD, applies_to: System.name
+        )
+      end
+    end
   end
 end

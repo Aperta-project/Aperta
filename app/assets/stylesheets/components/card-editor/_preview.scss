@@ -1,6 +1,6 @@
 .card-editor-preview {
   padding-bottom: 30px;
-  background-color: $aperta-grey-light;
+  background-color: $aperta-grey-lighter;
   flex: 1;
 
   .card-editor-preview-container {
@@ -21,12 +21,12 @@
       border-radius: 5px;
 
       &:hover {
-        background-color: $aperta-grey;
+        background-color: $aperta-grey-light;
       }
 
       &.active,
       &:focus {
-        background-color: $aperta-grey;
+        background-color: $aperta-grey-light;
       }
     }
   }

@@ -6,7 +6,7 @@ class Invitation < ActiveRecord::Base
 
   attribute :body, HtmlString.new
   attribute :decline_reason, HtmlString.new
-  attribute :reviewer_discussions, HtmlString.new
+  attribute :reviewer_suggestions, HtmlString.new
 
   belongs_to :task
   belongs_to :decision
@@ -19,8 +19,10 @@ class Invitation < ActiveRecord::Base
   belongs_to :primary, class_name: 'Invitation'
   before_create :assign_to_draft_decision
 
-  scope :where_email_matches,
-    ->(email) { where('lower(email) = lower(?) OR lower(email) like lower(?)', email, "%<#{email}>") }
+  EMAIL_MATCH = 'lower(email) = lower(?) OR lower(email) like lower(?)'.freeze
+  scope :where_email_matches, lambda {|email|
+    where(EMAIL_MATCH, email, "%<#{email}>")
+  }
 
   before_validation :set_invitee_role
   validates :invitee_role, presence: true

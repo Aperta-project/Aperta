@@ -240,12 +240,12 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
-    ember-cli-rails (0.7.1)
+    ember-cli-rails (0.8.4)
       cocaine (~> 0.5.8)
-      ember-cli-rails-assets (>= 0.6.1)
+      ember-cli-rails-assets (~> 0.6.2)
       html_page (~> 0.1.0)
-      railties (>= 3.2, < 5)
-    ember-cli-rails-assets (0.6.1)
+      railties (>= 3.2)
+    ember-cli-rails-assets (0.6.2)
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
@@ -417,6 +417,7 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    liquid (4.0.0)
     lograge (0.3.4)
       actionpack (>= 3)
       activesupport (>= 3)
@@ -772,6 +773,7 @@ DEPENDENCIES
   health_check
   heroku-deflater
   kaminari
+  liquid
   lograge
   mail_safe
   migration_comments

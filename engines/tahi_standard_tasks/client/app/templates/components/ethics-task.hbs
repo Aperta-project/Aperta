@@ -9,10 +9,13 @@
       disabled=isNotEditable
       as |selected|}}
           <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
-            {{nested-question-textarea ident='ethics--human_subjects--participants'
-                displayContent=selected.yes
-                owner=task
-                disabled=isNotEditable}}
+            {{nested-question-textarea
+              editorStyle='basic'
+              ident='ethics--human_subjects--participants'
+              displayContent=selected.yes
+              owner=task
+              disabled=isNotEditable
+            }}
 
             <div class="question-info">
               <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
@@ -37,10 +40,13 @@
           <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
         </div>
 
-        {{nested-question-textarea ident='ethics--animal_subjects--field_permit'
-        owner=task
-        displayContent=selected.yes
-        disabled=isNotEditable}}
+        {{nested-question-textarea
+          editorStyle='basic'
+          ident='ethics--animal_subjects--field_permit'
+          owner=task
+          displayContent=selected.yes
+          disabled=isNotEditable
+        }}
 
         {{nested-question-uploader-manager ident='ethics--animal_subjects--field_arrive'
                                            buttonText="upload arrive checklist"
@@ -60,10 +66,13 @@
         as |selected|}}
         {{#if selected.yes}}
           <div class="question-dataset">
-            {{nested-question-textarea ident='ethics--field_study--field_permit_number'
-            displayContent=selected.yes
-            owner=task
-            disabled=isNotEditable}}
+            {{nested-question-textarea
+              editorStyle='basic'
+              ident='ethics--field_study--field_permit_number'
+              displayContent=selected.yes
+              owner=task
+              disabled=isNotEditable
+            }}
           </div>
         {{/if}}
       {{/nested-question-radio}}

@@ -14,6 +14,10 @@ class ReviewerReportSerializer < ActiveModel::Serializer
     :revision
   has_one :task
 
+  def due_at
+    object.due_at if FeatureFlag[:REVIEW_DUE_DATE]
+  end
+
   def status
     object.computed_status
   end

@@ -43,13 +43,6 @@ test(`its initial selection corresponds to the answer's value`, function(assert)
   this.render(template);
   assert.textPresent('.ember-power-select-selected-item', 'Choice 2');
 });
-test(`shows a placeholder if the answer's value is blank/null`, function(assert) {
-  this.set('answer', { value: null});
-  this.set('content', this.defaultContent);
-  this.set('content.placeholder', 'A placeholder');
-  this.render(template);
-  assert.textPresent('.ember-power-select-placeholder', 'A placeholder');
-});
 test(`it sends 'valueChanged' when a new option is picked`, function(assert) {
   assert.expect(1);
   this.set('answer', { value: null});

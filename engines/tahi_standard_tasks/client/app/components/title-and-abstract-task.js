@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
-import Ember from 'ember';
 
 const taskValidations = {
   'paperTitle': ['presence'],

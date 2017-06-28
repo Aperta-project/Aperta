@@ -12,6 +12,7 @@ task 'create_feature_flags': :environment do
     "CARD_CONFIGURATION",
     "EMAIL_TEMPLATE",
     "HEALTH_CHECK",
-    "CORRESPONDENCE"
+    "CORRESPONDENCE",
+    "REVIEW_DUE_DATE"
   ]
 end

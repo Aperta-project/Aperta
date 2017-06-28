@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   workflowSort: ['paperType:asc', 'journal.name:asc'],
   sortedWorkflows: Ember.computed.sort('workflows', 'workflowSort'),
   journal: null,
-
   routing: Ember.inject.service('-routing'),
   classNames: ['admin-workflow-catalogue'],
 

@@ -10,7 +10,7 @@ module Typesetter
     private
 
     def creator
-      creator?
+      object.creator?
     end
 
     def include_orcid_profile_url?

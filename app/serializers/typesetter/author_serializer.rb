@@ -5,9 +5,13 @@ module Typesetter
     attributes :type, :first_name, :last_name, :middle_initial, :email,
                :department, :title, :corresponding, :deceased, :affiliation,
                :secondary_affiliation, :contributions, :government_employee,
-               :orcid_profile_url, :orcid_authenticated
+               :orcid_profile_url, :orcid_authenticated, :creator
 
     private
+
+    def creator
+      creator?
+    end
 
     def include_orcid_profile_url?
       TahiEnv.orcid_connect_enabled?

@@ -90,9 +90,12 @@ $ov--card-breakpoint: 900px;
     .answer-container {
       display: flex;
       flex: 1 0 50%;
-      //width: 100%;
       flex-flow: row wrap;
       justify-content: space-between;
+    }
+
+    .annotation {
+      flex-basis: 50%;
     }
 
 

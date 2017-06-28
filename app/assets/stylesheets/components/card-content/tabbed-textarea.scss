@@ -1,85 +1,122 @@
+
 .aside .panel-body {
   background: #fff;
+  -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+      border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 2em;
-  position: relative;
-}
-.aside .nav-tabs > li.active > a,
-.aside .nav-tabs > li.active > a:hover,
-.aside .nav-tabs > li.active > a:focus {
-  border: 1px solid #ccc;
-  border-bottom-color: transparent;
-  background-color: #fff;
-}
-.aside .nav-tabs > li {
-  float: left;
-  margin-left: -1px;
-}
-.aside .tab-pane .panel-body {
-  border-top: none;
-}
-.aside .nav-tabs > li > a,
-.aside .nav-tabs > li > a:hover,
-.aside .nav-tabs > li > a:focus {
-  border: 1px solid #ccc;}
+  width: calc(100% - 25px);
+  }
 
-.aside .nav-tabs {
-  border-bottom: 1px solid #ccc;
-}
-
-.aside .tabs-left .tab-pane .panel-body,
-.aside .tabs-right .tab-pane .panel-body {
-  border-top: 1px solid #ccc;
-}
-.aside .nav-tabs > li a:hover {
-  background: #eee;
-}
-.aside .tabs-below > .nav-tabs,
-.aside .tabs-right > .nav-tabs,
-.aside .tabs-left > .nav-tabs {
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
   border-bottom: 0;
 }
-.aside .tabs-left .panel-body {
-  position: static;
-}
-.aside .tabs-left > .nav-tabs,
-.aside .tabs-right > .nav-tabs {
-  width: 10%;
-}
 
-.aside .tabs-right .panel-body {
-  width: 90%;
-  margin-right: 10%;
-}
-.aside .tab-content > .tab-pane {
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
   display: none;
 }
-.aside .tab-content > .active,
-.aside .pill-content > .active {
+
+.tab-content > .active,
+.pill-content > .active {
   display: block;
 }
-.aside .tabs-right > .nav-tabs > li {
+
+.tabs-below > .nav-tabs {
+  border-top: 1px solid #ddd;
+}
+
+.tabs-below > .nav-tabs > li {
+  margin-top: -1px;
+  margin-bottom: 0;
+}
+
+.tabs-below > .nav-tabs > li > a {
+  -webkit-border-radius: 0 0 4px 4px;
+     -moz-border-radius: 0 0 4px 4px;
+          border-radius: 0 0 4px 4px;
+}
+
+.tabs-below > .nav-tabs > li > a:hover,
+.tabs-below > .nav-tabs > li > a:focus {
+  border-top-color: #ddd;
+  border-bottom-color: transparent;
+}
+
+.tabs-below > .nav-tabs > .active > a,
+.tabs-below > .nav-tabs > .active > a:hover,
+.tabs-below > .nav-tabs > .active > a:focus {
+  border-color: transparent #ddd #ddd #ddd;
+}
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
   float: none;
 }
-.aside .tabs-right > .nav-tabs > li > a {
-  min-width: 74px;
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  min-width: 25px;
   margin-right: 0;
   margin-bottom: 3px;
+  padding: 5px 5px;
 }
-.aside .tabs-right > .nav-tabs {
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 19px;
+  border-right: 1px solid #ddd;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd;
+  *border-right-color: #ffffff;
+}
+
+.tabs-right > .nav-tabs {
   float: right;
   margin-left: 19px;
+  border-left: 1px solid #ddd;
 }
-.aside .tabs-right > .nav-tabs > li > a {
+
+.tabs-right > .nav-tabs > li > a {
   margin-left: -1px;
   -webkit-border-radius: 0 4px 4px 0;
-  -moz-border-radius: 0 4px 4px 0;
-  border-radius: 0 4px 4px 0;
+     -moz-border-radius: 0 4px 4px 0;
+          border-radius: 0 4px 4px 0;
 }
-.aside .tabs-right > .nav-tabs > a,
-.aside .tabs-right > .nav-tabs > a:hover,
-.aside .tabs-right > .nav-tabs > a:focus {
-  border-color: #ccc #ccc #ccc transparent;
-  z-index: 1;
+
+.tabs-right > .nav-tabs > li > a:hover,
+.tabs-right > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #eeeeee #eeeeee #dddddd;
+}
+
+.tabs-right > .nav-tabs .active > a,
+.tabs-right > .nav-tabs .active > a:hover,
+.tabs-right > .nav-tabs .active > a:focus {
+  border-color: #ddd #ddd #ddd transparent;
+  *border-left-color: #ffffff;
+}
+
+.tabbed-textarea {
+  width: calc(100% - 5px);
+  height:100%;
+  box-sizing: border-box;
+  resize: vertical;
 }

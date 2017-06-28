@@ -29,9 +29,8 @@ class JournalPage < Page
 
   def delete_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
-    thumb.hover
-    thumb.find('.fa-trash').click
-    find('.admin-workflow-thumbnail-overlay-confirm-destroy .admin-workflow-thumbnail-delete-button').click
+    thumb.find(:xpath, '../div[@class="admin-workflow-thumbnail-icon"]').click
+    find('.admin-workflow-thumbnail-overlay .admin-workflow-thumbnail-delete-button').click
     has_no_css?(".admin-workflow-thumbnail-header", text: mmt.paper_type)
     self
   end

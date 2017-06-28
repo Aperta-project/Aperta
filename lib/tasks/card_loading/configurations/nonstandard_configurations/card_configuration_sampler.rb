@@ -31,7 +31,6 @@ module CardConfiguration
             text: "This is the text of a custom question.  Agree?",
             value_type: 'text',
             content_type: "short-input",
-            placeholder: "Your text here"
           },
           {
             text: "This is a second question",
@@ -41,7 +40,6 @@ module CardConfiguration
           {
             ident: "submision-date",
             text: "A Title",
-            placeholder: "Enter a date",
             value_type: "text",
             content_type: "date-picker"
           },
@@ -80,7 +78,6 @@ module CardConfiguration
                         text: "What'd you think of that first question, huh?",
                         value_type: 'text',
                         content_type: "short-input",
-                        placeholder: "Your text here"
                       }
                     ]
                   }
@@ -104,7 +101,6 @@ module CardConfiguration
                         text: "Now that you've picked that second choice, what will you do next?",
                         value_type: 'text',
                         content_type: "short-input",
-                        placeholder: "Your text here"
                       }
                     ]
                   }
@@ -121,7 +117,6 @@ module CardConfiguration
             text: "This is a dropdown question.  <b>Please</b> pick a choice",
             value_type: 'text',
             content_type: "dropdown",
-            placeholder: "Nothing selected yet",
             possible_values: [{ "label" => "Choice 1", "value" => 1 }, { "label" => "Choice 2", "value" => 2 }]
           },
           {

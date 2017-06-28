@@ -26,7 +26,6 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, args);
 
   app.import(app.bowerDirectory + '/underscore/underscore.js');
-  app.import(app.bowerDirectory + '/moment/moment.js');
 
   // Pusher
   app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');

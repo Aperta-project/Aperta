@@ -74,7 +74,7 @@ module TahiStandardTasks
 <p>Authors:<br>
 {% for author in manuscript.authors %}
 {{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
-{% endfor %}
+{% endfor %}</p>
 <p>Abstract:<br>
 {{ manuscript.abstract | default 'Abstract is not available' }}</p>
 TEXT

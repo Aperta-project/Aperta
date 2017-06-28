@@ -88,6 +88,29 @@ $ov--fullscreen-breakpoint: 780px;
     }
   }
 
+  &.overlay--blue--bg .overlay-container {
+    background-color: $aperta-blue;
+    color: #fff;
+
+    .button-link {
+      color: #fff;
+      background: $aperta-blue
+    }
+
+    .button-primary {
+      color: $aperta-blue;
+      background: #fff;
+    }
+
+    .overlay-close {
+      color: $aperta-blue;
+
+      &:hover {
+        color: $aperta-blue-dark;
+      }
+    }
+  }
+
   // -- Green Theme -------------
   &.overlay-x--green {
     color: #fff;

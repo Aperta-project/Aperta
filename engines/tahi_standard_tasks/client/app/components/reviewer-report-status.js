@@ -23,14 +23,12 @@ export default Ember.Component.extend({
     return output;
   }),
 
-  statusMessage: Ember.computed('report.status','report.revision','reviewDueAt', function() {
+  statusMessage: Ember.computed('report.status','report.revision','reviewDueAt', 'reviewDueMessage', function() {
     const status = this.get('report.status');
     var output = '';
 
-    if (['invitation_pending', 'not_invited'].includes(status)) {
-      output = '';
-    } else {
-      output = 'review of ' + this.get('report.revision') + ' due ' + this.get('reviewDueAt');
+    if (!['invitation_pending', 'not_invited'].includes(status)) {
+      output = 'review of ' + this.get('report.revision') + this.get('reviewDueMessage');
     }
     return output;
   }),
@@ -41,10 +39,15 @@ export default Ember.Component.extend({
     return moment(date).format(format);
   }),
 
-  reviewDueAt: Ember.computed('report.dueAt', function(){
+  reviewDueMessage: Ember.computed('report.dueAt', function(){
     const date = this.get('report.dueAt');
-    const format = 'MMMM D, YYYY h:mm a';
-    return moment(date).format(format);
+    var output = '';
+    if (date) {
+      const format = 'MMMM D, YYYY h:mm a z';
+      const zone = moment.tz.guess();
+      output = ' due ' + moment(date).tz(zone).format(format);
+    }
+    return output;
   }),
 
   reviewerStatus: Ember.computed('report.status', function() {

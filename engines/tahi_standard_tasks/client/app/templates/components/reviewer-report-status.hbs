@@ -10,7 +10,8 @@
   {{else}}
   <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
   {{#if (and (can 'manage_workflow' report.task.paper)
-             (eq reviewerStatus 'Pending'))}}
+             (eq reviewerStatus 'Pending')
+             report.dueAt)}}
     {{date-picker-link
       linkText="Change due date"
       startDate=report.originallyDueAt

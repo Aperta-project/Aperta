@@ -110,3 +110,48 @@ test('can not manage workflow, correspondence enabled, no nav icons', function(a
   });
 });
 
+test('can view recent activity, sees recent activity nav icon', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  const can = FakeCanService.create().allowPermission('view_recent_activity', paper);
+  this.register('service:can', can.asService());
+
+  $.mockjax({
+    type: 'GET',
+    url: '/api/feature_flags.json',
+    status: 200,
+    responseText: {
+      CORRESPONDENCE: true
+    }
+  });
+
+  this.set('paper', paper);
+  let done = assert.async();
+  this.render(template);
+  wait().then(() => {
+    assert.equal(this.$('#nav-recent-activity').length, 1);
+    done();
+  });
+});
+
+test('can not view recent activity, no recent activity nav icon', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  const can = FakeCanService.create();
+  this.register('service:can', can.asService());
+
+  $.mockjax({
+    type: 'GET',
+    url: '/api/feature_flags.json',
+    status: 200,
+    responseText: {
+      CORRESPONDENCE: true
+    }
+  });
+
+  this.set('paper', paper);
+  let done = assert.async();
+  this.render(template);
+  wait().then(() => {
+    assert.equal(this.$('#nav-recent-activity').length, 0);
+    done();
+  });
+});

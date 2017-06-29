@@ -17,7 +17,8 @@ class PaperContext < TemplateContext
   end
 
   def editor
-    UserContext.new(academic_editors.first) unless academic_editors.empty?
+    return if @object.academic_editors.empty?
+    UserContext.new(@object.academic_editors.first)
   end
 
   def url

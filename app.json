@@ -180,9 +180,6 @@
     },
     "PASSWORD_AUTH_ENABLED": "true",
     "PUMA_WORKERS": "1",
-    "PUSHER_URL": {
-      "required": true
-    },
     "PUSHER_VERBOSE_LOGGING": {
       "required": true
     },
@@ -218,6 +215,7 @@
     "scheduler:standard",
     "sendgrid:starter",
     "papertrail:choklad",
+    "pusher:sandbox",
     "heroku-postgresql:hobby-dev",
     "rediscloud:30"
   ],

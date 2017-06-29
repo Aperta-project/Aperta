@@ -20,6 +20,7 @@ module TahiStandardTasks
       @task = @apex_delivery.task
       @ftp_url = ftp_url
       @router_url = router_url
+      @destination = apex_delivery.destination
     end
 
     def make_delivery!
@@ -27,8 +28,8 @@ module TahiStandardTasks
         @packager = ApexPackager.new @paper,
                                     archive_filename: package_filename,
                                     apex_delivery_id: apex_delivery.id
-        upload_file(@packager.zip_file, package_filename, destination: apex_delivery.destination)
-        upload_file(@packager.manifest_file, manifest_filename, destination: apex_delivery.destination)
+        upload_file(@packager.zip_file, package_filename, destination: @destination)
+        upload_file(@packager.manifest_file, manifest_filename, destination: @destination)
       end
     end
 
@@ -59,17 +60,18 @@ module TahiStandardTasks
     end
 
     def upload_file(file_io, final_filename, destination:)
+      staff_emails = @paper.journal.staff_admins.pluck(:email)
       if destination == 'apex'
         FtpUploaderService.new(
           file_io: file_io,
           final_filename: final_filename,
-          email_on_failure: @paper.journal.staff_admins.pluck(:email),
+          email_on_failure: staff_emails,
           url: @ftp_url
         ).upload
       else
         RouterUploaderService.new(
           destination: destination,
-          email_on_failure: @paper.journal.staff_admins.pluck(:email),
+          email_on_failure: staff_emails,
           file_io: file_io,
           final_filename: final_filename,
           filenames: @packager.manifest.file_list,

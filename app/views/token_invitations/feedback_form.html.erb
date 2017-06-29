@@ -1,4 +1,9 @@
 <%= tinymce_assets %>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous">
+</script>
 
 <%= render layout: 'container' do %>
   <div class='message'>
@@ -13,7 +18,7 @@
           Please give your reasons for declining this invitation.
         </div>
       <% end %>
-      <%= f.text_area :decline_reason, class: 'tinymce' %>
+      <%= f.text_area :decline_reason, class: 'tinymce rich-text-editor', 'data-editor' => 'invitation_decline_reason' %>
       <br/>
 
       <%= f.label :reviewer_suggestions do %>
@@ -22,7 +27,7 @@
           Please provide reviewers' names, institutions, and email addresses if known.
         </div>
       <% end %>
-      <%= f.text_area :reviewer_suggestions, class: 'tinymce', style: 'resize: vertical;' %>
+      <%= f.text_area :reviewer_suggestions, class: 'tinymce rich-text-editor', 'data-editor' => 'invitation_reviewer_suggestions' %>
       <br/>
 
       <div class='flex-bar'>
@@ -37,22 +42,17 @@
   /* some tinymce options are snake_case */
   /* eslint-disable camelcase */
 
-  function initTinyMCE() {
+  $(document).ready(function () {
     var basicElements = 'p,br,strong/b,em/i,u,sub,sup,pre';
     var basicToolbar  = 'bold italic underline | subscript superscript | undo redo';
+    var options = {
+      selector: 'textarea.tinymce',
+      branding: false,
+      menubar: false,
+      toolbar: basicToolbar,
+      valid_elements: basicElements
+    };
 
-    if (typeof window.tinyMCE !== 'undefined') {
-      window.tinyMCE.init({
-        selector: 'textarea.tinymce',
-        branding: false,
-        menubar: false,
-        toolbar: basicToolbar,
-        valid_elements: basicElements
-      });
-    } else {
-      setTimeout(initTinyMCE, 50);
-    }
-  }
-
-  initTinyMCE();
+    window.tinyMCE.init(options);
+  });
 </script>

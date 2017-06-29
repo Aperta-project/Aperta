@@ -1,9 +1,4 @@
 <%= tinymce_assets %>
-<script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-  crossorigin="anonymous">
-</script>
 
 <%= render layout: 'container' do %>
   <div class='message'>
@@ -39,20 +34,21 @@
 <% end %>
 
 <script type="text/javascript">
-  /* some tinymce options are snake_case */
-  /* eslint-disable camelcase */
-
-  $(document).ready(function () {
-    var basicElements = 'p,br,strong/b,em/i,u,sub,sup,pre';
-    var basicToolbar  = 'bold italic underline | subscript superscript | undo redo';
+  function initTinyMCE() {
     var options = {
       selector: 'textarea.tinymce',
       branding: false,
       menubar: false,
-      toolbar: basicToolbar,
-      valid_elements: basicElements
+      toolbar: 'p,br,strong/b,em/i,u,sub,sup,pre',
+      valid_elements: 'bold italic underline | subscript superscript | undo redo'
     };
 
-    window.tinyMCE.init(options);
-  });
+    if (typeof window.tinyMCE !== 'undefined') {
+      window.tinyMCE.init(options);
+    } else {
+      setTimeout(initTinyMCE, 50);
+    }
+  }
+
+  initTinyMCE();
 </script>

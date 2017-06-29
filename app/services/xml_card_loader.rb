@@ -117,8 +117,6 @@ class XmlCardLoader
         content.attr_value('ident'),
       label:
         content.tag_text('label'),
-      placeholder:
-        content.tag_text('placeholder'),
       possible_values:
         content.fetch_values('possible-value', [:label, :value]),
       text:

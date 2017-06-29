@@ -235,11 +235,9 @@ describe XmlCardLoader do
 
       context 'short-input' do
         let(:text) { Faker::Lorem.sentence }
-        let(:placeholder) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
             <content content-type='short-input' value-type='text' default-answer-value="foo">
-              <placeholder>#{placeholder}</placeholder>
               <text>#{text}</text>
             </content>
           XML
@@ -248,11 +246,6 @@ describe XmlCardLoader do
         it 'sets the text to the value of the element text' do
           xml_card_loader.load(xml)
           expect(root_content.text).to eq(text)
-        end
-
-        it 'sets the placeholder to the value of the element placeholder' do
-          xml_card_loader.load(xml)
-          expect(root_content.placeholder).to eq(placeholder)
         end
 
         it 'sets the default answer value if given' do

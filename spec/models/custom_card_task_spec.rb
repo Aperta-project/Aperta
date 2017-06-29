@@ -17,6 +17,10 @@ describe CustomCardTask do
     let(:card_version) { task.card_version }
     let(:card) { card_version.card }
 
+    before(:all) do
+      Authorizations::Configuration.reload
+    end
+
     context "with a role that can view all tasks but can only edit one" do
       permissions do |context|
         permission(

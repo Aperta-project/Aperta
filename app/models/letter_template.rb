@@ -7,18 +7,25 @@ class LetterTemplate < ActiveRecord::Base
   validates :letter, presence: true
   validates :subject, presence: true
 
-  def render_attr(template, context)
-    Liquid::Template.parse(template).render(context)
-  end
-
   def render(context)
     tap do |my|
       # This is just an in-memory edit (render) of the letter template
       # fields that then get passed to the serializer. DO NOT save the
       # rendered versions.
-      my.subject = render_attr(subject, context)
-      my.to = render_attr(to, context)
+      my.subject = render_attr(subject, context, sanitize: true)
+      my.to = render_attr(to, context, sanitize: true)
       my.letter = render_attr(letter, context)
+    end
+  end
+
+  private
+
+  def render_attr(template, context, sanitize: false)
+    raw = Liquid::Template.parse(template).render(context)
+    if sanitize
+      ActionView::Base.full_sanitizer.sanitize(raw)
+    else
+      raw
     end
   end
 end

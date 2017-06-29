@@ -135,7 +135,9 @@ describe JournalFactory do
       end
 
       after(:all) do
-        @journal.destroy!
+        Permission.destroy_all
+        Role.destroy_all
+        Journal.destroy_all
       end
 
       let!(:journal) { @journal }

@@ -6,7 +6,6 @@ class CardContentSerializer < ActiveModel::Serializer
              :ident,
              :label,
              :order,
-             :placeholder,
              :possible_values,
              :text,
              :value_type,

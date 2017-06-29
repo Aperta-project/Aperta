@@ -7,7 +7,7 @@ class PlosBillingLogExportWorker
   def perform
     date = Time.zone.now.utc.days_ago(1).beginning_of_day
     # if its retrying we dont want to create a new report
-    report = BillingLogReport.first_or_create!(from_date: date)
+    report = BillingLogReport.where(from_date: date).first_or_create!
     # if retrying don't upload to S3 again
     report.save_and_send_to_s3! unless report.csv_file.file
     if BillingFTPUploader.new(report).upload

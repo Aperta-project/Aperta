@@ -48,15 +48,21 @@ export default Ember.Component.extend({
 
 /* eslint-enable camelcase */
 
-  postInitSetup(editor) {
-    let ifr = window.tinymce.DOM.get(editor.id + '_ifr');
-    editor.dom.setAttrib(ifr, 'title', '');
+  stripTitles() {
+    let editors = window.tinymce.editors;
+    for (let id of Object.keys(editors)) {
+      let editor = editors[id];
+      if (editor) {
+        let ifr = window.tinymce.DOM.get(id + '_ifr');
+        editor.dom.setAttrib(ifr, 'title', '');
+      }
+    }
   },
 
   configureCommon(hash) {
     hash['menubar'] = false;
     hash['content_style'] = this.get('bodyCSS');
-    hash['init_instance_callback'] = this.postInitSetup;
+    Ember.run.schedule('afterRender', this.stripTitles);
     return hash;
   },
 

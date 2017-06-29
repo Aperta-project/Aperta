@@ -212,6 +212,7 @@
     "scheduler:standard",
     "sendgrid:starter",
     "papertrail:choklad",
+    "pusher:sandbox",
     "heroku-postgresql:hobby-dev",
     "rediscloud:30"
   ],

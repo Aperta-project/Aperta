@@ -23,6 +23,10 @@ describe TahiStandardTasks::ReviewerMailer do
     )
   end
 
+  before do
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+  end
+
   describe ".welcome_reviewer" do
     subject(:email) do
       described_class.welcome_reviewer(assignee_id: reviewer.id, paper_id: paper.id)

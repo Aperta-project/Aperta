@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature "Inviting a new reviewer", js: true do
   include InvitationFeatureHelpers
-  include RichTextEditorHelpers
 
   let(:paper) do
     FactoryGirl.create(

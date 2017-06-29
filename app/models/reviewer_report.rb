@@ -19,7 +19,9 @@ class ReviewerReport < ActiveRecord::Base
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
 
   def set_due_datetime(length_of_time: 10.days)
-    DueDatetime.set_for(self, length_of_time: length_of_time)
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      DueDatetime.set_for(self, length_of_time: length_of_time)
+    end
   end
 
   def self.for_invitation(invitation)

@@ -2,7 +2,6 @@ require 'rails_helper'
 include RichTextEditorHelpers
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do
-
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
     FactoryGirl.create(
@@ -43,6 +42,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   before do
     assign_reviewer_role paper, reviewer
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
 
     login_as(reviewer, scope: :user)
     visit "/"

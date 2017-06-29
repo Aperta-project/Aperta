@@ -14,6 +14,7 @@ describe ReviewerReportsController do
 
     context 'when the user is authorized to :edit the reviewer report task' do
       before do
+        FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
         stub_sign_in user
         allow(user).to receive(:can?)
           .with(:edit, reviewer_report.task)

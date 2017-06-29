@@ -7,6 +7,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
+import moment from 'moment';
 
 moduleForComponent('review-status', 'Integration | Component | review status', {
   integration: true,
@@ -15,16 +16,19 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
     manualSetup(this.container);
     this.registry.register('service:can', FakeCanService);
 
+    let dueDate = new Date(2020, 1, 25);
     let paper = FactoryGuy.make('paper');
     let task = FactoryGuy.make('task');
     this.set('report', {
       status: 'not_invited',
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
-      dueAt: new Date(2020, 1, 25),
+      dueAt: dueDate,
       task: task
     });
     this.set('report.task.paper', paper);
+    let tz = moment.tz.guess();
+    this.set('timezone', moment(dueDate).tz(tz).format('z'));
   }
 });
 
@@ -52,7 +56,7 @@ test('No due_at unless accepted', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Pending: review of v99.0 due February 25, 2020 12:00 am Change due date Invitation accepted January 1, 2020',
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Change due date Invitation accepted January 1, 2020`,
     'Block template shows not invited text'
   );
 });
@@ -94,7 +98,7 @@ test('it shows pending', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Pending: review of v99.0 due February 25, 2020 12:00 am Invitation accepted January 1, 2020',
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020`,
     'Block template shows pending text with date'
   );
 
@@ -106,7 +110,7 @@ test('it shows pending', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Pending: review of v99.0 due February 25, 2020 12:00 am Invitation accepted January 1, 2020',
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020`,
     'Block template shows pending text with date'
   );
 });
@@ -122,7 +126,7 @@ test('it shows invited', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Invited: review of v99.0 due February 25, 2020 12:00 am Invitation sent on January 1, 2020',
+    `Invited: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation sent on January 1, 2020`,
     'Block template shows invited text with date'
   );
 });
@@ -138,7 +142,7 @@ test('it shows declined', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Declined: review of v99.0 due February 25, 2020 12:00 am Invitation declined January 1, 2020',
+    `Declined: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation declined January 1, 2020`,
     'Block template shows declined text with date'
   );
 });
@@ -154,7 +158,7 @@ test('it shows rescinded', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Rescinded: review of v99.0 due February 25, 2020 12:00 am Invitation rescinded January 1, 2020',
+    `Rescinded: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation rescinded January 1, 2020`,
     'Block template shows rescinded text with date'
   );
 });

@@ -61,32 +61,23 @@ module TahiStandardTasks
 
     def invitation_body_template
       template = <<-TEXT.strip_heredoc
-        You've been invited as a Reviewer on “{{ manuscript.title }}”, for {{ journal.name }}.
-
-        The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due-in-days | default 10}} days. If you require additional time, please do let us know so that we may plan accordingly.
-
-        Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
-
-        We look forward to hearing from you.
-
-        Sincerely,
-        {{ journal.name }} Team
-
-        ***************** CONFIDENTIAL *****************
-
-        {{ manuscript.paper_type }}
-
-        Manuscript Title:
-        {{ manuscript.title }}
-
-        Authors:
-        {% for author in manuscript.authors %}
-        {{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}
-        {% endfor %}
-
-        Abstract:
-        {{ manuscript.abstract | default 'Abstract is not available' }}
-      TEXT
+<p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>
+<p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due-in-days | default 10}} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
+<p>Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.</p>
+<p>We look forward to hearing from you.</p>
+<p>Sincerely,</p>
+<p>{{ journal.name }} Team</p>
+<p>***************** CONFIDENTIAL *****************</p>
+<p>{{ manuscript.paper_type }}</p>
+<p>Manuscript Title:<br>
+{{ manuscript.title }}</p>
+<p>Authors:<br>
+{% for author in manuscript.authors %}
+{{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
+{% endfor %}</p>
+<p>Abstract:<br>
+{{ manuscript.abstract | default 'Abstract is not available' }}</p>
+TEXT
       # Note that this will become a LetterTemplate. When that
       # happens, the rendering part below simplifies to a call on the
       # LetterTemplate object.

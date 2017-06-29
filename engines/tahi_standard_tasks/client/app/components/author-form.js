@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { contributionIdents } from 'tahi/models/author';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
@@ -10,7 +11,7 @@ const {
   isEqual
 } = Ember;
 
-export default Component.extend({
+export default Component.extend(ValidationErrorsMixin, {
   countries: service(),
   store: service(),
   can: service(),
@@ -136,6 +137,8 @@ export default Component.extend({
     if(this.get('authorProxy.errorsPresent')) { return; }
     this.get('author').save().then(() => {
       this.get('saveSuccess')();
+    }, (response) => {
+      this.displayValidationErrorsFromResponse(response);
     });
   },
 
@@ -211,7 +214,7 @@ export default Component.extend({
     currentAddressCountrySelected(data) {
       this.set('author.currentAddressCountry', data.text);
     },
-    
+
     selectAuthorConfirmation(status) {
       this.set('author.coAuthorState', status);
     },

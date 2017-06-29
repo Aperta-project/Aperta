@@ -54,11 +54,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     let dateIsValid = this.validateDate();
     let timeIsValid = this.validateTime();
     let mandatoryPresence = this.validateMandatoryPresence();
-    if (!(dateIsValid &&
-          timeIsValid &&
-          mandatoryPresence)) {
-      return;
-    }
+    return dateIsValid &&
+           timeIsValid &&
+           mandatoryPresence;
   },
 
   actions: {

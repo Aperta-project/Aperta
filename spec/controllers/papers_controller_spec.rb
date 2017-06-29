@@ -422,7 +422,7 @@ describe PapersController do
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
-          .with(:view, paper)
+          .with(:view_recent_activity, paper)
           .and_return true
         do_request
       end
@@ -442,7 +442,7 @@ describe PapersController do
       before do
         stub_sign_in(user)
         allow(user).to receive(:can?)
-          .with(:view, paper)
+          .with(:view_recent_activity, paper)
           .and_return false
         do_request
       end

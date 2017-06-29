@@ -18,7 +18,7 @@
           Please give your reasons for declining this invitation.
         </div>
       <% end %>
-      <%= f.text_area :decline_reason, class: 'tinymce rich-text-editor', 'data-editor' => 'invitation_decline_reason' %>
+      <%= f.text_area :decline_reason, class: 'tinymce', id: 'invitation_decline_reason' %>
       <br/>
 
       <%= f.label :reviewer_suggestions do %>
@@ -27,7 +27,7 @@
           Please provide reviewers' names, institutions, and email addresses if known.
         </div>
       <% end %>
-      <%= f.text_area :reviewer_suggestions, class: 'tinymce rich-text-editor', 'data-editor' => 'invitation_reviewer_suggestions' %>
+      <%= f.text_area :reviewer_suggestions, class: 'tinymce', id: 'invitation_reviewer_suggestions' %>
       <br/>
 
       <div class='flex-bar'>

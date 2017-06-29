@@ -230,10 +230,30 @@ describe TokenInvitationsController do
   describe 'GET /invitations/:token/accept' do
     subject(:do_request) { get :accept, token: 'soCrypticMuchMystery' }
     context 'there is no user logged in' do
-      context 'when the token points to an "invited" invitation' do
+      before { expect(controller).to receive(:use_authentication?).and_return(use_authentication_response) }
+      context 'when the token points to an "invited" invitation and the user should be logged in' do
+        let(:use_authentication_response) { true }
         it 'redirects user to login page' do
           do_request
           expect(response).to redirect_to(new_user_session_url)
+        end
+      end
+      context 'the user should go through akita phased signup' do
+        let(:use_authentication_response) { false }
+        let(:invitation_double) do
+          double('Invitation', token: 'blah', email: user.email)
+        end
+        let(:dummy_cas_url) { 'http://setphaserstostun.org' }
+        before do
+          expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+          invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
+          expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(dummy_cas_url)
+        end
+        it 'redirects user to akita host with only a token param' do
+          do_request
+          redirect_uri = URI.parse(response['Location'])
+          expect(redirect_uri.host).to eq(URI.parse(dummy_cas_url).host)
+          expect(redirect_uri.query.starts_with?('token=')).to be true
         end
       end
     end
@@ -242,6 +262,7 @@ describe TokenInvitationsController do
       before do
         stub_sign_in user
         expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+        expect(controller).to receive(:use_authentication?).and_return(true)
       end
       context 'when the invitation hasn\'t been accepted' do
         context 'when invitation and current user emails are the same' do

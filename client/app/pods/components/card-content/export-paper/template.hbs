@@ -4,6 +4,4 @@
   <div class="send-to-apex-history-header">APEX History</div>
 {{/if}}
 
-{{#each task.apexDeliveries as |delivery|}}
-  {{apex-delivery delivery=delivery}}
-{{/each}}
+{{export-group exports=task.apexDeliveries}}

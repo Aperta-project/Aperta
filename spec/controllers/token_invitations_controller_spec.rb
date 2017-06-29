@@ -174,6 +174,59 @@ describe TokenInvitationsController do
     end
   end
 
+  describe '#use_authentication?' do
+    context 'the invitation does not have an invitee_id' do
+      let(:invitation_double) { double('Invitation', email: 'ned@flancrest.com', invitee_id: nil) }
+      before { expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double) }
+      context 'the AKITA_INTEGRATION feature flag is false' do
+        before { expect(FeatureFlag).to receive(:[]).with('AKITA_INTEGRATION').and_return(false) }
+        it 'should return true' do
+          controller.send(:use_authentication?).should be true
+        end
+      end
+      context 'the AKITA_INTEGRATION ff is true' do
+        before do
+          expect(FeatureFlag).to receive(:[]).with('AKITA_INTEGRATION').and_return(true)
+        end
+        context 'and the phased sign up url is missing' do
+          before { expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(nil) }
+          it 'should return true' do
+            controller.send(:use_authentication?).should be true
+          end
+        end
+        context 'and phased signup url is present' do
+          before do
+            expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return('http://setphaserstostun.org')
+          end
+          context 'but NED is not enabled' do
+            before { expect(NedUser).to receive(:enabled?).and_return(false) }
+            it 'should return true' do
+              controller.send(:use_authentication?).should be true
+            end
+          end
+          context 'and NED is enabled' do
+            before do
+              expect(NedUser).to receive(:enabled?).and_return(true)
+              expect(NedUser).to receive(:new).and_return(ned_user)
+            end
+            context 'and the invitation email already exists in NED' do
+              let(:ned_user) { double('NedUser', email_has_account?: true) }
+              it 'should return true' do
+                controller.send(:use_authentication?).should be true
+              end
+            end
+            context 'and invitation email does not exit in NED' do
+              let(:ned_user) { double('NedUser', email_has_account?: false) }
+              it 'should return false' do
+                controller.send(:use_authentication?).should be false
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   describe 'GET /invitations/:token/accept' do
     subject(:do_request) { get :accept, token: 'soCrypticMuchMystery' }
     context 'there is no user logged in' do

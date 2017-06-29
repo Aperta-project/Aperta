@@ -90,15 +90,14 @@ class TokenInvitationsController < ApplicationController
   end
 
   def use_authentication?
-    NedUser.new.email_has_account?(invitation.email) or
-      !TahiEnv.cas_phased_signup_url or
-      !FeatureFlag['AKITA_INTEGRATION']
+    invitation.invitee_id or # user already in APERTA
+      !FeatureFlag['AKITA_INTEGRATION'] or
+      !TahiEnv.cas_phased_signup_url or # some envs might not have this
+      !NedUser.enabled? or # or this
+      NedUser.new.email_has_account?(invitation.email) # check NED for user
   end
 
   def ensure_user!
-    # first we check if the user is already in our db
-    # or if we even have that CAS_PHASED_SIGNUP_URL in this env
-    # or if the feature flag is set
     if use_authentication?
       # so they should login via regular means
       authenticate_user!

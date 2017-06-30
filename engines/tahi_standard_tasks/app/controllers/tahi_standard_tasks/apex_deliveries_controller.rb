@@ -37,7 +37,7 @@ module TahiStandardTasks
           ApexDelivery.includes(:user, :paper, :task).find(params[:id])
         else
           ApexDelivery.create!(
-            destination: delivery_params[:destination],
+            destination: delivery_params[:destination] || 'apex',
             paper: task.paper,
             task: task,
             user: current_user)

@@ -1,6 +1,5 @@
-# Worker class for generating a new SimpleReport, mailing it, and saving if
-# successful. Intended to be called by a scheduled task, or on an ad-hoc
-# basis.
+# Worker class for generating and saving a new SimpleReport.
+# Intended to be called by a scheduled task, or on an ad-hoc basis.
 class SimpleReportMailerWorker
   include Sidekiq::Worker
 
@@ -8,7 +7,6 @@ class SimpleReportMailerWorker
 
   def perform
     simple_report = SimpleReport.build_new_report
-    SimpleReportMailer.send_report(simple_report).deliver_now
     simple_report.save!
   end
 end

@@ -2,6 +2,7 @@ import resolver from './helpers/resolver';
 import {
   setResolver
 } from 'ember-qunit';
+import { start } from 'ember-cli-qunit';
 
 setResolver(resolver);
 
@@ -30,3 +31,4 @@ if (QUnit.urlParams.workerIndex && QUnit.urlParams.numWorkers) {
             !== parseInt(QUnit.urlParams.workerIndex));
   });
 }
+start();

@@ -269,10 +269,12 @@ describe TokenInvitationsController do
           double('Invitation', token: 'blah', email: user.email)
         end
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
+        let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
         before do
           expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
           invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
           expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(dummy_cas_url)
+          expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
         end
         it 'redirects user to akita host with only a token param' do
           do_request

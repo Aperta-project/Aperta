@@ -42,7 +42,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     for (let i = 0; i < mandatoryFields.length; i++) {
       let mandatoryFieldValue = this.get('model.' + mandatoryFields[i]);
       if (mandatoryFieldValue === '' ||
-          mandatoryFieldValue === null) {
+          mandatoryFieldValue === null ||
+          mandatoryFieldValue === undefined) {
         this.set('validationErrors.' + mandatoryFields[i], 'cannot be blank');
         isValid = false;
       }

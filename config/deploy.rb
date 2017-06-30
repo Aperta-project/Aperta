@@ -37,6 +37,7 @@ after 'deploy:migrate', 'deploy:safe_seeds' do
         execute :rake, 'roles-and-permissions:seed'
         execute :rake, 'data:update_journal_task_types'
         execute :rake, 'create_feature_flags'
+        execute :rake, 'seed:letter_templates:populate'
       end
     end
   end

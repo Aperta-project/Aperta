@@ -99,7 +99,7 @@ class TahiEnv
   required :CAS_SSL, :boolean, if: :cas_enabled?
   optional :CAS_CALLBACK_URL
   optional :CAS_PHASED_SIGNUP_URL
-  optional :PHASED_EC_PRIVATE_KEY
+  optional :JWT_ID_ECDSA
 
   # EM / Editorial Manager
   optional :EM_DATABASE

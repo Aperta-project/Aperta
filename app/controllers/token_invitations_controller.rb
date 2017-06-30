@@ -146,7 +146,7 @@ class TokenInvitationsController < ApplicationController
         please take a moment to create your PLOS account."
     }
     # get key from env? Abstract this into its own service?
-    private_key = OpenSSL::PKey::EC.new(TahiEnv.phased_ec_private_key, nil)
+    private_key = OpenSSL::PKey::EC.new(TahiEnv.jwt_id_ecdsa, nil)
     JWT.encode(payload, private_key, 'ES256')
   end
 end

@@ -194,7 +194,7 @@ describe TokenInvitationsController do
         context 'when invitation and current user emails are the same' do
           before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper)
+            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer')
           end
 
           it 'creates an Activity' do

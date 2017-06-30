@@ -70,7 +70,7 @@ class TasksController < ApplicationController
         subject: task_email_params[:subject],
         body: task_email_params[:body],
         to: user.email,
-        task: Task.find(params[:id])
+        task: task
       )
     end
     head :no_content

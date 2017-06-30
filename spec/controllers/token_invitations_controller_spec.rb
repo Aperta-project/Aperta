@@ -174,6 +174,31 @@ describe TokenInvitationsController do
     end
   end
 
+  describe '#jwt_encoded_payload' do
+    context 'should return an encrypted token which can be decrypted' do
+      let(:jwt_decoded_payload) do
+        token = controller.send(:jwt_encoded_payload)
+        JWT.decode(token, dummy_key, true, algorithm: 'ES256').first
+      end
+      let(:invitation_double) { double('Invitation', token: 'blah', email: user.email) }
+      let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
+      before do
+        expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double)
+        invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
+        expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
+      end
+      it 'has four keys: destination, heading, subheading, email' do
+        expect(jwt_decoded_payload.keys).to include('destination', 'heading', 'subheading', 'email')
+      end
+      it 'has a the invitation email set to the email key' do
+        expect(jwt_decoded_payload['email']).to eq(invitation_double.email)
+      end
+      it 'the destination value is the omniauth callback url with correct redirect url' do
+        expect(jwt_decoded_payload['destination']).to eq(controller.send(:akita_omniauth_callback_url))
+      end
+    end
+  end
+
   describe '#use_authentication?' do
     context 'the invitation does not have an invitee_id' do
       let(:invitation_double) { double('Invitation', email: 'ned@flancrest.com', invitee_id: nil) }

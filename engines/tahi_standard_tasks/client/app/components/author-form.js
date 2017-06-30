@@ -137,8 +137,6 @@ export default Component.extend(ValidationErrorsMixin, {
     if(this.get('authorProxy.errorsPresent')) { return; }
     this.get('author').save().then(() => {
       this.get('saveSuccess')();
-    }, (response) => {
-      this.displayValidationErrorsFromResponse(response);
     });
   },
 

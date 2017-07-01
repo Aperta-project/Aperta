@@ -16,7 +16,7 @@ class ApexPackager
     @apex_delivery_id = apex_delivery_id
   end
 
-  def zip_file
+  def zip_file(include_pdf: false)
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
@@ -25,7 +25,9 @@ class ApexPackager
         add_metadata(package)
         add_manuscript(package)
         add_sourcefile_if_needed(package)
-        add_generated_pdf(package)
+        if include_pdf
+          add_generated_pdf(package)
+        end
       end
     end
   end

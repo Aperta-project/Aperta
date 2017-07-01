@@ -80,6 +80,18 @@ describe ApexPackager do
       expected_manifest = {
         "archive_filename" => archive_filename,
         "metadata_filename" => "metadata.json",
+        "files" => ["metadata.json", "test.0001.docx"]
+      }
+      expect(manifest).to eq expected_manifest
+    end
+
+    it 'can create a manifest with a pdf file' do
+      packager = ApexPackager.new(paper, archive_filename: archive_filename)
+      packager.zip_file(include_pdf: true)
+      manifest = JSON.parse(packager.send(:manifest).to_json)
+      expected_manifest = {
+        "archive_filename" => archive_filename,
+        "metadata_filename" => "metadata.json",
         "files" => ["metadata.json", "test.0001.docx", "aperta-generated-PDF.pdf"]
       }
       expect(manifest).to eq expected_manifest

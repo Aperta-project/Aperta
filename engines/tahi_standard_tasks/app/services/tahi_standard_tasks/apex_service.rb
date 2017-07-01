@@ -28,8 +28,7 @@ module TahiStandardTasks
         @packager = ApexPackager.new @paper,
                                     archive_filename: package_filename,
                                     apex_delivery_id: apex_delivery.id
-        upload_file(@packager.zip_file, package_filename, destination: @destination)
-        upload_file(@packager.manifest_file, manifest_filename, destination: @destination)
+        upload_files(zip_filename: package_filename, manifest_filename: manifest_filename, destination: @destination)
       end
     end
 
@@ -59,12 +58,18 @@ module TahiStandardTasks
       fail ApexServiceError, "Paper is missing manuscript_id"
     end
 
-    def upload_file(file_io, final_filename, destination:)
+    def upload_files(zip_filename:, manifest_filename:, destination:)
       staff_emails = @paper.journal.staff_admins.pluck(:email)
       if destination == 'apex'
         FtpUploaderService.new(
-          file_io: file_io,
-          final_filename: final_filename,
+          file_io: @packager.zip_file,
+          final_filename: zip_filename,
+          email_on_failure: staff_emails,
+          url: @ftp_url
+        ).upload
+        FtpUploaderService.new(
+          file_io: @packager.manifest_file,
+          final_filename: manifest_filename,
           email_on_failure: staff_emails,
           url: @ftp_url
         ).upload
@@ -72,8 +77,8 @@ module TahiStandardTasks
         RouterUploaderService.new(
           destination: destination,
           email_on_failure: staff_emails,
-          file_io: file_io,
-          final_filename: final_filename,
+          file_io: @packager.zip_file(include_pdf: true),
+          final_filename: zip_filename,
           filenames: @packager.manifest.file_list,
           paper: @paper,
           url: @router_url

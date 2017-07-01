@@ -87,6 +87,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       if (this.get('isUploading')) return;
 
       // Client-side validations
+      this.clearAllValidationErrors();
       if (!this.validateFields()) return;
 
       // The way Correspondence was originally serialized makes this necessary

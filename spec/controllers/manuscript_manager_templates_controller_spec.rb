@@ -10,6 +10,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal_task_type) { FactoryGirl.create(:journal_task_type, journal_id: journal.id) }
   let(:user) { FactoryGirl.build(:user) }
 
   describe 'GET index' do
@@ -169,7 +170,7 @@ describe ManuscriptManagerTemplatesController do
           name: 'Phase title',
           position: 1,
           task_templates: [
-            journal_task_type_id: journal.id,
+            journal_task_type_id: journal_task_type.id,
             title: 'Ad-hoc',
             template: template_params
           ]
@@ -198,6 +199,7 @@ describe ManuscriptManagerTemplatesController do
       it "updates the ManuscriptManagerTemplate" do
         do_request
         mmt = ManuscriptManagerTemplate.last
+        puts mmt.attributes
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
         expect(template.to_json).to eq(template_params.to_json)

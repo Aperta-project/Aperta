@@ -19,11 +19,11 @@ possible-value = element possible-value {
 # Inputs
 radio-input = element content {
                   attribute ident { text }?,
-                  attribute value-type { "text" },
-                  attribute content-type { "radio" | "boolean" },
+                  attribute value-type { "text" | "boolean"},
+                  attribute content-type { "radio" },
                   attribute default-answer-value { text }?,
                   element text { text },
-                  possible-value+,
+                  possible-value*,
                   content*
               }
 
@@ -57,7 +57,6 @@ date-picker = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
-                  (element placeholder { text }? &
                   element text { text })
               }
 
@@ -67,8 +66,7 @@ dropdown-input = element content {
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
                   attribute default-answer-value { text }?,
-                  (element placeholder { text }? &
-                   element text { text }),
+                  element text { text }),
                   possible-value+,
                   content*
               }
@@ -87,13 +85,12 @@ text-input = element content {
                  attribute value-type { "text" },
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute default-answer-value { text }?,
-                 (element placeholder { text }? &
-                  element text { text }? &
-                  element validation {
-                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
-                   element error-message { text },
-                   element validator { text }
-                 }*)
+                 element text { text }? &
+                 element validation {
+                  attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
+                  element error-message { text },
+                  element validator { text }
+                }*)
              }
 
 # Contents

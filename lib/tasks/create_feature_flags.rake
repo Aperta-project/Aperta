@@ -11,6 +11,7 @@ task 'create_feature_flags': :environment do
   FeatureFlag.contain_exactly! [
     "CARD_CONFIGURATION",
     "HEALTH_CHECK",
-    "CORRESPONDENCE"
+    "CORRESPONDENCE",
+    "REVIEW_DUE_DATE"
   ]
 end

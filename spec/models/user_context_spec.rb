@@ -9,6 +9,10 @@ describe UserContext do
     FactoryGirl.build(:user)
   end
 
+  let(:affiliation) do
+    FactoryGirl.create(:affiliation, title: "Mister Manager", user: user)
+  end
+
   context 'rendering a user' do
     def check_render(template, expected)
       expect(Liquid::Template.parse(template).render(context))
@@ -25,6 +29,10 @@ describe UserContext do
 
     it 'renders an email' do
       check_render("{{ email }}", user.email)
+    end
+
+    it 'renders a title' do
+      check_render("{{ title }}", affiliation.title)
     end
   end
 end

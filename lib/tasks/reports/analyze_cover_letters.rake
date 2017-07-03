@@ -3,7 +3,7 @@ namespace :reports do
   	papers = blanks = balanced = unbalanced = returns = both = 0
 
     inactive_states = %w(rejected withdrawn accepted)
-    current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).map(&:to_i).to_set
+    current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).map(&:to_i)
 
   	Paper.where(id: current_papers).order(:id).all.each do |paper|
   		cover_letters = paper.tasks.where(type: 'TahiStandardTasks::CoverLetterTask').all

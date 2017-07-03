@@ -153,6 +153,10 @@ describe TahiEnv do
   # Redis Sentinel
   it_behaves_like 'dependent required array env var', var: 'REDIS_SENTINELS', dependent_key: 'REDIS_SENTINEL_ENABLED'
 
+  # RouterApi
+  it_behaves_like 'optional boolean env var', var: 'ROUTER_API_ENABLED', default_value: false
+  it_behaves_like 'dependent required env var', var: 'ROUTER_URL', dependent_key: 'ROUTER_API_ENABLED'
+
   # Pusher / Slanger
   it_behaves_like 'required env var', var: 'PUSHER_URL'
   it_behaves_like 'required boolean env var', var: 'PUSHER_SSL_VERIFY'

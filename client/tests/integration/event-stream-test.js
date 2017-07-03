@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { test } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
 

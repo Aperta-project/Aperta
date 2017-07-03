@@ -1,4 +1,4 @@
-import { test } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
 import * as TestHelper from 'ember-data-factory-guy';

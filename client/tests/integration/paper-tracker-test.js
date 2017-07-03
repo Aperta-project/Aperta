@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { test } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithParticipant } from '../helpers/setups';

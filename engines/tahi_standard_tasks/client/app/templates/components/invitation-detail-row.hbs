@@ -41,7 +41,7 @@
     </div>
     <div class="invitation-item-body-preview">
       {{#if invitation.declined}}
-        {{{invitation.declineReason}}}
+        {{clean-html invitation.declineReason}}
       {{else}}
         {{strip-html invitation.body}}
       {{/if}}

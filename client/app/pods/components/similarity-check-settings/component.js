@@ -43,9 +43,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  selectEnabled: Ember.computed('submissionOption', function() {
-    return this.get('submissionOption');
-  }),
+  selectEnabled: Ember.computed.reads('submissionOption'),
 
   fullSubmissionState: Ember.computed('submissionOption', function() {
     return this.get('submissionOption') ? '' : 'checked';
@@ -55,7 +53,7 @@ export default Ember.Component.extend({
     return this.get('submissionOption') ? 'checked' : '';
   }),
 
-  switchState: Ember.computed('switchState', function(){
+  switchState: Ember.computed('initialSetting', function(){
     var setting = this.get('initialSetting');
     var state = Ember.Object.create({value: true});
     if (['off',null].includes(setting)){

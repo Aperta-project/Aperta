@@ -393,6 +393,19 @@ creator_login25 = {'user'               : u'文孙',
                    'affiliation-from'   : '01/01/2010',
                    'affiliation-to'     : 'Present',
                    }
+creator_login26 = {'user'               : 'atest',
+                   'name'               : 'author23',
+                   'initials'           : 'aa23',
+                   'email'              : 'sealresq+1036@gmail.com',
+                   'orcidid'            : '',
+                   'profile_image'      : '',
+                   'affiliation-name'   : '',
+                   'affiliation-dept'   : '',
+                   'affiliation-title'  : '',
+                   'affiliation-country': '',
+                   'affiliation-from'   : '',
+                   'affiliation-to'     : '',
+                   }
 reviewer_login = {'user'               : 'areviewer',
                   'name'               : 'atest reviewer',
                   'initials'           : 'ar',
@@ -817,6 +830,7 @@ users = [creator_login1,
          creator_login23,
          creator_login24,
          creator_login25,
+         creator_login26,
          ]
 
 # In order to properly exercise the tests for orcid connectivity, we should include tests with users
@@ -824,7 +838,7 @@ users = [creator_login1,
 #   to be completed - we end up in an endless loop. Therefore, use a different set of users for
 #   ORCID tests.
 non_orcid_users = [creator_login21,
-                   creator_login22,
+                   creator_login22
                    ]
 
 # This list is a, hopefully temporary, need based on bugs in the discussion forums being unable

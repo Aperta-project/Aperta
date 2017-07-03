@@ -3,7 +3,7 @@ import { test } from 'qunit';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
 import { make } from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import page from 'tahi/tests/pages/ad-hoc-task';
 import Factory from 'tahi/tests/helpers/factory';
 
@@ -18,7 +18,7 @@ const paperTaskURL = function paperTaskURL(paper, task) {
 moduleForAcceptance('Integration: AdHoc Card', {
   afterEach() {
     server.restore();
-    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(function() { TestHelper.mockTeardown(); });
   },
 
   beforeEach() {

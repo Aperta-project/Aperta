@@ -3,7 +3,7 @@ import Ember from 'ember';
 import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import * as TestHelper from "ember-data-factory-guy";
 var app;
 
 app = null;

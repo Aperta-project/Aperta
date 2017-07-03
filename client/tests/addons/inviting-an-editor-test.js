@@ -3,19 +3,19 @@ import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import FactoryGuy from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 let App, paper, phase, task, inviteeEmail;
 
 module('Integration: Inviting an editor', {
   afterEach() {
-    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(function() { TestHelper.mockTeardown(); });
     Ember.run(App, 'destroy');
   },
 
   beforeEach() {
     App = startApp();
-    TestHelper.setup(App);
+    TestHelper.mockSetup();
 
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/formats', status: 200, responseText: {

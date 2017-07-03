@@ -4,7 +4,7 @@ import startApp from '../helpers/start-app';
 import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 var app, currentPaper, fakeUser, financialDisclosureTask,
     financialDisclosureTaskId, paperPayload, server;

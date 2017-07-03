@@ -5,7 +5,7 @@ import startApp from '../helpers/start-app';
 import { paperWithTask, addUserAsParticipant, addUserAsCollaborator, addNestedQuestionToTask } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';;
+import * as TestHelper from 'ember-data-factory-guy';;
 var app, currentPaper, fakeUser, server;
 
 app = null;
@@ -20,7 +20,7 @@ module('Integration: PaperIndex', {
   afterEach: function() {
     server.restore();
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     return Ember.run(app, app.destroy);
   },

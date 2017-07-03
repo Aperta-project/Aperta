@@ -4,7 +4,7 @@ import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithParticipant } from '../helpers/setups';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 let App = null;
 let server = null;

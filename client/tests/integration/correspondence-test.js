@@ -8,7 +8,7 @@ import Factory from '../helpers/factory';
 import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 
 import FactoryGuy from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import formatDate from 'tahi/lib/format-date';
 
 var app, paper, correspondence, server;
@@ -22,7 +22,7 @@ moduleForAcceptance('Integration: Correspondence', {
   afterEach: function() {
     server.restore();
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     Ember.run(app, app.destroy);
     $.mockjax.clear();

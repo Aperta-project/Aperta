@@ -5,7 +5,7 @@ import { test } from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { make, makeList } from 'ember-data-factory-guy';
 import Factory from '../helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 var App;
 
 App = null;
@@ -14,13 +14,13 @@ var paper = null;
 module('Integration: Commenting', {
   afterEach: function() {
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     return Ember.run(App, App.destroy);
   },
   beforeEach: function() {
     App = startApp();
-    TestHelper.setup(App);
+    TestHelper.mockSetup();
     paper = make('paper');
     $.mockjax({
       url: '/api/admin/journals/authorization',

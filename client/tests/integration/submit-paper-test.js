@@ -6,7 +6,7 @@ import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
 
 import FactoryGuy from 'ember-data-factory-guy';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 
 var app, paper, server;
 
@@ -18,14 +18,14 @@ module('Integration: Submitting Paper', {
   afterEach: function() {
     server.restore();
     Ember.run(function() {
-      return TestHelper.teardown();
+      return TestHelper.mockTeardown();
     });
     Ember.run(app, app.destroy);
     $.mockjax.clear();
   },
   beforeEach: function() {
     app = startApp();
-    TestHelper.setup();
+    TestHelper.mockSetup();
     server = setupMockServer();
 
     let journal = FactoryGuy.make('journal');

@@ -4,7 +4,7 @@ import moduleForAcceptance from 'tahi/tests/helpers/module-for-acceptance';
 import setupMockServer from 'tahi/tests/helpers/mock-server';
 import { paperWithParticipant } from 'tahi/tests/helpers/setups';
 import Factory from 'tahi/tests/helpers/factory';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 
 let server = null;

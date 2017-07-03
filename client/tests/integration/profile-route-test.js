@@ -1,7 +1,7 @@
 import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 
@@ -10,7 +10,7 @@ var server = null;
 module('Integration: Authorized Profile View', {
   beforeEach(){
     this.App = startApp();
-    TestHelper.setup(this.App);
+    TestHelper.mockSetup();
     server = setupMockServer();
     server.respondWith(
       'GET',

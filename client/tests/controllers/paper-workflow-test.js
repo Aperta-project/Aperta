@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
 import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import * as TestHelper from 'ember-data-factory-guy';
 import setupMockServer from '../helpers/mock-server';
 
 let app = null;

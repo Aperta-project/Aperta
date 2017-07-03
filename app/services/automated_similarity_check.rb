@@ -38,6 +38,11 @@ class AutomatedSimilarityCheck
   end
 
   def run
+    Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
+    Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
+    Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
+    Rails.logger.info "AutomatedSimilarityCheck: is this the first revision? #{first_revision?}"
+    Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
         versioned_text: paper.latest_submitted_version

@@ -9,8 +9,6 @@ class Setting < ActiveRecord::Base
 
   belongs_to :setting_template
 
-  before_validation :set_default_value
-
   delegate :possible_setting_values, to: :setting_template, allow_nil: true
 
   validates :value,
@@ -18,9 +16,4 @@ class Setting < ActiveRecord::Base
               in: ->(s) { s.possible_setting_values.map(&:value) }
             },
             if: -> { possible_setting_values.present? }
-
-  def set_default_value
-    return if value.present? || setting_template.nil?
-    self.value ||= setting_template.value
-  end
 end

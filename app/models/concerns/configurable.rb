@@ -6,7 +6,7 @@ module Configurable
   # accessing any given setting shouldn't happen through the
   # has_many directly, but rather through the `setting` method
   included do
-    has_many :settings, as: :owner
+    has_many :settings, as: :owner, dependent: :destroy
   end
 
   # setting templates for a given key will be global ones (where journal id is
@@ -30,11 +30,12 @@ module Configurable
   # and the Setting class name.
   def setting(name)
     settings.find_by(name: name) || begin
-
-      r = setting_templates.find_by!(setting_name: name)
-      settings.find_or_create_by!(name: r.setting_name,
-                                  type: r.setting_klass,
-                                  owner: self)
+      t = setting_templates.find_by!(setting_name: name)
+      settings.create!(name: t.setting_name,
+                       type: t.setting_klass,
+                       setting_template: t,
+                       value: t.value,
+                       owner: self)
     end
   end
 end

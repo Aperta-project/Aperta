@@ -108,16 +108,13 @@ class CoverLetterTask(BaseTask):
       self.validate_application_body_text(question)
 
     # Assert form styling
-    textarea = self._get(self._cover_letter_textarea)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('cover_letter--text')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'Cover letter text area '\
+                                                                          'is not present in the ' \
+                                                                          'task!'
     upload_cover_letter_button = self._get(self._upload_cover_letter_button)
-
-    expected_textarea_placeholder = 'Please type or paste your cover letter into this text ' \
-                                    'field, or attach a file below'
-    assert textarea.get_attribute('placeholder') == expected_textarea_placeholder, \
-        'The textarea placeholder: {0} is not the expected: ' \
-        '{1}'.format(textarea.get_attribute('placeholder'), expected_textarea_placeholder)
-    # APERTA-8903
-    # self.validate_textarea_style(textarea)
 
     expected_upload_button_text = 'ATTACH FILE'
     assert upload_cover_letter_button.text == expected_upload_button_text, \
@@ -143,14 +140,22 @@ class CoverLetterTask(BaseTask):
     """
     return self._textarea_sample_text
 
-  def validate_letter_textarea(self):
+  def fill_and_complete_letter_textarea(self):
     """
-    validate_letter_textarea: Validate the textarea filling and mark task as completed
+    fill_and_complete_letter_textarea: Enter sample text to cover letter rich text editor, then
+      mark task completed
     :return: void function
     """
-    textarea = self._get(self._cover_letter_textarea)
     sample_text = self.get_textarea_sample_text()
-    textarea.send_keys(sample_text)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('cover_letter--text')
+    assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'No Cover Letter editor '\
+                                                                          'text entry area present.'
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=sample_text)
+    # Gratuitous verification
+    cvr_ltr_txt = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+    logging.info('Temporary Paper Title is: {0}'.format(cvr_ltr_txt))
     self.click_completion_button()
 
   def upload_letter(self, letter='random'):

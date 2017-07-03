@@ -32,7 +32,7 @@ class FTCCard(BaseCard):
     self._autogenerate_text = (By.XPATH,
         '//div[contains(@class, \'form-group\')]/following-sibling::button')
     self._text_area = (By.CSS_SELECTOR, 'textarea.ember-text-area')
-    self._field_title = (By.CSS_SELECTOR, 'span.text-field-title')
+    self._field_title = (By.CSS_SELECTOR, 'div.form-group > div')
     self._checkboxes = (By.CSS_SELECTOR, 'label.question-checkbox input')
     self._check_items = (By.CSS_SELECTOR, 'p.model-question')
     self._check_items_text = [u'Check Section Headings of all new submissions (including Open '
@@ -150,13 +150,6 @@ class FTCCard(BaseCard):
     autogenerate_text_btn = self._get(self._autogenerate_text)
     autogenerate_text_btn.click()
     return None
-
-  def get_issues_text(self):
-    """
-    Get the contents of the issues to address in the text area
-    :return: Text in the text area of ITC
-    """
-    return self._get(self._text_area).get_attribute('value')
 
   def click_send_changes_btn(self):
     """

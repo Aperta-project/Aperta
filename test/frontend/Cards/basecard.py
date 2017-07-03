@@ -286,3 +286,16 @@ class BaseCard(AuthenticatedPage):
     :return: Void function
     """
     self._wait_for_element(self._get(self._completion_button))
+
+  def get_issues_text(self):
+    """
+    Get the contents of the issues to address in the text area - shared method among ITC, RTC, FTC
+    :return: Text in the text area of Tech Check Card
+    """
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+      self.get_rich_text_editor_instance('author-changes-letter')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    cfa_email_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
+    logging.info('Changes for Author email: {0}'.format(cfa_email_text))
+    return cfa_email_text
+

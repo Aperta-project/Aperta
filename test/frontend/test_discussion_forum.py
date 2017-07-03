@@ -150,11 +150,11 @@ class DiscussionForumTest(CommonTest):
 
   def test_discussions(self):
     """
-    This test validates a dicussion from the manuscript view. It involves multiple
+    This test validates a discussion from the manuscript view. It involves multiple
     participants, an admin user post a discussion and adds two collaborators.
-    The collaborators checks for messages, one collaborator make a post
+    The collaborators checks for messages, one collaborator makes a post
     mentioning the other collaborator and this mention should be highlighted.
-    All participants checks for content, user and time.
+    All participants check for content, user and time.
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))

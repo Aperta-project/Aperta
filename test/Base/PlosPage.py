@@ -35,7 +35,7 @@ class PlosPage(object):
   Model an abstract base Journal page.
   """
   PROD_URL = ''
-  logging.basicConfig(level=logging.INFO)
+  logging.basicConfig(format='%(levelname)-s %(message)s [%(filename)s:%(lineno)d]', level=logging.INFO)
 
   def __init__(self, driver, urlSuffix=''):
     # Internal WebDriver-related protected members

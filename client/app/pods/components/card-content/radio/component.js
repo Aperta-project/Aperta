@@ -15,12 +15,18 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    Ember.assert(
-      `the content must define an array of possibleValues
+    if(this.get('isText')) {
+      Ember.assert(
+        `the content must define an array of possibleValues
       that contains at least one object with the shape { label, value } `,
-      Ember.isPresent(this.get('content.possibleValues'))
-    );
+        Ember.isPresent(this.get('content.possibleValues'))
+      );
+    }
   },
+
+  isText: Ember.computed('content.valueType', function() {
+    return (this.get('content.valueType') === 'text');
+  }),
 
   actions: {
     valueChanged(newVal) {

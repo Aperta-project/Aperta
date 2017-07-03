@@ -18,7 +18,7 @@ from Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
-staff_users = editorial_users + admin_users + external_editorial_users
+staff_users = editorial_users + admin_users
 
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
@@ -67,9 +67,6 @@ class ReviseManuscriptTest(CommonTest):
     staff_user = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
-    if staff_user in (handling_editor_login, cover_editor_login):
-      # Set up a handling editor, academic editor and cover editor for this paper
-      self.set_editors_in_db(paper_id)
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())

@@ -21,24 +21,22 @@ export default Ember.Component.extend({
   ],
 
   initialSetting: Ember.computed('initialSetting', function() {
-    var setting = this.get('taskToConfigure.settings')
+    /*var setting = this.get('taskToConfigure.settings')
       .filter((x) => {
         return x.name === 'ithenticate_automation';
-      });
+      });*/
+    let setting = this.get('taskToConfigure.settings').findBy('name', 'ithenticate_automation');
     return setting.length > 0 ? setting[0].value : null;
   }),
 
-  submissionOption: Ember.computed('submissionOption', function() {
+  submissionOption: Ember.computed('initialSetting', function() {
     return this.get('initialSetting') !== 'at_first_full_submission';
   }),
 
-  selectedOption: Ember.computed('submissionOption', function() {
-    var setting = this.get('initialSetting');
+  selectedOption: Ember.computed('initialSetting', function() {
+    let setting = this.get('initialSetting');
     if (this.get('selectableOptions').map((x) => x.id).includes(setting)){
-      return this.get('selectableOptions')
-        .filter((x) => {
-          return x.id === setting;
-        })[0];
+      return this.get('selectableOptions').findBy('id', setting)[0];
     }
     else{
       return this.get('selectableOptions')[0];

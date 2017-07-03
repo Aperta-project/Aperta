@@ -75,7 +75,7 @@ export default Ember.Component.extend({
     },
 
     openSettings() {
-      this.sendAction('showSettings', this.get('task'));
+      this.get('showSettings')();
     }
   },
 

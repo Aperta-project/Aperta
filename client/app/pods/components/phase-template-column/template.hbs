@@ -18,7 +18,7 @@
                      canRemoveCard=true
                      removeTask="removeRecord"
                      showDeleteConfirm="showDeleteConfirm"
-                     showSettings="showSettings"
+                     showSettings=(action attrs.showSettings task)
                      action=(action attrs.editTaskTemplate task)}}
     {{/each}}
   {{/sortable-list}}

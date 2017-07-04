@@ -696,6 +696,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       author_task.edit_author(author)
       self.click_covered_element(task)
       time.sleep(1)
+      # The next three lines are a bit of a hack to get around APERTA-10622
+      self.click_covered_element(task)
+      time.sleep(1)
+      self.click_covered_element(task)
+      time.sleep(1)
     elif task_name == 'New Taxon':
       # Complete New Taxon data before mark close
       logging.info('Completing New Taxon Task')

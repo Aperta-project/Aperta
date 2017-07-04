@@ -564,8 +564,6 @@ class AuthorsTask(BaseTask):
     edit_btn = self._get(self._edit_author)
     self.click_covered_element(edit_btn)
     time.sleep(1)
-    govt_employee_question = self._get(self._govt_employee_question)
-    #self._actions.move_to_element(govt_employee_question).perform()
     if 'government' in author_data and author_data['government']:
       self.click_covered_element(self._get(self._govt_employee_radio_yes))
     else:
@@ -615,7 +613,7 @@ class AuthorsTask(BaseTask):
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:
       self.click_completion_button()
-      time.sleep(2)
+      time.sleep(3)
       # Following workaround is due to APERTA-9019
       completed = self.completed_state()
       logging.info('Author task is: {0}. Running workaround'.format(completed))

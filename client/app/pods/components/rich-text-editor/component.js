@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
-const basicPlugins     = '';
+const basicPlugins     = 'paste';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo';
 
 const anchorElement    = ',a[href|rel|target|title]';
 const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
-const expandedPlugins  = ' code codesample link table';
-const expandedToolbar  = ' | bullist numlist | table link | codesample code | formatselect';
+const expandedPlugins  = ' codesample link table';
+const expandedToolbar  = ' | bullist numlist | table link | codesample | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Code=pre';
 
@@ -48,9 +48,21 @@ export default Ember.Component.extend({
 
 /* eslint-enable camelcase */
 
+  stripTitles() {
+    let editors = window.tinymce.editors;
+    for (let id of Object.keys(editors)) {
+      let editor = editors[id];
+      if (editor) {
+        let ifr = window.tinymce.DOM.get(id + '_ifr');
+        editor.dom.setAttrib(ifr, 'title', '');
+      }
+    }
+  },
+
   configureCommon(hash) {
     hash['menubar'] = false;
     hash['content_style'] = this.get('bodyCSS');
+    Ember.run.schedule('afterRender', this.stripTitles);
     return hash;
   },
 

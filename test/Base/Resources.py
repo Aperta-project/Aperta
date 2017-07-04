@@ -1072,7 +1072,8 @@ docs = ['frontend/assets/docs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         ]
 
 # Resources for future needs - we will be supporting pdf ingestion at some point
-pdfs = ['frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGNOSE_NEUROPSYCHIATRIC_ILLNESSES.pdf',
+pdfs = [
+        'frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGNOSE_NEUROPSYCHIATRIC_ILLNESSES.pdf',
         'frontend/assets/pdfs/A_Division_in_PIN-Mediated_Auxin_Patterning_During_Organ_Initiation_in_Grasses.pdf',
         'frontend/assets/pdfs/A_Novel_Alpha_Kinase_EhAK1_Phosphorylates_Actin_and_Regulates_Phagocytosis_in_.pdf',
         'frontend/assets/pdfs/A_Systematic_Review_and_Meta-analysis_of_the_Efficacy_and_Safety_of_Intermittent_.pdf',
@@ -1115,6 +1116,7 @@ pdfs = ['frontend/assets/pdfs/ANATOMICAL_BRAIN_IMAGES_ALONE_CAN_ACCURATELY_DIAGN
         'frontend/assets/pdfs/Expanding_the_diversity_of_mycobacteriophages_Insights_into_genome_architecture_and_.pdf',
         'frontend/assets/pdfs/Externally_Safe_Test.pdf',
         'frontend/assets/pdfs/Fecal_contamination_of_drinking-water_in_low_and_middle-income_countries_a_.pdf',
+        # The following two manuscripts are really unique in that they won't display/populate title and abstract
         'frontend/assets/pdfs/Fitness_costs_of_noise_in_biochemical_reaction_networks_and_the_evolutionary_edited.pdf',
         'frontend/assets/pdfs/Fitness_costs_of_noise_in_biochemical_reaction_networks_and_the_evolutionary_limits_.pdf',
         'frontend/assets/pdfs/Gene_expression_signature_predicts_human_islet_integrity_and_transplant_functionality.pdf',

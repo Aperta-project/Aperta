@@ -9,7 +9,6 @@ import uuid
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
 from loremipsum import generate_paragraph
 
 from Base.CustomException import ElementDoesNotExistAssertionError
@@ -168,6 +167,11 @@ class DashboardPage(AuthenticatedPage):
     :return: void function
     """
     title = self.normalize_spaces(title)
+    # I had all these in one assignment but it would randomly fail - no idea
+    title = title.strip()
+    title = title.lstrip('<p>')
+    title = title.rstrip('</p>')
+    logging.info('Looking for invitation with title: {0}.'.format(title))
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
       if title in self.normalize_spaces(listing.text):

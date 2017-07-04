@@ -218,6 +218,8 @@ class BaseCard(AuthenticatedPage):
     :param short_doi: short_doi of paper - needed to validate the card header elements
     :return void function
     """
+    # Note that this can fail if the system is slow on converting the manuscript and updating the
+    #   title element for the given paper under test
     self._wait_for_element(self._get(self._header_title_link))
     self._get(self._header_title_link)
     self.validate_card_header(short_doi)

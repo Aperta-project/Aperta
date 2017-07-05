@@ -22,16 +22,17 @@
                         queryParameter="query"
                         inputId="invitation-recipient"
                         placeholder=placeholder
-                        errorMessage=pendingInvitation.errors.email.firstObject.message
+                        errorMessage=errorMessageEmail
                         parseResponseFunction=parseUserSearchResponse
                         resultText=autoSuggestSelectedText
                         itemSelected="didSelectUser"
                         inputChanged="inputChanged"
+                        focusOut="focusOut"
                         itemDisplayTextFunction=displayUserSelected
                         as |user|}}
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
-        <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
+        <button class="button-secondary button--green invitation-email-entry-button {{if errorMessage "button--disabled"}}"
                 {{action "createInvitation"}}>
           Add to Queue
         </button>

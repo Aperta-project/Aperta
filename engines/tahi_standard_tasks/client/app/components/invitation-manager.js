@@ -1,13 +1,18 @@
 import Ember from 'ember';
 import { eligibleUsersPath } from 'tahi/utils/api-path-helpers';
 import { task as concurrencyTask } from 'ember-concurrency';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const {
   computed,
   isEmpty
 } = Ember;
 
-export default Ember.Component.extend({
+const taskValidations = {
+  'userEmail': ['email']
+};
+
+export default Ember.Component.extend(ValidationErrorsMixin, {
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
 
@@ -27,6 +32,26 @@ export default Ember.Component.extend({
   isEditingInvitation: computed('activeInvitation', 'activeInvitationState', function() {
     return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
   }),
+
+  errorMessage: computed('pendingInvitation.errors.email.firstObject.message', 'errorMessageEmail', function(){
+    var message = this.get('pendingInvitation.errors.email.firstObject.message') || this.get('errorMessageEmail');
+    return message;
+  }),
+
+  validations: taskValidations,
+
+  validateData() {
+    this.set('errorMessageEmail', '');
+
+    this.validate('userEmail', this.get('selectedUser.email'));
+    const taskErrors = this.validationErrorsPresent();
+    if(taskErrors) {
+      this.set('errorMessageEmail', 'Please enter a valid email address');
+    }
+
+    return !taskErrors;
+  },
+
 
   // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
@@ -180,6 +205,9 @@ export default Ember.Component.extend({
       this.set('selectedUser', {
         email: val
       });
+    },
+    focusOut(){
+      this.validateData();
     }
   }
 });

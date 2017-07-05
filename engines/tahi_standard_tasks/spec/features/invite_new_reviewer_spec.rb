@@ -49,12 +49,12 @@ feature "Inviting a new reviewer", js: true do
     expect(page).to have_content(
       "You've successfully declined the invitation to review"
     )
-    page.fill_in "invitation_decline_reason", with: "I don't want to"
-    page.fill_in "invitation_reviewer_suggestions", with: "bob@example.com"
+    page.execute_script("tinymce.get('invitation_decline_reason').setContent('No thanks')")
+    page.execute_script("tinymce.get('invitation_reviewer_suggestions').setContent('bob@example.com')")
     page.click_button "Send Feedback"
     expect(page).to have_content("Thank You")
-    expect(Invitation.last.decline_reason).to eq("I don't want to")
-    expect(Invitation.last.reviewer_suggestions).to eq("bob@example.com")
+    expect(Invitation.last.decline_reason).to eq("<p>No thanks</p>")
+    expect(Invitation.last.reviewer_suggestions).to eq("<p>bob@example.com</p>")
   end
 
   scenario "Invitation token cannot be re-used" do

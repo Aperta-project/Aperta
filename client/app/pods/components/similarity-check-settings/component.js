@@ -51,15 +51,11 @@ export default Ember.Component.extend({
 
   switchState: Ember.computed('initialSetting', function(){
     var setting = this.get('initialSetting');
-    var state = Ember.Object.create({value: true});
+    var state = {value: true};
     if (['off',null].includes(setting)){
-      state.set('value', false);
+      state.value = false;
     }
     return state;
-  }),
-
-  content: Ember.Object.create({
-    text: 'Automatic Checks'
   }),
 
   optionsVisible: Ember.computed('switchState', function() {
@@ -73,16 +69,16 @@ export default Ember.Component.extend({
         this.set('afterState','');
         this.set('submissionOption', false);
       }
-      this.set('switchState', Ember.Object.create({value: newVal}));
+      this.set('switchState', {value: newVal});
     },
-    clickOption (value) {
+    setAnswer (value) {
       this.set('submissionOption', value);
     },
     selectionSelected(selection) {
       this.set('selectedOption', selection);
     },
     close() {
-      this.attrs.close();
+      this.get('close')();
     },
     saveSettings () {
       var settingValue = null;
@@ -102,7 +98,7 @@ export default Ember.Component.extend({
         value: settingValue
       }).then((data)=> {
         this.get('store').pushPayload(data);
-        this.attrs.close();
+        this.get('close')();
       });
     }
   }

@@ -7,7 +7,7 @@
       name="toogle"
       labelText="ON"
       answer=switchState
-      content=content
+      content=(hash text='Automatic Checks')
       size="small"
       valueChanged=(action 'saveAnswer')}}
   </div>
@@ -15,8 +15,24 @@
 
 <div class="{{optionsVisible}}">
   <h4>Send Manuscript to iThenticate</h4>
-  <input onClick={{action "clickOption" false}} type="radio" name="submissionOption" checked={{fullSubmissionState}}/>&nbsp;&nbsp;on first full submission<br><br>
-  <input onClick={{action "clickOption" true}} type="radio" name="submissionOption" checked={{afterState}}/>&nbsp;&nbsp;after&nbsp;&nbsp;
+  <label class="flex-element {{concat ident "-accept-label"}}">
+    {{radio-button value=false
+                   name="submissionOption"
+                   selection=option.value
+                   checked=fullSubmissionState
+                   action=(action "setAnswer")}}
+    &nbsp;on first full submission
+  </label>
+  <br />
+  <label class="flex-element {{concat ident "-accept-label"}}">
+    {{radio-button value=true
+                   name="submissionOption"
+                   selection=option.value
+                   checked=afterState
+                   action=(action "setAnswer")}}
+    &nbsp;after
+  </label>
+  &nbsp;&nbsp;
   <span>
     {{select-2-single
         enable=selectEnabled

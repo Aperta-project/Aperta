@@ -4,7 +4,7 @@ import Ember from 'ember';
 export default TaskComponent.extend({
   paperNotEditable: Ember.computed.not('task.paper.editable'),
   isNotEditable: Ember.computed('task.completed', 'paperNotEditable', function () {
-    return this.get('task.completed') || this.get('paperNotEditable');
+    return this.get('task.completed') && this.get('paperNotEditable');
   }),
 
   actions: {

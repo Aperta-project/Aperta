@@ -43,9 +43,10 @@ namespace :data do
               before = record[field]
               next if before.blank?
 
-              before = before.gsub("\n", "<br>") if field.in?(break_fields)
+              translate = field.in?(break_fields)
+              before = before.gsub("\n", "<br>") if translate
               after = HtmlScrubber.standalone_scrub!(before)
-              next if before.strip == after.strip
+              next if before.strip == after.strip && (!translate)
 
               if dry
                 header = "<br>PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
@@ -92,14 +93,22 @@ namespace :data do
           'reviewer_report--comments_for_author'
         ]
 
+        break_fields = Set.new(['cover_letter--text'])
+
         field_counts = Hash.new { |h, k| h[k] = 0 }
         CardContent.where(ident: idents).includes(:answers).each do |cc|
           # puts "migrating card content answers #with #{cc.ident}"
           cc.answers.each do |answer|
             next unless answer.paper_id.in?(current_papers)
+
             before = answer.value
+            next if before.blank?
+
+            translate = cc.ident.in?(break_fields)
+            before = before.gsub("\n", "<br>") if translate
             after = HtmlScrubber.standalone_scrub!(before)
-            next if before.strip == after.strip
+            next if before.strip == after.strip && (!translate)
+
             if dry
               header = "CARD_CONTENT [#{answer.paper_id}] #{cc.ident}"
               puts "#{header} BEFORE: #{clean[before]}"

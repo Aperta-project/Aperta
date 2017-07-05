@@ -33,6 +33,7 @@ Reviewer tasks:
         complexity of working around such use. Comment why when used.
 - [ ] Follows first PLOS style guidelines for Python, then PEP-8
 - [ ] Code is implemented in a Python 2/3 agnostic way
+- [ ] Code follows implementation guidance at: https://confluence.plos.org/confluence/display/FUNC/Implementing+your+python+end-to-end+tests
 
 #### After the Code Review:
 

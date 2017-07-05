@@ -3,15 +3,16 @@
 
 import logging
 from random import choice
+import time
 
 from loremipsum import generate_paragraph
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
+
 
 class ReviewerReportTask(BaseTask):
   """
@@ -145,16 +146,33 @@ class ReviewerReportTask(BaseTask):
       self.validate_radio_button_label(q6nolbl)
       q6noradio = qb6.find_element(*self._res_no_radio)
       self.validate_radio_button(q6noradio)
-      q2rta = self._get(self._res_q2_form)
-      self.validate_textarea_style(q2rta)
-      q3rta = self._get(self._res_q3_form)
-      self.validate_textarea_style(q3rta)
-      q4rta = self._get(self._res_q4_form)
-      self.validate_textarea_style(q4rta)
-      q5rta = self._get(self._res_q5_form)
-      self.validate_textarea_style(q5rta)
-      q6rta = self._get(self._res_q6_form)
-      self.validate_textarea_style(q6rta)
+      # Research reviewer report competing interests question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--competing_interests--detail')
+      # RT stands for Research Type Reviewer Report, rte for rich text editor
+      logging.info('RT Competing Interests rte instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
+      # Research reviewer report identity for authors question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--identity')
+      logging.info('RT Identity for Author rte instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
+      # Research reviewer report comments for authors question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--comments_for_author')
+      logging.info('RT Comments for Author rte instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
+      # Research reviewer report comments to editor question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--additional_comments')
+      logging.info('RT Comments to Editor rte instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
+      # Research reviewer report suitable other journal question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance(
+              'reviewer_report--suitable_for_another_journal--journal')
+      logging.info('RT Suitability to other PLOS journal Editor instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
     else:
       q3yeslbl = qb3.find_element(*self._fm_yes_label)
       assert q3yeslbl.text == 'Yes', q3yeslbl.text
@@ -176,16 +194,32 @@ class ReviewerReportTask(BaseTask):
       self.validate_radio_button_label(q4nolbl)
       q4noradio = qb4.find_element(*self._fm_no_radio)
       self.validate_radio_button(q4noradio)
-      q2fmta = self._get(self._fm_q2_form)
-      self.validate_textarea_style(q2fmta)
-      q3fmta = self._get(self._fm_q3_form)
-      self.validate_textarea_style(q3fmta)
-      q4fmta = self._get(self._fm_q4_form)
-      self.validate_textarea_style(q4fmta)
-      q5fmta = self._get(self._fm_q5_form)
-      self.validate_textarea_style(q5fmta)
-      q6fmta = self._get(self._fm_q6_form)
-      self.validate_textarea_style(q6fmta)
+      # Front matter competing insterests question
+      fm_ci_tinymce_editor_instance_id, fm_ci_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--competing_interests')
+      logging.info('FM Competing Interests Editor instance '
+                   'is: {0}'.format(fm_ci_tinymce_editor_instance_id))
+      # Front matter suitability for PLOS Biology question
+      fm_suitable_tinymce_editor_instance_id, fm_suitable_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--suitable--comment')
+      logging.info('FM Competing Interests Editor instance '
+                   'is: {0}'.format(fm_suitable_tinymce_editor_instance_id))
+      # Front matter unpublished data question
+      fm_ud_tinymce_editor_instance_id, fm_ud_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance(
+              'front_matter_reviewer_report--includes_unpublished_data--explanation')
+      logging.info('FM Competing Interests Editor instance '
+                   'is: {0}'.format(fm_ud_tinymce_editor_instance_id))
+      # Front matter editor comments question
+      fm_ed_tinymce_editor_instance_id, fm_ed_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--additional_comments')
+      logging.info('FM Competing Interests Editor instance '
+                   'is: {0}'.format(fm_ed_tinymce_editor_instance_id))
+      # Front matter identity for authors question
+      fm_ifa_tinymce_editor_instance_id, fm_ifa_tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--identity')
+      logging.info('FM Competing Interests Editor instance '
+                   'is: {0}'.format(fm_ifa_tinymce_editor_instance_id))
     submit_btn = self._get(self._submit_button)
     assert submit_btn.text == u'SUBMIT THIS REPORT', submit_btn.text
     self.validate_primary_big_green_button_style(submit_btn)
@@ -208,6 +242,7 @@ class ReviewerReportTask(BaseTask):
   def validate_reviewer_report_edit_mode(self, journal, research_type=True):
     """
     Validates content of Reviewer Report task.
+    :param journal: Journal in which the paper for report is registered
     :param research_type: If set to False, validates content against Front-Matter type report; when
       True uses research type reviewer report content
     :return None
@@ -242,11 +277,11 @@ class ReviewerReportTask(BaseTask):
       assert qh5.text == u'Additional comments may include concerns about dual publication, '\
           u'research or publication ethics.\n\nThese comments will not be transmitted to the '\
           u'authors.', qh5.text
-      #Failing due to APERTA-9101
-      assert qh6.text == u'If so, please specify which journal and whether you will be willing' \
-          u' to continue there as reviewer. {0} is committed to facilitate the transfer' \
-          u' between journals of suitable manuscripts to reduce redundant review cycles, and we' \
-          u' appreciate your support.'.format(journal), qh6.text
+      assert qh6.text == u'If so, please specify which PLOS journal and whether you will be ' \
+                         u'willing to continue there as reviewer on this manuscript. To reduce ' \
+                         u'redundant review cycles, PLOS Biology is committed to facilitating the '\
+                         u'transfer of suitable manuscripts between journals, and we appreciate ' \
+                         u'your support.'.format(journal), qh6.text
     else:
       assert u'Please refer to our referee guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text
@@ -258,8 +293,11 @@ class ReviewerReportTask(BaseTask):
       assert q1.text == u'Please provide your publication recommendation:', q1.text
       assert q2.text == u'Do you have any potential or perceived competing interests that may ' \
                         u'influence your review?', q2.text
-      assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
-                        u'{0}?'.format(journal), q3.text
+      # APERTA-10621
+      # assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
+      #                   u'{0}?'.format(journal), q3.text
+      assert u'Is this manuscript suitable in principle for the magazine section of ' in q3.text, \
+          q3.text
       assert q4.text == u'If previously unpublished data are included to support the conclusions,' \
                         u' please note in the box below whether:', q4.text
       assert q5.text == u'(Optional) Please offer any additional confidential comments to the ' \
@@ -288,8 +326,6 @@ class ReviewerReportTask(BaseTask):
       in the task accordion.
     :param data: A dictionary with the data used to complete the task, will be used to check that
       the task is completed as expected
-    :param research_type: If set to False, validates content against Front-Matter type report; when
-      True uses research type reviewer report content
     :return: None
     """
     research_type = False
@@ -367,8 +403,8 @@ class ReviewerReportTask(BaseTask):
       self.validate_application_body_text(q6_page_ans)
       assert q6_page_ans.text == q6_data, '{0} != {1}'.format(q6_page_ans.text, q6_data)
     report_submit_status = self._get(self._submitted_status)
-    assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
-    self.validate_action_status_text(report_submit_status)
+    assert 'Completed' in report_submit_status.text, report_submit_status.text
+    self.validate_application_list_style(report_submit_status)
 
   def complete_reviewer_report(self, recommendation=''):
     """
@@ -383,6 +419,7 @@ class ReviewerReportTask(BaseTask):
     self._actions.move_to_element(review_note).perform()
     if u'Please refer to our referee guidelines for detailed instructions.' in review_note.text:
       research_type = True
+    logging.info('Is this a research type report? {0}'.format(research_type))
     question_block_list = self._gets(self._question_block)
     qb1, qb2, qb3, qb4, qb5, qb6 = question_block_list
     if not recommendation:
@@ -410,18 +447,22 @@ class ReviewerReportTask(BaseTask):
       else:
         q2noradio = qb2.find_element(*self._res_no_radio)
         q2noradio.click()
-      q2rta = self._get(self._res_q2_form)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--competing_interests--detail')
       q2response = generate_paragraph()[2]
-      q2rta.send_keys(q2response)
-      q3rta = self._get(self._res_q3_form)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q2response)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--identity')
       q3response = generate_paragraph()[2]
-      q3rta.send_keys(q3response)
-      q4rta = self._get(self._res_q4_form)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q3response)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--comments_for_author')
       q4response = generate_paragraph()[2]
-      q4rta.send_keys(q4response)
-      q5rta = self._get(self._res_q5_form)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q4response)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('reviewer_report--additional_comments')
       q5response = generate_paragraph()[2]
-      q5rta.send_keys(q5response)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5response)
       q6radval = self.get_random_bool()
       self._actions.move_to_element(qb5).perform()
       if q6radval:
@@ -430,13 +471,16 @@ class ReviewerReportTask(BaseTask):
       else:
         q6noradio = qb6.find_element(*self._res_no_radio)
         q6noradio.click()
-      q6rta = self._get(self._res_q6_form)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance(
+              'reviewer_report--suitable_for_another_journal--journal')
       q6response = generate_paragraph()[2]
-      q6rta.send_keys(q6response)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q6response)
     else:
-      q2fmta = self._get(self._fm_q2_form)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--competing_interests')
       q2response = generate_paragraph()[2]
-      q2fmta.send_keys(q2response)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q2response)
       q3radval = self.get_random_bool()
       if q3radval:
         q3yesradio = qb3.find_element(*self._fm_yes_radio)
@@ -444,9 +488,10 @@ class ReviewerReportTask(BaseTask):
       else:
         q3noradio = qb3.find_element(*self._fm_no_radio)
         q3noradio.click()
-      q3fmta = self._get(self._fm_q3_form)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--suitable--comment')
       q3response = generate_paragraph()[2]
-      q3fmta.send_keys(q3response)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q3response)
       q4radval = self.get_random_bool()
       if q4radval:
         q4yesradio = qb4.find_element(*self._fm_yes_radio)
@@ -454,20 +499,28 @@ class ReviewerReportTask(BaseTask):
       else:
         q4noradio = qb4.find_element(*self._fm_no_radio)
         q4noradio.click()
-      q4fmta = self._get(self._fm_q4_form)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance(
+              'front_matter_reviewer_report--includes_unpublished_data--explanation')
       q4response = generate_paragraph()[2]
-      q4fmta.send_keys(q4response)
-      q5fmta = self._get(self._fm_q5_form)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q4response)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--additional_comments')
       q5response = generate_paragraph()[2]
-      q5fmta.send_keys(q5response)
-      q6fmta = self._get(self._fm_q6_form)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5response)
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+          self.get_rich_text_editor_instance('front_matter_reviewer_report--identity')
       q6response = generate_paragraph()[2]
-      q6fmta.send_keys(q6response)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q6response)
     submit_report_btn = self._get(self._submit_button)
     submit_report_btn.click()
     self._wait_for_element(self._get(self._submit_confirm_yes_btn))
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
+    time.sleep(1)
+    # Once again, have to re-define this due to dynamic attachment to the DOM - otherwise Stale
+    #  Reference Exception
+    # self._submitted_status = (By.CLASS_NAME, 'long-status')
     # Note: Wait for 'Completed' to make sure confirm is acknowledged
     self._wait_for_text_be_present_in_element(self._submitted_status, 'Completed')
     if research_type:

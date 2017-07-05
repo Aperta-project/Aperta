@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import re
 import time
 import os
 import random
@@ -31,7 +30,6 @@ class InviteCard(BaseCard):
     self._recipient_field = (By.ID, 'invitation-recipient')
     self._compose_invitation_button = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_heading = (By.CLASS_NAME, 'invitation-item-full-name')
-    self._edit_invite_textarea = (By.CSS_SELECTOR, 'div.invitation-edit-body')
     self._edit_add_to_queue_btn = (By.CLASS_NAME, 'invitation-email-entry-button')
     self._edit_invite_text_cancel = (By.CSS_SELECTOR, 'button.cancel')
     self._invitation_items = (By.CLASS_NAME, 'active-invitations')
@@ -114,12 +112,16 @@ class InviteCard(BaseCard):
         invite_headings_text = [x.text for x in invite_headings]
         assert any(invitee['email'] in s for s in invite_headings_text), \
             '{0} not found in {1}'.format(invitee['email'], invite_headings_text)
-        invite_text = self._get(self._edit_invite_textarea).get_attribute('innerHTML')
+        tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+            self.get_rich_text_editor_instance('invitation-edit-body')
+        logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+        invite_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
         invite_text = invite_text.replace('&nbsp', ' ')
-        assert mmt in invite.text, 'MMT: {0} is not found in\n {1}'.format(mmt, invite_text)
+        assert mmt in invite_text, 'MMT: {0} is not found in\n {1}'.format(mmt, invite_text)
         # Always remember that our ember text always normalizes whitespaces down to one
         #  Painful lesson
         title = self.normalize_spaces(title)
+        title = title.strip().lstrip('<p>').rstrip('</p>')
         assert title in invite_text, title + '\nNot found in \n' + invite_text
         assert 'PLOS Wombat' in invite_text, invite_text
         assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
@@ -129,13 +131,30 @@ class InviteCard(BaseCard):
         abstract = PgSQL().query('SELECT abstract '
                                  'FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
         if abstract is not None:
+          abstract = abstract.strip().lstrip('<p>').rstrip('</p>')
+          # Eff BeautifulSoup
+          abstract = abstract.replace('&amp;', '&')\
+              .replace('&gt;', '>')\
+              .replace('&lt;', '<')\
+              .replace('<span>', '')\
+              .replace('</span>', '')\
+              .replace('span>', '')\
+              .replace('<p>', '')\
+              .replace('</p>', '')\
+              .replace('<sub>', '')\
+              .replace('</sub>', '')\
+              .replace('<sup>', '')\
+              .replace('</sup>', '')
           # Always remember that our ember text always normalizes whitespaces down to one
           #  Painful lesson
           abstract = self.normalize_spaces(abstract)
+
           invite_text = self.normalize_spaces(invite_text)
-          assert abstract in invite_text, u'{0} not in {1}'.format(abstract, invite_text)
+          assert abstract in invite_text, u'{0} \n\nnot in\n\n {1}'.format(abstract, invite_text)
         else:
-          assert 'Abstract is not available' in invite_text, invite_text
+          # APERTA-10626
+          # assert 'Abstract is not available' in invite_text, invite_text
+          logging.info('No abstract extracted for paper.')
 
     # Attach a file
     sample_files = docs + pdfs + figures + supporting_info_files
@@ -372,27 +391,31 @@ class InviteCard(BaseCard):
       first_invitation_item.find_element_by_class_name('invitation-item-header').click()
       assert 'invitation-item--closed' in first_invitation_item.get_attribute('class'), \
         first_invitation_item.get_attribute('class')
-      # Only one item at most should be expanded. Select a different invitation item, and check that only it is expanded
+      # Only one item at most should be expanded. Select a different invitation item, and check
+      #   that only it is expanded
       first_invitation_item.click()
       invitation_items.remove(first_invitation_item)
       second_invitation_item = random.choice(invitation_items)
       second_invitation_item.click()
       invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
-      expanded_items = filter(lambda item: 'invitation-item--show' in item.get_attribute('class'), invitation_items)
+      expanded_items = filter(lambda item: 'invitation-item--show' in item.get_attribute('class'),
+                              invitation_items)
       assert len(expanded_items) == 1, 'There is more than one expanded item: {0}'.format(expanded_items)
 
     # Verify editable state when an invitation item is expanded
     first_invitation_item.click()
-    invitation_details = self._get(self._invitation_item_details)
+    self._get(self._invitation_item_details)
     self._get(self._invite_edit_invite_button).click()
     # When in edit mode, ability to collapse the invite item is disabled
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()
     assert 'invitation-item--edit' in first_invitation_item.get_attribute('class'), \
       first_invitation_item.get_attribute('class')
     # Verify that edits to email template persist
-    email_template_editor = self._get(self._invitation_email_editor)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('invitation-edit-body')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     paragraph = generate_paragraph()[-1]
-    email_template_editor.send_keys(paragraph)
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=paragraph)
     self._get(self._invitation_save_button).click()
     # Collapse and re-expand this invitation item, and check that the paragraph is present
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()

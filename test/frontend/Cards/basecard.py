@@ -8,13 +8,9 @@ import time
 
 from loremipsum import generate_paragraph
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
-    pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
 from frontend.Pages.authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREEN
 
 __author__ = 'sbassi@plos.org'
@@ -143,6 +139,7 @@ class BaseCard(AuthenticatedPage):
                                 'FROM papers WHERE papers.short_doi=%s;', (short_doi,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
                                                  paper_tuple[3], paper_tuple[4]
+    title = title.strip().lstrip('<p>').rstrip('</p>')
     paper_id = self.get_paper_id_from_short_doi(short_doi)
     manuscript_id = doi.split('journal.')[1]
     status = status.replace('_', ' ').capitalize()
@@ -218,6 +215,8 @@ class BaseCard(AuthenticatedPage):
     :param short_doi: short_doi of paper - needed to validate the card header elements
     :return void function
     """
+    # Note that this can fail if the system is slow on converting the manuscript and updating the
+    #   title element for the given paper under test
     self._wait_for_element(self._get(self._header_title_link))
     self._get(self._header_title_link)
     self.validate_card_header(short_doi)
@@ -265,7 +264,7 @@ class BaseCard(AuthenticatedPage):
     :return: True if versioned view of card, False otherwise
     """
     try:
-      christalmighty = self.get(self._versioned_metadata_div)
+      christalmighty = self._get(self._versioned_metadata_div)
     except ElementDoesNotExistAssertionError:
       logging.info('No versioned div found - not a versioned view')
       return False
@@ -278,7 +277,7 @@ class BaseCard(AuthenticatedPage):
     Returns the currently viewed version for a given metadata card
     :return: Version string
     """
-    return self.get(self._versioned_metadata_version_string).text
+    return self._get(self._versioned_metadata_version_string).text
 
   def card_ready(self):
     """

@@ -4,9 +4,11 @@
 import logging
 import os
 import time
+import urllib
 
 from selenium.webdriver.common.by import By
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'sbassi@plos.org'
@@ -23,8 +25,7 @@ class SICard(BaseCard):
     self._msg_div = (By.CLASS_NAME, 'task-main-content')
     self._add_new_files_btn = (By.CLASS_NAME, 'fileinput-button')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
-    self._file_title = (By.CSS_SELECTOR, 'div.si-file-title')
-    self._file_caption = (By.CSS_SELECTOR, 'div.si-file-caption')
+    self._upload_help_text = (By.CSS_SELECTOR, 'span.button-primary + div')
     self._si_filename = (By.CLASS_NAME, 'si-file-filename')
    #POM Actions
 
@@ -39,8 +40,7 @@ class SICard(BaseCard):
     assert card_title.text == 'Supporting Info', card_title.text
     self.validate_overlay_card_title_style(card_title)
 
-    msg_div = self._get(self._msg_div)
-    msg = msg_div.find_elements_by_tag_name('div')[-1]
+    msg = self._get(self._upload_help_text)
     assert msg.text == 'Please provide files in their native file formats, e.g. Word, Excel, '\
         'WAV, MPEG, JPG, etc.', card_title.text
     self.validate_application_body_text(msg)
@@ -50,10 +50,6 @@ class SICard(BaseCard):
     # Style of card elements
     file_link = self._get(self._file_link)
     self.validate_default_link_style(file_link)
-    file_title = self._get(self._file_title)
-    self.validate_file_title_style(file_title)
-    file_caption = self._get(self._file_caption)
-    self.validate_application_body_text(file_caption)
 
   def check_si_item(self, data):
     """
@@ -62,14 +58,8 @@ class SICard(BaseCard):
     :return: None
     """
     file_link = self._get(self._file_link)
-    assert file_link.text in data['file_name'], '{0} not in {1}'.format(file_link.text,
-        data['file_name'])
-    file_caption = self._get(self._file_caption)
-    assert file_caption.text == data['caption'].strip(), (file_caption.text,
-        data['caption'].strip())
-    figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'].strip())
-    file_title = self._get(self._file_title)
-    assert figure_line == file_title.text, (figure_line, file_title.text)
+    assert file_link.text in urllib.quote_plus(data['file_name']), \
+        '{0} not in {1}'.format(file_link.text, urllib.quote_plus(data['file_name']))
 
   def validate_uploads(self, uploads):
     """
@@ -94,7 +84,7 @@ class SICard(BaseCard):
     """
     Give a list of file, check if they are opened in the SI task
     Note that order may not be preserved so I compare an unordered set
-    :param uploads: Iterable with string with the file name to check in SI task
+    :param upload: Iterable with string with the file name to check in SI task
     :return: None
     """
     site_upload = self._get(self._file_link).text
@@ -110,7 +100,7 @@ class SICard(BaseCard):
     logging.info('Attach file called with {0}'.format(file_name))
     sif = (By.CLASS_NAME, 'si-file-view')
     try:
-      sif_before  = len(self._gets(sif))
+      sif_before = len(self._gets(sif))
     except ElementDoesNotExistAssertionError:
       sif_before = 0
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)

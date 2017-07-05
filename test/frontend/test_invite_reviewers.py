@@ -13,7 +13,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import prod_staff_login, reviewer_login, users, editorial_users, test_journal
+from Base.Resources import prod_staff_login, reviewer_login, ascii_only_users, editorial_users
 from frontend.common_test import CommonTest
 from Cards.invite_reviewer_card import InviteReviewersCard
 from Pages.manuscript_viewer import ManuscriptViewerPage
@@ -31,7 +31,7 @@ class InviteReviewersCardTest(CommonTest):
   def test_smoke_invite_reviewers_styles_elements(self):
     logging.info('Test Invite Reviewers::elements and styles')
     # Users logs in and make a submission
-    creator_user = random.choice(users)
+    creator_user = random.choice(ascii_only_users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -40,7 +40,7 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
+    manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -115,7 +115,7 @@ class InviteReviewersCardTest(CommonTest):
     current_path = os.getcwd()
     logging.info(current_path)
     # Users logs in and make a submission
-    creator_user = random.choice(users)
+    creator_user = random.choice(ascii_only_users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -242,7 +242,7 @@ class InviteReviewersCardTest(CommonTest):
     """
     logging.info('Test Invite Reviewers::Invite Rescind Reinvite')
     # Users logs in and make a submission
-    creator_user = random.choice(users)
+    creator_user = random.choice(ascii_only_users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -370,7 +370,7 @@ class InviteReviewersCardTest(CommonTest):
     #   would like to leave this in place and commented.
     # current_path = os.getcwd()
     # User log in and makes a submission
-    creator_user = random.choice(users)
+    creator_user = random.choice(ascii_only_users)
     logging.info('logging in as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
@@ -412,7 +412,7 @@ class InviteReviewersCardTest(CommonTest):
     """
     logging.info('Test Invite Reviewers::Reviewer Report State')
     # Users logs in and make a submission
-    creator_user = random.choice(users)
+    creator_user = random.choice(ascii_only_users)
     dashboard_page = self.cas_login(email=creator_user['email'])
     dashboard_page.page_ready()
     dashboard_page.click_create_new_submission_button()
@@ -518,7 +518,6 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.card_ready()
     invite_reviewers.validate_invited_reviewer_report_state(reviewer_login,
                                                             'completed')
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

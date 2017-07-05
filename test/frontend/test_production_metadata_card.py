@@ -83,11 +83,11 @@ class ProductionMetadataCardTest(CommonTest):
                             'FROM tasks '
                             'WHERE paper_id = %s '
                             'AND title = %s;', (paper_id, 'Production Metadata'))[0][0]
-    nested_queston = PgSQL().query('SELECT nested_question_id, value '
-                                   'FROM nested_question_answers '
-                                   'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))
-    answers_in_db = [x[1].replace('\n','') for x in nested_queston]
-    logging.info('nested_queston {0}'.format(nested_queston))
+    questions = PgSQL().query('SELECT card_content_id, value '
+                              'FROM answers '
+                              'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))
+    answers_in_db = [x[1].replace('\n','') for x in questions]
+    logging.info('nested_queston {0}'.format(questions))
     logging.info('answers in DB {0}'.format(answers_in_db))
     logging.info('data {0}'.format(data))
     for item in data.values():

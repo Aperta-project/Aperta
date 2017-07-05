@@ -65,13 +65,12 @@ class ProductionMedataCard(BaseCard):
     # Check "there is no placeholder text for Provenance"
     assert not provenance.get_attribute('placeholder')
     self.validate_input_field_style(provenance)
-    production_notes = self._get(self._production_notes)
-    assert production_notes.get_attribute('placeholder') == 'Add production notes here.', \
-        production_notes.get_attribute('placeholder')
-    self.validate_input_field_style(production_notes)
-    special_handling_instructions = self._get(self._special_handling_instructions)
-    special_handling_instructions.get_attribute('placeholder') == \
-        'Add special handling instructions here.'
+    # Validate Production notes tinyMCE instance
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('production_metadata--production_notes')
+    # Validate Special handling instructions tinyMCE instance
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('production_metadata--special_handling_instructions')
     prov_div = self._get(self._provenance_div)
     prov = prov_div.find_element_by_tag_name('span')
     assert prov.text == 'Provenance', prov.text
@@ -119,8 +118,15 @@ class ProductionMedataCard(BaseCard):
     volume_number = self._get(self._volume_number)
     issue_number = self._get(self._issue_number)
     provenance = self._get(self._provenance)
-    production_notes = self._get(self._production_notes)
-    special_handling_instructions = self._get(self._special_handling_instructions)
+    # Production Notes
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('production_metadata--production_notes')
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=data['production_notes'])
+    # Special Handling Instructions
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('production_metadata--special_handling_instructions')
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe,
+                            content=data['special_handling_instructions'])
     publication_date.send_keys(data['date']+Keys.ENTER)
     volume_number.click()
     # following 1 sec sleep is for background recording data at server
@@ -130,10 +136,6 @@ class ProductionMedataCard(BaseCard):
     issue_number.send_keys(data['issue']+Keys.ENTER)
     time.sleep(1)
     provenance.send_keys(data['provenance']+Keys.ENTER)
-    time.sleep(1)
-    production_notes.send_keys(data['production_notes']+Keys.ENTER)
-    time.sleep(1)
-    special_handling_instructions.send_keys(data['special_handling_instructions']+Keys.ENTER)
     time.sleep(1)
     self.click_completion_button()
     return data

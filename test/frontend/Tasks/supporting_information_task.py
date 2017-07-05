@@ -29,14 +29,10 @@ class SITask(BaseTask):
     self._si_upload_btn = (By.CLASS_NAME, 'si-files-upload-button')
     self._si_file_label_field = (By.CLASS_NAME, 'si-file-label-field')
     self._si_file_select_category = (By.CLASS_NAME, 'si-file-category-input')
-    self._si_file_title_input = (By.CLASS_NAME, 'si-file-title-input')
-    self._si_file_caption = (By.CLASS_NAME, 'si-file-caption-textbox')
     self._si_file_publishable = (By.CLASS_NAME, 'si-file-publishable-checkbox')
     self._si_file_cancel_btn = (By.CLASS_NAME, 'si-file-cancel-edit-button')
     self._si_file_save_btn = (By.CLASS_NAME, 'si-file-save-edit-button')
     self._si_file_title_caption_fields = (By.CLASS_NAME, 'format-input-field')
-    self._si_file_title_display = (By.CLASS_NAME, 'si-file-title')
-    self._si_file_caption_display = (By.CLASS_NAME, 'si-file-caption')
     self._si_file_del_btn = (By.CLASS_NAME, 'si-file-delete-button')
     self._si_file_other_input = (By.CLASS_NAME, 'power-select-other-input')
     self._file_link = (By.CSS_SELECTOR, 'a.si-file-filename')
@@ -78,18 +74,12 @@ class SITask(BaseTask):
     dropdown = self._get(self._si_file_select_category)
     # This will fail due to APERTA-8499
     #self.validate_error_field_style(dropdown)
-    title = self._get(self._si_file_title_input)
-    self.validate_input_field_style(title)
-    caption = self._get(self._si_file_caption)
-    self.validate_input_field_style(caption)
     publishable = self._get(self._si_file_publishable)
     self.validate_checkbox_label(publishable)
     save_btn = self._get(self._si_file_save_btn)
     assert save_btn.text == 'SAVE', save_btn.text
     if empty:
       assert dropdown.text == 'Select category', dropdown.text
-      assert title.text == 'Enter a title', title.text
-      assert caption.text == 'Enter a legend (optional)', caption.text
       assert publishable.text == 'For publication', publishable.text
       error_msg = self._get(self._si_error_message)
       assert error_msg.text == 'Please edit to add label, category, and optional title '\
@@ -105,7 +95,7 @@ class SITask(BaseTask):
   def complete_si_item_form(self, data):
     """
     Complete the form associated with a file
-    :param data: Dictionary with the following keys: figure, type, title and caption
+    :param data: Dictionary with the following keys: figure, type
     :return: None
     """
     label_field = self._get(self._si_file_label_field)
@@ -122,16 +112,6 @@ class SITask(BaseTask):
         item.click()
         self._get(self._si_file_other_input).send_keys('Other')
         break
-    title = self._get(self._si_file_title_input)
-    title_field = title.find_element_by_tag_name('div')
-    title_field.click()
-    title_field.clear()
-    title_field.send_keys(data['title'])
-    caption = self._get(self._si_file_caption)
-    caption_field = caption.find_element_by_tag_name('div')
-    caption_field.click()
-    caption_field.clear()
-    caption_field.send_keys(data['caption'])
     save_btn = self._get(self._si_file_save_btn)
     save_btn.click()
     return None
@@ -143,11 +123,14 @@ class SITask(BaseTask):
     :return: None
     """
     logging.info('Attach file called with {0}'.format(file_name))
+    self.set_timeout(5)
     sif = (By.CLASS_NAME, 'si-file-view')
     try:
-      sif_before  = len(self._gets(sif))
+      sif_before = len(self._gets(sif))
     except ElementDoesNotExistAssertionError:
       sif_before = 0
+    finally:
+      self.restore_timeout()
     self._driver.find_element_by_id('file_attachment').send_keys(file_name)
     # Time needed for file upload
     counter = 0
@@ -204,7 +187,7 @@ class SITask(BaseTask):
     """
     Validate the style of the upload elements in the SI task. Task must be opened
     to run this method
-    :param uploads: File name to check styles
+    :param attached_filename: File name to check styles
     :return: None
     """
     self.validate_default_link_style(attached_filename)

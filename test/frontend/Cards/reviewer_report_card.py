@@ -1,15 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from frontend.Cards.basecard import BaseCard
 
 
 __author__ = 'sbassi@plos.org'
+
 
 class ReviewerReportCard(BaseCard):
   """
@@ -21,7 +19,7 @@ class ReviewerReportCard(BaseCard):
     # Locators - Instance members
     self._question_block = (By.CSS_SELECTOR, 'li.question')
     self._questions = (By.CLASS_NAME, 'question-text')
-    self._submitted_status = (By.CLASS_NAME, 'reviewer-report-feedback')
+    self._submitted_status = (By.CLASS_NAME, 'long-status')
     # The following locators (except res_q6_ans) must be used with a find under each question block
     self._res_q1_answer = (By.CSS_SELECTOR, 'div.answer-text')
     self._res_q2_answer_bool = (By.CSS_SELECTOR, 'div.answer-text')
@@ -125,6 +123,9 @@ class ReviewerReportCard(BaseCard):
       q6ans = qb6.find_element(*self._fm_q6_answer)
       self.validate_application_body_text(q6ans)
       assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
+    # This out of place re-definition is necessary to avoid a stale reference exception because the
+    #  element has been redefined since initial load of the card.
+    self._submitted_status = (By.CLASS_NAME, 'long-status')
     report_submit_status = self._get(self._submitted_status)
-    assert report_submit_status.text == 'This report has been submitted', report_submit_status.text
-    self.validate_action_status_text(report_submit_status)
+    assert 'Completed' in report_submit_status.text, report_submit_status.text
+    self.validate_application_list_style(report_submit_status)

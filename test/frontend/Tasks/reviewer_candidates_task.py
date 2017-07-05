@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import os
 import random
 import time
 
@@ -184,12 +183,9 @@ class ReviewerCandidatesTask(BaseTask):
     assert 'Oppose' in opp_label.text, opp_label.text
     self.validate_radio_button_label(opp_label)
     self._get(self._cand_opp_radio_btn)
-
-    opt_reason_field = self._get(self._cand_reason)
-    assert 'Optional: reason for recommending or opposing ' \
-           'this reviewer' in opt_reason_field.get_attribute('placeholder'), \
-        opt_reason_field.get_attribute('placeholder')
-
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+       self.get_rich_text_editor_instance('reviewer_recommendations--reason')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     cancel_link = self._get(self._cand_form_cancel)
     assert 'cancel' in cancel_link.text, cancel_link.text
     self.validate_default_link_style(cancel_link)
@@ -367,7 +363,9 @@ class ReviewerCandidatesTask(BaseTask):
         self.click_covered_element(opp_btn)
     if not reason:
       reason = generate_paragraph(start_with_lorem=True)[2]
-    opt_reason_field = self._get(self._cand_reason)
-    opt_reason_field.send_keys(reason)
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('reviewer_recommendations--reason')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=reason)
     logging.debug(choice, reason)
     return choice, reason

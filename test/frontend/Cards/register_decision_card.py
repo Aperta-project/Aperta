@@ -128,10 +128,10 @@ class RegisterDecisionCard(BaseCard):
         decision_letter = previous_decision.find_element(*self._decision_bar_contents_letter)
         self.validate_application_body_text(decision_letter)
         previous_decision.click()
-    decision, reject_selection = self.register_decision(decision=False, commit=False)
+    decision, reject_selection = self.register_decision(commit=False)
     template_sign = self._get(self._letter_template_placeholder_paragraph)
     assert 'Please select the template letter and then edit further.' in template_sign.text, \
-          template_sign.text
+        template_sign.text
     # Following style commented out due to APERTA-9004
     # self.validate_application_body_text(template_sign)
     to_label = self._get(self._letter_template_to_field_label)
@@ -143,9 +143,9 @@ class RegisterDecisionCard(BaseCard):
     subject_text = subject.get_attribute('placeholder')
     # There is only placeholder information before selecting a template
     assert 'Enter your subject here' in subject_text, subject_text
-    letter = self._get(self._letter_template_decision_letter_field)
-    letter_text = letter.get_attribute('placeholder')
-    assert 'A boilerplate decision letter will appear here' in letter_text, letter_text
+    tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('decision-letter-field')
+    logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     template_letters = {'Reject-ED-RAR': 'In this case, your article was also assessed by an '
                                          'Academic Editor with relevant expertise and several '
                                          'independent reviewers. Based on the reviews, I regret '
@@ -187,26 +187,22 @@ class RegisterDecisionCard(BaseCard):
                                   "AE'S NAME*], I am pleased to inform you that we will be "
                                   "delighted to publish your manuscript in PLOS Wombat."}
     if decision == 'Accept':
-      letter = self._get(self._letter_template_decision_letter_field)
-      letter_text = letter.get_attribute('value')
+      letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
       assert template_letters['Accept'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['Accept'],
                                                                       letter_text)
     elif decision == 'Minor Revision':
-      letter = self._get(self._letter_template_decision_letter_field)
-      letter_text = letter.get_attribute('value')
+      letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
       assert template_letters['MinorRev'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MinorRev'],
                                                                       letter_text)
     elif decision == 'Major Revision':
-      letter = self._get(self._letter_template_decision_letter_field)
-      letter_text = letter.get_attribute('value')
+      letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
       assert template_letters['MajorRev'] in letter_text, \
         'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(template_letters['MajorRev'],
                                                                     letter_text)
     else:
-      letter = self._get(self._letter_template_decision_letter_field)
-      letter_text = letter.get_attribute('value')
+      letter_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
       if reject_selection == 'Editor Decision - Reject After Review':
         assert template_letters['Reject-ED-RAR'] in letter_text, \
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(

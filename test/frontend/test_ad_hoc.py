@@ -10,7 +10,7 @@ import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import docs, users, editorial_users
+from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
 from frontend.Cards.ad_hoc_author_card import AHAuthorCard
 from frontend.Cards.ad_hoc_editor_card import AHEditorCard
@@ -70,6 +70,7 @@ class AdHocCardTest(CommonTest):
     elif ad_hoc_user == 'Staff Only':
       workflow_page.click_ad_hoc_staff_card()
       ad_hoc_card = AHStaffCard(self._driver)
+    ad_hoc_card.card_ready()
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
     widget = random.choice(('checkbox', 'input_text', 'paragraph', 'email', 'file_upload'))

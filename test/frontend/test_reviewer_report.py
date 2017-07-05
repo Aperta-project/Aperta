@@ -61,7 +61,7 @@ class ReviewerReportTest(CommonTest):
     # Note: Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     # Need to complete cards here
-    manuscript_page.complete_task('Authors', author = creator_user)
+    manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.complete_task('Additional Information')
@@ -89,13 +89,18 @@ class ReviewerReportTest(CommonTest):
     logging.info('Paper short DOI is: {0}.'.format(short_doi))
     invite_reviewers.invite(reviewer_login)
     workflow_page.logout()
+    # Get invite title
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;',
+                                     (short_doi,))[0][0]
+    manuscript_title = unicode(manuscript_title,
+                               encoding='utf-8',
+                               errors='strict')
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.click_view_invites_button()
-    dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(short_doi)
-    self._driver.navigated = True
+    dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     assert manuscript_page.click_task('Review by')
@@ -127,7 +132,7 @@ class ReviewerReportTest(CommonTest):
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page.page_ready()
       card_title = 'Review by {0} (#1)'.format(reviewer_login['name'])
-      workflow_page.click_card('review_by', card_title)
+      workflow_page.click_card('fm_review_by', card_title)
       reviewer_report_card = ReviewerReportCard(self.getDriver())
       reviewer_report_card.card_ready()
       reviewer_report_card.validate_reviewer_report(outdata, research_type=False)
@@ -180,11 +185,16 @@ class ReviewerReportTest(CommonTest):
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     reviewer_name = reviewer_login['name']
     dashboard_page.click_view_invites_button()
-    dashboard_page.accept_all_invitations()
-    dashboard_page.page_ready()
-    dashboard_page.go_to_manuscript(short_doi)
-    self._driver.navigated = True
+    # Get invite title
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;',
+                                     (short_doi,))[0][0]
+    manuscript_title = unicode(manuscript_title,
+                               encoding='utf-8',
+                               errors='strict')
+    dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     assert manuscript_page.click_task('Review by ')
     reviewer_report_task = ReviewerReportTask(self.getDriver())
     reviewer_report_task.task_ready()

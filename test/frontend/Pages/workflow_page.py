@@ -77,6 +77,7 @@ class WorkflowPage(AuthenticatedPage):
     self._report_guide_card = (By.CSS_SELECTOR, 'div.reporting-guidelines-task > a')
     self._review_cands_card = (By.CSS_SELECTOR, 'div.reviewer-recommendations-task > a')
     self._reviewer_report_card = (By.CSS_SELECTOR, 'div.reviewer-report-task > a')
+    self._fm_reviewer_report_card = (By.CSS_SELECTOR, 'div.front-matter-reviewer-report-task > a')
     self._revise_task_card = (By.CSS_SELECTOR, 'div.revise-task > a')
     self._revision_tech_check_card = (By.CSS_SELECTOR, 'div.revision-tech-check-task > a')
     self._send_to_apex_card = (By.CSS_SELECTOR, 'div.send-to-apex-task > a')

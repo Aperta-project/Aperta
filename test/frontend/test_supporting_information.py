@@ -21,8 +21,6 @@ from frontend.Cards.supporting_information_card import SICard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
-from loremipsum import generate_paragraph
-
 __author__ = 'sbassi@plos.org'
 
 
@@ -32,11 +30,12 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def test_si_task_styles(self):
+  def rest_smoke_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
     """
+    logging.info('Test Supporting Information::test_smoke_si_task_styles')
     creator_user = random.choice(users)
     logging.info('Login as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -52,8 +51,6 @@ class SITaskTest(CommonTest):
     data['file_name'] = fn
     data['figure'] = 'S1'
     data['type'] = 'Text'
-    data['title'] = 'Title'
-    data['caption'] = 'Caption'
     manuscript_page.complete_task('Supporting Info', data=data)
     # get link
     manuscript_page.click_task('Supporting Info')
@@ -66,11 +63,12 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads_styles(file_link)
     return None
 
-  def test_si_task_and_card(self):
+  def test_core_si_task_and_card_functions(self):
     """
     test_si_card: Validates the elements, styles, and functions (Add, edit, delete) of SI Task
     :return: None
     """
+    logging.info('Test Supporting Information::test_core_si_task_and_card_functions')
     creator_user = random.choice(users)
     logging.info('Login as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -93,18 +91,12 @@ class SITaskTest(CommonTest):
     file_type = random.choice(choices)
     logging.info('Selected file type: {0}'.format(file_type))
     data['type'] = file_type
-    data['title'] = generate_paragraph()[2][:15]
-    data['caption'] = generate_paragraph()[2][:35]
     manuscript_page.complete_task('Supporting Info', data=data)
     # check for data
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    figure_data = supporting_info._get(supporting_info._si_file_title_display)
-    figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
-    assert figure_line == figure_data.text, (figure_line, figure_data.text)
-    caption_data = supporting_info._get(supporting_info._si_file_caption_display)
-    assert data['caption'].strip() == caption_data.text, (data['caption'], caption_data.text)
+    figure_line = '{0} {1}.'.format(data['figure'], data['type'])
     # press make change to task
     supporting_info.click_completion_button()
     # Edit description
@@ -118,15 +110,9 @@ class SITaskTest(CommonTest):
     file_type = random.choice(choices)
     logging.info('Selected file type: {0}'.format(file_type))
     data['type'] = file_type
-    data['title'] = generate_paragraph()[2][:15]
-    data['caption'] = generate_paragraph()[2][:35]
     supporting_info.complete_si_item_form(data)
     supporting_info = SITask(self._driver)
-    figure_data = supporting_info._get(supporting_info._si_file_title_display)
-    figure_line = '{0} {1}. {2}'.format(data['figure'], data['type'], data['title'])
-    assert figure_line == figure_data.text, (figure_line, figure_data.text)
-    caption_data = supporting_info._get(supporting_info._si_file_caption_display)
-    assert data['caption'].strip() == caption_data.text, (data['caption'], caption_data.text)
+    figure_line = '{0} {1}'.format(data['figure'], data['type'])
     # logout
     manuscript_page.logout()
     # Log in as Editorial User
@@ -177,11 +163,12 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def test_replace_si_upload(self):
+  def rest_core_replace_si_upload(self):
     """
     test_figure_task: Validates replace function in SI task
     :return: None
     """
+    logging.info('Test Supporting Information::test_core_replace_si_upload')
     creator_user = random.choice(users)
     logging.info('Login as {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -261,12 +248,13 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def test_multiple_si_uploads(self):
+  def rest_full_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card
     :return: void function
     """
+    logging.info('Test Supporting Information::test_full_multiple_si_uploads')
     creator_user = random.choice(users)
     logging.info(creator_user)
     dashboard_page = self.cas_login(email=creator_user['email'])

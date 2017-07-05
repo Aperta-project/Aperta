@@ -5,7 +5,6 @@ __author__ = 'jkrzemien@plos.org'
 
 import Config
 import json
-import os
 from datetime import datetime
 from time import time
 from inspect import getfile
@@ -19,10 +18,11 @@ from browsermobproxy import Server
 from appium import webdriver as appiumDriver
 from WebDriverListener import WebDriverListener
 
-from Resources import docs
-
 
 class WebDriverFactory(object):
+  """
+  TBD
+  """
   server = None
   proxy = None
   driver = None

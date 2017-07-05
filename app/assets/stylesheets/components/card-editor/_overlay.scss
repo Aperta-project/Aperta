@@ -68,22 +68,32 @@
   position: relative;
   padding: 4rem 8rem;
 
- .card-editor-preview-overlay-title {
-   margin: 0 0 1em 0;
-   font-size: 4.8rem;
+  .card-editor-preview-overlay-title {
+    margin: 0 0 1em 0;
+    font-size: 4.8rem;
  }
 
   .answer-container {
-    display: flex;
-    flex: 1 0 50%;
-    flex-flow: row wrap;
-    justify-content: space-between;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
   }
 
-  .annotation {
-    flex-basis: 50%;
+  .answer {
+    flex: 1 0 55%;
+    margin: 10px;
   }
 
+.additionalText {
+    flex: 1 0 35%;
+    margin: 10px;
+    min-width: 300px;
+  }
+
+}
+
+.singleColumn .additionalText {
+  display: none;
 }
 
 .card-editor-preview-overlay-footer {

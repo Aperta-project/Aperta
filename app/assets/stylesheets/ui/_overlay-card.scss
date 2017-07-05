@@ -89,15 +89,20 @@ $ov--card-breakpoint: 900px;
 
     .answer-container {
       display: flex;
-      flex: 1 0 50%;
       flex-flow: row wrap;
       justify-content: space-between;
     }
 
-    .annotation {
-      flex-basis: 50%;
+   .answer {
+      flex: 1 0 33%;
+      margin: 10px;
     }
 
+    .additionalText {
+      flex: 1 0 55%;
+      margin: 10px;
+      min-width: 300px;
+    }
 
     // TODO: These need another home:
     label {
@@ -107,6 +112,11 @@ $ov--card-breakpoint: 900px;
     .model-question {
       margin: 0;
     }
+
+  }
+
+  .singleColumn .additionalText {
+    display: none;
   }
 }
 

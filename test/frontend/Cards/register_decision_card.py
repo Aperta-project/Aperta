@@ -128,10 +128,10 @@ class RegisterDecisionCard(BaseCard):
         decision_letter = previous_decision.find_element(*self._decision_bar_contents_letter)
         self.validate_application_body_text(decision_letter)
         previous_decision.click()
-    decision, reject_selection = self.register_decision(decision=False, commit=False)
+    decision, reject_selection = self.register_decision(commit=False)
     template_sign = self._get(self._letter_template_placeholder_paragraph)
     assert 'Please select the template letter and then edit further.' in template_sign.text, \
-          template_sign.text
+        template_sign.text
     # Following style commented out due to APERTA-9004
     # self.validate_application_body_text(template_sign)
     to_label = self._get(self._letter_template_to_field_label)

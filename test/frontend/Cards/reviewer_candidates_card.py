@@ -5,8 +5,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
-from Base.PostgreSQL import PgSQL
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 
 __author__ = 'jgray@plos.org'
@@ -19,7 +18,7 @@ class ReviewerCandidatesCard(BaseCard):
   def __init__(self, driver, url_suffix='/'):
     super(ReviewerCandidatesCard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content > p')
     # APERTA-7177 Typo in class name for the main form
     self._new_candidate_btn = (By.CSS_SELECTOR, 'div.reviewer-candidates-wrapper > button')

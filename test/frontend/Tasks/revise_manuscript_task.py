@@ -9,11 +9,10 @@ from loremipsum import generate_paragraph
 
 from Base.Resources import docs
 from frontend.Tasks.basetask import BaseTask
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 __author__ = 'sbassi@plos.org'
+
 
 class ReviseManuscriptTask(BaseTask):
   """
@@ -22,7 +21,7 @@ class ReviseManuscriptTask(BaseTask):
   def __init__(self, driver):
     super(ReviseManuscriptTask, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._subtitle = (By.CSS_SELECTOR, 'div.task-main-content h3')
     self._decision_letter_anchor_link = (By.CSS_SELECTOR, 'div.row > div > a.link_ref')
     self._response_field_help_text = (By.CSS_SELECTOR, 'div.response-to-reviewers > p')

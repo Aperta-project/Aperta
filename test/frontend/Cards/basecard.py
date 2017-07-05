@@ -8,13 +8,9 @@ import time
 
 from loremipsum import generate_paragraph
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
-    creator_login5, internal_editor_login, staff_admin_login, super_admin_login, prod_staff_login, \
-    pub_svcs_login, cover_editor_login, handling_editor_login, academic_editor_login
 from frontend.Pages.authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREEN
 
 __author__ = 'sbassi@plos.org'
@@ -268,7 +264,7 @@ class BaseCard(AuthenticatedPage):
     :return: True if versioned view of card, False otherwise
     """
     try:
-      christalmighty = self.get(self._versioned_metadata_div)
+      christalmighty = self._get(self._versioned_metadata_div)
     except ElementDoesNotExistAssertionError:
       logging.info('No versioned div found - not a versioned view')
       return False
@@ -281,7 +277,7 @@ class BaseCard(AuthenticatedPage):
     Returns the currently viewed version for a given metadata card
     :return: Version string
     """
-    return self.get(self._versioned_metadata_version_string).text
+    return self._get(self._versioned_metadata_version_string).text
 
   def card_ready(self):
     """

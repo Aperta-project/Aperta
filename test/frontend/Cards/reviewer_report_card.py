@@ -1,15 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import logging
-import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from frontend.Cards.basecard import BaseCard
 
 
 __author__ = 'sbassi@plos.org'
+
 
 class ReviewerReportCard(BaseCard):
   """

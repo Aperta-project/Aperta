@@ -1,12 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import re
 import time
 import os
 import random
 
-from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException

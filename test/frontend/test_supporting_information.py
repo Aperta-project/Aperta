@@ -21,8 +21,6 @@ from frontend.Cards.supporting_information_card import SICard
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
-from loremipsum import generate_paragraph
-
 __author__ = 'sbassi@plos.org'
 
 

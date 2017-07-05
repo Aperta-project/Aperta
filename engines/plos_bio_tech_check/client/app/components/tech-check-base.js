@@ -68,7 +68,7 @@ export default TaskComponent.extend({
         return !q.answerForOwner(owner).get('value') && q.get('additionalData');
       }).map(function(question) {
         return question.get('additionalData');
-      }).join('<br><br>');
+      }).join('\n\n');
 
       this.set('authorChangesLetter', text);
     }

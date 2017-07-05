@@ -30,7 +30,7 @@ class SITaskTest(CommonTest):
   Validate the elements, styles, functions of the Supporting Information task
   """
 
-  def test_smoke_si_task_styles(self):
+  def rest_smoke_si_task_styles(self):
     """
     test_si_card: Validates the elements, styles SI Task
     :return: None
@@ -163,7 +163,7 @@ class SITaskTest(CommonTest):
       pass
     supporting_info.restore_timeout()
 
-  def test_core_replace_si_upload(self):
+  def rest_core_replace_si_upload(self):
     """
     test_figure_task: Validates replace function in SI task
     :return: None
@@ -248,7 +248,7 @@ class SITaskTest(CommonTest):
     supporting_info.validate_uploads([fn])
     return None
 
-  def test_full_multiple_si_uploads(self):
+  def rest_full_multiple_si_uploads(self):
     """
     test_figure_task: Validates the upload function for miltiple files in SI task
     and in SI Card

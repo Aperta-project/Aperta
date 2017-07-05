@@ -135,8 +135,7 @@ class InviteCard(BaseCard):
         if abstract is not None:
           abstract = abstract.strip().lstrip('<p>').rstrip('</p>')
           # Eff BeautifulSoup
-          abstract = abstract\
-              .replace('&amp;', '&')\
+          abstract = abstract.replace('&amp;', '&')\
               .replace('&gt;', '>')\
               .replace('&lt;', '<')\
               .replace('<span>', '')\

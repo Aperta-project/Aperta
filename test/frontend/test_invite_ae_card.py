@@ -122,20 +122,25 @@ class InviteAECardTest(CommonTest):
         'value: {1}'.format(test_for_role, ae_role_for_env)
     elif invite_response == 'Decline':
       assert not test_for_role
-      # search for reply
-      # Note: This is working but pending on result of APERTA-7259
-      reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
-                                           'FROM invitations '
-                                           'WHERE invitee_id = %s '
-                                           'AND state=\'declined\' '
-                                           'AND invitee_role =\'Academic Editor\' '
-                                           'AND decline_reason LIKE %s '
-                                           'AND reviewer_suggestions LIKE %s;',
-                                           (ae_user_id,
-                                            response_data[0]+'%',
-                                            response_data[1]+'%'))[0]
-      assert response_data[0] in reasons
-      assert response_data[1] in suggestions
+      # search for reply, if reply includes null values, don't validate reasons/suggestions
+      skip_validation = False
+      try:
+        reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
+                                             'FROM invitations '
+                                             'WHERE invitee_id = %s '
+                                             'AND state=\'declined\' '
+                                             'AND invitee_role =\'Academic Editor\' '
+                                             'AND decline_reason LIKE %s '
+                                             'AND reviewer_suggestions LIKE %s;',
+                                             (ae_user_id,
+                                              response_data[0]+'%',
+                                              response_data[1]+'%'))[0]
+      except IndexError:
+        logging.info('Either the response reason, academic editor suggestions, or both are blank')
+        skip_validation = True
+      if not skip_validation:
+        assert response_data[0] in reasons
+        assert response_data[1] in suggestions
     dashboard_page.logout()
 
     # log back in as editorial user and validate status display on card

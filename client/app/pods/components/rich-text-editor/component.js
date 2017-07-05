@@ -25,7 +25,12 @@ export default Ember.Component.extend({
       font-family: "Source Sans Pro", "source-sans-pro", helvetica, sans-serif;
       font-size: 14px;
       line-height: 20px;
-    }`,
+    }
+
+    .mce-content-body p {
+      margin: 0 0 10px 0;
+    }
+  `,
 
   editorStyle: 'expanded',
 

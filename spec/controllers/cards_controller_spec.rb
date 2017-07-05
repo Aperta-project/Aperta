@@ -318,7 +318,7 @@ describe CardsController do
           let(:text) { Faker::Lorem.sentence }
           let(:xml) do
             <<-XML
-              <card name='#{name}' required-for-submission='false' workflow-display-only='false'>
+              <card required-for-submission='false' workflow-display-only='false'>
                 <content content-type='text'>
                   <text>#{text}</text>
                 </content>

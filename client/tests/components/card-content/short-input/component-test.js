@@ -36,11 +36,6 @@ test(`it disables the input if disabled=true`, function(assert) {
   this.render(template);
   assert.elementFound('input[disabled]');
 });
-test(`it shows a placeholder from content.placeholder`, function(assert) {
-  this.set('content', {placeholder: 'Foo'});
-  this.render(template);
-  assert.elementFound('input[placeholder=Foo]');
-});
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);

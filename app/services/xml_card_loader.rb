@@ -23,7 +23,6 @@ class XmlCardLoader
     @xml = xml_card_document(xml_string)
 
     Card.transaction do
-      card.attributes = card_attributes
       card.card_versions << latest_card_version(replace: replace_latest_version)
       card.save!
     end
@@ -79,13 +78,6 @@ class XmlCardLoader
     end
   end
 
-  def card_attributes
-    {
-      name:
-        xml.card.attr_value('name')
-    }
-  end
-
   def card_version_attributes
     {
       version:
@@ -125,8 +117,6 @@ class XmlCardLoader
         content.attr_value('ident'),
       label:
         content.tag_text('label'),
-      placeholder:
-        content.tag_text('placeholder'),
       possible_values:
         content.fetch_values('possible-value', [:label, :value]),
       text:

@@ -34,6 +34,9 @@ Style/BlockDelimiters:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+Style/RescueModifier:
+  Enabled: false
+
 Style/MultilineMethodCallIndentation:
   # Both styles of method call indentation are acceptable, and depending on
   # folks' editor configurations the default might be to indent a single level

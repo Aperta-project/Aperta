@@ -3,6 +3,7 @@ class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include Commentable
   include Snapshottable
+  include CustomCastTypes
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
   DEFAULT_ROLE_HINT = 'user'.freeze
@@ -42,11 +43,6 @@ class Task < ActiveRecord::Base
     class_name: 'Assignment',
     as: :assigned_to
 
-  has_many :permission_requirements, as: :required_on, dependent: :destroy
-  has_many \
-    :required_permissions,
-    through: :permission_requirements,
-    source: :permission
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy

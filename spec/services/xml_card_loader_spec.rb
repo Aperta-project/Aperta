@@ -17,7 +17,7 @@ describe XmlCardLoader do
     end
 
     context 'xml has two content roots' do
-      let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}#{content2}</card>" }
+      let(:xml) { "<card required-for-submission='false' workflow-display-only='true'>#{content1}#{content2}</card>" }
 
       it 'throws an exception' do
         expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
@@ -44,7 +44,7 @@ describe XmlCardLoader do
   end
 
   describe 'creating or replacing a card_version using :replace_latest_version flag' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
 
     it 'when true, it replaces current card_version' do
       expect {
@@ -63,23 +63,11 @@ describe XmlCardLoader do
     end
   end
 
-  describe 'setting card attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
-
-    it 'sets #name' do
-      expect {
-        xml_card_loader.load(xml)
-      }.to change {
-        card.reload.name
-      }.from('original name').to('Foo')
-    end
-  end
-
   describe 'setting card_version attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
 
     before do
-      card.latest_card_version.update(required_for_submission: false, workflow_display_only: false)
+      card.latest_card_version.update(required_for_submission: true, workflow_display_only: false)
     end
 
     it 'sets #required_for_submission' do
@@ -87,7 +75,7 @@ describe XmlCardLoader do
         xml_card_loader.load(xml)
       }.to change {
         card.reload.latest_card_version.required_for_submission
-      }.from(false).to(true)
+      }.from(true).to(false)
     end
 
     it 'increments #version' do
@@ -113,7 +101,7 @@ describe XmlCardLoader do
     let(:validations) { child_content.card_content_validations }
     let(:xml) do
       <<-XML
-        <card name='Foo' required-for-submission='true' workflow-display-only='true'>
+        <card required-for-submission='false' workflow-display-only='true'>
           <content content-type='display-children'>
             <content ident='foo' content-type='short-input' value-type='text'>
               <text>foo</text>
@@ -146,13 +134,13 @@ describe XmlCardLoader do
   end
 
   describe 'setting card_content attributes' do
-    let(:xml) { "<card name='Foo' required-for-submission='true' workflow-display-only='true'>#{content1}</card>" }
+    let(:xml) { "<card required-for-submission='false' workflow-display-only='true'>#{content1}</card>" }
     let(:root_content) { card.reload.latest_card_version.card_contents.root }
 
     context 'with nested contents' do
       let(:xml) do
         <<-XML
-          <card name='Foo' required-for-submission='true' workflow-display-only='true'>
+          <card required-for-submission='false' workflow-display-only='true'>
             <content content-type='display-children'>
               #{content1}
               #{content2}
@@ -247,11 +235,9 @@ describe XmlCardLoader do
 
       context 'short-input' do
         let(:text) { Faker::Lorem.sentence }
-        let(:placeholder) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
             <content content-type='short-input' value-type='text' default-answer-value="foo">
-              <placeholder>#{placeholder}</placeholder>
               <text>#{text}</text>
             </content>
           XML
@@ -260,11 +246,6 @@ describe XmlCardLoader do
         it 'sets the text to the value of the element text' do
           xml_card_loader.load(xml)
           expect(root_content.text).to eq(text)
-        end
-
-        it 'sets the placeholder to the value of the element placeholder' do
-          xml_card_loader.load(xml)
-          expect(root_content.placeholder).to eq(placeholder)
         end
 
         it 'sets the default answer value if given' do

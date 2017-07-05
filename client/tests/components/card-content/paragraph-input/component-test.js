@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
@@ -35,11 +36,6 @@ test(`it disables the by marking it read-only if disabled=true`, function(assert
   this.render(template);
   assert.elementFound('.read-only');
 });
-test(`it shows a placeholder from content.placeholder`, function(assert) {
-  this.set('content', {placeholder: 'Foo'});
-  this.render(template);
-  assert.textPresent('.format-input', 'Foo');
-});
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);
@@ -62,5 +58,6 @@ test('it displays error messages if present', function(assert){
   assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
   assert.equal(this.$('.validation-error').eq(0).text(), errorsArr[0], 'First error text matches');
   assert.equal(this.$('.validation-error').eq(1).text(), errorsArr[1], 'Second error text matches');
-  assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), 'Error class present on parent element');
+  let text = 'Error class present on parent element';
+  assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), text);
 });

@@ -26,7 +26,7 @@ describe 'downloadable_paper/pdf_with_attachments' do
     imgs = page.all('img')
     figures.zip(imgs).each do |fig, img|
       expect(fig.href).to be_a_valid_url
-      expect(img['src']).to eq fig.href
+      expect(URI.parse(img['src']).path).to eq URI.parse(fig.href).path
     end
   end
 

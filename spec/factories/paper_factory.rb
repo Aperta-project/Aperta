@@ -241,6 +241,17 @@ FactoryGirl.define do
       end
     end
 
+    trait(:with_co_authors) do
+      after(:create) do |paper|
+        FactoryGirl.create(
+          :assignment,
+          role: FactoryGirl.create(:role, :creator),
+          user: FactoryGirl.build(:user),
+          assigned_to: paper
+        )
+      end
+    end
+    
     trait(:with_versions) do
       transient do
         first_version_body  'first body'
@@ -454,12 +465,16 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
+          file_type: 'docx',
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
-          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx',
+          status: 'done'
         )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]
         paper.save!
+
+        paper.versioned_texts.first.update!(file_type: 'docx')
 
         paper.reload
       end

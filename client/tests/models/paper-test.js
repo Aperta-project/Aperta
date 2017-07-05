@@ -163,30 +163,7 @@ test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
     }),
     assert.equal(paper.get('staffEditorHasErrorOnSubmittedAndEditable'), true);
   });
-}); 
-
-test('otherRolesHasErrorOnSubmitted', function(assert) {
-  const paper = this.subject();
-  
-  var scenarios = [
-    {
-      data: {
-        isPartialSubmittedState: true,
-        file: {
-          status: 'error'
-        },
-        currentUserRoles: ['Academic Editor', 'Handling Editor', 'Cover Editor', 'Reviewer'],
-      },
-    },
-  ];
-  scenarios.forEach(function(scenario) {
-    Ember.run(function() {
-      paper.setProperties(scenario.data);
-    }),
-    assert.equal(paper.get('otherRolesHasErrorOnSubmitted'), true);
-  });
-}); 
-
+});
 
 ['accepted',
   'in_revision',

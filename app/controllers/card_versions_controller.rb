@@ -21,7 +21,7 @@ class CardVersionsController < ApplicationController
     if task.present?
       requires_user_can(:view, task)
     else
-      requires_user_can(:view, card_version.card)
+      requires_user_can(:view, card_version)
     end
     respond_with card_version
   end

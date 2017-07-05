@@ -1,4 +1,6 @@
 class RegisterDecisionOverlay < CardOverlay
+  include RichTextEditorHelpers
+
   def previous_decisions
     within(".previous-decisions") do
       all('.decision-bar').map do |decision_div|
@@ -12,13 +14,12 @@ class RegisterDecisionOverlay < CardOverlay
     wait_for_ajax
   end
 
-  def decision_letter=(body)
-    page.has_content?('Accept')
-    find('.decision-letter-field').set(body)
+  def decision_letter
+    get_rich_text(editor: 'decision-letter-field')
   end
 
-  def decision_letter
-    find('.decision-letter-field').get()
+  def decision_letter=(contents)
+    set_rich_text(editor: 'decision-letter-field', text: contents)
   end
 
   def radio_selected?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615145227) do
+ActiveRecord::Schema.define(version: 20170628185715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -447,7 +447,6 @@ ActiveRecord::Schema.define(version: 20170615145227) do
     t.integer "journal_id"
     t.string  "title"
     t.string  "kind"
-    t.json    "required_permissions"
     t.boolean "system_generated"
     t.string  "role_hint"
   end
@@ -493,6 +492,43 @@ ActiveRecord::Schema.define(version: 20170615145227) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
+
+  create_table "nested_question_answers", force: :cascade do |t|
+    t.integer  "nested_question_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.string   "value_type",         null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.json     "additional_data"
+    t.integer  "decision_id"
+    t.integer  "paper_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
+  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
+
+  create_table "nested_questions", force: :cascade do |t|
+    t.string   "text"
+    t.string   "value_type", null: false
+    t.string   "ident",      null: false
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
+  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
+  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
+  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
@@ -565,16 +601,6 @@ ActiveRecord::Schema.define(version: 20170615145227) do
   add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
-  create_table "permission_requirements", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "required_on_id"
-    t.string   "required_on_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "permission_requirements", ["permission_id", "required_on_id", "required_on_type"], name: "permission_requirements_uniq_idx", unique: true, using: :btree
-
   create_table "permission_states", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -592,10 +618,11 @@ ActiveRecord::Schema.define(version: 20170615145227) do
   add_index "permission_states_permissions", ["permission_state_id", "permission_id"], name: "permission_states_ids_idx", unique: true, using: :btree
 
   create_table "permissions", force: :cascade do |t|
-    t.string   "action",     null: false
-    t.string   "applies_to", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "action",            null: false
+    t.string   "applies_to",        null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "filter_by_card_id"
   end
 
   add_index "permissions", ["action", "applies_to"], name: "index_permissions_on_action_and_applies_to", using: :btree
@@ -735,10 +762,12 @@ ActiveRecord::Schema.define(version: 20170615145227) do
     t.string   "document_s3_url"
     t.integer  "ithenticate_report_id"
     t.integer  "ithenticate_score"
-    t.integer  "versioned_text_id",               null: false
-    t.string   "state",                           null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "versioned_text_id",                               null: false
+    t.string   "state",                                           null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "error_message"
+    t.boolean  "dismissed",                       default: false
   end
 
   create_table "simple_reports", force: :cascade do |t|
@@ -939,6 +968,7 @@ ActiveRecord::Schema.define(version: 20170615145227) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "permissions", "cards", column: "filter_by_card_id"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

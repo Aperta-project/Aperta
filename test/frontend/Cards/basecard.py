@@ -143,6 +143,7 @@ class BaseCard(AuthenticatedPage):
                                 'FROM papers WHERE papers.short_doi=%s;', (short_doi,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
                                                  paper_tuple[3], paper_tuple[4]
+    title = title.strip().lstrip('<p>').rstrip('</p>')
     paper_id = self.get_paper_id_from_short_doi(short_doi)
     manuscript_id = doi.split('journal.')[1]
     status = status.replace('_', ' ').capitalize()

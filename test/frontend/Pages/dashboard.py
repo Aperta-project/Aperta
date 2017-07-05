@@ -128,7 +128,7 @@ class DashboardPage(AuthenticatedPage):
     self._yes_no_button = (By.CSS_SELECTOR, 'ul.dashboard-submitted-papers button')
 
     # Reviewer invitation modal
-    self._rim_title = (By.CSS_SELECTOR, 'h4.feedback-reviewer-invitation')
+    self._rim_title = (By.CSS_SELECTOR, '.feedback-reviewer-invitation')
     self._rim_ms_title = (By.CSS_SELECTOR, 'h3.feedback-invitation-title')
     self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
     self._rim_ms_decline_notice = (By.CSS_SELECTOR, 'h4.feedback-decline-notice')
@@ -208,8 +208,14 @@ class DashboardPage(AuthenticatedPage):
           # Enter reason and suggestions
           reasons = generate_paragraph()[2]
           suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
-          self._get(self._rim_reasons).send_keys(reasons)
-          self._get(self._rim_suggestions).send_keys(suggestions)
+          tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+              self.get_rich_text_editor_instance('declineReason')
+          logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+          self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=reasons)
+          tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+              self.get_rich_text_editor_instance('reviewerSuggestions')
+          logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+          self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=suggestions)
           time.sleep(1)
           self._get(self._rim_send_fb_btn).click()
           # Time to get sure information is sent
@@ -283,7 +289,7 @@ class DashboardPage(AuthenticatedPage):
         for author in auth_listings:
           logging.info(u'Testing page listed author: {0}'.format(author.text))
           tested_authors.append(author.text)
-          if db_author_information in unicode(author.text):
+          if unicode(db_author_information) in '{0}'.format(author.text):
             logging.info('Found Creator in invitation listing...')
             creator_found = True
             break
@@ -300,9 +306,10 @@ class DashboardPage(AuthenticatedPage):
                                               '"Abstract", label found: {0}.'.format(abst_lbl.text)
           # TODO: Add style validation for this label.
           page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
+          logging.info(page_abstract_text.text)
           assert db_abstract in page_abstract_text.text, \
-              'db abstract: {0}\nnot equal to invitation ' \
-              'abstract:\n{1}.'.format(db_abstract, page_abstract_text.text)
+              u'db abstract: {0}\nnot equal to invitation ' \
+              u'abstract:\n{1}.'.format(unicode(db_abstract), unicode(page_abstract_text.text))
         else:
           logging.info('No Abstract listed in invitation...')
         accept_btn = page_listing.find_element(*self._invitation_accept_button)
@@ -352,7 +359,7 @@ class DashboardPage(AuthenticatedPage):
     """
     # TODO: Validate these asserts with ST
     fb_modal_title = self._get(self._rim_title)
-    assert fb_modal_title.text == 'Reviewer Invitation'
+    assert 'Reviewer Invitation' in fb_modal_title.text, fb_modal_title.text
     # Disable due APERTA-7212
     #self.validate_modal_title_style(fb_modal_title)
     # paper_title
@@ -373,16 +380,11 @@ class DashboardPage(AuthenticatedPage):
         labels[0].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[0])
-    assert labels[1].text == 'We would value your suggestions of alternative reviewers for '\
-        'this manuscript.', labels[1].text
+    assert labels[1].text == 'We would value your suggestions of alternative reviewers for this ' \
+                             'manuscript. Please provide reviewers\' names, institutions, and ' \
+                             'email addresses if known.', labels[1].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[1])
-    rim_suggestions = self._get(self._rim_suggestions)
-    assert rim_suggestions.get_attribute('placeholder') == 'Please provide reviewers\' names,'\
-        ' institutions, and email adresses if known.', \
-        rim_suggestions.get_attribute('placeholder')
-    # Disable due APERTA-7212
-    #self.validate_X_style(rim_suggestions)
     return None
 
   def validate_invite_dynamic_content(self, username):

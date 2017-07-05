@@ -13,7 +13,8 @@
   </div>
 </div>
 
-<div class="{{optionsVisible}}">
+
+  {{#liquid-if switchState.value}}
   <h4>Send Manuscript to iThenticate</h4>
   <label class="flex-element {{concat ident "-accept-label"}}">
     {{radio-button value=false
@@ -42,7 +43,8 @@
         selectedData=selectedOption
         width="200px"}}
   </span>
-</div>
+  {{/liquid-if}}
+
 <div class="overlay-action-buttons">
   <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
   <button class="button-primary button--green" {{action "saveSettings"}}>SAVE</button>

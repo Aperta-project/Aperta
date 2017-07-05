@@ -58,10 +58,6 @@ export default Ember.Component.extend({
     return state;
   }),
 
-  optionsVisible: Ember.computed('switchState', function() {
-    return this.get('switchState').value ? 'show' : 'hide';
-  }),
-
   actions: {
     saveAnswer(newVal) {
       if (newVal){

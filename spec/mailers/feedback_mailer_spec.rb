@@ -5,9 +5,10 @@ describe FeedbackMailer, redis: true do
   let(:app_name) { 'TEST-APP-NAME' }
   let(:user) { FactoryGirl.create(:user) }
   let(:feedback) {
-    { referrer: "http://example.com/referrer",
+    {
+      referrer: "http://example.com/referrer",
       remarks: "Here is my feedback",
-      screenshots: [{url: "http://tahi.s3.amazonaws.com/pic.pdf", filename: "pic.pdf"}]
+      screenshots: [{ url: "http://tahi.s3.amazonaws.com/pic.pdf", filename: "pic.pdf" }]
     }
   }
   let(:email) { FeedbackMailer.contact(user, feedback) }
@@ -37,6 +38,10 @@ describe FeedbackMailer, redis: true do
         expect(Rails.logger).to receive(:info).with(msg)
         email.deliver_now
       end
+    end
+
+    it 'Excludes styles that must be manually removed from auto-generated JIRA tickets' do
+      expect(email.body).to_not include('<style>')
     end
   end
 end

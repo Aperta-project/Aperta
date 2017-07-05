@@ -171,7 +171,7 @@ class DashboardPage(AuthenticatedPage):
     title = title.strip()
     title = title.lstrip('<p>')
     title = title.rstrip('</p>')
-    logging.info('Looking for invitation with title: {0}.'.format(title))
+    logging.info(u'Looking for invitation with title: {0}.'.format(title))
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
       if title in self.normalize_spaces(listing.text):

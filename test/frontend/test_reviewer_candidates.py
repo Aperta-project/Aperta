@@ -33,7 +33,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
   1. Creator can recommend or oppose a reviewer
   """
 
-  def test_smoke_reviewer_candidates_styles(self):
+  def rest_smoke_reviewer_candidates_styles(self):
     """
     test_reviewer_candidates: Validates the elements, styles of the reviewer candidates task and
       card from new document creation through making a recommendation through
@@ -84,7 +84,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rcc = ReviewerCandidatesCard(self.getDriver())
     rcc.validate_styles(reviewer_login, paper_id)
 
-  def test_core_add_reviewer_candidate(self):
+  def rest_core_add_reviewer_candidate(self):
     """
     test_reviewer_candidates_task: Validates the submission of a recommended or opposed reviewer.
       Validates the presentation of the data submitted from the task on the workflow card. Note
@@ -139,7 +139,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     rcc.validate_styles(reviewer_login, paper_id)
     rcc.check_initial_population(reviewer_login, choice, reason)
 
-  def test_core_delete_reviewer_candidate(self):
+  def rest_core_delete_reviewer_candidate(self):
     """
     test_reviewer_candidates_task: Validates the submission of a recommended or opposed reviewer.
       Following submission deletes that submitted reviewer.
@@ -207,8 +207,6 @@ class ReviewerCandidatesTaskTest(CommonTest):
     # TODO (collaborators are not currently enabled) a paper Collaborator can view/edit the
     #   reviewer recommendations card.
     logging.info('Test Reviewer Candidates::permissions')
-    current_path = os.getcwd()
-    logging.info(current_path)
     #  First check for required initial data
     mmts = []
     journal_id = PgSQL().query("SELECT id FROM journals j WHERE j.name = 'PLOS Wombat';")[0][0]
@@ -285,14 +283,18 @@ class ReviewerCandidatesTaskTest(CommonTest):
     workflow_page.set_editable()
     workflow_page.check_for_flash_error()
     workflow_page.logout()
+    # Get selected data from db
+    manuscript_title = PgSQL().query('SELECT title '
+                                     'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
+    manuscript_title = unicode(manuscript_title,
+                               encoding='utf-8',
+                               errors='strict')
 
     # Login as Reviewer and accept invitation
     dashboard_page = self.cas_login(email=reviewer_login['email'])
     dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
-    dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(short_doi)
-    self._driver.navigated = True
+    dashboard_page.accept_invitation(title=manuscript_title)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')
@@ -303,9 +305,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     dashboard_page = self.cas_login(email=academic_editor_login['email'])
     dashboard_page.page_ready()
     dashboard_page.click_view_invitations()
-    dashboard_page.accept_all_invitations()
-    dashboard_page.go_to_manuscript(short_doi)
-    self._driver.navigated = True
+    dashboard_page.accept_invitation(title=manuscript_title)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     rc_task = paper_viewer.is_task_present('Reviewer Candidates')

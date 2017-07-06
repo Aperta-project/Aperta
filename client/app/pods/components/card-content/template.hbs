@@ -9,8 +9,12 @@
     </div>
 
     <div class="additionalText">
-      {{#if answer.cardContent.allowAnnotations}}
-        {{card-content/tabbed-textarea annotationChanged=(action 'updateAnnotation') annotation=answer.annotation}}
+      {{#if answer.cardContent.hasAdditionalText}}
+        {{card-content/tabbed-textarea
+          annotationChanged=(action 'updateAnnotation')
+          show_annotation=answer.cardContent.allowAnnotations
+          annotation=answer.annotation
+          instruction_text=answer.cardContent.instructionText}}
       {{/if}}
     </div>
 

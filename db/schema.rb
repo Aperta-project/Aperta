@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170619162849) do
+ActiveRecord::Schema.define(version: 20170705103433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 20170619162849) do
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
     t.boolean  "allow_annotations"
+    t.string   "instruction_text"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

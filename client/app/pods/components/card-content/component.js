@@ -15,8 +15,6 @@ export default Ember.Component.extend({
     return name;
   }),
 
-  dualColumn: null,
-
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,

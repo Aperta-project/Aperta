@@ -127,6 +127,8 @@ class XmlCardLoader
         content.attr_value('ident'),
       label:
         content.tag_text('label'),
+      instruction_text:
+        content.tag_text('instruction-text'),
       placeholder:
         content.tag_text('placeholder'),
       possible_values:

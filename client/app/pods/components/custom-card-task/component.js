@@ -7,7 +7,7 @@ export default TaskComponent.extend({
   hasAdditionalText: Ember.computed('task.nestedQuestions.[]', function() {
     let cardContents = this.get('task.cardVersion.contentRoot.unsortedChildren');
     return cardContents.any((cardContent) => {
-      return cardContent.get('allowAnnotations');
+      return cardContent.hasAdditionalText;
     });
   }),
 });

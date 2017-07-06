@@ -5,8 +5,7 @@
     -moz-border-radius: 4px 0 0 4px;
       border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
-  width: calc(100% - 25px);
-  //min-width: 300px;
+  width: calc(100% - 28px);
   }
 
 .tabs-below > .nav-tabs,
@@ -93,7 +92,6 @@
 .tabs-right > .nav-tabs {
   float: right;
   margin-left: 19px;
-  border-left: 1px solid #ddd;
 }
 
 .tabs-right > .nav-tabs > li > a {

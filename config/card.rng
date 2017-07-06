@@ -191,6 +191,11 @@
           </choice>
         </attribute>
       </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <interleave>
         <optional>
           <element name="placeholder">
@@ -235,6 +240,11 @@
             <value>false</value>
           </choice>
         </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <optional>
         <element name="text">

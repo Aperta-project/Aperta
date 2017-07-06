@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   hasAdditionalText: Ember.computed('card.content.unsortedChildren.[]', function() {
     let cardContents = this.get('card.content.unsortedChildren');
     return cardContents.any((cardContent) => {
-      return cardContent.get('allowAnnotations');
+      return cardContent.hasAdditionalText;
     });
   }),
 });

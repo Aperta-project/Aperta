@@ -7,6 +7,8 @@ export default Ember.Component.extend({
 
   _tabbedTextAreaSetup: Ember.on('didInsertElement', function() {
     // activate bootstrap nav tab elements
+    this.$('.nav-tabs > li:first-child').addClass('active');
+    this.$('.tab-content > .tab-pane:first-child').addClass('active');
     this.$('.nav-tabs .active').tab('show');
   })
 

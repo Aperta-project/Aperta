@@ -41,7 +41,7 @@ describe FeedbackMailer, redis: true do
     end
 
     it 'Excludes styles that must be manually removed from auto-generated JIRA tickets' do
-      expect(email.body).to_not include('<style>')
+      expect(email.body).to_not include('<html>')
     end
   end
 end

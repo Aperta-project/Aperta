@@ -29,11 +29,10 @@
 
     {{rich-text-editor
       editorStyle=editorStyle
-      data-editor=data-editor
       onContentsChanged=(action "updateAnswer")
       class=inputClassNames
       placeholder=placeholderText
-      name=ident
+      ident=ident
       value=answer.value
     }}
   {{/if}}

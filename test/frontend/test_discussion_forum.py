@@ -11,8 +11,7 @@ from dateutil import tz
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
-from Base.Resources import ascii_only_users, editorial_users, admin_users
-from Cards.invite_reviewer_card import InviteReviewersCard
+from Base.Resources import ascii_only_users, editorial_users, staff_admin_login
 from frontend.common_test import CommonTest
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
@@ -26,7 +25,8 @@ Note: Due to bug APERTA-8303 we import ascii only users instead of all users
 """
 __author__ = 'sbassi@plos.org'
 
-staff_users = admin_users + editorial_users
+staff_users = [staff_admin_login] + editorial_users
+
 
 @MultiBrowserFixture
 class DiscussionForumTest(CommonTest):
@@ -127,8 +127,9 @@ class DiscussionForumTest(CommonTest):
     red_badge = ms_viewer._get(ms_viewer._badge_red)
     red_badge_last = int(red_badge.text)
     assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}. This may be '\
-        'caused by users with non ascii characters (Reported in APERTA-8303)'.format(
-        red_badge_first + 1, red_badge_last)
+        'caused by users with non ascii characters (Reported in ' \
+                                                  'APERTA-8303)'.format(red_badge_first + 1,
+                                                                        red_badge_last)
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
@@ -158,11 +159,13 @@ class DiscussionForumTest(CommonTest):
     """
     web_page = random.choice(['manuscript viewer', 'workflow'])
     logging.info('Test discussion on: {0}'.format(web_page))
+    # We use ascii_only_users because the feature itself doesn't support hi-ascii/dbl byte chars
     creator, collaborator_1, collaborator_2 = random.sample(ascii_only_users, 3)
-    logging.info('Collaborator 1: {0}'.format(collaborator_1))
-    logging.info('Collaborator 2: {0}'.format(collaborator_2))
+    logging.info('Creator: {0}'.format(creator['name']))
+    logging.info('Collaborator 1: {0}'.format(collaborator_1['name']))
+    logging.info('Collaborator 2: {0}'.format(collaborator_2['name']))
     journal = 'PLOS Wombat'
-    logging.info('Logging in as user: {0}'.format(creator))
+    logging.info('Logging in as user: {0}'.format(creator['name']))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.page_ready()
     # Create paper
@@ -177,27 +180,27 @@ class DiscussionForumTest(CommonTest):
     logging.info(ms_viewer.get_current_url())
     short_doi = ms_viewer.get_paper_short_doi_from_url()
     logging.info('Assigned paper short doi: {0}'.format(short_doi))
-    # Submit paper
-    # reviewer1
     ms_viewer.complete_task('Upload Manuscript')
+    # Submit paper
     ms_viewer.click_submit_btn()
     ms_viewer.confirm_submit_btn()
     ms_viewer.close_modal()
 
-    # Once the paper is created, add collaborator
+    # Once the paper is created, add collaborator 1
     user_id = PgSQL().query('SELECT id FROM users where username = %s;',
-        (collaborator_1['user'],))[0][0]
+                            (collaborator_1['user'],))[0][0]
     journal_id = PgSQL().query('SELECT journal_id '
                                'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
     role_id = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s '
                             'AND name = %s;', (journal_id, 'Collaborator'))[0][0]
     paper_id = ms_viewer.get_paper_id_from_short_doi(short_doi)
-    # Add collaborator
+    # Add collaborator directly via the db, NOT the GUI
     PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
                    'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
                    ' now(), now());', (user_id, role_id, paper_id))
+    # now add Collaborator 2
     user_id = PgSQL().query('SELECT id FROM users where username = %s;',
-        (collaborator_2['user'],))[0][0]
+                            (collaborator_2['user'],))[0][0]
     PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, '
                    'assigned_to_type, created_at, updated_at) VALUES (%s, %s, %s, \'Paper\','
                    ' now(), now());', (user_id, role_id, paper_id))
@@ -205,7 +208,6 @@ class DiscussionForumTest(CommonTest):
     ms_viewer.logout()
 
     # Login as Staff user
-    # This will fail when superadmin is chosen due to a app bug
     staff_user = random.choice(staff_users)
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
@@ -214,7 +216,6 @@ class DiscussionForumTest(CommonTest):
     dashboard_page.go_to_manuscript(short_doi)
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
-    # This is failing for Asian Character set usernames of only two characters APERTA-7862
     topic = 'Testing discussion on paper {0}'.format(short_doi)
     msg_1 = generate_paragraph()[2]
     # How to call the discussion section
@@ -222,8 +223,6 @@ class DiscussionForumTest(CommonTest):
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[collaborator_1,
                                                                           collaborator_2])
     elif web_page == 'manuscript viewer':
-      dashboard_page.go_to_manuscript(short_doi)
-      ms_viewer = ManuscriptViewerPage(self.getDriver())
       # Add Collaborator 1 and Collaborator 2
       ms_viewer._wait_for_element(ms_viewer._get(ms_viewer._tb_workflow_link))
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1,

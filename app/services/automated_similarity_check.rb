@@ -48,7 +48,8 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
-        versioned_text: paper.latest_submitted_version
+        versioned_text: paper.latest_submitted_version,
+        automatic: true
       )
       Rails.logger.info <<-HERE
         Performing automated similarity check

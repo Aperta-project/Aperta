@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<card name="Competing Interests" required-for-submission="true" workflow-display-only="false">
+<card required-for-submission="true" workflow-display-only="false">
   <content content-type="display-children">
     <content content-type="radio" value-type="text" ident="competing_interests--has_competing_interests">
       <text>

@@ -1,12 +1,17 @@
 {{partial "task-completed-section"}}
 
 <div>
+  {{#each latestVersionPrimaryFailedChecks as |check|}}
+    {{flash-message remove=(action "dismissMessage")
+                    message=(format-report-error check)}}
+  {{/each}}
+
   <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
-  {{#if latestVersionHasChecks}}
+  {{#if latestVersionHasSuccessfulChecks}}
     <h3>Similarity Check Report</h3>
   {{/if}}
 
-  {{#each latestVersionedText.similarityChecks as |check|}}
+  {{#each sortedChecks as |check|}}
     {{similarity-check check=check}}
   {{/each}}
 
@@ -18,7 +23,7 @@
       <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
     </div>
   {{else}}
-    <button class="button-primary button--green" disabled={{latestVersionHasChecks}} {{ action "confirmGenerateReport" }}>Generate Report</button>
+    <button class="button-primary button--green" {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
   {{#if task.paper.hasSimilarityChecks }}

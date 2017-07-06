@@ -46,6 +46,7 @@ class JournalFactory
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Creator(s) only get access to the submission task types
       task_klasses = Task.submission_task_types
@@ -58,12 +59,14 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:edit_authors, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
       task_klasses = Task.submission_task_types
@@ -75,6 +78,7 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::COVER_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -94,6 +98,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -139,6 +144,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -157,6 +163,7 @@ class JournalFactory
         role.ensure_permission_exists(:view_participants, applies_to: klass.name)
       end
       role.ensure_permission_exists(:edit, applies_to: AdHocForReviewersTask.name, states: Paper::REVIEWABLE_STATES)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     # This role exists to give a reviewer the ability to edit their reviewer
@@ -169,11 +176,13 @@ class JournalFactory
       )
 
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::JOURNAL_SETUP_ROLE, journal: @journal) do |role|
       role.ensure_permission_exists(:create_card, applies_to: Journal)
       role.ensure_permission_exists(:edit, applies_to: Card)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
@@ -202,6 +211,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -230,6 +240,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
@@ -256,6 +267,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -279,6 +291,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -299,6 +312,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -345,6 +359,7 @@ class JournalFactory
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
@@ -372,6 +387,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -398,6 +414,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
@@ -425,6 +442,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
       task_klasses = Task.descendants
@@ -451,6 +469,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
@@ -460,6 +479,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
@@ -507,6 +527,8 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
     end
   end
 end

@@ -21,7 +21,7 @@ module CardConfiguration
         },
         {
           ident: "reviewer_recommendations--reason",
-          value_type: "text",
+          value_type: "html",
           text: "Optional: reason for recommending or opposing this reviewer"
         }
       ]

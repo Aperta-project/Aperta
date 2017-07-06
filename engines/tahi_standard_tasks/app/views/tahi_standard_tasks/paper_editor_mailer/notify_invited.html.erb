@@ -2,7 +2,7 @@
 <br><br>
 
 <div>
-  <%= simple_format @invitation.body %>
+  <%= @invitation.body.html_safe %>
 </div>
 
 <%= render partial: 'email/button', locals: {

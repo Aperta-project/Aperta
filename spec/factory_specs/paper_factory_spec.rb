@@ -12,7 +12,7 @@ describe 'PaperFactory' do
     end
   end
   let(:time_freeze) { 1.day.ago }
-  let(:title) { Faker::Lorem.words 10 }
+  let(:title) { Faker::Lorem.words(10) .join(" ") }
 
   describe 'default' do
     describe '#build_stubbed' do

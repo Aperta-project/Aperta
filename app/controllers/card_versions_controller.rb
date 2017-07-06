@@ -11,7 +11,7 @@ class CardVersionsController < ApplicationController
   respond_to :json
 
   def show
-    requires_user_can(:view, card_version.card)
+    requires_user_can(:view, card_version)
     respond_with card_version
   end
 

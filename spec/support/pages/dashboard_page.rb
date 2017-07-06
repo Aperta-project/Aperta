@@ -1,26 +1,27 @@
-# rubocop:disable Style/PredicateName
 # Represents the main page of the app
 class DashboardPage < Page
+  include RichTextEditorHelpers
+
   path :root
   text_assertions :welcome_message, '.welcome-message'
   text_assertions :submitted_paper, '.dashboard-submitted-papers li'
 
   def fill_in_new_manuscript_fields(paper_title, journal, paper_type)
     page.execute_script('$(".format-input-field").focus()')
-    find('.format-input-field').set paper_title
+    set_rich_text(editor: 'new-paper-title', text: paper_title)
     power_select "#paper-new-journal-select", journal
     power_select "#paper-new-paper-type-select", paper_type
   end
 
   def submissions
     within("#dashboard-my-submissions") do
-      page.all('li').map &:text
+      page.all('li').map(&:text)
     end
   end
 
   def submitted_papers
     within(".dashboard-submitted-papers") do
-      page.all('li').map &:text
+      page.all('li').map(&:text)
     end
   end
 
@@ -39,13 +40,13 @@ class DashboardPage < Page
     PaperPage.new
   end
 
-  #doesn't wait for elements to appear.
+  # doesn't wait for elements to appear.
   def has_no_admin_link?
-    all(".main-navigation-item", text: "Admin").empty?
+    all('.main-navigation-item', text: 'Admin').empty?
   end
 
   def admin_link
-    find(".main-navigation-item", text: "Admin")
+    find('.main-navigation-item', text: 'Admin')
   end
 
   def visit_admin
@@ -91,11 +92,11 @@ class DashboardPage < Page
   end
 
   def expect_active_invitations_count(count)
-    if count == 0
+    if count.zero?
       expect(page).not_to have_selector('.invitation-count')
     else
       expect(page).to have_selector('.invitation-count')
-      expect(page.find('.invitation-count')).to have_content("#{count}")
+      expect(page.find('.invitation-count')).to have_content(count.to_s)
     end
   end
 
@@ -113,12 +114,12 @@ class DashboardPage < Page
     end
   end
 
-  def view_invitations &block
+  def view_invitations
     press_view_invitations_button
 
     if block_given?
-      block.call(pending_invitations.map do |invitation|
-        PendingInvitationFragment.new invitation
+      yield(pending_invitations.map do |invitation|
+        PendingInvitationFragment.new(invitation)
       end)
     else
       pending_invitations
@@ -130,15 +131,14 @@ class DashboardPage < Page
   end
 
   def has_pending_invitations?(count)
-    self.has_css? '.pending-invitation', count: count
+    has_css?('.pending-invitation', count: count)
   end
 
   def has_no_pending_invitations?
-    self.has_no_css? '.pending-invitation'
+    has_no_css? '.pending-invitation'
   end
 
   def press_view_invitations_button
     click_button 'View invitations'
   end
 end
-# rubocop:enable Style/PredicateName

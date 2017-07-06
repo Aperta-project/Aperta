@@ -53,53 +53,36 @@ module TahiStandardTasks
     def invitation_template
       LetterTemplate.new(
         salutation: "Dear [REVIEWER NAME],",
-        body: invitation_template_body
+        body: invitation_body_template
       )
     end
 
     private
 
-    def invitation_template_body
+    def invitation_body_template
       template = <<-TEXT.strip_heredoc
-        You've been invited as a Reviewer on “%{manuscript_title}”, for %{journal_name}.
-
-        The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
-
-        Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
-
-        We look forward to hearing from you.
-
-        Sincerely,
-        %{journal_name} Team
-
-        ***************** CONFIDENTIAL *****************
-
-        %{paper_type}
-
-        Manuscript Title:
-        %{manuscript_title}
-
-        Authors:
-        %{authors}
-
-        Abstract:
-        %{abstract}
-
-      TEXT
-      template % template_data
-    end
-
-    def template_data
-      { manuscript_title: paper.display_title(sanitized: false),
-        paper_type: paper.paper_type,
-        journal_name: paper.journal.name,
-        abstract: abstract,
-        authors:  AuthorsList.authors_list(paper) }
-    end
-
-    def abstract
-      return 'Abstract is not available' unless paper.abstract
-      paper.abstract
+<p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>
+<p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due-in-days | default 10}} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
+<p>Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.</p>
+<p>We look forward to hearing from you.</p>
+<p>Sincerely,</p>
+<p>{{ journal.name }} Team</p>
+<p>***************** CONFIDENTIAL *****************</p>
+<p>{{ manuscript.paper_type }}</p>
+<p>Manuscript Title:<br>
+{{ manuscript.title }}</p>
+<p>Authors:<br>
+{% for author in manuscript.authors %}
+{{ forloop.index }}. {{ author.last_name }}, {{ author.first_name }}<br>
+{% endfor %}</p>
+<p>Abstract:<br>
+{{ manuscript.abstract | default 'Abstract is not available' }}</p>
+TEXT
+      # Note that this will become a LetterTemplate. When that
+      # happens, the rendering part below simplifies to a call on the
+      # LetterTemplate object.
+      context = PaperReviewerScenario.new(self)
+      Liquid::Template.parse(template).render(context)
     end
   end
 end

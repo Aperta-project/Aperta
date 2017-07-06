@@ -64,7 +64,8 @@ class PaperFactory
       creator: creator,
       title: task_template.title,
       body: task_template.template,
-      notify: false
+      notify: false,
+      task_template: task_template
     )
     task
   end
@@ -77,7 +78,8 @@ class PaperFactory
       creator: creator,
       card_version: task_template.card.latest_published_card_version,
       title: task_template.title,
-      notify: false
+      notify: false,
+      task_template: task_template
     )
     task
   end

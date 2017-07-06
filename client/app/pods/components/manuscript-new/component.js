@@ -22,6 +22,10 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   hasTitle: computed.notEmpty('paper.title'),
 
   actions: {
+    titleChanged(contents) {
+      this.set('paper.title', contents);
+    },
+
     selectJournal(journal) {
       this.set('paper.journal', journal);
       this.set('paper.paperType', null);

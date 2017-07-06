@@ -1,11 +1,11 @@
 class RoleSpecHelper
-  def self.create_role(name, participates_in: [], &blk)
-    new(name, participates_in: participates_in, &blk).role
+  def self.create_role(name, context, participates_in: [], &blk)
+    new(name, context, participates_in: participates_in, &blk).role
   end
 
   attr_reader :role
 
-  def initialize(name, participates_in: [], &blk)
+  def initialize(name, context, participates_in: [], &blk)
     @name = name
 
     attrs = participates_in.each_with_object({}) do |klass, hsh|
@@ -14,14 +14,15 @@ class RoleSpecHelper
     end
 
     @role = FactoryGirl.create(:role, attrs.merge(name: name))
-    instance_exec &blk if blk
+    instance_exec(context, &blk) if blk
     self
   end
 
-  def has_permission(action:, applies_to:, states: ['*'])
+  def has_permission(action:, applies_to:, states: ['*'], **kwargs)
     permissions = Permission.includes(:states).where(
       action: action,
-      applies_to: applies_to
+      applies_to: applies_to,
+      **kwargs
     ).select do |permission|
       permission.states.map(&:name).map(&:to_s).sort == states.map(&:to_s).sort
     end

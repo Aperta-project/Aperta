@@ -64,7 +64,7 @@ class SimilarityCheck < ActiveRecord::Base
   end
 
   def give_up_if_timed_out!
-    message = "Report timed out after #{TIMEOUT_INTERVAL/60} minutes."
+    message = "Report timed out after #{TIMEOUT_INTERVAL / 60} minutes."
     record_and_raise_error(message) if Time.current.utc > timeout_at
   end
 
@@ -104,7 +104,7 @@ class SimilarityCheck < ActiveRecord::Base
 
   def record_error(message)
     Rails.logger.warn("SimilarityCheckError: #{message}")
-    self.update_column(:error_message, message)
+    update_column(:error_message, message)
     fail_report!
   end
 

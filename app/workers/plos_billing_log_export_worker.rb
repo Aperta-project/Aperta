@@ -16,7 +16,7 @@ class PlosBillingLogExportWorker
           feed_name: "forensic",
           activity_key: "plos_billing.ftp_uploaded",
           subject: paper,
-          message: 'Billing uploaded to FTP Server'
+          message: BillingLogReport::ACTIVITY_MESSAGE
         )
       end
     end

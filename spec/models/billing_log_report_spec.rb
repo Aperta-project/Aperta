@@ -139,15 +139,24 @@ describe BillingLogReport do
       expect(BillingLogReport.new.papers_to_process).to eq([valid_paper])
     end
 
-    context 'with a from_date' do
-      it 'returns all accepted papers whose accepted_at is after from_date, and have a completed billing task' do
-        today = Time.zone.today
-        accepted_paper_with_completed_billing
-        new_paper = accepted_paper_with_completed_billing(accepted_date: today)
-        report = BillingLogReport.new(from_date: today - 1.day)
-        expect(report.papers_to_process).to eq([new_paper])
-      end
+    it 'returns all papers which have not been previously sent' do
+      sent_paper = accepted_paper_with_completed_billing
+      FactoryGirl.create :activity, :uploaded_paper, subject: sent_paper
+      accepted_paper_with_completed_billing
+      expect(BillingLogReport.new.papers_to_process).not_to include(sent_paper)
     end
+
+    # This behaviour is removed following APERTA-10433. There is a vague
+    # possibility this behaviour is required later. So the code remains
+    # context 'with a from_date' do
+    #   it 'returns all accepted papers whose accepted_at is after from_date, and have a completed billing task' do
+    #     today = Time.zone.today
+    #     accepted_paper_with_completed_billing
+    #     new_paper = accepted_paper_with_completed_billing(accepted_date: today)
+    #     report = BillingLogReport.new(from_date: today - 1.day)
+    #     expect(report.papers_to_process).to eq([new_paper])
+    #   end
+    # end
   end
 
   context 'on create create' do

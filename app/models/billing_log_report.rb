@@ -1,6 +1,8 @@
 require 'csv'
 # If no date is provided it defaults to last run
 class BillingLogReport < ActiveRecord::Base
+  ACTIVITY_MESSAGE = 'Billing uploaded to FTP Server'.freeze
+
   mount_uploader :csv_file, BillingLogUploader
 
   after_create :log_creation
@@ -57,12 +59,18 @@ class BillingLogReport < ActiveRecord::Base
   def papers_to_process
     @papers ||= begin
       papers = accepted_papers_with_completed_billing_tasks
+      sent_papers = Activity.where(message: BillingLogReport::ACTIVITY_MESSAGE)
+                            .map(&:subject)
+                            .map!(&:id)
+      papers.where.not(id: sent_papers)
 
-      if from_date
-        papers.where('accepted_at > ?', from_date)
-      else
-        papers
-      end
+      # This behaviour is removed following APERTA-10433. There is a vague
+      # possibility this behaviour is required later. So the code remains
+      # if from_date
+      #   papers.where('accepted_at > ?', from_date)
+      # else
+      #   papers
+      # end
     end
   end
 

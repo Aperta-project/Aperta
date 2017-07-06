@@ -11,16 +11,14 @@ namespace :data do
         reply    = -> (record) { record.discussion_topic.paper.id }
 
         list = [
-          [Attachment,      direct,   %i(title caption)],
-          [Comment,         indirect, %i(body)],
-          [Decision,        direct,   %i(letter author_response)],
-          [DiscussionReply, reply,    %i(body)],
-          [Invitation,      indirect, %i(body decline_reason reviewer_suggestions)],
-          [Paper,           paper,    %i(abstract title)],
-          [RelatedArticle,  indirect, %i(linked_title additional_info)]
+          [Attachment,      direct,   true,  %i(title caption)],
+          [Comment,         indirect, false, %i(body)],
+          [Decision,        direct,   true,  %i(letter author_response)],
+          [DiscussionReply, reply,    false, %i(body)],
+          [Invitation,      indirect, true,  %i(body decline_reason reviewer_suggestions)],
+          [Paper,           paper,    false, %i(abstract title)],
+          [RelatedArticle,  indirect, false, %i(linked_title additional_info)]
         ]
-
-        break_fields = Set.new(%i(letter author_response decline_reason reviewer_suggestions))
 
         dry = ENV['DRY_RUN'] == 'true'
         inactive_states = %w(rejected withdrawn accepted)
@@ -29,7 +27,7 @@ namespace :data do
         processed_papers = Hash.new { |h, k| h[k] = counters.new(Set.new, 0, 0) }
         clean = -> (text) { text.to_s.gsub(/\s+/, ' ').strip }
 
-        list.each do |(model, locator, fields)|
+        list.each do |(model, locator, newlines, fields)|
           records = model.all
           records.each do |record|
             # puts "Record #{record.class} #{record.id}"
@@ -43,10 +41,9 @@ namespace :data do
               before = record[field]
               next if before.blank?
 
-              translate = field.in?(break_fields)
-              before = before.gsub("\n", "<br>") if translate
-              after = HtmlScrubber.standalone_scrub!(before)
-              next if before.strip == after.strip && (!translate)
+              text = newlines ? before.gsub("\n", "<br>") : before
+              after = HtmlScrubber.standalone_scrub!(text)
+              next if before.strip == after.strip
 
               if dry
                 header = "<br>PAPER #{paper_id} - #{model} #{field} [#{record.id}]"
@@ -80,23 +77,14 @@ namespace :data do
       desc 'It goes through every answer that has HTML values in and sanitize it'
       task sanitize_answer_html: :environment do
         dry = ENV['DRY_RUN'] == 'true'
+        Rake::Task['cards:load'].invoke
+
         inactive_states = %w(rejected withdrawn accepted)
         current_papers = Paper.select(:id).where.not(publishing_state: inactive_states).pluck(:id).to_set
         clean = -> (text) { text.to_s.gsub(/\s+/, ' ').strip }
 
-        idents = [
-          'cover_letter--text',
-          'data_availability--data_location',
-          'front_matter_reviewer_report--suitable--comment',
-          'production_metadata--production_notes',
-          'publishing_related_questions--short_title',
-          'reviewer_report--comments_for_author'
-        ]
-
-        break_fields = Set.new(['cover_letter--text'])
-
         field_counts = Hash.new { |h, k| h[k] = 0 }
-        CardContent.where(ident: idents).includes(:answers).each do |cc|
+        CardContent.where(value_type: 'html').includes(:answers).each do |cc|
           # puts "migrating card content answers #with #{cc.ident}"
           cc.answers.each do |answer|
             next unless answer.paper_id.in?(current_papers)
@@ -104,10 +92,9 @@ namespace :data do
             before = answer.value
             next if before.blank?
 
-            translate = cc.ident.in?(break_fields)
-            before = before.gsub("\n", "<br>") if translate
-            after = HtmlScrubber.standalone_scrub!(before)
-            next if before.strip == after.strip && (!translate)
+            text = before.gsub("\n", "<br>")
+            after = HtmlScrubber.standalone_scrub!(text)
+            next if before.strip == after.strip
 
             if dry
               header = "CARD_CONTENT [#{answer.paper_id}] #{cc.ident}"

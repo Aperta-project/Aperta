@@ -21,17 +21,20 @@ namespace :reports do
           next if answers.empty?
 
           answers.each do |answer|
+            next unless answer.card_content.value_type == 'html'
+
             text = answer.value
             next unless text.is_a? String
             next if text.blank?
 
+            text = HtmlScrubber.standalone_scrub!(text)
             has_returns = text =~ /\n/
             newlines += 1 if has_returns
 
             matched = text =~ /\<[\S].*\>/
             balanced += 1 if matched
 
-            unmatched = text =~ /(\<[\S])|(\>[\S])/
+            unmatched = text =~ /(\<[\S])|([\S]\>)/
             unbalanced += 1 if unmatched
 
             brackets = matched || unmatched

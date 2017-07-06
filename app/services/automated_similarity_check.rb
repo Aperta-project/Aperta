@@ -11,6 +11,7 @@ class AutomatedSimilarityCheck
   # I could use a hash of procs for this, but folks will probably
   # think it's way more weird than a case statement
   def should_run?
+    return false if paper.manually_similarity_checked
     case setting_value
     when 'off'
       false
@@ -45,7 +46,8 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
-        versioned_text: paper.latest_submitted_version
+        versioned_text: paper.latest_submitted_version,
+        automatic: true
       )
       Rails.logger.info <<-HERE
         Performing automated similarity check

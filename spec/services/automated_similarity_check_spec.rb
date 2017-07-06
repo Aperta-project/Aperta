@@ -183,6 +183,37 @@ describe AutomatedSimilarityCheck do
           expect(result.class).to eq(SimilarityCheck)
         end
       end
+
+      context "regarding similarity check automation" do
+        let!(:setting) do
+          FactoryGirl.create(:ithenticate_automation_setting,
+                                            :after_first_major_revise_decision, owner: task_template)
+        end
+
+        context "the paper has had a manually generated report" do
+          before do
+            versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
+            FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: false)
+            paper.versioned_texts << versioned_text
+          end
+
+          it "does not create a SimilarityCheck record" do
+            expect(result).to be_nil
+          end
+        end
+
+        context "the paper is automatically checked" do
+          before do
+            versioned_text = FactoryGirl.create(:versioned_text, paper: paper)
+            FactoryGirl.create(:similarity_check, versioned_text: versioned_text, automatic: true)
+            paper.versioned_texts << versioned_text
+          end
+
+          it "it creates a SimilarityCheck record" do
+            expect(result.class).to eq(SimilarityCheck)
+          end
+        end
+      end
     end
   end
 end

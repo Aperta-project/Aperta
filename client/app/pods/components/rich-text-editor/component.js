@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
-const basicPlugins     = 'paste';
-const basicToolbar     = 'bold italic underline | subscript superscript | undo redo';
+const basicPlugins     = 'codesample paste';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
 const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
-const expandedPlugins  = ' codesample link table';
-const expandedToolbar  = ' | bullist numlist | table link | codesample | formatselect';
+const expandedPlugins  = ' link table';
+const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
-const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Code=pre';
+const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
 /* some tinymce options are snake_case */
 /* eslint-disable camelcase */

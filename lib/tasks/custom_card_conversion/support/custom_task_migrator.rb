@@ -1,0 +1,86 @@
+# Migrate legacy task, template, and answers to custom card
+class CustomTaskMigrator
+  attr_reader :legacy_class_name, :card_name
+
+  def initialize(legacy_class_name, card_name)
+    @legacy_class_name = legacy_class_name
+    @card_name = card_name
+  end
+
+  def migrate
+    old_card_version = Card.find_by!(name: legacy_class_name)
+      .latest_published_card_version
+
+    Card.transaction do
+      Journal.all.pluck(:id).each do |journal_id|
+        new_card = Card.find_by(name: card_name, journal_id: journal_id)
+        new_card_version = new_card.try(:latest_published_card_version)
+
+        unless new_card_version.present?
+          Rails.logger.info "#{card_name} card for journal #{journal_id} doesn't exist, skipping."
+          next
+        end
+
+        migrate_tasks(journal_id, new_card_version, new_card.id)
+        migrate_answers(old_card_version, new_card_version, journal_id)
+      end
+      destroy_legacy_card
+    end
+  end
+
+  private
+
+  def migrate_answers(old_card_version, new_card_version, journal_id)
+    # Update card content IDs of legacy answers
+    Answer.unscoped do # include soft deleted answers
+      idents = new_card_version.card_contents.pluck(:ident).compact
+      idents.each do |ident|
+        update_content_id(ident, old_card_version, new_card_version, journal_id)
+      end
+    end
+  end
+
+  def migrate_tasks(journal_id, new_card_version, card_id)
+    # Update types for legacy tasks for current journal
+    Task.where(type: legacy_class_name)
+      .joins(:paper).where(papers: { journal_id: journal_id })
+      .update_all(type: "CustomCardTask", card_version_id: new_card_version)
+
+    # Update existing task templates so new papers use new custom card
+    TaskTemplate.joins(:journal, :journal_task_type)
+      .where(journals: { id: journal_id }, journal_task_types: { kind: legacy_class_name })
+      .update_all(journal_task_type_id: nil, card_id: card_id)
+  end
+
+  def update_content_id(ident, old_card_version, new_card_version, journal_id)
+    old_content = old_card_version.card_contents.find_by(ident: ident)
+    new_content = new_card_version.card_contents.find_by(ident: ident)
+    Rails.logger.info "Updating #{old_content.answers.count} answers for ident '#{ident}'"
+    answers = old_content.answers.joins(:paper)
+      .where(papers: { journal_id: journal_id })
+    answers.update_all(card_content_id: new_content.id)
+    # assert that all answers have been moved to new new card content
+    return unless old_content.reload.answers.any?
+    raise "Failed attempting to move all answers for ident #{ident}"
+  end
+
+  def destroy_legacy_card
+    # -- destroy the old card, since everything has moved to the new one
+    # -- be sure to work around:
+    # --    acts_as_paranoid,
+    # --    active_record callback validations,
+    # --    acts_as_state_machine limitations,
+    # --    event stream notifications
+    old_card = Card.find_by!(name: legacy_class_name)
+    old_card.recover if old_card.destroyed?
+    old_card.state = "draft"
+    old_card.notifications_enabled = false
+    Rails.logger.info "Destroying legacy #{card_name} card"
+    old_card.destroy_fully!
+
+    return unless Card.where(name: legacy_class_name).exists?
+    message = "Unable to destroy legacy #{card_name} card"
+    Rails.error.info(message)
+    raise message
+  end
+end

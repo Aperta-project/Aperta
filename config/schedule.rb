@@ -10,7 +10,3 @@ every :day, at: '00:01' do
   rake 'clean:temp_files'
   rake 'reports:analyze_attachments:send_email[apertadevteam@plos.org]'
 end
-
-every :day, at: '09:00' do
-  rake 'simple_report'
-end

@@ -791,6 +791,7 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.datetime "updated_at",                                      null: false
     t.string   "error_message"
     t.boolean  "dismissed",                       default: false
+    t.boolean  "automatic",                       default: false, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|

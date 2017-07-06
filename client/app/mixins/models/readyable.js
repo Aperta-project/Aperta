@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 
 export default Ember.Mixin.create({
   ready: DS.attr('boolean'),

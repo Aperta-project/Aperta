@@ -88,7 +88,7 @@ class AuthenticatedPage(StyledPage):
     self._comment_name = (By.CLASS_NAME, 'comment-name')
     self._comment_date = (By.CLASS_NAME, 'comment-date')
     self._comment_body = (By.CLASS_NAME, 'comment-body')
-    self._mention = (By.CLASS_NAME, 'discussion-at-mention')
+    self._mention = (By.CSS_SELECTOR, 'div.comment-body > a')
     # Withdraw Banner
     self._withdraw_banner = (By.CLASS_NAME, 'withdrawal-banner')
     # Flash Messages
@@ -749,12 +749,13 @@ class AuthenticatedPage(StyledPage):
           self._get(self._add_participant_btn).click()
         except ElementDoesNotExistAssertionError:
           raise(ElementDoesNotExistAssertionError, 'This may fail when the user names has '
-            'less than 3 character, we don\'t expect this to happend with current dataset.'
-            ' Reported in APERTA-7862')
+            'less than 3 character. Reported in APERTA-7862')
         time.sleep(.5)
         participant_field = self._get(self._participant_field)
         participant_field.send_keys(participant[user_search_string])
-        time.sleep(.5)
+        # This sleep needs to be at least 1s as we are so slow in forming the matching selection
+        #   list
+        time.sleep(1)
         participant_field.send_keys(Keys.ENTER)
     return None
 
@@ -800,8 +801,7 @@ class AuthenticatedPage(StyledPage):
     :param user: String with username
     :return: object of a mention
     """
-    comment_body = self._get(self._comment_body)
-    mentions = comment_body.find_elements(*self._mention)
+    mentions = self._gets(self._mention)
     for mention in mentions:
       if mention.text[1:] == user:
         return mention

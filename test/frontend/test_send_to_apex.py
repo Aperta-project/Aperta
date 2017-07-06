@@ -13,7 +13,7 @@ import time
 from Base.PostgreSQL import PgSQL
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import staff_admin_login, users, editorial_users, creator_login1
+from Base.Resources import users, editorial_users, creator_login1
 from Cards.register_decision_card import RegisterDecisionCard
 from frontend.Cards.send_to_apex_card import SendToApexCard
 from frontend.common_test import CommonTest
@@ -22,6 +22,7 @@ from Pages.workflow_page import WorkflowPage
 from Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'scadavid@plos.org'
+
 
 @MultiBrowserFixture
 class SendToApexTest(CommonTest):

@@ -29,14 +29,14 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def print
-    puts 'Outputting billing log file'
-    puts '**************'
+    logger.info 'Outputting billing log file'
+    logger.info '**************'
     File.open(csv, 'r') do |f|
-      while line = f.gets
-        puts line
+      while (line = f.gets)
+        logger.info line
       end
     end
-    puts '**************'
+    logger.info '**************'
   end
 
   def create_csv
@@ -44,11 +44,11 @@ class BillingLogReport < ActiveRecord::Base
     CSV.open(path, 'w') do |new_csv|
       if papers?
         new_csv << billing_json(papers_to_process.first).keys
-        papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
+        papers_to_process.includes(:journal).find_each(batch_size: 50) { |paper|
           billing_log = BillingLog.new(paper: paper).populate_attributes
           billing_log.save
           new_csv << billing_json(paper).values
-        end
+        }
       else
         new_csv << ['No accepted papers with completed billing']
       end
@@ -83,8 +83,8 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def billing_json(paper)
-    JSON.parse(
-      Typesetter::BillingLogSerializer.new(paper).to_json)['billing_log']
+    JSON.parse(Typesetter::BillingLogSerializer.new(paper)
+                                               .to_json)['billing_log']
   end
 
   def current_time

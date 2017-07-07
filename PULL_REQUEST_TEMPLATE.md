@@ -30,7 +30,7 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 #### Code Review Tasks:
 
-Author tasks (delete tasks that don't apply to your PR, this list should be finished before code review):
+**Author tasks** (delete tasks that don't apply to your PR, this list should be finished before code review):
 
 - [ ] If I made any UI changes, I've let QA know.
 - [ ] If I changed the database schema, I enforced database constraints.
@@ -47,8 +47,8 @@ If I need to migrate existing data:
 - [ ] I've talked through the ramifications of the data-migration with Product Owners in regards to deployment timing
 - [ ] If I created a data migration, I added pre- and post-migration assertions.
 
-Reviewer tasks:
-- [ ] I read through the JIRA ticket's AC first
+**Reviewer tasks** (these should be checked or somehow noted before passing on to PO):
+- [ ] I read through the JIRA ticket's AC before doing the rest of the review
 - [ ] I ran the code (in the review environment or locally). I agree the running code fulfills the Acceptance Criteria as stated on the JIRA ticket
 - [ ] I read the code; it looks good
 - [ ] I have found the tests to be sufficient

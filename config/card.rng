@@ -38,6 +38,19 @@
       <optional>
         <attribute name="default-answer-value"/>
       </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -68,6 +81,19 @@
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <interleave>
         <optional>
           <element name="label">
@@ -111,6 +137,19 @@
             <value>false</value>
           </choice>
         </attribute>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <zeroOrMore>
@@ -272,6 +311,19 @@
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <optional>

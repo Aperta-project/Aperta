@@ -13,6 +13,11 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
   },
 
+  name: Ember.computed('content.ident', function() {
+    let ident = this.get('content.ident') || Ember.guidFor(this);
+    return ident;
+  }),
+
   actions: {
     valueChanged(newValue) {
       let action = this.get('valueChanged');

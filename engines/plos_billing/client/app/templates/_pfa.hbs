@@ -41,14 +41,16 @@
                                   owner=task
                                   textClassNames=""
                                   disabled=isNotEditable
+                                  inputClassNames='form-control'
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_1b}}
           {{error-message id="error-for-plos_billing--pfa_question_1b"
                           message=validationErrors.plos_billing--pfa_question_1b}}
         {{/if}}
         {{#if selected.no}}
-          {{nested-question-textarea ident="plos_billing--pfa_question_1a"
+          {{nested-question-input ident="plos_billing--pfa_question_1a"
                                      owner=task
+                                     inputClassNames='form-control'
                                      disabled=isNotEditable
                                      textClassNames=""}}
         {{/if}}
@@ -65,6 +67,7 @@
           {{nested-question-input ident="plos_billing--pfa_question_2b"
                                   owner=task
                                   textClassNames=""
+                                  inputClassNames='form-control'
                                   disabled=isNotEditable
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_2b}}
@@ -72,10 +75,11 @@
                           message=validationErrors.plos_billing--pfa_question_2b}}
         {{/if}}
         {{#if selected.no}}
-          {{nested-question-textarea ident="plos_billing--pfa_question_2a"
-                                     owner=task
-                                     disabled=isNotEditable
-                                     textClassNames=""}}
+          {{nested-question-input ident="plos_billing--pfa_question_2a"
+                                  inputClassNames='form-control'
+                                  owner=task
+                                  disabled=isNotEditable
+                                  textClassNames=""}}
         {{/if}}
       {{/nested-question-radio}}
       <br>
@@ -88,6 +92,7 @@
           {{nested-question-input ident="plos_billing--pfa_question_3a"
                                   owner=task
                                   textClassNames=""
+                                  inputClassNames='form-control'
                                   disabled=isNotEditable
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_3a}}
@@ -105,6 +110,7 @@
           {{nested-question-input ident="plos_billing--pfa_question_4a"
                                   owner=task
                                   textClassNames=""
+                                  inputClassNames='form-control'
                                   disabled=isNotEditable
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_4a}}
@@ -118,6 +124,7 @@
         {{nested-question-input ident="plos_billing--pfa_amount_to_pay"
                                 owner=task
                                 disabled=isNotEditable
+                                inputClassNames='form-control'
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--pfa_amount_to_pay}}
         {{error-message id="error-for-plos_billing--pfa_amount_to_pay"
@@ -135,8 +142,9 @@
       <br>
 
       <div>
-        {{nested-question-textarea ident="plos_billing--pfa_additional_comments"
+        {{nested-question-input ident="plos_billing--pfa_additional_comments"
                                    disabled=isNotEditable
+                                   inputClassNames='form-control'
                                    owner=task}}
       </div>
 

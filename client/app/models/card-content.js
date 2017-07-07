@@ -16,7 +16,6 @@ export default DS.Model.extend({
   allowFileCaptions: DS.attr('boolean'),
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
-  placeholder: DS.attr('string'),
   possibleValues: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),

@@ -100,7 +100,8 @@ describe Typesetter::AuthorSerializer do
       :secondary_affiliation,
       :contributions,
       :government_employee,
-      :type
+      :type,
+      :creator
     )
   end
 
@@ -217,6 +218,22 @@ describe Typesetter::AuthorSerializer do
   describe 'type' do
     it 'has a type of author' do
       expect(output[:type]).to eq 'author'
+    end
+  end
+
+  describe 'creator' do
+    context 'author is the creator of the paper' do
+      it 'is true' do
+        author.user = paper.creator
+        expect(output[:creator]).to eq true
+      end
+    end
+
+    context 'author is not the creator of the paper' do
+      it 'is false' do
+        author.user = FactoryGirl.create(:user)
+        expect(output[:creator]).to eq false
+      end
     end
   end
 

@@ -78,6 +78,7 @@ gem 'tiny_tds'
 gem 'twitter-text'
 gem 'unf'
 gem 'whenever'
+gem 'tinymce-rails'
 
 # We need any version of yaml_db after 0.3.0 since it will
 # namespace SerializationHelper

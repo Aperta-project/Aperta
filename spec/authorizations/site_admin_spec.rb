@@ -32,6 +32,10 @@ describe 'Site admins have ALL the permissions' do
     Permission.ensure_exists(:view, applies_to: Authorizations::FakePaper)
   end
 
+  after(:all) do
+    Permission.destroy_all
+  end
+
   context 'when the user is a site admin' do
     before do
       user.assign_to! assigned_to: the_system, role: Role.site_admin_role

@@ -16,8 +16,6 @@ class TaskFactory
                   .merge(options)
                   .except(:creator, :notify)
     @task = task_klass.new(task_options)
-
-    set_required_permissions
   end
 
   def save
@@ -31,14 +29,5 @@ class TaskFactory
     HashWithIndifferentAccess.new(
       title: task_klass::DEFAULT_TITLE,
     )
-  end
-
-  def set_required_permissions
-    return if task.required_permissions.present?
-
-    # custom card permissions have not been defined yet
-    return if task.is_a?(CustomCardTask)
-
-    task.required_permissions = task.journal_task_type.required_permissions
   end
 end

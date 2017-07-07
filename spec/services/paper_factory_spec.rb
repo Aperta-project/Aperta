@@ -83,6 +83,12 @@ describe PaperFactory do
       expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask', 'CustomCardTask'])
     end
 
+    it "associates task templates with tasks" do
+      new_paper = PaperFactory.create(paper_attrs, user)
+      task_template_titles = new_paper.tasks.map { |t| t.task_template.title }
+      expect(task_template_titles).to match_array(['Data Availability', card.name])
+    end
+
     it "adds correct positions to new tasks" do
       new_paper = PaperFactory.create(paper_attrs, user)
       new_paper.phases.each do |phase|
@@ -113,6 +119,12 @@ describe PaperFactory do
 
     it "saves the paper" do
       expect(subject).to be_persisted
+    end
+
+    it "raises an error without a title" do
+      paper = FactoryGirl.build(:paper, title: nil)
+      expect(paper).not_to be_valid
+      expect(paper.errors[:title]).to eq(["can't be blank"])
     end
 
     context "with non-existant template" do

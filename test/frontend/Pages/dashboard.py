@@ -310,7 +310,7 @@ class DashboardPage(AuthenticatedPage):
           logging.info(page_abstract_text.text)
           assert db_abstract in page_abstract_text.text, \
               u'db abstract: {0}\nnot equal to invitation ' \
-              u'abstract:\n{1}.'.format(unicode(db_abstract), unicode(page_abstract_text.text))
+              u'abstract:\n{1}'.format(unicode(db_abstract), unicode(page_abstract_text.text))
         else:
           logging.info('No Abstract listed in invitation...')
         accept_btn = page_listing.find_element(*self._invitation_accept_button)

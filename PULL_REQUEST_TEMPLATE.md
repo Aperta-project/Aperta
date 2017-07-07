@@ -32,18 +32,15 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 Author tasks (delete tasks that don't apply to your PR, this list should be finished before code review):
 
+- [ ] If I made any UI changes, I've let QA know.
 - [ ] If I changed the database schema, I enforced database constraints.
-
 - [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
 
 If I modified any environment variables:
 - [ ] I made a pull request to change the files on the [molten repo](https://github.com/PLOS/molten/tree/dev/pillar/aperta) {PR LINK}
 - [ ] I double-checked the `app.json` file to make sure that the heroku review apps are still inheriting the correct environment variables from staging
 
-- [ ] If I made any UI changes, I've let QA know.
-
 If I need to migrate existing data:
-
 - [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
 - [ ] If there are steps to take outside of `rake db:migrate` for Heroku or other environments, I added copy-pastable instructions to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
 - [ ] I verified the data-migration's results on a copy of production data (complicated migrations should also have real specs)

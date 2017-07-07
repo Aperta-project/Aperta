@@ -3,12 +3,16 @@
         <ul class="nav nav-tabs">
             {{#if instruction_text}}
                 <li>
-                    <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-1'}}"><i class="fa fa-fw fa-info-circle"></i></a>
+                    <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-1'}}">
+                        <i class="fa fa-fw fa-info-circle"></i>
+                    </a>
                 </li>
             {{/if}}
             {{#if show_annotation}}
                 <li>
-                    <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-2'}}"><i class="fa fa-fw fa-edit"></i></a>
+                    <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-2'}}">
+                        <i class="fa fa-fw fa-edit"></i>
+                    </a>
                 </li>
             {{/if}}
         </ul>
@@ -23,7 +27,8 @@
             {{#if show_annotation}}
                 <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
                     <div class="panel-body annotation-text">
-                        {{textarea class="tabbed-textarea" change=(action attrs.annotationChanged) value=annotation}}
+                        {{textarea class="tabbed-textarea" change=(action attrs.annotationChanged)
+                            value=annotation disabled=disabled}}
                     </div>
                 </div>
             {{/if}}

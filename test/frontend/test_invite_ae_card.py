@@ -77,8 +77,8 @@ class InviteAECardTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
     manuscript_title = unicode(manuscript_title,
-                              encoding='utf-8',
-                              errors='strict')
+                               encoding='utf-8',
+                               errors='strict')
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite(academic_editor_login,
                                    mmt,

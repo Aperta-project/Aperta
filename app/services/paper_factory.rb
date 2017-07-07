@@ -2,7 +2,6 @@ class PaperFactory
   attr_reader :paper, :creator
 
   def self.create(paper_params, creator)
-    paper_params[:title] = 'Untitled' if paper_params[:title].blank?
     # number_reviewer_reports is applied for all new papers as of APERTA-7810.
     # it's not exposed to the client.
     paper_params[:number_reviewer_reports] = true
@@ -65,7 +64,8 @@ class PaperFactory
       creator: creator,
       title: task_template.title,
       body: task_template.template,
-      notify: false
+      notify: false,
+      task_template: task_template
     )
     task
   end
@@ -78,7 +78,8 @@ class PaperFactory
       creator: creator,
       card_version: task_template.card.latest_published_card_version,
       title: task_template.title,
-      notify: false
+      notify: false,
+      task_template: task_template
     )
     task
   end

@@ -7,9 +7,8 @@
     <div class="answer">
       {{partial "card-content-component"}}
     </div>
-
     <div class="additionalText">
-      {{#if answer.cardContent.hasAdditionalText}}
+      {{#if answer.cardContent.renderAdditionalText}}
         {{card-content/tabbed-textarea
           annotationChanged=(action 'updateAnnotation')
           show_annotation=answer.cardContent.allowAnnotations

@@ -26,7 +26,8 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
-  hasAdditionalText: Ember.computed.or('allowAnnotations', 'instructionText'),
+  hasInstructionText: Ember.computed.notEmpty('instructionText'),
+  renderAdditionalText: Ember.computed.or('allowAnnotations','hasInstructionText'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),

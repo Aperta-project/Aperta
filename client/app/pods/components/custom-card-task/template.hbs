@@ -1,4 +1,4 @@
 {{partial "task-completed-section"}}
-<div class="custom-card-task {{if hasAdditionalText 'dualColumn' 'singleColumn'}}">
+<div class="custom-card-task {{if renderAdditionalText 'dualColumn' 'singleColumn'}}">
   {{card-content content=contentRoot owner=task disabled=isNotEditable}}
 </div>

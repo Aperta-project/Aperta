@@ -9,7 +9,7 @@ module Typesetter
                :publication_date, :provenance, :special_handling_instructions, :early_article_posting
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
-    attribute :title, key: :paper_title
+    attribute :paper_title
     attribute :abstract, key: :paper_abstract
 
     has_one :competing_interests,
@@ -31,6 +31,14 @@ module Typesetter
 
     def journal_title
       object.journal.name
+    end
+
+    def paper_title
+      without_p_tags(object.title)
+    end
+
+    def short_title
+      without_p_tags(object.short_title)
     end
 
     def publication_date

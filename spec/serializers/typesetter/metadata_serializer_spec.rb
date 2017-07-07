@@ -17,7 +17,7 @@ describe Typesetter::MetadataSerializer do
       :with_academic_editor_user,
       :with_short_title,
       journal: journal,
-      short_title: 'my paper short'
+      short_title: '<p>my paper short</p>'
     )
   end
   let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
@@ -83,6 +83,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:short_title]).to eq('my paper short')
   end
 
+  it 'strips <p> from short_titles' do
+    expect(paper.short_title).to match(/<p>/)
+    expect(output[:short_title]).to eq('my paper short')
+  end
+
   it 'has doi' do
     paper.doi = '1234'
     expect(output[:doi]).to eq('1234')
@@ -117,6 +122,11 @@ describe Typesetter::MetadataSerializer do
 
   it 'has title' do
     paper.title = 'here is the title'
+    expect(output[:paper_title]).to eq('here is the title')
+  end
+
+  it 'strips <p> from title' do
+    paper.title = '<p>here is the title</p>'
     expect(output[:paper_title]).to eq('here is the title')
   end
 

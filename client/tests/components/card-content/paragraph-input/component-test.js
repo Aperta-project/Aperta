@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
+import {getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent(
@@ -31,25 +32,26 @@ test(`it displays unescaped html text in the label`, function(assert) {
   this.render(template);
   assert.elementFound('b.foo');
 });
-test(`it disables the by marking it read-only if disabled=true`, function(assert) {
+test(`it only displays the answer as text disabled=true`, function(assert) {
   this.set('disabled', true);
   this.render(template);
   assert.elementFound('.read-only');
 });
-test(`it displays the value from answer.value`, function(assert) {
-  this.set('answer', {value: 'Bar'});
+test(`it displays the rich text (html formatted) value from answer.value`, function(assert) {
+  this.set('content', {ident: 'rich-text-editor-widget'});
+  this.set('answer', {value: 'an existing answer'});
   this.render(template);
-  assert.textPresent('.format-input', 'Bar');
+  assert.equal(getRichText('rich-text-editor-widget'), '<p>an existing answer</p>');
 });
 test(`it sends 'valueChanged' on keyup`, function(assert) {
   assert.expect(1);
+  this.set('content', {ident: 'rich-text-editor-widget'});
   this.set('answer', {value: 'Old'});
   this.set('actionStub', function(newVal) {
-    assert.equal(newVal, 'New', 'it calls the action with the new value');
+    assert.equal(newVal, '<p>a new value</p>', 'it calls the action with the new value');
   });
   this.render(template);
-  this.$('div[contenteditable]').html('New');
-  this.$('div[contenteditable]').trigger('keyup');
+  setRichText('rich-text-editor-widget', 'a new value');
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];

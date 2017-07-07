@@ -19,14 +19,17 @@ module Typesetter
     end
 
     def without_p_tags(str)
+      return nil if str.nil?
       Loofah.fragment(str).scrub!(REMOVE_P).to_s
     end
 
     def fix_strong_em_tags(str)
+      return nil if str.nil?
       Loofah.fragment(str).scrub!(EM2I).scrub!(STRONG2B).to_s
     end
 
     def strip_tags(str)
+      return nil if str.nil?
       Loofah.fragment(str).text
     end
   end

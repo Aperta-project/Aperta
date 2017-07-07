@@ -27,27 +27,57 @@ describe Typesetter::BaseSerializer do
     end.new
   end
 
+  shared_examples_for "something that handles nil" do
+    let!(:object) do
+      Class.new do
+        def foo
+          nil
+        end
+      end.new
+    end
+
+    it 'return nil' do
+      expect(subject).to be(nil)
+    end
+  end
+
   describe "without_p_tags" do
+    subject { klass.new(object).as_json[:test_without_p_tags] }
+
     it "should remove p tags" do
-      expect(klass.new(object).as_json[:test_without_p_tags]).to eq('<strong>lorem</strong> <em>ipsum</em>')
+      expect(subject).to eq('<strong>lorem</strong> <em>ipsum</em>')
     end
+
+    it_behaves_like "something that handles nil"
   end
 
   describe "fix_strong_em_tags" do
+    subject { klass.new(object).as_json[:test_fix_strong_em_tags] }
+
     it "should replace strong tags with b" do
-      expect(klass.new(object).as_json[:test_fix_strong_em_tags]).to match('<b>lorem</b>')
+      expect(subject).to match('<b>lorem</b>')
     end
+
+    it_behaves_like "something that handles nil"
   end
 
   describe "fix_strong_em_tags" do
+    subject { klass.new(object).as_json[:test_fix_strong_em_tags] }
+
     it "should replace em tags with i" do
-      expect(klass.new(object).as_json[:test_fix_strong_em_tags]).to match('<i>ipsum</i>')
+      expect(subject).to match('<i>ipsum</i>')
     end
+
+    it_behaves_like "something that handles nil"
   end
 
   describe "strip_tags" do
+    subject { klass.new(object).as_json[:test_strip_tags] }
+
     it "should remove all tags" do
-      expect(klass.new(object).as_json[:test_strip_tags]).to match('lorem ipsum')
+      expect(subject).to match('lorem ipsum')
     end
+
+    it_behaves_like "something that handles nil"
   end
 end

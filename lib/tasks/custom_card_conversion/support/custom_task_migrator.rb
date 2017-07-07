@@ -42,6 +42,11 @@ class CustomTaskMigrator
 
   def migrate_tasks(journal_id, new_card_version, card_id)
     # Update types for legacy tasks for current journal
+    # This is sort of a cavalier approach to changing types, working under the
+    # assumption that the legacy class's ruby file will already have been deleted.
+    # We will get an ActiveRecord load error if we ever instantiate the full model,
+    # so we are never assigning the result of our select, but immediately chaining
+    # to an update, so we stay in SQL-land, so Rails won't notice the missing class.
     Task.where(type: legacy_class_name)
       .joins(:paper).where(papers: { journal_id: journal_id })
       .update_all(type: "CustomCardTask", card_version_id: new_card_version)

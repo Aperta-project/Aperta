@@ -164,7 +164,7 @@ class Task < ActiveRecord::Base
 
   def submission_task?
     # TODO: Remove Task.submission_types check in APERTA-9787
-    if self.class.name == 'CustomCardTask' && card_version.present?
+    if self.class.name == 'CustomCardTask'
       card_version.required_for_submission
     else
       Task.submission_types.include?(self.class.name)

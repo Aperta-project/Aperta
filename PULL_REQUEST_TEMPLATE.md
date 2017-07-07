@@ -11,9 +11,9 @@ interaction?  Perhaps a quick recording?
 
 #### Special instructions for Review or PO:
 
-Is there anything out of the ordinariy in how the AC for the ticket needs to be evaluated?
+Is there anything out of the ordinary in how the AC for the ticket needs to be evaluated?
 Does the reviewer have to run a rake task? Is there specific seed data they should use?
-If PO needs specific guidance on how to evaluate this feature it should be here or on the JIRA ticket itself
+If PO needs specific guidance on how to evaluate this feature please add that information to the JIRA ticket itself (add a link here if needed)
 
 #### Notes
 

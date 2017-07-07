@@ -32,5 +32,13 @@ module Typesetter
       return nil if str.nil?
       Loofah.fragment(str).text
     end
+
+    def attributes
+      hash = super
+      hash.each do |k, v|
+        hash[k] = fix_strong_em_tags(v) if v.is_a? String
+      end
+      hash
+    end
   end
 end

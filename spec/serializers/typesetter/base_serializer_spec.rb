@@ -10,7 +10,7 @@ describe Typesetter::BaseSerializer do
       end
 
       def test_fix_strong_em_tags
-        fix_strong_em_tags(object.foo)
+        object.foo
       end
 
       def test_strip_tags
@@ -45,7 +45,7 @@ describe Typesetter::BaseSerializer do
     subject { klass.new(object).as_json[:test_without_p_tags] }
 
     it "should remove p tags" do
-      expect(subject).to eq('<strong>lorem</strong> <em>ipsum</em>')
+      expect(subject).to eq('<b>lorem</b> <i>ipsum</i>')
     end
 
     it_behaves_like "something that handles nil"
@@ -54,7 +54,7 @@ describe Typesetter::BaseSerializer do
   describe "fix_strong_em_tags" do
     subject { klass.new(object).as_json[:test_fix_strong_em_tags] }
 
-    it "should replace strong tags with b" do
+    it "should replace strong tags with b on all attributes" do
       expect(subject).to match('<b>lorem</b>')
     end
 

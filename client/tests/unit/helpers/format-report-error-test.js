@@ -1,6 +1,6 @@
-
 import { formatReportError } from 'tahi/helpers/format-report-error';
 import { module, test } from 'qunit';
+import Ember from 'ember';
 
 module('Unit | Helper | format report error');
 

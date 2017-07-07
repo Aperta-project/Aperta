@@ -15,14 +15,14 @@
         <div class="tab-content ">
             {{#if instruction_text}}
                 <div id="{{concat 'tab-' elementId '-1'}}" class="tab-pane">
-                    <div class="panel-body">
+                    <div class="panel-body instruction-text">
                         {{instruction_text}}
                     </div>
                 </div>
             {{/if}}
             {{#if show_annotation}}
                 <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
-                    <div class="panel-body">
+                    <div class="panel-body annotation-text">
                         {{textarea class="tabbed-textarea" change=(action attrs.annotationChanged) value=annotation}}
                     </div>
                 </div>

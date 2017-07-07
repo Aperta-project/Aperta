@@ -65,6 +65,10 @@ class Author < ActiveRecord::Base
     author_list_item || build_author_list_item
   end
 
+  def creator?
+    user == paper.creator
+  end
+
   def self.for_paper(paper)
     where(paper_id: paper)
   end

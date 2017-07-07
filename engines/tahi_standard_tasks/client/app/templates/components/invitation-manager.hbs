@@ -32,7 +32,7 @@
                         as |user|}}
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
-        <button class="button-secondary button--green invitation-email-entry-button {{if errorMessage "button--disabled"}}"
+        <button class="button-secondary button--green invitation-email-entry-button {{if disableButton "button--disabled"}}"
                 {{action "createInvitation"}}>
           Add to Queue
         </button>

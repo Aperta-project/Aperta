@@ -34,8 +34,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   }),
 
   errorMessage: computed('pendingInvitation.errors.email.firstObject.message', 'errorMessageEmail', function(){
-    var message = this.get('pendingInvitation.errors.email.firstObject.message') || this.get('errorMessageEmail');
-    return message;
+    return (this.get('pendingInvitation.errors.email.firstObject.message') || this.get('errorMessageEmail'));
+  }),
+
+  disableButton: computed('errorMessage', 'selectedUser', function(){
+    return (isEmpty(this.get('selectedUser')) || this.get('errorMessage')) ;
   }),
 
   validations: taskValidations,
@@ -166,7 +169,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     createInvitation() {
-      if (isEmpty(this.get('selectedUser'))) { return; }
+      if (this.get('disableButton')) { return; }
 
       this.get('createInvitation').perform({
         task: this.get('task'),
@@ -177,6 +180,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     // auto-suggest action
     didSelectUser(selectedUser) {
+      this.set('errorMessageEmail', '');
       this.set('selectedUser', selectedUser);
     },
 

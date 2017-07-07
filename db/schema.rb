@@ -659,6 +659,18 @@ ActiveRecord::Schema.define(version: 20170628185715) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "possible_setting_values", force: :cascade do |t|
+    t.integer  "setting_template_id"
+    t.string   "value_type",          default: "string", null: false
+    t.string   "string_value"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -754,6 +766,36 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "setting_templates", force: :cascade do |t|
+    t.string  "key"
+    t.string  "setting_klass"
+    t.string  "setting_name"
+    t.boolean "global"
+    t.integer "journal_id"
+    t.string  "value_type",    default: "string", null: false
+    t.string  "string_value"
+    t.boolean "boolean_value"
+    t.integer "integer_value"
+  end
+
+  add_index "setting_templates", ["key"], name: "index_setting_templates_on_key", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name"
+    t.string   "string_value"
+    t.string   "type"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "value_type",          default: "string", null: false
+    t.integer  "integer_value"
+    t.boolean  "boolean_value"
+    t.integer  "setting_template_id"
+  end
+
+  add_index "settings", ["setting_template_id"], name: "index_settings_on_setting_template_id", using: :btree
 
   create_table "similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_document_id"
@@ -872,22 +914,24 @@ ActiveRecord::Schema.define(version: 20170628185715) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                            null: false
-    t.string   "type",            default: "Task"
-    t.integer  "phase_id",                         null: false
-    t.boolean  "completed",       default: false,  null: false
+    t.string   "title",                             null: false
+    t.string   "type",             default: "Task"
+    t.integer  "phase_id",                          null: false
+    t.boolean  "completed",        default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",            default: [],     null: false
-    t.integer  "position",        default: 0
-    t.integer  "paper_id",                         null: false
+    t.json     "body",             default: [],     null: false
+    t.integer  "position",         default: 0
+    t.integer  "paper_id",                          null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id",                  null: false
+    t.integer  "card_version_id",                   null: false
+    t.integer  "task_template_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["task_template_id"], name: "index_tasks_on_task_template_id", using: :btree
   add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -968,6 +1012,7 @@ ActiveRecord::Schema.define(version: 20170628185715) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "settings", "setting_templates"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

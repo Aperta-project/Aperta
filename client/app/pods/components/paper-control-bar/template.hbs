@@ -84,10 +84,12 @@
     <div>Put stuff here</div>
   {{/if}}
 
-  <div class="control-bar-button" {{action "showActivity" tab}} id="nav-recent-activity">
-    {{partial "svg/heartbeat"}}
-    Recent Activity
-  </div>
+  {{#if (can "view_recent_activity" paper)}}
+    <div class="control-bar-button" {{action "showActivity" tab}} id="nav-recent-activity">
+      {{partial "svg/heartbeat"}}
+      Recent Activity
+    </div>
+  {{/if}}
 
   <div {{action (route-action 'showOrRaiseDiscussions' topicsIndexPath)}} class="control-bar-button" id="nav-discussions">
     {{fa-icon icon="comments"}}

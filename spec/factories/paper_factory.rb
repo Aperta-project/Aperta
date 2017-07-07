@@ -153,6 +153,20 @@ FactoryGirl.define do
       end
     end
 
+    trait(:first_minor_revision) do
+      publishing_state :in_revision
+      after :create do |paper|
+        paper.decisions.create!(verdict: "minor_revision", major_version: 0)
+      end
+    end
+
+    trait(:first_major_revision) do
+      publishing_state :in_revision
+      after :create do |paper|
+        paper.decisions.create!(verdict: "major_revision", major_version: 0)
+      end
+    end
+
     trait(:unsubmitted) do
       # noop
     end
@@ -465,12 +479,16 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
+          file_type: 'docx',
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
-          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx',
+          status: 'done'
         )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]
         paper.save!
+
+        paper.versioned_texts.first.update!(file_type: 'docx')
 
         paper.reload
       end

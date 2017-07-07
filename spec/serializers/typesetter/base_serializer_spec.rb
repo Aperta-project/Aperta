@@ -3,10 +3,14 @@ require 'rails_helper'
 describe Typesetter::BaseSerializer do
   subject(:klass) do
     Class.new(described_class) do
-      attributes :test_without_p_tags, :test_fix_strong_em_tags, :test_strip_tags
+      attributes :test_without_p_tags, :test_fix_strong_em_tags, :test_strip_tags, :test_without_pre_u_tags
 
       def test_without_p_tags
         without_p_tags(object.foo)
+      end
+
+      def test_without_pre_u_tags
+        without_pre_u_tags(object.foo)
       end
 
       def test_fix_strong_em_tags
@@ -22,7 +26,7 @@ describe Typesetter::BaseSerializer do
   let!(:object) do
     Class.new do
       def foo
-        "<p><strong>lorem</strong><p> </p><em>ipsum</em></p>"
+        "<p><pre><strong>lorem</strong></pre><p> </p><u><em>ipsum</em></u></p>"
       end
     end.new
   end
@@ -45,7 +49,17 @@ describe Typesetter::BaseSerializer do
     subject { klass.new(object).as_json[:test_without_p_tags] }
 
     it "should remove p tags" do
-      expect(subject).to eq('<b>lorem</b> <i>ipsum</i>')
+      expect(subject).not_to match(%r{</?p>})
+    end
+
+    it_behaves_like "something that handles nil"
+  end
+
+  describe "without_pre_u_tags" do
+    subject { klass.new(object).as_json[:test_without_pre_u_tags] }
+
+    it "should remove pre and u tags" do
+      expect(subject).not_to match(%r{</?(u|pre)>})
     end
 
     it_behaves_like "something that handles nil"

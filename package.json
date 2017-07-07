@@ -23,7 +23,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "./bin/heroku_install",
-    "clean": "rm -rf client/tmp client/node_modules client/bower_components; npm install"
+    "clean": "rm -rf client/tmp client/node_modules client/bower_components; npm install",
+    "heroku-postbuild": "rm -rf client/ tmp/ node_modules/"
   },
   "repository": {
     "type": "git",

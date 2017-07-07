@@ -1,5 +1,5 @@
 # UniqueEmail checks the author tables for existing email addresses and
-# validates that the new or changed email is not a duplicate of an existing one
+# validates that the new or changed email is not a duplicate.
 module UniqueEmail
   extend ActiveSupport::Concern
 

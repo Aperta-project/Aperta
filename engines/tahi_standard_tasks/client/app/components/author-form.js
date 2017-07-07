@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 import { contributionIdents } from 'tahi/models/author';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
@@ -11,7 +10,7 @@ const {
   isEqual
 } = Ember;
 
-export default Component.extend(ValidationErrorsMixin, {
+export default Component.extend({
   countries: service(),
   store: service(),
   can: service(),

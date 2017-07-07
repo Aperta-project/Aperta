@@ -40,6 +40,8 @@ class Author < ActiveRecord::Base
     format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
       if: :task_completed?
 
+  validate :email, :check_duplicate_email
+
   validates :contributions,
     presence: { message: "one must be selected" }, if: :task_completed?
 

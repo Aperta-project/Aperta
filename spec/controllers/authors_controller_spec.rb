@@ -38,6 +38,19 @@ describe AuthorsController do
     allow(controller).to receive(:current_user).and_return(user)
   end
 
+  describe "duplicate emails per paper are not allowed" do
+    before do
+      allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
+      allow(user).to receive(:can?).with(:administer, paper.journal).and_return(false)
+    end
+
+    it 'duplicate author emails on a paper are not allowed' do
+      expect { post_request  }.to change { Author.count }.by(1)
+      expect { post_request2 }.to change { Author.count }.by(0)
+      # expect response.status == 422
+    end
+  end
+
   describe "when the current user can edit_authors on the paper" do
     before do
       allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)

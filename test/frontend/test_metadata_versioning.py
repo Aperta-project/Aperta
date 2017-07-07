@@ -1,11 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import os
+
 import random
 import time
-
-from selenium.webdriver.common.by import By
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest

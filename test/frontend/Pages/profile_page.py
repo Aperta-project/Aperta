@@ -3,6 +3,7 @@
 import logging
 import os
 import random
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -102,7 +103,6 @@ class ProfilePage(AuthenticatedPage):
     #   However, we are not doing the right thing: APERTA-8338
     self._cas_profile_link = (By.CSS_SELECTOR, 'div.profile-link a')
     self._cas_profile_ptext = (By.CLASS_NAME, 'profile-link')
-
 
   # POM Actions
   def page_ready(self):
@@ -297,7 +297,12 @@ class ProfilePage(AuthenticatedPage):
       # # than you ask for here:
       # logging.info(date_range.text)
       # start_date, end_date = date_range.text.split(' - ')
-      self._get(self._profile_affiliation_email)
+      # The following element is only present if there is a value for the user to wrap in a
+      #   try::except
+      try:
+        self._get(self._profile_affiliation_email)
+      except ElementDoesNotExistAssertionError:
+        logging.info('No affiliation email exists for user {0}'.format(username))
 
   def validate_add_affiliation_validations(self, user):
     """
@@ -439,14 +444,15 @@ class ProfilePage(AuthenticatedPage):
       affiliation_list.append(user['affiliation-country'])
     else:
       rand_country = random.choice(country_list)
-      logging.info('Selected Country for {0} is: {1}'.format(user, rand_country))
+      logging.info(u'Selected Country for {0} is: {1}'.format(user, rand_country))
       for item in page_country_list:
         if item.text == rand_country:
           item.click()
           break
       affiliation_list.append(rand_country)
+    time.sleep(1)
     start_date_field = self._get(self._add_affiliation_start_date_field)
-    start_date_field.click()
+    self.click_covered_element(start_date_field)
     if user['affiliation-from']:
       start_date_field.send_keys(user['affiliation-from'])
       affiliation_list.append(user['affiliation-from'])
@@ -472,7 +478,7 @@ class ProfilePage(AuthenticatedPage):
       affiliation_email_field.send_keys('foo@bar.com')
       affiliation_list.append('foo@bar.com')
     add_aff_done_btn = self._get(self._add_affiliation_done_button)
-    add_aff_done_btn.click()
+    self.click_covered_element(add_aff_done_btn)
     self.check_for_flash_error()
     return affiliation_list
 
@@ -538,7 +544,7 @@ class ProfilePage(AuthenticatedPage):
           aff_email.text == expected_email:
         logging.info('Found Affiliation, Editing...')
         edit = aff.find_element(*self._profile_affiliation_edit)
-        edit.click()
+        self.click_covered_element(edit)
         self._wait_for_element(self._get(self._add_affiliation_form))
         affiliation_list = [expected_inst, ]
         department_field = self._get(self._add_affiliation_department_field)
@@ -571,12 +577,12 @@ class ProfilePage(AuthenticatedPage):
         affiliation_list.append('Nov 16, 2017')
         # WARNING End special warning section
         affiliation_email_field = self._get(self._add_affiliation_email_field)
-        affiliation_email_field.click()
+        self.click_covered_element(affiliation_email_field)
         affiliation_email_field.clear()
         affiliation_email_field.send_keys('foobar@example.com')
         affiliation_list.append('foobar@example.com')
         add_aff_done_btn = self._get(self._add_affiliation_done_button)
-        add_aff_done_btn.click()
+        self.click_covered_element(add_aff_done_btn)
         self.check_for_flash_error()
         return affiliation_list
       else:
@@ -633,7 +639,7 @@ class ProfilePage(AuthenticatedPage):
       institution = aff.find_element(*self._profile_affiliation_institution)
       if institution.text == 'Trump University':
         delete = aff.find_element(*self._profile_affiliation_delete)
-        delete.click()
+        self.click_covered_element(delete)
         if alert_is_present:
           self._driver.switch_to_alert().accept()
           logging.info('Accepted Delete Alert')

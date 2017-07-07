@@ -7,11 +7,6 @@ class BillingLogReport < ActiveRecord::Base
 
   after_create :log_creation
 
-  def self.create_report(from_date: nil)
-    from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
-    BillingLogReport.new(from_date: from_date)
-  end
-
   def log_creation
     logger.info "Billing log created"
   end
@@ -63,14 +58,6 @@ class BillingLogReport < ActiveRecord::Base
                             .map(&:subject)
                             .map!(&:id)
       papers.where.not(id: sent_papers)
-
-      # This behaviour is removed following APERTA-10433. There is a vague
-      # possibility this behaviour is required later. So the code remains
-      # if from_date
-      #   papers.where('accepted_at > ?', from_date)
-      # else
-      #   papers
-      # end
     end
   end
 

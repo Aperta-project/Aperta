@@ -10,7 +10,8 @@ describe BillingLogReport do
       task_params: {
         title: "Billing",
         type: "PlosBilling::BillingTask",
-        completed: true }
+        completed: true
+      }
     )
   end
 
@@ -30,36 +31,6 @@ describe BillingLogReport do
     BillingLogReport.logger = logger
   end
 
-  context '.create_report' do
-    context 'has from_date parameter' do
-      it 'returns new BillingLogReport with given from date' do
-        from_date = Date.new(2016, 1, 1)
-        report = BillingLogReport.create_report(from_date: from_date)
-
-        expect(report).to be_an_instance_of(BillingLogReport)
-        expect(report.from_date).to eq(from_date)
-      end
-    end
-
-    context 'not given from_date' do
-      it 'returns new BillingLogReport with nil from_date' do
-        report = BillingLogReport.create_report
-
-        expect(report).to be_an_instance_of(BillingLogReport)
-        expect(report.from_date).to be_nil
-      end
-
-      it 'returns new BillingLogReport data of last BillingLogReport' do
-        existing_report = FactoryGirl.create(:billing_log_report)
-        report = BillingLogReport.create_report
-
-        expect(report).to be_an_instance_of(BillingLogReport)
-        expect(report.from_date.to_s).to \
-          eq(existing_report.created_at.strftime('%F'))
-      end
-    end
-  end
-
   context '#save_and_send_to_s3!' do
     let(:report) { BillingLogReport.new }
     let(:csv_data) { CSV.read(report.csv) }
@@ -69,7 +40,8 @@ describe BillingLogReport do
       let(:csv_headers) do
         [
           'ned_id', 'corresponding_author_ned_id',
-          'corresponding_author_ned_email', 'title', 'journal']
+          'corresponding_author_ned_email', 'title', 'journal'
+        ]
       end
 
       before { report.save_and_send_to_s3! }
@@ -145,18 +117,6 @@ describe BillingLogReport do
       accepted_paper_with_completed_billing
       expect(BillingLogReport.new.papers_to_process).not_to include(sent_paper)
     end
-
-    # This behaviour is removed following APERTA-10433. There is a vague
-    # possibility this behaviour is required later. So the code remains
-    # context 'with a from_date' do
-    #   it 'returns all accepted papers whose accepted_at is after from_date, and have a completed billing task' do
-    #     today = Time.zone.today
-    #     accepted_paper_with_completed_billing
-    #     new_paper = accepted_paper_with_completed_billing(accepted_date: today)
-    #     report = BillingLogReport.new(from_date: today - 1.day)
-    #     expect(report.papers_to_process).to eq([new_paper])
-    #   end
-    # end
   end
 
   context 'on create create' do

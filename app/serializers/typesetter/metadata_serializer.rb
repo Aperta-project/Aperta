@@ -34,11 +34,11 @@ module Typesetter
     end
 
     def paper_title
-      without_p_tags(object.title)
+      title_clean(object.title)
     end
 
     def short_title
-      without_p_tags(object.short_title)
+      title_clean(object.short_title)
     end
 
     def publication_date

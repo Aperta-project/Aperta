@@ -3,14 +3,10 @@ require 'rails_helper'
 describe Typesetter::BaseSerializer do
   subject(:klass) do
     Class.new(described_class) do
-      attributes :test_without_p_tags, :test_fix_strong_em_tags, :test_strip_tags, :test_without_pre_u_tags
+      attributes :test_title_clean, :test_fix_strong_em_tags, :test_strip_tags
 
-      def test_without_p_tags
-        without_p_tags(object.foo)
-      end
-
-      def test_without_pre_u_tags
-        without_pre_u_tags(object.foo)
+      def test_title_clean
+        title_clean(object.foo)
       end
 
       def test_fix_strong_em_tags
@@ -45,21 +41,23 @@ describe Typesetter::BaseSerializer do
     end
   end
 
-  describe "without_p_tags" do
-    subject { klass.new(object).as_json[:test_without_p_tags] }
+  describe "title_clean" do
+    subject { klass.new(object).as_json[:test_title_clean] }
 
     it "should remove p tags" do
       expect(subject).not_to match(%r{</?p>})
     end
 
-    it_behaves_like "something that handles nil"
-  end
+    it "should remove u tags" do
+      expect(subject).not_to match(%r{</?u>})
+    end
 
-  describe "without_pre_u_tags" do
-    subject { klass.new(object).as_json[:test_without_pre_u_tags] }
+    it "should remove pre tags" do
+      expect(subject).not_to match(%r{</?u>})
+    end
 
-    it "should remove pre and u tags" do
-      expect(subject).not_to match(%r{</?(u|pre)>})
+    it "should remove span tags" do
+      expect(subject).not_to match(%r{</?span>})
     end
 
     it_behaves_like "something that handles nil"

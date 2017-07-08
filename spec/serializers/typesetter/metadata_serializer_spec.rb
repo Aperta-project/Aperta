@@ -17,7 +17,7 @@ describe Typesetter::MetadataSerializer do
       :with_academic_editor_user,
       :with_short_title,
       journal: journal,
-      short_title: '<p>my paper short</p>'
+      short_title: '<p>my <pre><span>paper</span></pre> <u><span style="omg: so-much-garbage\">short</span></u></p>'
     )
   end
   let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
@@ -83,7 +83,7 @@ describe Typesetter::MetadataSerializer do
     expect(output[:short_title]).to eq('my paper short')
   end
 
-  it 'strips <p> from short_titles' do
+  it 'strips base stuff from short_titles' do
     expect(paper.short_title).to match(/<p>/)
     expect(output[:short_title]).to eq('my paper short')
   end
@@ -125,8 +125,8 @@ describe Typesetter::MetadataSerializer do
     expect(output[:paper_title]).to eq('here is the title')
   end
 
-  it 'strips <p> from title' do
-    paper.title = '<p>here is the title</p>'
+  it 'strips bad stuff from title' do
+    paper.title = '<p><span>here</span> <u>is</u> <pre>the</pre> title</p>'
     expect(output[:paper_title]).to eq('here is the title')
   end
 

@@ -12,9 +12,7 @@ module Typesetter
       end
     end
 
-    REMOVE_P = make_stripper("p")
-
-    REMOVE_U_PRE = make_stripper("u", "pre")
+    TITLE_CLEAN = make_stripper("p", "span", "pre", "u")
 
     EM2I = Loofah::Scrubber.new do |node|
       node.name = "i" if node.name == "em"
@@ -24,18 +22,9 @@ module Typesetter
       node.name = "b" if node.name == "strong"
     end
 
-    STRONRE = Loofah::Scrubber.new do |node|
-      node.name = "b" if node.name == "strong"
-    end
-
-    def without_p_tags(str)
+    def title_clean(str)
       return nil if str.nil?
-      Loofah.fragment(str).scrub!(REMOVE_P).to_s
-    end
-
-    def without_pre_u_tags(str)
-      return nil if str.nil?
-      Loofah.fragment(str).scrub!(REMOVE_U_PRE).to_s
+      Loofah.fragment(str).scrub!(TITLE_CLEAN).to_s
     end
 
     def fix_strong_em_tags(str)

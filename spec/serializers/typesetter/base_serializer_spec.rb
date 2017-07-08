@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Typesetter::BaseSerializer do
+  let!(:object) { double }
+
   subject(:klass) do
     Class.new(described_class) do
       attributes :test_title_clean, :test_fix_strong_em_tags, :test_strip_tags
@@ -19,21 +21,15 @@ describe Typesetter::BaseSerializer do
     end
   end
 
-  let!(:object) do
-    Class.new do
-      def foo
-        "<p><pre><strong>lorem</strong></pre><p> </p><u><em>ipsum</em></u></p>"
-      end
-    end.new
+  before do
+    allow(object).to receive(:foo).and_return(
+      "<p><pre><strong>lorem</strong></pre><p> </p><u><em>ipsum</em></u></p>"
+    )
   end
 
   shared_examples_for "something that handles nil" do
-    let!(:object) do
-      Class.new do
-        def foo
-          nil
-        end
-      end.new
+    before do
+      allow(object).to receive(:foo).and_return(nil)
     end
 
     it 'return nil' do

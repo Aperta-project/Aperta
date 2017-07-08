@@ -206,7 +206,7 @@ describe Typesetter::MetadataSerializer do
     context "the paper has a related article to be sent to apex" do
       let!(:included_article) do
         FactoryGirl.create(:related_article,
-                           linked_title: "Sendable",
+                           linked_title: "<a><b>Sendable</b></a>",
                            linked_doi: "some.doi",
                            paper: paper,
                            send_link_to_apex: true)

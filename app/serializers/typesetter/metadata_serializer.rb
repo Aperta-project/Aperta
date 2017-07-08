@@ -6,10 +6,10 @@ module Typesetter
     validates :paper_is_accepted?, presence: true
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date, :provenance, :special_handling_instructions, :early_article_posting
+               :publication_date, :provenance, :special_handling_instructions,
+               :early_article_posting, :paper_title
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
-    attribute :paper_title
     attribute :abstract, key: :paper_abstract
 
     has_one :competing_interests,

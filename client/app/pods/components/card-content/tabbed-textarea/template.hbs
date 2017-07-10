@@ -1,14 +1,14 @@
 <div class="aside">
   <div class="tabs-right">
     <ul class="nav nav-tabs">
-      {{#if instruction_text}}
+      {{#if instructionText}}
       <li>
         <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-1'}}">
           <i class="fa fa-fw fa-info-circle"></i>
         </a>
       </li>
       {{/if}}
-      {{#if show_annotation}}
+      {{#if showAnnotation}}
       <li>
         <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-2'}}">
           <i class="fa fa-fw fa-edit"></i>
@@ -17,14 +17,14 @@
       {{/if}}
     </ul>
     <div class="tab-content ">
-      {{#if instruction_text}}
+      {{#if instructionText}}
       <div id="{{concat 'tab-' elementId '-1'}}" class="tab-pane">
         <div class="panel-body instruction-text">
-          {{instruction_text}}
+          {{instructionText}}
         </div>
       </div>
       {{/if}}
-      {{#if show_annotation}}
+      {{#if showAnnotation}}
       <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
         <div class="panel-body annotation-text">
           {{textarea class="tabbed-textarea" change=(action attrs.annotationChanged)

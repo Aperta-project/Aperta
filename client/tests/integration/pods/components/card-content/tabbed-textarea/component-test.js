@@ -16,7 +16,7 @@ moduleForComponent(
 
 let annotationTemplate = hbs`{{card-content/tabbed-textarea
           annotationChanged=(action actionStub)
-          show_annotation=true
+          showAnnotation=true
           annotation='annotation test'}}`;
 
 test(`it can render annotation text alone`, function(assert) {
@@ -27,8 +27,8 @@ test(`it can render annotation text alone`, function(assert) {
 
 let instructionTemplate = hbs`{{card-content/tabbed-textarea
           annotationChanged=(action actionStub)
-          show_annotation=false
-          instruction_text='instruction test'}}`;
+          showAnnotation=false
+          instructionText='instruction test'}}`;
 
 test(`it can render instruction text alone`, function(assert) {
   this.render(instructionTemplate);
@@ -38,9 +38,9 @@ test(`it can render instruction text alone`, function(assert) {
 
 let combinedTemplate = hbs`{{card-content/tabbed-textarea
           annotationChanged=(action actionStub)
-          show_annotation=true
+          showAnnotation=true
           annotation='annotation test'
-          instruction_text='instruction test'}}`;
+          instructionText='instruction test'}}`;
 
 test(`it can render cobined text together`, function(assert) {
   this.render(combinedTemplate);

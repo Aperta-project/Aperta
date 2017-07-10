@@ -11,9 +11,9 @@
       {{#if answer.cardContent.renderAdditionalText}}
         {{card-content/tabbed-textarea
         annotationChanged=(action 'updateAnnotation')
-        show_annotation=answer.cardContent.allowAnnotations
+        showAnnotation=answer.cardContent.allowAnnotations
         annotation=answer.annotation
-        instruction_text=answer.cardContent.instructionText
+        instructionText=answer.cardContent.instructionText
         disabled=disabled}}
       {{/if}}
     </div>

@@ -29,9 +29,9 @@ describe TahiStandardTasks::ApexDeliveriesController do
 
     it "saves the destination on the apex delivery" do
       do_request
+      expect(response.status).to eq(200)
       expect(res_body['apex_delivery']['destination']).to eq('apex')
     end
-
   end
 
   context "the current user can't send to apex" do

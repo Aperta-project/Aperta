@@ -1,10 +1,11 @@
 # Service class that automates similarity checks
 class AutomatedSimilarityCheck
-  attr_reader :paper, :previous_paper_state
+  attr_reader :task, :paper, :previous_paper_state
 
-  def initialize(paper, previous_paper_state)
+  def initialize(task, paper)
+    @task = task
     @paper = paper
-    @previous_paper_state = previous_paper_state
+    @previous_paper_state = paper.aasm.from_state.to_s
   end
 
   # I could use a hash of procs for this, but folks will probably
@@ -25,19 +26,23 @@ class AutomatedSimilarityCheck
   end
 
   def setting_value
+    # this gets called by `should_run?` and in the Rails.logger call, so
+    # memoizing it won't hurt
     @setting_value ||=
       begin
-        # does the paper have a similarity check task?
-        check_task = paper.tasks.find_by(
-          type: "TahiStandardTasks::SimilarityCheckTask"
-        )
-
-        return 'off' unless check_task && check_task.task_template
-        check_task.task_template.setting('ithenticate_automation').value
+        return 'off' unless task.task_template
+        # task_template.setting() will either find or create the ithenticate
+        # automation setting in the db.
+        task.task_template.setting('ithenticate_automation').value
       end
   end
 
   def run
+    Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
+    Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
+    Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
+    Rails.logger.info "AutomatedSimilarityCheck: is this the first revision? #{first_revision?}"
+    Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
         versioned_text: paper.latest_submitted_version

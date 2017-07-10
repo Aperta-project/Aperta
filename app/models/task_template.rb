@@ -15,7 +15,8 @@ class TaskTemplate < ActiveRecord::Base
 
   acts_as_list scope: :phase_template
 
-  def registered_settings_key
+  # setting_template_key is defined in Configurable
+  def setting_template_key
     if journal_task_type
       "TaskTemplate:#{journal_task_type.kind}"
     else

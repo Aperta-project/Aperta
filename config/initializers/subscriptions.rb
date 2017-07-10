@@ -10,13 +10,11 @@ Subscriptions.configure do
   add 'paper:submitted', \
       Paper::Submitted::EmailCreator,
       Paper::Submitted::SnapshotPaper,
-      Paper::Submitted::EmailCoauthors,
-      Paper::Submitted::AutomatedSimilarityCheck
+      Paper::Submitted::EmailCoauthors
 
   add 'paper:initially_submitted', \
       Paper::Submitted::SnapshotPaper,
-      Paper::Submitted::EmailCreator,
-      Paper::Submitted::AutomatedSimilarityCheck
+      Paper::Submitted::EmailCreator
 
   add 'paper:updated', \
       Paper::Updated::MarkTitleAndAbstractIncomplete

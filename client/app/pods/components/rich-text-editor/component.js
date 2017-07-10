@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
-const basicPlugins     = '';
-const basicToolbar     = 'bold italic underline | subscript superscript | undo redo';
+const basicPlugins     = 'codesample paste';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
 const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
-const expandedPlugins  = ' code codesample link table';
-const expandedToolbar  = ' | bullist numlist | table link | codesample code | formatselect';
+const expandedPlugins  = ' link table';
+const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
-const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Code=pre';
+const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
 /* some tinymce options are snake_case */
 /* eslint-disable camelcase */
@@ -25,7 +25,12 @@ export default Ember.Component.extend({
       font-family: "Source Sans Pro", "source-sans-pro", helvetica, sans-serif;
       font-size: 14px;
       line-height: 20px;
-    }`,
+    }
+
+    .mce-content-body p {
+      margin: 0 0 10px 0;
+    }
+  `,
 
   editorStyle: 'expanded',
 
@@ -48,9 +53,21 @@ export default Ember.Component.extend({
 
 /* eslint-enable camelcase */
 
+  stripTitles() {
+    let editors = window.tinymce.editors;
+    for (let id of Object.keys(editors)) {
+      let editor = editors[id];
+      if (editor) {
+        let ifr = window.tinymce.DOM.get(id + '_ifr');
+        editor.dom.setAttrib(ifr, 'title', '');
+      }
+    }
+  },
+
   configureCommon(hash) {
     hash['menubar'] = false;
     hash['content_style'] = this.get('bodyCSS');
+    Ember.run.schedule('afterRender', this.stripTitles);
     return hash;
   },
 

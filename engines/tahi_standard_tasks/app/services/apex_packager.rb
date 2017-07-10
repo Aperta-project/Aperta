@@ -3,7 +3,7 @@ class ApexPackager
   class ApexPackagerError < StandardError
   end
 
-  METADATA_FILENAME = 'metadata.json'.freeze
+  METADATA_FILENAME = 'metadata.json'
 
   def self.create_zip(paper)
     packager = new(paper)
@@ -25,7 +25,6 @@ class ApexPackager
         add_metadata(package)
         add_manuscript(package)
         add_sourcefile_if_needed(package)
-        add_generated_pdf(package)
       end
     end
   end
@@ -44,7 +43,7 @@ class ApexPackager
   end
 
   def add_sourcefile_if_needed(package)
-    if @paper.file_type == 'pdf' && @paper.sourcefile
+    if @paper.file_type == 'pdf'
       url = @paper.sourcefile.url
       add_file_to_package package,
         source_filename,
@@ -116,17 +115,5 @@ class ApexPackager
     package.put_next_entry(filename)
     package.write(file_contents)
     manifest.add_file(filename)
-  end
-
-  def add_generated_pdf(package)
-    package.put_next_entry(converter.output_filename)
-    package.write(converter.output_data)
-    manifest.add_file(converter.output_filename)
-  end
-
-  def converter
-    @converter ||= PaperConverters::PaperConverter.make(@paper.latest_version,
-                                                        'generated-pdf',
-                                                          nil)
   end
 end

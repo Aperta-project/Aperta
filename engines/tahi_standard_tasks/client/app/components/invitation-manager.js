@@ -33,8 +33,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
   }),
 
-  errorMessage: computed('pendingInvitation.errors.email.firstObject.message', 'errorMessageEmail', function(){
-    return (this.get('pendingInvitation.errors.email.firstObject.message') || this.get('errorMessageEmail'));
+  errorMessage: computed('pendingInvitation.errors.email.firstObject.message', 'emailErrorMessage', function(){
+    return (this.get('pendingInvitation.errors.email.firstObject.message') || this.get('emailErrorMessage'));
   }),
 
   disableButton: computed('errorMessage', 'selectedUser', function(){
@@ -44,12 +44,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   validations: taskValidations,
 
   validateData() {
-    this.set('errorMessageEmail', '');
+    this.set('emailErrorMessage', '');
 
     this.validate('userEmail', this.get('selectedUser.email'));
     const taskErrors = this.validationErrorsPresent();
     if(taskErrors) {
-      this.set('errorMessageEmail', 'Please enter a valid email address');
+      this.set('emailErrorMessage', 'Please enter a valid email address');
     }
 
     return !taskErrors;
@@ -180,7 +180,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     // auto-suggest action
     didSelectUser(selectedUser) {
-      this.set('errorMessageEmail', '');
+      this.set('emailErrorMessage', '');
       this.set('selectedUser', selectedUser);
     },
 

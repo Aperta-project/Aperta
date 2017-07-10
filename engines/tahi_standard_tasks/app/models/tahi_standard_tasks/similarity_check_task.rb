@@ -9,5 +9,9 @@ module TahiStandardTasks
     def active_model_serializer
       TahiStandardTasks::SimilarityCheckTaskSerializer
     end
+
+    def after_paper_submitted(paper)
+      AutomatedSimilarityCheck.new(self, paper).run
+    end
   end
 end

@@ -11,18 +11,7 @@ class CardVersionsController < ApplicationController
   respond_to :json
 
   def show
-    # If called from the author's manuscript sidebar, this request won't come
-    # with a task ID. Instead we need to verify that the user owns any task
-    # assigned to this card version.
-    task = Task.joins(:paper).find_by(
-      papers: { user_id: current_user.id },
-      tasks: { card_version_id: params[:id] }
-    )
-    if task.present?
-      requires_user_can(:view, task)
-    else
-      requires_user_can(:view, card_version)
-    end
+    requires_user_can(:view, card_version)
     respond_with card_version
   end
 

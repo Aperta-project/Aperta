@@ -27,7 +27,7 @@
       {{#if showAnnotation}}
       <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
         <div class="panel-body annotation-text">
-          {{textarea class="tabbed-textarea" change=(action attrs.annotationChanged)
+          {{textarea class="tabbed-textarea" input=(action attrs.annotationChanged)
           value=annotation disabled=disabled}}
         </div>
       </div>

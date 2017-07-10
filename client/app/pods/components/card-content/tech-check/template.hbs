@@ -1,0 +1,8 @@
+<div class="task-main-content">
+  <p class="content-text">{{{content.text}}}</p>
+  {{card-content/toggle-switch content=content
+                  labelText='Pass'
+                  disabled=disabled
+                  answer=answer
+                  valueChanged=(action 'saveAnswer')}}
+</div>

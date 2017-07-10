@@ -1,16 +1,13 @@
 # This module contains custom cast types that don't fit within
-# the base stuff we get from ActiveRecord.  We use this
-# see https://tinyurl.com/zurd3ek for details.
+# the base stuff we get from ActiveRecord.
 module CustomCastTypes
-  # This returns a sanitized HTML string appropriate for
-  # client-side consumption
+  # This returns a sanitized HTML string to be stored in the database.
   class HtmlString < ActiveRecord::Type::String
     include ActionView::Helpers::SanitizeHelper
 
-    def cast_value(value)
-      # This should be replace with something more useful
-      # in APERTA-8656
-      value
+    def type_cast_for_database(value)
+      scrubber = HtmlScrubber.new
+      sanitize(value, scrubber: scrubber)
     end
   end
 end

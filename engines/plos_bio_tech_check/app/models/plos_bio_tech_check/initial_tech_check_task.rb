@@ -22,6 +22,7 @@ module PlosBioTechCheck
     end
 
     def letter_text=(text)
+      text = HtmlScrubber.standalone_scrub!(text)
       self.body = body.merge("initialTechCheckBody" => text)
     end
 

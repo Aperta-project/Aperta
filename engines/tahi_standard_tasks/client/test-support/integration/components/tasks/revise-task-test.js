@@ -4,6 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { manualSetup, make } from 'ember-data-factory-guy';
 import Factory from '../../../helpers/factory';
 import wait from 'ember-test-helpers/wait';
+import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
   'revise-task',
@@ -57,8 +58,9 @@ let createInvalidTask = function() {
 let template = hbs`{{revise-task task=testTask}}`;
 
 test('it renders information regarding the latest decision', function(assert) {
+  let text = 'The changes have been made';
   let testTask = createTaskWithDecision({
-    'authorResponse': 'The changes have been made',
+    'authorResponse': text,
     'majorVersion': '1',
     'minorVersion': '2',
     'createdAt': new Date('November 29, 2016'),
@@ -74,7 +76,8 @@ test('it renders information regarding the latest decision', function(assert) {
     assert.textPresent('.revise-manuscript-task .decision .revision-number', '1.2', 'revision number was displayed');
     assert.textPresent('.revise-manuscript-task .decision .letter', 'This is my letter', 'letter was displayed');
     assert.textPresent('.revise-manuscript-task .decision .created-at', 'November 29, 2016', 'createdAt date was displayed');
-    assert.textPresent('.revise-manuscript-task .author-response', 'The changes have been made', 'author response was displayed');
+    let response = getRichText('revise-overlay-response-field');
+    assert.equal(response, `<p>${text}</p>`, 'author response was displayed');
     done();
   });
 });

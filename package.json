@@ -7,9 +7,14 @@
     "node": "4.5.0"
   },
   "//": "We keep our ember app in client/",
-  "cacheDirectories": ["client/node_modules", "client/bower_components", "node_modules"],
+  "cacheDirectories": [
+    "client/node_modules",
+    "client/bower_components",
+    "node_modules"
+  ],
   "dependencies": {
-    "bower": "^1.7.7"
+    "bower": "^1.7.7",
+    "ember-cli-tinymce": "^0.1.6"
   },
   "directories": {
     "doc": "doc",

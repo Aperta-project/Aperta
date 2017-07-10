@@ -37,6 +37,7 @@ gem 'fog', '~> 1.36.0'
 gem 'gepub', '~> 0.7.0beta1'
 gem 'health_check'
 gem 'kaminari'
+gem 'liquid'
 gem 'lograge'
 gem 'mail_safe', require: false
 gem 'migration_data'
@@ -77,6 +78,7 @@ gem 'tiny_tds'
 gem 'twitter-text'
 gem 'unf'
 gem 'whenever'
+gem 'tinymce-rails'
 
 # We need any version of yaml_db after 0.3.0 since it will
 # namespace SerializationHelper

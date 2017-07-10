@@ -100,7 +100,7 @@ describe UserMailer, redis: true do
     let(:reply) { FactoryGirl.create(:discussion_reply) }
     let(:email) { UserMailer.notify_mention_in_discussion(user.id, topic.id, reply.id) }
 
-    let(:sanitized_body) { 'hi foo <a class="discussion-at-mention" data-user-id="200" title="Steve Zissou">@steve</a>' }
+    let(:sanitized_body) { 'hi foo <a title="Steve Zissou">@steve</a>' }
 
     it 'uses the sanitized body from the reply and marks it as html_safe' do
       allow(DiscussionReply).to receive(:find).and_return reply

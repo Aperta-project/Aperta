@@ -80,6 +80,10 @@ export default TaskComponent.extend({
       this.get('cancelUpload').perform(attachment);
     },
 
+    saveAuthorContent(contents) {
+      this.set('latestRegisteredDecision.authorResponse', contents);
+    },
+
     saveAuthorResponse() {
       this.validateData();
       if(this.validationErrorsPresent()) { return; }

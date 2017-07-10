@@ -240,12 +240,12 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
-    ember-cli-rails (0.7.1)
+    ember-cli-rails (0.8.4)
       cocaine (~> 0.5.8)
-      ember-cli-rails-assets (>= 0.6.1)
+      ember-cli-rails-assets (~> 0.6.2)
       html_page (~> 0.1.0)
-      railties (>= 3.2, < 5)
-    ember-cli-rails-assets (0.6.1)
+      railties (>= 3.2)
+    ember-cli-rails-assets (0.6.2)
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     erubis (2.7.0)
@@ -417,6 +417,7 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.4.3)
       addressable (~> 2.3)
+    liquid (4.0.0)
     lograge (0.3.4)
       actionpack (>= 3)
       activesupport (>= 3)
@@ -696,6 +697,8 @@ GEM
       hitimes
     tiny_tds (0.7.0)
       mini_portile (= 0.6.2)
+    tinymce-rails (4.6.4)
+      railties (>= 3.1.1)
     trollop (2.1.2)
     twitter-text (1.13.0)
       unf (~> 0.1.0)
@@ -772,6 +775,7 @@ DEPENDENCIES
   health_check
   heroku-deflater
   kaminari
+  liquid
   lograge
   mail_safe
   migration_comments
@@ -837,6 +841,7 @@ DEPENDENCIES
   timecop
   timeliness
   tiny_tds
+  tinymce-rails
   twitter-text
   unf
   vcr
@@ -848,4 +853,4 @@ RUBY VERSION
    ruby 2.2.4p230
 
 BUNDLED WITH
-   1.15.0
+   1.15.1

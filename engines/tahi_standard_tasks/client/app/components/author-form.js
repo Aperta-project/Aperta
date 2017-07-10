@@ -139,8 +139,8 @@ export default Component.extend({
       this.get('saveSuccess')();
     })
     .catch(response => {
-      // console.log('>>>', response)
-      this.displayValidationErrorsFromResponse(response);
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
     });
   },
 
@@ -158,8 +158,8 @@ export default Component.extend({
       this.get('saveSuccess')();
     })
     .catch(response => {
-      // console.log('>>>', response)
-      this.displayValidationErrorsFromResponse(response);
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
     });
   },
 

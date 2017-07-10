@@ -6,6 +6,6 @@ class TaskTemplateSerializer < ActiveModel::Serializer
   has_one :journal_task_type, embed: :id, include: true
 
   def settings_enabled
-    object.registered_settings.present?
+    object.setting_templates.present?
   end
 end

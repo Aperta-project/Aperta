@@ -134,14 +134,20 @@ export default Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save().then(() => {
+    this.get('author').save()
+    .then(() => {
       this.get('saveSuccess')();
+    })
+    .catch(response => {
+      // console.log('>>>', response)
+      this.displayValidationErrorsFromResponse(response);
     });
   },
 
   saveNewAuthor() {
     const author = this.get('author');
-    author.save().then(savedAuthor => {
+    author.save()
+    .then(savedAuthor => {
       author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
         const value = answer.get('value');
         if(value || value === false){
@@ -149,8 +155,11 @@ export default Component.extend({
           answer.save();
         }
       });
-
       this.get('saveSuccess')();
+    })
+    .catch(response => {
+      // console.log('>>>', response)
+      this.displayValidationErrorsFromResponse(response);
     });
   },
 

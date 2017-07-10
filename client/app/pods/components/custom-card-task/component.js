@@ -4,7 +4,7 @@ import Ember from 'ember';
 export default TaskComponent.extend({
   contentRoot: Ember.computed.alias('task.cardVersion.contentRoot'),
 
-  renderAdditionalText: Ember.computed('task.nestedQuestions.[]', function() {
+  renderAdditionalText: Ember.computed('task.cardVersion.contentRoot.unsortedChildren.[]', function() {
     let cardContents = this.get('task.cardVersion.contentRoot.unsortedChildren');
     return cardContents.any((cardContent) => {
       return cardContent.get('renderAdditionalText');

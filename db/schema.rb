@@ -50,16 +50,6 @@ ActiveRecord::Schema.define(version: 20170705103433) do
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
-  create_table "annotations", force: :cascade do |t|
-    t.string   "contents"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "annotations", ["owner_type", "owner_id"], name: "index_annotations_on_owner_type_and_owner_id", using: :btree
-
   create_table "answers", force: :cascade do |t|
     t.integer  "card_content_id"
     t.integer  "owner_id"

@@ -1,10 +1,13 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import customAssertions from 'tahi/tests/helpers/custom-assertions';
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import sinon from 'sinon';
 
 moduleForComponent('left-drawer/drawer', 'Integration | Component | left drawer | drawer', {
-  integration: true
+  integration: true,
+  beforeEach() {
+    registerCustomAssertions();
+  }
 });
 
 test('it renders its contents in a classy div', function(assert) {

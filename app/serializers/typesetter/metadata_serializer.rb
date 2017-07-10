@@ -29,7 +29,7 @@ module Typesetter
     has_many :related_articles,
              serializer: Typesetter::RelatedArticleSerializer
 
-    attribute :custom_task_fields
+    attribute :custom_card_fields
 
     def journal_title
       object.journal.name
@@ -75,7 +75,7 @@ module Typesetter
       task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
     end
 
-    def custom_task_fields
+    def custom_card_fields
       custom_tasks_questions_answers
     end
 

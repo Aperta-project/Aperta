@@ -2,9 +2,6 @@ module Typesetter
   # Serializes a paper's metadata for the typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
-    include ActiveModel::Validations
-    validates :paper_is_accepted?, presence: true
-
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions, :early_article_posting
     attribute :first_submitted_at, key: :received_date
@@ -71,17 +68,6 @@ module Typesetter
 
     def early_article_posting
       task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
-    end
-
-    def serializable_hash
-      fail Typesetter::MetadataError.not_accepted unless valid?
-      super
-    end
-
-    private
-
-    def paper_is_accepted?
-      object.accepted?
     end
   end
 end

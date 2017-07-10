@@ -22,6 +22,8 @@ module TahiStandardTasks
       in: %w(apex em preprint)
     }
 
+    validate :paper_is_accepted
+
     aasm column: :state do
       # It's 'pending' before the job has been started by a worker
       state :pending, initial: true
@@ -55,6 +57,13 @@ module TahiStandardTasks
 
     def save_error(message)
       self.error_message = message
+    end
+
+    def paper_is_accepted
+      return if paper.accepted?
+      if (destination == 'apex') || (destination == 'em')
+        errors.add(:paper, "must be accepted in order to send to APEX or EM")
+      end
     end
   end
 end

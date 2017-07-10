@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import customAssertions from 'tahi/tests/helpers/custom-assertions';
 
 moduleForComponent('admin-page/workflow-catalogue',
   'Integration | Component | Admin Page | Workflow Catalogue', {

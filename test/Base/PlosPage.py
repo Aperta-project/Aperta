@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import json
@@ -34,7 +34,8 @@ class PlosPage(object):
   Model an abstract base Journal page.
   """
   PROD_URL = ''
-  logging.basicConfig(format='%(levelname)-s %(message)s [%(filename)s:%(lineno)d]', level=logging.INFO)
+  logging.basicConfig(format='%(levelname)-s %(message)s [%(filename)s:%(lineno)d]',
+                      level=logging.INFO)
 
   def __init__(self, driver, urlSuffix=''):
     # Internal WebDriver-related protected members
@@ -51,8 +52,8 @@ class PlosPage(object):
         self._driver.get(base_url)
         self._driver.navigated = True
       except TimeoutException as toe:
-        print '\t[WebDriver Error] WebDriver timed out while trying to load the requested ' \
-              'web page "{0}".'.format(base_url)
+        logging.info('\t[WebDriver Error] WebDriver timed out while trying to load the requested ' \
+              'web page "{0}".'.format(base_url))
         raise toe
 
     # Internal private member
@@ -81,29 +82,29 @@ class PlosPage(object):
     try:
       return self._wait.until(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
-            'by {0}.'.format(locator)
+      logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
+            'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
   def _gets(self, locator):
     try:
       return self._wait.until(expected_conditions.presence_of_all_elements_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] WebDriver timed out while trying to identify elements ' \
-            'by {0}.'.format(locator)
+      logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify elements ' \
+            'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
   def _iget(self, locator):
     """
-    Unlike the regular _get() function, this one will be successful for elements with a width and or height of zero
-    stupid name, but suggesting 'i' for invisible as a zero width/height element.
+    Unlike the regular _get() function, this one will be successful for elements with a width and
+    or height of zero; stupid name, but suggesting 'i' for invisible as a zero width/height element.
     :param locator: locator
     """
     try:
       return self._wait.until(expected_conditions.presence_of_element_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
-            'by {0}.'.format(locator)
+      logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
+            'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
   def _check_for_invisible_element(self, locator):
@@ -115,8 +116,8 @@ class PlosPage(object):
     try:
       return self._wait.until(expected_conditions.invisibility_of_element_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] WebDriver timed out while trying to look for hidden element by ' \
-            '{0}.'.format(locator)
+      logging.info('\t[WebDriver Error] WebDriver timed out while trying to look for hidden '
+                   'element by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
   def _check_for_invisible_element_boolean(self, locator):
@@ -144,8 +145,8 @@ class PlosPage(object):
     try:
       return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] Found element using {0} (test was for element ' \
-            'absence).'.format(locator)
+      logging.info('\t[WebDriver Error] Found element using {0} (test was for element ' \
+            'absence).'.format(locator))
       raise ElementExistsAssertionError(locator)
     finally:
       self.restore_timeout()
@@ -189,8 +190,8 @@ class PlosPage(object):
     try:
       return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      print '\t[WebDriver Error] Found element using {0} (test was for element ' \
-            'absence).'.format(locator)
+      logging.info('\t[WebDriver Error] Found element using {0} (test was for element ' \
+            'absence).'.format(locator))
       raise ElementExistsAssertionError(locator)
     finally:
       self.restore_timeout()
@@ -258,14 +259,28 @@ class PlosPage(object):
     return outval
 
   def traverse_to_frame(self, frame):
-    print '\t[WebDriver] About to switch to frame "%s"...' % frame,
+    logging.info('\t[WebDriver] About to switch to frame "%s"...' % frame)
     self._wait.until(expected_conditions.frame_to_be_available_and_switch_to_it(frame))
-    print 'OK'
+    logging.info('OK')
 
   def traverse_from_frame(self):
-    print '\t[WebDriver] About to switch to default content...',
+    logging.info('\t[WebDriver] About to switch to default content...')
     self._driver.switch_to.default_content()
-    print 'OK'
+    logging.info('OK')
+
+  def traverse_to_new_window(self):
+    # Switch the last launched window
+    logging.info('\t[WebDriver] About to switch the new window...')
+    new_window = self._driver.window_handles[1]
+    self._driver.switch_to_window(new_window)
+    logging.info('OK')
+
+  def traverse_from_window(self):
+    # Return the the previous window
+    logging.info('\t[WebDriver] About to switch to default content...')
+    default_context = self._driver.window_handles[0]
+    self._driver.switch_to_window(default_context)
+    logging.info('OK')
 
   def set_timeout(self, new_timeout):
     self._driver.implicitly_wait(new_timeout)
@@ -345,7 +360,7 @@ class PlosPage(object):
       self._driver.find_element(By.ID, locator)
       return True
     except NoSuchElementException:
-      print '\t[WebDriver] Element {0} does not exist.'.format(locator)
+      logging.info('\t[WebDriver] Element {0} does not exist.'.format(locator))
       return False
 
   def wait_for_animation(self, selector):

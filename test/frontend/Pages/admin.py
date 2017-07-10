@@ -51,7 +51,7 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
     self._base_admin_journals_edit_logo_upload_note = (By.CLASS_NAME,
                                                        'journal-thumbnail-logo-upload-note')
-    self._base_admin_journals_edit_logo_input_field = (By.ID, 'journal-logo-null')
+    self._base_admin_journals_edit_logo_input_field = (By.ID, 'upload-journal-logo-button')
     self._base_admin_journals_edit_title_label = (By.CSS_SELECTOR,
                                                  'div.inset-form-control-text > label')
     self._base_admin_journals_edit_title_field = (By.CSS_SELECTOR, 'div.inset-form-control > input')

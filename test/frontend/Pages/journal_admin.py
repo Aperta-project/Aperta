@@ -496,7 +496,7 @@ class JournalAdminPage(AdminPage):
       time.sleep(1)
       # working around a stale element reference
       new_save_template_button = self._get(self._mmt_template_save_button)
-      new_save_template_button.click()
+      self.click_covered_element(new_save_template_button)
       time.sleep(1)
       if uses_resrev_report:
         self._get(self._mmt_template_resrev_checkbox).click()

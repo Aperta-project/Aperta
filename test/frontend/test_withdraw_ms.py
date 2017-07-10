@@ -51,7 +51,7 @@ class WithdrawManuscriptTest(CommonTest):
     # Sadly, we take time to switch the overlay
     time.sleep(2)
     manuscript_page.close_modal()
-    manuscript_page._wait_for_not_element(manuscript_page._overlay_header_close, 0.05)
+    manuscript_page._wait_for_not_element(manuscript_page._overlay_header_close, 0.1)
     # Do some style and element validations
     manuscript_page._check_more_btn(user=creator_user)
 

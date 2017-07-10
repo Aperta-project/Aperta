@@ -383,7 +383,7 @@ class ProfilePage(AuthenticatedPage):
 
   def add_affiliation(self, user):
     """
-    A method to add an affilation for user
+    A method to add an affiliation for user
     :param user: a user dictionary from Base/Resources.py
     :return: Affiliation definition list as submitted
     """
@@ -706,3 +706,23 @@ class ProfilePage(AuthenticatedPage):
         logging.error('Affiliation Failed Deletion!')
         raise(ValueError, 'Affiliation: {0} failed deletion'.format(affiliation_definition_list))
     logging.info('The deleted affiliation was not found at all...A pass!')
+
+  def has_orcid(self):
+    """
+    Returns True if there is a linked orcid account and false otherwise
+    :return: boolean
+    """
+    has_orcid = True
+    self.set_timeout(3)
+    try:
+      self._get(self._profile_orcid_linked_div)
+    except ElementDoesNotExistAssertionError:
+      has_orcid = False
+    return has_orcid
+
+
+  def launch_orcid_window(self):
+      self._get(self._profile_orcid_unlinked_div)
+      orcid_btn = self._get(self._profile_orcid_unlinked_button)
+      orcid_btn.click()
+      self.traverse_to_new_window()

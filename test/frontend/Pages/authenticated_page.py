@@ -72,7 +72,8 @@ class AuthenticatedPage(StyledPage):
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._participant_field = (By.CLASS_NAME, 'ember-power-select-search-input')
     self._message_body_div = (By.CSS_SELECTOR, 'div.comment-board-form')
-    self._new_topic_message_body_field = (By.CSS_SELECTOR, 'textarea.discussion-topic-comment-field')
+    self._new_topic_message_body_field = (By.CSS_SELECTOR,
+                                          'textarea.discussion-topic-comment-field')
     self._message_body_field = (By.CSS_SELECTOR, 'textarea.new-comment-field')
     self._post_message_btn = (By.CSS_SELECTOR, 'button')
     self._first_discussion_lnk = (By.CLASS_NAME, 'discussions-index-topic')
@@ -100,7 +101,8 @@ class AuthenticatedPage(StyledPage):
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
     self._first_comment = (By.CLASS_NAME, 'discussion-topic-comment-field')
     self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
-    # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    # Cards - placeholder locators - these are over-ridden by definitions in the workflow and
+    #  manuscript_viewer pages
     self._addl_info_card = None
     self._authors_card = None
     self._billing_card = None
@@ -116,6 +118,8 @@ class AuthenticatedPage(StyledPage):
     self._report_guide_card = None
     self._review_cands_card = None
     self._revise_task_card = None
+    self._fm_reviewer_report_card = None
+    self._reviewer_report_card = None
     self._supporting_info_card = None
     self._upload_manu_card = None
     self._assign_admin_card = None
@@ -129,7 +133,6 @@ class AuthenticatedPage(StyledPage):
     self._production_metadata_card = None
     self._register_decision_card = None
     self._related_articles_card = None
-    self._reviewer_report_card = None
     self._revision_tech_check_card = None
     self._send_to_apex_card = None
     self._title_abstract_card = None
@@ -242,7 +245,7 @@ class AuthenticatedPage(StyledPage):
 
   def click_profile_nav(self):
     """
-    Click profile navigation
+    Click user avatar/name in main toolbar to open the sub-menu (accessing profile and logout links)
     :return: None
     """
     profile_menu_toggle = self._get(self._nav_profile_menu_toggle)
@@ -293,8 +296,10 @@ class AuthenticatedPage(StyledPage):
     """Validate styles of elements that are in the top menu from workflow"""
     editable = self._get(self._editable_label)
     assert editable.text.lower() == 'editable', editable.text
-    # The following block needs to be moved into a standardized style validation in authenticated_page.py
-    # Further a bug should be filed to note the lack of any definition of these elements in a style_guide of any kind
+    # The following block needs to be moved into a standardized style validation in
+    #  authenticated_page.py
+    # Further a bug should be filed to note the lack of any definition of these elements in a
+    # style_guide of any kind
     # assert editable.value_of_css_property('font-size') == '10px'
     # assert editable.value_of_css_property('color') == APERTA_GREEN
     # assert editable.value_of_css_property('font-weight') == '700'
@@ -381,9 +386,9 @@ class AuthenticatedPage(StyledPage):
     self._get(self._nav_profile_link).click()
     return self
 
-  def click_dashboard_link(self):
+  def click_aperta_dashboard_link(self):
     """Click nav toolbar dashboard link"""
-    self._get(self._nav_dashboard_link).click()
+    self._get(self._nav_aperta_dashboard_link).click()
     return self
 
   def click_paper_tracker_link(self):
@@ -562,8 +567,8 @@ class AuthenticatedPage(StyledPage):
     :return: paper.id from db, an integer
     """
     journal_id = PgSQL().query('SELECT journal_id '
-                               'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    return PgSQL().query('SELECT name FROM journals WHERE id = %s;', (journal_id,))[0][0]
+                               'FROM papers WHERE short_doi =%s;', (short_doi,))[0][0]
+    return PgSQL().query('SELECT name FROM journals WHERE id =%s;', (journal_id,))[0][0]
 
   @staticmethod
   def get_paper_id_from_short_doi(short_doi):
@@ -572,7 +577,7 @@ class AuthenticatedPage(StyledPage):
     :param short_doi: The short doi available from the URL of a paper and also the short_url in db
     :return: paper.id from db, an integer
     """
-    paper_id = PgSQL().query('select id from papers where short_doi = %s;', (short_doi,))[0][0]
+    paper_id = PgSQL().query('select id from papers where short_doi =%s;', (short_doi,))[0][0]
     return paper_id
 
   @staticmethod
@@ -585,7 +590,7 @@ class AuthenticatedPage(StyledPage):
     """
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '
-                                    'WHERE short_doi = %s;', (short_doi,))
+                                    'WHERE short_doi =%s;', (short_doi,))
     return submission_data
 
   def click_card(self, cardname, title=''):
@@ -646,7 +651,7 @@ class AuthenticatedPage(StyledPage):
         self.restore_timeout()
         return False
     elif cardname.lower() == 'review_by' and title:
-      cards = self._gets(self._reviewed_by_card)
+      cards = self._gets(self._reviewer_report_card)
       for card in cards:
         if title == card.text:
           card_title = card
@@ -777,8 +782,8 @@ class AuthenticatedPage(StyledPage):
     # make textarea visible. Selenium won't do it because running JS is not
     # part of a regular user interaction. Inserting JS is a valid hack when
     # there is no other way to make this work. Ticket for this: APERTA-8344
-    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing'"
-    self._driver.execute_script(js_cmd);
+    js_cmd = "document.getElementsByClassName('comment-board-form')[0].className += ' editing';"
+    self._driver.execute_script(js_cmd)
     time.sleep(2)
     msg_body = self._get(self._message_body_field)
     msg_body.send_keys(msg + ' ')

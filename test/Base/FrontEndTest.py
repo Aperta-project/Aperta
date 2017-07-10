@@ -1,5 +1,5 @@
-#!/usr/bin/env python2
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 __author__ = 'jkrzemien@plos.org'
 
@@ -10,6 +10,7 @@ from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
 from WebDriverFactory import WebDriverFactory
+
 
 class FrontEndTest(unittest.TestCase):
   """
@@ -25,7 +26,8 @@ class FrontEndTest(unittest.TestCase):
   # Will contain a single driver instance for the current test
   _driver = None
 
-  # Will contain a list of driver (not instantiated) for the current test variations (for all browsers)
+  # Will contain a list of driver (not instantiated) for the current test variations (for all
+  # browsers)
   _injected_drivers = []
 
   # Factory object to instantiate drivers

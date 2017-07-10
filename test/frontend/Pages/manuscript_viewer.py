@@ -389,7 +389,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     logging.info('Checking More Toolbar menu for {0}'.format(user))
     more_btn = self._get(self._tb_more_link)
-    more_btn.click()
+    self.click_covered_element(more_btn)
     # For the time being, the appeals link is being removed for everybody.
     # self._get(self._tb_more_appeal_link)
     # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
@@ -763,7 +763,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click on the question mark to open Infobox"""
     self._get(self._question_mark_icon).click()
 
-  def click_dashboard_link(self):
+  def click_aperta_dashboard_link(self):
     """Click on dashboard link"""
     self._get(self._nav_aperta_dashboard_link).click()
 

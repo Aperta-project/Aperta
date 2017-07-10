@@ -170,7 +170,7 @@ class ManuscriptViewerTest(CommonTest):
     manuscript_page.restore_timeout()
     # AC3 Green info box appears for initial manuscript view only - whether the user closes or
     #   leaves it open
-    manuscript_page.click_dashboard_link()
+    manuscript_page.click_aperta_dashboard_link()
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()

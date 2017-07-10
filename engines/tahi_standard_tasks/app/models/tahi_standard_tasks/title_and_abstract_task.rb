@@ -3,6 +3,8 @@ module TahiStandardTasks
   # used by editors to review and edit what iHat extracted from
   # an uploaded docx
   class TitleAndAbstractTask < Task
+    include SubmissionTask
+
     DEFAULT_TITLE = 'Title And Abstract'.freeze
     DEFAULT_ROLE_HINT = 'editor'.freeze
 

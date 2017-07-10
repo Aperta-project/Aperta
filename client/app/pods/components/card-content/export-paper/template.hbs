@@ -1,4 +1,10 @@
-<button class="button-primary button--green send-to-apex-button" {{action "sendToApex"}}>Send to Apex</button>
+<button class="button-primary
+               button--green
+               send-to-apex-button
+               {{if disabled "disabled"}}"
+        {{action "sendToApex"}}>
+  {{{content.label}}}
+</button>
 
 {{#if task.apexDeliveries}}
   <div class="export-history">

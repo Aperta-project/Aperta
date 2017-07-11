@@ -153,6 +153,20 @@ FactoryGirl.define do
       end
     end
 
+    trait(:first_minor_revision) do
+      publishing_state :in_revision
+      after :create do |paper|
+        paper.decisions.create!(verdict: "minor_revision", major_version: 0)
+      end
+    end
+
+    trait(:first_major_revision) do
+      publishing_state :in_revision
+      after :create do |paper|
+        paper.decisions.create!(verdict: "major_revision", major_version: 0)
+      end
+    end
+
     trait(:unsubmitted) do
       # noop
     end

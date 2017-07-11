@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Manuscript Manager Templates', js: true, selenium: true do
+feature 'Manuscript Manager Templates', js: true, flaky: true, selenium: true do
   let(:journal_admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
@@ -14,7 +14,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   end
 
   describe 'Creating' do
-    scenario 'Creating an empty template', flaky: true do
+    scenario 'Creating an empty template' do
       visit "/admin/mmt/journals/#{journal.id}/manuscript_manager_templates/new"
       find(".edit-paper-type-field").set('New Bar')
       find(".paper-type-save-button").click

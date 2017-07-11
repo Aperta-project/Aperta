@@ -5,6 +5,8 @@
 class Answer < ActiveRecord::Base
   acts_as_paranoid
 
+  RELATED_ANSWER_VALIDATION_TYPE = %w(answer_check answer_value).freeze
+
   include Readyable
 
   belongs_to :card_content
@@ -60,6 +62,15 @@ class Answer < ActiveRecord::Base
         meant it to work you may need to update the implementation.
       ERROR
     end
+  end
+
+  def related_answers
+    relatable_answer_idents = card_content.card_content_validations
+      .where(validation_type: RELATED_ANSWER_VALIDATION_TYPE)
+                                .map(&:target_ident)
+    task.answers.joins(:card_content).where(card_contents: {
+                                              ident: relatable_answer_idents
+                                            })
   end
 
   private

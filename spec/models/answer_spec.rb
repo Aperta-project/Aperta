@@ -93,5 +93,39 @@ describe Answer do
         check_coercion('true', 'true')
       end
     end
+
+    context '#related_answers' do
+      let(:ident) { 'foodent' }
+      subject(:card_content_validation) do
+        FactoryGirl.create(:card_content_validation,
+          validation_type: 'answer_value',
+          validator: '42',
+          error_message: 'that answer must be valid for this one to be valid :(',
+          violation_value: true,
+          target_ident: ident)
+      end
+
+      let(:related_card_content_validation) do
+        FactoryGirl.create(:card_content_validation,
+          :with_string_match_validation,
+          validator: '42',
+          error_message: 'Deep thought disapproves (and that other answer too)!')
+      end
+
+      let(:card) { FactoryGirl.create(:card, card_contents: [card_content, related_card_content]) }
+      let(:answer) { FactoryGirl.create(:answer, :with_task_owner) }
+      let(:related_answer) { FactoryGirl.create(:answer, owner: answer.task, value: '42') }
+      let!(:card_content) { FactoryGirl.create(:card_content, answers: [answer], card_content_validations: [subject]) }
+      let!(:related_card_content) {
+        FactoryGirl.create(:card_content, answers: [related_answer], content_type: 'short-input', value_type: 'text',
+                                          card_content_validations: [related_card_content_validation], ident: 'foodent')
+      }
+
+      it 'returns related answers' do
+        related_answers = answer.related_answers
+        expect(related_answers.count).to eq 1
+        expect(related_answers).to include related_answer
+      end
+    end
   end
 end

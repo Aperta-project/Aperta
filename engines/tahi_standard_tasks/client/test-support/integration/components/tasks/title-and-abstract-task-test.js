@@ -3,6 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 // Pretend like you're in client/tests
 import FakeCanService from '../../../helpers/fake-can-service';
+import wait from 'ember-test-helpers/wait';
 import {findEditor} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent(
@@ -47,6 +48,32 @@ test('Title/abstract not editable when task is complete and paper not editable',
   assert.ok(!abstract);
 });
 
+test('Title and abstract needs to be present', function(assert) {
+  var task = newTask(false, true);
+  setupEditableTask(this, task);
+
+  let done = assert.async();
+  wait().then(() => {
+    assert.textNotPresent('.task-completed', 'Make changes to this task');
+    done();
+  });
+});
+
+test('Show error when Title and abstract are not present', function(assert) {
+  var task = newTask(false, true);
+  task.paperTitle = null;
+  task.paperAbstract = null;
+  setupEditableTask(this, task);
+
+  this.$('.task button.task-completed').click();
+
+  let done = assert.async();
+  wait().then(() => {
+    assert.textPresent('.error-message', 'Please fix all errors');
+    done();
+  });
+});
+
 var newTask = function(completed, paperEditable) {
   return {
     id: 2,
@@ -54,8 +81,10 @@ var newTask = function(completed, paperEditable) {
     type: 'TahiStandardTasks::TitleAndAbstractTask',
     completed: completed,
     isMetadataTask: false,
-    isSubmissionTask: false,
+    isSubmissionTask: true,
     assignedToMe: false,
+    paperTitle: 'Paper title',
+    paperAbstract: 'Paper abstract',
     paper: {
       title: 'Paper title',
       abstract: 'Paper abstract',

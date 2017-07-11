@@ -71,7 +71,7 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    saveAnswer(newVal) {
+    changeAnswer(newVal) {
       if (newVal){
         this.set('fullSubmissionState','checked');
         this.set('afterState','');

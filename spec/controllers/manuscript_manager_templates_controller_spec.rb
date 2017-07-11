@@ -199,7 +199,6 @@ describe ManuscriptManagerTemplatesController do
       it "updates the ManuscriptManagerTemplate" do
         do_request
         mmt = ManuscriptManagerTemplate.last
-        puts mmt.attributes
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
         expect(template.to_json).to eq(template_params.to_json)

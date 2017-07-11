@@ -20,7 +20,7 @@ export default Ember.Component.extend({
     }
   ],
 
-  initialSetting: Ember.computed('initialSetting', function() {
+  initialSetting: Ember.computed('taskToConfigure', function() {
     let setting = this.get('taskToConfigure.settings').findBy('name', 'ithenticate_automation');
     return setting === undefined ? null : setting.string_value;
   }),

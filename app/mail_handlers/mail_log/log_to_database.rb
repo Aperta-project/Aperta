@@ -11,7 +11,7 @@ module MailLog
     class DeliveringEmailInterceptor
       def self.delivering_email(message)
         message.delivery_handler = EmailExceptionsHandler.new
-        recipients = message.to.join(', ')
+        recipients = get_recipients(message)
         mail_context = message.aperta_mail_context
         message_body = get_message(message)
         Correspondence.create!(
@@ -33,6 +33,13 @@ module MailLog
 
       def self.get_message(message)
         message.has_attachments? ? message.html_part.body : message.body
+      end
+
+      def self.get_recipients(message)
+        message.to.map do |to_email|
+          u = User.find_by(email: to_email)
+          u ? "#{u.full_name} <#{to_email}>" : to_email
+        end.join(', ')
       end
     end
 

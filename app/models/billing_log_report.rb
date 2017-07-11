@@ -1,14 +1,11 @@
 require 'csv'
 # If no date is provided it defaults to last run
 class BillingLogReport < ActiveRecord::Base
+  ACTIVITY_MESSAGE = 'Billing uploaded to FTP Server'.freeze
+
   mount_uploader :csv_file, BillingLogUploader
 
   after_create :log_creation
-
-  def self.create_report(from_date: nil)
-    from_date ||= BillingLogReport.last.created_at if BillingLogReport.any?
-    BillingLogReport.new(from_date: from_date)
-  end
 
   def log_creation
     logger.info "Billing log created"
@@ -27,14 +24,14 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def print
-    puts 'Outputting billing log file'
-    puts '**************'
+    logger.info 'Outputting billing log file'
+    logger.info '**************'
     File.open(csv, 'r') do |f|
-      while line = f.gets
-        puts line
+      while (line = f.gets)
+        logger.info line
       end
     end
-    puts '**************'
+    logger.info '**************'
   end
 
   def create_csv
@@ -42,11 +39,11 @@ class BillingLogReport < ActiveRecord::Base
     CSV.open(path, 'w') do |new_csv|
       if papers?
         new_csv << billing_json(papers_to_process.first).keys
-        papers_to_process.includes(:journal).find_each(batch_size: 50) do |paper|
+        papers_to_process.includes(:journal).find_each(batch_size: 50) { |paper|
           billing_log = BillingLog.new(paper: paper).populate_attributes
           billing_log.save
           new_csv << billing_json(paper).values
-        end
+        }
       else
         new_csv << ['No accepted papers with completed billing']
       end
@@ -57,12 +54,10 @@ class BillingLogReport < ActiveRecord::Base
   def papers_to_process
     @papers ||= begin
       papers = accepted_papers_with_completed_billing_tasks
-
-      if from_date
-        papers.where('accepted_at > ?', from_date)
-      else
-        papers
-      end
+      sent_papers = Activity.where(message: BillingLogReport::ACTIVITY_MESSAGE)
+                            .map(&:subject)
+                            .map!(&:id)
+      papers.where.not(id: sent_papers)
     end
   end
 
@@ -75,8 +70,8 @@ class BillingLogReport < ActiveRecord::Base
   end
 
   def billing_json(paper)
-    JSON.parse(
-      Typesetter::BillingLogSerializer.new(paper).to_json)['billing_log']
+    JSON.parse(Typesetter::BillingLogSerializer.new(paper)
+                                               .to_json)['billing_log']
   end
 
   def current_time

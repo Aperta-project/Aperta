@@ -52,7 +52,11 @@
         displayContent=true
         disabled=readOnly
         inputClassNames="taller reviewer_report--comments_for_author"
-        helpText="These comments will be transmitted to the author."
+        helpText="In reviewing the manuscript, please comment on the novelty and significance of the findings, its technical merit, and the experimental and analytical design.
+        Please also comment on the strength and sufficiency of the statistical analysis, on the supplementary information, and whether all data needed to replicate the study are available.
+        If you request revisions, please indicate which of your proposed revisions are *essential* to support the current conclusions.
+        <br><br><br>
+        These comments will be transmitted to the author."
       }}
     </li>
 
@@ -74,7 +78,7 @@
         ident="reviewer_report--suitable_for_another_journal"
         owner=model
         readOnly=readOnly
-        helpText=(concat "If so, please specify which PLOS journal and whether you will be willing to continue there as reviewer on this manuscript. To reduce redundant review cycles, PLOS Biology is committed to facilitating the transfer of suitable manuscripts between journals, and we appreciate your support.")
+        helpText=(concat "If so, please specify which PLOS journal and whether you will be willing to continue there as reviewer on this manuscript. To reduce redundant review cycles, <em>PLOS Biology</em> is committed to facilitating the transfer of suitable manuscripts between journals, and we appreciate your support.")
       }}
 
       {{nested-question-textarea

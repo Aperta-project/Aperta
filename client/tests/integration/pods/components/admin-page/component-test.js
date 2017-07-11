@@ -1,8 +1,23 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+const featureFlagServiceStub = Ember.Service.extend ({
+  flags: {
+    CARD_CONFIGURATION: true
+  },
+
+  value(flag){
+    return this.get('flags')[flag];
+  } 
+});
 
 moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
-  integration: true
+  integration: true,
+  beforeEach: function() {
+    // this avoids a weird error with the feature flag service: Uncaught[Object object]
+    this.register('service:feature-flag', featureFlagServiceStub);
+  }
 });
 
 test('it has a tab bar', function(assert) {

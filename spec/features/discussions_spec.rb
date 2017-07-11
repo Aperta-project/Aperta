@@ -80,4 +80,26 @@ feature "Discussions", js: true, selenium: true do
       discussion_page.expect_reply_created(user, 1)
     end
   end
+
+  context 'can see user replies on discussion in popout window' do
+    let(:user) { create :user }
+    let!(:discussion_topic) { FactoryGirl.create :discussion_topic, paper: paper }
+    let!(:discussion_participant) { FactoryGirl.create :discussion_participant, user: user, discussion_topic: discussion_topic }
+
+    before do
+      paper.add_collaboration(user)
+      discussion_topic.add_discussion_participant(discussion_participant)
+    end
+
+    scenario 'can see discussion and add reply', flaky: true do
+      login_as(user, scope: :user)
+      # the discussion url in popout window
+      visit "/discussions/#{paper.id}/#{discussion_topic.id}"
+
+      discussion_page.expect_view_topic
+      discussion_page.expect_view_only_participants
+      discussion_page.add_reply
+      discussion_page.expect_reply_created(user, 1)
+    end
+  end
 end

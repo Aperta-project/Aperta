@@ -28,14 +28,6 @@ radio-input = element content {
                   content*
               }
 
-sendback-reason = element content {
-                attribute ident { text }?,
-                attribute content-type { "check-box" },
-                attribute value-type { "boolean" },
-                (element label { text }? &
-                element text { text }? &
-                text-input)
-}
 
 check-box-input = element content {
                 attribute ident { text }?,
@@ -95,8 +87,25 @@ tech-check = element content {
                 attribute allow-annotations { "true" | "false" }?,
                 element instruction-text { text }?,
                 element text { text }?,
+                (element validation {
+                      attribute validation-type { "answer-check" | "answer-value"},
+                      attribute violation-value { text }?,
+                      attribute target-ident { text },
+                      element error-message { text }*,
+                      element validator { text }*
+                })*,
                 content*
             }
+
+sendback-reason = element content {
+                attribute ident { text }?,
+                attribute content-type { "sendback-reason" },
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }?),
+                content*
+            }
+
 
 text-input = element content {
                  attribute ident { text }?,
@@ -168,7 +177,7 @@ content = (
            tech-check |
            list-content |
            sendback-reason
-          )
+)
 
 start = element card {
             attribute required-for-submission { "true" | "false" },

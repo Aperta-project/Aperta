@@ -161,23 +161,33 @@ describe XmlCardLoader do
     end
 
     describe 'setting specific card_content types' do
-      context 'tech-check-widget' do
+      context 'tech-check' do
         let(:root_content) { card.reload.latest_card_version.card_contents.root }
         let(:child_content) { root_content.children.first }
-        let(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
+        let(:card) { FactoryGirl.create(:card, :versioned, name: 'original name') }
         let(:content1) do
           <<-XML
           <content content-type='display-children'>
-            <content ident='doesntmatter' value-type='boolean' content-type='tech-check-widget'>
+            <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
               <text>You shall not PASS!</text>
-              <content ident='reallydoesntmatter' value-type='boolean' content-type="check-box" default-answer-value="false">
-                <text>Because REASONS!</text>
-                <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
-                </content>
-              </content>
-              <content ident='reallydoesntmatter2' value-type='boolean' content-type="check-box" default-answer-value="false">
-                <text>Because REASONS!</text>
-                <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
+              <validation violation-value="false" target-ident="first-tech-check-box" validation-type="answer-check">
+                <validator>false</validator>
+              </validation>
+              <validation violation-value="false" target-ident="second-tech-check-box" validation-type="answer-check">
+                <validator>false</validator>
+              </validation>
+              <content content-type="sendback-reason" value-type="boolean">
+                <content content-type="display-children">
+                  <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">
+                    <text>Because REASONS!</text>
+                    <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
+                    </content>
+                  </content>
+                  <content ident='second-tech-check-box' value-type='boolean' content-type="check-box" default-answer-value="false">
+                    <text>Because more REASONS!</text>
+                    <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
+                    </content>
+                  </content>
                 </content>
               </content>
             </content>

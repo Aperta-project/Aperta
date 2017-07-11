@@ -39,12 +39,12 @@ describe CardContent do
     end
 
     context '#to_xml' do
-      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation) }
+      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation, ident: 'thing') }
       let(:card) { FactoryGirl.build(:card) }
       let(:expected_xml) do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
-        <content ident="#{card_content.ident}" value-type="text">
+        <content ident="#{card_content.ident}" value-type="text" ident="thing">
           <validation validation-type="string-match">
             <error-message>oh noes!</error-message>
             <validator>/text/</validator>

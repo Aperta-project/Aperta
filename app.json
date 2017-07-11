@@ -186,6 +186,9 @@
     "RACK_ENV": {
       "required": true
     },
+    "RACK_TIMEOUT": {
+      "required": true
+    },
     "RAILS_ASSET_HOST": {
       "required": true
     },

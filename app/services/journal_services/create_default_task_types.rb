@@ -1,4 +1,7 @@
 module JournalServices
+  # CreateDefaultTaskTypes is called by the 'data:update_journal_task_types'
+  # migration which is run on every deploy. It ensures that every Task in the
+  # system has an associated JournalTaskType in the database
   class CreateDefaultTaskTypes < BaseService
     def self.call(journal)
       Rails.logger.info "Processing journal: #{journal.name}..."

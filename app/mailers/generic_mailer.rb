@@ -3,9 +3,10 @@ class GenericMailer < ApplicationMailer
   default from: Rails.configuration.from_email
   layout "mailer"
 
-  def send_email(subject:, body:, to:)
+  def send_email(subject:, body:, to:, task: nil)
     @email_body = body.gsub("\n", '<br>')
     @plain_text_body = Nokogiri::HTML(body.gsub('<br>', "\n\n")).text
+    @task = task
     mail(to: to, subject: subject)
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170705103433) do
+ActiveRecord::Schema.define(version: 20170706190916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -776,25 +776,6 @@ ActiveRecord::Schema.define(version: 20170705103433) do
     t.datetime "updated_at",                                      null: false
     t.string   "error_message"
     t.boolean  "dismissed",                       default: false
-  end
-
-  create_table "simple_reports", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "initially_submitted",         default: 0, null: false
-    t.integer  "fully_submitted",             default: 0, null: false
-    t.integer  "invited_for_full_submission", default: 0, null: false
-    t.integer  "checking",                    default: 0, null: false
-    t.integer  "in_revision",                 default: 0, null: false
-    t.integer  "accepted",                    default: 0, null: false
-    t.integer  "withdrawn",                   default: 0, null: false
-    t.integer  "rejected",                    default: 0, null: false
-    t.integer  "new_accepted",                default: 0, null: false
-    t.integer  "new_rejected",                default: 0, null: false
-    t.integer  "new_withdrawn",               default: 0, null: false
-    t.integer  "new_initial_submissions",     default: 0, null: false
-    t.integer  "in_process_balance",          default: 0, null: false
-    t.integer  "unsubmitted",                 default: 0, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|

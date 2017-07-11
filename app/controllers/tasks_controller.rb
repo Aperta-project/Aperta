@@ -69,7 +69,8 @@ class TasksController < ApplicationController
       GenericMailer.delay.send_email(
         subject: task_email_params[:subject],
         body: task_email_params[:body],
-        to: user.email
+        to: user.email,
+        task: task
       )
     end
     head :no_content

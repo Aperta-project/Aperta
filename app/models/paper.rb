@@ -292,8 +292,7 @@ class Paper < ActiveRecord::Base
   end
 
   def self.find_by_id_or_short_doi(id)
-    return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
-    return find(id)
+    id.to_s =~ Journal::SHORT_DOI_FORMAT ? find_by_short_doi(id) : find(id)
   end
 
   def inactive?
@@ -587,7 +586,14 @@ class Paper < ActiveRecord::Base
   end
 
   def all_authors
-    author_list_items.map(&:author)
+    author_list_items.includes(:author).map(&:author)
+  end
+
+  # rubocop:disable Metrics/LineLength
+
+  def all_author_emails
+    fields = [[authors, :email], [group_authors, :contact_email]]
+    Set.new.tap { |set| fields.each { |assoc, field| set.merge(assoc.pluck(field)) } }
   end
 
   def revise_task

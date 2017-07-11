@@ -1,6 +1,59 @@
 require 'rails_helper'
 
 describe TaskTemplate do
+  describe 'Configurable mixin' do
+    let(:journal_task_type) { FactoryGirl.create(:journal_task_type) }
+    let(:configurable) do
+      FactoryGirl.create(:task_template, journal_task_type: journal_task_type)
+    end
+
+    it 'destroys its settings when it is destroyed' do
+      FactoryGirl.create(:setting, owner: configurable)
+
+      configurable.destroy!
+      expect(Setting.count).to eq(0)
+    end
+
+    describe 'setting(name)' do
+      let(:setting_name) { 'foo_setting' }
+      let(:result) do
+        configurable.setting(setting_name)
+      end
+      context 'with an existing Setting' do
+        let!(:existing_setting) do
+          FactoryGirl.create(:setting, name: setting_name, value: 'foo-on', owner: configurable)
+        end
+
+        it 'does not create a new Setting, but returns the existing one' do
+          expect { result }.to_not change { Setting.count }
+          expect(result.id).to eq(existing_setting.id)
+          expect(result.value).to eq('foo-on')
+        end
+      end
+
+      context 'with a corresponding SettingTemplate' do
+        let!(:setting_template) do
+          FactoryGirl.create(:setting_template,
+                             setting_name: setting_name,
+                             key: configurable.setting_template_key,
+                             value: "foo")
+        end
+
+        it 'creates a new Setting in the db' do
+          expect { result }.to change { Setting.count }.by(1)
+        end
+
+        it 'sets the default value for named setting from the template' do
+          expect(result.value).to eq("foo")
+        end
+
+        it 'associates the new setting to the setting template' do
+          expect(result.setting_template).to eq(setting_template)
+        end
+      end
+    end
+  end
+
   describe 'custom validations' do
     describe 'card relationships' do
       let(:card) { FactoryGirl.create(:card) }

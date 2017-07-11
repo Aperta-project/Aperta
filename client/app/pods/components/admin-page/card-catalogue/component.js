@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     },
 
     editCard(card) {
-      this.get('routing').transitionTo('admin.cc.card', [card]);
+      this.get('routing').transitionTo('admin.card', [card]);
     }
   }
 });

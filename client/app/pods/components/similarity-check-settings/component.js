@@ -58,6 +58,18 @@ export default Ember.Component.extend({
     return state;
   }),
 
+  settingValue: Ember.computed('switchState', 'submissionOption', function(){
+    if (this.get('switchState').value) {
+      if (this.get('submissionOption')) {
+        return this.get('selectedOption').id;
+      } else {
+        return 'at_first_full_submission';
+      }
+    } else {
+      return 'off';
+    }
+  }),
+
   actions: {
     saveAnswer(newVal) {
       if (newVal){
@@ -77,25 +89,13 @@ export default Ember.Component.extend({
       this.get('close')();
     },
     saveSettings () {
-      var settingValue = null;
-      var taskTemplateId = this.get('taskToConfigure.id');
-      if (this.get('switchState').value){
-        if (this.get('submissionOption')){
-          settingValue = this.get('selectedOption').id;
-        }
-        else{
-          settingValue = 'at_first_full_submission';
-        }
-      }
-      else{
-        settingValue = 'off';
-      }
-      this.get('restless').post('/api/task_templates/' + taskTemplateId + '/similarity_check_settings', {
-        value: settingValue
-      }).then((data)=> {
-        this.get('store').pushPayload(data);
-        this.get('close')();
-      });
+      this.get('restless').post('/api/task_templates/'
+        + this.get('taskToConfigure.id') + '/similarity_check_settings', {
+          value: this.get('settingValue')
+        }).then((data)=> {
+          this.get('store').pushPayload(data);
+          this.get('close')();
+        });
     }
   }
 });

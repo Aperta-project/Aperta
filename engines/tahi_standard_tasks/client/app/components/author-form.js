@@ -148,9 +148,9 @@ export default Component.extend({
     const author = this.get('author');
     author.save()
     .then(savedAuthor => {
-      author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+      author.get('nestedQuestionAnswers').toArray().forEach(function(answer) {
         const value = answer.get('value');
-        if(value || value === false){
+        if (value || value === false) {
           answer.set('owner', savedAuthor);
           answer.save();
         }

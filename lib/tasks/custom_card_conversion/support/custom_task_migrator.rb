@@ -1,10 +1,11 @@
 # Migrate legacy task, template, and answers to custom card
 class CustomTaskMigrator
-  attr_reader :legacy_class_name, :card_name
+  attr_reader :legacy_class_name, :card_name, :safe_to_destroy
 
   def initialize(legacy_class_name, card_name)
     @legacy_class_name = legacy_class_name
     @card_name = card_name
+    @safe_to_destroy = true
   end
 
   def migrate
@@ -18,13 +19,14 @@ class CustomTaskMigrator
 
         unless new_card_version.present?
           Rails.logger.info "#{card_name} card for journal #{journal_id} doesn't exist, skipping."
+          @safe_to_destroy = false
           next
         end
 
         migrate_tasks(journal_id, new_card_version, new_card.id)
         migrate_answers(old_card_version, new_card_version, journal_id)
       end
-      destroy_legacy_card
+      destroy_legacy_card if safe_to_destroy
     end
   end
 
@@ -65,7 +67,8 @@ class CustomTaskMigrator
       .where(papers: { journal_id: journal_id })
     answers.update_all(card_content_id: new_content.id)
     # assert that all answers have been moved to new new card content
-    return unless old_content.reload.answers.any?
+    return unless answers.any? && old_content.reload.answers.any?
+    @safe_to_destroy = false
     raise "Failed attempting to move all answers for ident #{ident}"
   end
 

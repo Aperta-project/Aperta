@@ -4,6 +4,7 @@ class GroupAuthor < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
   include Tokenable
+  include UniqueEmail
   include CoAuthorConfirmable
 
   CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions".freeze
@@ -36,10 +37,11 @@ class GroupAuthor < ActiveRecord::Base
             :name,
             presence: true,
             if: :task_completed?
+
   validates :contact_email,
-            format: { with: Devise.email_regexp,
-                      message: "needs to be a valid email address" },
+            format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
             if: :task_completed?
+
   validates :contributions,
             presence: { message: "one must be selected" },
             if: :task_completed?

@@ -1,5 +1,6 @@
 <div class="task-main-content">
   <p class="content-text">{{{content.text}}}</p>
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
   {{card-content/toggle-switch content=content
                   labelText='Pass'
                   disabled=disabled

@@ -95,6 +95,10 @@ class XmlCardLoader
         content.tag_text('validator'),
       validation_type:
         content.attr_value('validation-type'),
+      target_ident:
+        content.attr_value('target-ident'),
+      violation_value:
+        content.attr_value('violation-value'),
       error_message:
         content.tag_text('error-message')
     }

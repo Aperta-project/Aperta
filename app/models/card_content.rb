@@ -64,12 +64,12 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
-      'tech-check-widget': ['boolean'],
       'file-uploader': ['attachment'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
+      'sendback-reason': ['boolean'],
       'date-picker': ['text'] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -118,7 +118,8 @@ class CardContent < ActiveRecord::Base
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions
+      'allow-file-captions' => allow_file_captions,
+      'ident' => ident
     }.compact
   end
 
@@ -126,13 +127,8 @@ class CardContent < ActiveRecord::Base
     setup_builder(options).tag!('content', content_attrs) do |xml|
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
-      if card_content_validations.present?
-        card_content_validations.each do |ccv|
-          xml.tag!('validation', 'validation-type': ccv.validation_type) do
-            xml.tag!('error-message', ccv.error_message)
-            xml.tag!('validator', ccv.validator)
-          end
-        end
+      card_content_validations.each do |ccv|
+        create_card_config_validation(ccv, xml)
       end
       if possible_values.present?
         possible_values.each do |item|
@@ -141,5 +137,18 @@ class CardContent < ActiveRecord::Base
       end
       children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
+  end
+end
+
+private
+
+def create_card_config_validation(ccv, xml)
+  validation_attrs = { 'validation-type': ccv.validation_type,
+                       'violation-value': ccv.violation_value,
+                       'target-ident': ccv.target_ident }
+                       .delete_if { |_k, v| v.nil? }
+  xml.tag!('validation', validation_attrs) do
+    xml.tag!('error-message', ccv.error_message)
+    xml.tag!('validator', ccv.validator)
   end
 end

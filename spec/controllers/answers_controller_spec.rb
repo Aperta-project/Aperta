@@ -59,14 +59,17 @@ describe AnswersController do
   end
 
   describe "#update" do
-    let!(:answer) { FactoryGirl.create(:answer, value: 'initial', card_content: card_content, owner: owner) }
-    let(:card_content) { FactoryGirl.create(:card_content) }
+    let!(:answer) { FactoryGirl.create(:answer, value: 'initial', owner: owner) }
+    let!(:card_content_validation) { FactoryGirl.create(:card_content_validation, validator: 'fte') }
+    let(:card_content) { FactoryGirl.create(:card_content, answers: [answer], card_content_validations: [card_content_validation]) }
 
     subject(:do_request) do
       put_params = {
         format: 'json',
         id: answer.to_param,
         card_content_id: card_content.to_param,
+        owner_id: owner.id,
+        owner_type: owner.class.name,
         answer: {
           value: 'after'
         }
@@ -84,21 +87,48 @@ describe AnswersController do
                          .and_return true
       end
 
-      it 'updates the answer for the question' do
-        expect do
-          do_request
-        end.to_not change(Answer, :count)
+      context 'updates the answer for the question' do
+        it 'with no value if answer is ready' do
+          expect do
+            do_request
+          end.to_not change(Answer, :count)
 
-        json = JSON.parse(response.body)
-        expect(json['answer']['value']).to_not be_present
+          json = JSON.parse(response.body)
+          expect(json['answers'][0]['value']).to_not be_present
 
-        answer.reload
-        expect(answer.value).to eq('after')
+          answer.reload
+          expect(answer.value).to eq('after')
+        end
+
+        it 'with value if answer not ready' do
+          card_content_validation.update!(validator: 'coconut')
+          expect do
+            do_request
+          end.to_not change(Answer, :count)
+
+          json = JSON.parse(response.body)
+          expect(json['answers'][0]['value']).to be_present
+        end
+      end
+
+      context 'rollbacks' do
+        let(:violation_value) { 'violation after' }
+        let!(:card_content_validation) { FactoryGirl.create(:card_content_validation, validator: 'fte', violation_value: violation_value) }
+        it 'reverts to violation value if present and if invalid' do
+          expect do
+            do_request
+          end.to_not change(Answer, :count)
+
+          json = JSON.parse(response.body)
+          expect(json['answers'][0]['value']).to be_present
+        end
       end
 
       it "returns 200" do
         do_request
         expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json['answers']).to be_present
       end
     end
 

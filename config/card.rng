@@ -10,7 +10,7 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-
+    
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be
     happier
   -->
@@ -47,51 +47,6 @@
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
-    </element>
-  </define>
-  <define name="tech-check-widget">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="value-type">
-        <value>boolean</value>
-      </attribute>
-      <attribute name="content-type">
-        <value>tech-check-widget</value>
-      </attribute>
-      <element name="text">
-        <text/>
-      </element>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
-    </element>
-  </define>
-  <define name="sendback-reason">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <value>check-box</value>
-      </attribute>
-      <attribute name="value-type">
-        <value>boolean</value>
-      </attribute>
-      <interleave>
-        <optional>
-          <element name="label">
-            <text/>
-          </element>
-        </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
-        <ref name="text-input"/>
-      </interleave>
     </element>
   </define>
   <define name="check-box-input">
@@ -257,6 +212,58 @@
         </element>
       </optional>
       <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <choice>
+              <value>answer-check</value>
+              <value>answer-value</value>
+            </choice>
+          </attribute>
+          <optional>
+            <attribute name="violation-value"/>
+          </optional>
+          <attribute name="target-ident"/>
+          <zeroOrMore>
+            <element name="error-message">
+              <text/>
+            </element>
+          </zeroOrMore>
+          <zeroOrMore>
+            <element name="validator">
+              <text/>
+            </element>
+          </zeroOrMore>
+        </element>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>sendback-reason</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+      <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
     </element>
@@ -371,6 +378,7 @@
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>
+      <ref name="sendback-reason"/>
     </choice>
   </define>
   <start>

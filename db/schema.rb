@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628185715) do
+ActiveRecord::Schema.define(version: 20170630165801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -216,10 +216,14 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.string   "target_ident"
+    t.string   "violation_value"
   end
 
   add_index "card_content_validations", ["card_content_id"], name: "index_card_content_validations_on_card_content_id", using: :btree
   add_index "card_content_validations", ["deleted_at"], name: "index_card_content_validations_on_deleted_at", using: :btree
+  add_index "card_content_validations", ["target_ident"], name: "index_card_content_validations_on_target_ident", using: :btree
+  add_index "card_content_validations", ["violation_value"], name: "index_card_content_validations_on_violation_value", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"

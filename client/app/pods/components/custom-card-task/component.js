@@ -6,7 +6,7 @@ export default TaskComponent.extend({
 
   renderAdditionalText: Ember.computed('task.cardVersion.contentRoot.unsortedChildren.[]', function() {
     let cardContents = this.get('task.cardVersion.contentRoot.unsortedChildren');
-    return cardContents.any((cardContent) => {
+    return cardContents !== null && cardContents.any((cardContent) => {
       return cardContent.get('renderAdditionalText');
     });
   }),

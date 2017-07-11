@@ -14,7 +14,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
   end
 
   describe 'Creating' do
-    scenario 'Creating an empty template' do
+    scenario 'Creating an empty template', flaky: true do
       visit "/admin/mmt/journals/#{journal.id}/manuscript_manager_templates/new"
       find(".edit-paper-type-field").set('New Bar')
       find(".paper-type-save-button").click

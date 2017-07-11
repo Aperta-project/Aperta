@@ -63,7 +63,7 @@ describe SimilarityCheck, type: :model, redis: true do
       start_report!
     end
 
-    describe "successful ithenticate api calls" do
+    describe "successful ithenticate api calls", flaky: true do
       before do
         allow(Ithenticate::Api).to(
           receive_message_chain(:new_from_tahi_env, :add_document)

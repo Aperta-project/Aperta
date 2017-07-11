@@ -10,7 +10,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
 
   let(:dashboard) { DashboardPage.new }
 
-  scenario 'failure' do
+  scenario 'failure', flaky: true do
     with_aws_cassette('manuscript-new') do
       login_as(user, scope: :user)
       visit '/'

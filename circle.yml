@@ -1,62 +1,161 @@
-## Customize machine
-machine:
-  timezone:
-    America/Los_Angeles
+# Modeled off of https://circleci.com/gh/Tahi-project/tahi/16481#config/containers/0
+#
+version: 2
+executorType: docker
+containerInfo:
+  - image: circleci/build-image:ubuntu-14.04-XL-783-8f4b56f
+  - image: postgres:9.6.1
+    env:
+      - POSTGRES_USER=ubuntu
+      - POSTGRES_DB=circle_test
+stages:
+  build:
+    parallel: 16
+    workDir: /home/ubuntu/tahi
+    environment:
+      RAILS_ENV: test
+      RACK_ENV: test
+      DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+      CIRCLE_TEST_REPORTS: /tmp/reports
+      NODE_VERSION: 4.5.0
+      # This is for starting Xvfb window server, used for headless Selenium
+      DISPLAY: ":99"
+    steps:
+      - type: checkout
 
-  ruby:
-    version:
-      2.2.4 # when changing ruby versions, also update the cache_directory path below
-  node:
-    version: 4.7.1
+      - type: shell
+        name: Start Xvfb window server for headless Selenium testing
+        command: Xvfb :99 -screen 0 1280x1024x24
+        background: true
 
-  environment:
-    RAILS_ENV: test
-    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+      - type: cache-restore
+        key: tahi-v2-{{ .Branch }}-{{ checksum "Gemfile.lock" }}-{{ checksum "package.json" }}
 
-## Customize dependencies
-dependencies:
-  cache_directories:
-    - "/opt/circleci/.rvm/gems/ruby-2.2.4@tahi"
-    - "client/node_modules"
-    - "client/bower_components"
+      - type: shell
+        name: prepare Node and Ruby versions
+        command: |
+          source ~/.bashrc
+          set -e
+          #gem update --system
+          # This version is different from that used in the current public
+          # CircleCI.  Bundler 1.12.5 in that section was actually ignored,
+          # as a newer one was pre-installed and Rubygems chooses the
+          # latest unless a selector flag is passed to `gem`
+          #gem install bundler -v '1.13.6'
 
-  pre:
-    - gem update --system
-    - gem install bundler -v '1.12.5'
-    - bundle config --global jobs 7
-    - bundle config --global without staging:production
+          #gem uninstall rubygems-update -a -x --force
+          #gem uninstall bundler -a -x --force
+          #rvm install rubygems 2.4.8 --force
+          #gem install bundler -v 1.11.2
+          gem install bundler -v 1.12.5
+          bundle config --global jobs 7
+          bundle config --global without staging:production
+          bundle config --global path /home/ubuntu/bundle
 
-  override:
-    - bundle install: # note ':' here
-        timeout: 600
+          node --version
+          nvm install $NODE_VERSION
+          nvm alias default $NODE_VERSION
+          node --version
+          which node
+
+      - type: shell
+        name: install package dependencies (Bundle, npm)
+        command: |
+          source ~/.bashrc
+          set -e
+          node --version
+          time bundle install
+          time npm install
+          time bundle exec rake ember:install
+
+      - type: cache-save
+        key: tahi-v2-{{ .Branch }}-{{ checksum "Gemfile.lock" }}-{{ checksum "package.json" }}
+        paths:
+          - /home/ubuntu/bundle
+          - /home/ubuntu/tahi/node_modules
+          - /home/ubuntu/tahi/client
+
+      - type: shell
+        name: install psql client
+        command: sudo apt-get install postgresql-client
+
+      - type: shell
+        name: install custom postgres extensions
+        command: |
+          source ~/.bashrc
+          set -e
+          psql --version
+          psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
+          psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
+          psql --host 127.0.0.1 -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
+
+      - type: shell
+        name: set up database
+        command: |
+          source ~/.bashrc
+          set -e
+          bundle exec rake db:create db:schema:load
+
+      - type: shell
+        name: Run ember tests
+        command: |
+          source ~/.bashrc
+          set -e
+          mkdir -p $CIRCLE_TEST_REPORTS
+          # set -o pipefail && cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml
+          set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit > $CIRCLE_TEST_REPORTS/qunit.xml
+
+      - type: shell
+        name: hacks to fix this on CircleCI 2.0
+        pwd: /home/ubuntu/tahi/engines/tahi_standard_tasks/spec/support/pages/overlays/
+        command: |
+          source ~/.bashrc
+          set -ex
+          echo 'require_relative "./base_invite_users_overlay.rb"' | cat - invite_reviewers.rb > /tmp/fix && mv /tmp/fix ./invite_reviewers.rb
 
 
-## Customize database setup
-database:
-  pre:
-    # install custom postgres extensions
-    - psql -c "CREATE EXTENSION IF NOT EXISTS plpgsql;" -d circle_test
-    - psql -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;" -d circle_test
-    - psql -c "CREATE EXTENSION IF NOT EXISTS unaccent;" -d circle_test
-  override:
-    - bundle exec rake db:create db:schema:load
-  post:
-    # npm install here so that it is cached by circle for parallel tests
-    - npm install && bundle exec rake ember:install
+      - type: shell
+        name: Rspec debugging
+        command: |
+          source ~/.bashrc
+          set -e
 
+          TESTFILES=$(find . -wholename '**/spec/**/*_spec.rb' | sort | awk "NR % ${CIRCLE_NODE_TOTAL} == ${CIRCLE_NODE_INDEX}")
+          if [ -z "${TESTFILES}" ]
+          then
+              echo "misconfigured parallelism"
+              exit 1
+          else
+              bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml ${TESTFILES}
+          fi
 
-## Customize test commands
-test:
-  override:
-    - bundle exec rake circleci:qunit:
-       parallel: true
-    - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
-        timeout: 1800
-        parallel: true
-        files:
-          - "**/spec/**/*_spec.rb"
-    - bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
-        timeout: 1800
-        parallel: true
-        files:
-          - "**/spec/**/*_spec.rb"
+      ##- type: shell
+        ##name: Run all rspec tests separately
+        ##command: |
+          ##source ~/.bashrc
+          ##set -e
+          ##bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
+          ##bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
+
+      ##- type: shell
+        ##name: Run all rspec tests together
+        ##command: |
+          ##source ~/.bashrc
+          ##set -e
+          ##bundle exec rspec -p 30 --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml
+
+      - type: test-results-store
+        path: /tmp/reports
+
+      - type: artifacts-store
+        path: /tmp/reports
+        destination: reports
+
+      #- type: shell
+        #name: current status
+        #pwd: /
+        #command: |
+          #source ~/.bashrc
+          #set -e
+          #echo "Conversion to CircleCI 2.0 -- Work in progress"
+          #exit 1

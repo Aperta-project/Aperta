@@ -7,14 +7,12 @@ export default TaskComponent.extend({
   actions: {
     titleChanged(contents) {
       this.set('task.paperTitle', contents);
+      this.get('task.debouncedSave').perform();
     },
 
     abstractChanged(contents) {
       this.set('task.paperAbstract', contents);
-    },
-
-    focusOut() {
-      return this.get('task').save();
+      this.get('task.debouncedSave').perform();
     }
   }
 });

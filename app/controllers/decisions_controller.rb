@@ -41,7 +41,7 @@ class DecisionsController < ApplicationController
     end
     fail AuthorizationError if permitted.empty?
     decision.update! params.require(:decision).permit(*permitted)
-    render json: decision, serializer: DecisionSerializer, root: 'decision'
+    head :no_content
   end
 
   def register # I expect a task_id param, too!

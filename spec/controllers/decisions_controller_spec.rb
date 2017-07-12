@@ -181,7 +181,7 @@ describe DecisionsController do
             it "Updates the decision's author_response" do
               expect do
                 do_request
-                expect(response.status).to eq 200
+                expect(response.status).to eq 204
               end.to change { decision.reload.author_response }.from(decision.author_response).to(author_response)
             end
           end

@@ -119,20 +119,20 @@ stages:
       #         bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml ${TESTFILES}
       #     fi
 
-      ##- type: shell
-        ##name: Run all rspec tests separately
-        ##command: |
-          ##source ~/.bashrc
-          ##set -e
-          ##bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
-          ##bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml:
-
       - type: shell
-        name: Run all rspec tests together
+        name: Run all rspec tests separately
         command: |
           source ~/.bashrc
           set -e
-          bundle exec rspec -p 30 --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml
+          bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml
+          bundle exec rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml
+
+      # - type: shell
+      #   name: Run all rspec tests together
+      #   command: |
+      #     source ~/.bashrc
+      #     set -e
+      #     bundle exec rspec -p 30 --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml
 
       - type: test-results-store
         path: /tmp/reports

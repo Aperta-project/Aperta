@@ -7,13 +7,13 @@ namespace :data do
       task convert_tech_check_bodies: :environment do
         dry = ENV['DRY_RUN'] == 'true'
 
-        task_type = "PlosBioTechCheck::ChangesForAuthorTask"
+        # task_type = "PlosBioTechCheck::ChangesForAuthorTask"
         body_keys = %w(initialTechCheckBody finalTechCheckBody revisedTechCheckBody)
 
         inactive_states = %w(rejected withdrawn accepted)
         current_papers = Paper.where.not(publishing_state: inactive_states).pluck(:id)
 
-        tasks = Task.where(type: task_type).where(paper_id: current_papers).all
+        tasks = Task.where(paper_id: current_papers).all
         tasks = tasks.select { |task| task.body.is_a? Hash }
 
         count = 0
@@ -33,7 +33,7 @@ namespace :data do
             task.body = body
 
             if dry
-              puts "Converted Paper [#{task.paper_id}] Task [#{task.id}] #{key.titleize} Newlines [#{newlines}]"
+              puts "Converted Paper [#{task.paper_id}] Task [#{task.id}] #{task.type} #{key.titleize} Newlines [#{newlines}]"
             else
               task.save
             end

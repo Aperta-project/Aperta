@@ -35,15 +35,31 @@ describe ManuscriptManagerTemplatesController do
       end
     end
 
-    context "without filtering" do
+    context "with filtering" do
       subject(:do_request) do
-        get :index, format: 'json', journal_id: 2
+        get :index, format: 'json', journal_id: journal.id
       end
 
-      it "filters out unauthorized journals" do
-        do_request
-        expect(res_body).to have_key('manuscript_manager_templates')
-        expect(res_body['manuscript_manager_templates'][0]).to be_nil
+      context "when a user requests a journal they do not have access to" do
+        let!(:other_journal) { FactoryGirl.create(:journal) }
+
+        subject(:do_request) do
+          get :index, format: 'json', journal_id: other_journal.id
+        end
+
+        it "does not return mmts for another journal" do
+          do_request
+          expect(res_body).to have_key('manuscript_manager_templates')
+          expect(res_body['manuscript_manager_templates'].map { |mmt| mmt['id'] }).not_to include(mmt.id)
+        end
+      end
+
+      context "when a user requests a journal they have access to" do
+        it "renders the given template as json" do
+          do_request
+          expect(res_body).to have_key('manuscript_manager_templates')
+          expect(res_body['manuscript_manager_templates'].map { |mmt| mmt['id'] }).to contain_exactly(mmt.id)
+        end
       end
     end
   end

@@ -124,8 +124,9 @@ stages:
         command: |
           source ~/.bashrc
           set -e
-          bundle exec rake knapsack:rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml
-          bundle exec rake knapsack:rspec -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml
+          SPECS=$(circleci tests glob "**/spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+          bundle exec rspec $SPECS -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml
+          bundle exec rspec $SPECS -p 30 -t js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-features.xml
 
       # - type: shell
       #   name: Run all rspec tests together

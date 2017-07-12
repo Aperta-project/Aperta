@@ -139,6 +139,7 @@ group :test do
   gem 'fake_ftp'
   gem 'rspec-retry'
   gem 'generator_spec'
+  gem 'knapsack'
   gem 'pusher-fake'
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'

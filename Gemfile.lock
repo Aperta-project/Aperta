@@ -415,6 +415,8 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    knapsack (1.14.0)
+      rake
     launchy (2.4.3)
       addressable (~> 2.3)
     liquid (4.0.0)
@@ -775,6 +777,7 @@ DEPENDENCIES
   health_check
   heroku-deflater
   kaminari
+  knapsack
   liquid
   lograge
   mail_safe

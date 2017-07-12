@@ -117,6 +117,8 @@ class XmlCardLoader
         content.attr_value('allow-annotations'),
       content_type:
         content.attr_value('content-type'),
+      revert_children_on_hide:
+        content.attr_value('content-type'),
       default_answer_value:
         content.attr_value('default-answer-value'),
       ident:

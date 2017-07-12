@@ -140,12 +140,3 @@ stages:
       - type: artifacts-store
         path: /tmp/reports
         destination: reports
-
-      #- type: shell
-        #name: current status
-        #pwd: /
-        #command: |
-          #source ~/.bashrc
-          #set -e
-          #echo "Conversion to CircleCI 2.0 -- Work in progress"
-          #exit 1

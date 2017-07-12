@@ -27,7 +27,7 @@ feature 'Publishing Related Questions Card', js: true do
       expect(text).to eq("<p>#{title}</p>")
     end
 
-    scenario 'upload attachment' do
+    scenario 'upload attachment', flaky: true do
       within '#published-elsewhere' do
         choose 'Yes'
         find('.fileinput-button').click

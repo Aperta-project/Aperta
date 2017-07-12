@@ -105,15 +105,6 @@ stages:
           bundle exec rake circleci:qunit
 
       - type: shell
-        name: hacks to fix this on CircleCI 2.0
-        pwd: /home/ubuntu/tahi/engines/tahi_standard_tasks/spec/support/pages/overlays/
-        command: |
-          source ~/.bashrc
-          set -ex
-          echo 'require_relative "./base_invite_users_overlay.rb"' | cat - invite_reviewers.rb > /tmp/fix && mv /tmp/fix ./invite_reviewers.rb
-
-
-      - type: shell
         name: Rspec debugging
         command: |
           source ~/.bashrc

@@ -173,8 +173,9 @@ describe DecisionsController do
 
         context "the decision has been registered" do
           before do
-            decision.update(
-              registered_at: DateTime.now.utc, major_version: 0, minor_version: 0)
+            decision.update(registered_at: DateTime.now.utc,
+                            major_version: 0,
+                            minor_version: 0)
           end
 
           shared_examples_for "the author response is editable" do
@@ -338,10 +339,12 @@ describe DecisionsController do
       it "posts to the activity stream" do
         expect(Activity).to receive(:create).with hash_including(
           message: "A decision was made: Accept",
-          feed_name: "manuscript")
+          feed_name: "manuscript"
+        )
         expect(Activity).to receive(:create).with hash_including(
           message: "Paper state changed to accepted",
-          feed_name: "forensic")
+          feed_name: "forensic"
+        )
         do_request
       end
 

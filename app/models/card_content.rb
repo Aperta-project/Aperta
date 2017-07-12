@@ -120,6 +120,7 @@ class CardContent < ActiveRecord::Base
       'value-type' => value_type,
       'editor-style' => editor_style,
       'visible-with-parent-answer' => visible_with_parent_answer,
+      'revert-children-on-hide' => revert_children_on_hide,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
       'allow-file-captions' => allow_file_captions,

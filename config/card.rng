@@ -448,6 +448,12 @@
         <value>display-with-value</value>
       </attribute>
       <attribute name="visible-with-parent-answer"/>
+      <attribute name="revert-children-on-hide">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>

@@ -62,7 +62,7 @@ test('Changing phase name', function(assert) {
 
   columnTitleSelect = 'h2.column-title:contains("Phase 1")';
 
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
 
   click(columnTitleSelect).then(function() {
     return Ember.$(columnTitleSelect).html('Shazam!');
@@ -95,7 +95,7 @@ test('Adding an Ad-Hoc card', function(assert) {
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
   });
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Ad Hoc")');
   click('.overlay .button--green:contains("Add")');
@@ -149,7 +149,7 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
   });
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Billing")');
   click('.overlay .button--green:contains("Add")');

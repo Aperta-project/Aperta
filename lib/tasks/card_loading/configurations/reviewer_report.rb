@@ -42,7 +42,7 @@ module CardConfiguration
         {
           ident: "reviewer_report--comments_for_author",
           value_type: "html",
-          text: "Add your comments to authors below."
+          text: "Please add your review comments to authors below."
         },
 
         {
@@ -54,7 +54,7 @@ module CardConfiguration
         {
           ident: "reviewer_report--suitable_for_another_journal",
           value_type: "boolean",
-          text: "If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em> journal</a>?",
+          text: "If the manuscript does not meet the standards of <em>PLOS Biology</em>, do you think it is suitable for another <a href='https://www.plos.org/publications'><em>PLOS</em> journal</a> with only minor revisions?",
           children: [
             {
               ident: "reviewer_report--suitable_for_another_journal--journal",

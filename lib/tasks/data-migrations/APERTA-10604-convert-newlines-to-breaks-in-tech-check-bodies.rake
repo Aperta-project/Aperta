@@ -6,13 +6,9 @@ namespace :data do
       desc 'It goes through every tech check body and converts newlines to break tags'
       task convert_tech_check_bodies: :environment do
         dry = ENV['DRY_RUN'] == 'true'
-
-        # task_type = "PlosBioTechCheck::ChangesForAuthorTask"
         body_keys = %w(initialTechCheckBody finalTechCheckBody revisedTechCheckBody)
-
         inactive_states = %w(rejected withdrawn accepted)
         current_papers = Paper.where.not(publishing_state: inactive_states).pluck(:id)
-
         tasks = Task.where(paper_id: current_papers).all
         tasks = tasks.select { |task| task.body.is_a? Hash }
 

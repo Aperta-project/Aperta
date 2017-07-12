@@ -2,7 +2,7 @@ class AdminDashboardPage < Page
   text_assertions :journal_name, '.journal-thumbnail-name'
 
   def self.path
-    "/admin/journals"
+    "/admin/journals/all"
   end
 
   def self.visit
@@ -20,19 +20,11 @@ class AdminDashboardPage < Page
   end
 
   def has_journal_name?(name)
-    page.has_css?('.journal-thumbnail-name', text: name)
+    page.has_css?('.admin-drawer-item-title', text: name)
   end
 
   def has_journal_names?(*names)
     names.all? { |name_text| has_journal_name? name_text }
-  end
-
-  def has_journal_description?(description)
-    page.has_css? '.journal-thumbnail-show p', text: description
-  end
-
-  def has_journal_descriptions?(*descriptions)
-    descriptions.all? { |description| has_journal_description?(description) }
   end
 
   def has_journal_paper_count?(count)
@@ -44,14 +36,10 @@ class AdminDashboardPage < Page
     counts.all? { |count| has_journal_paper_count?(count) }
   end
 
-  def create_journal
-    click_on 'Add new journal'
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
-  end
-
   def edit_journal(journal_name)
-    find('.journal-thumbnail', text: journal_name).find('.edit-icon').click
-    EditJournalFragment.new(find '.journal-thumbnail-edit-form')
+    within('.left-drawer') { click_on journal_name }
+    find('.admin-nav-settings').click
+    EditJournalFragment.new(find('.journal-thumbnail-edit-form'))
   end
 
   def visit_journal(journal)
@@ -60,20 +48,21 @@ class AdminDashboardPage < Page
   end
 
   def search(query)
+    find(".admin-nav-users").click
     find(".admin-user-search input").set(query)
     find(".admin-user-search button").click
   end
 
   def search_results
     session.has_content? 'Username'
-    all('.admin-users .user-row').map do |el|
-      Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
+    all('.admin-users-list-list .user-row').map do |el|
+      Hash[[:last_name, :first_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 
   def first_search_result
     session.has_content? 'Username'
-    UserRowInSearch.new(all('.admin-users .user-row').first, context: page)
+    UserRowInSearch.new(all('.admin-users-list-list .user-row').first, context: page)
   end
 end
 
@@ -146,8 +135,7 @@ class EditJournalFragment < PageFragment
     # Creating a journal takes time to initialize everything it needs, e.g.
     # its roles and permissions, MMTs, task templates, etc. So be kind to
     # journal and allot it some more time to get set up.
-    wait_for_ajax timeout: 60
-    session.has_content? @name
+    Capybara.using_wait_time(60) { session.has_content? @name }
   end
 
   def cancel

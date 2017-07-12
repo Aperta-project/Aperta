@@ -102,8 +102,7 @@ stages:
           source ~/.bashrc
           set -e
           mkdir -p $CIRCLE_TEST_REPORTS
-          # set -o pipefail && cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml
-          set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit > $CIRCLE_TEST_REPORTS/qunit.xml
+          bundle exec rake circleci:qunit
 
       - type: shell
         name: hacks to fix this on CircleCI 2.0

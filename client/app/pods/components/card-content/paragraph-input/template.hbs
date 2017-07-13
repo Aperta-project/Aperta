@@ -1,7 +1,7 @@
 <label class="content-text">{{{content.text}}}</label>
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
-{{format-input
+{{rich-text-editor
   value=(readonly answer.value)
-  class="form-control"
-  valueChanged=(action "valueChanged")
+  name=name
+  onContentsChanged=(action "valueChanged")
   disabled=disabled}}

@@ -10,7 +10,9 @@ module Typesetter
 
     def competing_interests_statement
       return no_competing_interests unless competing_interests
-      object.answer_for('competing_interests--statement').try(:value)
+      strip_tags(
+        object.answer_for('competing_interests--statement').try(:value)
+      )
     end
 
     def no_competing_interests

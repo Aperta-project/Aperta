@@ -13,7 +13,7 @@
     <li class="question">
       {{nested-question-textarea
         ident="front_matter_reviewer_report--competing_interests"
-        editorStyle='basic'
+        editorStyle='expanded'
         owner=model
         displayContent=true
         disabled=readOnly
@@ -36,7 +36,7 @@
           {{#if radio.yieldingForAdditionalData}}
             {{nested-question-textarea
               ident="front_matter_reviewer_report--suitable--comment"
-              editorStyle='basic'
+              editorStyle='expanded'
               owner=model
               displayQuestionText=false
               displayContent=true
@@ -59,7 +59,7 @@
         {{#if radio.yieldingForAdditionalData}}
           {{nested-question-textarea
             ident="front_matter_reviewer_report--includes_unpublished_data--explanation"
-            editorStyle='basic'
+            editorStyle='expanded'
             owner=model
             noResponseText=""
             displayQuestionText=false
@@ -82,7 +82,7 @@
     <li class="question">
       {{nested-question-textarea
         ident="front_matter_reviewer_report--identity"
-        editorStyle='basic'
+        editorStyle='expanded'
         owner=model
         displayContent=true
         helpText="<li>Your name and review will not be published with the manuscript.</li>"

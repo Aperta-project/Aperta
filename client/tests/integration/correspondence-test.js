@@ -58,15 +58,6 @@ moduleForAcceptance('Integration: Correspondence', {
   }
 });
 
-function stubEndpointRequestResponse(url, status, json) {
-  $.mockjax({
-    url: url,
-    status: status,
-    dataType: 'json',
-    responseText: json
-  });
-}
-
 test('User can view a correspondence record', function(assert) {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
@@ -129,38 +120,6 @@ test(`'Add Correspondence' form`, (assert) => {
     assert.textPresent('.inset-form-control-text', 'CC');
     assert.textPresent('.inset-form-control-text', 'BCC');
     assert.textPresent('.inset-form-control-text', 'Contents');
-  });
-});
-
-test('Authorized User can create external correspondence', (assert) => {
-  stubEndpointRequestResponse('/api/papers/' + paper.get('id') + '/correspondence', 201, [{
-    'correspondence': {
-      'id': 23,
-      'date': '2001-02-13T12:34:00.000Z',
-      'subject': 'Physics',
-      'recipient': 'to@example.com',
-      'sender': 'from@example.com',
-      'body': 'This is a very long body message~~~~',
-      'sent_at':'2001-02-13T12:34:00.000Z'
-    }
-  }]);
-
-  visit('/papers/' + paper.get('shortDoi') + '/correspondence/new');
-
-  fillIn('.correspondence-date-sent', '02/13/1789');
-  fillIn('.correspondence-time-sent', '12:34pm');
-  fillIn('.correspondence-description', 'Good Description');
-  fillIn('.correspondence-from', 'from@example.com');
-  fillIn('.correspondence-to', 'to@example.com');
-  fillIn('.correspondence-subject', 'Physics');
-  fillIn('.correspondence-cc', 'cc@example.com');
-  fillIn('.correspondence-bcc', 'bcc@example.com');
-  fillIn('.correspondence-body', 'This is a very long body message~~~~');
-  click('.correspondence-submit');
-
-  assert.expect(1);
-  andThen(() => {
-    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
   });
 });
 

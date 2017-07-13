@@ -19,3 +19,18 @@ test('it renders', function(assert) {
   setRichText('foo', 'abc');
   assert.equal(getRichText('foo'), '<p>abc</p>');
 });
+
+test('it shows error message', function(assert) {
+  let saveContents = function() {};
+  let errorMessage = 'Error Message';
+  this.set('saveContents', saveContents);
+  this.set('errorMessage', errorMessage);
+
+  this.render(hbs`{{rich-text-editor ident='foo'
+                  onContentsChanged=saveContents
+                  errorMessage=errorMessage
+                  displayText=true}}`);
+
+  assert.elementFound('.error-message',
+                      errorMessage);
+});

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe CustomCardFactory do
+describe CustomCard::Factory do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:custom_card_factory) { CustomCardFactory.new(journal: journal) }
-  let(:card_configuration) { CustomCardConfiguration::CoverLetter }
+  let(:custom_card_factory) { CustomCard::Factory.new(journal: journal) }
+  let(:card_configuration) { CustomCard::Configurations::CoverLetter }
 
   before do
     allow(card_configuration).to receive(:xml_content).and_return(

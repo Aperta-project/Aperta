@@ -1,5 +1,4 @@
 require_relative "./support/card_loader.rb"
-require Rails.root.join('lib/tasks/custom_card_loading/support/custom_card_loader.rb')
 
 namespace :cards do
   desc "Load default Card models into the system"
@@ -8,7 +7,7 @@ namespace :cards do
     CardLoader.load_standard(journal: nil)
 
     puts "Loading Custom Cards attached to each Journal ..."
-    Journal.find_each { |j| CustomCardLoader.load_all(journal: j) }
+    CustomCard::Loader.all
   end
 
   desc "Loads one specific legacy card into the db for testing purposes. See card_configuration_sampler.rb"

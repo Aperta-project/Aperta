@@ -1,25 +1,26 @@
-module CustomCardConfiguration
-  class CompetingInterests
-    def self.name
-      "Competing Interests"
-    end
+module CustomCard
+  module Configurations
+    class CompetingInterests
+      def self.name
+        "Competing Interests"
+      end
 
-    def self.excluded_view_permissions
-    end
+      def self.excluded_view_permissions
+      end
 
-    def self.excluded_edit_permissions
-    end
+      def self.excluded_edit_permissions
+      end
 
-    def self.publish
-      true
-    end
+      def self.publish
+        true
+      end
 
-    def self.do_not_create_in_production_environment
-      false
-    end
+      def self.do_not_create_in_production_environment
+        false
+      end
 
-    def self.xml_content
-      <<-XML.strip_heredoc
+      def self.xml_content
+        <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
         <card required-for-submission="true" workflow-display-only="false">
           <content content-type="display-children">
@@ -47,7 +48,8 @@ module CustomCardConfiguration
             </content>
           </content>
         </card>
-      XML
+        XML
+      end
     end
   end
 end

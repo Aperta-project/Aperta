@@ -7,32 +7,39 @@ module JournalServices
         raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
-        make_tasks phase, task_types,
+        make_tasks journal, phase, task_types,
           TahiStandardTasks::FigureTask,
           TahiStandardTasks::EarlyPostingTask,
           TahiStandardTasks::SupportingInformationTask,
           TahiStandardTasks::AuthorsTask,
           TahiStandardTasks::UploadManuscriptTask,
-          TahiStandardTasks::CoverLetterTask
+          TahiStandardTasks::CoverLetterTask,
+          CustomCard::Configurations::CoverLetter
 
         phase = mmt.phase_templates.create! name: "Invite Editor"
-        make_tasks phase, task_types,
-          TahiStandardTasks::PaperEditorTask
+        make_tasks journal, phase, task_types, TahiStandardTasks::PaperEditorTask
 
         phase = mmt.phase_templates.create! name: "Invite Reviewers"
-        make_tasks phase, task_types, TahiStandardTasks::PaperReviewerTask
+        make_tasks journal, phase, task_types, TahiStandardTasks::PaperReviewerTask
 
         phase = mmt.phase_templates.create! name: "Get Reviews"
 
         phase = mmt.phase_templates.create! name: "Make Decision"
-        make_tasks phase, task_types, TahiStandardTasks::RegisterDecisionTask
+        make_tasks journal, phase, task_types, TahiStandardTasks::RegisterDecisionTask
       end
     end
 
-    def self.make_tasks(phase, task_types, *tasks)
-      tasks.each do |kind|
-        jtt = task_types.find_by(kind: kind)
-        phase.task_templates.create! title: jtt.title, journal_task_type: jtt
+    def self.make_tasks(journal, phase, task_types, *items)
+      items.each do |item|
+        if item <= Task
+          # create a new JournalTaskTemplate for a legacy Task
+          jtt = task_types.find_by(kind: item)
+          phase.task_templates.create! title: jtt.title, journal_task_type: jtt
+        else
+          # crete a new Card using seed data and associate to JournalTaskTemplate
+          card = CustomCard::Loader.load(item, journal: journal).first
+          phase.task_templates.create!(title: card.name, card: card)
+        end
       end
     end
   end

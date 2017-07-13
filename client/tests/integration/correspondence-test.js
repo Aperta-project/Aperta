@@ -28,7 +28,7 @@ moduleForAcceptance('Integration: Correspondence', {
     $.mockjax.clear();
   },
   beforeEach: function() {
-    app = startApp();
+    app = this.application;
     TestHelper.setup();
     server = setupMockServer();
 
@@ -158,9 +158,9 @@ test('Authorized User can create external correspondence', (assert) => {
   fillIn('.correspondence-body', 'This is a very long body message~~~~');
   click('.correspondence-submit');
 
-  assert.expect(0);
+  assert.expect(1);
   andThen(() => {
-    // assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
+    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
   });
 });
 

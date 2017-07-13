@@ -157,9 +157,6 @@ test('Authorized User can create external correspondence', (assert) => {
   fillIn('.correspondence-bcc', 'bcc@example.com');
   fillIn('.correspondence-body', 'This is a very long body message~~~~');
   click('.correspondence-submit');
-
-  andThen(() => {
-  });
 });
 
 test('Date and Time [format] are properly validated', (assert) => {

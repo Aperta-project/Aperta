@@ -159,7 +159,6 @@ test('Authorized User can create external correspondence', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
   });
 });
 

@@ -157,7 +157,11 @@ test('Authorized User can create external correspondence', (assert) => {
   fillIn('.correspondence-bcc', 'bcc@example.com');
   fillIn('.correspondence-body', 'This is a very long body message~~~~');
   click('.correspondence-submit');
+
   assert.expect(0);
+  andThen(() => {
+    // assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
+  });
 });
 
 test('Date and Time [format] are properly validated', (assert) => {

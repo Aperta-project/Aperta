@@ -23,9 +23,10 @@ module Typesetter
 
     def custom_tasks_questions_answers
       tasks = object.tasks.where(type: 'CustomCardTask')
+                          .includes(answers: :card_content)
       question_answers = {}
       tasks.each do |task|
-        answers = task.answers.includes(:card_content)
+        answers = task.answers
         answers.each do |answer|
           answer.card_content.ident
           question_answers[answer.card_content.ident.to_s] = answer.value

@@ -6,7 +6,9 @@ module Typesetter
     validates :paper_is_accepted?, presence: true
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date, :provenance, :special_handling_instructions, :early_article_posting
+               :publication_date, :provenance, :special_handling_instructions,
+               :early_article_posting, :custom_card_fields
+
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
@@ -28,8 +30,6 @@ module Typesetter
              serializer: Typesetter::SupportingInformationFileSerializer
     has_many :related_articles,
              serializer: Typesetter::RelatedArticleSerializer
-
-    attribute :custom_card_fields
 
     def journal_title
       object.journal.name

@@ -39,11 +39,12 @@ namespace :seed do
               {%- if review.status == 'completed' -%}
                 ----------<br/>
                 <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
-                {% for answer in review.answers %}
+                {%- for answer in review.answers -%}
+                  {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
                   <p>
-                    Q: {{ answer.question}}<br/>
-                    A: {{ answer.value }}
+                    {{ answer.value }}
                   </p>
+                  {%- endif -%}
                 {%- endfor -%}
               {% endif %}
             {% endfor %}

@@ -13,7 +13,7 @@ from datetime import datetime
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
+from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
     internal_editor_login, super_admin_login

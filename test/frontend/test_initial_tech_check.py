@@ -15,9 +15,9 @@ from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.initial_tech_check_card import ITCCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.initial_tech_check_card import ITCCard
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 

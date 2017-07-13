@@ -9,8 +9,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from Base.CustomException import ElementDoesNotExistAssertionError
-from base_admin import BaseAdminPage
+from .base_admin import BaseAdminPage
 
 __author__ = 'jgray@plos.org'
 

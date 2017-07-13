@@ -9,7 +9,7 @@ import random
 from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
-from WebDriverFactory import WebDriverFactory
+from .WebDriverFactory import WebDriverFactory
 
 
 class FrontEndTest(unittest.TestCase):

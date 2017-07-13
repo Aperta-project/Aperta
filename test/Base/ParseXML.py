@@ -128,10 +128,10 @@ class ParseXML(object):
 
       for section in root.findall(".//body/sec"):
         title = section.find("./title")
-        if unicode(title.text) == "None":
+        if str(title.text) == "None":
           continue
         else:
-          article_sections.append(unicode(title.text))
+          article_sections.append(str(title.text))
 
       if root.findall(".//back/ack"):
         article_sections.append('Acknowledgments')

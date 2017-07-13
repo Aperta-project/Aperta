@@ -10,15 +10,16 @@ import logging
 import os
 import random
 import time
+import sys
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, staff_admin_login
 from frontend.common_test import CommonTest
-from Cards.initial_decision_card import InitialDecisionCard
-from Cards.register_decision_card import RegisterDecisionCard
+from .Cards.initial_decision_card import InitialDecisionCard
+from .Cards.register_decision_card import RegisterDecisionCard
 
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'jgray@plos.org'
 
@@ -151,7 +152,9 @@ class RegisterDecisionCardTest(CommonTest):
     while keep_waiting:
       time.sleep(1)
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page.encode('utf8'):
+      if sys.version_info < (3, 0, 0) and 'full submit' in paper_title_from_page.encode('utf8'):
+        continue
+      elif sys.version_info >= (3, 0, 0) and 'full submit' in paper_title_from_page:
         continue
       else:
         keep_waiting = False

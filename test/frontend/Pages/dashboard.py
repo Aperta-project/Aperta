@@ -7,6 +7,7 @@ import string
 import six
 import time
 import uuid
+import sys
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
@@ -15,7 +16,7 @@ from loremipsum import generate_paragraph
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
+from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
 
 """
 A page model for the dashboard page that validates state-dependent element existence
@@ -208,7 +209,7 @@ class DashboardPage(AuthenticatedPage):
           time.sleep(1)
           self.validate_reviewer_invitation_response_styles(title)
           # Enter reason and suggestions
-          reasons = generate_paragraph()[2]
+          reasons = generate_paragraph()[2][:500]
           suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
           tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
               self.get_rich_text_editor_instance('declineReason')
@@ -311,7 +312,8 @@ class DashboardPage(AuthenticatedPage):
           logging.info(page_abstract_text.text)
           assert six.u(db_abstract) in six.u(page_abstract_text.text), \
               u'db abstract: {0}\nnot equal to invitation ' \
-              u'abstract:\n{1}'.format(six.u(db_abstract), six.u(page_abstract_text.text))
+              u'abstract:\n{1}.'.format(six.u(db_abstract), six.u(page_abstract_text.text))
+
         else:
           logging.info('No Abstract listed in invitation...')
         accept_btn = page_listing.find_element(*self._invitation_accept_button)
@@ -518,22 +520,29 @@ class DashboardPage(AuthenticatedPage):
       raise
     active_manuscripts = len(active_manuscript_list)
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
+
+    if sys.version_info < (3, 0, 0):
+      wm = welcome_msg.text.encode('utf-8')
+    else:
+      wm = welcome_msg.text
+
+
     if active_manuscripts > 1:
       assert 'Hi, {0}. You have {1} active manuscripts.'.format(first_name, active_manuscripts) \
-        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscripts.'.
+        in wm, ('Hi, {0}. You have {1} active manuscripts.'.
                                               format(first_name, active_manuscripts),
-                                              welcome_msg.text.encode('utf-8'))
+                                              wm)
     elif active_manuscripts == 1:
       assert 'Hi, {0}. You have {1} active manuscript.'.format(first_name, active_manuscripts) \
-        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have {1} active manuscript.'.
+        in wm, ('Hi, {0}. You have {1} active manuscript.'.
                                               format(first_name, active_manuscripts),
-                                              welcome_msg.text.encode('utf-8'))
+                                              wm)
     else:
       active_manuscripts = 0
       assert 'Hi, {0}. You have no manuscripts.'.format(first_name) \
-        in welcome_msg.text.encode('utf-8'), ('Hi, {0}. You have no manuscripts.'.\
+        in wm, ('Hi, {0}. You have no manuscripts.'.\
                                               format(first_name),
-                                              welcome_msg.text.encode('utf-8'))
+                                              wm)
     # APERTA-9556
     # self.validate_application_title_style(welcome_msg)
     return active_manuscripts, active_manuscript_list, uid
@@ -710,11 +719,16 @@ class DashboardPage(AuthenticatedPage):
           logging.info('Paper short doi: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
                            'Invalid document')
-        if isinstance(title, unicode) and isinstance(paper.text, unicode):
-          assert db_title == paper_text, \
-              six.u(title) + u' is not equal to ' + six.u(paper.text)
+        if sys.version_info < (3, 0, 0):
+          if (str(type(title)) == "<type 'unicode'>") and (str(type(paper.text)) == "<type 'unicode'>"):
+            assert db_title == paper_text, \
+                str(title) + u' is not equal to ' + str(paper.text)
+          else:
+            raise TypeError('Database title or Page title are not both unicode objects')
+
         else:
-          raise TypeError('Database title or Page title are not both unicode objects')
+          assert db_title == paper_text, \
+            str(title) + u' is not equal to ' + str(paper.text)
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT roles.name FROM roles '
                                     'INNER JOIN assignments on roles.id = assignments.role_id '
@@ -744,8 +758,7 @@ class DashboardPage(AuthenticatedPage):
                                  'FROM papers '
                                  'WHERE id = %s ;', (db_papers_list[count],))[0][0]
         # For display of status on the home page, we replace '_' with a space.
-        transtab = string.maketrans('_', ' ')
-        dbstatus = dbstatus.translate(transtab)
+        dbstatus = dbstatus.replace('_', ' ')
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'
         assert page_status.lower() == dbstatus.lower(), \
@@ -943,7 +956,10 @@ class DashboardPage(AuthenticatedPage):
           .find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div)\
           .find_element(*self._view_invites_pending_invite_paper_title)
-      logging.info('Title presented on the page: \n{0}'.format(pt.text.encode('utf-8')))
+      if sys.version_info < (3, 0, 0):
+        logging.info('Title presented on the page: \n{0}'.format(pt.text.encode('utf-8')))
+      else:
+        logging.info('Title presented on the page: \n{0}'.format(pt.text))
       self._get(self._view_invites_pending_invite_div)\
           .find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div)\
@@ -995,7 +1011,7 @@ class DashboardPage(AuthenticatedPage):
     error_msgs = self._gets(self._cns_error_message)
     # I can't quite make out why the previous returns two iterations of the error messages, but,
     # this fixes it
-    for i in range(len(error_msgs) / 2):
+    for i in range(int(len(error_msgs) / 2)):
       error_msgs.pop()
     errors = []
     for error in error_msgs:

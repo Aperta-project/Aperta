@@ -11,8 +11,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import admin_users
-from Pages.admin import AdminPage
-from Pages.journal_admin import JournalAdminPage
+from .Pages.admin import AdminPage
+from .Pages.journal_admin import JournalAdminPage
 
 from frontend.common_test import CommonTest
 

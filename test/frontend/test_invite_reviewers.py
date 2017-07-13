@@ -10,14 +10,15 @@ import logging
 import os
 import random
 import time
+import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import prod_staff_login, reviewer_login, ascii_only_users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.invite_reviewer_card import InviteReviewersCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.invite_reviewer_card import InviteReviewersCard
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'jgray@plos.org'
 
@@ -66,9 +67,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.validate_card_elements_styles(reviewer_login, 'reviewer', short_doi)
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_reviewers.validate_invite(reviewer_login,
                                      mmt,
@@ -149,9 +148,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.card_ready()
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_reviewers.validate_invite(reviewer_login,
                                      mmt,
@@ -277,9 +274,7 @@ class InviteReviewersCardTest(CommonTest):
     invite_reviewers.card_ready()
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
     invite_reviewers.validate_invite(reviewer_login,
                                      mmt,
                                      manuscript_title,
@@ -448,9 +443,7 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
     invite_reviewers.validate_invite(reviewer_login,
                                      mmt,
                                      manuscript_title,

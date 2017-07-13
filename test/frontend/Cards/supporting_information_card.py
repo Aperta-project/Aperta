@@ -4,7 +4,7 @@
 import logging
 import os
 import time
-import urllib
+import six.moves.urllib.parse as urllib
 
 from selenium.webdriver.common.by import By
 

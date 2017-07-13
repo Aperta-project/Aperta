@@ -14,7 +14,7 @@ __author__ = 'jgray@plos.org'
 
 import psycopg2
 
-from Resources import psql_hname, psql_port, psql_uname, psql_pw, psql_db
+from .Resources import psql_hname, psql_port, psql_uname, psql_pw, psql_db
 
 
 class PgSQL(object):

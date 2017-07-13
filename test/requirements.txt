@@ -3,8 +3,7 @@ beautifulsoup4==4.4.1
 browsermob-proxy==0.7.1
 ddt==1.1.0
 enum34==1.1.6
-loremipsum==1.0.5   
-https://cdn.mysql.com/Downloads/Connector-Python/mysql-connector-python-2.1.5.tar.gz
+mysql-connector-repackaged==0.3.1
 psycopg2==2.7.1
 PyPDF2==1.26.0
 requests==2.10.0
@@ -12,3 +11,5 @@ selenium==2.53.6
 teamcity-messages==1.18
 python-dateutil==2.5.3
 pytz
+six
+-e git://github.com/testlabauto/loremipsum.git#egg=loremipsum

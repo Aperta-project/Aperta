@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import time
+import sys
 
 from selenium.webdriver.common.by import By
 
@@ -121,7 +122,10 @@ class TitleAbstractCard(BaseCard):
     self.compare_unicode(db_title, extracted_title)
 
     if db_abstract:
-      clean_extracted_abstract = self.get_text(extracted_abstract.encode('utf8'))
+      if sys.version_info < (3, 0, 0):
+        clean_extracted_abstract = self.get_text(extracted_abstract.encode('utf8'))
+      else:
+        clean_extracted_abstract = self.get_text(extracted_abstract)
       clean_db_abstract = self.get_text(db_abstract)
       test_abstract = self.compare_unicode(clean_db_abstract, clean_extracted_abstract)
       if not test_abstract:

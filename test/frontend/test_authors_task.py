@@ -8,7 +8,7 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users
 from frontend.Tasks.authors_task import AuthorsTask
-from Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
 """
@@ -28,7 +28,7 @@ class AuthorsTaskTest(CommonTest):
 
   def test_smoke_validate_components_styles(self):
     """
-    test_authors_task: Validates the elements, styles and functions for the author task
+    test_smoke_validate_components_styles: Validates the elements, styles and functions for the author task
     :return: void function
     """
     logging.info('Test Authors Task::components_styles')
@@ -45,7 +45,7 @@ class AuthorsTaskTest(CommonTest):
 
   def test_core_add_delete_individual_author(self):
     """
-    test_authors_task: Validates add and delete individual author functions for the author task
+    test_core_add_delete_individual_author: Validates add and delete individual author functions for the author task
     :return: void function
     """
     logging.info('Test Authors Task::add_delete_individual_author')
@@ -79,7 +79,7 @@ class AuthorsTaskTest(CommonTest):
 
   def test_core_add_delete_group_author(self):
     """
-    test_authors_task: Validates add and delete group author functions for the author task
+    test_core_add_delete_group_author: Validates add and delete group author functions for the author task
     :return: void function
     """
     logging.info('Test Authors Task::test_core_add_delete_group_author')

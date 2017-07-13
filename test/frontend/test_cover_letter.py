@@ -6,7 +6,8 @@ This test case validates the Cover Letter Task.
 
 import logging
 import random
-import urllib
+
+import six.moves.urllib.parse as urllib
 
 import time
 
@@ -15,7 +16,7 @@ from Base.Resources import users, editorial_users
 from frontend.Cards.cover_letter_card import CoverLetterCard
 from frontend.Pages.workflow_page import WorkflowPage
 from frontend.Tasks.cover_letter_task import CoverLetterTask
-from Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
 __author__ = 'ivieira@plos.org'
@@ -164,7 +165,7 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
     current_attachment = cover_letter_task.get_last_uploaded_letter_file()
-    assert current_attachment in replacement_file, \
+    assert current_attachment in urllib.quote_plus(replacement_file), \
         'The page presented file name: {0} is not what we expected: ' \
         '{1}'.format(current_attachment, urllib.quote_plus(replacement_file))
 

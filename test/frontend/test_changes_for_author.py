@@ -15,12 +15,12 @@ from Base.CustomException import ElementDoesNotExistAssertionError, ElementExist
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.initial_tech_check_card import ITCCard
-from Cards.revision_tech_check_card import RTCCard
-from Cards.final_tech_check_card import FTCCard
-from Tasks.changes_for_author_task import ChangesForAuthorTask
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.initial_tech_check_card import ITCCard
+from .Cards.revision_tech_check_card import RTCCard
+from .Cards.final_tech_check_card import FTCCard
+from .Tasks.changes_for_author_task import ChangesForAuthorTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'jgray@plos.org'
 

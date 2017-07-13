@@ -12,11 +12,11 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_email, login_invalid_email, login_valid_uid, \
   login_valid_pw, login_invalid_pw, users, editorial_users, external_editorial_users, admin_users
 from frontend.common_test import CommonTest
-from Pages.login_page import LoginPage
-from Pages.akita_login_page import AkitaLoginPage
-from Pages.akita_signup_page import AkitaSignupPage
-from Pages.dashboard import DashboardPage
-from Pages.orcid_login_page import OrcidLoginPage
+from .Pages.login_page import LoginPage
+from .Pages.akita_login_page import AkitaLoginPage
+from .Pages.akita_signup_page import AkitaSignupPage
+from .Pages.dashboard import DashboardPage
+from .Pages.orcid_login_page import OrcidLoginPage
 
 __author__ = 'jgray@plos.org'
 

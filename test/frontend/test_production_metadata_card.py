@@ -15,9 +15,9 @@ from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.production_metadata_card import ProductionMedataCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.production_metadata_card import ProductionMedataCard
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 

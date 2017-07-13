@@ -10,16 +10,17 @@ import logging
 import os
 import random
 import time
+import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import reviewer_login, users, editorial_users
 from frontend.common_test import CommonTest
-from Cards.invite_reviewer_card import InviteReviewersCard
-from Cards.reviewer_report_card import ReviewerReportCard
-from Tasks.reviewer_report_task import ReviewerReportTask
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.invite_reviewer_card import InviteReviewersCard
+from .Cards.reviewer_report_card import ReviewerReportCard
+from .Tasks.reviewer_report_task import ReviewerReportTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
@@ -93,9 +94,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
@@ -189,9 +188,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
     dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()

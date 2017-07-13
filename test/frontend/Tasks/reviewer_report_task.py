@@ -449,19 +449,19 @@ class ReviewerReportTask(BaseTask):
         q2noradio.click()
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('reviewer_report--competing_interests--detail')
-      q2response = generate_paragraph()[2]
+      q2response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q2response)
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('reviewer_report--identity')
-      q3response = generate_paragraph()[2]
+      q3response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q3response)
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('reviewer_report--comments_for_author')
-      q4response = generate_paragraph()[2]
+      q4response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q4response)
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('reviewer_report--additional_comments')
-      q5response = generate_paragraph()[2]
+      q5response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5response)
       q6radval = self.get_random_bool()
       self._actions.move_to_element(qb5).perform()
@@ -474,12 +474,12 @@ class ReviewerReportTask(BaseTask):
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance(
               'reviewer_report--suitable_for_another_journal--journal')
-      q6response = generate_paragraph()[2]
+      q6response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q6response)
     else:
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('front_matter_reviewer_report--competing_interests')
-      q2response = generate_paragraph()[2]
+      q2response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q2response)
       q3radval = self.get_random_bool()
       if q3radval:
@@ -490,7 +490,7 @@ class ReviewerReportTask(BaseTask):
         q3noradio.click()
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('front_matter_reviewer_report--suitable--comment')
-      q3response = generate_paragraph()[2]
+      q3response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q3response)
       q4radval = self.get_random_bool()
       if q4radval:
@@ -502,15 +502,15 @@ class ReviewerReportTask(BaseTask):
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance(
               'front_matter_reviewer_report--includes_unpublished_data--explanation')
-      q4response = generate_paragraph()[2]
+      q4response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q4response)
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('front_matter_reviewer_report--additional_comments')
-      q5response = generate_paragraph()[2]
+      q5response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5response)
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
           self.get_rich_text_editor_instance('front_matter_reviewer_report--identity')
-      q6response = generate_paragraph()[2]
+      q6response = generate_paragraph()[2][:500]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q6response)
     submit_report_btn = self._get(self._submit_button)
     submit_report_btn.click()

@@ -12,8 +12,8 @@ from Base.Resources import super_admin_login, no_cards_mmt, gen_cmplt_apexdata, 
   resrch_w_init_dec, research_mmt, front_matter_mmt, only_rev_cands_mmt, only_init_dec_mmt, \
   bio_essay, bio_resart, bio_genres, bio_mystery, bio_commpage, bio_formcomm, bio_nwc, gen_resart, \
   gen_persp
-from Pages.admin import AdminPage
-from Pages.journal_admin import JournalAdminPage
+from .Pages.admin import AdminPage
+from .Pages.journal_admin import JournalAdminPage
 
 from frontend.common_test import CommonTest
 

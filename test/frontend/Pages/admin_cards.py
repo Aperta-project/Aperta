@@ -12,8 +12,7 @@ from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from styles import APERTA_BUTTON_BLUE
-from base_admin import BaseAdminPage
+from .base_admin import BaseAdminPage
 
 __author__ = 'jgray@plos.org'
 

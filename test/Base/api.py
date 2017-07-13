@@ -10,6 +10,7 @@ from functools import wraps
 from unittest import TestCase
 from datetime import datetime
 import time
+import logging
 
 
 class Needs(object):
@@ -53,8 +54,8 @@ def timeit(method):
     te = time.time()
     setattr(value, '_apiTime', (datetime.now() - value._testStartTime).total_seconds())
 
-    print ''
-    print 'Method %r %r call took %2.2f sec...' % (method.__name__, args[:], te - ts)
+    logging.info ('')
+    logging.info( 'Method %r %r call took %2.2f sec...' % (method.__name__, args[:], te - ts))
     return result
 
   return wrapper

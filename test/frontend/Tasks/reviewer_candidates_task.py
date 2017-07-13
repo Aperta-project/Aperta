@@ -362,7 +362,7 @@ class ReviewerCandidatesTask(BaseTask):
         logging.info('Selection covered by toolbar...')
         self.click_covered_element(opp_btn)
     if not reason:
-      reason = generate_paragraph(start_with_lorem=True)[2]
+      reason = generate_paragraph(start_with_lorem=True)[2][:500]
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance('reviewer_recommendations--reason')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))

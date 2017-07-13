@@ -11,11 +11,11 @@ from Base.Resources import users, editorial_users, external_editorial_users, \
     admin_users, super_admin_login, handling_editor_login, academic_editor_login, \
   internal_editor_login, login_valid_pw
 from Base.PostgreSQL import PgSQL
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Cards.initial_decision_card import InitialDecisionCard
-from Tasks.figures_task import FiguresTask
-from Tasks.upload_manuscript_task import UploadManuscriptTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Cards.initial_decision_card import InitialDecisionCard
+from .Tasks.figures_task import FiguresTask
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
 """

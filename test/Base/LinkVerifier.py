@@ -3,10 +3,11 @@
 __author__ = 'jkrzemien@plos.org'
 
 import requests
+import logging
 from requests.exceptions import HTTPError, Timeout
 from socket import error as SocketError
 from time import sleep
-import Config as Config
+from .Config import verify_link_timeout, verify_link_retries, wait_between_retries
 
 
 class LinkVerifier(object):
@@ -37,9 +38,9 @@ class LinkVerifier(object):
   """
 
   cache = {}
-  timeout = Config.verify_link_timeout
-  max_retries = Config.verify_link_retries
-  wait_between_retries = Config.wait_between_retries
+  timeout = verify_link_timeout
+  max_retries = verify_link_retries
+  wait_between_retries = wait_between_retries
 
   def __verify_link(self, url):
     successful = False
@@ -69,8 +70,8 @@ class LinkVerifier(object):
         code = e.code
       except SocketError as e:
         code = e.errno # Probably an ECONNRESET...
-        print "Socket error: %s" % code
+        logging.error( "Socket error: %s" % code)
 
-    print "HTTP %s" % code
+    logging.info( "HTTP %s" % code)
     assert code == 200, "Expected HTTP response code was 200 (OK), but instead I got: %s" % code
     return True

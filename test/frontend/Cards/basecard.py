@@ -242,7 +242,7 @@ class BaseCard(AuthenticatedPage):
     assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
     # Enter some text
-    expected_text = generate_paragraph()[2]
+    expected_text = generate_paragraph()[2][:500]
     self.insert_text_discussion(expected_text)
     post_btn.click()
     time.sleep(1)

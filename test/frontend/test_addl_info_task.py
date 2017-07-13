@@ -10,8 +10,8 @@ import os
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.Tasks.additional_information_task import AITask
-from Pages.dashboard import DashboardPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.dashboard import DashboardPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
 

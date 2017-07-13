@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import alert_is_present
 
-from authenticated_page import AuthenticatedPage
+from .authenticated_page import AuthenticatedPage
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import country_list
 

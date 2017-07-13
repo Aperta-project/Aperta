@@ -14,11 +14,11 @@ import random
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
-from Cards.early_article_posting_card import EarlyArticlePostingCard
+from .Cards.early_article_posting_card import EarlyArticlePostingCard
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.early_article_posting import EarlyArticlePostingTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.early_article_posting import EarlyArticlePostingTask
 
 __author__ = 'jgray@plos.org'
 

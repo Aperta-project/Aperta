@@ -89,7 +89,7 @@ class ReviseManuscriptTask(BaseTask):
       # Give time to upload.
       time.sleep(10)
     if data and 'text' not in data:
-      data['text'] = generate_paragraph()[2] or 'text'
+      data['text'] = generate_paragraph()[2][:500] or 'text'
     self._get(self._response_field).send_keys(data['text'])
     self._get(self._save_btn).click()
     return None

@@ -8,6 +8,7 @@ import logging
 import time
 import random
 import re
+import sys
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -19,7 +20,7 @@ from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
 from Base.Resources import staff_admin_login, super_admin_login, \
     internal_editor_login, prod_staff_login, pub_svcs_login
-from styles import StyledPage, APPLICATION_TYPEFACE, APERTA_GREEN, APERTA_GREY_DARK
+from .styles import StyledPage, APPLICATION_TYPEFACE, APERTA_GREEN, APERTA_GREY_DARK
 
 __author__ = 'jgray@plos.org'
 
@@ -501,10 +502,13 @@ class AuthenticatedPage(StyledPage):
       error_msg = self._get(self._flash_error_msg).text.strip(u'\xd7')
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
-    if isinstance(error_msg, unicode):
-      error_msg_string = error_msg.encode()
-    else:
+    if sys.version_info >= (3, 0, 0):
       error_msg_string = error_msg
+    else:
+      if (str(type(error_msg)) == "<type 'unicode'>"):
+        error_msg_string = error_msg.encode()
+      else:
+        error_msg_string = error_msg
     if error_msg:
       # For the time being, capturing the error message and continuing rather than failing
       #   and stopping the test is of greater importance. At some point we may want to enforce
@@ -734,7 +738,7 @@ class AuthenticatedPage(StyledPage):
     if msg:
       msg_body.send_keys(msg + ' ')
     else:
-      msg_body.send_keys(generate_paragraph()[2] + ' ')
+      msg_body.send_keys(generate_paragraph()[2][:500] + ' ')
     if mention:
       # Note: At this stage only Staff users can be mentioned.
       msg_body.send_keys('@' + mention)

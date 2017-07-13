@@ -3,8 +3,10 @@
 
 __author__ = 'jkrzemien@plos.org'
 
-import Config
+from .Config import run_against_grid, wait_timeout, run_against_appium, selenium_grid_url, \
+  browsermob_proxy_enabled, browsermob_proxy_path, appium_ios_node_url, appium_android_node_url, page_load_timeout
 import json
+import logging
 from datetime import datetime
 from time import time
 from inspect import getfile
@@ -16,7 +18,7 @@ from selenium.webdriver.support.events import EventFiringWebDriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from browsermobproxy import Server
 from appium import webdriver as appiumDriver
-from WebDriverListener import WebDriverListener
+from .WebDriverListener import WebDriverListener
 
 
 class WebDriverFactory(object):
@@ -69,19 +71,19 @@ class WebDriverFactory(object):
     is_appium = is_android or is_ios
 
     # If framework is set to run on **Selenium Grid**
-    if Config.run_against_grid == True:
-      print '\nRunning on Selenium Grid'
+    if run_against_grid == True:
+      logging.info( '\nRunning on Selenium Grid')
       kwargs = {'desired_capabilities': capabilities}
-      kwargs['command_executor'] = Config.selenium_grid_url
+      kwargs['command_executor'] = selenium_grid_url
       driver = EventFiringWebDriver(webdriver.Remote(**kwargs), WebDriverListener())
     else:
       # If `browser` is an **Appium** device *and* framework is set to run Appium **ONLY**
-      if is_appium and Config.run_against_appium == True:
-        print '\nRunning on Appium stand-alone mode (not through Selenium Grid)'
+      if is_appium and run_against_appium == True:
+        logging.info( '\nRunning on Appium stand-alone mode (not through Selenium Grid)')
         driver = self.__android(capabilities) if is_android else self.__ios(capabilities)
 
     # Configure default time out (for all cases)
-    driver.implicitly_wait(Config.wait_timeout)
+    driver.implicitly_wait(wait_timeout)
     return driver
 
   def setup_webdriver(self, profile=None, name="statistics"):
@@ -127,7 +129,7 @@ class WebDriverFactory(object):
       profile.set_preference('browser.helperApps.neverAsk.saveToDisk', mime_types)
 
     # Set up BrowserMob proxy, if enabled
-    if Config.browsermob_proxy_enabled:
+    if browsermob_proxy_enabled:
       self.proxy = self.__setup_browsermob_proxy();
       profile.set.proxy(self.proxy.selenium_proxy())
       self.proxy.new_har(name)
@@ -141,7 +143,7 @@ class WebDriverFactory(object):
     """
 
     # Terminate BrowserMob proxy, if present
-    if Config.browsermob_proxy_enabled and self.proxy:
+    if browsermob_proxy_enabled and self.proxy:
       # Retrieve HAR JSON blob from proxy, if any.
       har = self.proxy.har
 
@@ -165,7 +167,7 @@ class WebDriverFactory(object):
 
     **Returns** a Proxy object representing the started proxy server
     """
-    self.server = Server(Config.browsermob_proxy_path)
+    self.server = Server(browsermob_proxy_path)
     self.server.start()
     return self.server.create_proxy()
 
@@ -204,8 +206,8 @@ class WebDriverFactory(object):
       driver = webdriver.Firefox(firefox_profile=profile, firefox_binary=FirefoxBinary(ff_path))
 
     efDriver = EventFiringWebDriver(driver, WebDriverListener())
-    efDriver.implicitly_wait(Config.wait_timeout)
-    efDriver.set_page_load_timeout(Config.page_load_timeout)
+    efDriver.implicitly_wait(wait_timeout)
+    efDriver.set_page_load_timeout(page_load_timeout)
     efDriver.set_window_size(1280, 1024)
     return efDriver
 
@@ -224,10 +226,10 @@ class WebDriverFactory(object):
     try:
       driver = appiumDriver.Remote(url, capabilities)
     except Exception as e:
-      print '\t[WebDriver/Appium error] An error occurred while attempting to contact Appium URL.'
-      print '\tURL used: %s' % url
-      print '\tCapability used:'
-      print '\t%s' % capabilities
+      logging.error( '\t[WebDriver/Appium error] An error occurred while attempting to contact Appium URL.')
+      logging.error( '\tURL used: %s' % url)
+      logging.error( '\tCapability used:')
+      logging.error( '\t%s' % capabilities)
       raise e
     return EventFiringWebDriver(driver, WebDriverListener())
 
@@ -244,7 +246,7 @@ class WebDriverFactory(object):
     2. **Android VM/hardware device** running/attached to machine
 
     """
-    return self.__create_appium_driver(Config.appium_android_node_url, capabilities)
+    return self.__create_appium_driver(appium_android_node_url, capabilities)
 
   # === iOS section ===
 
@@ -272,4 +274,4 @@ class WebDriverFactory(object):
     explanation.
 
     """
-    return self.__create_appium_driver(Config.appium_ios_node_url, capabilities)
+    return self.__create_appium_driver(appium_ios_node_url, capabilities)

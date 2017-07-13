@@ -10,11 +10,11 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
-from Cards.title_abstract_card import TitleAbstractCard
+from .Cards.title_abstract_card import TitleAbstractCard
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.upload_manuscript_task import UploadManuscriptTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'jgray@plos.org'
 

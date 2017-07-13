@@ -8,14 +8,12 @@ Page Object Model for the Journal specific Admin Page. Validates global and dyna
 import logging
 import time
 
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from Base.Resources import task_names, yeti_task_names
-from admin import AdminPage
+from .admin import AdminPage
 
 __author__ = 'jgray@plos.org'
 

@@ -9,10 +9,10 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Cards.reporting_guidelines_card import ReportingGuidelinesCard
-from Tasks.reporting_guidelines_task import ReportingGuidelinesTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Cards.reporting_guidelines_card import ReportingGuidelinesCard
+from .Tasks.reporting_guidelines_task import ReportingGuidelinesTask
 
 __author__ = 'achoe@plos.org'
 

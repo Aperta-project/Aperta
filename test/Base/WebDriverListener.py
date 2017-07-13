@@ -3,9 +3,11 @@
 __author__ = 'jkrzemien@plos.org'
 
 from datetime import datetime
+import logging
 from time import time
 from inspect import getfile
 from os.path import abspath, dirname
+import sys
 
 from selenium.webdriver.support.events import AbstractEventListener
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
@@ -51,7 +53,11 @@ class WebDriverListener(AbstractEventListener):
 
   def before_click(self, element, driver):
     friendly_name = self._friendly_tag_name(element)
-    self.lastElement = (self._tidyText(element.text).encode('utf8'), friendly_name)
+    if sys.version_info < (3, 0, 0):
+      self.lastElement = (self._tidyText(element.text).encode('utf8'), friendly_name)
+    else:
+      self.lastElement = (self._tidyText(element.text), friendly_name)
+
     self._log('Clicking on "%s" %s...' % self.lastElement)
 
   def before_find(self, by, value, driver):
@@ -66,7 +72,7 @@ class WebDriverListener(AbstractEventListener):
   def before_navigate_to(self, url, driver):
     if self._driver is None:
       self._driver = driver
-    print '=' * 80
+    logging.info( '=' * 80)
     self._log('Navigating to %s...' % url)
 
   def on_exception(self, exception, driver):
@@ -85,8 +91,8 @@ class WebDriverListener(AbstractEventListener):
     ts = time()
     timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
     path = dirname(abspath(getfile(WebDriverListener)))
-    print('Saving screenshot: ')
-    print(exception.__class__.__name__ + '-' + timestamp + '.png')
+    logging.info('Saving screenshot: ')
+    logging.info(exception.__class__.__name__ + '-' + timestamp + '.png')
     return '%s/../Output/%s-%s.png' % (path, exception.__class__.__name__, timestamp)
 
   def _friendly_tag_name(self, element):
@@ -107,9 +113,9 @@ class WebDriverListener(AbstractEventListener):
     Helper *internal* method to print out messages from this listener
     """
     d = dict(self._driver.capabilities)
-    print ''
-    print LOG_HEADER % d['browserName'],
-    print msg
+    logging.info( '')
+    logging.info( LOG_HEADER % d['browserName'])
+    logging.info( msg)
 
   def _tidyText(self, text):
     """

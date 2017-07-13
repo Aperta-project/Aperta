@@ -8,13 +8,14 @@ import logging
 import random
 import string
 import time
+import sys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
 from Base.Resources import paper_tracker_search_queries
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from authenticated_page import AuthenticatedPage
+from .authenticated_page import AuthenticatedPage
 
 
 __author__ = 'jgray@plos.org'
@@ -376,13 +377,18 @@ class PaperTrackerPage(AuthenticatedPage):
           db_title = db_title.strip()
           page_title = title.text.strip()
           time.sleep(2)
-          if isinstance(db_title, unicode) and isinstance(page_title, unicode):
-            # Split both to eliminate differences in whitespace
-            db_title = db_title.split()
-            page_title = page_title.split()
-            logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
-                                                                     page_title,
-                                                                     count + 1))
+          # Split both to eliminate differences in whitespace
+          db_title = db_title.split()
+          page_title = page_title.split()
+          logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
+                                                                   page_title,
+                                                                   count + 1))
+          if sys.version_info < (3, 0, 0) and (str(type(db_title)) == "<type 'unicode'>") and (str(type(page_title)) == "<type 'unicode'>") :
+
+            assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
+                                                                                       page_title,
+                                                                                       count + 1)
+          elif sys.version_info >= (3, 0, 0):
             assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
                                                                                        page_title,
                                                                                        count + 1)
@@ -665,10 +671,15 @@ class PaperTrackerPage(AuthenticatedPage):
       papers = self._get_paper_list(journal_ids, sort_by='title')
       db_title = papers[0][1].strip()
       db_title = self.get_text(db_title)
-      if isinstance(paper_tracker_title, unicode) and isinstance(db_title, unicode):
-        # Split both to eliminate differences in whitespace
-        paper_tracker_title = paper_tracker_title.split()
-        db_title = db_title.split()
+
+      # Split both to eliminate differences in whitespace
+      paper_tracker_title = paper_tracker_title.split()
+      db_title = db_title.split()
+
+      if sys.version_info < (3, 0, 0) and (str(type(paper_tracker_title)) == "<type 'unicode'>")  and (str(type(db_title)) == "<type 'unicode'>") :
+        assert paper_tracker_title == db_title, \
+            'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
+      elif sys.version_info >= (3, 0, 0):
         assert paper_tracker_title == db_title, \
             'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
       else:
@@ -684,7 +695,7 @@ class PaperTrackerPage(AuthenticatedPage):
       paper_tracker_title = paper_tracker_title.strip()
       db_title = papers[0][1].strip()
       db_title = self.get_text(db_title)
-      if isinstance(paper_tracker_title, unicode) and isinstance(db_title, unicode):
+      if (str(type(paper_tracker_title)) == "<type 'unicode'>") and (str(type(db_title)) == "<type 'unicode'>") :
         # Split both to eliminate differences in whitespace
         paper_tracker_title = paper_tracker_title.split()
         db_title = db_title.split()

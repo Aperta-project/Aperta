@@ -1,14 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-
 import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 from Base.Resources import login_valid_pw, creator_login1, staff_admin_login, internal_editor_login
 
 """

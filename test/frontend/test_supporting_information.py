@@ -18,8 +18,8 @@ from Base.Resources import docs, figures, supporting_info_files, users, editoria
 from frontend.common_test import CommonTest
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Cards.supporting_information_card import SICard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 

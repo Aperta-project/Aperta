@@ -4,7 +4,7 @@ import logging
 import os
 import random
 import time
-import urllib
+import six.moves.urllib.parse as urllib
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By

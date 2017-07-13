@@ -16,8 +16,8 @@ from frontend.Cards.ad_hoc_author_card import AHAuthorCard
 from frontend.Cards.ad_hoc_editor_card import AHEditorCard
 from frontend.Cards.ad_hoc_reviewer_card import AHReviewerCard
 from frontend.Cards.ad_hoc_staff_card import AHStaffCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 

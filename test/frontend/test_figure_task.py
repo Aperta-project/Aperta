@@ -26,11 +26,11 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
-from Cards.figures_card import FiguresCard
+from .Cards.figures_card import FiguresCard
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.figures_task import FiguresTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.figures_task import FiguresTask
 
 __author__ = 'jgray@plos.org'
 

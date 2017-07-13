@@ -3,7 +3,8 @@
 import hashlib
 import logging
 import os
-import urllib
+import six.moves.urllib.parse as urllib
+import sys
 
 import time
 from selenium.webdriver.common.by import By
@@ -176,7 +177,11 @@ class CoverLetterCard(BaseCard):
     # original one
     try:
       files = filter(os.path.isfile, os.listdir('/tmp'))
-      files.sort(key=lambda x: os.path.getmtime(x))
+      if sys.version_info >= (3, 0, 0):
+        files = list(files)
+        files = sorted(files, key = lambda x: os.path.getmtime(x))
+      else:
+        files.sort(lambda x: os.path.getmtime(x))
       newest_file = files[-1]
       logging.info(newest_file)
     except IndexError:

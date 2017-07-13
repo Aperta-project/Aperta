@@ -14,12 +14,12 @@ from Base.PostgreSQL import PgSQL
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, creator_login1
-from Cards.register_decision_card import RegisterDecisionCard
+from .Cards.register_decision_card import RegisterDecisionCard
 from frontend.Cards.send_to_apex_card import SendToApexCard
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.upload_manuscript_task import UploadManuscriptTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'scadavid@plos.org'
 
@@ -155,9 +155,9 @@ class SendToApexTest(CommonTest):
     db_title, db_abstract = PgSQL().query('SELECT title, abstract '
                                           'FROM papers '
                                           'WHERE short_doi=%s;', (short_doi,))[0]
-    db_title = unicode(db_title, encoding='utf-8', errors='strict')
+    db_title = str(db_title, encoding='utf-8', errors='strict')
     if db_abstract:
-      db_abstract = unicode(db_abstract, encoding='utf-8', errors='strict')
+      db_abstract = str(db_abstract, encoding='utf-8', errors='strict')
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Billing')

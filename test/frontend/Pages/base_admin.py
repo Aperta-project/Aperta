@@ -20,7 +20,7 @@ from selenium.webdriver.common.by import By
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage
+from .authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
 

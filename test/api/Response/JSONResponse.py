@@ -9,8 +9,9 @@ Python's JSONPath can be installed via the following command:
 __author__ = 'jgray@plos.org'
 
 import json
+import logging
 from jsonpath import jsonpath
-from AbstractResponse import AbstractResponse
+from .AbstractResponse import AbstractResponse
 
 
 class JSONResponse(AbstractResponse):
@@ -21,8 +22,8 @@ class JSONResponse(AbstractResponse):
     try:
       self._json = json.loads(response)
     except Exception as e:
-      print 'Error while trying to parse response as JSON!'
-      print 'Actual response was: "%s"' % response
+      logging.error( 'Error while trying to parse response as JSON!')
+      logging.error('Actual response was: "%s"' % response)
       raise e
 
   def get_json(self):

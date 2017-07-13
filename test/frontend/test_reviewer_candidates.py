@@ -12,17 +12,18 @@ import logging
 import os
 import random
 import time
+import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import users, reviewer_login, academic_editor_login, editorial_users
-from Cards.invite_reviewer_card import InviteReviewersCard
-from Cards.invite_ae_card import InviteAECard
-from Cards.reviewer_candidates_card import ReviewerCandidatesCard
+from .Cards.invite_reviewer_card import InviteReviewersCard
+from .Cards.invite_ae_card import InviteAECard
+from .Cards.reviewer_candidates_card import ReviewerCandidatesCard
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.reviewer_candidates_task import ReviewerCandidatesTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.reviewer_candidates_task import ReviewerCandidatesTask
 
 __author__ = 'jgray@plos.org'
 
@@ -286,9 +287,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     # Get selected data from db
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    manuscript_title = unicode(manuscript_title,
-                               encoding='utf-8',
-                               errors='strict')
+    manuscript_title = six.u(manuscript_title)
 
     # Login as Reviewer and accept invitation
     dashboard_page = self.cas_login(email=reviewer_login['email'])

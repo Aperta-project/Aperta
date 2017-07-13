@@ -5,11 +5,13 @@ import json
 import logging
 import platform
 import pytz
-import os
 import random
 import re
 import tempfile
 from time import sleep
+import sys
+import six
+import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,11 +22,11 @@ from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
 import requests
 
-from CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
-from LinkVerifier import LinkVerifier
-from Resources import local_tz
-import CustomExpectedConditions
-import Config as Config
+from .CustomExpectedConditions import ElementToBeClickable
+from .CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from .LinkVerifier import LinkVerifier
+from .Resources import local_tz
+from .Config import wait_timeout, environment, base_url
 
 __author__ = 'jkrzemien@plos.org'
 
@@ -40,7 +42,7 @@ class PlosPage(object):
   def __init__(self, driver, urlSuffix=''):
     # Internal WebDriver-related protected members
     self._driver = driver
-    self._wait = WebDriverWait(self._driver, Config.wait_timeout)
+    self._wait = WebDriverWait(self._driver, wait_timeout)
     self._actions = ActionChains(self._driver)
 
     base_url = self.__buildEnvironmentURL(urlSuffix)
@@ -52,7 +54,8 @@ class PlosPage(object):
         self._driver.get(base_url)
         self._driver.navigated = True
       except TimeoutException as toe:
-        logging.info('\t[WebDriver Error] WebDriver timed out while trying to load the requested ' \
+        logging.error('\t[WebDriver Error] WebDriver timed out while trying to load the requested ' \
+
               'web page "{0}".'.format(base_url))
         raise toe
 
@@ -74,15 +77,15 @@ class PlosPage(object):
     **Returns** A string representing the whole URL from where our test starts
 
     """
-    env = Config.environment.lower()
-    base_url = self.PROD_URL if env == 'prod' else Config.base_url + urlSuffix
-    return base_url
+    env = environment.lower()
+    baseurl = self.PROD_URL if env == 'prod' else base_url + urlSuffix
+    return baseurl
 
   def _get(self, locator):
     try:
       return self._wait.until(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
+      logging.error('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
             'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
@@ -103,7 +106,7 @@ class PlosPage(object):
     try:
       return self._wait.until(expected_conditions.presence_of_element_located(locator))
     except TimeoutException:
-      logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
+      logging.error( '\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
             'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
 
@@ -116,8 +119,9 @@ class PlosPage(object):
     try:
       return self._wait.until(expected_conditions.invisibility_of_element_located(locator))
     except TimeoutException:
-      logging.info('\t[WebDriver Error] WebDriver timed out while trying to look for hidden '
-                   'element by {0}.'.format(locator))
+      logging.error( '\t[WebDriver Error] WebDriver timed out while trying to look for hidden element by ' \
+            '{0}.'.format(locator))
+
       raise ElementDoesNotExistAssertionError(locator)
 
   def _check_for_invisible_element_boolean(self, locator):
@@ -145,7 +149,7 @@ class PlosPage(object):
     try:
       return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      logging.info('\t[WebDriver Error] Found element using {0} (test was for element ' \
+      logging.error( '\t[WebDriver Error] Found element using {0} (test was for element ' \
             'absence).'.format(locator))
       raise ElementExistsAssertionError(locator)
     finally:
@@ -159,9 +163,9 @@ class PlosPage(object):
     :param multiplier: a multiplier, default (5) applied against the base wait_timeout to wait for
       element
     """
-    timeout = Config.wait_timeout * multiplier
+    timeout = wait_timeout * multiplier
     self.set_timeout(timeout)
-    self._wait.until(CustomExpectedConditions.ElementToBeClickable(element))
+    self._wait.until(ElementToBeClickable(element))
     self.restore_timeout()
 
   def _wait_for_text_be_present_in_element(self, locator, text,
@@ -172,7 +176,7 @@ class PlosPage(object):
     :param text: text to be present in the located element
     :param multiplier: the multiplier of Config.wait_timeout to wait for a locator to be not present
     """
-    timeout = Config.wait_timeout * multiplier
+    timeout = wait_timeout * multiplier
     self.set_timeout(timeout)
     self._wait.until(expected_conditions.text_to_be_present_in_element(
       locator, text))
@@ -185,12 +189,13 @@ class PlosPage(object):
     :param multiplier: the multiplier of Config.wait_timeout to wait for a locator to be not present
     :return: True or Error
     """
-    timeout = Config.wait_timeout * multiplier
+    timeout = wait_timeout * multiplier
     self.set_timeout(timeout)
     try:
       return self._wait.until_not(expected_conditions.visibility_of_element_located(locator))
     except TimeoutException:
-      logging.info('\t[WebDriver Error] Found element using {0} (test was for element ' \
+      logging.error( '\t[WebDriver Error] Found element using {0} (test was for element ' \
+
             'absence).'.format(locator))
       raise ElementExistsAssertionError(locator)
     finally:
@@ -212,7 +217,7 @@ class PlosPage(object):
     try:
       text = text.replace(u'\xa0', u' ')
     except UnicodeDecodeError:
-      text = unicode(text, 'utf-8')
+      text = six.u(text)
       text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 
@@ -225,28 +230,35 @@ class PlosPage(object):
     :string_2: Text string (may be Unicode or not)
     :return: True if compare is OK, is not, an assertion will fail
     """
-    if isinstance(string_1, unicode) and isinstance(string_2, unicode):
-      # Split both to eliminate differences in whitespace
-      string_1 = string_1.split()
-      string_2 = string_2.split()
-      assert string_1 == string_2, \
-        'String 1: {0} != String 2: {1}'.format(string_1, string_2)
-    elif isinstance(string_1, unicode) and not isinstance(string_2, unicode):
+    if sys.version_info >= (3,0,0):
       string_1 = PlosPage.normalize_spaces(string_1).split()
-      string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
-      assert string_1 == string_2, \
-        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
-    elif not isinstance(string_1, unicode) and isinstance(string_2, unicode):
-      string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
       string_2 = PlosPage.normalize_spaces(string_2).split()
       assert string_1 == string_2, \
-        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
+        'String 1: {0} != String 2: {1}'.format(string_1, string_2)
+      return True
     else:
-      string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
-      string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
-      assert string_1 == string_2, \
-        'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
-    return True
+      if (str(type(string_1)) == "<type 'unicode'>") and (str(type(string_2)) == "<type 'unicode'>"):
+        # Split both to eliminate differences in whitespace
+        string_1 = string_1.split()
+        string_2 = string_2.split()
+        assert string_1 == string_2, \
+          'String 1: {0} != String 2: {1}'.format(string_1, string_2)
+      elif (str(type(string_1)) == "<type 'unicode'>") and not (str(type(string_2)) == "<type 'unicode'>"):
+        string_1 = PlosPage.normalize_spaces(string_1).split()
+        string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
+        assert string_1 == string_2, \
+          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
+      elif not (str(type(string_1)) == "<type 'unicode'>") and (str(type(string_2)) == "<type 'unicode'>"):
+        string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
+        string_2 = PlosPage.normalize_spaces(string_2).split()
+        assert string_1 == string_2, \
+          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
+      else:
+        string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
+        string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
+        assert string_1 == string_2, \
+          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
+      return True
 
   @staticmethod
   def get_random_bool():
@@ -287,11 +299,14 @@ class PlosPage(object):
     self._wait = WebDriverWait(self._driver, new_timeout)
 
   def restore_timeout(self):
-    self._driver.implicitly_wait(Config.wait_timeout)
-    self._wait = WebDriverWait(self._driver, Config.wait_timeout)
+    self._driver.implicitly_wait(wait_timeout)
+    self._wait = WebDriverWait(self._driver, wait_timeout)
 
   def get_text(self, s):
-    soup = BeautifulSoup(s.decode('utf-8', 'ignore'), 'html.parser')
+    if sys.version_info < (3, 0, 0):
+      s = s.decode('utf-8', 'ignore')
+
+    soup = BeautifulSoup(s, 'html.parser')
     clean_out = soup.get_text()
     return clean_out
 
@@ -360,7 +375,7 @@ class PlosPage(object):
       self._driver.find_element(By.ID, locator)
       return True
     except NoSuchElementException:
-      logging.info('\t[WebDriver] Element {0} does not exist.'.format(locator))
+      logging.error( '\t[WebDriver] Element {0} does not exist.'.format(locator))
       return False
 
   def wait_for_animation(self, selector):
@@ -390,3 +405,4 @@ class PlosPage(object):
     """
     local_dto = utc_dto.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(local_tz))
     return local_dto
+

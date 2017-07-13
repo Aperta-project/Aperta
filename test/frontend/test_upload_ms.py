@@ -1,17 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import logging
-import os
 import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, editorial_users
-#from Base.PostgreSQL import PgSQL
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.upload_manuscript_task import UploadManuscriptTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
 """

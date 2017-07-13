@@ -4,6 +4,7 @@ import logging
 import time
 import os
 import random
+import sys
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -400,6 +401,8 @@ class InviteCard(BaseCard):
       invitation_items = self._get(self._invitation_items).find_elements_by_class_name('invitation-item')
       expanded_items = filter(lambda item: 'invitation-item--show' in item.get_attribute('class'),
                               invitation_items)
+      if sys.version_info >= (3, 0, 0):
+        expanded_items = list(expanded_items)
       assert len(expanded_items) == 1, 'There is more than one expanded item: {0}'.format(expanded_items)
 
     # Verify editable state when an invitation item is expanded
@@ -414,7 +417,7 @@ class InviteCard(BaseCard):
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance('invitation-edit-body')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
-    paragraph = generate_paragraph()[-1]
+    paragraph = generate_paragraph()[-1][:500]
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=paragraph)
     self._get(self._invitation_save_button).click()
     # Collapse and re-expand this invitation item, and check that the paragraph is present

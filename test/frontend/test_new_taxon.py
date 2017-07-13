@@ -13,8 +13,8 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from Base.Resources import staff_admin_login, users, editorial_users
-from Pages.workflow_page import WorkflowPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.Tasks.new_taxon_task import NewTaxonTask
 from frontend.Cards.new_taxon_card import NewTaxonCard
 

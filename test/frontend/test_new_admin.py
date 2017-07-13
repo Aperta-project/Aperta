@@ -6,11 +6,11 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import admin_users, users, external_editorial_users, editorial_users, \
     billing_staff_login
-from Pages.base_admin import BaseAdminPage
-from Pages.admin_workflows import AdminWorkflowsPage
-from Pages.admin_cards import AdminCardsPage
-from Pages.admin_users import AdminUsersPage
-from Pages.admin_settings import AdminSettingsPage
+from .Pages.base_admin import BaseAdminPage
+from .Pages.admin_workflows import AdminWorkflowsPage
+from .Pages.admin_cards import AdminCardsPage
+from .Pages.admin_users import AdminUsersPage
+from .Pages.admin_settings import AdminSettingsPage
 
 from frontend.common_test import CommonTest
 

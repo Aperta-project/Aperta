@@ -15,9 +15,9 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, handling_editor_login, cover_editor_login, \
     reviewer_login, academic_editor_login
 from frontend.common_test import CommonTest
-from Cards.assign_team_card import AssignTeamCard
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.assign_team_card import AssignTeamCard
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'jgray@plos.org'
 

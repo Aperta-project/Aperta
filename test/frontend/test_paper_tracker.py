@@ -6,7 +6,7 @@ import random
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
-from Pages.paper_tracker import PaperTrackerPage
+from .Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import editorial_users, staff_admin_login
 
 """

@@ -10,10 +10,10 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import creator_login1, creator_login2, creator_login3, creator_login4, \
     creator_login5, staff_admin_login
 from frontend.common_test import CommonTest
-from Cards.initial_decision_card import InitialDecisionCard
-from Tasks.figures_task import FiguresTask
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Cards.initial_decision_card import InitialDecisionCard
+from .Tasks.figures_task import FiguresTask
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 """
 This behavioral test case validates Paper submission and initial Decision.

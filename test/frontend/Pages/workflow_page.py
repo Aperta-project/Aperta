@@ -5,7 +5,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
-from authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
+from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE
 from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.initial_decision_card import InitialDecisionCard

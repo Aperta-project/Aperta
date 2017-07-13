@@ -13,8 +13,8 @@ from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
 from Base.Resources import ascii_only_users, editorial_users, staff_admin_login
 from frontend.common_test import CommonTest
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
 
 """
 This test case validates the Aperta Discussion Forum
@@ -217,7 +217,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     topic = 'Testing discussion on paper {0}'.format(short_doi)
-    msg_1 = generate_paragraph()[2]
+    msg_1 = generate_paragraph()[2][:500]
     # How to call the discussion section
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[collaborator_1,
@@ -261,7 +261,7 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
                                   'front end: {1}'.format(msg_1, comment_body)
-    msg_2 = generate_paragraph()[2]
+    msg_2 = generate_paragraph()[2][:500]
     discussion_back_link = ms_viewer._get(ms_viewer._discussion_back_link)
     discussion_back_link.click()
     ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])

@@ -7,7 +7,7 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import admin_users, users, external_editorial_users, editorial_users, \
     super_admin_login, billing_staff_login
-from Pages.admin import AdminPage
+from .Pages.admin import AdminPage
 from frontend.common_test import CommonTest
 
 """

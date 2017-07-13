@@ -4,7 +4,7 @@ __author__ = 'jkrzemien@plos.org'
 
 from types import FunctionType
 from unittest import TestCase
-import Config
+from .Config import run_against_grid, run_against_appium, grid_enabled_browsers, appium_enabled_browsers
 
 
 def __replicate_test_method(cls, original_test, new_test_name):
@@ -49,8 +49,8 @@ def MultiBrowserFixture(cls):
       original_test = getattr(cls, attr_name, None)
 
       # Compile all enabled/available browsers
-      if Config.run_against_grid == True: browsers += Config.grid_enabled_browsers
-      if Config.run_against_appium == True: browsers += Config.appium_enabled_browsers
+      if run_against_grid == True: browsers += grid_enabled_browsers
+      if run_against_appium == True: browsers += appium_enabled_browsers
       #if Config.run_against_grid: browsers += Config.grid_enabled_browsers
       #if Config.run_against_appium: browsers += Config.appium_enabled_browsers
 

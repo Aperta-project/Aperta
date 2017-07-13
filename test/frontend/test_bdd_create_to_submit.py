@@ -4,16 +4,16 @@ import logging
 import os
 import random
 import time
+import sys
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, admin_users, editorial_users
 from frontend.common_test import CommonTest
-from frontend.Tasks.basetask import BaseTask
-from Cards.initial_decision_card import InitialDecisionCard
-from Pages.dashboard import DashboardPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Tasks.upload_manuscript_task import UploadManuscriptTask
+from .Cards.initial_decision_card import InitialDecisionCard
+from .Pages.dashboard import DashboardPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.workflow_page import WorkflowPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 
 """
 This behavioral test case validates the Aperta Create New Submission through Submit process.
@@ -67,6 +67,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
+
   def test_validate_full_submit(self, init=True):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission
@@ -96,7 +97,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page.encode('utf8'):
+      if sys.version_info < (3, 0, 0):
+        paper_title_from_page = paper_title_from_page.encode('utf8')
+      if 'full submit' in paper_title_from_page:
         count += 1
         time.sleep(1)
         continue
@@ -104,7 +107,10 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
         break
       logging.warning('Conversion never completed - still showing interim title')
 
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    if sys.version_info >= (3, 0, 0):
+      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
+    else:
+      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     manuscript_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
@@ -157,14 +163,18 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page.encode('utf8'):
+      if sys.version_info >= (3, 0, 0):
+        title = paper_title_from_page
+      else:
+        title = paper_title_from_page.encode('utf8')
+      if 'full submit' in title:
         count += 1
         time.sleep(1)
         continue
       else:
         break
-      logging.warning('Conversion never completed - still showing interim title')
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+        # logging.warning('Conversion never completed - still showing interim title')
+    logging.info('paper_title_from_page: {0}'.format(title))
     manuscript_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     manuscript_page.click_submit_btn()
@@ -209,7 +219,10 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     short_doi = ms_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     paper_title_from_page = ms_page.get_paper_title_from_page()
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    if sys.version_info >= (3, 0, 0):
+      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
+    else:
+      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     ms_page.complete_task('Upload Manuscript')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
@@ -263,8 +276,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # look for errors here
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
-        '{0} not Please upload your source file'.format(warning.get_attribute('title'))
+      '{0} not Please upload your source file'.format(warning.get_attribute('title'))
     ms_page.complete_task('Upload Manuscript', data={'source': ''})
+
 
 @MultiBrowserFixture
 class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
@@ -308,6 +322,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
+
   def test_validate_initial_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making an initial submission,
@@ -341,7 +356,9 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = ms_page.get_paper_title_from_page()
-      if 'initial submit' in paper_title_from_page.encode('utf8'):
+      if sys.version_info < (3, 0, 0):
+        paper_title_from_page = paper_title_from_page.encode('utf8')
+      if 'initial submit' in paper_title_from_page:
         count += 1
         time.sleep(1)
         continue
@@ -469,7 +486,9 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'initial submit' in paper_title_from_page.encode('utf8'):
+      if sys.version_info < (3, 0, 0):
+        paper_title_from_page = paper_title_from_page.encode('utf8')
+      if 'initial submit' in paper_title_from_page:
         count += 1
         time.sleep(1)
         continue
@@ -565,6 +584,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

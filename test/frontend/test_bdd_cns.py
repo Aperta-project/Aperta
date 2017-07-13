@@ -9,8 +9,8 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, users
 
 from frontend.common_test import CommonTest
-from Pages.dashboard import DashboardPage
-from Pages.manuscript_viewer import ManuscriptViewerPage
+from .Pages.dashboard import DashboardPage
+from .Pages.manuscript_viewer import ManuscriptViewerPage
 
 """
 This behavioral test case validates the Aperta Create New Submission through Submit process.

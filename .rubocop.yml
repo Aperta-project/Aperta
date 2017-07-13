@@ -59,6 +59,7 @@ Style/StringLiteralsInInterpolation:
   Enabled: false
 
 Metrics/LineLength:
+  Max: 120
   Exclude:
     # Nested questions contain, mostly, long strings of english text,
     # which need consistent spacing.

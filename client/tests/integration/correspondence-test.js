@@ -86,6 +86,18 @@ test('User can click on a correspondence to view it\'s recodes', function(assert
   });
 });
 
+test('Correspondence column displays the subject for email generated correspondence', function(assert) {
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence');
+  return andThen(function() {
+    assert.ok(find('.correspondence-history'), 'Correspondence History');
+    assert.equal(find('.correspondence-table tr:last td:nth-child(1)').text().trim(), formatDate(correspondence.get('date'), {}));
+    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), correspondence.get('subject'));
+    assert.equal(find('.correspondence-table tr:last td:nth-child(3)').text().trim(), correspondence.get('recipient'));
+    assert.equal(find('.correspondence-table tr:last td:nth-child(4)').text().trim(), correspondence.get('manuscriptVersionStatus'));
+    assert.equal(find('.correspondence-table tr:last td:nth-child(5)').text().trim(), correspondence.get('sender'));
+  });
+});
+
 test(`Authorized User can see the 'Add Correspondence' button`, (assert) => {
   visit('/papers/' + paper.get('shortDoi') + '/correspondence');
   return andThen(() => {
@@ -159,7 +171,7 @@ test('Authorized User can create external correspondence', (assert) => {
   click('.correspondence-submit');
 
   andThen(() => {
-    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Physics');
+    assert.equal(find('.correspondence-table tr:last td:nth-child(2)').text().trim(), 'Good Description');
   });
 });
 
@@ -224,3 +236,4 @@ test('Invalid Records are not on list when process is aborted', (assert) => {
     });
   });
 });
+

@@ -30,8 +30,14 @@
       padding-top: 2rem;
       padding-bottom: 2rem;
     }
+
+    .unavailable {
+      color: $aperta-grey;
+      font-style: italic;
+    }
   }
 
+  .correspondence-manuscript-column { min-width: 190px }
   .correspondence-date-column { min-width: 150px; }
   .correspondence-subject-column { min-width: 200px; }
   .correspondence-recipient-column,

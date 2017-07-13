@@ -9,7 +9,6 @@ class Correspondence < ActiveRecord::Base
   has_many :attachments, as: :owner,
                          class_name: 'CorrespondenceAttachment',
                          dependent: :destroy
-  after_save :save_manuscript_version_status
 
   with_options if: :external? do |correspondence|
     correspondence.validates :description,
@@ -19,12 +18,14 @@ class Correspondence < ActiveRecord::Base
                              presence: true,
                              allow_blank: false
   end
+  after_save :save_manuscript_version_status
 
   def external?
     external
   end
 
   def save_manuscript_version_status
+    return if external?
     paper = self.paper
     # we have cases where correspondence(s) are not
     # created with a paper. Cards like Assigned AE emails,

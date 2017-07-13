@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615205634) do
+ActiveRecord::Schema.define(version: 20170706190916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,7 +256,6 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.integer  "published_by_id"
     t.string   "history_entry"
     t.boolean  "workflow_display_only",   default: false, null: false
-    t.string   "history_entry"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -372,11 +371,14 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.string   "manuscript_version_status"
+    t.boolean  "external"
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"
-    t.string   "manuscript_version_status"
+  end
 
+  add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
   add_index "email_logs", ["message_id"], name: "index_email_logs_on_message_id", using: :btree
   add_index "email_logs", ["paper_id"], name: "index_email_logs_on_paper_id", using: :btree
   add_index "email_logs", ["task_id"], name: "index_email_logs_on_task_id", using: :btree
@@ -778,25 +780,6 @@ ActiveRecord::Schema.define(version: 20170615205634) do
     t.boolean  "dismissed",                       default: false
   end
 
-  create_table "simple_reports", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "initially_submitted",         default: 0, null: false
-    t.integer  "fully_submitted",             default: 0, null: false
-    t.integer  "invited_for_full_submission", default: 0, null: false
-    t.integer  "checking",                    default: 0, null: false
-    t.integer  "in_revision",                 default: 0, null: false
-    t.integer  "accepted",                    default: 0, null: false
-    t.integer  "withdrawn",                   default: 0, null: false
-    t.integer  "rejected",                    default: 0, null: false
-    t.integer  "new_accepted",                default: 0, null: false
-    t.integer  "new_rejected",                default: 0, null: false
-    t.integer  "new_withdrawn",               default: 0, null: false
-    t.integer  "new_initial_submissions",     default: 0, null: false
-    t.integer  "in_process_balance",          default: 0, null: false
-    t.integer  "unsubmitted",                 default: 0, null: false
-  end
-
   create_table "snapshots", force: :cascade do |t|
     t.string   "source_type"
     t.integer  "source_id"
@@ -978,8 +961,8 @@ ActiveRecord::Schema.define(version: 20170615205634) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
-  add_foreign_key "settings", "setting_templates"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

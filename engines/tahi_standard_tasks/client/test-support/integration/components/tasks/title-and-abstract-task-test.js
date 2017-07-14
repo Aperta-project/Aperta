@@ -1,6 +1,6 @@
 import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-
+import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 // Pretend like you're in client/tests
 import FakeCanService from '../../../helpers/fake-can-service';
 import wait from 'ember-test-helpers/wait';
@@ -9,7 +9,10 @@ import {findEditor} from 'tahi/tests/helpers/rich-text-editor-helpers';
 moduleForComponent(
   'title-and-abstract-task',
   'Integration | Components | Tasks | Title and Abstract', {
-    integration: true
+    integration: true,
+    beforeEach() {
+      registerCustomAssertions();
+    }
   });
 
 test('User can edit the title and abstract', function(assert) {

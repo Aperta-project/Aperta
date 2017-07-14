@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model() {
-    return this.store.findAll('admin-journal');
+  redirect(params) {
+    this.transitionTo('admin.journals.workflows', params);
   }
+
 });

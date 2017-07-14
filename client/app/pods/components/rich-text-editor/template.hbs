@@ -1,12 +1,16 @@
 {{#if disabled}}
   {{{value}}}
 {{else}}
-  {{tinymce-editor
-    class=class
-    name=name
-    onValueChanged=(action onContentsChanged)
-    options=editorOptions
-    placeholder=placeholder
-    value=value
-  }}
+  <div class="rich-text-editor-container {{ if errorMessage "error" }}">
+    {{tinymce-editor
+      class=class
+      name=name
+      onValueChanged=(action onContentsChanged)
+      options=editorOptions
+      value=value
+    }}
+    {{error-message message=errorMessage
+                  displayIcon=displayIcon
+                  displayText=displayText}}
+  </div>
 {{/if}}

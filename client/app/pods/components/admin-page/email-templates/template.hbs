@@ -1,8 +1,5 @@
 <h2>Email Templates</h2>
 {{#if journal}}
-  <button class="button-primary button--blue">
-    ADD EMAIL TEMPLATE
-  </button>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -17,7 +14,7 @@
           <td>{{template.text}}</td>
           <td>{{template.subject}}</td>
           <td>
-            {{#link-to 'admin.cc.edit_email' template.id}}
+            {{#link-to 'admin.edit_email' template.id}}
               {{fa-icon "pencil"}} Edit
             {{/link-to}}
           </td>
@@ -26,5 +23,5 @@
     </tbody>
   </table>
 {{else}}
-  <p>Please select a journal to view email templates</p>
+  <h4>Please select a journal to view email templates.</h4>
 {{/if}}

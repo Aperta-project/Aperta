@@ -4,7 +4,15 @@
     <div class="base-layout">
       <h1>Correspondence History</h1>
 
-      {{correspondence-list model=model paper=paper}}
+        {{#if (can "manage_workflow" paper)}}
+          {{#link-to
+            'paper.correspondence.new'
+            paper
+            id='add-correspondence-button'}}
+            {{fa-icon icon="plus-square-o"}} &nbsp; Add Correspondence
+          {{/link-to}}
+        {{/if}}
+      {{correspondence-list model=sortedSentAt paper=paper}}
     </div>
   </div>
 </main>

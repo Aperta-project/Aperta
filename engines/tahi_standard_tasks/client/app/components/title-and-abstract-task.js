@@ -16,7 +16,8 @@ export default TaskComponent.extend({
   validateData() {
     this.validateAll();
     const taskErrors = this.validationErrorsPresent();
-
+    this.validate('paperTitle', this.get('task.paperTitle'));
+    this.validate('paperAbstract', this.get('task.paperAbstract'));
     if(taskErrors) {
       this.set('validationErrors.completed', 'Please fix all errors');
     }
@@ -33,7 +34,7 @@ export default TaskComponent.extend({
 
     focusOut() {
       this.set('validationErrors.completed', '');
-      this.validateAll();
+      this.validateData();
       if(!this.validationErrorsPresent()) {
         return this.get('task').save();
       }

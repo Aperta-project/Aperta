@@ -86,7 +86,8 @@ class TokenInvitationsController < ApplicationController
 
   def thank_you_message
     journal_name = invitation.paper.journal.name
-    "Thank you for agreeing to review for #{journal_name}."
+    verb = invitation.invitee_role == 'Reviewer' ? 'review' : 'edit'
+    "Thank you for agreeing to #{verb} for #{journal_name}."
   end
 
   def use_authentication?

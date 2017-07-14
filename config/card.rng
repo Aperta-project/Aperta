@@ -33,6 +33,12 @@
       <attribute name="content-type">
         <value>radio</value>
       </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <optional>
         <attribute name="default-answer-value"/>
       </optional>
@@ -67,6 +73,12 @@
       </optional>
       <attribute name="content-type">
         <value>check-box</value>
+      </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="default-answer-value">
@@ -119,6 +131,12 @@
       </attribute>
       <attribute name="value-type">
         <value>attachment</value>
+      </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="allow-multiple-uploads">
@@ -190,6 +208,12 @@
       <attribute name="content-type">
         <value>date-picker</value>
       </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
+      </attribute>
       <element name="text">
         <text/>
       </element>
@@ -209,6 +233,12 @@
       </attribute>
       <attribute name="content-type">
         <value>dropdown</value>
+      </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
@@ -244,6 +274,12 @@
       </optional>
       <attribute name="content-type">
         <value>tech-check</value>
+      </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="default-answer-value">
@@ -297,6 +333,12 @@
         <choice>
           <value>short-input</value>
           <value>paragraph-input</value>
+        </choice>
+      </attribute>
+      <attribute name="required-field">
+        <choice>
+          <value>true</value>
+          <value>false</value>
         </choice>
       </attribute>
       <optional>

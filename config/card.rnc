@@ -20,6 +20,7 @@ radio-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean"},
                   attribute content-type { "radio" },
+                  attribute required-field { "true" | "false" },
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
                   element instruction-text { text }?,
@@ -31,6 +32,7 @@ radio-input = element content {
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
+                attribute required-field { "true" | "false" },
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
@@ -44,6 +46,7 @@ file-uploader = element content {
                     attribute ident { text }?,
                     attribute content-type { "file-uploader" },
                     attribute value-type { "attachment" },
+                    attribute required-field { "true" | "false" },
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
@@ -62,6 +65,7 @@ date-picker = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
+                  attribute required-field { "true" | "false" },
                   element text { text }
               }
 
@@ -70,6 +74,7 @@ dropdown-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
+                  attribute required-field { "true" | "false" },
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
                   element instruction-text { text }?,
@@ -81,6 +86,7 @@ dropdown-input = element content {
 tech-check = element content {
                 attribute ident { text }?,
                 attribute content-type { "tech-check" },
+                attribute required-field { "true" | "false" },
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
@@ -94,6 +100,7 @@ text-input = element content {
                  attribute value-type { "text" | "html" },
                  attribute editor-style { text }?,
                  attribute content-type { "short-input" | "paragraph-input" },
+                 attribute required-field { "true" | "false" },
                  attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
                  element instruction-text { text }?,

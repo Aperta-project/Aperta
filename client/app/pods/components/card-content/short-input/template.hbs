@@ -1,8 +1,9 @@
-<label class="content-text">{{{content.text}}}</label>
+<label class="content-text">{{{content.text}}}{{#if content.isRequired}}<span class="required">*</span>{{/if}}</label>
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{input
   value=(readonly answer.value)
   class="form-control"
   change=(action "valueChanged")
   input=(action "valueChanged")
+  isRequired=content.isRequired
   disabled=disabled}}

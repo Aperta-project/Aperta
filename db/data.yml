@@ -12689,6 +12689,7 @@ email_logs:
   - journal_id
   - additional_context
   - body
+  - manuscript_version_status
   records: 
   - - '1'
     - no-reply@example.com

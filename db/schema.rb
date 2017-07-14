@@ -254,8 +254,8 @@ ActiveRecord::Schema.define(version: 20170706190916) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
-    t.boolean  "workflow_display_only",   default: false, null: false
     t.string   "history_entry"
+    t.boolean  "workflow_display_only",   default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -371,6 +371,11 @@ ActiveRecord::Schema.define(version: 20170706190916) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.string   "manuscript_version_status"
+    t.boolean  "external"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -956,8 +961,8 @@ ActiveRecord::Schema.define(version: 20170706190916) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
-  add_foreign_key "settings", "setting_templates"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

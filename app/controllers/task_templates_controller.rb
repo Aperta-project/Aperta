@@ -27,6 +27,13 @@ class TaskTemplatesController < ApplicationController
     respond_with task_template
   end
 
+  def similarity_check_settings
+    requires_user_can(:administer, journal)
+    task_template.setting('ithenticate_automation').update!(value:
+      params[:value])
+    respond_with task_template
+  end
+
   private
 
   def task_template_params
@@ -41,9 +48,9 @@ class TaskTemplatesController < ApplicationController
 
   def task_template
     @task_template ||= if params[:id]
-      TaskTemplate.find(params[:id])
-    else
-      TaskTemplate.new(task_template_params)
-    end
+                         TaskTemplate.find(params[:id])
+                       else
+                         TaskTemplate.new(task_template_params)
+                       end
   end
 end

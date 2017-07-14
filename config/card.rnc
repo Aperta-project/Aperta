@@ -93,11 +93,11 @@ text-input = element content {
                 }*)
              }
 
-list-container = element content {
+list-content = element content {
                  attribute ident { text }?,
                  attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" },
                  content*
-             }
+               }
 
 
 # Contents
@@ -137,7 +137,7 @@ content = (radio-input |
            dropdown-input |
            date-picker |
            tech-check |
-           list-container
+           list-content
           )
 
 start = element card {

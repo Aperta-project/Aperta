@@ -60,7 +60,9 @@ class AdminDashboardPage < Page
     end
   end
 
-  def first_search_result
+  def first_search_result(query)
+    search(query) if query
+
     session.has_content? 'Username'
     UserRowInSearch.new(all('.admin-users-list-list .user-row').first, context: page)
   end
@@ -75,6 +77,17 @@ class UserRowInSearch < PageFragment
     find('.username').click
     session.has_content? 'User Details'
     EditModal.new(context.find('.user-detail-overlay'), context: context)
+  end
+
+  def add_role(role)
+    find('.assign-role-button').click
+    session.find('.select2-input').set(role)
+    session.find('.select2-result', text: role).click
+  end
+
+  def remove_role(role)
+    find('.select2-search-choice', text: role).hover
+    find('.select2-search-choice', text: role).find('.select2-search-choice-close').click
   end
 end
 

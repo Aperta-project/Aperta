@@ -3,8 +3,6 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-paragraph-input'],
-
-  hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
   classNameBindings: ['hasErrors:has-error'],
 
   propTypes: {
@@ -12,6 +10,10 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
   },
+
+  isRichText: Ember.computed('content.valueType', function() {
+    return (this.get('content.valueType') === 'html');
+  }),
 
   actions: {
     valueChanged(newValue) {

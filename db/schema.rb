@@ -956,8 +956,8 @@ ActiveRecord::Schema.define(version: 20170711231804) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
-  add_foreign_key "settings", "setting_templates"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

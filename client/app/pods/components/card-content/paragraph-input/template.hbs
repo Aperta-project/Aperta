@@ -1,7 +1,23 @@
 <label class="content-text">{{{content.text}}}</label>
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
-{{format-input
-  value=(readonly answer.value)
-  class="form-control"
-  valueChanged=(action "valueChanged")
-  disabled=disabled}}
+
+{{#if isRichText}}
+  {{rich-text-editor
+    editorStyle=editorStyle
+    name=ident
+    data-editor=ident
+    value=answer.value
+    hasErrors=answer.hasErrors
+    errorMessages=answer.readyIssuesArray
+    onContentsChanged=(action "valueChanged")
+    class=inputClassNames
+  }}
+{{else}}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+
+  {{format-input
+    value=(readonly answer.value)
+    class="form-control"
+    valueChanged=(action "valueChanged")
+    disabled=disabled
+  }}
+{{/if}}

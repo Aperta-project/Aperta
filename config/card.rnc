@@ -82,7 +82,8 @@ tech-check = element content {
 
 text-input = element content {
                  attribute ident { text }?,
-                 attribute value-type { "text" },
+                 attribute value-type { "text" | "html" },
+                 attribute editor-style { text }?,
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute default-answer-value { text }?,
                  (element text { text }? &

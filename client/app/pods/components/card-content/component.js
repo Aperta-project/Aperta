@@ -31,10 +31,8 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    Ember.assert(`you must pass an owner to card-content`,
-                 Ember.isPresent(this.get('owner')));
-    Ember.assert('this component must have content with a contentType',
-                 this.get('content.contentType'));
+    Ember.assert(`you must pass an owner to card-content`, Ember.isPresent(this.get('owner')));
+    Ember.assert('this component must have content with a contentType', this.get('content.contentType'));
   },
 
   answer: Ember.computed('content', 'owner', function() {
@@ -49,10 +47,8 @@ export default Ember.Component.extend({
   actions: {
     updateAnswer(newVal) {
       this.set('answer.value', newVal);
-
-      if(!this.get('preview')) {
-        this.get('_debouncedSave').perform();
-      }
+      if (this.get('preview')) {return;}
+      this.get('_debouncedSave').perform();
     }
   }
 });

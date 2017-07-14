@@ -72,7 +72,7 @@ class UserRowInSearch < PageFragment
   end
 
   def edit_user_details
-    click
+    find('.username').click
     session.has_content? 'User Details'
     EditModal.new(context.find('.user-detail-overlay'), context: context)
   end

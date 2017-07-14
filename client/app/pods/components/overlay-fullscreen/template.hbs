@@ -5,6 +5,7 @@
                         inAnimationComplete=(action inAnimationComplete)
                         as |animateOut|}}
         {{#overlay-fullscreen-layout class=overlayClass
+                                    enableClose=enableClose
                                     title=title
                                     close=(action animateOut)}}
           {{yield (hash animateOut=animateOut)}}
@@ -16,6 +17,7 @@
                        inAnimationComplete=(action inAnimationComplete)
                        as |animateOut|}}
       {{#overlay-fullscreen-layout class=overlayClass
+                                   enableClose=enableClose
                                    title=title
                                    close=(action animateOut)}}
         {{yield (hash animateOut=animateOut)}}

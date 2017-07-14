@@ -21,10 +21,17 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
 
+  settingsTitle: Ember.computed('taskToConfigure', function() {
+    return this.get('taskToConfigure.title') + ': Settings';
+  }),
+
   featureFlag: Ember.inject.service(),
 
   showCardDeleteOverlay: false,
   taskToDelete: null,
+
+  showSettingsOverlay: false,
+  taskToConfigure: null,
 
   showAdHocTaskOverlay: false,
   adHocTaskToDisplay: null,
@@ -153,6 +160,15 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     hideCardDeleteOverlay() {
       this.set('showCardDeleteOverlay', false);
+    },
+
+    showSettingsOverlay(task) {
+      this.set('taskToConfigure', task);
+      this.set('showSettingsOverlay', true);
+    },
+
+    hideSettingsOverlay() {
+      this.set('showSettingsOverlay', false);
     },
 
     editMmtName(){

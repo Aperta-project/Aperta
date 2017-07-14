@@ -15,7 +15,7 @@ class QueryLanguageParser
       # (predicate, a parser that parses anything that's not a
       # keyword) and it returns a parser. @expressions is an array of
       # these parser factories.
-      @keywords ||= ['AND', 'OR', '\(', '\)']
+      @keywords ||= ['AND', 'OR', /(?<!\\)(\(|\))/] # disallow escaped parens
       @expressions ||= []
       @keywords.concat keywords
       @expressions.push block

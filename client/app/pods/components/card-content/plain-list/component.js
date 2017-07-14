@@ -1,12 +1,6 @@
 import Ember from 'ember';
-import { PropTypes } from 'ember-prop-types';
+import listCardContentComponent from 'tahi/mixins/components/list-card-content-component';
 
-export default Ember.Component.extend({
-  classNames: ['card-content-plain-list'],
-  tagName: 'ul',
-
-  propTypes: {
-    content: PropTypes.EmberObject.isRequired,
-    owner: PropTypes.EmberObject.isRequired,
-  }
+export default Ember.Component.extend(listCardContentComponent, {
+  classNames: ['card-content-plain-list']
 });

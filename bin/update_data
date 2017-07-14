@@ -13,5 +13,5 @@ bundle exec rake settings:seed_setting_templates
 bundle exec rake data:update_journal_task_types
 bundle exec rake institutional_accounts:add_seed_accounts
 bundle exec rake create_feature_flags
+bundle exec rake seed:letter_templates:populate
 bundle exec rake db:data:dump
-

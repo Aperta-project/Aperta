@@ -11,6 +11,7 @@ class ManualSeeds # Use this class to run seeds the old way
     Rake::Task['journal:create_default_templates'].invoke
     Rake::Task['settings:seed_setting_templates'].invoke
     Rake::Task['create_feature_flags'].invoke
+    Rake::Task['seed:letter_templates:populate'].invoke
 
     puts 'Tahi Production Seeds have been loaded successfully'
   end

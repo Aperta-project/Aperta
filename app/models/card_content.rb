@@ -112,8 +112,10 @@ class CardContent < ActiveRecord::Base
 
   def content_attrs
     {
+      'ident' => ident,
       'content-type' => content_type,
       'value-type' => value_type,
+      'editor-style' => editor_style,
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,

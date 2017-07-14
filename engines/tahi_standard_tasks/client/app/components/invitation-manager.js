@@ -214,7 +214,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       const taskErrors = this.validationErrorsPresent();
       if(!taskErrors)
         this.set('emailErrorMessage', '');
-
     },
     focusOut(){
       this.validateData();

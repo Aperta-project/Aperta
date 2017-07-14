@@ -180,7 +180,9 @@ describe TokenInvitationsController do
         token = controller.send(:jwt_encoded_payload)
         JWT.decode(token, dummy_key, true, algorithm: 'ES256').first
       end
-      let(:invitation_double) { double('Invitation', token: 'blah', email: user.email) }
+      let(:invitation_double) do
+        double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer')
+      end
       let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
       before do
         expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double)
@@ -201,7 +203,9 @@ describe TokenInvitationsController do
 
   describe '#use_authentication?' do
     context 'the invitation does not have an invitee_id' do
-      let(:invitation_double) { double('Invitation', email: 'ned@flancrest.com', invitee_id: nil) }
+      let(:invitation_double) do
+        double('Invitation', email: 'ned@flancrest.com', invitee_id: nil, invitee_role: 'Reviewer')
+      end
       before { expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double) }
       context 'the AKITA_INTEGRATION feature flag is false' do
         before { expect(FeatureFlag).to receive(:[]).with('AKITA_INTEGRATION').and_return(false) }
@@ -254,6 +258,9 @@ describe TokenInvitationsController do
 
   describe 'GET /invitations/:token/accept' do
     subject(:do_request) { get :accept, token: 'soCrypticMuchMystery' }
+    subject(:new_user_do_request) do
+      get :accept, token: 'soCrypticMuchMystery', new_user: true
+    end
     context 'there is no user logged in' do
       before { expect(controller).to receive(:use_authentication?).and_return(use_authentication_response) }
       context 'when the token points to an "invited" invitation and the user should be logged in' do
@@ -266,7 +273,7 @@ describe TokenInvitationsController do
       context 'the user should go through akita phased signup' do
         let(:use_authentication_response) { false }
         let(:invitation_double) do
-          double('Invitation', token: 'blah', email: user.email)
+          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer')
         end
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
         let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
@@ -313,6 +320,11 @@ describe TokenInvitationsController do
             expect(flash[:notice]).to include("Thank you for agreeing to review")
           end
 
+          it 'sets adds to the flash notice if there is a new_user query param' do
+            new_user_do_request
+            expect(flash[:notice]).to include("Your PLOS account was successfully created.")
+          end
+
           context 'Inviting an academic editor' do
             let(:invitation_double) do
               double('Invitation', invitee_role: 'Academic Editor', invited?: true, email: user.email, accept!: true, paper: task.paper)
@@ -326,7 +338,7 @@ describe TokenInvitationsController do
 
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper)
+            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer')
           end
           it 'does not accept the user\'s invitation' do
             expect(invitation_double).not_to receive(:accept!)

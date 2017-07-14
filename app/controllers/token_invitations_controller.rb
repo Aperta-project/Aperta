@@ -87,7 +87,12 @@ class TokenInvitationsController < ApplicationController
   def thank_you_message
     journal_name = invitation.paper.journal.name
     verb = invitation.invitee_role == 'Reviewer' ? 'review' : 'edit'
-    "Thank you for agreeing to #{verb} for #{journal_name}."
+    base_message = "Thank you for agreeing to #{verb} for #{journal_name}."
+    if params[:new_user]
+      "Your PLOS account was successfully created. " + base_message
+    else
+      base_message
+    end
   end
 
   def use_authentication?

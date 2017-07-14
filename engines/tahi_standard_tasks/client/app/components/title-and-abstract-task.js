@@ -26,6 +26,7 @@ export default TaskComponent.extend({
   actions: {
     titleChanged(contents) {
       this.set('task.paperTitle', contents);
+      this.get('task.debouncedSave').perform();
     },
 
     abstractChanged(contents) {

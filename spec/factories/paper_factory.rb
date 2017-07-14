@@ -479,16 +479,12 @@ FactoryGirl.define do
         paper.file = FactoryGirl.create(
           :manuscript_attachment,
           paper: paper,
-          file_type: 'docx',
           file: File.open(Rails.root.join('spec/fixtures/about_turtles.docx')),
-          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx',
-          status: 'done'
+          pending_url: 'http://tahi-test.s3.amazonaws.com/temp/about_turtles.docx'
         )
         accept_decision = FactoryGirl.create(:decision)
         paper.decisions = [accept_decision]
         paper.save!
-
-        paper.versioned_texts.first.update!(file_type: 'docx')
 
         paper.reload
       end

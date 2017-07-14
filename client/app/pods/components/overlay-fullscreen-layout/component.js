@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['overlay', 'overlay--fullscreen'],
+  enableClose: true,
 
   init() {
     this._super(...arguments);

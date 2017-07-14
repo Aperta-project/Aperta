@@ -1,5 +1,5 @@
 class JournalPage < Page
-  text_assertions :mmt_name, ".mmt-thumbnail .mmt-thumbnail-title"
+  text_assertions :mmt_name, ".admin-workflow-thumbnail .admin-workflow-thumbnail-header"
 
   def self.visit(journal)
     page.visit "/admin/journals/#{journal.id}"
@@ -12,28 +12,26 @@ class JournalPage < Page
   end
 
   def mmt_names
-    find(".mmt-thumbnail", match: :first)
-    all(".mmt-thumbnail .mmt-thumbnail-title").map(&:text)
+    find(".admin-workflow-thumbnail", match: :first)
+    all(".admin-workflow-thumbnail .admin-workflow-thumbnail-header").map(&:text)
   end
 
   def mmt_thumbnail(mmt)
-    find('.mmt-thumbnail .mmt-thumbnail-title', text: mmt.paper_type)
+    find('.admin-workflow-thumbnail .admin-workflow-thumbnail-header', text: mmt.paper_type)
       .find(:xpath, '..')
   end
 
   def visit_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
-    thumb.hover
-    thumb.find('.fa-pencil').click
+    thumb.click
     ManuscriptManagerTemplatePage.new
   end
 
   def delete_mmt(mmt)
     thumb = mmt_thumbnail(mmt)
-    thumb.hover
-    thumb.find('.fa-trash').click
-    find('.mmt-thumbnail-overlay-confirm-destroy .mmt-thumbnail-delete-button').click
-    has_no_css?(".mmt-thumbnail-title", text: mmt.paper_type)
+    thumb.find(:xpath, '../div[@class="admin-workflow-thumbnail-icon"]').click
+    find('.admin-workflow-thumbnail-overlay .admin-workflow-thumbnail-delete-button').click
+    has_no_css?(".admin-workflow-thumbnail-header", text: mmt.paper_type)
     self
   end
 

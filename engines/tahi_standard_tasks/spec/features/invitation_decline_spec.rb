@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Invite Reviewer", js: true do
+feature "Invite Reviewer", js: true, flaky: true do
   include InvitationFeatureHelpers
 
   let(:inviter) { create :user }

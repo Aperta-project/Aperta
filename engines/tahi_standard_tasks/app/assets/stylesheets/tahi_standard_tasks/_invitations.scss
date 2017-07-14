@@ -49,15 +49,6 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-style: italic;
 }
 
-
-/* Invitation body content-editable
----------------------------------------------------------------------------- */
-
-.invitation-show-body,
-.invitation-edit-body {
-  white-space: pre-wrap;
-}
-
 .invitation-edit-body {
   overflow: auto;
 }

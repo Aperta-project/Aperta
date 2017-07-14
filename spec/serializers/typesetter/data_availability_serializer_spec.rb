@@ -14,7 +14,7 @@ describe Typesetter::DataAvailabilitySerializer do
         },
         {
           ident: 'data_availability--data_location',
-          answer: 'holodeck',
+          answer: '<p><i>holodeck</i></p>',
           value_type: 'text'
         }
       ]
@@ -44,7 +44,7 @@ describe Typesetter::DataAvailabilitySerializer do
   end
 
   describe 'data location statement value' do
-    it 'is the answer to the data location statement question' do
+    it 'is the answer to the data location statement question and is stripped of tags' do
       expect(output[:data_location_statement]).to eq('holodeck')
     end
   end

@@ -240,7 +240,6 @@ ActiveRecord::Schema.define(version: 20170714215041) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "editor_style"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -372,6 +371,10 @@ ActiveRecord::Schema.define(version: 20170714215041) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.boolean  "external"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

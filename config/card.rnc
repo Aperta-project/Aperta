@@ -99,7 +99,6 @@ list-content = element content {
                  content*
                }
 
-
 # Contents
 text-content = element content {
                    attribute ident { text }?,

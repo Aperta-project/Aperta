@@ -259,7 +259,7 @@
       </interleave>
     </element>
   </define>
-  <define name="list-container">
+  <define name="list-content">
     <element name="content">
       <optional>
         <attribute name="ident"/>
@@ -343,7 +343,7 @@
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>
-      <ref name="list-container"/>
+      <ref name="list-content"/>
     </choice>
   </define>
   <start>

@@ -123,7 +123,6 @@ class CardContent < ActiveRecord::Base
 
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
-      render_tag(xml, 'placeholder', placeholder)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       if card_content_validations.present?

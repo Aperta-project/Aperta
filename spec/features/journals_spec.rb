@@ -13,45 +13,42 @@ feature "Journal Administration", js: true, flaky: true do
   let(:admin_page) { AdminDashboardPage.visit }
   let(:journal_page) { admin_page.visit_journal(journal) }
 
-  scenario "shows a list of journal thumbnails with name and description for each", selenium: true do
-    expect(admin_page).to have_journal_names(journal.name, journal2.name)
-    expect(admin_page).to have_journal_descriptions(journal.description, journal2.description)
+  describe "viewing your journals" do
+    scenario "defaults to the showing workflows", selenium: true do
+      expect(admin_page).to have_text('Workflow Catalogue')
 
-    within("#journal-#{journal.id}") do
-      expect(admin_page).to have_journal_paper_count(journal.papers.count)
-      expect(admin_page).to have_journal_name(journal.name)
-      expect(admin_page).to have_journal_description(journal.description)
-    end
-
-    within("#journal-#{journal2.id}") do
-      expect(admin_page).to have_journal_paper_count(journal2.papers.count)
-      expect(admin_page).to have_journal_name(journal2.name)
-      expect(admin_page).to have_journal_description(journal2.description)
+      within(".left-drawer") do
+        [journal.name, journal2.name].each do |journal_name|
+          expect(admin_page).to have_css(".admin-drawer-item", text: journal_name)
+        end
+      end
     end
   end
 
   describe "creating a journal" do
     scenario "create new journal via new journal form after clicking on 'Add new journal' button" do
-      new_journal_form = admin_page.create_journal
-      new_journal_form.name = 'New Journal Cool Cool'
-      new_journal_form.description = 'New journal description cool cool'
-      new_journal_form.journal_prefix = 'journal.prefix'
-      new_journal_form.publisher_prefix = 'prefix'
-      new_journal_form.last_doi_issued = '1000001'
-      new_journal_form.save
+      admin_page
+      click_on "Add New Journal"
+      within(".admin-new-journal-overlay") do
+        fill_in "name", with: "New Journal Cool Cool"
+        fill_in "description", with: "New journal description cool cool"
+        fill_in "doiJournalPrefix", with: "journal.prefix"
+        fill_in "doiPublisherPrefix", with: "prefix"
+        fill_in "lastDoiIssued", with: "1000001"
+        click_on "Save"
+      end
 
-      expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
-      expect(admin_page).to have_journal_descriptions(journal.description, journal2.description, 'New journal description cool cool')
+      using_wait_time(60) do # Creating a journal takes time
+        expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
+      end
 
       admin_page.reload sync_on: 'Add new journal'
-
       expect(admin_page).to have_journal_names(journal.name, journal2.name, 'New Journal Cool Cool')
-      expect(admin_page).to have_journal_descriptions(journal.description, journal2.description, 'New journal description cool cool')
     end
   end
 
   describe "editing a journal thumbnail", selenium: true do
-    scenario "shows edit form after clicking on pencil icon" do
+    scenario "shows edit form after clicking on journal in sidebar, then settings" do
       journal_edit_form = admin_page.edit_journal journal.name
       journal_edit_form.name = "Edited journal"
       journal_edit_form.description = "Edited journal description"
@@ -65,12 +62,8 @@ feature "Journal Administration", js: true, flaky: true do
       journal_edit_form.cancel
 
       expect(admin_page).to have_journal_names('Edited journal', journal2.name)
-      expect(admin_page).to have_journal_descriptions('Edited journal description', journal2.description)
-
       admin_page.reload sync_on: 'Add new journal'
-
       expect(admin_page).to have_journal_names('Edited journal', journal2.name)
-      expect(admin_page).to have_journal_descriptions('Edited journal description', journal2.description)
     end
   end
 end

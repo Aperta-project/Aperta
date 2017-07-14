@@ -8,6 +8,7 @@ module JournalServices
 
         phase = mmt.phase_templates.create! name: "Submission Data"
         make_tasks phase, task_types,
+          TahiStandardTasks::TitleAndAbstractTask,
           TahiStandardTasks::FigureTask,
           TahiStandardTasks::EarlyPostingTask,
           TahiStandardTasks::SupportingInformationTask,

@@ -93,7 +93,7 @@ export default Ember.Controller.extend({
           let msg = `Thank you for agreeing to review for ${invitation.get('journalName')}.`;
           this.flash.displayRouteLevelMessage('success', msg);
         });
-      }, () => { this.set('invitationsLoading', false); });
+      }).finally(() => { this.set('invitationsLoading', false); });
     },
 
     showNewManuscriptOverlay() {

@@ -1,8 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: 'tr',
-  classNames: ['user-row'],
+  tagName: '',
   journal: null, //passed in
 
   journalRoles: null, //passed-in
@@ -25,6 +24,9 @@ export default Ember.Component.extend({
         journalId: this.get('journal.id')
       });
       user.save();
+    },
+    displayDialog() {
+      this.sendAction('displayDialog');
     }
   }
 });

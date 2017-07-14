@@ -142,6 +142,12 @@ module MailLog::LogToDatabase
           expect(email_log.additional_context.keys).to_not include '@not_activerecord_model'
         end
       end
+
+      it 'inserts known recipient names' do
+        user = FactoryGirl.create(:user, email: mail.to.last)
+        interceptor.delivering_email(mail)
+        expect(Correspondence.last.recipients).to eq("#{mail.to.first}, #{user.full_name} <#{mail.to.last}>")
+      end
     end
   end
 

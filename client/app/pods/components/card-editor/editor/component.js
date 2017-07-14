@@ -8,16 +8,24 @@ export default Ember.Component.extend({
     card: PropTypes.EmberObject
   },
 
+  didInsertElement() {
+    $(window).on('beforeunload.dirtyXml', () => { if (this.get('xmlDirty')) { return true }; });
+  },
+
+  willDestroyElement() {
+    $(window).off('beforeunload.dirtyXml');
+  },
+
   xmlDirty: Ember.computed('card.xml', 'card.hasDirtyAttributes', function() {
     let card = this.get('card');
-
-    return card.get('hasDirtyAttributes') && card.changedAttributes()['xml'];
+    return !!(card.get('hasDirtyAttributes') && card.changedAttributes()['xml']);
   }),
 
   errors: null,
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
+  showDirtyOverlay: false,
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -64,9 +72,7 @@ export default Ember.Component.extend({
       yield card.archive();
       this.set('errors', []);
       let journalID = yield card.get('journal.id');
-      this.get('routing').transitionTo('admin.cc.journals.cards', null, {
-        journalID
-      });
+      this.get('routing').transitionTo('admin.journals.cards', journalID);
     } catch (e) {
       this.set('errors', e.errors);
     }
@@ -79,15 +85,20 @@ export default Ember.Component.extend({
       let journalID = yield card.get('journal.id');
       yield card.destroyRecord();
       this.set('errors', []);
-      this.get('routing').transitionTo('admin.cc.journals.cards', null, {
-        journalID
-      });
+      this.get('routing').transitionTo('admin.journals.cards', journalID);
     } catch (e) {
       this.set('errors', e.errors);
     }
   }),
 
+  allowStoppedTransition: 'allowStoppedTransition',
+
   actions: {
+    cleanCard() {
+      this.get('card').rollbackAttributes('xml');
+      this.sendAction('allowStoppedTransition');
+    },
+
     updateXML(code) {
       this.set('card.xml', code);
     },

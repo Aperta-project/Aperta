@@ -11,18 +11,24 @@
           class='article-title-input'
           onContentsChanged=(action 'titleChanged')
           disabled=isNotEditable
+          errorMessage=validationErrors.paperTitle
+          displayIcon=true
+          displayText=true
         }}
     </div>
 
     <div class="form-group qa-paper-abstract">
        <h3>Abstract</h3>
         {{rich-text-editor
-          editorStyle='expanded'
+          editorStyle='basic'
           value=task.paperAbstract
           ident='article-abstract-input'
           class='article-abstract-input'
           onContentsChanged=(action 'abstractChanged')
           disabled=isNotEditable
+          errorMessage=validationErrors.paperAbstract
+          displayIcon=true
+          displayText=true
         }}
     </div>
   </div>

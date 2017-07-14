@@ -7,10 +7,6 @@ module Authorizations
   # responsible for finding the @klass in question based on the provided
   # Authorizations::Authorization paths.
   #
-  # == Note
-  #
-  # This query does not enforce permission requirements. That must be done
-  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
   class ObjectsViaAuthorizationsQuery
     include QueryHelpers
     attr_reader :auth_configs, :klass, :target, :assignments_table

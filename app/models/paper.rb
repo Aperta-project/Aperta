@@ -41,6 +41,7 @@ class Paper < ActiveRecord::Base
            dependent: :destroy,
            inverse_of: :paper
   has_many :tasks, inverse_of: :paper
+  has_many :card_versions, through: :tasks
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal
@@ -127,7 +128,8 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
 
     event(:submit) do
@@ -143,7 +145,8 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_major_version!]
+                          :new_major_version!,
+                          :after_paper_submitted]
       transitions from: [:unsubmitted,
                          :invited_for_full_submission],
                   to: :submitted,
@@ -153,7 +156,8 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
 
     event(:invite_full_submission) do
@@ -250,7 +254,8 @@ class Paper < ActiveRecord::Base
                   from: [:rejected, :accepted,
                          :in_revision],
                   after: [:new_draft!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
   end
 
@@ -587,6 +592,14 @@ class Paper < ActiveRecord::Base
 
   def revise_task
     tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
+  end
+
+  # If we add more hooks like this we may want to make this more foolproof, but
+  # for now this method is an :after callback on the :submit event (check )
+  def after_paper_submitted
+    # Some hooks need `paper.previous_changes` so we call the hook with self
+    # rather than having the task look it up
+    tasks.each { |t| t.after_paper_submitted self }
   end
 
   private

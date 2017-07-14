@@ -3,12 +3,16 @@ import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 // Pretend like you're in client/tests
 import FakeCanService from '../helpers/fake-can-service';
+import registerCustomAssertions from '../helpers/custom-assertions';
 
 
 moduleForComponent(
   'related-articles-task',
   'Integration | Components | Tasks | Related Articles', {
-  integration: true
+    integration: true,
+    beforeEach() {
+      registerCustomAssertions();
+    }
 });
 
 

@@ -1,7 +1,7 @@
 module Typesetter
   # Serializes editor for the typesetter.
   # Expects an editor as its object to serialize.
-  class EditorSerializer < ActiveModel::Serializer
+  class EditorSerializer < Typesetter::BaseSerializer
     attributes :first_name, :last_name, :email, :department, :title,
       :organization, :organization_country
 

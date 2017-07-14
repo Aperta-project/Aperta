@@ -1,4 +1,8 @@
+# TaskTemplate gets consumed by the PaperFactory to create a task
+# when a paper is first created
 class TaskTemplate < ActiveRecord::Base
+  include Configurable
+
   belongs_to :phase_template, inverse_of: :task_templates
   belongs_to :journal_task_type
   belongs_to :card
@@ -10,6 +14,15 @@ class TaskTemplate < ActiveRecord::Base
   validate :only_one_mold
 
   acts_as_list scope: :phase_template
+
+  # setting_template_key is defined in Configurable
+  def setting_template_key
+    if journal_task_type
+      "TaskTemplate:#{journal_task_type.kind}"
+    else
+      "TaskTemplate:#{card.name}"
+    end
+  end
 
   private
 

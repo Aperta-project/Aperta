@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170628185715) do
+ActiveRecord::Schema.define(version: 20170713223217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,8 +254,8 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
-    t.boolean  "workflow_display_only",   default: false, null: false
     t.string   "history_entry"
+    t.boolean  "workflow_display_only",   default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -371,6 +371,10 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.boolean  "external"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -492,43 +496,6 @@ ActiveRecord::Schema.define(version: 20170628185715) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
-
-  create_table "nested_question_answers", force: :cascade do |t|
-    t.integer  "nested_question_id"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.text     "value"
-    t.string   "value_type",         null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.json     "additional_data"
-    t.integer  "decision_id"
-    t.integer  "paper_id"
-    t.datetime "deleted_at"
-  end
-
-  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
-  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
-
-  create_table "nested_questions", force: :cascade do |t|
-    t.string   "text"
-    t.string   "value_type", null: false
-    t.string   "ident",      null: false
-    t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-    t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
-    t.datetime "deleted_at"
-  end
-
-  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
-  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
-  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
-  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
@@ -659,6 +626,18 @@ ActiveRecord::Schema.define(version: 20170628185715) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "possible_setting_values", force: :cascade do |t|
+    t.integer  "setting_template_id"
+    t.string   "value_type",          default: "string", null: false
+    t.string   "string_value"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -755,6 +734,36 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "setting_templates", force: :cascade do |t|
+    t.string  "key"
+    t.string  "setting_klass"
+    t.string  "setting_name"
+    t.boolean "global"
+    t.integer "journal_id"
+    t.string  "value_type",    default: "string", null: false
+    t.string  "string_value"
+    t.boolean "boolean_value"
+    t.integer "integer_value"
+  end
+
+  add_index "setting_templates", ["key"], name: "index_setting_templates_on_key", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name"
+    t.string   "string_value"
+    t.string   "type"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "value_type",          default: "string", null: false
+    t.integer  "integer_value"
+    t.boolean  "boolean_value"
+    t.integer  "setting_template_id"
+  end
+
+  add_index "settings", ["setting_template_id"], name: "index_settings_on_setting_template_id", using: :btree
+
   create_table "similarity_checks", force: :cascade do |t|
     t.integer  "ithenticate_document_id"
     t.datetime "ithenticate_report_completed_at"
@@ -768,25 +777,6 @@ ActiveRecord::Schema.define(version: 20170628185715) do
     t.datetime "updated_at",                                      null: false
     t.string   "error_message"
     t.boolean  "dismissed",                       default: false
-  end
-
-  create_table "simple_reports", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "initially_submitted",         default: 0, null: false
-    t.integer  "fully_submitted",             default: 0, null: false
-    t.integer  "invited_for_full_submission", default: 0, null: false
-    t.integer  "checking",                    default: 0, null: false
-    t.integer  "in_revision",                 default: 0, null: false
-    t.integer  "accepted",                    default: 0, null: false
-    t.integer  "withdrawn",                   default: 0, null: false
-    t.integer  "rejected",                    default: 0, null: false
-    t.integer  "new_accepted",                default: 0, null: false
-    t.integer  "new_rejected",                default: 0, null: false
-    t.integer  "new_withdrawn",               default: 0, null: false
-    t.integer  "new_initial_submissions",     default: 0, null: false
-    t.integer  "in_process_balance",          default: 0, null: false
-    t.integer  "unsubmitted",                 default: 0, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|
@@ -872,22 +862,24 @@ ActiveRecord::Schema.define(version: 20170628185715) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                            null: false
-    t.string   "type",            default: "Task"
-    t.integer  "phase_id",                         null: false
-    t.boolean  "completed",       default: false,  null: false
+    t.string   "title",                             null: false
+    t.string   "type",             default: "Task"
+    t.integer  "phase_id",                          null: false
+    t.boolean  "completed",        default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",            default: [],     null: false
-    t.integer  "position",        default: 0
-    t.integer  "paper_id",                         null: false
+    t.json     "body",             default: [],     null: false
+    t.integer  "position",         default: 0
+    t.integer  "paper_id",                          null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id",                  null: false
+    t.integer  "card_version_id",                   null: false
+    t.integer  "task_template_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["task_template_id"], name: "index_tasks_on_task_template_id", using: :btree
   add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -969,6 +961,7 @@ ActiveRecord::Schema.define(version: 20170628185715) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

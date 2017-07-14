@@ -72,6 +72,14 @@ export default Ember.Component.extend({
 
     promptDelete() {
       this.sendAction('showDeleteConfirm', this.get('task'));
+    },
+
+    openSettings() {
+      this.get('showSettings')();
     }
-  }
+  },
+
+  settingsEnabled: Ember.computed('task.settingsEnabled', function() {
+    return this.get('task.settingsEnabled');
+  })
 });

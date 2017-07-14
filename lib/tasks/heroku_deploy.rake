@@ -31,6 +31,16 @@ namespace :heroku do
       # since the last heroku deployment
       puts "Running database migration ..."
       Rake::Task['db:migrate'].invoke
+
+      puts "Running rake tasks ..."
+      [
+        'cards:load',
+        'roles-and-permissions:seed',
+        'data:update_journal_task_types',
+        'create_feature_flags'
+      ].each do |task|
+        Rake::Task[task].invoke
+      end
     else
       # perform the initial database schema load
       puts "Running database setup ..."

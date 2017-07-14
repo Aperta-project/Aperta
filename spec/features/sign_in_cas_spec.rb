@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "CAS account creation" do
+feature "CAS account creation", flaky: true do
   scenario "User can create account for cas" do
     sign_in_page = SignInPage.visit
     expect(sign_in_page).to have_link('Create an account')

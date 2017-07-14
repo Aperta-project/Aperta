@@ -3,8 +3,6 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-short-input'],
-
-  hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
   classNameBindings: ['hasErrors:has-error'],
 
   propTypes: {

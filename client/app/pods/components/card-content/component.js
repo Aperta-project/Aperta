@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   },
 
   tagName: '',
-  debouncePeriod: 200, // in ms
+  debouncePeriod: 500, // in ms
 
   init() {
     this._super(...arguments);
@@ -41,7 +41,8 @@ export default Ember.Component.extend({
 
   _debouncedSave: concurrencyTask(function * () {
     yield timeout(this.get('debouncePeriod'));
-    return yield this.get('answer').save();
+    let answer = this.get('answer');
+    return yield answer.save();
   }).restartable(),
 
   actions: {

@@ -63,7 +63,7 @@ export default Ember.Component.extend({
     }
   },
 
-  displayErrors: Ember.observer('errorMessages', function() {
+  displayErrors: Ember.observer('errorMessages.[]', function() {
     if (Ember.isEmpty(this.get('errorMessages'))) {return;}
 
     let editor = this.get('editor');
@@ -71,7 +71,8 @@ export default Ember.Component.extend({
 
     editor.notificationManager.open({
       type: 'error',
-      text: errors.join('; ')
+      text: errors.join('; '),
+      // timeout: 2000
     });
   }),
 

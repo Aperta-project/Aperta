@@ -209,6 +209,12 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       this.set('selectedUser', {
         email: val
       });
+
+      this.validate('userEmail', this.get('selectedUser.email'));
+      const taskErrors = this.validationErrorsPresent();
+      if(!taskErrors)
+        this.set('emailErrorMessage', '');
+
     },
     focusOut(){
       this.validateData();

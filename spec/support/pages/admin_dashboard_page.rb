@@ -53,16 +53,16 @@ class AdminDashboardPage < Page
     find(".admin-user-search button").click
   end
 
-  def search_results
+  def search_results(query = nil)
+    search(query) if query
     session.has_content? 'Username'
     all('.admin-users-list-list .user-row').map do |el|
       Hash[[:last_name, :first_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 
-  def first_search_result(query)
+  def first_search_result(query = nil)
     search(query) if query
-
     session.has_content? 'Username'
     UserRowInSearch.new(all('.admin-users-list-list .user-row').first, context: page)
   end

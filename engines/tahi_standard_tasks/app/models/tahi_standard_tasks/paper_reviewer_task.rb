@@ -62,7 +62,7 @@ module TahiStandardTasks
     def invitation_body_template
       template = <<-TEXT.strip_heredoc
 <p>You've been invited as a Reviewer on "{{ manuscript.title }}", for {{ journal.name }}.</p>
-<p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due-in-days | default 10}} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
+<p>The abstract is included below. We would ideally like to have reviews returned to us within {{ invitation.due_in_days | default 10}} days. If you require additional time, please do let us know so that we may plan accordingly.</p>
 <p>Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.</p>
 <p>We look forward to hearing from you.</p>
 <p>Sincerely,</p>

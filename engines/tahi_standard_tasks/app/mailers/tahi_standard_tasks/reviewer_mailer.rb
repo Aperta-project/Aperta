@@ -50,7 +50,7 @@ module TahiStandardTasks
       @reviewer_report =
         ReviewerReport.where(user: @assignee,
                              decision: @paper.draft_decision).first
-      @review_due_at = @reviewer_report.due_at.strftime("%B %-d, %Y %H:%M %Z")
+      @review_due_at = @reviewer_report.due_at.strftime("%B %-d, %Y %H:%M %Z") if @reviewer_report.due_at
 
       mail(
         to: @assignee.try(:email),

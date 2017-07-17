@@ -1,5 +1,5 @@
 <label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}<span class="required">*</span>{{/if}}
+  {{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}
 </label>
 <div>
   {{#if isText}}
@@ -9,7 +9,7 @@
           selection=answer.value
           value=opt.value
           disabled=disabled
-          isRequired=content.isRequired
+          content=content
           action=(action "valueChanged")}}
         <span class="card-content-radio-label">{{{opt.label}}}</span>
       </label>
@@ -20,7 +20,7 @@
         selection=answer.value
         value=true
         disabled=disabled
-        isRequired=content.isRequired
+        content=content
         action=(action "valueChanged")}}
       <span class="card-content-radio-label">Yes</span>
     </label>
@@ -29,7 +29,7 @@
         selection=answer.value
         value=false
         disabled=disabled
-        isRequired=content.isRequired
+        content=content
         action=(action "valueChanged")}}
       <span class="card-content-radio-label">No</span>
     </label>

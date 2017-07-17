@@ -3,8 +3,6 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-short-input'],
-  attributeBindings: ['isRequired:required', 'aria-required'],
-  'aria-required': Ember.computed.reads('isRequiredString'),
 
   hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
   classNameBindings: ['hasErrors:has-error'],
@@ -15,9 +13,11 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool
   },
 
-  isRequiredString: Ember.computed('isRequired', function() {
-    return this.get('isRequired') === true ? 'true' : 'false';
-  }),
+  didInsertElement() {
+    if (this.get('content.isRequired') === true) {
+      $('input').attr({'aria-required': 'true'});
+    }
+  },
 
   actions: {
     valueChanged(e) {

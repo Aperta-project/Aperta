@@ -3,8 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'input',
   type: 'radio',
-  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled', 'isRequired:required', 'aria-required', 'data-test-selector:data-test-selector'],
-  'aria-required': Ember.computed.reads('isRequiredString'),
+  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled', 'content.isRequired:required', 'aria-required', 'data-test-selector:data-test-selector'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
 
   value: null,
   selection: null,
@@ -20,10 +20,6 @@ export default Ember.Component.extend({
       this.attrs.hasOwnProperty('selection')
     );
   },
-
-  isRequiredString: Ember.computed('isRequired', function() {
-    return this.get('isRequired') === true ? 'true' : 'false';
-  }),
 
   checked: Ember.computed('selection', 'value', function() {
     // When determining if the radio button should be selected or not,

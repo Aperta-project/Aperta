@@ -10,7 +10,7 @@ namespace :cards do
     CustomCard::Loader.all
   end
 
-  desc "Loads one specific legacy card into the db for testing purposes. See card_configuration_sampler.rb"
+  desc "Loads one specific legacy card into the db for testing purposes"
   task :load_one, [:name, :journal] => :environment do |_, args|
     journal = args[:journal] ? Journal.find(args[:journal]) : nil
 

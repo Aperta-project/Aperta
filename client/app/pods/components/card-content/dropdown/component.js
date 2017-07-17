@@ -3,8 +3,8 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-dropdown'],
-  attributeBindings: ['isRequired:required', 'aria-required'],
-  'aria-required': Ember.computed.reads('isRequiredString'),
+  attributeBindings: ['content.isRequired:required', 'aria-required'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
 
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
@@ -22,10 +22,6 @@ export default Ember.Component.extend({
       );
     }
   ),
-
-  isRequiredString: Ember.computed('isRequired', function() {
-    return this.get('isRequired') === true ? 'true' : 'false';
-  }),
 
   init() {
     this._super(...arguments);

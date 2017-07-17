@@ -16,9 +16,11 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool
   },
 
-  isRequiredString: Ember.computed('isRequired', function() {
-    return this.get('isRequired') === true ? 'true' : 'false';
-  }),
+  didInsertElement() {
+    if (this.get('content.isRequired') === true) {
+      $('input').attr({'aria-required': 'true'});
+    }
+  },
 
   actions: {
     valueChanged(e) {

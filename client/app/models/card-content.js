@@ -36,6 +36,10 @@ export default DS.Model.extend({
 
   isRequired: Ember.computed.equal('requiredField', true),
 
+  isRequiredString: Ember.computed('isRequired', function() {
+    return this.get('isRequired') === true ? 'true' : 'false';
+  }),
+
   createAnswerForOwner(owner){
     // only create answers for things that are actually
     // answerable (i.e., textboxes, radio buttons) and

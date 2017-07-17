@@ -11,9 +11,7 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
   },
 
-  isRichText: Ember.computed('content.valueType', function() {
-    return (this.get('content.valueType') === 'html');
-  }),
+  isRichText: Ember.computed.equal('content.valueType', 'html'),
 
   actions: {
     valueChanged(newValue) {

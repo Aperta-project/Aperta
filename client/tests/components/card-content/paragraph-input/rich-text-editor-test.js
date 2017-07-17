@@ -15,15 +15,23 @@ moduleForComponent(
   }
 );
 
-let template = hbs`{{card-content/paragraph-input
-answer=answer
-content=content
-disabled=disabled
-valueChanged=(action actionStub)
+let template = hbs`{{
+  card-content/paragraph-input
+  ident='test-editor'
+  answer=answer
+  content=content
+  disabled=disabled
+  onContentsChanged=(action actionStub)
 }}`;
 
-test(`it displays the text from content.text in a <label>`, function(assert) {
-  this.set('content', Ember.Object.create({text: 'Foo'}));
+test(`setting the value-type to text renders a textarea`, function(assert) {
+  this.set('content', Ember.Object.create({valueType: 'text', text: 'Some Text'}));
   this.render(template);
-  assert.textPresent('.content-text', 'Foo');
+  assert.equal(0, window.tinymce.editors.length);
+});
+
+test(`setting the value-type to html renders the rich-text editor`, function(assert) {
+  this.set('content', Ember.Object.create({valueType: 'html', text: 'Some Text'}));
+  this.render(template);
+  assert.equal(1, window.tinymce.editors.length);
 });

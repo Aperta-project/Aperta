@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
+const basicFormats     = {underline: {inline : 'u'}};
 const basicPlugins     = 'codesample paste';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
@@ -79,6 +80,7 @@ export default Ember.Component.extend({
     options['menubar'] = false;
     options['content_style'] = this.get('bodyCSS');
     options['setup'] = editor => this.set('editor', editor);
+    options['formats'] = basicFormats;
     Ember.run.schedule('afterRender', this.stripTitles);
     return options;
   },

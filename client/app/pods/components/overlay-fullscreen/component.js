@@ -121,6 +121,7 @@ export default Ember.Component.extend({
    *  @required
   **/
   visible: false,
+  enableClose: true,
 
   init() {
     this._super(...arguments);

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170706190916) do
+ActiveRecord::Schema.define(version: 20170713223217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,8 +257,8 @@ ActiveRecord::Schema.define(version: 20170706190916) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
-    t.boolean  "workflow_display_only",   default: false, null: false
     t.string   "history_entry"
+    t.boolean  "workflow_display_only",   default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -374,6 +374,10 @@ ActiveRecord::Schema.define(version: 20170706190916) do
     t.integer  "journal_id"
     t.jsonb    "additional_context"
     t.text     "body"
+    t.boolean  "external"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

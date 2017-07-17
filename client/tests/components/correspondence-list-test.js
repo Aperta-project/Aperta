@@ -17,6 +17,16 @@ moduleForComponent('correspondence', 'Integration | Component | Correspondence',
       status: 200,
       responseText: {}
     });
+
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: true
+      }
+    });
+
   },
   afterEach() {
     $.mockjax.clear();
@@ -30,18 +40,9 @@ let template = hbs`
 
 test('can manage workflow, list appears', function(assert) {
   let paper = FactoryGuy.make('paper');
-  FactoryGuy.make('correspondence');
+  FactoryGuy.make('correspondence', { paper: paper });
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
-
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
 
   this.set('paper', paper);
   let done = assert.async();
@@ -56,15 +57,6 @@ test('can not manage workflow, list is hidden', function(assert) {
   let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create();
   this.register('service:can', can.asService());
-
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
 
   this.set('paper', paper);
   let done = assert.async();

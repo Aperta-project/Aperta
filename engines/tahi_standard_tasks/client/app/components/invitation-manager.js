@@ -1,13 +1,18 @@
 import Ember from 'ember';
 import { eligibleUsersPath } from 'tahi/utils/api-path-helpers';
 import { task as concurrencyTask } from 'ember-concurrency';
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const {
   computed,
   isEmpty
 } = Ember;
 
-export default Ember.Component.extend({
+const taskValidations = {
+  'userEmail': ['email']
+};
+
+export default Ember.Component.extend(ValidationErrorsMixin, {
   store: Ember.inject.service(),
   restless: Ember.inject.service(),
 
@@ -27,6 +32,29 @@ export default Ember.Component.extend({
   isEditingInvitation: computed('activeInvitation', 'activeInvitationState', function() {
     return this.get('activeInvitation') && this.get('activeInvitationState') === 'edit';
   }),
+
+  errorMessage: computed('pendingInvitation.errors.email.firstObject.message', 'emailErrorMessage', function(){
+    return (this.get('pendingInvitation.errors.email.firstObject.message') || this.get('emailErrorMessage'));
+  }),
+
+  disableButton: computed('errorMessage', 'selectedUser', function(){
+    return (isEmpty(this.get('selectedUser')) || this.get('errorMessage')) ;
+  }),
+
+  validations: taskValidations,
+
+  validateData() {
+    this.set('emailErrorMessage', '');
+
+    this.validate('userEmail', this.get('selectedUser.email'));
+    const taskErrors = this.validationErrorsPresent();
+    if(taskErrors) {
+      this.set('emailErrorMessage', 'Please enter a valid email address');
+    }
+
+    return !taskErrors;
+  },
+
 
   // note that both of these eventually alias to the paper's decisions
   decisions: computed.alias('task.decisions'),
@@ -141,7 +169,7 @@ export default Ember.Component.extend({
     },
 
     createInvitation() {
-      if (isEmpty(this.get('selectedUser'))) { return; }
+      if (this.get('disableButton')) { return; }
 
       this.get('createInvitation').perform({
         task: this.get('task'),
@@ -152,6 +180,7 @@ export default Ember.Component.extend({
 
     // auto-suggest action
     didSelectUser(selectedUser) {
+      this.set('emailErrorMessage', '');
       this.set('selectedUser', selectedUser);
     },
 
@@ -180,6 +209,14 @@ export default Ember.Component.extend({
       this.set('selectedUser', {
         email: val
       });
+
+      this.validate('userEmail', this.get('selectedUser.email'));
+      const taskErrors = this.validationErrorsPresent();
+      if(!taskErrors)
+        this.set('emailErrorMessage', '');
+    },
+    focusOut(){
+      this.validateData();
     }
   }
 });

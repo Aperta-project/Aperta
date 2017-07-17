@@ -17,7 +17,8 @@ class TokenInvitationsController < ApplicationController
       invitation.accept!
       Activity.invitation_accepted!(invitation, user: current_user)
       journal_name = invitation.paper.journal.name
-      flash[:notice] = "Thank you for agreeing to review for #{journal_name}."
+      verb = invitation.invitee_role == 'Reviewer' ? 'review' : 'edit'
+      flash[:notice] = "Thank you for agreeing to #{verb} for #{journal_name}."
     end
     redirect_to "/papers/#{invitation.paper.to_param}"
   end

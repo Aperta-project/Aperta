@@ -15,6 +15,7 @@ describe PaperContext do
   end
 
   let(:academic_editor) { FactoryGirl.create(:user) }
+  let(:handling_editor) { FactoryGirl.create(:user) }
 
   context 'rendering a paper' do
     def check_render(template, expected)
@@ -91,10 +92,23 @@ describe PaperContext do
         check_render("{{ academic_editors[0].first_name }}",
                      academic_editor.first_name)
       end
+    end
+
+    context 'with a handling editor' do
+      before do
+        journal.handling_editor_role ||
+          journal.create_handling_editor_role!
+        assign_handling_editor_role(paper, handling_editor)
+      end
+
+      it 'renders handling editors' do
+        check_render("{{ handling_editors[0].first_name }}",
+                     handling_editor.first_name)
+      end
 
       it 'renders an editor' do
         check_render("{{ editor.first_name }}",
-                     academic_editor.first_name)
+                     handling_editor.first_name)
       end
     end
   end

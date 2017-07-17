@@ -194,7 +194,7 @@ describe TokenInvitationsController do
         context 'when invitation and current user emails are the same' do
           before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper)
+            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer')
           end
 
           it 'creates an Activity' do
@@ -209,9 +209,20 @@ describe TokenInvitationsController do
           it 'redirects user to the manuscript and sets a flash notice' do
             do_request
             expect(response).to redirect_to("/papers/#{invitation_double.paper.short_doi}")
-            expect(flash[:notice]).to be_present
+            expect(flash[:notice]).to include("Thank you for agreeing to review")
+          end
+
+          context 'Inviting an academic editor' do
+            let(:invitation_double) do
+              double('Invitation', invitee_role: 'Academic Editor', invited?: true, email: user.email, accept!: true, paper: task.paper)
+            end
+            it 'flashes appropriate language' do
+              do_request
+              expect(flash[:notice]).to include("Thank you for agreeing to edit")
+            end
           end
         end
+
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
             double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper)
@@ -227,6 +238,7 @@ describe TokenInvitationsController do
           end
         end
       end
+
       context 'when the invitation has been accepted' do
         let(:invitation_double) do
           double('Invitation', invited?: false, email: user.email, paper: task.paper)

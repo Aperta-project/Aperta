@@ -1,5 +1,5 @@
 .invitation-email-entry {
-  padding: $invite-padding;
+  padding: $invite-padding-vertical $invite-padding-horizontal $invite-padding-bottom;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

@@ -3,7 +3,7 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-paragraph-input'],
-  classNameBindings: ['hasErrors:has-error'],
+  classNameBindings: ['answer.hasErrors:has-error'],
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

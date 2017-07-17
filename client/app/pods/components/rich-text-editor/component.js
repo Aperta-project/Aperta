@@ -11,7 +11,6 @@ const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
-
 export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],

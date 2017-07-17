@@ -5,4 +5,8 @@ class AnswerContext < TemplateContext
   def question
     @object.card_content.text
   end
+
+  def ident
+    @object.card_content.ident
+  end
 end

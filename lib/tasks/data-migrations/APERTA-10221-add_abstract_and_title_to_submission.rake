@@ -10,6 +10,7 @@ namespace :data do
         journal_task_type = journal.journal_task_types.find_by(kind: TahiStandardTasks::TitleAndAbstractTask)
 
         journal.manuscript_manager_templates.each do |mtm|
+          p mtm
           task_created = nil
           first_phase_template = nil
 
@@ -19,6 +20,8 @@ namespace :data do
             first_phase_template = pt if pt.position == 1
           end
 
+          first_phase_template ||= mtm.phase_templates.first
+
           # If task is not already created, create it on the Initial submission phase
           task_created = first_phase_template.task_templates.create!(
             journal_task_type: journal_task_type,
@@ -26,8 +29,8 @@ namespace :data do
           ) unless task_created
           p "TahiStandardTasks::TitleAndAbstractTask => "
           p task_created
-          # Won't do anything if the task was already created
-          next if task_created.phase_template != first_phase_template
+          # Move the task template to the first phase template to show it at the top of the list
+          first_phase_template.task_templates << task_created if task_created.phase_template != first_phase_template
 
           # Reorders tasks templates
           first_phase_template.task_templates.each do |t|
@@ -51,10 +54,13 @@ namespace :data do
         task_to_change = paper.tasks.where(type: TahiStandardTasks::TitleAndAbstractTask).first
 
         # Creates the tasks and assigns to the phase, if it is not created
-        next if task_to_change
         phase = paper.phases.where(position: 1).first
-        task_to_change = TaskFactory.create(TahiStandardTasks::TitleAndAbstractTask, paper: paper, phase: phase)
-        task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym
+        if task_to_change
+          phase.tasks << task_to_change
+        else
+          task_to_change = TaskFactory.create(TahiStandardTasks::TitleAndAbstractTask, paper: paper, phase: phase)
+          task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym
+        end
 
         p "TahiStandardTasks::TitleAndAbstractTask => "
         p task_to_change

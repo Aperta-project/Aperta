@@ -53,14 +53,16 @@ class AdminDashboardPage < Page
     find(".admin-user-search button").click
   end
 
-  def search_results
+  def search_results(query = nil)
+    search(query) if query
     session.has_content? 'Username'
     all('.admin-users-list-list .user-row').map do |el|
       Hash[[:last_name, :first_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 
-  def first_search_result
+  def first_search_result(query = nil)
+    search(query) if query
     session.has_content? 'Username'
     UserRowInSearch.new(all('.admin-users-list-list .user-row').first, context: page)
   end
@@ -72,9 +74,20 @@ class UserRowInSearch < PageFragment
   end
 
   def edit_user_details
-    click
+    find('.username').click
     session.has_content? 'User Details'
     EditModal.new(context.find('.user-detail-overlay'), context: context)
+  end
+
+  def add_role(role)
+    find('.assign-role-button').click
+    session.find('.select2-input').set(role)
+    session.find('.select2-result', text: role).click
+  end
+
+  def remove_role(role)
+    find('.select2-search-choice', text: role).hover
+    find('.select2-search-choice', text: role).find('.select2-search-choice-close').click
   end
 end
 

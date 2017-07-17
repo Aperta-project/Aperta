@@ -10,6 +10,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal_task_type) { FactoryGirl.create(:journal_task_type, journal_id: journal.id) }
   let(:user) { FactoryGirl.build(:user) }
 
   describe 'GET index' do
@@ -185,7 +186,7 @@ describe ManuscriptManagerTemplatesController do
           name: 'Phase title',
           position: 1,
           task_templates: [
-            journal_task_type_id: journal.id,
+            journal_task_type_id: journal_task_type.id,
             title: 'Ad-hoc',
             template: template_params
           ]

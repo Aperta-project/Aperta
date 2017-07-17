@@ -3,8 +3,9 @@
     {{#if title}}
       <h1 class="overlay-header-title">{{title}}</h1>
     {{/if}}
-
-    <span class="overlay-close" {{action "close"}}>&times;</span>
+    {{#if enableClose}}
+      <span class="overlay-close" {{action "close"}}>&times;</span>
+    {{/if}}
   </header>
 
   <div class="overlay-body">

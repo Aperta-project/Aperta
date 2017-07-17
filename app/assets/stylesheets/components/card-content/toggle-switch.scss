@@ -50,8 +50,8 @@
     cursor: not-allowed;
   }
 
-  input:checked + .slider {
-    background-color: $aperta-green;
+  input:checked + .slider{
+    //background-color: $aperta-green;
   }
 
   input:focus + .slider {
@@ -60,6 +60,14 @@
 
   input:checked + .slider:before {
     transform: translateX(100%);
+  }
+
+  .slider.blue {
+    background-color: $aperta-blue;
+  }
+
+  .slider.green {
+    background-color: $aperta-green;
   }
 
   .slider.round {

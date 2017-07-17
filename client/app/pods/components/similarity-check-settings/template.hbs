@@ -17,7 +17,7 @@
   {{#liquid-if switchState.value}}
   <h4>Send Manuscript to iThenticate</h4>
   <label class="flex-element {{concat ident "-accept-label"}}">
-    {{radio-button value=false
+    &nbsp;{{radio-button value=false
                    name="submissionOption"
                    selection=option.value
                    checked=fullSubmissionState
@@ -26,7 +26,7 @@
   </label>
   <br />
   <label class="flex-element {{concat ident "-accept-label"}}">
-    {{radio-button value=true
+    &nbsp;{{radio-button value=true
                    name="submissionOption"
                    selection=option.value
                    checked=afterState
@@ -46,6 +46,6 @@
   {{/liquid-if}}
 
 <div class="overlay-action-buttons">
-  <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
-  <button class="button-primary button--green" {{action "saveSettings"}}>SAVE</button>
+  <button class="button-link button--blue cancel" {{action "close"}}>cancel</button>
+  <button class="button-primary button--blue" {{action "saveSettings"}}>SAVE</button>
 </div>

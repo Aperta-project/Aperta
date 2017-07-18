@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 describe ApexPackager do
-  let(:journal) do
-    FactoryGirl.create(:journal, :with_creator_role, pdf_css: 'body { background-color: red; }')
-  end
-  let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_creator, journal: journal) }
+
+  let(:paper) { FactoryGirl.create(:paper, :with_phases) }
   let!(:figures_task) { FactoryGirl.create(:figure_task, :with_loaded_card, paper: paper) }
   let!(:manuscript_file) do
     instance_double(ManuscriptAttachment, filename: 'manuscript_file.docx')
@@ -25,7 +23,7 @@ describe ApexPackager do
   def read_zip_entry(zip_io, file_name)
     Zip::InputStream.open(zip_io) do |io|
       while (entry = io.get_next_entry)
-        return io.read if entry.name == file_name
+        return io.read if (entry.name == file_name)
       end
     end
     nil
@@ -39,8 +37,8 @@ describe ApexPackager do
   before do
     allow(paper).to receive(:file).and_return(manuscript_file)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
-    allow(manuscript_file).to receive(:url)
-                                  .and_return(Rails.root.join('spec/fixtures/about_turtles.docx'))
+    allow(manuscript_file).to receive(:url).and_return(
+      Rails.root.join('spec/fixtures/about_turtles.docx'))
 
     metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')
@@ -61,10 +59,12 @@ describe ApexPackager do
 
     it 'creates a zip package for a paper' do
       zip_io = ApexPackager.create_zip(paper)
-      expect(zip_filenames(zip_io)).to include('test.0001.docx')
+      expect(zip_filenames((zip_io))).to include(
+        'test.0001.docx')
       expect(zip_contains(zip_io,
-                'test.0001.docx',
-              Rails.root.join('spec/fixtures/about_turtles.docx'))).to be(true)
+                          'test.0001.docx',
+                          Rails.root.join(
+                            'spec/fixtures/about_turtles.docx'))).to be(true)
     end
 
     it 'contains the correct metadata' do
@@ -129,7 +129,7 @@ describe ApexPackager do
         manifest = packager.manifest_file
         json = JSON.parse manifest.read
         expected_keys = %w(archive_filename metadata_filename files)
-        expect(json).to include(*expected_keys)
+        expect(json).to include *expected_keys
       end
     end
   end
@@ -163,7 +163,7 @@ describe ApexPackager do
     it 'adds a figure to a zip' do
       zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_io)).to include('yeti.jpg')
+      expect(zip_filenames((zip_io))).to include('yeti.jpg')
       contents = read_zip_entry(zip_io, 'yeti.jpg')
       expect(contents).to eq('a string')
     end
@@ -171,7 +171,7 @@ describe ApexPackager do
     it 'does not add a striking image when none is present' do
       zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_io)).to_not include('Strikingimage.jpg')
+      expect(zip_filenames((zip_io))).to_not include('Strikingimage.jpg')
     end
 
     describe "add_figures" do
@@ -206,8 +206,7 @@ describe ApexPackager do
         caption: 'a caption',
         file: File.open(
           Rails.root.join('spec/fixtures/about_turtles.docx')
-        ),
-        resource_tokens: [ResourceToken.new(version_urls: { preview: Faker::Internet.url })]
+        )
       )
     end
 
@@ -220,7 +219,7 @@ describe ApexPackager do
     it 'adds supporting information to a zip' do
       zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_io)).to include('about_turtles.docx')
+      expect(zip_filenames((zip_io))).to include('about_turtles.docx')
       contents = read_zip_entry(zip_io, 'about_turtles.docx')
       expect(contents).to eq('a string')
     end
@@ -230,7 +229,8 @@ describe ApexPackager do
       supporting_information_file.save!
       zip_io = ApexPackager.create_zip(paper)
 
-      expect(zip_filenames(zip_io)).to_not include(supporting_information_file.filename)
+      expect(zip_filenames((zip_io))).to_not include(
+        supporting_information_file.filename)
     end
 
     describe "add_supporting_information" do

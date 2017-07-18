@@ -58,7 +58,7 @@ feature 'Initial Tech Check', js: true do
     expect(text).to_not include "In the Ethics statement card, you have selected Yes to one of the questions."
   end
 
-  scenario "unchecking a box with no associated text has no effect" do
+  scenario "unchecking a box with no associated text has no effect", flaky: true do
     login_as(editor, scope: :user)
     overlay = Page.view_task_overlay(paper, task)
     overlay.display_letter

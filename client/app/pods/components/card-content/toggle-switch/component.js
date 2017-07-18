@@ -4,10 +4,10 @@ import { PropTypes } from 'ember-prop-types';
 export default Ember.Component.extend({
   classNames: ['card-content-toggle-switch'],
   propTypes: {
-    content: PropTypes.EmberObject.isRequired,
+    content: PropTypes.object.isRequired,
     disabled: PropTypes.bool,
     labelText: PropTypes.string,
-    answer: PropTypes.EmberObject.isRequired,
+    answer: PropTypes.object.isRequired,
     size: PropTypes.string // 'small', 'medium', or 'large'
   },
 

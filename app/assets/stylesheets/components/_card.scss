@@ -21,10 +21,13 @@
   right: 0;
   padding: 5px 5px 0 0;
   font-size: 14px;
-  color: #000;
+  color: $aperta-grey-dark;
   cursor: pointer;
-  @extend .fa, .fa-times-circle-o;
+  @extend .fa, .fa-close;
   opacity: 0;
+}
+.card-remove:hover {
+  color:$aperta-green;
 }
 
 .card {

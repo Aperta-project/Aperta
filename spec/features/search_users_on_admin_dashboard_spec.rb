@@ -17,8 +17,7 @@ feature "Search Users on Admin Dashboard", js: true do
   let(:admin_page) { AdminDashboardPage.visit }
 
   scenario "Searching users returns a list of users" do
-    admin_page.search("bob")
-    search_results = admin_page.search_results
+    search_results = admin_page.search_results("bob")
 
     expect(search_results.length).to eq(3)
     expect(search_results).to match_array(

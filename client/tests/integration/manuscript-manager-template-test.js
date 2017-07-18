@@ -62,7 +62,7 @@ test('Changing phase name', function(assert) {
 
   columnTitleSelect = 'h2.column-title:contains("Phase 1")';
 
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
 
   click(columnTitleSelect).then(function() {
     return Ember.$(columnTitleSelect).html('Shazam!');
@@ -95,7 +95,7 @@ test('Adding an Ad-Hoc card', function(assert) {
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
   });
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Ad Hoc")');
   click('.overlay .button--green:contains("Add")');
@@ -149,7 +149,7 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
   TestHelper.mockFind('admin-journal').returns({
     model: adminJournal
   });
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
   click('.button--green:contains("Add New Card")');
   click('label:contains("Billing")');
   click('.overlay .button--green:contains("Add")');
@@ -158,3 +158,67 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
     return assert.elementNotFound('.ad-hoc-template-overlay', 'Clicking any other card has no effect');
   });
 });
+
+/*test('Updating similarity check setting', function(assert) {
+  var adminJournal, journalTaskType, mmt, pt, registeredSetting;
+  registeredSetting = FactoryGuy.make('registered-setting');
+  journalTaskType = FactoryGuy.make('journal-task-type', {
+    id: 1,
+    kind: "TahiStandardTasks::SimilarityCheckTask",
+    title: "Similarity Check"
+  });
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1,
+    journalTaskTypes: [journalTaskType]
+  });
+  mmt = FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  pt = FactoryGuy.make('phase-template', {
+    id: 1,
+    manuscriptManagerTemplate: mmt,
+    name: "Phase 1"
+  });
+  TestHelper.mockFind('admin-journal').returns({
+    model: adminJournal
+  });
+  visit("/admin/journals/1/manuscript_manager_templates/1/edit");
+  click('.button--green:contains("Add New Card")');
+  click('label:contains("Similarity Check")');
+  click('.overlay .button--green:contains("Add")');
+  click('a:contains("Save Template")');
+
+  andThen(function() {
+    //click('.card--settings');
+    assert.elementFound('span.card-title:contains("Similarity Check")');
+  });
+  click('label:contains("Ad Hoc")');
+  click('.overlay .button--green:contains("Add")');
+  andThen(function() {
+    assert.elementFound('h1.inline-edit:contains("Ad Hoc")');
+    assert.notOk(find('h1.inline-edit').hasClass('editing'), 'The title should not be editable to start');
+  });
+
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--label');
+  fillInContentEditable('.inline-edit-form div[contenteditable]', 'New contenteditable, yahoo!');
+  click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  andThen(function() {
+    return assert.textPresent('.inline-edit', 'yahoo', 'text is still correct');
+  });
+  click('.inline-edit-body-part .fa-trash');
+  andThen(function() {
+    return assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+  });
+  click('.inline-edit-body-part .delete-button');
+  andThen(function() {
+    return assert.textNotPresent('.inline-edit', 'yahoo', 'Deleted text is gone');
+  });
+  click('.overlay-close-button');
+  click('.card-title');
+  return andThen(function() {
+    return assert.elementFound('h1.inline-edit:contains("Ad Hoc")', 'User can edit the existing ad-hoc card');
+  });
+});
+*/

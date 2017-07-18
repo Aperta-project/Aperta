@@ -1,0 +1,5 @@
+client/bower_components
+client/node_modules
+client/tmp
+node_modules
+tmp

@@ -1,8 +1,7 @@
 # Decisions Controller
 class DecisionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :assert_paper_submitted!, only: [:register]
-  before_action :assert_verdict_picked!, only: [:register]
+  before_action :verify_paper_and_verdict!, only: [:register]
   respond_to :json
 
   def index
@@ -88,11 +87,8 @@ class DecisionsController < ApplicationController
     @decision ||= Decision.includes(:paper).find(params[:id])
   end
 
-  def assert_verdict_picked!
+  def verify_paper_and_verdict!
     assert decision.verdict.present?, "You must pick a verdict, first"
-  end
-
-  def assert_paper_submitted!
     assert decision.paper.awaiting_decision?, "The paper must be submitted"
   end
 end

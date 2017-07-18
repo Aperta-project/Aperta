@@ -9,7 +9,11 @@ const taskValidations = {
 export default TaskComponent.extend({
   paperNotEditable: Ember.computed.not('task.paper.editable'),
   isNotEditable: Ember.computed('task.completed', 'paperNotEditable', function () {
-    return this.get('task.completed') || this.get('paperNotEditable');
+    if (this.get('currentUser.siteAdmin')){
+      return this.get('task.completed');
+    }else{
+      return this.get('task.completed') || this.get('paperNotEditable');
+    }
   }),
   validations: taskValidations,
 

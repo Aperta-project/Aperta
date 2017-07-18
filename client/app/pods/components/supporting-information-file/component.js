@@ -92,10 +92,6 @@ export default Component.extend({
 
       this.get('updateFile')(this.get('file'));
       this.set('uiState', 'view');
-    },
-
-    uploadFinished() {
-      this.get('model').validateAll();
-    },
+    }
   }
 });

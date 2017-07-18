@@ -31,7 +31,7 @@ class RouterUploaderService
       # The archive_filename is not a string but the file itself.
       archive_filename: Faraday::UploadIO.new(@file_io, '')
     }
-    response = conn.post("/api/delivery") do |request|
+    response = conn.post("/api/deliveries") do |request|
       request.body = payload
     end
   end

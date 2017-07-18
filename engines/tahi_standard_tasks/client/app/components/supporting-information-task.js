@@ -70,11 +70,9 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);
 
-      const siFile = this.get('store')
-                         .peekRecord('supporting-information-file', id);
-
+      const siFile = this.get('store').peekRecord('supporting-information-file', id);
       const proxyObject = this.get('filesWithErrors').findBy('object', siFile);
-      proxyObject.validateAll();
+      proxyObject.set('newlyUploaded', true);
     },
 
     deleteFile(file) {

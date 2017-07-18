@@ -7,6 +7,13 @@ const {
 } = Ember;
 
 export default Component.extend({
+  init() {
+    this._super(...arguments);
+    if(this.get('model.newlyUploaded')) {
+      this.set('uiState', 'edit');
+    }
+  },
+
   classNames: ['si-file'],
   classNameBindings: ['uiStateClass'],
   file: alias('model.object'),
@@ -15,6 +22,7 @@ export default Component.extend({
   errorsPresent: alias('model.errorsPresent'),
   isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
+
   legendsAllowed: alias('file.paper.legendsAllowed'),
 
   categories: [

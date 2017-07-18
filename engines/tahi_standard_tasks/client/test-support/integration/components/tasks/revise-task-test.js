@@ -9,16 +9,16 @@ import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 moduleForComponent(
   'revise-task',
   'Integration | Components | Tasks | Revise', {
-  integration: true,
-  beforeEach() {
-    manualSetup(this.container);
-    this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
-    Factory.createPermission('reviseTask', 1, ['edit', 'view']);
-  },
-  afterEach() {
-    $.mockjax.clear();
-  }
-});
+    integration: true,
+    beforeEach() {
+      manualSetup(this.container);
+      this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+      Factory.createPermission('reviseTask', 1, ['edit', 'view']);
+    },
+    afterEach() {
+      $.mockjax.clear();
+    }
+  });
 
 let createTaskWithDecision = function(decisionAttrs) {
   const decision = make('decision', decisionAttrs);
@@ -76,6 +76,12 @@ test('it renders information regarding the latest decision', function(assert) {
     assert.textPresent('.revise-manuscript-task .decision .revision-number', '1.2', 'revision number was displayed');
     assert.textPresent('.revise-manuscript-task .decision .letter', 'This is my letter', 'letter was displayed');
     assert.textPresent('.revise-manuscript-task .decision .created-at', 'November 29, 2016', 'createdAt date was displayed');
+    assert.textPresent('.response-to-reviewers .link_ref', 'See Decision Letter below');
+
+    this.$('.response-to-reviewers .link_ref').click();
+    assert.elementsFound('.clearfix .link_ref', 1);
+    assert.textPresent('.clearfix .link_ref', 'Back to top');
+
     let response = getRichText('revise-overlay-response-field');
     assert.equal(response, `<p>${text}</p>`, 'author response was displayed');
     done();
@@ -186,7 +192,7 @@ test('it lets you complete the task when there are no validation errors', functi
 });
 
 test('it lets you uncomplete the task when it has validation errors', function(assert) {
-  let testTask = createInvalidTask()
+  let testTask = createInvalidTask();
   this.set('testTask', testTask);
 
   Ember.run(() => {

@@ -59,8 +59,9 @@ namespace :data do
           phase.tasks << task_to_change
         else
           task_to_change = TaskFactory.create(TahiStandardTasks::TitleAndAbstractTask, paper: paper, phase: phase)
-          task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym
         end
+
+        task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym
 
         p "TahiStandardTasks::TitleAndAbstractTask => "
         p task_to_change

@@ -76,7 +76,7 @@ test('it renders information regarding the latest decision', function(assert) {
     assert.textPresent('.revise-manuscript-task .decision .revision-number', '1.2', 'revision number was displayed');
     assert.textPresent('.revise-manuscript-task .decision .letter', 'This is my letter', 'letter was displayed');
     assert.textPresent('.revise-manuscript-task .decision .created-at', 'November 29, 2016', 'createdAt date was displayed');
-    assert.textPresent('.response-to-reviewers .link_ref', 'See Decision Letter below');
+    assert.textPresent('.response-to-reviewers .link_ref', 'Most Recent Decision Letter');
 
     this.$('.response-to-reviewers .link_ref').click();
     assert.elementsFound('.clearfix .link_ref', 1);

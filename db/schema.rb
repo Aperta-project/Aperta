@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170713223217) do
+ActiveRecord::Schema.define(version: 20170714215041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,6 +240,7 @@ ActiveRecord::Schema.define(version: 20170713223217) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.string   "editor_style"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -254,8 +255,8 @@ ActiveRecord::Schema.define(version: 20170713223217) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
-    t.string   "history_entry"
     t.boolean  "workflow_display_only",   default: false, null: false
+    t.string   "history_entry"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree

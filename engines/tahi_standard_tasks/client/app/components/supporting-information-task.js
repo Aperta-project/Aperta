@@ -34,16 +34,18 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   filesWithValidations: computed('files.[]', function() {
     let proxies = this.get('files').map((file)=> {
+      // These proxies hold validation errors. We cache them to avoid wiping out
+      // all validation errors in the collection when a file is added or deleted.
       return this.get('cachedFilesWithValidations').findBy('object', file) || this.newFileWithValidations(file);
     });
     this.set('cachedFilesWithValidations', proxies);
     return proxies;
   }),
   cachedFilesWithValidations: computed(() => []),
-  newFileWithValidations(f){
+  newFileWithValidations(file){
     return ObjectProxyWithErrors.create({
       saveErrorText: this.get('saveErrorText'),
-      object: f,
+      object: file,
       skipValidations: () => { return this.get('skipValidations'); },
       validations: {
         'label':     ['presence'],

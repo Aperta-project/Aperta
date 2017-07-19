@@ -33,26 +33,32 @@ export default TaskComponent.extend(FileUploadMixin, {
   },
 
   filesWithErrors: computed('files.[]', function() {
-    return this.get('files').map((f)=> {
-      return ObjectProxyWithErrors.create({
-        saveErrorText: this.get('saveErrorText'),
-        object: f,
-        skipValidations: () => { return this.get('skipValidations') },
-        validations: {
-          processed: [{
-            type: 'processingFinished',
-            message: 'All files must be done processing to save.',
-            validation() {
-              const file = this.get('object');
-              return file.get('status') === 'done';
-            }
-          }],
-          'label': ['presence'],
-          'category': ['presence']
-        }
-      });
+    let proxies = this.get('files').map((f)=> {
+      return this.get('cachedFilesWithErrors').findBy('object', f) || this.makeFileWithErrors(f);
     });
+    this.set('cachedFilesWithErrors', proxies);
+    return proxies;
   }),
+  cachedFilesWithErrors: [],
+  makeFileWithErrors(f){
+    return ObjectProxyWithErrors.create({
+      saveErrorText: this.get('saveErrorText'),
+      object: f,
+      skipValidations: () => { return this.get('skipValidations'); },
+      validations: {
+        processed: [{
+          type: 'processingFinished',
+          message: 'All files must be done processing to save.',
+          validation() {
+            const file = this.get('object');
+            return file.get('status') === 'done';
+          }
+        }],
+        'label': ['presence'],
+        'category': ['presence']
+      }
+    });
+  },
 
   actions: {
     uploadStarted(data, filename) {

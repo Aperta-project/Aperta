@@ -47,9 +47,8 @@ test('can manage workflow, list appears', function(assert) {
 
   this.set('correspondence', [correspondence]);  
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
     assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
@@ -57,7 +56,6 @@ test('can manage workflow, list appears', function(assert) {
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', 'v0.0 rejected');
     assert.textPresent('tr:last td:nth-child(5)', correspondence.get('sender'));
-    done();
   });
 });
 
@@ -69,9 +67,8 @@ test('can manage workflow, list appears for manually created correspondence', fu
 
   this.set('correspondence', [correspondence]);  
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
     assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
@@ -79,7 +76,6 @@ test('can manage workflow, list appears for manually created correspondence', fu
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', 'Unavailable');
     assert.textPresent('tr:last td:nth-child(5)', correspondence.get('sender'));
-    done();
   });
 });
 

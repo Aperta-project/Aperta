@@ -16,7 +16,6 @@ export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
-  editor: null,
 
   bodyCSS: `
     .mce-content-body {
@@ -66,7 +65,6 @@ export default Ember.Component.extend({
   configureCommon(options) {
     options['menubar'] = false;
     options['content_style'] = this.get('bodyCSS');
-    options['setup'] = editor => this.set('editor', editor);
     options['formats'] = basicFormats;
     Ember.run.schedule('afterRender', this.stripTitles);
     return options;

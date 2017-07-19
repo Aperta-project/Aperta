@@ -12,7 +12,6 @@ module JournalServices
                                 TahiStandardTasks::SupportingInformationTask,
                                 TahiStandardTasks::AuthorsTask,
                                 TahiStandardTasks::UploadManuscriptTask,
-                                TahiStandardTasks::CoverLetterTask,
                                 CustomCard::Configurations::CoverLetter
                               ])
 

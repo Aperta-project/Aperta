@@ -25,7 +25,10 @@ namespace :titles do
     puts styles.size
   end
 
-  task parse: :environment do
+  task identify: :environment do
+    Content = Struct.new(:id, :text)
+    Styles = Set.new(%w(font-style font-weight))
+
     def rules(text)
       text.split(';').map(&:strip).inject(Set.new) do |props, rule|
         row = rule.split(':').map(&:strip)
@@ -33,41 +36,53 @@ namespace :titles do
       end
     end
 
-    styles = Set.new(%w(font-style font-weight))
-    card_id = CardContent.where("ident like '%short%'").first.id
-    answers = Answer.where(card_content_id: card_id)
-    puts answers.size
+    def analyze(kind, list)
+      tags = []
+      styler = Loofah::Scrubber.new do |node|
+        style = node.attributes['style']
+        next Loofah::Scrubber::CONTINUE if style.blank?
 
-    values = answers.map(&:value).map { |value| HtmlScrubber.style_scrub!(value) }
-    output = ''
+        styling = rules(style.text)
+        matches = Styles & styling
 
-    styler = Loofah::Scrubber.new do |node|
-      style = node.attributes['style']
-      (output << node.to_s; next Loofah::Scrubber::CONTINUE) if style.blank?
-
-      styling = rules(style.text)
-      matches = styles & styling
-      node.remove_attribute('style')
-      (output << node.to_s; next Loofah::Scrubber::CONTINUE) if matches.empty?
-
-      contents = node.to_s
-      matches.each do |match|
-        tag = case match
-          when 'font-style'  then 'i'
-          when 'font-weight' then 'b'
-        end
-        contents = "<#{tag}>#{contents}</#{tag}>" if tag
+        tags = matches.map do |match|
+          case match
+            when 'font-style'  then 'i'
+            when 'font-weight' then 'b'
+          end
+        end.compact
       end
 
-      output << contents
-      Loofah::Scrubber::STOP
+      count = 0
+      list.each do |item|
+        text = HtmlScrubber.style_scrub!(item.text)
+        tags = []
+        Loofah.fragment(text).scrub!(styler)
+        next if tags.empty?
+
+        count += 1
+        text = text.gsub("\n", ' ')
+        puts "#{kind} #{item.id.to_s.rjust(4)}: #{tags.join(', ').rjust(4)} -- [#{text.size.to_s.rjust(4)}] #{text}"
+      end
+
+      count
     end
 
-    values.each do |text|
-      output = ''
-      Loofah.fragment(text).scrub!(styler)
-      next if text == output
-      puts "1. #{text.gsub("\n", ' ')}\n2. #{output.gsub("\n", ' ')}\n\n"
+    def collect(kind)
+      list = yield
+      count = analyze(kind, yield)
+      "#{kind}: #{count} of #{list.size}"
     end
+
+    results = []
+    papers = Paper.order(:id).all
+    results << collect('Paper Title')    {papers.map {|paper| Content.new(paper.id, paper.title)}}
+    results << collect('Paper Abstract') {papers.map {|paper| Content.new(paper.id, paper.abstract)}}
+
+    short_title = CardContent.where("ident like '%short%'").first
+    results << collect('Short Title')  {short_title.answers.order(:id).map {|answer| Content.new(answer.id, answer.value)}}
+
+    puts
+    puts results
   end
 end

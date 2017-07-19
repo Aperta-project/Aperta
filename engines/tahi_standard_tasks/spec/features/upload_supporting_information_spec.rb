@@ -28,9 +28,6 @@ feature "Upload Supporting Information", js: true do
     expect(task).to have_no_content('Upload Complete!')
     expect(task).to have_file 'yeti.jpg'
 
-    # edit file
-    task.edit_file_info
-
     task.file_label_input = 'F4'
     task.file_category_dropdown = 'Figure'
     task.toggle_file_striking_image
@@ -61,9 +58,6 @@ feature "Upload Supporting Information", js: true do
     expect(task).to have_no_content('Loading')
     expect(task).to have_no_content('Upload Complete!')
     expect(task).to have_file 'yeti.jpg'
-
-    # edit file
-    task.edit_file_info
 
     task.save_file_info
 

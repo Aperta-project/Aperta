@@ -18,6 +18,10 @@ FactoryGuy.define('card-content', {
       contentType: 'text',
       valueType: null,
       text: 'Here is a paragraph of unanswerable text'
+    },
+    list: {
+      contentType: 'bulleted-list',
+      valueType: null
     }
   }
 });

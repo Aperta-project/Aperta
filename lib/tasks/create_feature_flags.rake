@@ -14,6 +14,6 @@ task 'create_feature_flags': :environment do
     "HEALTH_CHECK",
     "CORRESPONDENCE",
     "REVIEW_DUE_DATE",
-    "AKITA_INTEGRATION"
+    "CAS_PHASED_SIGNUP"
   ]
 end

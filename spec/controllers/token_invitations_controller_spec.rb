@@ -207,15 +207,15 @@ describe TokenInvitationsController do
         double('Invitation', email: 'ned@flancrest.com', invitee_id: nil, invitee_role: 'Reviewer')
       end
       before { expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double) }
-      context 'the AKITA_INTEGRATION feature flag is false' do
-        before { expect(FeatureFlag).to receive(:[]).with('AKITA_INTEGRATION').and_return(false) }
+      context 'the CAS_PHASED_SIGNUP feature flag is false' do
+        before { expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(false) }
         it 'should return true' do
           controller.send(:use_authentication?).should be true
         end
       end
-      context 'the AKITA_INTEGRATION ff is true' do
+      context 'the CAS_PHASED_SIGNUP ff is true' do
         before do
-          expect(FeatureFlag).to receive(:[]).with('AKITA_INTEGRATION').and_return(true)
+          expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(true)
         end
         context 'and the phased sign up url is missing' do
           before { expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(nil) }

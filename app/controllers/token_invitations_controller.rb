@@ -97,7 +97,7 @@ class TokenInvitationsController < ApplicationController
 
   def use_authentication?
     invitation.invitee_id or # user already in APERTA
-      !FeatureFlag['AKITA_INTEGRATION'] or
+      !FeatureFlag['CAS_PHASED_SIGNUP'] or
       !TahiEnv.cas_phased_signup_url or # some envs might not have this
       !NedUser.enabled? or # or this
       NedUser.new.email_has_account?(invitation.email) # check NED for user

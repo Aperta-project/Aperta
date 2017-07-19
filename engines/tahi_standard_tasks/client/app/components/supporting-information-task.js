@@ -39,7 +39,7 @@ export default TaskComponent.extend(FileUploadMixin, {
     this.set('cachedFilesWithValidations', proxies);
     return proxies;
   }),
-  cachedFilesWithValidations: [],
+  cachedFilesWithValidations: computed(() => []),
   newFileWithValidations(f){
     return ObjectProxyWithErrors.create({
       saveErrorText: this.get('saveErrorText'),

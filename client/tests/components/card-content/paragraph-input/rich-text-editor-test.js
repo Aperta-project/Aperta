@@ -24,7 +24,7 @@ let template = hbs`{{
   onContentsChanged=(action actionStub)
 }}`;
 
-test(`setting the value-type to text renders a textarea`, function(assert) {
+test(`setting the value-type to text does not render a rich-text editor`, function(assert) {
   this.set('content', Ember.Object.create({valueType: 'text', text: 'Some Text'}));
   this.render(template);
   assert.equal(0, window.tinymce.editors.length);

@@ -12,15 +12,18 @@
       <tbody>
         {{#each model as |message|}}
           <tr>
-            <td>{{format-date message.sentAt}}</td>
+            <td>{{format-date message.date}}</td>
             <td>
               <div class="correspondence{{message.id}}">
               {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
-                {{message.subject}}
+                {{if message.external message.description message.subject}}
               {{/link-to}}
               </div>
             </td>
             <td>{{message.recipient}}</td>
+            <td class='{{unless message.manuscriptVersionStatus 'unavailable'}}'>
+              {{if message.manuscriptVersionStatus message.manuscriptVersionStatus 'Unavailable'}}
+            </td>
             <td>{{message.sender}}</td>
           </tr>
         {{/each}}

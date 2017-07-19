@@ -12,5 +12,6 @@ export default DS.Model.extend({
   description: DS.attr('string'),
   cc: DS.attr('string'),
   bcc: DS.attr('string'),
-  sentAt: DS.attr('date')
+  sentAt: DS.attr('date'),
+  manuscriptVersionStatus: DS.attr('string')
 });

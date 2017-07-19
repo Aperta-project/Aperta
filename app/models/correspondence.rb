@@ -20,23 +20,7 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
-  after_save :save_manuscript_version_status
-
   def external?
     external
-  end
-
-  def save_manuscript_version_status
-    return if external?
-    paper = self.paper
-    # we have cases where correspondence(s) are not
-    # created with a paper. Cards like Assigned AE emails,
-    # AE Invitation Emails, Author Chase Emails, creates a
-    # correspondence with the paper_id nil
-    return unless paper
-    manuscript_version = paper.versioned_texts.last.version
-    manuscript_status = paper.publishing_state
-    manuscript_version_status = "#{manuscript_version} #{manuscript_status}"
-    update_column :manuscript_version_status, manuscript_version_status
   end
 end

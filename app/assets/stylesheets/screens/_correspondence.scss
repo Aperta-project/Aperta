@@ -30,6 +30,11 @@
       padding-top: 2rem;
       padding-bottom: 2rem;
     }
+
+    .unavailable {
+      color: $aperta-grey;
+      font-style: italic;
+    }
   }
 
   .correspondence-date-column { min-width: 150px; }

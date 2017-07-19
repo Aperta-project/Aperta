@@ -86,6 +86,10 @@ describe Typesetter::AuthorSerializer do
     allow(author).to receive(:answer_for).and_call_original
   end
 
+  let!(:creator_flag) do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
+  end
+
   it 'includes author fields' do
     expect(output.keys).to contain_exactly(
       :first_name,
@@ -233,6 +237,17 @@ describe Typesetter::AuthorSerializer do
       it 'is false' do
         author.user = FactoryGirl.create(:user)
         expect(output[:creator]).to eq false
+      end
+    end
+
+    context 'with creator feature flag turned off' do
+      before do
+        FeatureFlag.find(creator_flag.id).update(active: false)
+      end
+
+      it 'is not serialized' do
+        author.user = FactoryGirl.create(:user)
+        expect(output[:creator]).to_not be_present
       end
     end
   end

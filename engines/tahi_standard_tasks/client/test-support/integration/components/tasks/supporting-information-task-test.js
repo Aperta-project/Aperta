@@ -40,16 +40,6 @@ moduleForComponent(
 });
 
 let template = hbs`{{supporting-information-task task=testTask}}`;
-let errorSelector = '.supporting-information-thumbnail .error-message:not(.error-message--hidden)';
-
-test("it renders the paper's SI files", function(assert) {
-  let doneFile = make('supporting-information-file', { status: 'done' });
-  let testTask = createTaskWithFiles([doneFile]);
-  allowPermissionOnTask('edit', testTask);
-  this.set('testTask', testTask);
-  this.render(template);
-  assert.elementsFound('.si-file', 1);
-});
 
 test("it renders the paper's supportingInformationFiles", function(assert) {
   let testTask = createTaskWithFiles([

@@ -43,12 +43,12 @@ namespace :titles do
 
     styler = Loofah::Scrubber.new do |node|
       style = node.attributes['style']
-      (output << node.to_s; next Loofah::Scrubber::STOP) if style.blank?
+      (output << node.to_s; next Loofah::Scrubber::CONTINUE) if style.blank?
 
       styling = rules(style.text)
       matches = styles & styling
       node.remove_attribute('style')
-      (output << node.to_s; next Loofah::Scrubber::STOP) if matches.empty?
+      (output << node.to_s; next Loofah::Scrubber::CONTINUE) if matches.empty?
 
       contents = node.to_s
       matches.each do |match|

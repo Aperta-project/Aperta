@@ -8,6 +8,10 @@ class PaperContext < TemplateContext
     @object.academic_editors.map { |ae| UserContext.new(ae) }
   end
 
+  def handling_editors
+    @object.handling_editors.map { |he| UserContext.new(he) }
+  end
+
   def authors
     @object.authors.map { |a| AuthorContext.new(a) }
   end
@@ -17,8 +21,8 @@ class PaperContext < TemplateContext
   end
 
   def editor
-    return if @object.academic_editors.empty?
-    UserContext.new(@object.academic_editors.first)
+    return if @object.handling_editors.empty?
+    UserContext.new(@object.handling_editors.first)
   end
 
   def url

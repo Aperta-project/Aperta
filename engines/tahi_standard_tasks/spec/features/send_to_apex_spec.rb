@@ -51,6 +51,7 @@ feature 'Send to Apex task', js: true do
   end
 
   scenario 'User can send a paper to Send to Apex' do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     apex_delivery = TahiStandardTasks::ApexDelivery.where(paper_id: paper.id)
     expect(apex_delivery.count).to be 0
 

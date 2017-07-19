@@ -50,10 +50,6 @@
     cursor: not-allowed;
   }
 
-  input:checked + .slider{
-    //background-color: $aperta-green;
-  }
-
   input:focus + .slider {
     box-shadow: 0 0 1px green;
   }
@@ -62,11 +58,11 @@
     transform: translateX(100%);
   }
 
-  .slider.blue {
+  input:checked + .slider.blue {
     background-color: $aperta-blue;
   }
 
-  .slider.green {
+  input:checked + .slider.green {
     background-color: $aperta-green;
   }
 

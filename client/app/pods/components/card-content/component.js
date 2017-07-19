@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   },
 
   tagName: '',
-  debouncePeriod: 500, // in ms
+  debouncePeriod: 200, // in ms
 
   init() {
     this._super(...arguments);

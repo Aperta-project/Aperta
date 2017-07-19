@@ -2,6 +2,7 @@
   {{{value}}}
 {{else}}
   <div class="rich-text-editor-container {{ if hasErrors "error" }}">
+    {{card-content/validation-errors errors=errorMessages}}
     {{tinymce-editor
       class=class
       name=name

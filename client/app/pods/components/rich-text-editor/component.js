@@ -63,19 +63,6 @@ export default Ember.Component.extend({
     }
   },
 
-  displayErrors: Ember.observer('errorMessages.[]', function() {
-    if (Ember.isEmpty(this.get('errorMessages'))) {return;}
-
-    let editor = this.get('editor');
-    let errors = this.get('errorMessages');
-
-    editor.notificationManager.open({
-      type: 'error',
-      text: errors.join('; '),
-      // timeout: 2000
-    });
-  }),
-
   configureCommon(options) {
     options['menubar'] = false;
     options['content_style'] = this.get('bodyCSS');

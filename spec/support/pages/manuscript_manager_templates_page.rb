@@ -2,7 +2,7 @@ class ManuscriptManagerTemplatePage < Page
   text_assertions :paper_type, ".paper-type-name"
 
   def self.visit(journal)
-    page.visit "/admin/journals/#{journal.to_param}/manuscript_manager_templates"
+    page.visit "/admin/mmt/journals/#{journal.to_param}/manuscript_manager_templates"
     new
   end
 

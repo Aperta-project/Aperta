@@ -90,7 +90,8 @@ export default Ember.Controller.extend({
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
         this.hideInvitationsOverlay();
         this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
-          let msg = `Thank you for agreeing to review for ${invitation.get('journalName')}.`;
+          let verb = invitation.get('inviteeRole') === 'Reviewer' ? 'review' : 'edit';
+          let msg = `Thank you for agreeing to ${verb} for ${invitation.get('journalName')}.`;
           this.flash.displayRouteLevelMessage('success', msg);
         });
       }).finally(() => { this.set('invitationsLoading', false); });

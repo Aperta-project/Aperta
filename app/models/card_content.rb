@@ -45,8 +45,7 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES =
-    %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -145,4 +144,6 @@ class CardContent < ActiveRecord::Base
       children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
+
+  # rubocop:enable Metrics/AbcSize
 end

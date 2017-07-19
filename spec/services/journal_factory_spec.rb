@@ -1213,7 +1213,6 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [
               PlosBilling::BillingTask,
-              TahiStandardTasks::CoverLetterTask,
               TahiStandardTasks::ReviewerRecommendationsTask,
               CustomCardTask
             ]
@@ -1266,13 +1265,6 @@ describe JournalFactory do
               applies_to: 'PlosBilling::BillingTask'
             ).all
             expect(permissions).not_to include(*billing_permissions)
-          end
-
-          it 'can do nothing on the TahiStandardTasks::CoverLetterTask' do
-            cover_letter_permissions = Permission.where(
-              applies_to: 'TahiStandardTasks::CoverLetterTask'
-            ).all
-            expect(permissions).not_to include(*cover_letter_permissions)
           end
 
           it 'can do nothing on the TahiStandardTasks::RegisterDecisionTask' do

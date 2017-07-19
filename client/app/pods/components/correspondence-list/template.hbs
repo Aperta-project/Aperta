@@ -13,7 +13,7 @@
       <tbody>
         {{#each model as |message|}}
           <tr>
-            <td>{{format-date message.sentAt}}</td>
+            <td>{{format-date message.date}}</td>
             <td>
               <div class="correspondence{{message.id}}">
               {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}

@@ -101,15 +101,14 @@ describe AutomatedSimilarityCheck do
         end
 
         it "creates a SimilarityCheck record" do
-          puts "paper.aasm.from_state #{paper.aasm.from_state}"
           expect(result.class).to eq(SimilarityCheck)
         end
       end
 
-      context "the task is configured to run on the submission after first minor revision" do
+      context "the task is configured to run on the first submission after a minor revision" do
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
-                                            :after_first_minor_revise_decision, owner: task_template)
+                                            :after_minor_revise_decision, owner: task_template)
         end
 
         it "creates a SimilarityCheck record" do
@@ -117,10 +116,25 @@ describe AutomatedSimilarityCheck do
         end
       end
 
-      context "the task is configured to run on the submission after first major revision" do
+      context "a paper has been through more than one revision" do
+        before do
+          # adds a major revision onto the previous minor revision
+          paper.decisions.create!(verdict: "minor_revision", major_version: 0, minor_version: 2)
+        end
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
-                                            :after_first_major_revise_decision, owner: task_template)
+                             :after_minor_revise_decision, owner: task_template)
+        end
+
+        it "creates a SimilarityCheck record" do
+          expect(result.class).to eq(SimilarityCheck)
+        end
+      end
+
+      context "the task is configured to run on the first submission after a major revision" do
+        let!(:setting) do
+          FactoryGirl.create(:ithenticate_automation_setting,
+                                            :after_major_revise_decision, owner: task_template)
         end
 
         it "does not create a SimilarityCheck record" do
@@ -162,10 +176,10 @@ describe AutomatedSimilarityCheck do
         end
       end
 
-      context "the task is configured to run on the submission after first minor revision" do
+      context "the task is configured to run on the first submission after a minor revision" do
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
-                                            :after_first_minor_revise_decision, owner: task_template)
+                                            :after_minor_revise_decision, owner: task_template)
         end
 
         it "does not create a SimilarityCheck record" do
@@ -173,10 +187,10 @@ describe AutomatedSimilarityCheck do
         end
       end
 
-      context "the task is configured to run on the submission after first major revision" do
+      context "the task is configured to run on the submission after a major revision" do
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
-                                            :after_first_major_revise_decision, owner: task_template)
+                                            :after_major_revise_decision, owner: task_template)
         end
 
         it "creates a SimilarityCheck record" do

@@ -35331,7 +35331,7 @@ possible_setting_values:
   - - '4'
     - '1'
     - string
-    - after_first_minor_revise_decision
+    - after_minor_revise_decision
     - false
     - 
     - '2017-06-27 14:02:51.610782'
@@ -35339,7 +35339,7 @@ possible_setting_values:
   - - '5'
     - '1'
     - string
-    - after_first_major_revise_decision
+    - after_major_revise_decision
     - false
     - 
     - '2017-06-27 14:02:51.611815'
@@ -35371,7 +35371,7 @@ possible_setting_values:
   - - '9'
     - '1'
     - string
-    - after_first_minor_revise_decision
+    - after_minor_revise_decision
     - false
     - 
     - '2017-07-10 21:26:36.548188'
@@ -35379,7 +35379,7 @@ possible_setting_values:
   - - '10'
     - '1'
     - string
-    - after_first_major_revise_decision
+    - after_major_revise_decision
     - false
     - 
     - '2017-07-10 21:26:36.549545'
@@ -35411,7 +35411,7 @@ possible_setting_values:
   - - '14'
     - '1'
     - string
-    - after_first_minor_revise_decision
+    - after_minor_revise_decision
     - false
     - 
     - '2017-07-11 01:32:48.938217'
@@ -35419,7 +35419,7 @@ possible_setting_values:
   - - '15'
     - '1'
     - string
-    - after_first_major_revise_decision
+    - after_major_revise_decision
     - false
     - 
     - '2017-07-11 01:32:48.939295'
@@ -35451,7 +35451,7 @@ possible_setting_values:
   - - '19'
     - '1'
     - string
-    - after_first_minor_revise_decision
+    - after_minor_revise_decision
     - false
     - 
     - '2017-07-14 17:42:09.354359'
@@ -35459,7 +35459,7 @@ possible_setting_values:
   - - '20'
     - '1'
     - string
-    - after_first_major_revise_decision
+    - after_major_revise_decision
     - false
     - 
     - '2017-07-14 17:42:09.356397'
@@ -35491,7 +35491,7 @@ possible_setting_values:
   - - '24'
     - '1'
     - string
-    - after_first_minor_revise_decision
+    - after_minor_revise_decision
     - false
     - 
     - '2017-07-17 22:54:13.245744'
@@ -35499,7 +35499,7 @@ possible_setting_values:
   - - '25'
     - '1'
     - string
-    - after_first_major_revise_decision
+    - after_major_revise_decision
     - false
     - 
     - '2017-07-17 22:54:13.24676'

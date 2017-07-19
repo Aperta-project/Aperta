@@ -18,10 +18,10 @@ class AutomatedSimilarityCheck
       submitted_after_first_full_submission?
     when 'after_any_first_revise_decision'
       submitted_after_any_first_revise_decision?
-    when 'after_first_minor_revise_decision'
-      submitted_after_first_minor_revise_decision?
-    when 'after_first_major_revise_decision'
-      submitted_after_first_major_revise_decision?
+    when 'after_minor_revise_decision'
+      submitted_after_minor_revise_decision?
+    when 'after_major_revise_decision'
+      submitted_after_major_revise_decision?
     end
   end
 
@@ -41,7 +41,6 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
     Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
     Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
-    Rails.logger.info "AutomatedSimilarityCheck: is this the first revision? #{first_revision?}"
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
@@ -64,23 +63,15 @@ class AutomatedSimilarityCheck
     paper.last_completed_decision.verdict
   end
 
-  def first_revision?
-    paper.decisions.completed.revisions.count == 1 &&
-      previous_paper_state == 'in_revision'
+  def submitted_after_major_revise_decision?
+    previous_verdict == 'major_revision'
   end
 
-  def submitted_after_first_major_revise_decision?
-    first_revision? &&
-      previous_verdict == 'major_revision'
-  end
-
-  def submitted_after_first_minor_revise_decision?
-    first_revision? &&
-      previous_verdict == 'minor_revision'
+  def submitted_after_minor_revise_decision?
+    previous_verdict == 'minor_revision'
   end
 
   def submitted_after_any_first_revise_decision?
-    first_revision? &&
-      ['minor_revision', 'major_revision'].include?(previous_verdict)
+    ['minor_revision', 'major_revision'].include?(previous_verdict)
   end
 end

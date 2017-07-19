@@ -16,7 +16,7 @@ export default TaskComponent.extend(FileUploadMixin, {
   saveErrorText: 'Please edit and complete the required fields.',
 
   validateData() {
-    const objs = this.get('filesWithErrors');
+    const objs = this.get('filesWithValidations');
     objs.invoke('validateAll');
 
     let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
@@ -32,30 +32,30 @@ export default TaskComponent.extend(FileUploadMixin, {
     }
   },
 
-  filesWithErrors: computed('files.[]', function() {
-    let proxies = this.get('files').map((f)=> {
-      return this.get('cachedFilesWithErrors').findBy('object', f) || this.makeFileWithErrors(f);
+  filesWithValidations: computed('files.[]', function() {
+    let proxies = this.get('files').map((file)=> {
+      return this.get('cachedFilesWithValidations').findBy('object', file) || this.newFileWithValidations(file);
     });
-    this.set('cachedFilesWithErrors', proxies);
+    this.set('cachedFilesWithValidations', proxies);
     return proxies;
   }),
-  cachedFilesWithErrors: [],
-  makeFileWithErrors(f){
+  cachedFilesWithValidations: [],
+  newFileWithValidations(f){
     return ObjectProxyWithErrors.create({
       saveErrorText: this.get('saveErrorText'),
       object: f,
       skipValidations: () => { return this.get('skipValidations'); },
       validations: {
-        processed: [{
+        'label':     ['presence'],
+        'category':  ['presence'],
+        'processed': [{
           type: 'processingFinished',
           message: 'All files must be done processing to save.',
           validation() {
             const file = this.get('object');
             return file.get('status') === 'done';
           }
-        }],
-        'label': ['presence'],
-        'category': ['presence']
+        }]
       }
     });
   },
@@ -77,7 +77,7 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.get('store').pushPayload('supporting-information-file', data);
 
       const siFile = this.get('store').peekRecord('supporting-information-file', id);
-      const proxyObject = this.get('filesWithErrors').findBy('object', siFile);
+      const proxyObject = this.get('filesWithValidations').findBy('object', siFile);
       proxyObject.set('newlyUploaded', true);
     },
 

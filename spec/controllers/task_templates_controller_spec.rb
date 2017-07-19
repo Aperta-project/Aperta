@@ -5,13 +5,22 @@ describe TaskTemplatesController do
   before { sign_in user }
 
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:manuscript_manager_template) { FactoryGirl.create(:manuscript_manager_template,
-                                                         journal: journal) }
-  let(:phase_template) { FactoryGirl.create(:phase_template,
-                                            manuscript_manager_template: manuscript_manager_template) }
-  let(:task_template) { FactoryGirl.create(:task_template,
-                                          phase_template: phase_template,
-                                          journal_task_type: journal.journal_task_types.first) }
+  let(:manuscript_manager_template) {
+    FactoryGirl.create(:manuscript_manager_template, journal: journal)
+  }
+
+  let(:phase_template) {
+    FactoryGirl.create(:phase_template, manuscript_manager_template: manuscript_manager_template)
+  }
+  let(:setting) {
+    FactoryGirl.create(:setting, name: 'ithenticate_automation')
+  }
+  let(:task_template) {
+    FactoryGirl.create(:task_template,
+    phase_template: phase_template,
+    journal_task_type: journal.journal_task_types.first,
+    settings: [setting])
+  }
   let(:journal_task_type) { journal.journal_task_types.first }
 
   it "creates a record" do
@@ -30,5 +39,10 @@ describe TaskTemplatesController do
   it "deletes a record" do
     delete :destroy, format: :json, id: task_template.id
     expect(response.status).to eq(204)
+  end
+
+  it "updates similarity check settings" do
+    post :similarity_check_settings, format: :json, id: task_template.id, value: 'off'
+    expect(response.status).to eq(201)
   end
 end

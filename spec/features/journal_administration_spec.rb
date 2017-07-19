@@ -30,6 +30,7 @@ feature "Journal Administration", js: true do
       scenario "shows assigned journal" do
         # refresh page since we've assigned the journal role
         visit "/"
+
         expect(admin_page).to have_journal_names(journal.name)
       end
     end
@@ -45,9 +46,9 @@ feature "Journal Administration", js: true do
   end
 
   describe "Visiting a journal" do
-    scenario "shows manuscript manager templates" do
-      mmt_names = journal.manuscript_manager_templates.pluck(:paper_type)
-      expect(journal_page.mmt_names).to match_array(mmt_names)
+    scenario "shows workflows" do
+      workflow_headers = journal.manuscript_manager_templates.pluck(:paper_type).map { |mmt_name| "#{mmt_name} #{journal.name.upcase}" }
+      expect(journal_page.mmt_names).to match_array(workflow_headers)
     end
 
     scenario "editing a MMT" do
@@ -82,6 +83,7 @@ feature "Journal Administration", js: true do
 
     before do
       admin_page.visit_journal(journal)
+      find('.admin-nav-users').click
     end
 
     scenario 'add a role to a user' do

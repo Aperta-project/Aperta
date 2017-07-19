@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-xs-5">
+    <h3>Automatic Checks:</h3>&nbsp;&nbsp;
+  </div>
+  <div class="col-xs-7">
+    {{card-content/toggle-switch
+      name="toogle"
+      labelText="ON"
+      answer=switchState
+      content=(hash text='Automatic Checks')
+      size="small"
+      valueChanged=(action 'changeAnswer')}}
+  </div>
+</div>
+
+
+  {{#liquid-if switchState.value}}
+  <h4>Send Manuscript to iThenticate</h4>
+  <label class="flex-element {{concat ident "-accept-label"}}">
+    {{radio-button value=false
+                   name="submissionOption"
+                   selection=option.value
+                   checked=fullSubmissionState
+                   action=(action "setAnswer")}}
+    &nbsp;on first full submission
+  </label>
+  <br />
+  <label class="flex-element {{concat ident "-accept-label"}}">
+    {{radio-button value=true
+                   name="submissionOption"
+                   selection=option.value
+                   checked=afterState
+                   action=(action "setAnswer")}}
+    &nbsp;after
+  </label>
+  &nbsp;&nbsp;
+  <span>
+    {{select-2-single
+        enable=selectEnabled
+        class="similarity-options"
+        source=selectableOptions
+        selectionSelected="selectionSelected"
+        selectedData=selectedOption
+        width="200px"}}
+  </span>
+  {{/liquid-if}}
+
+<div class="overlay-action-buttons">
+  <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
+  <button class="button-primary button--green" {{action "saveSettings"}}>SAVE</button>
+</div>

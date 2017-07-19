@@ -3,7 +3,7 @@ import startApp from '../helpers/start-app';
 import { test, moduleFor } from 'ember-qunit';
 
 moduleFor(
-  'controller:admin/journal/manuscript-manager-template/edit',
+  'controller:admin/mmt/journal/manuscript-manager-template/edit',
   'ManuscriptManagerTemplateEditController', {
 
   beforeEach() {

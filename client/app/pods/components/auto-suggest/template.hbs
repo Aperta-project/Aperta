@@ -4,13 +4,16 @@
     bubbles=true
     key-up=(action "keyUp")
     change=(action "valueChanged")
+    focus-out=(action "focusOut")
     placeholder=placeholder
     name=inputName
     class="auto-suggest-no-border"}}
 
-{{error-message message=errorMessage
+<div class="invite-error-message">
+  {{error-message message=errorMessage
                 displayIcon=true
-                displayText=false}}
+                displayText=true}}
+</div>
 
 {{#if searching}}
   {{progress-spinner visible=true size="small"}}

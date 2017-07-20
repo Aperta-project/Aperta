@@ -52,7 +52,7 @@ test('can manage workflow, list appears', function(assert) {
   wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
-    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('date'), {}));
+    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', correspondence.get('manuscriptVersionStatus'));
@@ -74,7 +74,7 @@ test('can manage workflow, list appears for manually created correspondence', fu
   wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
-    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('date'), {}));
+    assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
     assert.textPresent('tr:last td:nth-child(4)', 'Unavailable');

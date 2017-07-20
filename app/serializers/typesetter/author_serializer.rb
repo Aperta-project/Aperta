@@ -13,6 +13,10 @@ module Typesetter
       object.creator?
     end
 
+    def include_creator?
+      FeatureFlag['CORRESPONDING_AUTHOR']
+    end
+
     def include_orcid_profile_url?
       TahiEnv.orcid_connect_enabled?
     end

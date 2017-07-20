@@ -12,7 +12,7 @@ describe Typesetter::CompetingInterestsSerializer do
           value_type: 'boolean',
           questions: [{
             ident: 'competing_interests--statement',
-            answer: 'entered statement',
+            answer: '<p><i>entered</i> statement</p>',
             value_type: 'text'
           }]
         }
@@ -42,7 +42,7 @@ describe Typesetter::CompetingInterestsSerializer do
   end
 
   describe 'competing interests statement value' do
-    it 'is the answer to the competing interests statement question' do
+    it 'has HTML tags stripped' do
       expect(output[:competing_interests_statement]).to eq('entered statement')
     end
   end

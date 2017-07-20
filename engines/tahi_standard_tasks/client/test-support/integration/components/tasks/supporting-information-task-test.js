@@ -99,12 +99,10 @@ test('it retains validation errors on the remaining files when a file is deleted
   this.$('.si-file-viewing .si-file-delete-icon').click();
   this.$('.si-file-viewing .si-file-delete-button').click();
   
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     // Validation errors remain visible on the first (and now only) file
     assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
     assert.elementNotFound('.si-file-viewing');
-    done();
   });
 });
 

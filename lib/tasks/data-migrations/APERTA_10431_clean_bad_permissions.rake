@@ -9,6 +9,12 @@ namespace :data do
 
     task aperta_10431_remove_bad_permissions: :environment do
       Permission.where('filter_by_card_id': nil, 'applies_to': CustomCardTask).destroy_all
+      if Permission.where('filter_by_card_id': nil, 'applies_to': CustomCardTask).count > 0
+        raise Exception, "A permission exists with applies: CustomCardTask and filter_by_card_id == nil!"
+      end
+      if PermissionsRole.where.not(permission_id: Permission.all.pluck(:id)).count > 0
+        raise Exception, "A dangling reference in permissions_roles exists to a deleted permission"
+      end
     end
   end
 end

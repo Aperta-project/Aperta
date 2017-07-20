@@ -19,16 +19,16 @@ describe CardPermissions do
       end
 
       it 'should return the permissions' do
-        expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task'))
+        expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task', filter_by_card_id: card))
       end
     end
   end
 
   shared_examples_for "permission creator" do
     it "should create 3 permissions" do
-      expect do
-        subject
-      end.to change { Permission.all.count }.from(0).to(3)
+      expect { subject }.to change {
+        Permission.where(filter_by_card_id: card).count
+      }.from(0).to(3)
     end
 
     it "should create a new permission with a wildcard state" do
@@ -38,7 +38,7 @@ describe CardPermissions do
     end
 
     it 'should return the permissions' do
-      expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task'))
+      expect(subject).to contain_exactly(*Permission.where(applies_to: 'Task', filter_by_card_id: card))
     end
 
     context 'when the role is creator' do

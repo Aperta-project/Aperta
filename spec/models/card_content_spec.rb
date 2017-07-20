@@ -63,7 +63,7 @@ describe CardContent do
     let!(:root_content) { FactoryGirl.create(:card_content, :root) }
 
     it 'returns all roots' do
-      expect(CardContent.all.root.id).to be(root_content.id)
+      expect(CardContent.roots).to include(root_content)
     end
   end
 

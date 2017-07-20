@@ -10,7 +10,9 @@ class AutomatedSimilarityCheck
 
   # I could use a hash of procs for this, but folks will probably
   # think it's way more weird than a case statement
+  # rubocop:disable Metrics/CyclomaticComplexity
   def should_run?
+    return if existing_similarity_checks?
     case setting_value
     when 'off'
       false
@@ -24,6 +26,7 @@ class AutomatedSimilarityCheck
       submitted_after_major_revise_decision?
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def setting_value
     # this gets called by `should_run?` and in the Rails.logger call, so
@@ -41,6 +44,7 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
     Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
     Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
+    Rails.logger.info "AutomatedSimilarityCheck: Existing similarity checks? #{existing_similarity_checks?}"
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
@@ -61,6 +65,10 @@ class AutomatedSimilarityCheck
 
   def previous_verdict
     paper.last_completed_decision.try(:verdict)
+  end
+
+  def existing_similarity_checks?
+    SimilarityCheck.joins(:paper).where(papers: { id: paper.id }).exists?
   end
 
   def submitted_after_major_revise_decision?

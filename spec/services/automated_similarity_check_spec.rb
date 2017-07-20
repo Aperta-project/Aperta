@@ -69,6 +69,11 @@ describe AutomatedSimilarityCheck do
         it "creates a SimilarityCheck record on first submission" do
           expect(result.class).to eq(SimilarityCheck)
         end
+
+        it "does not create a similarity check if one already exists" do
+          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          expect(result).to be_nil
+        end
       end
 
       context "the task is configured to run on the submission after a major revise decision" do
@@ -114,6 +119,11 @@ describe AutomatedSimilarityCheck do
         it "creates a SimilarityCheck record" do
           expect(result.class).to eq(SimilarityCheck)
         end
+
+        it "does not create a similarity check if one already exists" do
+          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          expect(result).to be_nil
+        end
       end
 
       context "the task is configured to run on the first submission after a minor revision" do
@@ -124,6 +134,11 @@ describe AutomatedSimilarityCheck do
 
         it "creates a SimilarityCheck record" do
           expect(result.class).to eq(SimilarityCheck)
+        end
+
+        it "does not create a similarity check if one already exists" do
+          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          expect(result).to be_nil
         end
       end
 
@@ -185,6 +200,11 @@ describe AutomatedSimilarityCheck do
         it "creates a SimilarityCheck record" do
           expect(result.class).to eq(SimilarityCheck)
         end
+
+        it "does not create a similarity check if one already exists" do
+          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          expect(result).to be_nil
+        end
       end
 
       context "the task is configured to run on the first submission after a minor revision" do
@@ -206,6 +226,11 @@ describe AutomatedSimilarityCheck do
 
         it "creates a SimilarityCheck record" do
           expect(result.class).to eq(SimilarityCheck)
+        end
+
+        it "does not create a similarity check if one already exists" do
+          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          expect(result).to be_nil
         end
       end
     end

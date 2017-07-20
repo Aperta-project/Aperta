@@ -1,4 +1,5 @@
 {
+  "//": "This file exists to work around a heroku issue. Please look inside the client/ dir for our ember code.",
   "name": "tahi",
   "version": "1.0.0",
   "description": "## Development Notes",
@@ -9,21 +10,16 @@
   "//": "We keep our ember app in client/",
   "cacheDirectories": [
     "client/node_modules",
-    "client/bower_components",
-    "node_modules"
+    "client/bower_components"
   ],
-  "dependencies": {
-    "bower": "^1.7.7",
-    "ember-cli-tinymce": "^0.1.6"
-  },
   "directories": {
     "doc": "doc",
     "test": "test"
   },
+  "//": "This should only be used on heroku",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "./bin/heroku_install",
-    "clean": "rm -rf client/tmp client/node_modules client/bower_components; npm install"
+    "preinstall": "if [ -z \"$STACK\" ] ; then echo \"***** Please cd client to run npm commands *****\" ; exit 1 ; fi",
+    "postinstall": "./bin/heroku_install"
   },
   "repository": {
     "type": "git",

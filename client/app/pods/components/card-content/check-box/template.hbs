@@ -1,6 +1,7 @@
 {{#if content.text}}
   <p class="content-text">{{{content.text}}}{{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}</p>
 {{/if}}
+{{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{check-box
   name=name
   id=name

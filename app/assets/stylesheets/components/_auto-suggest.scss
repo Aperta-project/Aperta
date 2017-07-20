@@ -54,6 +54,13 @@
     top: 0.7rem;
     right: 0.75rem;
   }
+
+  .invite-error-message {
+    margin-left: -20px;
+    .error-message {
+      position: relative;
+    }
+  }
 }
 
 .auto-suggest-border .auto-suggest {

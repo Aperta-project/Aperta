@@ -3,8 +3,6 @@
 #
 # For event stream subscriptions, check out event_stream_subscribers.rb
 #
-
-# rubocop:disable Style/AlignParameters
 Subscriptions.configure do
   add '.*', \
       EventLogger
@@ -38,4 +36,3 @@ Subscriptions.configure do
   add 'manuscript_attachment:updated', \
       ManuscriptAttachment::ProcessManuscript
 end
-# rubocop:enable Style/AlignParameters

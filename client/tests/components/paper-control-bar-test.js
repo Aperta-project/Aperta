@@ -50,13 +50,11 @@ test('can manage workflow, correspondence enabled, all icons show', function(ass
   });
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 1);
     assert.equal(this.$('#nav-workflow').length, 1);
     assert.equal(this.$('#nav-manuscript').length, 1);
-    done();
   });
 });
 
@@ -75,13 +73,11 @@ test('can manage workflow, correspondence disabled, no correspondence icon', fun
   });
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 0);
     assert.equal(this.$('#nav-workflow').length, 1);
     assert.equal(this.$('#nav-manuscript').length, 1);
-    done();
   });
 });
 
@@ -100,13 +96,11 @@ test('can not manage workflow, correspondence enabled, no nav icons', function(a
   });
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('#nav-correspondence').length, 0);
     assert.equal(this.$('#nav-workflow').length, 0);
     assert.equal(this.$('#nav-manuscript').length, 0);
-    done();
   });
 });
 
@@ -125,11 +119,9 @@ test('can view recent activity, sees recent activity nav icon', function(assert)
   });
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('#nav-recent-activity').length, 1);
-    done();
   });
 });
 
@@ -148,10 +140,8 @@ test('can not view recent activity, no recent activity nav icon', function(asser
   });
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('#nav-recent-activity').length, 0);
-    done();
   });
 });

@@ -20,6 +20,7 @@ export default TaskComponent.extend({
   sortedChecks: Ember.computed.sort('latestVersionSimilarityChecks', 'sortProps'),
   automatedReportsDisabled: Ember.computed.reads('task.paper.manuallySimilarityChecked'),
   automatedReportsOff: Ember.computed.equal('task.currentSettingValue', 'off'),
+  showAutomatedReportMsg: Ember.computed.or('automatedReportsOff', 'automatedReportsDisabled'),
 
   confirmVisible: false,
 

@@ -3,6 +3,7 @@
     {{#unless (and disabled (not preview))}}
       {{{description}}}
     {{/unless}}
+    {{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}
   </p>
 {{/if}}
 
@@ -21,7 +22,8 @@
                     cancelUpload=attrs.cancelUpload
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment}}
+                    uploadFinished=attrs.updateAttachment
+                    content=content}}
 {{/each}}
 
 {{#each fileUploads as |f|}}
@@ -41,6 +43,7 @@
                          filePrefix=filePath
                          multiple=multiple
                          disabled=disableAddButton
+                         content=content
                          addingFileFailed=(action "uploadError")
                          progress=(action "uploadProgress")
                          done=(action "uploadFinished")

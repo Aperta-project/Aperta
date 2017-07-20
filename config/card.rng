@@ -48,6 +48,19 @@
         <text/>
       </element>
       <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
+      <zeroOrMore>
         <ref name="possible-value"/>
       </zeroOrMore>
       <zeroOrMore>
@@ -92,6 +105,19 @@
           </element>
         </optional>
       </interleave>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -180,6 +206,19 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
     </element>
   </define>
   <!-- for now duplicating radio-input for dropdown -->
@@ -209,6 +248,19 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <oneOrMore>
         <ref name="possible-value"/>
       </oneOrMore>
@@ -247,6 +299,19 @@
           <text/>
         </element>
       </optional>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -288,6 +353,7 @@
                 <value>string-match</value>
                 <value>string-length-minimum</value>
                 <value>string-length-maximum</value>
+                <value>required-field</value>
               </choice>
             </attribute>
             <element name="error-message">
@@ -299,23 +365,6 @@
           </element>
         </zeroOrMore>
       </interleave>
-    </element>
-  </define>
-  <define name="list-content">
-    <element name="content">
-      <optional>
-        <attribute name="ident"/>
-      </optional>
-      <attribute name="content-type">
-        <choice>
-          <value>bulleted-list</value>
-          <value>numbered-list</value>
-          <value>plain-list</value>
-        </choice>
-      </attribute>
-      <zeroOrMore>
-        <ref name="content"/>
-      </zeroOrMore>
     </element>
   </define>
   <!-- Contents -->
@@ -385,7 +434,6 @@
       <ref name="dropdown-input"/>
       <ref name="date-picker"/>
       <ref name="tech-check"/>
-      <ref name="list-content"/>
     </choice>
   </define>
   <start>

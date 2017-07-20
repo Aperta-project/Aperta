@@ -24,6 +24,11 @@ radio-input = element content {
                   attribute required-field { "true" | "false" },
                   attribute default-answer-value { text }?,
                   element text { text },
+                  element validation {
+                    attribute validation-type { "required-field" },
+                    element error-message { text },
+                    element validator { text }
+                  }*,
                   possible-value*,
                   content*
               }
@@ -36,6 +41,11 @@ check-box-input = element content {
                 attribute value-type { "boolean" },
                 (element label { text }? &
                 element text { text }?),
+                element validation {
+                   attribute validation-type { "required-field" },
+                   element error-message { text },
+                   element validator { text }
+                }*,
                 content*
             }
 
@@ -61,7 +71,12 @@ date-picker = element content {
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
                   attribute required-field { "true" | "false" },
-                  element text { text }
+                  element text { text },
+                  element validation {
+                   attribute validation-type { "required-field" },
+                   element error-message { text },
+                   element validator { text }
+                  }*
               }
 
 # for now duplicating radio-input for dropdown
@@ -72,6 +87,11 @@ dropdown-input = element content {
                   attribute required-field { "true" | "false" },
                   attribute default-answer-value { text }?,
                   element text { text },
+                  element validation {
+                   attribute validation-type { "required-field" },
+                   element error-message { text },
+                   element validator { text }
+                  }*,
                   possible-value+,
                   content*
               }
@@ -83,6 +103,11 @@ tech-check = element content {
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 element text { text }?,
+                element validation {
+                   attribute validation-type { "required-field" },
+                   element error-message { text },
+                   element validator { text }
+                }*,
                 content*
             }
 
@@ -93,18 +118,12 @@ text-input = element content {
                  attribute required-field { "true" | "false" },
                  attribute default-answer-value { text }?,
                  (element text { text }? &
-                  element validation {
-                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
-                   element error-message { text },
-                   element validator { text }
+                 element validation {
+                  attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" | "required-field" },
+                  element error-message { text },
+                  element validator { text }
                 }*)
              }
-
-list-content = element content {
-                 attribute ident { text }?,
-                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" },
-                 content*
-               }
 
 # Contents
 text-content = element content {
@@ -142,8 +161,7 @@ content = (radio-input |
            file-uploader |
            dropdown-input |
            date-picker |
-           tech-check |
-           list-content
+           tech-check
           )
 
 start = element card {

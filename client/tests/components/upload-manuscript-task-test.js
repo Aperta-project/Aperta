@@ -70,11 +70,9 @@ test('docx papers don\'t require sourcefiles', function(assert) {
   this.render(hbs`{{upload-manuscript-task task=task}}`);
   this.$('button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.get('task.completed'), true, 'task was completed');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
-    done();
   });
 });
 
@@ -87,13 +85,11 @@ test('pdf papers display a validation error if no sourcefile is attached', funct
   this.set('task.paper.fileType', 'pdf');
   this.$('button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.get('task.completed'), false, 'task did not complete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     assert.equal(this.$('.error-message').length, 2);
     assert.equal(this.$('.error-message:contains("Please upload your source file")').length, 1);
-    done();
   });
 });
 
@@ -107,11 +103,9 @@ test('pdf papers validate if a sourcefile is attached', function(assert) {
   this.set('task.paper.sourcefile', 'some.file');
   this.$('button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.get('task.completed'), true, 'task was completed');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
-    done();
   });
 });
 
@@ -126,10 +120,8 @@ test('pdf papers not in revision don\'t require sourcefiles', function(assert) {
   this.render(hbs`{{upload-manuscript-task task=task}}`);
   this.$('button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.get('task.completed'), true, 'task was completed');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
-    done();
   });
 });

@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   _setup: Ember.on('didInsertElement', function() {
     let $picker = this.$().datepicker({
       autoclose: true,
-      startDate: this.get('startDate'),
+      startDate: this.get('startDate') || new Date(),
     });
 
     $picker.on('changeDate', (event)=> {

@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
-  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', function() {
+  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', function() {
     const status = this.get('report.status');
     var output = '';    const verbs = {
       'pending': 'accepted',
@@ -19,6 +19,12 @@ export default Ember.Component.extend({
       output = 'This candidate has not been invited to ' + this.get('report.revision');
     } else {
       output = `Invitation ${verbs[status]} ${this.get('statusDate')}`;
+    }
+    const originalDueDate = this.get('report.originallyDueAt');
+    if (originalDueDate) {
+      const format = 'MMMM D';
+      const formattedDate = moment(originalDueDate).format(format);
+      output += ` · Original due date was ${formattedDate}`;
     }
     return output;
   }),

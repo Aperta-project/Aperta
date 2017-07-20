@@ -46,6 +46,7 @@ class Task < ActiveRecord::Base
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
+  has_many :reviewer_reports
   has_many :attachments,
            as: :owner,
            class_name: 'AdhocAttachment',
@@ -267,6 +268,10 @@ class Task < ActiveRecord::Base
   # subclass type (ie TahiStandardTasks::ReviewerReportTask)
   def owner_type_for_answer
     'Task'
+  end
+
+  def last_reviewer_report_status
+    reviewer_reports.last.try(:computed_status)
   end
 
   private

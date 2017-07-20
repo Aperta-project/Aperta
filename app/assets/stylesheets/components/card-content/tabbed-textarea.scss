@@ -5,8 +5,13 @@
     -moz-border-radius: 4px 0 0 4px;
       border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
-  width: calc(100% - 28px);
+  width: calc(100% - 29px);
+  max-height: 240px;
+
+  &.instruction-text {
+    overflow: scroll;
   }
+}
 
 .tabs-below > .nav-tabs,
 .tabs-right > .nav-tabs,
@@ -91,7 +96,6 @@
 
 .tabs-right > .nav-tabs {
   float: right;
-  margin-left: 19px;
 }
 
 .tabs-right > .nav-tabs > li > a {
@@ -118,4 +122,5 @@
   height:100%;
   box-sizing: border-box;
   resize: vertical;
+  max-height: 200px;
 }

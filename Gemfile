@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Remember to also change circle.yml and .ruby-version when the
 # ruby version changes
-ruby '2.2.4'
+ruby '2.2.6'
 
 # Task Engines
 gem 'plos_billing', path: 'engines/plos_billing'

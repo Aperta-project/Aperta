@@ -26,7 +26,7 @@
   }
 }
 
-.admin > .select2-container .select2-choice .select2-arrow {
+.admin.select2-container .select2-choice .select2-arrow {
   background: $aperta-blue !important;
 }
 
@@ -50,7 +50,7 @@
   border-color: $aperta-green;
 }
 
-.admin .select2-container-active .select2-choice, .admin .select2-container-active .select2-choices {
+.admin.select2-container-active .select2-choice, .admin .select2-container-active .select2-choices {
   border-color: $aperta-blue !important;
 }
 

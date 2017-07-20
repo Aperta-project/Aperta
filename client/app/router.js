@@ -23,6 +23,7 @@ Router.map(function() {
 
     this.route('correspondence', { path: '/correspondence' }, function() {
       this.route('viewcorrespondence',  { path: '/viewcorrespondence/:id' });
+      this.route('new', { path: '/new' });
     });
 
 

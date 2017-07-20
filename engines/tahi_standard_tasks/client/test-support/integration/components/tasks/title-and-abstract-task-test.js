@@ -24,15 +24,6 @@ test('User can edit the title and abstract', function(assert) {
   assert.ok(abstract);
 });
 
-test('Title/abstract not editable when paper is not', function(assert) {
-  var task = newTask(false, false);
-  setupEditableTask(this, task);
-  let title = findEditor('article-title-input');
-  let abstract = findEditor('article-abstract-input');
-  assert.ok(!title);
-  assert.ok(!abstract);
-});
-
 test('Title/abstract not editable when task is complete', function(assert) {
   var task = newTask(true, true);
   setupEditableTask(this, task);
@@ -110,4 +101,3 @@ var setupEditableTask = function(context, task) {
 
   context.render(template);
 };
-

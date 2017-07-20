@@ -1,5 +1,7 @@
+# Decisions Controller
 class DecisionsController < ApplicationController
   before_action :authenticate_user!
+  before_action :verify_paper_and_verdict!, only: [:register]
   respond_to :json
 
   def index
@@ -12,7 +14,12 @@ class DecisionsController < ApplicationController
                   paper.decisions.completed
                 end
 
-    render json: decisions.includes(invitations: [:task, :invitee, :primary, :alternates, :invitation_queue, :attachments]),
+    render json: decisions.includes(invitations: [:task,
+                                                  :invitee,
+                                                  :primary,
+                                                  :alternates,
+                                                  :invitation_queue,
+                                                  :attachments]),
            each_serializer: DecisionSerializer,
            root: 'decisions'
   end
@@ -39,15 +46,13 @@ class DecisionsController < ApplicationController
       # Only allow the creator to update the `author_response` column
       permitted += [:author_response]
     end
-    fail AuthorizationError if permitted.empty?
+    raise AuthorizationError if permitted.empty?
     decision.update! params.require(:decision).permit(*permitted)
-    render json: decision, serializer: DecisionSerializer, root: 'decision'
+    head :no_content
   end
 
   def register # I expect a task_id param, too!
     requires_user_can(:register_decision, decision.paper)
-    assert decision.paper.awaiting_decision?, "The paper must be submitted"
-    assert decision.verdict.present?, "You must pick a verdict, first"
 
     task = Task.find(params[:task_id])
     # These lines let us update the task/paper in the requester's browser
@@ -80,5 +85,10 @@ class DecisionsController < ApplicationController
 
   def decision
     @decision ||= Decision.includes(:paper).find(params[:id])
+  end
+
+  def verify_paper_and_verdict!
+    assert decision.verdict.present?, "You must pick a verdict, first"
+    assert decision.paper.awaiting_decision?, "The paper must be submitted"
   end
 end

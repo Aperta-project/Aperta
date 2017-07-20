@@ -9,7 +9,9 @@ module Typesetter
     end
 
     def data_location_statement
-      object.answer_for('data_availability--data_location').try(:value)
+      strip_tags(
+        object.answer_for('data_availability--data_location').try(:value)
+      )
     end
   end
 end

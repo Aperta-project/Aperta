@@ -138,7 +138,7 @@ feature 'Gradual Engagement', js: true do
 
     context 'and the paper is in revision and is ready for submission' do
       scenario 'the sidebar submission text shows journal name and message to
-                fill out info FULL submission state information' do
+                fill out info FULL submission state information', flaky: true do
         paper = FactoryGirl.create :paper,
                                    :with_integration_journal,
                                    :gradual_engagement,

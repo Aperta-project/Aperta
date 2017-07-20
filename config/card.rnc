@@ -93,12 +93,18 @@ text-input = element content {
                  attribute required-field { "true" | "false" },
                  attribute default-answer-value { text }?,
                  (element text { text }? &
-                 element validation {
-                  attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
-                  element error-message { text },
-                  element validator { text }
+                  element validation {
+                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
+                   element error-message { text },
+                   element validator { text }
                 }*)
              }
+
+list-content = element content {
+                 attribute ident { text }?,
+                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" },
+                 content*
+               }
 
 # Contents
 text-content = element content {
@@ -136,7 +142,8 @@ content = (radio-input |
            file-uploader |
            dropdown-input |
            date-picker |
-           tech-check
+           tech-check |
+           list-content
           )
 
 start = element card {

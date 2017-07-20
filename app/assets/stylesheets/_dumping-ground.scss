@@ -58,7 +58,11 @@
 }
 
 .preserve-line-breaks {
-  white-space: pre-line;
+  p:after {
+    content:"";
+    display:inline-block;
+    width:0px;
+  }
 }
 
 

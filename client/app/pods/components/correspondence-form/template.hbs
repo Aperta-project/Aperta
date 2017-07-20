@@ -1,0 +1,196 @@
+<div class="row">
+  <div class="col-sm-12">
+    <p>Manually add a correspondence record to the correspondence history, e.g.
+      an email was sent from a personal email and you want to record it in
+      Aperta. <strong>Note: this will NOT send an email</strong></p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-3">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>Date sent</label>
+        {{error-message message=validationErrors.dateSent
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{date-picker name='correspondence-date-sent'
+                    value=dateSent
+                    date=dateSent
+                    class="correspondence-date-sent inset-form-control-input"
+                    placeholder="Select date"}}
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-3">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>Time sent</label>
+        {{error-message message=validationErrors.timeSent
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{time-picker class="timepicker inset-form-control-input correspondence-time-sent"
+                    name='correspondence-time-sent'
+                    value=timeSent
+                    placeholder="Select time..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>Description</label>
+        {{error-message message=validationErrors.description
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-description'
+              value=model.description
+              class="correspondence-description inset-form-control-input"
+              placeholder="Enter a brief description of the purpose of the correspondence..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>From</label>
+        {{error-message message=validationErrors.sender
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-from'
+              value=model.sender
+              class="correspondence-from inset-form-control-input"
+              placeholder="Sender's name and/or email address..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>To</label>
+        {{error-message message=validationErrors.recipients
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-to'
+              value=model.recipients
+              class="correspondence-to inset-form-control-input"
+              placeholder="Recipient names and/or email address(es)..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>Subject</label>
+        {{error-message message=validationErrors.subject
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-subject'
+              value=model.subject
+              class="correspondence-subject inset-form-control-input"
+              placeholder="Enter or copy-paste the subject..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>CC</label>
+        {{error-message message=validationErrors.cc
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-cc'
+              value=model.cc
+              class="correspondence-cc inset-form-control-input"
+              placeholder="Recipient names and/or email address(es)..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control">
+      <div class="inset-form-control-text">
+        <label>BCC</label>
+        {{error-message message=validationErrors.bcc
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{input type="text"
+              name='correspondence-bcc'
+              value=model.bcc
+              class="correspondence-bcc inset-form-control-input"
+              placeholder="Recipient names and/or email address(es)..."}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    {{#if isUploading}}
+      <p>Uploading...</p>
+    {{/if}}
+    {{#if doneUploading}}
+      <p>
+        <i class="fa fa-file-o"></i>&nbsp;
+        <a>{{attachment.filename}}</a>&nbsp;&nbsp;
+        <span class="fileinput-buton" {{action 'removeAttachment'}}>
+          <i class="fa fa-trash"></i>
+          <span>Delete</span>
+        </span>
+      </p>
+    {{/if}}
+  </div>
+  <div class="col-sm-12">
+    <div class="button-secondary button--green correspondence-attachment fileinput-button">
+      <i class="fa fa-paperclip"></i>&nbsp;Attach Files
+      {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.pdf,.docx,.doc,.pages"
+                      start=(action "uploadStarted")
+                      done=(action "uploadFinished")
+                      filePrefix="correspondence_attachment"}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <p>&nbsp;</p>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="inset-form-control required">
+      <div class="inset-form-control-text">
+        <label>Contents</label>
+        {{error-message message=validationErrors.body
+                        displayIcon=true
+                        displayText=false}}
+      </div>
+      {{#expanding-textarea}}
+      {{textarea class="inset-form-control-textarea correspondence-body"
+                 name="correspondence-body"
+                 value=model.body
+                 placeholder="Enter or copy-paste the contents of the correspondence."
+                 autofocus="autofocus"}}
+      {{/expanding-textarea}}
+    </div>
+  </div>
+</div>
+ <div class="overlay-footer-content correspondence-form-footer-content">
+  <div class="overlay-action-buttons">
+    {{#if close}}
+      <button class="button-link button--green" {{action close}}>cancel</button>
+    {{/if}}
+    <button class="button button--green button-primary correspondence-submit" {{action "submit" model}}>ADD TO HISTORY</button>
+  </div>
+</div>

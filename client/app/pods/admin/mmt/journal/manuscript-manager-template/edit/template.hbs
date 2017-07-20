@@ -19,6 +19,14 @@
                       onSave=(action "addTaskTemplate")
                       close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
+{{#overlay-fullscreen visible=showSettingsOverlay
+                      outAnimationComplete=(action "hideSettingsOverlay")
+                      title=settingsTitle
+                      enableClose=false
+                      as |overlay|}}
+  {{similarity-check-settings close=(action overlay.animateOut)
+                              taskToConfigure=taskToConfigure}}
+{{/overlay-fullscreen}}
 
 {{#if showAdHocTaskOverlay}}
   {{overlay-ad-hoc-template
@@ -83,6 +91,7 @@
                             removeRecord="removeRecord"
                             rollbackPhase="rollbackPhase"
                             showDeleteConfirm="showCardDeleteOverlay"
+                            showSettings=(action "showSettingsOverlay")
                             chooseNewCardTypeOverlay="showChooseNewCardOverlay"}}
   {{/each}}
 </div>

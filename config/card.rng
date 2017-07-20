@@ -259,6 +259,23 @@
       </interleave>
     </element>
   </define>
+  <define name="list-content">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <choice>
+          <value>bulleted-list</value>
+          <value>numbered-list</value>
+          <value>plain-list</value>
+        </choice>
+      </attribute>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
   <!-- Contents -->
   <define name="text-content">
     <element name="content">
@@ -328,18 +345,19 @@
   </define>
   <define name="content">
     <choice>
-      <ref name="check-box-input"/>
-      <ref name="date-picker"/>
+      <ref name="radio-input"/>
+      <ref name="text-input"/>
+      <ref name="text-content"/>
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
-      <ref name="dropdown-input"/>
       <ref name="export-paper"/>
       <ref name="field-set"/>
+      <ref name="check-box-input"/>
       <ref name="file-uploader"/>
-      <ref name="radio-input"/>
+      <ref name="dropdown-input"/>
+      <ref name="date-picker"/>
       <ref name="tech-check"/>
-      <ref name="text-content"/>
-      <ref name="text-input"/>
+      <ref name="list-content"/>
     </choice>
   </define>
   <start>

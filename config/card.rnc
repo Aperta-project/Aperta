@@ -93,6 +93,12 @@ text-input = element content {
                 }*)
              }
 
+list-content = element content {
+                 attribute ident { text }?,
+                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" },
+                 content*
+               }
+
 # Contents
 text-content = element content {
                    attribute ident { text }?,
@@ -126,18 +132,19 @@ export-paper = element content {
 }
 
 content = (
-           check-box-input |
-           date-picker |
+           radio-input |
+           text-input |
+           text-content |
            display-children-content |
            display-with-value-content |
-           dropdown-input |
            export-paper |
            field-set |
+           check-box-input |
            file-uploader |
-           radio-input |
+           dropdown-input |
+           date-picker |
            tech-check |
-           text-content |
-           text-input
+           list-content
           )
 
 start = element card {

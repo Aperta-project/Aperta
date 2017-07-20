@@ -111,6 +111,8 @@ group :development, :test do
   gem 'test_after_commit'
   gem 'awesome_print'
   gem 'equivalent-xml'
+  gem 'faker'
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -133,8 +135,6 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'email_spec'
-  gem 'factory_girl_rails'
-  gem 'faker'
   gem 'fakeredis'
   gem 'fake_ftp'
   gem 'rspec-retry'

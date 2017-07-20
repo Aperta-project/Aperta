@@ -1,6 +1,15 @@
 require 'securerandom'
 
+
+titles = [
+  "A “Rose Is a Rose Is a Rose Is a Rose,” but Exactly What Is a Gastric Adenocarcinoma?",
+  "The Tactics People Use to Entice and Disguise the Process of Human Mate Poaching.",
+  "You Probably Think This Paper's About You: Narcissists' Perceptions of Their Personality and Reputation."
+]
+
 FactoryGirl.define do
+  num_gen = Random.new
+
   factory :paper do
     journal
     paper_type { journal.paper_types.first || "research" }
@@ -28,7 +37,9 @@ FactoryGirl.define do
     end
 
     sequence :title do |n|
-      "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
+      selection_index = num_gen.rand 4
+      title = titles[selection_index]
+      "#{title} - #{n}-#{SecureRandom.hex(3)}"
     end
 
     trait :with_phases do
@@ -265,7 +276,7 @@ FactoryGirl.define do
         )
       end
     end
-    
+
     trait(:with_versions) do
       transient do
         first_version_body  'first body'

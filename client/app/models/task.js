@@ -4,6 +4,7 @@ import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 import Answerable from 'tahi/mixins/answerable';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import Snapshottable from 'tahi/mixins/snapshottable';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
   attachments: DS.hasMany('adhoc-attachment', {
@@ -53,6 +54,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   title: DS.attr('string'),
   type: DS.attr('string'),
   assignedToMe: DS.attr(),
+  debouncePeriod: 200, // ms
 
   componentName: Ember.computed('type', function() {
     return Ember.String.dasherize(this.get('type'));
@@ -83,5 +85,10 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
       // non-custom card (legacy) tasks will display on sidebar conditionally
       return this.get('assignedToMe') || this.get('isSubmissionTask');
     }
-  })
+  }),
+
+  debouncedSave: concurrencyTask(function * () {
+    yield timeout(this.get('debouncePeriod'));
+    return yield this.save();
+  }).restartable()
 });

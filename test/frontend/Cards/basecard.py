@@ -139,7 +139,7 @@ class BaseCard(AuthenticatedPage):
                                 'FROM papers WHERE papers.short_doi=%s;', (short_doi,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
                                                  paper_tuple[3], paper_tuple[4]
-    title = title.strip().lstrip('<p>').rstrip('</p>')
+    title = self.strip_tinymce_ptags(title)
     paper_id = self.get_paper_id_from_short_doi(short_doi)
     manuscript_id = doi.split('journal.')[1]
     status = status.replace('_', ' ').capitalize()
@@ -168,7 +168,8 @@ class BaseCard(AuthenticatedPage):
     assert html_header_state.text == status, u'{0} != {1}'.format(html_header_state.text, status)
     html_header_title = self._get(self._header_title_link)
 
-    self.compare_unicode(html_header_title.text, title)
+    assert html_header_title.text in title, 'header title: {0}, not found in ' \
+                                            'db_title: {1}.'.format(html_header_title.text, title)
     # Validate Styles
     assert APPLICATION_TYPEFACE in html_header_author.value_of_css_property('font-family'), \
         html_header_author.value_of_css_property('font-family')

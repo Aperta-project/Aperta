@@ -47,6 +47,7 @@ class SendToApexTest(CommonTest):
     # Request title to make sure the required page is loaded
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.page_ready()
@@ -63,6 +64,7 @@ class SendToApexTest(CommonTest):
     paper_viewer.page_ready()
     # Disable Upload Manuscript Task
     data = manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     # go to workflow and open Send to Apex Card
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
@@ -173,6 +175,7 @@ class SendToApexTest(CommonTest):
     manuscript_page.complete_task('Reviewer Candidates')
     manuscript_page.complete_task('Supporting Info')
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.page_ready()

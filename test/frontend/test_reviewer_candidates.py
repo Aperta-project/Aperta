@@ -245,6 +245,7 @@ class ReviewerCandidatesTaskTest(CommonTest):
     manuscript_page.click_task('Reviewer Candidates')
     manuscript_page.check_for_flash_error()
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_submit_overlay()

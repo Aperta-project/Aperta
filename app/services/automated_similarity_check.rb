@@ -60,7 +60,7 @@ class AutomatedSimilarityCheck
   end
 
   def previous_verdict
-    paper.last_completed_decision.verdict
+    paper.last_completed_decision.try(:verdict)
   end
 
   def submitted_after_major_revise_decision?

@@ -70,6 +70,17 @@ describe AutomatedSimilarityCheck do
           expect(result.class).to eq(SimilarityCheck)
         end
       end
+
+      context "the task is configured to run on the submission after a major revise decision" do
+        let!(:setting) do
+          FactoryGirl.create(:ithenticate_automation_setting,
+                             :after_major_revise_decision, owner: task_template)
+        end
+
+        it "does not create a SimilarityCheck record" do
+          expect(result).to be_nil
+        end
+      end
     end
 
     context "a paper with a SimilarityCheckTask is in minor revision" do

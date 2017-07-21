@@ -47,6 +47,7 @@ test('can manage workflow, list appears', function(assert) {
 
   this.set('correspondence', [correspondence]);  
   this.set('paper', paper);
+  let done = assert.async();
   this.render(template);
   return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);

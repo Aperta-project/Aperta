@@ -4,10 +4,10 @@ describe SimilarityChecksController, type: :controller do
   let(:user) { create :user }
 
   describe "#create" do
-    let!(:versioned_text) { create :versioned_text }
+    let!(:paper_version) { create :paper_version }
     let(:do_request) do
       get :create, format: :json, similarity_check: {
-        versioned_text_id: versioned_text.to_param
+        paper_version_id: paper_version.to_param
       }
     end
 
@@ -15,7 +15,7 @@ describe SimilarityChecksController, type: :controller do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-                         .with(:perform_similarity_check, versioned_text.paper)
+                         .with(:perform_similarity_check, paper_version.paper)
                          .and_return true
       end
 
@@ -40,7 +40,7 @@ describe SimilarityChecksController, type: :controller do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-                         .with(:perform_similarity_check, versioned_text.paper)
+                         .with(:perform_similarity_check, paper_version.paper)
                          .and_return false
       end
 
@@ -59,7 +59,7 @@ describe SimilarityChecksController, type: :controller do
 
   describe "#report_view_only" do
     let(:similarity_check) { create :similarity_check, :report_complete }
-    let(:paper) { similarity_check.versioned_text.paper }
+    let(:paper) { similarity_check.paper_version.paper }
     let(:do_request) do
       get :report_view_only, id: similarity_check.to_param
     end

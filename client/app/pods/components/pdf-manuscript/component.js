@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     const url = paperDownloadPath({
       paperId: this.get('paper.id'),
       format: 'pdf',
-      versionedTextId: this.get('version.id')
+      paperVersionId: this.get('version.id')
     });
     window.PDFJS.webViewerLoad(url);
   },

@@ -26,7 +26,7 @@ class PaperDownloadsController < ApplicationController
 
   def converter
     @converter ||= PaperConverters::PaperConverter.make(
-      versioned_text,
+      paper_version,
       export_format,
       current_user
     )
@@ -40,15 +40,15 @@ class PaperDownloadsController < ApplicationController
     @paper ||= Paper.find_by_id_or_short_doi(params.require(:id))
   end
 
-  def versioned_text_id_param
-    params[:versioned_text_id]
+  def paper_version_id_param
+    params[:paper_version_id]
   end
 
-  def versioned_text
-    @versioned_text ||= begin
-      if versioned_text_id_param
-        VersionedText.find_by!(
-          id: versioned_text_id_param,
+  def paper_version
+    @paper_version ||= begin
+      if paper_version_id_param
+        PaperVersion.find_by!(
+          id: paper_version_id_param,
           paper: paper
         )
       else

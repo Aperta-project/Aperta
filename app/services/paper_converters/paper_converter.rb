@@ -4,15 +4,15 @@ module PaperConverters
   # Base class of paper converters. Use ::make to get a particular instance of
   # a paper converter
   class PaperConverter
-    def self.make(versioned_text, export_format, current_user)
-      current_format = versioned_text.file_type
+    def self.make(paper_version, export_format, current_user)
+      current_format = paper_version.file_type
       klass = if [nil, current_format, 'source'].include?(export_format)
                 direct_converter(export_format)
               elsif ['pdf', 'doc', 'docx'].include?(current_format)\
                 || ['pdf', 'pdf_with_attachments'].include?(export_format)
                 dynamic_converter(current_format, export_format)
               end
-      klass.new(versioned_text, export_format, current_user)
+      klass.new(paper_version, export_format, current_user)
     end
 
     def self.direct_converter(export_format)
@@ -36,8 +36,8 @@ module PaperConverters
       end
     end
 
-    def initialize(versioned_text, export_format, current_user = nil)
-      @versioned_text = versioned_text
+    def initialize(paper_version, export_format, current_user = nil)
+      @paper_version = paper_version
       @export_format  = export_format
       @current_user = current_user
     end

@@ -11,7 +11,7 @@ const taskValidations = {
     validation() {
       if (this.get('task.paper.fileType') !== 'pdf') return true;
 
-      let versions = this.get('task.paper.versionedTexts');
+      let versions = this.get('task.paper.paperVersions');
       let inRevision = this.get('task.paper.publishingState') === 'in_revision';
       if (inRevision || versions.any(v => v.get('majorVersion') > 0)) {
         return this.get('task.paper.sourcefile');

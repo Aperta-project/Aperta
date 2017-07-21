@@ -1,6 +1,6 @@
 #
 # Controller for creating and retrieving SimilarityCheck records. This tries to
-# handle all the permutations of being called with a versioned text or paper
+# handle all the permutations of being called with a paper version or paper
 # param, both of which have many SimilarityChecks.
 #
 class SimilarityChecksController < ::ApplicationController
@@ -11,7 +11,7 @@ class SimilarityChecksController < ::ApplicationController
   def create
     requires_user_can(:perform_similarity_check, paper)
     similarity_check = SimilarityCheck.create!(
-      versioned_text: versioned_text
+      paper_version: paper_version
     )
     similarity_check.start_report_async
     respond_with(similarity_check)
@@ -46,7 +46,7 @@ class SimilarityChecksController < ::ApplicationController
 
   def create_params
     @create_params ||= params.require(:similarity_check)
-                         .permit(:versioned_text_id)
+                         .permit(:paper_version_id)
   end
 
   def update_params
@@ -58,11 +58,11 @@ class SimilarityChecksController < ::ApplicationController
       if params[:paper_id].present?
         Paper.find_by_id_or_short_doi(params[:paper_id])
       else
-        versioned_text.paper
+        paper_version.paper
       end
   end
 
-  def versioned_text
-    @versioned_text ||= VersionedText.find(create_params[:versioned_text_id])
+  def paper_version
+    @paper_version ||= PaperVersion.find(create_params[:paper_version_id])
   end
 end

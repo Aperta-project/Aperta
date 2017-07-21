@@ -303,17 +303,17 @@ describe PapersController do
     end
   end
 
-  describe 'GET versioned_texts' do
+  describe 'GET paper_versions' do
     subject(:do_request) do
-      get :versioned_texts, id: paper.to_param, format: :json
+      get :paper_versions, id: paper.to_param, format: :json
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
     it_behaves_like "an unauthenticated json request"
 
     context "when the user has access" do
-      let!(:versioned_text) do
-        paper.versioned_texts.create!(
+      let!(:paper_version) do
+        paper.paper_versions.create!(
           major_version: 1,
           minor_version: 2
         )
@@ -329,11 +329,11 @@ describe PapersController do
 
       it { is_expected.to responds_with(200) }
 
-      it "responds with the paper's versioned_texts" do
-        versioned_text_ids = res_body['versioned_texts'].map { |hsh| hsh['id'] }
-        expect(versioned_text_ids.length).to eq paper.versioned_texts.count
-        expect(versioned_text_ids).to \
-          contain_exactly(*paper.versioned_texts.map(&:id))
+      it "responds with the paper's paper_versions" do
+        paper_version_ids = res_body['paper_versions'].map { |hsh| hsh['id'] }
+        expect(paper_version_ids.length).to eq paper.paper_versions.count
+        expect(paper_version_ids).to \
+          contain_exactly(*paper.paper_versions.map(&:id))
       end
     end
 

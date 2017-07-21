@@ -4,7 +4,7 @@ import { similarityCheckReportPath } from 'tahi/utils/api-path-helpers';
 
 
 export default DS.Model.extend({
-  versionedText: DS.belongsTo('versioned-text'),
+  paperVersion: DS.belongsTo('paper-version'),
   paper: DS.belongsTo('paper'),
   state: DS.attr('string'),
   errorMessage: DS.attr('string'),

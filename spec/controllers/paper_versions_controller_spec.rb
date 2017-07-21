@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-describe VersionedTextsController do
+describe PaperVersionsController do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:user) { FactoryGirl.create(:user) }
 
   # this will have been automagically created by setting the paper
   # body
-  let(:versioned_text) { VersionedText.where(paper: paper).first! }
+  let(:paper_version) { PaperVersion.where(paper: paper).first! }
 
   describe "GET 'show'" do
-    subject(:do_request) { get :show, id: versioned_text.id, format: :json }
+    subject(:do_request) { get :show, id: paper_version.id, format: :json }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -36,7 +36,7 @@ describe VersionedTextsController do
           file_type
           source_type
         )
-        expect(res_body['versioned_text'].keys).to eq(expected_keys)
+        expect(res_body['paper_version'].keys).to eq(expected_keys)
       end
     end
 

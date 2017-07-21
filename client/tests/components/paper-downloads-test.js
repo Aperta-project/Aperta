@@ -13,7 +13,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
     manualSetup(this.container);
 
     const docxPaper = make('paper', {
-      versionedTexts: [{
+      paperVersions: [{
         id: 1,
         isDraft: false,
         majorVersion: 1,
@@ -24,7 +24,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
     this.set('docxPaper', docxPaper);
 
     const pdfPaper = make('paper', {
-      versionedTexts: [{
+      paperVersions: [{
         id: 2,
         isDraft: false,
         majorVersion: 1,
@@ -35,7 +35,7 @@ moduleForComponent('paper-downloads', 'Integration | Component | Paper Downloads
     this.set('pdfPaper', pdfPaper);
 
     const pdfAndSourcePaper = make('paper', {
-      versionedTexts: [{
+      paperVersions: [{
         id: 3,
         isDraft: false,
         majorVersion: 1,
@@ -67,4 +67,3 @@ test('docx versions display download links', function(assert) {
   assert.equal(this.$('.download-docx').length, 1);
   assert.equal(this.$('.download-pdf').length, 1);
 });
-

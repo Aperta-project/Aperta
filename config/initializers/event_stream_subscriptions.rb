@@ -63,8 +63,8 @@ Subscriptions.configure do
   add 'invitation:invited', Invitation::Updated::StateChange
   add 'invitation:rescinded', Invitation::Updated::StateChange
 
-  add 'versioned_text:created', stream_to_paper_channel
-  add 'versioned_text:updated', stream_to_paper_channel
+  add 'paper_version:created', stream_to_paper_channel
+  add 'paper_version:updated', stream_to_paper_channel
 
   # Paper constituents that don't get 'updated':
 

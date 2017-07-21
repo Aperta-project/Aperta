@@ -8,14 +8,14 @@ export function paperDownloadLink(_, params) {
       paperId: params.paper.get('id'),
       format: params.format
     };
-  } else if (params.versionedText) {
+  } else if (params.paperVersion) {
     opts = {
-      paperId: params.versionedText.get('paper.id'),
-      versionedTextId: params.versionedText.get('id'),
+      paperId: params.paperVersion.get('paper.id'),
+      paperVersionId: params.paperVersion.get('id'),
       format: params.format
     };
   } else {
-    throw 'Either paper or versionedText needs to be defined';
+    throw 'Either paper or paperVersion needs to be defined';
   }
 
   return paperDownloadPath(opts);

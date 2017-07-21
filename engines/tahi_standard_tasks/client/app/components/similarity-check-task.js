@@ -10,8 +10,8 @@ export default TaskComponent.extend({
   restless: Ember.inject.service(),
   classNames: ['similarity-check-task'],
   sortProps: ['id:desc'],
-  latestVersionedText: Ember.computed.alias('task.paper.latestVersionedText'),
-  latestVersionSimilarityChecks: Ember.computed.alias('latestVersionedText.similarityChecks.[]'),
+  latestPaperVersion: Ember.computed.alias('task.paper.latestPaperVersion'),
+  latestVersionSimilarityChecks: Ember.computed.alias('latestPaperVersion.similarityChecks.[]'),
   latestVersionSuccessfulChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'report_complete'),
   latestVersionHasSuccessfulChecks: Ember.computed.notEmpty('latestVersionSuccessfulChecks.[]'),
   latestVersionFailedChecks: Ember.computed.filterBy('latestVersionSimilarityChecks', 'state', 'failed'),
@@ -27,10 +27,10 @@ export default TaskComponent.extend({
     },
     generateReport() {
       this.set('confirmVisible', false);
-      this.get('task.paper.versionedTexts').then(() => {
+      this.get('task.paper.paperVersions').then(() => {
         const similarityCheck = this.get('store').createRecord('similarity-check', {
           paper: this.get('task.paper'),
-          versionedText: this.get('latestVersionedText')
+          paperVersion: this.get('latestPaperVersion')
         });
         similarityCheck.save();
       });

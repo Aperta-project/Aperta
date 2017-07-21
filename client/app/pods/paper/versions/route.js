@@ -7,7 +7,7 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   afterModel(model) {
     return Ember.RSVP.all([
       model.get('tasks'),
-      model.get('versionedTexts'),
+      model.get('paperVersions'),
       model.get('snapshots')]);
   },
 
@@ -27,7 +27,7 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
       controller.set('viewingVersion', model.textForVersion(viewingVersionText));
     } else {
       // `selectedVersion1` was undefined or a draft
-      let latest = model.get('versionedTexts').objectAt(0);
+      let latest = model.get('paperVersions').objectAt(0);
       controller.set('viewingVersion', latest);
       controller.set('selectedVersion1', this.versionText(latest));
     }

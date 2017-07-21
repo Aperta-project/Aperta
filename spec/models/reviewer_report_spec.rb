@@ -110,7 +110,7 @@ describe ReviewerReport do
 
   describe "#revision" do
     it "defaults to v0.0" do
-      subject.task.paper.versioned_texts = []
+      subject.task.paper.paper_versions = []
       subject.decision.major_version = nil
       subject.decision.minor_version = nil
 

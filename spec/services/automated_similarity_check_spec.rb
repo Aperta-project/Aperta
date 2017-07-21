@@ -71,7 +71,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "does not create a similarity check if one already exists" do
-          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          FactoryGirl.create(:similarity_check, paper_version: paper.latest_version)
           expect(result).to be_nil
         end
       end
@@ -121,7 +121,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "does not create a similarity check if one already exists" do
-          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          FactoryGirl.create(:similarity_check, paper_version: paper.latest_version)
           expect(result).to be_nil
         end
       end
@@ -137,7 +137,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "does not create a similarity check if one already exists" do
-          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          FactoryGirl.create(:similarity_check, paper_version: paper.latest_version)
           expect(result).to be_nil
         end
       end
@@ -202,7 +202,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "does not create a similarity check if one already exists" do
-          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          FactoryGirl.create(:similarity_check, paper_version: paper.latest_version)
           expect(result).to be_nil
         end
       end
@@ -229,7 +229,7 @@ describe AutomatedSimilarityCheck do
         end
 
         it "does not create a similarity check if one already exists" do
-          FactoryGirl.create(:similarity_check, versioned_text: paper.latest_version)
+          FactoryGirl.create(:similarity_check, paper_version: paper.latest_version)
           expect(result).to be_nil
         end
       end

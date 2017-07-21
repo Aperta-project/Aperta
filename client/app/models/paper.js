@@ -52,7 +52,7 @@ export default DS.Model.extend({
     async: false
   }),
   tasks: hasMany('task', { polymorphic: true }),
-  versionedTexts: hasMany('versioned-text'),
+  paperVersions: hasMany('paper-version'),
   similarityChecks: hasMany('similarity-check'),
 
   active: attr('boolean'),
@@ -136,13 +136,13 @@ export default DS.Model.extend({
   }),
 
   versionAscendingSort: ['isDraft:asc', 'majorVersion:asc', 'minorVersion:asc'],
-  versionedTextsAscending: computed.sort('versionedTexts', 'versionAscendingSort'),
+  paperVersionsAscending: computed.sort('paperVersions', 'versionAscendingSort'),
 
-  latestVersionedText: computed.reads('versionedTextsAscending.lastObject'),
+  latestPaperVersion: computed.reads('paperVersionsAscending.lastObject'),
 
   textForVersion(versionString) {
     let versionParts = versionString.split('.');
-    return this.get('versionedTexts').find(function(version) {
+    return this.get('paperVersions').find(function(version) {
       return (version.get('majorVersion') === Number(versionParts[0]) &&
               version.get('minorVersion') === Number(versionParts[1]));
     });

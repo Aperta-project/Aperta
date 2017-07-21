@@ -2,7 +2,7 @@ namespace :data do
   namespace :migrate do
     namespace :tasks do
       desc <<-DESC.strip_heredoc
-        Creates ManuscriptAttachment versions from VersionedText records.
+        Creates ManuscriptAttachment versions from PaperVersion records.
 
         This is an all or nothing task. It will either migrate everything
         over successfully or it will fail.
@@ -18,24 +18,24 @@ namespace :data do
             next if paper.file
 
             # We expect the same number of historical versions as there are
-            # versioned_text records for a paper.
-            expected_versions_count = paper.versioned_texts.count
+            # paper_version records for a paper.
+            expected_versions_count = paper.paper_versions.count
             attachment = paper.build_file
             attachment.notifications_enabled = false
 
-            paper.versioned_texts.order(:id).each do |versioned_text|
-              attachment.s3_dir = "uploads/versioned_text/#{versioned_text.id}"
-              attachment['file'] = versioned_text.source
-              attachment.created_at = versioned_text.created_at
-              attachment.updated_at = versioned_text.updated_at
-              attachment.old_id = versioned_text.id
-              attachment.uploaded_by_id = versioned_text.submitting_user_id
+            paper.paper_versions.order(:id).each do |paper_version|
+              attachment.s3_dir = "uploads/paper_version/#{paper_version.id}"
+              attachment['file'] = paper_version.source
+              attachment.created_at = paper_version.created_at
+              attachment.updated_at = paper_version.updated_at
+              attachment.old_id = paper_version.id
+              attachment.uploaded_by_id = paper_version.submitting_user_id
               attachment.type = 'ManuscriptAttachment'
               attachment.owner_type = 'Paper'
-              attachment.owner_id = versioned_text.paper_id
-              attachment.paper_id = versioned_text.paper_id
-              attachment.title = versioned_text.source
-              attachment.status = versioned_text.source.nil? ? 'processing' : 'done'
+              attachment.owner_id = paper_version.paper_id
+              attachment.paper_id = paper_version.paper_id
+              attachment.title = paper_version.source
+              attachment.status = paper_version.source.nil? ? 'processing' : 'done'
               attachment.save
             end
 

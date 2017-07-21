@@ -24,7 +24,7 @@ export default Ember.Component.extend({
 
   versions: [],
   fetchVersions: task(function * () {
-    const versions = yield this.get('paper.versionedTexts');
+    const versions = yield this.get('paper.paperVersions');
     this.set('versions', versions);
   }),
 

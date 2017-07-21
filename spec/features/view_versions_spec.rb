@@ -17,8 +17,8 @@ feature 'Viewing Versions:', js: true, flaky: true do
                          paper: paper,
                          phase: paper.phases.first
     end
-    let(:version_0) { paper.versioned_texts.version_desc.last }
-    let(:version_1) { paper.versioned_texts.version_desc.first }
+    let(:version_0) { paper.paper_versions.version_desc.last }
+    let(:version_1) { paper.paper_versions.version_desc.first }
 
     let(:user) { creator }
 

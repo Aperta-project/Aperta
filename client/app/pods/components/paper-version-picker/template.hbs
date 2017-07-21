@@ -10,7 +10,7 @@
 
   <label class="bar-item paper-viewing-version">
     Now viewing:
-    {{#power-select options=paper.versionedTexts
+    {{#power-select options=paper.paperVersions
                     selected=viewingVersion
                     onchange=(action "setViewingVersion")
                     searchEnabled=false
@@ -22,7 +22,7 @@
 
   <label class="bar-item paper-comparison-version">
     Compare with:
-    {{#power-select options=paper.versionedTexts
+    {{#power-select options=paper.paperVersions
                     selected=comparisonVersion
                     placeholder="-"
                     onchange=(action "setComparisonVersion")

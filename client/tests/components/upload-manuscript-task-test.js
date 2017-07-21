@@ -21,7 +21,7 @@ moduleForComponent('upload-manuscript-task', 'Integration | Component | manuscri
         pdfAllowed: true
       },
       sourceFile: null,
-      versionedTexts: [{
+      paperVersions: [{
         id: 1,
         majorVersion: 1,
         minorVersion: 1,
@@ -114,7 +114,7 @@ test('pdf papers not in revision don\'t require sourcefiles', function(assert) {
   fake.allowPermission('edit', this.get('task'));
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
   this.set('task.paper.fileType', 'pdf');
-  this.set('task.paper.versionedTexts', []);
+  this.set('task.paper.paperVersions', []);
   this.set('task.paper.publishingState', '');
 
   this.render(hbs`{{upload-manuscript-task task=task}}`);

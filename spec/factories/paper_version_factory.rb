@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :versioned_text do
+  factory :paper_version do
     major_version 1
     minor_version 0
     paper

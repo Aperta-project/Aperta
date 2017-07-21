@@ -5,17 +5,17 @@ module PaperConverters
   class SupportingInformationFileProxy
     include UrlBuilder
 
-    def self.from_versioned_text(versioned_text)
-      if versioned_text.latest_version?
-        paper = versioned_text.paper
+    def self.from_paper_version(paper_version)
+      if paper_version.latest_version?
+        paper = paper_version.paper
         return paper.supporting_information_files.map do |si_file|
           klass = SupportingInformationFileProxy
           klass.from_supporting_information_file(si_file)
         end
       else
-        major_version = versioned_text.major_version
-        minor_version = versioned_text.minor_version
-        snapshots = versioned_text.paper.snapshots.supporting_information_files
+        major_version = paper_version.major_version
+        minor_version = paper_version.minor_version
+        snapshots = paper_version.paper.snapshots.supporting_information_files
                                   .where(major_version: major_version,
                                          minor_version: minor_version)
         return snapshots.map do |snapshot|

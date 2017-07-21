@@ -30,7 +30,7 @@ describe SimilarityCheck, type: :model, redis: true do
   describe "#start_report!" do
     let(:similarity_check) { create :similarity_check }
     let(:paper) { create :paper, :version_with_file_type, :with_creator }
-    let!(:similarity_check) { create :similarity_check, versioned_text: paper.latest_version }
+    let!(:similarity_check) { create :similarity_check, paper_version: paper.latest_version }
     let(:stubbed_url) { paper.file.url }
     let(:fake_doc_id) { Faker::Number.number(8).to_i }
     let(:fake_ithenticate_response) do

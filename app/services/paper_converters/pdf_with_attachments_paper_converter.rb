@@ -11,9 +11,9 @@ module PaperConverters
     end
 
     def output_filename
-      paper = @versioned_text.paper
+      paper = @paper_version.paper
       filename = "#{paper.short_doi} - #{paper.creator.last_name} "\
-       "- #{@versioned_text.version}"
+       "- #{@paper_version.version}"
       "#{filename} (with attachments).pdf"
     end
 
@@ -22,7 +22,7 @@ module PaperConverters
     end
 
     def uploaded_pdf_data
-      url = Attachment.authenticated_url_for_key(@versioned_text.s3_full_path)
+      url = Attachment.authenticated_url_for_key(@paper_version.s3_full_path)
       Faraday.get(URI.parse(url)).body
     end
 
@@ -85,11 +85,11 @@ module PaperConverters
     end
 
     def figures
-      FigureProxy.from_versioned_text(@versioned_text).sort_by(&:rank)
+      FigureProxy.from_paper_version(@paper_version).sort_by(&:rank)
     end
 
     def supporting_information_files
-      SupportingInformationFileProxy.from_versioned_text(@versioned_text)
+      SupportingInformationFileProxy.from_paper_version(@paper_version)
     end
 
     def create_attachments_html
@@ -99,7 +99,7 @@ module PaperConverters
         locals: {
           figures: figures,
           supporting_information_files: supporting_information_files,
-          journal_pdf_css: @versioned_text.paper.journal.pdf_css
+          journal_pdf_css: @paper_version.paper.journal.pdf_css
         }
       )
     end

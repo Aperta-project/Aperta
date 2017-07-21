@@ -3,7 +3,7 @@ module PaperConverters
   class SourcePaperConverter < RedirectingPaperConverter
     def download_url
       Attachment.authenticated_url_for_key(
-        @versioned_text.s3_full_sourcefile_path
+        @paper_version.s3_full_sourcefile_path
       )
     end
   end

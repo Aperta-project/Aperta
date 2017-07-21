@@ -77,9 +77,9 @@ describe 'PaperFactory' do
           .to mostly_eq(reference_paper.decisions).except('id', 'paper_id')
       end
 
-      it 'should have equal versioned_texts' do
-        expect(paper_submitted_lite.versioned_texts)
-          .to mostly_eq(reference_paper.versioned_texts).except('id', 'paper_id')
+      it 'should have equal paper_versions' do
+        expect(paper_submitted_lite.paper_versions)
+          .to mostly_eq(reference_paper.paper_versions).except('id', 'paper_id')
       end
     end
   end

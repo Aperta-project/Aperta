@@ -7,7 +7,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 var App;
 
 moduleForModel('paper', 'Unit: Paper Model', {
-  needs: ['model:author','model:group-author','model:card', 'model:correspondence', 'model:snapshot','model:related-article','model:paper-task-type', 'model:user', 'model:figure', 'model:journal', 'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment', 'model:question-attachment', 'model:comment-look', 'model:discussion-topic', 'model:versioned-text', 'model:discussion-participant', 'model:discussion-reply', 'model:phase', 'model:task', 'model:comment', 'model:participation', 'model:card-thumbnail', 'model:nested-question-owner', 'model:nested-question', 'model:nested-question-answer', 'model:collaboration', 'model:supporting-information-file','model:similarity-check'],
+  needs: ['model:author','model:group-author','model:card', 'model:correspondence', 'model:snapshot','model:related-article','model:paper-task-type', 'model:user', 'model:figure', 'model:journal', 'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment', 'model:question-attachment', 'model:comment-look', 'model:discussion-topic', 'model:paper-version', 'model:discussion-participant', 'model:discussion-reply', 'model:phase', 'model:task', 'model:comment', 'model:participation', 'model:card-thumbnail', 'model:nested-question-owner', 'model:nested-question', 'model:nested-question-answer', 'model:collaboration', 'model:supporting-information-file','model:similarity-check'],
   afterEach: function() {
     Ember.run(function() {
       return TestHelper.teardown();
@@ -73,7 +73,7 @@ test('simplifiedRelatedUsers contains no collaborators', function(assert) {
 
 test('authorHasErrorOnPreSubmission', function(assert) {
   const paper = this.subject();
-  
+
   var scenarios = [
     {
       data: {
@@ -122,7 +122,7 @@ test('authorHasErrorOnPreSubmission', function(assert) {
 
 test('authorHasErrorOnSubmission', function(assert) {
   const paper = this.subject();
-  
+
   var scenarios = [
     {
       data: {
@@ -140,11 +140,11 @@ test('authorHasErrorOnSubmission', function(assert) {
     }),
     assert.equal(paper.get('authorHasErrorOnSubmission'), true);
   });
-}); 
+});
 
 test('staffEditorHasErrorOnSubmittedAndEditable', function(assert) {
   const paper = this.subject();
-  
+
   var scenarios = [
     {
       data: {

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :similarity_check do
-    versioned_text
+    paper_version
 
     trait :waiting_for_report do
       state :waiting_for_report

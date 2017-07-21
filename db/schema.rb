@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170720202710) do
+ActiveRecord::Schema.define(version: 20170721202501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -534,6 +534,24 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.datetime "updated_at"
   end
 
+  create_table "paper_versions", force: :cascade do |t|
+    t.integer  "submitting_user_id"
+    t.integer  "paper_id",                         null: false
+    t.integer  "major_version"
+    t.integer  "minor_version"
+    t.text     "text",                default: "",              comment: "Contains HTML"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "original_text",                                 comment: "Contains HTML"
+    t.string   "file_type"
+    t.string   "manuscript_s3_path"
+    t.string   "manuscript_filename"
+    t.string   "sourcefile_s3_path"
+    t.string   "sourcefile_filename"
+  end
+
+  add_index "paper_versions", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
+
   create_table "papers", force: :cascade do |t|
     t.text     "abstract",                              default: "",                 comment: "Contains HTML"
     t.text     "title",                                                 null: false, comment: "Contains HTML"
@@ -771,7 +789,7 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.string   "document_s3_url"
     t.integer  "ithenticate_report_id"
     t.integer  "ithenticate_score"
-    t.integer  "versioned_text_id",                               null: false
+    t.integer  "paper_version_id",                                null: false
     t.string   "state",                                           null: false
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
@@ -906,24 +924,6 @@ ActiveRecord::Schema.define(version: 20170720202710) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
-  create_table "versioned_texts", force: :cascade do |t|
-    t.integer  "submitting_user_id"
-    t.integer  "paper_id",                         null: false
-    t.integer  "major_version"
-    t.integer  "minor_version"
-    t.text     "text",                default: "",              comment: "Contains HTML"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "original_text",                                 comment: "Contains HTML"
-    t.string   "file_type"
-    t.string   "manuscript_s3_path"
-    t.string   "manuscript_filename"
-    t.string   "sourcefile_s3_path"
-    t.string   "sourcefile_filename"
-  end
-
-  add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
-
   create_table "versions", force: :cascade do |t|
     t.string   "item_type",  null: false
     t.integer  "item_id",    null: false
@@ -962,6 +962,6 @@ ActiveRecord::Schema.define(version: 20170720202710) do
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
   add_foreign_key "settings", "setting_templates"
-  add_foreign_key "similarity_checks", "versioned_texts"
+  add_foreign_key "similarity_checks", "paper_versions"
   add_foreign_key "task_templates", "cards"
 end

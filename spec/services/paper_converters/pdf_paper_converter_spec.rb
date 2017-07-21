@@ -11,15 +11,15 @@ describe PaperConverters::PdfPaperConverter do
   end
   let(:user) { FactoryGirl.create :user }
   let(:paper) { create(:paper, :version_with_file_type, :with_creator, journal: journal) }
-  let(:versioned_text) { paper.latest_version }
+  let(:paper_version) { paper.latest_version }
   let(:task) { FactoryGirl.create(:supporting_information_task) }
-  let(:converter) { PaperConverters::PdfPaperConverter.new(versioned_text, export_format, user) }
+  let(:converter) { PaperConverters::PdfPaperConverter.new(paper_version, export_format, user) }
 
   it_behaves_like "a synchronous paper converter"
 
   describe "#output_filename" do
     subject { converter.output_filename }
-    it { is_expected.to eq "#{paper.short_doi} - #{paper.creator.last_name} - #{versioned_text.version}.pdf" }
+    it { is_expected.to eq "#{paper.short_doi} - #{paper.creator.last_name} - #{paper_version.version}.pdf" }
   end
 
   describe "#output_filetype" do

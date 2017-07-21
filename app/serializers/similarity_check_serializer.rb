@@ -2,7 +2,7 @@ class SimilarityCheckSerializer < ActiveModel::Serializer
   attributes :id,
     :dismissed,
     :error_message,
-    :versioned_text_id,
+    :paper_version_id,
     :ithenticate_score,
     :state,
     :updated_at

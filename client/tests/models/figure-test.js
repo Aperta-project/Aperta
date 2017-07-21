@@ -13,7 +13,7 @@ moduleForModel('figure', 'Unit | Model | figure', {
     'model:journal',
     'model:phase',
     'model:supporting-information-file',
-    'model:versioned-text',
+    'model:paper-version',
     'model:snapshot',
     'model:task',
     'model:paper-task-type',

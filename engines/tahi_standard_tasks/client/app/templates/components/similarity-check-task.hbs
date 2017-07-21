@@ -29,7 +29,7 @@
   {{#if task.paper.hasSimilarityChecks }}
     <hr>
     <h3>Report History</h3>
-    {{#each task.paper.versionedTexts as |version|}}
+    {{#each task.paper.paperVersions as |version|}}
       {{#if (and version.hasSimilarityChecks (not version.isDraft))}}
         {{similarity-check-bar version=version}}
       {{/if}}

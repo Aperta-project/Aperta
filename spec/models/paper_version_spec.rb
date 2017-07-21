@@ -2,62 +2,62 @@
 require 'rails_helper'
 require 'models/concerns/versioned_thing_shared_examples'
 
-describe VersionedText do
+describe PaperVersion do
   let(:paper) { FactoryGirl.create :paper, :version_with_file_type }
   let(:user) { FactoryGirl.create :user }
-  let(:versioned_text) { paper.latest_version }
+  let(:paper_version) { paper.latest_version }
 
-  it_behaves_like 'a thing with major and minor versions', :versioned_text
+  it_behaves_like 'a thing with major and minor versions', :paper_version
 
   describe '#version_string' do
     it 'contains file_type' do
-      expect(versioned_text.version_string.match('DOCX').to_a.any?).to be(true)
+      expect(paper_version.version_string.match('DOCX').to_a.any?).to be(true)
     end
 
     it 'contains draft text' do
-      expect(versioned_text.version_string.match('draft').to_a.any?).to be(true)
+      expect(paper_version.version_string.match('draft').to_a.any?).to be(true)
     end
 
     it 'contains major and minor' do
       paper.draft.be_minor_version!
-      expect(versioned_text.version_string.match('0.0').to_a.any?).to be(true)
+      expect(paper_version.version_string.match('0.0').to_a.any?).to be(true)
     end
   end
 
   describe '#version' do
-    let(:new_versioned_text) { FactoryGirl.create :versioned_text }
+    let(:new_paper_version) { FactoryGirl.create :paper_version }
     it 'returns semantic version if it is not a draft' do
-      expect(new_versioned_text.version).to eq('v1.0')
+      expect(new_paper_version.version).to eq('v1.0')
     end
 
     it 'returns latest draft if it is a draft' do
-      expect(versioned_text.version).to eq('latest draft')
+      expect(paper_version.version).to eq('latest draft')
     end
   end
 
   context 'validation' do
-    context 'versioned text is completed' do
-      subject(:versioned_text) { FactoryGirl.build(:versioned_text) }
+    context 'paper version is completed' do
+      subject(:paper_version) { FactoryGirl.build(:paper_version) }
 
       it 'is valid' do
-        expect(versioned_text.valid?).to be(true)
+        expect(paper_version.valid?).to be(true)
       end
 
       it 'requires a paper' do
-        versioned_text.paper = nil
-        expect(versioned_text.valid?).to be(false)
+        paper_version.paper = nil
+        expect(paper_version.valid?).to be(false)
       end
     end
 
-    context 'versioned text is a draft' do
+    context 'paper version is a draft' do
       it 'can only update version numbers if it is a draft' do
-        expect(versioned_text).to be_draft
-        expect(versioned_text.valid?).to be(true)
-        versioned_text.major_version = 1
-        expect(versioned_text.valid?).to be(true)
-        versioned_text.save!
-        versioned_text.major_version = 2
-        expect(versioned_text.valid?).to be(false)
+        expect(paper_version).to be_draft
+        expect(paper_version.valid?).to be(true)
+        paper_version.major_version = 1
+        expect(paper_version.valid?).to be(true)
+        paper_version.save!
+        paper_version.major_version = 2
+        expect(paper_version.valid?).to be(false)
       end
     end
   end
@@ -84,15 +84,15 @@ describe VersionedText do
       expect(paper.major_version).to be(0)
     end
 
-    it "has matching file and versioned_text s3 directories" do
+    it "has matching file and paper_version s3 directories" do
       paper.draft.be_minor_version!
       expect(paper.file.s3_dir).not_to be_nil
-      expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+      expect(paper.file.s3_dir).to eq(paper_version.manuscript_s3_path)
     end
 
-    it "has matching file and versioned_text filenames" do
+    it "has matching file and paper_version filenames" do
       paper.draft.be_minor_version!
-      expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      expect(paper.file[:file]).to eq(paper_version.manuscript_filename)
     end
   end
 
@@ -118,35 +118,35 @@ describe VersionedText do
       expect(paper.minor_version).to be(0)
     end
 
-    it "has matching file and versioned_text s3 directories" do
+    it "has matching file and paper_version s3 directories" do
       paper.draft.be_major_version!
       expect(paper.file.s3_dir).not_to be_nil
-      expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+      expect(paper.file.s3_dir).to eq(paper_version.manuscript_s3_path)
     end
 
-    it "has matching file and versioned_text filenames" do
+    it "has matching file and paper_version filenames" do
       paper.draft.be_major_version!
-      expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      expect(paper.file[:file]).to eq(paper_version.manuscript_filename)
     end
   end
 
   describe "#new_draft!" do
-    subject(:new_draft!) { versioned_text.new_draft! }
+    subject(:new_draft!) { paper_version.new_draft! }
 
-    context "the versioned_text is a draft" do
-      let(:versioned_text) { paper.draft }
+    context "the paper_version is a draft" do
+      let(:paper_version) { paper.draft }
 
       it "has no submitting user" do
-        expect(versioned_text.submitting_user).to be_nil
+        expect(paper_version.submitting_user).to be_nil
       end
 
-      it "has matching file and versioned_text s3 directories" do
+      it "has matching file and paper_version s3 directories" do
         expect(paper.file.s3_dir).not_to be_nil
-        expect(paper.file.s3_dir).to eq(versioned_text.manuscript_s3_path)
+        expect(paper.file.s3_dir).to eq(paper_version.manuscript_s3_path)
       end
 
-      it "has matching file and versioned_text filenames" do
-        expect(paper.file[:file]).to eq(versioned_text.manuscript_filename)
+      it "has matching file and paper_version filenames" do
+        expect(paper.file[:file]).to eq(paper_version.manuscript_filename)
       end
 
       it "fails" do
@@ -154,15 +154,15 @@ describe VersionedText do
       end
     end
 
-    context "the versioned_text is completed" do
-      let!(:versioned_text) { paper.draft }
+    context "the paper_version is completed" do
+      let!(:paper_version) { paper.draft }
 
       before :each do
-        versioned_text.update! major_version: 0, minor_version: 0
+        paper_version.update! major_version: 0, minor_version: 0
       end
 
-      it "Creates a new VersionedText" do
-        expect { new_draft! }.to change { VersionedText.count }.by(1)
+      it "Creates a new PaperVersion" do
+        expect { new_draft! }.to change { PaperVersion.count }.by(1)
       end
 
       it "has no version number" do
@@ -181,9 +181,9 @@ describe VersionedText do
 
   describe "#create" do
     it "should not allow creating multiple versions with the same number" do
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 1, minor_version: 0)
       expect do
-        FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
+        FactoryGirl.create(:paper_version, paper: paper, major_version: 1, minor_version: 0)
       end.to raise_exception(ActiveRecord::RecordInvalid)
     end
   end
@@ -209,7 +209,7 @@ describe VersionedText do
       expect(FigureInserter).to receive(:new)
         .with('new original text', [figure], {})
         .and_return -> {}
-      versioned_text.update!(original_text: 'new original text')
+      paper_version.update!(original_text: 'new original text')
     end
 
     it 'uses the latest figures' do
@@ -218,7 +218,7 @@ describe VersionedText do
         .with('new original text', [figure2], {})
         .and_return -> {}
       figure.destroy
-      versioned_text.update!(original_text: 'new original text')
+      paper_version.update!(original_text: 'new original text')
     end
   end
 
@@ -229,8 +229,8 @@ describe VersionedText do
         version_urls: { 'detail' => 'test.jpg' }
       )
     end
-    let(:versioned_text) do
-      create(:versioned_text).tap { |vt| vt.update!(text: html) }
+    let(:paper_version) do
+      create(:paper_version).tap { |vt| vt.update!(text: html) }
     end
     let(:expected_html) do
       <<-HTML.strip
@@ -238,7 +238,7 @@ describe VersionedText do
       HTML
     end
 
-    context 'a recent versioned text record' do
+    context 'a recent paper version record' do
       let(:html) do
         <<-HTML.strip
           <h1>Hello</h1><img src="/resource_proxy/12345/detail"><h3>World</h3>
@@ -248,12 +248,12 @@ describe VersionedText do
       it 'should materialize text with corresponding figures' do
         allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
         allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
-        expect(versioned_text.materialized_content).to eq(expected_html)
+        expect(paper_version.materialized_content).to eq(expected_html)
       end
     end
 
     # 'the embedded resource proxy urls changed at some point'
-    context 'an old versioned text record' do
+    context 'an old paper version record' do
       let(:html) do
         <<-HTML.strip
           <h1>Hello</h1><img src="/resource_proxy/figures/12345/detail"><h3>World</h3>
@@ -263,7 +263,7 @@ describe VersionedText do
       it 'should materialize text with corresponding figures' do
         allow(ResourceToken).to receive(:find_by_token).with('12345').and_return resource_token
         allow(Attachment).to receive(:authenticated_url_for_key).with(resource_token.version_urls['detail']).and_return 'https://signed.jpg'
-        expect(versioned_text.materialized_content).to eq(expected_html)
+        expect(paper_version.materialized_content).to eq(expected_html)
       end
     end
   end

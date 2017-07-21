@@ -1128,7 +1128,7 @@ describe Paper do
           .to("in_revision")
       end
 
-      it "creates a new versioned text" do
+      it "creates a new paper version" do
         expect(paper).to receive(:new_draft!).once
         subject
       end
@@ -1166,7 +1166,7 @@ describe Paper do
 
     context "when there is no latest_version" do
       before do
-        paper.versioned_texts.destroy_all
+        paper.paper_versions.destroy_all
         expect(paper.latest_version).to be(nil)
       end
 
@@ -1189,7 +1189,7 @@ describe Paper do
 
     context "when there is no latest_version" do
       before do
-        paper.versioned_texts.destroy_all
+        paper.paper_versions.destroy_all
         expect(paper.latest_version).to be(nil)
       end
 
@@ -1514,16 +1514,16 @@ describe Paper do
   describe "#latest_submitted_version" do
     before do
       # create a bunch of old minor versions
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 2)
     end
     let!(:latest) do
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 3)
     end
 
     it "returns the latest version" do
-      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
-      expect(paper.latest_submitted_version).to eq(versioned_text)
+      paper_version = FactoryGirl.create(:paper_version, paper: paper, major_version: 1, minor_version: 0)
+      expect(paper.latest_submitted_version).to eq(paper_version)
     end
 
     it "does not return a draft even if there is one" do
@@ -1535,26 +1535,26 @@ describe Paper do
   describe "#latest_version" do
     before do
       # create a bunch of old minor versions
-      paper.versioned_texts = []
+      paper.paper_versions = []
       paper.save!
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 2)
+      FactoryGirl.create(:paper_version, paper: paper, major_version: 0, minor_version: 3)
     end
 
     it "returns the latest version" do
-      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
-      expect(paper.latest_version).to eq(versioned_text)
+      paper_version = FactoryGirl.create(:paper_version, paper: paper, major_version: 1, minor_version: 0)
+      expect(paper.latest_version).to eq(paper_version)
     end
 
     it "returns a draft if there is one" do
-      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: nil, minor_version: nil)
-      expect(paper.latest_version).to eq(versioned_text)
+      paper_version = FactoryGirl.create(:paper_version, paper: paper, major_version: nil, minor_version: nil)
+      expect(paper.latest_version).to eq(paper_version)
     end
   end
 
   describe "#draft" do
-    it "returns a VersionedText with no version" do
+    it "returns a PaperVersion with no version" do
       draft = paper.draft
       expect(draft.major_version).to be_nil
       expect(draft.minor_version).to be_nil

@@ -1468,7 +1468,7 @@ http_interactions:
   recorded_at: Wed, 01 Apr 2015 19:37:08 GMT
 - request:
     method: get
-    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ur-id/20160505/us-west-1/s3/aws4_request&X-Amz-Date=20160505T211627Z&X-Amz-Expires=600&X-Amz-Signature=9c950fd177c1e96932307f9766d3b328ae710841f3e0fd03a78e9d106711d3fa&X-Amz-SignedHeaders=host
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/paper_version/1/about_equations.docx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ur-id/20160505/us-west-1/s3/aws4_request&X-Amz-Date=20160505T211627Z&X-Amz-Expires=600&X-Amz-Signature=9c950fd177c1e96932307f9766d3b328ae710841f3e0fd03a78e9d106711d3fa&X-Amz-SignedHeaders=host
     body:
       encoding: US-ASCII
       string: ''

@@ -9,11 +9,11 @@ class SimilarityCheck < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
 
-  belongs_to :versioned_text
-  has_one :paper, through: :versioned_text
+  belongs_to :paper_version
+  has_one :paper, through: :paper_version
   has_one :file, through: :paper
 
-  validates :versioned_text, :state, presence: true
+  validates :paper_version, :state, presence: true
 
   TIMEOUT_INTERVAL = 10.minutes
 

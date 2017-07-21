@@ -4,10 +4,10 @@ describe PaperDownloadsController, type: :controller do
   include Rails.application.routes.url_helpers
 
   let!(:paper) { create(:paper, :version_with_file_type, :with_creator) }
-  let!(:versioned_text) do
+  let!(:paper_version) do
     paper.reload # weirdly, this is needed for paper.file to not be nil
     create(
-      :versioned_text,
+      :paper_version,
       paper: paper,
       file_type: 'docx',
       manuscript_s3_path: 'sample/path',
@@ -28,7 +28,7 @@ describe PaperDownloadsController, type: :controller do
       get(
         :show,
         id: paper.to_param,
-        versioned_text_id: versioned_text.to_param,
+        paper_version_id: paper_version.to_param,
         export_format: 'docx',
         format: :json
       )
@@ -45,16 +45,16 @@ describe PaperDownloadsController, type: :controller do
       end
 
       it 'redirects to the correct s3 file' do
-        quoted = Regexp.quote(versioned_text.s3_full_path)
+        quoted = Regexp.quote(paper_version.s3_full_path)
         expect(do_request).to redirect_to(/#{quoted}.+Amz-SignedHeaders/)
       end
 
       context 'a synchronous conversion is requested' do
-        let!(:versioned_text) do
+        let!(:paper_version) do
           paper.reload # weirdly, this is needed for paper.file to not be nil
           paper.file.update(file_type: 'pdf')
           create(
-            :versioned_text,
+            :paper_version,
             paper: paper,
           )
         end
@@ -63,7 +63,7 @@ describe PaperDownloadsController, type: :controller do
           get(
             :show,
             id: paper.to_param,
-            versioned_text_id: versioned_text.to_param,
+            paper_version_id: paper_version.to_param,
             export_format: 'pdf_with_attachments',
             format: :json
           )
@@ -77,7 +77,7 @@ describe PaperDownloadsController, type: :controller do
         end
       end
 
-      context 'the VersionedText is not specified' do
+      context 'the PaperVersion is not specified' do
         subject(:do_request) do
           get(
             :show,
@@ -86,25 +86,25 @@ describe PaperDownloadsController, type: :controller do
             format: :json
           )
         end
-        let(:expected_versioned_text) { paper.latest_version }
+        let(:expected_paper_version) { paper.latest_version }
 
-        it 'redirects to the file corresponding to latest versioned text' do
-          quoted = Regexp.quote(expected_versioned_text.s3_full_path)
+        it 'redirects to the file corresponding to latest paper version' do
+          quoted = Regexp.quote(expected_paper_version.s3_full_path)
           expect(do_request).to redirect_to(/#{quoted}.+Amz-SignedHeaders/)
         end
       end
 
-      context 'the specified VersionedText does not belong to the paper' do
-        let!(:versioned_text) do
+      context 'the specified PaperVersion does not belong to the paper' do
+        let!(:paper_version) do
           create(
-            :versioned_text,
+            :paper_version,
             file_type: 'docx',
             manuscript_s3_path: 'sample/path',
             manuscript_filename: 'name.docx'
           )
         end
         let!(:manuscript_attachment) do
-          create(:manuscript_attachment, owner: versioned_text.paper)
+          create(:manuscript_attachment, owner: paper_version.paper)
         end
 
         it 'returns a 404' do

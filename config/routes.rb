@@ -165,7 +165,7 @@ Tahi::Application.routes.draw do
         get 'activity/workflow', to: 'papers#workflow_activities'
         get 'activity/manuscript', to: 'papers#manuscript_activities'
         get :comment_looks
-        get :versioned_texts
+        get :paper_versions
         get :snapshots
         get :related_articles
         put :submit
@@ -213,7 +213,7 @@ Tahi::Application.routes.draw do
       put :update_avatar, on: :collection
     end
     resources :user_roles, only: [:index, :create, :destroy]
-    resources :versioned_texts, only: [:show]
+    resources :paper_versions, only: [:show]
 
     # Internal Admin API
     #

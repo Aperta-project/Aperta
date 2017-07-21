@@ -80,13 +80,13 @@ class PapersController < ApplicationController
     respond_with(comment_looks, root: :comment_looks)
   end
 
-  def versioned_texts
+  def paper_versions
     requires_user_can(:view, paper)
-    versions = paper.versioned_texts
+    versions = paper.paper_versions
       .includes(:submitting_user)
       .order('major_version DESC, minor_version DESC')
-    respond_with versions, each_serializer: VersionedTextSerializer,
-                           root: 'versioned_texts'
+    respond_with versions, each_serializer: PaperVersionSerializer,
+                           root: 'paper_versions'
   end
 
   def workflow_activities

@@ -33,8 +33,8 @@ class Paper < ActiveRecord::Base
     class_name: 'SourcefileAttachment'
 
   # Everything else
-  has_many :versioned_texts, dependent: :destroy
-  has_many :similarity_checks, through: :versioned_texts
+  has_many :paper_versions, dependent: :destroy
+  has_many :similarity_checks, through: :paper_versions
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
   has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },
@@ -103,7 +103,7 @@ class Paper < ActiveRecord::Base
   end
 
   after_create :assign_doi!
-  after_create :create_versioned_texts
+  after_create :create_paper_versions
   after_commit :state_transition_notifications
 
   aasm column: :publishing_state do
@@ -536,11 +536,11 @@ class Paper < ActiveRecord::Base
   # Return the latest version of this paper.
   # This will ALWAYS return a new instance.
   def latest_version
-    versioned_texts(true).version_desc.first
+    paper_versions(true).version_desc.first
   end
 
   def latest_submitted_version
-    versioned_texts.completed.version_desc.first
+    paper_versions.completed.version_desc.first
   end
 
   def latest_decision_rescinded?
@@ -557,7 +557,7 @@ class Paper < ActiveRecord::Base
   end
 
   def draft
-    versioned_texts.drafts.first
+    paper_versions.drafts.first
   end
 
   def draft_decision
@@ -649,8 +649,8 @@ class Paper < ActiveRecord::Base
     update!(short_doi: doi_parts[-2] + '.' + doi_parts[-1])
   end
 
-  def create_versioned_texts
-    versioned_texts.create! major_version: nil,
+  def create_paper_versions
+    paper_versions.create! major_version: nil,
                             minor_version: nil,
                             original_text: (@new_body || ''),
                             file_type: file_type

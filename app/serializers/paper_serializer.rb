@@ -35,7 +35,7 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def versions_contain_pdf
-    object.versioned_texts.any? { |vt| vt.file_type == "pdf" }
+    object.paper_versions.any? { |vt| vt.file_type == "pdf" }
   end
 
   def current_user_roles
@@ -50,7 +50,7 @@ class PaperSerializer < LitePaperSerializer
       tasks: paper_tasks_path(object),
       phases: paper_phases_path(object),
       figures: paper_figures_path(object),
-      versioned_texts: versioned_texts_paper_path(object),
+      paper_versions: paper_versions_paper_path(object),
       discussion_topics: paper_discussion_topics_path(object),
       decisions: paper_decisions_path(object),
       snapshots: snapshots_paper_path(object),

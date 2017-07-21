@@ -67,7 +67,7 @@ feature 'Similarity Check', js: true, redis: true do
   end
 
   scenario 'User can generate a similarity check report' do
-    similarity_check = SimilarityCheck.where(versioned_text_id: paper.versioned_texts.first.id)
+    similarity_check = SimilarityCheck.where(paper_version_id: paper.paper_versions.first.id)
     expect(similarity_check.count).to be 0
 
     overlay = Page.view_task_overlay(paper, task)
@@ -85,7 +85,7 @@ feature 'Similarity Check', js: true, redis: true do
   end
 
   scenario 'Bad iThenticate credentials raises an exception' do
-    similarity_check = SimilarityCheck.where(versioned_text_id: paper.versioned_texts.first.id)
+    similarity_check = SimilarityCheck.where(paper_version_id: paper.paper_versions.first.id)
     expect(similarity_check.count).to be 0
 
     overlay = Page.view_task_overlay(paper, task)

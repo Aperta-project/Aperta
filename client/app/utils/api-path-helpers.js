@@ -27,14 +27,14 @@ export function newDiscussionUsersPath(paperId) {
   return `/api/papers/${paperId}/discussion_topics/new_discussion_users`;
 }
 
-export function paperDownloadPath({paperId, versionedTextId, format}) {
+export function paperDownloadPath({paperId, paperVersionId, format}) {
   let path = `/api/paper_downloads/${paperId}`;
   let params = {};
   if (format) {
     params.export_format = format;
   }
-  if (versionedTextId) {
-    params.versioned_text_id = versionedTextId;
+  if (paperVersionId) {
+    params.paper_version_id = paperVersionId;
   }
   if (!_.isEmpty(params)) {
     path += `?${$.param(params)}`;

@@ -113,7 +113,7 @@ FactoryGirl.define do
       state_updated_at { DateTime.current.utc }
       after :create do |paper, evaluator|
         paper.new_draft_decision!
-        paper.versioned_texts.first.update!(
+        paper.paper_versions.first.update!(
           major_version: 0,
           minor_version: 0,
           submitting_user: evaluator.submitting_user
@@ -134,7 +134,7 @@ FactoryGirl.define do
 
         paper.save!
 
-        paper.versioned_texts.first.update!(
+        paper.paper_versions.first.update!(
           file_type: 'docx'
         )
       end
@@ -265,7 +265,7 @@ FactoryGirl.define do
         )
       end
     end
-    
+
     trait(:with_versions) do
       transient do
         first_version_body  'first body'
@@ -317,7 +317,7 @@ FactoryGirl.define do
 
         paper.save!
 
-        paper.versioned_texts.last.update!(
+        paper.paper_versions.last.update!(
           file_type: 'pdf'
         )
         paper.new_draft!

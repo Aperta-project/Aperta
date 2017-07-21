@@ -1,18 +1,18 @@
-# VersionedText holds a snapshot of the text of the manuscript.
-# There's one VersionedText for each version of the manuscript, and
+# PaperVersion holds a snapshot of the text of the manuscript.
+# There's one PaperVersion for each version of the manuscript, and
 # one version of the manuscript for each time the author gets to make
 # changes -- minor versions for small changes, like tech checks, and
 # major versions for full revisions (after a revise decision).
-class VersionedText < ActiveRecord::Base
+class PaperVersion < ActiveRecord::Base
   include EventStream::Notifiable
   include Versioned
 
-  # Base exception class for VersionedText
-  class VersionedTextError < StandardError; end
+  # Base exception class for PaperVersion
+  class PaperVersionError < StandardError; end
 
   # Exception thrown when manuscript attachments aren't `done?` and we're
   # attempting to copy data from them.
-  class AttachmentNotDone < VersionedTextError; end
+  class AttachmentNotDone < PaperVersionError; end
 
   belongs_to :paper
   belongs_to :submitting_user, class_name: "User"
@@ -74,7 +74,7 @@ class VersionedText < ActiveRecord::Base
       d.major_version = nil
       d.minor_version = nil
       d.submitting_user = nil
-      d.save! # makes duplicate of VersionedText
+      d.save! # makes duplicate of PaperVersion
     end
   end
 
@@ -131,7 +131,7 @@ class VersionedText < ActiveRecord::Base
     return if major_version_was.nil?
     errors.add(
       :major_version,
-      "This versioned_text is not a draft. You may not change its version."
+      "This paper_version is not a draft. You may not change its version."
     )
   end
 end

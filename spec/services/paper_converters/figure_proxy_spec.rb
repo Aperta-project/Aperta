@@ -45,54 +45,54 @@ describe PaperConverters::FigureProxy do
     it_behaves_like 'a figure proxy'
   end
 
-  describe ".from_versioned_text" do
-    let(:versioned_text) { paper.versioned_texts.first }
-    subject(:from_versioned_text) do
-      described_class.from_versioned_text(versioned_text)
+  describe ".from_paper_version" do
+    let(:paper_version) { paper.paper_versions.first }
+    subject(:from_paper_version) do
+      described_class.from_paper_version(paper_version)
     end
 
-    context "the VersionedText is the latest on the paper" do
+    context "the PaperVersion is the latest on the paper" do
       before do
-        allow(versioned_text).to receive(:latest_version?).and_return(true)
+        allow(paper_version).to receive(:latest_version?).and_return(true)
         paper.reload
       end
 
       it "returns a list of FigureProxy objects" do
         expect(paper.figures).to be_present
-        expect(from_versioned_text.count).to eq paper.figures.count
-        from_versioned_text.each do |obj|
+        expect(from_paper_version.count).to eq paper.figures.count
+        from_paper_version.each do |obj|
           expect(obj).to be_an_instance_of described_class
         end
       end
 
       it "creates FigureProxy objects from figures" do
         expect(described_class).to receive(:from_figure).once
-        from_versioned_text
+        from_paper_version
       end
     end
 
-    context "the VersionedText is not the latest on the paper" do
+    context "the PaperVersion is not the latest on the paper" do
       let!(:snapshot) do
         SnapshotService.new(paper).snapshot!(figure).first
       end
 
       before do
-        allow(versioned_text).to receive(:latest_version?).and_return(false)
-        allow(versioned_text).to receive(:minor_version).and_return(minor_version)
-        allow(versioned_text).to receive(:major_version).and_return(major_version)
+        allow(paper_version).to receive(:latest_version?).and_return(false)
+        allow(paper_version).to receive(:minor_version).and_return(minor_version)
+        allow(paper_version).to receive(:major_version).and_return(major_version)
         paper.reload
       end
 
       it "returns a list of FigureProxy objects" do
-        expect(from_versioned_text.count).to eq 1
-        from_versioned_text.each do |obj|
+        expect(from_paper_version.count).to eq 1
+        from_paper_version.each do |obj|
           expect(obj).to be_an_instance_of described_class
         end
       end
 
       it "creates FigureProxy objects from snapshots" do
         expect(described_class).to receive(:from_snapshot).once
-        from_versioned_text
+        from_paper_version
       end
     end
   end

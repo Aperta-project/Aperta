@@ -11,9 +11,9 @@ module PaperConverters
     end
 
     def output_filename
-      paper = @versioned_text.paper
+      paper = @paper_version.paper
       filename = "#{paper.short_doi} - #{paper.creator.last_name} "\
-       "- #{@versioned_text.version}"
+       "- #{@paper_version.version}"
       "#{filename}.pdf"
     end
 
@@ -22,11 +22,11 @@ module PaperConverters
     end
 
     def supporting_information_files
-      SupportingInformationFileProxy.from_versioned_text(@versioned_text)
+      SupportingInformationFileProxy.from_paper_version(@paper_version)
     end
 
     def publishing_info_presenter
-      PublishingInformationPresenter.new(@versioned_text.paper, @current_user)
+      PublishingInformationPresenter.new(@paper_version.paper, @current_user)
     end
 
     def pdf_html
@@ -35,8 +35,8 @@ module PaperConverters
         layout: nil,
         locals: {
           should_proxy_previews: false,
-          paper: @versioned_text.paper,
-          paper_body: @versioned_text.materialized_content,
+          paper: @paper_version.paper,
+          paper_body: @paper_version.materialized_content,
           publishing_info_presenter: publishing_info_presenter,
           supporting_information_files: supporting_information_files
         }

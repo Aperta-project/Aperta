@@ -27,6 +27,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       before do
         CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
         CardLoader.load("TahiStandardTasks::ReviseTask")
+        CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
         allow(decision).to receive(:revision?).and_return(true)
       end
 

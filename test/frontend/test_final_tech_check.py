@@ -59,6 +59,7 @@ class FTCCardTest(CommonTest):
 
     manuscript_page.page_ready_post_create()
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay

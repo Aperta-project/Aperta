@@ -26,6 +26,7 @@ from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.revise_manuscript_task import ReviseManuscriptTask
 from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
+from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
 from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
 
@@ -41,7 +42,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
     # Locators - Instance members
     # Main Viewer Div
-    self._paper_title = (By.CSS_SELECTOR, 'div#control-bar-paper-title > span')
+    self._paper_title = (By.CSS_SELECTOR, 'div#control-bar-paper-title > span > p')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
@@ -714,6 +715,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
         outdata = scenario
       base_task.click_completion_button()
       self.click_covered_element(task)
+    elif task_name == 'Title And Abstract':
+      # Complete T&A data before mark close
+      logging.info('Completing Title And Abstract Task')
+      title_and_abstract_task = TitleAbstractTask(self._driver)
+      short_doi = title_and_abstract_task.get_short_doi()
+      title_and_abstract_task.set_abstract(short_doi)
+      base_task.click_completion_button()
+      self.click_covered_element(task)
+
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close

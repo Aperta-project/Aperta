@@ -66,6 +66,7 @@ export default Ember.Component.extend({
     options['menubar'] = false;
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
+    options['elementpath'] = false;
     Ember.run.schedule('afterRender', this.stripTitles);
     return options;
   },

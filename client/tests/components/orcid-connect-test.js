@@ -149,15 +149,13 @@ test("user can click on trash icon, and say 'Yes, I do want to remove my ORCID r
   this.render(template);
   this.$('.remove-orcid').click();
 
-  // done + wait().then(...) is used so a promise can be resolved for the
+  // return wait().then(...) is used so a promise can be resolved for the
   // above mocked out HTTP PUT to /api/orcid_accounts/1/clear,
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.spyCalledWith(confirm, ["Are you sure you want to remove your ORCID record?"]);
 
     // The promise returned by the restless call inside of clearRecord is resolving after the test runs :(
     assert.textPresent('.orcid-not-linked > button', 'Connect or create your ORCID ID');
-    done();
   });
 });
 

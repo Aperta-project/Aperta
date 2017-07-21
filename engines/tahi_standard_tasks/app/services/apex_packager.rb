@@ -25,9 +25,10 @@ class ApexPackager
         add_metadata(package)
         add_manuscript(package)
         add_sourcefile_if_needed(package)
-        if include_pdf
-          add_generated_pdf(package)
-        end
+        # ummm... this method doesn't exist, so commented out for now
+        # if include_pdf
+        #   add_generated_pdf(package)
+        # end
       end
     end
   end

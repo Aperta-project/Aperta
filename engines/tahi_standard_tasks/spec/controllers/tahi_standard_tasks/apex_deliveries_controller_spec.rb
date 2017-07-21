@@ -5,7 +5,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
 
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, journal: journal }
+  let(:paper) { FactoryGirl.create :paper, journal: journal, publishing_state: 'accepted' }
   let(:task) { FactoryGirl.create :send_to_apex_task, paper: paper }
 
   subject(:do_request) do

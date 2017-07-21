@@ -1,6 +1,5 @@
 class FeedbackMailer < ApplicationMailer
   include MailerHelper
-  layout "mailer"
 
   def contact(user, feedback)
     @user = user

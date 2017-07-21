@@ -17,7 +17,7 @@ describe Typesetter::MetadataSerializer do
       :with_academic_editor_user,
       :with_short_title,
       journal: journal,
-      short_title: 'my paper short'
+      short_title: '<p>my <pre><span>paper</span></pre> <u><span style="omg: so-much-garbage\">short</span></u></p>'
     )
   end
   let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
@@ -37,6 +37,8 @@ describe Typesetter::MetadataSerializer do
       our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
+
+  FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
 
   before do
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
@@ -83,6 +85,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:short_title]).to eq('my paper short')
   end
 
+  it 'strips base stuff from short_titles' do
+    expect(paper.short_title).to match(/<p>/)
+    expect(output[:short_title]).to eq('my paper short')
+  end
+
   it 'has doi' do
     paper.doi = '1234'
     expect(output[:doi]).to eq('1234')
@@ -117,6 +124,11 @@ describe Typesetter::MetadataSerializer do
 
   it 'has title' do
     paper.title = 'here is the title'
+    expect(output[:paper_title]).to eq('here is the title')
+  end
+
+  it 'strips bad stuff from title' do
+    paper.title = '<p><span>here</span> <u>is</u> <pre>the</pre> title</p>'
     expect(output[:paper_title]).to eq('here is the title')
   end
 
@@ -196,7 +208,7 @@ describe Typesetter::MetadataSerializer do
     context "the paper has a related article to be sent to apex" do
       let!(:included_article) do
         FactoryGirl.create(:related_article,
-                           linked_title: "Sendable",
+                           linked_title: "<a><b>Sendable</b></a>",
                            linked_doi: "some.doi",
                            paper: paper,
                            send_link_to_apex: true)

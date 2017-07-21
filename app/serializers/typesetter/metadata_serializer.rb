@@ -7,11 +7,9 @@ module Typesetter
 
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions,
-               :early_article_posting, :custom_card_fields
-
+               :early_article_posting, :custom_card_fields, :paper_title
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
-    attribute :title, key: :paper_title
     attribute :abstract, key: :paper_abstract
 
     has_one :competing_interests,
@@ -33,6 +31,14 @@ module Typesetter
 
     def journal_title
       object.journal.name
+    end
+
+    def paper_title
+      title_clean(object.title)
+    end
+
+    def short_title
+      title_clean(object.short_title)
     end
 
     def publication_date

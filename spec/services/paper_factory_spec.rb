@@ -121,6 +121,12 @@ describe PaperFactory do
       expect(subject).to be_persisted
     end
 
+    it "raises an error without a title" do
+      paper = FactoryGirl.build(:paper, title: nil)
+      expect(paper).not_to be_valid
+      expect(paper.errors[:title]).to eq(["can't be blank"])
+    end
+
     context "with non-existant template" do
       let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: "Opinion Piece") }
       it "adds an error on paper_type" do

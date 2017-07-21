@@ -203,6 +203,10 @@ export default Ember.Component.extend({
       } else {
         this.sendAction('inputChanged', inputValue);
       }
+    },
+
+    focusOut(inputValue){
+      this.sendAction('focusOut', inputValue);
     }
   }
 });

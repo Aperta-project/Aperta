@@ -152,7 +152,9 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
-      resources :correspondence, only: :index
+      resources :correspondence, only: [:index, :create] do
+        resources :attachment, only: :create, controller: :correspondence_attachments
+      end
       resources :similarity_checks, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
@@ -203,7 +205,9 @@ Tahi::Application.routes.draw do
         get 'reviewers', to: 'task_eligible_users#reviewers'
       end
     end
-    resources :task_templates
+    resources :task_templates do
+      post :similarity_check_settings, on: :member
+    end
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
       put :update_avatar, on: :collection

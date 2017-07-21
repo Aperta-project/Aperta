@@ -4,13 +4,14 @@
   "description": "Tahi client application",
   "private": true,
   "engines": {
-    "node": "4.5.0"
+    "node": "6.11.0"
   },
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
+    "clean": "rm -rf tmp node_modules bower_components; npm install; ./node_modules/.bin/bower install",
     "build": "ember build",
     "start": "ember server",
     "test": "ember test"

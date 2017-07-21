@@ -271,7 +271,8 @@ class Task < ActiveRecord::Base
   end
 
   def last_reviewer_report_status
-    reviewer_reports.last.try(:computed_status)
+    # the most review report is always the first
+    reviewer_reports.first.try(:computed_status)
   end
 
   private

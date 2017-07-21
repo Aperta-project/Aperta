@@ -7,11 +7,19 @@
       <i class="card-diff-icon fa fa-files-o"></i>
     {{/if}}
   {{else}}
-    {{#unless taskTemplate}}
+    {{#if taskImmutable}}
+      <div class="task-disclosure-completed-icon">
+        {{partial "svg/minus"}}
+      </div>
+    {{else if taskIncomplete}}
+      <div class="task-disclosure-completed-icon">
+        {{partial "svg/check"}}
+      </div>
+    {{else}}
       <div class="task-disclosure-completed-icon {{if task.completed "active"}}">
         {{partial "svg/check"}}
       </div>
-    {{/unless}}
+    {{/if}}
   {{/if}}
   {{# if settingsEnabled}}
   <span {{action "openSettings" bubbles=false}} title="Settings" class="card--settings--container"><i class="fa fa-cog settings card--settings" aria-hidden="true"></i>&nbsp;&nbsp;</span>

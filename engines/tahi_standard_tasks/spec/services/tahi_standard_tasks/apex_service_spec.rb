@@ -20,6 +20,8 @@ describe TahiStandardTasks::ApexService do
   describe "#make_delivery!" do
     before do
       allow(ApexPackager).to receive(:new).and_return packager
+      # The paper must be 'accepted' to send to APEX or EM
+      paper.update(publishing_state: 'accepted')
     end
 
     context "the destination is apex" do

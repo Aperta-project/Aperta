@@ -25,6 +25,9 @@ describe TahiStandardTasks::ApexService do
     end
 
     context "the destination is apex" do
+      before do
+        apex_delivery.destination = "apex"
+      end
       it "uploads two files" do
         expect(service).to receive(:upload_to_ftp)
                              .with(packager.zip_file, service.send(:package_filename))

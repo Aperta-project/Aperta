@@ -10,7 +10,7 @@
       "camelcase": "warn",
       "indent": ["error", 2],
       "eqeqeq": "error",
-      "max-len": ["warn", 110],
+      "max-len": ["warn", 120],
       "semi": ["error", "always"],
       "quotes": [
         "error",

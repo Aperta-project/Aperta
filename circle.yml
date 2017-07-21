@@ -17,7 +17,7 @@ stages:
       RACK_ENV: test
       DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
       CIRCLE_TEST_REPORTS: /tmp/reports
-      NODE_VERSION: 4.5.0
+      NODE_VERSION: 6.11.0
       # This is for starting Xvfb window server, used for headless Selenium
       DISPLAY: ":99"
     steps:

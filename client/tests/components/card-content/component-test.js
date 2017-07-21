@@ -35,11 +35,9 @@ test('it creates an answer for card-content', function(assert) {
   assert.elementsFound('input.form-control', 1);
   this.$('input.form-control').val('a new answer').trigger('input');
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.mockjaxRequestMade('/api/answers', 'POST');
     $.mockjax.clear();
-    done();
   });
 });
 

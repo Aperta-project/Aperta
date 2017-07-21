@@ -28,10 +28,11 @@ namespace :data do
                 when 'font-style'  then 'i'
                 when 'font-weight' then 'b'
               end
-            end.compact
-            next Loofah::Scrubber::CONTINUE if tags.empty?
+            end.compact.uniq
 
             node.attributes['style'].remove
+            next Loofah::Scrubber::CONTINUE if tags.empty?
+
             statistics.changed += 1
             case tags.size
             when 1

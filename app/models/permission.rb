@@ -5,6 +5,8 @@ class Permission < ActiveRecord::Base
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :states, class_name: 'PermissionState'
 
+  validates(:filter_by_card_id, presence: true, if: -> { applies_to == CustomCardTask.to_s })
+
   def self.ensure_exists(
         action,
         applies_to:,

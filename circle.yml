@@ -65,7 +65,6 @@ stages:
           set -e
           node --version
           time bundle install
-          time npm install
           time bundle exec rake ember:install
 
       - type: cache-save

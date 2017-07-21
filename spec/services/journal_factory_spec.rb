@@ -9,7 +9,7 @@ describe JournalFactory do
   # a direct call to ".descendants" in this file it should likely be wrapped
   # using this helper method.
   def without_anonymous_classes(klasses)
-    klasses.select { |klass| klass.name.present? && klass != MetadataTestTask && klass != InvitableTestTask && klass != QueryParserSpec::FictionalReport }
+    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' }
   end
 
   describe '.create' do

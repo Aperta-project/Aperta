@@ -979,4 +979,16 @@ class AuthenticatedPage(StyledPage):
       self.traverse_from_frame()
     return
 
-
+  @staticmethod
+  def strip_tinymce_ptags(input_string):
+    """
+    TinyMCE has a completely annoying habit of wrapping user input in extra <p> tags
+    Args:
+      input_string: the string you wish to strip the ptags from
+    Returns: output string: the original user input
+    """
+    input_string = input_string.replace('<p>', '')\
+                               .replace('</p>', '')\
+                               .replace('\n', '')
+    output_string = input_string.strip()
+    return output_string

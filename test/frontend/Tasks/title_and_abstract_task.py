@@ -1,23 +1,24 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Page Object Model for the Title and Abstract Card
+Page Object Model for Title and Abstract Task
 """
 
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from frontend.Cards.basecard import BaseCard
+from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'jgray@plos.org'
 
 
-class TitleAbstractCard(BaseCard):
+class TitleAbstractTask(BaseTask):
   """
-  Page Object Model for the Title and Abstract Card
+  Page Object Model for Title and Abstract Task
   """
+
   def __init__(self, driver):
-    super(TitleAbstractCard, self).__init__(driver)
+    super(TitleAbstractTask, self).__init__(driver)
 
     # Locators - Instance members
     self._title_label = (By.CSS_SELECTOR, 'div.qa-paper-title > h3')
@@ -26,12 +27,9 @@ class TitleAbstractCard(BaseCard):
   # POM Actions
   def validate_styles(self):
     """
-    Validate styles in the Title and Abstract Card
+    Validate styles in the Title And Abstract Task
     :return: void function
     """
-    card_title = self._get(self._card_heading)
-    assert card_title.text == 'Title And Abstract'
-    self.validate_overlay_card_title_style(card_title)
     title_label = self._get(self._title_label)
     assert title_label.text == 'Title', title_label.text
     self.validate_application_h3_style(title_label)
@@ -41,7 +39,7 @@ class TitleAbstractCard(BaseCard):
     self.validate_application_h3_style(abstract_label)
     self.get_rich_text_editor_instance('article-abstract-input')
 
-  def check_title_abstract_card_population(self, short_doi):
+  def check_title_abstract_task_population(self, short_doi):
     """
     Verify that the values populated in the form are those we have in the db
     :param short_doi: The paper.short_doi of the relevant manuscript
@@ -107,4 +105,4 @@ class TitleAbstractCard(BaseCard):
       db_abstract = self.strip_tinymce_ptags(db_abstract)
     # APERTA-10711 - until this is merged down to master this will not work
     # assert db_abstract == abstract, 'Abstract from page: {0} doesn\'t match abstract ' \
-    #                                 'from db: {1}'.format(abstract, db_abstract)
+#                                 'from db: {1}'.format(abstract, db_abstract)

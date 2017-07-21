@@ -112,6 +112,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     else:
       logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
     manuscript_page.click_submit_btn()
@@ -176,6 +177,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
         # logging.warning('Conversion never completed - still showing interim title')
     logging.info('paper_title_from_page: {0}'.format(title))
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
     manuscript_page.click_submit_btn()
     time.sleep(3)
@@ -214,38 +216,39 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(15)
-    ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.page_ready_post_create()
-    short_doi = ms_page.get_paper_short_doi_from_url()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    paper_title_from_page = ms_page.get_paper_title_from_page()
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
     if sys.version_info >= (3, 0, 0):
       logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
     else:
       logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
-    ms_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
     time.sleep(3)
-    ms_page.click_submit_btn()
+    manuscript_page.click_submit_btn()
     time.sleep(3)
-    ms_page.confirm_submit_cancel()
+    manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
     # and it takes time
     time.sleep(.5)
-    ms_page.click_submit_btn()
+    manuscript_page.click_submit_btn()
     time.sleep(1)
-    ms_page.confirm_submit_btn()
+    manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    ms_page.close_submit_overlay()
-    ms_page.validate_submit_success()
-    sub_data = ms_page.get_db_submission_data(short_doi)
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
     assert sub_data[0][1] == False, 'Gradual Engagement: {0}'.format(sub_data[0][1])
     assert sub_data[0][2], sub_data[0][2]
     # Extend with 1- login as admin user. 2- aprobe with major rev and then log as
     # first user and submit without source and check for error.
-    ms_page.logout()
+    manuscript_page.logout()
 
     editor = random.choice(editorial_users)
     dashboard_page = self.cas_login(email=editor['email'])
@@ -267,9 +270,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
-    ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.page_ready()
-    ms_page.click_task('Upload Manuscript')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
@@ -277,7 +280,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
       '{0} not Please upload your source file'.format(warning.get_attribute('title'))
-    ms_page.complete_task('Upload Manuscript', data={'source': ''})
+    manuscript_page.complete_task('Upload Manuscript', data={'source': ''})
 
 
 @MultiBrowserFixture
@@ -345,17 +348,17 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
-    ms_page = ManuscriptViewerPage(self.getDriver())
-    ms_page.validate_ihat_conversions_success(timeout=45)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(5)
     # Need to wait for url to update
-    short_doi = ms_page.get_short_doi()
+    short_doi = manuscript_page.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
 
     count = 0
     while count < 60:
-      paper_title_from_page = ms_page.get_paper_title_from_page()
+      paper_title_from_page = manuscript_page.get_paper_title_from_page()
       if sys.version_info < (3, 0, 0):
         paper_title_from_page = paper_title_from_page.encode('utf8')
       if 'initial submit' in paper_title_from_page:
@@ -366,28 +369,29 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
         break
       logging.warning('Conversion never completed - still showing interim title')
     # Give a little time for the submit button to attach to the DOM
-    ms_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     time.sleep(5)
-    ms_page.click_submit_btn()
-    ms_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
-    ms_page.confirm_submit_cancel()
+    manuscript_page.click_submit_btn()
+    manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
+    manuscript_page.confirm_submit_cancel()
     # The overlay must be cleared to interact with the submit button
     # and it takes time
     time.sleep(2)
-    ms_page.click_submit_btn()
-    ms_page.confirm_submit_btn()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(3)
-    ms_page.check_for_flash_error()
-    ms_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
-    ms_page.close_submit_overlay()
-    ms_page.validate_initial_submit_success()
-    sub_data = ms_page.get_db_submission_data(short_doi)
+    manuscript_page.check_for_flash_error()
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
+    manuscript_page.close_submit_overlay()
+    manuscript_page.validate_initial_submit_success()
+    sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
     assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
-    ms_page.logout()
+    manuscript_page.logout()
 
     admin_user = random.choice(admin_users)
     logging.info('Logging in as {0}'.format(admin_user['name']))
@@ -499,6 +503,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Give a little time for the submit button to attach to the DOM
     time.sleep(5)
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()

@@ -14,7 +14,7 @@ namespace :circleci do
         in_garbage = false
         output.lines.each do |line|
           next if line =~ /^Warning/
-          if line =~ /^{ \[Error/
+          if line =~ /^{ \[?Error/
             in_garbage = true # Starting a garbage section.
             next
           end

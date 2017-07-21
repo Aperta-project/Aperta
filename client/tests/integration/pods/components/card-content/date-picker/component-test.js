@@ -34,7 +34,7 @@ test(`it renders a date picker with a title`, function(assert) {
   this.set('content', Ember.Object.create({ text: 'Title' }));
 
   this.render(template);
-  assert.equal($('p.picker-title').html(), 'Title');
+  assert.equal($('p.picker-title').html(), 'Title<!---->');
   assert.elementFound('input.datepicker');
 });
 

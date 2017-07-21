@@ -13,8 +13,8 @@
 #    off
 #    at_first_full_submission
 #    after_any_first_revise_decision
-#    after_first_minor_revise_decision
-#    after_first_major_revise_decision
+#    after_minor_revise_decision
+#    after_major_revise_decision
 #
 # To find the manuscript manager template id, go to edit a manuscript manager
 # template in the admin screen, and check the url. For instance:

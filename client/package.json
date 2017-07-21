@@ -11,7 +11,7 @@
     "test": "tests"
   },
   "scripts": {
-    "clean": "rm -rf tmp node_modules bower_components; npm install",
+    "clean": "rm -rf tmp node_modules bower_components; npm install; ./node_modules/.bin/bower install",
     "build": "ember build",
     "start": "ember server",
     "test": "ember test"

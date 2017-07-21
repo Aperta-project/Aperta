@@ -165,9 +165,14 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task = CoverLetterTask(self.getDriver())
     cover_letter_task.task_ready()
     current_attachment = cover_letter_task.get_last_uploaded_letter_file()
-    assert current_attachment in urllib.quote_plus(replacement_file), \
+    try:
+      assert current_attachment in urllib.quote_plus(replacement_file), \
         'The page presented file name: {0} is not what we expected: ' \
         '{1}'.format(current_attachment, urllib.quote_plus(replacement_file))
+    except AssertionError:
+      assert urllib.quote_plus(current_attachment) in urllib.quote_plus(replacement_file), \
+        'The page presented file name: {0} is not what we expected: ' \
+        '{1}'.format(urllib.quote_plus(current_attachment), urllib.quote_plus(replacement_file))
 
   def test_cover_letter_file_delete(self):
     """

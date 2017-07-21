@@ -72,7 +72,7 @@ class ApertaAdminTest(CommonTest):
     adm_page.select_admin_top_link('Users')
     # Select a random journal link to validate the Users sub-page
     selected_journal = adm_page.select_journal(regular=True)
-    logging.info('Returned journal is {0}'.format(selected_journal))
+    logging.info('Journal for User pane test is {0}'.format(selected_journal))
     admin_users_pane = AdminUsersPage(self.getDriver())
     admin_users_pane.page_ready()
     admin_users_pane.validate_users_pane(selected_journal)

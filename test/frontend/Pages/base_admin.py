@@ -13,6 +13,7 @@ Page Object Model for the base Admin Page. This page defines common elements use
     get_active_admin_tab()
 """
 import logging
+import os
 import random
 import time
 
@@ -44,14 +45,45 @@ class BaseAdminPage(AuthenticatedPage):
     self._base_admin_selected_journal = (By.CSS_SELECTOR,
                                          'div.admin-drawer-item > a.active')
     # Admin Toolbar Elements
-    self._base_admin_workflows_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(1)')
-    self._base_admin_cards_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(2)')
-    self._base_admin_emails_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view:nth-of-type(3)')
-    self._base_admin_users_link = (By.CSS_SELECTOR,
-                                   'div.tab-bar > a.ember-view:nth-of-type(4)')
-    self._base_admin_settings_link = (By.CSS_SELECTOR,
-                                      'div.tab-bar > a.ember-view:nth-of-type(5)')
+    self._base_admin_workflows_link = (By.LINK_TEXT, 'Workflows')
+    self._base_admin_cards_link = (By.LINK_TEXT, 'Cards')
+    self._base_admin_emails_link = (By.LINK_TEXT, 'Emails')
+    self._base_admin_users_link = (By.LINK_TEXT, 'Users')
+    self._base_admin_settings_link = (By.LINK_TEXT, 'Settings')
     self._base_admin_toolbar_active_link = (By.CSS_SELECTOR, 'div.tab-bar > a.ember-view.active')
+    self._base_admin_add_jrnl_btn = (By.CLASS_NAME, 'admin-drawer-item-button')
+    # Add New Journal Overlay Elements
+    self._anj_edit_journal_div = (By.CLASS_NAME, 'labeled-input-form')
+    self._anj_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
+    self._anj_edit_logo_upload_note = (By.CSS_SELECTOR, 'div.journal-logo-uploader p')
+    self._anj_edit_logo_input_field = (By.ID, 'upload-journal-logo-button')
+    self._anj_edit_title_label = (By.CSS_SELECTOR, 'div.admin-new-card-overlay-form > '
+                                                   '.labeled-input-with-errors label')
+    self._anj_edit_title_field = (By.NAME, 'name')
+    self._anj_edit_desc_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
+                                                  '.labeled-input-with-errors + '
+                                                  '.labeled-input-with-errors label')
+    self._anj_edit_desc_field = (By.CLASS_NAME, 'ember-text-area')
+    self._anj_edit_doi_jrnl_prefix_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
+                                                             '.labeled-input-with-errors + '
+                                                             '.labeled-input-with-errors + '
+                                                             '.labeled-input-with-errors label')
+    self._anj_edit_doi_jrnl_prefix_field = (By.NAME, 'doiJournalPrefix')
+    self._anj_edit_doi_publ_prefix_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
+                                                             '.labeled-input-with-errors + '
+                                                             '.labeled-input-with-errors + '
+                                                             '.labeled-input-with-errors + '
+                                                             '.labeled-input-with-errors label')
+    self._anj_edit_doi_publ_prefix_field = (By.NAME, 'doiPublisherPrefix')
+    self._anj_edit_last_doi_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
+                                                      '.labeled-input-with-errors + '
+                                                      '.labeled-input-with-errors + '
+                                                      '.labeled-input-with-errors + '
+                                                      '.labeled-input-with-errors + '
+                                                      '.labeled-input-with-errors label')
+    self._anj_edit_last_doi_field = (By.NAME, 'lastDoiIssued')
+    self._anj_edit_cancel_link = (By.CSS_SELECTOR, '.admin-new-journal-overlay-cancel')
+    self._anj_edit_save_button = (By.CSS_SELECTOR, '.admin-new-journal-overlay-save')
 
   # POM Actions
   def page_ready(self):
@@ -193,7 +225,24 @@ class BaseAdminPage(AuthenticatedPage):
       if journal.text == rand_selection:
         journal.click()
         break
+    time.sleep(2)
     return rand_selection
+
+  def select_named_journal(self, journal):
+    """
+    Given a journal name, identifies the journal block index on the admin page for that journal
+    :param journal: The journal name
+    :return: True if journal exists, False if not exist
+    """
+    journal_links = self._gets(self._base_admin_journal_links)
+    for journal_link in journal_links:
+      if journal_link.text == journal:
+        journal_link.click()
+        time.sleep(1)
+        return True
+      else:
+        continue
+    return False
 
   def get_active_admin_tab(self):
     """
@@ -239,4 +288,78 @@ class BaseAdminPage(AuthenticatedPage):
     else:
       logging.error('Invalid linkname specified: {0}'.format(linkname))
     # Allow time for the UI to update
-    time.sleep(1)
+    time.sleep(2)
+
+  def launch_add_journal_overlay(self):
+    """
+    Click the Add New Journal button, Note this button is only present for the Superadmin
+    Returns: Void Function
+    """
+    self._wait_for_element(self._get(self._base_admin_add_jrnl_btn))
+    anj_btn = self._get(self._base_admin_add_jrnl_btn)
+    anj_btn.click()
+    self._wait_for_element(self._get(self._anj_edit_title_field))
+
+  def validate_add_new_journal(self, journal_name='', journal_desc='', logo='', doi_jrnl_prefix='',
+                               last_doi_issued=1000000, doi_publ_prefix='', commit=False):
+    """
+    If commit == False, validate the elements of the form, if True, create the new journal
+    :param doi_jrnl_prefix: string, The DOI Journal prefix for the new Journal
+    :param last_doi_issued: integer, The most recently issued doi numeric. Defaults to 1000000
+    :param doi_publ_prefix: string, The DOI Publisher prefix for the publisher of the new journal
+    :param journal_name: An optional journal_name to create
+    :param journal_desc: An optional description for the journal being created
+    :param logo: A filename representing the journal logo - should be a valid file in assets/imgs/
+    :param commit: Boolean, default False. If true, commit creation of the journal
+    :return: void function
+    """
+    self._wait_for_element(self._get(self._anj_edit_save_button))
+    upload_button = self._get(self._anj_edit_logo_upload_btn)
+    assert upload_button.text == 'UPLOAD NEW'
+    journal_title_label = self._get(self._anj_edit_title_label)
+    assert journal_title_label.text == 'Journal Title', journal_title_label.text
+    journal_title_field = self._get(self._anj_edit_title_field)
+    journal_desc_label = self._get(self._anj_edit_desc_label)
+    assert journal_desc_label.text == 'Journal Description', journal_desc_label.text
+    journal_desc_field = self._get(self._anj_edit_desc_field)
+    doi_jrnl_prefix_label = self._get(self._anj_edit_doi_jrnl_prefix_label)
+    assert doi_jrnl_prefix_label.text == 'DOI Journal Prefix', doi_jrnl_prefix_label.text
+    doi_jrnl_prefix_field = self._get(self._anj_edit_doi_jrnl_prefix_field)
+    doi_publ_prefix_label = self._get(self._anj_edit_doi_publ_prefix_label)
+    assert doi_publ_prefix_label.text == 'DOI Publisher Prefix', doi_publ_prefix_label.text
+    doi_publ_prefix_field = self._get(self._anj_edit_doi_publ_prefix_field)
+    last_doi_issued_label = self._get(self._anj_edit_last_doi_label)
+    assert last_doi_issued_label.text == 'Last DOI Issued', last_doi_issued_label.text
+    last_doi_issued_field = self._get(self._anj_edit_last_doi_field)
+    cancel_link = self._get(self._anj_edit_cancel_link)
+    save_button = self._get(self._anj_edit_save_button)
+    assert cancel_link.text == 'cancel', cancel_link.text
+    assert save_button.text == 'SAVE JOURNAL', save_button.text
+    if commit:
+      logging.info('Committing new journal: {0}'.format(journal_name))
+      journal_title_field.send_keys(journal_name)
+      journal_desc_field.send_keys(journal_desc)
+      doi_jrnl_prefix_field.send_keys(doi_jrnl_prefix)
+      doi_publ_prefix_field.send_keys(doi_publ_prefix)
+      last_doi_issued_field.send_keys(last_doi_issued)
+      logo_input = self._iget(self._anj_edit_logo_input_field)
+      current_path = os.getcwd()
+      logging.info(current_path)
+      logo_path = os.path.join(current_path, 'frontend/assets/imgs/{0}'.format(logo))
+      logo_input.send_keys(logo_path)
+      save_button.click()
+      self._populate_journal_db_values(journal_name, 'apertadevteam@plos.org')
+
+  @staticmethod
+  def _populate_journal_db_values(jname, staff_email):
+    """
+    A method to populate values into the journal table for journal named jname. There is no current
+      interface to populated these in the GUI.
+    :param jname: The name of the journal
+    :param staff_email: The email address to populate staff_email in journal table for jname
+    :return: void function
+    """
+    if jname and staff_email:
+      PgSQL().modify('UPDATE journals SET  staff_email=%s WHERE name=%s;', (staff_email, jname))
+    else:
+      raise(ValueError, 'Incorrect number of parameters passed. Send, journal_name, staff_email')

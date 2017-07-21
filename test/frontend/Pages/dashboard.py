@@ -169,10 +169,7 @@ class DashboardPage(AuthenticatedPage):
     :return: void function
     """
     title = self.normalize_spaces(title)
-    # I had all these in one assignment but it would randomly fail - no idea
-    title = title.strip()
-    title = title.lstrip('<p>')
-    title = title.rstrip('</p>')
+    title = self.strip_tinymce_ptags(title)
     logging.info(u'Looking for invitation with title: {0}.'.format(title))
     invite_listings = self._gets(self._view_invites_invite_listing)
     for listing in invite_listings:
@@ -192,7 +189,7 @@ class DashboardPage(AuthenticatedPage):
     """
     response = random.choice(['Accept', 'Decline'])
     title = self.normalize_spaces(title)
-    title = title.strip().lstrip('<p>').rstrip('</p>')
+    title = self.strip_tinymce_ptags(title)
     logging.info(response)
     invite_listings = self._gets(self._view_invites_invite_listing)
     reasons = ''
@@ -380,13 +377,13 @@ class DashboardPage(AuthenticatedPage):
     # Disable due APERTA-7212
     #self.validate_X_style(rim_ms_decline_notice)
     labels = self._gets(self._rim_request_labels)
-    assert labels[0].text == 'Please give your reasons for declining this invitation.', \
+    assert 'Please give your reasons for declining this invitation.' in labels[0].text, \
         labels[0].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[0])
-    assert labels[1].text == 'We would value your suggestions of alternative reviewers for this ' \
-                             'manuscript. Please provide reviewers\' names, institutions, and ' \
-                             'email addresses if known.', labels[1].text
+    assert labels[1].text == "We would value your suggestions of alternative reviewers for this " \
+                             "manuscript. Please provide reviewers' names, institutions, and " \
+                             "email addresses if known.", labels[1].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[1])
     return None

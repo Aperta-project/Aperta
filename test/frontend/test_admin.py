@@ -1,5 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Aperta Admin page.
+"""
+
 import logging
 import os
 import random
@@ -7,12 +11,10 @@ import random
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import admin_users, users, external_editorial_users, editorial_users, \
     super_admin_login, billing_staff_login
-from .Pages.admin import AdminPage
+from .Pages.admin_workflows import AdminWorkflowsPage
+from .Pages.admin_users import AdminUsersPage
+from .Pages.admin_settings import AdminSettingsPage
 from frontend.common_test import CommonTest
-
-"""
-This test case validates the Aperta Admin page.
-"""
 
 __author__ = 'jgray@plos.org'
 
@@ -48,12 +50,12 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
-    adm_page = AdminPage(self.getDriver())
-    adm_page._wait_for_element(adm_page._get(adm_page._base_admin_journals_section_journal_block))
-    adm_page.validate_page_elements_styles(user_type['user'])
+    adm_wf_page = AdminWorkflowsPage(self.getDriver())
+    adm_wf_page.page_ready()
+    adm_wf_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
-    adm_page.validate_journal_block_display(user_type['user'])
-    adm_page.validate_nav_toolbar_elements(user_type)
+    adm_wf_page.validate_journal_block_display(user_type['user'])
+    adm_wf_page.validate_nav_toolbar_elements(user_type)
 
   def _rest_negative_permission(self):
     """
@@ -75,11 +77,12 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
-    adm_page = AdminPage(self.getDriver())
-    # TODO: Validate following case with other users
+    adm_users_page = AdminUsersPage(self.getDriver())
+    adm_users_page.page_ready()
+    adm_users_page._get(adm_users_page._base_admin_users_link).click()
     user = random.choice(user_search)
     logging.info('Searching user: {0}'.format(user))
-    adm_page.validate_search_edit_user(user)
+    adm_users_page.validate_search_edit_user(user)
 
   def test_validate_add_new_journal(self):
     """
@@ -94,8 +97,10 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
-    adm_page = AdminPage(self.getDriver())
-    adm_page.validate_add_new_journal(user_type['user'])
+    adm_wf_page = AdminWorkflowsPage(self.getDriver())
+    adm_wf_page.page_ready()
+    adm_wf_page._get(adm_wf_page._base_admin_add_jrnl_btn).click()
+    adm_wf_page.validate_add_new_journal(user_type['user'])
 
   def test_validate_edit_journal(self):
     """
@@ -109,8 +114,13 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
-    adm_page = AdminPage(self.getDriver())
-    adm_page.validate_edit_journal(user_type['user'])
+    adm_settings_page = AdminSettingsPage(self.getDriver())
+    adm_settings_page.page_ready()
+    adm_settings_page._get(adm_settings_page._base_admin_settings_link).click()
+    adm_settings_page.page_ready()
+    adm_settings_page.validate_settings_pane('All My Journals')
+    journal = adm_settings_page.select_journal(regular=True)
+    adm_settings_page.validate_edit_journal(journal)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

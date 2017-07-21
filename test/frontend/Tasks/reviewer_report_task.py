@@ -417,7 +417,7 @@ class ReviewerReportTask(BaseTask):
     research_type = False
     review_note = self._get(self._review_note)
     self._actions.move_to_element(review_note).perform()
-    if u'Please refer to our referee guidelines for detailed instructions.' in review_note.text:
+    if u'Please refer to our reviewer guidelines for detailed instructions.' in review_note.text:
       research_type = True
     logging.info('Is this a research type report? {0}'.format(research_type))
     question_block_list = self._gets(self._question_block)

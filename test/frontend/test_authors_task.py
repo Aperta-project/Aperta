@@ -1,5 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Authors Task.
+"""
+
 import logging
 import os
 import random
@@ -11,9 +15,6 @@ from frontend.Tasks.authors_task import AuthorsTask
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
-"""
-This test case validates the Authors Task.
-"""
 __author__ = 'sbassi@plos.org'
 
 

@@ -88,6 +88,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
+    paper_viewer.complete_task('Title And Abstract')
     paper_viewer.complete_task('Additional Information')
     time.sleep(3)
 

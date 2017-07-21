@@ -35,6 +35,7 @@ class FTCCard(BaseCard):
     self._field_title = (By.CSS_SELECTOR, 'div.form-group > div')
     self._checkboxes = (By.CSS_SELECTOR, 'label.question-checkbox input')
     self._check_items = (By.CSS_SELECTOR, 'p.model-question')
+    # APERTA-10771 - This next check is failing because of an editing problem in the application
     self._check_items_text = [u'Check Section Headings of all new submissions (including Open '
         'Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction,'
         ' Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure '

@@ -114,8 +114,6 @@ class RegisterDecisionCardTest(CommonTest):
     paper_id = manuscript_page.get_paper_short_doi_from_url()
     manuscript_page._wait_for_element(manuscript_page._get(
         manuscript_page._manuscript_viewer_status_area))
-    # figures
-    manuscript_page.click_task('Figures')
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')

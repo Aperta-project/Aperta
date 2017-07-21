@@ -179,7 +179,7 @@ class CoverLetterCard(BaseCard):
       files = filter(os.path.isfile, os.listdir('/tmp'))
       if sys.version_info >= (3, 0, 0):
         files = list(files)
-        files = sorted(files, key = lambda x: os.path.getmtime(x))
+        files = sorted(files, key=lambda x: os.path.getmtime(x))
       else:
         files.sort(lambda x: os.path.getmtime(x))
       newest_file = files[-1]

@@ -122,7 +122,7 @@ class InviteCard(BaseCard):
         # Always remember that our ember text always normalizes whitespaces down to one
         #  Painful lesson
         title = self.normalize_spaces(title)
-        title = title.strip().lstrip('<p>').rstrip('</p>')
+        title = self.strip_tinymce_ptags(title)
         assert title in invite_text, title + '\nNot found in \n' + invite_text
         assert 'PLOS Wombat' in invite_text, invite_text
         assert '***************** CONFIDENTIAL *****************' in invite_text, invite_text
@@ -132,20 +132,24 @@ class InviteCard(BaseCard):
         abstract = PgSQL().query('SELECT abstract '
                                  'FROM papers WHERE short_doi=%s;', (short_doi,))[0][0]
         if abstract is not None:
-          abstract = abstract.strip().lstrip('<p>').rstrip('</p>')
-          # Eff BeautifulSoup
+          abstract = self.strip_tinymce_ptags(abstract)
+          # Eff BeautifulSoup - actually, we need to preserve some tags and some entitites so
+          #   rolling my own here - this will bite me in the keyster at some point I am certain
           abstract = abstract.replace('&amp;', '&')\
-              .replace('&gt;', '>')\
-              .replace('&lt;', '<')\
-              .replace('<span>', '')\
-              .replace('</span>', '')\
-              .replace('span>', '')\
-              .replace('<p>', '')\
-              .replace('</p>', '')\
-              .replace('<sub>', '')\
-              .replace('</sub>', '')\
-              .replace('<sup>', '')\
-              .replace('</sup>', '')
+                             .replace('&gt;', '>')\
+                             .replace('&lt;', '<')\
+                             .replace('<span>', '')\
+                             .replace('</span>', '')\
+                             .replace('span>', '')\
+                             .replace('<p>', '')\
+                             .replace('</p>', '')\
+                             .replace('<sub>', '')\
+                             .replace('</sub>', '')\
+                             .replace('<sup>', '')\
+                             .replace('</sup>', '') \
+                             .replace('/p>', '')  # Not sure how this got in there but it did
+                                                  #  get through once...
+
           # Always remember that our ember text always normalizes whitespaces down to one
           #  Painful lesson
           abstract = self.normalize_spaces(abstract)
@@ -424,4 +428,4 @@ class InviteCard(BaseCard):
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()
     first_invitation_item.click()
     email_body = self._get(self._invitation_email_body)
-    assert paragraph in email_body.text, '{0} is not in {1}'.format(paragraph, email_body.text)
+    assert paragraph in email_body.text, '{0}\nis not in\n{1}.'.format(paragraph, email_body.text)

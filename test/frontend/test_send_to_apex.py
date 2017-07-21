@@ -60,13 +60,13 @@ class SendToApexTest(CommonTest):
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     self._driver.navigated = True
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.page_ready()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     # Disable Upload Manuscript Task
     data = manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # go to workflow and open Send to Apex Card
-    paper_viewer.click_workflow_link()
+    manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.page_ready()
     workflow_page.click_card('send_to_apex')
@@ -157,9 +157,9 @@ class SendToApexTest(CommonTest):
     db_title, db_abstract = PgSQL().query('SELECT title, abstract '
                                           'FROM papers '
                                           'WHERE short_doi=%s;', (short_doi,))[0]
-    db_title = str(db_title, encoding='utf-8', errors='strict')
+    db_title = str(db_title)
     if db_abstract:
-      db_abstract = str(db_abstract, encoding='utf-8', errors='strict')
+      db_abstract = str(db_abstract)
     manuscript_page.complete_task('Additional Information')
     manuscript_page.complete_task('Authors', author=creator_user)
     manuscript_page.complete_task('Billing')
@@ -230,6 +230,7 @@ class SendToApexTest(CommonTest):
     source_file_name = upload_manuscript_task.take_name_of_pdf_file()
     doc2upload, hash_file, file_ext = upload_manuscript_task.upload_source_file(source_file_name)
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.page_ready()

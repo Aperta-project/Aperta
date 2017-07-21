@@ -66,7 +66,9 @@ class ReviseManuscriptTask(BaseTask):
     self._get(self._btn_done).click()
     # wait for error
     time.sleep(2)
-    msg1, msg2 = self._gets(self._error_messages)
+    # The tinyMCE component includes a hidden field with the class error-message that is now being
+    #   picked up and causes an index error - accounting for it and dropping it on the floor. (msg3)
+    msg1, msg2, msg3 = self._gets(self._error_messages)
     assert msg1.text == 'Please fix all errors', msg1.text
     assert msg2.text == 'Please provide a response or attach a file', msg2.text
     return None

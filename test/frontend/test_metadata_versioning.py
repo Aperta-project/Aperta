@@ -50,7 +50,7 @@ class MetadataVersioningTest(CommonTest):
     new_prq = {'q1': 'Yes', 'q2': 'Yes', 'q3': [0, 1, 0, 0], 'q4': 'New Data',
                'q5': 'More Data'}
     logging.info('Logging in as {0}'.format(creator_login1['name']))
-    dashboard_page = self.cas_login(email=creator_login1['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=creator_login1['email'])
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
     dashboard_page.page_ready()
@@ -58,27 +58,28 @@ class MetadataVersioningTest(CommonTest):
     time.sleep(.5)
     self.create_article(title=title, journal='PLOS Wombat', type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer.page_ready_post_create()
-    short_doi = ms_viewer.get_current_url().split('/')[-1]
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    ms_viewer.complete_task('Billing')
-    ms_viewer.complete_task('Cover Letter')
-    ms_viewer.complete_task('Figures')
-    ms_viewer.complete_task('Supporting Info')
-    ms_viewer.complete_task('Authors', author=creator_login1)
-    ms_viewer.complete_task('Financial Disclosure')
-    ms_viewer.complete_task('Additional Information')
-    ms_viewer.complete_task('Early Article Posting')
-    ms_viewer.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Billing')
+    manuscript_page.complete_task('Cover Letter')
+    manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Authors', author=creator_login1)
+    manuscript_page.complete_task('Financial Disclosure')
+    manuscript_page.complete_task('Additional Information')
+    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.complete_task('Upload Manuscript')
     time.sleep(3)
     # make submission
-    ms_viewer.click_submit_btn()
-    ms_viewer.confirm_submit_btn()
-    ms_viewer.close_submit_overlay()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
     # logout
-    ms_viewer.logout()
+    manuscript_page.logout()
 
     # If this is an initial decision submission, admin has to invite
     if paper_type == 'Research w/Initial Decision Card':

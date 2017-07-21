@@ -160,8 +160,7 @@ class TahiEnv
   required :REDIS_SENTINELS, :array, default: [], if: :redis_sentinel_enabled?
 
   # RouterApi
-  optional :ROUTER_API_ENABLED, :boolean, default: false
-  required :ROUTER_URL, if: :router_api_enabled?
+  optional :ROUTER_URL
 
   # Salesforce
   optional :SALESFORCE_ENABLED, :boolean, default: true

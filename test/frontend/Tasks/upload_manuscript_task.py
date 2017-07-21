@@ -119,7 +119,9 @@ class UploadManuscriptTask(BaseTask):
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     upload_ms_btn = self._get(self._upload_manuscript_replace_btn)
-    upload_ms_btn.click()
+
+    #upload_ms_btn.click()
+
     # Time needed for script execution.
     time.sleep(7)
 

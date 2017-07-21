@@ -13,7 +13,9 @@ from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, admin_users
 from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from .Pages.workflow_page import WorkflowPage
+from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -57,6 +59,7 @@ class ReviseManuscriptTest(CommonTest):
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
     paper_viewer.complete_task('Upload Manuscript')
+    paper_viewer.complete_task('Title And Abstract')
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()
@@ -83,6 +86,40 @@ class ReviseManuscriptTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     data = {'attach': 2}
     paper_viewer.complete_task('Response to Reviewers', data=data)
+
+    # replace first version
+    paper_viewer.click_task('Upload Manuscript')
+    upms = UploadManuscriptTask(self.getDriver())
+    upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
+    upms.replace_manuscript()
+    base_task = BaseTask(self._driver)
+    if not base_task.completed_state():
+      base_task.click_completion_button()
+
+    # need to complete this task again after providing new manuscript
+    paper_viewer.complete_task('Title And Abstract')
+
+    # submit and logout
+    paper_viewer.click_submit_btn()
+    paper_viewer.confirm_submit_btn()
+    paper_viewer.close_submit_overlay()
+    paper_viewer.logout()
+
+    # log back in as staff_user
+    logging.info('Logging in again as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    # go to wf
+    paper_viewer.click_workflow_link()
+
+    workflow_page = WorkflowPage(self.getDriver())
+    time.sleep(2)
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
+
+
     return self
 
 if __name__ == '__main__':

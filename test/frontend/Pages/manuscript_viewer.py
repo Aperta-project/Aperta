@@ -10,9 +10,7 @@ import random
 import time
 from datetime import datetime
 
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
-
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
@@ -28,7 +26,6 @@ from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
-from frontend.Tasks.upload_manuscript_task import UploadManuscriptTask
 
 __author__ = 'sbassi@plos.org'
 

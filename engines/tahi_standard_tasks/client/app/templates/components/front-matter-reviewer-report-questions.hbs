@@ -17,11 +17,9 @@
         owner=model
         displayContent=true
         disabled=readOnly
-        helpText=(concat "<li>
+        helpText=(concat "
           Please review our <a href='"competingInterestsLink "'>
-          Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.
-          If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong>
-        </li>")
+          Competing Interests policy</a> and declare any potential interests that you feel the Editor should be aware of when considering your review.")
         }}
     </li>
 
@@ -30,7 +28,8 @@
           ident="front_matter_reviewer_report--suitable"
           owner=model
           wrapperClass="yes-no-with-comments"
-          helpText="<p><strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication' target='_blank'>referee</a> guidelines and information on our <a href='http://journals.plos.org/plosbiology/s/other-article-types' target='_blank'>article types</a>.</strong></p><p>Submit your detailed comments in the box below. These will be communicated to the authors.</p>"
+          helpText="<h3>Do you think this manuscript is suitable, in principle, for the magazine section of <em>PLOS Biology</em>? What recommendations do you have for revisions that might make the manuscript suitable?</h3>
+          <p><strong>Please refer to our <a href='http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-reviewing-magazine-submissions' target='_blank'>reviewer guidelines</a> and information on our <a href='http://journals.plos.org/plosbiology/s/other-article-types' target='_blank'>article types</a>.</strong></p><p>Your review comments will be communicated to the authors.</p>"
           readOnly=readOnly as |radio|}}
 
           {{#if radio.yieldingForAdditionalData}}
@@ -74,7 +73,7 @@
         ident="front_matter_reviewer_report--additional_comments"
         owner=model
         displayContent=true
-        helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
+        helpText="Additional comments may include concerns about dual publication, research or publication ethics."
         disabled=readOnly
       }}
     </li>
@@ -85,7 +84,7 @@
         editorStyle='expanded'
         owner=model
         displayContent=true
-        helpText="<li>Your name and review will not be published with the manuscript.</li>"
+        helpText="Your name and review will not be published with the manuscript."
         disabled=readOnly
       }}
     </li>

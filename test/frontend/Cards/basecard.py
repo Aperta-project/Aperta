@@ -249,7 +249,8 @@ class BaseCard(AuthenticatedPage):
     time.sleep(1)
     # Check that the entered text is there
     message_comment = self._get(self._message_comment)
-    assert expected_text in message_comment.text, (expected_text, message_comment.text)
+    assert expected_text.strip() in message_comment.text, (expected_text.strip(),
+                                                           message_comment.text)
     # Check footer
     following_label = self._get(self._following_label)
     assert following_label.text == 'Following:', following_label.text

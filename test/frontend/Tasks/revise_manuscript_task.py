@@ -67,8 +67,8 @@ class ReviseManuscriptTask(BaseTask):
     # wait for error
     time.sleep(2)
     messages = self._gets(self._error_messages)
-    assert messages[0].text == 'Please fix all errors', msg1.text
-    assert messages[1].text == 'Please provide a response or attach a file', msg2.text
+    assert messages[0].text == 'Please fix all errors', messages[0].text
+    assert messages[1].text == 'Please provide a response or attach a file', messages[1].text
     return None
 
   def response_to_reviewers(self, data=None):

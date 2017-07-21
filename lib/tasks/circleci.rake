@@ -11,9 +11,17 @@ namespace :circleci do
       status = $CHILD_STATUS.exitstatus
       File.open(File.join(reports_dir, 'qunit.xml'), 'w') do |f|
         # qunit mangles XML output. Fix it.
+        in_garbage = false
         output.lines.each do |line|
           next if line =~ /^Warning/
-          next if line =~ /^{ \[Error/
+          if line =~ /^{ \[Error/
+            in_garbage = true # Starting a garbage section.
+            next
+          end
+          if in_garbage
+            next unless line =~ /^</ # Got a <, probably out of the garbage and into XML again
+            in_garbage = false
+          end
           f << line
         end
       end

@@ -93,7 +93,9 @@ class Journal < ActiveRecord::Base
     !!(doi =~ DOI_FORMAT)
   end
 
-  def journal_prefix
+  # Per https://www.doi.org/doi_handbook/2_Numbering.html#2.2
+  # the registrant code is the last part of the DOI prefix
+  def doi_registrant_code
     doi_journal_prefix.split('.').last
   end
 

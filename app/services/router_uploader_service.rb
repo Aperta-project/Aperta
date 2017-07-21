@@ -27,7 +27,7 @@ class RouterUploaderService
       aperta_id: @paper.short_doi,
       files: @filenames.join(','),
       destination: @destination.first,
-      journal_code: @paper.journal.journal_prefix,
+      journal_code: @paper.journal.doi_registrant_code,
       # The archive_filename is not a string but the file itself.
       archive_filename: Faraday::UploadIO.new(@file_io, '')
     }

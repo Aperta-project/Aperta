@@ -807,7 +807,7 @@ ActiveRecord::Schema.define(version: 20170713223217) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   default: "apex", null: false
+    t.string   "destination",   null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

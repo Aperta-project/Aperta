@@ -85,7 +85,8 @@ describe ApexPackager do
       expect(manifest).to eq expected_manifest
     end
 
-    # commented out until the pdf generator is implemented for ApexPackager
+    # NOTE: commented out until the pdf generator is implemented for ApexPackager
+    #       as part of APERTA-10394
     # it 'can create a manifest with a pdf file' do
     #   packager = ApexPackager.new(paper, archive_filename: archive_filename)
     #   packager.zip_file(include_pdf: true)

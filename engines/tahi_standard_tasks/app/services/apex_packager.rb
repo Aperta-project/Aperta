@@ -16,6 +16,7 @@ class ApexPackager
     @apex_delivery_id = apex_delivery_id
   end
 
+  # NOTE: This implementation will likely change in APERTA-10685
   def zip_file(include_pdf: false)
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
@@ -25,7 +26,7 @@ class ApexPackager
         add_metadata(package)
         add_manuscript(package)
         add_sourcefile_if_needed(package)
-        # ummm... this method doesn't exist, so commented out for now
+        # NOTE: This will be implemented in APERTA-10394
         # if include_pdf
         #   add_generated_pdf(package)
         # end

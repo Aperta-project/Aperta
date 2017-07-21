@@ -10,7 +10,9 @@ class AutomatedSimilarityCheck
 
   # I could use a hash of procs for this, but folks will probably
   # think it's way more weird than a case statement
+  # rubocop:disable Metrics/CyclomaticComplexity
   def should_run?
+    return if existing_similarity_checks?
     case setting_value
     when 'off'
       false
@@ -18,12 +20,13 @@ class AutomatedSimilarityCheck
       submitted_after_first_full_submission?
     when 'after_any_first_revise_decision'
       submitted_after_any_first_revise_decision?
-    when 'after_first_minor_revise_decision'
-      submitted_after_first_minor_revise_decision?
-    when 'after_first_major_revise_decision'
-      submitted_after_first_major_revise_decision?
+    when 'after_minor_revise_decision'
+      submitted_after_minor_revise_decision?
+    when 'after_major_revise_decision'
+      submitted_after_major_revise_decision?
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def setting_value
     # this gets called by `should_run?` and in the Rails.logger call, so
@@ -41,7 +44,7 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
     Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
     Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
-    Rails.logger.info "AutomatedSimilarityCheck: is this the first revision? #{first_revision?}"
+    Rails.logger.info "AutomatedSimilarityCheck: Existing similarity checks? #{existing_similarity_checks?}"
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
@@ -61,26 +64,22 @@ class AutomatedSimilarityCheck
   end
 
   def previous_verdict
-    paper.last_completed_decision.verdict
+    paper.last_completed_decision.try(:verdict)
   end
 
-  def first_revision?
-    paper.decisions.completed.revisions.count == 1 &&
-      previous_paper_state == 'in_revision'
+  def existing_similarity_checks?
+    SimilarityCheck.joins(:paper).where(papers: { id: paper.id }).exists?
   end
 
-  def submitted_after_first_major_revise_decision?
-    first_revision? &&
-      previous_verdict == 'major_revision'
+  def submitted_after_major_revise_decision?
+    previous_verdict == 'major_revision'
   end
 
-  def submitted_after_first_minor_revise_decision?
-    first_revision? &&
-      previous_verdict == 'minor_revision'
+  def submitted_after_minor_revise_decision?
+    previous_verdict == 'minor_revision'
   end
 
   def submitted_after_any_first_revise_decision?
-    first_revision? &&
-      ['minor_revision', 'major_revision'].include?(previous_verdict)
+    ['minor_revision', 'major_revision'].include?(previous_verdict)
   end
 end

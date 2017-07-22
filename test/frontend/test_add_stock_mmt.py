@@ -259,7 +259,6 @@ class ApertaSeedJournalMMTTest(CommonTest):
     logging.info(biology_exists)
     if not biology_exists:
       adm_wf_page.validate_add_new_journal(journal_name='PLOS Biology Demo',
-                                           journal_desc='',
                                            logo='thumbnail_logo+plos+bio+2x.png',
                                            doi_jrnl_prefix='journal.pbiod',
                                            doi_publ_prefix='10.1371',
@@ -298,7 +297,6 @@ class ApertaSeedJournalMMTTest(CommonTest):
     logging.info(genetics_exists)
     if not genetics_exists:
       adm_wf_page.validate_add_new_journal(journal_name='PLOS Genetics Demo',
-                                           journal_desc='',
                                            logo='thumbnail_plos_genetics_demo_logo.png',
                                            doi_jrnl_prefix='journal.pgend',
                                            doi_publ_prefix='10.1371',

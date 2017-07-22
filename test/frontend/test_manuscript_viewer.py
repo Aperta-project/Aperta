@@ -108,7 +108,7 @@ class ManuscriptViewerTest(CommonTest):
                                           (paper_id, uid))
         system_permissions = PgSQL().query('select name from roles where id in (select role_id '
                                            'from assignments where ((assigned_to_type = '
-                                           '\'System\' and user_id = %s)));',(uid,))
+                                           '\'System\' and user_id = %s)));', (uid,))
         permissions = journal_permissions + paper_permissions + system_permissions
         logging.info('DB Permissions: {0}'.format(permissions))
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
@@ -284,8 +284,7 @@ class ManuscriptViewerTest(CommonTest):
 
     logging.info('Logging in as the Internal Editor to Register a Decision')
     # Log as editor to approve the manuscript with modifications
-    dashboard_page = self.cas_login(email=internal_editor_login['email'],
-                                    password=login_valid_pw)
+    dashboard_page = self.cas_login(email=internal_editor_login['email'])
     # Go to article
     dashboard_page.go_to_manuscript(short_doi)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

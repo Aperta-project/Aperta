@@ -218,8 +218,8 @@ class ReviewerCandidatesTaskTest(CommonTest):
       mmts.append(mmt_tuple[0])
     if 'OnlyReviewerCandidates' not in mmts:
       logging.info('Required Data not present, aborting')
-      raise(StandardError, 'Required seed data not present: '
-                           'PLOS Wombat journal, Only ReviewerCandidates mmt')
+      raise(ValueError, 'Required seed data not present: '
+                        'PLOS Wombat journal, Only ReviewerCandidates mmt')
     else:
       logging.info('Required Data IS present, continuing...')
 

@@ -63,7 +63,7 @@ class SendToApexTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     # Disable Upload Manuscript Task
-    data = manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # go to workflow and open Send to Apex Card
     manuscript_page.click_workflow_link()
@@ -117,7 +117,7 @@ class SendToApexTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()
     # Disable Upload Manuscript Task
-    data = manuscript_page.complete_task('Upload Manuscript', click_override=True)
+    manuscript_page.complete_task('Upload Manuscript', click_override=True)
     # go to workflow and open Send to Apex Card
     paper_viewer.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())

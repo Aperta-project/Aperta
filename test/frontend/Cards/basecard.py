@@ -138,7 +138,7 @@ class BaseCard(AuthenticatedPage):
                                 'papers.paper_type, papers.publishing_state, papers.title '
                                 'FROM papers WHERE papers.short_doi=%s;', (short_doi,))[0]
     journal_id, doi, paper_type, status, title = paper_tuple[0], paper_tuple[1], paper_tuple[2], \
-                                                 paper_tuple[3], paper_tuple[4]
+        paper_tuple[3], paper_tuple[4]
     title = self.strip_tinymce_ptags(title)
     paper_id = self.get_paper_id_from_short_doi(short_doi)
     manuscript_id = doi.split('journal.')[1]
@@ -294,9 +294,8 @@ class BaseCard(AuthenticatedPage):
     :return: Text in the text area of Tech Check Card
     """
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
-      self.get_rich_text_editor_instance('author-changes-letter')
+        self.get_rich_text_editor_instance('author-changes-letter')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     cfa_email_text = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
     logging.info('Changes for Author email: {0}'.format(cfa_email_text))
     return cfa_email_text
-

@@ -1,5 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page object definition for the billing card
+"""
 import time
 
 from selenium.webdriver.common.by import By
@@ -7,18 +10,18 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
 from frontend.Cards.basecard import BaseCard
-#from Base.Resources import author
 
 __author__ = 'sbassi@plos.org'
+
 
 class BillingCard(BaseCard):
   """
   Page Object Model for Billing Card
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(BillingCard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._first_name = (By.NAME, "first_name")
     self._last_name = (By.NAME, "last_name")
     self._title = (By.NAME, "title")
@@ -32,32 +35,15 @@ class BillingCard(BaseCard):
     self._country = (By.CLASS_NAME, "select2-container")
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
     self._question_1_dd = (By.CLASS_NAME, 'payment-method')
-    #self._pfa = ()
 
-
-   #POM Actions
-  def click_task_completed_checkbox(self):
-    """Click task completed checkbox"""
-    self._get(self._completed_check).click()
-    return self
-
+  # POM Actions
   def click_close_button_bottom(self):
     """Click close button on bottom"""
     self._get(self._bottom_close_button).click()
     return self
 
-  def validate_styles(self):
-    """Validate all styles for Authors Card"""
-    ##self.get_stylegiude() # Only for development use
-    self.validate_common_elements_styles()
-    return self
-
   def add_billing_data(self, billing_data):
     """Add billing data"""
-    completed = self._get(self._completed_check)
-    if completed.is_selected():
-      self._get(self._close_button).click()
-      return None
     first = self._get(self._first_name)
     first.clear()
     first.send_keys(billing_data['first'] + Keys.ENTER)
@@ -93,18 +79,16 @@ class BillingCard(BaseCard):
     state.send_keys(billing_data['state'] + Keys.ENTER)
     country = self._get(self._country)
     country.send_keys(billing_data['country'] + Keys.ENTER)
-    #country.click()
-    #country_input = country.find_element_by_tag_name('input')
-    #country.clear()
-    #import pdb; pdb.set_trace()
-    #country_input.send_keys(billing_data['country'] + Keys.ENTER)
+    # country.click()
+    # country_input = country.find_element_by_tag_name('input')
+    # country.clear()
+    # import pdb; pdb.set_trace()
+    # country_input.send_keys(billing_data['country'] + Keys.ENTER)
 
     q1 = self._get(self._question_1_dd)
     q1.click()
     q1.send_keys('PLOS Publication Fee Assistance Program (PFA)' + Keys.ENTER)
     time.sleep(.5)
     # retrieve the element again because there is a change in the status
-    completed = self._get(self._completed_check)
-    completed.click()
     time.sleep(.5)
     self._get(self._close_button).click()

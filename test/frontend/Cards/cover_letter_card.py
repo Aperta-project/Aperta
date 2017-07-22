@@ -1,5 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page object definition for the Cover Letter card
+"""
 import hashlib
 import logging
 import os

@@ -1,5 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page object definition for the final tech check card
+"""
 import logging
 import random
 import time
@@ -29,78 +32,83 @@ class FTCCard(BaseCard):
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
     self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
     self._alert_info = (By.CLASS_NAME, 'alert-info')
-    self._autogenerate_text = (By.XPATH,
-        '//div[contains(@class, \'form-group\')]/following-sibling::button')
+    self._autogenerate_text = (
+        By.XPATH, '//div[contains(@class, \'form-group\')]/following-sibling::button')
     self._text_area = (By.CSS_SELECTOR, 'textarea.ember-text-area')
     self._field_title = (By.CSS_SELECTOR, 'div.form-group > div')
     self._checkboxes = (By.CSS_SELECTOR, 'label.question-checkbox input')
     self._check_items = (By.CSS_SELECTOR, 'p.model-question')
     # APERTA-10771 - This next check is failing because of an editing problem in the application
     self._check_items_text = [u'Check Section Headings of all new submissions (including Open '
-        'Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction,'
-        ' Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure '
-        'Legends.',
-        'Check the ethics statement - does it mention Human Participants? If so, flag this with'
-        ' the editor in the discussion below.',
-        'Check if there are any obvious ethical flags (mentions of animal/human work in the '
-        'title/abstract), check that there\'s an ethics statement. If not, ask the authors about'
-        ' this.',
-        'Is the data available? If not, or it\'s only available by contacting an author or the '
-        'institution, make a note in the discussion below.',
-        'If author indicates the data is available in Supporting Information, check to make sure'
-        ' there are Supporting Information files in the submission (don\'t need to check for '
-        'specifics at this stage).',
-        'If the author has mentioned Dryad in their Data statement, check that they\'ve included'
-        ' the Dryad reviewer URL. If not, make a note in the discussion below.',
-        'If Financial Disclosure Statement is not complete (they\'ve written N/A or something '
-        'similar), message author.',
-        'If the Financial Disclosure Statement includes any companies from the Tobacco Industry,'
-        ' make a note in the discussion below.',
-        'If any figures are completely illegible, contact the author.',
-        'If any files or figures are cited but not included in the submission, message the '
-        'author.',
-        'Have the authors asked any questions in the cover letter? If yes, contact the '
-        'editor/journal team.',
-        'Have the authors mentioned any billing information in the cover letter? If yes, contact'
-        ' the editor/journal team.',
-        'If an Ethics Statement is present, make a note in the discussion below.',
-        ]
+                              u'Rejects). Should broadly follow: Title, Authors, Affiliations, '
+                              u'Abstract, Introduction, Results, Discussion, Materials and '
+                              u'Methods, References, Acknowledgements, and Figure Legends.',
+                              'Check the ethics statement - does it mention Human Participants? '
+                              'If so, flag this with the editor in the discussion below.',
+                              'Check if there are any obvious ethical flags (mentions of '
+                              'animal/human work in the title/abstract), check that there\'s an '
+                              'ethics statement. If not, ask the authors about this.',
+                              'Is the data available? If not, or it\'s only available by '
+                              'contacting an author or the institution, make a note in the '
+                              'discussion below.',
+                              'If author indicates the data is available in Supporting '
+                              'Information, check to make sure there are Supporting Information '
+                              'files in the submission (don\'t need to check for specifics at '
+                              'this stage).',
+                              'If the author has mentioned Dryad in their Data statement, check '
+                              'that they\'ve included the Dryad reviewer URL. If not, make a note '
+                              'in the discussion below.',
+                              'If Financial Disclosure Statement is not complete (they\'ve'
+                              ' written N/A or something similar), message author.',
+                              'If the Financial Disclosure Statement includes any companies from '
+                              'the Tobacco Industry, make a note in the discussion below.',
+                              'If any figures are completely illegible, contact the author.',
+                              'If any files or figures are cited but not included in the '
+                              'submission, message the author.',
+                              'Have the authors asked any questions in the cover letter? If yes, '
+                              'contact the editor/journal team.',
+                              'Have the authors mentioned any billing information in the cover '
+                              'letter? If yes, contact the editor/journal team.',
+                              'If an Ethics Statement is present, make a note in the discussion '
+                              'below.'
+                              ]
     self.email_text = {0: '',
-                    1: 'Please ensure that all of the following sections are present and '
-          'appear in your manuscript file in the following order: Title, Authors, '
-          'Affiliations, Abstract, Introduction, Results, Discussion, Materials and '
-          'Methods, References, Acknowledgments, and Figure Legends. More detailed '
-          'guidelines can be found on our website: '
-          'http://journals.plos.org/plosbiology/s/submission-guidelines#loc-manuscript-'
-          'organization.',
-                    2: '',
-                    3: '',
-                    4: '',
-                    5: '',
-                    6: 'Please complete the Financial Disclosure Statement field of the '
-          'online submission form.',
-                    7: 'This section should describe sources of funding that have '
-          'supported the work. Please include relevant grant numbers and the URL of any '
-          'funder\'s Web site.',
-                    8: 'Your Figure is not easily legible. Please provide a higher '
-          'quality version of this Figure while ensuring the file size remains below '
-          '10MB. We recommend saving your figures as TIFF files using LZW compression.'
-          ' More detailed guidelines can be found on our website: '
-          'http://journals.plos.org/plosbiology/s/figures.',
-                    9: 'Please note you have cited a file in your manuscript that has not'
-          ' been included with your submission. Please upload this file, or if this file '
-          'was cited in error, please remove the corresponding citation from your '
-          'manuscript.',
-                    10: '',
-                    11: 'Please note that our policy requires the removal of any mention '
-          'of billing information from the cover letter. I have forwarded your query to '
-          'our Billing Team (authorbilling@plos.org). Further infromation about Publication'
-          ' Fees can be found here: http://www.plos.org/publications/publication-fees/. '
-          'Thank you, PLOS Biology',
-                    12: '',
-                    }
+                       1: 'Please ensure that all of the following sections are present and '
+                       'appear in your manuscript file in the following order: Title, Authors, '
+                       'Affiliations, Abstract, Introduction, Results, Discussion, Materials and '
+                       'Methods, References, Acknowledgments, and Figure Legends. More detailed '
+                       'guidelines can be found on our website: '
+                       'http://journals.plos.org/plosbiology/s/submission-guidelines'
+                       '#loc-manuscript-organization.',
+                       2: '',
+                       3: '',
+                       4: '',
+                       5: '',
+                       6: 'Please complete the Financial Disclosure Statement field of the '
+                       'online submission form.',
+                       7: 'This section should describe sources of funding that have '
+                       'supported the work. Please include relevant grant numbers and the URL of '
+                       'any funder\'s Web site.',
+                       8: 'Your Figure is not easily legible. Please provide a higher '
+                       'quality version of this Figure while ensuring the file size remains below '
+                       '10MB. We recommend saving your figures as TIFF files using LZW compression.'
+                       ' More detailed guidelines can be found on our website: '
+                       'http://journals.plos.org/plosbiology/s/figures.',
+                       9: 'Please note you have cited a file in your manuscript that has not'
+                       ' been included with your submission. Please upload this file, or if this '
+                       'file was cited in error, please remove the corresponding citation from '
+                       'your manuscript.',
+                       10: '',
+                       11: 'Please note that our policy requires the removal of any mention '
+                       'of billing information from the cover letter. I have forwarded your query '
+                       'to our Billing Team (authorbilling@plos.org). Further infromation about '
+                       'Publication Fees can be found here: '
+                       'http://www.plos.org/publications/publication-fees/. Thank you, PLOS '
+                       'Biology',
+                       12: '',
+                       }
 
-   # POM Actions
+  # POM Actions
   def validate_styles(self, paper_id):
     """
     Validate styles for the Final Tech Check Card
@@ -181,10 +189,10 @@ class FTCCard(BaseCard):
     time.sleep(1)
     field_title = self._get(self._field_title)
     assert field_title.text == 'List all changes the author needs to make:', field_title.text
-    # Dissabled due to APERTA-6954
-    #self.validate_field_title_style(field_title)
+    # Disabled due to APERTA-6954
+    # self.validate_field_title_style(field_title)
     # Disabled due to APERTA-6964
-    #self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
+    # self.validate_secondary_big_grey_button_style(autogenerate_email_btn)
     return data
 
   def execute_decision(self, choice='random'):

@@ -1,24 +1,27 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page object definition for the authors card
+"""
 import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoAlertPresentException
 
 from frontend.Cards.basecard import BaseCard
 from Base.Resources import author
 
 __author__ = 'sbassi@plos.org'
 
+
 class AuthorsCard(BaseCard):
   """
   Page Object Model for Authors Card
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(AuthorsCard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._click_task_completed = (By.CSS_SELECTOR, '#task_completed')
     self._close_button_bottom = (By.CSS_SELECTOR, 'footer > div > a.button-secondary')
     self._authors_title = (By.TAG_NAME, 'h1')
@@ -34,25 +37,25 @@ class AuthorsCard(BaseCard):
     self._email_input = (By.XPATH, ".//div[contains(@class, 'author-half')]/input")
     self._title_lbl = (By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div/span")
     self._title_input = (By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div/input")
-    self._department_lbl = (By.XPATH,
-      ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/span")
-    self._department_input = (By.XPATH,
-      ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/input")
+    self._department_lbl = (
+        By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/span")
+    self._department_input = (
+        By.XPATH, ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/input")
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
     self._author_lbls = (By.CLASS_NAME, 'author-label')
-    self._designed_chkbx = (By.XPATH,
-      './/input[@name=\'author--contributions--conceived_and_designed_experiments\']/'
-      'following-sibling::span')
+    self._designed_chkbx = (
+        By.XPATH, './/input[@name=\'author--contributions--conceived_and_designed_experiments\']/'
+        'following-sibling::span')
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
-    self._corresponding = (By.XPATH,
-      ".//input[@name='author--published_as_corresponding_author']")
+    self._corresponding = (
+        By.XPATH, ".//input[@name='author--published_as_corresponding_author']")
 
-   #POM Actions
+  # POM Actions
   def click_task_completed_checkbox(self):
     """Click task completed checkbox"""
     self._get(self._click_task_completed).click()
@@ -63,24 +66,6 @@ class AuthorsCard(BaseCard):
     self._get(self._close_button_bottom).click()
     return self
 
-  def get_stylegiude(self):
-    """
-    Helper function to retrieve actual styles in Styleguide.
-    This is for test developing only, not used when running test.
-    """
-    self._driver.get('https://staging.tahi-project.org/styleguide')
-    import time; time.sleep(2)
-    self._cardtabs = (By.XPATH, '//ul[@id="tabs"]/li[2]/a')
-    self._get(self._cardtabs).click()
-    #self._authors_title = (By.TAG_NAME, 'h1')
-    #title = self._get(self._authors_title)
-    i = (By.CSS_SELECTOR, 'div.constrain h4')
-    #h4 = self._get(self._author_contrib_lbl)
-    h4 = self._get(i)
-    print(h4.text, h4.value_of_css_property('font-size'),
-      h4.value_of_css_property('font-weight'), h4.value_of_css_property('line-height'),
-      h4.value_of_css_property('color'))
-
   def validate_author_card_styles(self):
     """Validate"""
     authors_title = self._get(self._authors_title)
@@ -88,12 +73,12 @@ class AuthorsCard(BaseCard):
     self.validate_application_title_style(authors_title)
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
-    "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
-    "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
-    "contributions fall short of authorship should instead be mentioned in the "
-    "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
-    "author names and affiliations should be listed at the end of the article."
-    )
+        "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
+        "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
+        "contributions fall short of authorship should instead be mentioned in the "
+        "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
+        "author names and affiliations should be listed at the end of the article."
+        )
     self.validate_application_body_text(authors_text)
     add_new_author_btn = self._get(self._add_new_author_btn)
     assert 'ADD A NEW AUTHOR' == add_new_author_btn.text, add_new_author_btn.text
@@ -138,9 +123,9 @@ class AuthorsCard(BaseCard):
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
     assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
     corresponding_lbl, deceased_lbl, conceived_lbl, perfomed_lbl, data_lbl, \
-      materials_lbl, writing_lbl, other_lbl = self._gets(self._author_lbls)
+        materials_lbl, writing_lbl, other_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
-      ' on the published article'), corresponding_lbl.text
+                                      ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
     assert other_lbl.text == 'Other', other_lbl.text
     assert conceived_lbl.text == 'Conceived and designed the experiments', conceived_lbl.text
@@ -179,7 +164,6 @@ class AuthorsCard(BaseCard):
     assert [x for x in all_auth_data if author['title'][-4:] in x]
     assert [x for x in all_auth_data if author['email'] in x]
 
-
   def validate_delete_author(self):
     """Check deleteing an author from author card"""
     # Check where is the new data
@@ -194,7 +178,7 @@ class AuthorsCard(BaseCard):
     authors = self._gets(self._author_items)
     self._actions.move_to_element(authors[n-1]).perform()
     time.sleep(2)
-    #authors = self._gets(self._author_items)
+    # authors = self._gets(self._author_items)
     trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
     trash.click()
     # get buttons
@@ -203,41 +187,29 @@ class AuthorsCard(BaseCard):
     del_message = delete_div.find_element_by_tag_name('p')
     assert del_message.text == 'This will permanently delete the author. Are you sure?'
     # TODO: Check p style, resume this when styles are set.
-    cancel_btn, delete_btn  = delete_div.find_elements_by_tag_name('button')
+    cancel_btn, delete_btn = delete_div.find_elements_by_tag_name('button')
     assert cancel_btn.text == 'CANCEL', cancel_btn.text
     assert delete_btn.text == 'DELETE FOREVER', delete_btn.text
     # TODO: check styles, resume this when styles are set.
     delete_btn.click()
     time.sleep(2)
 
-
-  def validate_styles(self):
-    """Validate all styles for Authors Card"""
-    ##self.get_stylegiude() # Only for development use
-    self.validate_author_card_styles()
-    self.validate_common_elements_styles()
-    return self
-
   def edit_author(self, author_data):
     """Edit the first author in the author card"""
-    completed = self._get(self._completed_check)
-    if completed.is_selected():
-      self._get(self._close_button).click()
-      return None
-    author_card = AuthorsCard(self._driver)
-    author = self._get(self._author_items)
+    AuthorsCard(self._driver)
+    self._get(self._author_items)
     self._actions.move_to_element(author).perform()
     edit_btn = self._get(self._edit_author)
     edit_btn.click()
     title_input = self._get(self._title_input)
     department_input = self._get(self._department_input)
     institutions = self._gets(self._institution_div)
-    if len(institutions)==2:
+    if len(institutions) == 2:
       institution_div = institutions[0]
       institution_input = institution_div.find_element_by_tag_name('input')
       institution_input.clear()
       institution_input.send_keys(author_data['institution'] + Keys.ENTER)
-    #'did-you-mean-what-you-meant'
+    # 'did-you-mean-what-you-meant'
     title_input.clear()
     title_input.send_keys(author_data['title'] + Keys.ENTER)
     department_input.clear()
@@ -251,15 +223,5 @@ class AuthorsCard(BaseCard):
       author_contribution_chck.click()
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
-    completed = self._get(self._completed_check)
-    completed.click()
     time.sleep(.2)
     self._get(self._close_button).click()
-
-  def press_submit_btn(self):
-    """Press sidebar submit button"""
-    self._get(self._sidebar_submit).click()
-
-  def confirm_submit_btn(self):
-    """Press sidebar submit button"""
-    self._get(self._submit_confirm).click()

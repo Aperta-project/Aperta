@@ -19,6 +19,7 @@ __author__ = 'sbassi@plos.org'
 
 staff_users = editorial_users + admin_users
 
+
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
   """
@@ -53,7 +54,6 @@ class ReviseManuscriptTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
     manuscript_page.complete_task('Upload Manuscript')

@@ -229,7 +229,7 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.card_ready()
-    invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
+    invite_reviewers.validate_response(reviewer_login, invite_response, response_data[0],
                                        response_data[1])
 
   def test_core_invite_rescind_reinvite(self):
@@ -354,7 +354,7 @@ class InviteReviewersCardTest(CommonTest):
     time.sleep(3)
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.card_ready()
-    invite_reviewers.validate_response(reviewer_login, invite_response,response_data[0],
+    invite_reviewers.validate_response(reviewer_login, invite_response, response_data[0],
                                        response_data[1])
 
   def test_core_invite_email_template_edit(self):
@@ -406,7 +406,8 @@ class InviteReviewersCardTest(CommonTest):
 
   def test_invited_reviewer_report_state(self):
     """
-    test_invited_reviewer_report_state: Validates the elements for report status on the invite reviewers card
+    test_invited_reviewer_report_state: Validates the elements for report status on the invite
+    reviewers card
     :return: void function
     """
     logging.info('Test Invite Reviewers::Reviewer Report State')
@@ -420,7 +421,6 @@ class InviteReviewersCardTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
     short_doi = manuscript_page.get_paper_short_doi_from_url()
-    paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
@@ -483,7 +483,7 @@ class InviteReviewersCardTest(CommonTest):
     workflow_page.click_card('invite_reviewers')
     invite_reviewers = InviteReviewersCard(self.getDriver())
     invite_reviewers.card_ready()
-    invite_reviewers.validate_invited_reviewer_report_state(reviewer_login, 'pending')
+    invite_reviewers.validate_invited_reviewer_report_state(reviewer_login)
     # logout and enter as reviewer
     workflow_page.logout()
 

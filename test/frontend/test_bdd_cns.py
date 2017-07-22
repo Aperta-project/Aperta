@@ -1,20 +1,20 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This behavioral test case validates the Aperta Create New Submission through Submit process.
+"""
+
 import logging
 import os
 import random
-import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, users
+from Base.Resources import users
 
 from frontend.common_test import CommonTest
 from .Pages.dashboard import DashboardPage
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 
-"""
-This behavioral test case validates the Aperta Create New Submission through Submit process.
-"""
 __author__ = 'jgray@plos.org'
 
 cards = ['cover_letter',

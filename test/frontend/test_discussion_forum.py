@@ -1,5 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Aperta Discussion Forum
+Automated test case for:
+ * test discussion forum notification icons to MS
+ * test discussion interactions
+Note: Due to bug APERTA-8303 we import ascii only users instead of all users
+"""
+
 import logging
 import os
 import random
@@ -16,13 +24,6 @@ from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
 
-"""
-This test case validates the Aperta Discussion Forum
-Automated test case for:
- * test discussion forum notification icons to MS
- * test discussion interactions
-Note: Due to bug APERTA-8303 we import ascii only users instead of all users
-"""
 __author__ = 'sbassi@plos.org'
 
 staff_users = [staff_admin_login] + editorial_users
@@ -221,13 +222,17 @@ class DiscussionForumTest(CommonTest):
     msg_1 = generate_paragraph()[2][:500]
     # How to call the discussion section
     if web_page == 'workflow':
-      manuscript_page.post_new_discussion(topic=topic, msg=msg_1, participants=[collaborator_1,
-                                                                          collaborator_2])
+      manuscript_page.post_new_discussion(topic=topic,
+                                          msg=msg_1,
+                                          participants=[collaborator_1,
+                                                        collaborator_2])
     elif web_page == 'manuscript viewer':
       # Add Collaborator 1 and Collaborator 2
       manuscript_page._wait_for_element(manuscript_page._get(manuscript_page._tb_workflow_link))
-      manuscript_page.post_new_discussion(topic=topic, msg=msg_1,
-                                    participants=[collaborator_1, collaborator_2])
+      manuscript_page.post_new_discussion(topic=topic,
+                                          msg=msg_1,
+                                          participants=[collaborator_1,
+                                                        collaborator_2])
     # Staff user logout
     manuscript_page.logout()
 

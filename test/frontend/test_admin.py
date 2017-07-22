@@ -57,13 +57,6 @@ class ApertaAdminTest(CommonTest):
     adm_wf_page.validate_journal_block_display(user_type['user'])
     adm_wf_page.validate_nav_toolbar_elements(user_type)
 
-  def _rest_negative_permission(self):
-    """
-    test_admin: Validate if non authorized user can see Admin panel
-    :return: void function
-    """
-    # TODO
-
   def test_validate_user_search(self):
     """
     test_admin: Validate the function of the base Admin page user search function

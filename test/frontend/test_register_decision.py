@@ -168,7 +168,7 @@ class RegisterDecisionCardTest(CommonTest):
     manuscript_page.logout()
 
     # login as staff admin
-    dashboard_page = self.cas_login(email=staff_admin_login['email'])
+    self.cas_login(email=staff_admin_login['email'])
     # Go to workflow
     self._driver.get(paper_workflow_url)
     # go to card

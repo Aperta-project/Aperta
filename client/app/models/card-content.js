@@ -19,10 +19,15 @@ export default DS.Model.extend({
   possibleValues: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),
+  instructionText: DS.attr('string'),
   label: DS.attr('string'),
   valueType: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
+  allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
+
+  hasInstructionText: Ember.computed.notEmpty('instructionText'),
+  renderAdditionalText: Ember.computed.or('allowAnnotations','hasInstructionText'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),

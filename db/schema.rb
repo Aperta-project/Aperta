@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
+    t.string   "annotation"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -240,6 +241,8 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.boolean  "allow_annotations"
+    t.string   "instruction_text"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

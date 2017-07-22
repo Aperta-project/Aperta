@@ -69,6 +69,7 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/bootstrap/js/collapse.js');
   app.import(app.bowerDirectory + '/bootstrap/js/dropdown.js');
   app.import(app.bowerDirectory + '/bootstrap/js/tooltip.js');
+  app.import(app.bowerDirectory + '/bootstrap/js/tab.js');
   app.import(app.bowerDirectory + '/bootstrap-datepicker/css/datepicker3.css');
   app.import(app.bowerDirectory + '/bootstrap-datepicker/js/bootstrap-datepicker.js');
 

@@ -10,7 +10,7 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-    
+
     card.rng: If this file is card.rng, please edit card.rnc instead. You will be
     happier
   -->
@@ -37,6 +37,19 @@
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <element name="text">
         <text/>
@@ -68,6 +81,19 @@
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <interleave>
         <optional>
           <element name="label">
@@ -111,6 +137,19 @@
             <value>false</value>
           </choice>
         </attribute>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <zeroOrMore>
@@ -176,6 +215,19 @@
       <optional>
         <attribute name="default-answer-value"/>
       </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -207,6 +259,19 @@
         <value>boolean</value>
       </attribute>
       <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
+      <optional>
         <element name="text">
           <text/>
         </element>
@@ -232,6 +297,19 @@
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <optional>

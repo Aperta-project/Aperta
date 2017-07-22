@@ -16,7 +16,11 @@ class ManuscriptManagerTemplateForm
   end
 
   def update!(template)
+    # puts "Before Tranformation"
+    # puts params
     process_params
+    # puts "After Transformation"
+    # puts params
     template.update! params
   end
 

@@ -40,16 +40,6 @@ moduleForComponent(
 });
 
 let template = hbs`{{supporting-information-task task=testTask}}`;
-let errorSelector = '.supporting-information-thumbnail .error-message:not(.error-message--hidden)';
-
-test("it renders the paper's SI files", function(assert) {
-  let doneFile = make('supporting-information-file', { status: 'done' });
-  let testTask = createTaskWithFiles([doneFile]);
-  allowPermissionOnTask('edit', testTask);
-  this.set('testTask', testTask);
-  this.render(template);
-  assert.elementsFound('.si-file', 1);
-});
 
 test("it renders the paper's supportingInformationFiles", function(assert) {
   let testTask = createTaskWithFiles([
@@ -78,6 +68,37 @@ test('it reports validation errors on the task when attempting to complete', fun
     // Error at the task level
     assert.textPresent('.supporting-information-task', 'Please fix all errors');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
+  });
+});
+
+test('it retains validation errors on the remaining files when a file is deleted', function(assert) {
+  let testTask = createTaskWithFiles([
+    make('supporting-information-file', {label: null, status: 'done', id: 1}),
+    make('supporting-information-file', {label: null, status: 'done', id: 2})
+  ]);
+  allowPermissionOnTask('edit', testTask);
+  this.set('testTask', testTask);
+
+  this.render(template);
+  assert.elementsFound('.si-file-viewing', 2);
+
+  this.$('.si-file-viewing .si-file-edit-icon').first().click();
+  assert.elementsFound('.si-file-viewing', 1);
+  assert.elementsFound('.si-file-editor', 1);
+  
+  // Validation errors are visible on the first file
+  this.$('.si-file-editor .si-file-save-edit-button').click();
+  assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
+  
+  // delete the second file
+  $.mockjax({url: '/api/supporting_information_files/2', type: 'DELETE', status: 204, responseText: ''});
+  this.$('.si-file-viewing .si-file-delete-icon').click();
+  this.$('.si-file-viewing .si-file-delete-button').click();
+  
+  return wait().then(() => {
+    // Validation errors remain visible on the first (and now only) file
+    assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
+    assert.elementNotFound('.si-file-viewing');
   });
 });
 

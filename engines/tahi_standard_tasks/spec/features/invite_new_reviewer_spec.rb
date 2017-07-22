@@ -12,6 +12,8 @@ feature "Inviting a new reviewer", js: true do
   let(:editor) { create :user }
 
   before do
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE", active: false
+
     assign_journal_role paper.journal, editor, :editor
     assign_handling_editor_role paper, editor
     task.add_participant(editor)

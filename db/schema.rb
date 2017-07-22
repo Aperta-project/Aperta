@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170713223217) do
+ActiveRecord::Schema.define(version: 20170720202710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170713223217) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
+    t.string   "annotation"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -240,6 +241,8 @@ ActiveRecord::Schema.define(version: 20170713223217) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.boolean  "allow_annotations"
+    t.string   "instruction_text"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -353,6 +356,17 @@ ActiveRecord::Schema.define(version: 20170713223217) do
   end
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
+
+  create_table "due_datetimes", force: :cascade do |t|
+    t.integer  "due_id"
+    t.string   "due_type"
+    t.datetime "due_at"
+    t.datetime "originally_due_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "due_datetimes", ["due_type", "due_id"], name: "index_due_datetimes_on_due_type_and_due_id", using: :btree
 
   create_table "email_logs", force: :cascade do |t|
     t.string   "sender"

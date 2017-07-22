@@ -68,15 +68,18 @@ class ManuscriptManagerTemplatesController < ApplicationController
       :uses_research_article_reviewer_report,
       phase_templates: [
         :name, :position, task_templates: [
-          :title, :journal_task_type_id, :position, :card_id, :settings, :settings_enabled
+          :title, :journal_task_type_id, :position, :card_id
         ]
       ]
     ).tap do |whitelisted|
       whitelisted[:phase_templates].try(:each_index) do |i|
         pt = whitelisted[:phase_templates][i]
         pt[:task_templates].try(:each_index) do |j|
-          value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
-          whitelisted[:phase_templates][i][:task_templates][j][:template] = value || []
+          template_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
+          whitelisted[:phase_templates][i][:task_templates][j][:template] = template_value || []
+
+          settings_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:settings]
+          whitelisted[:phase_templates][i][:task_templates][j][:settings] = settings_value || []
         end
       end
     end

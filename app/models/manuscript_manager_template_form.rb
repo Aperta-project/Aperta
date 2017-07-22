@@ -16,11 +16,7 @@ class ManuscriptManagerTemplateForm
   end
 
   def update!(template)
-    # puts "Before Tranformation"
-    # puts params
     process_params
-    # puts "After Transformation"
-    # puts params
     template.update! params
   end
 
@@ -42,6 +38,27 @@ class ManuscriptManagerTemplateForm
 
   def set_task_templates(task_template_params)
     return if task_template_params.nil?
-    task_template_params.map { |param| TaskTemplate.new param }
+    task_template_params.map do |param|
+      settings = set_settings(param.delete("settings"))
+      param["settings"] = settings if settings.present?
+      TaskTemplate.new param
+    end
+  end
+
+  def set_settings(setting_params)
+    return if setting_params.nil?
+    setting_params.map do |param|
+      # since old task template is getting deleted, we have to create
+      # a new setting without any references to the deleted owner.
+      setting = Setting.new
+      setting.owner_type = param['owner_type']
+      setting.name = param['name']
+      setting.string_value = param['string_value']
+      setting.value_type = param['value_type']
+      setting.integer_value = param['integer_value']
+      setting.boolean_value = param['boolean_value']
+      setting.setting_template_id = param['setting_template_id']
+      setting
+    end
   end
 end

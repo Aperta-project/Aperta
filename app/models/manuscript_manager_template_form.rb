@@ -51,13 +51,13 @@ class ManuscriptManagerTemplateForm
       # since old task template is getting deleted, we have to create
       # a new setting without any references to the deleted owner.
       setting = Setting.new
-      setting.owner_type = param['owner_type']
       setting.name = param['name']
       setting.string_value = param['string_value']
       setting.value_type = param['value_type']
       setting.integer_value = param['integer_value']
       setting.boolean_value = param['boolean_value']
       setting.setting_template_id = param['setting_template_id']
+      setting.owner_type = param['owner_type']
       setting
     end
   end

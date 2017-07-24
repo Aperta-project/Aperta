@@ -9,6 +9,7 @@ moduleForComponent('invitation-detail-row', 'Integration | Component | invitatio
     manualSetup(this.container);
     this.set('update-date', new Date('January 01, 2016'));
     this.set('completed-date', new Date('March 01, 2016'));
+    this.set('due-at'), new Date('February 25, 2017)');
     this.set('reviewerReport', make('reviewer-report'));
     this.set('invitation', make('invitation', {
       declineReason: null,
@@ -37,12 +38,20 @@ test('displays invitation information if invitation.invited is true', function(a
                      `Invited ${moment(this.get('update-date')).format('MMM D, YYYY')}`);
 });
 
-test('displays invitation information if invitation.accepted is true', function(assert){
+test('displays review report status if invitation.accepted is true', function(assert){
   this.set('invitation.state', 'accepted');
   this.set('invitation.reviewerReport.status', 'pending');
   this.render(template);
 
-  assert.textPresent('.invitation-item-status', 'Pending');
+  assert.textPresent('.invitation-item-status', 'Review due');
+});
+
+test('displays reviewer report due date if invitation.accepted is true', function(assert){
+  this.set('invitation.state', 'accepted');
+  this.set('invitation.reviewerReport.status', 'pending');
+  this.render(template);
+
+  assert.textPresent('.invitation-item-status', 'Jul 4');
 });
 
 test('displays invitation information if invitation.accepted is true and report complete', function(assert){

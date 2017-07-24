@@ -17,11 +17,13 @@ export default DS.Model.extend({
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
+  defaultAnswerValue: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),
   label: DS.attr('string'),
   valueType: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
+  revertChildrenOnHide: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
   childrenSort: ['order:asc'],

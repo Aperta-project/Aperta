@@ -10,6 +10,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :text,
              :value_type,
              :revert_children_on_hide,
+             :default_answer_value,
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value
              # then render this content's children

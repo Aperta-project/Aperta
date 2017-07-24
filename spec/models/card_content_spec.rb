@@ -36,6 +36,41 @@ describe CardContent do
           expect(card_content).to be_valid
         end
       end
+
+      context 'revert concerns' do
+        let(:answer) { FactoryGirl.build(:answer, card_content: card_content) }
+        let!(:card_content) { FactoryGirl.create(:card_content) }
+        let!(:check_box_answer) { FactoryGirl.create(:answer, card_content: check_box_card_content, owner: answer.owner, value: true) }
+        let!(:check_box_card_content) {
+          FactoryGirl.create(:card_content, content_type: 'check-box',
+                                            value_type: 'boolean')
+        }
+        let!(:visible_with_value_card_content) {
+          FactoryGirl.create(:card_content, content_type: 'display-with-value',
+                                            visible_with_parent_answer: 'true',
+                                            revert_children_on_hide: true,
+                                            value_type: nil)
+        }
+
+        it 'keeps answer if revert_children_on_hide is true but answer is not hidden' do
+          expected_value = 'nope'
+          card_content.update!(default_answer_value: 'should not appear')
+          visible_with_value_card_content.move_to_child_of(check_box_card_content)
+          card_content.move_to_child_of(visible_with_value_card_content)
+          visible_with_value_card_content.update!(visible_with_parent_answer: 'true')
+          answer.update!(value: expected_value)
+          expect(answer.reload.value).to eq expected_value
+        end
+
+        it 'reverts associated answer value if revert_children_on_hide is true' do
+          answer.save!
+          expected_value = 'nope'
+          visible_with_value_card_content.move_to_child_of(check_box_card_content)
+          card_content.move_to_child_of(visible_with_value_card_content)
+          answer.update!(value: expected_value)
+          expect(answer.value).to eq expected_value
+        end
+      end
     end
 
     context '#to_xml' do

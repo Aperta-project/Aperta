@@ -79,7 +79,7 @@ tech-check = element content {
                 attribute value-type { "boolean" },
                 element text { text }?,
                 (element validation {
-                      attribute validation-type { "answer-check" | "answer-value"},
+                      attribute validation-type { "answer-readiness" | "answer-value"},
                       attribute violation-value { text }?,
                       attribute target-ident { text },
                       element error-message { text }*,

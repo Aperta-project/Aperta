@@ -52,6 +52,10 @@ class CardContentValidation < ActiveRecord::Base
       answer.task.answer_for(target_ident).ready?
   end
 
+  def validate_by_required_fields
+    !task.answer_for(ident).nil?
+  end
+
   def rollback_answer?(result)
     (result == false && violation_value.present?)
   end

@@ -1,12 +1,12 @@
 class SupportingInfoOverlay < CardOverlay
-  def has_file? file_name
+  def has_file?(file_name)
     have_xpath("//a[contains(@href, \"#{file_name}\"]")
   end
 
-  def attach_supporting_information
+  def attach_supporting_information(file_name = 'yeti.jpg')
     upload_file(
       element_id: 'file_attachment',
-      file_name: 'yeti.jpg',
+      file_name: file_name,
       sentinel: -> { SupportingInformationFile.count }
     )
   end

@@ -53,6 +53,13 @@ export default Ember.Component.extend({
       if(!this.get('preview')) {
         this.get('_debouncedSave').perform();
       }
+    },
+
+    updateAnnotation(e) {
+      this.set('answer.annotation', e.target.value);
+      if(!this.get('preview')) {
+        this.get('_debouncedSave').perform();
+      }
     }
   }
 });

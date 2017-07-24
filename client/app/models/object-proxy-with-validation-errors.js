@@ -33,6 +33,11 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
     );
   },
 
+  clearAllValidationErrors() {
+    this.set('errorsPresent', false);
+    this.set('validationErrors', {});
+  },
+
   validateAll() {
     this.set('validationErrors.save', '');
 

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.TextField.extend({
   tagName: 'input',
@@ -26,7 +27,7 @@ export default Ember.TextField.extend({
       this.updateDate(null);
     });
 
-    this.set("value", this.get("date"));
+    this.set('value', this.get('date'));
 
     this.set('$picker', $picker);
     this.set('ready', true);
@@ -39,7 +40,7 @@ export default Ember.TextField.extend({
   updateDate: function(newDate){
     this.set('date', newDate);
     this.sendAction('dateChanged', newDate);
-    if(this.get("group")) { this.get('group').dateChanged(); }
+    if(this.get('group')) { this.get('group').dateChanged(); }
   },
 
   setStartDate(dateString) {

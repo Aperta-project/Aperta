@@ -24,13 +24,12 @@ test('it shows error message', function(assert) {
   let saveContents = function() {};
   let errorMessage = 'Error Message';
   this.set('saveContents', saveContents);
-  this.set('errorMessage', errorMessage);
+  this.set('errorMessages', [errorMessage]);
 
   this.render(hbs`{{rich-text-editor ident='foo'
                   onContentsChanged=saveContents
-                  errorMessage=errorMessage
+                  errorMessages=errorMessages
                   displayText=true}}`);
 
-  assert.elementFound('.error-message',
-                      errorMessage);
+  assert.elementFound('.error-message', errorMessage);
 });

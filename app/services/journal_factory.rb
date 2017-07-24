@@ -37,6 +37,10 @@ class JournalFactory
     assign_hint Role::JOURNAL_ROLES,          Journal.name
   end
 
+  # All standard tasks that users who see the workflow should see
+  # Billing is special, and CustomCardTask is handled by a custom mechanism.
+  STANDARD_TASKS = Task.descendants - [PlosBilling::BillingTask, CustomCardTask]
+
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
@@ -100,13 +104,9 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
-      # Tasks
-      task_klasses = Task.descendants
-
       # Cover editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTask
-      task_klasses -= [
-        PlosBilling::BillingTask,
+      task_klasses = STANDARD_TASKS - [
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::PaperEditorTask
       ]
@@ -214,9 +214,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
@@ -273,9 +271,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
@@ -320,13 +316,9 @@ class JournalFactory
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
-      # Tasks
-      task_klasses = Task.descendants
-
       # Handling editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTast
-      task_klasses -= [
-        PlosBilling::BillingTask,
+      task_klasses = STANDARD_TASKS - [
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::PaperEditorTask
       ]
@@ -396,9 +388,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
@@ -451,9 +441,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
@@ -523,8 +511,7 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      task_klasses = Task.descendants
-      task_klasses.each do |klass|
+      (STANDARD_TASKS + [PlosBilling::BillingTask]).each do |klass|
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)

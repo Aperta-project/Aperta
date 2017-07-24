@@ -34,7 +34,7 @@ module CardConfiguration
         {
           ident: "front_matter_reviewer_report--suitable",
           value_type: "boolean",
-          text: "Is this manuscript suitable in principle for the magazine section of <em>PLOS Biology</em>?",
+          text: "Please add your review comments in the box below.",
           children: [
             {
               ident: "front_matter_reviewer_report--suitable--comment",
@@ -47,7 +47,7 @@ module CardConfiguration
         {
           ident: "front_matter_reviewer_report--includes_unpublished_data",
           value_type: "boolean",
-          text: "If previously unpublished data are included to support the conclusions, please note in the box below whether:",
+          text: "(Optional) If previously unpublished data are included to support the conclusions, please note in the box below whether:",
           children: [
             {
               ident: "front_matter_reviewer_report--includes_unpublished_data--explanation",
@@ -60,13 +60,13 @@ module CardConfiguration
         {
           ident: "front_matter_reviewer_report--additional_comments",
           value_type: "text",
-          text: "(Optional) Please offer any additional confidential comments to the editor"
+          text: "(Optional) Please offer any additional confidential comments to the editor."
         },
 
         {
           ident: "front_matter_reviewer_report--identity",
           value_type: "text",
-          text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
+          text: "(Optional) If you’d like your identity to be revealed to the authors, please include your name here."
         }
       ]
     end

@@ -92,13 +92,11 @@ test('validates numericality of a few fields', function(assert) {
   this.$('input[name=plos_billing--pfa_question_3a]').val('not a number').trigger('input');
   this.$('input[name=plos_billing--pfa_question_4a]').val('not a number').trigger('input');
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.textPresent('#error-for-plos_billing--pfa_question_1b', 'Must be a number');
     assert.textPresent('#error-for-plos_billing--pfa_question_2b', 'Must be a number');
     assert.textPresent('#error-for-plos_billing--pfa_question_3a', 'Must be a number');
     assert.textPresent('#error-for-plos_billing--pfa_question_4a', 'Must be a number');
-    done();
   });
 });
 
@@ -108,11 +106,9 @@ test('it reports validation errors on the task when attempting to complete', fun
   this.render(template);
   this.$('.billing-task button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     // Error at the task level
     assert.textPresent('.billing-task', 'Please fix all errors');
-    done();
   });
 });
 
@@ -122,10 +118,8 @@ test('it does not allow the user to complete when there are validation errors', 
   this.render(template);
   this.$('.billing-task button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
-    done();
   });
 });
 
@@ -139,11 +133,9 @@ test('it lets you complete the task when there are no validation errors', functi
   // try to complete
   this.$('.billing-task button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(testTask.get('completed'), true, 'task was completed');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
-    done();
   });
 });
 
@@ -161,8 +153,7 @@ test('it lets you uncomplete the task when it has validation errors', function(a
   assert.equal(testTask.get('completed'), true, 'task was initially completed');
   this.$('.billing-task button.task-completed').click();
 
-  let done = assert.async();
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     $.mockjax.clear();
@@ -174,7 +165,6 @@ test('it lets you uncomplete the task when it has validation errors', function(a
       assert.textPresent('.billing-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not input completion status');
       assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
-      done();
     });
   });
 });

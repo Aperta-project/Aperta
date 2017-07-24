@@ -17,16 +17,14 @@ feature "Admin can edit user details and initiate password reset", js: true do
   end
 
   scenario "Admin saves user details" do
-    admin_page.search "bob"
-    bob = admin_page.first_search_result
+    bob = admin_page.first_search_result('bob')
     edit_modal = bob.edit_user_details
     edit_modal.first_name = "Andy"
     edit_modal.last_name = "Plantenberg"
     edit_modal.username = "andy"
 
     admin_page = edit_modal.save
-    admin_page.search("andy")
-    search_results = admin_page.search_results
+    search_results = admin_page.search_results("andy")
 
     expect(search_results.first[:first_name]).to eq("Andy")
     expect(search_results.first[:last_name]).to eq("Plantenberg")
@@ -34,19 +32,25 @@ feature "Admin can edit user details and initiate password reset", js: true do
   end
 
   scenario "Admin cancels user details after editing" do
-    admin_page.search("bob")
-    bob = admin_page.first_search_result
+    bob = admin_page.first_search_result('bob')
     edit_modal = bob.edit_user_details
     edit_modal.first_name = "Andy"
     edit_modal.last_name = "Plantenberg"
     edit_modal.username = "andy"
 
     admin_page = edit_modal.cancel
-    admin_page.search("bob")
-    search_results = admin_page.search_results
+    search_results = admin_page.search_results("bob")
 
     expect(search_results.first[:first_name]).to eq("Bob")
     expect(search_results.first[:last_name]).to eq("Merlyn")
     expect(search_results.first[:username]).to eq("shadow_missing2010")
+  end
+
+  scenario 'Admin edits user roles' do
+    bob = admin_page.first_search_result('bob')
+    bob.add_role('Staff Admin')
+    expect(bob.find('.user-role').text).to include('Staff Admin')
+    bob.remove_role('Staff Admin')
+    expect(bob.find('.user-role').text).not_to include('Staff Admin')
   end
 end

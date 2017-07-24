@@ -42,6 +42,10 @@ module.exports = function(environment) {
       'img-src': "'self'",
       'style-src': "'self' 'unsafe-inline'", // Allow inline styles
       'media-src': "'self'"
+    },
+
+    moment: {
+      includeTimezone: 'all'
     }
   };
 

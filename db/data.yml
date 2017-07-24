@@ -12311,8 +12311,8 @@ card_contents:
     - '516'
     - 
     - 
-    - '2017-07-24 18:00:19.355021'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.860821'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - display-children
@@ -12339,8 +12339,8 @@ card_contents:
       described in the <a target="_blank" href="http://journals.plos.org/plosbiology/s/competing-interests">PLOS
       Policy on Declaration and Evaluation of Competing Interests</a>)?</div></li>
     - text
-    - '2017-07-24 18:00:19.366069'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.87225'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - radio
@@ -12361,8 +12361,8 @@ card_contents:
     - '508'
     - 
     - 
-    - '2017-07-24 18:00:19.373161'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.879148'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - display-with-value
@@ -12383,8 +12383,8 @@ card_contents:
     - '507'
     - 
     - 
-    - '2017-07-24 18:00:19.379118'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.884985'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - field-set
@@ -12407,8 +12407,8 @@ card_contents:
       Your response should begin with this statement: "I have read the journal''s
       policy and the authors of this manuscript have the following competing interests.'
     - text
-    - '2017-07-24 18:00:19.383997'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.889984'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - paragraph-input
@@ -12429,8 +12429,8 @@ card_contents:
     - '514'
     - 
     - 
-    - '2017-07-24 18:00:19.441571'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.918804'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - display-with-value
@@ -12451,8 +12451,8 @@ card_contents:
     - '513'
     - 
     - 
-    - '2017-07-24 18:00:19.446773'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.924556'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - field-set
@@ -12475,8 +12475,8 @@ card_contents:
       Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
       Please note that if your manuscript is accepted, this statement will be published.
     - 
-    - '2017-07-24 18:00:19.450853'
-    - '2017-07-24 18:00:19.479368'
+    - '2017-07-24 18:42:12.956839'
+    - '2017-07-24 18:42:12.983658'
     - 
     - '48'
     - text
@@ -12914,7 +12914,7 @@ card_versions:
     - '72'
     - 
     - true
-    - '2017-07-24 18:00:19.49895'
+    - '2017-07-24 18:42:13.002387'
     - 
     - Initial version
     - false
@@ -13338,8 +13338,8 @@ cards:
     - 
     - locked
   - - '72'
-    - '2017-07-24 18:00:18.977427'
-    - '2017-07-24 18:00:19.503343'
+    - '2017-07-24 18:42:11.699835'
+    - '2017-07-24 18:42:13.006541'
     - 
     - Competing Interests
     - '1'
@@ -16907,12 +16907,6 @@ journal_task_types:
     - '1'
     - Authors
     - TahiStandardTasks::AuthorsTask
-    - false
-    - author
-  - - '3'
-    - '1'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
     - false
     - author
   - - '4'

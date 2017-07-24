@@ -4,7 +4,7 @@ module Typesetter
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions,
-               :early_article_posting, :paper_title
+               :early_article_posting, :custom_card_fields, :paper_title
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :abstract, key: :paper_abstract
@@ -77,5 +77,15 @@ module Typesetter
     def early_article_posting
       task('TahiStandardTasks::EarlyPostingTask').try(:answer_for, 'early-posting--consent').try(:value) || false
     end
+
+    def custom_card_fields
+      custom_tasks_questions_answers
+    end
+
+    def serializable_hash
+      fail Typesetter::MetadataError.not_accepted unless valid?
+      super
+    end
+    
   end
 end

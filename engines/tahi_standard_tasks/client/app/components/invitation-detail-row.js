@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import DragNDrop from 'tahi/services/drag-n-drop';
-import { task as concurrencyTask } from 'ember-concurrency';
+import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 const {
   Component,
@@ -150,11 +150,16 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     this.get('setRowState')('show');
   }),
 
+  _updateContents: concurrencyTask(function * (invitation) {
+    yield timeout(1000); // half a second wait
+    this.get('saveInvite')(invitation);
+  }).restartable(),
+
   actions: {
-    updateAnswer(contents) {
+    updateContents(contents) {
       let invitation = this.get('invitation');
       invitation.set('body', contents);
-      this.get('saveInvite')(invitation);
+      this.get('_updateContents').perform(invitation);
     },
 
     toggleDetails() {

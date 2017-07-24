@@ -10,7 +10,6 @@ feature "Paper workflow", js: true, selenium: true do
     assign_journal_role(journal, admin, :admin)
     login_as(admin, scope: :user)
     visit "/papers/#{paper.id}/workflow"
-    wait_for_ajax
   end
 
   describe "navigation" do

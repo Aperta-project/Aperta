@@ -239,7 +239,7 @@ class ReviewerCandidatesTask(BaseTask):
     assert choice in decision.text.lower(), decision.text.lower()
     stated_reason = entry.find_element(*self._cand_view_reason)
     self.validate_application_body_text(stated_reason)
-    assert reason == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
+    assert reason.rstrip() == stated_reason.text, '{0} != {1}'.format(reason, stated_reason.text)
     self._actions.move_to_element(full_name).perform()
     delete_recommendation = entry.find_element(*self._cand_view_delete)
     time.sleep(.5)
@@ -322,7 +322,7 @@ class ReviewerCandidatesTask(BaseTask):
     except ElementDoesNotExistAssertionError:
       logging.info('No listing was found - pass case')
       return
-    raise(StandardError, 'Reviewer Recommendation found - should have been deleted')
+    raise(Exception, 'Reviewer Recommendation found - should have been deleted')
 
   def assert_add_new_cand_btn_present(self):
     """
@@ -362,7 +362,7 @@ class ReviewerCandidatesTask(BaseTask):
         logging.info('Selection covered by toolbar...')
         self.click_covered_element(opp_btn)
     if not reason:
-      reason = generate_paragraph(start_with_lorem=True)[2][:500]
+      reason = generate_paragraph(start_with_lorem=True)[2]
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance('reviewer_recommendations--reason')
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))

@@ -99,8 +99,9 @@ class LoginPage(AuthenticatedPage):
     # APERTA-6107 Filed for the following
     # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
-    assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)', \
-        welcome_msg.value_of_css_property('color')
+    assert welcome_msg.value_of_css_property('color') == 'rgb(0, 0, 0)', \
+      welcome_msg.value_of_css_property('color')
+
     self.set_timeout(1)
     try:
       forgot_msg = self._get(self._forgot_pw_link)

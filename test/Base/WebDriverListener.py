@@ -7,7 +7,6 @@ import logging
 from time import time
 from inspect import getfile
 from os.path import abspath, dirname
-import sys
 
 from selenium.webdriver.support.events import AbstractEventListener
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
@@ -53,11 +52,7 @@ class WebDriverListener(AbstractEventListener):
 
   def before_click(self, element, driver):
     friendly_name = self._friendly_tag_name(element)
-    if sys.version_info < (3, 0, 0):
-      self.lastElement = (self._tidyText(element.text).encode('utf8'), friendly_name)
-    else:
-      self.lastElement = (self._tidyText(element.text), friendly_name)
-
+    self.lastElement = (self._tidyText(element.text), friendly_name)
     self._log('Clicking on "%s" %s...' % self.lastElement)
 
   def before_find(self, by, value, driver):

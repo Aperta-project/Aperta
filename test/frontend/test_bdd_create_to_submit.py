@@ -4,7 +4,6 @@ import logging
 import os
 import random
 import time
-import sys
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, admin_users, editorial_users
@@ -97,8 +96,6 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if sys.version_info < (3, 0, 0):
-        paper_title_from_page = paper_title_from_page.encode('utf8')
       if 'full submit' in paper_title_from_page:
         count += 1
         time.sleep(1)
@@ -107,10 +104,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
         break
       logging.warning('Conversion never completed - still showing interim title')
 
-    if sys.version_info >= (3, 0, 0):
-      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
-    else:
-      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
@@ -164,10 +158,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if sys.version_info >= (3, 0, 0):
-        title = paper_title_from_page
-      else:
-        title = paper_title_from_page.encode('utf8')
+      title = paper_title_from_page
       if 'full submit' in title:
         count += 1
         time.sleep(1)
@@ -221,10 +212,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    if sys.version_info >= (3, 0, 0):
-      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
-    else:
-      logging.info('paper_title_from_page: {0}'.format(paper_title_from_page.encode('utf8')))
+    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
@@ -359,8 +347,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if sys.version_info < (3, 0, 0):
-        paper_title_from_page = paper_title_from_page.encode('utf8')
       if 'initial submit' in paper_title_from_page:
         count += 1
         time.sleep(1)
@@ -490,8 +476,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     count = 0
     while count < 60:
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if sys.version_info < (3, 0, 0):
-        paper_title_from_page = paper_title_from_page.encode('utf8')
       if 'initial submit' in paper_title_from_page:
         count += 1
         time.sleep(1)

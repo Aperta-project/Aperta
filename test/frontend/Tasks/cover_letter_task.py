@@ -152,6 +152,7 @@ class CoverLetterTask(BaseTask):
     assert tinymce_editor_instance_id and tinymce_editor_instance_iframe, 'No Cover Letter editor '\
                                                                           'text entry area present.'
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
+    self._driver.execute_script("javascript:arguments[0].scrollIntoView()", tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=sample_text)
     # Gratuitous verification
     cvr_ltr_txt = self.tmce_get_rich_text(tinymce_editor_instance_iframe)

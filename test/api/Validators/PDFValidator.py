@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+import logging
+
 __author__ = 'jkrzemien@plos.org'
 
 '''
@@ -9,7 +11,7 @@ Tests's responses.
 
 from datetime import datetime
 
-from AbstractValidator import AbstractValidator
+from .AbstractValidator import AbstractValidator
 
 
 class PDFValidator(AbstractValidator):
@@ -25,7 +27,7 @@ class PDFValidator(AbstractValidator):
 
 
   def metadata(self, section, doi, testStartTime, apiTime):
-    print 'Validating PDF metadata section in Response...',
+    logging.info( 'Validating PDF metadata section in Response...')
     assert section is not None
     assert section['file'] == doi + '.PDF', "File field in metadata section did not match!"
     assert section['metadata']['doi'] == 'info:doi/' + doi, "DOI field in metadata section did not match!"
@@ -34,4 +36,4 @@ class PDFValidator(AbstractValidator):
     assert section['metadata']['created'] == section['metadata']['lastModified'], "Created & LastModified fields in metadata section did not match!"
     assert section['metadata']['size'] == self.get_size(), "Size field in metadata section did not match!"
     self._verify_created_date(section['metadata'], testStartTime, apiTime)
-    print 'OK'
+    logging.info( 'OK')

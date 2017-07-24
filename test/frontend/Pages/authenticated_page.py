@@ -8,7 +8,6 @@ import logging
 import time
 import random
 import re
-import sys
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -502,19 +501,13 @@ class AuthenticatedPage(StyledPage):
       error_msg = self._get(self._flash_error_msg).text.strip(u'\xd7')
     except ElementDoesNotExistAssertionError:
       self.restore_timeout()
-    if sys.version_info >= (3, 0, 0):
-      error_msg_string = error_msg
-    else:
-      if (str(type(error_msg)) == "<type 'unicode'>"):
-        error_msg_string = error_msg.encode()
-      else:
-        error_msg_string = error_msg
+
     if error_msg:
       # For the time being, capturing the error message and continuing rather than failing
       #   and stopping the test is of greater importance. At some point we may want to enforce
       #   this failure, so leaving it in place.
       # raise ElementExistsAssertionError('Error Message found: {0}'.format(error_msg_string))
-      logging.error('Error Message found: {0}'.format(error_msg_string))
+      logging.error('Error Message found: {0}'.format(error_msg))
 
   def check_for_flash_success(self, timeout=15):
     """
@@ -555,7 +548,7 @@ class AuthenticatedPage(StyledPage):
     short_doi = self.get_current_url().split('/')[-1]
     while not short_doi:
       if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+        raise (Exception, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
       short_doi = self.get_current_url().split('/')[-1]
       count += 1
@@ -738,7 +731,7 @@ class AuthenticatedPage(StyledPage):
     if msg:
       msg_body.send_keys(msg + ' ')
     else:
-      msg_body.send_keys(generate_paragraph()[2][:500] + ' ')
+      msg_body.send_keys(generate_paragraph()[2] + ' ')
     if mention:
       # Note: At this stage only Staff users can be mentioned.
       msg_body.send_keys('@' + mention)
@@ -826,10 +819,12 @@ class AuthenticatedPage(StyledPage):
     withdraw_banner = self._get(self._withdraw_banner)
     assert 'This paper has been withdrawn from {0} and is in View Only mode'.format(journal) in \
           withdraw_banner.text, 'Banner text is not correct: {0}'.format(withdraw_banner.text)
-    assert withdraw_banner.value_of_css_property('background-color') == 'rgba(135, 135, 135, 1)', \
-        withdraw_banner.value_of_css_property('background-color')
-    assert withdraw_banner.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
-        withdraw_banner.value_of_css_property('color')
+
+    assert withdraw_banner.value_of_css_property('background-color') == 'rgb(135, 135, 135)', \
+      withdraw_banner.value_of_css_property('background-color')
+    assert withdraw_banner.value_of_css_property('color') == 'rgb(255, 255, 255)', \
+      withdraw_banner.value_of_css_property('color')
+
     assert APPLICATION_TYPEFACE in withdraw_banner.value_of_css_property('font-family'), \
         withdraw_banner.value_of_css_property('font-family')
 

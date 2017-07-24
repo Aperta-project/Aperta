@@ -167,6 +167,8 @@ class AuthorsTask(BaseTask):
     assert 'ADD A NEW AUTHOR' in add_new_author_btn.text, add_new_author_btn.text
     self.validate_primary_big_green_button_style(add_new_author_btn)
     completion_btn = self._get(self._completion_button)
+
+    self._scroll_into_view(completion_btn)
     self._actions.move_to_element(completion_btn).perform()
     self.validate_individual_author_form_styles(add_new_author_btn)
     self.validate_group_author_form_styles(add_new_author_btn)
@@ -447,6 +449,7 @@ class AuthorsTask(BaseTask):
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
     govt_div = self._get(self._govt_employee_div)
+    self._scroll_into_view(govt_div)
     self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()
@@ -494,6 +497,7 @@ class AuthorsTask(BaseTask):
     govt_choice = random.choice(['Yes', 'No'])
     logging.info('Selecting Gov\'t Choice {0}'.format(govt_choice))
     govt_div = self._get(self._govt_employee_div)
+    self._scroll_into_view(govt_div)
     self._actions.move_to_element(govt_div).perform()
     if govt_choice == 'Yes':
       govt_yes.click()

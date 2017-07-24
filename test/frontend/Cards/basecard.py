@@ -206,8 +206,8 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('line-height') == '20px', \
         plus.value_of_css_property('line-height')
     assert plus.value_of_css_property('color') == APERTA_GREEN, plus.value_of_css_property('color')
-    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', \
-        plus.value_of_css_property('background-color')
+    assert plus.value_of_css_property('background-color') == 'rgb(255, 255, 255)', \
+      plus.value_of_css_property('background-color')
     assert plus.text == '+', plus.text
 
   def validate_common_elements_styles(self, short_doi):
@@ -243,7 +243,7 @@ class BaseCard(AuthenticatedPage):
     assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
     # Enter some text
-    expected_text = generate_paragraph()[2][:500]
+    expected_text = generate_paragraph()[2]
     self.insert_text_discussion(expected_text)
     post_btn.click()
     time.sleep(1)

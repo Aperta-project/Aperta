@@ -43,21 +43,23 @@ MANUSCRIPT_TYPEFACE = 'lora'
 #   represented here. Anything not defined in the color palette should be pushed into the specific
 #   validation method.
 # colors
-APERTA_GREEN = 'rgba(57, 163, 41, 1)'
-APERTA_GREEN_LIGHT = 'rgba(142, 203, 135, 1)'
-APERTA_GREEN_DARK = 'rgba(15, 116, 0, 1)'
-APERTA_RED = 'rgba(206, 11, 36, 1)'
-APERTA_BLUE = 'rgba(45, 133, 222, 1)'
-APERTA_BUTTON_BLUE = 'rgba(231, 243, 254, 1)'
-APERTA_BLUE_LIGHT = 'rgba(215, 235, 254, 1)'
-APERTA_BLUE_DARK = 'rgba(32, 94, 156, 1)'
-APERTA_GREY_XLIGHT = 'rgba(245, 245, 245, 1)'
-APERTA_GREY_LIGHT = 'rgba(213, 213, 213, 1)'
-APERTA_GREY_DARK = 'rgba(135, 135, 135, 1)'
-APERTA_BLACK = 'rgba(51, 51, 51, 1)'
-APERTA_ERROR = 'rgba(206, 11, 36, 1)'
-WHITE = 'rgba(255, 255, 255, 1)'
-BLACK = 'rgba(0, 0, 0, 1)'
+APERTA_GREEN = 'rgb(57, 163, 41)'
+APERTA_GREEN_LIGHT = 'rgb(142, 203, 135)'
+APERTA_GREEN_DARK = 'rgb(15, 116, 0)'
+APERTA_RED = 'rgb(206, 11, 36)'
+APERTA_BLUE = 'rgb(45, 133, 222)'
+APERTA_BUTTON_BLUE = 'rgb(231, 243, 254)'
+APERTA_BLUE_LIGHT = 'rgb(215, 235, 254)'
+APERTA_BLUE_DARK = 'rgb(32, 94, 156)'
+APERTA_GREY_XLIGHT = 'rgb(245, 245, 245)'
+APERTA_GREY_LIGHT = 'rgb(213, 213, 213)'
+APERTA_GREY_DARK = 'rgb(135, 135, 135)'
+APERTA_BLACK = 'rgb(51, 51, 51)'
+APERTA_ERROR = 'rgb(206, 11, 36)'
+WHITE = 'rgb(255, 255, 255)'
+BLACK = 'rgb(0, 0, 0)'
+TRANSPARENT = 'rgba(0, 0, 0, 0)'
+
 
 
 class StyledPage(PlosPage):
@@ -480,10 +482,9 @@ class StyledPage(PlosPage):
     # This color is not represented in the tahi palette
     # Also allow for this being implemented on the correct color background directly or as a
     #   transparency atop a box of correct color
-    assert msg.value_of_css_property('background-color') in ('rgba(234, 253, 231, 1)',
-                                                             'transparent'), \
-        msg.value_of_css_property('background-color')
-
+    assert msg.value_of_css_property('background-color') in ('rgb(234, 253, 231)',
+                                                             TRANSPARENT), \
+      msg.value_of_css_property('background-color')
   # OLD Non-clean, pre v.1. style guide definitions are all below here #############################
   # Divider and Border Styles ===========================
   @staticmethod
@@ -653,8 +654,8 @@ class StyledPage(PlosPage):
         link.value_of_css_property('font-size')
     assert link.value_of_css_property('line-height') == '20px', \
         link.value_of_css_property('line-height')
-    assert link.value_of_css_property('background-color') == 'transparent', \
-        link.value_of_css_property('background-color')
+    assert link.value_of_css_property('background-color') == TRANSPARENT, \
+         link.value_of_css_property('background-color')
     assert link.value_of_css_property('color') == APERTA_GREEN, \
         link.value_of_css_property('color')
     assert link.value_of_css_property('font-weight') == '400', \
@@ -1229,7 +1230,7 @@ class StyledPage(PlosPage):
     assert button.value_of_css_property('line-height') == '20px', button.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert button.value_of_css_property('color') == APERTA_GREY_DARK, button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == 'transparent', \
+    assert button.value_of_css_property('background-color') == TRANSPARENT, \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', button.value_of_css_property('text-align')
     assert button.value_of_css_property('vertical-align') == 'middle', button.value_of_css_property('vertical-align')
@@ -1536,8 +1537,8 @@ class StyledPage(PlosPage):
         field.value_of_css_property('font-size')
     assert field.value_of_css_property('font-weight') == '400', \
         field.value_of_css_property('font-weight')
-    assert field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
-        field.value_of_css_property('color')
+    assert field.value_of_css_property('color') == 'rgb(85, 85, 85)', \
+      field.value_of_css_property('color')
     assert field.value_of_css_property('line-height') == '20px', \
         field.value_of_css_property('line-height')
 
@@ -1986,3 +1987,13 @@ class StyledPage(PlosPage):
         ft.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert ft.value_of_css_property('color') == APERTA_BLACK, ft.value_of_css_property('color')
+
+  @staticmethod
+  def validate_cancel_button_style(button):
+    assert APPLICATION_TYPEFACE in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('line-height') == '60px'
+    assert button.value_of_css_property('background-color') == TRANSPARENT
+    assert button.value_of_css_property('color') == APERTA_GREEN
+    assert button.value_of_css_property('font-weight') == '400'
+    # TODO: Styles for create_new_topic since is not in the style guide

@@ -9348,69 +9348,6 @@
         }
       }
     },
-    "ember-cli-dependency-checker": {
-      "version": "1.4.0",
-      "from": "https://registry.npmjs.org/ember-cli-dependency-checker/-/ember-cli-dependency-checker-1.4.0.tgz",
-      "resolved": "https://registry.npmjs.org/ember-cli-dependency-checker/-/ember-cli-dependency-checker-1.4.0.tgz",
-      "dependencies": {
-        "chalk": {
-          "version": "0.5.1",
-          "from": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
-          "resolved": "https://registry.npmjs.org/chalk/-/chalk-0.5.1.tgz",
-          "dependencies": {
-            "ansi-styles": {
-              "version": "1.1.0",
-              "from": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-1.1.0.tgz",
-              "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-1.1.0.tgz"
-            },
-            "escape-string-regexp": {
-              "version": "1.0.5",
-              "from": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz",
-              "resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
-            },
-            "has-ansi": {
-              "version": "0.1.0",
-              "from": "https://registry.npmjs.org/has-ansi/-/has-ansi-0.1.0.tgz",
-              "resolved": "https://registry.npmjs.org/has-ansi/-/has-ansi-0.1.0.tgz",
-              "dependencies": {
-                "ansi-regex": {
-                  "version": "0.2.1",
-                  "from": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz",
-                  "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
-                }
-              }
-            },
-            "strip-ansi": {
-              "version": "0.3.0",
-              "from": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-0.3.0.tgz",
-              "resolved": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-0.3.0.tgz",
-              "dependencies": {
-                "ansi-regex": {
-                  "version": "0.2.1",
-                  "from": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz",
-                  "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-0.2.1.tgz"
-                }
-              }
-            },
-            "supports-color": {
-              "version": "0.2.0",
-              "from": "https://registry.npmjs.org/supports-color/-/supports-color-0.2.0.tgz",
-              "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-0.2.0.tgz"
-            }
-          }
-        },
-        "is-git-url": {
-          "version": "0.2.3",
-          "from": "https://registry.npmjs.org/is-git-url/-/is-git-url-0.2.3.tgz",
-          "resolved": "https://registry.npmjs.org/is-git-url/-/is-git-url-0.2.3.tgz"
-        },
-        "semver": {
-          "version": "4.3.6",
-          "from": "https://registry.npmjs.org/semver/-/semver-4.3.6.tgz",
-          "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.6.tgz"
-        }
-      }
-    },
     "ember-cli-deprecation-workflow": {
       "version": "0.2.3",
       "from": "https://registry.npmjs.org/ember-cli-deprecation-workflow/-/ember-cli-deprecation-workflow-0.2.3.tgz",

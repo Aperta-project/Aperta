@@ -26,7 +26,10 @@ class CustomTaskMigrator
         migrate_tasks(journal_id, new_card_version, new_card.id)
         migrate_answers(old_card_version, new_card_version, journal_id)
       end
-      destroy_legacy_card if safe_to_destroy
+      if safe_to_destroy
+        destroy_legacy_card if safe_to_destroy
+        JournalTaskType.where(kind: legacy_class_name).delete_all
+      end
     end
   end
 

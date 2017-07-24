@@ -81,6 +81,5 @@ module Typesetter
     def custom_card_fields
       custom_tasks_questions_answers
     end
-
   end
 end

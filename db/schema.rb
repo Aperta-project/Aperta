@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 20170720202710) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
   end

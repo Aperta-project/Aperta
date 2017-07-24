@@ -56,6 +56,7 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:owner_type,
                                    :owner_id,
                                    :value,
+                                   :annotation,
                                    :card_content_id)
   end
 end

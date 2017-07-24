@@ -11,6 +11,7 @@ describe AnswersController do
         format: 'json',
         answer: {
           value: "Hello",
+          annotation: "World",
           owner_id: owner.id,
           owner_type: owner.class.name,
           card_content_id: card_content.id
@@ -38,6 +39,7 @@ describe AnswersController do
         expect(answer.card_content).to eq(card_content)
         expect(answer.owner).to eq(owner)
         expect(answer.value).to eq("Hello")
+        expect(answer.annotation).to eq("World")
       end
 
       it "responds with 200 OK" do
@@ -59,7 +61,7 @@ describe AnswersController do
   end
 
   describe "#update" do
-    let!(:answer) { FactoryGirl.create(:answer, value: 'initial', card_content: card_content, owner: owner) }
+    let!(:answer) { FactoryGirl.create(:answer, value: 'initial value', annotation: "iniitial annotation", card_content: card_content, owner: owner) }
     let(:card_content) { FactoryGirl.create(:card_content) }
 
     subject(:do_request) do
@@ -68,7 +70,8 @@ describe AnswersController do
         id: answer.to_param,
         card_content_id: card_content.to_param,
         answer: {
-          value: 'after'
+          value: 'updated value',
+          annotation: 'updated annotation'
         }
       }
       put(:update, put_params)
@@ -91,9 +94,10 @@ describe AnswersController do
 
         json = JSON.parse(response.body)
         expect(json['answer']['value']).to_not be_present
-
+        expect(json['answer']['annotaion']).to_not be_present
         answer.reload
-        expect(answer.value).to eq('after')
+        expect(answer.value).to eq('updated value')
+        expect(answer.annotation).to eq('updated annotation')
       end
 
       it "returns 200" do
@@ -115,7 +119,7 @@ describe AnswersController do
   end
 
   describe "#destroy" do
-    let!(:answer) { FactoryGirl.create(:answer, value: "Hi", owner: owner) }
+    let!(:answer) { FactoryGirl.create(:answer, value: "Hi", annotation: "there", owner: owner) }
     let(:card_content) { FactoryGirl.create(:card_content) }
 
     subject(:do_request) do

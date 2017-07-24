@@ -8,8 +8,7 @@
 # translate the compact rnc format to the rng that gets used in the XmlCardLoader
 #   `trang -I rnc -O rng card.rnc card.rng`
 #
-# card.rng: If this file is card.rng, please edit card.rnc instead. You will be
-# happier
+# card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
 
 possible-value = element possible-value {
                      attribute label { text },
@@ -22,6 +21,8 @@ radio-input = element content {
                   attribute value-type { "text" | "boolean"},
                   attribute content-type { "radio" },
                   attribute default-answer-value { text }?,
+                  attribute allow-annotations { "true" | "false" }?,
+                  element instruction-text { text }?,
                   element text { text },
                   possible-value*,
                   content*
@@ -32,6 +33,8 @@ check-box-input = element content {
                 attribute content-type { "check-box" },
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
+                attribute allow-annotations { "true" | "false" }?,
+                element instruction-text { text }?,
                 (element label { text }? &
                 element text { text }?),
                 content*
@@ -43,6 +46,8 @@ file-uploader = element content {
                     attribute value-type { "attachment" },
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
+                    attribute allow-annotations { "true" | "false" }?,
+                    element instruction-text { text }?,
                     (element validation {
                       attribute validation-type { "file-name" },
                       element error-message { text },
@@ -66,6 +71,8 @@ dropdown-input = element content {
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
                   attribute default-answer-value { text }?,
+                  attribute allow-annotations { "true" | "false" }?,
+                  element instruction-text { text }?,
                   element text { text },
                   possible-value+,
                   content*
@@ -76,20 +83,25 @@ tech-check = element content {
                 attribute content-type { "tech-check" },
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
+                attribute allow-annotations { "true" | "false" }?,
+                element instruction-text { text }?,
                 element text { text }?,
                 content*
             }
 
 text-input = element content {
                  attribute ident { text }?,
-                 attribute value-type { "text" },
+                 attribute value-type { "text" | "html" },
+                 attribute editor-style { text }?,
                  attribute content-type { "short-input" | "paragraph-input" },
                  attribute default-answer-value { text }?,
+                 attribute allow-annotations { "true" | "false" }?,
+                 element instruction-text { text }?,
                  (element text { text }? &
-                  element validation {
-                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
-                   element error-message { text },
-                   element validator { text }
+                 element validation {
+                  attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
+                  element error-message { text },
+                  element validator { text }
                 }*)
              }
 

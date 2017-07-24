@@ -202,57 +202,129 @@ describe TokenInvitationsController do
   end
 
   describe '#use_authentication?' do
-    context 'the invitation does not have an invitee_id' do
-      let(:invitation_double) do
-        double('Invitation', email: 'ned@flancrest.com', invitee_id: nil, invitee_role: 'Reviewer')
+    before do
+      expect(controller).to receive(:cas_phased_signup_disabled?).at_least(:once).and_return(phased_disabled?)
+    end
+    context 'CAS phased signup is not setup' do
+      let(:phased_disabled?) { true }
+      it 'should return true' do
+        controller.send(:use_authentication?).should be true
       end
-      before { expect(controller).to receive(:invitation).at_least(:once).and_return(invitation_double) }
-      context 'the CAS_PHASED_SIGNUP feature flag is false' do
-        before { expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(false) }
+    end
+    context 'CAS phased signup is setup' do
+      let(:phased_disabled?) { false }
+      before do
+        expect(controller).to receive(:ned_unverified?).at_least(:once).and_return(ned_unverified?)
+      end
+      context 'User can be verified in NED' do
+        let(:ned_unverified?) { false }
+        it 'should return false' do
+          controller.send(:use_authentication?).should be false
+        end
+      end
+      context 'User cannot be verified in NED' do
+        let(:ned_unverified?) { true }
         it 'should return true' do
           controller.send(:use_authentication?).should be true
         end
       end
-      context 'the CAS_PHASED_SIGNUP ff is true' do
-        before do
-          expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(true)
-        end
-        context 'and the phased sign up url is missing' do
-          before { expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(nil) }
-          it 'should return true' do
-            controller.send(:use_authentication?).should be true
-          end
-        end
-        context 'and phased signup url is present' do
-          before do
-            expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return('http://setphaserstostun.org')
-          end
-          context 'but NED is not enabled' do
-            before { expect(NedUser).to receive(:enabled?).and_return(false) }
-            it 'should return true' do
-              controller.send(:use_authentication?).should be true
-            end
-          end
-          context 'and NED is enabled' do
-            before do
-              expect(NedUser).to receive(:enabled?).and_return(true)
-              expect(NedUser).to receive(:new).and_return(ned_user)
-            end
-            context 'and the invitation email already exists in NED' do
-              let(:ned_user) { double('NedUser', email_has_account?: true) }
-              it 'should return true' do
-                controller.send(:use_authentication?).should be true
-              end
-            end
-            context 'and invitation email does not exit in NED' do
-              let(:ned_user) { double('NedUser', email_has_account?: false) }
-              it 'should return false' do
-                controller.send(:use_authentication?).should be false
-              end
-            end
-          end
+    end
+  end
+
+  describe '#ned_unverified?' do
+    before do
+      expect(NedUser).to receive(:enabled?).and_return(ned_enabled?)
+    end
+    context 'NED is not enabled' do
+      let(:ned_enabled?) { false }
+      it 'should return true' do
+        controller.send(:ned_unverified?).should be true
+      end
+    end
+    context 'Ned is enabled' do
+      let(:invitation_double) { double('Invitation', email: 'ned@flancrest.com') }
+      let(:ned_enabled?) { true }
+      before do
+       expect(NedUser).to receive(:new).and_return(ned_user)
+       expect(controller).to receive(:invitation).and_return(invitation_double)
+     end
+      context 'User is in NED db' do
+        let(:ned_user) { double('NedUser', email_has_account?: true) }
+        it 'should return true' do
+          controller.send(:ned_unverified?).should be true
         end
       end
+      context 'User is not in NED db' do
+        let(:ned_user) { double('NedUser', email_has_account?: false) }
+        it 'should return false' do
+          controller.send(:ned_unverified?).should be false
+        end
+      end
+    end
+  end
+
+  describe '#cas_phased_signup_disabled?' do
+    before do
+      expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_enabled?).and_return(phased_env_var)
+    end
+    context 'CAS_PHASED_SIGNUP_ENABLED env var is false' do
+      let(:phased_env_var) { false }
+
+      it 'should return false' do
+        controller.send(:cas_phased_signup_disabled?).should be true
+      end
+    end
+
+    context 'CAS_PHASED_SIGNUP_ENABLED env var is true' do
+      let(:phased_env_var) { true }
+      before do
+        expect(FeatureFlag).to receive(:[]).with('CAS_PHASED_SIGNUP').and_return(cas_ff)
+      end
+      context 'with feature flag enabled' do
+        let(:cas_ff) { true }
+        it 'returns false' do
+          controller.send(:cas_phased_signup_disabled?).should be false
+        end
+      end
+      context 'with feature flag disabled' do
+        let(:cas_ff) { false }
+        it 'returns false' do
+          controller.send(:cas_phased_signup_disabled?).should be true
+        end
+      end
+    end
+  end
+
+  describe '#akita_invitation_accept_url' do
+    let(:invitation_double) { double('Invitation', token: 'abc') }
+    let(:url_args) do
+      {
+        controller: 'token_invitations',
+        action: 'accept',
+        token: invitation_double.token,
+        new_user: true
+      }
+    end
+    it 'passes the expected hash to url_for' do
+      allow(controller).to receive(:invitation).and_return(invitation_double)
+      expect(controller).to receive(:url_for).with(url_args)
+      controller.send(:akita_invitation_accept_url)
+    end
+  end
+
+  describe '#akita_omniauth_callback_url' do
+    let(:dummy_url) { 'http://dummyurl.com' }
+    let(:url_args) do
+      {
+        controller: 'tahi_devise/omniauth_callbacks',
+        action: 'cas',
+        url: dummy_url
+      }
+    end
+    it 'passes the expected has to url_for' do
+      expect(controller).to receive(:akita_invitation_accept_url).and_return(dummy_url)
+      expect(controller).to receive(:url_for).with(url_args)
+      controller.send(:akita_omniauth_callback_url)
     end
   end
 
@@ -262,9 +334,21 @@ describe TokenInvitationsController do
       get :accept, token: 'soCrypticMuchMystery', new_user: true
     end
     context 'there is no user logged in' do
-      before { expect(controller).to receive(:use_authentication?).and_return(use_authentication_response) }
+      before do
+        expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
+        allow(controller).to receive(:use_authentication?).and_return(use_authentication_response)
+      end
       context 'when the token points to an "invited" invitation and the user should be logged in' do
+        let(:invitation_double) { double('Invitation', invitee_id: nil) }
         let(:use_authentication_response) { true }
+        it 'redirects user to login page' do
+          do_request
+          expect(response).to redirect_to(new_user_session_url)
+        end
+      end
+      context 'when the token points to an "invited" invitation with an invitee_id and the user should be logged in' do
+        let(:invitation_double) { double('Invitation', invitee_id: 1234) }
+        let(:use_authentication_response) { false }
         it 'redirects user to login page' do
           do_request
           expect(response).to redirect_to(new_user_session_url)
@@ -273,12 +357,11 @@ describe TokenInvitationsController do
       context 'the user should go through akita phased signup' do
         let(:use_authentication_response) { false }
         let(:invitation_double) do
-          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer')
+          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer', invitee_id: nil)
         end
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
         let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
         before do
-          expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
           invitation_double.stub_chain(:paper, :journal, :name).and_return('PLOS Alchemy')
           expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(dummy_cas_url)
           expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
@@ -296,13 +379,13 @@ describe TokenInvitationsController do
       before do
         stub_sign_in user
         expect(Invitation).to receive(:find_by_token!).and_return(invitation_double)
-        expect(controller).to receive(:use_authentication?).and_return(true)
+        allow(controller).to receive(:use_authentication?).and_return(true)
       end
       context 'when the invitation hasn\'t been accepted' do
         context 'when invitation and current user emails are the same' do
           before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer')
+            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end
 
           it 'creates an Activity' do
@@ -327,7 +410,7 @@ describe TokenInvitationsController do
 
           context 'Inviting an academic editor' do
             let(:invitation_double) do
-              double('Invitation', invitee_role: 'Academic Editor', invited?: true, email: user.email, accept!: true, paper: task.paper)
+              double('Invitation', invitee_role: 'Academic Editor', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_id: 123)
             end
             it 'flashes appropriate language' do
               do_request
@@ -338,7 +421,7 @@ describe TokenInvitationsController do
 
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer')
+            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end
           it 'does not accept the user\'s invitation' do
             expect(invitation_double).not_to receive(:accept!)
@@ -354,7 +437,7 @@ describe TokenInvitationsController do
 
       context 'when the invitation has been accepted' do
         let(:invitation_double) do
-          double('Invitation', invited?: false, email: user.email, paper: task.paper)
+          double('Invitation', invited?: false, email: user.email, paper: task.paper, invitee_id: 123)
         end
         it 'does not try to accept again and redirects to manuscript' do
           expect(invitation_double).to receive(:invited?)

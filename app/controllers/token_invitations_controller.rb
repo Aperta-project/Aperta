@@ -1,5 +1,4 @@
 # Serves as the method for non-users to decline without having to sign in.
-require 'jwt'
 
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
@@ -96,15 +95,19 @@ class TokenInvitationsController < ApplicationController
   end
 
   def use_authentication?
-    invitation.invitee_id or # user already in APERTA
-      !FeatureFlag['CAS_PHASED_SIGNUP'] or
-      !TahiEnv.cas_phased_signup_url or # some envs might not have this
-      !NedUser.enabled? or # or this
-      NedUser.new.email_has_account?(invitation.email) # check NED for user
+    cas_phased_signup_disabled? or ned_unverified?
+  end
+
+  def cas_phased_signup_disabled?
+    !TahiEnv.cas_phased_signup_enabled? or !FeatureFlag['CAS_PHASED_SIGNUP']
+  end
+
+  def ned_unverified?
+    !NedUser.enabled? or NedUser.new.email_has_account?(invitation.email)
   end
 
   def ensure_user!
-    if use_authentication?
+    if invitation.invitee_id or use_authentication?
       # so they should login via regular means
       authenticate_user!
     else

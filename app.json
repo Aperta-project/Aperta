@@ -201,9 +201,6 @@
     "REDIS_PROVIDER": {
       "required": true
     },
-    "ROUTER_URL": {
-      "required": true
-    },
     "S3_BUCKET": {
       "required": true
     },

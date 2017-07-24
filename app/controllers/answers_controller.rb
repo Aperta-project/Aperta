@@ -20,7 +20,7 @@ class AnswersController < ApplicationController
     related_answer = answers.find(params[:id])
     requires_user_can(:edit, related_answer.owner)
     related_answer.update!(answer_params)
-    render json: answers, each_serializer: LightAnswerSerializer
+    render json: answers.reload, each_serializer: LightAnswerSerializer
   end
 
   def destroy

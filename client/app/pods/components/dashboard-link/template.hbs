@@ -1,4 +1,4 @@
-<td class="col-xs-9 dashboard-paper-title {{type}}-paper-title hug-left">
+<td class="col-xs-8 dashboard-paper-title {{type}}-paper-title hug-left">
   {{#link-to "paper.index" model.shortDoi
              id=paperLinkId}}
     {{{model.displayTitle}}}
@@ -18,5 +18,9 @@
     </span>
   {{/if}}
 </td>
-<td class="col-xs-1 role-tag text-center">{{roles}}</td>
-<td class="col-xs-1"><div class='status-tag text-center'>{{status}}</div></td>
+<td class="col-xs-3 hug-left">
+  <span class="role-tag">{{roles}}</span><br>
+  <span class="review-due-message">{{reviewDueMessage}}</span><br>
+  <span class="originally-due-message">{{originallyDueMessage}}</span><br>
+</td>
+<td class="col-xs-2"><div class='status-tag hug-left'>{{status}}</div></td>

@@ -17,6 +17,8 @@ export default Ember.Component.extend({
         $line1 = this.$('.expanding-textarea-arrow-line1', $resizeArrow),
         $line2 = this.$('.expanding-textarea-arrow-line2', $resizeArrow);
 
+      $textarea.css('resize', 'vertical');
+
       // Use the initial height of the textarea as the minimum height.
       // We will not let the user resize the textarea smaller than this.
       var minOuterHeight = $textarea.outerHeight(),

@@ -1,5 +1,6 @@
 $invite-padding-vertical: 1.5rem;
 $invite-padding-horizontal: 2rem;
+$invite-padding-bottom: 2.5rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitees, .assignments {
@@ -190,7 +191,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-full-name {
-  width: 32%;
+  width: 30%;
   cursor: pointer;
   padding-left: 0.5rem;
 }
@@ -200,7 +201,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-status {
-  width: 18%;
+  width: 20%;
   cursor: pointer;
 
   .not-bold {

@@ -90,6 +90,9 @@ export default DS.Model.extend({
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
 
+  reviewDueAt: attr('date'),
+  reviewOriginallyDueAt: attr('date'),
+
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
   allAuthorsSortingAsc: ['position:asc'],

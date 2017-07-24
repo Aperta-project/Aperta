@@ -239,4 +239,18 @@ describe Task do
       expect(task.can_change?(double)).to eq(true)
     end
   end
+
+  describe "#last_reviewer_report_status" do
+    let(:task) { FactoryGirl.create(:reviewer_report_task) }
+    let(:report1) { FactoryGirl.create(:reviewer_report) }
+    let(:report2) { FactoryGirl.create(:reviewer_report) }
+    before do
+      task.reviewer_reports << report1
+      task.reviewer_reports << report2
+    end
+
+    it "returns the status of the last created report" do
+      expect(task.last_reviewer_report_status).to eq(report2.computed_status)
+    end
+  end
 end

@@ -23,17 +23,17 @@ export default Ember.Component.extend({
       return this.get('task.lastReviewerReportStatus');
     }
   }),
-  taskImmutable: Ember.computed('task.lastReviewerReportStatus', {
+  taskImmutable: Ember.computed('reviewState', {
     get() {
-      return this.get('task.lastReviewerReportStatus') === 'not_invited' ||
-        this.get('task.lastReviewerReportStatus') === 'invitation_declined' ||
-        this.get('task.lastReviewerReportStatus') === 'invitation_rescinded';
+      return this.get('reviewState') === 'not_invited' ||
+        this.get('reviewState') === 'invitation_declined' ||
+        this.get('reviewState') === 'invitation_rescinded';
     }
   }),
-  taskIncomplete: Ember.computed('task.lastReviewerReportStatus', {
+  taskIncomplete: Ember.computed('reviewState', {
     get() {
-      return this.get('task.lastReviewerReportStatus') === 'pending' ||
-        this.get('task.lastReviewerReportStatus') === 'invitation_invited';
+      return this.get('reviewState') === 'pending' ||
+        this.get('reviewState') === 'invitation_invited';
     }
   }),
 

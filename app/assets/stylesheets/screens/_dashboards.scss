@@ -83,7 +83,16 @@
 }
 
 .role-tag {
-  color: $aperta-grey-dark;
+  color: $aperta-black;
+  font-weight: bold;
+}
+
+.review-due-message {
+  color: $aperta-black;
+}
+
+.originally-due-message {
+  color: $aperta-grey;
 }
 
 .status-tag {

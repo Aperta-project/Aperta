@@ -5,6 +5,7 @@ import Readyable from 'tahi/mixins/models/readyable';
 export default DS.Model.extend(Readyable, {
   additionalData: DS.attr(),
   value: DS.attr(),
+  annotation: DS.attr('string'),
 
   attachments: DS.hasMany('question-attachment', { async: false }),
   cardContent: DS.belongsTo('card-content', { async: false }),

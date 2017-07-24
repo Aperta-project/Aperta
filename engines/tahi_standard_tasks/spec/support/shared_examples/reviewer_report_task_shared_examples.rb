@@ -18,6 +18,7 @@ RSpec.shared_examples_for 'a reviewer report task' do |factory:|
       invitee: reviewer_user,
       decision: paper.draft_decision
     )
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE", active: false
     paper.draft_decision.invitations << invitation
     report = FactoryGirl.create(:reviewer_report,
                                 task: task,

@@ -1,4 +1,7 @@
 RSpec.shared_examples_for 'creating a reviewer report task' do |reviewer_report_type:|
+  before do
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+  end
   context "assigning reviewer old_role" do
     context "with no existing reviewer" do
       it "creates a ReviewerReportTask" do

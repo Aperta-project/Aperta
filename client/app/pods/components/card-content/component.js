@@ -50,6 +50,13 @@ export default Ember.Component.extend({
       this.set('answer.value', newVal);
       if (this.get('preview')) {return;}
       this.get('_debouncedSave').perform();
+    },
+
+    updateAnnotation(e) {
+      this.set('answer.annotation', e.target.value);
+      if(!this.get('preview')) {
+        this.get('_debouncedSave').perform();
+      }
     }
   }
 });

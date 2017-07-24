@@ -121,7 +121,8 @@ class CardContent < ActiveRecord::Base
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions
+      'allow-file-captions' => allow_file_captions,
+      'allow-annotations' => allow_annotations
     }.compact
   end
 
@@ -129,6 +130,7 @@ class CardContent < ActiveRecord::Base
 
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
+      render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       if card_content_validations.present?

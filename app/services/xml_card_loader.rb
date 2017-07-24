@@ -125,6 +125,7 @@ class XmlCardLoader
         content.fetch_values('possible-value', [:label, :value]),
       text:
         content.tag_text('text'),
+      editor_style: content.attr_value('editor-style'),
       value_type:
         content.attr_value('value-type'),
       visible_with_parent_answer:

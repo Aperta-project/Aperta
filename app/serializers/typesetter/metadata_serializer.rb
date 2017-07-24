@@ -82,10 +82,5 @@ module Typesetter
       custom_tasks_questions_answers
     end
 
-    def serializable_hash
-      fail Typesetter::MetadataError.not_accepted unless valid?
-      super
-    end
-    
   end
 end

@@ -39,8 +39,8 @@ class ReviseManuscriptTask(BaseTask):
     # Without the following time, it grabs an empty string
     time.sleep(4)
     subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
-    assert subtitle_1.text == 'Current Revision', subtitle_1.text
-    assert subtitle_2.text == 'Response to Reviewers:', subtitle_2.text
+    assert subtitle_1.text == 'Response to reviewers', subtitle_1.text
+    assert subtitle_2.text == 'Decision Letter', subtitle_2.text
     assert subtitle_3.text == 'Decision History', subtitle_3.text
     # APERTA-10618
     # decision_anchor_link = self._get(self._decision_letter_anchor_link)

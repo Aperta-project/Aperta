@@ -98,7 +98,7 @@ class ReviseManuscriptTest(CommonTest):
 
     # need to complete this task again after providing new manuscript
     paper_viewer.complete_task('Title And Abstract')
-
+    paper_viewer.complete_task('Response to Reviewers', data=data)
     # submit and logout
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()

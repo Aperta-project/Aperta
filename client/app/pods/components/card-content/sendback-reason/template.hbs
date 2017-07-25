@@ -1,7 +1,20 @@
-{{text}}
-{{card-content/display-children
-content=content
-owner=owner
-disabled=disabled
-preview=preview}}
+{{!-- render the first child (checkbox) --}}
+  {{card-content
+    content=checkbox
+    disabled=disabled
+    owner=owner
+    preview=preview}}
+{{!-- render the second child (pencil-style checkbox) --}}
+  {{card-content
+    content=pencil
+    disabled=disabled
+    owner=owner
+    preview=preview}}
 
+{{#if showText}}
+  {{card-content
+    content=textarea
+    disabled=disabled
+    owner=owner
+    preview=preview}}
+{{/if}}

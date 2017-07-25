@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170724222156) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.datetime "deleted_at"
+    t.boolean  "toggleable_hide_value"
     t.string   "annotation"
   end
 
@@ -245,11 +246,11 @@ ActiveRecord::Schema.define(version: 20170724222156) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "editor_style"
-    t.boolean  "allow_annotations"
-    t.string   "instruction_text"
     t.boolean  "revert_children_on_hide"
     t.boolean  "toggleable_hide"
+    t.boolean  "allow_annotations"
+    t.string   "instruction_text"
+    t.string   "editor_style"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -264,8 +265,8 @@ ActiveRecord::Schema.define(version: 20170724222156) do
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
-    t.string   "history_entry"
     t.boolean  "workflow_display_only",   default: false, null: false
+    t.string   "history_entry"
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
@@ -517,6 +518,43 @@ ActiveRecord::Schema.define(version: 20170724222156) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
+
+  create_table "nested_question_answers", force: :cascade do |t|
+    t.integer  "nested_question_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.string   "value_type",         null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.json     "additional_data"
+    t.integer  "decision_id"
+    t.integer  "paper_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
+  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
+
+  create_table "nested_questions", force: :cascade do |t|
+    t.string   "text"
+    t.string   "value_type", null: false
+    t.string   "ident",      null: false
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
+  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
+  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
+  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"

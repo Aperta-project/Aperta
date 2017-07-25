@@ -181,6 +181,7 @@ class DiscussionForumTest(CommonTest):
     short_doi = ms_viewer.get_paper_short_doi_from_url()
     logging.info('Assigned paper short doi: {0}'.format(short_doi))
     ms_viewer.complete_task('Upload Manuscript')
+    ms_viewer.complete_task('Title And Abstract')
     # Submit paper
     ms_viewer.click_submit_btn()
     ms_viewer.confirm_submit_btn()
@@ -217,7 +218,7 @@ class DiscussionForumTest(CommonTest):
     ms_viewer = ManuscriptViewerPage(self.getDriver())
     ms_viewer.page_ready()
     topic = 'Testing discussion on paper {0}'.format(short_doi)
-    msg_1 = generate_paragraph()[2][:500]
+    msg_1 = generate_paragraph()[2]
     # How to call the discussion section
     if web_page == 'workflow':
       ms_viewer.post_new_discussion(topic=topic, msg=msg_1, participants=[collaborator_1,
@@ -261,7 +262,7 @@ class DiscussionForumTest(CommonTest):
     comment_body = ms_viewer._get(ms_viewer._comment_body).text
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
                                   'front end: {1}'.format(msg_1, comment_body)
-    msg_2 = generate_paragraph()[2][:500]
+    msg_2 = generate_paragraph()[2]
     discussion_back_link = ms_viewer._get(ms_viewer._discussion_back_link)
     discussion_back_link.click()
     ms_viewer.post_discussion(msg_2, mention=collaborator_2['user'])

@@ -9,7 +9,6 @@ import random
 import re
 import tempfile
 from time import sleep
-import sys
 import six
 import os
 
@@ -83,7 +82,7 @@ class PlosPage(object):
 
   def _get(self, locator):
     try:
-      return self._wait.until(expected_conditions.visibility_of_element_located(locator))
+      return self._wait.until(expected_conditions.visibility_of_element_located(locator)).wrapped_element
     except TimeoutException:
       logging.error('\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
             'by {0}.'.format(locator))
@@ -91,7 +90,7 @@ class PlosPage(object):
 
   def _gets(self, locator):
     try:
-      return self._wait.until(expected_conditions.presence_of_all_elements_located(locator))
+      return [x.wrapped_element for x in self._wait.until(expected_conditions.presence_of_all_elements_located(locator))]
     except TimeoutException:
       logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify elements ' \
             'by {0}.'.format(locator))
@@ -104,7 +103,7 @@ class PlosPage(object):
     :param locator: locator
     """
     try:
-      return self._wait.until(expected_conditions.presence_of_element_located(locator))
+      return self._wait.until(expected_conditions.presence_of_element_located(locator)).wrapped_element
     except TimeoutException:
       logging.error( '\t[WebDriver Error] WebDriver timed out while trying to identify element ' \
             'by {0}.'.format(locator))
@@ -117,7 +116,7 @@ class PlosPage(object):
     :return: webdriver element or exception
     """
     try:
-      return self._wait.until(expected_conditions.invisibility_of_element_located(locator))
+      return self._wait.until(expected_conditions.invisibility_of_element_located(locator)).wrapped_element
     except TimeoutException:
       logging.error( '\t[WebDriver Error] WebDriver timed out while trying to look for hidden element by ' \
             '{0}.'.format(locator))
@@ -204,6 +203,9 @@ class PlosPage(object):
   def _is_link_valid(self, link):
     return self.__linkVerifier.is_link_valid(link.get_attribute('href'))
 
+  def _scroll_into_view(self, element):
+    self._driver.execute_script("javascript:arguments[0].scrollIntoView()", element)
+
   @staticmethod
   def normalize_spaces(text):
     """
@@ -230,35 +232,13 @@ class PlosPage(object):
     :string_2: Text string (may be Unicode or not)
     :return: True if compare is OK, is not, an assertion will fail
     """
-    if sys.version_info >= (3,0,0):
-      string_1 = PlosPage.normalize_spaces(string_1).split()
-      string_2 = PlosPage.normalize_spaces(string_2).split()
-      assert string_1 == string_2, \
-        'String 1: {0} != String 2: {1}'.format(string_1, string_2)
-      return True
-    else:
-      if (str(type(string_1)) == "<type 'unicode'>") and (str(type(string_2)) == "<type 'unicode'>"):
-        # Split both to eliminate differences in whitespace
-        string_1 = string_1.split()
-        string_2 = string_2.split()
-        assert string_1 == string_2, \
-          'String 1: {0} != String 2: {1}'.format(string_1, string_2)
-      elif (str(type(string_1)) == "<type 'unicode'>") and not (str(type(string_2)) == "<type 'unicode'>"):
-        string_1 = PlosPage.normalize_spaces(string_1).split()
-        string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
-        assert string_1 == string_2, \
-          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
-      elif not (str(type(string_1)) == "<type 'unicode'>") and (str(type(string_2)) == "<type 'unicode'>"):
-        string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
-        string_2 = PlosPage.normalize_spaces(string_2).split()
-        assert string_1 == string_2, \
-          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
-      else:
-        string_1 = PlosPage.normalize_spaces(string_1.decode('utf-8')).split()
-        string_2 = PlosPage.normalize_spaces(string_2.decode('utf-8')).split()
-        assert string_1 == string_2, \
-          'String 1: {0} != String 2: {1}'.decode('utf-8').format(string_1, string_2)
-      return True
+
+    string_1 = PlosPage.normalize_spaces(string_1).split()
+    string_2 = PlosPage.normalize_spaces(string_2).split()
+    assert string_1 == string_2, \
+      'String 1: {0} != String 2: {1}'.format(string_1, string_2)
+    return True
+
 
   @staticmethod
   def get_random_bool():
@@ -303,9 +283,6 @@ class PlosPage(object):
     self._wait = WebDriverWait(self._driver, wait_timeout)
 
   def get_text(self, s):
-    if sys.version_info < (3, 0, 0):
-      s = s.decode('utf-8', 'ignore')
-
     soup = BeautifulSoup(s, 'html.parser')
     clean_out = soup.get_text()
     return clean_out

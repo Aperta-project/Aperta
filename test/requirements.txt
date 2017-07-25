@@ -1,15 +1,15 @@
-Appium-Python-Client==0.22
-beautifulsoup4==4.4.1
-browsermob-proxy==0.7.1
-ddt==1.1.0
+Appium-Python-Client==0.24
+beautifulsoup4==4.6.0
+browsermob-proxy==0.8.0
+ddt==1.1.1
 enum34==1.1.6
 mysql-connector-repackaged==0.3.1
 psycopg2==2.7.1
 PyPDF2==1.26.0
-requests==2.10.0
-selenium==2.53.6
+requests==2.18.1
+selenium==3.4.3
 teamcity-messages==1.18
-python-dateutil==2.5.3
-pytz
-six
+python-dateutil==2.6.1
+pytz==2017.2
+six==1.10.0
 -e git://github.com/testlabauto/loremipsum.git#egg=loremipsum

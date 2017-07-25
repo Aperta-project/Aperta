@@ -16,3 +16,4 @@ frontend/assets/responsetoreviewers/*
 frontend/assets/reviewerreports/*
 Output/
 venv/
+.geckodriver

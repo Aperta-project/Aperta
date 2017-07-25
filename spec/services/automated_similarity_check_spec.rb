@@ -237,7 +237,7 @@ describe AutomatedSimilarityCheck do
       context "regarding similarity check automation" do
         let!(:setting) do
           FactoryGirl.create(:ithenticate_automation_setting,
-                                            :after_first_major_revise_decision, owner: task_template)
+                                            :after_major_revise_decision, owner: task_template)
         end
 
         context "the paper has had a manually generated report" do

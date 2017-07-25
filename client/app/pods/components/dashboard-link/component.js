@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import formatDate from 'tahi/lib/format-date';
 
 export default Ember.Component.extend({
   attributeBindings: ['data-test-id'],
@@ -7,7 +8,8 @@ export default Ember.Component.extend({
     return `dashboard-paper-${paperId}`;
   }),
   tagName: 'tr',
-  unreadCommentsCount: Ember.computed.alias('model.commentLooks.length'),
+  unreadCommentsCount: Ember.computed.reads('model.commentLooks.length'),
+  dueDate: Ember.computed.reads('model.reviewDueAt'),
 
   status: Ember.computed('model.publishingState', function() {
     if (this.get('model.publishingState') === 'unsubmitted') {
@@ -22,6 +24,22 @@ export default Ember.Component.extend({
       return 'Author';
     } else {
       return this.get('model.roles');
+    }
+  }),
+
+  reviewDueMessage: Ember.computed('model.roles', 'model.reviewDueAt', function() {
+    if (this.get('model.roles') == 'Reviewer') {
+      return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), { format: 'MMMM DD' });
+    } else {
+      return "";
+    }
+  }),
+
+  originallyDueMessage: Ember.computed('model.roles','model.reviewDueAt', function() {
+    if (this.get('model.roles') == 'Reviewer' && !Ember.isEmpty(this.get('model.reviewOriginallyDueAt'))) {
+      return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), { format: 'MMMM DD' });
+    } else {
+      return "";
     }
   }),
 

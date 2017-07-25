@@ -2,17 +2,44 @@ require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerMailer do
   let(:assigner) { FactoryGirl.create(:user) }
-  let(:paper) { reviewer_task.paper }
+  let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
   let(:reviewer) { FactoryGirl.create(:user) }
-  let(:reviewer_task) { FactoryGirl.create(:paper_reviewer_task) }
+  let(:reviewer_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
   let(:invitation) do
     FactoryGirl.create(
       :invitation,
       invitee: reviewer,
       inviter: assigner,
       email: reviewer.email,
-      task: reviewer_task
+      task: reviewer_task,
+      decision: paper.draft_decision
     )
+  end
+
+  let(:report) do
+    FactoryGirl.create(
+      :reviewer_report,
+      decision: paper.draft_decision,
+      user: reviewer
+    )
+  end
+
+  before do
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+  end
+
+  describe ".welcome_reviewer" do
+    subject(:email) do
+      described_class.welcome_reviewer(assignee_id: reviewer.id, paper_id: paper.id)
+    end
+
+    context "with a due date" do
+      it "contains the due date" do
+        report.set_due_datetime
+        expect(report.due_at).to_not be_nil
+        expect(email.body).to match(report.due_at.to_s)
+      end
+    end
   end
 
   describe ".reviewer_accepted" do

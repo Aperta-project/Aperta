@@ -11,8 +11,8 @@
 
 <div class="task-main-content">
   <div class="supporting-information-files">
-    {{#each filesWithErrors as |fileWithErrors|}}
-      {{supporting-information-file model=fileWithErrors
+    {{#each filesWithValidations as |file|}}
+      {{supporting-information-file model=file
                                     updateFile=(action "updateFile")
                                     deleteFile=(action "deleteFile")
                                     isEditable=isEditable}}

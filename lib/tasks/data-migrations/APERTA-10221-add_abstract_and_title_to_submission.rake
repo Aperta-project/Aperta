@@ -10,7 +10,6 @@ namespace :data do
         journal_task_type = journal.journal_task_types.find_by(kind: TahiStandardTasks::TitleAndAbstractTask)
 
         journal.manuscript_manager_templates.each do |mtm|
-          p mtm
           task_created = nil
           first_phase_template = nil
 
@@ -27,8 +26,6 @@ namespace :data do
             journal_task_type: journal_task_type,
             title: journal_task_type.title
           ) unless task_created
-          p "TahiStandardTasks::TitleAndAbstractTask => "
-          p task_created
           # Move the task template to the first phase template to show it at the top of the list
           first_phase_template.task_templates << task_created if task_created.phase_template != first_phase_template
 
@@ -62,9 +59,6 @@ namespace :data do
         end
 
         task_to_change.completed = true if Paper::UNEDITABLE_STATES.include? paper.publishing_state.to_sym
-
-        p "TahiStandardTasks::TitleAndAbstractTask => "
-        p task_to_change
 
         # Reorder tasks
         phase.tasks.each do |t|

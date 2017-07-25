@@ -28,8 +28,8 @@ export default TaskComponent.extend({
     const setting = this.get('task.currentSettingValue');
     let settingNames = {
       at_first_full_submission: 'first full submission',
-      after_first_major_revise_decision: 'first major revision',
-      after_first_minor_revise_decision: 'first minor revision',
+      after_major_revise_decision: 'major revision',
+      after_minor_revise_decision: 'minor revision',
       after_any_first_revise_decision: 'any first revision'
     };
 

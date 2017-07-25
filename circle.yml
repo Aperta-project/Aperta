@@ -41,8 +41,8 @@ database:
   override:
     - bundle exec rake db:create db:schema:load
   post:
-    # npm install here so that it is cached by circle for parallel tests
-    - cd client && npm install && cd .. && bundle exec rake ember:install
+    - bundle exec rake ember:install:
+        timeout: 900 # 15 minutes
 
 
 ## Customize test commands

@@ -55,7 +55,7 @@ export default Ember.Component.extend({
     }
     return output;
   }),
-
+  
   reviewerStatus: Ember.computed('report.status', function() {
     const status = this.get('report.status');
     const statuses = {

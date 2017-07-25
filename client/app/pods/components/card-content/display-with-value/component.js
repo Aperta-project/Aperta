@@ -29,10 +29,12 @@ export default Ember.Component.extend({
 
   showChildren: Ember.computed(
     'parentAnswer.value',
+    'parentAnswer.toggleableHideValue',
     'content.visibleWithParentAnswer',
     function() {
       let parentValue = this.get('parentAnswer.value');
-      if (parentValue === null || parentValue === undefined) { return false; }
+      let toggleHideValue = this.get('parentAnswer.toggleableHideValue');
+      if (parentValue === null || parentValue === undefined || toggleHideValue === true) { return false; }
       return (parentValue).toString() ===
         this.get('content.visibleWithParentAnswer');
     }

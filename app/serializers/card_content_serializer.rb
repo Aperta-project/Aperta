@@ -14,6 +14,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :allow_annotations,
              :revert_children_on_hide,
              :default_answer_value,
+             :toggleable_hide,
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value
              # then render this content's children

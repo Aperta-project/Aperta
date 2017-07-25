@@ -1,17 +1,14 @@
 #asterik-field {
-  font-size: 20px;
+  font-size: 18px;
   color: $aperta-green;
-  font-weight: bold;
 }
 
-.testing {
+.title-and-abstract-header {
   font-size: 18px;
 
     &::after {
       content: '*';
-      position: relative;
-      top: 0.70rem;
-      font-size: 21pt;
+      font-size: 18px;
       color: $aperta-green;
       font-weight: bold;
     }

@@ -28,22 +28,22 @@ export default Ember.Component.extend({
   }),
 
   reviewDueMessage: Ember.computed('model.roles', 'model.reviewDueAt', function() {
-    if (this.get('model.roles') == 'Reviewer') {
+    if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewDueAt'))) {
       return 'Your review is due ' + formatDate(this.get('model.reviewDueAt'), { format: 'MMMM DD' });
     } else {
-      return "";
+      return '';
     }
   }),
 
   originallyDueMessage: Ember.computed('model.roles','model.reviewDueAt', function() {
-    if (this.get('model.roles') == 'Reviewer' && !Ember.isEmpty(this.get('model.reviewOriginallyDueAt'))) {
+    if (this.get('model.roles').includes('Reviewer') && !Ember.isEmpty(this.get('model.reviewOriginallyDueAt'))) {
       return 'Originally due ' + formatDate(this.get('model.reviewOriginallyDueAt'), { format: 'MMMM DD' });
     } else {
-      return "";
+      return '';
     }
   }),
 
   paperLinkId: Ember.computed(function(){
-    return "view-paper-" + this.get('model.id');
+    return 'view-paper-' + this.get('model.id');
   }),
 });

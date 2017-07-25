@@ -390,7 +390,8 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"
-    t.string   "manuscript_version_status"
+    t.string   "manuscript_status"
+    t.string   "manuscript_version"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

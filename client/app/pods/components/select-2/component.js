@@ -11,6 +11,7 @@ Select2Component = Ember.TextField.extend({
   multiSelect: false,
   selectedData: [],
   placeholder: "",
+  color: 'green', // green, blue
 
   setupSelectedListener: function() {
     this.$().off('select2-selecting');
@@ -74,6 +75,10 @@ Select2Component = Ember.TextField.extend({
   setup: (function() {
     var i, len, opt, options, passThroughOptions;
     options = {};
+    if (this.get('color') === 'blue') {
+      this.set('dropdownCssClass', 'admin');
+      this.set('containerCss', 'admin');
+    }
     if (this.get('selectedTemplate')) {
       options.formatSelection = this.get('selectedTemplate');
     }
@@ -82,6 +87,9 @@ Select2Component = Ember.TextField.extend({
     }
     if(this.get('dropdownCssClass')) {
       options.dropdownCssClass = this.get('dropdownCssClass');
+    }
+    if(this.get('containerCss')) {
+      options.containerCssClass = this.get('containerCss');
     }
     options.multiple = this.get('multiSelect');
     options.data = this.get('source');

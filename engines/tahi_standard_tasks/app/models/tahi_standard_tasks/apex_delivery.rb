@@ -61,9 +61,7 @@ module TahiStandardTasks
 
     def paper_acceptance_state
       return unless paper.present? && !paper.accepted?
-      if (destination == 'apex') || (destination == 'em')
-        errors.add(:paper, "must be accepted in order to send to APEX or EM")
-      end
+      errors.add(:paper, "must be accepted in order to send to APEX") if destination == 'apex'
     end
   end
 end

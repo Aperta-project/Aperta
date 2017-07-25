@@ -124,6 +124,7 @@ class CardContent < ActiveRecord::Base
       'revert-children-on-hide' => revert_children_on_hide,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
+      'toggleable-hide' => toggleable_hide,
       'allow-file-captions' => allow_file_captions,
       'allow-annotations' => allow_annotations
     }.compact

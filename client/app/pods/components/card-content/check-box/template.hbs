@@ -10,6 +10,9 @@
 {{#if content.label}}
   <label for={{name}}>{{{content.label}}}</label>
 {{/if}}
+{{#if toggleableHideEnabled}}
+  {{fa-icon click=(action "toggleHide") icon="pencil"}}
+{{/if}}
 
 {{card-content/display-children
 content=content

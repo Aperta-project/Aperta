@@ -27,6 +27,7 @@ export default DS.Model.extend({
   visibleWithParentAnswer: DS.attr('string'),
   allowAnnotations: DS.attr('boolean'),
   revertChildrenOnHide: DS.attr('boolean'),
+  toggleableHide: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
   hasInstructionText: Ember.computed.notEmpty('instructionText'),
@@ -48,7 +49,8 @@ export default DS.Model.extend({
       return null;
     }
   },
-
+  
+  
   answerForOwner(owner) {
     return this.get('answers').findBy('owner', owner) ||
            this.createAnswerForOwner(owner);

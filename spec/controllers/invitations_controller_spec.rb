@@ -127,9 +127,7 @@ describe InvitationsController do
 
       context 'the primary id is not present' do
         subject(:do_request) do
-          put :update_primary,
-            format: :json,
-            id: invitation.id
+          put :update_primary, format: :json, id: invitation.id
         end
 
         before do

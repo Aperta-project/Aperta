@@ -151,7 +151,7 @@ export default Component.extend(DragNDrop.DraggableMixin, {
   }),
 
   _updateContents: concurrencyTask(function * (invitation) {
-    yield timeout(1000); // half a second wait
+    yield timeout(200); // agreed timeout time for cards
     this.get('saveInvite')(invitation);
   }).restartable(),
 

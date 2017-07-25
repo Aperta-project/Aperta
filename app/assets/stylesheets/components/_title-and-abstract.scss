@@ -1,0 +1,18 @@
+#asterik-field {
+  font-size: 20px;
+  color: $aperta-green;
+  font-weight: bold;
+}
+
+.testing {
+  font-size: 18px;
+
+    &::after {
+      content: '*';
+      position: relative;
+      top: 0.70rem;
+      font-size: 21pt;
+      color: $aperta-green;
+      font-weight: bold;
+    }
+}

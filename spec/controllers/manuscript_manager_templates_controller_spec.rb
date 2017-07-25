@@ -12,6 +12,7 @@ describe ManuscriptManagerTemplatesController do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:journal_task_type) { FactoryGirl.create(:journal_task_type, journal_id: journal.id) }
   let(:user) { FactoryGirl.build(:user) }
+  let(:setting_template) { FactoryGirl.create(:setting_template) }
 
   describe 'GET index' do
     let(:mmt) { journal.manuscript_manager_templates.first }
@@ -188,7 +189,14 @@ describe ManuscriptManagerTemplatesController do
           task_templates: [
             journal_task_type_id: journal_task_type.id,
             title: 'Ad-hoc',
-            template: template_params
+            template: template_params,
+            settings: [
+              owner_type: 'TaskTemplate',
+              name: 'Setting name',
+              string_value: 'Setting value',
+              value_type: 'string',
+              setting_template_id: setting_template.id
+            ]
           ]
         ]
       }
@@ -217,6 +225,10 @@ describe ManuscriptManagerTemplatesController do
         mmt = ManuscriptManagerTemplate.last
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
+        expect(mmt.phase_templates[0].task_templates[0].settings[0]
+          .owner_type).to eq(
+            new_params[:phase_templates][0][:task_templates][0][:settings][0][:owner_type]
+          )
         expect(template.to_json).to eq(template_params.to_json)
       end
 

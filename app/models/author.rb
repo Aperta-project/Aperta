@@ -1,7 +1,9 @@
+# Manuscript author model
 class Author < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
   include Tokenable
+  include UniqueEmail
   include CoAuthorConfirmable
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions".freeze
@@ -35,8 +37,7 @@ class Author < ActiveRecord::Base
     :affiliation, :email, presence: true, if: :task_completed?
 
   validates :email,
-    format: { with: Devise.email_regexp,
-      message: "needs to be a valid email address" },
+    format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
       if: :task_completed?
 
   validates :contributions,

@@ -308,7 +308,7 @@ describe TokenInvitationsController do
     it 'passes the expected hash to url_for' do
       allow(controller).to receive(:invitation).and_return(invitation_double)
       expect(controller).to receive(:url_for).with(url_args)
-      controller.send(:akita_invitation_accept_url)
+      controller.send(:akita_invitation_accept_url, new_user: true)
     end
   end
 
@@ -339,17 +339,36 @@ describe TokenInvitationsController do
         allow(controller).to receive(:use_authentication?).and_return(use_authentication_response)
       end
       context 'when the token points to an "invited" invitation and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: nil) }
+        let(:invitation_double) { double('Invitation', invitee_id: nil, token: 'abc') }
         let(:use_authentication_response) { true }
-        it 'redirects user to login page' do
-          do_request
-          expect(response).to redirect_to(new_user_session_url)
+        before do
+          expect_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(cas_enabled)
+        end
+        context 'CAS is disabled' do
+          let(:cas_enabled) { false }
+          it 'redirects user to login page' do
+            do_request
+            expect(response).to redirect_to(new_user_session_url)
+          end
+        end
+        context 'CAS is enabled' do
+          let(:cas_enabled) { true }
+          let(:dummy_url) { 'http://wat.com' }
+          let(:dummy_params) { { url: dummy_url } }
+          let(:dummy_redirect) { 'http://redirect.com' }
+          it 'redirects user to login page' do
+            allow(controller).to receive(:akita_invitation_accept_url).and_return(dummy_url)
+            expect(controller).to receive(:omniauth_authorize_path).with(:user, 'cas', dummy_params).and_return(dummy_redirect)
+            do_request
+            expect(response).to redirect_to(dummy_redirect)
+          end
         end
       end
       context 'when the token points to an "invited" invitation with an invitee_id and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: 1234) }
+        let(:invitation_double) { double('Invitation', invitee_id: 1234, token: 'abc') }
         let(:use_authentication_response) { false }
         it 'redirects user to login page' do
+          allow_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(false)
           do_request
           expect(response).to redirect_to(new_user_session_url)
         end

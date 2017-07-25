@@ -3,7 +3,7 @@
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
-  before_action :ensure_user!, only: [:accept]
+  before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
@@ -108,8 +108,11 @@ class TokenInvitationsController < ApplicationController
 
   def ensure_user!
     if invitation.invitee_id or use_authentication?
-      # so they should login via regular means
-      authenticate_user!
+      if TahiEnv.cas_enabled?
+        redirect_to omniauth_authorize_path(:user, 'cas', url: akita_invitation_accept_url)
+      else
+        authenticate_user!
+      end
     else
       # ok, they are in an env with cas and they aren't in aperta yet
       # let redirect them to CAS with with with the JWT payload and a
@@ -128,20 +131,20 @@ class TokenInvitationsController < ApplicationController
     end
   end
 
-  def akita_invitation_accept_url
-    url_for(
+  def akita_invitation_accept_url(query_hash = {})
+    arg_hash = {
       controller: 'token_invitations',
       action: 'accept',
-      token: invitation.token,
-      new_user: true
-    )
+      token: invitation.token
+    }
+    url_for(arg_hash.merge(query_hash))
   end
 
   def akita_omniauth_callback_url
     url_for(
       controller: 'tahi_devise/omniauth_callbacks',
       action: 'cas',
-      url: akita_invitation_accept_url
+      url: akita_invitation_accept_url(new_user: true)
     )
   end
 

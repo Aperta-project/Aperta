@@ -12,7 +12,7 @@ class AutomatedSimilarityCheck
   # think it's way more weird than a case statement
   # rubocop:disable Metrics/CyclomaticComplexity
   def should_run?
-    return if existing_similarity_checks?
+    return if paper.manually_similarity_checked
     case setting_value
     when 'off'
       false
@@ -44,11 +44,12 @@ class AutomatedSimilarityCheck
     Rails.logger.info "AutomatedSimilarityCheck: Possibly checking paper #{paper.id}"
     Rails.logger.info "AutomatedSimilarityCheck: set to #{setting_value.inspect}"
     Rails.logger.info "AutomatedSimilarityCheck: Paper previous state was #{previous_paper_state.inspect}"
-    Rails.logger.info "AutomatedSimilarityCheck: Existing similarity checks? #{existing_similarity_checks?}"
+    Rails.logger.info "AutomatedSimilarityCheck: Existing similarity checks? #{paper.manually_similarity_checked}"
     Rails.logger.info "AutomatedSimilarityCheck: should_run? #{should_run?}"
     if should_run?
       similarity_check = SimilarityCheck.create!(
-        versioned_text: paper.latest_submitted_version
+        versioned_text: paper.latest_submitted_version,
+        automatic: true
       )
       Rails.logger.info <<-HERE
         Performing automated similarity check
@@ -65,10 +66,6 @@ class AutomatedSimilarityCheck
 
   def previous_verdict
     paper.last_completed_decision.try(:verdict)
-  end
-
-  def existing_similarity_checks?
-    SimilarityCheck.joins(:paper).where(papers: { id: paper.id }).exists?
   end
 
   def submitted_after_major_revise_decision?

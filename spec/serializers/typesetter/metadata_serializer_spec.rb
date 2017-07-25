@@ -38,9 +38,8 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
-
   before do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end

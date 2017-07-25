@@ -127,9 +127,7 @@ describe InvitationsController do
 
       context 'the primary id is not present' do
         subject(:do_request) do
-          put :update_primary,
-            format: :json,
-            id: invitation.id
+          put :update_primary, format: :json, id: invitation.id
         end
 
         before do
@@ -259,9 +257,9 @@ describe InvitationsController do
         expect(invitation.reload.email).to eq("foo@bar.com")
       end
 
-      it "responds with the updated invitation" do
+      it "returns 204" do
         do_request
-        expect(res_body["invitation"]["id"]).to eq(invitation.id)
+        expect(response.status).to eq(204)
       end
 
       it "does not update the invitation's primary" do

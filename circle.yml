@@ -22,7 +22,7 @@ dependencies:
 
   pre:
     - gem update --system
-    - gem install bundler -v '1.12.5'
+    - gem install bundler -v '1.15.3'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
 
@@ -41,8 +41,8 @@ database:
   override:
     - bundle exec rake db:create db:schema:load
   post:
-    # npm install here so that it is cached by circle for parallel tests
-    - cd client && npm install && cd .. && bundle exec rake ember:install
+    - bundle exec rake ember:install:
+        timeout: 900 # 15 minutes
 
 
 ## Customize test commands

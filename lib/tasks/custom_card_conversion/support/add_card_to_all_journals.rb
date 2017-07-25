@@ -15,6 +15,10 @@ class AddCardToAllJournals
   end
 
   def from_configuration_file
+    # Guard against schema changes which may have occurred in the same migration set
+    CardContent.connection.schema_cache.clear!
+    CardContent.reset_column_information
+
     xml = File.read(File.join(XML_PATH, config_file_name))
 
     Card.transaction do

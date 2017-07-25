@@ -21,6 +21,13 @@ namespace :paper_tracker_seed_data do
         puts "IGNORED REDIS ERROR"
         puts "============================"
         puts "============================"
+
+      rescue Redis::CommandError
+        puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        puts "IGNORED REDIS ERROR"
+        puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
       end
     end
 

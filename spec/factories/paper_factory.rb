@@ -1,10 +1,8 @@
 require 'securerandom'
 
-
 titles = [
   "A “Rose Is a Rose Is a Rose Is a Rose,” but Exactly What Is a Gastric Adenocarcinoma?",
-  "The Tactics People Use to Entice and Disguise the Process of Human Mate Poaching.",
-  "You Probably Think This Paper's About You: Narcissists' Perceptions of Their Personality and Reputation."
+  "The Tactics People Use to Entice and Disguise the Process of Human Mate Poaching."
 ]
 
 FactoryGirl.define do
@@ -37,7 +35,7 @@ FactoryGirl.define do
     end
 
     sequence :title do |n|
-      selection_index = num_gen.rand 4
+      selection_index = num_gen.rand titles.length
       title = titles[selection_index]
       "#{title} - #{n}-#{SecureRandom.hex(3)}"
     end

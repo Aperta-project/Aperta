@@ -61,6 +61,54 @@ feature "Dashboard", js: true do
     end
   end
 
+  feature "displaying review due dates" do
+    let(:paper_reviewer_task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+    let(:paper) do
+      FactoryGirl.create(
+        :paper_with_phases,
+        :with_creator,
+        :submitted_lite,
+        journal: journal
+      )
+    end
+    let(:papers) { [paper] }
+    let(:invitation) do
+      FactoryGirl.create(
+        :invitation,
+        :accepted,
+        accepted_at: DateTime.now.utc,
+        invitee: user,
+        task: paper_reviewer_task,
+        decision: paper.draft_decision
+      )
+    end
+
+    before do
+      FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+
+      paper.draft_decision.invitations << invitation
+      ReviewerReportTaskCreator.new(
+        originating_task: paper_reviewer_task,
+        assignee_id: user.id
+      ).process
+
+      login_as(user, scope: :user)
+    end
+
+    scenario "shows review due date" do
+      visit "/"
+      within('.active-paper-table-row') { expect(page).to have_content("Your review is due") }
+    end
+
+    scenario "shows original due date" do
+      report = ReviewerReport.for_invitation(invitation)
+      report.set_due_datetime(length_of_time: 100.days)
+
+      visit "/"
+      within('.active-paper-table-row') { expect(page).to have_content("Originally due") }
+    end
+  end
+
   feature "displaying journal name" do
     let(:active_paper_count) { 1 }
     let(:paper) { papers.first }

@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -13,5 +14,10 @@ export default DS.Model.extend({
   cc: DS.attr('string'),
   bcc: DS.attr('string'),
   sentAt: DS.attr('date'),
-  manuscriptVersionStatus: DS.attr('string')
+  manuscriptVersion: DS.attr('string'),
+  manuscriptStatus: DS.attr('string'),
+
+  manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
+    return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+  }),
 });

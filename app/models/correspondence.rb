@@ -19,13 +19,13 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
-  after_save :save_manuscript_version_status
+  after_save :save_manuscript_version_and_status
 
   def external?
     external
   end
 
-  def save_manuscript_version_status
+  def save_manuscript_version_and_status
     return if external?
     paper = self.paper
     # we have cases where correspondence(s) are not
@@ -35,7 +35,6 @@ class Correspondence < ActiveRecord::Base
     return unless paper
     manuscript_version = paper.versioned_texts.last.version
     manuscript_status = paper.publishing_state
-    manuscript_version_status = "#{manuscript_version} #{manuscript_status}"
-    update_column :manuscript_version_status, manuscript_version_status
+    update_attributes(manuscript_version: manuscript_version, manuscript_status: manuscript_status)
   end
 end

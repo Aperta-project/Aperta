@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe "ManuscriptManagerTemplateForm" do
-
   let(:journal) { FactoryGirl.create(:journal) }
   let(:valid_form) { ManuscriptManagerTemplateForm.new(valid_params) }
   let(:template) { FactoryGirl.create(:manuscript_manager_template) }
 
   context "Creating a ManuscriptManagerTemplate" do
-
     it "Creates a ManuscriptManagerTemplate" do
       valid_form.create!
       last_template = ManuscriptManagerTemplate.last

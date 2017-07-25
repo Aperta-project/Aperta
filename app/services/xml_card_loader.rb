@@ -119,6 +119,8 @@ class XmlCardLoader
         content.attr_value('revert-children-on-hide'),
       default_answer_value:
         content.attr_value('default-answer-value'),
+      toggleable_hide:
+        content.attr_value('toggleable-hide'),
       ident:
         content.attr_value('ident'),
       label:

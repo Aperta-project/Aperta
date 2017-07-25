@@ -57,6 +57,7 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:owner_type,
                                    :owner_id,
                                    :value,
-                                   :card_content_id)
+                                   :card_content_id,
+                                   :toggleable_hide)
   end
 end

@@ -58,6 +58,14 @@
         <value>check-box</value>
       </attribute>
       <optional>
+        <attribute name="toggleable-hide">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
         <attribute name="default-answer-value">
           <choice>
             <value>true</value>
@@ -215,7 +223,7 @@
         <element name="validation">
           <attribute name="validation-type">
             <choice>
-              <value>answer-check</value>
+              <value>answer-readiness</value>
               <value>answer-value</value>
             </choice>
           </attribute>

@@ -4,7 +4,8 @@ class AnswerSerializer < ActiveModel::Serializer
     :value,
     :additional_data,
     :paper_id,
-    :owner
+    :owner,
+    :toggleable_hide_value
 
   has_one :card_content, embed: :id
   has_many :attachments, embed: :ids, include: true, root: :question_attachments

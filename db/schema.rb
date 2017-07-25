@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170711225015) do
+ActiveRecord::Schema.define(version: 20170724222156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,9 +57,10 @@ ActiveRecord::Schema.define(version: 20170711225015) do
     t.integer  "paper_id"
     t.string   "value"
     t.jsonb    "additional_data"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.datetime "deleted_at"
+    t.boolean  "toggleable_hide_value"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -245,6 +246,7 @@ ActiveRecord::Schema.define(version: 20170711225015) do
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
     t.boolean  "revert_children_on_hide"
+    t.boolean  "toggleable_hide"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

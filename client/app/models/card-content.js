@@ -24,6 +24,7 @@ export default DS.Model.extend({
   valueType: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
   revertChildrenOnHide: DS.attr('boolean'),
+  toggleableHide: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
   childrenSort: ['order:asc'],
@@ -42,7 +43,8 @@ export default DS.Model.extend({
       return null;
     }
   },
-
+  
+  
   answerForOwner(owner) {
     return this.get('answers').findBy('owner', owner) ||
            this.createAnswerForOwner(owner);

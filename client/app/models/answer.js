@@ -10,6 +10,7 @@ export default DS.Model.extend(Readyable, {
   cardContent: DS.belongsTo('card-content', { async: false }),
   owner: DS.belongsTo('answerable', { async: false, polymorphic: true }),
   paper: DS.belongsTo('paper'), //TODO APERTA-8972 consider removing from client
+  toggleableHideValue: DS.attr('boolean'),
 
   wasAnswered: Ember.computed('value', function(){
     return Ember.isPresent(this.get('value'));

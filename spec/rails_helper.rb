@@ -21,6 +21,7 @@ include Warden::Test::Helpers
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 require_relative '../lib/tasks/card_loading/support/card_loader'
+require_relative '../lib/custom_card/loader'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

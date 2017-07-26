@@ -1,19 +1,20 @@
 class RoleSpecHelper
-  def self.create_role(name, context, participates_in: [], &blk)
-    new(name, context, participates_in: participates_in, &blk).role
+  def self.create_role(name, context, journal:, participates_in: [], &blk)
+    new(name, context, journal: journal, participates_in: participates_in, &blk).role
   end
 
   attr_reader :role
 
-  def initialize(name, context, participates_in: [], &blk)
+  def initialize(name, context, journal: nil, participates_in: [], &blk)
     @name = name
+    @journal = journal || FactoryGirl.create(:journal)
 
     attrs = participates_in.each_with_object({}) do |klass, hsh|
       column = "participates_in_#{klass.name.underscore.downcase.pluralize}"
       hsh[column] = true
     end
 
-    @role = FactoryGirl.create(:role, attrs.merge(name: name))
+    @role = FactoryGirl.create(:role, attrs.merge(name: name, journal: journal))
     instance_exec(context, &blk) if blk
     self
   end

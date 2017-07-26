@@ -51,6 +51,7 @@ describe ReviewerReportsController do
       end
 
       it 'returns a 204' do
+        FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
         do_request
         expect(response.status).to eq(204)
       end

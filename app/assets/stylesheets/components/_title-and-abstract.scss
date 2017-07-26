@@ -1,0 +1,15 @@
+.asterisk-field {
+  font-size: 18px;
+  color: $aperta-green;
+}
+
+.title-and-abstract-header {
+  font-size: 18px;
+
+    &::after {
+      content: '*';
+      font-size: 18px;
+      color: $aperta-green;
+      font-weight: bold;
+    }
+}

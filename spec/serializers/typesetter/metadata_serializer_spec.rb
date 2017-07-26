@@ -38,9 +38,8 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
-
   before do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -385,24 +384,5 @@ describe Typesetter::MetadataSerializer do
       serializer: Typesetter::SupportingInformationFileSerializer,
       json_key: :supporting_information_files
     )
-  end
-
-  context 'and the paper is accepted' do
-    before { paper.publishing_state = 'accepted' }
-
-    it 'serializes without error' do
-      expect(output).to_not be_empty
-    end
-  end
-
-  context 'and the paper is not accepted' do
-    before { paper.publishing_state = 'unsubmitted' }
-
-    it 'raise an error' do
-      expect { output }.to raise_error(
-        Typesetter::MetadataError,
-        /Paper has not been accepted/
-      )
-    end
   end
 end

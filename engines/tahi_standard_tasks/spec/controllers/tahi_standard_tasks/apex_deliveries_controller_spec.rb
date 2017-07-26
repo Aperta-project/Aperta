@@ -5,7 +5,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
 
   let(:user) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, journal: journal }
+  let(:paper) { FactoryGirl.create :paper, journal: journal, publishing_state: 'accepted' }
   let(:task) { FactoryGirl.create :send_to_apex_task, paper: paper }
 
   subject(:do_request) do
@@ -25,6 +25,12 @@ describe TahiStandardTasks::ApexDeliveriesController do
         do_request
         expect(response).to have_http_status(200)
       end.to change { TahiStandardTasks::ApexDelivery.count }.by 1
+    end
+
+    it "saves the destination on the apex delivery" do
+      do_request
+      expect(response.status).to eq(200)
+      expect(res_body['apex_delivery']['destination']).to eq('apex')
     end
   end
 

@@ -37,6 +37,12 @@ describe Journal do
       expect(journal.errors[:doi_publisher_prefix]).to be_empty
     end
 
+    it 'returns a doi_journal_abbrev based upon the doi_journal_prefix' do
+      journal.doi_journal_prefix = 'journalname.some_code'
+      expect(journal.doi_journal_abbrev).to eq('some_code')
+      expect(journal.errors[:doi_journal_prefix]).to be_empty
+    end
+
     it 'requires a unique doi_journal_prefix and doi_publisher_prefix combination' do
       journal.doi_journal_prefix = existing_journal.doi_journal_prefix
       journal.doi_publisher_prefix = existing_journal.doi_publisher_prefix

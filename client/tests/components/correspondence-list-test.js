@@ -47,9 +47,8 @@ test('can manage workflow, list appears', function(assert) {
 
   this.set('correspondence', [correspondence]);  
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
     assert.equal(this.$('tbody').length, 1);
     assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));

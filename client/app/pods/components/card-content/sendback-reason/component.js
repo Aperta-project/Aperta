@@ -46,5 +46,13 @@ export default Ember.Component.extend({
     function() {
       return this.get('checkboxAnswer.value') && this.get('pencilAnswer.value');
     }
-  )
+  ),
+  actions: {
+    toggleAnswer(answer) {
+      answer.toggleProperty('value');
+      if (this.get('preview')) {return Ember.RSVP.resolve();}
+      return answer.save();
+    }
+  }
+
 });

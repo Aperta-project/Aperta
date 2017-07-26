@@ -6,12 +6,17 @@
     preview=preview}}
 {{!-- render the second child (pencil-style checkbox) --}}
   {{#if checkboxAnswer.value}}
-    {{card-content
+    {{#card-content
       content=pencil
       disabled=disabled
       owner=owner
       faIconizeTo="pencil"
-      preview=preview}}
+      preview=preview as |cc|}}
+      <div>
+        <span> value is {{cc.answer.value}} </span>
+        <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
+      </div>
+    {{/card-content}}
   {{/if}}
 
 {{#if showText}}

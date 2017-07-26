@@ -49,8 +49,14 @@ export default DS.Model.extend({
       return null;
     }
   },
-  
-  
+
+  // //TODO: remove me?
+  // answer: Ember.computed('answers.[]', 'owner', function() {
+  //   let owner  = this.get('owner');
+  //   return this.get('answers').findBy('owner', owner) ||
+  //     this.createAnswerForOwner(owner);
+  // }),
+
   answerForOwner(owner) {
     return this.get('answers').findBy('owner', owner) ||
            this.createAnswerForOwner(owner);

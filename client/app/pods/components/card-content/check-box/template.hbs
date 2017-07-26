@@ -4,14 +4,12 @@
 {{check-box
   name=name
   id=name
+  faIconizeTo=faIconizeTo
   checked=(readonly answer.value)
   disabled=disabled
   action="valueChanged"}}
 {{#if content.label}}
   <label for={{name}}>{{{content.label}}}</label>
-{{/if}}
-{{#if toggleableHideEnabled}}
-  {{fa-icon click=(action "toggleHide") icon="pencil"}}
 {{/if}}
 
 {{card-content/display-children

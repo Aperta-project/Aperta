@@ -24,9 +24,32 @@ describe Author do
     )
   end
 
-  context "validation" do
+  describe "validation" do
     it "will be valid with default factory data" do
-      expect(author.valid?).to be(true)
+      expect(author).to be_valid
+    end
+
+    describe 'email uniqueness' do
+      it 'is unique among authors on the paper' do
+        dupe_author = FactoryGirl.build(:author, paper: paper, email: author.email)
+        expect(dupe_author).not_to be_valid
+        expect(dupe_author.errors[:email]).to include('Duplicate email address for this manuscript')
+      end
+
+      it 'is unique among group authors on the paper' do
+        group_author = FactoryGirl.create(:group_author, paper: paper)
+        dupe_author = FactoryGirl.build(:author, paper: subject.paper, email: group_author.email)
+        expect(dupe_author).not_to be_valid
+        expect(dupe_author.errors[:email]).to include('Duplicate email address for this manuscript')
+      end
+
+      it 'is validated on email change' do
+        dupe_author = FactoryGirl.create(:author, paper: paper, email: "blah#{author.email}")
+        expect(dupe_author).to be_valid
+        dupe_author.email = author.email
+        expect(dupe_author).not_to be_valid
+        expect(dupe_author.errors[:email]).to include('Duplicate email address for this manuscript')
+      end
     end
 
     context "and the corresponding authors_task is completed" do

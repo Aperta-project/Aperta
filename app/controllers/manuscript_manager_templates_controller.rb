@@ -75,8 +75,11 @@ class ManuscriptManagerTemplatesController < ApplicationController
       whitelisted[:phase_templates].try(:each_index) do |i|
         pt = whitelisted[:phase_templates][i]
         pt[:task_templates].try(:each_index) do |j|
-          value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
-          whitelisted[:phase_templates][i][:task_templates][j][:template] = value || []
+          template_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
+          whitelisted[:phase_templates][i][:task_templates][j][:template] = template_value || []
+
+          settings_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:settings]
+          whitelisted[:phase_templates][i][:task_templates][j][:settings] = settings_value || []
         end
       end
     end

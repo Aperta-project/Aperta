@@ -37,8 +37,7 @@ module Typesetter
       tasks.each do |task|
         answers = task.answers
         answers.each do |answer|
-          answer.card_content.ident
-          question_answers[answer.card_content.ident.to_s] = answer.value
+          question_answers[answer.card_content.ident.to_s] = answer.value unless answer.card_content.ident.blank?
         end
       end
       question_answers

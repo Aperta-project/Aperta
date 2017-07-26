@@ -13,6 +13,7 @@ export default Ember.Component.extend({
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     owner: PropTypes.EmberObject.isRequired,
+    answerChanged: PropTypes.any.isRequired
   },
 
   classNames: ['card-content-sendback-reason'],

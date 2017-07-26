@@ -20,7 +20,8 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool,
-    hasAnswerContainer: PropTypes.bool
+    hasAnswerContainer: PropTypes.bool,
+    answerChanged: PropTypes.any
   },
 
   getDefaultProps() {
@@ -58,6 +59,9 @@ export default Ember.Component.extend({
   actions: {
     updateAnswer(newVal) {
       this.set('answer.value', newVal);
+      if (this.get('answerChanged')) {
+        this.get('answerChanged')(this.get('answer'));
+      }
       if (this.get('preview')) {
         return;
       }

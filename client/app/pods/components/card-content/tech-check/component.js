@@ -10,7 +10,14 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    sendbackChanged(sendbackAnswer) {
+      let techCheckAnswer = this.get('answer');
+      if (sendbackAnswer.get('value') === true) {
+        techCheckAnswer.set('value', false);
+      }
+    },
     saveAnswer(newVal) {
+      //# TODO: do stuff to switch all sendback checkboxes here
       let action = this.get('valueChanged');
       if (action) {
         action(newVal);

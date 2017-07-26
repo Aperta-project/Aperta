@@ -5,8 +5,6 @@ import random
 import os
 import logging
 
-from loremipsum import generate_paragraph
-
 from Base.Resources import docs
 from frontend.Tasks.basetask import BaseTask
 from selenium.webdriver.common.by import By
@@ -84,15 +82,12 @@ class ReviseManuscriptTask(BaseTask):
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672
       self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
+    elif data and 'text' in data:
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('revise-overlay-response-field')
+      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=data['text'])
 
-      # This code is dead and it leaves file upload dialog zombies
-      #self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
-      #self._get(self._upload_btn).click()
-      # Give time to upload.
-      #time.sleep(10)
 
-    if data and 'text' not in data:
-      data['text'] = generate_paragraph()[2] or 'text'
-    self._get(self._response_field).send_keys(data['text'])
     self._get(self._save_btn).click()
     return None

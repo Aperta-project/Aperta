@@ -9,6 +9,8 @@ import os
 import random
 import time
 
+from loremipsum import generate_paragraph
+
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, admin_users
 from frontend.common_test import CommonTest
@@ -98,8 +100,10 @@ class ReviseManuscriptTest(CommonTest):
 
     # need to complete this task again after providing new manuscript
     paper_viewer.complete_task('Title And Abstract')
-    paper_viewer.complete_task('Response to Reviewers', data=data)
+    paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
+                                                              'response_number': 2})
     # submit and logout
+    time.sleep(1)
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()
@@ -119,6 +123,9 @@ class ReviseManuscriptTest(CommonTest):
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
 
+    decision_history = workflow_page.get_decision_history_summary()
+    assert decision_history[0].text == '1.0\nMajor Revision', decision_history[0].text
+    assert decision_history[1].text == '0.0\nMajor Revision', decision_history[1].text
 
     return self
 

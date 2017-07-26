@@ -637,7 +637,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Response to Reviewers':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
-      revise_manuscript.validate_empty_response()
+      if data and 'response_number' not in data:
+        revise_manuscript.validate_empty_response()
       revise_manuscript.response_to_reviewers(data)
       # complete revise task
       if not base_task.completed_state():

@@ -122,6 +122,7 @@ class ReviseManuscriptTest(CommonTest):
     time.sleep(2)
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
+    workflow_page.click_register_decision_card()
 
     decision_history = workflow_page.get_decision_history_summary()
     assert decision_history[0].text == '1.0\nMajor Revision', decision_history[0].text

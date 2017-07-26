@@ -271,8 +271,8 @@ class Task < ActiveRecord::Base
   end
 
   def display_status
-    return "active_check" if completed
-    "check"
+    return :active_check if completed
+    :check
   end
 
   private

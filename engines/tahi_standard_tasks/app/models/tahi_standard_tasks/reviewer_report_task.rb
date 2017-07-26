@@ -74,12 +74,7 @@ module TahiStandardTasks
     end
 
     def display_status
-      inactive = ["not_invited", "invitation_declined", "invitation_rescinded"]
-      incomplete = ["pending", "invitation_invited"]
-      status = latest_reviewer_report.try(:computed_status)
-      return "minus" if inactive.include? status
-      return "check" if incomplete.include? status
-      "active_check" if status == "completed"
+      latest_reviewer_report.display_status
     end
   end
 end

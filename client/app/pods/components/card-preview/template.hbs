@@ -11,12 +11,8 @@
       <div class="task-disclosure-completed-icon">
         {{partial "svg/minus"}}
       </div>
-    {{else if (eq reviewState "check")}}
-      <div class="task-disclosure-completed-icon">
-        {{partial "svg/check"}}
-      </div>
     {{else}}
-      <div class="task-disclosure-completed-icon active">
+      <div class="task-disclosure-completed-icon {{if (eq reviewState "active_check") "active"}}">
         {{partial "svg/check"}}
       </div>
     {{/if}}

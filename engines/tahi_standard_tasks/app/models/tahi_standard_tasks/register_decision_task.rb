@@ -13,6 +13,7 @@ module TahiStandardTasks
       if decision.revision?
         ReviseTask.setup_new_revision(paper, phase)
         UploadManuscriptTask.setup_new_revision(paper, phase)
+        TitleAndAbstractTask.setup_new_revision(paper, phase)
       end
       complete!
     end

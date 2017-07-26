@@ -228,6 +228,9 @@ class JournalFactory
 
       role.ensure_permission_exists(:view, applies_to: Card)
 
+      # The TitleAndAbstractTask is always editable, regardless of paper state.
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
+
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic)
@@ -279,6 +282,9 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+
+      # The TitleAndAbstractTask is always editable, regardless of paper state.
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)

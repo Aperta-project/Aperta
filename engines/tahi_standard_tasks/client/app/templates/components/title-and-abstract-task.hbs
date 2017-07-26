@@ -18,9 +18,7 @@
           class='article-title-input'
           onContentsChanged=(action 'titleChanged')
           disabled=isNotEditable
-          errorMessage=validationErrors.paperTitle
-          displayIcon=true
-          displayText=true
+          errorMessages=paperTitleError
         }}
     </div>
 
@@ -33,9 +31,7 @@
           class='article-abstract-input'
           onContentsChanged=(action 'abstractChanged')
           disabled=isNotEditable
-          errorMessage=validationErrors.paperAbstract
-          displayIcon=true
-          displayText=true
+          errorMessages=paperAbstractError
         }}
     </div>
   </div>

@@ -18,24 +18,7 @@ export default Ember.Component.extend({
   canRemoveCard: false,
   version1: null,  // Will be a string like "1.2"
   version2: null,  // Will be a string like "1.2"
-  reviewState: Ember.computed('task.lastReviewerReportStatus', {
-    get() {
-      return this.get('task.lastReviewerReportStatus');
-    }
-  }),
-  taskImmutable: Ember.computed('reviewState', {
-    get() {
-      return this.get('reviewState') === 'not_invited' ||
-        this.get('reviewState') === 'invitation_declined' ||
-        this.get('reviewState') === 'invitation_rescinded';
-    }
-  }),
-  taskIncomplete: Ember.computed('reviewState', {
-    get() {
-      return this.get('reviewState') === 'pending' ||
-        this.get('reviewState') === 'invitation_invited';
-    }
-  }),
+  reviewState: Ember.computed.reads('task.displayStatus'),
 
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish

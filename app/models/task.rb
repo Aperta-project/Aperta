@@ -1,3 +1,4 @@
+# Base class for all types of Task
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
@@ -46,7 +47,6 @@ class Task < ActiveRecord::Base
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
-  has_many :reviewer_reports
   has_many :attachments,
            as: :owner,
            class_name: 'AdhocAttachment',
@@ -270,15 +270,29 @@ class Task < ActiveRecord::Base
     'Task'
   end
 
-  def last_reviewer_report_status
-    # the most review report is always the first
-    reviewer_reports.first.try(:computed_status)
+  def display_status
+    return reviewer_report_status if respond_to? :reviewer_reports
+    default_task_status
   end
 
   private
 
   def update_completed_at
     self.completed_at = (Time.zone.now if completed)
+  end
+
+  def reviewer_report_status
+    immutable = ["not_invited", "invitation_declined", "invitation_rescinded"]
+    incomplete = ["pending", "invitation_invited"]
+    status = latest_reviewer_report.try(:computed_status)
+    return "minus" if immutable.include? status
+    return "check" if incomplete.include? status
+    "active_check" if status == "completed"
+  end
+
+  def default_task_status
+    return "active_check" if completed
+    "check"
   end
 end
 

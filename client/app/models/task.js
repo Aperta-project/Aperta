@@ -56,7 +56,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   qualifiedType: DS.attr('string'),
   title: DS.attr('string'),
   type: DS.attr('string'),
-  lastReviewerReportStatus: DS.attr('string'),
+  displayStatus: DS.attr('string'),
   assignedToMe: DS.attr(),
   debouncePeriod: 200, // ms
 

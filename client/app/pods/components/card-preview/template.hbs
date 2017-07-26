@@ -7,16 +7,16 @@
       <i class="card-diff-icon fa fa-files-o"></i>
     {{/if}}
   {{else}}
-    {{#if taskImmutable}}
+    {{#if (eq reviewState "minus")}}
       <div class="task-disclosure-completed-icon">
         {{partial "svg/minus"}}
       </div>
-    {{else if taskIncomplete}}
+    {{else if (eq reviewState "check")}}
       <div class="task-disclosure-completed-icon">
         {{partial "svg/check"}}
       </div>
     {{else}}
-      <div class="task-disclosure-completed-icon {{if task.completed "active"}}">
+      <div class="task-disclosure-completed-icon active">
         {{partial "svg/check"}}
       </div>
     {{/if}}

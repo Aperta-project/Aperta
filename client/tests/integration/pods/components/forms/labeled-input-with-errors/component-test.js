@@ -73,3 +73,8 @@ test('it adds the dasherized name to the input and label classes', function(asse
   assert.elementFound('label.fun-times');
   assert.elementFound('.fun-times[type="text"]');
 });
+
+test('it adds the required class if the required prop is passed in', function(assert) {
+  this.render(hbs`{{forms/labeled-input-with-errors name='funTimes' type='text' label='Fred' required=true}}`);
+  assert.elementFound('label.required');
+});

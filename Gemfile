@@ -105,6 +105,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-rescue'
+  gem 'pry-stack_explorer'
   gem 'quiet_assets'
   # This needs to be in the development group to make rake tasks work
   gem 'rspec-rails'

@@ -15,6 +15,8 @@ export default Ember.Component.extend({
     owner: PropTypes.EmberObject.isRequired,
   },
 
+  classNames: ['card-content-sendback-reason'],
+
   shouldHide: Ember.observer('checkboxAnswer.value', function() {
     Ember.run.once(this, 'revertChildrenAnswers');
   }),

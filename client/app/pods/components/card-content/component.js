@@ -19,11 +19,15 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
-    preview: PropTypes.bool
+    preview: PropTypes.bool,
+    hasAnswerContainer: PropTypes.bool
   },
 
   getDefaultProps() {
-    return { preview: false };
+    return {
+      preview: false,
+      hasAnswerContainer: true
+    };
   },
 
   tagName: '',
@@ -31,15 +35,21 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    Ember.assert(`you must pass an owner to card-content`, Ember.isPresent(this.get('owner')));
-    Ember.assert('this component must have content with a contentType', this.get('content.contentType'));
+    Ember.assert(
+      `you must pass an owner to card-content`,
+      Ember.isPresent(this.get('owner'))
+    );
+    Ember.assert(
+      'this component must have content with a contentType',
+      this.get('content.contentType')
+    );
   },
 
   answer: Ember.computed('content', 'owner', function() {
     return this.get('content').answerForOwner(this.get('owner'));
   }),
 
-  _debouncedSave: concurrencyTask(function * () {
+  _debouncedSave: concurrencyTask(function*() {
     yield timeout(this.get('debouncePeriod'));
     let answer = this.get('answer');
     return yield answer.save();
@@ -48,13 +58,15 @@ export default Ember.Component.extend({
   actions: {
     updateAnswer(newVal) {
       this.set('answer.value', newVal);
-      if (this.get('preview')) {return;}
+      if (this.get('preview')) {
+        return;
+      }
       this.get('_debouncedSave').perform();
     },
 
     updateAnnotation(e) {
       this.set('answer.annotation', e.target.value);
-      if(!this.get('preview')) {
+      if (!this.get('preview')) {
         this.get('_debouncedSave').perform();
       }
     }

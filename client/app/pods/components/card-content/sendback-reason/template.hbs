@@ -1,28 +1,31 @@
 {{!-- render the first child (checkbox) --}}
+<div class="sendback-reason-row">
   {{card-content
     content=checkbox
     disabled=disabled
     owner=owner
+    hasAnswerContainer=false
     preview=preview}}
-{{!-- render the second child (pencil-style checkbox) --}}
+  {{!-- render the second child (pencil-style checkbox) --}}
   {{#if checkboxAnswer.value}}
     {{#card-content
       content=pencil
       disabled=disabled
       owner=owner
-      faIconizeTo="pencil"
+      hasAnswerContainer=false
       preview=preview as |cc|}}
-      <div>
-        <span> value is {{cc.answer.value}} </span>
-        <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
-      </div>
+      <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
     {{/card-content}}
   {{/if}}
+</div>
 
 {{#if showText}}
-  {{card-content
-    content=textarea
-    disabled=disabled
-    owner=owner
-    preview=preview}}
+  <div class="card-content-field-set">
+    {{card-content
+      content=textarea
+      disabled=disabled
+      hasAnswerContainer=false
+      owner=owner
+      preview=preview}}
+  </div>
 {{/if}}

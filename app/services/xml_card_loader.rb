@@ -109,6 +109,8 @@ class XmlCardLoader
         content.attr_value('allow-file-captions'),
       allow_multiple_uploads:
         content.attr_value('allow-multiple-uploads'),
+      allow_annotations:
+        content.attr_value('allow-annotations'),
       content_type:
         content.attr_value('content-type'),
       default_answer_value:
@@ -117,10 +119,13 @@ class XmlCardLoader
         content.attr_value('ident'),
       label:
         content.tag_text('label'),
+      instruction_text:
+        content.tag_text('instruction-text'),
       possible_values:
         content.fetch_values('possible-value', [:label, :value]),
       text:
         content.tag_text('text'),
+      editor_style: content.attr_value('editor-style'),
       value_type:
         content.attr_value('value-type'),
       visible_with_parent_answer:

@@ -1,11 +1,12 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Component.extend({
   classNames: ['report-status'],
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
-  statusMessage: Ember.computed('report.status', function() {
+  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', function() {
     const status = this.get('report.status');
     var output = '';    const verbs = {
       'pending': 'accepted',
@@ -17,10 +18,24 @@ export default Ember.Component.extend({
     if (['invitation_pending', 'not_invited'].includes(status)) {
       output = 'This candidate has not been invited to ' + this.get('report.revision');
     } else {
-      output = 'Invitation to review ' + this.get('report.revision') + ' '
-             + verbs[status] + ' ' + this.get('statusDate');
+      output = `Invitation ${verbs[status]} ${this.get('statusDate')}`;
     }
+    const originalDueDate = this.get('report.originallyDueAt');
+    if (originalDueDate) {
+      const format = 'MMMM D';
+      const formattedDate = moment(originalDueDate).format(format);
+      output += ` · Original due date was ${formattedDate}`;
+    }
+    return output;
+  }),
 
+  statusMessage: Ember.computed('report.status','report.revision','reviewDueAt', 'reviewDueMessage', function() {
+    const status = this.get('report.status');
+    var output = '';
+
+    if (!['invitation_pending', 'not_invited'].includes(status)) {
+      output = 'review of ' + this.get('report.revision') + this.get('reviewDueMessage');
+    }
     return output;
   }),
 
@@ -30,6 +45,17 @@ export default Ember.Component.extend({
     return moment(date).format(format);
   }),
 
+  reviewDueMessage: Ember.computed('report.dueAt', function(){
+    const date = this.get('report.dueAt');
+    var output = '';
+    if (date) {
+      const format = 'MMMM D, YYYY h:mm a z';
+      const zone = moment.tz.guess();
+      output = ' due ' + moment(date).tz(zone).format(format);
+    }
+    return output;
+  }),
+  
   reviewerStatus: Ember.computed('report.status', function() {
     const status = this.get('report.status');
     const statuses = {
@@ -45,4 +71,12 @@ export default Ember.Component.extend({
     return statuses[status];
   }),
 
+  actions: {
+    changeDueDate(newDate) {
+      var hours = this.get('report.dueAt').getHours();
+      newDate.setHours(hours);
+      this.set('report.dueAt', newDate);
+      this.get('report').save();
+    }
+  }
 });

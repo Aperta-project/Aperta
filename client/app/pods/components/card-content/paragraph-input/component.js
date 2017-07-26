@@ -11,6 +11,8 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
   },
 
+  isRichText: Ember.computed.equal('content.valueType', 'html'),
+
   actions: {
     valueChanged(newValue) {
       let action = this.get('valueChanged');

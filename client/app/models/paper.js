@@ -89,6 +89,10 @@ export default DS.Model.extend({
   versionsContainPdf: attr('boolean'),
   legendsAllowed: attr('boolean'),
   currentUserRoles: attr(),
+  manuallySimilarityChecked: attr('boolean'),
+
+  reviewDueAt: attr('date'),
+  reviewOriginallyDueAt: attr('date'),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),

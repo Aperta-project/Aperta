@@ -4,6 +4,8 @@ FactoryGuy.define('reviewer-report', {
   default: {
     task: { id: 1 },
     decision: { id: 1},
+    dueAt: '2017-07-04T14:00:00.028Z',
+    originallyDueAt: '2017-07-04T14:00:00.028Z',
     user: { id: 1}
   },
   traits: {

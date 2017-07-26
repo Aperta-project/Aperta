@@ -15,9 +15,12 @@ class ReviewerReportsController < ApplicationController
   def update
     requires_user_can :edit, reviewer_report.task
 
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      reviewer_report.due_datetime.update_attributes reviewer_report_params.slice(:due_at)
+    end
     reviewer_report.submit! if reviewer_report_params[:submitted].present?
 
-    render json: reviewer_report
+    respond_with reviewer_report
   end
 
   private
@@ -28,6 +31,6 @@ class ReviewerReportsController < ApplicationController
 
   def reviewer_report_params
     params.require(:reviewer_report)
-      .permit(:submitted)
+      .permit(:submitted, :due_at)
   end
 end

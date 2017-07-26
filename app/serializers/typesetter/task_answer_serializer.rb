@@ -20,5 +20,18 @@ module Typesetter
         nil
       end
     end
+
+    def custom_tasks_questions_answers
+      tasks = object.tasks.where(type: 'CustomCardTask')
+                          .includes(answers: :card_content)
+      question_answers = {}
+      tasks.each do |task|
+        answers = task.answers
+        answers.each do |answer|
+          question_answers[answer.card_content.ident.to_s] = answer.value unless answer.card_content.ident.blank?
+        end
+      end
+      question_answers
+    end
   end
 end

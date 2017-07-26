@@ -14,6 +14,7 @@ task 'create_feature_flags': :environment do
     "HEALTH_CHECK",
     "CORRESPONDENCE",
     "REVIEW_DUE_DATE",
+    "CAS_PHASED_SIGNUP",
     "CORRESPONDING_AUTHOR"
   ]
 end

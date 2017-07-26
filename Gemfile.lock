@@ -774,6 +774,7 @@ DEPENDENCIES
   has_secure_token
   health_check
   heroku-deflater
+  jwt
   kaminari
   liquid
   lograge
@@ -853,4 +854,4 @@ RUBY VERSION
    ruby 2.2.6p396
 
 BUNDLED WITH
-   1.15.1
+   1.15.3

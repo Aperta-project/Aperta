@@ -16,7 +16,7 @@ export default TaskComponent.extend(FileUploadMixin, {
   saveErrorText: 'Please edit and complete the required fields.',
 
   validateData() {
-    const objs = this.get('filesWithErrors');
+    const objs = this.get('filesWithValidations');
     objs.invoke('validateAll');
 
     let errors = ObjectProxyWithErrors.errorsPresentInCollection(objs); // returns a boolean
@@ -32,27 +32,35 @@ export default TaskComponent.extend(FileUploadMixin, {
     }
   },
 
-  filesWithErrors: computed('files.[]', function() {
-    return this.get('files').map((f)=> {
-      return ObjectProxyWithErrors.create({
-        saveErrorText: this.get('saveErrorText'),
-        object: f,
-        skipValidations: () => { return this.get('skipValidations') },
-        validations: {
-          processed: [{
-            type: 'processingFinished',
-            message: 'All files must be done processing to save.',
-            validation() {
-              const file = this.get('object');
-              return file.get('status') === 'done';
-            }
-          }],
-          'label': ['presence'],
-          'category': ['presence']
-        }
-      });
+  filesWithValidations: computed('files.[]', function() {
+    let proxies = this.get('files').map((file)=> {
+      // These proxies hold validation errors. We cache them to avoid wiping out
+      // all validation errors in the collection when a file is added or deleted.
+      return this.get('cachedFilesWithValidations').findBy('object', file) || this.newFileWithValidations(file);
     });
+    this.set('cachedFilesWithValidations', proxies);
+    return proxies;
   }),
+  cachedFilesWithValidations: computed(() => []),
+  newFileWithValidations(file){
+    return ObjectProxyWithErrors.create({
+      saveErrorText: this.get('saveErrorText'),
+      object: file,
+      skipValidations: () => { return this.get('skipValidations'); },
+      validations: {
+        'label':     ['presence'],
+        'category':  ['presence'],
+        'processed': [{
+          type: 'processingFinished',
+          message: 'All files must be done processing to save.',
+          validation() {
+            const file = this.get('object');
+            return file.get('status') === 'done';
+          }
+        }]
+      }
+    });
+  },
 
   actions: {
     uploadStarted(data, filename) {
@@ -70,11 +78,9 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.get('store').pushPayload('supporting-information-file', data);
 
-      const siFile = this.get('store')
-                         .peekRecord('supporting-information-file', id);
-
-      const proxyObject = this.get('filesWithErrors').findBy('object', siFile);
-      proxyObject.validateAll();
+      const siFile = this.get('store').peekRecord('supporting-information-file', id);
+      const proxyObject = this.get('filesWithValidations').findBy('object', siFile);
+      proxyObject.set('newlyUploaded', true);
     },
 
     deleteFile(file) {

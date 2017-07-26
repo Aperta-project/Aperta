@@ -50,16 +50,20 @@
     cursor: not-allowed;
   }
 
-  input:checked + .slider {
-    background-color: $aperta-green;
-  }
-
   input:focus + .slider {
     box-shadow: 0 0 1px green;
   }
 
   input:checked + .slider:before {
     transform: translateX(100%);
+  }
+
+  input:checked + .slider.blue {
+    background-color: $aperta-blue;
+  }
+
+  input:checked + .slider.green {
+    background-color: $aperta-green;
   }
 
   .slider.round {

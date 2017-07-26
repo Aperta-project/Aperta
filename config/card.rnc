@@ -21,7 +21,7 @@ radio-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean"},
                   attribute content-type { "radio" },
-                  attribute required-field { "true" | "false" },
+                  attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   element text { text },
                   possible-value*,
@@ -31,7 +31,7 @@ radio-input = element content {
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
-                attribute required-field { "true" | "false" },
+                attribute required-field { "true" | "false" }?,
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 (element label { text }? &
@@ -43,7 +43,7 @@ file-uploader = element content {
                     attribute ident { text }?,
                     attribute content-type { "file-uploader" },
                     attribute value-type { "attachment" },
-                    attribute required-field { "true" | "false" },
+                    attribute required-field { "true" | "false" }?,
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
                     (element validation {
@@ -60,7 +60,7 @@ date-picker = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
-                  attribute required-field { "true" | "false" },
+                  attribute required-field { "true" | "false" }?,
                   element text { text }
               }
 
@@ -69,7 +69,7 @@ dropdown-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
-                  attribute required-field { "true" | "false" },
+                  attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   element text { text },
                   possible-value+,
@@ -79,7 +79,7 @@ dropdown-input = element content {
 tech-check = element content {
                 attribute ident { text }?,
                 attribute content-type { "tech-check" },
-                attribute required-field { "true" | "false" },
+                attribute required-field { "true" | "false" }?,
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 element text { text }?,
@@ -90,7 +90,7 @@ text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" },
                  attribute content-type { "short-input" | "paragraph-input" },
-                 attribute required-field { "true" | "false" },
+                 attribute required-field { "true" | "false" }?,
                  attribute default-answer-value { text }?,
                  (element text { text }? &
                   element validation {

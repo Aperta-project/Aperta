@@ -7,8 +7,8 @@ FactoryGuy.define('correspondence', {
     subject: 'Thank you for submitting your manuscript to PLOS Abominable Snowman',
     recipient: 'john.doe@example.com',
     sender: 'joe@example.com',
-    manuscriptVersion: 'rejected',
-    manuscriptStatus: 'v0.0'
+    manuscriptVersion: 'v0.0',    
+    manuscriptStatus: 'rejected'
   },
 
   traits: {

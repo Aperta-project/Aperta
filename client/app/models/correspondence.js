@@ -18,6 +18,11 @@ export default DS.Model.extend({
   manuscriptStatus: DS.attr('string'),
 
   manuscriptVersionStatus: Ember.computed('manuscriptVersion','manuscriptStatus', function() {
-    return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
-  }),
+    if (!this.get('manuscriptVersion') || !this.get('manuscriptStatus')) {
+      return 'Unavailable';
+    }
+    else {
+      return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
+    }
+  })
 });

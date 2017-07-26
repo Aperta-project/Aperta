@@ -55,7 +55,7 @@ test('can manage workflow, list appears', function(assert) {
     assert.textPresent('tr:last td:nth-child(1)', formatDate(correspondence.get('sentAt'), {}));
     assert.textPresent('tr:last td:nth-child(2)', correspondence.get('subject'));
     assert.textPresent('tr:last td:nth-child(3)', correspondence.get('recipient'));
-    assert.textPresent('tr:last td:nth-child(4)', correspondence.get('v0.0 rejected'));
+    assert.textPresent('tr:last td:nth-child(4)', 'v0.0 rejected');
     assert.textPresent('tr:last td:nth-child(5)', correspondence.get('sender'));
     done();
   });

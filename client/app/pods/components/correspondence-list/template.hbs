@@ -22,8 +22,8 @@
               </div>
             </td>
             <td>{{message.recipient}}</td>
-            <td class='{{unless message.manuscriptVersionStatus 'unavailable'}}'>
-              {{if message.manuscriptVersionStatus message.manuscriptVersionStatus 'Unavailable'}}
+            <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}">
+              {{message.manuscriptVersionStatus}}
             </td>
             <td>{{message.sender}}</td>
           </tr>

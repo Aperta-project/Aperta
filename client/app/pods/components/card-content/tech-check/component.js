@@ -6,7 +6,21 @@ export default Ember.Component.extend({
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
-    answer: PropTypes.EmberObject.isRequired
+    answer: PropTypes.EmberObject.isRequired,
+    preview: PropTypes.bool
+  },
+
+  clearSendbacks() {
+    let sendbackAnswers = this.get('content.children').map((sendbackContent) => {
+      let checkbox = sendbackContent.get('children.firstObject');
+      return checkbox.answerForOwner(this.get('owner'));
+    });
+
+    sendbackAnswers.setEach('value', false);
+    if (!this.get('preview')) {
+      //TODO: filter to only save changed answers
+      sendbackAnswers.invoke('save');
+    }
   },
 
   actions: {
@@ -17,10 +31,13 @@ export default Ember.Component.extend({
       }
     },
     saveAnswer(newVal) {
-      //# TODO: do stuff to switch all sendback checkboxes here
       let action = this.get('valueChanged');
       if (action) {
         action(newVal);
+      }
+
+      if (newVal) {//if the check has 'passed' manually
+        this.clearSendbacks();
       }
     }
   }

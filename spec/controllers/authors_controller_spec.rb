@@ -4,17 +4,28 @@ describe AuthorsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:authors_task, :with_loaded_card, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
+  let(:enrico) do
+    {
+      first_name: "enrico",
+      last_name: "fermi",
+      email: "enrico@fermilabs.org",
+      paper_id: paper.id,
+      task_id: task.id
+    }
+  end
+
   let(:post_request) do
     post :create,
          format: :json,
-         author: {
-           first_name: "enrico",
-           last_name: "fermi",
-           paper_id: paper.id,
-           task_id: task.id,
-           position: 1
-         }
+         author: enrico
   end
+
+  let(:post_request2) do
+    post :create,
+         format: :json,
+         author: enrico
+  end
+
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
   let(:delete_request) { delete :destroy, format: :json, id: author.id }
   let(:put_request) do
@@ -50,6 +61,22 @@ describe AuthorsController do
 
     it 'a DELETE request deletes the author' do
       expect { delete_request }.to change { Author.count }.by(-1)
+    end
+  end
+
+  describe "duplicate emails per paper are not allowed" do
+    before do
+      allow(user).to receive(:can?).with(:edit_authors, paper).and_return(true)
+      allow(user).to receive(:can?).with(:administer, paper.journal).and_return(false)
+    end
+
+    it 'duplicate author emails on a paper are not allowed' do
+      expect { post_request }.to change { Author.count }.by(1)
+      expect(response.status).to eq 200
+
+      response = post_request2
+      expect { response }.to change { Author.count }.by(0)
+      expect(response.status).to eq 422
     end
   end
 

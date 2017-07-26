@@ -16,9 +16,10 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool
   },
 
+  //short-input renders a standard {{input}} component, which doesn't bind aria attributes
   didInsertElement() {
     if (this.get('content.isRequired') === true) {
-      $('input').attr({'aria-required': 'true'});
+      this.$('input').attr({'aria-required': 'true'});
     }
   },
 

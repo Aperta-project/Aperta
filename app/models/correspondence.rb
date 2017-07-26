@@ -19,7 +19,7 @@ class Correspondence < ActiveRecord::Base
                              allow_blank: false
   end
 
-  after_save :save_manuscript_version_and_status
+  after_create :save_manuscript_version_and_status
 
   def external?
     external
@@ -33,8 +33,7 @@ class Correspondence < ActiveRecord::Base
     # AE Invitation Emails, Author Chase Emails, creates a
     # correspondence with the paper_id nil
     return unless paper
-    manuscript_version = paper.versioned_texts.last.version
-    manuscript_status = paper.publishing_state
-    update_attributes(manuscript_version: manuscript_version, manuscript_status: manuscript_status)
+    update_attributes manuscript_version: paper.versioned_texts.last.version,
+                      manuscript_status: paper.publishing_state
   end
 end

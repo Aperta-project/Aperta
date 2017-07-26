@@ -6,8 +6,8 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 var app;
 
-moduleForModel('correspondence', 'Unit | Model | invitation', {
-  needs: ['model:correspondence'],
+moduleForModel('correspondence', 'Unit | Model | Correspondence', {
+  needs: ['model:correspondence', 'model:paper'],
 
   afterEach: function() {
     Ember.run(function() {
@@ -21,11 +21,41 @@ moduleForModel('correspondence', 'Unit | Model | invitation', {
   }
 });
 
-test('manuscriptVersionStatus', function(assert) {
-  // var shortTitle;
-  // shortTitle = 'test short title';
-  var paper = FactoryGuy.make('correspondence', {
+test('manuscriptVersionStatus with  valid values', function(assert) {
+  var correspondence = FactoryGuy.make('correspondence', {
   });
-  assert.equal(paper.get('manuscriptStatus'), 'v0.0');  
-  assert.equal(paper.get('manuscriptVersion'), 'rejected');
+  var scenarios = [
+    {
+      data: {
+        manuscriptVersion: null,
+        manuscriptStatus: null,
+      },
+    },
+  ];
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      correspondence.setProperties(scenario.data);
+    }),
+    assert.equal(correspondence.get('manuscriptVersionStatus'), 'Unavailable');
+  });
 });
+
+test('manuscriptVersionStatus for external correspondence and old papers', function(assert) {
+  var correspondence = FactoryGuy.make('correspondence', {
+  });
+  
+  var scenarios = [
+    {
+      data: {
+        manuscriptVersion: 'v2.0',
+        manuscriptStatus: 'submitted',
+      },
+    },
+  ];
+  scenarios.forEach(function(scenario) {
+    Ember.run(function() {
+      correspondence.setProperties(scenario.data);
+    }),
+    assert.equal(correspondence.get('manuscriptVersionStatus'), 'v2.0 submitted');
+  });
+}); 

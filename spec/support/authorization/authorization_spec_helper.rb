@@ -16,10 +16,10 @@ module AuthorizationSpecHelper
       end
     end
 
-    def role(name, journal_binding: :journal, participates_in: [], &blk)
+    def role(name, journal_binding: nil, participates_in: [], &blk)
       let_name = ['role', name].compact.join('_').gsub(/\s+/, '_')
       let!(let_name) do
-        journal = send(journal_binding)
+        journal = send(journal_binding) if journal_binding.present?
         RoleSpecHelper.create_role(name, self, journal: journal, participates_in: participates_in, &blk)
       end
     end

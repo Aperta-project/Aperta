@@ -37,7 +37,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |paper, evaluator|
-        paper.phases << FactoryGirl.build_list(:phase, evaluator.phases_count)
+        paper.phases << FactoryGirl.build_list(:phase, evaluator.phases_count, paper: paper)
       end
     end
 
@@ -179,7 +179,7 @@ FactoryGirl.define do
           end_time = Time.now
           puts "seeded cards in test in #{end_time - start} seconds"
         end
-        FactoryGirl.create(:early_posting_task, :with_loaded_card)
+        FactoryGirl.create(:early_posting_task, :with_loaded_card, paper: paper)
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end

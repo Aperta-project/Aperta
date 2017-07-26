@@ -16,6 +16,7 @@ describe CustomCardTask do
     let(:other_task) { FactoryGirl.create(:custom_card_task, paper: paper) }
     let(:card_version) { task.card_version }
     let(:card) { card_version.card }
+    let(:journal) { paper.journal }
 
     before(:all) do
       Authorizations::Configuration.reload
@@ -34,7 +35,7 @@ describe CustomCardTask do
         )
       end
 
-      role :with_access do |context|
+      role :with_access, journal_binding: :journal do |context|
         has_permission(
           action: 'edit',
           applies_to: Task.name,
@@ -71,7 +72,7 @@ describe CustomCardTask do
         )
       end
 
-      role :with_access do |context|
+      role :with_access, journal_binding: :journal do |context|
         has_permission(
           action: 'view',
           applies_to: CardVersion.name,

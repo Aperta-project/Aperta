@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ApexDelivery do
-  subject(:apex_delivery) { FactoryGirl.build(:apex_delivery) }
+  let!(:paper) do
+    FactoryGirl.create(:paper, publishing_state: 'accepted')
+  end
+  subject(:apex_delivery) { FactoryGirl.build(:apex_delivery, paper: paper, destination: 'apex') }
 
   describe 'validations' do
     it 'is valid' do
@@ -15,6 +18,11 @@ describe TahiStandardTasks::ApexDelivery do
 
     it 'requires a paper' do
       apex_delivery.paper = nil
+      expect(apex_delivery.valid?).to be(false)
+    end
+
+    it 'requires a paper to be accepted' do
+      apex_delivery.paper.publishing_state = nil
       expect(apex_delivery.valid?).to be(false)
     end
 

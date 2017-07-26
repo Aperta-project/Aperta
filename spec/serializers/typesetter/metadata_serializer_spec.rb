@@ -385,23 +385,4 @@ describe Typesetter::MetadataSerializer do
       json_key: :supporting_information_files
     )
   end
-
-  context 'and the paper is accepted' do
-    before { paper.publishing_state = 'accepted' }
-
-    it 'serializes without error' do
-      expect(output).to_not be_empty
-    end
-  end
-
-  context 'and the paper is not accepted' do
-    before { paper.publishing_state = 'unsubmitted' }
-
-    it 'raise an error' do
-      expect { output }.to raise_error(
-        Typesetter::MetadataError,
-        /Paper has not been accepted/
-      )
-    end
-  end
 end

@@ -1,0 +1,13 @@
+<td colspan="2" class="export-delivery-message">
+  Export <strong>{{ delivery.humanReadableState }}</strong>. {{ delivery.errorMessage }}
+</td>
+
+<td class="export-delivery-date">
+  {{format-date delivery.createdAt }}
+</td>
+
+{{#if delivery.failed}}
+  <td class="export-delivery-date">
+    <i class="fa fa-exclamation-triangle red"></i>
+  </td>
+{{/if}}

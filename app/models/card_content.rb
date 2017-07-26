@@ -60,6 +60,7 @@ class CardContent < ActiveRecord::Base
     { 'display-children': [nil],
       'display-with-value': [nil],
       'dropdown': ['text', 'boolean'],
+      'export-paper': [nil],
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],

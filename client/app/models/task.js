@@ -7,6 +7,9 @@ import Snapshottable from 'tahi/mixins/snapshottable';
 import { timeout, task as concurrencyTask } from 'ember-concurrency';
 
 export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Snapshottable, {
+  apexDeliveries: DS.hasMany('apex-delivery', {
+    inverse: 'task'
+  }),
   attachments: DS.hasMany('adhoc-attachment', {
     async: true,
     inverse: 'task'

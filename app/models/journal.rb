@@ -93,6 +93,11 @@ class Journal < ActiveRecord::Base
     !!(doi =~ DOI_FORMAT)
   end
 
+  # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines
+  def doi_journal_abbrev
+    doi_journal_prefix.split('.').last
+  end
+
   def staff_admins
     User.with_role(staff_admin_role, assigned_to: self)
   end

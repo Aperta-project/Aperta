@@ -774,6 +774,7 @@ DEPENDENCIES
   has_secure_token
   health_check
   heroku-deflater
+  jwt
   kaminari
   liquid
   lograge

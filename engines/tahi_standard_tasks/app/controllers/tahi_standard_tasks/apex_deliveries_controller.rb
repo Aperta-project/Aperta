@@ -24,7 +24,7 @@ module TahiStandardTasks
     private
 
     def delivery_params
-      @delivery_params ||= params.require(:apex_delivery).permit(:task_id)
+      @delivery_params ||= params.require(:apex_delivery).permit(:task_id, :destination)
     end
 
     def task
@@ -37,6 +37,7 @@ module TahiStandardTasks
           ApexDelivery.includes(:user, :paper, :task).find(params[:id])
         else
           ApexDelivery.create!(
+            destination: delivery_params[:destination] || 'apex',
             paper: task.paper,
             task: task,
             user: current_user)

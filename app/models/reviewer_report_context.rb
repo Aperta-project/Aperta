@@ -11,7 +11,7 @@ class ReviewerReportContext < TemplateContext
      { name: :answers, context: AnswerContext, many: true }]
   end
 
-  whitelist :state, :revision, :computed_status, :computed_datetime, :invitation_accepted?
+  whitelist :state, :revision, :computed_status, :computed_datetime, :invitation_accepted?, :due_at
 
   alias status computed_status
   alias datetime computed_datetime

@@ -271,28 +271,14 @@ class Task < ActiveRecord::Base
   end
 
   def display_status
-    return reviewer_report_status if respond_to? :reviewer_reports
-    default_task_status
+    return "active_check" if completed
+    "check"
   end
 
   private
 
   def update_completed_at
     self.completed_at = (Time.zone.now if completed)
-  end
-
-  def reviewer_report_status
-    immutable = ["not_invited", "invitation_declined", "invitation_rescinded"]
-    incomplete = ["pending", "invitation_invited"]
-    status = latest_reviewer_report.try(:computed_status)
-    return "minus" if immutable.include? status
-    return "check" if incomplete.include? status
-    "active_check" if status == "completed"
-  end
-
-  def default_task_status
-    return "active_check" if completed
-    "check"
   end
 end
 

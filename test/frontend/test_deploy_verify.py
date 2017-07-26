@@ -14,7 +14,6 @@ import logging
 import os
 import random
 import time
-import sys
 
 from selenium.webdriver.common.by import By
 
@@ -67,7 +66,6 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     short_doi = manuscript_page.get_short_doi()
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Cover Letter')

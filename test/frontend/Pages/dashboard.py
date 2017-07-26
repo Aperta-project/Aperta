@@ -3,11 +3,9 @@
 import logging
 import os
 import random
-import string
 import six
 import time
 import uuid
-import sys
 
 from psycopg2 import DatabaseError
 from selenium.webdriver.common.by import By
@@ -206,7 +204,7 @@ class DashboardPage(AuthenticatedPage):
           time.sleep(1)
           self.validate_reviewer_invitation_response_styles(title)
           # Enter reason and suggestions
-          reasons = generate_paragraph()[2][:500]
+          reasons = generate_paragraph()[2]
           suggestions = 'Name Lastname, email@domain.com, INSTITUTE'
           tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
               self.get_rich_text_editor_instance('declineReason')
@@ -518,11 +516,7 @@ class DashboardPage(AuthenticatedPage):
     active_manuscripts = len(active_manuscript_list)
     logging.info('Expecting {0} active manuscripts'.format(active_manuscripts))
 
-    if sys.version_info < (3, 0, 0):
-      wm = welcome_msg.text.encode('utf-8')
-    else:
-      wm = welcome_msg.text
-
+    wm = welcome_msg.text
 
     if active_manuscripts > 1:
       assert 'Hi, {0}. You have {1} active manuscripts.'.format(first_name, active_manuscripts) \
@@ -716,16 +710,9 @@ class DashboardPage(AuthenticatedPage):
           logging.info('Paper short doi: {0}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: '
                            'Invalid document')
-        if sys.version_info < (3, 0, 0):
-          if (str(type(title)) == "<type 'unicode'>") and (str(type(paper.text)) == "<type 'unicode'>"):
-            assert db_title == paper_text, \
-                str(title) + u' is not equal to ' + str(paper.text)
-          else:
-            raise TypeError('Database title or Page title are not both unicode objects')
 
-        else:
-          assert db_title == paper_text, \
-            str(title) + u' is not equal to ' + str(paper.text)
+        assert db_title == paper_text, \
+          str(title) + u' is not equal to ' + str(paper.text)
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT roles.name FROM roles '
                                     'INNER JOIN assignments on roles.id = assignments.role_id '
@@ -823,6 +810,7 @@ class DashboardPage(AuthenticatedPage):
     # div.find_element_by_class_name('ember-power-select-options').click()
     for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
       if item.text == paper_type:
+        self._scroll_into_view(item)
         item.click()
         time.sleep(1)
         break
@@ -953,10 +941,7 @@ class DashboardPage(AuthenticatedPage):
           .find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div)\
           .find_element(*self._view_invites_pending_invite_paper_title)
-      if sys.version_info < (3, 0, 0):
-        logging.info('Title presented on the page: \n{0}'.format(pt.text.encode('utf-8')))
-      else:
-        logging.info('Title presented on the page: \n{0}'.format(pt.text))
+      logging.info('Title presented on the page: \n{0}'.format(pt.text))
       self._get(self._view_invites_pending_invite_div)\
           .find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div)\

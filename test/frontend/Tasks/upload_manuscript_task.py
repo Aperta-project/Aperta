@@ -131,7 +131,7 @@ class UploadManuscriptTask(BaseTask):
     uploaded_pdf = self._get(self._uploaded_pdf)
     file_name, file_ext = os.path.splitext(uploaded_pdf.text)
     full_file_name = '{0}{1}'.format(file_name, file_ext)
-    return file_name
+    return full_file_name
 
   def upload_source_file(self, file_name='random'):
     """
@@ -153,14 +153,14 @@ class UploadManuscriptTask(BaseTask):
     else:
       doc2upload = 'frontend/assets/docs/{0}'.format(file_name)
       current_path = os.getcwd()
-      fn_doc = '{0}/{1}.doc'.format(current_path, doc2upload)
+      fn = '{0}/{1}.doc'.format(current_path, doc2upload)
       fn_docx = '{0}/{1}.docx'.format(current_path, doc2upload)
     try:
-      with open(fn_doc, 'rb') as fh:
+      with open(fn, 'rb') as fh:
         hash_file = hashlib.sha256(fh.read()).hexdigest()
-      logging.info('Sending document: {0}'.format(fn_doc))
+      logging.info('Sending document: {0}'.format(fn))
       time.sleep(1)
-      self._driver.find_element_by_id('upload-source-file').send_keys(fn_doc)
+      self._driver.find_element_by_id('upload-source-file').send_keys(fn)
       file_ext = 'doc'
     except IOError:
       with open(fn_docx, 'rb') as fh:

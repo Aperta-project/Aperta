@@ -65,6 +65,7 @@ class BillingTask(BaseTask):
     self._get(self._city).send_keys(data['city'])
     self._get(self._zip).send_keys(data['zip'])
     payment_prices = self._get(self._payment_prices_ul)
+    self._scroll_into_view(payment_prices)
     self._actions.move_to_element(payment_prices).perform()
     time.sleep(5)
     payment_select = self._get(self._payment_option)
@@ -83,7 +84,7 @@ class BillingTask(BaseTask):
     if not completed:
       # Scroll to top to leave the complete button without obstructions
       manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
-      self._actions.move_to_element(manuscript_id_text).perform()
+      self._scroll_into_view(manuscript_id_text)
       time.sleep(.5)
       self.click_completion_button()
       time.sleep(1)

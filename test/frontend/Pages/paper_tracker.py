@@ -8,7 +8,6 @@ import logging
 import random
 import string
 import time
-import sys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
@@ -377,23 +376,15 @@ class PaperTrackerPage(AuthenticatedPage):
           db_title = db_title.strip()
           page_title = title.text.strip()
           time.sleep(2)
-          # Split both to eliminate differences in whitespace
-          db_title = db_title.split()
-          page_title = page_title.split()
-          logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title,
-                                                                   page_title,
+          logging.debug('DB: {0}\nPage: {1}\nPage Row: {2}'.format(db_title.split(),
+                                                                   page_title.split(),
                                                                    count + 1))
-          if sys.version_info < (3, 0, 0) and (str(type(db_title)) == "<type 'unicode'>") and (str(type(page_title)) == "<type 'unicode'>") :
 
-            assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
-                                                                                       page_title,
-                                                                                       count + 1)
-          elif sys.version_info >= (3, 0, 0):
-            assert db_title == page_title, 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title,
-                                                                                       page_title,
-                                                                                       count + 1)
-          else:
-            raise TypeError('Database title or Page title are not both unicode objects')
+
+          assert db_title.split() == page_title.split(), 'DB: {0}\nPage: {1}\n Page Row: {2}'.format(db_title.split(),
+                                                                                     page_title.split(),
+                                                                                     count + 1)
+
         db_short_doi = db_papers[count][0]
         page_short_doi = self._get(self._paper_tracker_table_tbody_manid)
         logging.debug('Page id: ' + page_short_doi.text + '\nDB id: ' + db_short_doi)
@@ -675,15 +666,9 @@ class PaperTrackerPage(AuthenticatedPage):
       # Split both to eliminate differences in whitespace
       paper_tracker_title = paper_tracker_title.split()
       db_title = db_title.split()
+      assert paper_tracker_title == db_title, \
+          'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
 
-      if sys.version_info < (3, 0, 0) and (str(type(paper_tracker_title)) == "<type 'unicode'>")  and (str(type(db_title)) == "<type 'unicode'>") :
-        assert paper_tracker_title == db_title, \
-            'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
-      elif sys.version_info >= (3, 0, 0):
-        assert paper_tracker_title == db_title, \
-            'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
-      else:
-        raise TypeError('Database title or Page title are not both unicode objects')
       logging.info('Sorting by Title DESC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
       title_th.click()

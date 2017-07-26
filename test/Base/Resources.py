@@ -418,6 +418,32 @@ reviewer_login = {'user'               : 'areviewer',
                   'affiliation-from'   : '',
                   'affiliation-to'     : '',
                   }
+reviewer_login2 = {'user'              : 'areviewer2',
+                  'name'               : 'atest reviewer',
+                  'initials'           : 'ar2',
+                  'email'              : 'sealresq+1037@gmail.com',
+                  'orcidid'            : '0000-0002-3410-8410',
+                  'profile_image'      : '',
+                  'affiliation-name'   : 'PLOS',
+                  'affiliation-dept'   : '',
+                  'affiliation-title'  : '',
+                  'affiliation-country': '',
+                  'affiliation-from'   : '',
+                  'affiliation-to'     : '',
+                  }
+reviewer_login3 = {'user'              : 'areviewer3',
+                  'name'               : 'atest reviewer',
+                  'initials'           : 'ar3',
+                  'email'              : 'sealresq+1038@gmail.com',
+                  'orcidid'            : '0000-0002-1350-6890',
+                  'profile_image'      : '',
+                  'affiliation-name'   : 'PLOS',
+                  'affiliation-dept'   : '',
+                  'affiliation-title'  : '',
+                  'affiliation-country': '',
+                  'affiliation-from'   : '',
+                  'affiliation-to'     : '',
+                  }
 staff_admin_login = {'user'               : 'astaffadmin',
                      'name'               : 'atest staffadmin',
                      'initials'           : 'ast',
@@ -625,6 +651,11 @@ admin_users = [staff_admin_login,
                super_admin_login,
                ]
 
+reviewer_users = [reviewer_login,
+                  reviewer_login2,
+                  reviewer_login3,
+                  ]
+
 all_orcid_users = [
                    creator_login1,
                    creator_login2,
@@ -659,6 +690,9 @@ all_orcid_users = [
                    academic_editor_login,
                    billing_staff_login,
                    jrnl_setup_adm_login,
+                   reviewer_login,
+                   reviewer_login2,
+                   reviewer_login3,
                   ]
 # anyone can be a discussion_participant
 # everyone has a user role for their own profile page

@@ -153,7 +153,7 @@ class ProfilePage(AuthenticatedPage):
     unlinked = False
     orcid_logo = self._get(self._profile_orcid_logo)
     assert orcid_logo.get_attribute('src') == \
-        'http://orcid.org/sites/default/files/images/orcid_24x24.png', \
+        'https://orcid.org/sites/default/files/images/orcid_24x24.png', \
         orcid_logo.get_attribute('src')
     assert orcid_logo.get_attribute('alt') == 'ORCID logo', orcid_logo.get_attribute('alt')
     assert orcid_logo.get_attribute('width') == u'24', orcid_logo.get_attribute('width')
@@ -372,6 +372,7 @@ class ProfilePage(AuthenticatedPage):
       fn = os.getcwd() + '/frontend/assets/imgs/' + user['profile_image']
     else:
       fn = os.getcwd() + '/frontend/assets/imgs/plos.gif'
+
     avatar_input.send_keys(fn + Keys.RETURN)
     # APERTA-8337
     # TODO: Figure out how to actually trigger the upload
@@ -639,7 +640,7 @@ class ProfilePage(AuthenticatedPage):
       institution = aff.find_element(*self._profile_affiliation_institution)
       if institution.text == 'Trump University':
         delete = aff.find_element(*self._profile_affiliation_delete)
-        self.click_covered_element(delete)
+        delete.click()
         if alert_is_present:
           self._driver.switch_to_alert().accept()
           logging.info('Accepted Delete Alert')

@@ -68,64 +68,64 @@ class DiscussionForumTest(CommonTest):
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications', journal=journal,
                         type_=paper_type, random_bit=True)
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     # check for flash message
-    ms_viewer.page_ready_post_create()
-    logging.info(ms_viewer.get_current_url())
-    short_doi = ms_viewer.get_paper_short_doi_from_url()
-    ms_viewer.logout()
+    manuscript_page.page_ready_post_create()
+    logging.info(manuscript_page.get_current_url())
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.logout()
 
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     if web_page == 'manuscript viewer':
       # This is failing for Asian character set usernames of only two characters APERTA-7862
-      ms_viewer.post_new_discussion(topic='Testing discussion on paper {}'.format(short_doi),
+      manuscript_page.post_new_discussion(topic='Testing discussion on paper {}'.format(short_doi),
                                     participants=[creator])
     elif web_page == 'workflow':
-      ms_viewer.click_workflow_link()
+      manuscript_page.click_workflow_link()
       workflow_page = WorkflowPage(self.getDriver())
       workflow_page.page_ready()
       workflow_page.post_new_discussion(topic='Testing discussion on paper {}'.format(short_doi),
                                         participants=[creator])
-    ms_viewer.logout()
+    manuscript_page.logout()
 
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
-    ms_viewer.page_ready()
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     # look for icon
-    red_badge = ms_viewer._get(ms_viewer._badge_red)
+    red_badge = manuscript_page._get(manuscript_page._badge_red)
     red_badge_first = int(red_badge.text)
     red_badge.click()
     time.sleep(.5)
-    ms_viewer._get(ms_viewer._badge_red)
-    ms_viewer.logout()
+    manuscript_page._get(manuscript_page._badge_red)
+    manuscript_page.logout()
 
     logging.info(u'Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     dashboard_page.page_ready()
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     # click on discussion icon
-    ms_viewer.click_discussion_link()
-    ms_viewer.post_discussion('@' + creator['user'])
-    ms_viewer.logout()
+    manuscript_page.click_discussion_link()
+    manuscript_page.post_discussion('@' + creator['user'])
+    manuscript_page.logout()
 
     logging.info(u'Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     # look for icon
     time.sleep(2)
-    red_badge = ms_viewer._get(ms_viewer._badge_red)
+    red_badge = manuscript_page._get(manuscript_page._badge_red)
     red_badge_last = int(red_badge.text)
     assert red_badge_first + 1 == red_badge_last, '{0} is different from {1}. This may be '\
         'caused by users with non ascii characters (Reported in ' \
@@ -134,21 +134,21 @@ class DiscussionForumTest(CommonTest):
     red_badge.click()
     # look for red icon on workflow page?
     time.sleep(.5)
-    ms_viewer._get(ms_viewer._first_discussion_lnk).click()
+    manuscript_page._get(manuscript_page._first_discussion_lnk).click()
     time.sleep(.5)
-    red_badge = ms_viewer._get(ms_viewer._comment_sheet_badge_red)
+    red_badge = manuscript_page._get(manuscript_page._comment_sheet_badge_red)
     red_badge_current = int(red_badge.text)
     assert red_badge_first == red_badge_current, '{0} is different from {1}'.format(
         red_badge_first, red_badge_last)
     # close and check if any badge
-    ms_viewer.close_sheet()
-    ms_viewer.set_timeout(2)
+    manuscript_page.close_sheet()
+    manuscript_page.set_timeout(2)
     try:
-      ms_viewer._get(ms_viewer._badge_red)
+      manuscript_page._get(manuscript_page._badge_red)
       assert False, 'There should not be any discussion badge'
     except ElementDoesNotExistAssertionError:
       logging.info('There is no badge')
-    ms_viewer.restore_timeout()
+    manuscript_page.restore_timeout()
 
   def test_discussions(self):
     """
@@ -183,6 +183,7 @@ class DiscussionForumTest(CommonTest):
     logging.info('Assigned paper short doi: {0}'.format(short_doi))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
+
     # Submit paper
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
@@ -219,7 +220,7 @@ class DiscussionForumTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()
     topic = 'Testing discussion on paper {0}'.format(short_doi)
-    msg_1 = generate_paragraph()[2][:500]
+    msg_1 = generate_paragraph()[2]
     # How to call the discussion section
     if web_page == 'workflow':
       manuscript_page.post_new_discussion(topic=topic,
@@ -267,7 +268,7 @@ class DiscussionForumTest(CommonTest):
     comment_body = manuscript_page._get(manuscript_page._comment_body).text
     assert msg_1 == comment_body, 'Message sent: {0} not the message found in the '\
                                   'front end: {1}'.format(msg_1, comment_body)
-    msg_2 = generate_paragraph()[2][:500]
+    msg_2 = generate_paragraph()[2]
     discussion_back_link = manuscript_page._get(manuscript_page._discussion_back_link)
     discussion_back_link.click()
     manuscript_page.post_discussion(msg_2, mention=collaborator_2['user'])

@@ -10,7 +10,6 @@ import logging
 import os
 import random
 import time
-import sys
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, staff_admin_login
@@ -152,9 +151,7 @@ class RegisterDecisionCardTest(CommonTest):
     while keep_waiting:
       time.sleep(1)
       paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if sys.version_info < (3, 0, 0) and 'full submit' in paper_title_from_page.encode('utf8'):
-        continue
-      elif sys.version_info >= (3, 0, 0) and 'full submit' in paper_title_from_page:
+      if 'full submit' in paper_title_from_page:
         continue
       else:
         keep_waiting = False

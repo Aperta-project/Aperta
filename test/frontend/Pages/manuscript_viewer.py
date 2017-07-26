@@ -10,6 +10,9 @@ import random
 import time
 from datetime import datetime
 
+
+
+
 from selenium.webdriver.common.by import By
 
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
@@ -27,6 +30,7 @@ from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
+from .styles import StyledPage
 
 __author__ = 'sbassi@plos.org'
 
@@ -68,6 +72,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_ra_link = (By.ID, 'nav-recent-activity')
+    self._close_ra_overlay = (By.CSS_SELECTOR, '.overlay-close')
     self._tb_more_link = (By.CSS_SELECTOR, 'div.more-dropdown-menu')
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
@@ -330,9 +335,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     #     close_icon_overlay.value_of_css_property('font-size')
     assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family'), \
         close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
-        close_icon_overlay.value_of_css_property('color')
-    close_icon_overlay.click()
+
+    assert close_icon_overlay.value_of_css_property('color') == 'rgb(57, 163, 41)', \
+      close_icon_overlay.value_of_css_property('color')
+
+    # close recent activity overlay
+    self._get(self._close_ra_overlay).click()
+
     time.sleep(1)
 
   def _check_discussion(self, useremail=''):
@@ -361,13 +370,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       discussion_create_new_btn.click()
       # TODO: Styles for cancel since is not in the style guide
       cancel = self._get(self._create_topic_cancel)
-      assert APPLICATION_TYPEFACE in cancel.value_of_css_property('font-family')
-      assert cancel.value_of_css_property('font-size') == '14px'
-      assert cancel.value_of_css_property('line-height') == '60px'
-      assert cancel.value_of_css_property('background-color') == 'transparent'
-      assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-      assert cancel.value_of_css_property('font-weight') == '400'
-      # TODO: Styles for create_new_topic since is not in the style guide
+      StyledPage.validate_cancel_button_style(cancel)
+
       titles = self._gets(self._topic_title)
       assert 'Topic Title' == titles[0].text
       assert 'Message' == titles[1].text
@@ -378,7 +382,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
     assert APPLICATION_TYPEFACE in close_icon_overlay.value_of_css_property('font-family')
-    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+
+    assert close_icon_overlay.value_of_css_property('color') == 'rgb(57, 163, 41)'
+
     close_icon_overlay.click()
 
   def _check_more_btn(self, user=''):
@@ -388,7 +394,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     logging.info('Checking More Toolbar menu for {0}'.format(user))
     more_btn = self._get(self._tb_more_link)
-    self.click_covered_element(more_btn)
+
+    more_btn.click()
     # For the time being, the appeals link is being removed for everybody.
     # self._get(self._tb_more_appeal_link)
     # Per APERTA-5371 only creators, admins, pub svcs and internal editors can see the withdraw item
@@ -1183,7 +1190,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Validate handle box
     handle_box_expected_width = '23px'
     handle_box_expected_height = '35px'
-    handle_box_expected_bg = ['#ddd', 'rgba(221, 221, 221, 1)']
+
+    handle_box_expected_bg = ['#ddd', 'rgb(221, 221, 221)']
+
     handle_box_expected_left = '-9px'
 
     assert handle_box.is_displayed(), 'The handle box is not displayed'

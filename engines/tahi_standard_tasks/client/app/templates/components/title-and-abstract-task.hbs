@@ -1,9 +1,16 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
+  <p>
+    Please ensure that the title and abstract text you enter below exactly
+    matches what is in your manuscript file.
+  </p>
+  <p> 
+    Fields marked with an <i class="asterisk-field">*</i> are required
+  </p>
   <div class="title-and-abstract">
     <div class="form-group qa-paper-title">
-      <h3>Title</h3>
+      <h3 class="title-and-abstract-header">Title </h3>
         {{rich-text-editor
           editorStyle='basic'
           value=task.paperTitle
@@ -18,7 +25,7 @@
     </div>
 
     <div class="form-group qa-paper-abstract">
-       <h3>Abstract</h3>
+       <h3 class="title-and-abstract-header">Abstract </h3>
         {{rich-text-editor
           editorStyle='basic'
           value=task.paperAbstract

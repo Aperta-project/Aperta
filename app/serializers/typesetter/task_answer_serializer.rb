@@ -32,13 +32,11 @@ module Typesetter
       tasks.each do |task|
         answers = task.answers
         answers.each do |answer|
-          unless answer.card_content.ident.blank?
-            # rubocop:disable Style/Next
-            if answer.card_content.value_type == 'attachment'
-              question_answers[answer.card_content.ident.to_s] = process_file_attachments(answer)
-            else
-              question_answers[answer.card_content.ident.to_s] = answer.value
-            end
+          next answer.card_content.ident.blank?
+          if answer.card_content.value_type == 'attachment'
+            question_answers[answer.card_content.ident.to_s] = process_file_attachments(answer)
+          else
+            question_answers[answer.card_content.ident.to_s] = answer.value
           end
         end
       end

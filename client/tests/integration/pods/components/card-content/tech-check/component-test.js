@@ -14,6 +14,7 @@ moduleForComponent(
       manualSetup(this.container);
       registerCustomAssertions();
       this.set('actionStub', function() {});
+      this.set('preview', true);
       this.set('content', Ember.Object.create({ ident: 'test' }));
       this.set('answer', Ember.Object.create({ value: null }));
     }
@@ -25,7 +26,7 @@ content=content
 disabled=disabled
 owner=owner
 answer=answer
-preview=true
+preview=preview
 valueChanged=(action actionStub)
 }}`;
 
@@ -94,8 +95,8 @@ test(`it sends 'valueChanged' on change`, function(assert) {
 
   this.set('owner', owner);
   this.set('content', tc);
-  this.set('actionStub', function(newVal) {
-    assert.equal(newVal, true, 'it calls the action with the new value');
+  this.set('actionStub', function(newToggleVal) {
+    assert.equal(newToggleVal, true, 'it calls the action with the new value');
   });
   this.render(template);
   this.$('.card-content-toggle-switch input').click();
@@ -106,8 +107,13 @@ test(`toggling to 'Pass' will clear any existing sendbacks`, function(assert) {
   let [tc, sendbackCheck] = createCheckWithSendback();
   // check the box for the sendback
   make('answer', { owner: owner, value: true, cardContent: sendbackCheck });
+
+  this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  $.mockjax({url: '/api/answers/1', type: 'PUT', status: 201, responseText: '{}'});
+
   this.set('owner', owner);
   this.set('content', tc);
+  this.set('preview', false);
   this.render(template);
 
   assert.elementFound(
@@ -116,10 +122,52 @@ test(`toggling to 'Pass' will clear any existing sendbacks`, function(assert) {
   );
 
   this.$('.card-content-toggle-switch input').click();
-  assert.elementNotFound(
-    `.sendback-reason-row input[type="checkbox"]:checked`,
-    'the checkbox becomes unchecked'
-  );
+  return wait().then(() => {
+    assert.mockjaxRequestMade({url: '/api/answers/1', type: 'PUT'}, 'it saves the sendback after clearing it');
+    assert.elementNotFound(
+      `.sendback-reason-row input[type="checkbox"]:checked`,
+      'the checkbox becomes unchecked'
+    );
+  });
 });
 
-test(`checking a sendback will set the toggle to 'Fail' and send 'valueChanged'`, function() {});
+test(`checking a sendback will set the toggle to 'Fail' and send 'valueChanged'`, function(
+  assert
+) {
+  assert.expect(4);
+  let owner = make('custom-card-task');
+  let [tc, sendbackCheck] = createCheckWithSendback();
+  // the sendback is unchecked
+  make('answer', { owner: owner, value: false, cardContent: sendbackCheck });
+  // the tech check is set to 'Pass'
+  let techCheckAnswer = make('answer', { owner: owner, value: true, cardContent: tc });
+
+
+  this.set('actionStub', function(newToggleVal) {
+    assert.equal(
+      newToggleVal,
+      false,
+      'it calls valueChanged with the new (false) toggle value after checking the sendback'
+    );
+  });
+  this.set('owner', owner);
+  this.set('content', tc);
+  this.set('answer', techCheckAnswer);
+  this.render(template);
+
+  assert.elementFound(
+    `.card-content-toggle-switch input:checked`,
+    'the toggle is initially on'
+  );
+
+  this.$(`.sendback-reason-row input[type="checkbox"]`).click();
+
+  assert.elementFound(
+    `.sendback-reason-row input[type="checkbox"]:checked`,
+    'the checkbox becomes checked'
+  );
+  assert.elementNotFound(
+    `.card-content-toggle-switch input:checked`,
+    'the switch gets toggled off'
+  );
+});

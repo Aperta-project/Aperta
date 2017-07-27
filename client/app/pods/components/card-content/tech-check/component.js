@@ -11,14 +11,13 @@ export default Ember.Component.extend({
   },
 
   clearSendbacks() {
-    let sendbackAnswers = this.get('content.children').map((sendbackContent) => {
+    let sendbackAnswers = this.get('content.children').map(sendbackContent => {
       let checkbox = sendbackContent.get('children.firstObject');
       return checkbox.answerForOwner(this.get('owner'));
     });
 
     sendbackAnswers.setEach('value', false);
     if (!this.get('preview')) {
-      //TODO: filter to only save changed answers
       sendbackAnswers.invoke('save');
     }
   },
@@ -28,6 +27,10 @@ export default Ember.Component.extend({
       let techCheckAnswer = this.get('answer');
       if (sendbackAnswer.get('value') === true) {
         techCheckAnswer.set('value', false);
+        let action = this.get('valueChanged');
+        if (action) {
+          action(false);
+        }
       }
     },
     saveAnswer(newVal) {
@@ -36,7 +39,8 @@ export default Ember.Component.extend({
         action(newVal);
       }
 
-      if (newVal) {//if the check has 'passed' manually
+      if (newVal) {
+        //if the check has 'passed' manually
         this.clearSendbacks();
       }
     }

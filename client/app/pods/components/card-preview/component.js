@@ -18,7 +18,7 @@ export default Ember.Component.extend({
   canRemoveCard: false,
   version1: null,  // Will be a string like "1.2"
   version2: null,  // Will be a string like "1.2"
-  reviewState: Ember.computed.reads('task.displayStatus'),
+  reviewState: Ember.computed.alias('task.displayStatus'),
 
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish

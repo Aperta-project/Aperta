@@ -5,8 +5,6 @@
 class Answer < ActiveRecord::Base
   acts_as_paranoid
 
-  RELATED_ANSWER_VALIDATION_TYPE = %w(answer_check answer_value).freeze
-
   include Readyable
 
   belongs_to :card_content
@@ -25,8 +23,6 @@ class Answer < ActiveRecord::Base
   delegate :value_type, to: :card_content
 
   before_save :sanitize_html, if: :html_value_type?
-  before_save :rollback_children_values!,
-    if: :children_hidden_and_requires_rollback?
   # The 'value: true' option means it's validating value using
   # the value validator.
   # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
@@ -75,30 +71,7 @@ class Answer < ActiveRecord::Base
                                             })
   end
 
-  def children_hidden_and_requires_rollback?
-    card_content.children.where(content_type: 'display-with-value',
-                                revert_children_on_hide: true).any? do |cc|
-      !children_visible?(cc)
-    end
-  end
-
   private
-
-  def children_visible?(cc)
-    parent = cc.parent
-    visible_answer_value = cc.visible_with_parent_answer
-    CoerceAnswerValue.coerce(visible_answer_value, parent.value_type) ==
-      parent.answers.find_by(owner_id: owner_id).try(:value)
-  end
-
-  def rollback_children_values!
-    rollbackable_answers = [self] + children
-    rollbackable_answers.each do |answer|
-      if answer.persisted?
-        answer.update_column(:value, answer.card_content.default_answer_value)
-      end
-    end
-  end
 
   def html_value_type?
     value_type == 'html'

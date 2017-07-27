@@ -9,40 +9,6 @@ describe Answer do
     )
   end
 
-  context '#hidden_and_requires_rollback?' do
-    let!(:check_box_answer) { FactoryGirl.create(:answer, card_content: check_box_card_content, owner: answer.owner, value: 'true') }
-    let!(:check_box_card_content) {
-      FactoryGirl.create(:card_content, content_type: 'check-box',
-                                        value_type: 'boolean')
-    }
-    let!(:visible_with_value_card_content) {
-      FactoryGirl.create(:card_content, content_type: 'display-with-value',
-                                        visible_with_parent_answer: 'true',
-                                        value_type: nil,
-                                        revert_children_on_hide: true)
-    }
-
-    it 'returns false if card content is visible' do
-      card_content.save!
-      visible_with_value_card_content.move_to_child_of(check_box_card_content)
-      card_content.move_to_child_of(visible_with_value_card_content)
-      visible_with_value_card_content.save!
-      subject.update!(value: 'nope')
-      expect(check_box_answer.children_hidden_and_requires_rollback?).to eq false
-    end
-
-    it 'returns true if card content is hidden' do
-      visible_with_value_card_content.move_to_child_of(check_box_card_content)
-      visible_with_value_card_content.save!
-      card_content.save!
-      card_content.move_to_child_of(visible_with_value_card_content)
-      card_content.reload
-      visible_with_value_card_content.update!(visible_with_parent_answer: 'false')
-      subject.update!(value: 'nope')
-      expect(check_box_answer.children_hidden_and_requires_rollback?).to eq true
-    end
-  end
-
   context 'ReadyValidator - data-driven validations' do
     context 'string-match validation' do
       let(:card_content_validation) do
@@ -155,11 +121,6 @@ describe Answer do
                                           card_content_validations: [related_card_content_validation], ident: 'foodent')
       }
 
-      it 'returns related answers' do
-        related_answers = answer.related_answers
-        expect(related_answers.count).to eq 1
-        expect(related_answers).to include related_answer
-      end
     end
   end
 end

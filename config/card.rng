@@ -11,8 +11,7 @@
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
     
-    card.rng: If this file is card.rng, please edit card.rnc instead. You will be
-    happier
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
   <define name="possible-value">
     <element name="possible-value">
@@ -456,12 +455,6 @@
         <value>display-with-value</value>
       </attribute>
       <attribute name="visible-with-parent-answer"/>
-      <attribute name="revert-children-on-hide">
-        <choice>
-          <value>true</value>
-          <value>false</value>
-        </choice>
-      </attribute>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>

@@ -32,7 +32,7 @@ module Typesetter
       tasks.each do |task|
         answers = task.answers
         answers.each do |answer|
-          next answer.card_content.ident.blank?
+          next if answer.card_content.ident.blank?
           if answer.card_content.value_type == 'attachment'
             question_answers[answer.card_content.ident.to_s] = process_file_attachments(answer)
           else

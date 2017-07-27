@@ -16,11 +16,10 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answers = Answer.where(owner: owner)
-    related_answer = answers.find(params[:id])
-    requires_user_can(:edit, related_answer.owner)
-    related_answer.update!(answer_params)
-    render json: answers.reload, each_serializer: LightAnswerSerializer
+    answer = Answer.find(params[:id])
+    requires_user_can(:edit, answer.owner)
+    answer.update!(answer_params)
+    render json: answer, serializer: LightAnswerSerializer, root: 'answer'
   end
 
   def destroy

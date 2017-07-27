@@ -121,10 +121,8 @@ class CardContent < ActiveRecord::Base
       'value-type' => value_type,
       'editor-style' => editor_style,
       'visible-with-parent-answer' => visible_with_parent_answer,
-      'revert-children-on-hide' => revert_children_on_hide,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
-      'toggleable-hide' => toggleable_hide,
       'allow-file-captions' => allow_file_captions,
       'allow-annotations' => allow_annotations
     }.compact
@@ -155,9 +153,7 @@ end
 private
 
 def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type,
-                       'violation-value': ccv.violation_value,
-                       'target-ident': ccv.target_ident }
+  validation_attrs = { 'validation-type': ccv.validation_type }
                        .delete_if { |_k, v| v.nil? }
   xml.tag!('validation', validation_attrs) do
     xml.tag!('error-message', ccv.error_message)

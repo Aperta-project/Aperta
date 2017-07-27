@@ -89,9 +89,6 @@ tech-check = element content {
                 element instruction-text { text }?,
                 element text { text }?,
                 (element validation {
-                      attribute validation-type { "answer-readiness" | "answer-value"},
-                      attribute violation-value { text }?,
-                      attribute target-ident { text },
                       element error-message { text }*,
                       element validator { text }*
                 })*,

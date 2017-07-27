@@ -285,16 +285,6 @@
       </optional>
       <zeroOrMore>
         <element name="validation">
-          <attribute name="validation-type">
-            <choice>
-              <value>answer-readiness</value>
-              <value>answer-value</value>
-            </choice>
-          </attribute>
-          <optional>
-            <attribute name="violation-value"/>
-          </optional>
-          <attribute name="target-ident"/>
           <zeroOrMore>
             <element name="error-message">
               <text/>

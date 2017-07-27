@@ -79,7 +79,7 @@ describe CardContent do
       let(:expected_xml) do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>
-        <content ident="#{card_content.ident}" value-type="text" ident="thing">
+        <content ident="#{card_content.ident}" value-type="text">
           <validation validation-type="string-match">
             <error-message>oh noes!</error-message>
             <validator>/text/</validator>

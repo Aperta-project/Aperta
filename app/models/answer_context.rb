@@ -9,8 +9,4 @@ class AnswerContext < TemplateContext
   def ident
     @object.card_content.ident
   end
-
-  def children
-    @object.children.map { |c| AnswerContext.new(c) }
-  end
 end

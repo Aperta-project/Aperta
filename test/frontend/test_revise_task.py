@@ -81,6 +81,7 @@ class ReviseManuscriptTest(CommonTest):
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.logout()
+
     # Login as user and complete Revise Manuscript
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
@@ -98,10 +99,10 @@ class ReviseManuscriptTest(CommonTest):
     if not base_task.completed_state():
       base_task.click_completion_button()
 
-    # need to complete this task again after providing new manuscript
+    paper_viewer.click_task('Upload Manuscript')
+    # This needs to be completed a second time now
     paper_viewer.complete_task('Title And Abstract')
-    paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
-                                                              'response_number': 2})
+
     # submit and logout
     time.sleep(1)
     paper_viewer.click_submit_btn()
@@ -127,6 +128,15 @@ class ReviseManuscriptTest(CommonTest):
     decision_history = workflow_page.get_decision_history_summary()
     assert decision_history[0].text == '1.0\nMajor Revision', decision_history[0].text
     assert decision_history[1].text == '0.0\nMajor Revision', decision_history[1].text
+    workflow_page.logout()
+
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.go_to_manuscript(short_doi)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    # need to complete this task again after providing new manuscript
+    paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
+                                                              'response_number': 2})
 
     return self
 

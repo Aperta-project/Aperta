@@ -82,6 +82,7 @@ class ReviseManuscriptTask(BaseTask):
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672
       self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
+      time.sleep(10)
     elif data and 'text' in data:
       tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance('revise-overlay-response-field')

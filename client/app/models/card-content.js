@@ -26,8 +26,6 @@ export default DS.Model.extend({
   editorStyle: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
   allowAnnotations: DS.attr('boolean'),
-  revertChildrenOnHide: DS.attr('boolean'),
-  toggleableHide: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
   hasInstructionText: Ember.computed.notEmpty('instructionText'),

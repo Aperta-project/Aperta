@@ -28,6 +28,13 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
+  overrideAnswerContainerOverrideables: ['sendback-reason'],
+
+  overrideAnswerContainer: Ember.computed('contentType', function(){
+    return this.get('overrideAnswerContainerOverrideables').includes(this.get('contentType'));
+
+  }),
+
   hasInstructionText: Ember.computed.notEmpty('instructionText'),
   renderAdditionalText: Ember.computed.or('allowAnnotations','hasInstructionText'),
 

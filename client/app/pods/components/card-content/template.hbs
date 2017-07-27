@@ -2,7 +2,7 @@
   This card-content component will be rendered
   for every node in the tree, wrapping a more specific
   inner component that depends on the type of the content--}}
-  {{#if (and answer hasAnswerContainer)}}
+  {{#if (and answer keepAnswerContainer)}}
     <div class="answer-container">
       <div class="answer">
         {{partial "card-content-component"}}

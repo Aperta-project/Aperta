@@ -24,6 +24,10 @@ export default Ember.Component.extend({
     answerChanged: PropTypes.any
   },
 
+  keepAnswerContainer: Ember.computed('content', function(){
+    return !this.get('content.overrideAnswerContainer') && this.get('hasAnswerContainer');
+  }),
+
   getDefaultProps() {
     return {
       preview: false,

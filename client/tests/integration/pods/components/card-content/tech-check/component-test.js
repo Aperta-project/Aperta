@@ -43,12 +43,14 @@ let createCheckWithSendback = () => {
     valueType: 'boolean',
     parent: sendback
   });
-  make('card-content', { // pencil
+  make('card-content', {
+    // pencil
     contentType: 'check-box',
     valueType: 'boolean',
     parent: sendback
   });
-  make('card-content', { // sendback reason textarea
+  make('card-content', {
+    // sendback reason textarea
     contentType: 'paragraph-input',
     parent: sendback
   });
@@ -102,14 +104,22 @@ test(`it sends 'valueChanged' on change`, function(assert) {
 test(`toggling to 'Pass' will clear any existing sendbacks`, function(assert) {
   let owner = make('custom-card-task');
   let [tc, sendbackCheck] = createCheckWithSendback();
-
-  // check the sendback
-  make('answer', {owner: owner, value: true, parent: sendbackCheck});
+  // check the box for the sendback
+  make('answer', { owner: owner, value: true, cardContent: sendbackCheck });
   this.set('owner', owner);
   this.set('content', tc);
   this.render(template);
 
-  assert.elementFound(`.sendback-reason-row input[type="checkbox"]`);
+  assert.elementFound(
+    `.sendback-reason-row input[type="checkbox"]:checked`,
+    'the checkbox starts checked'
+  );
+
+  this.$('.card-content-toggle-switch input').click();
+  assert.elementNotFound(
+    `.sendback-reason-row input[type="checkbox"]:checked`,
+    'the checkbox becomes unchecked'
+  );
 });
 
 test(`checking a sendback will set the toggle to 'Fail' and send 'valueChanged'`, function() {});

@@ -1,8 +1,9 @@
+import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicFormats     = {underline: {inline : 'u'}};
-const basicPlugins     = 'codesample paste';
+const basicPlugins     = 'code codesample paste';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
@@ -11,6 +12,7 @@ const listElement      = ',ol[reversed|start|type]';
 const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' link table';
 const expandedToolbar  = ' | bullist numlist | table link | formatselect';
+const developToolbar   = ENV.environment === 'development' ? ' code' : '';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
@@ -46,7 +48,7 @@ export default Ember.Component.extend({
     expanded: {
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
-      toolbar: basicToolbar + expandedToolbar,
+      toolbar: basicToolbar + developToolbar + expandedToolbar,
       valid_elements: basicElements + anchorElement + listElement + expandedElements
     }
 

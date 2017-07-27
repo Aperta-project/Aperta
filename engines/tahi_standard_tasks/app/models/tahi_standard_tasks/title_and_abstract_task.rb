@@ -28,6 +28,16 @@ module TahiStandardTasks
       super << [:paper_title, :paper_abstract]
     end
 
+    def self.setup_new_revision(paper, phase)
+      existing_title_and_abstract_task = find_by(paper: paper)
+      if existing_title_and_abstract_task
+        existing_title_and_abstract_task
+          .update(completed: false, phase: phase)
+      else
+        TaskFactory.create(self, paper: paper, phase: phase)
+      end
+    end
+
     private
 
     def update_paper

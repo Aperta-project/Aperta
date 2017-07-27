@@ -25,7 +25,7 @@ export default Ember.Component.extend({
       this.initializeCoauthorshipControls();
     }
   },
-  
+
   initializeCoauthorshipControls() {
     this.get('author.paper.journal').then( (journal) => {
       this.get('can').can('administer', journal).then( (value) => {
@@ -70,23 +70,33 @@ export default Ember.Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save();
-    this.attrs.saveSuccess();
+    this.get('author').save()
+    .then(() => {
+      this.attrs.saveSuccess();
+    })
+    .catch(response => {
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
+    });
   },
 
   saveNewAuthor() {
     const author = this.get('author');
-    author.save().then(savedAuthor => {
-      author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+    author.save()
+    .then(savedAuthor => {
+      author.get('nestedQuestionAnswers').toArray().forEach(function(answer) {
         const value = answer.get('value');
-        if(value || value === false){
+        if (value || value === false) {
           answer.set('owner', savedAuthor);
           answer.save();
         }
       });
+      this.attrs.saveSuccess();
+    })
+    .catch(response => {
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
     });
-
-    this.attrs.saveSuccess();
   },
 
   resetAuthor() {

@@ -38,9 +38,8 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
-  FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
-
   before do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -228,6 +227,41 @@ describe Typesetter::MetadataSerializer do
     end
   end
 
+  describe "add custom card and export the fields" do
+    let(:journal) do
+      FactoryGirl.create(:journal, :with_creator_role, pdf_css: 'body { background-color: red; }')
+    end
+    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_creator, journal: journal) }
+    let(:card_version) { FactoryGirl.create(:card_version) }
+    let(:another_card_version) { FactoryGirl.create(:card_version) }
+    let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
+    let(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
+    before do
+      parent = card_version.content_root
+      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', default_answer_value: 'true'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
+      card_version.create_default_answers(my_custom_task)
+      parent = another_card_version.content_root
+      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my other anwser'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', default_answer_value: 'false'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
+      another_card_version.create_default_answers(another_my_custom_task)
+      paper.publishing_state = 'accepted'
+    end
+
+    it "check exported custom card fields" do
+      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper).to_json)
+      expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
+                            "my_custom_task--question_1" => true,
+                            "my_custom_task--question_2" => false,
+                            "another_custom_task--some_text" => 'This is my other anwser',
+                            "another_custom_task--question_1" => false,
+                            "another_custom_task--question_2" => false }
+      expect(parsed_metadata['metadata']['custom_card_fields']).to eq expected_metadata
+    end
+  end
+
   shared_examples_for 'serializes :has_one paper task' do |opts|
     opts[:factory] || fail(ArgumentError, 'Must pass in a :factory')
     opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')
@@ -350,24 +384,5 @@ describe Typesetter::MetadataSerializer do
       serializer: Typesetter::SupportingInformationFileSerializer,
       json_key: :supporting_information_files
     )
-  end
-
-  context 'and the paper is accepted' do
-    before { paper.publishing_state = 'accepted' }
-
-    it 'serializes without error' do
-      expect(output).to_not be_empty
-    end
-  end
-
-  context 'and the paper is not accepted' do
-    before { paper.publishing_state = 'unsubmitted' }
-
-    it 'raise an error' do
-      expect { output }.to raise_error(
-        Typesetter::MetadataError,
-        /Paper has not been accepted/
-      )
-    end
   end
 end

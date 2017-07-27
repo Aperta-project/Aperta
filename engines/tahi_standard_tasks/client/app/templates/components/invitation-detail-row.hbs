@@ -26,8 +26,13 @@
               </div>
               <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
             {{else}}
-              <span>Pending</span><br>
-              <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+              <span>
+                {{#if invitation.reviewerReport.dueAt}}
+                  Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}
+                {{else}}
+                  Review pending
+                {{/if}}
+              </span>
             {{/if}}
           {{else}}
             <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
@@ -154,7 +159,7 @@
       value=invitation.body
       data-editor='invitation-edit-body'
       class="invitation-edit-body"
-      onContentsChanged=(action "updateAnswer")
+      onContentsChanged=(action "updateContents")
       disabled=owner.completed
     }}
 

@@ -18,6 +18,11 @@ module TahiStandardTasks
     validates :user, presence: true
     validates :paper, presence: true
     validates :task, presence: true
+    validates :destination, presence: true, inclusion: {
+      in: %w(apex em preprint)
+    }
+
+    validate :paper_acceptance_state
 
     aasm column: :state do
       # It's 'pending' before the job has been started by a worker
@@ -52,6 +57,11 @@ module TahiStandardTasks
 
     def save_error(message)
       self.error_message = message
+    end
+
+    def paper_acceptance_state
+      return unless paper.present? && !paper.accepted?
+      errors.add(:paper, "must be accepted in order to send to APEX") if destination == 'apex'
     end
   end
 end

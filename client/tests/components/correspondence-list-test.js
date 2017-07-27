@@ -45,11 +45,9 @@ test('can manage workflow, list appears', function(assert) {
   this.register('service:can', can.asService());
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 1);
-    done();
   });
 });
 
@@ -59,10 +57,8 @@ test('can not manage workflow, list is hidden', function(assert) {
   this.register('service:can', can.asService());
 
   this.set('paper', paper);
-  let done = assert.async();
   this.render(template);
-  wait().then(() => {
+  return wait().then(() => {
     assert.equal(this.$('.correspondence-table').length, 0);
-    done();
   });
 });

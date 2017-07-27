@@ -44,6 +44,7 @@ bin/eventsource
 dump.rdb
 spring
 CHANGELOG.md
+.DS_Store
 
 # ignore Gemfile.lock in engines/
 engines/*/Gemfile.lock

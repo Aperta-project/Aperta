@@ -45,8 +45,7 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES =
-    %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -61,6 +60,7 @@ class CardContent < ActiveRecord::Base
     { 'display-children': [nil],
       'display-with-value': [nil],
       'dropdown': ['text', 'boolean'],
+      'export-paper': [nil],
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
@@ -115,18 +115,24 @@ class CardContent < ActiveRecord::Base
 
   def content_attrs
     {
+      'ident' => ident,
       'content-type' => content_type,
       'value-type' => value_type,
       'required-field' => required_field,
+      'editor-style' => editor_style,
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions
+      'allow-file-captions' => allow_file_captions,
+      'allow-annotations' => allow_annotations
     }.compact
   end
 
+  # rubocop:disable Metrics/AbcSize
+
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
+      render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       if card_content_validations.present?
@@ -145,4 +151,6 @@ class CardContent < ActiveRecord::Base
       children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
     end
   end
+
+  # rubocop:enable Metrics/AbcSize
 end

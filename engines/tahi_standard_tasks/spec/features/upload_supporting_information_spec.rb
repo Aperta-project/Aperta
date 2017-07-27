@@ -28,9 +28,6 @@ feature "Upload Supporting Information", js: true do
     expect(task).to have_no_content('Upload Complete!')
     expect(task).to have_file 'yeti.jpg'
 
-    # edit file
-    task.edit_file_info
-
     task.file_label_input = 'F4'
     task.file_category_dropdown = 'Figure'
     task.toggle_file_striking_image
@@ -52,7 +49,7 @@ feature "Upload Supporting Information", js: true do
     expect(task).to_not have_selector('.si-file')
   end
 
-  scenario "Author is presented error" do
+  scenario "Author sees validation errors" do
     supporting_info_task = paper.tasks.first
 
     # upload file
@@ -62,12 +59,20 @@ feature "Upload Supporting Information", js: true do
     expect(task).to have_no_content('Upload Complete!')
     expect(task).to have_file 'yeti.jpg'
 
-    # edit file
-    task.edit_file_info
-
     task.save_file_info
 
     expect(task.error_message).to match(/Please edit/)
+  end
+
+  scenario "Author sees expanded forms after multiple uploads" do
+    supporting_info_task = paper.tasks.first
+
+    task = Page.view_task_overlay(paper, supporting_info_task)
+    # upload multiple files
+    task.attach_supporting_information('yeti.jpg')
+    task.attach_supporting_information('yeti.tiff')
+    expect(task).to have_selector('.si-file-editor.visible', count: 2)
+    expect(task).not_to have_selector('.si-file-edit-icon')
   end
 
   scenario "Author uploads a broken file and sees error" do

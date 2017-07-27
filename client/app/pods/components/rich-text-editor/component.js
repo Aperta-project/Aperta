@@ -6,7 +6,9 @@ const basicPlugins     = 'codesample paste';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
-const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
+const listElement      = ',ol[reversed|start|type]';
+
+const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' link table';
 const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
@@ -45,7 +47,7 @@ export default Ember.Component.extend({
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
       toolbar: basicToolbar + expandedToolbar,
-      valid_elements: basicElements + anchorElement + expandedElements
+      valid_elements: basicElements + anchorElement + listElement + expandedElements
     }
 
   /* eslint-enable camelcase */

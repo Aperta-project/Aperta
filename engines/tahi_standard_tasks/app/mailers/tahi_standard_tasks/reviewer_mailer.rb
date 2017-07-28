@@ -65,10 +65,24 @@ module TahiStandardTasks
     end
 
     def remind_before_due(reviewer_report_id:)
+      reminder_notice(reviewer_report_id: reviewer_report_id, template_name: 'Review Reminder - Before Due')
+    end
+
+    def first_late_notice(reviewer_report_id:)
+      reminder_notice(reviewer_report_id: reviewer_report_id, template_name: 'Review Reminder - First Late')
+    end
+
+    def second_late_notice(reviewer_report_id:)
+      reminder_notice(reviewer_report_id: reviewer_report_id, template_name: 'Review Reminder - Second Late')
+    end
+
+    private
+
+    def reminder_notice(reviewer_report_id:, template_name:)
       reviewer_report = ReviewerReport.find(reviewer_report_id)
       @paper = reviewer_report.paper
       journal = @paper.journal
-      letter_template = journal.letter_templates.find_by(name: "Review Reminder - Before Due")
+      letter_template = journal.letter_templates.find_by(name: template_name)
       scenario = ReviewerReportScenario.new(reviewer_report)
       to = Liquid::Template.parse(letter_template.to).render(scenario)
       subject = Liquid::Template.parse(letter_template.subject).render(scenario)

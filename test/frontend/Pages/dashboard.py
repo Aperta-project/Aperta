@@ -860,9 +860,9 @@ class DashboardPage(AuthenticatedPage):
     :return: generated title
     """
     if not prefix:
-      return str(uuid.uuid4())
+      return str(uuid.uuid4()) +'_cm'
     elif prefix and random_bit:
-      return '{0} {1}'.format(prefix, uuid.uuid4())
+      return '{0} {1}'.format(prefix, uuid.uuid4())  +'_cm'
     elif prefix and not random_bit:
       return prefix
 

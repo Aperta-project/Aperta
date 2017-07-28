@@ -257,4 +257,35 @@ describe TahiStandardTasks::ReviewerMailer do
       end
     end
   end
+
+  describe '.remind_before_due' do
+    subject(:email) do
+      described_class.remind_before_due(reviewer_report_id: report.id)
+    end
+
+    before do
+      report.paper.journal.letter_templates.create!(
+        name: 'Review Reminder - Before Due',
+        to: '{{ reviewer.email }}',
+        subject: 'review {{ journal.name }}',
+        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} </p>'
+      )
+    end
+
+    it 'is to the reviewer' do
+      expect(email.to).to eq([report.user.email])
+    end
+
+    it 'renders the email template' do
+      expect(email.body).to match("Dear Dr. #{report.user.last_name}, review #{report.paper.title}")
+    end
+
+    it 'renders the View Manuscript button' do
+      expect(email.body).to match("View Manuscript")
+    end
+
+    it 'renders the signature' do
+      expect(email.body).to match('Bethany Coates')
+    end
+  end
 end

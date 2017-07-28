@@ -1,4 +1,7 @@
-<label class="content-text">{{{content.text}}}{{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}</label>
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+  {{/if}}</label>
 {{#power-select
     options=content.possibleValues
     selected=selectedValue

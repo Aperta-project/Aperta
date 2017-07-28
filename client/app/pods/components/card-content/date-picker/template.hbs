@@ -1,5 +1,8 @@
 <div class="form-group">
-  <p class="picker-title">{{{content.text}}}{{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}</p>
+  <p class="picker-title">{{{content.text}}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+    {{/if}}</p>
   <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
 
     {{date-picker

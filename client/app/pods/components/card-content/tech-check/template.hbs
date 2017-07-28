@@ -1,5 +1,8 @@
 <div class="task-main-content">
-  <p class="content-text">{{{content.text}}}{{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}</p>
+  <p class="content-text">{{{content.text}}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+    {{/if}}</p>
   {{card-content/toggle-switch content=content
                   labelText='Pass'
                   disabled=disabled

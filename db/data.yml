@@ -13654,6 +13654,9 @@ email_logs:
   - description
   - cc
   - bcc
+  - manuscript_status
+  - manuscript_version
+  - versioned_text_id
   records: 
   - - '1'
     - no-reply@example.com
@@ -13739,6 +13742,9 @@ email_logs:
       "@journal": ["Journal", 1]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -13829,6 +13835,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '3'
     - no-reply@example.com
     - author@example.com
@@ -13913,6 +13922,9 @@ email_logs:
       "@journal": ["Journal", 1]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -14015,6 +14027,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '5'
     - no-reply@example.com
     - reviewer@example.com
@@ -14114,6 +14129,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '6'
     - no-reply@example.com
     - reviewer@example.com
@@ -14200,6 +14218,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '7'
     - no-reply@example.com
     - admin@example.com
@@ -14280,6 +14301,9 @@ email_logs:
       ["TahiStandardTasks::PaperReviewerTask", 82]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -14369,6 +14393,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '9'
     - no-reply@example.com
     - admin@example.com
@@ -14449,6 +14476,9 @@ email_logs:
       ["TahiStandardTasks::PaperReviewerTask", 82]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -14597,6 +14627,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '11'
     - no-reply@example.com
     - author@example.com
@@ -14678,6 +14711,9 @@ email_logs:
     - '{"@paper": ["Paper", 4], "@author": ["User", 3], "@journal": ["Journal", 1]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -14780,6 +14816,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '13'
     - no-reply@example.com
     - sealresq+2@gmail.com
@@ -14879,6 +14918,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '14'
     - no-reply@example.com
     - admin@example.com
@@ -14959,6 +15001,9 @@ email_logs:
       ["TahiStandardTasks::PaperReviewerTask", 82]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -15049,6 +15094,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '16'
     - no-reply@example.com
     - admin@example.com
@@ -15129,6 +15177,9 @@ email_logs:
       ["TahiStandardTasks::PaperReviewerTask", 82]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 
@@ -15217,6 +15268,9 @@ email_logs:
     - 
     - 
     - 
+    - 
+    - 
+    - 
   - - '18'
     - no-reply@example.com
     - admin@example.com
@@ -15295,6 +15349,9 @@ email_logs:
       ["TahiStandardTasks::PaperReviewerTask", 207]}'
     - 
     - false
+    - 
+    - 
+    - 
     - 
     - 
     - 

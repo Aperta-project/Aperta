@@ -194,7 +194,6 @@ describe TahiStandardTasks::ReviewerMailer do
     before do
       report.paper.journal.letter_templates.create!(
         name: 'Review Reminder - Before Due',
-        to: '{{ reviewer.email }}',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} </p>'
       )
@@ -229,7 +228,6 @@ describe TahiStandardTasks::ReviewerMailer do
     before do
       report.paper.journal.letter_templates.create!(
         name: 'Review Reminder - First Late',
-        to: '{{ reviewer.email }}',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} </p>'
       )
@@ -264,7 +262,6 @@ describe TahiStandardTasks::ReviewerMailer do
     before do
       report.paper.journal.letter_templates.create!(
         name: 'Review Reminder - Second Late',
-        to: '{{ reviewer.email }}',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} </p>'
       )

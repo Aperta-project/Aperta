@@ -4,7 +4,7 @@
   "description": "Tahi client application",
   "private": true,
   "engines": {
-    "node": "6.11.1"
+    "node": "6.11.0"
   },
   "directories": {
     "doc": "doc",
@@ -57,6 +57,8 @@
     "ember-font-awesome": "3.0.5",
     "ember-inflector": "^1.9.6",
     "ember-load-initializers": "^0.5.1",
+    "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-moment": "7.3.1",
     "ember-popout": "1.0.0",
     "ember-power-select": "1.0.0",
     "ember-prop-types": "3.0.0",

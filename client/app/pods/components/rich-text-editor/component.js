@@ -12,7 +12,6 @@ const listElement      = ',ol[reversed|start|type]';
 const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' link table';
 const expandedToolbar  = ' | bullist numlist | table link | formatselect';
-const developToolbar   = ENV.environment === 'development' ? ' code' : '';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
@@ -48,7 +47,7 @@ export default Ember.Component.extend({
     expanded: {
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
-      toolbar: basicToolbar + developToolbar + expandedToolbar,
+      toolbar: basicToolbar + expandedToolbar,
       valid_elements: basicElements + anchorElement + listElement + expandedElements
     }
 
@@ -71,6 +70,9 @@ export default Ember.Component.extend({
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
     options['elementpath'] = false;
+    if (ENV.environment === 'development') {
+      options['toolbar'] += ' code';
+    }
     Ember.run.schedule('afterRender', this.stripTitles);
     return options;
   },

@@ -3,7 +3,9 @@
     {{#unless (and disabled (not preview))}}
       {{{description}}}
     {{/unless}}
-    {{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+    {{/if}}
   </p>
 {{/if}}
 

@@ -392,10 +392,7 @@ ActiveRecord::Schema.define(version: 20170728115624) do
     t.string   "bcc"
     t.string   "manuscript_status"
     t.string   "manuscript_version"
-<<<<<<< 0c9cd88846855681669aa10ff8a4f8577cf3a019
     t.integer  "versioned_text_id"
-=======
->>>>>>> APERTA-9677 #wip on separation of manuscript version and status
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree

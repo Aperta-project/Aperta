@@ -27,7 +27,6 @@ feature "session invalidation", js: true do
   let!(:reviewer) { create :user }
   let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
     CardLoader.load("TahiStandardTasks::ReviewerReportTask")
     paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(

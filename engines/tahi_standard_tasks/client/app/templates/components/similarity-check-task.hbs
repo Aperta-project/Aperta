@@ -6,64 +6,24 @@
                     message=(format-report-error check)}}
   {{/each}}
 
-  {{#unless confirmVisible}}
-    {{#if showAutomatedReportMsg}}
-      <div class="auto-report-off">
-        <p><strong>Automated similarity check is disabled:</strong></p>
-      </div>
-    {{else if (not automatedReportsDisabled)}}
-      <div class="automated-report-status">
-        <div class="messages">
-         <p>
-            <i class="fa fa-gear"></i>
-            <strong>Automated similarity check is active:</strong>
-            This manuscript will be sent to iThenticate on {{versionedTextDescriptor}}.
-          </p>
-          <p>
-            Manually generating a report below will disable the automated
-            similarity check for this manuscript.
-          </p>
-        </div>
-      </div>
-    {{/if}}
-
-    <p>
-      Click below to generate a similarity report via iThenticate.
-      If a report was generated for a previous version it can be found in the version history.
-    </p>
-    <br>
-  {{/unless}}
-
+  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
   {{#if latestVersionHasSuccessfulChecks}}
-    <div class="latest-versioned-text">
-      <h3>Similarity Check Report</h3>
-
-      {{#each sortedChecks as |check|}}
-        {{similarity-check check=check}}
-      {{/each}}
-    </div>
+    <h3>Similarity Check Report</h3>
   {{/if}}
+
+  {{#each sortedChecks as |check|}}
+    {{similarity-check check=check}}
+  {{/each}}
 
   {{#if confirmVisible}}
     <div class="confirm-container">
-      <h4>
-        {{#if automatedReportsDisabled}}
-          Are you sure?
-        {{else}}
-          Manually generating the report will disable the automated similarity check for this manuscript
-        {{/if}}
-      </h4>
+      <h4>Are you sure?</h4>
       <br>
       <button class="button-link button--white" {{action "cancel"}}>cancel</button>
-      <button class="button-secondary button--green generate-report" {{action "generateReport"}}>Generate Report</button>
+      <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
     </div>
-
   {{else}}
-    <button class="button-primary button--green generate-confirm"
-            disabled={{disableReports}}
-            {{ action "confirmGenerateReport" }}>
-      Generate Report
-    </button>
+    <button class="button-primary button--green" {{ action "confirmGenerateReport" }}>Generate Report</button>
   {{/if}}
 
   {{#if task.paper.hasSimilarityChecks }}
@@ -75,4 +35,5 @@
       {{/if}}
     {{/each}}
   {{/if}}
+
 </div>

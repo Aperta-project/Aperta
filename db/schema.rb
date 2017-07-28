@@ -513,23 +513,6 @@ ActiveRecord::Schema.define(version: 20170721165848) do
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
 
-  create_table "nested_question_answers", force: :cascade do |t|
-    t.integer  "nested_question_id"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.text     "value"
-    t.string   "value_type",         null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.json     "additional_data"
-    t.integer  "decision_id"
-    t.integer  "paper_id"
-    t.datetime "deleted_at"
-  end
-
-  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
-  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
-
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"
     t.string   "value_type", null: false

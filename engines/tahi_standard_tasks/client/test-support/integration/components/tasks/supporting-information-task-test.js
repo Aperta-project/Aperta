@@ -40,6 +40,16 @@ moduleForComponent(
 });
 
 let template = hbs`{{supporting-information-task task=testTask}}`;
+let errorSelector = '.supporting-information-thumbnail .error-message:not(.error-message--hidden)';
+
+test("it renders the paper's SI files", function(assert) {
+  let doneFile = make('supporting-information-file', { status: 'done' });
+  let testTask = createTaskWithFiles([doneFile]);
+  allowPermissionOnTask('edit', testTask);
+  this.set('testTask', testTask);
+  this.render(template);
+  assert.elementsFound('.si-file', 1);
+});
 
 test("it renders the paper's supportingInformationFiles", function(assert) {
   let testTask = createTaskWithFiles([
@@ -48,8 +58,10 @@ test("it renders the paper's supportingInformationFiles", function(assert) {
   this.set('testTask', testTask);
   this.render(template);
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.elementsFound('.si-file', 1);
+    done();
   });
 });
 
@@ -64,41 +76,12 @@ test('it reports validation errors on the task when attempting to complete', fun
   assert.elementsFound('.si-file', 1);
   this.$('.supporting-information-task button.task-completed').click();
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     // Error at the task level
     assert.textPresent('.supporting-information-task', 'Please fix all errors');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
-  });
-});
-
-test('it retains validation errors on the remaining files when a file is deleted', function(assert) {
-  let testTask = createTaskWithFiles([
-    make('supporting-information-file', {label: null, status: 'done', id: 1}),
-    make('supporting-information-file', {label: null, status: 'done', id: 2})
-  ]);
-  allowPermissionOnTask('edit', testTask);
-  this.set('testTask', testTask);
-
-  this.render(template);
-  assert.elementsFound('.si-file-viewing', 2);
-
-  this.$('.si-file-viewing .si-file-edit-icon').first().click();
-  assert.elementsFound('.si-file-viewing', 1);
-  assert.elementsFound('.si-file-editor', 1);
-  
-  // Validation errors are visible on the first file
-  this.$('.si-file-editor .si-file-save-edit-button').click();
-  assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
-  
-  // delete the second file
-  $.mockjax({url: '/api/supporting_information_files/2', type: 'DELETE', status: 204, responseText: ''});
-  this.$('.si-file-viewing .si-file-delete-icon').click();
-  this.$('.si-file-viewing .si-file-delete-button').click();
-  
-  return wait().then(() => {
-    // Validation errors remain visible on the first (and now only) file
-    assert.textPresent('.si-file-editor', 'Please edit and complete the required fields');
-    assert.elementNotFound('.si-file-viewing');
+    done();
   });
 });
 
@@ -111,10 +94,12 @@ test('it requires validation on an SI file label', function(assert) {
   this.render(template);
   this.$('.supporting-information-task button.task-completed').click();
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.elementFound('.si-file .error-message:not(.error-message--hidden)');
     assert.textPresent('.si-file .error-message', 'Please edit');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
+    done();
   });
 });
 
@@ -127,10 +112,12 @@ test('it requires validation on an SI file category', function(assert) {
   this.render(template);
   this.$('.supporting-information-task button.task-completed').click();
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.elementFound('.si-file .error-message:not(.error-message--hidden)');
     assert.textPresent('.si-file .error-message', 'Please edit');
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
+    done();
   });
 });
 
@@ -145,9 +132,11 @@ test("it allows completion when all the files have a status of 'done'", function
   this.render(template);
 
   this.$('.task-completed').click();
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), true, 'task is completed');
     assert.mockjaxRequestMade(testUrl, 'PUT', 'it saves the task')
+    done();
   });
 });
 
@@ -160,8 +149,10 @@ test('it does not allow the user to complete when there are validation errors', 
   this.render(template);
   this.$('.supporting-information-task button.task-completed').click();
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remained incomplete');
+    done();
   });
 });
 
@@ -178,9 +169,11 @@ test("it does not allow completion when any of the files' statuses are not set t
   this.render(template);
 
   this.$('.task-completed').click();
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
     assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+    done();
   });
 });
 
@@ -195,9 +188,11 @@ test("it does not allow completion when any of the files' labels are not defined
   this.render(template);
 
   this.$('.task-completed').click();
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
     assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+    done();
   });
 });
 
@@ -213,9 +208,11 @@ test("it does not allow completion when any of the files' categories is not defi
   this.render(template);
 
   this.$('.task-completed').click();
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task remains uncompleted');
     assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'it does not save the task')
+    done();
   });
 });
 
@@ -236,7 +233,8 @@ test('it lets you uncomplete the task when it has validation errors', function(a
   assert.equal(testTask.get('completed'), true, 'task was initially completed');
   this.$('.supporting-information-task button.task-completed').click();
 
-  return wait().then(() => {
+  let done = assert.async();
+  wait().then(() => {
     assert.equal(testTask.get('completed'), false, 'task was marked as incomplete');
     assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
     $.mockjax.clear();
@@ -247,6 +245,7 @@ test('it lets you uncomplete the task when it has validation errors', function(a
       assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT');
       assert.textPresent('.supporting-information-task', 'Please fix all errors');
       assert.equal(testTask.get('completed'), false, 'task did not change completion status');
+      done();
     });
   });
 });

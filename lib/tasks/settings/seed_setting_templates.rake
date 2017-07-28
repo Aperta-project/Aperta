@@ -16,8 +16,8 @@ namespace :settings do
          "off",
          "at_first_full_submission",
          "after_any_first_revise_decision",
-         "after_minor_revise_decision",
-         "after_major_revise_decision"
+         "after_first_minor_revise_decision",
+         "after_first_major_revise_decision"
        ] }].each do |hash|
       SettingTemplate.transaction do
         possible_values = hash.delete(:possible_setting_values) { |_el| [] }

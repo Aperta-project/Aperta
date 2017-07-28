@@ -76,7 +76,7 @@ class Invitation < ActiveRecord::Base
     end
 
     event(:accept,
-      after_commit: [:set_accepted_at, :notify_invitation_accepted]) do
+      after_commit: [:set_accepted_at, :notify_invitation_accepted, :schedule_events]) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
@@ -135,6 +135,10 @@ class Invitation < ActiveRecord::Base
 
   def set_invitee
     update(invitee: User.find_by(email: email))
+  end
+
+  def schedule_events(factory_template: self)
+    ScheduledEventFactory.schedule_events(factory_template) if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   private

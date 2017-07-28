@@ -5,6 +5,7 @@ class Correspondence < ActiveRecord::Base
   belongs_to :paper
   belongs_to :task
   belongs_to :journal
+  belongs_to :versioned_text
 
   has_many :attachments, as: :owner,
                          class_name: 'CorrespondenceAttachment',
@@ -34,6 +35,7 @@ class Correspondence < ActiveRecord::Base
     # correspondence with the paper_id nil
     return unless paper
     update_attributes manuscript_version: paper.versioned_texts.last.version,
-                      manuscript_status: paper.publishing_state
+                      manuscript_status: paper.publishing_state,
+                      versioned_text_id: paper.versioned_texts.last.id
   end
 end

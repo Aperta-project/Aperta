@@ -272,7 +272,6 @@ namespace :seed do
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         LetterTemplate.where(name: 'Review Reminder - Before Due', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your review for {{ journal.name }} is due soon'
-          lt.to = '{{ reviewer.email }}'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
             <p>Thank you again for agreeing to review “{{ paper.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
@@ -287,7 +286,6 @@ namespace :seed do
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         LetterTemplate.where(name: 'Review Reminder - First Late', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Late Review for {{ journal.name }}'
-          lt.to = '{{ reviewer.email }}'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
             <p>This is a reminder that your review of the PLOS Biology manuscript “{{ paper.title }}” was due to be received by  {{ review.due_at }}.</p>
@@ -303,7 +301,6 @@ namespace :seed do
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         LetterTemplate.where(name: 'Review Reminder - Second Late', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Reminder of Late Review for {{ journal.name }}'
-          lt.to = '{{ reviewer.email }}'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
             <p>This is a reminder that your review of the PLOS Biology manuscript “{{ paper.title }}” was expected by the agreed due date, {{ review.due_at }}. At this stage we urgently need the review in order to proceed with the editorial process.</p>

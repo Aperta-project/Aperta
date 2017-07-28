@@ -1,0 +1,2 @@
+class ReviewerReportScheduledEventsTemplate < ScheduledEventTemplate
+end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724172602) do
+ActiveRecord::Schema.define(version: 20170728134747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -784,6 +784,29 @@ ActiveRecord::Schema.define(version: 20170724172602) do
     t.datetime "updated_at"
   end
 
+  create_table "scheduled_event_templates", force: :cascade do |t|
+    t.string   "owner"
+    t.integer  "owner_id"
+    t.string   "event_name"
+    t.integer  "event_dispatch_offset"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "scheduled_event_templates", ["due_datetime_id"], name: "index_scheduled_event_templates_on_due_datetime_id", using: :btree
+
+  create_table "scheduled_events", force: :cascade do |t|
+    t.datetime "dispatch_at"
+    t.string   "state"
+    t.string   "name"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
+
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
     t.datetime "created_at", null: false
@@ -1038,6 +1061,8 @@ ActiveRecord::Schema.define(version: 20170724172602) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_event_templates", "due_datetimes"
+  add_foreign_key "scheduled_events", "due_datetimes"
   add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

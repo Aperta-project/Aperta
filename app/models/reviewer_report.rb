@@ -17,11 +17,16 @@ class ReviewerReport < ActiveRecord::Base
                   message: 'Only one report allowed per reviewer per decision' }
 
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
+  delegate :schedule_events, to:
 
   def set_due_datetime(length_of_time: 10.days)
     if FeatureFlag[:REVIEW_DUE_DATE]
       DueDatetime.set_for(self, length_of_time: length_of_time)
     end
+  end
+
+  def schedule_events(factory_template: self)
+    ScheduledEventFactory.schedule_events(factory_template) if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   def self.for_invitation(invitation)
@@ -39,7 +44,7 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
-          after_commit: [:set_due_datetime],
+          after_commit: [:set_due_datetime, :schedule_events],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end

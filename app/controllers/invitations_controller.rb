@@ -16,7 +16,7 @@ class InvitationsController < ApplicationController
   def update
     requires_user_can(:manage_invitations, invitation.task)
     invitation.update_attributes!(invitation_update_params)
-    respond_with invitation
+    head :no_content
   end
 
   # non restful route for drag and drop changes

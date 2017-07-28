@@ -25,6 +25,8 @@ describe Invitation::Updated::StateChange do
     end
 
     before do
+      FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+
       decision.invitations << invitation
       decision.reviewer_reports << report
       Subscriptions.reload

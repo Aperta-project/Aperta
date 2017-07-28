@@ -9,7 +9,7 @@ const taskValidations = {
 export default TaskComponent.extend({
   paperNotEditable: Ember.computed.not('task.paper.editable'),
   isNotEditable: Ember.computed('task.completed', 'paperNotEditable', function () {
-    return this.get('task.completed') || this.get('paperNotEditable');
+    return this.get('task.completed') || (this.get('paperNotEditable') && !this.get('currentUser.siteAdmin'));
   }),
   validations: taskValidations,
 
@@ -22,7 +22,16 @@ export default TaskComponent.extend({
       this.set('validationErrors.completed', 'Please fix all errors');
     }
   },
-
+  paperTitleError: Ember.computed('validationErrors.paperTitle', function(){
+    if (this.get('validationErrors.paperTitle')){
+      return [this.get('validationErrors.paperTitle')];
+    }
+  }),
+  paperAbstractError: Ember.computed('validationErrors.paperAbstract', function(){
+    if (this.get('validationErrors.paperAbstract')){
+      return [this.get('validationErrors.paperAbstract')];
+    }
+  }),
   actions: {
     titleChanged(contents) {
       this.set('task.paperTitle', contents);

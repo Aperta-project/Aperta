@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe JournalServices::CreateDefaultManuscriptManagerTemplates do
+  let(:service) { JournalServices::CreateDefaultManuscriptManagerTemplates }
   let(:journal) { FactoryGirl.create(:journal) }
 
   before do
@@ -12,7 +13,7 @@ describe JournalServices::CreateDefaultManuscriptManagerTemplates do
 
   it "creates default manager templates" do
     expect do
-      JournalServices::CreateDefaultManuscriptManagerTemplates.call(journal)
+      service.call(journal)
     end.to change { journal.manuscript_manager_templates.count } .by(1)
   end
 end

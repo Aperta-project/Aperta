@@ -98,6 +98,9 @@ class TahiEnv
   required :CAS_SERVICE_VALIDATE_URL, if: :cas_enabled?
   required :CAS_SSL, :boolean, if: :cas_enabled?
   optional :CAS_CALLBACK_URL
+  optional :CAS_PHASED_SIGNUP_ENABLED, :boolean, default: false
+  required :CAS_PHASED_SIGNUP_URL, if: :cas_phased_signup_enabled?
+  required :JWT_ID_ECDSA, if: :cas_phased_signup_enabled?
 
   # EM / Editorial Manager
   optional :EM_DATABASE
@@ -158,6 +161,9 @@ class TahiEnv
   # Redis
   optional :REDIS_SENTINEL_ENABLED, :boolean, default: false
   required :REDIS_SENTINELS, :array, default: [], if: :redis_sentinel_enabled?
+
+  # RouterApi
+  optional :ROUTER_URL
 
   # Salesforce
   optional :SALESFORCE_ENABLED, :boolean, default: true

@@ -19,6 +19,9 @@ namespace :db do
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
     location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
+    # Minimal footprint local import. Run "hs" node module in a directory containing a production dump file,
+    # Then uncomment this:
+    # location = "http://localhost:8080/prod_dump.tar.gz"
 
     with_config do |app, host, db, user, password|
       # ensure that there is no connection to the database since we're
@@ -110,9 +113,6 @@ namespace :db do
     Journal.update_all(logo: nil)
     encrypted_password = User.new(password: DEFAULT_USER_PASSWORD).encrypted_password
     User.update_all(encrypted_password: encrypted_password, avatar: nil)
-    unless User.all.all? { |u| u.valid_password?(DEFAULT_USER_PASSWORD) } # time-consuming safety check
-      fail "Some passwords were not reset successfully."
-    end
   end
 
   desc <<-DESCRIPTION

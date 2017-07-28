@@ -10,9 +10,7 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-    
-    card.rng: If this file is card.rng, please edit card.rnc instead. You will be
-    happier
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier
   -->
   <define name="possible-value">
     <element name="possible-value">
@@ -43,6 +41,19 @@
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <element name="text">
         <text/>
@@ -93,6 +104,19 @@
       <attribute name="value-type">
         <value>boolean</value>
       </attribute>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <interleave>
         <optional>
           <element name="label">
@@ -155,6 +179,19 @@
             <value>false</value>
           </choice>
         </attribute>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <zeroOrMore>
@@ -245,6 +282,19 @@
       <optional>
         <attribute name="default-answer-value"/>
       </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -295,6 +345,19 @@
         <value>boolean</value>
       </attribute>
       <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
+      </optional>
+      <optional>
         <element name="text">
           <text/>
         </element>
@@ -323,8 +386,14 @@
         <attribute name="ident"/>
       </optional>
       <attribute name="value-type">
-        <value>text</value>
+        <choice>
+          <value>text</value>
+          <value>html</value>
+        </choice>
       </attribute>
+      <optional>
+        <attribute name="editor-style"/>
+      </optional>
       <attribute name="content-type">
         <choice>
           <value>short-input</value>
@@ -339,6 +408,19 @@
       </attribute>
       <optional>
         <attribute name="default-answer-value"/>
+      </optional>
+      <optional>
+        <attribute name="allow-annotations">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <element name="instruction-text">
+          <text/>
+        </element>
       </optional>
       <interleave>
         <optional>
@@ -421,6 +503,26 @@
       </zeroOrMore>
     </element>
   </define>
+  <define name="export-paper">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>export-paper</value>
+      </attribute>
+      <interleave>
+        <element name="label">
+          <text/>
+        </element>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -428,6 +530,7 @@
       <ref name="text-content"/>
       <ref name="display-children-content"/>
       <ref name="display-with-value-content"/>
+      <ref name="export-paper"/>
       <ref name="field-set"/>
       <ref name="check-box-input"/>
       <ref name="file-uploader"/>

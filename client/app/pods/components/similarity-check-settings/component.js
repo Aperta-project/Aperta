@@ -7,12 +7,12 @@ export default Ember.Component.extend({
   classNames: ['similarity-check-settings'],
   selectableOptions: [
     {
-      id: 'after_first_major_revise_decision',
-      text: 'first major revision'
+      id: 'after_major_revise_decision',
+      text: 'major revision'
     },
     {
-      id: 'after_first_minor_revise_decision',
-      text: 'first minor revision'
+      id: 'after_minor_revise_decision',
+      text: 'minor revision'
     },
     {
       id: 'after_any_first_revise_decision',

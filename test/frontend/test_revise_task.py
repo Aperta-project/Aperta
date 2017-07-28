@@ -139,6 +139,7 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
     # need to complete this task again after providing new manuscript
     paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
                                                               'response_number': 2})

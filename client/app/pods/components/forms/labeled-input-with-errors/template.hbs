@@ -1,6 +1,6 @@
 <div class='input-header'>
   <div class='description'>
-    <label class="{{if required 'required'}}">{{label}}</label>
+    <label class={{labelClasses}}>{{label}}</label>
     {{#if helpText }}
       <div class='help-text'>{{helpText}}</div>
     {{/if}}
@@ -15,7 +15,7 @@
       value=value
       enter=enter
       placeholder=placeholder
-      class='form-control'
+      class=inputClasses
       classBinding='errorsPresentOnField:labeled-input-with-errors-errored'
       autofocus=(if autofocus 'autofocus') }}
   {{else if (eq type 'textarea')}}
@@ -24,7 +24,7 @@
       value=value
       enter=enter
       placeholder=placeholder
-      class='form-control'
+      class=inputClasses
       classBinding='errorsPresentOnField:labeled-input-with-errors-errored'
       autofocus=(if autofocus 'autofocus') }}
   {{/if}}

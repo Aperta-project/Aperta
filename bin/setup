@@ -80,8 +80,8 @@ Dir.chdir APP_ROOT do
       brew_install package
     end
   when :linux
-    # Install node v 4.2
-    system "curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -"
+    # Install node v 6.11.1
+    system "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
     system "sudo apt-get install -y imagemagick nodejs wget redis-server postgresql qpdf"
   end
   header 'Installing gems'

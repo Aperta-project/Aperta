@@ -31,4 +31,20 @@ namespace :one_off do
       end
     end
   end
+
+  desc "Create chasing schedule templates for testing purposes"
+  task create_reviewer_report_scheduled_templates: :environment do
+    puts "Creating ReviewerReport scheduled events templates ..."
+    ScheduledEvent.transaction do
+      ScheduledEventTemplate.create owner: 'ReviewerReport',
+                                    event_name: 'Pre-Due Reminder',
+                                    event_dispatch_offset: -2
+      ScheduledEventTemplate.create owner: 'ReviewerReport',
+                                    event_name: 'Firt-late Reminder',
+                                    event_dispatch_offset: -2
+      ScheduledEventTemplate.create owner: 'ReviewerReport',
+                                    event_name: 'Second-late Reminder',
+                                    event_dispatch_offset: -2
+    end
+  end
 end

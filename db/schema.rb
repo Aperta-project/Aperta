@@ -513,7 +513,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
-  
+
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "user_id"

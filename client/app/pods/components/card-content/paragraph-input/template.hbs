@@ -1,4 +1,7 @@
-<label class="content-text">{{{content.text}}}</label>
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+  {{/if}}</label>
 
 {{#if isRichText}}
   {{rich-text-editor
@@ -13,8 +16,6 @@
       disabled=disabled
   }}
 {{else}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
-
   {{format-input
       value=(readonly answer.value)
       class="form-control"
@@ -22,5 +23,4 @@
       disabled=disabled
   }}
 {{/if}}
-<label class="content-text">{{{content.text}}}{{#if content.isRequired}}{{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}{{/if}}</label>
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}

@@ -22,7 +22,7 @@ module MailLog
           subject: message.subject,
           body: message_body,
           # we need to do this instead of mail.without_attachments!
-          # because without_attachments! mutates the mess age object
+          # because without_attachments! mutates the message object
           raw_source: Mail.new(message.encoded).without_attachments!.to_s,
           status: 'pending',
           task: mail_context.try(:task),

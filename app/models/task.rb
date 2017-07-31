@@ -1,3 +1,4 @@
+# Base class for all types of Task
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
@@ -267,6 +268,11 @@ class Task < ActiveRecord::Base
   # subclass type (ie TahiStandardTasks::ReviewerReportTask)
   def owner_type_for_answer
     'Task'
+  end
+
+  def display_status
+    return :active_check if completed
+    :check
   end
 
   private

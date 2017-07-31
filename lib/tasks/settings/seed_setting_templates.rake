@@ -18,7 +18,16 @@ namespace :settings do
          "after_any_first_revise_decision",
          "after_minor_revise_decision",
          "after_major_revise_decision"
-       ] }].each do |hash|
+       ] },
+     {
+       journal: Journal.first, # should these be global or attached to biology?
+       key: ManuscriptManagerTemplate.new.setting_template_key,
+       value_type: "integer",
+       global: false,
+       setting_klass: "Setting",
+       setting_name: "review_duration_period",
+       value: 10
+     }].each do |hash|
       SettingTemplate.transaction do
         possible_values = hash.delete(:possible_setting_values) { |_el| [] }
         template_value = hash.delete(:value)

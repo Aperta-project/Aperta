@@ -105,7 +105,7 @@ module TahiStandardTasks
       subject = Liquid::Template.parse(letter_template.subject).render(scenario)
       @body = Liquid::Template.parse(letter_template.body).render(scenario)
 
-      mail(to: to, subject: subject)
+      mail(to: to, subject: subject, template_name: 'review_due_reminder')
     end
   end
 end

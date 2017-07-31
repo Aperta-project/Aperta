@@ -120,7 +120,6 @@ class CardContent < ActiveRecord::Base
       'value-type' => value_type,
       'required-field' => required_field,
       'editor-style' => editor_style,
-      'required-field' => required_field,
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,
       'allow-multiple-uploads' => allow_multiple_uploads,

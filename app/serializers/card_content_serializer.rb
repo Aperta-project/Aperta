@@ -13,7 +13,6 @@ class CardContentSerializer < ActiveModel::Serializer
              :required_field,
              :editor_style,
              :allow_annotations,
-             :required_field,
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value
              # then render this content's children

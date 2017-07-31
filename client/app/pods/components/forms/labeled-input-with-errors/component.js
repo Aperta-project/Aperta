@@ -30,6 +30,14 @@ export default Ember.Component.extend({
     }
   }),
 
+  inputClasses: Ember.computed('name', function() {
+    return `form-control ${this.getWithDefault('name', '').dasherize()}`;
+  }),
+
+  labelClasses: Ember.computed('required', 'name', function() {
+    return `${this.get('required') ? 'required' : ''} ${this.getWithDefault('name', '').dasherize()}`;
+  }),
+
   actions: {
     // Called when user hits enter while focused on the input
     enter() {

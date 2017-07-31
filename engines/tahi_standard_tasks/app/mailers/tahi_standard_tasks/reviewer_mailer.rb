@@ -21,8 +21,7 @@ module TahiStandardTasks
       mail(
         to: @invitation.email,
         subject: @subject,
-        bcc: @paper.journal.reviewer_email_bcc,
-        from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+        bcc: @paper.journal.reviewer_email_bcc
       )
     end
 

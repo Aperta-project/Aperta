@@ -27,6 +27,7 @@ let createSendbackWithChildren = () => {
     contentType: 'check-box',
     ident: 'reason',
     label: 'See me!',
+    text: 'lalalala',
     valueType: 'boolean',
     parent: sendback
   });
@@ -57,7 +58,7 @@ test('it shows its text if provided', function(assert) {
   owner=owner 
   valueChanged=(action actionStub)}}`);
 
-  assert.equal(this.$('.content-text').text().trim(), 'Answer my question');
+  assert.equal(this.$('.content-text').text().trim(), 'lalalala');
 });
 
 test('it shows its label if provided', function(assert) {

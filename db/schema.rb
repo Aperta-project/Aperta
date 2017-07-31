@@ -57,8 +57,8 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.integer  "paper_id"
     t.string   "value"
     t.jsonb    "additional_data"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.datetime "deleted_at"
     t.string   "annotation"
   end

@@ -245,6 +245,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

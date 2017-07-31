@@ -14,21 +14,28 @@ module MailLog
         recipients = get_recipients(message)
         mail_context = message.aperta_mail_context
         message_body = get_message(message)
-        Correspondence.create!(
+        paper = mail_context.try(:paper)
+        correspondence_hash = {
           sender: message.from.first,
           recipients: recipients,
           message_id: message.message_id,
           subject: message.subject,
           body: message_body,
           # we need to do this instead of mail.without_attachments!
-          # because without_attachments! mutates the message object
+          # because without_attachments! mutates the mess age object
           raw_source: Mail.new(message.encoded).without_attachments!.to_s,
           status: 'pending',
           task: mail_context.try(:task),
-          paper: mail_context.try(:paper),
+          paper: paper,
           journal: mail_context.try(:journal),
           additional_context: mail_context.try(:to_database_safe_hash)
-        )
+        }
+        correspondence_hash.merge!(
+          manuscript_version: paper.versioned_texts.last.version,
+          manuscript_status: paper.publishing_state,
+          versioned_text_id: paper.versioned_texts.last.id
+        ) if paper
+        Correspondence.create!(correspondence_hash)
       end
 
       def self.get_message(message)

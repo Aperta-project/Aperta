@@ -8,6 +8,7 @@ describe TahiStandardTasks::FrontMatterReviewerReportTaskSerializer, serializer_
   before do
     allow(reviewer_report_task.paper).to receive('decisions').and_return [decision]
     allow(reviewer_report_task).to receive(:submitted?).and_return true
+    allow(reviewer_report_task).to receive(:display_status).and_return :submitted
   end
 
   let(:task_content) { deserialized_content[:task] }

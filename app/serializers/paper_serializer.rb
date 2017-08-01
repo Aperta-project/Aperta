@@ -27,11 +27,6 @@ class PaperSerializer < LitePaperSerializer
   has_one :file, embed: :id, include: true, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :id, include: true, serializer: AttachmentSerializer
 
-  def aarx_doi
-    object.aarx_doi
-    # is this necessary
-  end
-
   def paper_task_types
     paper.journal.journal_task_types
   end

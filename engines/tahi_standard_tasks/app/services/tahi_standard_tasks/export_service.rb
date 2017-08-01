@@ -40,6 +40,8 @@ module TahiStandardTasks
 
         paper.ensure_preprint_doi! if needs_preprint_doi?
 
+        paper.verify_or_assign_preprint_doi! if needs_preprint_doi?
+
         if destination == 'apex'
           upload_to_ftp(packager.zip_file, package_filename)
           upload_to_ftp(packager.manifest_file, manifest_filename)

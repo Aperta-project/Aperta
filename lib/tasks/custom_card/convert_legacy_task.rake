@@ -1,5 +1,3 @@
-Dir[Rails.root.join("lib/custom_card/**/*.rb")].each { |f| require f }
-
 namespace :custom_card do
   desc 'Convert legacy tasks to custom card tasks'
   # example:  custom_card:convert_legacy_task[TahiStandardTasks::CompetingInterestsTask, Competing Interests]

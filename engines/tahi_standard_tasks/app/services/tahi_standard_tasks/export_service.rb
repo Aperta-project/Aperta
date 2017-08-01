@@ -38,6 +38,8 @@ module TahiStandardTasks
                                     delivery_id: export_delivery.id,
                                     destination: destination
 
+        paper.verify_or_assign_preprint_doi! if needs_preprint_doi?
+
         if destination == 'apex'
           upload_to_ftp(packager.zip_file, package_filename)
           upload_to_ftp(packager.manifest_file, manifest_filename)
@@ -48,6 +50,10 @@ module TahiStandardTasks
     end
 
     private
+
+    def needs_preprint_doi?
+      deistination == 'preprint' && apex_delivery.with_new_preprint_doi?
+    end
 
     def while_notifying_delivery
       export_delivery.delivery_in_progress!

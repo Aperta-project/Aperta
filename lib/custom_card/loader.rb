@@ -1,5 +1,3 @@
-Dir[Rails.root.join("lib/custom_card/**/*.rb")].each { |f| require f }
-
 module CustomCard
   # The purpose of this class is to provide a common interface for
   # creating custom Cards for specified Journals.

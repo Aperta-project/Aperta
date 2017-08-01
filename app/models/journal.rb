@@ -4,8 +4,8 @@ class Journal < ActiveRecord::Base
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
-  PREPRINT_DOI_FORMAT     = %r{\A(#{PREPRINT_DOI_PREFIX_FORMAT}/\d+/)\z}
   PREPRINT_DOI_PREFIX_FORMAT = %r{10.24196\/aarx\.}
+  PREPRINT_DOI_FORMAT     = %r{\A(#{PREPRINT_DOI_PREFIX_FORMAT}/\d+/)\z}
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
   PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
   PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze

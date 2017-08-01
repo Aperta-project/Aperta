@@ -34,4 +34,9 @@ class CardContentValidation < ActiveRecord::Base
     return false unless validator =~ /^[0-9]+$/
     answer.value.length <= validator.to_i
   end
+
+  def validate_by_required_field(answer)
+    return false if card_content.required_field && answer.value.blank?
+    true
+  end
 end

@@ -42,7 +42,7 @@ class TasksController < ApplicationController
 
     # if the task is completed the only thing that can be done to it is mark
     # it as uncompleted
-    if task.completed?
+    if required_fields_completed && task.completed?
       attrs = params.require(:task).permit(:completed)
       task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else
@@ -160,5 +160,19 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def required_fields_completed
+    required_fields = task.card_version.card_contents.where(required_field: true)
+    required_fields.each do |content|
+      answer = task.find_or_build_answer_for(card_content: content)
+      answer.save unless answer.persisted?
+      # puts "task ident #{content.ident} answer.id #{answer.id} answer.ready_issues #{answer.ready_issues}"
+    end
+
+    result = task.answers.all?(&:ready?)
+    # puts "task.answers.all?(&:ready?) #{result}"
+    task.incomplete! unless result
+    result
   end
 end

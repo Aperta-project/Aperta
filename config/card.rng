@@ -10,7 +10,8 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier
+    
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
   <define name="possible-value">
     <element name="possible-value">
@@ -60,6 +61,19 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="possible-value"/>
       </zeroOrMore>
@@ -121,6 +135,19 @@
         </optional>
       </interleave>
       <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
+      <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
     </element>
@@ -177,7 +204,10 @@
         <zeroOrMore>
           <element name="validation">
             <attribute name="validation-type">
-              <value>file-name</value>
+              <choice>
+                <value>file-name</value>
+                <value>required-field</value>
+              </choice>
             </attribute>
             <element name="error-message">
               <text/>
@@ -225,6 +255,19 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
     </element>
   </define>
   <!-- for now duplicating radio-input for dropdown -->
@@ -272,6 +315,19 @@
       <oneOrMore>
         <ref name="possible-value"/>
       </oneOrMore>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -322,6 +378,19 @@
           <text/>
         </element>
       </optional>
+      <zeroOrMore>
+        <element name="validation">
+          <attribute name="validation-type">
+            <value>required-field</value>
+          </attribute>
+          <element name="error-message">
+            <text/>
+          </element>
+          <element name="validator">
+            <text/>
+          </element>
+        </element>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -384,6 +453,7 @@
                 <value>string-match</value>
                 <value>string-length-minimum</value>
                 <value>string-length-maximum</value>
+                <value>required-field</value>
               </choice>
             </attribute>
             <element name="error-message">

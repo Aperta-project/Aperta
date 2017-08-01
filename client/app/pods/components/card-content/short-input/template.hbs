@@ -2,7 +2,7 @@
   {{#if content.isRequired}}
     {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
   {{/if}}</label>
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
+
 {{input
   value=(readonly answer.value)
   class="form-control"
@@ -11,3 +11,5 @@
   disabled=disabled
   required=content.isRequired
   content=content}}
+
+<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>

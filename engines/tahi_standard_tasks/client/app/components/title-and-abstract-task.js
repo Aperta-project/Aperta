@@ -40,6 +40,7 @@ export default TaskComponent.extend({
 
     abstractChanged(contents) {
       this.set('task.paperAbstract', contents);
+      this.get('task.debouncedSave').perform();
     },
 
     focusOut() {

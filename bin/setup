@@ -96,6 +96,10 @@ Dir.chdir APP_ROOT do
     f.puts "RAILS_SECRET_TOKEN=#{SecureRandom.hex(64)}"
   end
 
+  header 'Installing mailcatcher'
+  system 'gem install mailcatcher'
+  puts 'Run in the console `mailcatcher` to start the daemon. For more information check http://mailcatcher.me/'
+
   header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo
   # http://stackoverflow.com/questions/8546759/how-to-check-if-a-postgres-user-exists

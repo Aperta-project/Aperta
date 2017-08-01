@@ -11,7 +11,7 @@
     <tbody>
       {{#each templates as |template|}}
         <tr class="admin-email-template-row">
-          <td>{{template.text}}</td>
+          <td>{{template.name}}</td>
           <td>{{template.subject}}</td>
           <td>
             {{#link-to 'admin.edit_email' template.id}}

@@ -70,14 +70,6 @@
         <value>check-box</value>
       </attribute>
       <optional>
-        <attribute name="toggleable-hide">
-          <choice>
-            <value>true</value>
-            <value>false</value>
-          </choice>
-        </attribute>
-      </optional>
-      <optional>
         <attribute name="default-answer-value">
           <choice>
             <value>true</value>

@@ -95,10 +95,6 @@ class XmlCardLoader
         content.tag_text('validator'),
       validation_type:
         content.attr_value('validation-type'),
-      target_ident:
-        content.attr_value('target-ident'),
-      violation_value:
-        content.attr_value('violation-value'),
       error_message:
         content.tag_text('error-message')
     }
@@ -117,12 +113,8 @@ class XmlCardLoader
         content.attr_value('allow-annotations'),
       content_type:
         content.attr_value('content-type'),
-      revert_children_on_hide:
-        content.attr_value('revert-children-on-hide'),
       default_answer_value:
         content.attr_value('default-answer-value'),
-      toggleable_hide:
-        content.attr_value('toggleable-hide'),
       ident:
         content.attr_value('ident'),
       label:

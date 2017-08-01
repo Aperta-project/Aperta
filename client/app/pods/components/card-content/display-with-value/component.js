@@ -15,26 +15,12 @@ export default Ember.Component.extend({
     return this.get('content.parent').answerForOwner(this.get('owner'));
   }),
 
-  shouldHide: Ember.observer('parentAnswer.value', function() {
-    Ember.run.once(this, 'revertChildrenAnswers');
-  }),
-
-  revertChildrenAnswers() {
-    if (this.get('content.revertChildrenOnHide') && !this.get('showChildren')) {
-      Ember.A(this.get('content.children')).forEach((child) => {
-        child.answerForOwner(this.get('owner')).set('value', child.get('defaultAnswerValue'));
-      });
-    }
-  },
-
   showChildren: Ember.computed(
     'parentAnswer.value',
-    'parentAnswer.toggleableHideValue',
     'content.visibleWithParentAnswer',
     function() {
       let parentValue = this.get('parentAnswer.value');
-      let toggleHideValue = this.get('parentAnswer.toggleableHideValue');
-      if (parentValue === null || parentValue === undefined || toggleHideValue === true) { return false; }
+      if (parentValue === null || parentValue === undefined) { return false; }
       return (parentValue).toString() ===
         this.get('content.visibleWithParentAnswer');
     }

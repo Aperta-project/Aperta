@@ -62,15 +62,6 @@ class Answer < ActiveRecord::Base
     end
   end
 
-  def related_answers
-    relatable_answer_idents = card_content.card_content_validations
-      .where(validation_type: RELATED_ANSWER_VALIDATION_TYPE)
-                                .map(&:target_ident)
-    task.answers.joins(:card_content).where(card_contents: {
-                                              ident: relatable_answer_idents
-                                            })
-  end
-
   private
 
   def html_value_type?

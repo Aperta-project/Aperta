@@ -57,7 +57,6 @@ class AnswersController < ApplicationController
                                    :owner_id,
                                    :value,
                                    :annotation,
-                                   :card_content_id,
-                                   :toggleable_hide)
+                                   :card_content_id)
   end
 end

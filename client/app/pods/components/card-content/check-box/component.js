@@ -19,18 +19,12 @@ export default Ember.Component.extend({
     return this.get('answer.value');
   }),
 
-  toggleableHideEnabled: Ember.computed.and('content.toggleableHide', 'answerChecked'),
-  answerChecked: Ember.computed.equal('answer.value', true),
   actions: {
     valueChanged(newVal) {
       let action = this.get('valueChanged');
       if (action) {
         action(newVal.checked);
       }
-    },
-
-    toggleHide() {
-      this.toggleProperty('answer.toggleableHideValue');
     }
   }
 });

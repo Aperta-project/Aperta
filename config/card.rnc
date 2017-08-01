@@ -32,7 +32,6 @@ radio-input = element content {
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
-                attribute toggleable-hide { "true" | "false" }?,
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,

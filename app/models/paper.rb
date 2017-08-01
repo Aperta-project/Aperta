@@ -14,6 +14,9 @@ class Paper < ActiveRecord::Base
   include Snapshottable
   include CustomCastTypes
 
+  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
+  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
+
   attribute :title, HtmlString.new
   attribute :abstract, HtmlString.new
 
@@ -636,6 +639,11 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  # def assign_preprint_doi!
+  #   raise "Invalid paper Journals are required for papers urls." unless journal
+  #   update!(:preprint_doi_short_id: journal.next_preprint_short_doi!)
+  # end
 
   def new_major_version!
     draft.be_major_version!

@@ -13659,7 +13659,7 @@ email_logs:
   - versioned_text_id
   records: 
   - - '1'
-    - no-reply@example.comp
+    - no-reply@example.com
     - editor@example.com
     - You've been added as a collaborator to the manuscript, "The most scrumtrulescent
       scientific paper of 2015."

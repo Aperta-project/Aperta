@@ -9,8 +9,10 @@
     hasErrors=answer.hasErrors
     errorMessages=answer.readyIssuesArray
     onContentsChanged=(action "valueChanged")
+    focusOut=(action "validate")
     class=inputClassNames
     disabled=disabled
+    hideError=hideError
   }}
 {{else}}
   {{card-content/validation-errors errors=answer.readyIssuesArray}}

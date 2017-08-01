@@ -1,8 +1,11 @@
 <label class="content-text">{{{content.text}}}</label>
-{{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{#unless isBlank}}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{/unless}}
 {{input
   value=(readonly answer.value)
   class="form-control"
   change=(action "valueChanged")
   input=(action "valueChanged")
+  focusOut=(action "validate")
   disabled=disabled}}

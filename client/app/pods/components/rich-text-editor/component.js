@@ -54,15 +54,12 @@ export default Ember.Component.extend({
   /* eslint-enable camelcase */
   },
 
-  stripTitles() {
-    let editors = window.tinymce.editors;
-    for (let id of Object.keys(editors)) {
-      let editor = editors[id];
-      if (editor) {
-        let ifr = window.tinymce.DOM.get(id + '_ifr');
-        editor.dom.setAttrib(ifr, 'title', '');
-      }
-    }
+  postRender() {
+    let editor = this.childViews.find(child => child.editor).editor;
+    let iframeSelector = 'iframe#' + editor.id + '_ifr';
+    document.querySelector(iframeSelector).removeAttribute('title');
+    let callback = this.get('focusOut');
+    if (callback) editor.on('blur', callback);
   },
 
   configureCommon(options) {
@@ -73,7 +70,7 @@ export default Ember.Component.extend({
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }
-    Ember.run.schedule('afterRender', this.stripTitles);
+    Ember.run.schedule('afterRender', this, this.postRender);
     return options;
   },
 

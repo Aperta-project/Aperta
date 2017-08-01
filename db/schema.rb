@@ -579,6 +579,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.string   "preprint_short_doi"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

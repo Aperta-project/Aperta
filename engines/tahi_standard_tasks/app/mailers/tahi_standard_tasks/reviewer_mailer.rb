@@ -19,9 +19,9 @@ module TahiStandardTasks
       @subject = "You have been invited as a reviewer " \
         "for the manuscript, \"#{@paper.display_title}\""
       mail(
-        to: @invitation.email,
+        to:      @invitation.email,
         subject: @subject,
-        bcc: @paper.journal.reviewer_email_bcc
+        bcc:     @paper.journal.reviewer_email_bcc
       )
     end
 

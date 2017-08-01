@@ -6,7 +6,6 @@ export default Ember.Component.extend({
   classNameBindings: ['answer.hasErrors:has-error'],
   attributeBindings: ['isRequired:required', 'aria-required'],
   'aria-required': Ember.computed.reads('isRequiredString'),
-
   hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
   classNameBindings: ['hasErrors:has-error'],
 

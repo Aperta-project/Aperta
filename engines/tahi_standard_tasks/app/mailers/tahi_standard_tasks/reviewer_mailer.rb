@@ -79,16 +79,16 @@ module TahiStandardTasks
     private
 
     def reminder_notice(template_name:, reviewer_report_id:)
-      reviewer_report = ReviewerReport.find(reviewer_report_id)
-      @paper = reviewer_report.paper
-      journal = @paper.journal
-      letter_template = journal.letter_templates.find_by(name: template_name)
-      scenario = ReviewerReportScenario.new(reviewer_report)
-      to = reviewer_report.user.email
-      subject = Liquid::Template.parse(letter_template.subject).render(scenario)
-      @body = Liquid::Template.parse(letter_template.body).render(scenario)
+      @reviewer_report = ReviewerReport.find(reviewer_report_id)
+      @paper = @reviewer_report.paper
+      @journal = @paper.journal
+      @letter_template = @journal.letter_templates.find_by(name: template_name)
+      @scenario = ReviewerReportScenario.new(@reviewer_report)
+      @to = @reviewer_report.user.email
+      @subject = Liquid::Template.parse(@letter_template.subject).render(@scenario)
+      @body = Liquid::Template.parse(@letter_template.body).render(@scenario)
 
-      mail(to: to, subject: subject, template_name: 'review_due_reminder')
+      mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
     end
   end
 end

@@ -4,7 +4,8 @@ export default TaskComponent.extend({
   actions: {
     sendToApex: function() {
       const apexDelivery = this.get('store').createRecord('apex-delivery', {
-        task: this.get('task')
+        task: this.get('task'),
+        destination: 'apex'
       });
       apexDelivery.save();
     }

@@ -5,7 +5,11 @@ class Assignment::NotifyAssignee < EventStreamSubscriber
   end
 
   def payload
-    payload_for_record(record.assigned_to)
+    if record.assigned_to.nil?
+      super
+    else
+      payload_for_record(record.assigned_to)
+    end
   end
 
   def run

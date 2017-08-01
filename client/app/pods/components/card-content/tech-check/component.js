@@ -8,7 +8,6 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
     answer: PropTypes.EmberObject.isRequired
   },
-
   actions: {
     saveAnswer(newVal) {
       let action = this.get('valueChanged');

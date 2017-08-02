@@ -1,5 +1,3 @@
-Dir[Rails.root.join("lib/custom_card/**/*.rb")].each { |f| require f }
-
 module CustomCard
   # The purpose of this class is to provide a common interface for
   # creating custom Cards for specified Journals.
@@ -7,6 +5,12 @@ module CustomCard
   # rubocop:disable Metrics/LineLength, Style/RedundantSelf
   class Loader
     def self.all
+      if card_configuration_klasses.empty?
+        raise <<-ERROR.strip_heredoc
+          No card configuration classes found. Either lib/custom_card/configurations/
+          is empty, or there is a class loading issue.
+        ERROR
+      end
       Journal.find_each do |journal|
         card_configuration_klasses.each do |card_configuration_klass|
           self.load(card_configuration_klass, journal: journal)

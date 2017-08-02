@@ -18,7 +18,7 @@ possible-value = element possible-value {
 # Inputs
 radio-input = element content {
                   attribute ident { text }?,
-                  attribute value-type { "text" | "boolean"},
+                  attribute value-type { "text" | "boolean" },
                   attribute content-type { "radio" },
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,

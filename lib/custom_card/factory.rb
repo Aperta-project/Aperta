@@ -1,5 +1,3 @@
-Dir[Rails.root.join("lib/custom_card/**/*.rb")].each { |f| require f }
-
 module CustomCard
   # The purpose of this class is to create a new custom Card using a
   # configuration class that is specified in lib/custom_card/configurations

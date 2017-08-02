@@ -83,7 +83,7 @@ FactoryGirl.define do
       title "Cover Letter"
     end
 
-    factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
+    factory :competing_interests_task, class: 'CustomCardTask' do
       title "Competing Interests"
     end
 

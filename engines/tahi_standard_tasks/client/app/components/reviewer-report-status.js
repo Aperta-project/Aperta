@@ -20,11 +20,16 @@ export default Ember.Component.extend({
     } else {
       output = `Invitation ${verbs[status]} ${this.get('statusDate')}`;
     }
+
+    const dueDate = this.get('statusDate');        
     const originalDueDate = this.get('report.originallyDueAt');
-    if (originalDueDate) {
-      const format = 'MMMM D';
-      const formattedDate = moment(originalDueDate).format(format);
-      output += ` · Original due date was ${formattedDate}`;
+    const format = 'MMMM D';
+    const formattedDueDate = moment(dueDate).format(format);    
+    const formattedoriginalDueDate = moment(originalDueDate).format(format);
+    if (formattedDueDate === formattedoriginalDueDate) {
+      output += ``;
+    } else {
+      output += ` · Original due date was ${formattedoriginalDueDate}`;      
     }
     return output;
   }),

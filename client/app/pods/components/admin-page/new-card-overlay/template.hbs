@@ -4,7 +4,26 @@
   <div class="admin-new-card-overlay-form">
     {{forms/labeled-input-with-errors type="text" label="Name your new card:" name="name" value=cardName enter=(action "complete") errors=errors required=true autofocus=true}}
     <p class="admin-new-card-overlay-note">Note: this name will not appear to external audiences. It can be edited at any time.</p>
+
+    <div class='input-header'>
+      <div class='description'>
+        <label class="required">Select your card type:</label>
+      </div>
+    </div>
+
+    <div class='input-with-notification-icon'>
+      {{#power-select
+          options=cardTypes
+          selected=cardType
+          onchange=(action "valueChanged")
+          searchEnabled=false
+          disabled=false
+          as |val|}}
+        {{val.label}}
+      {{/power-select}}
+    </div>
   </div>
+
 
   <div class="overlay-action-buttons">
     <button class="button-link button--blue admin-new-card-overlay-cancel" {{action "close"}}>

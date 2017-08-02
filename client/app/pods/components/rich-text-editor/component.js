@@ -1,8 +1,9 @@
+import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicFormats     = {underline: {inline : 'u'}};
-const basicPlugins     = 'codesample paste';
+const basicPlugins     = 'code codesample paste';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
@@ -69,6 +70,9 @@ export default Ember.Component.extend({
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
     options['elementpath'] = false;
+    if (ENV.environment === 'development') {
+      options['toolbar'] += ' code';
+    }
     Ember.run.schedule('afterRender', this.stripTitles);
     return options;
   },

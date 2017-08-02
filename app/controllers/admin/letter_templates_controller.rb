@@ -7,7 +7,7 @@ class Admin::LetterTemplatesController < ApplicationController
   def index
     journal_id = letter_template_params[:journal_id]
     letter_templates = LetterTemplate.where(journal_id: journal_id)
-    respond_with(letter_templates, only: [:id, :subject, :text])
+    respond_with(letter_templates, only: [:id, :subject, :name])
   end
 
   def show
@@ -28,6 +28,6 @@ class Admin::LetterTemplatesController < ApplicationController
   end
 
   def letter_template_params
-    params.permit(:journal_id, letter_template: [:letter, :subject])
+    params.permit(:journal_id, letter_template: [:body, :subject])
   end
 end

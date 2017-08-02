@@ -17,7 +17,7 @@ export default Component.extend({
     let owner = this.get('owner');
     if (!owner) return null;
     let ident=this.get('ident');
-    Ember.assert("Expecting to be given a ident, but wasn't", this.get('ident'));
+    Ember.assert("Expecting to be given an ident, but wasn't", this.get('ident'));
     let question = owner.findQuestion(ident);
     Ember.assert(`Expecting to find question matching ident '${ident}' but
       didn't. Make sure the owner's questions are loaded before this

@@ -3,7 +3,7 @@ module PlosBioTechCheck
     include Rails.application.routes.url_helpers
     include MailerHelper
     add_template_helper ClientRouteHelper
-    default from: ENV.fetch('FROM_EMAIL')
+    default from: Rails.configuration.from_email
     after_action :prevent_delivery_to_invalid_recipient
     layout 'mailer'
 

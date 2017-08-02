@@ -34,5 +34,4 @@ class CardContentValidation < ActiveRecord::Base
     return false unless validator =~ /^[0-9]+$/
     answer.value.length <= validator.to_i
   end
-
 end

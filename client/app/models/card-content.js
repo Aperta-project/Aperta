@@ -28,6 +28,13 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
+
+  // The unusual nature of the sendback component (being reliant on other card-content within the context
+  // of its rendering and behavior, as well as their order) had the side effect of adding answerContainer
+  // element (which is used to flex-grid up the annotations component)
+  // being wrapped around card-content that we actually wanted to be in-line. After deciding between
+  // either having this be track on the card-content record in the DB or have it be a hard-coded override on the
+  // model, it made sense to add it there to reduce complexity and because it's purely a display concern.
   overrideAnswerContainerOverrideables: ['sendback-reason'],
 
   overrideAnswerContainer: Ember.computed('contentType', function(){
@@ -53,7 +60,7 @@ export default DS.Model.extend({
       return null;
     }
   },
-  
+
   answerForOwner(owner) {
     return this.get('answers').findBy('owner', owner) ||
            this.createAnswerForOwner(owner);

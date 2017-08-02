@@ -170,12 +170,6 @@ describe XmlCardLoader do
           <content content-type='display-children'>
             <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
               <text>You shall not PASS!</text>
-              <validation violation-value="false" target-ident="first-tech-check-box" validation-type="answer-check">
-                <validator>false</validator>
-              </validation>
-              <validation violation-value="false" target-ident="second-tech-check-box" validation-type="answer-check">
-                <validator>false</validator>
-              </validation>
               <content content-type="sendback-reason" value-type="boolean">
                 <content content-type="display-children">
                   <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">

@@ -22,8 +22,5 @@ describe ScheduledEventFactory do
         expect([first_event.event_name, second_event.event_name]).to include(ScheduledEvent.last.name)
       end
     end
-
-    context 'already existing events'
-    context 'past effective dispatch date'
   end
 end

@@ -7,6 +7,6 @@ FactoryGirl.define do
     association due_datetime, :in_5_days
     name Faker::Pokemon.name + 'Chaser'
     state nil
-    dispatch DateTime.now.utc + 5.days
+    dispatch DateTime.now.utc + create_offset.days
   end
 end

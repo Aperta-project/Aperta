@@ -18,7 +18,6 @@ class ReviewerReport < ActiveRecord::Base
                   message: 'Only one report allowed per reviewer per decision' }
 
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
-  delegate :schedule_events, to:
 
   def set_due_datetime(length_of_time: 10.days)
     if FeatureFlag[:REVIEW_DUE_DATE]

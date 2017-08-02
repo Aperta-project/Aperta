@@ -4,8 +4,7 @@ class Journal < ActiveRecord::Base
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
-  PREPRINT_DOI_PREFIX_FORMAT = %r{10.24196\/aarx\.}
-  PREPRINT_DOI_FORMAT     = %r{\A(#{PREPRINT_DOI_PREFIX_FORMAT}/\d+/)\z}
+  PREPRINT_DOI_FORMAT     = %r{\A10.24196\/aarx\.\d+\z}
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
   PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
   PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
@@ -153,7 +152,6 @@ class Journal < ActiveRecord::Base
     with_lock do
       next_number = last_preprint_doi_issued.succ
       next_doi = "#{preprint_full_doi_prefix}#{next_number}"
-      binding.pry
       if self.class.valid_preprint_doi?(next_doi)
         update_column :last_preprint_doi_issued, next_number
         return next_number

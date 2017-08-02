@@ -26,7 +26,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def schedule_events(factory_template: self)
-    ScheduledEventFactory.schedule_events(factory_template) if FeatureFlag[:REVIEW_DUE_AT]
+    ScheduledEventFactory.new(factory_template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   def self.for_invitation(invitation)

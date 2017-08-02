@@ -8,13 +8,4 @@
 # a reviewer would have a ReviewerScheduledEventTemplate, and so on.
 class ScheduledEventTemplate < ActiveRecord::Base
   belongs_to :due_datetime
-
-  def self.schedule_events
-    find_each do |template|
-      ScheduledEvent.new(
-        name: template.event_name,
-        dispatch_at: due_datetime + event_dispatch_offset.days
-      )
-    end
-  end
 end

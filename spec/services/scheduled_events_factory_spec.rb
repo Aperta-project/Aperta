@@ -7,7 +7,7 @@ describe ScheduledEventFactory do
       FactoryGirl.create :reviewer_report
     end
 
-    subject { described_class.schedule_events reviewer_report }
+    subject { described_class.new(reviewer_report).schedule_events }
 
     context 'with templates in the system' do
       let!(:first_event) { FactoryGirl.create :scheduled_event_template }

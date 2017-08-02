@@ -612,6 +612,30 @@ describe Paper do
     end
   end
 
+  describe '#aarx_doi' do
+    context "paper with preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_doi_short_id: "123")
+      end
+
+      it "returns a valid doi" do
+        expect(paper.aarx_doi).to eq("10.24196/aarx.123")
+      end
+    end
+
+    context "paper without preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_doi_short_id: nil)
+      end
+
+      it "returns nil" do
+        expect(paper.aarx_doi).to eq(nil)
+      end
+    end
+  end
+
   describe '#latest_withdrawal' do
     let!(:joe) { FactoryGirl.create(:user) }
     let!(:sally) { FactoryGirl.create(:user) }

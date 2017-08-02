@@ -28,6 +28,7 @@ feature "session invalidation", js: true do
   let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
     CardLoader.load("TahiStandardTasks::ReviewerReportTask")
     paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(
@@ -40,7 +41,6 @@ feature "session invalidation", js: true do
     assign_reviewer_role paper, reviewer
     login_as(reviewer, scope: :user)
     Page.view_paper paper
-    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
   end
 
   context "editing a field with an invalid CSRF token" do

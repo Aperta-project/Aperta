@@ -152,8 +152,9 @@ class FigureTaskTest(CommonTest):
     # Need to allot a good amount of time here for figure upload, storage and thumbnail processing
     #  Have had rare failures at 22s
     time.sleep(25)
-    figures_list = figures_task.replace_figure(figure2replace='figure1_tiff_lzw.tiff',
-                                               replacement_figure='frontend/assets/imgs/figure2_tiff_lzw.tiff')
+    figures_list = \
+        figures_task.replace_figure(figure2replace='figure1_tiff_lzw.tiff',
+                                    replacement_figure='frontend/assets/imgs/figure2_tiff_lzw.tiff')
     logging.info(figures_list)
     figures_task.validate_figure_presence(figures_list)
     figures_task.logout()
@@ -175,7 +176,6 @@ class FigureTaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision')
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    paper_url = manuscript_page.get_current_url()
     manuscript_page.click_task('Figures')
     figures_task = FiguresTask(self.getDriver())
     figures_task.task_ready()

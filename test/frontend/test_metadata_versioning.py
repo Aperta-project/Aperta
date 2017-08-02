@@ -1,5 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates metadata versioning for Aperta.
+"""
+
 import logging
 import random
 import time
@@ -8,11 +12,8 @@ from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
-from Base.Resources import login_valid_pw, creator_login1, staff_admin_login, internal_editor_login
+from Base.Resources import creator_login1, staff_admin_login, internal_editor_login
 
-"""
-This test case validates metadata versioning for Aperta.
-"""
 __author__ = 'sbassi@plos.org'
 
 
@@ -50,7 +51,7 @@ class MetadataVersioningTest(CommonTest):
     new_prq = {'q1': 'Yes', 'q2': 'Yes', 'q3': [0, 1, 0, 0], 'q4': 'New Data',
                'q5': 'More Data'}
     logging.info('Logging in as {0}'.format(creator_login1['name']))
-    dashboard_page = self.cas_login(email=creator_login1['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=creator_login1['email'])
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
     dashboard_page.page_ready()
@@ -58,32 +59,33 @@ class MetadataVersioningTest(CommonTest):
     time.sleep(.5)
     self.create_article(title=title, journal='PLOS Wombat', type_=paper_type, random_bit=True)
     dashboard_page.restore_timeout()
-    ms_viewer = ManuscriptViewerPage(self.getDriver())
-    ms_viewer.page_ready_post_create()
-    short_doi = ms_viewer.get_current_url().split('/')[-1]
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_current_url().split('/')[-1]
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    ms_viewer.complete_task('Billing')
-    ms_viewer.complete_task('Cover Letter')
-    ms_viewer.complete_task('Figures')
-    ms_viewer.complete_task('Supporting Info')
-    ms_viewer.complete_task('Authors', author=creator_login1)
-    ms_viewer.complete_task('Financial Disclosure')
-    ms_viewer.complete_task('Additional Information')
-    ms_viewer.complete_task('Early Article Posting')
-    ms_viewer.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Billing')
+    manuscript_page.complete_task('Cover Letter')
+    manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Authors', author=creator_login1)
+    manuscript_page.complete_task('Financial Disclosure')
+    manuscript_page.complete_task('Additional Information')
+    manuscript_page.complete_task('Early Article Posting')
+    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.complete_task('Upload Manuscript')
     time.sleep(3)
     # make submission
-    ms_viewer.click_submit_btn()
-    ms_viewer.confirm_submit_btn()
-    ms_viewer.close_submit_overlay()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
     # logout
-    ms_viewer.logout()
+    manuscript_page.logout()
 
     # If this is an initial decision submission, admin has to invite
     if paper_type == 'Research w/Initial Decision Card':
       logging.info('This is an initial decision paper, logging in as admin to invite.')
-      dashboard_page = self.cas_login(email=staff_admin_login['email'], password=login_valid_pw)
+      dashboard_page = self.cas_login(email=staff_admin_login['email'])
       # go to article
       time.sleep(5)
       dashboard_page.go_to_manuscript(short_doi)
@@ -99,7 +101,7 @@ class MetadataVersioningTest(CommonTest):
       logging.info('Paper type is initial submission, logging in as creator to complete '
                    'full submission')
       # Log in as a author to make first final submission
-      dashboard_page = self.cas_login(email=creator_login1['email'], password=login_valid_pw)
+      dashboard_page = self.cas_login(email=creator_login1['email'])
       dashboard_page.go_to_manuscript(short_doi)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
@@ -112,7 +114,7 @@ class MetadataVersioningTest(CommonTest):
 
     logging.info('Logging in as the Internal Editor to Register a Decision')
     # Log as editor to approve the manuscript with modifications
-    dashboard_page = self.cas_login(email=internal_editor_login['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=internal_editor_login['email'])
     # go to article
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -124,7 +126,7 @@ class MetadataVersioningTest(CommonTest):
 
     # Log in as a author to make some changes
     logging.info('Logging in as creator to make changes')
-    dashboard_page = self.cas_login(email=creator_login1['email'], password=login_valid_pw)
+    dashboard_page = self.cas_login(email=creator_login1['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -133,7 +135,7 @@ class MetadataVersioningTest(CommonTest):
                                click_override=True,
                                data=new_prq)
 
-    paper_viewer.select_manuscript_version_item('compare', 1)
+    paper_viewer.select_manuscript_version_item(1)
 
     # Following command disabled due to bug APERTA-5849
     # paper_viewer.click_task('prq')

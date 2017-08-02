@@ -156,8 +156,7 @@ class CommonTest(FrontEndTest):
       fn = os.path.join(current_path, '{0}'.format(doc2upload))
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
-    self._driver.find_element_by_id('upload-files').\
-      send_keys(fn)
+    self._driver.find_element_by_id('upload-files').send_keys(fn)
     # Time needed for script execution.
     time.sleep(7)
     return title
@@ -238,8 +237,8 @@ class CommonTest(FrontEndTest):
                                              'name = \'Staff Admin\';',
                                              (wombat_journal_id,))[0][0]
     billstaff_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
-                                             'name = \'Billing Staff\';',
-                                             (wombat_journal_id,))[0][0]
+                                           'name = \'Billing Staff\';',
+                                           (wombat_journal_id,))[0][0]
     pubsvcs_role_for_env = PgSQL().query('SELECT id FROM roles WHERE journal_id = %s AND '
                                          'name = \'Publishing Services\';',
                                          (wombat_journal_id,))[0][0]
@@ -255,28 +254,28 @@ class CommonTest(FrontEndTest):
 
     # test if assignment already exists, add it NOT present
     try:
-      intedit_role_exists = PgSQL().query('SELECT roles.name '
-                                          'FROM assignments '
-                                          'JOIN roles ON roles.id = assignments.role_id '
-                                          'WHERE assignments.user_id=%s '
-                                          'AND roles.name=\'Internal Editor\' '
-                                          'AND assignments.assigned_to_type=\'Journal\';',
-                                          (intedit_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Internal Editor\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (intedit_user_id,))[0][0]
       logging.info('Internal editor assignment already exists')
     except IndexError:
       logging.info('Internal Editor user lack Internal Editor role. Adding...')
       PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
-                   'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
-                   (intedit_user_id, internal_editor_role_for_env, wombat_journal_id))
+                     'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
+                     (intedit_user_id, internal_editor_role_for_env, wombat_journal_id))
 
     try:
-      staffadm_role_exists = PgSQL().query('SELECT roles.name '
-                                          'FROM assignments '
-                                          'JOIN roles ON roles.id = assignments.role_id '
-                                          'WHERE assignments.user_id=%s '
-                                          'AND roles.name=\'Staff Admin\' '
-                                          'AND assignments.assigned_to_type=\'Journal\';',
-                                          (staffadm_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Staff Admin\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (staffadm_user_id,))[0][0]
       logging.info('Staff Admin assignment already exists')
     except IndexError:
       logging.info('Staff Admin user lack Staff Admin role. Adding...')
@@ -285,13 +284,13 @@ class CommonTest(FrontEndTest):
                      (staffadm_user_id, staff_admin_role_for_env, wombat_journal_id))
 
     try:
-      billstaff_role_exists = PgSQL().query('SELECT roles.name '
-                                            'FROM assignments '
-                                            'JOIN roles ON roles.id = assignments.role_id '
-                                            'WHERE assignments.user_id=%s '
-                                            'AND roles.name=\'Billing Staff\' '
-                                            'AND assignments.assigned_to_type=\'Journal\';',
-                                            (billstaff_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Billing Staff\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (billstaff_user_id,))[0][0]
       logging.info('Billing Staff assignment already exists')
     except IndexError:
       logging.info('Billing Staff user lack Billing Staff role. Adding...')
@@ -300,13 +299,13 @@ class CommonTest(FrontEndTest):
                      (billstaff_user_id, billstaff_role_for_env, wombat_journal_id))
 
     try:
-      pubsvcs_role_exists = PgSQL().query('SELECT roles.name '
-                                          'FROM assignments '
-                                          'JOIN roles ON roles.id = assignments.role_id '
-                                          'WHERE assignments.user_id=%s '
-                                          'AND roles.name=\'Publishing Services\' '
-                                          'AND assignments.assigned_to_type=\'Journal\';',
-                                          (pubsvcs_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Publishing Services\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (pubsvcs_user_id,))[0][0]
       logging.info('Publishing Services assignment already exists')
     except IndexError:
       logging.info('Publishing Services user lack Publishing Services role. Adding...')
@@ -315,20 +314,19 @@ class CommonTest(FrontEndTest):
                      (pubsvcs_user_id, pubsvcs_role_for_env, wombat_journal_id))
 
     try:
-      prodstaff_role_exists = PgSQL().query('SELECT roles.name '
-                                            'FROM assignments '
-                                            'JOIN roles ON roles.id = assignments.role_id '
-                                            'WHERE assignments.user_id=%s '
-                                            'AND roles.name=\'Production Staff\' '
-                                            'AND assignments.assigned_to_type=\'Journal\';',
-                                            (prodstaff_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Production Staff\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (prodstaff_user_id,))[0][0]
       logging.info('Production Staff assignment already exists')
     except IndexError:
       logging.info('Production Staff user lack Production Staff role. Adding...')
       PgSQL().modify('INSERT INTO assignments (user_id, role_id, assigned_to_id, assigned_to_type, '
                      'created_at, updated_at) VALUES (%s, %s, %s, \'Journal\', now(), now());',
                      (prodstaff_user_id, prodstaff_role_for_env, wombat_journal_id))
-
 
   @staticmethod
   def set_freelance_eds_in_db():
@@ -348,13 +346,13 @@ class CommonTest(FrontEndTest):
 
     # test if assignment already exists, add it NOT present
     try:
-      handedit_fe_role_exists = PgSQL().query('SELECT roles.name '
-                                              'FROM assignments '
-                                              'JOIN roles ON roles.id = assignments.role_id '
-                                              'WHERE assignments.user_id=%s '
-                                              'AND roles.name=\'Freelance Editor\' '
-                                              'AND assignments.assigned_to_type=\'Journal\';',
-                                              (handedit_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Freelance Editor\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (handedit_user_id,))[0][0]
       logging.info('Handling editors\' Freelance Editor assignment already exists')
     except IndexError:
       logging.info('Handling editor user lacks Freeland Editor role, adding...')
@@ -363,13 +361,13 @@ class CommonTest(FrontEndTest):
                      (handedit_user_id, freelance_editor_role_for_env, wombat_journal_id))
 
     try:
-      covedit_fe_role_exists = PgSQL().query('SELECT roles.name '
-                                             'FROM assignments '
-                                             'JOIN roles ON roles.id = assignments.role_id '
-                                             'WHERE assignments.user_id=%s '
-                                             'AND roles.name=\'Freelance Editor\' '
-                                             'AND assignments.assigned_to_type=\'Journal\';',
-                                             (covedit_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Freelance Editor\' '
+                    'AND assignments.assigned_to_type=\'Journal\';',
+                    (covedit_user_id,))[0][0]
       logging.info('Cover editor\' Freelance Editor assignment already exists')
     except IndexError:
       logging.info('Cover editor user lacks Freeland Editor role, adding...')
@@ -392,13 +390,13 @@ class CommonTest(FrontEndTest):
     logging.info(siteadmin_user_id)
     # test if assignment already exists, add it NOT present
     try:
-      x = PgSQL().query('SELECT roles.name '
-                        'FROM assignments '
-                        'JOIN roles ON roles.id = assignments.role_id '
-                        'WHERE assignments.user_id=%s '
-                        'AND roles.name=\'Site Admin\' '
-                        'AND assignments.assigned_to_type=\'System\';',
-                        (siteadmin_user_id,))[0][0]
+      PgSQL().query('SELECT roles.name '
+                    'FROM assignments '
+                    'JOIN roles ON roles.id = assignments.role_id '
+                    'WHERE assignments.user_id=%s '
+                    'AND roles.name=\'Site Admin\' '
+                    'AND assignments.assigned_to_type=\'System\';',
+                    (siteadmin_user_id,))[0][0]
       logging.info('Site Admin assignment already exists')
     except IndexError:
       logging.info('Site Admin user lacks Site Admin role, adding...')

@@ -23,6 +23,7 @@ __author__ = 'sbassi@plos.org'
 
 staff_users = editorial_users + admin_users
 
+
 @MultiBrowserFixture
 class ReviseManuscriptTest(CommonTest):
   """
@@ -54,28 +55,29 @@ class ReviseManuscriptTest(CommonTest):
     logging.info('Creating Article in {0} of type {1}'.format(journal, paper_type))
     self.create_article(title='Testing Discussion Forum notifications', journal=journal,
                         type_=paper_type, random_bit=True)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.page_ready()
-    short_doi = paper_viewer.get_paper_short_doi_from_url()
-    paper_id = paper_viewer.get_paper_id_from_short_doi(short_doi)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
-    paper_viewer.complete_task('Upload Manuscript')
-    paper_viewer.complete_task('Title And Abstract')
-    paper_viewer.click_submit_btn()
-    paper_viewer.confirm_submit_btn()
-    paper_viewer.close_submit_overlay()
+
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
+
     # logout
-    paper_viewer.logout()
+    manuscript_page.logout()
     # log as editor, invite a reviewer
     staff_user = random.choice(staff_users)
     logging.info('Logging in as user: {0}'.format(staff_user))
     dashboard_page = self.cas_login(email=staff_user['email'])
     # go to article id short_doi
     dashboard_page.go_to_manuscript(short_doi)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
     # go to wf
-    paper_viewer.click_workflow_link()
+    manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     time.sleep(2)
     workflow_page.click_register_decision_card()
@@ -87,6 +89,7 @@ class ReviseManuscriptTest(CommonTest):
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(short_doi)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+
     manuscript_page.page_ready()
     data = {'attach': 2}
     manuscript_page.complete_task('Response to Reviewers', data=data)
@@ -144,6 +147,9 @@ class ReviseManuscriptTest(CommonTest):
     # need to complete this task again after providing new manuscript
     paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
                                                               'response_number': 2})
+
+    data = {'attach': 2}
+    manuscript_page.complete_task('Response to Reviewers', data=data)
 
     return self
 

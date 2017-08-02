@@ -1,7 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page Object definition for the assign team card
+"""
 import logging
-import re
 import time
 
 from selenium.webdriver.common.by import By
@@ -31,7 +33,8 @@ class AssignTeamCard(BaseCard):
     self.assign_team_user_selector = (By.CSS_SELECTOR, 'div.assignment-user-input')
     self.assign_team_user_search_field = (
         By.XPATH,
-        '//div[@class="select2-drop select2-display-none select2-with-searchbox select2-drop-active"][2]/div/input')
+        '//div[@class="select2-drop select2-display-none '
+        'select2-with-searchbox select2-drop-active"][2]/div/input')
     self.assign_team_assign_button = (By.CSS_SELECTOR,
                                       'span.assign_team_select2_container + button')
 
@@ -139,7 +142,7 @@ class AssignTeamCard(BaseCard):
     for assignment in assigned:
       pagefullname = assignment.find_element(*self._assignee_full_name)
       role_clause = assignment.find_element(*self._assignee_role_clause)
-      revoke = assignment.find_element(*self._assignee_revoke)
+      assignment.find_element(*self._assignee_revoke)
       if role in role_clause.text:
         logging.info('Found role, checking assignee ({0}) for match'.format(assignee['name']))
         if assignee['name'] in pagefullname.text:

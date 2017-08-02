@@ -29,9 +29,9 @@ class ProductionMetadataCardTest(CommonTest):
   """
   def test_production_metadata_card(self):
     """
-    test_production_metadata_card: Validates the elements, styles, roles and functions of invite academic
-    editors from new document creation through inviting ae, validation of the invite on the
-    invitees dashboard, acceptance and rejections
+    test_production_metadata_card: Validates the elements, styles, roles and functions of invite
+    academic editors from new document creation through inviting ae, validation of the invite
+    on the invitees dashboard, acceptance and rejections
     :return: void function
     """
     logging.info('Test Production Metadata')
@@ -87,7 +87,7 @@ class ProductionMetadataCardTest(CommonTest):
     questions = PgSQL().query('SELECT card_content_id, value '
                               'FROM answers '
                               'WHERE owner_id = %s AND owner_type=%s;', (task_id, 'Task'))
-    answers_in_db = [x[1].replace('\n','') for x in questions]
+    answers_in_db = [x[1].replace('\n', '') for x in questions]
     logging.info('nested_queston {0}'.format(questions))
     logging.info('answers in DB {0}'.format(answers_in_db))
     logging.info('data {0}'.format(data))

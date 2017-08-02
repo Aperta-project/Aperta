@@ -65,7 +65,7 @@ class TitleAbstractTest(CommonTest):
     workflow_page.page_ready()
     workflow_page.click_card('title_and_abstract')
     title_abstract = TitleAbstractCard(self.getDriver())
-    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
+    title_abstract.card_ready()
     title_abstract.validate_card_header(short_doi)
     title_abstract.validate_styles()
 
@@ -94,16 +94,7 @@ class TitleAbstractTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     # check for flash message
     paper_viewer.validate_ihat_conversions_success(timeout=45)
-    # Need to wait for url to update
-    count = 0
-    short_doi = paper_viewer.get_current_url().split('/')[-1]
-    while not short_doi:
-      if count > 60:
-        raise(StandardError, 'Short doi is not updated after a minute, aborting')
-      time.sleep(1)
-      short_doi = paper_viewer.get_current_url().split('/')[-1]
-      count += 1
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    short_doi = paper_viewer.get_short_doi()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     paper_viewer.logout()
 
@@ -123,8 +114,8 @@ class TitleAbstractTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('title_and_abstract')
     title_abstract = TitleAbstractCard(self.getDriver())
-    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
-    title_abstract.check_initial_population(short_doi)
+    title_abstract.card_ready()
+    title_abstract.check_title_abstract_card_population(short_doi)
     title_abstract.click_completion_button()
     title_abstract.click_close_button()
     title_abstract.logout()
@@ -165,10 +156,11 @@ class TitleAbstractTest(CommonTest):
     workflow_page._wait_for_element(workflow_page._get(workflow_page._add_new_card_button))
     workflow_page.click_card('title_and_abstract')
     title_abstract = TitleAbstractCard(self.getDriver())
-    title_abstract._wait_for_element(title_abstract._get(title_abstract._abstract_input))
+    title_abstract.card_ready()
     ta_state = title_abstract.completed_state()
     if ta_state:
       raise (AssertionError, 'Title and Abstract card state not reset on re-upload of manuscript')
+    title_abstract.set_abstract(short_doi)
     title_abstract.click_completion_button()
     new_ta_state = title_abstract.completed_state()
     # I don't see a non-rococo way to avoid this one

@@ -1,6 +1,8 @@
 *~
 *.pyc
+.cache
 .DS_Store
+.geckodriver
 .idea/*
 .idea/inspectionProfiles/*
 config/env.vagrant
@@ -14,6 +16,6 @@ frontend/assets/coverletters/*
 frontend/assets/profileandjournallogos/*
 frontend/assets/responsetoreviewers/*
 frontend/assets/reviewerreports/*
+geckodriver.log
 Output/
 venv/
-.geckodriver

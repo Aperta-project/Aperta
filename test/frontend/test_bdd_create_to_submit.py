@@ -1,5 +1,16 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This behavioral test case validates the Aperta Create New Submission through Submit process.
+This test requires the following data:
+A journal named "PLOS Wombat"
+An MMT in that journal with no cards populated in its workflow, named "NoCards"
+An MMT in that journal with only the initial decision card populated in its workflow,
+    named "OnlyInitialDecisionCard"
+The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
+    frontend/assets/docs/
+"""
+
 import logging
 import os
 import random
@@ -14,16 +25,6 @@ from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
 from .Tasks.upload_manuscript_task import UploadManuscriptTask
 
-"""
-This behavioral test case validates the Aperta Create New Submission through Submit process.
-This test requires the following data:
-A journal named "PLOS Wombat"
-An MMT in that journal with no cards populated in its workflow, named "NoCards"
-An MMT in that journal with only the initial decision card populated in its workflow,
-    named "OnlyInitialDecisionCard"
-The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
-    frontend/assets/docs/
-"""
 __author__ = 'jgray@plos.org'
 
 cards = ['cover_letter',
@@ -93,18 +94,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page:
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-      logging.warning('Conversion never completed - still showing interim title')
-
-    logging.info('paper_title_from_page: {0}'.format(paper_title_from_page))
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('Paper title from page is: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
@@ -126,7 +117,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
   def test_validate_full_submit_styles(self, init=True):
@@ -155,18 +146,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      title = paper_title_from_page
-      if 'full submit' in title:
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-        # logging.warning('Conversion never completed - still showing interim title')
-    logging.info('paper_title_from_page: {0}'.format(title))
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('Paper title from page is: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     # Allow time for submit button to attach to the DOM
@@ -181,14 +162,13 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == False, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is False, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
   def test_validate_pdf_full_submit(self):
     """
     test_bdd_create_to_submit: Validates creating a new document and making a full submission, via
       pdf upload
-    :param init: Determine if login is needed
     :return: void function
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_full_submit')
@@ -232,7 +212,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == False, 'Gradual Engagement: {0}'.format(sub_data[0][1])
+    assert sub_data[0][1] is False, 'Gradual Engagement: {0}'.format(sub_data[0][1])
     assert sub_data[0][2], sub_data[0][2]
     # Extend with 1- login as admin user. 2- aprobe with major rev and then log as
     # first user and submit without source and check for error.
@@ -267,7 +247,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # look for errors here
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
-      '{0} not Please upload your source file'.format(warning.get_attribute('title'))
+        '{0} not Please upload your source file'.format(warning.get_attribute('title'))
     manuscript_page.complete_task('Upload Manuscript', data={'source': ''})
 
 
@@ -321,8 +301,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     :return: void function
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_initial_submit')
-    current_path = os.getcwd()
-    logging.info(current_path)
     creator_user = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -343,18 +321,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     short_doi = manuscript_page.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'initial submit' in paper_title_from_page:
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-      logging.warning('Conversion never completed - still showing interim title')
-    # Give a little time for the submit button to attach to the DOM
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('Paper title from page is: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     time.sleep(5)
@@ -375,7 +343,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_initial_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
-    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
     manuscript_page.logout()
 
@@ -401,12 +369,12 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     sub_data = workflow_page.get_db_submission_data(short_doi)
     if decision == 'reject':
       assert sub_data[0][0] == 'rejected', sub_data[0][0]
-      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
       return True
     elif decision == 'invite':
       assert sub_data[0][0] == 'invited_for_full_submission', sub_data[0][0]
-      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
     else:
       print('ERROR: no initial decision rendered')
@@ -440,7 +408,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
 
   def test_validate_pdf_initial_submit(self):
@@ -450,8 +418,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     :return: void function
     """
     logging.info('Test BDDCreatetoNormalSubmitTest::validate_pdf_initial_submit')
-    current_path = os.getcwd()
-    logging.info(current_path)
     creator_user = random.choice(users)
     logging.info('Logging in as user: {0}'.format(creator_user))
     dashboard_page = self.cas_login(email=creator_user['email'])
@@ -468,24 +434,11 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
     time.sleep(5)
-    # Need to wait for url to update
-    count = 0
     short_doi = manuscript_page.get_short_doi()
     short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    count = 0
-    while count < 60:
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'initial submit' in paper_title_from_page:
-        count += 1
-        time.sleep(1)
-        continue
-      else:
-        break
-      logging.warning('Conversion never completed - still showing interim title')
-
-    # Give a little time for the submit button to attach to the DOM
-    time.sleep(5)
+    paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('Paper title from page is: {0}'.format(paper_title_from_page))
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
@@ -505,7 +458,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_initial_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'initially_submitted', sub_data[0][0]
-    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
     manuscript_page.logout()
 
@@ -532,12 +485,12 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     sub_data = workflow_page.get_db_submission_data(short_doi)
     if decision == 'reject':
       assert sub_data[0][0] == 'rejected', sub_data[0][0]
-      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
       return True
     elif decision == 'invite':
       assert sub_data[0][0] == 'invited_for_full_submission', sub_data[0][0]
-      assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+      assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
     else:
       print('ERROR: no initial decision rendered')
@@ -571,9 +524,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(short_doi)
     assert sub_data[0][0] == 'submitted', sub_data[0][0]
-    assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
+    assert sub_data[0][1] is True, 'Gradual Engagement: ' + sub_data[0][1]
     assert sub_data[0][2], sub_data[0][2]
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

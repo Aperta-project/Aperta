@@ -15,7 +15,7 @@ from selenium.webdriver.common.keys import Keys
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PostgreSQL import PgSQL
-from .styles import APERTA_BLUE, APERTA_BUTTON_BLUE
+from .styles import APERTA_BLUE
 from .base_admin import BaseAdminPage
 
 __author__ = 'jgray@plos.org'
@@ -277,6 +277,8 @@ class AdminWorkflowsPage(BaseAdminPage):
       add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
       add_mmt_btn.click()
       self._wait_for_element(self._get(self._mmt_template_name_field))
+      if uses_resrev_report:
+        self._get(self._mmt_template_resrev_checkbox).click()
       template_field = self._get(self._mmt_template_name_field)
       save_template_button = self._get(self._mmt_template_save_button)
       template_field.click()
@@ -299,15 +301,13 @@ class AdminWorkflowsPage(BaseAdminPage):
       div_buttons = self._get(self._div_buttons)
       div_buttons.find_element_by_class_name('button-primary').click()
       time.sleep(1)
-      # working around a stale element reference
       new_save_template_button = self._get(self._mmt_template_save_button)
       new_save_template_button.click()
       time.sleep(1)
-      if uses_resrev_report:
-        self._get(self._mmt_template_resrev_checkbox).click()
-      time.sleep(1)
       back_btn = self._get(self._mmt_template_back_link)
       back_btn.click()
+      time.sleep(3)
+      self._wait_for_not_element(self._mmt_template_back_link, 1)
 
   def delete_new_mmt_template(self):
     """
@@ -383,3 +383,38 @@ class AdminWorkflowsPage(BaseAdminPage):
         break
     else:
       raise ElementDoesNotExistAssertionError('No such card: {0}'.format(card_title))
+
+  def validate_journal_block_display(self, username):
+    """
+    Provided a privileged username, validates the display of journal blocks and their elements
+    :param username: a privileged username for determining which journal blocks should be displayed
+    per the db
+    :return: void function
+    """
+    logging.info(username)
+    if username == 'asuperadm':
+      logging.info('Validating journal blocks for Site Admin user')
+      # Validate the presentation of journal blocks
+      # Site Admin gets all journals
+      db_journals = PgSQL().query('SELECT journals.name '
+                                  'FROM journals;')
+      db_journals.append('All My Journals')
+    else:
+      # Staff Admin role is assigned on a per journal basis
+      logging.info('Validating admin page elements for Staff Admin user')
+      uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+      db_journals = []
+      db_journals.append(PgSQL().query('SELECT journals.name '
+                                       'FROM journals '
+                                       'JOIN assignments '
+                                       'ON journals.id = assignments.assigned_to_id '      
+                                       'WHERE user_id = %s AND assigned_to_type=\'Journal\';',
+                                       (uid,))[0][0])
+      if len(db_journals) > 1:
+        db_journals.append('All My Journals')
+    journal_blocks = self._gets(self._admin_workflow_mmt_thumbnail)
+    for journal_block in journal_blocks:
+      logging.info('Testing for presence of {0}'.format(journal_block))
+      journal_title = self._get(self._base_admin_journal_links)
+      assert journal_title.text in db_journals, '{0} not found in \n{1}'.format(journal_title.text,
+                                                                                db_journals)

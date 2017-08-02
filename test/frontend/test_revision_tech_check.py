@@ -21,6 +21,7 @@ from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
+
 @MultiBrowserFixture
 class RTCCardTest(CommonTest):
   """
@@ -59,7 +60,7 @@ class RTCCardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -97,7 +98,7 @@ class RTCCardTest(CommonTest):
     try:
       rtc_card._get(rtc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
-      #raise ElementExistsAssertionError('There is an unexpected error message')
+      # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('There is an error message because of APERTA-7012')
     except ElementDoesNotExistAssertionError:
       pass

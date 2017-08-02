@@ -65,27 +65,14 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     time.sleep(15)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success(timeout=45)
-    time.sleep(2)
-    short_doi = manuscript_page.get_paper_short_doi_from_url()
-
-    keep_waiting = True
-    while keep_waiting:
-      time.sleep(5)
-      paper_title_from_page = manuscript_page.get_paper_title_from_page()
-      if 'full submit' in paper_title_from_page:
-        continue
-      else:
-        keep_waiting = False
-
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    short_doi = paper_viewer.get_current_url().split('/')[-1]
-    short_doi = short_doi.split('?')[0] if '?' in short_doi else short_doi
+    short_doi = manuscript_page.get_short_doi()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
-    paper_viewer.complete_task('Upload Manuscript')
-    paper_viewer.complete_task('Cover Letter')
-    paper_viewer.complete_task('Figures')
-    paper_viewer.complete_task('Supporting Info')
-    paper_viewer.complete_task('Additional Information')
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Cover Letter')
+    manuscript_page.complete_task('Figures')
+    manuscript_page.complete_task('Supporting Info')
+    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.complete_task('Additional Information')
     time.sleep(3)
 
     # Allow time for submit button to attach to the DOM

@@ -70,6 +70,8 @@ class AdHocCardTest(CommonTest):
     elif ad_hoc_user == 'Staff Only':
       workflow_page.click_ad_hoc_staff_card()
       ad_hoc_card = AHStaffCard(self._driver)
+    else:
+      raise(ValueError, 'Ad hoc card type doesn\'t exist')
     ad_hoc_card.card_ready()
     ad_hoc_card.validate_card_elements_styles(short_doi, ad_hoc_user)
     ad_hoc_card._get(ad_hoc_card._add_btn).click()
@@ -77,7 +79,6 @@ class AdHocCardTest(CommonTest):
     logging.info('Testing {0} widget'.format(widget))
     ad_hoc_card.validate_widgets_styles(widget)
     return None
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

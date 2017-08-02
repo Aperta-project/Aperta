@@ -28,6 +28,8 @@ class AdminUsersPage(BaseAdminPage):
     self._admin_users_pane_title = (By.CSS_SELECTOR, 'div.admin-page-content > div > h2')
     self._admin_users_search_field = (By.CSS_SELECTOR, 'div.admin-user-search > input')
     self._admin_users_search_button = (By.CSS_SELECTOR, 'div.admin-user-search > button')
+    self._admin_users_default_state_text = (By.CSS_SELECTOR,
+                                            '.admin-user-search-default-state-text')
     self._admin_users_search_results_table = (By.CLASS_NAME, 'admin-users-list-list')
     self._admin_users_search_results_table_lname_header = (By.XPATH, '//table[1]/tr/th[1]')
     self._admin_users_search_results_table_fname_header = (By.XPATH, '//table[1]/tr/th[2]')
@@ -46,6 +48,16 @@ class AdminUsersPage(BaseAdminPage):
     self._admin_users_row_role_add_field = (
         By.CSS_SELECTOR, 'tr.user-row td div div ul li.select2-search-field input')
     self._admin_users_row_role_search_result_item = (By. CSS_SELECTOR, 'ul.select2-results li div')
+    # User Detail Overlay items
+    self._ud_overlay_title = (By.CLASS_NAME, 'overlay-header-title')
+    self._ud_overlay_uname_label = (By.XPATH, '//label[contains(@for, \'user-detail-username\')]')
+    self._ud_overlay_uname_field = (By.ID, 'user-detail-username')
+    self._ud_overlay_fname_label = (By.XPATH, '//label[contains(@for, \'user-detail-first-name\')]')
+    self._ud_overlay_fname_field = (By.ID, 'user-detail-first-name')
+    self._ud_overlay_lname_label = (By.XPATH, '//label[contains(@for, \'user-detail-last-name\')]')
+    self._ud_overlay_lname_field = (By.ID, 'user-detail-last-name')
+    self._ud_overlay_cancel_link = (By.CLASS_NAME, 'cancel-link')
+    self._ud_overlay_save_button = (By.CSS_SELECTOR, 'div.overlay-action-buttons > button')
 
   # POM Actions
   def page_ready(self):
@@ -136,4 +148,53 @@ class AdminUsersPage(BaseAdminPage):
     delete_role = self._get(self._admin_users_row_role_delete)
     delete_role.click()
 
-  # TODO: When available, test opening the user detail overlay see APERTA-9499
+  def validate_search_edit_user(self, username):
+    """
+    Validates the styling and output of the base admin user search
+    :param username: A username against which to search
+    :return: void function
+    """
+    self._search_user('')
+    time.sleep(1)  # sadly one needs to allow time for the result set to update from the server
+    no_result_search_text = self._get(self._admin_users_default_state_text).text
+    assert no_result_search_text == 'No matching users found'
+    self._search_user(username)
+    self._get(self._admin_users_search_results_table)
+    self._get(self._admin_users_search_results_table_fname_header)
+    self._get(self._admin_users_search_results_table_lname_header)
+    self._get(self._admin_users_search_results_table_uname_header)
+    # TODO: Determine the search heuristic and enforce it. It seems overly broad currently.
+    result_set = self._gets(self._admin_users_search_results_row)
+    success_count = 0
+    for result in result_set:
+      if username in result.text:
+        success_count += 1
+        result.click()
+        # TODO: Validate Styles for these elements
+        time.sleep(1)
+        self._get(self._ud_overlay_title)
+        user_details_closer = self._get(self._overlay_header_close)
+        self._get(self._ud_overlay_fname_label)
+        self._get(self._ud_overlay_fname_field)
+        self._get(self._ud_overlay_lname_label)
+        self._get(self._ud_overlay_lname_field)
+        self._get(self._ud_overlay_uname_label)
+        self._get(self._ud_overlay_uname_field)
+        self._get(self._ud_overlay_cancel_link)
+        self._get(self._ud_overlay_save_button)
+        user_details_closer.click()
+    assert success_count > 0
+
+  def _search_user(self, username):
+    """
+    provided a username, executes the search for that username
+    :param username: a string to search for
+    :return: void function
+    """
+    user_search_field = self._get(self._admin_users_search_field)
+    user_search_btn = self._get(self._admin_users_search_button)
+    user_search_field.clear()
+    user_search_field.send_keys(username)
+    user_search_btn.click()
+
+# TODO: When available, test opening the user detail overlay see APERTA-9499

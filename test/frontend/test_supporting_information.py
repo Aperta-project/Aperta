@@ -44,7 +44,6 @@ class SITaskTest(CommonTest):
     self.create_article(journal='PLOS Wombat', type_='Research', random_bit=True)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready_post_create()
-    short_doi = manuscript_page.get_short_doi()
     doc2upload = 'frontend/assets/supportingInfo/S2_other.XSLX'
     fn = os.path.join(os.getcwd(), doc2upload)
     data = {}
@@ -96,7 +95,6 @@ class SITaskTest(CommonTest):
     manuscript_page.click_task('Supporting Info')
     # locate elements
     supporting_info = SITask(self._driver)
-    figure_line = '{0} {1}.'.format(data['figure'], data['type'])
     # press make change to task
     supporting_info.click_completion_button()
     # Edit description
@@ -111,8 +109,6 @@ class SITaskTest(CommonTest):
     logging.info('Selected file type: {0}'.format(file_type))
     data['type'] = file_type
     supporting_info.complete_si_item_form(data)
-    supporting_info = SITask(self._driver)
-    figure_line = '{0} {1}'.format(data['figure'], data['type'])
     # logout
     manuscript_page.logout()
     # Log in as Editorial User
@@ -158,7 +154,7 @@ class SITaskTest(CommonTest):
     supporting_info.set_timeout(2)
     try:
       supporting_info._get(supporting_info._si_trash_icon)
-      raise(StandardError, 'Item not deleted')
+      raise(TimeoutError, 'Item not deleted')
     except ElementDoesNotExistAssertionError:
       pass
     supporting_info.restore_timeout()
@@ -200,7 +196,6 @@ class SITaskTest(CommonTest):
     # Time for the file to upload and cancel button to attach
     time.sleep(10)
     # Get current SI file name
-    file_link = supporting_info._si_file_link
     file_link_div = supporting_info._get(supporting_info._si_filename)
     file_link_text = file_link_div.find_element_by_tag_name('a').text
     timeout = 60

@@ -1,6 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+"""
+Page object definition for the early article posting card
+"""
 from selenium.webdriver.common.by import By
 
 from frontend.Cards.basecard import BaseCard
@@ -15,13 +17,12 @@ class EarlyArticlePostingCard(BaseCard):
   def __init__(self, driver):
     super(EarlyArticlePostingCard, self).__init__(driver)
 
-    #Locators - Instance members
+    # Locators - Instance members
     self._intro_text = (By.CSS_SELECTOR, 'div.task-main-content > p')
     self._accman_consent_checkbox = (By.NAME, 'early-posting--consent')
     self._accman_consent_label = (By.CLASS_NAME, 'model-question')
 
-    #POM Actions
-
+  # POM Actions
   def validate_styles(self):
     """
     Validate styles in the Early Articl Posting Card
@@ -72,4 +73,3 @@ class EarlyArticlePostingCard(BaseCard):
         return
       raise (ValueError, 'EAP opt-in state expected to be False, '
                          'actual state: {0}'.format(not selection_state))
-

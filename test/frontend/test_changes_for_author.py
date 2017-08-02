@@ -11,7 +11,7 @@ import os
 import random
 import time
 
-from Base.CustomException import ElementDoesNotExistAssertionError, ElementExistsAssertionError
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users
 from frontend.common_test import CommonTest

@@ -1,6 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-from decimal import Decimal
+"""
+This behavioral test case validates Paper submission and initial Decision.
+This test requires the following data:
+The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
+    frontend/assets/docs/
+"""
+
 import logging
 import os
 import random
@@ -15,12 +21,6 @@ from .Tasks.figures_task import FiguresTask
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
 
-"""
-This behavioral test case validates Paper submission and initial Decision.
-This test requires the following data:
-The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into
-    frontend/assets/docs/
-"""
 __author__ = 'sbassi@plos.org'
 
 users = [creator_login1,
@@ -97,7 +97,7 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.validate_recent_activity_entry(
         'Upload Manuscript card was marked as complete', creator_user['name'])
     manuscript_page.validate_recent_activity_entry('Manuscript was initially submitted',
-        creator_user['name'])
+                                                   creator_user['name'])
     manuscript_page.close_overlay()
     version = manuscript_page.get_ui_manuscript_version()
     # Wait for 0.0 according to new version proposal, where this version number
@@ -142,10 +142,10 @@ class InitialDecisionCardTest(CommonTest):
     # AC 5
     if not figures_task.is_question_checked():
       figures_task.check_question()
-      assert figures_task.is_question_checked() == True
+      assert figures_task.is_question_checked() is True
     else:
       figures_task.check_question()
-      assert figures_task.is_question_checked() == False
+      assert figures_task.is_question_checked() is False
     # AC 6
     manuscript_page.refresh()
     version = manuscript_page.get_ui_manuscript_version()

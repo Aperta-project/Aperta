@@ -1,5 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the Aperta paper_tracker page.
+
+Note that this case does NOT test actually creating a new manuscript, or accepting or declining an
+    invitation
+Those acts are expected to be defined in
+
+"""
+
 import logging
 import os
 import random
@@ -9,19 +18,12 @@ from frontend.common_test import CommonTest
 from .Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import editorial_users, staff_admin_login
 
-"""
-This test case validates the Aperta paper_tracker page.
-
-Note that this case does NOT test actually creating a new manuscript, or accepting or declining an
-    invitation
-Those acts are expected to be defined in
-
-"""
 __author__ = 'jgray@plos.org'
 
 
 users = editorial_users
 users.append(staff_admin_login)
+
 
 @MultiBrowserFixture
 class ApertaPaperTrackerTest(CommonTest):

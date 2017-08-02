@@ -50,7 +50,7 @@ class FTCCardTest(CommonTest):
     short_doi = manuscript_page.get_current_url().split('/')[-1]
     while not short_doi:
       if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+        raise (TimeoutError, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
       short_doi = manuscript_page.get_current_url().split('/')[-1]
       count += 1
@@ -97,11 +97,11 @@ class FTCCardTest(CommonTest):
       if not checked and ftc_card.email_text[index]:
         assert ftc_card.email_text[index] in issues_text, \
             '{0} (Not checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
-                index, issues_text)
+                                                            index, issues_text)
       elif checked and ftc_card.email_text[index]:
         assert ftc_card.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(ftc_card.email_text[index],
-                index, issues_text)
+                                                        index, issues_text)
     ftc_card.click_send_changes_btn()
     all_success_messages = ftc_card.get_flash_success_messages()
     success_msgs = [msg.text.split('\n')[0] for msg in all_success_messages]
@@ -113,7 +113,7 @@ class FTCCardTest(CommonTest):
     try:
       ftc_card._get(ftc_card._flash_error_msg)
       # Note: Commenting out due to APERTA-7012
-      #raise ElementExistsAssertionError('There is an unexpected error message')
+      # raise ElementExistsAssertionError('There is an unexpected error message')
       logging.warning('There is an error message because of APERTA-7012')
     except ElementDoesNotExistAssertionError:
       pass

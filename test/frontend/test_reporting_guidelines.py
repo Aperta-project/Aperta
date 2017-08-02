@@ -1,5 +1,8 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+Test case for the reporting guidelines card
+"""
 
 import logging
 import os
@@ -64,9 +67,9 @@ class ReportingGuidelinesTaskTest(CommonTest):
 
   def test_core_reporting_guidelines_upload_prisma(self):
     """
-    Validates upload of PRISMA checklist. This applies only to the "Systematic Reviews" and "Meta-analyses" options
-    on this task. Also validates style of the file upload widget, since this wasn't covered in style validation due
-    to lack of entry.
+    Validates upload of PRISMA checklist. This applies only to the "Systematic Reviews" and
+    "Meta-analyses" options on this task. Also validates style of the file upload widget, since
+    this wasn't covered in style validation due to lack of entry.
     :return: None
     """
     logging.info('Test Reporting Guidelines::upload_prisma')

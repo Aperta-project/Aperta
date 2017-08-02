@@ -21,6 +21,7 @@ from .Pages.workflow_page import WorkflowPage
 
 __author__ = 'sbassi@plos.org'
 
+
 @MultiBrowserFixture
 class ITCCardTest(CommonTest):
   """
@@ -61,7 +62,7 @@ class ITCCardTest(CommonTest):
     manuscript_page.logout()
     editorial_user = random.choice(editorial_users)
     logging.info('Logging in as {0}'.format(editorial_user))
-    dashboard_page = self.cas_login(email=editorial_user['email'])
+    self.cas_login(email=editorial_user['email'])
     paper_workflow_url = '{0}/workflow'.format(paper_canonical_url)
     self._driver.get(paper_workflow_url)
     workflow_page = WorkflowPage(self.getDriver())
@@ -84,11 +85,11 @@ class ITCCardTest(CommonTest):
       if not checked and itc_card.email_text[index]:
         assert itc_card.email_text[index] in issues_text, \
             '{0} (Not checked item #{1}) not in {2}'.format(itc_card.email_text[index],
-                index, issues_text)
+                                                            index, issues_text)
       elif checked and itc_card.email_text[index]:
         assert itc_card.email_text[index] not in issues_text, \
             '{0} (Checked item #{1}) not in {2}'.format(itc_card.email_text[index],
-                index, issues_text)
+                                                        index, issues_text)
     time.sleep(1)
     itc_card.click_send_changes_btn()
     all_success_messages = itc_card.get_flash_success_messages()
@@ -105,7 +106,6 @@ class ITCCardTest(CommonTest):
       # logging.warning('There is an error message because of APERTA-7012')
     except ElementDoesNotExistAssertionError:
       pass
-
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

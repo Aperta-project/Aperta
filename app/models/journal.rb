@@ -11,6 +11,7 @@ class Journal < ActiveRecord::Base
   PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
 
   class InvalidDoiError < ::StandardError; end
+  class InvalidPreprintDoiError < ::StandardError; end
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
@@ -152,6 +153,7 @@ class Journal < ActiveRecord::Base
     with_lock do
       next_number = last_preprint_doi_issued.succ
       next_doi = "#{preprint_full_doi_prefix}#{next_number}"
+      binding.pry
       if self.class.valid_preprint_doi?(next_doi)
         update_column :last_preprint_doi_issued, next_number
         return next_number

@@ -1,5 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+This test case validates the upload manuscript
+"""
 import logging
 import random
 import time
@@ -11,9 +14,6 @@ from .Pages.workflow_page import WorkflowPage
 from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
-"""
-This test case validates the upload manuscript
-"""
 __author__ = 'sbassi@plos.org'
 
 
@@ -51,7 +51,7 @@ class UploadManuscriptTest(CommonTest):
     ms_page.click_task('Upload Manuscript')
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
-    upms.validate_styles(type_='doc')
+    upms.validate_styles()
     upms.click_completion_button()
     assert ms_page.is_task_marked_complete('Upload Manuscript'), \
         'The task in not market as complete and it shoyld be completed'
@@ -118,7 +118,7 @@ class UploadManuscriptTest(CommonTest):
     warning = upms._get(upms._upload_source_warning)
     assert warning.get_attribute('title') == 'Please upload your source file', \
         '{0} instead of Please upload your source file'.format(warning.get_attribute('title'))
-    upms.upload_source_file('random')
+    upms.upload_source_file()
     upms.validate_styles(type_='pdf', source_uploaded=True)
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()

@@ -9,7 +9,6 @@ This test also requires a new mmt in PLOS Wombat: generateCompleteApexData
 """
 
 import logging
-import os
 import random
 
 from Base.Decorators import MultiBrowserFixture

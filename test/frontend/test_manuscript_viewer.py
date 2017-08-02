@@ -1,15 +1,17 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
+"""
+This test case validates the article editor page and its associated overlays.
+"""
+
 import logging
 import os
 import random
-import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import users, editorial_users, external_editorial_users, \
-    admin_users, super_admin_login, handling_editor_login, academic_editor_login, \
-  internal_editor_login, login_valid_pw
+from Base.Resources import users, editorial_users, admin_users, super_admin_login, \
+    handling_editor_login, academic_editor_login, internal_editor_login
 from Base.PostgreSQL import PgSQL
 from .Pages.manuscript_viewer import ManuscriptViewerPage
 from .Pages.workflow_page import WorkflowPage
@@ -18,15 +20,13 @@ from .Tasks.figures_task import FiguresTask
 from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from frontend.common_test import CommonTest
 
-"""
-This test case validates the article editor page and its associated overlays.
-"""
 __author__ = 'sbassi@plos.org'
 
 
 # Note temporary redefining external editorial without cover_editor_login from the pool
 # of external users due to APERTA-9007
 external_editorial_users = [handling_editor_login, academic_editor_login]
+
 
 @MultiBrowserFixture
 class ManuscriptViewerTest(CommonTest):
@@ -62,15 +62,15 @@ class ManuscriptViewerTest(CommonTest):
     # create a new manuscript
     dashboard_page.click_create_new_submission_button()
     self.create_article(journal='PLOS Wombat', type_='Images+InitialDecision', random_bit=True)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready()
-    manuscript_viewer.close_infobox()
-    manuscript_viewer.validate_independent_scrolling()
-    manuscript_viewer.validate_nav_toolbar_elements(user)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.close_infobox()
+    manuscript_page.validate_independent_scrolling()
+    manuscript_page.validate_nav_toolbar_elements(user)
     if user in admin_users:
-      manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=True)
+      manuscript_page.validate_page_elements_styles_functions(user=user['email'], admin=True)
     else:
-      manuscript_viewer.validate_page_elements_styles_functions(user=user['email'], admin=False)
+      manuscript_page.validate_page_elements_styles_functions(user=user['email'], admin=False)
     return self
 
   def test_role_aware_menus(self):
@@ -80,11 +80,10 @@ class ManuscriptViewerTest(CommonTest):
     logging.info('Test Manuscript Viewer::Role Aware Menus')
     current_path = os.getcwd()
     logging.info(current_path)
-    roles = { 'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
-              'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7,
-              'Billing Staff': 7, 'Participant': 6, 'Discussion Participant': 6,
-              'Collaborator': 6, 'Academic Editor': 6, 'Handling Editor': 6,
-              'Cover Editor': 6, 'Reviewer': 7, 'Journal Setup Admin': 7}
+    roles = {'Creator': 6, 'Freelance Editor': 6, 'Staff Admin': 7, 'Publishing Services': 7,
+             'Production Staff': 7, 'Site Admin': 7, 'Internal Editor': 7, 'Billing Staff': 7,
+             'Participant': 6, 'Discussion Participant': 6, 'Collaborator': 6, 'Academic Editor': 6,
+             'Handling Editor': 6, 'Cover Editor': 6, 'Reviewer': 7, 'Journal Setup Admin': 7}
     random_users = [random.choice(users), random.choice(editorial_users),
                     random.choice(external_editorial_users), random.choice(admin_users)]
     for user in random_users:
@@ -93,12 +92,12 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page.page_ready()
       if dashboard_page.get_dashboard_ms(user):
         self.select_preexisting_article(first=True)
-        manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-        manuscript_viewer.page_ready()
-        journal_id = manuscript_viewer.get_journal_id()
+        manuscript_page = ManuscriptViewerPage(self.getDriver())
+        manuscript_page.page_ready()
+        journal_id = manuscript_page.get_journal_id()
         uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
-        short_doi = manuscript_viewer.get_paper_short_doi_from_url()
-        paper_id = manuscript_viewer.get_paper_id_from_short_doi(short_doi)
+        short_doi = manuscript_page.get_paper_short_doi_from_url()
+        paper_id = manuscript_page.get_paper_id_from_short_doi(short_doi)
         journal_permissions = PgSQL().query('select name from roles where id in (select role_id'
                                             ' from assignments where ((assigned_to_id = %s and '
                                             'assigned_to_type = \'Journal\' and user_id = %s)));',
@@ -108,15 +107,15 @@ class ManuscriptViewerTest(CommonTest):
                                           'assigned_to_type = \'Paper\' and user_id = %s)));',
                                           (paper_id, uid))
         system_permissions = PgSQL().query('select name from roles where id in (select role_id '
-                                          'from assignments where ((assigned_to_type = '
-                                          '\'System\' and user_id = %s)));',(uid,))
+                                           'from assignments where ((assigned_to_type = '
+                                           '\'System\' and user_id = %s)));', (uid,))
         permissions = journal_permissions + paper_permissions + system_permissions
         logging.info('DB Permissions: {0}'.format(permissions))
         max_elements = max([roles[item] for sublist in permissions for item in sublist])
-        logging.info(u'Validate user {0} in paper {1} with permissions {2} and max_elements {3}'\
-                    .format(user['user'], short_doi, permissions, max_elements))
+        logging.info(u'Validate user {0} in paper {1} with permissions {2} and max_elements {3}'
+                     .format(user['user'], short_doi, permissions, max_elements))
         # NOTE: When covereditor is selected, the assert fails.
-        manuscript_viewer.validate_roles(max_elements, user['user'])
+        manuscript_page.validate_roles(max_elements, user['user'])
       else:
         logging.info(u'No manuscripts present for user: {0}'.format(user['user']))
       dashboard_page.logout()
@@ -271,75 +270,74 @@ class ManuscriptViewerTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     dashboard_page._wait_for_element(dashboard_page._get(dashboard_page._cns_paper_type_chooser))
     self.create_article(journal='PLOS Wombat', type_='NoCards', random_bit=True, format_='pdf')
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready_post_create()
-    short_doi = manuscript_viewer.get_paper_short_doi_from_url()
-    manuscript_viewer.complete_task('Upload Manuscript')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready_post_create()
+    short_doi = manuscript_page.get_paper_short_doi_from_url()
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     # Make submission
-    manuscript_viewer.click_submit_btn()
-    manuscript_viewer.confirm_submit_btn()
-    manuscript_viewer.close_submit_overlay()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
     # Logout
-    manuscript_viewer.logout()
+    manuscript_page.logout()
 
     logging.info('Logging in as the Internal Editor to Register a Decision')
     # Log as editor to approve the manuscript with modifications
-    dashboard_page = self.cas_login(email=internal_editor_login['email'],
-                                    password=login_valid_pw)
+    dashboard_page = self.cas_login(email=internal_editor_login['email'])
     # Go to article
     dashboard_page.go_to_manuscript(short_doi)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.click_workflow_link()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
-    manuscript_viewer.logout()
+    manuscript_page.logout()
 
     # Log in as a author to upload the word version
     logging.info('Logging in as creator to upload a word version')
     dashboard_page = self.cas_login(email=user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready()
-    manuscript_viewer.click_task('Upload Manuscript')
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+    manuscript_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms._wait_for_element(upms._get(upms._upload_manuscript_replace_btn))
     upms.replace_manuscript()
     upms.validate_ihat_conversions_success(timeout=45)
     data = {'attach': 2}
-    manuscript_viewer.complete_task('Upload Manuscript')
-    manuscript_viewer.complete_task('Response to Reviewers', data=data)
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Response to Reviewers', data=data)
     # Make new submission
-    manuscript_viewer.click_submit_btn()
-    manuscript_viewer.confirm_submit_btn()
-    manuscript_viewer.close_submit_overlay()
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
     # Logout
-    manuscript_viewer.logout()
+    manuscript_page.logout()
 
     logging.info('Logging in as the Internal Editor to Register a Decision')
     # Log as editor to approve the manuscript with modifications
-    dashboard_page = self.cas_login(email=internal_editor_login['email'],
-                                    password=login_valid_pw)
+    dashboard_page = self.cas_login(email=internal_editor_login['email'])
     # Go to article
     dashboard_page.go_to_manuscript(short_doi)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.click_workflow_link()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_workflow_link()
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
-    manuscript_viewer.logout()
+    manuscript_page.logout()
 
     # Log in as a author to validate the download drawer
     logging.info('Logging in as author to validate the download drawer')
     dashboard_page = self.cas_login(email=user['email'])
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
-    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewer.page_ready()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
     # Validate download drawer styles and actions
-    manuscript_viewer.validate_download_drawer_styles()
-    manuscript_viewer.validate_download_btn_actions()
+    manuscript_page.validate_download_drawer_styles()
+    manuscript_page.validate_download_btn_actions()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

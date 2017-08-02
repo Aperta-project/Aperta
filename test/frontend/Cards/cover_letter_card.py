@@ -1,5 +1,8 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Page object definition for the Cover Letter card
+"""
 import hashlib
 import logging
 import os
@@ -177,7 +180,7 @@ class CoverLetterCard(BaseCard):
     try:
       files = filter(os.path.isfile, os.listdir('/tmp'))
       files = list(files)
-      files = sorted(files, key = lambda x: os.path.getmtime(x))
+      files = sorted(files, key=lambda x: os.path.getmtime(x))
       newest_file = files[-1]
       logging.info(newest_file)
     except IndexError:

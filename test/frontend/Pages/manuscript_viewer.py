@@ -10,13 +10,15 @@ import random
 import time
 from datetime import datetime
 
-from .styles import StyledPage
+
+
+
 from selenium.webdriver.common.by import By
 
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
-from Base.Resources import docs, users, staff_admin_login, pub_svcs_login, \
-    internal_editor_login, super_admin_login
+from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
+    super_admin_login
 from Base.PDF_Util import PdfUtil
 from Base.PostgreSQL import PgSQL
 from frontend.Tasks.basetask import BaseTask
@@ -28,6 +30,7 @@ from frontend.Tasks.reviewer_report_task import ReviewerReportTask
 from frontend.Tasks.supporting_information_task import SITask
 from frontend.Tasks.title_and_abstract_task import TitleAbstractTask
 from frontend.Tasks.new_taxon_task import NewTaxonTask
+from .styles import StyledPage
 
 __author__ = 'sbassi@plos.org'
 
@@ -588,7 +591,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        if task_name in task.text and 'active' not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+        if task_name in task.text \
+            and 'active' \
+            not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
           self._actions.move_to_element(manuscript_id_text).perform()
           self.click_covered_element(task)
@@ -725,7 +730,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       title_and_abstract_task.set_abstract(short_doi)
       base_task.click_completion_button()
       self.click_covered_element(task)
-
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close

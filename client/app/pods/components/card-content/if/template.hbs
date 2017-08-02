@@ -1,0 +1,13 @@
+{{#if (get scenario content.if)}}
+  {{card-content
+  content=children.[0]
+  owner=task
+  disabled=isNotEditable
+  scenario=(hash isEditable=isEditable)}}
+{{else}}
+  {{card-content
+  content=children.[1]
+  owner=task
+  disabled=isNotEditable
+  scenario=(hash isEditable=isEditable)}}
+{{/if}}

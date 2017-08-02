@@ -11,6 +11,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :task
   belongs_to :decision
   has_one :paper, through: :task
+  has_one :due_datetime, as: :due
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
@@ -138,7 +139,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def schedule_events(factory_template: self)
-    ScheduledEventFactory.schedule_events(factory_template) if FeatureFlag[:REVIEW_DUE_AT]
+    ScheduledEventFactory.new(factory_template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   private

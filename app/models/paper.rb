@@ -607,7 +607,6 @@ class Paper < ActiveRecord::Base
   end
 
   def verify_or_assign_preprint_doi!
-    binding.pry
     return unless preprint_doi_short_id == nil
     raise "Invalid paper Journals are required for papers urls." unless journal
     update!(preprint_doi_short_id: journal.next_preprint_short_doi!)

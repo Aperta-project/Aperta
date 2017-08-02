@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe LetterTemplate do
   describe 'validations' do
-    [:letter, :subject].each do |attr_key|
+    [:body, :subject].each do |attr_key|
       it "should require a #{attr_key.to_s}" do
         letter_template = FactoryGirl.build(:letter_template, attr_key => '')
         expect(letter_template).not_to be_valid
@@ -15,7 +15,7 @@ describe LetterTemplate do
       FactoryGirl.create(:letter_template,
                          subject: "{{ subject }}",
                          to: "{{ email }}",
-                         letter: "Interesting text about {{ subject }} from {{ email }}")
+                         body: "Interesting text about {{ subject }} from {{ email }}")
     end
 
     let(:letter_context) do
@@ -33,9 +33,9 @@ describe LetterTemplate do
       expect(letter_template.render(letter_context.stringify_keys).to).to eq(letter_context[:email])
     end
 
-    it "sets the letter" do
-      expected_text = "Interesting text about #{letter_context[:subject]} from #{letter_context[:email]}"
-      expect(letter_template.render(letter_context.stringify_keys).letter).to eq(expected_text)
+    it "sets the body" do
+      expected_body = "Interesting text about #{letter_context[:subject]} from #{letter_context[:email]}"
+      expect(letter_template.render(letter_context.stringify_keys).body).to eq(expected_body)
     end
 
     context "html sanitization" do

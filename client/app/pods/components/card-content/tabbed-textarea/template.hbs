@@ -20,15 +20,15 @@
       {{#if instructionText}}
       <div id="{{concat 'tab-' elementId '-1'}}" class="tab-pane">
         <div class="panel-body instruction-text">
-          {{instructionText}}
+            {{textarea-autosize class="tabbed-textarea"  value=instructionText disabled=true}}
         </div>
       </div>
       {{/if}}
       {{#if showAnnotation}}
       <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
         <div class="panel-body annotation-text">
-          {{textarea class="tabbed-textarea" input=(action attrs.annotationChanged)
-          value=annotation disabled=disabled}}
+          {{textarea-autosize class="tabbed-textarea" input=(action attrs.annotationChanged)
+            value=annotation disabled=disabled}}
         </div>
       </div>
       {{/if}}

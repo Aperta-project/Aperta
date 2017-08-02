@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "active-model-adapter": "2.0.3",
+    "autosize": "^4.0.0",
     "bower": "^1.7.7",
     "broccoli-asset-rev": "^2.4.2",
     "broccoli-funnel": "^1.1.0",
@@ -86,5 +87,6 @@
     ]
   },
   "devDependencies": {
+    "ember-cli-textarea-autosize": "1.0.1"
   }
 }

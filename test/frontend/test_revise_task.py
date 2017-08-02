@@ -137,6 +137,7 @@ class ReviseManuscriptTest(CommonTest):
 
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.page_ready()

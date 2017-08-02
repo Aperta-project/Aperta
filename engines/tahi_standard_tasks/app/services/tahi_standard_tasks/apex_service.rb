@@ -51,7 +51,15 @@ module TahiStandardTasks
     private
 
     def needs_preprint_doi?
-      deistination == 'preprint' && apex_delivery.with_new_preprint_doi?
+      needs_doi_answer = nil
+      needs_preprint_answer = task.answers.each do |answer|
+        if answer.card_content.ident == "needs_doi_flag"
+          needs_doi_answer = answer
+        end
+      end
+
+      return false if needs_doi_answer == nil
+      destination == 'preprint' && needs_doi_answer.value
     end
 
     def while_notifying_delivery

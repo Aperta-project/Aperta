@@ -1,5 +1,5 @@
 <label class="content-text">{{{content.text}}}</label>
-{{#unless isBlank}}
+{{#unless hideError}}
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{/unless}}
 {{input

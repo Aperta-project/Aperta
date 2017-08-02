@@ -7,6 +7,7 @@ class Journal < ActiveRecord::Base
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
 
   class InvalidDoiError < ::StandardError; end
+  class InvalidPreprintDoiError < ::StandardError; end
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal

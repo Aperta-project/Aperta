@@ -20,10 +20,10 @@ namespace :settings do
          "after_major_revise_decision"
        ] },
      {
-       journal: Journal.first, # should these be global or attached to biology?
-       key: ManuscriptManagerTemplate.new.setting_template_key,
+       journal: nil,
+       key: "TaskTemplate:TahiStandardTasks::PaperReviewerTask",
        value_type: "integer",
-       global: false,
+       global: true,
        setting_klass: "Setting",
        setting_name: "review_duration_period",
        value: 10

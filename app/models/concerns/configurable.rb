@@ -31,13 +31,19 @@ module Configurable
   def setting(name)
     settings.find_by(name: name) || begin
       t = setting_templates.find_by!(setting_name: name)
-      value_proc = proc { |s| s.value = t.value }
-      settings.create!(name: t.setting_name,
-                       type: t.setting_klass,
-                       setting_template: t,
-                       value_type: t.value_type,
-                       owner: self,
-                       &value_proc)
+
+      setting_args = {
+        name: t.setting_name,
+        type: t.setting_klass,
+        setting_template: t,
+        value_type: t.value_type,
+        owner: self
+      }
+
+      settings.create!(setting_args) do |setting|
+        # due to some init/AR/meta issues in the original implementation :(
+        setting.value = t.value
+      end
     end
   end
 end

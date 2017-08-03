@@ -1,0 +1,14 @@
+<div class="row">
+  Reviews due
+    {{input type="number"
+    size=4
+    autofocus="autofocus"
+    min=1
+    value=10}}
+    days after acceptance.
+</div>
+
+<div class="overlay-action-buttons">
+  <button class="button-link button--blue cancel" {{action "close"}}>cancel</button>
+  <button class="button-primary button--blue" {{action "saveSettings"}}>SAVE</button>
+</div>

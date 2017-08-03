@@ -11,5 +11,15 @@ export default DS.Model.extend({
   type: Ember.computed.readOnly('kind'),
   kind: Ember.computed.readOnly('journalTaskType.kind'),
   settings: DS.attr(),
-  settingsEnabled: DS.attr()
+  settingsEnabled: DS.attr(),
+  settingNames: DS.attr(),
+  settingComponents: Ember.computed('settingNames', function(){
+    let settingMap = {
+      ithenticate_automation: 'similarity-check-settings',
+      review_duration_period: 'invite-reviewers-settings'
+    };
+    return this.get('settingNames').map(function(settingName) {
+      return settingMap[settingName];
+    });
+  })
 });

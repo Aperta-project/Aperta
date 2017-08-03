@@ -206,7 +206,11 @@ Tahi::Application.routes.draw do
       end
     end
     resources :task_templates do
-      post :similarity_check_settings, on: :member
+      member do
+        post :similarity_check_settings
+        get :setting
+        put :update_setting
+      end
     end
     resources :users, only: [:show, :index] do
       get :reset, on: :collection

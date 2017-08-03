@@ -8,6 +8,7 @@ class Journal < ActiveRecord::Base
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
   PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
   PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
+  PREPRINT_SHORT_DOI_FORMAT = %r{\A\d+\z}
 
   class InvalidDoiError < ::StandardError; end
   class InvalidPreprintDoiError < ::StandardError; end
@@ -42,7 +43,17 @@ class Journal < ActiveRecord::Base
     uniqueness: { scope: :doi_publisher_prefix,
                   message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
-  validates :last_preprint_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
+  validates :last_preprint_doi_issued,
+    presence: {
+      message: 'Please include a Last DOI Issued'
+    },
+    format: {
+      with: PREPRINT_SHORT_DOI_FORMAT,
+      message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
+      if: proc { |journal| journal.last_preprint_doi_issued.present? }
+  }
+
+
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true

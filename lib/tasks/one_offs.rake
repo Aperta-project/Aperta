@@ -41,10 +41,10 @@ namespace :one_off do
                                     event_dispatch_offset: -2
       ScheduledEventTemplate.create owner: 'ReviewerReport',
                                     event_name: 'Firt-late Reminder',
-                                    event_dispatch_offset: -2
+                                    event_dispatch_offset: 2
       ScheduledEventTemplate.create owner: 'ReviewerReport',
                                     event_name: 'Second-late Reminder',
-                                    event_dispatch_offset: -2
+                                    event_dispatch_offset: 4
     end
   end
 end

@@ -102,6 +102,10 @@ class Journal < ActiveRecord::Base
     !!(doi =~ PREPRINT_DOI_FORMAT)
   end
 
+  def validate_prepint_doi(doi)
+    raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
+  end
+
   # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines
   def doi_journal_abbrev
     doi_journal_prefix.split('.').last

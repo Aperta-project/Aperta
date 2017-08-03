@@ -193,12 +193,10 @@ test('it only displays originally due date when not equal to due date', function
   this.set('report.status', 'pending');
 
   this.render(hbs`
-    {{reviewer-report-status report=report}}
-  `);
+    {{reviewer-report-status report=report}}`);
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Pending: review of v99.0 due February 25, 2020 12:00 am WAT Invitation accepted January 1, 2020 · Original due date was May 12`,
-    'Block template shows declined text with date'
+    `Pending: review of v99.0 due February 25, 2020 12:00 am WAT Invitation accepted January 1, 2020 · Original due date was May 12`
   );
 });

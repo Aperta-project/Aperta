@@ -607,9 +607,9 @@ class Paper < ActiveRecord::Base
   end
 
   def verify_or_assign_preprint_doi!
-    return unless preprint_doi_short_id == nil
+    return unless preprint_short_doi == nil
     raise "Invalid paper Journals are required for papers urls." unless journal
-    update!(preprint_doi_short_id: journal.next_preprint_short_doi!)
+    update!(preprint_short_doi: journal.next_preprint_short_doi!)
   end
 
   def aarx_doi
@@ -620,8 +620,8 @@ class Paper < ActiveRecord::Base
   end
 
   def preprint_doi_suffix
-    return nil unless preprint_doi_short_id
-    Journal::PREPRINT_DOI_PREFIX_NAME + preprint_doi_short_id
+    return nil unless preprint_short_doi
+    Journal::PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
   end
 
   private

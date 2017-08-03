@@ -102,7 +102,7 @@ class Journal < ActiveRecord::Base
     !!(doi =~ PREPRINT_DOI_FORMAT)
   end
 
-  def validate_prepint_doi(doi)
+  def self.validate_preprint_doi(doi)
     raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
   end
 

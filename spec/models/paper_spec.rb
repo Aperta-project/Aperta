@@ -616,7 +616,7 @@ describe Paper do
     context "paper with preprint doi" do
       let(:paper) do
         FactoryGirl.create(:paper,
-          preprint_doi_short_id: "123")
+          preprint_short_doi: "123")
       end
 
       it "returns a valid doi" do
@@ -627,7 +627,7 @@ describe Paper do
     context "paper without preprint doi" do
       let(:paper) do
         FactoryGirl.create(:paper,
-          preprint_doi_short_id: nil)
+          preprint_short_doi: nil)
       end
 
       it "returns nil" do

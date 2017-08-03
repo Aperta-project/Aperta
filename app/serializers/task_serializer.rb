@@ -6,7 +6,7 @@ class TaskSerializer < ActiveModel::Serializer
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
              :card_version_id, :paper_id, :is_workflow_only_task
 
-  has_many :answers, serializer: AnswerSerializer
+  has_many :answers, serializer: AnswerSerializer, include: true, embed: :id
 
   self.root = :task
 

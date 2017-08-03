@@ -40,6 +40,7 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
+    @required_answers = []
     # if the task is completed the only thing that can be done to it is mark
     # it as uncompleted
     if required_fields_completed && task.completed?
@@ -53,7 +54,15 @@ class TasksController < ApplicationController
     task.after_update
     Activity.task_updated! task, user: current_user
 
-    render task.update_responder.new(task, view_context).response
+    # render task.update_responder.new(task, view_context).response
+    # render json: @list.to_json(:include => :entries)
+    # render task.update_responder.new(task, view_context).response
+    # render json: @list.to_json(:include => :entries)
+    # json = JSON.parse task.to_json(:include => :answers, serializer: LightAnswerSerializer)
+    # render json: task.answers, each_serializer: LightAnswerSerializer, root: 'answers'
+    # json = JSON.parse task.to_json
+    # render task.update_responder.new(task, view_context).response
+    render json: task
   end
 
   def destroy
@@ -167,12 +176,8 @@ class TasksController < ApplicationController
     required_fields.each do |content|
       answer = task.find_or_build_answer_for(card_content: content)
       answer.save unless answer.persisted?
-      # puts "task ident #{content.ident} answer.id #{answer.id} answer.ready_issues #{answer.ready_issues}"
     end
 
-    result = task.answers.all?(&:ready?)
-    # puts "task.answers.all?(&:ready?) #{result}"
-    task.incomplete! unless result
-    result
+    params[:task][:completed] = task.answers.all?(&:ready?)
   end
 end

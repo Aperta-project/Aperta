@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe LitePaperSerializer do
+describe PaperSerializer do
   subject(:serializer) { described_class.new(paper, user: user, root: :paper) }
   let(:paper) { FactoryGirl.build_stubbed(Paper) }
   let(:user) { FactoryGirl.build_stubbed(:user) }
@@ -32,6 +32,7 @@ describe LitePaperSerializer do
     describe 'aarx_doi' do
       it "should be present" do
         expect(json[:aarx_doi].to_s).to be_present
+        expect(json[:aarx_doi].to_s).to eq("10.24196/aarx.1")
       end
     end
 

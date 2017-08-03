@@ -241,9 +241,11 @@ ActiveRecord::Schema.define(version: 20170728115624) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.boolean  "required_field"
     t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -514,7 +516,7 @@ ActiveRecord::Schema.define(version: 20170728115624) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
-
+  
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "user_id"

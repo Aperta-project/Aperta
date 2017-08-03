@@ -10,6 +10,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :possible_values,
              :text,
              :value_type,
+             :required_field,
              :editor_style,
              :allow_annotations,
              # when visible_with_parent_answer is set,

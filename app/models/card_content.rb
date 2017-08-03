@@ -118,6 +118,7 @@ class CardContent < ActiveRecord::Base
       'ident' => ident,
       'content-type' => content_type,
       'value-type' => value_type,
+      'required-field' => required_field,
       'editor-style' => editor_style,
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value,

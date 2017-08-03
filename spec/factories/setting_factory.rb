@@ -17,12 +17,12 @@ FactoryGirl.define do
       value "after_any_first_revise_decision"
     end
 
-    trait :after_minor_revise_decision do
-      value "after_minor_revise_decision"
+    trait :after_first_minor_revise_decision do
+      value "after_first_minor_revise_decision"
     end
 
-    trait :after_major_revise_decision do
-      value "after_major_revise_decision"
+    trait :after_first_major_revise_decision do
+      value "after_first_major_revise_decision"
     end
   end
 end

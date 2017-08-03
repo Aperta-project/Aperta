@@ -1,3 +1,8 @@
+import DS from 'ember-data';
 import Task from 'tahi/models/task';
 
-export default Task.extend();
+var SendToApexTask = Task.extend({
+  apexDeliveries: DS.hasMany('apex-delivery')
+});
+
+export default SendToApexTask;

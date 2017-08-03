@@ -126,12 +126,6 @@ describe 'SeedHelpers' do
       )
     end
 
-    it 'does not allow creating a CustomCardPermission with a nil filter_by_card_id' do
-      expect do
-        role.ensure_permission_exists(:view, applies_to: CustomCardTask)
-      end.to raise_exception(ActiveRecord::RecordInvalid, /Filter by card can't be blank/)
-    end
-
     it 'does nothing if the permission already exists' do
       expect(role.permissions).to contain_exactly(
         Permission.where(action: :view, applies_to: Task).first)

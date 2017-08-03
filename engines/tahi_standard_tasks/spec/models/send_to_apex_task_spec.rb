@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TahiStandardTasks::SendToApexTask do
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, publishing_state: 'accepted')
+    FactoryGirl.create :paper, :with_tasks
   end
   let!(:task) do
     FactoryGirl.create(:send_to_apex_task, :with_loaded_card, paper: paper)
@@ -16,7 +16,7 @@ describe TahiStandardTasks::SendToApexTask do
     let!(:task) do
       FactoryGirl.create(:send_to_apex_task, :with_loaded_card, apex_deliveries: [apex_delivery])
     end
-    let!(:apex_delivery) { FactoryGirl.build(:apex_delivery, paper: paper, destination: 'apex') }
+    let!(:apex_delivery) { FactoryGirl.create(:apex_delivery) }
 
     it 'detroys apex deliveries when the task is destroyed' do
       expect do

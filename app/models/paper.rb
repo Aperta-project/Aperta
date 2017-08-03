@@ -643,8 +643,8 @@ class Paper < ActiveRecord::Base
   end
 
   def preprint_doi_suffix
-    return nil unless preprint_doi_short_id
-    Journal::PREPRINT_DOI_PREFIX_NAME + preprint_doi_short_id
+    return nil unless preprint_short_doi
+    Journal::PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
   end
 
   private

@@ -1902,6 +1902,24 @@ activities:
     - '1'
     - '2017-03-30 21:34:36.066657'
     - '2017-03-30 21:34:36.066657'
+  - - '211'
+    - manuscript
+    - '4'
+    - Paper
+    - task.incompleted
+    - Custom Card card was marked as incomplete
+    - '2'
+    - '2017-08-03 23:41:34.576823'
+    - '2017-08-03 23:41:34.576823'
+  - - '212'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Custom Card card was marked as complete
+    - '2'
+    - '2017-08-03 23:44:53.196391'
+    - '2017-08-03 23:44:53.196391'
 
 ---
 affiliations:
@@ -12405,10 +12423,11 @@ card_contents:
     - '506'
     - 'Please provide details about any and all competing interests in the box below.
       Your response should begin with this statement: "I have read the journal''s
-      policy and the authors of this manuscript have the following competing interests.'
+      policy and the authors of this manuscript have the following competing interests."<br><br>Please
+      note that if your manuscript is accepted, this statement will be published.'
     - html
     - '2017-07-28 17:30:16.847337'
-    - '2017-07-28 17:30:16.897122'
+    - '2017-08-03 23:43:06.448117'
     - 
     - '48'
     - paragraph-input
@@ -39940,7 +39959,7 @@ tasks:
     - '10'
     - 
   - - '5'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '1'
     - false
@@ -40213,7 +40232,7 @@ tasks:
     - '10'
     - 
   - - '26'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '6'
     - false
@@ -40499,7 +40518,7 @@ tasks:
     - '10'
     - 
   - - '47'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '11'
     - true
@@ -40779,16 +40798,16 @@ tasks:
     - '10'
     - 
   - - '68'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '16'
     - true
     - '2015-11-02 14:46:23.953399'
-    - '2015-11-02 15:09:49.305375'
+    - '2017-08-03 23:44:53.169304'
     - "[]"
     - '5'
     - '4'
-    - '2016-02-02 19:33:00'
+    - '2017-08-03 23:44:53.16875'
     - '48'
     - 
   - - '69'
@@ -41062,7 +41081,7 @@ tasks:
     - '10'
     - 
   - - '89'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '21'
     - false
@@ -41335,7 +41354,7 @@ tasks:
     - '10'
     - 
   - - '110'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '26'
     - false
@@ -41608,7 +41627,7 @@ tasks:
     - '10'
     - 
   - - '131'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '31'
     - false
@@ -41881,7 +41900,7 @@ tasks:
     - '10'
     - 
   - - '174'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '41'
     - true
@@ -42166,7 +42185,7 @@ tasks:
     - '10'
     - 
   - - '195'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '46'
     - false

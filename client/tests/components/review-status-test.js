@@ -195,7 +195,7 @@ test('it only displays originally due date when not equal to due date', function
     {{reviewer-report-status report=report}}`);
 
   assert.textPresent(
-    '.report-status',
+    '.sub-message',
     `Original due date was May 12`
   );
 });

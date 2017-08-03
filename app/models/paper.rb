@@ -72,6 +72,13 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
+  validates :preprint_short_doi,
+    format: {
+      with: Journal::PREPRINT_SHORT_DOI_FORMAT,
+      message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
+      if: proc { |paper| paper.preprint_short_doi.present? }
+  }
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 

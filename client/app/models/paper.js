@@ -61,6 +61,7 @@ export default DS.Model.extend({
   createdAt: attr('date'),
   creator: belongsTo('user', { async: false }),
   shortDoi: attr('string'),
+  aarxDoi: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),
@@ -108,6 +109,11 @@ export default DS.Model.extend({
 
   submissionTasks: computed.filterBy('tasks', 'isSubmissionTask', true),
   sortedSubmissionTasks: computed.sort('submissionTasks', 'taskSorting'),
+
+  preprintShortDoi: computed('preprintShortDoi', function() {
+    var doi = this.get('aarxDoi');
+    return doi.match(/.+\.(\d+)$/)[1];
+  }),
 
   displayTitle: computed('title', function() {
     return this.get('title') || '[No Title]';

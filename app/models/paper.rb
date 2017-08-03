@@ -107,11 +107,7 @@ class Paper < ActiveRecord::Base
            to: :latest_version, allow_nil: true
 
   def self.find_preprint_short_doi(doi_string)
-    if doi_string =~ /10.24196\/aarx/
-      doi_string.scan(/\d+/)[2]
-    else
-      doi_string.scan(/\d+/)[0]
-    end
+    doi_string.match(/.+\.(\d+)/)[1]
   end
 
   def file_type

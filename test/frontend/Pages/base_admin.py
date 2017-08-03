@@ -57,30 +57,15 @@ class BaseAdminPage(AuthenticatedPage):
     self._anj_edit_logo_upload_btn = (By.CLASS_NAME, 'fileinput-button')
     self._anj_edit_logo_upload_note = (By.CSS_SELECTOR, 'div.journal-logo-uploader p')
     self._anj_edit_logo_input_field = (By.ID, 'upload-journal-logo-button')
-    self._anj_edit_title_label = (By.CSS_SELECTOR, 'div.admin-new-card-overlay-form > '
-                                                   '.labeled-input-with-errors label')
+    self._anj_edit_title_label = (By.CSS_SELECTOR, 'label.name')
     self._anj_edit_title_field = (By.NAME, 'name')
-    self._anj_edit_desc_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
-                                                  '.labeled-input-with-errors + '
-                                                  '.labeled-input-with-errors label')
+    self._anj_edit_desc_label = (By.CSS_SELECTOR, 'label.description')
     self._anj_edit_desc_field = (By.CLASS_NAME, 'ember-text-area')
-    self._anj_edit_doi_jrnl_prefix_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
-                                                             '.labeled-input-with-errors + '
-                                                             '.labeled-input-with-errors + '
-                                                             '.labeled-input-with-errors label')
+    self._anj_edit_doi_jrnl_prefix_label = (By.CSS_SELECTOR, 'label.doi-journal-prefix')
     self._anj_edit_doi_jrnl_prefix_field = (By.NAME, 'doiJournalPrefix')
-    self._anj_edit_doi_publ_prefix_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
-                                                             '.labeled-input-with-errors + '
-                                                             '.labeled-input-with-errors + '
-                                                             '.labeled-input-with-errors + '
-                                                             '.labeled-input-with-errors label')
+    self._anj_edit_doi_publ_prefix_label = (By.CSS_SELECTOR, 'label.doi-publisher-prefix')
     self._anj_edit_doi_publ_prefix_field = (By.NAME, 'doiPublisherPrefix')
-    self._anj_edit_last_doi_label = (By.CSS_SELECTOR, '.admin-new-card-overlay-form > '
-                                                      '.labeled-input-with-errors + '
-                                                      '.labeled-input-with-errors + '
-                                                      '.labeled-input-with-errors + '
-                                                      '.labeled-input-with-errors + '
-                                                      '.labeled-input-with-errors label')
+    self._anj_edit_last_doi_label = (By.CSS_SELECTOR, 'label.last-doi-issued')
     self._anj_edit_last_doi_field = (By.NAME, 'lastDoiIssued')
     self._anj_edit_cancel_link = (By.CSS_SELECTOR, '.admin-new-journal-overlay-cancel')
     self._anj_edit_save_button = (By.CSS_SELECTOR, '.admin-new-journal-overlay-save')
@@ -142,7 +127,7 @@ class BaseAdminPage(AuthenticatedPage):
       # Validate the presentation of journal links in the left drawer
       # Super Admin gets all journals
       db_jrnls = PgSQL().query('SELECT name '
-                               'FROM journals')
+                               'FROM journals;')
       logging.info(db_jrnls)
       for jrnl in db_jrnls:
         db_journals.append(jrnl[0])

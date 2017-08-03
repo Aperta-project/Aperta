@@ -45,7 +45,12 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DOI IS') do |doi|
-    paper_table[:doi].matches("%#{doi}%")
+    if doi =~ /aarx/
+      preprint_short_doi = Paper.find_preprint_short_doi(doi)
+      paper_table[:preprint_short_doi].matches("%#{preprint_short_doi}%")
+    else
+      paper_table[:doi].matches("%#{doi}%")
+    end
   end
 
   add_two_part_expression('USER', 'HAS ROLE') do |user_query, role|

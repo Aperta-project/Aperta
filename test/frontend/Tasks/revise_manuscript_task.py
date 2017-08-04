@@ -40,7 +40,7 @@ class ReviseManuscriptTask(BaseTask):
     time.sleep(4)
     subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
     assert subtitle_2.text == 'Decision Letter', subtitle_2.text
-    assert subtitle_1.text == 'Response to reviewers:', subtitle_1.text
+    assert subtitle_1.text == 'Response to reviewers', subtitle_1.text
     assert subtitle_3.text == 'Decision History', subtitle_3.text
     # APERTA-10618
     # decision_anchor_link = self._get(self._decision_letter_anchor_link)
@@ -66,9 +66,7 @@ class ReviseManuscriptTask(BaseTask):
     self._get(self._btn_done).click()
     # wait for error
     time.sleep(2)
-    # The tinyMCE component includes a hidden field with the class error-message that is now being
-    #   picked up and causes an index error - accounting for it and dropping it on the floor. (msg3)
-    msg1, msg2, msg3 = self._gets(self._error_messages)
+    msg1, msg2 = self._gets(self._error_messages)
     assert msg1.text == 'Please fix all errors', msg1.text
     assert msg2.text == 'Please provide a response or attach a file', msg2.text
     return None

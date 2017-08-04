@@ -1,11 +1,11 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Helper.extend({
   compute([dueDate, dispatchDate]) {
-    let diff = dueDate - dispatchDate;
-    let dayDiff = Math.ceil(diff / (1000 * 3600 * 24));
-    let absDiff = Math.abs(dayDiff);
-    let diffDirection = dayDiff ? 'before' : 'after';
-    return `(${absDiff} days ${diffDirection} due date)`;
+    let diff = new Date(dueDate) - new Date(dispatchDate);
+    let duration = moment.duration(diff).humanize();
+    let direction = diff < 0 ? 'before' : 'after';
+    return `(${duration} days ${direction} due date)`;
   }
 });

@@ -196,6 +196,6 @@ test('it only displays originally due date when not equal to due date', function
 
   assert.textPresent(
     '.report-status',
-    `Original due date was May 12`
+    `Original due date was`
   );
 });

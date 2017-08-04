@@ -22,7 +22,7 @@ module.exports = function(defaults) {
       themes: ['eclipse']
     },
     minifyJS: {
-      enabled: EmberApp.env() === 'production'
+      enabled: true
     }
   };
 

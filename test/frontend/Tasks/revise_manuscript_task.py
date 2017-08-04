@@ -5,8 +5,6 @@ import random
 import os
 import logging
 
-from loremipsum import generate_paragraph
-
 from Base.Resources import docs
 from frontend.Tasks.basetask import BaseTask
 from selenium.webdriver.common.by import By
@@ -39,8 +37,8 @@ class ReviseManuscriptTask(BaseTask):
     # Without the following time, it grabs an empty string
     time.sleep(4)
     subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
-    assert subtitle_1.text == 'Current Revision', subtitle_1.text
-    assert subtitle_2.text == 'Response to Reviewers:', subtitle_2.text
+    assert subtitle_1.text == 'Response to reviewers', subtitle_1.text
+    assert subtitle_2.text == 'Decision Letter', subtitle_2.text
     assert subtitle_3.text == 'Decision History', subtitle_3.text
     # APERTA-10618
     # decision_anchor_link = self._get(self._decision_letter_anchor_link)
@@ -66,9 +64,7 @@ class ReviseManuscriptTask(BaseTask):
     self._get(self._btn_done).click()
     # wait for error
     time.sleep(2)
-    # The tinyMCE component includes a hidden field with the class error-message that is now being
-    #   picked up and causes an index error - accounting for it and dropping it on the floor. (msg3)
-    msg1, msg2, msg3 = self._gets(self._error_messages)
+    msg1, msg2 = self._gets(self._error_messages)
     assert msg1.text == 'Please fix all errors', msg1.text
     assert msg2.text == 'Please provide a response or attach a file', msg2.text
     return None
@@ -86,15 +82,13 @@ class ReviseManuscriptTask(BaseTask):
       time.sleep(1)
       # Testing uploading only one file due to bug APERTA-6672
       self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
+      time.sleep(10)
+    elif data and 'text' in data:
+      tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
+        self.get_rich_text_editor_instance('revise-overlay-response-field')
+      self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
+      self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=data['text'])
 
-      # This code is dead and it leaves file upload dialog zombies
-      #self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
-      #self._get(self._upload_btn).click()
-      # Give time to upload.
-      #time.sleep(10)
 
-    if data and 'text' not in data:
-      data['text'] = generate_paragraph()[2] or 'text'
-    self._get(self._response_field).send_keys(data['text'])
     self._get(self._save_btn).click()
     return None

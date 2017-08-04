@@ -14,7 +14,6 @@ from datetime import datetime
 
 
 from selenium.webdriver.common.by import By
-
 from .authenticated_page import AuthenticatedPage, APPLICATION_TYPEFACE, APERTA_GREY_DARK
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.Resources import users, staff_admin_login, pub_svcs_login, internal_editor_login, \
@@ -643,7 +642,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Response to Reviewers':
       revise_manuscript = ReviseManuscriptTask(self._driver)
       revise_manuscript.validate_styles()
-      revise_manuscript.validate_empty_response()
+      if data and 'response_number' not in data:
+        revise_manuscript.validate_empty_response()
       revise_manuscript.response_to_reviewers(data)
       # complete revise task
       if not base_task.completed_state():

@@ -947,7 +947,7 @@ class StyledPage(PlosPage):
         button.value_of_css_property('line-height')
     assert button.value_of_css_property('color') == APERTA_GREEN, \
         button.value_of_css_property('color')
-    assert button.value_of_css_property('background-color') == 'transparent', \
+    assert button.value_of_css_property('background-color') == 'rgba(0, 0, 0, 0)', \
         button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center', \
         button.value_of_css_property('text-align')

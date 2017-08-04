@@ -1,24 +1,25 @@
 {{#if preview}}
-  <span>Use this to toggle the preview state for this 'if'</span>
+  <div>
+    This switch appears only in the card preview;
+    it toggles between the <b>then</b> and the <b>else</b> portions of this <b>if</b> section.
+  </div>
   {{card-content/toggle-switch
     size="small"
     answer=(hash value=previewState)
     valueChanged=(toggle "previewState" this)
   }}
-  <!-- 'toggle' is from ember-composable-helpers
-       https://github.com/DockYard/ember-composable-helpers#toggle -->
 {{/if}}
 
 {{#if condition}}
   {{card-content
   content=content.children.firstObject
   owner=owner
-  disabled=isNotEditable
-  scenario=(hash isEditable=isEditable)}}
+  disabled=disabled
+  }}
 {{else}}
   {{card-content
   content=content.children.lastObject
   owner=owner
-  disabled=isNotEditable
-  scenario=(hash isEditable=isEditable)}}
+  disabled=disabled
+  }}
 {{/if}}

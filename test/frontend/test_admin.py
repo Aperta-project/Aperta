@@ -5,7 +5,6 @@ This test case validates the Aperta Admin page.
 """
 
 import logging
-import os
 import random
 
 from Base.Decorators import MultiBrowserFixture
@@ -43,8 +42,6 @@ class ApertaAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Test Admin::validate_components_styles')
-    current_path = os.getcwd()
-    logging.info(current_path)
     logging.info('Validating Admin page components and styles')
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
@@ -63,16 +60,14 @@ class ApertaAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Test Admin::validate_user_search')
-    current_path = os.getcwd()
-    logging.info(current_path)
     logging.info('Validating base admin page user search function')
     user_type = random.choice(admin_users)
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_admin_link()
     adm_users_page = AdminUsersPage(self.getDriver())
-    adm_users_page.page_ready()
     adm_users_page._get(adm_users_page._base_admin_users_link).click()
+    adm_users_page.page_ready()
     user = random.choice(user_search)
     logging.info('Searching user: {0}'.format(user))
     adm_users_page.validate_search_edit_user(user)
@@ -84,8 +79,6 @@ class ApertaAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Test Admin::validate_add_new_journal')
-    current_path = os.getcwd()
-    logging.info(current_path)
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])
@@ -101,8 +94,6 @@ class ApertaAdminTest(CommonTest):
     :return: void function
     """
     logging.info('Test Admin::validate_edit_journal')
-    current_path = os.getcwd()
-    logging.info(current_path)
     user_type = super_admin_login
     logging.info('Logging in as user: {0}'.format(user_type))
     dashboard_page = self.cas_login(email=user_type['email'])

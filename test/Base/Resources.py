@@ -957,11 +957,11 @@ APEX_FTP_DIR = getenv('APEX_FTP_DIR', 'aperta2apextest')
 # Define connector information for Aperta's Tahi component postgres instance
 # NOTA BENE: Production data should NEVER be included in this file.
 # DEV/CI
-psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.sfo.plos.org')
+psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.soma.plos.org')
 # QA/RC
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.sfo.plos.org')
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.soma.plos.org')
 # Stage
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-401.sfo.plos.org')
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-stage.soma.plos.org')
 # Global
 psql_port = getenv('APERTA_PSQL_PORT', '5432')
 psql_uname = getenv('APERTA_PSQL_USER', 'tahi')

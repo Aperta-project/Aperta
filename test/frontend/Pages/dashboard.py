@@ -103,7 +103,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
-    self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
+    self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless p')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     # The next sequence of 10 locators are all per invitation so should be used withing a

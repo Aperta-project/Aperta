@@ -24,7 +24,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
       dueAt: dueDate,
-      task: task,
+      task: task
     });
     this.set('report.task.paper', paper);
     let tz = moment.tz.guess();

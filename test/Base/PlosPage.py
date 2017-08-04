@@ -106,20 +106,14 @@ class PlosPage(object):
      :param wait_lambda: lambda to evaluate every second, returning when it is true
      :param max_wait: maximum amount of time to wait for it to be true
     """
-    while True:
-      tries = 0
+    for x in range(0, max_wait):
       try:
-        if tries > max_wait:
-          raise Exception(wait_lambda)
         if wait_lambda():
           return
         else:
           time.sleep(1)
-          tries += 1
       except ElementDoesNotExistAssertionError:
         time.sleep(1)
-        tries += 1
-
 
   def _iget(self, locator):
     """

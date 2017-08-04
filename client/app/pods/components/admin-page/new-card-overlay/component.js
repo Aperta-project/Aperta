@@ -37,6 +37,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   }),
 
   didReceiveAttrs(){
+    //Defaults the dropdown as the first element in the card list
     this.set('cardType', this.get('cardTypes')[0]);
   },
 

@@ -25,6 +25,7 @@ describe TahiStandardTasks::ReviewerMailer do
 
   before do
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
   end
 
   describe ".welcome_reviewer" do

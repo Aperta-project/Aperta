@@ -1,9 +1,8 @@
 # Serves as the method for non-users to decline without having to sign in.
-
 class TokenInvitationsController < ApplicationController
-  before_action :redirect_if_inactive, only: [:accept, :decline]
   before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
+  before_action :redirect_if_inactive, only: [:accept, :decline]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
@@ -117,6 +116,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def ensure_user!
+    redirect_if_inactive
     if invitation.invitee_id or use_authentication?
       if TahiEnv.cas_enabled?
         redirect_to omniauth_authorize_path(:user, 'cas', url: akita_invitation_accept_url)

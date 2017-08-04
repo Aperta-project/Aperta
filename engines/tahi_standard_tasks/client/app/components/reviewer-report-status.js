@@ -28,7 +28,7 @@ export default Ember.Component.extend({
     const formattedDueDate = moment(dueDate).format(format);    
     const formattedOriginalDueDate = moment(originalDueDate).format(format);
     if (formattedDueDate !== formattedOriginalDueDate) {
-      output += `· Original due date was ${formattedOriginalDueDate}`;
+      output += `; original due date was ${formattedOriginalDueDate}.`;
     }
     return output;
   }),

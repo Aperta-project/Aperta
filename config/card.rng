@@ -438,9 +438,7 @@
       <attribute name="content-type">
         <value>if</value>
       </attribute>
-      <element name="text">
-        <text/>
-      </element>
+      <attribute name="condition"/>
       <ref name="content"/>
       <optional>
         <ref name="content"/>

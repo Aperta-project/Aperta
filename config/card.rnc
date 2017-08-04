@@ -146,7 +146,7 @@ export-paper = element content {
 
 if = element content {
                 attribute content-type { "if" },
-                element text { text },
+                attribute condition { text },
                 content,
                 content?
 }

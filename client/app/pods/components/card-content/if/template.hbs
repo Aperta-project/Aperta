@@ -1,13 +1,24 @@
-{{#if (get scenario content.if)}}
+{{#if preview}}
+  {{card-content/toggle-switch
+    name='Fred'
+    size="small"
+    content=content
+    answer=condition
+    checked=condition
+    action="previewToggleChanged"
+  }}
+{{/if}}
+
+{{#if condition}}
   {{card-content
-  content=children.[0]
-  owner=task
+  content=content.children.firstObject
+  owner=owner
   disabled=isNotEditable
   scenario=(hash isEditable=isEditable)}}
 {{else}}
   {{card-content
-  content=children.[1]
-  owner=task
+  content=content.children.lastObject
+  owner=owner
   disabled=isNotEditable
   scenario=(hash isEditable=isEditable)}}
 {{/if}}

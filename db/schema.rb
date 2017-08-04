@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721165848) do
+ActiveRecord::Schema.define(version: 20170804150657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
+    t.string   "condition"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

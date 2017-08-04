@@ -14,7 +14,7 @@ from os.path import abspath, dirname
 from os import getenv
 
 from selenium import webdriver
-from selenium.webdriver.support.events import EventFiringWebDriver
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from browsermobproxy import Server
 from appium import webdriver as appiumDriver
@@ -206,6 +206,8 @@ class WebDriverFactory(object):
       driver = webdriver.Firefox(firefox_profile=profile, firefox_binary=FirefoxBinary(ff_path))
 
     efDriver = EventFiringWebDriver(driver, WebDriverListener())
+    # Don't commit with this line uncommented, use above instead.  Line below is to suppress WebDriverListener logging
+    #efDriver = EventFiringWebDriver(driver, AbstractEventListener())
     efDriver.implicitly_wait(wait_timeout)
     efDriver.set_page_load_timeout(page_load_timeout)
     efDriver.set_window_size(1280, 1024)

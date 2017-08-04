@@ -118,10 +118,8 @@ class UploadManuscriptTask(BaseTask):
     logging.info('Sending document: {0}'.format(fn))
     time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
-    #pload_ms_btn = self._get(self._upload_manuscript_replace_btn)
-    #upload_ms_btn.click()
     # Time needed for script execution.
-    time.sleep(7)
+    time.sleep(10)
 
   def take_name_of_pdf_file(self):
     """

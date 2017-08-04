@@ -9,11 +9,15 @@ import os
 import random
 import time
 
+from loremipsum import generate_paragraph
+
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import users, editorial_users, admin_users
 from frontend.common_test import CommonTest
 from .Pages.manuscript_viewer import ManuscriptViewerPage
+from .Tasks.upload_manuscript_task import UploadManuscriptTask
 from .Pages.workflow_page import WorkflowPage
+from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
 
@@ -56,11 +60,13 @@ class ReviseManuscriptTest(CommonTest):
     short_doi = manuscript_page.get_paper_short_doi_from_url()
     logging.info("Assigned paper short doi: {0}".format(short_doi))
     # Complete cards
+
     manuscript_page.complete_task('Upload Manuscript')
     manuscript_page.complete_task('Title And Abstract')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_submit_overlay()
+
     # logout
     manuscript_page.logout()
     # log as editor, invite a reviewer
@@ -77,13 +83,78 @@ class ReviseManuscriptTest(CommonTest):
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.logout()
+
     # Login as user and complete Revise Manuscript
     logging.info('Logging in as user: {0}'.format(creator))
     dashboard_page = self.cas_login(email=creator['email'])
     dashboard_page.go_to_manuscript(short_doi)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+
+    manuscript_page.page_ready()
     data = {'attach': 2}
     manuscript_page.complete_task('Response to Reviewers', data=data)
+    # This needs to be completed after any decision
+    manuscript_page.complete_task('Title And Abstract')
+
+    # replace first version
+    manuscript_page.click_task('Upload Manuscript')
+    upms = UploadManuscriptTask(self.getDriver())
+    upms.task_ready()
+    upms.replace_manuscript()
+
+    while not upms.completed_state():
+      upms.click_completion_button()
+      time.sleep(1)
+
+    manuscript_page.click_task('Upload Manuscript')
+    manuscript_page.page_ready()
+    # This needs to be completed a second time now
+    manuscript_page.complete_task('Title And Abstract')
+
+    # submit and logout
+    time.sleep(1)
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_submit_overlay()
+    manuscript_page.logout()
+
+    # log back in as staff_user
+    logging.info('Logging in again as user: {0}'.format(staff_user))
+    dashboard_page = self.cas_login(email=staff_user['email'])
+    dashboard_page.page_ready()
+    # go to article id short_doi
+    dashboard_page.go_to_manuscript(short_doi)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.page_ready()
+
+    # go to wf
+    manuscript_page.click_workflow_link()
+
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.page_ready()
+    workflow_page.click_register_decision_card()
+    workflow_page.complete_card('Register Decision')
+    workflow_page.click_register_decision_card()
+
+    decision_history = workflow_page.get_decision_history_summary()
+    assert '1.0 Major Revision' in ' '.join(decision_history[0].text.split()), ' '.join(decision_history[0].text.split())
+    assert '0.0 Major Revision' in ' '.join(decision_history[1].text.split()), ' '.join(decision_history[1].text.split())
+
+    workflow_page.logout()
+
+    logging.info('Logging in as user: {0}'.format(creator))
+    dashboard_page = self.cas_login(email=creator['email'])
+    dashboard_page.page_ready()
+    dashboard_page.go_to_manuscript(short_doi)
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
+    paper_viewer.page_ready()
+    # need to complete this task again after providing new manuscript
+    paper_viewer.complete_task('Response to Reviewers', data={'text': generate_paragraph()[2],
+                                                              'response_number': 2})
+
+    data = {'attach': 2}
+    manuscript_page.complete_task('Response to Reviewers', data=data)
+
     return self
 
 if __name__ == '__main__':

@@ -224,6 +224,9 @@ class RegisterDecisionCard(BaseCard):
           'Template text:\n{0}\nNot found in Card text\n{1}\n'.format(
           template_letters['Reject-RARAR-ONE'], letter_text)
 
+  def get_decision_history_summary(self):
+    return self._gets(self._decision_bar_verdict)
+
   def register_decision(self, decision='', template='', commit=True):
     """
     Register decision on publishing manuscript

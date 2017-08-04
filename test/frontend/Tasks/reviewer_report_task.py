@@ -466,7 +466,8 @@ class ReviewerReportTask(BaseTask):
       q5response = generate_paragraph()[2]
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=q5response)
       q6radval = self.get_random_bool()
-      self._actions.move_to_element(qb5).perform()
+      self._scroll_into_view(qb5)
+
       if q6radval:
         q6yesradio = qb6.find_element(*self._res_yes_radio)
         q6yesradio.click()

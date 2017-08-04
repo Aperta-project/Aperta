@@ -41,8 +41,8 @@ class InviteReviewersCard(InviteCard):
         report_state = invite.find_element(*self._invitee_report_state)
 
         if expected_report_state == 'pending':
-          assert report_state.text == 'Pending', 'The report state: {0} is not the expected: Pending'.format(report_state.text)
-          invite.find_element_by_css_selector('div.invitation-item-status span.not-bold')
+          assert 'Review due' in report_state.text, 'Review due not found in {0}'.format(report_state.text)
+          invite.find_element_by_css_selector('div.invitation-item-status span')
         elif expected_report_state == 'completed':
           assert 'Completed' in report_state.text, 'The report state: {0} is not the expected: Completed'.format(report_state.text)
           invite.find_element_by_css_selector('div.invitation-item-status .invitation-item-review-completed-icon')

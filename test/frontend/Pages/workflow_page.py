@@ -154,6 +154,12 @@ class WorkflowPage(AuthenticatedPage):
     """Click Invite Academic Editor Card"""
     self._get(self._invite_ae_card).click()
 
+  def get_decision_history_summary(self):
+    self.click_register_decision_card()
+    time.sleep(1)
+    register_decision_card = RegisterDecisionCard(self._driver)
+    return register_decision_card.get_decision_history_summary()
+
   def click_register_decision_card(self):
     """Open the Register Decison Card from the workflow page"""
     self._get(self._register_decision_card).click()

@@ -11,6 +11,7 @@ import tempfile
 from time import sleep
 import six
 import os
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -95,6 +96,24 @@ class PlosPage(object):
       logging.info('\t[WebDriver Error] WebDriver timed out while trying to identify elements ' \
             'by {0}.'.format(locator))
       raise ElementDoesNotExistAssertionError(locator)
+
+  def _wait_on_lambda(self, wait_lambda, max_wait=30):
+    """
+    This is intended for use with lambdas having _gets or _get calls and therefore
+    allows ElementDoesNotExistAssertionError's to occur and treats them the same
+    as the lambda evaluating to false (continue wait).
+
+     :param wait_lambda: lambda to evaluate every second, returning when it is true
+     :param max_wait: maximum amount of time to wait for it to be true
+    """
+    for x in range(0, max_wait):
+      try:
+        if wait_lambda():
+          return
+        else:
+          time.sleep(1)
+      except ElementDoesNotExistAssertionError:
+        time.sleep(1)
 
   def _iget(self, locator):
     """

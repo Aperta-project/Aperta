@@ -11,7 +11,6 @@ class Invitation < ActiveRecord::Base
   belongs_to :task
   belongs_to :decision
   has_one :paper, through: :task
-  has_one :due_datetime, as: :due
   belongs_to :invitee, class_name: 'User', inverse_of: :invitations
   belongs_to :inviter, class_name: 'User', inverse_of: :invitations_from_me
   belongs_to :actor, class_name: 'User'
@@ -77,7 +76,7 @@ class Invitation < ActiveRecord::Base
     end
 
     event(:accept,
-      after_commit: [:set_accepted_at, :notify_invitation_accepted, :schedule_events]) do
+      after_commit: [:set_accepted_at, :notify_invitation_accepted]) do
       transitions from: :invited, to: :accepted, guards: :accept_allowed?
     end
     event(:decline,
@@ -136,10 +135,6 @@ class Invitation < ActiveRecord::Base
 
   def set_invitee
     update(invitee: User.find_by(email: email))
-  end
-
-  def schedule_events(factory_template: self)
-    ScheduledEventFactory.new(factory_template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   private

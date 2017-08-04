@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170801121059) do
+ActiveRecord::Schema.define(version: 20170804153441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -746,17 +746,6 @@ ActiveRecord::Schema.define(version: 20170801121059) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "scheduled_event_templates", force: :cascade do |t|
-    t.string   "owner"
-    t.string   "event_name"
-    t.integer  "event_dispatch_offset"
-    t.integer  "due_datetime_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  add_index "scheduled_event_templates", ["due_datetime_id"], name: "index_scheduled_event_templates_on_due_datetime_id", using: :btree
 
   create_table "scheduled_events", force: :cascade do |t|
     t.datetime "dispatch_at"

@@ -1,11 +1,9 @@
-{{#if reviewDueAtFlag}}
-  <p style="font-size:18px;">Reminders</p>
-  {{#each report.scheduledEvents as |event|}}
-    <p>
-      {{event.name}} on
-      {{moment-format event.dispatchAt dispatchDateFormat}}
-      {{due-date-offset event.dispatchAt report.dueAt}}
-    </p>
-  {{/each}}
-  <br>
-{{/if}}
+<p style="font-size:18px;">Reminders</p>
+{{#each events as |event|}}
+  <p class='scheduled-event'>
+    {{event.name}} on
+    {{moment-format event.dispatchAt dispatchDateFormat}} {{dueAtTimezone}}
+    {{due-date-offset event.dispatchAt dueDate}}
+  </p>
+{{/each}}
+<br>

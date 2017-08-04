@@ -19,14 +19,21 @@ class ReviewerReport < ActiveRecord::Base
 
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
 
+  SCHEDULED_EVENTS_TEMPLATE = [
+    { name: 'Pre-Due Reminder', dispatch_offset: -2 },
+    { name: 'First Late Reminder', dispatch_offset: 2 },
+    { name: 'Second Late Reminder', dispatch_offset: 4 }
+  ].freeze
+
   def set_due_datetime(length_of_time: 10.days)
     if FeatureFlag[:REVIEW_DUE_DATE]
       DueDatetime.set_for(self, length_of_time: length_of_time)
     end
+    schedule_events if FeatureFlag[:REVIEW_DUE_AT]
   end
 
-  def schedule_events(factory_template: self)
-    ScheduledEventFactory.new(factory_template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+  def schedule_events(owner: self, template: SCHEDULED_EVENTS_TEMPLATE)
+    ScheduledEventFactory.new(owner, template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
   end
 
   def self.for_invitation(invitation)

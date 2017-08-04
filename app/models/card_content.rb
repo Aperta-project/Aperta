@@ -72,6 +72,7 @@ class CardContent < ActiveRecord::Base
       'date-picker': ['text'],
       'numbered-list': [nil],
       'bulleted-list': [nil],
+      'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types

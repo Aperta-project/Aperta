@@ -438,9 +438,13 @@
       <attribute name="content-type">
         <value>if</value>
       </attribute>
-      <attribute name="text"/>
+      <element name="text">
+        <text/>
+      </element>
       <ref name="content"/>
-      <ref name="content"/>
+      <optional>
+        <ref name="content"/>
+      </optional>
     </element>
   </define>
   <define name="content">

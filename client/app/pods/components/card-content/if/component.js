@@ -9,21 +9,23 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool
+    // It seems like this component needs to receive the 'scenario',
+    // and then forward it down to its children
   },
 
-  condition: Ember.computed('content.condition', function () {
-    window.console.log(this.get('content.condition'));
-    return !this.get('content.condition');
-  }),
+  previewState: true,
 
-  init() {
-    this._super(...arguments);
-  },
-
-  actions: {
-    previewToggleChanged(args) {
-      window.console.log(args);
+  condition: Ember.computed(
+    'content.condition',
+    'preview',
+    'previewState',
+    function() {
+      if (this.get('preview')) {
+        return this.get('previewState');
+      } else {
+        // I left this sort of as-is for now
+        return this.get('content.condition');
+      }
     }
-  }
-
+  )
 });

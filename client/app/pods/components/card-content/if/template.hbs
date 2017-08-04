@@ -1,12 +1,12 @@
 {{#if preview}}
+  <span>Use this to toggle the preview state for this 'if'</span>
   {{card-content/toggle-switch
-    name='Fred'
     size="small"
-    content=content
-    answer=condition
-    checked=condition
-    action="previewToggleChanged"
+    answer=(hash value=previewState)
+    valueChanged=(toggle "previewState" this)
   }}
+  <!-- 'toggle' is from ember-composable-helpers
+       https://github.com/DockYard/ember-composable-helpers#toggle -->
 {{/if}}
 
 {{#if condition}}

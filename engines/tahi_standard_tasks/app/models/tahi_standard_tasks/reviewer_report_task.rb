@@ -72,5 +72,9 @@ module TahiStandardTasks
     def latest_reviewer_report
       reviewer_reports.order('created_at DESC').first
     end
+
+    def display_status
+      latest_reviewer_report.display_status
+    end
   end
 end

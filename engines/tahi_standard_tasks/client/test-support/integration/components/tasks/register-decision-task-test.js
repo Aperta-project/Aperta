@@ -39,18 +39,18 @@ moduleForComponent(
         letterTemplates: [
           {
             id: 1,
-            text: 'RA Accept',
-            templateDecision: 'accept',
+            name: 'RA Accept',
+            category: 'accept',
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
-            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
+            body: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] for [JOURNAL STAFF EMAIL] Sincerely Someone who Accepts' },
           {
             id: 2,
-            text: 'Editor Reject',
-            templateDecision: 'reject',
+            name: 'Editor Reject',
+            category: 'reject',
             to: '[AUTHOR EMAIL]',
             subject: 'Your [JOURNAL NAME] Submission',
-            letter: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
+            body: 'Dear Dr. [LAST NAME],Regarding [PAPER TITLE] in [JOURNAL NAME] Sincerely who Rejects' }],
         nestedQuestions: nestedQuestions
       });
 

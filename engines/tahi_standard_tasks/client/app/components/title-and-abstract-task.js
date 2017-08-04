@@ -7,10 +7,6 @@ const taskValidations = {
 };
 
 export default TaskComponent.extend({
-  paperNotEditable: Ember.computed.not('task.paper.editable'),
-  isNotEditable: Ember.computed('task.completed', 'paperNotEditable', function () {
-    return this.get('task.completed') || (this.get('paperNotEditable') && !this.get('currentUser.siteAdmin'));
-  }),
   validations: taskValidations,
 
   validateData() {
@@ -40,6 +36,7 @@ export default TaskComponent.extend({
 
     abstractChanged(contents) {
       this.set('task.paperAbstract', contents);
+      this.get('task.debouncedSave').perform();
     },
 
     focusOut() {

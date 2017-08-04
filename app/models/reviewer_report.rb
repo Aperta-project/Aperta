@@ -132,6 +132,14 @@ class ReviewerReport < ActiveRecord::Base
   end
   # rubocop:enable Metrics/CyclomaticComplexity
 
+  def display_status
+    status = computed_status
+    inactive = ["not_invited", "invitation_declined", "invitation_rescinded"]
+    return :minus if inactive.include? status
+    return :active_check if status == "completed"
+    :check
+  end
+
   private
 
   def set_submitted_at

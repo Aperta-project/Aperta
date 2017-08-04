@@ -4,7 +4,7 @@
   "description": "Tahi client application",
   "private": true,
   "engines": {
-    "node": "6.11.0"
+    "node": "6.11.1"
   },
   "directories": {
     "doc": "doc",
@@ -85,6 +85,5 @@
       "../engines/tahi-assign_team/client"
     ]
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

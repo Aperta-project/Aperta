@@ -4,7 +4,7 @@
 class LetterTemplate < ActiveRecord::Base
   belongs_to :journal
 
-  validates :letter, presence: true
+  validates :body, presence: true
   validates :subject, presence: true
 
   def render(context)
@@ -14,7 +14,7 @@ class LetterTemplate < ActiveRecord::Base
       # rendered versions.
       my.subject = render_attr(subject, context, sanitize: true)
       my.to = render_attr(to, context, sanitize: true)
-      my.letter = render_attr(letter, context)
+      my.body = render_attr(body, context)
     end
   end
 

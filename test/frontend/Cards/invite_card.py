@@ -167,6 +167,11 @@ class InviteCard(BaseCard):
     fn = os.path.join(os.getcwd(), file_1)
     logging.info('Attaching file: {0}'.format(fn))
     self.attach_file(fn)
+
+    # see note about sleep below
+    time.sleep(15)
+
+
     # look for file name and replace attachment link
     self._wait_for_element(self._get(self._replace_attachment))
     attachments = self.get_attached_file_names()
@@ -421,6 +426,8 @@ class InviteCard(BaseCard):
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     paragraph = generate_paragraph()[2]
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=paragraph)
+
+    time.sleep(1)
     self._get(self._invitation_save_button).click()
     # Collapse and re-expand this invitation item, and check that the paragraph is present
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()

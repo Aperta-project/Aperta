@@ -12,10 +12,17 @@ class ScheduledEventFactory
   def schedule_events
     template.each do |event|
       ScheduledEvent.create name: event[:name],
-                            dispatch_at: due_datetime.due_at + event[:dispatch_offset].days,
+                            dispatch_at: dispatch_date(event),
                             due_datetime: due_datetime,
                             owner_type: owner_type,
                             owner_id: owner_id
     end
+  end
+
+  private
+
+  def dispatch_date(event)
+    return nil unless due_datetime
+    due_datetime.due_at + event[:dispatch_offset].days
   end
 end

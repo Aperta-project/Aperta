@@ -188,14 +188,14 @@ test('it shows completed', function(assert) {
 });
 
 test('it only displays originally due date when not equal to due date', function(assert) {
-  this.set('report.originallyDueAt', 'Fri May 12 2017 00:00:00 GMT+0100 (WAT)');
+  this.set('report.originallyDueAt', moment(new Date(2020, 4, 12)).format('MMMM DD'));
   this.set('report.status', 'pending');
 
   this.render(hbs`
     {{reviewer-report-status report=report}}`);
 
   assert.textPresent(
-    '.sub-message',
+    '.report-status',
     `Original due date was May 12`
   );
 });

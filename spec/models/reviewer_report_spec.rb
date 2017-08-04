@@ -141,13 +141,6 @@ describe ReviewerReport do
     end
   end
 
-  describe '#schedule_events' do
-    before { FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT') }
-    it 'creates events based on the templates specified' do
-      expect { subject.schedule_events }.to change { ScheduledEvent.count }.by(3)
-    end
-  end
-
   describe '#set_due_datetime' do
     before do
       FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
@@ -155,8 +148,7 @@ describe ReviewerReport do
     end
 
     it 'schedues events afterwards' do
-      expect_any_instance_of(ScheduledEventFactory).to receive(:schedule_events)
-      subject.set_due_datetime
+      expect { subject.set_due_datetime }.to change { subject.scheduled_events.count }.by(3)
     end
   end
 end

@@ -48,6 +48,8 @@ class QueryParser < QueryLanguageParser
     if doi =~ /aarx/
       preprint_short_doi = Paper.find_preprint_short_doi(doi)
       paper_table[:preprint_short_doi].matches("%#{preprint_short_doi}%")
+    elsif doi =~ /^\d+$/
+      paper_table[:preprint_short_doi].matches("%#{doi}%")
     else
       paper_table[:doi].matches("%#{doi}%")
     end

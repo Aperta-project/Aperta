@@ -38,7 +38,7 @@ module TahiStandardTasks
                                     delivery_id: export_delivery.id,
                                     destination: destination
 
-        paper.verify_or_assign_preprint_doi! if needs_preprint_doi?
+        paper.ensure_preprint_doi! if needs_preprint_doi?
 
         if destination == 'apex'
           upload_to_ftp(packager.zip_file, package_filename)
@@ -52,11 +52,8 @@ module TahiStandardTasks
     private
 
     def needs_preprint_doi?
-      needs_doi_answer = nil
-      needs_preprint_answer = task.answers.each do |answer|
-        if answer.card_content.ident == "needs_doi_flag"
-          needs_doi_answer = answer
-        end
+      needs_doi_answer = task.answers.find do |answer|
+        answer.card_content.ident == "needs_doi_flag"
       end
 
       return false if needs_doi_answer == nil

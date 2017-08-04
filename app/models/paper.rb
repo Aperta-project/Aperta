@@ -613,9 +613,8 @@ class Paper < ActiveRecord::Base
     similarity_checks.exists? automatic: false
   end
 
-  def verify_or_assign_preprint_doi!
-    return unless preprint_short_doi == nil
-    raise "Invalid paper Journals are required for papers urls." unless journal
+  def ensure_preprint_doi!
+    return if preprint_short_doi.present?
     update!(preprint_short_doi: journal.next_preprint_short_doi!)
   end
 

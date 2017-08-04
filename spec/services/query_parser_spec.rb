@@ -91,14 +91,21 @@ describe QueryParser do
       it 'parses raw doi queries' do
         parse = QueryParser.new.parse '1241251'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."doi" ILIKE '%1241251%'
+          ("papers"."doi" ILIKE '%1241251%' OR "papers"."preprint_short_doi" ILIKE '%1241251%')
         SQL
       end
 
       it 'parses framed doi queries' do
         parse = QueryParser.new.parse 'DOI IS 1241251'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "papers"."doi" ILIKE '%1241251%'
+          ("papers"."doi" ILIKE '%1241251%' OR "papers"."preprint_short_doi" ILIKE '%1241251%')
+        SQL
+      end
+
+      it 'parses framed aarx_doi queries' do
+        parse = QueryParser.new.parse 'DOI IS aarx.1241251'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."preprint_short_doi" ILIKE '%1241251%'
         SQL
       end
 

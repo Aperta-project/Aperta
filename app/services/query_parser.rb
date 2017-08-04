@@ -45,11 +45,13 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DOI IS') do |doi|
-    if doi =~ /aarx/
+    if doi =~ /^aarx.\d+$/
       preprint_short_doi = Paper.find_preprint_short_doi(doi)
       paper_table[:preprint_short_doi].matches("%#{preprint_short_doi}%")
     elsif doi =~ /^\d+$/
-      paper_table[:preprint_short_doi].matches("%#{doi}%")
+      paper_table[:doi].matches("%#{doi}%").or(
+        paper_table[:preprint_short_doi].matches("%#{doi}%")
+      )
     else
       paper_table[:doi].matches("%#{doi}%")
     end
@@ -180,7 +182,9 @@ class QueryParser < QueryLanguageParser
   end
 
   add_statement(/^\d+/.r) do |doi|
-    paper_table[:doi].matches("%#{doi}%")
+    paper_table[:doi].matches("%#{doi}%").or(
+      paper_table[:preprint_short_doi].matches("%#{doi}%")
+    )
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|

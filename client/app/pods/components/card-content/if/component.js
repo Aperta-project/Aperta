@@ -14,19 +14,20 @@ export default Ember.Component.extend({
   },
 
   previewState: true,
+  conditionName: Ember.computed.reads('content.condition'),
 
   condition: Ember.computed(
     'content.condition',
     'preview',
     'previewState',
-    'task.completed',
+    'owner.completed',
     'disabled',
-    'isEditable',
     function() {
       if (this.get('preview')) {
         return this.get('previewState');
       } else {
-        return this.get(this.get('content.condition'));
+        let conditionName = this.get('conditionName');
+        return this.get(conditionName);
       }
     }
   )

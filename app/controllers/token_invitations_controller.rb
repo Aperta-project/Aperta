@@ -2,7 +2,7 @@
 
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_inactive, only: [:accept, :decline]
-  # before_action :redirect_if_logged_in, except: :accept
+  before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
@@ -51,6 +51,11 @@ class TokenInvitationsController < ApplicationController
     end
 
     redirect_to invitation_thank_you_path(token)
+  end
+
+  def inactive
+    assign_template_vars
+    @email = @paper.journal.staff_email
   end
 
   private

@@ -1,6 +1,6 @@
 <%= render layout: 'container' do %>
   <div class='message'>
     This invitation is no longer active.<br><br>
-    <p>Either you previously declined to review this submission for PLOS Biology or your invitation was rescinded. If you are interested in reviewing this manuscript, please email <a href="mailto:plosbiology@plos.org">plosbiology@plos.org</a> for assistance.</p>
+    <p>Either you previously declined to review this submission for <i><%= @paper.journal.name %></i> or your invitation was rescinded. If you are interested in reviewing this manuscript, please email <%= link_to @email, 'mailto:' + @email %> for assistance.</p>
   </div>
 <% end %>

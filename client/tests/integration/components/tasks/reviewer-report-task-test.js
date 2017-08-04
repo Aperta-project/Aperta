@@ -165,5 +165,5 @@ test('disallow wrong permissions from viewing scheduled events', function (asser
     this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
   });
   this.render(hbs`{{reviewer-report-task task=task}}`);
-  assert.textPresent('.scheduled-events p', 'Reminders');
+  assert.textNotPresent('.scheduled-events p', 'Reminders');
 });

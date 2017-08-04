@@ -214,7 +214,7 @@ class AuthenticatedPage(StyledPage):
     short_doi = self.get_current_url().split('/')[-1]
     while not short_doi:
       if count > 60:
-        raise (StandardError, 'Short doi is not updated after a minute, aborting')
+        raise (Exception, 'Short doi is not updated after a minute, aborting')
       time.sleep(1)
       short_doi = self.get_current_url().split('/')[-1]
       count += 1

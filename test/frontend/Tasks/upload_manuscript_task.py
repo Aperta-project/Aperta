@@ -123,7 +123,7 @@ class UploadManuscriptTask(BaseTask):
     #upload_ms_btn.click()
 
     # Time needed for script execution.
-    time.sleep(7)
+    time.sleep(10)
 
   def take_name_of_pdf_file(self):
     """

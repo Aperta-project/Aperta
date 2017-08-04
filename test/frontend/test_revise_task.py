@@ -93,15 +93,18 @@ class ReviseManuscriptTest(CommonTest):
     manuscript_page.page_ready()
     data = {'attach': 2}
     manuscript_page.complete_task('Response to Reviewers', data=data)
+    # This needs to be completed after any decision
+    manuscript_page.complete_task('Title And Abstract')
 
     # replace first version
     manuscript_page.click_task('Upload Manuscript')
     upms = UploadManuscriptTask(self.getDriver())
     upms.task_ready()
     upms.replace_manuscript()
-    base_task = BaseTask(self._driver)
-    if not base_task.completed_state():
-      base_task.click_completion_button()
+
+    while not upms.completed_state():
+      upms.click_completion_button()
+      time.sleep(1)
 
     manuscript_page.click_task('Upload Manuscript')
     manuscript_page.page_ready()
@@ -132,10 +135,10 @@ class ReviseManuscriptTest(CommonTest):
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.click_register_decision_card()
-
+    time.sleep(3)
     decision_history = workflow_page.get_decision_history_summary()
-    assert decision_history[0].text == '1.0\nMajor Revision', decision_history[0].text
-    assert decision_history[1].text == '0.0\nMajor Revision', decision_history[1].text
+    assert decision_history[0].text.replace('\n', ' ') == '1.0 Major Revision', decision_history[0].text
+    assert decision_history[1].text.replace('\n', ' ') == '0.0 Major Revision', decision_history[1].text
     workflow_page.logout()
 
     logging.info('Logging in as user: {0}'.format(creator))

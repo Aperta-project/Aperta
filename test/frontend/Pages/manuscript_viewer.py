@@ -649,7 +649,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
         task.click()
-      time.sleep(1)
+      time.sleep(3)
     elif task_name == 'Supporting Info':
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()

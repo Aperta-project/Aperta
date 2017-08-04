@@ -85,11 +85,8 @@ class ReviseManuscriptTask(BaseTask):
       # Testing uploading only one file due to bug APERTA-6672
       self._driver.find_element_by_css_selector('input.add-new-attachment').send_keys(fn)
 
-      # This code is dead and it leaves file upload dialog zombies
-      #self._upload_btn = (By.CLASS_NAME, 'fileinput-button')
-      #self._get(self._upload_btn).click()
-      # Give time to upload.
-      #time.sleep(10)
+      time.sleep()
+
 
     if data and 'text' not in data:
       data['text'] = generate_paragraph()[2] or 'text'

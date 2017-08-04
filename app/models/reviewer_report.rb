@@ -51,7 +51,7 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
-          after_commit: [:set_due_datetime, :schedule_events],
+          after_commit: [:set_due_datetime],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end

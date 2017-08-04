@@ -6,7 +6,7 @@ class ReviewerReport < ActiveRecord::Base
   default_scope { order('decision_id DESC') }
 
   has_one :due_datetime, as: :due
-  has_many :scheduled_events, as: :owner
+  has_many :scheduled_events, -> { order :dispatch_at }, as: :owner
 
   belongs_to :task, foreign_key: :task_id
   belongs_to :user
@@ -20,7 +20,7 @@ class ReviewerReport < ActiveRecord::Base
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
 
   SCHEDULED_EVENTS_TEMPLATE = [
-    { name: 'Pre-Due Reminder', dispatch_offset: -2 },
+    { name: 'Pre-due Reminder', dispatch_offset: -2 },
     { name: 'First Late Reminder', dispatch_offset: 2 },
     { name: 'Second Late Reminder', dispatch_offset: 4 }
   ].freeze

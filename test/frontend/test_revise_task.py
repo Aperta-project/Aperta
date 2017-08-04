@@ -141,7 +141,7 @@ class ReviseManuscriptTest(CommonTest):
       decision_history[0].text
     assert 'Major Revision' in decision_history[1].text, \
       decision_history[1].text
-    
+
     workflow_page.logout()
 
     logging.info('Logging in as user: {0}'.format(creator))

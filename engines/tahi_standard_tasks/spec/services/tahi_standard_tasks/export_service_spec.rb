@@ -28,6 +28,7 @@ describe TahiStandardTasks::ExportService do
       before do
         export_delivery.destination = "apex"
       end
+
       it "uploads two files" do
         expect(service).to receive(:upload_to_ftp)
                              .with(packager.zip_file, service.send(:package_filename))
@@ -91,6 +92,37 @@ describe TahiStandardTasks::ExportService do
     it "returns the filename of the package" do
       filename = service.send(:manifest_filename)
       expect(filename).to match(/tur.0001\.man.json/)
+    end
+  end
+
+  describe "#needs_preprint_doi?" do
+    context "with needs_doi_flag" do
+      let(:card_content) { FactoryGirl.create(:card_content, ident: "needs_doi_flag") }
+      let(:answer) { FactoryGirl.create(:answer, card_content: card_content, value: "t") }
+      let(:task) { FactoryGirl.create(:ad_hoc_task, answers: [answer]) }
+
+      it "for a preprint export it ensures a preprint doi" do
+        apex_delivery.destination = "preprint"
+        apex_delivery.task = task
+        expect(service.send(:needs_preprint_doi?)).to eq("t")
+      end
+
+      it "for a preprint export it ensures a preprint doi" do
+        apex_delivery.destination = "apex"
+        apex_delivery.task = task
+        expect(service.send(:needs_preprint_doi?)).to eq(false)
+      end
+    end
+
+    context "preprint export no needs_doi_flag" do
+      let(:card_content) { FactoryGirl.create(:card_content, ident: nil) }
+      let(:task) { FactoryGirl.create(:ad_hoc_task, answers: []) }
+
+      it "does ensures a preprint doi" do
+        apex_delivery.destination = "preprint"
+        apex_delivery.task = task
+        expect(service.send(:needs_preprint_doi?)).to eq(false)
+      end
     end
   end
 end

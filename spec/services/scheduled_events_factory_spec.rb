@@ -1,26 +1,23 @@
 require 'rails_helper'
 
 describe ScheduledEventFactory do
-  describe 'schedule_events' do
-    let(:due_datetime) { FactoryGirl.create :due_datetime }
+  describe '#schedule_events' do
+    let(:due_date) { FactoryGirl.create :due_datetime, :in_5_days }
     let(:reviewer_report) do
-      FactoryGirl.create :reviewer_report
+      FactoryGirl.create :reviewer_report, due_datetime: due_date
+    end
+    let(:template) { ReviewerReport::SCHEDULED_EVENTS_TEMPLATE }
+
+    subject { described_class.new(reviewer_report, ReviewerReport::SCHEDULED_EVENTS_TEMPLATE).schedule_events }
+
+    it 'should schedule events all' do
+      number_of_events = template.count
+      expect { subject }.to change { ScheduledEvent.count }.by(number_of_events)
     end
 
-    subject { described_class.new(reviewer_report).schedule_events }
-
-    context 'with templates in the system' do
-      let!(:first_event) { FactoryGirl.create :scheduled_event_template }
-      let!(:second_event) { FactoryGirl.create :scheduled_event_template }
-
-      it 'should schedule events all' do
-        expect { subject }.to change { ScheduledEvent.count }.by(2)
-      end
-
-      it 'should schedule events as specified in the template' do
-        subject
-        expect([first_event.event_name, second_event.event_name]).to include(ScheduledEvent.last.name)
-      end
+    it 'should schedule events as specified in the template' do
+      subject
+      expect(template.map { |x| x[:name] }).to include(ScheduledEvent.last.name)
     end
   end
 end

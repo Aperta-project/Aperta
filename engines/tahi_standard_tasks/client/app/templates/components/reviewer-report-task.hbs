@@ -8,7 +8,8 @@
       {{reviewer-report-status report=currentReviewerReport}}
       {{#if (and (can 'manage_workflow' currentReviewerReport.task.paper)
                  currentReviewerReport.scheduledEvents)}}
-        {{scheduled-events report=currentReviewerReport}}
+        {{scheduled-events events=currentReviewerReport.scheduledEvents
+                           dueDate=currentReviewerReport.dueAt}}
       {{/if}}
       <p><strong>Please refer to our
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>

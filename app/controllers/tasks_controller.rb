@@ -30,6 +30,7 @@ class TasksController < ApplicationController
     requires_user_can :manage_workflow, paper
     if does_not_violate_single_billing_task_condition?
       @task = TaskFactory.create(task_type, new_task_params)
+      create_answers
     else
       return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
     end
@@ -40,7 +41,6 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
-    @required_answers = []
     # if the task is completed the only thing that can be done to it is mark
     # it as uncompleted
     if required_fields_completed && task.completed?
@@ -54,14 +54,6 @@ class TasksController < ApplicationController
     task.after_update
     Activity.task_updated! task, user: current_user
 
-    # render task.update_responder.new(task, view_context).response
-    # render json: @list.to_json(:include => :entries)
-    # render task.update_responder.new(task, view_context).response
-    # render json: @list.to_json(:include => :entries)
-    # json = JSON.parse task.to_json(:include => :answers, serializer: LightAnswerSerializer)
-    # render json: task.answers, each_serializer: LightAnswerSerializer, root: 'answers'
-    # json = JSON.parse task.to_json
-    # render task.update_responder.new(task, view_context).response
     render json: task
   end
 
@@ -171,13 +163,16 @@ class TasksController < ApplicationController
     end
   end
 
-  def required_fields_completed
-    required_fields = task.card_version.card_contents.where(required_field: true)
+  def create_answers
+    required_fields = @task.card_version.card_contents.where(required_field: true)
     required_fields.each do |content|
       answer = task.find_or_build_answer_for(card_content: content)
-      answer.save unless answer.persisted?
+      answer.save
     end
+  end
 
-    params[:task][:completed] = task.answers.all?(&:ready?)
+  def required_fields_completed
+    task.answers.includes(:card_content)
+                  .where(card_contents: { required_field: true }).all?(&:ready?)
   end
 end

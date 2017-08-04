@@ -36,7 +36,8 @@ class CardContentValidation < ActiveRecord::Base
   end
 
   def validate_by_required_field(answer)
-    return false if card_content.required_field && answer.value.blank?
+    return false if answer.kind_of?(QuestionAttachment) && answer.filename.nil?
+    return false if answer.value.nil? || (answer.value.kind_of?(String) && answer.value.blank?)
     true
   end
 end

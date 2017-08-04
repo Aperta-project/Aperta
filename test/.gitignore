@@ -16,6 +16,7 @@ frontend/assets/coverletters/*
 frontend/assets/profileandjournallogos/*
 frontend/assets/responsetoreviewers/*
 frontend/assets/reviewerreports/*
+frontend/geckodriver.log
 geckodriver.log
 Output/
 venv/

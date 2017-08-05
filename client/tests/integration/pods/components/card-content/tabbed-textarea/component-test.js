@@ -21,7 +21,7 @@ let annotationTemplate = hbs`{{card-content/tabbed-textarea
 
 test(`it can render annotation text alone`, function(assert) {
   this.render(annotationTemplate);
-  assert.equal(this.$('.annotatation-text textarea.tabbed-textarea').val(), 'annotation test');
+  assert.equal(this.$('.annotation-text textarea.tabbed-textarea').val(), 'annotation test');
   assert.elementNotFound('.instruction-text');
 });
 
@@ -44,7 +44,7 @@ let combinedTemplate = hbs`{{card-content/tabbed-textarea
 
 test(`it can render cobined text together`, function(assert) {
   this.render(combinedTemplate);
-  assert.equal(this.$('.annotatation-text textarea.tabbed-textarea').val(), 'annotation test');
+  assert.equal(this.$('.annotation-text textarea.tabbed-textarea').val(), 'annotation test');
   assert.equal(this.$('.instruction-text textarea.tabbed-textarea').val(), 'instruction test');
 });
 

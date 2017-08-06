@@ -41,9 +41,13 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
-    # if the task is completed the only thing that can be done to it is mark
-    # it as uncompleted
-    if required_fields_completed && task.completed?
+    # if required fields are incomplete mark the task as incomplete
+    params[:task][:completed] = false unless required_fields_completed
+
+    # if the task is marked as completed and required fields are complete
+    # mark the task as complete
+    # else update the task with provided attributes
+    if task.completed?
       attrs = params.require(:task).permit(:completed)
       task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else

@@ -36,8 +36,14 @@ class CardContentValidation < ActiveRecord::Base
   end
 
   def validate_by_required_field(answer)
-    return false if answer.kind_of?(QuestionAttachment) && answer.filename.nil?
-    return false if answer.value.nil? || (answer.value.kind_of?(String) && answer.value.blank?)
+    return true unless answer.card_content.required_field
+    if answer.kind_of?(QuestionAttachment)
+      return false if answer.filename.nil?
+    elsif answer.card_content.content_type == 'file-uploader'
+      return answer.attachments.empty?
+    elsif answer.value.nil? || (answer.value.kind_of?(String) && answer.value.blank?)
+      return false
+    end
     true
   end
 end

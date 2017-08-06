@@ -4,7 +4,7 @@
       {{{description}}}
     {{/unless}}
     {{#if content.isRequired}}
-      {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+      {{#if answer.hasErrors}}<span class="error-message">*</span>{{/if}}
     {{/if}}
   </p>
 {{/if}}
@@ -54,4 +54,4 @@
   </div>
 {{/if}}
 
-<p>{{card-content/validation-errors errors=answer.readyIssuesArray}}</p>
+<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>

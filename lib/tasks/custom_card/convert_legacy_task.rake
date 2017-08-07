@@ -7,6 +7,7 @@ namespace :custom_card do
     STDOUT.puts "Migrating legacy task '#{task_name}' to custom card task '#{card_name}' ..."
 
     unless Card.find_by(name: card_name)
+      # card should have been loaded by the dependent `cards:load` rake task
       abort "Unable to find an existing Card with name '#{card_name}'. Is there a configuration class for this card in lib/custom_card/configurations?"
     end
 

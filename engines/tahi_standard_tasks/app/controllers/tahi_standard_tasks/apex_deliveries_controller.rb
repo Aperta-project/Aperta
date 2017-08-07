@@ -1,6 +1,6 @@
 module TahiStandardTasks
   #
-  # Endpoints for the ApexDelivery task. See ApexDelivery and SendToApexTask for
+  # Endpoints for the ExportDelivery task. See ExportDelivery and SendToApexTask for
   # more details.
   #
   class ApexDeliveriesController < ::ApplicationController
@@ -10,7 +10,7 @@ module TahiStandardTasks
 
     def create
       requires_user_can(:send_to_apex, task.paper)
-      ApexService.delay(retry: false)
+      ExportService.delay(retry: false)
         .make_delivery(apex_delivery_id: apex_delivery.id)
 
       render json: apex_delivery
@@ -34,9 +34,9 @@ module TahiStandardTasks
     def apex_delivery
       @apex_delivery ||=
         if params[:id]
-          ApexDelivery.includes(:user, :paper, :task).find(params[:id])
+          ExportDelivery.includes(:user, :paper, :task).find(params[:id])
         else
-          ApexDelivery.create!(
+          ExportDelivery.create!(
             destination: delivery_params[:destination] || 'apex',
             paper: task.paper,
             task: task,

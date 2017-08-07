@@ -10,10 +10,10 @@ class ApexPackager
     packager.zip_file
   end
 
-  def initialize(paper, archive_filename: nil, apex_delivery_id: nil)
+  def initialize(paper, archive_filename: nil, export_delivery_id: nil)
     @paper = paper
     @archive_filename = archive_filename
-    @apex_delivery_id = apex_delivery_id
+    @apex_delivery_id = export_delivery_id
   end
 
   # NOTE: This implementation will likely change in APERTA-10685

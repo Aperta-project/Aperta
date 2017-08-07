@@ -167,6 +167,12 @@ class InviteCard(BaseCard):
     fn = os.path.join(os.getcwd(), file_1)
     logging.info('Attaching file: {0}'.format(fn))
     self.attach_file(fn)
+
+    # see note about sleep below, same applies here with additional complication of possible exceptions
+    # this code block essentially says that ElementDoesNotExistAssertionError is the same as len(self._gets(self._replace_attachment)) < 1
+
+    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 1)
+
     # look for file name and replace attachment link
     self._wait_for_element(self._get(self._replace_attachment))
     attachments = self.get_attached_file_names()
@@ -177,9 +183,10 @@ class InviteCard(BaseCard):
     fn = os.path.join(os.getcwd(), file_2)
     logging.info('Attaching file: {0}'.format(fn))
     self.attach_file(fn)
-    # In this one instance, I am not seeing a way around this damn sleep - if we try to early, we
-    #   will get an index out of range error. I feel dirty.
-    time.sleep(15)
+
+    # Used to have a long sleep here that would still occasionally fail resulting in a index error below
+    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 2)
+
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
     attachments = self.get_attached_file_names()
@@ -236,12 +243,12 @@ class InviteCard(BaseCard):
           count += 1
           time.sleep(.5)
           if count > 60:
-            raise(StandardError, 'Full name not present, aborting')
+            raise(Exception, 'Full name not present, aborting')
         assert invitee['name'] in pagefullname.text
         status = invite.find_element(*self._invitee_state)
         assert response in ['Accept', 'Decline'], response
         if response == 'Accept':
-          assert 'Accepted' in status.text, status.text
+          assert 'Review due' in status.text, status.text
         elif response == 'Decline':
           # Need to extend box to display text
           assert 'Decline' in status.text, status.text
@@ -421,6 +428,8 @@ class InviteCard(BaseCard):
     logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
     paragraph = generate_paragraph()[2]
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=paragraph)
+
+    time.sleep(1)
     self._get(self._invitation_save_button).click()
     # Collapse and re-expand this invitation item, and check that the paragraph is present
     first_invitation_item.find_element_by_class_name('invitation-item-header').click()

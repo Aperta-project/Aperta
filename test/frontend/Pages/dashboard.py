@@ -103,7 +103,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
-    self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless a')
+    self._first_paper = (By.CSS_SELECTOR, 'table.table-borderless p')
     # View invitations
     self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     # The next sequence of 10 locators are all per invitation so should be used withing a
@@ -379,9 +379,9 @@ class DashboardPage(AuthenticatedPage):
         labels[0].text
     # Disable due APERTA-7212
     #self.validate_X_style(labels[0])
-    assert labels[1].text == "We would value your suggestions of alternative reviewers for this " \
+    assert labels[1].text.rstrip() == "We would value your suggestions of alternative reviewers for this " \
                              "manuscript. Please provide reviewers' names, institutions, and " \
-                             "email addresses if known.", labels[1].text
+                             "email addresses if known.", labels[1].text.rstrip()
     # Disable due APERTA-7212
     #self.validate_X_style(labels[1])
     return None

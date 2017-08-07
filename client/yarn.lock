@@ -265,6 +265,10 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+autosize@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/autosize/-/autosize-4.0.0.tgz#7a0599b1ba84d73bd7589b0d9da3870152c69237"
+
 aws-sign2@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.5.0.tgz#c57103f7a17fc037f02d7c2e64b602ea223f7d63"
@@ -2248,6 +2252,14 @@ ember-cli-test-loader@^1.1.0:
   resolved "https://registry.yarnpkg.com/ember-cli-test-loader/-/ember-cli-test-loader-1.1.1.tgz#333311209b18185d0e0e95f918349da10cacf0b1"
   dependencies:
     ember-cli-babel "^5.2.1"
+
+ember-cli-textarea-autosize@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-textarea-autosize/-/ember-cli-textarea-autosize-1.0.1.tgz#30d9596475dd771ba0dc09842bc5de091241b4e0"
+  dependencies:
+    ember-cli-babel "^5.1.6"
+    ember-cli-htmlbars "^1.0.3"
+    ember-cli-htmlbars-inline-precompile "^0.3.1"
 
 ember-cli-tinymce@0.1.6:
   version "0.1.6"

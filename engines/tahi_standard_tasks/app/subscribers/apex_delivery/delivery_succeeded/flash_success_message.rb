@@ -2,7 +2,7 @@ module ApexDelivery
   module DeliverySucceeded
     #
     # Sends an EventStream message, telling the browser to flash a success
-    # message. Triggered when an ApexDelivery has successfully completed.
+    # message. Triggered when an ExportDelivery has successfully completed.
     #
     class FlashSuccessMessage < FlashMessageSubscriber
       def user

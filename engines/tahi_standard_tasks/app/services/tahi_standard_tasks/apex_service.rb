@@ -6,7 +6,7 @@ module TahiStandardTasks
   #
   class ApexService
     def self.make_delivery(apex_delivery_id:)
-      apex_delivery = ApexDelivery.find(apex_delivery_id)
+      apex_delivery = ExportDelivery.find(apex_delivery_id)
       new(apex_delivery: apex_delivery).make_delivery!
     end
 

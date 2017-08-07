@@ -24,7 +24,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
       expect do
         do_request
         expect(response).to have_http_status(200)
-      end.to change { TahiStandardTasks::ApexDelivery.count }.by 1
+      end.to change { TahiStandardTasks::ExportDelivery.count }.by 1
     end
 
     it "saves the destination on the apex delivery" do
@@ -46,7 +46,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
       expect do
         do_request
         expect(response).to have_http_status(403)
-      end.to change { TahiStandardTasks::ApexDelivery.count }.by 0
+      end.to change { TahiStandardTasks::ExportDelivery.count }.by 0
     end
   end
 end

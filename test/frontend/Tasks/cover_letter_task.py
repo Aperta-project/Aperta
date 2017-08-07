@@ -229,6 +229,7 @@ class CoverLetterTask(BaseTask):
     # replace_file_input = uploaded_item.find_element_by_class_name(
     #   's3-file-uploader')
     replace_file_input.send_keys(fn)
+    time.sleep(3)
     expected_file_name = fn.split("/")[-1]
     return letter
 

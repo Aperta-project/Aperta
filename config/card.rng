@@ -286,6 +286,48 @@
         </interleave>
       </optional>
       <zeroOrMore>
+        <element name="validation">
+          <zeroOrMore>
+            <element name="error-message">
+              <text/>
+            </element>
+          </zeroOrMore>
+          <zeroOrMore>
+            <element name="validator">
+              <text/>
+            </element>
+          </zeroOrMore>
+        </element>
+      </zeroOrMore>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="content">
+      <optional>
+        <attribute name="ident"/>
+      </optional>
+      <attribute name="content-type">
+        <value>sendback-reason</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
+      <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
     </element>
@@ -460,6 +502,7 @@
       <ref name="date-picker"/>
       <ref name="tech-check"/>
       <ref name="list-content"/>
+      <ref name="sendback-reason"/>
     </choice>
   </define>
   <start>

@@ -1,0 +1,30 @@
+<div class="sendback-reason-row">
+  {{card-content
+    content=checkbox
+    disabled=disabled
+    owner=owner
+    answerChanged=answerChanged
+    hasAnswerContainer=false
+    preview=preview}}
+  {{#if checkboxAnswer.value}}
+    {{#card-content
+      content=pencil
+      disabled=disabled
+      owner=owner
+      hasAnswerContainer=false
+      preview=preview as |cc|}}
+      <i class="fa fa-pencil" {{action 'toggleAnswer' cc.answer}}></i>
+    {{/card-content}}
+  {{/if}}
+</div>
+
+{{#if showText}}
+  <div class="card-content-field-set">
+    {{card-content
+      content=textarea
+      disabled=disabled
+      hasAnswerContainer=false
+      owner=owner
+      preview=preview}}
+  </div>
+{{/if}}

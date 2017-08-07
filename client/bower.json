@@ -16,6 +16,8 @@
     "qunit-notifications": "0.1.0",
     "select2": "3.5.1",
     "underscore": "1.7.0",
-    "jt.timepicker": "^1.11.11"
+    "jt.timepicker": "^1.11.11",
+    "autosize": "^4.0.0",
+    "keyevent": "^1.0.0"
   }
 }

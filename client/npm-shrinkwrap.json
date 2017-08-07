@@ -7,6 +7,11 @@
       "from": "https://registry.npmjs.org/active-model-adapter/-/active-model-adapter-2.0.3.tgz",
       "resolved": "https://registry.npmjs.org/active-model-adapter/-/active-model-adapter-2.0.3.tgz"
     },
+    "autosize": {
+      "version": "4.0.0",
+      "from": "autosize@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/autosize/-/autosize-4.0.0.tgz"
+    },
     "bower": {
       "version": "1.8.0",
       "from": "https://registry.npmjs.org/bower/-/bower-1.8.0.tgz",
@@ -14785,6 +14790,11 @@
       "version": "1.1.1",
       "from": "https://registry.npmjs.org/ember-cli-test-loader/-/ember-cli-test-loader-1.1.1.tgz",
       "resolved": "https://registry.npmjs.org/ember-cli-test-loader/-/ember-cli-test-loader-1.1.1.tgz"
+    },
+    "ember-cli-textarea-autosize": {
+      "version": "1.0.1",
+      "from": "ember-cli-textarea-autosize@1.0.1",
+      "resolved": "https://registry.npmjs.org/ember-cli-textarea-autosize/-/ember-cli-textarea-autosize-1.0.1.tgz"
     },
     "ember-cli-tinymce": {
       "version": "0.1.6",

@@ -45,14 +45,16 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
+      <interleave>
+        <optional>
+          <element name="instruction-text">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
           <text/>
         </element>
-      </optional>
-      <element name="text">
-        <text/>
-      </element>
+      </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
       </zeroOrMore>
@@ -88,22 +90,24 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
         <optional>
-          <element name="label">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
+        <interleave>
+          <optional>
+            <element name="label">
+              <text/>
+            </element>
+          </optional>
+          <optional>
+            <element name="text">
+              <text/>
+            </element>
+          </optional>
+        </interleave>
       </interleave>
       <zeroOrMore>
         <ref name="content"/>
@@ -145,35 +149,37 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
-        <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>file-name</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
-        </zeroOrMore>
         <optional>
-          <element name="label">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
+        <interleave>
+          <zeroOrMore>
+            <element name="validation">
+              <attribute name="validation-type">
+                <value>file-name</value>
+              </attribute>
+              <element name="error-message">
+                <text/>
+              </element>
+              <element name="validator">
+                <text/>
+              </element>
+            </element>
+          </zeroOrMore>
+          <optional>
+            <element name="label">
+              <text/>
+            </element>
+          </optional>
+          <optional>
+            <element name="text">
+              <text/>
+            </element>
+          </optional>
+        </interleave>
       </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
@@ -222,14 +228,16 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
+      <interleave>
+        <optional>
+          <element name="instruction-text">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
           <text/>
         </element>
-      </optional>
-      <element name="text">
-        <text/>
-      </element>
+      </interleave>
       <oneOrMore>
         <ref name="possible-value"/>
       </oneOrMore>
@@ -266,14 +274,16 @@
         </attribute>
       </optional>
       <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
-      <optional>
-        <element name="text">
-          <text/>
-        </element>
+        <interleave>
+          <optional>
+            <element name="instruction-text">
+              <text/>
+            </element>
+          </optional>
+          <element name="text">
+            <text/>
+          </element>
+        </interleave>
       </optional>
       <zeroOrMore>
         <element name="validation">
@@ -353,34 +363,36 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
         <optional>
-          <element name="text">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <choice>
-                <value>string-match</value>
-                <value>string-length-minimum</value>
-                <value>string-length-maximum</value>
-              </choice>
-            </attribute>
-            <element name="error-message">
+        <interleave>
+          <optional>
+            <element name="text">
               <text/>
             </element>
-            <element name="validator">
-              <text/>
+          </optional>
+          <zeroOrMore>
+            <element name="validation">
+              <attribute name="validation-type">
+                <choice>
+                  <value>string-match</value>
+                  <value>string-length-minimum</value>
+                  <value>string-length-maximum</value>
+                </choice>
+              </attribute>
+              <element name="error-message">
+                <text/>
+              </element>
+              <element name="validator">
+                <text/>
+              </element>
             </element>
-          </element>
-        </zeroOrMore>
+          </zeroOrMore>
+        </interleave>
       </interleave>
     </element>
   </define>

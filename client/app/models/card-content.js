@@ -42,7 +42,11 @@ export default DS.Model.extend({
   }),
 
   hasInstructionText: Ember.computed.notEmpty('instructionText'),
-  renderAdditionalText: Ember.computed.or('allowAnnotations','hasInstructionText'),
+  hasAdditionalText: Ember.computed.or('allowAnnotations', 'hasInstructionText'),
+  anyChildRendersAsDualColumn: Ember.computed('unsortedChildren.@each.renderAsDualColumn', function() {
+    return this.get('unsortedChildren').isAny('renderAsDualColumn');
+  }),
+  renderAsDualColumn: Ember.computed.or('hasAdditionalText', 'anyChildRendersAsDualColumn'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),

@@ -6,7 +6,7 @@
       {{reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
       {{reviewer-report-status report=currentReviewerReport}}
-      {{#if (and (can 'manage_workflow' currentReviewerReport.task.paper)
+      {{#if (and (can 'manage_scheduled_events' task)
                  currentReviewerReport.scheduledEvents)}}
         {{scheduled-events events=currentReviewerReport.scheduledEvents
                            dueDate=currentReviewerReport.dueAt}}

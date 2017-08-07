@@ -15,6 +15,13 @@ class AnswersController < ApplicationController
     respond_with answer
   end
 
+  def show
+    answer = Answer.find(params[:id])
+    requires_user_can(:view, answer.owner)
+
+    render json: answer, serializer: LightAnswerSerializer, root: 'answer'
+  end
+
   def update
     answer = Answer.find(params[:id])
     requires_user_can(:edit, answer.owner)

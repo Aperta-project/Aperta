@@ -61,7 +61,10 @@ export default Ember.Component.extend({
           src: s3Url,
           filename: file.name
         });
-        attachment.save();
+        attachment.save().then(() => {
+          const answer = this.get('answer');
+          answer.reload();
+        });
       });
     },
 
@@ -71,7 +74,10 @@ export default Ember.Component.extend({
     },
 
     deleteAttachment(attachment) {
-      attachment.destroyRecord();
+      attachment.destroyRecord().then(() => {
+        const answer = this.get('answer');
+        answer.reload();
+      });
     }
   }
 });

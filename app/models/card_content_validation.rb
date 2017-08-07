@@ -40,7 +40,7 @@ class CardContentValidation < ActiveRecord::Base
     if answer.kind_of?(QuestionAttachment)
       return false if answer.filename.nil?
     elsif answer.card_content.content_type == 'file-uploader'
-      return answer.attachments.empty?
+      return false if answer.attachments.empty?
     elsif answer.value.nil? || (answer.value.kind_of?(String) && answer.value.blank?)
       return false
     end

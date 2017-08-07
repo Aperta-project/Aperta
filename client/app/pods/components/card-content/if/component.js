@@ -12,28 +12,32 @@ export default Ember.Component.extend({
     preview: PropTypes.bool
   },
 
+  previewState: true,
+  conditionName: Ember.computed.reads('content.condition'),
+  conditionValue: null,
+  scenario: this,
+
   init() {
     this._super(...arguments);
     let conditionName = this.get('conditionName');
     let conditionKey = `scenario.${conditionName}`;
-    this.getConditionValue();
+    this.setConditionValue();
     this.addObserver(conditionKey, function() {
       Ember.run(() => {
-        this.getConditionValue();
+        this.setConditionValue();
       });
     });
   },
 
-  getConditionValue() {
+  setConditionValue() {
     let conditionName = this.get('conditionName');
     let scenario = findNearestProperty(this, 'scenario');
-    let value = Ember.get(scenario, conditionName);
-    this.set('conditionValue', value);
+    if (scenario) {
+      let value = Ember.get(scenario, conditionName);
+      this.set('conditionValue', value);
+    }
   },
 
-  previewState: true,
-  conditionName: Ember.computed.reads('content.condition'),
-  conditionValue: null,
 
   condition: Ember.computed(
     'content.condition',

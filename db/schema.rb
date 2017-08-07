@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
-  
+ActiveRecord::Schema.define(version: 20170807183846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -484,14 +483,13 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",                     null: false
-    t.string   "doi_journal_prefix",                       null: false
-    t.string   "last_doi_issued",          default: "0",   null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
-    t.boolean  "pdf_allowed",              default: false
-    t.string   "last_preprint_doi_issued", default: "0",   null: false
+    t.boolean  "pdf_allowed",          default: false
   end
 
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
@@ -658,6 +656,10 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   end
 
   add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
+  create_table "preprint_doi_incrementers", force: :cascade do |t|
+    t.integer "value", default: 1, null: false
+  end
 
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"

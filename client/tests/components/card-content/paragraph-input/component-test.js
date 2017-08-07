@@ -6,7 +6,12 @@ import hbs from 'htmlbars-inline-precompile';
 moduleForComponent(
   'card-content/paragraph-input',
   'Integration | Component | card content | paragraph input',
-  { integration: true }
+  {
+    integration: true,
+    beforeEach() {
+      registerCustomAssertions();
+    }
+  }
 );
 
 let template = hbs`{{card-content/paragraph-input

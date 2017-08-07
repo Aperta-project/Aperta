@@ -76,11 +76,11 @@ test(`it sends 'valueChanged' on change`, function(assert) {
 test(`it displays an asterisks if 'content.isRequred set to true`, function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: true}));
   this.render(template);
-  assert.elementFound('p span.error-message');
+  assert.equal(this.$('p span.error-message').text(), '*');
 });
 
 test(`it does not display an asterisks if 'content.isRequred set to false`, function(assert) {
   this.set('content', Ember.Object.create({ ident: 'test' , text: 'Test check-box', isRequired: false}));
   this.render(template);
-  assert.elementNotFound('p span.error-message');
+  assert.equal(this.$('p span.error-message').text(), '');
 });

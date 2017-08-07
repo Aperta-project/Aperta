@@ -576,8 +576,8 @@ class DashboardPage(AuthenticatedPage):
                                                                     str(active_manuscript_count))
       # APERTA-6352 The sorting of Active, submitted titles is incorrect, commenting out
       # self.validate_manu_dynamic_content(uid, active_manuscript_list, 'active')
-      assert self._get(self._dash_active_role_th).text == 'Role'
-      assert self._get(self._dash_active_status_th).text == 'Status'
+      assert self._get(self._dash_active_role_th).text == 'Your Role / Tasks'
+      assert self._get(self._dash_active_status_th).text == 'Manuscript Status'
     else:
       print('No manuscripts are active for user.')
 

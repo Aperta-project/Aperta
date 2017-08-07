@@ -12,10 +12,13 @@ export default Ember.Mixin.create({
   handlePusherConnectionSuccess() {
     Ember.run.cancel(this.get('debounceTimer'));
 
-    // remove the connecting message on connecting -> connected transition
-    let messages = this.get('flash').get('systemLevelMessages');
-    let connectionMessage = messages.findBy('text', this._pusherFailureMessage('connecting'));
-    this.get('flash').removeSystemLevelMessage(connectionMessage);
+    // remove existing failure messages on connecting -> connected transition
+    ['connecting', 'disconnected', 'failed', 'unavailable'].forEach((failureState) => {
+      let systemFlash = this.get('flash').get('systemLevelMessages');
+      let existingMessages = systemFlash.filterBy('text', this._pusherFailureMessage(failureState));
+      systemFlash.removeObjects(existingMessages);
+    });
+
     this.set('debounceTimer', null);
     this.set('pusherConnecting', false);
   },

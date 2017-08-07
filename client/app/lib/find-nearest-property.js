@@ -10,7 +10,7 @@ export default function (root, keyName, link='parentView') {
 
   do {
     Ember.assert(`Property ${keyName} missing in ${link} hierarchy`, object);
-    window.console.log('Checking nearest', object);
+    // window.console.log('Checking nearest', object);
     if (object.hasOwnProperty(keyName)) {
       return object[keyName];
     }

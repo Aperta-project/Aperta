@@ -15,48 +15,40 @@ moduleForComponent(
   }
 );
 
-let trueTemplate = hbs`
+let ifTemplate = hbs`
 {{card-content/if
-  condition=true
-  class="true-test"
+  class="if-parent"
+  scenario=scenario
   owner="this can be anything"
-  disabled=disabled
-  tagName="div"
   content=content}}`;
 
-let falseTemplate = hbs`
-{{card-content/if
-  condition=false
-  class="false-test"
-  owner="this can be anything"
-  disabled=disabled
-  tagName="div"
-  content=content}}`;
-
-let fakeTextContent = Ember.Object.extend({
-  contentType: 'text',
-  text: 'Child 1' ,
+let parent = Ember.Object.extend({
+  contentType: 'if',
+  condition: 'isEditable',
+  text: 'If Parent' ,
   answerForOwner() {
-    return {value: 'foo'};
+    return {isEditable: true};
   }
 });
 
 test(
-  `when disabled, it marks its children as disabled`,
+  `it chooses then or else based on the condition`,
   function(assert) {
-    let content = fakeTextContent.create({
+    let content = parent.create({
+      scenario: {isEditable: true},
       children: [
         FactoryGuy.make('card-content', 'short-input', { text: 'Child 1' }),
-        FactoryGuy.make('card-content', 'short-input', { text: 'Child 2' }),
+        FactoryGuy.make('card-content', 'paragraph-input', { text: 'Child 2' }),
       ]
     });
 
     this.set('content', content);
-    this.set('disabled', true);
-    this.render(trueTemplate);
-    assert.elementFound('.card-content-short-input input:disabled', 'found disabled short input');
+    this.render(ifTemplate);
 
-    this.render(falseTemplate);
-    assert.elementFound('.card-content-short-input input:disabled', 'found disabled short input');
+    this.set('isEditable', false);
+    assert.elementFound('.card-content-short-input', 'found then content');
+
+    this.set('isEditable', true);
+    assert.elementFound('.card-content-paragraph-input', 'found else content');
   }
 );

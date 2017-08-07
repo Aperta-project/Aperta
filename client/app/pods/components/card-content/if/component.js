@@ -13,21 +13,32 @@ export default Ember.Component.extend({
     // and then forward it down to its children
   },
 
+  init() {
+    this._super(...arguments);
+    let conditionName = this.get('conditionName');
+    let conditionKey = `scenario.${conditionName}`;
+    this.addObserver(conditionKey, function () {
+      let conditionName = this.get('conditionName');
+      let scenario = this.get('scenario');
+      let value = Ember.get(scenario, conditionName);
+      this.set('conditionValue', value);
+    });
+  },
+
   previewState: true,
   conditionName: Ember.computed.reads('content.condition'),
+  conditionValue: null,
 
   condition: Ember.computed(
     'content.condition',
     'preview',
     'previewState',
-    'owner.completed',
-    'disabled',
+    'conditionValue',
     function() {
       if (this.get('preview')) {
         return this.get('previewState');
       } else {
-        let conditionName = this.get('conditionName');
-        return this.get(conditionName);
+        return this.get('conditionValue');
       }
     }
   )

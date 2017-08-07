@@ -45,7 +45,8 @@ test(`it chooses then or else based on the condition`, function(assert) {
     ]
   });
 
-  this.set('scenario', { isEditable: true });
+  this.set('scenario', {});
+  this.set('scenario.isEditable', true );
   this.set('content', content);
   this.render(ifTemplate);
 

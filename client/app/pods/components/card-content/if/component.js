@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import findNearestProperty from 'tahi/lib/find-nearest-property';
 
 export default Ember.Component.extend({
   classNames: ['card-content-if'],
@@ -25,7 +26,7 @@ export default Ember.Component.extend({
 
   getConditionValue() {
     let conditionName = this.get('conditionName');
-    let scenario = this.get('scenario');
+    let scenario = findNearestProperty(this, 'scenario');
     let value = Ember.get(scenario, conditionName);
     this.set('conditionValue', value);
   },

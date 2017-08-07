@@ -18,7 +18,7 @@ moduleForComponent(
 let ifTemplate = hbs`
 {{card-content/if
   class="if-parent"
-  scenario=scenario
+  scenario=values
   owner="this can be anything"
   content=content}}`;
 
@@ -45,13 +45,13 @@ test(`it chooses then or else based on the condition`, function(assert) {
     ]
   });
 
-  this.set('scenario', {});
-  this.set('scenario.isEditable', true );
+  this.set('values', {});
+  this.set('values.isEditable', true );
   this.set('content', content);
   this.render(ifTemplate);
 
   assert.elementFound('.card-content-short-input', 'found then content');
 
-  this.set('scenario.isEditable', false );
+  this.set('values.isEditable', false );
   assert.elementFound('.card-content-paragraph-input', 'found else content');
 });

@@ -51,6 +51,6 @@ test(`it chooses then or else based on the condition`, function(assert) {
 
   assert.elementFound('.card-content-short-input', 'found then content');
 
-  this.set('scenario', { isEditable: false });
+  this.set('scenario.isEditable', false );
   assert.elementFound('.card-content-paragraph-input', 'found else content');
 });

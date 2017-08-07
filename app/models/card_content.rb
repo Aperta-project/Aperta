@@ -13,6 +13,7 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :answers, dependent: :destroy
 
   validates :card_version, presence: true
 
@@ -25,8 +26,6 @@ class CardContent < ActiveRecord::Base
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
-
-  has_many :answers
 
   validates :ident,
             uniqueness: {

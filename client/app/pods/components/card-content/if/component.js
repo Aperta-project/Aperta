@@ -9,20 +9,25 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
     preview: PropTypes.bool
-    // It seems like this component needs to receive the 'scenario',
-    // and then forward it down to its children
   },
 
   init() {
     this._super(...arguments);
     let conditionName = this.get('conditionName');
     let conditionKey = `scenario.${conditionName}`;
-    this.addObserver(conditionKey, function () {
-      let conditionName = this.get('conditionName');
-      let scenario = this.get('scenario');
-      let value = Ember.get(scenario, conditionName);
-      this.set('conditionValue', value);
+    this.getConditionValue();
+    this.addObserver(conditionKey, function() {
+      Ember.run(() => {
+        this.getConditionValue();
+      });
     });
+  },
+
+  getConditionValue() {
+    let conditionName = this.get('conditionName');
+    let scenario = this.get('scenario');
+    let value = Ember.get(scenario, conditionName);
+    this.set('conditionValue', value);
   },
 
   previewState: true,

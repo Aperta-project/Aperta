@@ -202,7 +202,7 @@ class FiguresTask(BaseTask):
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
       add_new_figures_btn = self._get(self._add_new_figures_btn)
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
-      add_new_figures_btn.click()
+      #add_new_figures_btn.click()
       self._validate_processing(figure)
       self._driver.find_element_by_id('figure_attachment').clear()
       if not figure.startswith('frontend/assets/imgs/'):

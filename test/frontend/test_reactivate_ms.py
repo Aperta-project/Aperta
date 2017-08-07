@@ -53,11 +53,15 @@ class ReactivateManuscriptTest(CommonTest):
     paper_url = manuscript_page.get_current_url()
     short_doi = manuscript_page.get_short_doi()
 
+    manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
+
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(2)
+    #time.sleep(2)
+
     manuscript_page.close_modal()
     time.sleep(1)
     # Do some style and element validations

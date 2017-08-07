@@ -136,7 +136,7 @@ test('That there are the correct nested question answers when there is no draft 
 });
 
 test('allows right permissions to view scheduled events', function (assert) {
-  this.can.allowPermission('manage_workflow', this.task.get('paper'));
+  this.can.allowPermission('manage_scheduled_events', this.task);
   const scheduledEvents = [
     make('scheduled-event', { }),
     make('scheduled-event', { })

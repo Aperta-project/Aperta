@@ -135,10 +135,11 @@ class ReviseManuscriptTest(CommonTest):
     workflow_page.click_register_decision_card()
     workflow_page.complete_card('Register Decision')
     workflow_page.click_register_decision_card()
-    time.sleep(3)
+
     decision_history = workflow_page.get_decision_history_summary()
-    assert decision_history[0].text.replace('\n', ' ') == '1.0 Major Revision', decision_history[0].text
-    assert decision_history[1].text.replace('\n', ' ') == '0.0 Major Revision', decision_history[1].text
+    assert '1.0 Major Revision' in ' '.join(decision_history[0].text.split()), ' '.join(decision_history[0].text.split())
+    assert '0.0 Major Revision' in ' '.join(decision_history[1].text.split()), ' '.join(decision_history[1].text.split())
+
     workflow_page.logout()
 
     logging.info('Logging in as user: {0}'.format(creator))

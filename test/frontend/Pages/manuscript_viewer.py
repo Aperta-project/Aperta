@@ -633,11 +633,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif task_name == 'Review by':
       review_report = ReviewerReportTask(self._driver)
       outdata = review_report.complete_reviewer_report()
-      # complete task
-      if not base_task.completed_state():
-        base_task.click_completion_button()
-        # close task
-        task.click()
       time.sleep(1)
     elif task_name == 'Response to Reviewers':
       revise_manuscript = ReviseManuscriptTask(self._driver)
@@ -649,7 +644,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
         task.click()
-      time.sleep(1)
+      time.sleep(3)
     elif task_name == 'Supporting Info':
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()

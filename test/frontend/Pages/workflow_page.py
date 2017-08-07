@@ -156,6 +156,7 @@ class WorkflowPage(AuthenticatedPage):
 
   def get_decision_history_summary(self):
     self.click_register_decision_card()
+    time.sleep(1)
     register_decision_card = RegisterDecisionCard(self._driver)
     return register_decision_card.get_decision_history_summary()
 

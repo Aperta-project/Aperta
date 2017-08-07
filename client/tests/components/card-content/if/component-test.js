@@ -25,30 +25,32 @@ let ifTemplate = hbs`
 let parent = Ember.Object.extend({
   contentType: 'if',
   condition: 'isEditable',
-  text: 'If Parent' ,
+  text: 'If Parent',
   answerForOwner() {
-    return {isEditable: true};
+    return { isEditable: true };
   }
 });
 
-test(
-  `it chooses then or else based on the condition`,
-  function(assert) {
-    let content = parent.create({
-      scenario: {isEditable: true},
-      children: [
-        FactoryGuy.make('card-content', 'short-input', { text: 'Child 1' }),
-        FactoryGuy.make('card-content', 'paragraph-input', { text: 'Child 2' }),
-      ]
-    });
+test(`it chooses then or else based on the condition`, function(assert) {
+  let content = parent.create({
+    children: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Child 1'
+      }),
+      FactoryGuy.make('card-content', {
+        contentType: 'paragraph-input',
+        text: 'Child 2'
+      })
+    ]
+  });
 
-    this.set('content', content);
-    this.render(ifTemplate);
+  this.set('scenario', { isEditable: true });
+  this.set('content', content);
+  this.render(ifTemplate);
 
-    this.set('isEditable', false);
-    assert.elementFound('.card-content-short-input', 'found then content');
+  assert.elementFound('.card-content-short-input', 'found then content');
 
-    this.set('isEditable', true);
-    assert.elementFound('.card-content-paragraph-input', 'found else content');
-  }
-);
+  this.set('scenario', { isEditable: false });
+  assert.elementFound('.card-content-paragraph-input', 'found else content');
+});

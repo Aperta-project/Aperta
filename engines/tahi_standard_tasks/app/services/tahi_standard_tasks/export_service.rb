@@ -52,12 +52,7 @@ module TahiStandardTasks
     private
 
     def needs_preprint_doi?
-      needs_doi_answer = task.answers.find do |answer|
-        answer.card_content.ident == "needs_doi_flag"
-      end
-
-      return false if needs_doi_answer == nil
-      destination == 'preprint' && needs_doi_answer.value
+      destination == 'preprint' && !paper.preprint_opt_out?
     end
 
     def while_notifying_delivery

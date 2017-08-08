@@ -25,6 +25,8 @@ module Tahi
     config.autoload_paths += %W(#{config.root}/app/workers)
     config.autoload_paths += %W(#{config.root}/app/subscribers)
 
+    config.eager_load_paths += %W(#{config.root}/lib/custom_card/configurations)
+
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
     config.x.admin_email = TahiEnv.admin_email

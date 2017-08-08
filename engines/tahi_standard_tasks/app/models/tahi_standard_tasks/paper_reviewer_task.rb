@@ -7,7 +7,7 @@ module TahiStandardTasks
     include Invitable
 
     def invitation_invited(invitation)
-      PaperReviewerMailer.delay.notify_invited invitation_id: invitation.id
+      ReviewerMailer.delay.notify_invited invitation_id: invitation.id
     end
 
     def invitation_accepted(invitation)

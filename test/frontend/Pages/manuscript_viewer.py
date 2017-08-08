@@ -672,7 +672,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
       self.click_covered_element(task)
-      time.sleep(.5)
+      time.sleep(2)
     elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
@@ -723,8 +723,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       title_and_abstract_task = TitleAbstractTask(self._driver)
       short_doi = title_and_abstract_task.get_short_doi()
       title_and_abstract_task.set_abstract(short_doi)
+      time.sleep(1)
       base_task.click_completion_button()
       self.click_covered_element(task)
+      time.sleep(2)
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close

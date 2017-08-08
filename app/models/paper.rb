@@ -651,7 +651,7 @@ class Paper < ActiveRecord::Base
   def aarx_doi
     return nil unless preprint_doi_suffix
     doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
-    validate_preprint_doi(doi)
+    self.class.validate_preprint_doi(doi)
     return doi
   end
 

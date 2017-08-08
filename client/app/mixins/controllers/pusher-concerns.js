@@ -20,38 +20,30 @@ export default Ember.Mixin.create({
 
   _updateConnectionMessage() {
     this._clearConnectionMessages();
-    let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
+    let message = this.pusherFailureMessages[this.get('pusherConnectionState')];
     this.get('flash').displaySystemLevelMessage('error', message);
   },
 
   _clearConnectionMessages() {
     ['unavailable', 'failed', 'disconnected', 'connecting'].forEach((key) => {
       let systemFlash = this.get('flash').get('systemLevelMessages');
-      let existingMessages = systemFlash.filterBy('text', this._pusherFailureMessage(key));
+      let existingMessages = systemFlash.filterBy('text', this.pusherFailureMessages[key]);
       systemFlash.removeObjects(existingMessages);
     });
   },
 
-  _pusherFailureMessage(failureState) {
-    switch (failureState) {
-    case 'unavailable':
-      return `Aperta is currently having trouble maintaining a live connection with your browser.
+  pusherFailureMessages: {
+    unavailable: `Aperta is currently having trouble maintaining a live connection with your browser.
             This could impact updates to the interface, and we recommend you 
             <a href="#" onclick="window.location.reload(false)"> reload this page</a>
-            to attempt to re-establish the connection`;
-    case 'failed':
-      return `Aperta is having trouble establishing a live connection with your browser
+            to attempt to re-establish the connection`,
+    failed: `Aperta is having trouble establishing a live connection with your browser
               due to lack of browser support for required software.
-              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`;
-    case 'disconnected':
-      return `Aperta\'s live connection with your browser has been dropped. 
+              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`,
+    disconnected: `Aperta\'s live connection with your browser has been dropped. 
             This could impact updates to the interface,
             and we recommend you <a href="#" onclick="window.location.reload(false)">reload this page</a> 
-            to attempt to re-establish the connection.`;
-    case 'connecting':
-      return `Aperta is attempting to acquire a live connection. Please wait until connection is established.`;
-    default:
-      return false;
-    }
+            to attempt to re-establish the connection.`,
+    connecting: `Aperta is attempting to acquire a live connection. Please wait until connection is established.`
   }
 });

@@ -6,14 +6,14 @@ export default Ember.Mixin.create({
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
-  pusherIsConnected: Ember.computed.not('pusher.isDisconnected'),
+  pusherIsDisconnected: Ember.computed.alias('pusher.isDisconnected'),
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
     yield timeout(10000);
 
     this.clearPusherConnectionMessages();
-    if (!this.get('pusherIsConnected')) {
+    if (this.get('pusherIsDisconnected')) {
       this.updatePusherConnectionMessage();
     }
   }).drop(),

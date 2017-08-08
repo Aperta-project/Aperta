@@ -86,6 +86,19 @@ class Paper < ActiveRecord::Base
       if: proc { |paper| paper.preprint_doi_article_number.present? }
   }
 
+  class InvalidPreprintDoiError < ::StandardError; end
+  PREPRINT_DOI_FORMAT = %r{\A10.24196\/aarx\.\d{7}\z}
+  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
+  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
+
+  def self.valid_preprint_doi?(doi)
+    !!(doi =~ PREPRINT_DOI_FORMAT)
+  end
+
+  def self.validate_preprint_doi(doi)
+    raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
+  end
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
@@ -637,14 +650,14 @@ class Paper < ActiveRecord::Base
 
   def aarx_doi
     return nil unless preprint_doi_suffix
-    doi = Journal::PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
-    Journal.validate_preprint_doi(doi)
+    doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
+    validate_preprint_doi(doi)
     return doi
   end
 
   def preprint_doi_suffix
     return nil unless preprint_short_doi
-    Journal::PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
+    PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
   end
 
   private

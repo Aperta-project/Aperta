@@ -21,6 +21,15 @@ module Configurable
     raise NotImplementedError, e
   end
 
+  def all_settings
+    setting_templates.map do |st|
+      {
+        name: st.setting_name,
+        value: setting(st.setting_name).value
+      }
+    end
+  end
+
   # A Configurable can have many settings. A given setting can be accessed by
   # its name. Settings are lazily created when they are needed. To look up a
   # setting, a configurable has a setting_template_key that needs to be

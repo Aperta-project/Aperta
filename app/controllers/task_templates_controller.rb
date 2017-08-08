@@ -25,18 +25,8 @@ class TaskTemplatesController < ApplicationController
     respond_with task_template
   end
 
-  def setting
-    respond_with task_template.setting(params[:name])
-  end
-
   def update_setting
     task_template.setting(params[:name]).update!(value: params[:value])
-    respond_with task_template
-  end
-
-  def similarity_check_settings
-    task_template.setting('ithenticate_automation').update!(value:
-      params[:value])
     respond_with task_template
   end
 

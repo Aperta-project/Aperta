@@ -10,16 +10,27 @@ export default DS.Model.extend({
   title: DS.attr('string'),
   type: Ember.computed.readOnly('kind'),
   kind: Ember.computed.readOnly('journalTaskType.kind'),
-  settings: DS.attr(),
+  allSettings: DS.attr(),
+  settings: Ember.computed('allSettings', function(){
+    return Ember.A(this.get('allSettings')).map(function(setting) {
+      return Ember.Object.create(setting);
+    });
+  }),
   settingsEnabled: DS.attr(),
-  settingNames: DS.attr(),
-  settingComponents: Ember.computed('settingNames', function(){
+  restless: Ember.inject.service(),
+  settingComponents: Ember.computed('settings', function(){
     let settingMap = {
       ithenticate_automation: 'similarity-check-settings',
       review_duration_period: 'invite-reviewers-settings'
     };
-    return this.get('settingNames').map(function(settingName) {
-      return settingMap[settingName];
+    return this.get('settings').map(function(setting) {
+      return settingMap[setting.get('name')];
     });
-  })
+  }),
+  updateSetting: function (settingName, settingValue) {
+    const url = `/api/task_templates/${this.get('id')}/update_setting`;
+    return this.get('restless').put(url, {name: settingName, value: settingValue}).then(() => {
+      this.get('settings').findBy('name', settingName).set('value', settingValue);
+    });
+  }
 });

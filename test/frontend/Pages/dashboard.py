@@ -213,7 +213,6 @@ class DashboardPage(AuthenticatedPage):
               self.get_rich_text_editor_instance('reviewerSuggestions')
           logging.info('Editor instance is: {0}'.format(tinymce_editor_instance_id))
           self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=suggestions)
-          time.sleep(1)
           self._get(self._rim_send_fb_btn).click()
           # Time to get sure information is sent
           time.sleep(2)

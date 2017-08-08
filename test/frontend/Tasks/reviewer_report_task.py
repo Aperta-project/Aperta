@@ -95,7 +95,7 @@ class ReviewerReportTask(BaseTask):
     :return void function
     """
     # First the global elements/sytles
-    self.validate_common_elements_styles()
+    #self.validate_common_elements_styles() # not working - button.task-completed is no longer there
     accrb = self._get(self._q1_accept_radio)
     self.validate_radio_button(accrb)
     acclbl = self._get(self._q1_accept_label)
@@ -284,10 +284,10 @@ class ReviewerReportTask(BaseTask):
                          u'transfer of suitable manuscripts between journals, and we appreciate ' \
                          u'your support.'.format(journal), qh6.text
     else:
-      assert u'Please refer to our referee guidelines and information on our article ' \
+      assert u'Please refer to our reviewer guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text
-      assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-' \
-             'for-publication" target="_blank">referee</a>' in \
+      assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#' \
+             'loc-reviewing-magazine-submissions" target="_blank">reviewer guidelines</a>' in \
              review_note.get_attribute('innerHTML'), review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
       q1, q2, q3, q4, q5, q6 = question_list
@@ -297,22 +297,23 @@ class ReviewerReportTask(BaseTask):
       # APERTA-10621
       # assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
       #                   u'{0}?'.format(journal), q3.text
-      assert u'Is this manuscript suitable in principle for the magazine section of ' in q3.text, \
+      assert u'Please add your review comments in the box below.' in q3.text, \
           q3.text
-      assert q4.text == u'If previously unpublished data are included to support the conclusions,' \
+      assert q4.text == u'(Optional) If previously unpublished data are included to support the conclusions,' \
                         u' please note in the box below whether:', q4.text
       assert q5.text == u'(Optional) Please offer any additional confidential comments to the ' \
-                        u'editor', q5.text
-      assert q6.text == u'(Optional) If you\'d like your identity to be revealed to the authors, ' \
+                        u'editor.', q5.text
+      assert q6.text == u'(Optional) If you’d like your identity to be revealed to the authors, ' \
                         u'please include your name here.', q6.text
       qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential' \
                          u' interests that you feel the Editor should be aware of when ' \
-                         u'considering your review. If you have no competing interests, please ' \
-                         u'write: "I have no competing interests."', qh2.text
-      assert qh3.text == u'Please refer to our referee guidelines and information on our article ' \
-                         u'types.\nSubmit your detailed comments in the box below. These will be ' \
-                         u'communicated to the authors.', qh3.text
+                         u'considering your review.', qh2.text
+      assert qh3.text == u'Do you think this manuscript is suitable, in principle, for the magazine ' \
+                         u'section of PLOS Biology? What recommendations do you have for revisions ' \
+                         u'that might make the manuscript suitable?\nPlease refer to our reviewer ' \
+                         u'guidelines and information on our article types.\nYour review comments ' \
+                         u'will be communicated to the authors.', qh3.text
       assert qh4.text == u'The data have been generated rigorously with relevant controls, ' \
                          u'replication and sample sizes, if applicable.\nThe data provided ' \
                          u'support the conclusions that are drawn.', qh4.text

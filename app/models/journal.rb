@@ -4,14 +4,9 @@ class Journal < ActiveRecord::Base
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
-  PREPRINT_DOI_FORMAT     = %r{\A10.24196\/aarx\.\d+\z}
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
-  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
-  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
-  PREPRINT_SHORT_DOI_FORMAT = %r{\A\d+\z}
 
   class InvalidDoiError < ::StandardError; end
-  class InvalidPreprintDoiError < ::StandardError; end
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
@@ -43,17 +38,6 @@ class Journal < ActiveRecord::Base
     uniqueness: { scope: :doi_publisher_prefix,
                   message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
-  validates :last_preprint_doi_issued,
-    presence: {
-      message: 'Please include a Last DOI Issued'
-    },
-    format: {
-      with: PREPRINT_SHORT_DOI_FORMAT,
-      message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
-      if: proc { |journal| journal.last_preprint_doi_issued.present? }
-  }
-
-
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
@@ -109,14 +93,6 @@ class Journal < ActiveRecord::Base
     !!(doi =~ DOI_FORMAT)
   end
 
-  def self.valid_preprint_doi?(doi)
-    !!(doi =~ PREPRINT_DOI_FORMAT)
-  end
-
-  def self.validate_preprint_doi(doi)
-    raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
-  end
-
   # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines
   def doi_journal_abbrev
     doi_journal_prefix.split('.').last
@@ -163,19 +139,6 @@ class Journal < ActiveRecord::Base
     end
   end
 
-  def next_preprint_short_doi!
-    with_lock do
-      incrementer = PreprintDoiIncrementer.get_incrementer
-      next_number = incrementer.succ!.value.to_doi
-      next_doi = "#{preprint_full_doi_prefix}#{next_number}"
-      if self.class.valid_preprint_doi?(next_doi)
-        update_column :last_preprint_doi_issued, next_number
-        return next_number
-      else
-        raise InvalidPreprintDoiError, "Attempted to generate the next Preprint DOI, but it was in an invalid DOI format: #{next_doi}"
-      end
-    end
-  end
   private
 
   def preprint_full_doi_prefix

@@ -1715,4 +1715,31 @@ describe Paper do
       expect(paper.latest_decision_rescinded?).to eq(true)
     end
   end
+
+  describe '.valid_preprint_doi?' do
+    context "with a valid preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.0000001").to eq true
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.0324501").to eq true
+      end
+    end
+
+    context "with a blank preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? nil).to eq false
+      end
+    end
+
+    context "with an invalid preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.1").to eq false
+        expect(described_class.valid_preprint_doi? "10.24196/aarx0000001").to eq false
+        expect(described_class.valid_preprint_doi? "10.24196aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "10.2419/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "1024196/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "0.24196/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "1.24196/aarx.0324501").to eq false
+      end
+    end
+  end
 end

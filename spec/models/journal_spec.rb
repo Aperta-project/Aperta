@@ -167,37 +167,6 @@ describe Journal do
     end
   end
 
-  describe "#next_preprint_short_doi!" do
-    let(:journal) { FactoryGirl.create(:journal) }
-
-    it "increments last_doi_issued each time it is called" do
-      expect do
-        journal.next_preprint_short_doi!
-      end.to change { journal.last_preprint_doi_issued.to_i }.by 1
-
-      expect do
-        journal.next_preprint_short_doi!
-        journal.next_preprint_short_doi!
-      end.to change { journal.last_preprint_doi_issued.to_i }.by 2
-    end
-
-    it "returns the next DOI" do
-      next_short_doi = journal.next_preprint_short_doi!
-      expect(next_short_doi).to eq journal.last_preprint_doi_issued
-    end
-
-    it "raises an InvalidDoiError when the DOI is in an invalid format" do
-      # Use update_column to bypass validations since the journal would not
-      # normally let them save. This is to create the possibility of generating
-      # a bad DOI.
-      journal.update_column :last_preprint_doi_issued, "not_an_integer_in_a_string"
-
-      expect do
-        journal.next_preprint_short_doi!
-      end.to raise_error(Journal::InvalidPreprintDoiError)
-    end
-  end
-
   describe '.staff_admins_for_papers' do
     let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
@@ -265,34 +234,6 @@ describe Journal do
       it "returns false" do
         expect(described_class.valid_doi? "10.1000/182/12").to eq false
         expect(described_class.valid_doi? "monkey").to eq false
-      end
-    end
-  end
-
-  describe '.valid_doi?' do
-
-    context "with a valid DOI" do
-      it "returns false" do
-        expect(Journal.valid_preprint_doi? "10.24196/aarx.0000001").to eq true
-        expect(Journal.valid_preprint_doi? "10.24196/aarx.1").to eq true
-        expect(Journal.valid_preprint_doi? "10.24196/aarx.0324501").to eq true
-      end
-    end
-
-    context "with a blank DOI" do
-      it "returns false" do
-        expect(described_class.valid_preprint_doi? nil).to eq false
-      end
-    end
-
-    context "with an invalid DOI" do
-      it "returns false" do
-        expect(Journal.valid_preprint_doi? "10.24196/aarx0000001").to eq false
-        expect(Journal.valid_preprint_doi? "10.24196aarx.0324501").to eq false
-        expect(Journal.valid_preprint_doi? "10.2419/aarx.0324501").to eq false
-        expect(Journal.valid_preprint_doi? "1024196/aarx.0324501").to eq false
-        expect(Journal.valid_preprint_doi? "0.24196/aarx.0324501").to eq false
-        expect(Journal.valid_preprint_doi? "1.24196/aarx.0324501").to eq false
       end
     end
   end

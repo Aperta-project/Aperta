@@ -173,7 +173,7 @@ class CoverLetterTask(BaseTask):
     input_selector = self._iget(self._upload_cover_letter_filename_input)
     input_selector.send_keys(fn)
     self._last_uploaded_letter_file = fn
-    formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
+    formatted_file_name = urllib.parse.quote_plus(fn.split("/")[-1])
 
     # Wait until the uploaded item be loaded
     self._wait_for_element(self._get(self._uploaded_attachment_item))

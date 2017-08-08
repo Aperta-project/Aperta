@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170728115624) do
+ActiveRecord::Schema.define(version: 20170807175908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170728115624) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                        null: false
-    t.integer  "rgt",                        null: false
+    t.integer  "lft",                                        null: false
+    t.integer  "rgt",                                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",            null: false
+    t.integer  "card_version_id",                            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20170728115624) do
     t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.boolean  "required_field",             default: false
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -818,7 +819,7 @@ ActiveRecord::Schema.define(version: 20170728115624) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+  create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
     t.integer  "user_id"

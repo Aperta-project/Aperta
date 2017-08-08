@@ -1,17 +1,19 @@
 # A class for creating a validated manifest file for for apex export
-class ApexManifest
+class ExportManifest
   class InvalidManifest < StandardError; end
 
-  attr_accessor :archive_filename, :metadata_filename, :apex_delivery_id
+  attr_accessor :archive_filename, :metadata_filename, :delivery_id
   attr_reader :file_list
 
   def initialize(archive_filename:,
                  metadata_filename:,
-                 apex_delivery_id: nil)
+                 destination:,
+                 delivery_id: nil)
     @file_list = []
     @archive_filename = archive_filename
     @metadata_filename = metadata_filename
-    @apex_delivery_id = apex_delivery_id
+    @delivery_id = delivery_id
+    @destination = destination
   end
 
   def add_file(filename)
@@ -24,7 +26,7 @@ class ApexManifest
       metadata_filename: metadata_filename,
       files: file_list
     }.tap do |m|
-      m[:apex_delivery_id] = apex_delivery_id if apex_delivery_id.present?
+      m[delivery_id_key] = delivery_id if delivery_id.present?
     end
   end
 
@@ -33,5 +35,11 @@ class ApexManifest
       f.write to_json
       f.rewind
     end
+  end
+
+  private
+
+  def delivery_id_key
+    @destination == 'apex' ? :apex_delivery_id : :export_delivery_id
   end
 end

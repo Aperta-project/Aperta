@@ -1,8 +1,8 @@
 require "rails_helper"
 
-describe TahiStandardTasks::ApexService do
-  let(:apex_delivery) do
-    FactoryGirl.build(:apex_delivery).tap { |d| d.paper.doi = doi }
+describe TahiStandardTasks::ExportService do
+  let(:export_delivery) do
+    FactoryGirl.build(:export_delivery).tap { |d| d.paper.doi = doi }
   end
   let(:doi) { "23423/journal.tur.0001" }
   let(:packager) do
@@ -12,9 +12,9 @@ describe TahiStandardTasks::ApexService do
       allow(d).to receive_message_chain(:manifest, :file_list).and_return(['foo', 'bar'])
     end
   end
-  let(:paper) { apex_delivery.paper }
+  let(:paper) { export_delivery.paper }
   let(:service) do
-    TahiStandardTasks::ApexService.new apex_delivery: apex_delivery
+    TahiStandardTasks::ExportService.new export_delivery: export_delivery
   end
 
   describe "#make_delivery!" do
@@ -26,7 +26,7 @@ describe TahiStandardTasks::ApexService do
 
     context "the destination is apex" do
       before do
-        apex_delivery.destination = "apex"
+        export_delivery.destination = "apex"
       end
       it "uploads two files" do
         expect(service).to receive(:upload_to_ftp)
@@ -43,7 +43,7 @@ describe TahiStandardTasks::ApexService do
         end
 
         it "makes a failure notification" do
-          expect(apex_delivery).to receive(:delivery_failed!)
+          expect(export_delivery).to receive(:delivery_failed!)
           expect { service.make_delivery! }.to raise_error(turtle_message)
         end
       end
@@ -51,7 +51,7 @@ describe TahiStandardTasks::ApexService do
 
     context "the destination is em or preprint" do
       it "uploads to the router" do
-        apex_delivery.destination = "em"
+        export_delivery.destination = "em"
         expect_any_instance_of(RouterUploaderService).to receive(:upload).and_return(nil)
         service.make_delivery!
       end
@@ -72,7 +72,7 @@ describe TahiStandardTasks::ApexService do
     it "fails if there is no manuscript ID" do
       paper.doi = nil
       expect { service.send(:package_filename) }.to \
-        raise_error(TahiStandardTasks::ApexService::ApexServiceError)
+        raise_error(TahiStandardTasks::ExportService::ExportServiceError)
     end
 
     it "returns the filename of the package" do
@@ -85,7 +85,7 @@ describe TahiStandardTasks::ApexService do
     it "fails if there is no manuscript ID" do
       paper.doi = nil
       expect { service.send(:manifest_filename) }.to \
-        raise_error(TahiStandardTasks::ApexService::ApexServiceError)
+        raise_error(TahiStandardTasks::ExportService::ExportServiceError)
     end
 
     it "returns the filename of the package" do

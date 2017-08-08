@@ -616,11 +616,11 @@ describe Paper do
     context "paper with preprint doi" do
       let(:paper) do
         FactoryGirl.create(:paper,
-          preprint_short_doi: "123")
+          preprint_short_doi: "1234567")
       end
 
       it "returns a valid doi" do
-        expect(paper.aarx_doi).to eq("10.24196/aarx.123")
+        expect(paper.aarx_doi).to eq("10.24196/aarx.1234567")
       end
     end
 

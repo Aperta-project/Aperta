@@ -26,7 +26,7 @@ describe LitePaperSerializer do
     let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
 
     let(:paper) do
-      FactoryGirl.create(:paper, journal: journal, creator: user, preprint_short_doi: "1")
+      FactoryGirl.create(:paper, journal: journal, creator: user, preprint_short_doi: "1234567")
     end
 
     describe 'aarx_doi' do

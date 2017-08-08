@@ -34,7 +34,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
 });
 
 test('No due_at unless accepted', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
   let fake = this.container.lookup('service:can');
   let paper = this.get('report.task.paper');
   fake.allowPermission('manage_workflow', paper);
@@ -49,6 +49,7 @@ test('No due_at unless accepted', function(assert) {
     'Block template shows not invited text'
   );
 
+  assert.textNotPresent('.report-status', 'original due date was');
   this.set('report.status', 'invitation_accepted');
 
   this.render(hbs`

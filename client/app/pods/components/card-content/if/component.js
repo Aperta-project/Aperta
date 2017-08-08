@@ -22,7 +22,9 @@ export default Ember.Component.extend({
     let conditionName = this.get('conditionName');
     let conditionKey = `scenario.${conditionName}`;
     this.setConditionValue();
+    // window.console.log('Observing', conditionKey);
     this.addObserver(conditionKey, function() {
+      // window.console.log('Changing', conditionKey);
       Ember.run(() => {
         this.setConditionValue();
       });
@@ -34,10 +36,12 @@ export default Ember.Component.extend({
     let scenario = findNearestProperty(this, 'scenario');
     if (scenario) {
       let value = Ember.get(scenario, conditionName);
+      // window.console.log('Update', conditionName, value);
       this.set('conditionValue', value);
+    } else {
+      // window.console.log('No scenario found for', conditionName);
     }
   },
-
 
   condition: Ember.computed(
     'content.condition',

@@ -10,7 +10,10 @@ export default Ember.Mixin.create({
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
-    yield timeout(10000);
+    if (!Ember.testing) {
+      // wait so that users on spotty connections aren't notified of every connection blip
+      yield timeout(10000);
+    }
 
     this.clearPusherConnectionMessages();
     if (this.get('pusherIsDisconnected')) {

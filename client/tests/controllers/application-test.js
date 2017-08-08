@@ -1,121 +1,135 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import sinon from 'sinon';
 
-let pusherStub, flashStub, pusherFailureMessageSpy, displayFlashMessageSpy, healthCheckStub;
+let healthCheckStub, pusherStub, pusherFailureMessagesStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
-  needs: ['model:journal'],
+  needs: ['service:flash'],
   beforeEach: function() {
     healthCheckStub = { start: ()=>{} };
-    pusherStub = {connection: { connection: { state: 'connecting' } }};
-    pusherFailureMessageSpy = sinon.stub().returns('oh noes -.-');
-    displayFlashMessageSpy = sinon.spy();
-    flashStub = Ember.Object.create({
-      displaySystemLevelMessage: displayFlashMessageSpy,
-      systemLevelMessages: Ember.A(),
-      removeSystemLevelMessage: sinon.spy()
-    });
+    pusherStub = Ember.Object.create({connection: { connection: { state: 'connecting' } }});
+    pusherFailureMessagesStub = {
+      failed: 'f',
+      unavailable: 'u',
+      connecting: 'c',
+      disconnected: 'd'
+    };
   }
 });
 
 test('Slanger notifications - happy path', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(2);
   let complete = assert.async();
 
   pusherStub.connection.connection.state = 'connected';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(false);
+  pusherStub.isDisconnected = false;
 
   Ember.run(() => {
     let controller = this.subject({
       pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
-      healthCheck: healthCheckStub,
-      flash: flashStub
+      healthCheck: healthCheckStub
     });
 
     assert.ok(controller);
-
-    assert.ok(pusherFailureMessageSpy.calledWith('connecting'),
-      '_pusherFailureMessage was called with connecting');
-
-    assert.ok(displayFlashMessageSpy.notCalled, 'displaySystemLevelMessage was NOT called');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flash messages are empty');
     complete();
-
   });
-
 });
 
 test('Slanger notifications - unable to connect', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(2);
   let complete = assert.async();
 
   pusherStub.connection.connection.state = 'unavailable';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
+  pusherStub.isDisconnected = true;
 
   Ember.run(() => {
     let controller = this.subject({
       pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('unavailable'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}], 
+      'flash shows message for unavailable state');
     complete();
-
   });
+});
 
+test('Slanger notifications - repeatedly unable to connect', function(assert) {
+
+  assert.expect(2);
+  let complete = assert.async();
+
+  pusherStub.connection.connection.state = 'unavailable';
+  pusherStub.isDisconnected = true;
+
+  Ember.run(() => {
+    let controller = this.subject({
+      pusher: pusherStub,
+      healthCheck: healthCheckStub,
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
+
+    pusherStub.connection.connection.state = 'connected';
+    pusherStub.set('isDisconnected', false);
+    pusherStub.connection.connection.state = 'unavailable';
+    pusherStub.set('isDisconnected', true);
+    pusherStub.connection.connection.state = 'connected';
+    pusherStub.set('isDisconnected', false);
+    pusherStub.connection.connection.state = 'unavailable';
+    pusherStub.set('isDisconnected', true);
+
+    assert.ok(controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}], 
+      'flash shows only one message');
+    complete();
+  });
 });
 
 test('Slanger notifications - browser doesnt support web sockets', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(2);
   let complete = assert.async();
 
   pusherStub.connection.connection.state = 'failed';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
+  pusherStub.isDisconnected = true;
 
   Ember.run(() => {
-    let controller = this.subject({ pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+    let controller = this.subject({ 
+      pusher: pusherStub,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('failed'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'f'}], 
+      'flash shows message for failed state');
     complete();
-
   });
-
 });
 
 test('Slanger notifications - user was disconnected by the application', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(2);
   let complete = assert.async();
 
   pusherStub.connection.connection.state = 'disconnected';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
+  pusherStub.isDisconnected = true;
 
   Ember.run(() => {
-    let controller = this.subject({ pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+    let controller = this.subject({ 
+      pusher: pusherStub,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('disconnected'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystem LevelMessage was called');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'd'}], 
+      'flash shows message for disconnected state');
     complete();
-
   });
 });

@@ -5,6 +5,7 @@ class Correspondence < ActiveRecord::Base
   belongs_to :paper
   belongs_to :task
   belongs_to :journal
+  belongs_to :versioned_text
 
   has_many :attachments, as: :owner,
                          class_name: 'CorrespondenceAttachment',

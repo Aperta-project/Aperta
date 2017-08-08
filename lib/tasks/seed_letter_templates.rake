@@ -64,15 +64,15 @@ namespace :seed do
     end
 
 
-    desc 'Adds default letter-templates for Register Decision to all journals. First template_decision is default'
+    desc 'Adds default letter-templates for Register Decision to all journals.'
     task populate: :environment do
       Journal.all.each do |journal|
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'Editor Decision - Reject After Review', template_decision: 'reject', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'Editor Decision - Reject After Review', category: 'reject', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>***EDIT THIS LETTER BEFORE SENDING****</p>
             #{greeting}
             <p>Thank you very much for submitting your manuscript "{{ manuscript.title }}" for review by {{ journal.name }}. As with all papers reviewed by the journal, yours was assessed and discussed by the {{ journal.name }} editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.</p>
@@ -88,10 +88,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'Editor Decision - Reject After Review CJs', template_decision: 'reject', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'Editor Decision - Reject After Review CJs', category: 'reject', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>***EDIT THIS LETTER BEFORE SENDING****</p>
             #{greeting}
             <p>Thank you very much for submitting your manuscript entitled "{{ manuscript.title }}" for review by {{ journal.name }}. As with all papers reviewed by the journal, yours was assessed and discussed by the {{ journal.name }} editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.</p>
@@ -111,10 +111,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'Editor Decision - Reject After Review ONE', template_decision: 'reject', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'Editor Decision - Reject After Review ONE', category: 'reject', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>***EDIT THIS LETTER BEFORE SENDING****</p>
             #{greeting}
             <p>Thank you very much for submitting your manuscript entitled "{{ manuscript.title }}" for review by {{ journal.name }}. As with all papers reviewed by the journal, yours was assessed and discussed by the {{ journal.name }} editors. In this case, your article was also assessed by an Academic Editor with relevant expertise and several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal.</p>
@@ -134,10 +134,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'Reject After Review ONE', template_decision: 'reject', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'Reject After Review ONE', category: 'reject', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>**IF THE MANUSCRIPT HAS NOT BEEN RE-REVIEWED, EDIT THE FIRST PARAGRAPH AS APPROPRIATE**</p>
             #{greeting}
             <p>Thank you very much for submitting your revised manuscript entitled "{{ manuscript.title }}" for review by {{ journal.name }}. As with all papers reviewed by the journal, yours was assessed and discussed by the {{ journal.name }} editors. In this case, your article was also assessed by the Academic Editor who saw the original version [EDIT HERE if not re-reviewed: and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....].] These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further.</p>
@@ -158,10 +158,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'Reject After Revision and Re-review ONE', template_decision: 'reject', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'Reject After Revision and Re-review ONE', category: 'reject', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>***EDIT THIS LETTER BEFORE SENDING****</p>
             #{greeting}
             <p>Thank you very much for submitting your revised manuscript entitled {{ manuscript.title }} for review by {{ journal.name }}. As with all papers reviewed by the journal, yours was assessed and discussed by the {{ journal.name }} editors. In this case, your article was also assessed by the Academic Editor who saw the original version and by several independent reviewers. Based on the reviews, I regret that we will not be able to accept this manuscript for publication in the journal. As you will see, the reviewers continue to have concerns about [...EDIT HERE....]. These seem to us sufficiently serious that we cannot encourage you to revise the manuscript further.</p>
@@ -182,10 +182,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'RA Major Revision', template_decision: 'major_revision', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'RA Major Revision', category: 'major_revision', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'A decision has been registered on the manuscript, "{{ manuscript.title }}"'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>**choose appropriate first paragraph; attach prod reqs PDF - DELETE THIS***</p>
             #{greeting}
             <p>***EITHER****</p>
@@ -214,10 +214,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'RA Minor Revision', template_decision: 'minor_revision', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'RA Minor Revision', category: 'minor_revision', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>** CHOOSE BETWEEN NUMBERED PARAGRAPHS BELOW **</p>
             <p>** REMOVE THIS TEXT BEFORE SENDING **</p>
             #{greeting}
@@ -241,10 +241,10 @@ namespace :seed do
         end
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        LetterTemplate.where(text: 'RA Accept', template_decision: 'accept', journal: journal).first_or_initialize.tap do |lt|
+        LetterTemplate.where(name: 'RA Accept', category: 'accept', journal: journal).first_or_initialize.tap do |lt|
           lt.subject = 'Your {{ journal.name }} submission'
           lt.to = author_emails
-          lt.letter = <<-TEXT.strip_heredoc
+          lt.body = <<-TEXT.strip_heredoc
             <p>***EDIT THIS LETTER BEFORE SENDING****</p>
             #{greeting}
             <p>On behalf of my colleagues and the Academic Editor, [*INSERT AE'S NAME*], I am pleased to inform you that we will be delighted to publish your manuscript in {{ journal.name }}.</p>

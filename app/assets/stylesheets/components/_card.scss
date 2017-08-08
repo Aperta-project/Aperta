@@ -71,3 +71,10 @@
   transform: rotate(2deg) scale(1.05);
   box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2), 0 2px 25px rgba(0, 0, 0, 0.1);
 }
+
+.required-field {
+  position: relative;
+  top: 0.75rem;
+  font-size: 21pt;
+  color:  $aperta-red;
+}

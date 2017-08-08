@@ -2,22 +2,22 @@
   This card-content component will be rendered
   for every node in the tree, wrapping a more specific
   inner component that depends on the type of the content--}}
-  {{#if answer}}
-  <div class="answer-container">
-    <div class="answer">
-      {{partial "card-content-component"}}
+  {{#if (and answer keepAnswerContainer)}}
+    <div class="answer-container">
+      <div class="answer">
+        {{partial "card-content-component"}}
+      </div>
+      <div class="additional-text">
+        {{#if content.hasAdditionalText}}
+          {{card-content/tabbed-textarea
+          annotationChanged=(action 'updateAnnotation')
+          showAnnotation=content.allowAnnotations
+          annotation=answer.annotation
+          instructionText=content.instructionText
+          disabled=disabled}}
+        {{/if}}
+      </div>
     </div>
-    <div class="additional-text">
-      {{#if answer.cardContent.renderAdditionalText}}
-        {{card-content/tabbed-textarea
-        annotationChanged=(action 'updateAnnotation')
-        showAnnotation=answer.cardContent.allowAnnotations
-        annotation=answer.annotation
-        instructionText=answer.cardContent.instructionText
-        disabled=disabled}}
-      {{/if}}
-    </div>
-  </div>
   {{else}}
     {{partial "card-content-component"}}
   {{/if}}

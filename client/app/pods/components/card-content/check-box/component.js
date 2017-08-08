@@ -12,7 +12,6 @@ export default Ember.Component.extend({
 
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident') || Ember.guidFor(this);
-
     return `check-box-${ident}`;
   }),
 

@@ -1,14 +1,14 @@
 {{#if content.text}}
   <p class="content-text">{{{content.text}}}
     {{#if content.isRequired}}
-      {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
     {{/if}}</p>
 {{/if}}
 
 {{check-box
   name=name
   id=name
-  checked=(readonly answer.value)
+  checked=answer.value
   disabled=disabled
   content=content
   answer=answer
@@ -17,3 +17,8 @@
   <label for={{name}}>{{{content.label}}}</label>
 {{/if}}
 <p>{{card-content/validation-errors errors=answer.readyIssuesArray}}</p>
+{{card-content/display-children
+content=content
+owner=owner
+disabled=disabled
+preview=preview}}

@@ -1,38 +1,26 @@
 import Ember from 'ember';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default Ember.Mixin.create({
 
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
-  debounceTimer: null,
-  pusherConnectionState: 'unknown',
-  pusherConnecting: false,
+  pusherIsConnected: Ember.computed.not('pusher.isDisconnected'),
+  pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
-  handlePusherConnectionSuccess() {
-    Ember.run.cancel(this.get('debounceTimer'));
-    this._clearConnectionMessages();
-    this.set('debounceTimer', null);
-    this.set('pusherConnecting', false);
-  },
-
-  handlePusherConnecting() {
-    this.set('pusherConnecting', true);
-    if (!this.get('debounceTimer')) {
-      let debounce = Ember.run.debounce(this, function() {
-        this._displayConnectionMessage('unavailable');
-      }, 10000);
-      this.set('debounceTimer', debounce);
+  handlePusherConnectionStatusChange: concurrencyTask(function*() {
+    yield timeout(10000);
+    if (this.get('pusherIsConnected')) {
+      this._clearConnectionMessages();
+    } else {
+      this._updateConnectionMessage();
     }
-  },
+  }).drop(),
 
-  handlePusherConnectionFailure() {
-    this._displayConnectionMessage(this.get('pusherConnectionState'));
-  },
-
-  _displayConnectionMessage(key) {
+  _updateConnectionMessage() {
     this._clearConnectionMessages();
-    let message = this._pusherFailureMessage(key);
+    let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
     this.get('flash').displaySystemLevelMessage('error', message);
   },
 

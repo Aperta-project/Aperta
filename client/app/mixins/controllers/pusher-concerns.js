@@ -11,20 +11,21 @@ export default Ember.Mixin.create({
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
     yield timeout(10000);
-    if (this.get('pusherIsConnected')) {
-      this._clearConnectionMessages();
-    } else {
-      this._updateConnectionMessage();
+
+    this.clearPusherConnectionMessages();
+    if (!this.get('pusherIsConnected')) {
+      this.updatePusherConnectionMessage();
     }
   }).drop(),
 
-  _updateConnectionMessage() {
-    this._clearConnectionMessages();
+  updatePusherConnectionMessage() {
     let message = this.pusherFailureMessages[this.get('pusherConnectionState')];
-    this.get('flash').displaySystemLevelMessage('error', message);
+    if (message) {
+      this.get('flash').displaySystemLevelMessage('error', message);
+    }
   },
 
-  _clearConnectionMessages() {
+  clearPusherConnectionMessages() {
     ['unavailable', 'failed', 'disconnected', 'connecting'].forEach((key) => {
       let systemFlash = this.get('flash').get('systemLevelMessages');
       let existingMessages = systemFlash.filterBy('text', this.pusherFailureMessages[key]);

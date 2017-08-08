@@ -96,31 +96,29 @@ describe TahiStandardTasks::ApexService do
   end
 
   describe "#needs_preprint_doi?" do
-    context "with needs_doi_flag" do
-      let(:card_content) { FactoryGirl.create(:card_content, ident: "needs_doi_flag") }
-      let(:answer) { FactoryGirl.create(:answer, card_content: card_content, value: "t") }
-      let(:task) { FactoryGirl.create(:ad_hoc_task, answers: [answer]) }
-
-      it "for a preprint export it ensures a preprint doi" do
-        apex_delivery.destination = "preprint"
-        apex_delivery.task = task
-        expect(service.send(:needs_preprint_doi?)).to eq("t")
+    context "the paper has not opted out of preprint" do
+      before do
+        paper.update(preprint_opt_out: false)
       end
 
-      it "for a preprint export it ensures a preprint doi" do
+      it "for a preprint export it needs a preprint doi" do
+        apex_delivery.destination = "preprint"
+        expect(service.send(:needs_preprint_doi?)).to eq(true)
+      end
+
+      it "for an apex export it needs a preprint doi" do
         apex_delivery.destination = "apex"
-        apex_delivery.task = task
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
     end
 
-    context "preprint export no needs_doi_flag" do
-      let(:card_content) { FactoryGirl.create(:card_content, ident: nil) }
-      let(:task) { FactoryGirl.create(:ad_hoc_task, answers: []) }
+    context "the paper has opted out of preprint" do
+      before do
+        paper.update(preprint_opt_out: true)
+      end
 
-      it "does ensures a preprint doi" do
+      it "does not ensure a need doi" do
         apex_delivery.destination = "preprint"
-        apex_delivery.task = task
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
     end

@@ -1,6 +1,6 @@
 # Provides a template context for Answers
 class AnswerContext < TemplateContext
-  whitelist :value_type, :children, :string_value, :value
+  whitelist :value_type, :string_value, :value
 
   def question
     @object.card_content.text

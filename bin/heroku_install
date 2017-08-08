@@ -5,5 +5,5 @@ set -e
 bower="$(pwd)/client/node_modules/.bin/bower"
 
 for app in "client"; do
-  cd $app && npm install && $bower install && cd -
+  cd $app && yarn install && $bower install && cd -
 done

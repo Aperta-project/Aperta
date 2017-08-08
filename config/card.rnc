@@ -18,16 +18,17 @@ possible-value = element possible-value {
 # Inputs
 radio-input = element content {
                   attribute ident { text }?,
-                  attribute value-type { "text" | "boolean"},
+                  attribute value-type { "text" | "boolean" },
                   attribute content-type { "radio" },
                   attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  element instruction-text { text }?,
-                  element text { text },
+                  (element instruction-text { text }? &
+                  element text { text }),
                   possible-value*,
                   content*
               }
+
 
 check-box-input = element content {
                 attribute ident { text }?,
@@ -36,9 +37,9 @@ check-box-input = element content {
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                element instruction-text { text }?,
+                (element instruction-text { text }? &
                 (element label { text }? &
-                element text { text }?),
+                element text { text }?)),
                 content*
             }
 
@@ -50,14 +51,14 @@ file-uploader = element content {
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
-                    element instruction-text { text }?,
+                    (element instruction-text { text }? &
                     (element validation {
                       attribute validation-type { "file-name" },
                       element error-message { text },
                       element validator { text }
                     }* &
                     element label { text }? &
-                    element text { text }?),
+                    element text { text }?)),
                     possible-value*
                 }
 
@@ -77,8 +78,8 @@ dropdown-input = element content {
                   attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  element instruction-text { text }?,
-                  element text { text },
+                  (element instruction-text { text }? &
+                  element text { text }),
                   possible-value+,
                   content*
               }
@@ -90,10 +91,20 @@ tech-check = element content {
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                element instruction-text { text }?,
-                element text { text }?,
+                (element instruction-text { text }? &
+                element text { text })?,
                 content*
             }
+
+sendback-reason = element content {
+                attribute ident { text }?,
+                attribute content-type { "sendback-reason" },
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }?),
+                content*
+            }
+
 
 text-input = element content {
                  attribute ident { text }?,
@@ -103,13 +114,13 @@ text-input = element content {
                  attribute required-field { "true" | "false" }?,
                  attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
-                 element instruction-text { text }?,
+                 (element instruction-text { text }? &
                  (element text { text }? &
                  element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                   element error-message { text },
                   element validator { text }
-                }*)
+                }*))
              }
 
 list-content = element content {
@@ -164,8 +175,9 @@ content = (
            dropdown-input |
            date-picker |
            tech-check |
-           list-content
-          )
+           list-content |
+           sendback-reason
+)
 
 start = element card {
             attribute required-for-submission { "true" | "false" },

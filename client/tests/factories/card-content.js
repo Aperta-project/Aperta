@@ -4,7 +4,7 @@ FactoryGuy.define('card-content', {
   default: {
     contentType: 'short-input',
     valueType: 'text',
-    text: 'Answer my question',
+    text: 'Default cardContent test text',
     ident: '',
   },
 

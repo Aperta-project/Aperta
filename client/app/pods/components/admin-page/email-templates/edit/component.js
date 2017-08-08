@@ -7,8 +7,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
-  disabled: Ember.computed('template.subject', 'template.letter', function() {
-    return !this.get('template.subject') || !this.get('template.letter');
+  disabled: Ember.computed('template.subject', 'template.body', function() {
+    return !this.get('template.subject') || !this.get('template.body');
   }),
   unsaved: true,
   actions: {

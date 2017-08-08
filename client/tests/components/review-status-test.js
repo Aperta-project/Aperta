@@ -17,6 +17,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
     this.registry.register('service:can', FakeCanService);
 
     let dueDate = new Date(2020, 1, 25);
+    let originalDueDate = new Date(2020, 1, 25);
     let paper = FactoryGuy.make('paper');
     let task = FactoryGuy.make('task');
     this.set('report', {
@@ -24,6 +25,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
       dueAt: dueDate,
+      originalDueAt: originalDueDate,
       task: task
     });
     this.set('report.task.paper', paper);

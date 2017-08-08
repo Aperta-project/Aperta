@@ -11,14 +11,7 @@ export default Ember.Mixin.create({
 
   handlePusherConnectionSuccess() {
     Ember.run.cancel(this.get('debounceTimer'));
-
-    // remove existing failure messages on connecting -> connected transition
-    ['connecting', 'disconnected', 'failed', 'unavailable'].forEach((failureState) => {
-      let systemFlash = this.get('flash').get('systemLevelMessages');
-      let existingMessages = systemFlash.filterBy('text', this._pusherFailureMessage(failureState));
-      systemFlash.removeObjects(existingMessages);
-    });
-
+    this._clearConnectionMessages();
     this.set('debounceTimer', null);
     this.set('pusherConnecting', false);
   },
@@ -27,16 +20,28 @@ export default Ember.Mixin.create({
     this.set('pusherConnecting', true);
     if (!this.get('debounceTimer')) {
       let debounce = Ember.run.debounce(this, function() {
-        let message = this._pusherFailureMessage('unavailable');
-        this.get('flash').displaySystemLevelMessage('error', message);
+        this._displayConnectionMessage('unavailable');
       }, 10000);
       this.set('debounceTimer', debounce);
     }
   },
 
   handlePusherConnectionFailure() {
-    let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
+    this._displayConnectionMessage(this.get('pusherConnectionState'));
+  },
+
+  _displayConnectionMessage(key) {
+    this._clearConnectionMessages();
+    let message = this._pusherFailureMessage(key);
     this.get('flash').displaySystemLevelMessage('error', message);
+  },
+
+  _clearConnectionMessages() {
+    ['unavailable', 'failed', 'disconnected', 'connecting'].forEach((key) => {
+      let systemFlash = this.get('flash').get('systemLevelMessages');
+      let existingMessages = systemFlash.filterBy('text', this._pusherFailureMessage(key));
+      systemFlash.removeObjects(existingMessages);
+    });
   },
 
   _pusherFailureMessage(failureState) {

@@ -17,7 +17,6 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
     this.registry.register('service:can', FakeCanService);
 
     let dueDate = new Date(2020, 1, 25);
-    let originalDueDate = new Date(2020, 1, 25);
     let paper = FactoryGuy.make('paper');
     let task = FactoryGuy.make('task');
     this.set('report', {
@@ -25,7 +24,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
       dueAt: dueDate,
-      originalDueAt: originalDueDate,
+      originallyDueAt: dueDate,
       task: task
     });
     this.set('report.task.paper', paper);
@@ -46,7 +45,7 @@ test('No due_at unless accepted', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Not yet invited: This candidate has not been invited to v99.0; original due date was August 7.',
+    'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
 
@@ -58,7 +57,7 @@ test('No due_at unless accepted', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Change due date Invitation accepted January 1, 2020; original due date was August 7.`,
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Change due date Invitation accepted January 1, 2020`,
     'Block template shows not invited text'
   );
 });
@@ -72,7 +71,7 @@ test('it shows not invited', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Not yet invited: This candidate has not been invited to v99.0; original due date was August 7.',
+    'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
 
@@ -84,7 +83,7 @@ test('it shows not invited', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    'Not yet invited: This candidate has not been invited to v99.0; original due date was August 7.',
+    'Not yet invited: This candidate has not been invited to v99.0',
     'Block template shows not invited text'
   );
 });
@@ -100,7 +99,7 @@ test('it shows pending', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020; original due date was August 7.`,
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020`,
     'Block template shows pending text with date'
   );
 
@@ -112,7 +111,7 @@ test('it shows pending', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020; original due date was August 7.`,
+    `Pending: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation accepted January 1, 2020`,
     'Block template shows pending text with date'
   );
 });
@@ -128,7 +127,7 @@ test('it shows invited', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Invited: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation sent on January 1, 2020; original due date was August 7.`,
+    `Invited: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation sent on January 1, 2020`,
     'Block template shows invited text with date'
   );
 });
@@ -144,7 +143,7 @@ test('it shows declined', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Declined: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation declined January 1, 2020; original due date was August 7.`,
+    `Declined: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation declined January 1, 2020`,
     'Block template shows declined text with date'
   );
 });
@@ -160,7 +159,7 @@ test('it shows rescinded', function(assert) {
 
   assert.equal(
     this.$('.report-status').text().trim().replace(/\s+/g,' '),
-    `Rescinded: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation rescinded January 1, 2020; original due date was August 7.`,
+    `Rescinded: review of v99.0 due February 25, 2020 12:00 am ${ this.get('timezone') } Invitation rescinded January 1, 2020`,
     'Block template shows rescinded text with date'
   );
 });
@@ -197,21 +196,6 @@ test('it only displays originally due date when not equal to due date', function
     {{reviewer-report-status report=report}}`);
 
   assert.textPresent(
-    '.report-status',
-    `original due date was`
-  );
-});
-
-test('it does not display originally due date when equal to due date', function(assert) {
-  let dueDate = moment(new Date(2020, 1, 25)).format('MMMM D');
-  this.set('report.dueAt', dueDate);  
-  this.set('report.originallyDueAt', dueDate);
-  this.set('report.status', 'pending');
-
-  this.render(hbs`
-    {{reviewer-report-status report=report}}`);
-    
-  assert.textNotPresent(
     '.report-status',
     `original due date was`
   );

@@ -74,7 +74,7 @@ class Paper < ActiveRecord::Base
 
   validates :preprint_short_doi,
     format: {
-      with: %r{\A\d+\z},
+      with: %r{\A\d{7}\z},
       message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
       if: proc { |paper| paper.preprint_short_doi.present? }
   }
@@ -630,7 +630,7 @@ class Paper < ActiveRecord::Base
     return if preprint_short_doi.present?
 
     with_lock do
-      next_number = PreprintDoiIncrementer.incremented_doi!
+      next_number = PreprintDoiIncrementer.get_next_doi!
       next_doi = "#{preprint_full_doi_prefix}#{next_number}"
       raise InvalidPreprintDoiError unless self.class.valid_preprint_doi?(next_doi)
       update_column :preprint_short_doi, next_number
@@ -640,7 +640,7 @@ class Paper < ActiveRecord::Base
   def aarx_doi
     return nil unless preprint_doi_suffix
     doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
-    validate_preprint_doi(doi)
+    self.class.validate_preprint_doi(doi)
     return doi
   end
 

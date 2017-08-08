@@ -3,7 +3,7 @@ class PreprintDoiIncrementer < ActiveRecord::Base
   class DoiIncrementerSingletonError < StandardError; end;
   DOI_LENGTH = 7
 
-  def self.incremented_doi!
+  def self.get_next_doi!
     first.succ!.to_doi
   end
 

@@ -26,13 +26,13 @@ describe PaperSerializer do
     let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
 
     let(:paper) do
-      FactoryGirl.create(:paper, journal: journal, creator: user, preprint_short_doi: "1")
+      FactoryGirl.create(:paper, journal: journal, creator: user, preprint_short_doi: "1234567")
     end
 
     describe 'aarx_doi' do
       it "should be present" do
         expect(json[:aarx_doi].to_s).to be_present
-        expect(json[:aarx_doi].to_s).to eq("10.24196/aarx.1")
+        expect(json[:aarx_doi].to_s).to eq("10.24196/aarx.1234567")
       end
     end
 

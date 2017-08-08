@@ -165,7 +165,8 @@ class Journal < ActiveRecord::Base
 
   def next_preprint_short_doi!
     with_lock do
-      next_number = last_preprint_doi_issued.succ
+      incrementer = PreprintDoiIncrementer.get_incrementer
+      next_number = incrementer.succ!.value.to_doi
       next_doi = "#{preprint_full_doi_prefix}#{next_number}"
       if self.class.valid_preprint_doi?(next_doi)
         update_column :last_preprint_doi_issued, next_number

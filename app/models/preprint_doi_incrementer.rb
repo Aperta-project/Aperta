@@ -3,17 +3,19 @@ class PreprintDoiIncrementer < ActiveRecord::Base
   class DoiIncrementerSingletonError < StandardError; end;
   DOI_LENGTH = 7
 
-  def self.get_incrementer
-    first
-  end
-
-  def succ!
-    tap { update!(value: self.value += 1) }
+  def self.incremented_doi!
+    first.succ!.to_doi
   end
 
   def self.create
     raise DoiIncrementerSingletonError if first.present?
     super
+  end
+
+  private
+
+  def succ!
+    tap { update!(value: self.value += 1) }
   end
 
   def to_doi

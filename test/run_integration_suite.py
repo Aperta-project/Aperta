@@ -9,7 +9,7 @@ It is for local use and doesn't perform all the setup that the bash script does.
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
 
-
+result = None
 try:
   suite.addTests(loader.loadTestsFromName('frontend.test_ad_hoc'))
   suite.addTests(loader.loadTestsFromName('frontend.test_addl_info_task'))

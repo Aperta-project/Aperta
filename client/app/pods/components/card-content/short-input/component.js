@@ -18,6 +18,15 @@ export default Ember.Component.extend(ValidateTextInput, {
       // Since input[type=text] will pass valueChanged an event, we're going to be nice
       // and pass the mixin the string value it's expecting.
       this._super(e.target.value);
+    },
+
+    maybeHideError() {
+      // Hide error message but not red border when user clicks into a blanked, but errored
+      // field. There is no equivalent function for paragraph-input, as TinyMCE fires a change
+      // event when focusing.
+      if (Ember.isBlank(this.get('workingValue'))) {
+        this.set('hideError', true);
+      }
     }
   }
 });

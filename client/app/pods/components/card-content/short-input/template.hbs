@@ -1,6 +1,6 @@
 <label class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="error-message">*</span>{{/unless}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
   {{/if}}</label>
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{input

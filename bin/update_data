@@ -3,10 +3,20 @@
 # `set -xe` causes this whole script to immediately exit if any single command fails
 set -xe
 
+bundle exec rake db:drop
+# manually check that the DB was dropped because rake db:drop will exit with success even if it failed
+psql -l | grep tahi_development && exit 1
+
+# Get the DB up to date with master
+# If you are working on a hotfix you should get up to date with the release branch instead of master
 git checkout master
-bundle exec rake db:reset
+bundle exec rake db:setup
+
+# Go back to the feature branch
 git checkout -
+# run migrations
 bundle exec rake db:migrate
+# seed sample data
 bundle exec rake cards:load
 bundle exec rake roles-and-permissions:seed
 bundle exec rake settings:seed_setting_templates
@@ -14,4 +24,5 @@ bundle exec rake data:update_journal_task_types
 bundle exec rake institutional_accounts:add_seed_accounts
 bundle exec rake create_feature_flags
 bundle exec rake seed:letter_templates:populate
+# update schema.rb and data.yml to reflect your DB
 bundle exec rake db:data:dump

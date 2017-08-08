@@ -10,11 +10,7 @@ class PaperAttributesExtractor
   end
 
   def sync!(paper)
-    paper.update!(
-      body: extract_file('body'),
-      abstract: nil,
-      title: paper.title
-    )
+    paper.update!(body: extract_file('body'))
   end
 
   private

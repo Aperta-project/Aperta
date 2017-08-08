@@ -62,18 +62,20 @@
     </p>
 
     <div class="form-group">
-      <span class="text-field-title">Role of sponsors or funders</span>
-      {{input
-        type="text"
-        name="additional_comments"
-        ident="funder--had_influence--role_description"
-        owner=model
-        value=model.funderInfluenceDescription
-        class="form-control tall-text-field"
-        placeholder="Description"
-        displayQuestionText=false
-        disabled=disabled
-      }}
+      <div class="inset-form-control">
+        <div class="inset-form-control-text">
+          <label>Role of sponsors or funders</label>
+        </div>
+        {{nested-question-input
+          type="text"
+          ident="funder--had_influence--role_description"
+          owner=model
+          displayQuestionText=false
+          placeholder="Description"
+          inputClassNames="form-control tall-text-field"
+          disabled=disabled
+        }}
+      </div>
     </div>
   {{/if}}
 

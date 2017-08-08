@@ -2,23 +2,23 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
-  classNameBindings: ['templateDecision:letter-template'],
+  classNameBindings: ['category:letter-template'],
   firstDecisionTemplate: Ember.computed.reads('decisionTemplates.firstObject'),
   //passed-in stuff
-  templateDecision: null,
+  category: null,
   letterValue: null,
   updateTemplate: null,
 
   decisionTemplates: Ember.computed(
     'task.letterTemplates.[]',
-    'templateDecision',
+    'category',
     function() {
       return this.get('task.letterTemplates')
-        .filterBy('templateDecision', this.get('templateDecision'))
+        .filterBy('category', this.get('category'))
         .map(function(letterTemplate) {
           return {
-            id: letterTemplate.get('text'),
-            text: letterTemplate.get('text')
+            id: letterTemplate.get('name'),
+            text: letterTemplate.get('name')
           };
         });
     }),

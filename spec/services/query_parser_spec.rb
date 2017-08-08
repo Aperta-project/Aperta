@@ -109,6 +109,13 @@ describe QueryParser do
         SQL
       end
 
+      it 'parses full aarx_doi queries' do
+        parse = QueryParser.new.parse 'DOI IS 10.24196/aarx.1241251'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."preprint_short_doi" ILIKE '%1241251%'
+        SQL
+      end
+
       it 'parses OR statements' do
         parse = QueryParser.new.parse 'STATUS IS rejected OR STATUS IS withdrawn'
         expect(parse.to_sql).to eq(<<-SQL.strip)

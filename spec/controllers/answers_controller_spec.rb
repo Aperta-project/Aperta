@@ -62,7 +62,6 @@ describe AnswersController do
 
   describe "#update" do
     let!(:answer) { FactoryGirl.create(:answer, value: 'initial value', annotation: "iniitial annotation", card_content: card_content, owner: owner) }
-    let(:card_content) { FactoryGirl.create(:card_content) }
 
     subject(:do_request) do
       put_params = {
@@ -87,22 +86,25 @@ describe AnswersController do
                          .and_return true
       end
 
-      it 'updates the answer for the question' do
-        expect do
-          do_request
-        end.to_not change(Answer, :count)
+      context 'updates the answer for the question' do
+        it 'updates the answer for the question' do
+          expect do
+            do_request
+          end.to_not change(Answer, :count)
 
-        json = JSON.parse(response.body)
-        expect(json['answer']['value']).to_not be_present
-        expect(json['answer']['annotaion']).to_not be_present
-        answer.reload
-        expect(answer.value).to eq('updated value')
-        expect(answer.annotation).to eq('updated annotation')
+          json = JSON.parse(response.body)
+          expect(json['answer']['value']).to_not be_present
+          expect(json['answer']['annotaion']).to_not be_present
+          answer.reload
+          expect(answer.annotation).to eq('updated annotation')
+        end
       end
 
       it "returns 200" do
         do_request
         expect(response.status).to eq(200)
+        json = JSON.parse(response.body)
+        expect(json['answer']).to be_present
       end
     end
 

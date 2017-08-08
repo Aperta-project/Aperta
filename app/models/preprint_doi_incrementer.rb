@@ -7,7 +7,7 @@ class PreprintDoiIncrementer < ActiveRecord::Base
     first
   end
 
-  def increment!
+  def succ!
     tap { update!(value: self.value += 1) }
   end
 
@@ -16,7 +16,7 @@ class PreprintDoiIncrementer < ActiveRecord::Base
     super
   end
 
-  def to_s
+  def to_doi
     pad_string = ""
     pad_length = DOI_LENGTH - value.to_s.length
     pad_length.times { |n| pad_string[n] = "0" }

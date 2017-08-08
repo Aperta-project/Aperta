@@ -3,7 +3,6 @@
 import logging
 import os
 import random
-import six
 import time
 import uuid
 
@@ -287,7 +286,7 @@ class DashboardPage(AuthenticatedPage):
         for author in auth_listings:
           logging.info(u'Testing page listed author: {0}'.format(author.text))
           tested_authors.append(author.text)
-          if six.u(db_author_information) in '{0}'.format(author.text):
+          if db_author_information in '{0}'.format(author.text):
             logging.info('Found Creator in invitation listing...')
             creator_found = True
             break
@@ -305,9 +304,9 @@ class DashboardPage(AuthenticatedPage):
           # TODO: Add style validation for this label.
           page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
           logging.info(page_abstract_text.text)
-          assert six.u(db_abstract) in six.u(page_abstract_text.text), \
+          assert db_abstract in page_abstract_text.text, \
               u'db abstract: {0}\nnot equal to invitation ' \
-              u'abstract:\n{1}.'.format(six.u(db_abstract), six.u(page_abstract_text.text))
+              u'abstract:\n{1}.'.format(db_abstract, page_abstract_text.text)
 
         else:
           logging.info('No Abstract listed in invitation...')

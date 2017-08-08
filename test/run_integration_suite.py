@@ -51,10 +51,9 @@ try:
   suite.addTests(loader.loadTestsFromName('frontend.test_workflow'))
 
   runner = unittest.TextTestRunner(verbosity=3)
+  result = runner.run(suite)
 except Exception as e:
   pprint(e)
-
 finally:
-  result = runner.run(suite)
   pprint(result.failures)
   pprint(result.errors)

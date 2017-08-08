@@ -6,7 +6,7 @@ Page object definition for the Cover Letter card
 import hashlib
 import logging
 import os
-import six.moves.urllib.parse as urllib
+import urllib
 
 import time
 from selenium.webdriver.common.by import By

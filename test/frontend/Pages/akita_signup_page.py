@@ -4,7 +4,7 @@
 Page Object Model for the Akita Login page.
 """
 
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 

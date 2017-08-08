@@ -9,7 +9,6 @@ import random
 import re
 import tempfile
 from time import sleep
-import six
 import os
 import time
 
@@ -238,7 +237,7 @@ class PlosPage(object):
     try:
       text = text.replace(u'\xa0', u' ')
     except UnicodeDecodeError:
-      text = six.u(text)
+      text = text
       text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 

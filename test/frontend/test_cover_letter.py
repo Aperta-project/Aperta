@@ -7,7 +7,7 @@ This test case validates the Cover Letter Task.
 import logging
 import random
 
-import six.moves.urllib.parse as urllib
+import urllib
 
 import time
 

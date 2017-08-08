@@ -10,7 +10,6 @@ import logging
 import os
 import random
 import time
-import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
@@ -95,7 +94,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = six.u(manuscript_title)
+    manuscript_title = manuscript_title
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])
@@ -190,7 +189,7 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = six.u(manuscript_title)
+    manuscript_title = manuscript_title
     dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()

@@ -5,7 +5,7 @@ Page object definition for the Figures card
 """
 import logging
 import time
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 

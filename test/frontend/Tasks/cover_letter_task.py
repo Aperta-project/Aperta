@@ -6,7 +6,7 @@ import random
 import logging
 import time
 import re
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 

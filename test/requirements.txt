@@ -11,6 +11,5 @@ selenium==3.4.3
 teamcity-messages==1.18
 python-dateutil==2.6.1
 pytz==2017.2
-six==1.10.0
 -e git://github.com/testlabauto/loremipsum.git#egg=loremipsum
 

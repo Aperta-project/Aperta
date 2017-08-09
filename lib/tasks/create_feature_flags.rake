@@ -15,6 +15,7 @@ task 'create_feature_flags': :environment do
     "CORRESPONDENCE",
     "REVIEW_DUE_DATE",
     "CAS_PHASED_SIGNUP",
-    "CORRESPONDING_AUTHOR"
+    "CORRESPONDING_AUTHOR",
+    "KEEP_APEX_HTML"
   ]
 end

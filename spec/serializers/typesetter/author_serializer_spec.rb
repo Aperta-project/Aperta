@@ -90,6 +90,10 @@ describe Typesetter::AuthorSerializer do
     FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
   end
 
+  let!(:apex_html_flag) do
+    FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false
+  end
+
   it 'includes author fields' do
     expect(output.keys).to contain_exactly(
       :first_name,

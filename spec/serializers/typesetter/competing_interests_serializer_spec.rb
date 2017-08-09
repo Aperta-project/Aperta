@@ -20,6 +20,7 @@ describe Typesetter::CompetingInterestsSerializer do
     )
   end
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
   let(:output) { serializer.serializable_hash }
 
   it 'has competing interests fields' do

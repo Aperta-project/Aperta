@@ -64,7 +64,7 @@ class PaperTrackerPage(AuthenticatedPage):
   # POM Actions
 
   @staticmethod
-  def _get_paper_list(journal_ids, sort_by='id', reverse=False):
+  def _get_paper_list(journal_ids, sort_by='short_doi', reverse=False):
     """
     Aux function to retrieve papers displayed on Paper Tracker
     :param journal_ids: Iterable with all journals id
@@ -72,7 +72,7 @@ class PaperTrackerPage(AuthenticatedPage):
     :param reverse: Boolean value to indicate sort order (False: Ascending, True: Descending)
     :return: A list with all paper data
     """
-    sort_by_d = {'id': 0,
+    sort_by_d = {'short_doi': 0,
                  'title': 1,
                  'doi': 2,
                  'submitted_at': 3,
@@ -85,10 +85,10 @@ class PaperTrackerPage(AuthenticatedPage):
     for journal in journal_ids:
       journal_papers += PgSQL().query('SELECT short_doi, title, doi, submitted_at, '
                                       'first_submitted_at, paper_type, publishing_state '
-                                     'FROM papers '
-                                     'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
-                                     'AND submitted_at IS NOT NULL '
-                                     'ORDER BY papers.submitted_at ASC;', (journal, 'unsubmitted'))
+                                      'FROM papers '
+                                      'WHERE papers.journal_id IN (%s) AND publishing_state != %s '
+                                      'AND submitted_at IS NOT NULL '
+                                      'ORDER BY papers.submitted_at ASC;', (journal, 'unsubmitted'))
 
 
     for paper in journal_papers:
@@ -268,11 +268,12 @@ class PaperTrackerPage(AuthenticatedPage):
       logging.info(total_count)
     return total_count, journal_ids
 
-  def validate_table_presentation_and_function(self, total_count, journal_ids):
+  def validate_table_presentation_and_function(self, total_count, journal_ids, user_type):
     """
     Check table content and sorting
     :param total_count: Integer with number of papers
     :param journal_ids: List with journal ids
+    :param user_type: the user who is running the test - used to determine journal access
     :return: None
     """
     title_th = self._get(self._paper_tracker_table_title_th)
@@ -312,8 +313,6 @@ class PaperTrackerPage(AuthenticatedPage):
         for paper in journal_papers:
           submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
-      # only trouble is this pukes on the none type objects for papers that are unsubmitted but in
-      # other states (withdrawn)
       submitted_papers = sorted(submitted_papers,
                                 key=lambda x: x[3],
                                 reverse=False)
@@ -338,8 +337,9 @@ class PaperTrackerPage(AuthenticatedPage):
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       for count, row in enumerate(table_rows):
         if not db_papers[count][3]:
-          logging.info(db_papers[count])
-          raise ValueError('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
+          logging.warning('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
+          logging.warning('Aborting validation of paper content ordering.')
+          break
         logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
@@ -466,7 +466,7 @@ class PaperTrackerPage(AuthenticatedPage):
             # ASK: Can we have an empty here?
             pass
         count += 1
-
+      self._wait_for_element(self._get(self._paper_tracker_table_tbody_he), multiplier=2)
       handedits = self._get(self._paper_tracker_table_tbody_he)
       page_hes_by_role = handedits.text.split('\n')
       for handeditor in page_hes_by_role:
@@ -554,7 +554,7 @@ class PaperTrackerPage(AuthenticatedPage):
 
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
       he_th.click()
-      time.sleep(1)
+      time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
       final_he = self._get(self._paper_tracker_table_tbody_he).text
@@ -659,15 +659,17 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_title = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
+      logging.info('Found {0} on page, searching for result in db.'.format(paper_tracker_title))
       papers = self._get_paper_list(journal_ids, sort_by='title')
       db_title = papers[0][1].strip()
       db_title = self.get_text(db_title)
-
       # Split both to eliminate differences in whitespace
-      paper_tracker_title = paper_tracker_title.split()
-      db_title = db_title.split()
+      # paper_tracker_title = paper_tracker_title.split()
+      # db_title = db_title.split()
       assert paper_tracker_title == db_title, \
-          'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
+          'Title in page: {0} != Title in DB: {1} for row: {2}'.format(paper_tracker_title,
+                                                                       db_title,
+                                                                       count)
 
       logging.info('Sorting by Title DESC')
       title_th = self._get(self._paper_tracker_table_title_th).find_element_by_tag_name('a')
@@ -676,18 +678,30 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_title = (
           By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       paper_tracker_title = self._get(self._paper_tracker_table_tbody_title).text
-      papers = self._get_paper_list(journal_ids, sort_by='title', reverse=True)
+      # papers = self._get_paper_list(journal_ids, sort_by='title', reverse=True)
       paper_tracker_title = paper_tracker_title.strip()
-      db_title = papers[0][1].strip()
-      db_title = self.get_text(db_title)
-      if (str(type(paper_tracker_title)) == "<type 'unicode'>") and (str(type(db_title)) == "<type 'unicode'>") :
-        # Split both to eliminate differences in whitespace
-        paper_tracker_title = paper_tracker_title.split()
-        db_title = db_title.split()
-        assert paper_tracker_title == db_title, \
-            'Title in page: {0} != Title in DB: {1}'.format(paper_tracker_title, db_title)
+      # The title validation ends up being a rather difficult animal because the ordering presented
+      #  in the GUI is actually a complex sort in the descending case of title desc and short_doi
+      #  ascending.
+      if user_type == 'super_admin_login':
+        db_papers = PgSQL().query('SELECT title '
+                                  'FROM papers '
+                                  'AND publishing_state != \'unsubmitted\' '
+                                  'ORDER BY title DESC, short_doi ASC;')
       else:
-        raise TypeError('Database title or Page title are not both unicode objects')
+        db_papers = PgSQL().query('SELECT title '
+                                  'FROM papers '
+                                  'WHERE journal_id in (%s) '
+                                  'AND publishing_state != \'unsubmitted\' '
+                                  'ORDER BY title DESC, short_doi ASC '
+                                  'LIMIT 1;', (journal_ids[0],))
+      db_title = db_papers[0][0].strip()
+      db_title = self.get_text(db_title)
+
+      assert paper_tracker_title == db_title, \
+          'Title in page: {0} != Title in DB: {1} for row: {2}'.format(paper_tracker_title,
+                                                                       db_title,
+                                                                       count)
 
   def _validate_current_sort(self, journal_ids, sort_by='', reverse=False):
     """
@@ -706,6 +720,7 @@ class PaperTrackerPage(AuthenticatedPage):
     pt_short_doi = paper_tracker_ms_id.get_attribute('href').split('/')[-1]
     papers = self._get_paper_list(journal_ids, sort_by=sort_by, reverse=reverse)
     db_id = papers[0][0]
+    logging.info(db_id)
     assert pt_short_doi == db_id, 'ID in page: {0} != ID in DB: {1}'.format(pt_short_doi, db_id)
 
   @staticmethod

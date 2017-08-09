@@ -36,7 +36,7 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def test_validate_components_styles(self):
+  def rest_validate_components_styles(self):
     """
     test_admin: Validate elements and styles for the base Admin page
     :return: void function
@@ -54,7 +54,7 @@ class ApertaAdminTest(CommonTest):
     adm_wf_page.validate_journal_block_display(user_type['user'])
     adm_wf_page.validate_nav_toolbar_elements(user_type)
 
-  def test_validate_user_search(self):
+  def rest_validate_user_search(self):
     """
     test_admin: Validate the function of the base Admin page user search function
     :return: void function
@@ -72,7 +72,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Searching user: {0}'.format(user))
     adm_users_page.validate_search_edit_user(user)
 
-  def test_validate_add_new_journal(self):
+  def rest_validate_add_new_journal(self):
     """
     test_admin: Validate the elements, styles and process of adding a new journal.
     This test stops short of creating a new journal
@@ -104,6 +104,7 @@ class ApertaAdminTest(CommonTest):
     adm_settings_page.page_ready()
     adm_settings_page.validate_settings_pane('All My Journals')
     journal = adm_settings_page.select_journal(regular=True)
+    logging.info(journal)
     adm_settings_page.validate_edit_journal(journal)
 
 if __name__ == '__main__':

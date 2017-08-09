@@ -107,7 +107,7 @@ class AkitaSignupPage(PlosPage):
     signup_urlform = self.get_current_url()
     signup_urlform = signup_urlform.split('=')[1]
     environment_url = environment_url.split('users')[0]
-    signup_urlform = urllib.unquote(signup_urlform)
+    signup_urlform = urllib.parse.unquote(signup_urlform)
     assert environment_url in signup_urlform, environment_url + ' not found in ' + signup_urlform
 
   def enter_login_field(self, email):

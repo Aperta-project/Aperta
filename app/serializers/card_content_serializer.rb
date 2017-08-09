@@ -12,6 +12,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :value_type,
              :editor_style,
              :allow_annotations,
+             :required_field,
              :default_answer_value,
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value

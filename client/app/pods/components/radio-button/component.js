@@ -3,7 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'input',
   type: 'radio',
-  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled', 'data-test-selector:data-test-selector'],
+  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled', 'content.isRequired:required', 'aria-required', 'data-test-selector:data-test-selector'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
 
   value: null,
   selection: null,

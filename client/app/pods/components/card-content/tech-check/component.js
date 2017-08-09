@@ -21,7 +21,6 @@ export default Ember.Component.extend({
       sendbackAnswers.invoke('save');
     }
   },
-
   actions: {
     sendbackChanged(sendbackAnswer) {
       let techCheckAnswer = this.get('answer');

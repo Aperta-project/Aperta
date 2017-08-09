@@ -3,7 +3,8 @@ import Ember from 'ember';
 const { computed, observer, on } = Ember;
 
 export default Ember.Component.extend({
-  attributeBindings: ['contenteditable', 'placeholder', 'disabled'],
+  attributeBindings: ['contenteditable', 'placeholder', 'disabled', 'content.isRequired:required', 'aria-required'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
   editable: true,
   placeholder: '',
   plaintext: false,

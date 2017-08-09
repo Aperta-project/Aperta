@@ -3,7 +3,6 @@
 <div class="task-main-content reviewer-form">
   <div class="reviewer-report-wrapper">
     {{#if task.isSubmitted}}
-      {{reviewer-report-status report=currentReviewerReport}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
       {{reviewer-report-status report=currentReviewerReport}}

@@ -538,7 +538,7 @@ class PaperTrackerPage(AuthenticatedPage):
       logging.info('Sorting by Handling Editor ASC')
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
       he_th.click()
-      time.sleep(1)
+      time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
       original_he = self._get(self._paper_tracker_table_tbody_he).text
@@ -546,7 +546,7 @@ class PaperTrackerPage(AuthenticatedPage):
       logging.info('Sorting by Handling Editor DESC')
       he_th = self._get(self._paper_tracker_table_he_th).find_element_by_tag_name('a')
       he_th.click()
-      time.sleep(1)
+      time.sleep(2)
       self._paper_tracker_table_tbody_he = (
         By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-handling-editor-column"]')
       sorted_he = self._get(self._paper_tracker_table_tbody_he).text

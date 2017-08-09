@@ -32,6 +32,14 @@ module CustomCard
         []
       end
 
+      def self.excluded_discussion_view_permissions
+        []
+      end
+
+      def self.excluded_discussion_edit_permissions
+        []
+      end
+
       def self.publish
         # true:  auto publish card when created
         # false: leave card as a draft

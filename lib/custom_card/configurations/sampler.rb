@@ -19,6 +19,14 @@ module CustomCard
         :all
       end
 
+      def self.excluded_discussion_view_permissions
+        # [Role::REVIEWER_ROLE]
+      end
+
+      def self.excluded_discussion_edit_permissions
+        # [Role::ACADEMIC_EDITOR_ROLE]
+      end
+
       def self.publish
         true
       end

@@ -103,7 +103,7 @@ describe XmlCardLoader do
       <<-XML
         <card required-for-submission='false' workflow-display-only='true'>
           <content content-type='display-children'>
-            <content ident='foo' content-type='short-input' value-type='text'>
+            <content ident='foo' content-type='short-input' value-type='text' required-field='false'>
               <text>foo</text>
               <validation validation-type='string-match'>
                 <error-message>First Validation</error-message>
@@ -199,7 +199,7 @@ describe XmlCardLoader do
       context 'radio' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1">
+            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1" required-field="false">
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>
@@ -222,7 +222,7 @@ describe XmlCardLoader do
         let(:label) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='check-box' value-type='boolean'>
+            <content content-type='check-box' value-type='boolean' required-field='false'>
               <text>#{text}</text>
               <label>#{label}</label>
             </content>
@@ -272,7 +272,7 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' default-answer-value="foo">
+            <content content-type='short-input' value-type='text' default-answer-value="foo" required-field="false">
               <text>#{text}</text>
             </content>
           XML
@@ -292,7 +292,7 @@ describe XmlCardLoader do
       context 'dropdown' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='dropdown'>
+            <content ident='foo' value-type='text' content-type='dropdown' required-field="false">
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>

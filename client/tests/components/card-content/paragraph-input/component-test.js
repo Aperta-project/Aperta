@@ -10,7 +10,6 @@ moduleForComponent(
     integration: true,
     beforeEach() {
       registerCustomAssertions();
-      this.set('actionStub', function() {});
     }
   }
 );
@@ -19,7 +18,6 @@ let template = hbs`{{card-content/paragraph-input
 answer=answer
 content=content
 disabled=disabled
-valueChanged=(action actionStub)
 }}`;
 test(`it displays the text from content.text in a <label>`, function(assert) {
   this.set('content', {text: 'Foo'});
@@ -40,16 +38,6 @@ test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);
   assert.textPresent('.format-input', 'Bar');
-});
-test(`it sends 'valueChanged' on keyup`, function(assert) {
-  assert.expect(1);
-  this.set('answer', {value: 'Old'});
-  this.set('actionStub', function(newVal) {
-    assert.equal(newVal, 'New', 'it calls the action with the new value');
-  });
-  this.render(template);
-  this.$('div[contenteditable]').html('New');
-  this.$('div[contenteditable]').trigger('keyup');
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];

@@ -241,9 +241,10 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.string   "editor_style"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -826,7 +827,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   null: false
+    t.string   "destination", default: "apex", null: false
     t.string   "service_id"
   end
 

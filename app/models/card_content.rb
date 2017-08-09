@@ -115,17 +115,37 @@ class CardContent < ActiveRecord::Base
   end
 
   def content_attrs
-    {
-      'ident' => ident,
-      'content-type' => content_type,
-      'value-type' => value_type,
-      'editor-style' => editor_style,
-      'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value,
-      'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions,
-      'allow-annotations' => allow_annotations
-    }.compact
+    attrs =
+      {
+        'ident' => ident,
+        'content-type' => content_type,
+        'value-type' => value_type,
+        'required-field' => required_field,
+        'visible-with-parent-answer' => visible_with_parent_answer,
+        'default-answer-value' => default_answer_value
+      }.merge(additional_content_attrs).compact
+  end
+
+  def additional_content_attrs
+    case content_type
+    when 'file-uploader'
+      {
+        'allow-multiple-uploads' => allow_multiple_uploads,
+        'allow-file-captions' => allow_file_captions,
+        'allow-annotations' => allow_annotations
+      }
+    when 'short-input', 'paragraph-input'
+      {
+        'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations
+      }
+    when 'radio', 'check-box', 'dropdown', 'tech-check'
+      {
+        'allow-annotations' => allow_annotations
+      }
+    else
+      {}
+    end
   end
 
   # rubocop:disable Metrics/AbcSize

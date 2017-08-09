@@ -4,10 +4,11 @@ export default Ember.Component.extend({
   tagName: 'input',
   type: 'checkbox',
   classNameBindings: [':ember-checkbox', 'class', 'faIcon'],
-  attributeBindings: 'type checked indeterminate disabled tabindex name autofocus form value'.w(),
+  attributeBindings: 'type checked indeterminate disabled tabindex name autofocus form value content.isRequired:required aria-required'.w(),
   checked: false,
   disabled: false,
   indeterminate: false,
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
 
   _setupOnChange: Ember.on('init', function() {
     this.on('change', this, this._updateElementValue);

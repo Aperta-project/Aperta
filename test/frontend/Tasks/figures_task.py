@@ -456,9 +456,10 @@ class FiguresTask(BaseTask):
         page_fig_name = figure_block.find_element(*self._figure_dl_link)
         count += 1
         if count > 10:
-          raise(StandardError, 'Figure block not populating correctly - not getting a figure name')
+          raise(Exception, 'Figure block not populating correctly - not getting a figure name')
       final_order.append(page_fig_name.text)
     original_order.sort()
+    time.sleep(1)
     assert original_order == final_order, 'Original Order sorted: {0} != ' \
                                           'Final Order{1}'.format(original_order, final_order)
     self._validate_striking_image_set(figure)

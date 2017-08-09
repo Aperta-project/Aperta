@@ -85,6 +85,5 @@
       "../engines/tahi-assign_team/client"
     ]
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

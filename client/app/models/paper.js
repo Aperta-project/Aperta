@@ -223,20 +223,6 @@ export default DS.Model.extend({
 
   hasAnyError: computed.equal('file.status', 'error'),
 
-  authorHasErrorOnPreSubmission: computed('isInSubmittableState', 'file.status', 'currentUserRoles', function() {
-    return this.stateHasErrorsForRole('isInSubmittableState', ['Creator']);
-  }),
-
-  authorHasErrorOnSubmission: computed('isPartialSubmittedState', 'file.status', 'currentUserRoles', function() {
-    return this.stateHasErrorsForRole('isPartialSubmittedState', ['Creator']);
-  }),
-
-  staffEditorHasErrorOnSubmittedAndEditable: computed('currentUserRoles','isPartialSubmittedState', 'editable',
-  'file.status', function(){
-    let roleArray = ['Internal Editor', 'Staff Admin', 'Production Staff'];
-    return this.stateHasErrorsForRole('isPartialSubmittedState', roleArray) && this.get('editable');
-  }),
-
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
       return "initial";
@@ -289,14 +275,6 @@ export default DS.Model.extend({
   hasSimilarityChecks: computed.notEmpty('similarityChecks'),
 
   restless: Ember.inject.service(),
-
-  stateHasErrorsForRole(state, roleArray) {
-    return this.get(state) &&
-    this.get('file.status') ===  'error'
-    && roleArray.any((role) => {
-      return this.get('currentUserRoles').includes(role);
-    });
-  },
 
   atMentionableStaffUsers() {
     const url = '/api/at_mentionable_users';

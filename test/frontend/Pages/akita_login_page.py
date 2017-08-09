@@ -85,9 +85,9 @@ class AkitaLoginPage(PlosPage):
     Click the Sign-In button
     :return: None
     """
-    cas_signin = self._get(self._signin_button)
     for x in range(0, 5):
       try:
+        cas_signin = self._get(self._signin_button)
         cas_signin.click()
         return
       except selenium.common.exceptions.TimeoutException as te:

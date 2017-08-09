@@ -723,10 +723,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       title_and_abstract_task = TitleAbstractTask(self._driver)
       short_doi = title_and_abstract_task.get_short_doi()
       title_and_abstract_task.set_abstract(short_doi)
-      time.sleep(1)
+      time.sleep(1) # added because set abstract can sometimes return before the tinymce control is ready
       base_task.click_completion_button()
       self.click_covered_element(task)
-      time.sleep(2)
+      time.sleep(2) # added sleep because after this call, submissions were failing because title and abstract was not done closing
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close

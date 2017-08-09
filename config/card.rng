@@ -10,7 +10,8 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier
+    
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
   <define name="possible-value">
     <element name="possible-value">
@@ -432,6 +433,18 @@
       </interleave>
     </element>
   </define>
+  <define name="if">
+    <element name="content">
+      <attribute name="content-type">
+        <value>if</value>
+      </attribute>
+      <attribute name="condition"/>
+      <ref name="content"/>
+      <optional>
+        <ref name="content"/>
+      </optional>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -447,6 +460,7 @@
       <ref name="date-picker"/>
       <ref name="tech-check"/>
       <ref name="list-content"/>
+      <ref name="if"/>
     </choice>
   </define>
   <start>

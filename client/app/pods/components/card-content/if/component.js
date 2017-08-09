@@ -19,14 +19,16 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    let conditionName = this.get('conditionName');
-    let conditionKey = `computedScenario.${conditionName}`;
-    this.getConditionValue();
-    this.addObserver(conditionKey, function() {
-      Ember.run(() => {
-        this.getConditionValue();
+    if (!this.get('preview')) {
+      let conditionName = this.get('conditionName');
+      let conditionKey = `computedScenario.${conditionName}`;
+      this.getConditionValue();
+      this.addObserver(conditionKey, function() {
+        Ember.run(() => {
+          this.getConditionValue();
+        });
       });
-    });
+    }
   },
 
   getConditionValue() {

@@ -95,7 +95,7 @@ class ReviewerReportTask(BaseTask):
     :return void function
     """
     # First the global elements/sytles
-    self.validate_common_elements_styles()
+    #self.validate_common_elements_styles() # not working - button.task-completed is no longer there
     accrb = self._get(self._q1_accept_radio)
     self.validate_radio_button(accrb)
     acclbl = self._get(self._q1_accept_label)
@@ -255,7 +255,7 @@ class ReviewerReportTask(BaseTask):
       assert u'Please refer to our reviewer guidelines for detailed instructions.' in \
           review_note.text
       assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-'\
-          'for-publication">referee</a>' in review_note.get_attribute('innerHTML')
+          'for-publication">reviewer</a>' in review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
       q1, q2, q3, q4, q5, q6 = question_list
       assert q1.text == u'Please provide your publication recommendation:', q1.text
@@ -263,18 +263,24 @@ class ReviewerReportTask(BaseTask):
           u'influence your review?', q2.text
       assert q3.text == u'(Optional) If you\'d like your identity to be revealed to the authors, '\
           u'please include your name here.', q3.text
-      assert q4.text == u'Add your comments to authors below.', q4.text
+      assert q4.text == u'Please add your review comments to authors below.', q4.text
       assert q5.text == u'(Optional) If you have any additional confidential comments to the editor,'\
           u' please add them below.', q5.text
       assert q6.text == u'If the manuscript does not meet the standards of PLOS Biology, do you '\
-          u'think it is suitable for another PLOS journal?', q6.text
+          u'think it is suitable for another PLOS journal with only minor revisions?', q6.text
       qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential'\
           u' interests that you feel the Editor should be aware of when considering your review.', \
           qh2.text
       assert qh3.text == u'Your name and review will not be published with the manuscript.', \
           qh3.text
-      assert qh4.text == u'These comments will be transmitted to the author.', qh4.text
+      assert u'In reviewing the manuscript, please comment on the novelty and ' \
+             u'significance of the findings, its technical merit, and the experimental ' \
+             u'and analytical design. Please also comment on the strength and ' \
+             u'sufficiency of the statistical analysis, on the supplementary information, ' \
+             u'and whether all data needed to replicate the study are available. ' \
+             u'If you request revisions, please indicate which of your proposed revisions ' \
+             u'are *essential* to support the current conclusions.' in qh4.text, qh4.text
       assert qh5.text == u'Additional comments may include concerns about dual publication, '\
           u'research or publication ethics.\n\nThese comments will not be transmitted to the '\
           u'authors.', qh5.text
@@ -284,10 +290,10 @@ class ReviewerReportTask(BaseTask):
                          u'transfer of suitable manuscripts between journals, and we appreciate ' \
                          u'your support.'.format(journal), qh6.text
     else:
-      assert u'Please refer to our referee guidelines and information on our article ' \
+      assert u'Please refer to our reviewer guidelines and information on our article ' \
                          u'types.' in review_note.text, review_note.text
-      assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-' \
-             'for-publication" target="_blank">referee</a>' in \
+      assert '<a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#' \
+             'loc-reviewing-magazine-submissions" target="_blank">reviewer guidelines</a>' in \
              review_note.get_attribute('innerHTML'), review_note.get_attribute('innerHTML')
       question_list = self._gets(self._questions)
       q1, q2, q3, q4, q5, q6 = question_list
@@ -297,22 +303,23 @@ class ReviewerReportTask(BaseTask):
       # APERTA-10621
       # assert q3.text == u'Is this manuscript suitable in principle for the magazine section of ' \
       #                   u'{0}?'.format(journal), q3.text
-      assert u'Is this manuscript suitable in principle for the magazine section of ' in q3.text, \
+      assert u'Please add your review comments in the box below.' in q3.text, \
           q3.text
-      assert q4.text == u'If previously unpublished data are included to support the conclusions,' \
+      assert q4.text == u'(Optional) If previously unpublished data are included to support the conclusions,' \
                         u' please note in the box below whether:', q4.text
       assert q5.text == u'(Optional) Please offer any additional confidential comments to the ' \
-                        u'editor', q5.text
-      assert q6.text == u'(Optional) If you\'d like your identity to be revealed to the authors, ' \
+                        u'editor.', q5.text
+      assert q6.text == u'(Optional) If you’d like your identity to be revealed to the authors, ' \
                         u'please include your name here.', q6.text
       qh2, qh3, qh4, qh5, qh6 = self._gets(self._questions_help)
       assert qh2.text == u'Please review our Competing Interests policy and declare any potential' \
                          u' interests that you feel the Editor should be aware of when ' \
-                         u'considering your review. If you have no competing interests, please ' \
-                         u'write: "I have no competing interests."', qh2.text
-      assert qh3.text == u'Please refer to our referee guidelines and information on our article ' \
-                         u'types.\nSubmit your detailed comments in the box below. These will be ' \
-                         u'communicated to the authors.', qh3.text
+                         u'considering your review.', qh2.text
+      assert qh3.text == u'Do you think this manuscript is suitable, in principle, for the magazine ' \
+                         u'section of PLOS Biology? What recommendations do you have for revisions ' \
+                         u'that might make the manuscript suitable?\nPlease refer to our reviewer ' \
+                         u'guidelines and information on our article types.\nYour review comments ' \
+                         u'will be communicated to the authors.', qh3.text
       assert qh4.text == u'The data have been generated rigorously with relevant controls, ' \
                          u'replication and sample sizes, if applicable.\nThe data provided ' \
                          u'support the conclusions that are drawn.', qh4.text

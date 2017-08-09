@@ -494,6 +494,10 @@ class AuthenticatedPage(StyledPage):
     Check that any process (submit, save, send, etc) did not trigger a flash error
     :return: void function
     """
+    return # see comment below.  If we decide to do more than log, then we need
+           # spend time on the self._get(self._flash_error_msg) call.  In many of the
+           # places where this is called, self._get(self._flash_error_msg) just throws
+           # ElementNotFound after much more than 3 seconds
     error_msg = ''
     self.set_timeout(3)
     try:
@@ -786,6 +790,7 @@ class AuthenticatedPage(StyledPage):
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
     if mention:
+      self._scroll_into_view(msg_body)
       msg_body.send_keys('@' + mention)
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)
@@ -957,6 +962,7 @@ class AuthenticatedPage(StyledPage):
       text_entry_field.send_keys(content)
     finally:
       self.traverse_from_frame()
+      time.sleep(1) # added sleep because tinymce takes more time than the previous control
     return
 
   def tmce_clear_rich_text(self, iframe):

@@ -5,7 +5,7 @@ Page object definition for the Figures card
 """
 import logging
 import time
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 
@@ -94,5 +94,5 @@ class FiguresCard(BaseCard):
     logging.info(page_fig_name_list)
     for figure in fig_list:
       # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
-      assert urllib.quote_plus(figure) in page_fig_name_list, \
-          '{0} not found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
+      assert urllib.parse.quote_plus(figure) in page_fig_name_list, \
+          '{0} not found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)

@@ -4,7 +4,7 @@
 import logging
 import os
 import time
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 
@@ -58,8 +58,8 @@ class SICard(BaseCard):
     :return: None
     """
     file_link = self._get(self._file_link)
-    assert file_link.text in urllib.quote_plus(data['file_name']), \
-        '{0} not in {1}'.format(file_link.text, urllib.quote_plus(data['file_name']))
+    assert file_link.text in urllib.parse.quote_plus(data['file_name']), \
+        '{0} not in {1}'.format(file_link.text, urllib.parse.quote_plus(data['file_name']))
 
   def validate_uploads(self, uploads):
     """

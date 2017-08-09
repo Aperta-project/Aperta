@@ -37,13 +37,15 @@ class ReviseManuscriptTask(BaseTask):
     # Without the following time, it grabs an empty string
     time.sleep(4)
     subtitle_1, subtitle_2, subtitle_3 = self._gets(self._subtitle)
-    assert subtitle_1.text == 'Response to reviewers', subtitle_1.text
+
     assert subtitle_2.text == 'Decision Letter', subtitle_2.text
+    assert subtitle_1.text == 'Response to reviewers', subtitle_1.text
+
     assert subtitle_3.text == 'Decision History', subtitle_3.text
     # APERTA-10618
     # decision_anchor_link = self._get(self._decision_letter_anchor_link)
     # assert decision_anchor_link.text == 'See Decision Letter below', decision_anchor_link.text
-    response_field_hint = self._get(self._response_field_help_text)
+    # response_field_hint = self._get(self._response_field_help_text)
     # APERTA-10618
     # expected_field_hint_text = 'Please upload an additional version of your manuscript that ' \
     #                           'highlights the changes you\'ve made. You may also upload your ' \
@@ -88,7 +90,7 @@ class ReviseManuscriptTask(BaseTask):
         self.get_rich_text_editor_instance('revise-overlay-response-field')
       self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=data['text'])
-
+      time.sleep(1) # this is to give tinymce more time (issue fix)
 
     self._get(self._save_btn).click()
     return None

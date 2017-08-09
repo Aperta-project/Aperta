@@ -49,12 +49,13 @@ class UploadManuscriptTest(CommonTest):
         'The task is opened and must be closed'
     # open to check style
     ms_page.click_task('Upload Manuscript')
+    time.sleep(1)
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
     upms.validate_styles()
     upms.click_completion_button()
     assert ms_page.is_task_marked_complete('Upload Manuscript'), \
-        'The task in not market as complete and it shoyld be completed'
+        'The task in not marked as complete and it should be completed'
 
   def test_upload_pdf_task(self):
     """
@@ -79,7 +80,9 @@ class UploadManuscriptTest(CommonTest):
     assert not ms_page.is_task_marked_complete('Upload Manuscript')
     assert not ms_page.is_task_open('Upload Manuscript')
     # open to check style
+    ms_page.complete_task('Title And Abstract')
     ms_page.click_task('Upload Manuscript')
+    time.sleep(1) # this was added as a bug fix so following steps don't fail
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
     upms.validate_styles(type_='pdf')

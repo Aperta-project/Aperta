@@ -644,7 +644,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
         task.click()
-      time.sleep(1)
+      time.sleep(3) #This sleep is probably also tinymce... Code after Response to Reviewers was failing because completing it took more time than allowed for.
     elif task_name == 'Supporting Info':
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()
@@ -672,7 +672,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
       self.click_covered_element(task)
-      time.sleep(.5)
+      time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
     elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
@@ -723,8 +723,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       title_and_abstract_task = TitleAbstractTask(self._driver)
       short_doi = title_and_abstract_task.get_short_doi()
       title_and_abstract_task.set_abstract(short_doi)
+      time.sleep(1) # added because set abstract can sometimes return before the tinymce control is ready
       base_task.click_completion_button()
       self.click_covered_element(task)
+      time.sleep(2) # added sleep because after this call, submissions were failing because title and abstract was not done closing
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',
                        'Ethics Statement', 'Reporting Guidelines'):
       # Complete Competing Interest data before mark close

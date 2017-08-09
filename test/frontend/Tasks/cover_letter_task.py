@@ -6,7 +6,7 @@ import random
 import logging
 import time
 import re
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.webdriver.common.by import By
 
@@ -157,6 +157,7 @@ class CoverLetterTask(BaseTask):
     # Gratuitous verification
     cvr_ltr_txt = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
     logging.info('Temporary Paper Title is: {0}'.format(cvr_ltr_txt))
+    time.sleep(1) #sleep added to give tinymce more time
     self.click_completion_button()
 
   def upload_letter(self, letter='random'):
@@ -173,7 +174,7 @@ class CoverLetterTask(BaseTask):
     input_selector = self._iget(self._upload_cover_letter_filename_input)
     input_selector.send_keys(fn)
     self._last_uploaded_letter_file = fn
-    formatted_file_name = urllib.quote_plus(fn.split("/")[-1])
+    formatted_file_name = urllib.parse.quote_plus(fn.split("/")[-1])
 
     # Wait until the uploaded item be loaded
     self._wait_for_element(self._get(self._uploaded_attachment_item))
@@ -229,6 +230,7 @@ class CoverLetterTask(BaseTask):
     # replace_file_input = uploaded_item.find_element_by_class_name(
     #   's3-file-uploader')
     replace_file_input.send_keys(fn)
+    time.sleep(3) #This sleep is to allow a file upload to process.
     expected_file_name = fn.split("/")[-1]
     return letter
 
@@ -297,7 +299,7 @@ class CoverLetterTask(BaseTask):
     # Generate MD5 hashes for original and downloaded file to compare if is the same
     original_file_md5 = hashlib.md5(
       open(os.path.join(original_working_dir + '/frontend/assets/coverletters/'
-                        + urllib.unquote_plus(original_file_path)), 'rb').read()).hexdigest()
+                        + urllib.parse.unquote_plus(original_file_path)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(newest_file, 'rb').read()).hexdigest()
 

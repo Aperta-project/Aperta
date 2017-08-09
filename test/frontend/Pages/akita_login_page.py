@@ -4,6 +4,10 @@
 Page Object Model for the Akita Login page.
 """
 
+import selenium
+import logging
+import time
+
 from selenium.webdriver.common.by import By
 
 from Base.PlosPage import PlosPage
@@ -81,5 +85,12 @@ class AkitaLoginPage(PlosPage):
     Click the Sign-In button
     :return: None
     """
-    cas_signin = self._get(self._signin_button)
-    cas_signin.click()
+    for x in range(0, 5):
+      try:
+        cas_signin = self._get(self._signin_button)
+        cas_signin.click()
+        return
+      except selenium.common.exceptions.TimeoutException as te:
+        logging.info(te)
+        time.sleep(2)
+

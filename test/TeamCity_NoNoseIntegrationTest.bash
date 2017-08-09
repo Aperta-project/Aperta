@@ -62,7 +62,7 @@ python -m frontend.test_initial_decision_card
 python -m frontend.test_initial_tech_check
 python -m frontend.test_invite_ae_card
 python -m frontend.test_invite_reviewers
-python -m frontend.test_journal_admin
+
 python -m frontend.test_login
 python -m frontend.test_manuscript_viewer
 python -m frontend.test_metadata_versioning

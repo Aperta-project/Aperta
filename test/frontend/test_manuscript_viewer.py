@@ -308,6 +308,7 @@ class ManuscriptViewerTest(CommonTest):
     upms.validate_ihat_conversions_success(timeout=45)
     data = {'attach': 2}
     manuscript_page.complete_task('Upload Manuscript')
+    manuscript_page.complete_task('Title And Abstract')
     manuscript_page.complete_task('Response to Reviewers', data=data)
     # Make new submission
     manuscript_page.click_submit_btn()

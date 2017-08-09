@@ -676,7 +676,7 @@ class ProfilePage(AuthenticatedPage):
         return
       logging.debug(u'{0}, {1}, {2}, {3}, {4}'.format(institution.text, department.text,
                                                       title.text, country.text, aff_email.text))
-    raise(ValueError, 'The expected affiliation was not found at all...')
+    assert False, 'The expected affiliation was not found at all...'
 
   def validate_no_affiliation(self, affiliation_definition_list):
     """

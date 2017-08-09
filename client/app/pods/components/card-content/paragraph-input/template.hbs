@@ -5,15 +5,17 @@
 
 {{#if isRichText}}
   {{rich-text-editor
-      editorStyle=content.editorStyle
-      name=ident
-      data-editor=ident
-      value=answer.value
-      hasErrors=answer.hasErrors
-      errorMessages=answer.readyIssuesArray
-      onContentsChanged=(action "valueChanged")
-      class=inputClassNames
-      disabled=disabled
+    editorStyle=content.editorStyle
+    name=ident
+    data-editor=ident
+    value=answer.value
+    hasErrors=answer.hasErrors
+    errorMessages=answer.readyIssuesArray
+    onContentsChanged=(action "valueChanged")
+    focusOut=(action "validate")
+    class=inputClassNames
+    disabled=disabled
+    hideError=hideError
   }}
 {{else}}
   {{format-input

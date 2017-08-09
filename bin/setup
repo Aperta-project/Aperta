@@ -48,6 +48,14 @@ def brew_install package, options=nil
   end
 end
 
+def npm_global_install package, options=nil
+  if system("npm list -g #{package} &>/dev/null")
+    puts "#{package} is already installed"
+  else
+    system "npm install -g #{package} #{options}"
+  end
+end
+
 def copy_template source, dest
   if File.exist?(dest)
     puts "Not copying from #{source} (#{dest} already exists)."
@@ -84,6 +92,7 @@ Dir.chdir APP_ROOT do
     system "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
     system "sudo apt-get install -y imagemagick nodejs wget redis-server postgresql qpdf"
   end
+  npm_global_install 'yarn'
   header 'Installing gems'
   system 'gem install bundler --conservative'
   system 'bundle install'

@@ -230,7 +230,7 @@ class CoverLetterTask(BaseTask):
     # replace_file_input = uploaded_item.find_element_by_class_name(
     #   's3-file-uploader')
     replace_file_input.send_keys(fn)
-    time.sleep(3)
+    time.sleep(3) #This sleep is to allow a file upload to process.
     expected_file_name = fn.split("/")[-1]
     return letter
 

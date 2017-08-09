@@ -1,4 +1,4 @@
-# A class for creating a validated manifest file for for apex export
+# A class for creating a validated manifest file for apex/router export
 class ExportManifest
   class InvalidManifest < StandardError; end
 
@@ -40,6 +40,6 @@ class ExportManifest
   private
 
   def delivery_id_key
-    @destination == 'apex' ? :apex_delivery_id : :export_delivery_id
+    @destination == 'apex' ? :delivery_id : :export_delivery_id
   end
 end

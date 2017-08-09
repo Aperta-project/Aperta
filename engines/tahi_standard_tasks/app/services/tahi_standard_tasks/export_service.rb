@@ -33,9 +33,10 @@ module TahiStandardTasks
 
     def make_delivery!
       while_notifying_delivery do
-        @packager = ApexPackager.new paper,
+        @packager = ExportPackager.new paper,
                                     archive_filename: package_filename,
-                                    apex_delivery_id: export_delivery.id
+                                    delivery_id: export_delivery.id,
+                                    destination: export_delivery.destination
 
         if destination == 'apex'
           upload_to_ftp(packager.zip_file, package_filename)

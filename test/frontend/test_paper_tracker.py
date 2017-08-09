@@ -22,7 +22,6 @@ __author__ = 'jgray@plos.org'
 
 
 users = editorial_users
-users.append(staff_admin_login)
 
 
 @MultiBrowserFixture
@@ -66,7 +65,7 @@ class ApertaPaperTrackerTest(CommonTest):
     pt_page = PaperTrackerPage(self.getDriver())
     (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type['user'])
     logging.info('Total count is {0} for {1}'.format(total_count, journals_list))
-    pt_page.validate_table_presentation_and_function(total_count, journals_list)
+    pt_page.validate_table_presentation_and_function(total_count, journals_list, user_type)
 
   def test_validate_paper_tracker_search(self):
     """

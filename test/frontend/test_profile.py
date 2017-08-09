@@ -32,7 +32,7 @@ class ApertaProfileTest(CommonTest):
      - reset password
   """
 
-  def test_validate_components_styles(self):
+  def test_smoke_validate_components_styles(self):
     """
     test_profile: Validates elements and styles of the profile page
     :return: void function
@@ -52,7 +52,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_nav_toolbar_elements(profile_user)
     profile_page.clear_transients()
 
-  def test_avatar(self):
+  def test_core_avatar(self):
     """
     Tests editing of the avatar image for a user profile
     :return:
@@ -71,7 +71,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.validate_image_upload(profile_user)
     profile_page.clear_transients()
 
-  def test_add_affiliations(self):
+  def test_core_add_affiliations(self):
     """
     test_profile: validate implemented validations for add affiliation
                   validate add new affiliation
@@ -98,7 +98,7 @@ class ApertaProfileTest(CommonTest):
     # Clean up after ourselves so we don't get too many pre-existing affiliations
     profile_page.clear_transients()
 
-  def test_edit_affiliations(self):
+  def test_core_edit_affiliations(self):
     """
     test_profile: validate edit existing affiliation
     :return: void function
@@ -130,7 +130,7 @@ class ApertaProfileTest(CommonTest):
     # clean up after
     profile_page.clear_transients()
 
-  def test_delete_affiliations(self):
+  def test_core_delete_affiliations(self):
     """
     test_profile: validate delete existing affiliation
     :return: void function

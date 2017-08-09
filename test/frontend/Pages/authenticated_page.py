@@ -790,6 +790,7 @@ class AuthenticatedPage(StyledPage):
     msg_body.send_keys(msg + ' ')
     time.sleep(1)
     if mention:
+      self._scroll_into_view(msg_body)
       msg_body.send_keys('@' + mention)
       time.sleep(1)
       msg_body.send_keys(Keys.ARROW_DOWN + Keys.ENTER)

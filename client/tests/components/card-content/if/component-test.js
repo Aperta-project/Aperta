@@ -57,7 +57,7 @@ test(`it chooses then or else based on the condition`, function(assert) {
 });
 
 let cardContentTemplate = hbs`
-{{card-content content=content scenario=scenario owner="foo"}}`;
+{{card-content content=content scenario=scenario preview=preview owner="foo"}}`;
 
 test(`can reference a scenario from a parent view instead of having it passed in directly`, function(assert) {
   let content = parent.create({
@@ -73,6 +73,7 @@ test(`can reference a scenario from a parent view instead of having it passed in
     ]
   });
 
+  this.set('preview', false);
   this.set('scenario', {});
   this.set('scenario.isEditable', true );
   this.set('content', content);
@@ -83,3 +84,26 @@ test(`can reference a scenario from a parent view instead of having it passed in
   this.set('scenario.isEditable', false );
   assert.elementFound('.card-content-paragraph-input', 'found else content');
 });
+
+test(`ignores the scenario when preview is true, and shows a toggle`, function(assert) {
+  let content = parent.create({
+    children: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Child 1'
+      }),
+      FactoryGuy.make('card-content', {
+        contentType: 'paragraph-input',
+        text: 'Child 2'
+      })
+    ]
+  });
+
+  this.set('preview', true);
+  this.set('content', content);
+  this.render(cardContentTemplate);
+
+  assert.elementFound('.if-preview', 'found preview');
+
+});
+

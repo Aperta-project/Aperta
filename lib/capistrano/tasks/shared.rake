@@ -96,12 +96,6 @@ namespace :nginx do
 end
 
 namespace :cleanup do
-  desc "Cleanup node temp files" # Prevents running out of inodes
-  task :tmp do
-    on release_roles(fetch(:assets_roles)) do
-      execute :rm, '-rf', '/tmp/npm-*'
-    end
-  end
   desc "Cleanup database dump files"
   task :dumps do
     on release_roles(fetch(:assets_roles)) do
@@ -109,7 +103,6 @@ namespace :cleanup do
         with rails_env: fetch(:rails_env) do
           execute :rake, "db:dump:cleanup"
         end
-
       end
     end
   end
@@ -181,5 +174,4 @@ before "deploy:migrate", "deploy:maybe_schema_load"
 after 'deploy:publishing', 'deploy:restart'
 after 'deploy:restart', 'deploy:check_statuses'
 
-after 'deploy:finished', 'cleanup:tmp'
 after 'deploy:finished', 'cleanup:dumps'

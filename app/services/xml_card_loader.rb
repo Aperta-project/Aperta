@@ -110,6 +110,7 @@ class XmlCardLoader
       content_type: content.attr_value('content-type'),
       default_answer_value: content.attr_value('default-answer-value'),
       ident: content.attr_value('ident'),
+      required_field: content.attr_value('required-field'),
       label: content.tag_text('label'),
       instruction_text: content.tag_text('instruction-text'),
       possible_values: content.fetch_values('possible-value', [:label, :value]),

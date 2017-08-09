@@ -1,0 +1,20 @@
+{{#if hasBlock}}
+  {{yield (hash
+  content=content
+  disabled=disabled
+  owner=owner
+  answer=answer
+  preview=preview
+  answerChanged=answerChanged
+  valueChanged=(action 'updateAnswer'))}}
+{{else}}
+  {{component
+  templateName
+  content=content
+  disabled=disabled
+  owner=owner
+  answer=answer
+  preview=preview
+  answerChanged=answerChanged
+  valueChanged=(action 'updateAnswer')}}
+{{/if}}

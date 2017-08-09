@@ -14,9 +14,11 @@ export default DS.Model.extend({
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
+  requiredField: DS.attr('boolean'),
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
+  defaultAnswerValue: DS.attr(),
   order: DS.attr('number'),
   text: DS.attr('string'),
   instructionText: DS.attr('string'),
@@ -28,11 +30,34 @@ export default DS.Model.extend({
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
 
+
+  // The unusual nature of the sendback component (being reliant on other card-content within the context
+  // of its rendering and behavior, as well as their order) had the side effect of adding answerContainer
+  // element (which is used to flex-grid up the annotations component)
+  // being wrapped around card-content that we actually wanted to be in-line. After deciding between
+  // either having this be track on the card-content record in the DB or have it be a hard-coded override on the
+  // model, it made sense to add it there to reduce complexity and because it's purely a display concern.
+  overrideAnswerContainerOverrideables: ['sendback-reason'],
+
+  overrideAnswerContainer: Ember.computed('contentType', function(){
+    return this.get('overrideAnswerContainerOverrideables').includes(this.get('contentType'));
+  }),
+
   hasInstructionText: Ember.computed.notEmpty('instructionText'),
-  renderAdditionalText: Ember.computed.or('allowAnnotations','hasInstructionText'),
+  hasAdditionalText: Ember.computed.or('allowAnnotations', 'hasInstructionText'),
+  anyChildRendersAsDualColumn: Ember.computed('unsortedChildren.@each.renderAsDualColumn', function() {
+    return this.get('unsortedChildren').isAny('renderAsDualColumn');
+  }),
+  renderAsDualColumn: Ember.computed.or('hasAdditionalText', 'anyChildRendersAsDualColumn'),
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
+
+  isRequired: Ember.computed.equal('requiredField', true),
+
+  isRequiredString: Ember.computed('isRequired', function() {
+    return this.get('isRequired') === true ? 'true' : 'false';
+  }),
 
   createAnswerForOwner(owner){
     // only create answers for things that are actually

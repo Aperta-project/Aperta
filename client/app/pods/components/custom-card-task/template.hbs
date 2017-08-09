@@ -1,11 +1,9 @@
 {{partial "task-completed-section"}}
-<div class="custom-card-task {{if renderAdditionalText 'dual-column' 'single-column'}}">
+<div class="custom-card-task {{if renderAsDualColumn 'dual-column' 'single-column'}}">
   {{card-content
     content=contentRoot
     owner=task
     disabled=isNotEditable
     scenario=this
   }}
-  {{!-- note that once you remove the hash, you'll still need to pass something down as the 'scenario' in order to
-  use with the 'get' helper.  it's dirty but you can say `scenario=this` and it will do the job for the time being--}}
 </div>

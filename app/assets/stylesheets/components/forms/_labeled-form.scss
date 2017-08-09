@@ -13,6 +13,7 @@
       margin-bottom: 0;
 
       &.required::after {
+        color: $aperta-red;
         content: '*';
         font-size: 16px;
       }

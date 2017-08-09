@@ -1,8 +1,15 @@
 {{#if preview}}
   <div class="if-preview">
-    This switch appears only in the card preview for an <b>IF</b> component.<br/>
-    Switch it <i>right</i> to preview the <b>THEN</b> section; <i>left</i> to preview the <b>ELSE</b> section.
+    This switch appears only in the card preview for an <b>IF</b> component;&nbsp;
+    the <b>IF</b> condition is&nbsp;<b>{{conditionName}}.</b><br/>
+    Switch it <i>right</i> to preview the <b>THEN</b> section;
+    {{#if bivalent}}
+      switch it <i>left</i> to preview the <b>ELSE</b> section.
+    {{else}}
+      the <b>ELSE</b> section is blank.
+    {{/if}}
   </div>
+
   {{card-content/toggle-switch
     size="small"
     content=(hash)

@@ -962,7 +962,7 @@ class AuthenticatedPage(StyledPage):
       text_entry_field.send_keys(content)
     finally:
       self.traverse_from_frame()
-      time.sleep(1)
+      time.sleep(1) # added sleep because tinymce takes more time than the previous control
     return
 
   def tmce_clear_rich_text(self, iframe):

@@ -35,10 +35,8 @@ export default Ember.Component.extend({
   getConditionValue() {
     let conditionName = this.get('conditionName');
     let scenario = this.get('computedScenario');
-    if (scenario) {
-      let value = Ember.get(scenario, conditionName);
-      this.set('conditionValue', value);
-    }
+    let value = Ember.get(scenario, conditionName);
+    this.set('conditionValue', value);
   },
 
   previewState: true,

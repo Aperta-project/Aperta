@@ -1,24 +1,26 @@
-<label class="content-text">{{{content.text}}}</label>
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  {{/if}}</label>
 
 {{#if isRichText}}
   {{rich-text-editor
-    editorStyle=content.editorStyle
-    name=ident
-    data-editor=ident
-    value=answer.value
-    hasErrors=answer.hasErrors
-    errorMessages=answer.readyIssuesArray
-    onContentsChanged=(action "valueChanged")
-    class=inputClassNames
-    disabled=disabled
+      editorStyle=content.editorStyle
+      name=ident
+      data-editor=ident
+      value=answer.value
+      hasErrors=answer.hasErrors
+      errorMessages=answer.readyIssuesArray
+      onContentsChanged=(action "valueChanged")
+      class=inputClassNames
+      disabled=disabled
   }}
 {{else}}
-  {{card-content/validation-errors errors=answer.readyIssuesArray}}
-
   {{format-input
-    value=(readonly answer.value)
-    class="form-control"
-    valueChanged=(action "valueChanged")
-    disabled=disabled
+      value=(readonly answer.value)
+      class="form-control"
+      valueChanged=(action "valueChanged")
+      disabled=disabled
   }}
 {{/if}}
+{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}

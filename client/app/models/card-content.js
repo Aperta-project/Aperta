@@ -14,6 +14,7 @@ export default DS.Model.extend({
 
   allowMultipleUploads: DS.attr('boolean'),
   allowFileCaptions: DS.attr('boolean'),
+  requiredField: DS.attr('boolean'),
   contentType: DS.attr('string'),
   ident: DS.attr('string'),
   possibleValues: DS.attr(),
@@ -50,6 +51,12 @@ export default DS.Model.extend({
 
   childrenSort: ['order:asc'],
   children: Ember.computed.sort('unsortedChildren', 'childrenSort'),
+
+  isRequired: Ember.computed.equal('requiredField', true),
+
+  isRequiredString: Ember.computed('isRequired', function() {
+    return this.get('isRequired') === true ? 'true' : 'false';
+  }),
 
   createAnswerForOwner(owner){
     // only create answers for things that are actually

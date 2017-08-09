@@ -369,7 +369,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_loaded_card) }
     let!(:card_content) do
       root = task.card.content_root_for_version(:latest)
       root.children.first
@@ -419,7 +419,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_question_answers" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_card) }
     let(:card_content) do
       root = Card.find_by(name: task.class.name).content_root_for_version(:latest)
       FactoryGirl.create(:card_content, parent: root)

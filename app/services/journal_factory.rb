@@ -154,7 +154,6 @@ class JournalFactory
       task_klasses = SUBMISSION_TASKS
       task_klasses -= [
         PlosBilling::BillingTask,
-        TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
       task_klasses += [AdHocForReviewersTask]

@@ -293,7 +293,7 @@ test('reversion button is only present when the card is published with changes a
 });
 
 test('xml validation errors appear if errors are present', function(assert) {
-  assert.expect(6);
+  assert.expect(9);
 
   let card = make('card', { xml: '', state: 'draft' });
   this.set('card', card);
@@ -336,5 +336,24 @@ test('xml validation errors appear if errors are present', function(assert) {
   assert.elementFound('.error-message',
     'xml error header visible when errors present');
   assert.equal(displayedErrorsPost.length, 2,
+    'itemized xml errors visible when errors present');
+
+  const mockActiveModelErrors = [
+    {detail: {message: 'this is a test error message #1'}}];
+
+  this.set('errors', mockActiveModelErrors);
+
+  this.render(
+    hbs`
+      <div id='card-editor-action-buttons'></div>
+      {{card-editor/editor card=card routing=fakeRouting errors=errors}}`
+  );
+
+  displayedErrorsPost = $('[data-test-selector="xml-error"]');
+  assert.elementFound('.card-editor-xml-errors',
+    'xml error panel visible when errors present');
+  assert.elementFound('.error-message',
+    'xml error header visible when errors present');
+  assert.equal(displayedErrorsPost.length, 1,
     'itemized xml errors visible when errors present');
 });

@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ApexDelivery do
+describe TahiStandardTasks::ExportDelivery do
   describe "validating paper accepted" do
-
     it "the paper must be accepted when delivering to apex" do
       delivery = FactoryGirl.build(:apex_delivery, destination: 'apex')
       expect(delivery).to have(1).errors_on(:paper)

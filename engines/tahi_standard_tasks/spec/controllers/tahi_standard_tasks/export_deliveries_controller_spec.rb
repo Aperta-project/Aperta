@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TahiStandardTasks::ApexDeliveriesController do
+describe TahiStandardTasks::ExportDeliveriesController do
   routes { TahiStandardTasks::Engine.routes }
 
   let(:user) { FactoryGirl.create :user }
@@ -9,7 +9,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
   let(:task) { FactoryGirl.create :send_to_apex_task, paper: paper }
 
   subject(:do_request) do
-    post :create, format: :json, apex_delivery: { task_id: task.to_param }
+    post :create, format: :json, export_delivery: { task_id: task.to_param }
   end
 
   context "the current user can send to apex" do
@@ -24,13 +24,13 @@ describe TahiStandardTasks::ApexDeliveriesController do
       expect do
         do_request
         expect(response).to have_http_status(200)
-      end.to change { TahiStandardTasks::ApexDelivery.count }.by 1
+      end.to change { TahiStandardTasks::ExportDelivery.count }.by 1
     end
 
     it "saves the destination on the apex delivery" do
       do_request
       expect(response.status).to eq(200)
-      expect(res_body['apex_delivery']['destination']).to eq('apex')
+      expect(res_body['export_delivery']['destination']).to eq('apex')
     end
   end
 
@@ -46,7 +46,7 @@ describe TahiStandardTasks::ApexDeliveriesController do
       expect do
         do_request
         expect(response).to have_http_status(403)
-      end.to change { TahiStandardTasks::ApexDelivery.count }.by 0
+      end.to change { TahiStandardTasks::ExportDelivery.count }.by 0
     end
   end
 end

@@ -9,7 +9,7 @@ class RouterUploaderService
                  final_filename:,
                  paper:,
                  url:,
-                 apex_delivery_id:)
+                 export_delivery_id:)
     @destination      = destination,
     @email_on_failure = email_on_failure,
     @file_io          = file_io,
@@ -17,7 +17,7 @@ class RouterUploaderService
     @final_filename   = final_filename,
     @paper            = paper,
     @url              = url,
-    @apex_delivery    = TahiStandardTasks::ApexDelivery.find(apex_delivery_id)
+    @export_delivery    = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
   end
 
   def upload
@@ -42,12 +42,12 @@ class RouterUploaderService
     response = conn.post("/api/deliveries") do |request|
       request.body = payload
     end
-    @apex_delivery.service_id = response.body["job_id"]
-    @apex_delivery.save
+    @export_delivery.service_id = response.body["job_id"]
+    @export_delivery.save
   end
 
-  def self.check_status(apex_delivery_id, router_url: TahiEnv.router_url)
-    @apex_delivery = TahiStandardTasks::ApexDelivery.find(apex_delivery_id)
+  def self.check_status(export_delivery_id, router_url: TahiEnv.router_url)
+    @export_delivery = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
 
     conn = Faraday.new(url: router_url) do |faraday|
       faraday.response :json
@@ -55,8 +55,8 @@ class RouterUploaderService
       faraday.use Faraday::Response::RaiseError
       faraday.adapter :net_http
     end
-    if @apex_delivery.service_id.present?
-      response = conn.get("/api/deliveries/" + @apex_delivery.service_id)
+    if @export_delivery.service_id.present?
+      response = conn.get("/api/deliveries/" + @export_delivery.service_id)
       return {  job_status: response.body["job_status"],
                 job_status_description: response.body["job_status_details"] }
     else

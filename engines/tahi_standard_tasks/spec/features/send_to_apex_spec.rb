@@ -52,7 +52,7 @@ feature 'Send to Apex task', js: true do
 
   scenario 'User can send a paper to Send to Apex' do
     FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
-    apex_delivery = TahiStandardTasks::ApexDelivery.where(paper_id: paper.id)
+    apex_delivery = TahiStandardTasks::ExportDelivery.where(paper_id: paper.id)
     expect(apex_delivery.count).to be 0
 
     overlay = Page.view_task_overlay(paper, task)

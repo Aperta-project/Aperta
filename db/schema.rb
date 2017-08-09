@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804235315) do
+ActiveRecord::Schema.define(version: 20170807175908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -818,7 +818,7 @@ ActiveRecord::Schema.define(version: 20170804235315) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+  create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
     t.integer  "user_id"
@@ -827,6 +827,7 @@ ActiveRecord::Schema.define(version: 20170804235315) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "destination",   null: false
+    t.string   "service_id"
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

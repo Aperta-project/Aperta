@@ -46,7 +46,7 @@ test('looks properly disabled when disabled is true', function(assert) {
 test('pushing the button saves a new apex delivery using the text of the card content', function(
   assert
 ) {
-  $.mockjax({ url: '/api/apex_deliveries', type: 'POST', status: 204 });
+  $.mockjax({ url: '/api/export_deliveries', type: 'POST', status: 204 });
   let task = make('custom-card-task');
   this.set('task', task);
   this.set('content', { text: 'foo' });
@@ -55,13 +55,13 @@ test('pushing the button saves a new apex delivery using the text of the card co
   return wait().then(() => {
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
     let request = _.find(mockjaxCalls, {
-      url: '/api/apex_deliveries',
+      url: '/api/export_deliveries',
       type: 'POST'
     });
 
     let requestData = JSON.parse(request.data);
     assert.equal(
-      requestData.apex_delivery.destination,
+      requestData.export_delivery.destination,
       'foo',
       'it saves the card content text as the apex delivery destination'
     );
@@ -72,7 +72,7 @@ test('it displays a list of deliveries', function(assert) {
   let task = make('custom-card-task');
   this.set('task', task);
   this.set('content', { text: 'foo' });
-  make('apex-delivery', {
+  make('export-delivery', {
     task: task,
     state: 'in_progress',
     destination: 'apex'

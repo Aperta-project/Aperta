@@ -7,7 +7,7 @@ module TahiStandardTasks
   # This task is the *end* of the Aperta workflow; after handoff to APEX, the
   # paper is no longer active in Aperta.
   #
-  # This task works hand-in-hand with the ApexDelivery model.
+  # This task works hand-in-hand with the ExportDelivery model.
   #
   class SendToApexTask < Task
     has_many :apex_deliveries, foreign_key: 'task_id', dependent: :destroy

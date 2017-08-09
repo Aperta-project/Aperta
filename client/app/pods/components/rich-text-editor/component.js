@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicFormats     = {underline: {inline : 'u'}};
-const basicPlugins     = 'code codesample paste';
+const basicPlugins     = 'code codesample paste autoresize';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
@@ -67,6 +67,9 @@ export default Ember.Component.extend({
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
     options['elementpath'] = false;
+    options['autoresize_max_height'] = 500;
+    options['autoresize_bottom_margin'] = 1;
+    options['autoresize_on_init'] = true;
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }

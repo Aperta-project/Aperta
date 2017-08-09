@@ -189,7 +189,6 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = manuscript_title
     dashboard_page.accept_invitation(manuscript_title)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.page_ready()

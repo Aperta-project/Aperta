@@ -70,6 +70,10 @@ export default Ember.Component.extend({
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
     options['elementpath'] = false;
+    options['plugins'] = 'autoresize';
+    options['autoresize_max_height'] = 500;
+    options['autoresize_bottom_margin'] = 1;
+    options['autoresize_on_init'] = true;
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }

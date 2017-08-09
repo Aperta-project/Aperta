@@ -644,7 +644,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
         task.click()
-      time.sleep(3)
+      time.sleep(3) #This sleep is probably also tinymce... Code after Response to Reviewers was failing because completing it took more time than allowed for.
     elif task_name == 'Supporting Info':
       supporting_info = SITask(self._driver)
       supporting_info.validate_styles()

@@ -18,11 +18,13 @@ class ReviewerReport < ActiveRecord::Base
 
   delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
 
-  def set_due_datetime(length_of_time: 10.days)
+  # rubocop:disable Style/AccessorMethodName
+  def set_due_datetime(length_of_time: review_duration_period.days)
     if FeatureFlag[:REVIEW_DUE_DATE]
       DueDatetime.set_for(self, length_of_time: length_of_time)
     end
   end
+  # rubocop:enable Style/AccessorMethodName
 
   def self.for_invitation(invitation)
     reports = ReviewerReport.where(user: invitation.invitee,
@@ -132,5 +134,19 @@ class ReviewerReport < ActiveRecord::Base
     else
       "not_invited"
     end
+  end
+
+  def review_duration_period
+    # unfortunately the better way to get this value is lost in the ReviewerReportTaskCreator
+    # where it is originating_task.task_template.setting('review_duration_period').value
+    # until we shore up our data modeling, le sigh.
+    period = 10 # use the original default in case anything is missing
+    if mmt = paper.journal.manuscript_manager_templates.find_by_paper_type(paper.paper_type)
+      clause = { journal_task_types: { kind: "TahiStandardTasks::PaperReviewerTask" } }
+      if task_template = mmt.task_templates.joins(:journal_task_type).find_by(clause)
+        period = task_template.setting('review_duration_period').value
+      end
+    end
+    period
   end
 end

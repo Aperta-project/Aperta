@@ -36,7 +36,7 @@ module TahiStandardTasks
         @packager = ExportPackager.new paper,
                                     archive_filename: package_filename,
                                     delivery_id: export_delivery.id,
-                                    destination: export_delivery.destination
+                                    destination: destination
 
         if destination == 'apex'
           upload_to_ftp(packager.zip_file, package_filename)
@@ -86,7 +86,7 @@ module TahiStandardTasks
       RouterUploaderService.new(
         destination: destination,
         email_on_failure: staff_emails,
-        file_io: packager.zip_file(include_pdf: true),
+        file_io: packager.zip_file,
         final_filename: package_filename,
         filenames: packager.manifest.file_list,
         paper: paper,

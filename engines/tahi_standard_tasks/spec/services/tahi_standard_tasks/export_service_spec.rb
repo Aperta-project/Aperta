@@ -6,7 +6,7 @@ describe TahiStandardTasks::ExportService do
   end
   let(:doi) { "23423/journal.tur.0001" }
   let(:packager) do
-    double('ApexPackager').tap do |d|
+    double('ExportPackager').tap do |d|
       allow(d).to receive(:zip_file).and_return(Tempfile.new('zip'))
       allow(d).to receive(:manifest_file).and_return(Tempfile.new('manifest'))
       allow(d).to receive_message_chain(:manifest, :file_list).and_return(['foo', 'bar'])
@@ -19,7 +19,7 @@ describe TahiStandardTasks::ExportService do
 
   describe "#make_delivery!" do
     before do
-      allow(ApexPackager).to receive(:new).and_return packager
+      allow(ExportPackager).to receive(:new).and_return packager
       # The paper must be 'accepted' to send to APEX or EM
       paper.update(publishing_state: 'accepted')
     end

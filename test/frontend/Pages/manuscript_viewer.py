@@ -672,7 +672,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if not base_task.completed_state():
         base_task.click_completion_button()
       self.click_covered_element(task)
-      time.sleep(2)
+      time.sleep(2) #This sleep was added to fix a case where a following complete_task() call failed because this one wasn't done.
     elif task_name in ('Cover Letter', 'Figures', 'Financial Disclosure', 'Reviewer Candidates'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open

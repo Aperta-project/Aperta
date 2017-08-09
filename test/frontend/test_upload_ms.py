@@ -82,7 +82,7 @@ class UploadManuscriptTest(CommonTest):
     # open to check style
     ms_page.complete_task('Title And Abstract')
     ms_page.click_task('Upload Manuscript')
-    time.sleep(1)
+    time.sleep(1) # this was added as a bug fix so following steps don't fail
     # check style without source
     upms = UploadManuscriptTask(self.getDriver())
     upms.validate_styles(type_='pdf')

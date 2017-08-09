@@ -6,8 +6,11 @@ export default Ember.Component.extend({
   //paper: passed to component
 
   sidebarTasks: filterBy('paper.tasks', 'isSidebarTask', true),
-  taskSorting: ['isSubmissionTask', 'assignedToMe:desc', 'phase.position', 'position'],
+  taskSorting: ['position'],
+  phaseSorting: ['phase.position'],
+  // it seems sorting separately produces better results than lumping all the sort criteria together
   sortedTasks: sort('sidebarTasks', 'taskSorting'),
+  sortedPhases: sort('sortedTasks', 'phaseSorting'),
 
   actions: {
     toggleSubmissionProcess(){

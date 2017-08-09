@@ -237,7 +237,6 @@ class PlosPage(object):
     try:
       text = text.replace(u'\xa0', u' ')
     except UnicodeDecodeError:
-      text = text
       text = text.replace(u'\xa0', u' ')
     return re.sub(r'\s+', ' ', text)
 

@@ -39,7 +39,7 @@ describe CardContent do
     end
 
     context '#to_xml' do
-      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation) }
+      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation, ident: 'thing') }
       let(:card) { FactoryGirl.build(:card) }
       let(:expected_xml) do
         <<-XML.strip_heredoc

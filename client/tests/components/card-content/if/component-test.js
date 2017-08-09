@@ -45,9 +45,38 @@ test(`it chooses then or else based on the condition`, function(assert) {
     ]
   });
 
-  this.set('scenario', { isEditable: true });
+  this.set('scenario', {});
+  this.set('scenario.isEditable', true );
   this.set('content', content);
   this.render(ifTemplate);
+
+  assert.elementFound('.card-content-short-input', 'found then content');
+
+  this.set('scenario.isEditable', false );
+  assert.elementFound('.card-content-paragraph-input', 'found else content');
+});
+
+let cardContentTemplate = hbs`
+{{card-content content=content scenario=scenario owner="foo"}}`;
+
+test(`can reference a scenario from a parent view instead of having it passed in directly`, function(assert) {
+  let content = parent.create({
+    children: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Child 1'
+      }),
+      FactoryGuy.make('card-content', {
+        contentType: 'paragraph-input',
+        text: 'Child 2'
+      })
+    ]
+  });
+
+  this.set('scenario', {});
+  this.set('scenario.isEditable', true );
+  this.set('content', content);
+  this.render(cardContentTemplate);
 
   assert.elementFound('.card-content-short-input', 'found then content');
 

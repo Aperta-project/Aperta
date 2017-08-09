@@ -391,6 +391,9 @@ ActiveRecord::Schema.define(version: 20170804150657) do
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"
+    t.string   "manuscript_status"
+    t.string   "manuscript_version"
+    t.integer  "versioned_text_id"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -493,11 +496,11 @@ ActiveRecord::Schema.define(version: 20170804150657) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "text"
-    t.string   "template_decision"
+    t.string   "name"
+    t.string   "category"
     t.string   "to"
     t.string   "subject"
-    t.text     "letter"
+    t.text     "body"
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"

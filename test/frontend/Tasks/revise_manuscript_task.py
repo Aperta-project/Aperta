@@ -90,7 +90,7 @@ class ReviseManuscriptTask(BaseTask):
         self.get_rich_text_editor_instance('revise-overlay-response-field')
       self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
       self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=data['text'])
-      time.sleep(1)
+      time.sleep(1) # this is to give tinymce more time (issue fix)
 
     self._get(self._save_btn).click()
     return None

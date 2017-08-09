@@ -32,11 +32,11 @@ module CustomCard
         []
       end
 
-      def self.excluded_discussion_view_permissions
+      def self.discussion_view_role_names
         []
       end
 
-      def self.excluded_discussion_edit_permissions
+      def self.discussion_edit_role_names
         []
       end
 

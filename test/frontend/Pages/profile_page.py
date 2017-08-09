@@ -125,6 +125,7 @@ class ProfilePage(AuthenticatedPage):
     self._wait_for_element(self._get(self._avatar_hover))
     avatar_hover = self._get(self._avatar_hover)
     assert avatar_hover.text == 'UPLOAD NEW'
+    time.sleep(1)
     self.validate_large_avatar_hover_style(avatar_hover)
 
     name_title = self._get(self._profile_name_title)
@@ -367,13 +368,16 @@ class ProfilePage(AuthenticatedPage):
     """
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     avatar_input = self._iget(self._avatar_input)
-    self._get(self._avatar_hover).click()
+    # self._get(self._avatar_hover).click()
     if user['profile_image']:
       fn = os.getcwd() + '/frontend/assets/imgs/' + user['profile_image']
     else:
       fn = os.getcwd() + '/frontend/assets/imgs/plos.gif'
+    avatar_input.send_keys(fn)
+    # This stupid sleep keeps Firefox from puttin up the damn "Are you sure you want to leave the
+    #   page dialog that causes a failure. I feel dirty.
+    time.sleep(1)
 
-    avatar_input.send_keys(fn + Keys.RETURN)
     # APERTA-8337
     # TODO: Figure out how to actually trigger the upload
 

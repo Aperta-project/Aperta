@@ -104,6 +104,7 @@ class ApertaAdminTest(CommonTest):
     adm_settings_page.page_ready()
     adm_settings_page.validate_settings_pane('All My Journals')
     journal = adm_settings_page.select_journal(regular=True)
+    logging.info(journal)
     adm_settings_page.validate_edit_journal(journal)
 
 if __name__ == '__main__':

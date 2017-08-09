@@ -171,7 +171,7 @@ class AdminUsersPage(BaseAdminPage):
         success_count += 1
         result.click()
         # TODO: Validate Styles for these elements
-        time.sleep(1)
+        time.sleep(2)
         self._get(self._ud_overlay_title)
         user_details_closer = self._get(self._overlay_header_close)
         self._get(self._ud_overlay_fname_label)

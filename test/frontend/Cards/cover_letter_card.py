@@ -193,7 +193,7 @@ class CoverLetterCard(BaseCard):
     uploaded_file_md5 = hashlib.md5(
       open(os.path.join(
         original_working_dir + '/frontend/assets/coverletters/',
-        urllib.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
+        urllib.parse.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(os.path.join('/tmp', newest_file), 'rb').read()).hexdigest()
 

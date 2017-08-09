@@ -298,7 +298,7 @@ class CoverLetterTask(BaseTask):
     # Generate MD5 hashes for original and downloaded file to compare if is the same
     original_file_md5 = hashlib.md5(
       open(os.path.join(original_working_dir + '/frontend/assets/coverletters/'
-                        + urllib.unquote_plus(original_file_path)), 'rb').read()).hexdigest()
+                        + urllib.parse.unquote_plus(original_file_path)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(newest_file, 'rb').read()).hexdigest()
 

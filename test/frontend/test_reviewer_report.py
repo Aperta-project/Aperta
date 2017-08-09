@@ -94,7 +94,6 @@ class ReviewerReportTest(CommonTest):
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;',
                                      (short_doi,))[0][0]
-    manuscript_title = manuscript_title
 
     # login as reviewer respond to invite
     dashboard_page = self.cas_login(email=reviewer_login['email'])

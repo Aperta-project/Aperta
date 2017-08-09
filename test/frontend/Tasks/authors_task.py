@@ -564,7 +564,8 @@ class AuthorsTask(BaseTask):
     if completed:
       return None
     author_div = self._get(self._author_items)
-    self._actions.move_to_element(author_div).perform()
+    self._scroll_into_view(author_div)
+    #self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     self.click_covered_element(edit_btn)
     time.sleep(1)

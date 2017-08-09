@@ -22,8 +22,8 @@ test('Slanger notifications - happy path', function(assert) {
   assert.expect(2);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'connected';
-  pusherStub.isDisconnected = false;
+  pusherStub.set('connection.connection.state', 'connected');
+  pusherStub.set('isDisconnected', false);
 
   Ember.run(() => {
     let controller = this.subject({
@@ -42,8 +42,8 @@ test('Slanger notifications - unable to connect', function(assert) {
   assert.expect(2);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'unavailable';
-  pusherStub.isDisconnected = true;
+  pusherStub.set('connection.connection.state', 'unavailable');
+  pusherStub.set('isDisconnected', true);
 
   Ember.run(() => {
     let controller = this.subject({
@@ -64,8 +64,9 @@ test('Slanger notifications - repeatedly unable to connect', function(assert) {
   assert.expect(2);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'unavailable';
-  pusherStub.isDisconnected = true;
+  pusherStub.set('connection.connection.state', 'unavailable');
+  pusherStub.set('isDisconnected', true);
+
 
   Ember.run(() => {
     let controller = this.subject({
@@ -95,8 +96,8 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
   assert.expect(2);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'failed';
-  pusherStub.isDisconnected = true;
+  pusherStub.set('connection.connection.state', 'failed');
+  pusherStub.set('isDisconnected', true);
 
   Ember.run(() => {
     let controller = this.subject({ 
@@ -117,8 +118,8 @@ test('Slanger notifications - user was disconnected by the application', functio
   assert.expect(2);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'disconnected';
-  pusherStub.isDisconnected = true;
+  pusherStub.set('connection.connection.state', 'disconnected');
+  pusherStub.set('isDisconnected', true);
 
   Ember.run(() => {
     let controller = this.subject({ 

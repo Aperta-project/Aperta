@@ -104,6 +104,4 @@ test(`ignores the scenario when preview is true, and shows a toggle`, function(a
   this.render(cardContentTemplate);
 
   assert.elementFound('.if-preview', 'found preview');
-
 });
-

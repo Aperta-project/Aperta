@@ -5,11 +5,22 @@ import ValidateTextInput from 'tahi/mixins/validate-text-input';
 export default Ember.Component.extend(ValidateTextInput, {
   classNames: ['card-content-short-input'],
   classNameBindings: ['answer.hasErrors:has-error'],
+  attributeBindings: ['isRequired:required', 'aria-required'],
+  'aria-required': Ember.computed.reads('isRequiredString'),
+  hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
+  classNameBindings: ['hasErrors:has-error'],
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool
+  },
+
+  //short-input renders a standard {{input}} component, which doesn't bind aria attributes
+  didInsertElement() {
+    if (this.get('content.isRequired') === true) {
+      this.$('input').attr({'aria-required': 'true'});
+    }
   },
 
   actions: {

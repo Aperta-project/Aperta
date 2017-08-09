@@ -157,6 +157,7 @@ class CoverLetterTask(BaseTask):
     # Gratuitous verification
     cvr_ltr_txt = self.tmce_get_rich_text(tinymce_editor_instance_iframe)
     logging.info('Temporary Paper Title is: {0}'.format(cvr_ltr_txt))
+    time.sleep(1)
     self.click_completion_button()
 
   def upload_letter(self, letter='random'):

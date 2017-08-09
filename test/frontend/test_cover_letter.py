@@ -235,6 +235,7 @@ class CoverLetterTaskTest(CommonTest):
     # Test card
     staff_user = random.choice(editorial_users)
     dashboard_page = self.cas_login(email=staff_user['email'])
+    time.sleep(1)
     logging.info(dashboard_page.get_current_url())
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)

@@ -141,6 +141,7 @@ class CoverLetterCard(BaseCard):
                            'Aenean ac'
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=textarea_edited_text)
+    time.sleep(1)
     self.click_completion_button()
     new_page_text = self._get(self._cover_letter_textarea_noneditable).text
     assert new_page_text == textarea_edited_text, \

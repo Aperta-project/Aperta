@@ -31,7 +31,7 @@ let parent = Ember.Object.extend({
   }
 });
 
-test(`it chooses then or else based on the condition`, function(assert) {
+test(`bivalent if/then/else chooses then or else based on the condition`, function(assert) {
   let content = parent.create({
     children: [
       FactoryGuy.make('card-content', {
@@ -54,6 +54,27 @@ test(`it chooses then or else based on the condition`, function(assert) {
 
   this.set('scenario.isEditable', false );
   assert.elementFound('.card-content-paragraph-input', 'found else content');
+});
+
+test(`univalent if/then chooses then or nothing based on the condition`, function(assert) {
+  let content = parent.create({
+    children: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Child 1'
+      })
+    ]
+  });
+
+  this.set('scenario', {});
+  this.set('scenario.isEditable', true );
+  this.set('content', content);
+  this.render(ifTemplate);
+
+  assert.elementFound('.card-content-short-input', 'found then content');
+
+  this.set('scenario.isEditable', false );
+  assert.elementNotFound('.card-content-short-input', 'found no content');
 });
 
 let cardContentTemplate = hbs`

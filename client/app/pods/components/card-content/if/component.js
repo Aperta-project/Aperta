@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   },
 
   scenario: null,
+  bivalent: Ember.computed.equal('content.children.length', 2),
   computedScenario: Ember.computed(function () {
     return findNearestProperty(this, 'scenario');
   }),

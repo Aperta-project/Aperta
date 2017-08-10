@@ -5,6 +5,12 @@
     {{#if task.isSubmitted}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
+      {{reviewer-report-status report=currentReviewerReport}}
+      {{#if (and (can 'manage_scheduled_events' task)
+                 currentReviewerReport.scheduledEvents)}}
+        {{scheduled-events events=currentReviewerReport.scheduledEvents
+                           dueDate=currentReviewerReport.dueAt}}
+      {{/if}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 
       {{#if currentReviewerReport.needsSubmission }}
@@ -39,6 +45,7 @@
             </div>
             <div id="collapse-{{unbound report.decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound report.decision.id}}">
               <div class="panel-body">
+                {{reviewer-report-status report=report}}
                 {{front-matter-reviewer-report-questions model=report readOnly=true}}
               </div>
             </div>

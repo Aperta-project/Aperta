@@ -2,7 +2,7 @@
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
-  before_action :redirect_if_inactive, only: [:accept, :decline]
+  before_action :redirect_if_inactive, only: [:accept, :decline, :show]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength

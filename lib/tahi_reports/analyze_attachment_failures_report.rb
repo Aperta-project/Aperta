@@ -112,10 +112,17 @@ module TahiReports
       end
     end
 
+    def clean_message(message)
+      if message
+        message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
+      else
+        "[no error message]"
+      end
+    end
+
     def print_number_of_attachments_per_error_breakdown
       output.puts "Number of #{attachment_klass.name}(s) per error"
       output.puts "-------------------------------------------"
-      attachments_stuck_in_errored = {}
       TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
         output.puts unless i == 0
         output.puts "Errors #{human_readable_timeframe}"
@@ -123,7 +130,7 @@ module TahiReports
           attachments_by_error = attachments_errored.where(
             updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
           ).each do |a|
-            a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
+            a.error_message = clean_message(a.error_message)
           end
 
           if attachments_by_error.empty?
@@ -139,7 +146,7 @@ module TahiReports
           attachments_by_error = attachments_errored.where(
             updated_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i-1].ago.end_of_day.utc)
           ).each do |a|
-            a.error_message = a.error_message.gsub("\n", "  ").gsub(/(identify)[^']+'/, '\1 <file-path-extracted>')
+            a.error_message = clean_message(a.error_message)
           end
 
           if attachments_by_error.empty?

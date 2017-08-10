@@ -26,6 +26,7 @@ describe Invitation::Updated::StateChange do
 
     before do
       FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+      FactoryGirl.create :review_duration_period_setting_template
 
       decision.invitations << invitation
       decision.reviewer_reports << report

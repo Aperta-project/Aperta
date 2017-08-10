@@ -24,29 +24,20 @@ module Typesetter
 
     def title_clean(str)
       return nil if str.nil?
-      if FeatureFlag[:KEEP_APEX_HTML]
-        str
-      else
-        Loofah.fragment(str).scrub!(TITLE_CLEAN).to_s
-      end
+      return str if FeatureFlag[:KEEP_APEX_HTML]
+      Loofah.fragment(str).scrub!(TITLE_CLEAN).to_s
     end
 
     def fix_strong_em_tags(str)
       return nil if str.nil?
-      if FeatureFlag[:KEEP_APEX_HTML]
-        str
-      else
-        Loofah.fragment(str).scrub!(EM2I).scrub!(STRONG2B).to_s
-      end
+      return str if FeatureFlag[:KEEP_APEX_HTML]
+      Loofah.fragment(str).scrub!(EM2I).scrub!(STRONG2B).to_s
     end
 
     def strip_tags(str)
       return nil if str.nil?
-      if FeatureFlag[:KEEP_APEX_HTML]
-        str
-      else
-        Loofah.fragment(str).text
-      end
+      return str if FeatureFlag[:KEEP_APEX_HTML]
+      Loofah.fragment(str).text
     end
 
     def attributes

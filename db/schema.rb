@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170801032907) do
+ActiveRecord::Schema.define(version: 20170803230632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,9 +241,9 @@ ActiveRecord::Schema.define(version: 20170801032907) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.string   "editor_style"
     t.boolean  "required_field"
   end
 
@@ -827,7 +827,7 @@ ActiveRecord::Schema.define(version: 20170801032907) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   null: false
+    t.string   "destination",   default: "apex", null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

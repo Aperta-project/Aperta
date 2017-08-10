@@ -5,15 +5,35 @@ module CustomCard
     #
     class PreprintOptOut < Base
       def self.name
-        "Preprint Opt Out"
+        "Preprint Posting"
       end
 
       def self.excluded_view_permissions
-        # [Role::REVIEWER_ROLE]
+        [
+          Role::DISCUSSION_PARTICIPANT,
+          Role::FREELANCE_EDITOR_ROLE,
+          Role::JOURNAL_SETUP_ROLE,
+          Role::TASK_PARTICIPANT_ROLE,
+          Role::REVIEWER_ROLE,
+          Role::REVIEWER_REPORT_OWNER_ROLE
+        ]
       end
 
       def self.excluded_edit_permissions
-        # [Role::ACADEMIC_EDITOR_ROLE]
+        [
+          Role::ACADEMIC_EDITOR_ROLE,
+          Role::BILLING_ROLE,
+          Role::COVER_EDITOR_ROLE,
+          Role::DISCUSSION_PARTICIPANT,
+          Role::FREELANCE_EDITOR_ROLE,
+          Role::HANDLING_EDITOR_ROLE,
+          Role::INTERNAL_EDITOR_ROLE,
+          Role::JOURNAL_SETUP_ROLE,
+          Role::TASK_PARTICIPANT_ROLE,
+          Role::PRODUCTION_STAFF_ROLE,
+          Role::REVIEWER_ROLE,
+          Role::REVIEWER_REPORT_OWNER_ROLE
+        ]
       end
 
       def self.publish

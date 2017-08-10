@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
+import ValidateTextInput from 'tahi/mixins/validate-text-input';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ValidateTextInput, {
   classNames: ['card-content-paragraph-input'],
   classNameBindings: ['answer.hasErrors:has-error'],
+
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,
@@ -11,14 +13,5 @@ export default Ember.Component.extend({
     disabled: PropTypes.bool,
   },
 
-  isRichText: Ember.computed.equal('content.valueType', 'html'),
-
-  actions: {
-    valueChanged(newValue) {
-      let action = this.get('valueChanged');
-      if (action) {
-        action(newValue);
-      }
-    }
-  }
+  isRichText: Ember.computed.equal('content.valueType', 'html')
 });

@@ -33,3 +33,17 @@ test('it shows error message', function(assert) {
 
   assert.elementFound('.error-message', errorMessage);
 });
+
+test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
+  assert.expect(1);
+  this.set('value', '<p>Old</p>');
+  this.set('changeStub', function(newVal) {
+    assert.equal(newVal, '<p>New</p>', 'it calls the action with the new value');
+  });
+  this.render(hbs`{{rich-text-editor
+                  value=value
+                  onContentsChanged=(action changeStub)}}`);
+  let editor = window.tinymce.activeEditor;
+  editor.setContent('New');
+  editor.target.triggerSave();
+});

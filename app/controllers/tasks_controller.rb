@@ -42,7 +42,12 @@ class TasksController < ApplicationController
     requires_user_can :edit, task
 
     # if required fields are incomplete mark the task as incomplete
-    params[:task][:completed] = false unless required_fields_completed
+    # side load answers and ready issues using a custom serializer
+    unless required_fields_completed
+      task.completed = false
+      render json: task, serializer: TaskAnswerSerializer
+      return
+    end
 
     # if the task is marked as completed and required fields are complete
     # mark the task as complete

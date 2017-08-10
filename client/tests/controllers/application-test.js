@@ -1,19 +1,19 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 
-let healthCheckStub, pusherStub, pusherFailureMessagesStub;
+let healthCheckStub, pusherStub, pusherFailureMessagesStub, flashStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
-  needs: ['service:flash'],
   beforeEach: function() {
     healthCheckStub = { start: ()=>{} };
     pusherStub = Ember.Object.create({connection: { connection: { state: 'connecting' } }});
-    pusherFailureMessagesStub = {
-      failed: 'f',
-      unavailable: 'u',
-      connecting: 'c',
-      disconnected: 'd'
-    };
+    pusherFailureMessagesStub = { failed: 'f', unavailable: 'u' };
+    flashStub = Ember.Object.create({
+      systemLevelMessages: Ember.A(),
+      displaySystemLevelMessage(type, message) {
+        this.get('systemLevelMessages').pushObject({ text: message, type: type });
+      },
+    });
   }
 });
 
@@ -28,6 +28,7 @@ test('Slanger notifications - happy path', function(assert) {
   Ember.run(() => {
     let controller = this.subject({
       pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub
     });
 
@@ -48,6 +49,7 @@ test('Slanger notifications - unable to connect', function(assert) {
   Ember.run(() => {
     let controller = this.subject({
       pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
@@ -61,32 +63,65 @@ test('Slanger notifications - unable to connect', function(assert) {
 
 test('Slanger notifications - repeatedly unable to connect', function(assert) {
 
-  assert.expect(2);
+  assert.expect(9);
   let complete = assert.async();
 
-  pusherStub.set('connection.connection.state', 'unavailable');
-  pusherStub.set('isDisconnected', true);
+  pusherStub.connection.connection.state = 'connected';
+  pusherStub.set('isDisconnected', false);
 
-
+  let controller = null;
   Ember.run(() => {
-    let controller = this.subject({
+    controller = this.subject({
       pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
 
-    pusherStub.connection.connection.state = 'connected';
-    pusherStub.set('isDisconnected', false);
-    pusherStub.connection.connection.state = 'unavailable';
-    pusherStub.set('isDisconnected', true);
-    pusherStub.connection.connection.state = 'connected';
-    pusherStub.set('isDisconnected', false);
-    pusherStub.connection.connection.state = 'unavailable';
-    pusherStub.set('isDisconnected', true);
-
     assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}], 
-      'flash shows only one message');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flash shows no connection messages');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'disconnected';
+    pusherStub.set('isDisconnected', true);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'connecting';
+    pusherStub.set('isDisconnected', true);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'connected';
+    pusherStub.set('isDisconnected', false);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message after connecting');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'connecting';
+    pusherStub.set('isDisconnected', true);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'unavailable';
+    pusherStub.set('isDisconnected', true);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'connecting';
+    pusherStub.set('isDisconnected', true);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message');
+  });
+  Ember.run(() => {
+    pusherStub.connection.connection.state = 'connected';
+    pusherStub.set('isDisconnected', false);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flash shows one message after connecting');
     complete();
   });
 });
@@ -102,6 +137,7 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
   Ember.run(() => {
     let controller = this.subject({ 
       pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub,
       pusherFailureMessages: pusherFailureMessagesStub
     });
@@ -109,28 +145,6 @@ test('Slanger notifications - browser doesnt support web sockets', function(asse
     assert.ok(controller);
     assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'f'}], 
       'flash shows message for failed state');
-    complete();
-  });
-});
-
-test('Slanger notifications - user was disconnected by the application', function(assert) {
-
-  assert.expect(2);
-  let complete = assert.async();
-
-  pusherStub.set('connection.connection.state', 'disconnected');
-  pusherStub.set('isDisconnected', true);
-
-  Ember.run(() => {
-    let controller = this.subject({ 
-      pusher: pusherStub,
-      healthCheck: healthCheckStub,
-      pusherFailureMessages: pusherFailureMessagesStub
-    });
-
-    assert.ok(controller);
-    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'd'}], 
-      'flash shows message for disconnected state');
     complete();
   });
 });

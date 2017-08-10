@@ -10,30 +10,21 @@ export default Ember.Mixin.create({
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
-    if (!Ember.testing) {
-      // wait so that users on spotty connections aren't notified of every connection blip
-      yield timeout(5000);
-    }
-
-    this.clearPusherConnectionMessages();
     if (this.get('pusherIsDisconnected')) {
-      this.updatePusherConnectionMessage();
+      if (this.get('pusherConnectionState') === 'failed') {
+        this.updatePusherConnectionMessage('failed');
+      } else {
+        this.updatePusherConnectionMessage('unavailable');
+      }
     }
   }).drop(),
 
-  updatePusherConnectionMessage() {
-    let message = this.pusherFailureMessages[this.get('pusherConnectionState')];
-    if (message) {
+  updatePusherConnectionMessage(key) {
+    let message = this.pusherFailureMessages[key];
+    let messages = this.get('flash').get('systemLevelMessages').filterBy('text', message);
+    if(!messages.length) {
       this.get('flash').displaySystemLevelMessage('error', message);
     }
-  },
-
-  clearPusherConnectionMessages() {
-    ['unavailable', 'failed', 'disconnected', 'connecting'].forEach((key) => {
-      let systemFlash = this.get('flash').get('systemLevelMessages');
-      let existingMessages = systemFlash.filterBy('text', this.pusherFailureMessages[key]);
-      systemFlash.removeObjects(existingMessages);
-    });
   },
 
   pusherFailureMessages: {
@@ -43,11 +34,6 @@ export default Ember.Mixin.create({
             to attempt to re-establish the connection`,
     failed: `Aperta is having trouble establishing a live connection with your browser
               due to lack of browser support for required software.
-              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`,
-    disconnected: `Aperta\'s live connection with your browser has been dropped. 
-            This could impact updates to the interface,
-            and we recommend you <a href="#" onclick="window.location.reload(false)">reload this page</a> 
-            to attempt to re-establish the connection.`,
-    connecting: `Aperta is attempting to acquire a live connection. Please wait until connection is established.`
+              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`
   }
 });

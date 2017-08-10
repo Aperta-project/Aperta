@@ -1,7 +1,7 @@
 # Serves as the method for non-users to decline without having to sign in.
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
-  before_action :redirect_unless_declined, except: [:show, :decline, :accept]
+  before_action :redirect_unless_declined, except: [:show, :decline, :accept, :inactive]
   before_action :redirect_if_inactive, only: [:show, :accept, :decline]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 

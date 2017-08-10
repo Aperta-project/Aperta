@@ -2,13 +2,12 @@
 class TokenInvitationsController < ApplicationController
   before_action :redirect_if_logged_in, except: :accept
   before_action :redirect_unless_declined, except: [:show, :decline, :accept]
-  before_action :redirect_if_inactive, only: [:accept, :decline, :show]
+  before_action :redirect_if_inactive, only: [:show, :accept, :decline]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
   # rubocop:disable Style/AndOr, Metrics/LineLength
   def show
     redirect_to root_path and return if invitation.accepted?
-    redirect_to invitation_feedback_form_path(token) and return if invitation.declined?
 
     assign_template_vars
   end
@@ -23,7 +22,6 @@ class TokenInvitationsController < ApplicationController
   end
 
   def decline
-    redirect_to root_path and return if invitation.declined?
     redirect_to invitation_feedback_form_path(token)
 
     invitation.decline!
@@ -66,7 +64,7 @@ class TokenInvitationsController < ApplicationController
   end
 
   def redirect_if_inactive
-    redirect_to invitation_inactive_path(token) if invitation.declined? || invitation.rescinded?
+    redirect_to invitation_inactive_path(token) and return if invitation.declined? or invitation.rescinded?
   end
 
   def redirect_if_logged_in
@@ -116,7 +114,6 @@ class TokenInvitationsController < ApplicationController
   end
 
   def ensure_user!
-    redirect_if_inactive
     if invitation.invitee_id or use_authentication?
       if TahiEnv.cas_enabled?
         redirect_to omniauth_authorize_path(:user, 'cas', url: akita_invitation_accept_url)

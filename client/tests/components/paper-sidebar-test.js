@@ -68,6 +68,6 @@ test('rendering a list of tasks', function(assert) {
 
   assert.equal(this.$('.task-disclosure').length, 2);
 
-  assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`));
-  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-bulbasaur`));
+  assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-bulbasaur`));
+  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-charmander`));
 });

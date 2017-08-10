@@ -10,19 +10,25 @@ export default Ember.Mixin.create({
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
-    if (this.get('pusherIsDisconnected')) {
-      if (this.get('pusherConnectionState') === 'failed') {
-        this.updatePusherConnectionMessage('failed');
-      } else {
-        this.updatePusherConnectionMessage('unavailable');
-      }
+    let state = null;
+    switch (this.get('pusherConnectionState')) {
+    case 'failed':
+      state = 'failed';
+      break;
+    case 'unavailable':
+    case 'disconnected':
+      state = 'unavailable';
+    }
+
+    if (state) {
+      this.updatePusherConnectionMessage(state);
     }
   }).drop(),
 
   updatePusherConnectionMessage(key) {
     let message = this.pusherFailureMessages[key];
     let messages = this.get('flash').get('systemLevelMessages').filterBy('text', message);
-    if(!messages.length) {
+    if (!messages.length) {
       this.get('flash').displaySystemLevelMessage('error', message);
     }
   },

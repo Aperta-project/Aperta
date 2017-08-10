@@ -1,0 +1,9 @@
+<p style="font-size:18px;">Reminders</p>
+{{#each events as |event|}}
+  <p class='scheduled-event'>
+    {{event.name}} on
+    {{moment-format event.dispatchAt dispatchDateFormat}} {{dueAtTimezone}}
+    {{due-date-offset event.dispatchAt dueDate}}
+  </p>
+{{/each}}
+<br>

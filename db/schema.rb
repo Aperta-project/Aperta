@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170803230632) do
+ActiveRecord::Schema.define(version: 20170804153441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -747,6 +747,19 @@ ActiveRecord::Schema.define(version: 20170803230632) do
     t.datetime "updated_at"
   end
 
+  create_table "scheduled_events", force: :cascade do |t|
+    t.datetime "dispatch_at"
+    t.string   "state"
+    t.string   "name"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+  end
+
+  add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
+
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
     t.datetime "created_at", null: false
@@ -982,6 +995,7 @@ ActiveRecord::Schema.define(version: 20170803230632) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_events", "due_datetimes"
   add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

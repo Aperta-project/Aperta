@@ -65,6 +65,13 @@ export default Ember.Component.extend({
       return false;
     }),
 
+  ifReviewerReportTask: Ember.computed('task', function() {
+    let task = this.get('task.type');
+    if (task !== 'ReviewerReportTask') {
+      return true;
+    }
+  }),  
+
   actions: {
     viewCard() {
       let action = this.get('action');

@@ -14,4 +14,6 @@
   required=content.isRequired
   content=content}}
 
-<div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>
+{{#unless hideError}}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{/unless}}

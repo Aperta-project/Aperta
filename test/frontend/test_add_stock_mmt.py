@@ -219,6 +219,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     wombat_exists = adm_wf_page.select_named_journal('PLOS Wombat')
     logging.info(wombat_exists)
     if not wombat_exists:
+      adm_wf_page.launch_add_journal_overlay()
       adm_wf_page.validate_add_new_journal(journal_name='PLOS Wombat',
                                            journal_desc='Of, by and for the best marsupials',
                                            logo='WombatPVC_web-01.jpg',
@@ -258,6 +259,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     biology_exists = adm_wf_page.select_named_journal('PLOS Biology Demo')
     logging.info(biology_exists)
     if not biology_exists:
+      adm_wf_page.launch_add_journal_overlay()
       adm_wf_page.validate_add_new_journal(journal_name='PLOS Biology Demo',
                                            logo='thumbnail_logo+plos+bio+2x.png',
                                            doi_jrnl_prefix='journal.pbiod',
@@ -274,6 +276,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
                                          mmt_name=mmt['name'],
                                          user_tasks=mmt['user_tasks'],
                                          staff_tasks=mmt['staff_tasks'],
+                                         custom_cards=mmt['custom_cards'],
                                          uses_resrev_report=mmt['uses_resrev_report'])
         # It is necessary to reinvoke the driver to avoid a Stale Element Reference Exception
         #   as each new mmt add updates the DOM
@@ -296,6 +299,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
     genetics_exists = adm_wf_page.select_named_journal('PLOS Genetics Demo')
     logging.info(genetics_exists)
     if not genetics_exists:
+      adm_wf_page.launch_add_journal_overlay()
       adm_wf_page.validate_add_new_journal(journal_name='PLOS Genetics Demo',
                                            logo='thumbnail_plos_genetics_demo_logo.png',
                                            doi_jrnl_prefix='journal.pgend',

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+export PATH="$HOME/bin:$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 # Command Line script for TeamCity build job for test run
 # Depends on
 # env.APERTA_PSQL_DBNAME
@@ -14,15 +18,16 @@
 # Stop the script if any single command fails
 set -e
 
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux32.tar.gz
+tar -xvzf geckodriver*
+chmod +x geckodriver
+mv geckodriver /opt/teamcity/bin/
+
+SCRIPT_DIR=%teamcity.build.workingDir%/test
 ASSETS_DIR=$SCRIPT_DIR/frontend/assets
 
-# Use a virtualenv if it exists
-VENV_ACTIVATE="venv/bin/activate"
-if [ -e $VENV_ACTIVATE ]; then
-  source $VENV_ACTIVATE
-fi
-
+pyenv activate tahi-int3
+pyenv version
 cd $ASSETS_DIR
 wget http://bighector.plos.org/aperta/testing_assets.tar.gz
 TESTING_ASSETS="testing_assets.tar.gz"
@@ -62,11 +67,9 @@ python -m frontend.test_initial_decision_card
 python -m frontend.test_initial_tech_check
 python -m frontend.test_invite_ae_card
 python -m frontend.test_invite_reviewers
-python -m frontend.test_journal_admin
 python -m frontend.test_login
 python -m frontend.test_manuscript_viewer
 python -m frontend.test_metadata_versioning
-# python -m frontend.test_new_admin
 python -m frontend.test_new_taxon
 python -m frontend.test_paper_tracker
 python -m frontend.test_production_metadata_card
@@ -84,3 +87,5 @@ python -m frontend.test_title_abstract_card
 python -m frontend.test_upload_ms
 python -m frontend.test_withdraw_ms
 python -m frontend.test_workflow
+pyenv deactivate
+pyenv version

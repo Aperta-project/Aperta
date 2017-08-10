@@ -572,7 +572,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
                     task_name,
                     click_override=False,
                     data=None,
-                    author=''):
+                    author='',
+                    prod=False):
     """
     On a given task, check complete and then close
     :param task_name: The name of the task to complete (str)
@@ -580,6 +581,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param data: A dictionary with the required data for each task.
     :param author: Author to use in completing author task, if applicable - looks up values from
       Base/Resources.py
+    :param prod: boolean, default False - used to signal method call being executed against prod
+      where we don't have db access.
     :return outdata or None: returns a list of the values used to fill out the form or None if
       nothing is captured.
     """
@@ -722,7 +725,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       logging.info('Completing Title And Abstract Task')
       title_and_abstract_task = TitleAbstractTask(self._driver)
       short_doi = title_and_abstract_task.get_short_doi()
-      title_and_abstract_task.set_abstract(short_doi)
+      if prod:
+        title_and_abstract_task.set_abstract(short_doi, prod=True)
+      else:
+        title_and_abstract_task.set_abstract(short_doi)
       base_task.click_completion_button()
       self.click_covered_element(task)
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',

@@ -32,7 +32,7 @@ user_pw = os.getenv('VALID_PW', '')
 
 
 @MultiBrowserFixture
-class ApertaBDDDeployVerifyTest(CommonTest):
+class ApertaProdDeployVerifyTest(CommonTest):
   """
   A deployment validation step for the Aperta build chain
   """
@@ -71,7 +71,7 @@ class ApertaBDDDeployVerifyTest(CommonTest):
     manuscript_page.complete_task('Cover Letter')
     manuscript_page.complete_task('Figures')
     manuscript_page.complete_task('Supporting Info')
-    manuscript_page.complete_task('Title And Abstract')
+    manuscript_page.complete_task('Title And Abstract', prod=True)
     manuscript_page.complete_task('Additional Information')
     time.sleep(3)
 

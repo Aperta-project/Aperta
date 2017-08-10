@@ -6,9 +6,10 @@ export default Ember.Component.extend({
   readOnly: false,
   shortStatus: Ember.computed.reads('short'),
 
-  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', function() {
+  statusSubMessage: Ember.computed('report.status','report.revision','statusDate', 'report.originallyDueAt', 'report.dueAt', function() {
     const status = this.get('report.status');
-    var output = '';    const verbs = {
+    var output = '';    
+    const verbs = {
       'pending': 'accepted',
       'invitation_invited': 'sent on',
       'invitation_accepted': 'accepted',
@@ -20,11 +21,14 @@ export default Ember.Component.extend({
     } else {
       output = `Invitation ${verbs[status]} ${this.get('statusDate')}`;
     }
+
+    const dueDate = this.get('report.dueAt');        
     const originalDueDate = this.get('report.originallyDueAt');
-    if (originalDueDate) {
-      const format = 'MMMM D';
-      const formattedDate = moment(originalDueDate).format(format);
-      output += ` · Original due date was ${formattedDate}`;
+    const format = 'MMMM D';   
+    const formattedDueDate = moment(dueDate).format(format);    
+    const formattedOriginalDueDate = moment(originalDueDate).format(format);
+    if (dueDate && formattedDueDate !== formattedOriginalDueDate) {
+      output += `; original due date was ${formattedOriginalDueDate}.`;
     }
     return output;
   }),

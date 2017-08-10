@@ -48,7 +48,7 @@ test(`it sends 'valueChanged' on change`, function(assert) {
     assert.equal(newVal, 'New', 'it calls the action with the new value');
   });
   this.render(template);
-  this.$('input').val('New').trigger('change');
+  this.$('input').val('New').trigger('change').trigger('blur');
 });
 test(`it sends 'valueChanged' on input`, function(assert) {
   assert.expect(1);
@@ -57,7 +57,7 @@ test(`it sends 'valueChanged' on input`, function(assert) {
     assert.equal(newVal, 'New', 'it calls the action with the new value');
   });
   this.render(template);
-  this.$('input').val('New').trigger('input');
+  this.$('input').val('New').trigger('input').trigger('blur');
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];

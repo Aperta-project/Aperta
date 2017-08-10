@@ -995,6 +995,7 @@ ActiveRecord::Schema.define(version: 20170804153441) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_events", "due_datetimes"
   add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

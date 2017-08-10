@@ -13439,6 +13439,15 @@ card_versions:
     -
     - Initial version
     - false
+  - - '52'
+    - '1'
+    - '74'
+    -
+    - true
+    - '2017-08-10 09:55:32.718181'
+    -
+    - Initial version
+    - false
 
 ---
 cards:
@@ -13881,6 +13890,15 @@ cards:
     - '2017-07-28 17:30:17.739732'
     -
     - Card Configuration Sampler
+    - '1'
+    - '1'
+    -
+    - published
+  - - '74'
+    - '2017-08-10 09:55:31.946948'
+    - '2017-08-10 09:55:32.722639'
+    -
+    - Preprint Opt Out
     - '1'
     - '1'
     -

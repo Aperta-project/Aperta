@@ -10,6 +10,32 @@ class ScheduledEventFactory
   end
 
   def schedule_events
+    active_owned_events = ScheduledEvent.owned_by(owner_type, owner_id).active.all
+    return schedule_new_events if active_owned_events.blank?
+    update_scheduled_events
+  end
+
+  private
+
+  def dispatch_date(event)
+    return nil unless due_datetime
+    due_datetime.due_at + event[:dispatch_offset].days
+  end
+
+  def reschedule(event, template)
+    new_date = dispatch_date(template)
+    if event.complete? # already fired
+      if event.dispatch_at < new_date
+        new_event = event.dup
+        new_event.dispatch_at = new_date
+        new_event.save
+      end
+    end
+
+    event.deactivate! if event.active? && event.dispatch_at > new_date
+  end
+
+  def schedule_new_events
     template.each do |event|
       ScheduledEvent.create name: event[:name],
                             dispatch_at: dispatch_date(event),
@@ -19,10 +45,10 @@ class ScheduledEventFactory
     end
   end
 
-  private
-
-  def dispatch_date(event)
-    return nil unless due_datetime
-    due_datetime.due_at + event[:dispatch_offset].days
+  def update_scheduled_events
+    template.each do |entry|
+      event = ScheduledEvent.owned_by(owner_type, owner_id).where(name: entry[:name])
+      reschedule event, entry
+    end
   end
 end

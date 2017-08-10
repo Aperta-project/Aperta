@@ -6,21 +6,11 @@ export default Ember.Mixin.create({
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
-  pusherIsDisconnected: Ember.computed.alias('pusher.isDisconnected'),
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange: concurrencyTask(function*() {
-    let state = null;
-    switch (this.get('pusherConnectionState')) {
-    case 'failed':
-      state = 'failed';
-      break;
-    case 'unavailable':
-    case 'disconnected':
-      state = 'unavailable';
-    }
-
-    if (state) {
+    let state = this.get('pusherConnectionState');
+    if(['unavailable', 'failed', 'disconnected'].includes(state)) {
       this.updatePusherConnectionMessage(state);
     }
   }).drop(),
@@ -40,6 +30,10 @@ export default Ember.Mixin.create({
             to attempt to re-establish the connection`,
     failed: `Aperta is having trouble establishing a live connection with your browser
               due to lack of browser support for required software.
-              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`
+              <a href="http://browsehappy.com/">Please update your browser to the current version</a>`,
+    disconnected: `Aperta\'s live connection with your browser has been dropped. 
+            This could impact updates to the interface,
+            and we recommend you <a href="#" onclick="window.location.reload(false)">reload this page</a> 
+            to attempt to re-establish the connection.`
   }
 });

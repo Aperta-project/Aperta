@@ -97,7 +97,7 @@ module TahiStandardTasks
         filenames: packager.manifest.file_list,
         paper: paper,
         url: router_url,
-        apex_delivery_id: apex_delivery.id
+        export_delivery_id: export_delivery.id
       ).upload
     end
   end

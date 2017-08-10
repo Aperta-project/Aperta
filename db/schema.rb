@@ -551,6 +551,8 @@ ActiveRecord::Schema.define(version: 20170804153441) do
     t.boolean  "deleted",    default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "order_dir"
+    t.string   "order_by"
   end
 
   create_table "papers", force: :cascade do |t|

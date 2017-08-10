@@ -181,7 +181,6 @@ class TasksController < ApplicationController
   end
 
   def required_fields_completed
-    task.answers.includes(:card_content)
-                  .where(card_contents: { required_field: true }).all?(&:ready?)
+    task.answers.includes(:card_content).all?(&:ready?)
   end
 end

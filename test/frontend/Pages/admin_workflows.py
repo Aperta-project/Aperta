@@ -319,8 +319,7 @@ class AdminWorkflowsPage(BaseAdminPage):
       time.sleep(1)
       back_btn = self._get(self._mmt_template_back_link)
       back_btn.click()
-      time.sleep(3)
-      self._wait_for_not_element(self._mmt_template_back_link, 1)
+      self._wait_for_not_element(self._mmt_template_back_link, .15)
 
   def delete_new_mmt_template(self):
     """

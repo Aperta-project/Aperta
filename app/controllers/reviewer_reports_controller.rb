@@ -17,6 +17,7 @@ class ReviewerReportsController < ApplicationController
 
     if FeatureFlag[:REVIEW_DUE_DATE]
       reviewer_report.due_datetime.update_attributes reviewer_report_params.slice(:due_at)
+      reviewer_report.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
     end
     reviewer_report.submit! if reviewer_report_params[:submitted].present?
 

@@ -8,6 +8,15 @@ class ScheduledEvent < ActiveRecord::Base
 
   include AASM
 
+  scope :active, -> { where(state: 'active') }
+  scope :owned_by, ->(type, id) { where(owner_type: type, owner_id: id) }
+
+  before_save :deactivate, if: :past_dispatch?
+
+  def past_dispatch?
+    dispatch_at < Datetime.now
+  end
+
   aasm column: :state do
     state :active, initial: true
     state :inactive

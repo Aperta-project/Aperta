@@ -9,6 +9,19 @@ export default Ember.Mixin.create({
   pusherConnectionState: 'unknown',
   pusherConnecting: false,
 
+  handlePusherConnectionStatusChange(){
+    this.set('pusherConnectionState', this.pusher.connection.connection.state);
+
+    if (this.pusher.connection.connection.state === 'connecting') {
+      this.handlePusherConnecting();
+    } else {
+      this.handlePusherConnectionSuccess();
+    }
+    if (this.pusher.get('isDisconnected')) {
+      this.handlePusherConnectionFailure();
+    }
+  },
+  
   handlePusherConnectionSuccess() {
     Ember.run.cancel(this.get('debounceTimer'));
 

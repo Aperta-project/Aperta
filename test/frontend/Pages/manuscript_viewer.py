@@ -729,6 +729,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
         title_and_abstract_task.set_abstract(short_doi, prod=True)
       else:
         title_and_abstract_task.set_abstract(short_doi)
+      # Need a delay to ensure the card state is updated before clicking the completion button.
+      # Without this delay, the click of the completion button fails, unfortunately.
+      time.sleep(3)
       base_task.click_completion_button()
       self.click_covered_element(task)
     elif task_name in ('Competing Interest', 'Data Availability', 'Early Article Posting',

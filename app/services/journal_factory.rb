@@ -39,7 +39,8 @@ class JournalFactory
 
   # All standard tasks that users who see the workflow should see
   # Billing is special, and CustomCardTask is handled by a custom mechanism.
-  STANDARD_TASKS = Task.descendants - [PlosBilling::BillingTask, CustomCardTask]
+  STANDARD_TASKS = (Task.descendants - [PlosBilling::BillingTask, CustomCardTask]).freeze
+  SUBMISSION_TASKS = (Task.submission_task_types - [CustomCardTask]).freeze
 
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength
   def ensure_default_roles_and_permissions_exist
@@ -53,9 +54,8 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Creator(s) only get access to the submission task types
-      task_klasses = Task.submission_task_types
-      task_klasses << PlosBioTechCheck::ChangesForAuthorTask
-      task_klasses << AdHocForAuthorsTask
+      task_klasses = SUBMISSION_TASKS
+      task_klasses += [PlosBioTechCheck::ChangesForAuthorTask, AdHocForAuthorsTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
@@ -73,9 +73,9 @@ class JournalFactory
       role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
+      task_klasses += [AdHocForAuthorsTask]
       task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -115,6 +115,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
@@ -151,13 +152,13 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
 
       # Reviewer(s) get access to all submission tasks, except a few
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
       task_klasses -= [
         PlosBilling::BillingTask,
         TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
-      task_klasses << AdHocForReviewersTask
+      task_klasses += [AdHocForReviewersTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name)
         role.ensure_permission_exists(:view_participants, applies_to: klass.name)
@@ -220,6 +221,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -277,6 +279,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -394,6 +397,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -447,6 +451,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -481,7 +486,7 @@ class JournalFactory
                        participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
 
       # AEs cannot view Billing task, Register Decision tasks, or
       # Changes For Author tasks. However, AEs can view all
@@ -491,7 +496,7 @@ class JournalFactory
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
-      task_klasses << TahiStandardTasks::ReviewerReportTask
+      task_klasses += [TahiStandardTasks::ReviewerReportTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end

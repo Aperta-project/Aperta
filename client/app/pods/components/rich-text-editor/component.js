@@ -1,12 +1,15 @@
+import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicFormats     = {underline: {inline : 'u'}};
-const basicPlugins     = 'codesample paste';
+const basicPlugins     = 'code codesample paste autoresize';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
 
 const anchorElement    = ',a[href|rel|target|title]';
-const expandedElements = ',div,span,code,ol,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
+const listElement      = ',ol[reversed|start|type]';
+
+const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
 const expandedPlugins  = ' link table';
 const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
@@ -45,21 +48,18 @@ export default Ember.Component.extend({
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
       toolbar: basicToolbar + expandedToolbar,
-      valid_elements: basicElements + anchorElement + expandedElements
+      valid_elements: basicElements + anchorElement + listElement + expandedElements
     }
 
   /* eslint-enable camelcase */
   },
 
-  stripTitles() {
-    let editors = window.tinymce.editors;
-    for (let id of Object.keys(editors)) {
-      let editor = editors[id];
-      if (editor) {
-        let ifr = window.tinymce.DOM.get(id + '_ifr');
-        editor.dom.setAttrib(ifr, 'title', '');
-      }
-    }
+  postRender() {
+    let editor = this.childViews.find(child => child.editor).editor;
+    let iframeSelector = 'iframe#' + editor.id + '_ifr';
+    document.querySelector(iframeSelector).removeAttribute('title');
+    let callback = this.get('focusOut');
+    if (callback) editor.on('blur', callback);
   },
 
   configureCommon(options) {
@@ -67,7 +67,13 @@ export default Ember.Component.extend({
     options['content_style'] = this.get('bodyCSS');
     options['formats'] = basicFormats;
     options['elementpath'] = false;
-    Ember.run.schedule('afterRender', this.stripTitles);
+    options['autoresize_max_height'] = 500;
+    options['autoresize_bottom_margin'] = 1;
+    options['autoresize_on_init'] = true;
+    if (ENV.environment === 'development') {
+      options['toolbar'] += ' code';
+    }
+    Ember.run.schedule('afterRender', this, this.postRender);
     return options;
   },
 

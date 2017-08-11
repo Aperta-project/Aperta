@@ -40,6 +40,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
   before do
     assign_reviewer_role paper, reviewer
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
 
     login_as(reviewer, scope: :user)
     visit "/"

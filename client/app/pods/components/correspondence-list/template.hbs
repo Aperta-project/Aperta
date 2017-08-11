@@ -4,8 +4,9 @@
       <thead>
         <tr>
           <th class="correspondence-date-column">Date</th>
-          <th class="correspondence-subject-column">Subject</th>
-          <th class="correspondence-recipient-column">Recipient</th>
+          <th class="correspondence-subject-column">Correspondence</th> 
+          <th class="correspondence-recipient-column">Recipient</th>                   
+          <th class="correspondence-manuscript-column">Manuscript Version / Status</th>
           <th class="correspondence-sender-column">Initiator</th>
         </tr>
       </thead>
@@ -16,11 +17,14 @@
             <td>
               <div class="correspondence{{message.id}}">
               {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
-                {{message.subject}}
+                {{if message.external message.description message.subject}}
               {{/link-to}}
               </div>
             </td>
             <td>{{message.recipient}}</td>
+            <td class="{{if (eq message.manuscriptVersionStatus "Unavailable") "unavailable"}}">
+              {{message.manuscriptVersionStatus}}
+            </td>
             <td>{{message.sender}}</td>
           </tr>
         {{/each}}

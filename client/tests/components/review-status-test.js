@@ -36,8 +36,8 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
 test('No due_at unless accepted', function(assert) {
   assert.expect(3);
   let fake = this.container.lookup('service:can');
-  let paper = this.get('report.task.paper');
-  fake.allowPermission('manage_workflow', paper);
+  let task = this.get('report.task');
+  fake.allowPermission('edit_due_date', task);
 
   this.render(hbs`
     {{reviewer-report-status report=report}}

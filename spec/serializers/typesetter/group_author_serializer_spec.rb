@@ -54,6 +54,8 @@ describe Typesetter::GroupAuthorSerializer do
 
   let(:output) { serializer.serializable_hash }
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+
   it 'has author interests fields' do
     expect(output.keys).to contain_exactly(
       :contact_first_name,

@@ -33,6 +33,8 @@ describe Typesetter::EditorSerializer do
   subject(:serializer) { described_class.new(academic_editor) }
   let(:output) { serializer.serializable_hash }
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+
   context 'no affiliation' do
     it_behaves_like 'editor fields'
 

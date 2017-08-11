@@ -16,6 +16,8 @@ describe Typesetter::FunderSerializer do
     )
   end
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+
   before do
     AnswerableFactory.create(
       funder,

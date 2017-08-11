@@ -37,6 +37,7 @@ describe Typesetter::MetadataSerializer do
       our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true

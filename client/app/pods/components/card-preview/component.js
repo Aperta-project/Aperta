@@ -65,11 +65,9 @@ export default Ember.Component.extend({
       return false;
     }),
 
-  ifReviewerReportTask: Ember.computed('task', function() {
-    let task = this.get('task.type');
-    if (task !== 'ReviewerReportTask') {
-      return true;
-    }
+  notReviewerReportTask: Ember.computed('task', function() {
+    let taskType = this.get('task.type');
+    return taskType !== 'ReviewerReportTask';
   }),  
 
   actions: {

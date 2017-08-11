@@ -1,48 +1,40 @@
 import Ember from 'ember';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default Ember.Mixin.create({
 
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
-  debounceTimer: null,
   pusherConnectionState: 'unknown',
-  pusherConnecting: false,
 
   handlePusherConnectionStatusChange(){
     this.set('pusherConnectionState', this.pusher.connection.connection.state);
 
     if (this.pusher.connection.connection.state === 'connecting') {
-      this.handlePusherConnecting();
+      this.get('handlePusherConnecting').perform();
     } else {
-      this.handlePusherConnectionSuccess();
+      this.cleanupPusherConnecting();
     }
     if (this.pusher.get('isDisconnected')) {
       this.handlePusherConnectionFailure();
     }
   },
   
-  handlePusherConnectionSuccess() {
-    Ember.run.cancel(this.get('debounceTimer'));
-
+  cleanupPusherConnecting() {
     // remove the connecting message on connecting -> connected transition
     let messages = this.get('flash').get('systemLevelMessages');
     let connectionMessage = messages.findBy('text', this._pusherFailureMessage('connecting'));
     this.get('flash').removeSystemLevelMessage(connectionMessage);
-    this.set('debounceTimer', null);
-    this.set('pusherConnecting', false);
   },
-
-  handlePusherConnecting() {
-    this.set('pusherConnecting', true);
-    if (!this.get('debounceTimer')) {
-      let debounce = Ember.run.debounce(this, function() {
-        let message = this._pusherFailureMessage('unavailable');
-        this.get('flash').displaySystemLevelMessage('error', message);
-      }, 10000);
-      this.set('debounceTimer', debounce);
+  
+  handlePusherConnecting: concurrencyTask(function*() {
+    if(!Ember.isTesting){
+      // Pusher tries to connect for 10s. Handle the resulting connection state.
+      yield timeout(10000);
     }
-  },
+    this.handlePusherConnectionStatusChange();
+  }).drop(),
 
   handlePusherConnectionFailure() {
     let message = this._pusherFailureMessage(this.get('pusherConnectionState'));

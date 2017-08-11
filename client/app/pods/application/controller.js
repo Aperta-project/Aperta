@@ -19,7 +19,7 @@ export default Ember.Controller.extend(pusherConcerns, {
     this.get('healthCheck').start();
   },
 
-  pusherConnectionStatusChanged: Ember.on('init', Ember.observer('pusher.isDisconnected', function() {
+  pusherConnectionStatusChanged: Ember.on('init', Ember.observer('pusherNotConnected', function() {
     this.handlePusherConnectionStatusChange();
   })),
 

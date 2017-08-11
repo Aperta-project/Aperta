@@ -6,18 +6,18 @@ export default Ember.Mixin.create({
   pusher: Ember.inject.service('pusher'),
   flash: Ember.inject.service('flash'),
 
-  pusherConnectionState: 'unknown',
+  pusherNotConnected: Ember.computed.alias('pusher.isDisconnected'),
+  // this alias works, but is not observable
+  pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange(){
-    this.set('pusherConnectionState', this.pusher.connection.connection.state);
-
-    if (this.pusher.connection.connection.state === 'connecting') {
+    if (this.get('pusherConnectionState') === 'connecting') {
       this.get('handlePusherConnecting').perform();
     } else {
       this.cleanupPusherConnecting();
     }
-    if (this.pusher.get('isDisconnected')) {
-      this.handlePusherConnectionFailure();
+    if (this.get('pusherNotConnected')) {
+      this.handlePusherNotConnected();
     }
   },
   
@@ -36,7 +36,7 @@ export default Ember.Mixin.create({
     this.handlePusherConnectionStatusChange();
   }).drop(),
 
-  handlePusherConnectionFailure() {
+  handlePusherNotConnected() {
     let message = this._pusherFailureMessage(this.get('pusherConnectionState'));
     this.get('flash').displaySystemLevelMessage('error', message);
   },

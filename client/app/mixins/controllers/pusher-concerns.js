@@ -7,7 +7,6 @@ export default Ember.Mixin.create({
   flash: Ember.inject.service('flash'),
 
   pusherNotConnected: Ember.computed.alias('pusher.isDisconnected'),
-  // this alias works, but is not observable
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
   handlePusherConnectionStatusChange() {
@@ -29,8 +28,9 @@ export default Ember.Mixin.create({
   },
 
   handlePusherConnecting: concurrencyTask(function*() {
+    // We observe pusherNotConnected which does not change on 'connecting' => 'unavailable'.
+    // However, we know that 'connecting' ends after 10s. Handle the resulting connection state.
     if (!Ember.isTesting) {
-      // Pusher tries to connect for 10s. Handle the resulting connection state.
       yield timeout(10000);
     }
     this.handlePusherConnectionStatusChange();

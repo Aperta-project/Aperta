@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
   cleanupPusherConnecting() {
     // remove the connecting message on connecting -> connected transition
     let messages = this.get('flash').get('systemLevelMessages');
-    let connectionMessage = messages.findBy('text', this.pusherFailureMessage('connecting'));
+    let connectionMessage = messages.findBy('text', this.pusherFailureMessages['connecting']);
     this.get('flash').removeSystemLevelMessage(connectionMessage);
   },
 
@@ -33,37 +33,34 @@ export default Ember.Mixin.create({
     if (!Ember.isTesting) {
       yield timeout(10000);
     }
-    this.handlePusherConnectionStatusChange();
+
+    this.handlePusherConnectingCompleted();
   }).drop(),
 
+  handlePusherConnectingCompleted(){
+    this.handlePusherConnectionStatusChange();
+  },
+
   updatePusherConnectionMessage() {
-    let message = this.pusherFailureMessage(this.get('pusherConnectionState'));
+    let message = this.pusherFailureMessages[this.get('pusherConnectionState')];
     let messages = this.get('flash').get('systemLevelMessages').filterBy('text', message);
     if (!messages.length) {
       this.get('flash').displaySystemLevelMessage('error', message);
     }
   },
 
-  pusherFailureMessage(failureState) {
-    switch (failureState) {
-    case 'unavailable':
-      return `Aperta is currently having trouble maintaining a live connection with your browser.
+  pusherFailureMessages: {
+    unavailable: `Aperta is currently having trouble maintaining a live connection with your browser.
           This could impact updates to the interface, and we recommend you 
           <a href="#" onclick="window.location.reload(false)"> reload this page</a>
-          to attempt to re-establish the connection`;
-    case 'failed':
-      return `Aperta is having trouble establishing a live connection with your browser
-            due to lack of browser support for required software.
-            <a href="http://browsehappy.com/">Please update your browser to the current version</a>`;
-    case 'disconnected':
-      return `Aperta\'s live connection with your browser has been dropped. 
+          to attempt to re-establish the connection`,
+    failed: `Aperta is having trouble establishing a live connection with your browser
+          due to lack of browser support for required software.
+          <a href="http://browsehappy.com/">Please update your browser to the current version</a>`,
+    disconnected: `Aperta\'s live connection with your browser has been dropped. 
           This could impact updates to the interface,
           and we recommend you <a href="#" onclick="window.location.reload(false)">reload this page</a> 
-          to attempt to re-establish the connection.`;
-    case 'connecting':
-      return `Aperta is attempting to acquire a live connection. Please wait until connection is established.`;
-    default:
-      return false;
-    }
-  }
+          to attempt to re-establish the connection.`,
+    connecting: `Aperta is attempting to acquire a live connection. Please wait until connection is established.`
+  },
 });

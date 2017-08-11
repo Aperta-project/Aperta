@@ -46,7 +46,6 @@
   </div>
 
   {{#each sortedTasks as |task|}}
-  phase: {{task.phase.position}} task: {{task.position}}
     {{#task-disclosure title=task.title type=task.type completed=task.completed class=task.componentName}}
       {{#task-load task=task}}
         {{component task.componentName task=task}}

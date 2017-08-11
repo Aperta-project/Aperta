@@ -7,7 +7,7 @@ class TaskSerializer < ActiveModel::Serializer
              :card_version_id, :paper_id, :is_workflow_only_task,
              :display_status
 
-  has_one :phase, embed: :id
+  has_one :phase, embed: :id, include: true
 
   self.root = :task
 

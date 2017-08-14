@@ -31,7 +31,7 @@ let parent = Ember.Object.extend({
   }
 });
 
-test(`bivalent if/then/else chooses then or else based on the condition`, function(assert) {
+test(`if/then/else (2 children) chooses 'then' or 'else' content based on the condition`, function(assert) {
   let content = parent.create({
     children: [
       FactoryGuy.make('card-content', {
@@ -56,7 +56,7 @@ test(`bivalent if/then/else chooses then or else based on the condition`, functi
   assert.elementFound('.card-content-paragraph-input', 'found else content');
 });
 
-test(`univalent if/then chooses then or nothing based on the condition`, function(assert) {
+test(`if/then (only 1 child) chooses 'then' content or nothing based on the condition`, function(assert) {
   let content = parent.create({
     children: [
       FactoryGuy.make('card-content', {

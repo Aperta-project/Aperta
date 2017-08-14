@@ -103,12 +103,6 @@ module Authorizations
   # it will use ObjectsAuthorizedViaNNNQuery objects to do the heavy
   # lifting where NNN is BelongsTo, Collection, Self, or Through.
   #
-  # ==== Step 3
-  #
-  # Now that we have all of the objects that a user may be authorized to see
-  # we need to further reduce the results to exclude any that have
-  # PermissionRequirement(s) that the user doesn't have.
-  #
   # The result of this is final set of objects that a user can see. For Joe,
   # it would be a list of all of the tasks he could view on Paper 99.
   #
@@ -118,7 +112,7 @@ module Authorizations
   #
   #     id       permission_actions
   #   ------  |  -------------------
-  #      11   |    view:*, edit: unsubumitted
+  #      11   |    view:*, edit: unsubmitted
   #      47   |    view:*, edit: unsubmitted
   #      33   |    view:*, edit: unsubmitted
   #

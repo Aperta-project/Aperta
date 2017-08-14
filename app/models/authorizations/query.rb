@@ -377,8 +377,7 @@ module Authorizations
       ObjectsPermissibleByRequiredPermissionsQuery.new(
         klass: @klass,
         assignments_table: permissible_assignments_as_table,
-        objects_query: objects_via_authorizations_query,
-        applies_to: eligible_applies_to
+        objects_query: objects_via_authorizations_query
       )
     end
   end

@@ -12,18 +12,18 @@ describe TahiStandardTasks::SendToApexTask do
     it_behaves_like '<Task class>.restore_defaults update title to the default'
   end
 
-  describe '#apex_deliveries association' do
+  describe '#export_deliveries association' do
     let!(:task) do
-      FactoryGirl.create(:send_to_apex_task, :with_loaded_card, apex_deliveries: [apex_delivery])
+      FactoryGirl.create(:send_to_apex_task, :with_loaded_card, export_deliveries: [export_delivery])
     end
-    let!(:apex_delivery) { FactoryGirl.build(:apex_delivery, paper: paper, destination: 'apex') }
+    let!(:export_delivery) { FactoryGirl.build(:export_delivery, paper: paper, destination: 'apex') }
 
-    it 'detroys apex deliveries when the task is destroyed' do
+    it 'destroys export deliveries when the task is destroyed' do
       expect do
         task.destroy
-      end.to change { task.apex_deliveries.count }.by(-1)
+      end.to change { task.export_deliveries.count }.by(-1)
 
-      expect { apex_delivery.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { export_delivery.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

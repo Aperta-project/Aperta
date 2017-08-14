@@ -9,12 +9,14 @@ class ScheduledEvent < ActiveRecord::Base
   include AASM
 
   scope :active, -> { where(state: 'active') }
+  scope :inactive, -> { where(state: 'inactive') }
+  scope :complete, -> { where(state: 'complete') }
   scope :owned_by, ->(type, id) { where(owner_type: type, owner_id: id) }
 
-  before_save :deactivate, if: :past_dispatch?
+  before_save :deactivate, if: :should_deactivate?
 
-  def past_dispatch?
-    dispatch_at < Datetime.now
+  def should_deactivate?
+    dispatch_at < DateTime.now.in_time_zone && !complete?
   end
 
   aasm column: :state do
@@ -22,8 +24,8 @@ class ScheduledEvent < ActiveRecord::Base
     state :inactive
     state :complete
 
-    event(:activate) do
-      transitions from: :inactive, to: :active
+    event(:reactivate) do
+      transitions from: [:complete, :inactive], to: :active
     end
 
     event(:deactivate) do

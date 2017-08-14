@@ -612,6 +612,30 @@ describe Paper do
     end
   end
 
+  describe '#aarx_doi' do
+    context "paper with preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_short_doi: "1234567")
+      end
+
+      it "returns a valid doi" do
+        expect(paper.aarx_doi).to eq("10.24196/aarx.1234567")
+      end
+    end
+
+    context "paper without preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_short_doi: nil)
+      end
+
+      it "returns nil" do
+        expect(paper.aarx_doi).to eq(nil)
+      end
+    end
+  end
+
   describe '#latest_withdrawal' do
     let!(:joe) { FactoryGirl.create(:user) }
     let!(:sally) { FactoryGirl.create(:user) }
@@ -1689,6 +1713,33 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(true)
+    end
+  end
+
+  describe '.valid_preprint_doi?' do
+    context "with a valid preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.0000001").to eq true
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.0324501").to eq true
+      end
+    end
+
+    context "with a blank preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? nil).to eq false
+      end
+    end
+
+    context "with an invalid preprint DOI" do
+      it "returns false" do
+        expect(described_class.valid_preprint_doi? "10.24196/aarx.1").to eq false
+        expect(described_class.valid_preprint_doi? "10.24196/aarx0000001").to eq false
+        expect(described_class.valid_preprint_doi? "10.24196aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "10.2419/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "1024196/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "0.24196/aarx.0324501").to eq false
+        expect(described_class.valid_preprint_doi? "1.24196/aarx.0324501").to eq false
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ class Journal < ActiveRecord::Base
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
 
-  class InvalidDoiError < ::StandardError ; end
+  class InvalidDoiError < ::StandardError; end
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
@@ -140,6 +140,10 @@ class Journal < ActiveRecord::Base
   end
 
   private
+
+  def preprint_full_doi_prefix
+    PREPRINT_DOI_PREFIX_ID + PREPRINT_DOI_PREFIX_NAME
+  end
 
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)

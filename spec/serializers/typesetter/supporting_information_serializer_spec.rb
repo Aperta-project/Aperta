@@ -19,6 +19,7 @@ describe Typesetter::SupportingInformationFileSerializer do
   end
 
   let(:output) { serializer.serializable_hash }
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     allow(si_file).to receive(:filename).and_return(file_name)

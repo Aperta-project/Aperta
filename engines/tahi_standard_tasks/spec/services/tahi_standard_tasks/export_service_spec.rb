@@ -28,6 +28,7 @@ describe TahiStandardTasks::ExportService do
       before do
         export_delivery.destination = "apex"
       end
+
       it "uploads two files" do
         expect(service).to receive(:upload_to_ftp)
                              .with(packager.zip_file, service.send(:package_filename))
@@ -91,6 +92,35 @@ describe TahiStandardTasks::ExportService do
     it "returns the filename of the package" do
       filename = service.send(:manifest_filename)
       expect(filename).to match(/tur.0001\.man.json/)
+    end
+  end
+
+  describe "#needs_preprint_doi?" do
+    context "the paper has not opted out of preprint" do
+      before do
+        paper.update(preprint_opt_out: false)
+      end
+
+      it "for a preprint export it needs a preprint doi" do
+        apex_delivery.destination = "preprint"
+        expect(service.send(:needs_preprint_doi?)).to eq(true)
+      end
+
+      it "for an apex export it needs a preprint doi" do
+        apex_delivery.destination = "apex"
+        expect(service.send(:needs_preprint_doi?)).to eq(false)
+      end
+    end
+
+    context "the paper has opted out of preprint" do
+      before do
+        paper.update(preprint_opt_out: true)
+      end
+
+      it "does not ensure a need doi" do
+        apex_delivery.destination = "preprint"
+        expect(service.send(:needs_preprint_doi?)).to eq(false)
+      end
     end
   end
 end

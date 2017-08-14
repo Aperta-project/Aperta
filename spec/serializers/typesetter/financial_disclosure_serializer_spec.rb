@@ -10,6 +10,8 @@ describe Typesetter::FinancialDisclosureSerializer do
 
   let(:output) { serializer.serializable_hash }
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+
   before do
     AnswerableFactory.create(
       task,

@@ -72,6 +72,26 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
+  validates :preprint_short_doi,
+    format: {
+      with: %r{\A\d{7}\z},
+      message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
+      if: proc { |paper| paper.preprint_short_doi.present? }
+  }
+
+  class InvalidPreprintDoiError < ::StandardError; end
+  PREPRINT_DOI_FORMAT = %r{\A10.24196\/aarx\.\d{7}\z}
+  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
+  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
+
+  def self.valid_preprint_doi?(doi)
+    !!(doi =~ PREPRINT_DOI_FORMAT)
+  end
+
+  def self.validate_preprint_doi(doi)
+    raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
+  end
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
@@ -604,6 +624,29 @@ class Paper < ActiveRecord::Base
 
   def manually_similarity_checked
     similarity_checks.exists? automatic: false
+  end
+
+  def ensure_preprint_doi!
+    return if preprint_short_doi.present?
+
+    with_lock do
+      next_number = PreprintDoiIncrementer.get_next_doi!
+      next_doi = "#{preprint_full_doi_prefix}#{next_number}"
+      raise InvalidPreprintDoiError unless self.class.valid_preprint_doi?(next_doi)
+      update_column :preprint_short_doi, next_number
+    end
+  end
+
+  def aarx_doi
+    return nil unless preprint_doi_suffix
+    doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
+    self.class.validate_preprint_doi(doi)
+    return doi
+  end
+
+  def preprint_doi_suffix
+    return nil unless preprint_short_doi
+    PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
   end
 
   private

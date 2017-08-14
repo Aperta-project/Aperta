@@ -21,6 +21,10 @@ describe Typesetter::BaseSerializer do
     end
   end
 
+  let!(:apex_html_flag) do
+    FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false
+  end
+
   before do
     allow(object).to receive(:foo).and_return(
       "<p><pre><strong>lorem</strong></pre><p> </p><u><em>ipsum</em></u></p>"

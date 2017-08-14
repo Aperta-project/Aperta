@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
+ActiveRecord::Schema.define(version: 20170808181146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -579,6 +579,8 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.string   "preprint_short_doi"
+    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -656,6 +658,10 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   end
 
   add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
+  create_table "preprint_doi_incrementers", force: :cascade do |t|
+    t.integer "value", default: 1, null: false
+  end
 
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
@@ -746,6 +752,19 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "scheduled_events", force: :cascade do |t|
+    t.datetime "dispatch_at"
+    t.string   "state"
+    t.string   "name"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+  end
+
+  add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
 
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
@@ -983,6 +1002,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_events", "due_datetimes"
   add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

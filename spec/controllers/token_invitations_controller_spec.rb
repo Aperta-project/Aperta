@@ -42,9 +42,9 @@ describe TokenInvitationsController do
 
     context 'when the token points to a "declined" invitation' do
       let(:invitation) { FactoryGirl.create(:invitation, :declined) }
-      it 'redirects to root' do
+      it 'redirects to inactive' do
         do_request
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(invitation_inactive_path(invitation.token))
       end
     end
   end
@@ -245,9 +245,9 @@ describe TokenInvitationsController do
       let(:invitation_double) { double('Invitation', email: 'ned@flancrest.com') }
       let(:ned_enabled?) { true }
       before do
-       expect(NedUser).to receive(:new).and_return(ned_user)
-       expect(controller).to receive(:invitation).and_return(invitation_double)
-     end
+        expect(NedUser).to receive(:new).and_return(ned_user)
+        expect(controller).to receive(:invitation).and_return(invitation_double)
+      end
       context 'User is in NED db' do
         let(:ned_user) { double('NedUser', email_has_account?: true) }
         it 'should return true' do
@@ -339,7 +339,7 @@ describe TokenInvitationsController do
         allow(controller).to receive(:use_authentication?).and_return(use_authentication_response)
       end
       context 'when the token points to an "invited" invitation and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: nil, token: 'abc') }
+        let(:invitation_double) { double('Invitation', invitee_id: nil, token: 'abc', declined?: false, rescinded?: false) }
         let(:use_authentication_response) { true }
         before do
           expect_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(cas_enabled)
@@ -365,7 +365,7 @@ describe TokenInvitationsController do
         end
       end
       context 'when the token points to an "invited" invitation with an invitee_id and the user should be logged in' do
-        let(:invitation_double) { double('Invitation', invitee_id: 1234, token: 'abc') }
+        let(:invitation_double) { double('Invitation', invitee_id: 1234, token: 'abc', declined?: false, rescinded?: false) }
         let(:use_authentication_response) { false }
         it 'redirects user to login page' do
           allow_any_instance_of(TahiEnv).to receive(:cas_enabled?).and_return(false)
@@ -376,7 +376,7 @@ describe TokenInvitationsController do
       context 'the user should go through akita phased signup' do
         let(:use_authentication_response) { false }
         let(:invitation_double) do
-          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer', invitee_id: nil)
+          double('Invitation', token: 'blah', email: user.email, invitee_role: 'Reviewer', invitee_id: nil, declined?: false, rescinded?: false)
         end
         let(:dummy_cas_url) { 'http://setphaserstostun.org' }
         let(:dummy_key) { OpenSSL::PKey::EC.new('prime256v1').generate_key }
@@ -404,7 +404,7 @@ describe TokenInvitationsController do
         context 'when invitation and current user emails are the same' do
           before { expect(Activity).to receive(:invitation_accepted!).and_return(true) }
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
+            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end
 
           it 'creates an Activity' do
@@ -429,7 +429,7 @@ describe TokenInvitationsController do
 
           context 'Inviting an academic editor' do
             let(:invitation_double) do
-              double('Invitation', invitee_role: 'Academic Editor', invited?: true, email: user.email, accept!: true, paper: task.paper, invitee_id: 123)
+              double('Invitation', invitee_role: 'Academic Editor', invited?: true, declined?: false, rescinded?: false, email: user.email, accept!: true, paper: task.paper, invitee_id: 123)
             end
             it 'flashes appropriate language' do
               do_request
@@ -440,7 +440,7 @@ describe TokenInvitationsController do
 
         context 'when invitation and current user emails are not the same' do
           let(:invitation_double) do
-            double('Invitation', invited?: true, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
+            double('Invitation', invited?: true, declined?: false, rescinded?: false, email: 'phished@plos.org', accept!: true, paper: task.paper, invitee_role: 'Reviewer', invitee_id: 123)
           end
           it 'does not accept the user\'s invitation' do
             expect(invitation_double).not_to receive(:accept!)
@@ -456,7 +456,7 @@ describe TokenInvitationsController do
 
       context 'when the invitation has been accepted' do
         let(:invitation_double) do
-          double('Invitation', invited?: false, email: user.email, paper: task.paper, invitee_id: 123)
+          double('Invitation', invited?: false, declined?: false, rescinded?: false, email: user.email, paper: task.paper, invitee_id: 123)
         end
         it 'does not try to accept again and redirects to manuscript' do
           expect(invitation_double).to receive(:invited?)

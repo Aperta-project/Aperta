@@ -70,6 +70,8 @@ export default Ember.Component.extend({
     return taskType !== 'ReviewerReportTask';
   }),  
 
+  showDeleteButton: Ember.computed.and('canRemoveCard', 'notReviewerReportTask'),
+
   actions: {
     viewCard() {
       let action = this.get('action');

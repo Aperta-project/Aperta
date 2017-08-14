@@ -23,6 +23,6 @@
   <span class="card-title">{{task.title}}</span>
 </a>
 
-{{#if (and canRemoveCard notReviewerReportTask)}}
+{{#if showDeleteButton}}
    <span {{action "promptDelete" bubbles=false}} class="card-remove" title="Delete Card"></span> 
 {{/if}}

@@ -60,7 +60,7 @@ test('#unread-comments-count badge is removed when commentLooks are "read"', fun
   });
 });
 
-test('no delete button display for reviewer card', function(assert) {
+test('no delete button display for reviewer card, even if canRemoveCard is true', function(assert) {
   this.set('task', {
     title: 'Review by Reviewer User',
     type: 'ReviewerReportTask',
@@ -68,11 +68,26 @@ test('no delete button display for reviewer card', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
-    {{card-preview task=task}}
+    {{card-preview task=task canRemoveCard=true}}
   `);
 
   Ember.run(this, function() {
     assert.textPresent('span.card-title', 'Review by Reviewer User');
     assert.equal(this.$('.task-disclosure-heading .card-remove').length, 0);
+  });
+});
+
+test('delete button display for any other type of task', function(assert) {
+  this.set('task', {
+    type: 'AuthorsTask',
+  });
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview task=task canRemoveCard=true}}
+  `);
+  
+  Ember.run(this, function() {
+    assert.equal(this.$('.task-disclosure-heading .card-remove').length, 1);
   });
 });

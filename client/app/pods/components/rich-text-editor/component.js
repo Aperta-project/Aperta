@@ -1,6 +1,8 @@
 import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
+const inlineElements   = 'strong/b,em/i,u,sub,sup,pre';
+
 const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
 const basicFormats     = {underline: {inline : 'u'}};
 const basicPlugins     = 'code codesample paste autoresize';
@@ -38,6 +40,13 @@ export default Ember.Component.extend({
 
   editorStyle: 'expanded',
   editorConfigurations: {
+    inline: {
+      plugins: basicPlugins,
+      toolbar: basicToolbar,
+      valid_elements: inlineElements,
+      forced_root_block: false
+    },
+
     basic: {
       plugins: basicPlugins,
       toolbar: basicToolbar,

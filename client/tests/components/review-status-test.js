@@ -40,7 +40,7 @@ test('No due_at unless accepted', function(assert) {
   fake.allowPermission('edit_due_date', task);
 
   this.render(hbs`
-    {{reviewer-report-status report=report}}
+    {{reviewer-report-status report=report canEditDueDate=(can 'edit_due_date' report.task)}}
   `);
 
   assert.equal(
@@ -53,7 +53,7 @@ test('No due_at unless accepted', function(assert) {
   this.set('report.status', 'invitation_accepted');
 
   this.render(hbs`
-    {{reviewer-report-status report=report}}
+    {{reviewer-report-status report=report canEditDueDate=(can 'edit_due_date' report.task)}}
   `);
 
   assert.equal(

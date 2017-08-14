@@ -1,0 +1,13 @@
+.scheduled-events {
+  .scheduled-event {
+    display: flex;
+
+    > p:first-child {
+      width: 50%;
+    }
+  }
+
+  .event-completed {
+    color: #878787;
+  }
+}

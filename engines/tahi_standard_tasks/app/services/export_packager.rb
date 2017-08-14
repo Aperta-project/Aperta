@@ -3,7 +3,7 @@ class ExportPackager
   class ExportPackagerError < StandardError
   end
 
-  METADATA_FILENAME = 'metadata.json'.freeze
+  METADATA_FILENAME = 'metadata.json'
 
   def self.create_zip(paper, destination:)
     packager = new(paper, destination: destination)
@@ -27,7 +27,6 @@ class ExportPackager
         add_metadata(package)
         add_manuscript(package)
         add_sourcefile_if_needed(package)
-        # NOTE: This will be implemented in APERTA-10394
         add_generated_pdf(package) if include_pdf?
       end
     end
@@ -55,8 +54,14 @@ class ExportPackager
     @destination != 'apex'
   end
 
-  def add_generated_pdf(_package)
-    nil
+  def add_generated_pdf(package)
+    package.put_next_entry(converter.output_filename)
+    package.write(converter.output_data)
+    manifest.add_file(converter.output_filename)
+  end
+
+  def converter
+    @converter ||= PaperConverters::PaperConverter.make(@paper.latest_version, 'generated-pdf', nil)
   end
 
   def add_sourcefile_if_needed(package)

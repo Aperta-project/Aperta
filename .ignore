@@ -1,0 +1,10 @@
+public/assets/
+log/
+tmp/
+tags
+client/dist/
+client/tmp/
+client/npm-shrinkwrap.json
+client/yarn.lock
+client/node_modules/
+client/bower_components

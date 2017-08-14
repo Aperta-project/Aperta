@@ -5,6 +5,12 @@
     {{#if task.isSubmitted}}
       {{reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
+      {{reviewer-report-status report=currentReviewerReport}}
+      {{#if (and (can 'manage_scheduled_events' task)
+                 currentReviewerReport.scheduledEvents)}}
+        {{scheduled-events events=currentReviewerReport.scheduledEvents
+                           dueDate=currentReviewerReport.dueAt}}
+      {{/if}}
       <p><strong>Please refer to our
         <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>
         guidelines for detailed instructions.</strong>

@@ -20,23 +20,26 @@ radio-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "radio" },
+                  attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  element instruction-text { text }?,
-                  element text { text },
+                  (element instruction-text { text }? &
+                  element text { text }),
                   possible-value*,
                   content*
               }
 
+
 check-box-input = element content {
                 attribute ident { text }?,
                 attribute content-type { "check-box" },
+                attribute required-field { "true" | "false" }?,
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                element instruction-text { text }?,
+                (element instruction-text { text }? &
                 (element label { text }? &
-                element text { text }?),
+                element text { text }?)),
                 content*
             }
 
@@ -44,17 +47,18 @@ file-uploader = element content {
                     attribute ident { text }?,
                     attribute content-type { "file-uploader" },
                     attribute value-type { "attachment" },
+                    attribute required-field { "true" | "false" }?,
                     attribute allow-multiple-uploads { "true" | "false" }?,
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
-                    element instruction-text { text }?,
+                    (element instruction-text { text }? &
                     (element validation {
                       attribute validation-type { "file-name" },
                       element error-message { text },
                       element validator { text }
                     }* &
                     element label { text }? &
-                    element text { text }?),
+                    element text { text }?)),
                     possible-value*
                 }
 
@@ -62,6 +66,7 @@ date-picker = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
+                  attribute required-field { "true" | "false" }?,
                   element text { text }
               }
 
@@ -70,10 +75,11 @@ dropdown-input = element content {
                   attribute ident { text }?,
                   attribute value-type { "text" | "boolean" },
                   attribute content-type { "dropdown" },
+                  attribute required-field { "true" | "false" }?,
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
-                  element instruction-text { text }?,
-                  element text { text },
+                  (element instruction-text { text }? &
+                  element text { text }),
                   possible-value+,
                   content*
               }
@@ -81,28 +87,40 @@ dropdown-input = element content {
 tech-check = element content {
                 attribute ident { text }?,
                 attribute content-type { "tech-check" },
+                attribute required-field { "true" | "false" }?,
                 attribute default-answer-value { "true" | "false" }?,
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
-                element instruction-text { text }?,
-                element text { text }?,
+                (element instruction-text { text }? &
+                element text { text })?,
                 content*
             }
+
+sendback-reason = element content {
+                attribute ident { text }?,
+                attribute content-type { "sendback-reason" },
+                attribute value-type { "boolean" },
+                (element label { text }? &
+                element text { text }?),
+                content*
+            }
+
 
 text-input = element content {
                  attribute ident { text }?,
                  attribute value-type { "text" | "html" },
                  attribute editor-style { text }?,
                  attribute content-type { "short-input" | "paragraph-input" },
+                 attribute required-field { "true" | "false" }?,
                  attribute default-answer-value { text }?,
                  attribute allow-annotations { "true" | "false" }?,
-                 element instruction-text { text }?,
+                 (element instruction-text { text }? &
                  (element text { text }? &
                  element validation {
                   attribute validation-type { "string-match" | "string-length-minimum" | "string-length-maximum" },
                   element error-message { text },
                   element validator { text }
-                }*)
+                }*))
              }
 
 list-content = element content {
@@ -157,8 +175,9 @@ content = (
            dropdown-input |
            date-picker |
            tech-check |
-           list-content
-          )
+           list-content |
+           sendback-reason
+)
 
 start = element card {
             attribute required-for-submission { "true" | "false" },

@@ -3,11 +3,5 @@ import Ember from 'ember';
 
 export default TaskComponent.extend({
   contentRoot: Ember.computed.reads('task.cardVersion.contentRoot'),
-
-  renderAdditionalText: Ember.computed('task.cardVersion.contentRoot.unsortedChildren.[]', function() {
-    let cardContents = this.get('task.cardVersion.contentRoot.unsortedChildren');
-    return cardContents !== undefined && cardContents !== null && cardContents.any((cardContent) => {
-      return cardContent.get('renderAdditionalText');
-    });
-  }),
+  renderAsDualColumn: Ember.computed.alias('task.cardVersion.contentRoot.renderAsDualColumn')
 });

@@ -117,6 +117,8 @@ class XmlCardLoader
         content.attr_value('default-answer-value'),
       ident:
         content.attr_value('ident'),
+      required_field:
+        content.attr_value('required-field'),
       label:
         content.tag_text('label'),
       instruction_text:

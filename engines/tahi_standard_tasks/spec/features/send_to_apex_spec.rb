@@ -22,6 +22,7 @@ feature 'Send to Apex task', js: true do
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     # Here we are checking that the URLs have similar elements to be the 'same'

@@ -894,18 +894,8 @@ class DashboardPage(AuthenticatedPage):
     # global elements
     logging.info(username)
     modal_title = self._get(self._view_invites_title)
-    self.validate_application_title_style(modal_title)
-    assert APPLICATION_TYPEFACE in modal_title.value_of_css_property('font-family'), \
-        modal_title.value_of_css_property('font-family')
-    assert modal_title.value_of_css_property('font-size') == '48px', \
-        modal_title.value_of_css_property('font-size')
-    assert modal_title.value_of_css_property('font-weight') == '500', \
-        modal_title.value_of_css_property('font-weight')
-    # TODO: APERTA-3013 Re-enable check when issue resolved.
-    # assert modal_title.value_of_css_property('line-height') == '43.2px', \
-    #     modal_title.value_of_css_property('line-height')
-    assert modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', \
-        modal_title.value_of_css_property('color')
+    # APERTA-11038
+    # self.validate_application_title_style(modal_title)
     # per invite elements
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitations = PgSQL().query('SELECT task_id FROM invitations '
@@ -978,7 +968,7 @@ class DashboardPage(AuthenticatedPage):
         paper_type_chooser_label.text
     paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
-    upload_btn = self._get(self._upload_btn)
+    self._get(self._upload_btn)
     doc2upload = random.choice(docs)
     fn = os.path.join(os.getcwd(), doc2upload)
     logging.info('Sending document: {0}'.format(fn))
@@ -987,8 +977,9 @@ class DashboardPage(AuthenticatedPage):
     else:
       raise IOError('Docx file: {0} not found'.format(doc2upload))
     self.click_upload_button()
-    # TODO: Check this when fixed bug APERTA-2831 is resolved
-    # self.validate_secondary_big_green_button_style(upload_btn)
+    # It takes a delay to fully populate all three error messages - without a delay we kept missing
+    #   the Paper type can't be blank message as it wouldn't fully populate in all cases.
+    time.sleep(1)
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)
     # I can't quite make out why the previous returns two iterations of the error messages, but,
@@ -999,8 +990,8 @@ class DashboardPage(AuthenticatedPage):
     for error in error_msgs:
       error = error.text.split('\n')[0]
       errors.append(error)
-    assert 'Journal can\'t be blank' in errors
-    assert 'Paper type can\'t be blank' in errors
+    assert 'Journal can\'t be blank' in errors, errors
+    assert 'Paper type can\'t be blank' in errors, errors
     closer.click()
 
   def validate_mmt_ordering(self, journals=()):

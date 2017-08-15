@@ -833,17 +833,6 @@ ActiveRecord::Schema.define(version: 20170815201704) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.integer  "task_id"
-    t.integer  "user_id"
-    t.string   "state"
-    t.string   "error_message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "destination",   null: false
-  end
-
   create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"

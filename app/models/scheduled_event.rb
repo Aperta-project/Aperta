@@ -16,7 +16,7 @@ class ScheduledEvent < ActiveRecord::Base
   before_save :deactivate, if: :should_deactivate?
 
   def should_deactivate?
-    dispatch_at && dispatch_at < DateTime.now.in_time_zone && !complete?
+    dispatch_at && dispatch_at < DateTime.now.in_time_zone && active?
   end
 
   aasm column: :state do

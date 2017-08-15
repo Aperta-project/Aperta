@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'models/concerns/striking_image_shared_examples'
 
 describe SupportingInformationFile, redis: true do
   let(:file) do
@@ -15,7 +14,6 @@ describe SupportingInformationFile, redis: true do
 
   let(:file_src) { "/resource_proxy/#{file.token}" }
 
-  it_behaves_like 'a striking image'
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
     subject(:si_file) { FactoryGirl.create(:supporting_information_file, :with_resource_token) }

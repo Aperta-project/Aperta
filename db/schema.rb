@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
+ActiveRecord::Schema.define(version: 20170815183418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -577,8 +577,6 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
-    t.integer  "striking_image_id"
-    t.string   "striking_image_type"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

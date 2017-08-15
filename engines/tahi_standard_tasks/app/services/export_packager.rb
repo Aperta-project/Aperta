@@ -3,7 +3,7 @@ class ExportPackager
   class ExportPackagerError < StandardError
   end
 
-  METADATA_FILENAME = 'metadata.json'
+  METADATA_FILENAME = 'metadata.json'.freeze
 
   def self.create_zip(paper, destination:)
     packager = new(paper, destination: destination)

@@ -72,17 +72,15 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
-  validates :preprint_short_doi,
+  validates :preprint_doi_article_number,
     format: {
       with: %r{\A\d{7}\z},
       message: 'The Preprint Short DOI is not valid. It can only contain a string of integers',
-      if: proc { |paper| paper.preprint_short_doi.present? }
+      if: proc { |paper| paper.preprint_doi_article_number.present? }
   }
 
   class InvalidPreprintDoiError < ::StandardError; end
   PREPRINT_DOI_FORMAT = %r{\A10.24196\/aarx\.\d{7}\z}
-  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
-  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
 
   def self.valid_preprint_doi?(doi)
     !!(doi =~ PREPRINT_DOI_FORMAT)
@@ -627,26 +625,33 @@ class Paper < ActiveRecord::Base
   end
 
   def ensure_preprint_doi!
-    return if preprint_short_doi.present?
+    return if preprint_doi_article_number.present?
 
     with_lock do
-      next_number = PreprintDoiIncrementer.get_next_doi!
-      next_doi = "#{preprint_full_doi_prefix}#{next_number}"
+      next_article_number = PreprintDoiIncrementer.get_next_doi!
+      next_doi = "#{preprint_doi_without_id}#{next_article_number}"
+      binding.pry
       raise InvalidPreprintDoiError unless self.class.valid_preprint_doi?(next_doi)
-      update_column :preprint_short_doi, next_number
+      update_column :preprint_doi_article_number, next_article_number
     end
   end
 
+  PREPRINT_DOI_PREFIX = "10.24196".freeze
+
   def aarx_doi
     return nil unless preprint_doi_suffix
-    doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
+    doi = PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
     self.class.validate_preprint_doi(doi)
     return doi
   end
 
   def preprint_doi_suffix
-    return nil unless preprint_short_doi
-    PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
+    return nil unless preprint_doi_article_number
+    "aarx." + preprint_doi_article_number
+  end
+
+  def preprint_doi_without_id
+    PREPRINT_DOI_PREFIX + "/aarx."
   end
 
   private

@@ -87,18 +87,19 @@ describe ExportPackager do
       expect(manifest).to eq expected_manifest
     end
 
-    # TODO: - Make sure this passes once
-    xit 'can create a manifest with a pdf file' do
-      packager = ExportPackager.new(paper, archive_filename: archive_filename, destination: 'apex')
-      packager.zip_file
-      manifest = JSON.parse(packager.send(:manifest).to_json)
-      expected_manifest = {
-        "archive_filename" => archive_filename,
-        "metadata_filename" => "metadata.json",
-        "files" => ["metadata.json", "test.0001.docx", "aperta-generated-PDF.pdf"]
-      }
-      expect(manifest).to eq expected_manifest
-    end
+    # NOTE: commented out until the pdf generator is implemented for ApexPackager
+    #          as part of APERTA10394
+    # it 'can create a manifest with a pdf file' do
+    #   packager = ApexPackager.new(paper, archive_filename: archive_filename)
+    #   packager.zip_file(include_pdf: true)
+    #   manifest = JSON.parse(packager.send(:manifest).to_json)
+    #   expected_manifest = {
+    #     "archive_filename" => archive_filename,
+    #     "metadata_filename" => "metadata.json",
+    #     "files" => ["metadata.json", "test.0001.docx", "apertageneratedPDF.pdf"]
+    #   }
+    #   expect(manifest).to eq expected_manifest
+    # end
 
     describe "add_metadata" do
       it "adds a manuscript file to the manifest" do

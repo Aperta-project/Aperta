@@ -4,7 +4,7 @@ class PreprintDoiIncrementer < ActiveRecord::Base
   DOI_LENGTH = 7
 
   def self.get_next_doi!
-    first.succ!.to_doi
+    first_or_create!.send(:succ!).send(:to_doi)
   end
 
   def self.create

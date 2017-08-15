@@ -5,31 +5,34 @@
 </p>
 <div>
   {{#if isText}}
-    {{#each content.possibleValues as |opt|}}
-      <label class="option">
+    {{#each content.possibleValues as |opt index|}}
+      <label for="{{input-id this index}}" class="option">
         {{radio-button
           selection=answer.value
           value=opt.value
           disabled=disabled
+          id=(input-id this index)
           content=content
           action=(action "valueChanged")}}
         <span class="card-content-radio-label">{{{opt.label}}}</span>
       </label>
     {{/each}}
   {{else }}
-    <label class="option">
+    <label for="{{input-id this '11'}}" class="option">
       {{radio-button
         selection=answer.value
         value=true
+        id=(input-id this '11')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}
       <span class="card-content-radio-label">Yes</span>
     </label>
-    <label class="option">
+    <label  for="{{input-id this '22'}}" class="option">
       {{radio-button
         selection=answer.value
         value=false
+        id=(input-id this '22')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}

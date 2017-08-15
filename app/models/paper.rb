@@ -72,23 +72,22 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
+  class InvalidPreprintDoiError < ::StandardError; end
+  PREPRINT_DOI_ARTICLE_NUMBER_LENGTH = 7
+  PREPRINT_DOI_PREFIX = "10.24196".freeze
+  PREPRINT_DOI_FORMAT = %r{
+    \A
+    #{PREPRINT_DOI_PREFIX}
+    /aarx\.
+    \d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH }}
+  \z}x
+
   validates :preprint_doi_article_number,
     format: {
-      with: %r{\A\d{7}\z},
+      with: %r{\A\d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}}\z},
       message: 'The Preprint DOI article number is not valid. It can only contain a string of integers',
       if: proc { |paper| paper.preprint_doi_article_number.present? }
   }
-
-  class InvalidPreprintDoiError < ::StandardError; end
-  PREPRINT_DOI_FORMAT = %r{\A10.24196\/aarx\.\d{7}\z}
-
-  def self.valid_preprint_doi?(doi)
-    !!(doi =~ PREPRINT_DOI_FORMAT)
-  end
-
-  def self.validate_preprint_doi(doi)
-    raise InvalidPreprintDoiError unless valid_preprint_doi?(doi)
-  end
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -98,7 +97,7 @@ class Paper < ActiveRecord::Base
   pg_search_scope :pg_title_search,
                   against: :title,
                   using: {
-                    tsearch: {dictionary: "english"} # stems
+                    tsearch: { dictionary: "english" } # stems
                   }
 
   delegate :major_version, :minor_version,
@@ -311,7 +310,7 @@ class Paper < ActiveRecord::Base
 
   def self.find_by_id_or_short_doi(id)
     return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
-    return find(id)
+    find(id)
   end
 
   def inactive?
@@ -625,32 +624,23 @@ class Paper < ActiveRecord::Base
   end
 
   def ensure_preprint_doi!
-    return if preprint_doi_article_number.present?
+    return preprint_doi_article_number if preprint_doi_article_number.present?
 
     with_lock do
-      next_article_number = PreprintDoiIncrementer.get_next_doi!
-      next_doi = "#{preprint_doi_without_id}#{next_article_number}"
-      raise InvalidPreprintDoiError unless self.class.valid_preprint_doi?(next_doi)
-      update_column :preprint_doi_article_number, next_article_number
+      next_article_number = PreprintDoiIncrementer.next_article_number!
+      update preprint_doi_article_number: next_article_number
     end
+    preprint_doi_article_number
   end
-
-  PREPRINT_DOI_PREFIX = "10.24196".freeze
 
   def aarx_doi
     return nil unless preprint_doi_suffix
-    doi = PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
-    self.class.validate_preprint_doi(doi)
-    return doi
+    PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
   end
 
   def preprint_doi_suffix
     return nil unless preprint_doi_article_number
     "aarx." + preprint_doi_article_number
-  end
-
-  def preprint_doi_without_id
-    PREPRINT_DOI_PREFIX + "/aarx."
   end
 
   private

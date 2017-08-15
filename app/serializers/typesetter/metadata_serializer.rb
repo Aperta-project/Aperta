@@ -2,7 +2,7 @@ module Typesetter
   # Serializes a paper's metadata for the typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
-    attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
+    attributes :aarx_doi, :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
                :publication_date, :provenance, :special_handling_instructions,
                :early_article_posting, :custom_card_fields, :paper_title
     attribute :first_submitted_at, key: :received_date

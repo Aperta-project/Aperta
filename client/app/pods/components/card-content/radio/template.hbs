@@ -1,8 +1,8 @@
-<label class="content-text">{{{content.text}}}
+<p class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
     {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
   {{/if}}
-</label>
+</p>
 <div>
   {{#if isText}}
     {{#each content.possibleValues as |opt|}}

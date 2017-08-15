@@ -12,7 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170807175908) do
-  
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -241,10 +241,10 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
+    t.boolean  "required_field"
+    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
-    t.string   "editor_style"
-    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -515,6 +515,43 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
+
+  create_table "nested_question_answers", force: :cascade do |t|
+    t.integer  "nested_question_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.string   "value_type",         null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.json     "additional_data"
+    t.integer  "decision_id"
+    t.integer  "paper_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
+  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
+
+  create_table "nested_questions", force: :cascade do |t|
+    t.string   "text"
+    t.string   "value_type", null: false
+    t.string   "ident",      null: false
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
+  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
+  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
+  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
@@ -840,7 +877,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination", null: false
+    t.string   "destination",   null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

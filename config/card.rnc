@@ -24,13 +24,13 @@ radio-input = element content {
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
                   (element instruction-text { text }? &
-                  element text { text }),
+                  element text { text } &
                   element validation {
                     attribute validation-type { "required-field" },
                     element error-message { text },
                     element validator { text }
-                  }*,
-                  possible-value*,
+                  }* &
+                  possible-value*),
                   content*
               }
 
@@ -44,12 +44,12 @@ check-box-input = element content {
                 attribute allow-annotations { "true" | "false" }?,
                 (element instruction-text { text }? &
                 (element label { text }? &
-                element text { text }?)),
-                element validation {
+                 element text { text }?) &
+                 element validation {
                     attribute validation-type { "required-field" },
                     element error-message { text },
                     element validator { text }
-                }*,
+                }*),
                 content*
             }
 
@@ -62,14 +62,14 @@ file-uploader = element content {
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
                     (element instruction-text { text }? &
-                    (element validation {
+                     element validation {
                       attribute validation-type { "file-name" |  "required-field"},
                       element error-message { text },
                       element validator { text }
                     }* &
                     element label { text }? &
-                    element text { text }?)),
-                    possible-value*
+                    element text { text }? &
+                    possible-value*)
                 }
 
 date-picker = element content {
@@ -77,12 +77,12 @@ date-picker = element content {
                   attribute value-type { "text" },
                   attribute content-type { "date-picker" },
                   attribute required-field { "true" | "false" }?,
-                  element text { text },
-                  element validation {
+                  (element text { text } &
+                   element validation {
                     attribute validation-type { "required-field" },
                     element error-message { text },
                     element validator { text }
-                  }*
+                  }*)
               }
 
 # for now duplicating radio-input for dropdown
@@ -94,13 +94,12 @@ dropdown-input = element content {
                   attribute default-answer-value { text }?,
                   attribute allow-annotations { "true" | "false" }?,
                   (element instruction-text { text }? &
-                  element text { text }),
-                  possible-value+,
-                  element validation {
+                   element text { text } &
+                   element validation {
                     attribute validation-type { "required-field" },
                     element error-message { text },
-                    element validator { text }
-                  }*,
+                    element validator { text }}* &
+                    possible-value+),
                   content*
               }
 
@@ -112,12 +111,12 @@ tech-check = element content {
                 attribute value-type { "boolean" },
                 attribute allow-annotations { "true" | "false" }?,
                 (element instruction-text { text }? &
-                element text { text })?,
+                element text { text }? &
                 element validation {
                     attribute validation-type { "required-field" },
                     element error-message { text },
                     element validator { text }
-                }*,
+                }*),
                 content*
             }
 

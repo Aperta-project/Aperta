@@ -13,12 +13,14 @@ module TahiStandardTasks
     def upload_manuscript
       requires_user_can :edit, task
 
+      paper = task.paper
+      attachment = paper.file || paper.create_file
       DownloadManuscriptWorker.download_manuscript(
-        task.paper,
-        params[:url],
+        paper,
+        params[:manuscript_attachment][:s3_url],
         current_user
       )
-      head 204
+      respond_with attachment
     end
 
     private

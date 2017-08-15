@@ -1,0 +1,40 @@
+module CustomCard
+  module Configurations
+    #
+    # This class defines the specific attributes of a particular
+    # Card and it can be used to create a new valid Card into the
+    # system via the CustomCard::Loader.
+    #
+    class <%= klass_name %> < Base
+      def self.name
+        "<%= display_name %>"
+      end
+
+      def self.view_role_names
+        <%= view_permissions %>
+      end
+
+      def self.edit_role_names
+        <%= edit_permissions %>
+      end
+
+      def self.publish
+        true
+      end
+
+      def self.do_not_create_in_production_environment
+        false
+      end
+
+      def self.xml_content
+        <<-XML.strip_heredoc
+          <?xml version="1.0" encoding="UTF-8"?>
+          <card required-for-submission="true" workflow-display-only="false">
+            <content content-type="display-children">
+            </content>
+          </card>
+        XML
+      end
+    end
+  end
+end

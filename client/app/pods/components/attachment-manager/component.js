@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
+import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 /**
  *  This component displays a UI where you can upload one or multiple files,
@@ -15,9 +16,11 @@ import FileUpload from 'tahi/models/file-upload';
  *                       hasCaption=true
  *                       attachments=task.attachments
  *                       noteChanged=(action "noteChanged")
- *                       deleteFile=(action "deleteAttachment")
  *                       uploadFinished=(action "uploadFinished")}}
  *  ```
+ *
+ *  Note that attachment-manager has default implementations for deleting an existing attachment and for cancelling
+ * an upload.  You can pass a 'deleteFile' and 'cancelUpload' to override them.
 **/
 
 let { computed } = Ember;
@@ -36,6 +39,10 @@ export default Ember.Component.extend({
   alwaysShowAddButton: false,
   preview: false, // used for the card config editor
   uploadErrorMessage: null, // set in the uploadError action
+  allowDelete: true,
+
+  attachments: null, // passed in
+  attachment: null, // manager can instead take a single attachment binding
 
   uploadInProgress: computed.notEmpty('fileUploads'),
   canUploadMoreFiles: computed('attachments.[]', 'multiple', function() {
@@ -70,8 +77,18 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     Ember.assert('Please provide filePath property', this.get('filePath'));
+    if (this.get('attachment')) {
+      this.set('attachments', [this.get('attachment')]);
+    }
     if (!this.get('attachments')) this.set('attachments', []);
   },
+
+  cancelAttachmentUpload: concurrencyTask(function * (attachment) {
+    yield attachment.cancelUpload();
+    yield timeout(5000);
+    attachment.unloadRecord();
+  }),
+
 
   actions: {
     fileAdded(upload) {
@@ -79,6 +96,36 @@ export default Ember.Component.extend({
       this.get('fileUploads').addObject(
         FileUpload.create({ file: upload.files[0] })
       );
+    },
+
+    /**
+     * The default behavior for canceling an attachment upload is to defer to the
+     * attachment's cancel behavior, wait 5 seconds, and then unload the record from the client.  callers of attachment-manager can also pass a 'cancelUpload' action if they need to
+     * do something different.
+     */
+    cancelUpload(attachment) {
+      if (this.get('cancelUpload')) {
+        this.get('cancelUpload')(attachment);
+      } else {
+        this.get('cancelAttachmentUpload').perform(attachment);
+      }
+    },
+
+    deleteAttachment(attachment) {
+      if (this.get('deleteFile')) {
+        this.get('deleteFile')(attachment);
+      } else {
+        attachment.destroyRecord();
+      }
+    },
+
+    updateAttachmentCaption(caption, attachment) {
+      attachment.set('caption', caption);
+      attachment.save();
+    },
+
+    clearError() {
+      this.set('uploadErrorMessage', null);
     },
 
     uploadProgress(data) {
@@ -91,8 +138,16 @@ export default Ember.Component.extend({
       });
     },
 
+    /**
+     * uploadError will either set the message provided by the action or
+     * override it with a hardcoded error message that's been passed in to attachment-manager
+     */
     uploadError(message) {
-      this.set('uploadErrorMessage', message);
+      if (this.get('errorMessage')) {
+        this.set('uploadErrorMessage', this.get('errorMessage'));
+      } else {
+        this.set('uploadErrorMessage', message);
+      }
     },
 
     uploadFinished(s3Url, fileName) {

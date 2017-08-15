@@ -14,18 +14,22 @@
     {{card-content/validation-errors errors=attachment.readyIssuesArray}}
   {{/if}}
 
-  {{attachment-item accept=accept
-                    attachment=attachment
-                    disabled=disabled
-                    filePath=filePath
-                    hasCaption=hasCaption
-                    caption=attachment.caption
-                    captionChanged=attrs.captionChanged
-                    cancelUpload=attrs.cancelUpload
-                    deleteFile=attrs.deleteFile
-                    noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment
-                    content=content}}
+  {{attachment-item
+    accept=accept
+    attachment=attachment
+    disabled=disabled
+    filePath=filePath
+    hasCaption=hasCaption
+    allowDelete=allowDelete
+    caption=attachment.caption
+    captionChanged=(action "updateAttachmentCaption")
+    cancelUpload=(action "cancelUpload")
+    deleteFile=(action "deleteAttachment")
+    noteChanged=attrs.noteChanged
+    content=content
+    fileAdded=(action "clearError")
+    uploadError=(action "uploadError")
+    uploadFinished=attrs.updateAttachment}}
 {{/each}}
 
 {{#each fileUploads as |f|}}

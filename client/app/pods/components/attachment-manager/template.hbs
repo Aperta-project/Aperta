@@ -4,7 +4,7 @@
       {{{description}}}
     {{/unless}}
     {{#if content.isRequired}}
-      {{#if answer.hasErrors}}<span class="required-field">*</span>{{/if}}
+    <span class="required-field">{{#if answer.hasErrors}}*{{else}}&nbsp;{{/if}}</span>
     {{/if}}
   </p>
 {{/if}}

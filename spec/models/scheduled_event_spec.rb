@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe ScheduledEvent do
-  subject { FactoryGirl.create :scheduled_event }
+  before do
+    subject { FactoryGirl.create :scheduled_event }
+  end
 
   describe '.state' do
     it 'defaults to active' do
@@ -15,7 +17,7 @@ describe ScheduledEvent do
 
     it 'can move from inactive to active' do
       subject.deactivate
-      subject.activate
+      subject.reactivate
       expect(subject.active?).to be true
     end
 

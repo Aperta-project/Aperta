@@ -22,10 +22,10 @@ class ReviewerReportsController < ApplicationController
     reviewer_report.submit! if reviewer_report_params[:submitted].present?
 
     # return the updated report if the due date changed
-    if reviewer_report_params.slice(:due_at)
-      render json: reviewer_report
-    else
+    if reviewer_report_params.slice(:due_at).empty?
       respond_with reviewer_report
+    else
+      render json: reviewer_report
     end
   end
 

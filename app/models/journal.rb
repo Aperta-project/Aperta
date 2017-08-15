@@ -141,10 +141,6 @@ class Journal < ActiveRecord::Base
 
   private
 
-  def preprint_full_doi_prefix
-    PREPRINT_DOI_PREFIX_ID + PREPRINT_DOI_PREFIX_NAME
-  end
-
   def setup_defaults
     # TODO: remove these from being a callback (when we aren't using rails_admin)
     JournalServices::CreateDefaultTaskTypes.call(self)

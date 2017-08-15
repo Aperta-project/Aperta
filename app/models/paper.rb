@@ -88,8 +88,6 @@ class Paper < ActiveRecord::Base
 
   class InvalidPreprintDoiError < ::StandardError; end
   PREPRINT_DOI_FORMAT = %r{\A10.24196\/aarx\.\d{7}\z}
-  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
-  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
 
   def self.valid_preprint_doi?(doi)
     !!(doi =~ PREPRINT_DOI_FORMAT)
@@ -648,16 +646,22 @@ class Paper < ActiveRecord::Base
     "aarx." + preprint_doi_article_number
   end
 
+  PREPRINT_DOI_PREFIX = "10.24196".freeze
+
   def aarx_doi
     return nil unless preprint_doi_suffix
-    doi = PREPRINT_DOI_PREFIX_ID + preprint_doi_suffix
+    doi = PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
     self.class.validate_preprint_doi(doi)
     return doi
   end
 
   def preprint_doi_suffix
-    return nil unless preprint_short_doi
-    PREPRINT_DOI_PREFIX_NAME + preprint_short_doi
+    return nil unless preprint_doi_article_number
+    "aarx." + preprint_doi_article_number
+  end
+
+  def preprint_doi_without_id
+    PREPRINT_DOI_PREFIX + "/aarx."
   end
 
   private

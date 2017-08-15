@@ -139,6 +139,11 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  # CardTypes are universal across journals, but it's convenient to refer to them from a given journal.
+  def card_types
+    CardType.display_names
+  end
+
   private
 
   def setup_defaults

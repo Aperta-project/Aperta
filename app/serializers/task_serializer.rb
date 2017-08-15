@@ -5,7 +5,7 @@ class TaskSerializer < ActiveModel::Serializer
              :is_metadata_task, :is_submission_task, :is_snapshot_task,
              :links, :phase_id, :assigned_to_me, :owner_type_for_answer,
                :card_version_id, :paper_id, :is_workflow_only_task,
-             :display_status
+             :display_status, :custom
 
   self.root = :task
 

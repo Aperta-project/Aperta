@@ -11,8 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
-  
+ActiveRecord::Schema.define(version: 20170815214753) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.integer  "latest_version", default: 1, null: false
     t.datetime "archived_at"
     t.string   "state",                      null: false
+    t.string   "card_type",      default: "Custom Card", null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
@@ -908,6 +909,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.datetime "completed_at"
     t.integer  "card_version_id",                   null: false
     t.integer  "task_template_id"
+    t.boolean  "custom",           default: false,  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

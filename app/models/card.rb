@@ -24,6 +24,10 @@ class Card < ActiveRecord::Base
       MSG
     }
 
+  validates :card_type,
+            inclusion: { in: CardType.display_names },
+            allow_nil: true
+
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }

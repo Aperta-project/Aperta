@@ -90,7 +90,7 @@ class CardsController < ApplicationController
   end
 
   def card_params(xml: false)
-    keys = %i(name journal_id)
+    keys = %i(name journal_id card_type)
     keys << :xml if xml
     params.require(:card).permit(*keys)
   end

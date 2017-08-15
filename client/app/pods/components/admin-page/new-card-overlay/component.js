@@ -13,7 +13,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   classNames: ['admin-new-card-overlay'],
   cardName: '',
   cardType: '',
-  cardTypes: [{label: 'Custom Card', value: 'customCard'}],
+  cardTypes: Ember.computed.reads('journal.cardTypes'),
   saving: Ember.computed.reads('createCard.isRunning'),
   errors: null,
 
@@ -23,7 +23,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     this.set('errors', null);
     const card = this.get('store').createRecord('card', {
       name: this.get('cardName'),
-      type: this.get('cardType'),
+      cardType: this.get('cardType'),
       journal: this.get('journal')
     });
 

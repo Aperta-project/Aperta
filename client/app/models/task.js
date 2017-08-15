@@ -40,6 +40,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     async: false
   }),
 
+  custom: DS.attr('boolean'),
   body: DS.attr(),
   completed: DS.attr('boolean'),
   decisions: Ember.computed.alias('paper.decisions'),

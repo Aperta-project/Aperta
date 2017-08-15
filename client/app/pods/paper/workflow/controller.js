@@ -15,6 +15,15 @@ const {
   }
 } = Ember;
 
+// This is a sister to the CardType class on the server.
+// It maps the description string of a card type to the
+// name of an ember data model type. The two mappings need to
+// be kept in sync
+const cardTypeMap = {
+  'Custom Card': 'CustomCardTask',
+  'Upload Manuscript': 'TahiStandardTasks::UploadManuscriptTask'
+};
+
 export default Controller.extend(Discussions, {
   flash: Ember.inject.service(),
   restless: service('restless'),
@@ -41,13 +50,14 @@ export default Controller.extend(Discussions, {
   taskToDisplay: null,
   showTaskOverlay: false,
 
-  buildTask(emberStoreKey, title, kind, phase, card) {
+  buildTask(emberStoreKey, title, kind, phase, card, custom) {
     return this.store.createRecord(emberStoreKey, {
-      title: title,
+      title,
       type: kind,
       paper: this.get('paper'),
-      phase: phase,
-      card: card
+      phase,
+      card,
+      custom
     });
   },
 
@@ -78,11 +88,13 @@ export default Controller.extend(Discussions, {
 
       if(item.constructor.modelName === 'card') {
         // task will be created from a Card
-        newTask = this.buildTask('CustomCardTask', item.get('name'), 'CustomCardTask', phase, item);
+        let newTaskType = cardTypeMap[item.get('cardType')];
+        let unNamespacedKind = deNamespaceTaskType(newTaskType);
+        newTask = this.buildTask(unNamespacedKind, item.get('name'), newTaskType, phase, item, true);
       } else {
         // task will be created from a JournalTaskType
         let unNamespacedKind = deNamespaceTaskType(item.get('kind'));
-        newTask = this.buildTask(unNamespacedKind, item.get('title'), item.get('kind'), phase);
+        newTask = this.buildTask(unNamespacedKind, item.get('title'), item.get('kind'), phase, false);
       }
 
       let newTaskPromise = newTask.save().catch((response) => {

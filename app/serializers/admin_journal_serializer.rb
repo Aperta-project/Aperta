@@ -12,7 +12,8 @@ class AdminJournalSerializer < ActiveModel::Serializer
     :doi_journal_prefix,
     :doi_publisher_prefix,
     :last_doi_issued,
-    :links
+    :links,
+    :card_types
   has_many :admin_journal_roles,
            embed: :ids,
            include: true,

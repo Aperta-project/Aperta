@@ -101,13 +101,6 @@ class ExportPackager
     end
   end
 
-  def attachment_apex_filename(attachment)
-    return attachment.filename unless attachment == @paper.striking_image
-
-    extension = attachment.filename.split('.').last
-    "Strikingimage.#{extension}"
-  end
-
   def add_supporting_information(package)
     @paper.supporting_information_files.each do |file|
       next unless file.publishable?

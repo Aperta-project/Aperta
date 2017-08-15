@@ -11,6 +11,5 @@ FactoryGuy.define('supporting-information-file', {
     label: 'S1',
     caption: 'SI caption',
     publishable: true,
-    strikingImage: false
   }
 });

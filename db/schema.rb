@@ -12,7 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170807175908) do
-  
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
-    t.boolean  "required_field"
+    t.boolean  "required_field",             default: false
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -562,7 +562,6 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -572,13 +571,14 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.integer  "striking_image_id"
+    t.string   "striking_image_type"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -840,7 +840,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination", null: false
+    t.string   "destination",   default: "apex", null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

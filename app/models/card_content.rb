@@ -133,7 +133,8 @@ class CardContent < ActiveRecord::Base
       {
         'allow-multiple-uploads' => allow_multiple_uploads,
         'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'error-message' => error_message
       }
     when 'if'
       {

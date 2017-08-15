@@ -1,8 +1,8 @@
 {{#if showDescription}}
   <p class="description">
-    {{#unless (and disabled (not preview))}}
+    {{#if (or preview (not disabled))}}
       {{{description}}}
-    {{/unless}}
+    {{/if}}
     {{#if content.isRequired}}
       {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
     {{/if}}

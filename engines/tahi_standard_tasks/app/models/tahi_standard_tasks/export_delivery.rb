@@ -2,12 +2,12 @@ module TahiStandardTasks
   #
   # The very last thing Aperta does with an accepted manuscript is packacge up
   # the manuscript and its metadata and send it to Apex, an external vendor that
-  # typesets the paper. An ApexDelivery represents the progress of gathering,
+  # typesets the paper. An ExportDelivery represents the progress of gathering,
   # zipping, and sending the appropriate data to Apex.
   #
   # Works hand-in-hand with SendToApexTask.
   #
-  class ApexDelivery < ::ActiveRecord::Base
+  class ExportDelivery < ::ActiveRecord::Base
     include EventStream::Notifiable
     include AASM
 

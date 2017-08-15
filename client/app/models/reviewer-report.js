@@ -17,5 +17,6 @@ export default NestedQuestionOwner.extend(Answerable, {
   needsSubmission: Ember.computed('status', 'submitted', function() {
     var status = this.get('status');
     return !this.get('submitted') && status === 'pending';
-  })
+  }),
+  scheduledEvents: DS.hasMany('scheduled-event')
 });

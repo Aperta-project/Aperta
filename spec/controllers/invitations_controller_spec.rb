@@ -520,6 +520,8 @@ describe InvitationsController do
       it_behaves_like 'an unauthenticated json request'
 
       context 'when the user is authenticated' do
+        let!(:due_at_flag) { FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT" }
+
         before do
           stub_sign_in user
         end

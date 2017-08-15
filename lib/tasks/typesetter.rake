@@ -15,10 +15,10 @@ namespace :typesetter do
     Creates a typesetter ZIP file for manual inspection.
       Usage: rake typesetter:zip[<paper_id>,<output_filename>]
   USAGE
-  task :zip, [:paper_id, :output_filename] => :environment do |_, args|
+  task :zip, [:paper_id, :output_filename, :destination] => :environment do |_, args|
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     paper = Paper.find(args.paper_id)
-    package = ApexPackager.create_zip(paper)
+    package = ExportPackager.create_zip(paper, destination: args.destination)
     FileUtils.cp(package.path, args[:output_filename])
   end
 end

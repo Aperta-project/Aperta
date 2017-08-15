@@ -261,6 +261,10 @@ Tahi::Application.routes.draw do
     to: 'token_invitations#feedback_form',
     as: 'invitation_feedback_form'
 
+  get '/invitations/:token/inactive',
+    to: 'token_invitations#inactive',
+    as: 'invitation_inactive'
+
   post '/invitations/:token/feedback',
     to: 'token_invitations#feedback',
     as: 'post_feedback'

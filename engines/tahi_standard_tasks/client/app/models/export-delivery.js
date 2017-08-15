@@ -5,7 +5,7 @@ import Ember from 'ember';
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: true }),
   task: DS.belongsTo('task', {
-    inverse: 'apexDeliveries',
+    inverse: 'exportDeliveries',
     polymorphic: true
   }),
   state: DS.attr('string'),

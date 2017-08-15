@@ -1,23 +1,24 @@
 # This class creates a temporary ZIP file for FTP to Apex
-class ApexPackager
-  class ApexPackagerError < StandardError
+class ExportPackager
+  class ExportPackagerError < StandardError
   end
 
-  METADATA_FILENAME = 'metadata.json'
+  METADATA_FILENAME = 'metadata.json'.freeze
 
-  def self.create_zip(paper)
-    packager = new(paper)
+  def self.create_zip(paper, destination:)
+    packager = new(paper, destination: destination)
     packager.zip_file
   end
 
-  def initialize(paper, archive_filename: nil, apex_delivery_id: nil)
+  def initialize(paper, archive_filename: nil, delivery_id: nil, destination:)
     @paper = paper
     @archive_filename = archive_filename
-    @apex_delivery_id = apex_delivery_id
+    @delivery_id = delivery_id
+    @destination = destination
   end
 
   # NOTE: This implementation will likely change in APERTA-10685
-  def zip_file(include_pdf: false)
+  def zip_file
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
@@ -27,9 +28,7 @@ class ApexPackager
         add_manuscript(package)
         add_sourcefile_if_needed(package)
         # NOTE: This will be implemented in APERTA-10394
-        # if include_pdf
-        #   add_generated_pdf(package)
-        # end
+        add_generated_pdf(package) if include_pdf?
       end
     end
   end
@@ -40,12 +39,25 @@ class ApexPackager
   end
 
   def manifest
-    @manifest ||= ApexManifest.new archive_filename: @archive_filename,
-                                   metadata_filename: METADATA_FILENAME,
-                                   apex_delivery_id: @apex_delivery_id
+    @manifest ||= ExportManifest.new archive_filename: @archive_filename,
+                                     metadata_filename: METADATA_FILENAME,
+                                     delivery_id: @delivery_id,
+                                     destination: @destination
   end
 
   private
+
+  def include_pdf?
+    article_router_package?
+  end
+
+  def article_router_package?
+    @destination != 'apex'
+  end
+
+  def add_generated_pdf(_package)
+    nil
+  end
 
   def add_sourcefile_if_needed(package)
     if @paper.file_type == 'pdf'

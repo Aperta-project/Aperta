@@ -53,7 +53,7 @@ class CardContent < ActiveRecord::Base
       'field-set': [nil],
       'short-input': ['text'],
       'check-box': ['boolean'],
-      'file-uploader': ['attachment'],
+      'file-uploader': ['attachment', 'manuscript', 'sourcefile'],
       'text': [nil],
       'paragraph-input': ['text', 'html'],
       'radio': ['boolean', 'text'],

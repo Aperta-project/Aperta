@@ -144,7 +144,11 @@
         <value>file-uploader</value>
       </attribute>
       <attribute name="value-type">
-        <value>attachment</value>
+        <choice>
+          <value>attachment</value>
+          <value>manuscript</value>
+          <value>sourcefile</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="required-field">

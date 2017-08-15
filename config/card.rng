@@ -139,7 +139,11 @@
         <value>file-uploader</value>
       </attribute>
       <attribute name="value-type">
-        <value>attachment</value>
+        <choice>
+          <value>attachment</value>
+          <value>manuscript</value>
+          <value>sourcefile</value>
+        </choice>
       </attribute>
       <optional>
         <attribute name="required-field">
@@ -333,20 +337,6 @@
           </element>
         </interleave>
       </optional>
-      <zeroOrMore>
-        <element name="validation">
-          <zeroOrMore>
-            <element name="error-message">
-              <text/>
-            </element>
-          </zeroOrMore>
-          <zeroOrMore>
-            <element name="validator">
-              <text/>
-            </element>
-          </zeroOrMore>
-        </element>
-      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>

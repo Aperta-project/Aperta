@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 const inlineElements   = 'strong/b,em/i,u,sub,sup,pre';
 
-const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
+const basicElements    = 'p,br,' + inlineElements;
 const basicFormats     = {underline: {inline : 'u'}};
 const basicPlugins     = 'code codesample paste autoresize';
 const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
@@ -35,11 +35,10 @@ export default Ember.Component.extend({
     }
   `,
 
-  /* some tinymce options are snake_case */
-  /* eslint-disable camelcase */
-
   editorStyle: 'expanded',
   editorConfigurations: {
+    /* some tinymce options are snake_case */
+    /* eslint-disable camelcase */
     inline: {
       plugins: basicPlugins,
       toolbar: basicToolbar,
@@ -59,8 +58,7 @@ export default Ember.Component.extend({
       toolbar: basicToolbar + expandedToolbar,
       valid_elements: basicElements + anchorElement + listElement + expandedElements
     }
-
-  /* eslint-enable camelcase */
+    /* eslint-enable camelcase */
   },
 
   postRender() {

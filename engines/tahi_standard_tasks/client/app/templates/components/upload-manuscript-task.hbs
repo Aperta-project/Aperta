@@ -17,63 +17,38 @@
         If preferred, you may upload those files separately before completing your submission.
       </p>
     {{else}}
-     You can upload a replacement manuscript file at any time before you
-     submit.
-    {{/if}}
-      <div>
-    {{#if manuscriptUploaded}}
-        <a href="{{s3Url}}"
-           class="download-docx"
-           title="{{filename}}">
-           {{fa-icon fileTypeClass}} {{filename}}
-        </a>
-    {{else}}
-      <a href={{paper-download-link paper=task.paper}}
-         target="_new">
-         {{fa-icon fileTypeClass}} {{task.paper.file.filename}}
-      </a>
-    {{/if}}
-      <span class="fileinput-button manuscript-task">
-        {{fa-icon icon="refresh"}}
-        <span>Replace</span>
-        {{file-uploader id="upload-files"
-                        railsMethod="PUT"
-                        accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")
-                        start="uploadStarted"
-                        progress="uploadProgress"
-                        done="uploadFinished"
-                        addingFileFailed="fileAddError"
-                        error="uploadError"
-                        filePrefix="paper/manuscript"
-                        url=manuscriptUploadUrl
-                        disabled=isNotEditable}}
+      <span>
+        You can upload a replacement manuscript file at any time before you
+        submit.
       </span>
-      </div>
+    {{/if}}
+    {{paper-attachment-manager
+      task=task
+      attachmentType="manuscript"
+      disabled=false
+      errorMessage=(if pdfAllowed
+                      "Please upload a Microsoft Word file (.docx or .doc) or PDF."
+                      "Please upload a Microsoft Word file (.docx or .doc).")
+      accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")}}
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>
   {{/if}}
 
-  {{#if uploadError}}
-    <p>We're sorry, '{{fileName}}' is not a valid file type.</p>
-    {{#if pdfAllowed}}
-      <p>Please upload a Microsoft Word file (.docx or .doc) or PDF.</p>
-    {{else}}
-      <p>Please upload a Microsoft Word file (.docx or .doc).</p>
-    {{/if}}
-  {{/if}}
-
-  {{#if isUploading}}
-    <div id="paper-manuscript-upload">
-      {{#if showProgress}}
-        <div class="progress">
-          <div class="progress-bar" style={{progressBarStyle}}></div>
-        </div>
-      {{/if}}
+  {{#if needsSourcefile}}
+    <div class="flex-form">
+      <h4>Please Upload Your Source File</h4>
+      <span>Because you uploaded a PDF, you must also provide your source file (e.g. .tex, .docx) before marking this task as done.</span>
+      <div class="flex-group flex-group--center upload-sourcefile">
+        {{paper-attachment-manager
+          task=task
+          attachmentType="sourcefile"
+          disabled=false
+          errorMessage=(if pdfAllowed
+                          "Please upload a Microsoft Word file (.docx or .doc) or PDF."
+                          "Please upload a Microsoft Word file (.docx or .doc).")
+          accept=(if pdfAllowed ".docx,.doc,.pdf" ".docx,.doc")}}
+        {{error-message message=validationErrors.hasSourceIfNeeded displayIcon=true}}
+      </div>
     </div>
   {{/if}}
-
-  {{#if needsSourcefile}}
-    {{upload-source-file task=task message=validationErrors.hasSourceIfNeeded}}
-  {{/if}}
-
 </div>

@@ -1,6 +1,8 @@
 # SourcefileAttachmentsController contains the end-points responsible for
 # interacting with SourcefileAttachment records over HTTP. Currently, the only
 # publicly accessible action is #show.
+
+# TODO: merge with ManuscriptAttachmentsController
 class SourcefileAttachmentsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json

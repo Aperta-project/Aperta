@@ -19,7 +19,7 @@ export default Ember.Component.extend({
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,
-    preview: PropTypes.bool,
+    preview: PropTypes.bool.isRequired,
     hasAnswerContainer: PropTypes.bool,
     answerChanged: PropTypes.any
   },

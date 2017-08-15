@@ -43,7 +43,6 @@ class Journal < ActiveRecord::Base
     uniqueness: { scope: :doi_publisher_prefix,
                   message: 'This DOI Journal Prefix has already been assigned to this publisher.  Please choose a unique DOI Journal Prefix' }
   validates :last_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
-  validates :last_preprint_doi_issued, presence: { message: 'Please include a Last DOI Issued' }
 
   after_create :setup_defaults
   before_destroy :confirm_no_papers, prepend: true
@@ -149,18 +148,6 @@ class Journal < ActiveRecord::Base
     end
   end
 
-  def next_preprint_short_doi!
-    with_lock do
-      next_number = last_preprint_doi_issued.succ
-      next_doi = "#{preprint_full_doi_prefix}#{next_number}"
-      if self.class.valid_preprint_doi?(next_doi)
-        update_column :last_preprint_doi_issued, next_number
-        return next_number
-      else
-        raise InvalidPreprintDoiError, "Attempted to generate the next Preprint DOI, but it was in an invalid DOI format: #{next_doi}"
-      end
-    end
-  end
   private
 
   def setup_defaults

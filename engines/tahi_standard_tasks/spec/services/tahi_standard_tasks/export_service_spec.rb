@@ -102,12 +102,12 @@ describe TahiStandardTasks::ExportService do
       end
 
       it "for a preprint export it needs a preprint doi" do
-        apex_delivery.destination = "preprint"
+        export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(true)
       end
 
       it "for an apex export it needs a preprint doi" do
-        apex_delivery.destination = "apex"
+        export_delivery.destination = "apex"
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
     end
@@ -118,7 +118,7 @@ describe TahiStandardTasks::ExportService do
       end
 
       it "does not ensure a need doi" do
-        apex_delivery.destination = "preprint"
+        export_delivery.destination = "preprint"
         expect(service.send(:needs_preprint_doi?)).to eq(false)
       end
     end

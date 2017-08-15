@@ -20,11 +20,14 @@ moduleForComponent('upload-manuscript-task', 'Integration | Component | manuscri
       journal: {
         pdfAllowed: true
       },
+      file: {
+        fileType: 'docx'
+      },
       sourceFile: null,
       versionedTexts: [{
         id: 1,
         majorVersion: 1,
-        minorVersion: 1,
+        minorVersion: 1
       }]
     });
 
@@ -33,6 +36,10 @@ moduleForComponent('upload-manuscript-task', 'Integration | Component | manuscri
       paper: paper
     }));
     this.registry.register('pusher:main', Ember.Object.extend({socketId: 'foo'}));
+  },
+
+  afterEach() {
+    $.mockjax.clear();
   }
 });
 
@@ -49,17 +56,17 @@ test('No upload sourcefile component for docx', function(assert) {
   fake.allowPermission('edit', this.get('task'));
 
   this.render(hbs`{{upload-manuscript-task task=task}}`);
-  assert.equal(this.$('#upload-sourcefile').length, 0, 'Upload sourcefile component doesn\'t render');
+  assert.equal(this.$('.upload-sourcefile').length, 0, 'Upload sourcefile component doesn\'t render');
 });
 
 test('Upload sourcefile component renders for pdf', function(assert) {
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', this.get('task'));
 
-  this.set('task.paper.fileType', 'pdf');
+  this.set('task.paper.file.fileType', 'pdf');
 
   this.render(hbs`{{upload-manuscript-task task=task}}`);
-  assert.equal(this.$('#upload-sourcefile').length, 1, 'Upload sourcefile component does render');
+  assert.equal(this.$('.upload-sourcefile').length, 1, 'Upload sourcefile component does render');
 });
 
 test('docx papers don\'t require sourcefiles', function(assert) {
@@ -82,14 +89,14 @@ test('pdf papers display a validation error if no sourcefile is attached', funct
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
 
   this.render(hbs`{{upload-manuscript-task task=task}}`);
-  this.set('task.paper.fileType', 'pdf');
+  this.set('task.paper.file.fileType', 'pdf');
   this.$('button.task-completed').click();
 
   return wait().then(() => {
     assert.equal(this.get('task.completed'), false, 'task did not complete');
-    assert.mockjaxRequestMade('/api/tasks/1', 'PUT');
-    assert.equal(this.$('.error-message').length, 2);
     assert.equal(this.$('.error-message:contains("Please upload your source file")').length, 1);
+    assert.textPresent('.error-message', 'Please upload your source file');
+    assert.mockjaxRequestNotMade('/api/tasks/1', 'PUT', 'does not save the task');
   });
 });
 
@@ -99,8 +106,8 @@ test('pdf papers validate if a sourcefile is attached', function(assert) {
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
 
   this.render(hbs`{{upload-manuscript-task task=task}}`);
-  this.set('task.paper.fileType', 'pdf');
-  this.set('task.paper.sourcefile', 'some.file');
+  this.set('task.paper.file.fileType', 'pdf');
+  this.set('task.paper.sourcefile', make('sourcefile-attachment', { fileType: 'docx' } ));
   this.$('button.task-completed').click();
 
   return wait().then(() => {
@@ -113,7 +120,7 @@ test('pdf papers not in revision don\'t require sourcefiles', function(assert) {
   let fake = this.container.lookup('service:can');
   fake.allowPermission('edit', this.get('task'));
   $.mockjax({url: '/api/tasks/1', type: 'PUT', status: 204, responseText: '{}'});
-  this.set('task.paper.fileType', 'pdf');
+  this.set('task.paper.file.fileType', 'pdf');
   this.set('task.paper.versionedTexts', []);
   this.set('task.paper.publishingState', '');
 

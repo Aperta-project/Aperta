@@ -16,7 +16,8 @@ shared_examples 'templated scheduled events' do |template|
     subject
     template.each do |entry|
       entry_event = owned_active_events.where(name: entry[:name]).first
-      expect(entry_event.dispatch_at).to eq(reviewer_report.due_at + entry[:dispatch_offset].days)
+      dispatch_with_offset = (reviewer_report.due_at + entry[:dispatch_offset].days).beginning_of_hour
+      expect(entry_event.dispatch_at).to eq(dispatch_with_offset)
     end
   end
 end

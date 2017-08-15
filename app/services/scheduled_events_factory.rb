@@ -22,7 +22,7 @@ class ScheduledEventFactory
 
   def dispatch_date(event)
     return nil unless due_datetime
-    due_datetime.due_at + event[:dispatch_offset].days
+    (due_datetime.due_at + event[:dispatch_offset].days).beginning_of_hour
   end
 
   def reschedule(event, template)

@@ -162,6 +162,13 @@ export-paper = element content {
                 element text { text }?)
 }
 
+if = element content {
+                attribute content-type { "if" },
+                attribute condition { text },
+                content,
+                content?
+}
+
 content = (
            radio-input |
            text-input |
@@ -176,7 +183,8 @@ content = (
            date-picker |
            tech-check |
            list-content |
-           sendback-reason
+           sendback-reason |
+           if
 )
 
 start = element card {

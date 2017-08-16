@@ -70,6 +70,23 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
+  class InvalidPreprintDoiError < ::StandardError; end
+  PREPRINT_DOI_ARTICLE_NUMBER_LENGTH = 7
+  PREPRINT_DOI_PREFIX = "10.24196".freeze
+  PREPRINT_DOI_FORMAT = %r{
+    \A
+    #{PREPRINT_DOI_PREFIX}
+    /aarx\.
+    \d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH }}
+  \z}x
+
+  validates :preprint_doi_article_number,
+    format: {
+      with: %r{\A\d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}}\z},
+      message: 'The Preprint DOI article number is not valid. It can only contain a string of integers',
+      if: proc { |paper| paper.preprint_doi_article_number.present? }
+  }
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
@@ -593,6 +610,26 @@ class Paper < ActiveRecord::Base
 
   def manually_similarity_checked
     similarity_checks.exists? automatic: false
+  end
+
+  def ensure_preprint_doi!
+    return preprint_doi_article_number if preprint_doi_article_number.present?
+
+    with_lock do
+      next_article_number = PreprintDoiIncrementer.next_article_number!
+      update preprint_doi_article_number: next_article_number
+    end
+    preprint_doi_article_number
+  end
+
+  def aarx_doi
+    return nil unless preprint_doi_suffix
+    PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
+  end
+
+  def preprint_doi_suffix
+    return nil unless preprint_doi_article_number
+    "aarx." + preprint_doi_article_number
   end
 
   private

@@ -34,6 +34,12 @@ module CustomCard
       template "configuration.template", "lib/custom_card/configurations/#{klass_name.underscore}.rb"
     end
 
+    def generate_custom_card_migration
+      if legacy_task_klass_name.present?
+        generate "custom_card:migration", "\"#{name}\" \"#{legacy_task_klass_name}\""
+      end
+    end
+
     private
 
     def production_data_loaded?

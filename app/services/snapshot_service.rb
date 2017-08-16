@@ -35,7 +35,8 @@ class SnapshotService
         contents: json,
         paper: @paper,
         major_version: nil,
-        minor_version: nil)
+        minor_version: nil
+      )
     end
   end
 end

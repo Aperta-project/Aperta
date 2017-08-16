@@ -28,7 +28,7 @@ class S3Migration < ActiveRecord::Base
 
         # Add +new_store_path+ to return the S3 key for where we want the
         # file to go.
-        def new_store_path(for_file=filename)
+        def new_store_path(for_file = filename)
           File.join([generate_new_store_dir, full_filename(for_file)].compact)
         end
       end
@@ -57,7 +57,6 @@ class S3Migration < ActiveRecord::Base
     event(:migrate, after: [:perform_migration]) do
       transitions from: :ready,
                   to: :in_progress
-
     end
 
     event(:completed) do
@@ -123,7 +122,7 @@ class S3Migration < ActiveRecord::Base
       return
     end
 
-    previous_file_hash = attachment.previous_file_hash || s3object.data[:headers]['ETag'].gsub('"', '')
+    previous_file_hash = attachment.previous_file_hash || s3object.data[:headers]['ETag'].delete('"')
     begin
       new_file_hash = Digest::SHA256.hexdigest(s3object.data[:body])
     rescue Exception => ex
@@ -153,9 +152,7 @@ class S3Migration < ActiveRecord::Base
     # only backfill an attachment snapshot if we found an existing
     # task snapshot for this attachment
     task_snapshot = find_and_update_task_snapshot(previous_file_hash, new_file_hash)
-    if task_snapshot
-      SnapshotService.new(attachment.paper).snapshot!(attachment)
-    end
+    SnapshotService.new(attachment.paper).snapshot!(attachment) if task_snapshot
 
     destination_url = attachment.file.new_store_path(File.basename(source_url))
     update_attributes!(
@@ -186,7 +183,7 @@ class S3Migration < ActiveRecord::Base
       errored_at: Time.zone.now
     )
     failed!
-    msg = "Failed S3 migration on #{self.inspect}. See S3Migration.find(#{id}) for more information."
+    msg = "Failed S3 migration on #{inspect}. See S3Migration.find(#{id}) for more information."
     STDERR.puts msg, ex.message, ex.backtrace, ""
     Rails.logger.error msg
   end
@@ -228,8 +225,6 @@ class S3Migration < ActiveRecord::Base
       node['children'].detect do |node|
         find_child_with_file_hash file_hash, node
       end
-    else
-      nil
     end
   end
 end

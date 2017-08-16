@@ -50,17 +50,16 @@ namespace :data do
         task_id_set.each do |task_id|
           task = Task.find(task_id)
           task.paper.decisions.each do |decision|
-            if decision.invitations.where(invitee: task.reviewer, invitee_role: 'Reviewer', state: 'accepted').first
-              reviewer_report = ReviewerReport.where(
-                task: task,
-                user: task.reviewer,
-                decision: decision
-              )
+            next unless decision.invitations.where(invitee: task.reviewer, invitee_role: 'Reviewer', state: 'accepted').first
+            reviewer_report = ReviewerReport.where(
+              task: task,
+              user: task.reviewer,
+              decision: decision
+            )
 
-              if reviewer_report.empty?
-                STDOUT.puts("Creating reviewer report for #{task.id}")
-                reviewer_report.first_or_create!
-              end
+            if reviewer_report.empty?
+              STDOUT.puts("Creating reviewer report for #{task.id}")
+              reviewer_report.first_or_create!
             end
           end
         end
@@ -75,14 +74,13 @@ namespace :data do
 
           task.paper.decisions.each do |decision|
             reviewer_invitation = decision.invitations.where(invitee: task.reviewer, invitee_role: 'Reviewer').first
-            if reviewer_invitation
-              STDOUT.puts("Creating reviewer report for Task: #{task.id} Reviewer: #{task.reviewer.full_name} Invitation state: #{reviewer_invitation.state}")
-              reviewer_report = ReviewerReport.where(
-                task: task,
-                user: task.reviewer,
-                decision: reviewer_invitation.decision
-              ).create!
-            end
+            next unless reviewer_invitation
+            STDOUT.puts("Creating reviewer report for Task: #{task.id} Reviewer: #{task.reviewer.full_name} Invitation state: #{reviewer_invitation.state}")
+            reviewer_report = ReviewerReport.where(
+              task: task,
+              user: task.reviewer,
+              decision: reviewer_invitation.decision
+            ).create!
           end
         end
 

@@ -1,6 +1,6 @@
 namespace :journal do
   desc "Add default ManuscriptManagerTemplate to all journals"
-  task :create_default_templates => :environment do
+  task create_default_templates: :environment do
     Journal.all.each do |journal|
       if journal.manuscript_manager_templates.empty?
         mmt = JournalServices::CreateDefaultManuscriptManagerTemplates.call(journal)

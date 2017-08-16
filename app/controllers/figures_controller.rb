@@ -61,7 +61,8 @@ class FiguresController < ApplicationController
       :caption,
       :striking_image,
       :attachment,
-      attachment: [])
+      attachment: []
+    )
   end
 
   def render_404

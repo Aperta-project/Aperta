@@ -14,5 +14,4 @@ class LogoUploader < CarrierWave::Uploader::Base
       "#{version_name}_#{orig_file}"
     end
   end
-
 end

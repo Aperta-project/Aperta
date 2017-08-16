@@ -126,7 +126,8 @@ class InvitationsController < ApplicationController
         :primary,
         :alternates,
         :invitation_queue,
-        :attachments)
+        :attachments
+      )
   end
 
   def send_and_notify(invitation)

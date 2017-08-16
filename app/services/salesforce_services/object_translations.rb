@@ -1,4 +1,3 @@
-# rubocop:disable LineLength
 module SalesforceServices
   module ObjectTranslations
     # This class extracts Salesforce manuscript data from a paper

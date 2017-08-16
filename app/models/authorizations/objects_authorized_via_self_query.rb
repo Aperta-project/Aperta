@@ -1,5 +1,4 @@
 module Authorizations
-
   # ObjectsAuthorizedViaSelfQuery represents the query responsible for finding
   # all authorized objects through a self-reference, e.g.:
   #

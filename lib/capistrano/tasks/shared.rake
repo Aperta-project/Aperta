@@ -111,16 +111,13 @@ end
 namespace :check_status do
   [{ name: :nginx,
      pidfile: :nginx_pidfile,
-     role: :web
-   },
+     role: :web },
    { name: :sidekiq,
      pidfile: :sidekiq_pidfile,
-     role: :worker
-   },
+     role: :worker },
    { name: :puma,
      pidfile: :puma_pidfile,
-     role: :web
-   }].each do |config|
+     role: :web }].each do |config|
     desc "Check the status of the #{config[:name]} process"
     task config[:name] do
       on roles(config[:role]) do

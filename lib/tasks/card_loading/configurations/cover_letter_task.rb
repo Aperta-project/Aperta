@@ -20,7 +20,7 @@ module CardConfiguration
         },
         {
           ident: "cover_letter--attachment",
-          value_type: "attachment",
+          value_type: "attachment"
         }
       ]
     end

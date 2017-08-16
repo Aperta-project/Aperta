@@ -91,10 +91,9 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
   def manuscript_manager_template
     @mmt ||= if params[:id]
-      ManuscriptManagerTemplate.find(params[:id])
-    else
-      ManuscriptManagerTemplate.new(template_params)
+               ManuscriptManagerTemplate.find(params[:id])
+             else
+               ManuscriptManagerTemplate.new(template_params)
     end
   end
-
 end

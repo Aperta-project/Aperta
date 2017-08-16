@@ -8,7 +8,7 @@ module TahiStandardTasks
     validates :last_name, presence: true
     validates :email, presence: true
 
-    alias_method :task, :reviewer_recommendations_task
+    alias task reviewer_recommendations_task
 
     # NestedQuestionAnswersController will save the paper_id to newly created
     # answers if an answer's owner responds to :paper. This method is needed by

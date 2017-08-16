@@ -1,5 +1,4 @@
 class DefaultAuthorCreator
-
   attr_reader :creator, :paper, :author
 
   def initialize(paper, creator)

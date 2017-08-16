@@ -1,6 +1,5 @@
 module TahiUtilities
   class Sweeper
-
     # Cleans up old files, such as old database dump files.
     # Parameters:
     # - from_folder: the directory the files are being cleaned up from
@@ -15,17 +14,17 @@ module TahiUtilities
       list_in_order   = 'ls -1tr' # list files in a single column, in chronological order, oldest first
       silently        = '2> /dev/null'
       shell_command   = "#{list_in_order} #{folder}/#{file_pattern} #{silently}"
-      dump_files      = %x[#{shell_command}].split("\n")
+      dump_files      = `#{shell_command}`.split("\n")
       save_files      = dump_files.pop(save_file_count)
 
-      %x[rm #{dump_files.join(' ')}] if dump_files.count > 0
+      `rm #{dump_files.join(' ')}` if dump_files.count > 0
 
-      remaining_files = %x[#{shell_command}].split("\n")
+      remaining_files = `#{shell_command}`.split("\n")
       if remaining_files.count > save_file_count
         STDERR.puts "Clean up of database dump files appears to have failed.  Please investigate manually."
       else
         puts "The #{remaining_files.count} most recent log files have been left:\n"
-        puts remaining_files.map{|path| ' * ' + path}
+        puts remaining_files.map { |path| ' * ' + path }
         puts "and #{dump_files.count} files have been removed."
       end
       { remaining_files: remaining_files, deleted_files: dump_files }

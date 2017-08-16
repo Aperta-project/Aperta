@@ -9,7 +9,7 @@ module CustomCard
   # - auto-publishing
   # - allowing cards to be loaded only in non-production environments
 
-  # rubocop:disable Style/IfUnlessModifier, Metrics/LineLength
+  # rubocop:disable Style/IfUnlessModifier
   class Factory
     attr_accessor :journal
 

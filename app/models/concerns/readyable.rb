@@ -20,7 +20,7 @@ module Readyable
 
   def add_errors(ccv, attribute)
     self.ready = false
-    self.errors.add(attribute,
+    errors.add(attribute,
                       ccv.validation_type.underscore.to_sym,
                       message: ccv.error_message)
   end
@@ -36,7 +36,7 @@ module Readyable
       obj.card_content.card_content_validations.each do |validation|
         obj.add_errors(validation, _attr) unless validation.validate_answer(obj)
       end
-      obj.errors.each { |error, message| obj.ready_issues << message }
+      obj.errors.each { |_error, message| obj.ready_issues << message }
     end
 
     private

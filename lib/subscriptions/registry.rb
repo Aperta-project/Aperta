@@ -1,5 +1,4 @@
 module Subscriptions
-
   # Holds subscription details in a single list. Tracks which events and
   # subscribers are added. It also tracks where those subscriptions were made,
   # so tracking down the source of a subscriber is a simple affair.
@@ -38,7 +37,7 @@ module Subscriptions
       end.flatten
     end
 
-    def pretty_print(io=$stdout)
+    def pretty_print(io = $stdout)
       headers = ["Event Name", "Subscribers"]
       rows = @events.sort.map do |event, info|
         [event, info.map(&:subscribers).flatten.map(&:to_s).sort.join(', ')]
@@ -62,11 +61,9 @@ module Subscriptions
         duplicate_info = previously_registered.detect { |info| info.subscribers.include?(new_handler) }
 
         if duplicate_info
-          raise DuplicateSubscribersRegistrationError.new("#{new_handler} can only be registered once per event, but was registered twice for event `#{new_info.event}` at both: \n\t1. #{duplicate_info.added_from} \n\t2. #{new_info.added_from}\n")
+          raise DuplicateSubscribersRegistrationError, "#{new_handler} can only be registered once per event, but was registered twice for event `#{new_info.event}` at both: \n\t1. #{duplicate_info.added_from} \n\t2. #{new_info.added_from}\n"
         end
       end
     end
-
   end
-
 end

@@ -3,7 +3,6 @@ module MailLog
   # messages. This should likely be hooked into ActionMailer before any other
   # application-level email handlers are.
   module InitializeMessage
-
     def self.attach_handlers!
       ::ActionMailer::Base.register_interceptor(DeliveringEmailInterceptor)
     end

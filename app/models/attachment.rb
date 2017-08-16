@@ -14,7 +14,7 @@ class Attachment < ActiveRecord::Base
   attribute :title, HtmlString.new
   attribute :caption, HtmlString.new
 
-  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif).freeze
 
   STATUSES = {
     processing: 'processing'.freeze,

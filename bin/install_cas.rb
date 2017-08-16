@@ -4,13 +4,13 @@ require 'fileutils'
 require 'nokogiri'
 
 RAILS_ROOT_DIR = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-RAILS_TEMP_DIR = "#{RAILS_ROOT_DIR}/tmp"
-RAILS_LOG_DIR = "#{RAILS_ROOT_DIR}/log"
+RAILS_TEMP_DIR = "#{RAILS_ROOT_DIR}/tmp".freeze
+RAILS_LOG_DIR = "#{RAILS_ROOT_DIR}/log".freeze
 
-CAS_VERSION = "3.5.2.1"
-CAS_DIRECTORY = "cas-server-#{CAS_VERSION}"
-CAS_TARBALL_FILENAME = "#{CAS_DIRECTORY}-release.tar.gz"
-CAS_DOWNLOAD_URL = "http://downloads.jasig.org/cas/#{CAS_TARBALL_FILENAME}"
+CAS_VERSION = "3.5.2.1".freeze
+CAS_DIRECTORY = "cas-server-#{CAS_VERSION}".freeze
+CAS_TARBALL_FILENAME = "#{CAS_DIRECTORY}-release.tar.gz".freeze
+CAS_DOWNLOAD_URL = "http://downloads.jasig.org/cas/#{CAS_TARBALL_FILENAME}".freeze
 
 def brew_install(package)
   system("brew install #{package}") if system("brew info #{package} | grep 'Not installed' > /dev/null")
@@ -26,7 +26,7 @@ puts "Downloading CAS tarball"
 system "curl -o #{RAILS_TEMP_DIR}/#{CAS_TARBALL_FILENAME} #{CAS_DOWNLOAD_URL}"
 
 puts "Unpacking CAS tarball"
-FileUtils.cd("#{RAILS_TEMP_DIR}", verbose: true) { system "tar zxf #{CAS_TARBALL_FILENAME}" }
+FileUtils.cd(RAILS_TEMP_DIR.to_s, verbose: true) { system "tar zxf #{CAS_TARBALL_FILENAME}" }
 
 puts "Configuring CAS"
 FileUtils.cd("#{RAILS_TEMP_DIR}/#{CAS_DIRECTORY}/cas-server-webapp/src/main/webapp/WEB-INF/classes/", verbose: true) do

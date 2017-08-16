@@ -26,7 +26,7 @@ class BillingLog < ActiveRecord::Base
 
   def filename
     @filename ||=
-    "billing-log(#{id})-paper(#{paper.id})-#{current_time}.csv"
+      "billing-log(#{id})-paper(#{paper.id})-#{current_time}.csv"
   end
 
   private
@@ -38,6 +38,7 @@ class BillingLog < ActiveRecord::Base
   def billing_json
     @billing_json ||=
       JSON.parse(
-        Typesetter::BillingLogSerializer.new(paper).to_json)['billing_log']
+        Typesetter::BillingLogSerializer.new(paper).to_json
+      )['billing_log']
   end
 end

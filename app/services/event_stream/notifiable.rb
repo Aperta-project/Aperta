@@ -53,7 +53,7 @@ module EventStream::Notifiable
     def event_action
       if previous_changes[:created_at].present?
         "created"
-      elsif self.destroyed?
+      elsif destroyed?
         "destroyed"
       else
         "updated"

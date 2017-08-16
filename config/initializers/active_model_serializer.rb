@@ -2,7 +2,6 @@ module ActiveModel
   class Serializer
     module Associations
       class HasMany
-
         def key_with_polymorphism
           return @name if !option(:key) && option(:polymorphic)
           key_without_polymorphism
@@ -17,7 +16,6 @@ module ActiveModel
           end
         end
         alias_method_chain :serialize_ids, :polymorphism
-
       end
 
       class HasOne

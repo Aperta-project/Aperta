@@ -19,7 +19,7 @@ module ApertaSourceCodeVisitors
       @class_definitions = {}
     end
 
-    def visit_class(node, tail)
+    def visit_class(_node, tail)
       class_reference = tail[0]
       superclass_reference = tail[1] || nil
 
@@ -42,9 +42,7 @@ module ApertaSourceCodeVisitors
       class_parts = []
       flattened_class_reference = parts.flatten
       flattened_class_reference.each_with_index do |n, i|
-        if n == :@const
-          class_parts << flattened_class_reference[i+1]
-        end
+        class_parts << flattened_class_reference[i + 1] if n == :@const
       end
       class_parts.join('::')
     end

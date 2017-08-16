@@ -1,6 +1,5 @@
 # coding: utf-8
 module Authorizations
-
   # ObjectsAuthorizedViaThroughAssociationQuery represents the query
   # responsible for finding all authorized objects through has_many :through
   # associations, e.g.:
@@ -101,7 +100,8 @@ module Authorizations
           # belongs_to on the through_klass
           klass.arel_table.primary_key
             .eq(through_klass.arel_table[reflection.foreign_key])
-        end)
+        end
+      )
 
       common_query.add_column_condition(
         query: query,

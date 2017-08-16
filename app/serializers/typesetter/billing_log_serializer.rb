@@ -120,7 +120,8 @@ module Typesetter
 
     def direct_bill_response
       return unless billing_answer_for(
-        'plos_billing--payment_method') == 'institutional'
+        'plos_billing--payment_method'
+      ) == 'institutional'
       additional_data =
         billing_task.answer_for('plos_billing--ringgold_institution').try(:additional_data)
       additional_data['nav_customer_number'] if additional_data

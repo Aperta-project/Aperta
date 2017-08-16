@@ -6,15 +6,15 @@ class Decision < ActiveRecord::Base
   attribute :letter, HtmlString.new
   attribute :author_response, HtmlString.new
 
-  REVISION_VERDICTS = ['major_revision', 'minor_revision']
-  TERMINAL_VERDICTS = ['accept', 'reject']
+  REVISION_VERDICTS = ['major_revision', 'minor_revision'].freeze
+  TERMINAL_VERDICTS = ['accept', 'reject'].freeze
   PUBLISHING_STATE_BY_VERDICT = {
     "minor_revision" => "in_revision",
     "major_revision" => "in_revision",
     "accept" => "accepted",
     "reject" => "rejected",
     "invite_full_submission" => "invited_for_full_submission"
-  }
+  }.freeze
 
   VERDICTS = PUBLISHING_STATE_BY_VERDICT.keys
 
@@ -37,7 +37,8 @@ class Decision < ActiveRecord::Base
     if author_response_changed? && !latest_registered? && persisted?
       errors.add(
         :author_response,
-        'Author response can only change on the latest registered decision')
+        'Author response can only change on the latest registered decision'
+      )
     end
   end
 

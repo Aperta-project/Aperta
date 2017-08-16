@@ -1,5 +1,4 @@
 module Authorizations
-
   # HydrateObjects is responsible for taking a HydrateObjectsQuery instance,
   # executing it against a given @target ActiveRecord::Relation, and
   # returning a ResultSet that contains all of ActiveRecord model instances
@@ -57,11 +56,11 @@ module Authorizations
     #
     # Note: the above Hash is meant to be illustrative, not accurate.
     def convert_permission_actions_into_hash_map(permission_actions)
-      permissions_map = Hash.new { |h,k| h[k] = { states: [] } }
+      permissions_map = Hash.new { |h, k| h[k] = { states: [] } }
 
-      permission_actions.split(/\s*,\s*/).
-        map { |f| f.split(/:/) }.
-        each { |action, state| permissions_map[action][:states] << state }
+      permission_actions.split(/\s*,\s*/)
+        .map { |f| f.split(/:/) }
+        .each { |action, state| permissions_map[action][:states] << state }
 
       permissions_map
     end

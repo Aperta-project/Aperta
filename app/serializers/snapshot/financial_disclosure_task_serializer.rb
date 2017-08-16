@@ -1,5 +1,4 @@
 class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseSerializer
-
   private
 
   def snapshot_properties

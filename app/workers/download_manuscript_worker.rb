@@ -8,8 +8,8 @@ class DownloadManuscriptWorker
   include Sidekiq::Worker
 
   # Retries here are would be confusing.  A paper could revert to an older
-  # state hours or days after it was fixed.  
-  sidekiq_options :retry => false
+  # state hours or days after it was fixed.
+  sidekiq_options retry: false
 
   # +download_manuscript+ schedules a background job to download the paper's
   # manuscript at the provided url, on behalf of the given user.

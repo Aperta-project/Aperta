@@ -3,7 +3,6 @@ namespace :data do
     namespace :nested_questions do
       desc 'Changes each nested question ident to make them unique'
       task unique: :environment do
-
         conversions =
           [
             {
@@ -54,10 +53,9 @@ namespace :data do
               from: "competing_interests",
               to: "competing_interests--has_competing_interests",
               children: [
-                { from: "statement", to: "competing_interests--statement" },
+                { from: "statement", to: "competing_interests--statement" }
               ]
             },
-
 
             {
               type: TahiStandardTasks::ReviewerReportTask.name,
@@ -70,7 +68,7 @@ namespace :data do
               from: "support_conclusions",
               to: "reviewer_report--plos_biology_suitable",
               children: [
-                { from: "explanation", to: "reviewer_report--plos_biology_suitable--comment" },
+                { from: "explanation", to: "reviewer_report--plos_biology_suitable--comment" }
               ]
             },
             {
@@ -78,7 +76,7 @@ namespace :data do
               from: "statistical_analysis",
               to: "reviewer_report--statistical_analysis",
               children: [
-                { from: "explanation", to: "reviewer_report--statistical_analysis--explanation" },
+                { from: "explanation", to: "reviewer_report--statistical_analysis--explanation" }
               ]
             },
             {
@@ -86,7 +84,7 @@ namespace :data do
               from: "standards",
               to: "reviewer_report--standards",
               children: [
-                { from: "explanation", to: "reviewer_report--standards--explanation" },
+                { from: "explanation", to: "reviewer_report--standards--explanation" }
               ]
             },
             {
@@ -107,7 +105,7 @@ namespace :data do
               from: "funder_had_influence",
               to: "funder--had_influence",
               children: [
-                { from: "funder_role_description", to: "funder--had_influence--role_description" },
+                { from: "funder_role_description", to: "funder--had_influence--role_description" }
               ]
             },
 
@@ -129,7 +127,7 @@ namespace :data do
               from: "human_subjects",
               to: "ethics--human_subjects",
               children: [
-                { from: "participants", to: "ethics--human_subjects--participants" },
+                { from: "participants", to: "ethics--human_subjects--participants" }
               ]
             },
             {
@@ -137,7 +135,7 @@ namespace :data do
               from: "animal_subjects",
               to: "ethics--animal_subjects",
               children: [
-                { from: "field_permit", to: "ethics--animal_subjects--field_permit" },
+                { from: "field_permit", to: "ethics--animal_subjects--field_permit" }
               ]
             },
 
@@ -154,7 +152,6 @@ namespace :data do
               to: "financial_disclosures--author_received_funding",
               children: []
             },
-
 
             {
               type: PlosBilling::BillingTask.name,
@@ -697,40 +694,38 @@ namespace :data do
               type: TahiStandardTasks::ReportingGuidelinesTask.name,
               from: "diagnostic_studies",
               to: "reporting_guidelines--diagnostic_studies",
-              children: [ ]
+              children: []
             },
             {
               type: TahiStandardTasks::ReportingGuidelinesTask.name,
               from: "epidemiological_studies",
               to: "reporting_guidelines--epidemiological_studies",
-              children: [ ]
+              children: []
             },
             {
               type: TahiStandardTasks::ReportingGuidelinesTask.name,
               from: "microarray_studies",
               to: "reporting_guidelines--microarray_studies",
-              children: [ ]
+              children: []
             },
 
             {
               type: TahiStandardTasks::ReviewerRecommendation.name,
               from: "recommend_or_oppose",
               to: "reviewer_recommendations--recommend_or_oppose",
-              children: [ ]
+              children: []
             },
             {
               type: TahiStandardTasks::ReviewerRecommendation.name,
               from: "reason",
               to: "reviewer_recommendations--reason",
-              children: [ ]
-            },
-        ]
+              children: []
+            }
+          ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert
       end
     end
-
-
 
     class NestedQuestionConverter
       attr_reader :conversions, :dry_run
@@ -744,10 +739,9 @@ namespace :data do
         NestedQuestion.transaction do
           conversions.each do |conversion|
             parent = update_parent(type: conversion[:type], from: conversion[:from], to: conversion[:to])
-            if parent.present?
-              conversion[:children].each do |child|
-                update_child(parent: parent, from: child[:from], to: child[:to])
-              end
+            next unless parent.present?
+            conversion[:children].each do |child|
+              update_child(parent: parent, from: child[:from], to: child[:to])
             end
           end
           if dry_run

@@ -15,7 +15,6 @@ module Subscriptions
   APPLICATION_EVENT_NAMESPACE = Rails.application.railtie_name
 
   class << self
-
     # Provides a simple DSL for configuring internal subscriptions.
     # There is only 1 action: `add`.
     #
@@ -44,7 +43,7 @@ module Subscriptions
 
     # prints out the current list of subscriptions in a style similar to the
     # output of `rake routes`
-    def pretty_print(io=$stdout)
+    def pretty_print(io = $stdout)
       __registry__.pretty_print(io)
     end
 
@@ -84,5 +83,4 @@ module Subscriptions
       @registry ||= Subscriptions::Registry.new
     end
   end
-
 end

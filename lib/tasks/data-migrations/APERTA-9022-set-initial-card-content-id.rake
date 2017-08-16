@@ -9,9 +9,7 @@ namespace :data do
 
         # Due to snafuness, this reset may have already run more than once (it wasn't
         # always in a migration). Just in case, reset to the max card_content.
-        if CardContent.count > 0
-          start = CardContent.maximum(:id).try(:+, 1)
-        end
+        start = CardContent.maximum(:id).try(:+, 1) if CardContent.count > 0
 
         if start.present?
           $stderr.puts("Starting CardContent.id sequence at #{start}")

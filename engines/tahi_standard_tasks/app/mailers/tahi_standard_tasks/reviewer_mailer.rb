@@ -71,7 +71,8 @@ module TahiStandardTasks
 
       mail(
         to: @assignee.try(:email),
-        subject: "Thank you for agreeing to review for #{@journal.name}")
+        subject: "Thank you for agreeing to review for #{@journal.name}"
+      )
     end
   end
 end

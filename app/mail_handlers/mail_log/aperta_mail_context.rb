@@ -6,7 +6,7 @@ module MailLog
 
     def initialize(context_hash)
       @context_hash = context_hash
-      @model_hash = @context_hash.select do |key, value|
+      @model_hash = @context_hash.select do |_key, value|
         value.is_a?(ActiveRecord::Base)
       end
       @task = @model_hash.values.detect { |value| value.is_a?(Task) }
@@ -22,9 +22,7 @@ module MailLog
       @paper ||= task.try(:paper) || fallback_to_first_possible_paper_reference
     end
 
-    def task
-      @task
-    end
+    attr_reader :task
 
     def to_database_safe_hash
       model_hash.each_with_object({}) do |(key, model), safe_hash|

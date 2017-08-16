@@ -10,7 +10,8 @@ module Versioned
     scope :drafts, -> { where(major_version: nil) }
     validates :paper_id, uniqueness: {
       scope: [:major_version, :minor_version],
-      message: "Paper already has a %{model} with that version" }
+      message: "Paper already has a %{model} with that version"
+    }
   end
 
   def draft?

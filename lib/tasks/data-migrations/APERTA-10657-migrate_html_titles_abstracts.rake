@@ -25,8 +25,8 @@ namespace :data do
             matches = Styles & styling
             tags = matches.map do |match|
               case match
-                when 'font-style'  then 'i'
-                when 'font-weight' then 'b'
+              when 'font-style'  then 'i'
+              when 'font-weight' then 'b'
               end
             end.compact.uniq
 
@@ -55,8 +55,8 @@ namespace :data do
 
             statistics.updated += 1
             if Dry
-              before = before.gsub("\n", ' ')
-              after = after.gsub("\n", ' ')
+              before = before.tr("\n", ' ')
+              after = after.tr("\n", ' ')
               puts "<u>Paper [#{model.paper}] #{statistics.kind}</u><br>\n1. #{before}<br>\n2. #{after}<br>\n<br>\n"
             else
               model.record[model.field] = after
@@ -76,9 +76,9 @@ namespace :data do
         papers = Paper.order(:id).all
         short_title = CardContent.where("ident like '%short%'").first
 
-        results << migrate('Paper Title')    {papers.map {|paper| Content.new(paper, :title, paper.id)}}
-        results << migrate('Short Title')    {short_title.answers.order(:id).map {|answer| Content.new(answer, :value, answer.paper_id)}}
-        results << migrate('Paper Abstract') {papers.map {|paper| Content.new(paper, :abstract, paper.id)}}
+        results << migrate('Paper Title')    { papers.map { |paper| Content.new(paper, :title, paper.id) } }
+        results << migrate('Short Title')    { short_title.answers.order(:id).map { |answer| Content.new(answer, :value, answer.paper_id) } }
+        results << migrate('Paper Abstract') { papers.map { |paper| Content.new(paper, :abstract, paper.id) } }
 
         puts
         puts results

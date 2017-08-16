@@ -2,7 +2,7 @@ module CustomCard
   # The purpose of this class is to provide a common interface for
   # creating custom Cards for specified Journals.
   #
-  # rubocop:disable Metrics/LineLength, Style/RedundantSelf
+  # rubocop:disable Style/RedundantSelf
   class Loader
     def self.all
       if card_configuration_klasses.empty?

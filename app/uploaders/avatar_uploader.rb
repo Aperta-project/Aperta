@@ -7,7 +7,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # WARNING: The default image is hard-coded here. Any update to the filename
   # will have to be made here and in the user thumbnail component
-  DEFAULT_URL = "/images/profile-no-image.png"
+  DEFAULT_URL = "/images/profile-no-image.png".freeze
 
   # Choose what kind of storage to use for this uploader:
   storage Rails.application.config.carrierwave_storage
@@ -24,7 +24,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  process :resize_to_fill => [160, 160]
+  process resize_to_fill: [160, 160]
 
   # def scale(width, height)
   #   # do something
@@ -46,5 +46,4 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-
 end

@@ -17,7 +17,6 @@ class ManualSeeds # Use this class to run seeds the old way
   end
 end
 
-
 # To generate BASE seed data, run `rake db:data:dump` to dump
 # the current state of the database in `db/data.yml`.
 

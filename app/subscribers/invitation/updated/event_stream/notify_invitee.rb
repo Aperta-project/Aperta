@@ -1,5 +1,4 @@
 class Invitation::Updated::EventStream::NotifyInvitee < EventStreamSubscriber
-
   def channel
     private_channel_for(record.invitee)
   end
@@ -7,5 +6,4 @@ class Invitation::Updated::EventStream::NotifyInvitee < EventStreamSubscriber
   def run
     super if record.invitee
   end
-
 end

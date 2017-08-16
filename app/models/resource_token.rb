@@ -11,8 +11,6 @@ class ResourceToken < ActiveRecord::Base
   def url(version = nil)
     chosen_url = default_url
     chosen_url = version_urls[version.to_s] if version
-    if chosen_url
-      owner_type.constantize.authenticated_url_for_key(chosen_url)
-    end
+    owner_type.constantize.authenticated_url_for_key(chosen_url) if chosen_url
   end
 end

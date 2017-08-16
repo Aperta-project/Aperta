@@ -3,7 +3,7 @@ class CardThumbnailSerializer < ActiveModel::Serializer
   has_one :paper, embed: :id, include: true, serializer: LitePaperSerializer
 
   def task
-    {id: object.id, type: type}
+    { id: object.id, type: type }
   end
 
   def task_type
@@ -11,7 +11,6 @@ class CardThumbnailSerializer < ActiveModel::Serializer
   end
 
   def type
-    object.type.gsub(/.+::/,'')
+    object.type.gsub(/.+::/, '')
   end
-
 end

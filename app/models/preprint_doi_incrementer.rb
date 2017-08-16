@@ -1,6 +1,6 @@
 # A soft singleton class for globally tracking the last preprint doi
 class PreprintDoiIncrementer < ActiveRecord::Base
-  class DoiIncrementerSingletonError < StandardError; end;
+  class DoiIncrementerSingletonError < StandardError; end
   def self.next_article_number!
     first_or_create!.send(:succ!).send(:to_doi)
   end

@@ -1,5 +1,4 @@
 class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
-
   private
 
   def snapshot_properties
@@ -10,7 +9,7 @@ class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
       snapshot_property("email", "text", model.email),
       snapshot_property("department", "text", model.department),
       snapshot_property("title", "text", model.title),
-      snapshot_property("affiliation", "text", model.affiliation),
+      snapshot_property("affiliation", "text", model.affiliation)
     ]
   end
 end

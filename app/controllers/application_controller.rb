@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
 
   def unmunge_empty_arrays!(model_key, model_attributes)
     model_attributes.each do |key|
-      if params[model_key].has_key?(key) && params[model_key][key].nil?
+      if params[model_key].key?(key) && params[model_key][key].nil?
         params[model_key][key] = []
       end
     end
@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   end
 
   # customize devise signout path
-  def after_sign_out_path_for(resource_or_scope)
+  def after_sign_out_path_for(_resource_or_scope)
     cas_logout_url || new_user_session_path
   end
 

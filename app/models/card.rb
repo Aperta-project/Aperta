@@ -163,8 +163,6 @@ class Card < ActiveRecord::Base
     card_name = LookupClassNamespace.lookup_namespace(klass_name)
     find_by(journal: nil, name: card_name)
   end
-
-  # rubocop:disable Style/AndOr, Metrics/LineLength
   def self.find_by_class_name!(klass_name)
     find_by_class_name(klass_name) ||
       raise(ActiveRecord::RecordNotFound, "Could not find Card with name '#{klass_name}'")

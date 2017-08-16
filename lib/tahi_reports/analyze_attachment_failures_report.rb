@@ -7,7 +7,7 @@ module TahiReports
       'in the past two weeks': 2.weeks,
       'in the past month': 1.month,
       'in the past year': 1.year
-    }
+    }.freeze
 
     attr_reader :output, :attachment_klass
 
@@ -99,7 +99,7 @@ module TahiReports
 
     def print_attachments_stuck(attachments, state)
       attachments_stuck = {}
-      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
+      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), _i|
         attachments_stuck[human_readable_timeframe] = attachments.where(
           updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
         ).count
@@ -124,9 +124,9 @@ module TahiReports
       output.puts "Number of #{attachment_klass.name}(s) per error"
       output.puts "-------------------------------------------"
       TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
-        output.puts unless i == 0
+        output.puts unless i.zero?
         output.puts "Errors #{human_readable_timeframe}"
-        if i == 0
+        if i.zero?
           attachments_by_error = attachments_errored.where(
             updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
           ).each do |a|
@@ -137,14 +137,14 @@ module TahiReports
             output.puts "  [none]"
           else
             attachments_by_error.group_by(&:error_message).each_with_index do |(error_message, attachments), j|
-              output.puts unless j == 0
+              output.puts unless j.zero?
               output.puts "  #{attachments.length} failed with error: #{error_message}"
               output.puts "  ids=#{attachments.map(&:id).inspect}"
             end
           end
         else
           attachments_by_error = attachments_errored.where(
-            updated_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i-1].ago.end_of_day.utc)
+            updated_at: (timeframe.ago.beginning_of_day.utc..TIMEFRAMES.values[i - 1].ago.end_of_day.utc)
           ).each do |a|
             a.error_message = clean_message(a.error_message)
           end
@@ -153,7 +153,7 @@ module TahiReports
             output.puts "  [none]"
           else
             attachments_by_error.group_by(&:error_message).each_with_index do |(error_message, attachments), j|
-              output.puts unless j == 0
+              output.puts unless j.zero?
               output.puts "  #{attachments.length} failed with error: #{error_message}"
               output.puts "  ids=#{attachments.map(&:id).inspect}"
             end

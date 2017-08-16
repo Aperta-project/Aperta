@@ -42,7 +42,7 @@ class JournalFactory
   STANDARD_TASKS = (Task.descendants - [PlosBilling::BillingTask, CustomCardTask]).freeze
   SUBMISSION_TASKS = (Task.submission_task_types - [CustomCardTask]).freeze
 
-  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength
+  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
       # Paper

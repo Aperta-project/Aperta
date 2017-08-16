@@ -1,5 +1,4 @@
 HealthCheck.setup do |config|
-
   # uri prefix (no leading slash)
   config.uri = 'health'
   # health of the server can be checked by hitting (e.g) http://aperta.tech/health

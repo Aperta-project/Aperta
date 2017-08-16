@@ -1,5 +1,4 @@
 module DeviseHelper
-
   # override DeviseHelper with our own CSS classes
   def devise_error_messages!
     return "" if resource.errors.empty?

@@ -1,5 +1,4 @@
 namespace :heroku do
-
   desc <<-DESC.strip_heredoc
     Allow incremental database migrations upon heroku deployments
 
@@ -65,11 +64,11 @@ namespace :heroku do
   DESC
   task :deploy, [:version, :app] => [:environment] do |_, args|
     include Spinner
-    DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01']
-    DEPLOYING_APPS = [args[:app]] if args[:app].present?
-    fail "\n \e[31m Please enter a version number. i.e. rake 'heroku:deploy[1.1.1] \e[0m'" if args[:version].blank?
+    DEPLOYING_APPS = ['tahi-lean-workflow', 'tahi-sandbox01'].freeze
+    DEPLOYING_APPS = [args[:app]].freeze if args[:app].present?
+    raise "\n \e[31m Please enter a version number. i.e. rake 'heroku:deploy[1.1.1] \e[0m'" if args[:version].blank?
     unless system("git show-ref --quiet --verify refs/remotes/origin/release/#{args[:version]}")
-      fail "\e[31m Remote release branch 'release/#{args[:version]}' has not been pushed up yet \e[0m"
+      raise "\e[31m Remote release branch 'release/#{args[:version]}' has not been pushed up yet \e[0m"
     end
     threads = []
     DEPLOYING_APPS.each do |app|

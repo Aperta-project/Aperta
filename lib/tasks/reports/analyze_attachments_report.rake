@@ -18,7 +18,7 @@ namespace :reports do
 
       Note: this can only send to one recipient at a time.
     DESCRIPTION
-    task :send_email, [:recipient] => :environment do |t, args|
+    task :send_email, [:recipient] => :environment do |_t, args|
       recipient = args[:recipient] || raise(
         ArgumentError,
         <<-ERROR.strip_heredoc
@@ -33,7 +33,7 @@ namespace :reports do
       TahiReports::AnalyzeAttachmentFailuresReport.run(output: report_output)
       GenericMailer.delay.send_email(
         to: recipient,
-        subject: "Attachment Analysis Report for #{Date.today.to_s}",
+        subject: "Attachment Analysis Report for #{Date.today}",
         body: report_output.tap(&:rewind).read
       )
     end

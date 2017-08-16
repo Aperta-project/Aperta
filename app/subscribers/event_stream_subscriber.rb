@@ -3,7 +3,6 @@
 require_dependency 'emberize'
 
 class EventStreamSubscriber
-
   attr_reader :action, :record, :excluded_socket_id
 
   def self.call(event_name, event_data)
@@ -18,11 +17,11 @@ class EventStreamSubscriber
   end
 
   def run
-    TahiPusher::Channel.delay(queue: :eventstream, retry: false).
-      push(channel_name: channel,
-           event_name: action,
-           payload: payload,
-           excluded_socket_id: excluded_socket_id)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false)
+      .push(channel_name: channel,
+            event_name: action,
+            payload: payload,
+            excluded_socket_id: excluded_socket_id)
   end
 
   def payload
@@ -30,7 +29,7 @@ class EventStreamSubscriber
   end
 
   def channel
-    raise NotImplementedError.new("You must define the channel name for pusher")
+    raise NotImplementedError, "You must define the channel name for pusher"
   end
 
   private

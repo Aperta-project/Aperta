@@ -46,7 +46,6 @@ class Admin::JournalsController < ApplicationController
     respond_with(journal, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 
-
   private
 
   def journal

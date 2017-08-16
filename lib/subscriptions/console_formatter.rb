@@ -1,12 +1,10 @@
 module Subscriptions
-
   # Print subscription detail as a nicely formatted table
   #
   # usage:
   # ConsoleFormatter.new(["header 1", "header 2"], [["row 1 column 1", "row 2 column 2"]])
   #
   class ConsoleFormatter
-
     def initialize(headers, row_data)
       @headers = headers
       @row_data = row_data
@@ -44,5 +42,4 @@ module Subscriptions
       (@row_data.map { |row| row[col].length } + [column_header.length]).max
     end
   end
-
 end

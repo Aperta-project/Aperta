@@ -12,12 +12,12 @@ class FlashMessageSubscriber
   def run
     mt = message_type
     return if mt.nil?
-    TahiPusher::Channel.
-      delay(queue: :eventstream, retry: false).
-      push(channel_name: "private-user@#{user.id}",
-           event_name: 'flashMessage',
-           payload: { messageType: mt,
-                      message: message })
+    TahiPusher::Channel
+      .delay(queue: :eventstream, retry: false)
+      .push(channel_name: "private-user@#{user.id}",
+            event_name: 'flashMessage',
+            payload: { messageType: mt,
+                       message: message })
   end
 
   def user

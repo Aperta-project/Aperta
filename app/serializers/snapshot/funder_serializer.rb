@@ -1,5 +1,4 @@
 class Snapshot::FunderSerializer < Snapshot::BaseSerializer
-
   private
 
   def snapshot_properties

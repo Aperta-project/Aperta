@@ -7,7 +7,7 @@ module PlosBioTechCheck
     after_action :prevent_delivery_to_invalid_recipient
     layout 'mailer'
 
-    def notify_changes_for_author author_id:, task_id:
+    def notify_changes_for_author(author_id:, task_id:)
       @author = User.find author_id
       @task = Task.find task_id
       @paper = @task.paper

@@ -11,7 +11,7 @@ class Phase < ActiveRecord::Base
     "Invite Reviewers",
     "Get Reviews",
     "Make Decision"
-  ]
+  ].freeze
 
   def self.default_phases
     DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos + 1 }

@@ -1,5 +1,4 @@
 module Authorizations
-
   # HydrateObjectsQuery is responsible for hydrating all of the rows
   # for the @klass being queried.
   #
@@ -65,7 +64,7 @@ module Authorizations
     def to_arel
       Arel::SelectManager.new(klass.arel_table.engine)
         .project(*select_columns)
-        .from( Arel.sql("( #{@query.to_sql} )").as(as_table.name))
+        .from(Arel.sql("( #{@query.to_sql} )").as(as_table.name))
         .join(klass.arel_table).on(klass.arel_table[:id].eq(as_table[:id]))
     end
 
@@ -91,7 +90,7 @@ module Authorizations
     # convert all String/Symbol(s) to be columns on the +as_table+.
     def process_select_columns(select_columns)
       select_columns.map do |column|
-        if column.is_a?(String) or column.is_a?(Symbol)
+        if column.is_a?(String) || column.is_a?(Symbol)
           as_table[column]
         else
           column

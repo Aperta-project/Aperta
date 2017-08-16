@@ -32,9 +32,9 @@ class PhaseTemplatesController < ApplicationController
 
   def phase_template
     @phase_template ||= if params[:id]
-      PhaseTemplate.find(params[:id])
-    else
-      PhaseTemplate.new(phase_template_params)
+                          PhaseTemplate.find(params[:id])
+                        else
+                          PhaseTemplate.new(phase_template_params)
     end
   end
 end

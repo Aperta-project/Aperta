@@ -2,7 +2,6 @@ module UserDevise
   extend ActiveSupport::Concern
 
   included do
-
     # allow login using email address or username
     def self.find_first_by_auth_conditions(warden_conditions)
       conditions = warden_conditions.dup
@@ -25,8 +24,5 @@ module UserDevise
         end
       end
     end
-
   end
-
 end
-

@@ -1,4 +1,3 @@
-# rubocop:disable all
 namespace :data do
   namespace :migrate do
     namespace :discussion_participants do

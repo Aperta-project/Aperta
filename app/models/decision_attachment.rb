@@ -17,5 +17,4 @@ class DecisionAttachment < Attachment
   def build_title
     file.filename || title
   end
-
 end

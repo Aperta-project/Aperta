@@ -1,5 +1,4 @@
 module Authorizations
-
   # ObjectsAuthorizedCommonQuery contains a bunch of common methods
   # useful fo building up other queries. It's a helper class.
   #
@@ -83,12 +82,12 @@ module Authorizations
       # state checks. E.g. Task currently delegates permission state checks to
       # Paper.
       local_permission_state_column = if klass.respond_to?(:delegate_state_to)
-        delegate_permission_state_to_association = klass.delegate_state_to.to_s
-        delegate_state_table = klass.reflections[delegate_permission_state_to_association].klass.arel_table
-        delegate_state_table[permission_state_column]
-      elsif klass.column_names.include?(permission_state_column.to_s) # e.g. Paper has its own publishing state column
-        # E.g. Paper.arel_table['publishing_state']
-        klass.arel_table[permission_state_column]
+                                        delegate_permission_state_to_association = klass.delegate_state_to.to_s
+                                        delegate_state_table = klass.reflections[delegate_permission_state_to_association].klass.arel_table
+                                        delegate_state_table[permission_state_column]
+                                      elsif klass.column_names.include?(permission_state_column.to_s) # e.g. Paper has its own publishing state column
+                                        # E.g. Paper.arel_table['publishing_state']
+                                        klass.arel_table[permission_state_column]
       end
 
       # if there is no permission state column to use then do nothing
@@ -108,7 +107,7 @@ module Authorizations
       # local_permission_state_column. This is necessary if a class is
       # delegating their state permission column to an association, but that
       # associaton has not been loaded, e.g. Task -> Paper#publishing_state
-      if !query.join_sources.map(&:left).map(&:name).include?(local_permission_state_column.relation.name)
+      unless query.join_sources.map(&:left).map(&:name).include?(local_permission_state_column.relation.name)
         query.join(local_permission_state_column.relation).on(
           local_permission_state_column.relation.primary_key.eq(
             klass.arel_table[
@@ -189,8 +188,6 @@ module Authorizations
         end
 
         query.where(conditions)
-      else
-        # no-op for non-STI klasses
       end
     end
 

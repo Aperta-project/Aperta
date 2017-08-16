@@ -4,13 +4,13 @@ class InvalidPayload < StandardError; end
 class Verifier
   attr_accessor :data
 
-  EXPIRATION_DATE_KEY = "_verifier_expiration_date"
+  EXPIRATION_DATE_KEY = "_verifier_expiration_date".freeze
 
-  def initialize(data={})
+  def initialize(data = {})
     @data = data.dup
   end
 
-  def encrypt(expiration_date:nil)
+  def encrypt(expiration_date: nil)
     add_expiration_date(expiration_date) if expiration_date.present?
     verifier.generate(data)
   end
@@ -42,7 +42,7 @@ class Verifier
   def add_expiration_date(expiration_date)
     data[EXPIRATION_DATE_KEY] = expiration_date
   rescue IndexError
-    raise InvalidPayload.new("Data to be encrypted with expiration date must be a hash")
+    raise InvalidPayload, "Data to be encrypted with expiration date must be a hash"
   end
 
   def validate_expiration!

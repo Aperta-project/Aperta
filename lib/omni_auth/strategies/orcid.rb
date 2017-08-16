@@ -3,18 +3,17 @@ require 'omniauth-oauth2'
 module OmniAuth
   module Strategies
     class Orcid < OmniAuth::Strategies::OAuth2
-
-      DEFAULT_SCOPE = '/orcid-bio/read-limited'
+      DEFAULT_SCOPE = '/orcid-bio/read-limited'.freeze
       API_HOST = ENV['ORCID_API_HOST']
       SITE_HOST = ENV['ORCID_SITE_HOST']
 
       def self.options
         { site:        "http://#{API_HOST}",
-        authorize_url: "http://#{SITE_HOST}/oauth/authorize",
-        token_url:     "https://#{API_HOST}/oauth/token",
-        scope:         "/orcid-bio/read-limited",
-        response_type: "code",
-        mode:          :header }
+          authorize_url: "http://#{SITE_HOST}/oauth/authorize",
+          token_url:     "https://#{API_HOST}/oauth/token",
+          scope:         "/orcid-bio/read-limited",
+          response_type: "code",
+          mode:          :header }
       end
 
       # Customize the parameters passed to the OAuth provider in the authorization phase
@@ -42,7 +41,6 @@ module OmniAuth
       option :client_options, options
       uid { access_token.params["orcid"] }
       info { profile }
-
     end
   end
 end

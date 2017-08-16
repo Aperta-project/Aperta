@@ -42,9 +42,7 @@ class ApertaSourceCode
       @visitor.visit(node, tail)
     end
 
-    if tail.is_a?(Array)
-      walk_tree(tail)
-    end
+    walk_tree(tail) if tail.is_a?(Array)
 
     if node
       leaving_method = "leaving_#{node}"

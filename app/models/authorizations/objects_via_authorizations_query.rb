@@ -1,5 +1,4 @@
 module Authorizations
-
   # ObjectsViaAuthorizationsQuery represents the query responsible for finding
   # all objects through a given set of authorization pathways.
   #

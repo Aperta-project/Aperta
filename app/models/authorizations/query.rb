@@ -156,7 +156,6 @@ module Authorizations
   # The Authorizations::UserHelper module provides convenience methods
   # that wrap this object. Check those before using this object directly.
   #
-  # rubocop:disable ClassLength
   class Query
     include QueryHelpers
 
@@ -324,7 +323,7 @@ module Authorizations
       hydrate_objects_query = HydrateObjectsQuery.new(
         klass: klass,
         query: query_to_hydrate,
-        select_columns: [ klass.arel_table[Arel.star], :permission_actions ]
+        select_columns: [klass.arel_table[Arel.star], :permission_actions]
       )
 
       HydrateObjects.new(

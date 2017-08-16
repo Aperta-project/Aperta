@@ -1,5 +1,4 @@
 class Snapshot::ReviewerRecommendationsTaskSerializer < Snapshot::BaseSerializer
-
   private
 
   def snapshot_properties

@@ -1,4 +1,4 @@
-if ENV.has_key? 'AWS_ACCESS_KEY_ID'
+if ENV.key? 'AWS_ACCESS_KEY_ID'
   CarrierWave.configure do |config|
     config.fog_credentials = {
       provider: 'AWS',
@@ -8,7 +8,7 @@ if ENV.has_key? 'AWS_ACCESS_KEY_ID'
     }
     config.fog_directory  = Rails.application.config.s3_bucket
     config.fog_public     = false
-    config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
+    config.fog_attributes = { 'Cache-Control' => 'max-age=315576000' }
     config.fog_authenticated_url_expiration = 6.days
     config.cache_dir = Rails.root.join('public/uploads/tmp/carrierwave').to_s
   end

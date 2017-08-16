@@ -23,10 +23,6 @@ module Typesetter
         tasks.first
       elsif tasks.length > 1
         raise Typesetter::MetadataError.multiple_tasks(tasks)
-      else
-        # This branch isn't strictly necessary, but here to raise visibility
-        # that is an intentional decision.
-        nil
       end
     end
 
@@ -42,11 +38,11 @@ module Typesetter
         answers = task.answers
         answers.each do |answer|
           next if answer.card_content.ident.blank?
-          if answer.card_content.value_type == 'attachment'
-            question_answers[answer.card_content.ident.to_s] = process_file_attachments(answer)
-          else
-            question_answers[answer.card_content.ident.to_s] = answer.value
-          end
+          question_answers[answer.card_content.ident.to_s] = if answer.card_content.value_type == 'attachment'
+                                                               process_file_attachments(answer)
+                                                             else
+                                                               answer.value
+                                                             end
         end
       end
       question_answers

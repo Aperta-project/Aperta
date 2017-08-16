@@ -160,7 +160,6 @@ module TahiStandardTasks
             allow(user).to receive(:can?)
               .with(:edit, task)
               .and_return true
-
           end
 
           it "returns 204" do

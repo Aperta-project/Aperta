@@ -4,19 +4,19 @@ class RouterUploaderService
 
   def initialize(destination:, email_on_failure:, file_io:, filenames:, final_filename:, paper:, url:)
     @destination = destination,
-    @email_on_failure = email_on_failure,
-    @file_io = file_io,
-    @filenames = filenames,
-    @final_filename = final_filename,
-    @paper = paper,
-    @url = url
+                   @email_on_failure = email_on_failure,
+                   @file_io = file_io,
+                   @filenames = filenames,
+                   @final_filename = final_filename,
+                   @paper = paper,
+                   @url = url
   end
 
   def upload
     conn = Faraday.new(url: @url) do |faraday|
       faraday.response :json
       faraday.request :multipart
-      faraday.request  :url_encoded
+      faraday.request :url_encoded
       faraday.use :gzip
       faraday.use Faraday::Response::RaiseError
       faraday.adapter :net_http

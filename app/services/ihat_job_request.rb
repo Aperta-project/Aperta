@@ -45,7 +45,8 @@ class IhatJobRequest
         recipe_name: recipe_name(from_format: from_format, to_format: 'html'),
         callback_url: callback_url,
         content_type: 'application/epub+zip',
-        metadata: metadata)
+        metadata: metadata
+      )
       PaperConverters::PaperConverter.post_ihat_job(request)
     end
   end

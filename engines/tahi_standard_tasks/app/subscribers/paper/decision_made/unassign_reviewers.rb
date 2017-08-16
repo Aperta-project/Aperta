@@ -4,7 +4,7 @@
 # which lives in the main app.
 class Paper::DecisionMade::UnassignReviewers
   REVIEWER_SPECIFIC_TASKS = ["TahiStandardTasks::FrontMatterReviewerReportTask",
-                             "TahiStandardTasks::ReviewerReportTask"]
+                             "TahiStandardTasks::ReviewerReportTask"].freeze
 
   def self.call(_event_name, event_data)
     paper = event_data[:record]
@@ -16,7 +16,8 @@ class Paper::DecisionMade::UnassignReviewers
     invitations = Invitation.joins(:task).where(
       'tasks.paper_id' => paper.id,
       'tasks.type' => 'TahiStandardTasks::PaperReviewerTask',
-      'invitations.state' => 'invited')
+      'invitations.state' => 'invited'
+    )
 
     invitations.each(&:rescind!)
   end

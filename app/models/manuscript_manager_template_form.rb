@@ -12,12 +12,21 @@ class ManuscriptManagerTemplateForm
 
   def create!
     process_params
-    ManuscriptManagerTemplate.create!(params)
+    # since adding a setting is dependent on the task template
+    # already existing, we're creating it first but the
+    # act_as_list callbacks are tweaking the incoming position
+    # values since the association is added later. Running
+    # it in the block halts the callbacks and trusts the params
+    TaskTemplate.acts_as_list_no_update([TaskTemplate]) do
+      ManuscriptManagerTemplate.create!(params)
+    end
   end
 
   def update!(template)
     process_params
-    template.update! params
+    TaskTemplate.acts_as_list_no_update([TaskTemplate]) do
+      template.update! params
+    end
   end
 
   private

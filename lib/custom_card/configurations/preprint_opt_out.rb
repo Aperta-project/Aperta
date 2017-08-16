@@ -8,32 +8,26 @@ module CustomCard
         "Preprint Posting"
       end
 
-      def self.excluded_view_permissions
-        [
-          Role::DISCUSSION_PARTICIPANT,
-          Role::FREELANCE_EDITOR_ROLE,
-          Role::JOURNAL_SETUP_ROLE,
-          Role::TASK_PARTICIPANT_ROLE,
-          Role::REVIEWER_ROLE,
-          Role::REVIEWER_REPORT_OWNER_ROLE
-        ]
+      def self.view_role_names
+        ["Academic Editor",
+         "Billing Staff",
+         "Collaborator",
+         "Cover Editor",
+         "Creator",
+         "Handling Editor",
+         "Internal Editor",
+         "Production Staff",
+         "Publishing Services",
+         "Site Admin",
+         "Staff Admin"]
       end
 
-      def self.excluded_edit_permissions
-        [
-          Role::ACADEMIC_EDITOR_ROLE,
-          Role::BILLING_ROLE,
-          Role::COVER_EDITOR_ROLE,
-          Role::DISCUSSION_PARTICIPANT,
-          Role::FREELANCE_EDITOR_ROLE,
-          Role::HANDLING_EDITOR_ROLE,
-          Role::INTERNAL_EDITOR_ROLE,
-          Role::JOURNAL_SETUP_ROLE,
-          Role::TASK_PARTICIPANT_ROLE,
-          Role::PRODUCTION_STAFF_ROLE,
-          Role::REVIEWER_ROLE,
-          Role::REVIEWER_REPORT_OWNER_ROLE
-        ]
+      def self.edit_role_names
+        ["Collaborator",
+         "Creator",
+         "Publishing Services",
+         "Site Admin",
+         "Staff Admin"]
       end
 
       def self.publish

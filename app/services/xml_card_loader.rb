@@ -75,6 +75,7 @@ class XmlCardLoader
       content.child_elements('content').each do |child|
         root.children << build_card_content(child, card_version)
       end
+      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 

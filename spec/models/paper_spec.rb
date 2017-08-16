@@ -326,6 +326,15 @@ describe Paper do
           expect(paper.metadata_tasks_completed?).to eq(false)
         end
       end
+
+      context 'paper with incomplete custom card tasks' do
+        let(:paper) { FactoryGirl.create(:paper) }
+        let(:task) { FactoryGirl.create(:custom_card_task, paper: paper) }
+
+        it 'returns true' do
+          expect(paper.metadata_tasks_completed?).to eq(true)
+        end
+      end
     end
 
     describe 'required_for_submission_tasks_completed?' do

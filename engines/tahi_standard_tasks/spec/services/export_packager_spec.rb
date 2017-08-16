@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe ApexPackager do
-
+describe ExportPackager do
   let(:paper) { FactoryGirl.create(:paper, :with_phases) }
   let!(:figures_task) { FactoryGirl.create(:figure_task, :with_loaded_card, paper: paper) }
   let!(:manuscript_file) do
@@ -23,7 +22,7 @@ describe ApexPackager do
   def read_zip_entry(zip_io, file_name)
     Zip::InputStream.open(zip_io) do |io|
       while (entry = io.get_next_entry)
-        return io.read if (entry.name == file_name)
+        return io.read if entry.name == file_name
       end
     end
     nil
@@ -38,7 +37,8 @@ describe ApexPackager do
     allow(paper).to receive(:file).and_return(manuscript_file)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
     allow(manuscript_file).to receive(:url).and_return(
-      Rails.root.join('spec/fixtures/about_turtles.docx'))
+      Rails.root.join('spec/fixtures/about_turtles.docx')
+    )
 
     metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')
@@ -58,23 +58,25 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      zip_io = ApexPackager.create_zip(paper)
-      expect(zip_filenames((zip_io))).to include(
-        'test.0001.docx')
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+      expect(zip_filenames(zip_io)).to include(
+        'test.0001.docx'
+      )
       expect(zip_contains(zip_io,
                           'test.0001.docx',
                           Rails.root.join(
-                            'spec/fixtures/about_turtles.docx'))).to be(true)
+                            'spec/fixtures/about_turtles.docx'
+                          ))).to be(true)
     end
 
     it 'contains the correct metadata' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
       contents = read_zip_entry(zip_io, 'metadata.json')
       expect(contents).to eq('json')
     end
 
     it 'creates a valid manifest' do
-      packager = ApexPackager.new(paper, archive_filename: archive_filename)
+      packager = ExportPackager.new(paper, archive_filename: archive_filename, destination: 'apex')
       packager.zip_file
       manifest = JSON.parse(packager.send(:manifest).to_json)
       expected_manifest = {
@@ -86,7 +88,7 @@ describe ApexPackager do
     end
 
     # NOTE: commented out until the pdf generator is implemented for ApexPackager
-    #       as part of APERTA-10394
+    #          as part of APERTA10394
     # it 'can create a manifest with a pdf file' do
     #   packager = ApexPackager.new(paper, archive_filename: archive_filename)
     #   packager.zip_file(include_pdf: true)
@@ -94,14 +96,14 @@ describe ApexPackager do
     #   expected_manifest = {
     #     "archive_filename" => archive_filename,
     #     "metadata_filename" => "metadata.json",
-    #     "files" => ["metadata.json", "test.0001.docx", "aperta-generated-PDF.pdf"]
+    #     "files" => ["metadata.json", "test.0001.docx", "apertageneratedPDF.pdf"]
     #   }
     #   expect(manifest).to eq expected_manifest
     # end
 
     describe "add_metadata" do
       it "adds a manuscript file to the manifest" do
-        packager = ApexPackager.new(paper)
+        packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_metadata, package)
         end
@@ -115,7 +117,7 @@ describe ApexPackager do
 
     describe "add_manuscript" do
       it "adds a manuscript file to the manifest" do
-        packager = ApexPackager.new(paper)
+        packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_manuscript, package)
         end
@@ -127,7 +129,7 @@ describe ApexPackager do
 
     describe "manifest_file" do
       it "returns a manifest file handle" do
-        packager = ApexPackager.new(paper, archive_filename: archive_filename)
+        packager = ExportPackager.new(paper, archive_filename: archive_filename, destination: 'apex')
         manifest = packager.manifest_file
         json = JSON.parse manifest.read
         expected_keys = %w(archive_filename metadata_filename files)
@@ -163,22 +165,22 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
-      expect(zip_filenames((zip_io))).to include('yeti.jpg')
+      expect(zip_filenames(zip_io)).to include('yeti.jpg')
       contents = read_zip_entry(zip_io, 'yeti.jpg')
       expect(contents).to eq('a string')
     end
 
     it 'does not add a striking image when none is present' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
-      expect(zip_filenames((zip_io))).to_not include('Strikingimage.jpg')
+      expect(zip_filenames(zip_io)).to_not include('Strikingimage.jpg')
     end
 
     describe "add_figures" do
       it "adds figure files to the manifest" do
-        packager = ApexPackager.new(paper)
+        packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_figures, package)
         end
@@ -219,9 +221,9 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
-      expect(zip_filenames((zip_io))).to include('about_turtles.docx')
+      expect(zip_filenames(zip_io)).to include('about_turtles.docx')
       contents = read_zip_entry(zip_io, 'about_turtles.docx')
       expect(contents).to eq('a string')
     end
@@ -229,15 +231,16 @@ describe ApexPackager do
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
-      expect(zip_filenames((zip_io))).to_not include(
-        supporting_information_file.filename)
+      expect(zip_filenames(zip_io)).to_not include(
+        supporting_information_file.filename
+      )
     end
 
     describe "add_supporting_information" do
       it "adds a SI file to the package" do
-        packager = ApexPackager.new(paper)
+        packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_supporting_information, package)
         end
@@ -291,12 +294,12 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
       expect(zip_filenames(zip_io)).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
       filenames = zip_filenames(zip_io)
       expect(filenames).to include('Strikingimage.jpg')
@@ -306,7 +309,7 @@ describe ApexPackager do
 
     describe "add_stricking_image" do
       it "adds a stricking image to the manifest" do
-        packager = ApexPackager.new(paper)
+        packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_striking_image, package)
         end
@@ -347,7 +350,7 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper with pdf and docx' do
-      zip_io = ApexPackager.create_zip(paper)
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
       expect(zip_filenames(zip_io)).to include('test.0001.docx')
       expect(
         zip_contains(zip_io, 'test.0001.docx', Rails.root.join('spec/fixtures/about_turtles.docx'))

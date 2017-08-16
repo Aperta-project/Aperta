@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :apex_delivery, class: 'TahiStandardTasks::ApexDelivery' do
+  factory :export_delivery, class: 'TahiStandardTasks::ExportDelivery' do
     user
     paper
     association :task, factory: :ad_hoc_task

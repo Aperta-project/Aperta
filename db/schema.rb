@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170815183418) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(version: 20170815183418) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
-    t.boolean  "required_field",             default: false
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -838,7 +838,7 @@ ActiveRecord::Schema.define(version: 20170815183418) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   default: "apex", null: false
+    t.string   "destination",   null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

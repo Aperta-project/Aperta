@@ -27,12 +27,20 @@ class CardContentValidation < ActiveRecord::Base
 
   def validate_by_string_length_minimum(answer)
     return false unless validator =~ /^[0-9]+$/
-    answer.value.length >= validator.to_i
+    string_to_validate(answer).length >= validator.to_i
   end
 
   def validate_by_string_length_maximum(answer)
     return false unless validator =~ /^[0-9]+$/
-    answer.value.length <= validator.to_i
+    string_to_validate(answer).length <= validator.to_i
+  end
+
+  def string_to_validate(answer)
+    if answer.value_type == 'html'
+      ActionView::Base.full_sanitizer.sanitize(answer.value)
+    else
+      answer.value
+    end
   end
 
   def validate_by_required_field(answer)

@@ -1,3 +1,4 @@
+# Base class for all types of Task
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
@@ -164,8 +165,11 @@ class Task < ActiveRecord::Base
 
   def submission_task?
     # TODO: Remove Task.submission_types check in APERTA-9787
-    Task.submission_types.include?(self.class.name) ||
-      (!card_version.nil? && card_version.required_for_submission)
+    if self.class.name == 'CustomCardTask'
+      card_version.required_for_submission
+    else
+      Task.submission_types.include?(self.class.name)
+    end
   end
 
   def array_attributes
@@ -267,6 +271,11 @@ class Task < ActiveRecord::Base
   # subclass type (ie TahiStandardTasks::ReviewerReportTask)
   def owner_type_for_answer
     'Task'
+  end
+
+  def display_status
+    return :active_check if completed
+    :check
   end
 
   private

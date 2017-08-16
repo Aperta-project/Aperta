@@ -66,7 +66,11 @@
     <div class="card-editor-xml-errors">
         <p> {{error-message message="Please fix the following errors:" displayIcon=true}} </p>
         {{#each errors as |error|}}
-          <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+          {{#if error.detail.line}}
+            <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+          {{else}}
+            <div data-test-selector="xml-error"> {{error.detail.message}} </div>
+          {{/if}}
         {{/each}}
     </div>
   {{/if}}

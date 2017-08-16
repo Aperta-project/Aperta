@@ -24,6 +24,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
       revision: 'v99.0',
       statusDatetime: new Date(2020, 0, 1),
       dueAt: dueDate,
+      originallyDueAt: dueDate,
       task: task
     });
     this.set('report.task.paper', paper);
@@ -33,7 +34,7 @@ moduleForComponent('review-status', 'Integration | Component | review status', {
 });
 
 test('No due_at unless accepted', function(assert) {
-  assert.expect(2);
+  assert.expect(3);
   let fake = this.container.lookup('service:can');
   let paper = this.get('report.task.paper');
   fake.allowPermission('manage_workflow', paper);
@@ -48,6 +49,7 @@ test('No due_at unless accepted', function(assert) {
     'Block template shows not invited text'
   );
 
+  assert.textNotPresent('.report-status', 'original due date was');
   this.set('report.status', 'invitation_accepted');
 
   this.render(hbs`
@@ -184,5 +186,18 @@ test('it shows completed', function(assert) {
     '.report-status',
     'Completed January 1, 2020',
     'Block template shows invited text with date'
+  );
+});
+
+test('it only displays originally due date when not equal to due date', function(assert) {
+  this.set('report.originallyDueAt', moment(new Date(2020, 4, 12)).format('MMMM DD'));
+  this.set('report.status', 'pending');
+
+  this.render(hbs`
+    {{reviewer-report-status report=report}}`);
+
+  assert.textPresent(
+    '.report-status',
+    `original due date was`
   );
 });

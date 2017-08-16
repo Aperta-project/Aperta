@@ -8,7 +8,7 @@ moduleForComponent('admin-page/email-templates',
 );
 
 const template = {
-  text: 'TPS reports',
+  name: 'TPS reports',
   subject: 'Yeaahhhh....'
 };
 

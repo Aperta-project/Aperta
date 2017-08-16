@@ -13,11 +13,17 @@ module CustomCard
         raise NotImplementedError
       end
 
-      def self.excluded_view_permissions
+      def self.view_role_names
+        # an array of `Role.name` that should have view access to Card
+        # default: no access
+        # options: this method can also return `:all` to allow all Roles in system
         []
       end
 
-      def self.excluded_edit_permissions
+      def self.edit_role_names
+        # an array of `Role.name` that should have edit access to Card
+        # default: no access
+        # options: this method can also return `:all` to allow all Roles in system
         []
       end
 

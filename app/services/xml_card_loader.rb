@@ -75,6 +75,7 @@ class XmlCardLoader
       content.child_elements('content').each do |child|
         root.children << build_card_content(child, card_version)
       end
+      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 
@@ -117,6 +118,8 @@ class XmlCardLoader
         content.attr_value('default-answer-value'),
       ident:
         content.attr_value('ident'),
+      required_field:
+        content.attr_value('required-field'),
       label:
         content.tag_text('label'),
       instruction_text:

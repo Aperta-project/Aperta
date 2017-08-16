@@ -15,13 +15,25 @@ class XmlCardDocument
     attr_reader :errors
     def initialize(errors)
       @errors = []
-      errors.each do |error|
-        @errors << {
-          message: error[:message],
-          line: error[:line],
-          col: error[:column]
-        }
+      if errors.respond_to?(:full_messages)
+        errors.full_messages.each do |message|
+          @errors << {
+            message: message
+          }
+        end
+      else
+        errors.each do |error|
+          @errors << {
+            message: error[:message],
+            line: error[:line],
+            col: error[:column]
+          }
+        end
       end
+    end
+
+    def message
+      errors
     end
   end
 
@@ -39,7 +51,7 @@ class XmlCardDocument
     tempfile.close
 
     errors = schema.validate(tempfile.path)
-    raise XmlValidationError, errors unless errors.empty?
+    raise(XmlValidationError, errors) unless errors.empty?
   ensure
     tempfile.unlink
   end

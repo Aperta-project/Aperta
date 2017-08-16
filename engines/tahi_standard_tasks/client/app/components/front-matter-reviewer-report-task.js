@@ -2,6 +2,7 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 
 export default TaskComponent.extend({
+  flash: Ember.inject.service(),
   currentReviewerReport: Ember.computed.alias('task.reviewerReports.firstObject'),
   previousReviewerReports: Ember.computed('task.reviewerReports.@each.reviewerReport', function(){
     if (this.get('currentReviewerReport.decision.draft')) {
@@ -10,6 +11,9 @@ export default TaskComponent.extend({
       return this.get('task.reviewerReports');
     }
   }),
+  // this property is responsible for displaying (or not) the 'Make changes to this Task' button.
+  // It can later be modified to depend on permissions
+  taskStateToggleable: false,
 
   actions: {
     confirmSubmission() {
@@ -26,6 +30,7 @@ export default TaskComponent.extend({
       report.save().then(() => {
         this.set('task.completed', true);
         this.get('task').save();
+        this.get('flash').displayRouteLevelMessage('success', 'Thank you for submitting your review.');
       });
     }
   }

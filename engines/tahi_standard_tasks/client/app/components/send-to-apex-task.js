@@ -3,10 +3,11 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 export default TaskComponent.extend({
   actions: {
     sendToApex: function() {
-      const apexDelivery = this.get('store').createRecord('apex-delivery', {
-        task: this.get('task')
+      const exportDelivery = this.get('store').createRecord('export-delivery', {
+        task: this.get('task'),
+        destination: 'apex'
       });
-      apexDelivery.save();
+      exportDelivery.save();
     }
   }
 });

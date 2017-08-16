@@ -17,7 +17,7 @@ moduleForComponent('admin-page/email-templates/edit',
 test('it populates input fields with model data', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: 'foo', letter: 'bar'});
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
 
   this.set('template', template);
 
@@ -25,13 +25,13 @@ test('it populates input fields with model data', function(assert) {
     {{admin-page/email-templates/edit template=template}}
   `);
   assert.equal(this.$('#subject').val(), template.get('subject'));
-  assert.equal(this.$('#letter').val(), template.get('letter'));
+  assert.equal(this.$('#body').val(), template.get('body'));
 });
 
 test('it prevents the model from saving if a field is blank and displays validation errors', function(assert){
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: '', letter: 'bar'});
+  let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
   sinon.spy(template, 'save');
   this.set('template', template);
 
@@ -49,7 +49,7 @@ test('it prevents the model from saving if a field is blank and displays validat
 test('model receives save call when valid', function(assert){
   assert.expect(1);
 
-  let template = FactoryGuy.make('letter-template', {subject: 'foo', letter: ''});
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: ''});
   var saveStub = sinon.stub(template, 'save');
 
   // Reject the promise because routing isnt working here, this is easier.
@@ -62,7 +62,7 @@ test('model receives save call when valid', function(assert){
   `);
 
   Ember.run(() => {
-    this.$('#letter').val('baz').trigger('input');
+    this.$('#body').val('baz').trigger('input');
     this.$('.button-primary').click();
   });
   assert.equal(template.save.called, true);
@@ -71,7 +71,7 @@ test('model receives save call when valid', function(assert){
 test('after attempted save it dynamically warns user if input field has invalid content', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: '', letter: 'bar'});
+  let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
   this.set('template', template);
 
   this.render(hbs`

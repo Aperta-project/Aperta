@@ -2,7 +2,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 
 FactoryGuy.define('letter-template', {
   default: {
-    text: 'RA accept',
-    templateDecision: 'accept'
+    name: 'RA accept',
+    category: 'accept'
   }
 });

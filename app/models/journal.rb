@@ -4,14 +4,9 @@ class Journal < ActiveRecord::Base
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
-  PREPRINT_DOI_PREFIX_FORMAT = %r{10.24196\/aarx\.}
-  PREPRINT_DOI_FORMAT     = %r{\A(#{PREPRINT_DOI_PREFIX_FORMAT}/\d+/)\z}
   SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
-  PREPRINT_DOI_PREFIX_ID = "10.24196/".freeze
-  PREPRINT_DOI_PREFIX_NAME = "aarx.".freeze
 
   class InvalidDoiError < ::StandardError; end
-  class InvalidPreprintDoiError < ::StandardError; end
 
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
@@ -96,10 +91,6 @@ class Journal < ActiveRecord::Base
 
   def self.valid_doi?(doi)
     !!(doi =~ DOI_FORMAT)
-  end
-
-  def self.valid_preprint_doi?(doi)
-    !!(doi =~ PREPRINT_DOI_FORMAT)
   end
 
   # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines

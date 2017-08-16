@@ -1,3 +1,4 @@
+
 <tr>
   <td class="paper-tracker-badge-column">
     {{#if paper.commentLooks}}
@@ -13,7 +14,7 @@
     {{link-to paper.manuscript_id "paper.index" paper.shortDoi}}
   </td>
   <td class="paper-tracker-paper-preprint-id-column">
-    {{link-to paper.aarxDoi "paper.index" paper.manuscript_id}}
+    {{link-to paper.aarxDoi "paper.index" paper.shortDoi}}
   </td>
   <td class="paper-tracker-date-column paper-version-date">
     {{format-date paper.submittedAt}}<br>

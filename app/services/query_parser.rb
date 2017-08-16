@@ -46,11 +46,11 @@ class QueryParser < QueryLanguageParser
 
   add_simple_expression('DOI IS') do |doi|
     if doi =~ /aarx.\d+$/
-      preprint_short_doi = Paper.find_preprint_short_doi(doi)
-      paper_table[:preprint_short_doi].matches("%#{preprint_short_doi}%")
+      article_number = Paper.find_preprint_doi_article_number(doi)
+      paper_table[:preprint_doi_article_number].matches("%#{article_number}%")
     elsif doi =~ /^\d+$/
       paper_table[:doi].matches("%#{doi}%").or(
-        paper_table[:preprint_short_doi].matches("%#{doi}%")
+        paper_table[:preprint_doi_article_number].matches("%#{doi}%")
       )
     else
       paper_table[:doi].matches("%#{doi}%")
@@ -183,7 +183,7 @@ class QueryParser < QueryLanguageParser
 
   add_statement(/^\d+/.r) do |doi|
     paper_table[:doi].matches("%#{doi}%").or(
-      paper_table[:preprint_short_doi].matches("%#{doi}%")
+      paper_table[:preprint_doi_article_number].matches("%#{doi}%")
     )
   end
 

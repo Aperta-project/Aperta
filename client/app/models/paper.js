@@ -110,11 +110,6 @@ export default DS.Model.extend({
   submissionTasks: computed.filterBy('tasks', 'isSubmissionTask', true),
   sortedSubmissionTasks: computed.sort('submissionTasks', 'taskSorting'),
 
-  preprintShortDoi: computed('preprintShortDoi', function() {
-    var doi = this.get('aarxDoi');
-    return doi.match(/.+\.(\d+)$/)[1];
-  }),
-
   displayTitle: computed('title', function() {
     return this.get('title') || '[No Title]';
   }),

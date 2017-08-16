@@ -19,6 +19,21 @@
       <attribute name="value"/>
     </element>
   </define>
+  <define name="required-field-validator">
+    <element name="validation">
+      <attribute name="validation-type">
+        <value>required-field</value>
+      </attribute>
+      <interleave>
+        <element name="error-message">
+          <text/>
+        </element>
+        <element name="validator">
+          <text/>
+        </element>
+      </interleave>
+    </element>
+  </define>
   <!-- Inputs -->
   <define name="radio-input">
     <element name="content">
@@ -63,17 +78,7 @@
           <text/>
         </element>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>required-field</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
         <zeroOrMore>
           <ref name="possible-value"/>
@@ -138,17 +143,7 @@
           </optional>
         </interleave>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>required-field</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
       </interleave>
       <zeroOrMore>
@@ -206,20 +201,7 @@
           </element>
         </optional>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <choice>
-                <value>file-name</value>
-                <value>required-field</value>
-              </choice>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
         <optional>
           <element name="label">
@@ -261,17 +243,7 @@
           <text/>
         </element>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>required-field</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
       </interleave>
     </element>
@@ -320,17 +292,7 @@
           <text/>
         </element>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>required-field</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
         <oneOrMore>
           <ref name="possible-value"/>
@@ -388,17 +350,7 @@
           </element>
         </optional>
         <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>required-field</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
+          <ref name="required-field-validator"/>
         </zeroOrMore>
       </interleave>
       <zeroOrMore>

@@ -15,6 +15,12 @@ possible-value = element possible-value {
                      attribute value { text }
                  }
 
+required-field-validator = element validation {
+                            attribute validation-type { "required-field" },
+                            (element error-message { text } &
+                             element validator { text })
+                           }
+
 # Inputs
 radio-input = element content {
                   attribute ident { text }?,
@@ -25,11 +31,7 @@ radio-input = element content {
                   attribute allow-annotations { "true" | "false" }?,
                   (element instruction-text { text }? &
                   element text { text } &
-                  element validation {
-                    attribute validation-type { "required-field" },
-                    element error-message { text },
-                    element validator { text }
-                  }* &
+                  required-field-validator* &
                   possible-value*),
                   content*
               }
@@ -45,11 +47,7 @@ check-box-input = element content {
                 (element instruction-text { text }? &
                 (element label { text }? &
                  element text { text }?) &
-                 element validation {
-                    attribute validation-type { "required-field" },
-                    element error-message { text },
-                    element validator { text }
-                }*),
+                 required-field-validator*),
                 content*
             }
 
@@ -62,11 +60,7 @@ file-uploader = element content {
                     attribute allow-file-captions { "true" | "false" }?,
                     attribute allow-annotations { "true" | "false" }?,
                     (element instruction-text { text }? &
-                     element validation {
-                      attribute validation-type { "file-name" |  "required-field"},
-                      element error-message { text },
-                      element validator { text }
-                    }* &
+                     required-field-validator* &
                     element label { text }? &
                     element text { text }? &
                     possible-value*)
@@ -78,11 +72,7 @@ date-picker = element content {
                   attribute content-type { "date-picker" },
                   attribute required-field { "true" | "false" }?,
                   (element text { text } &
-                   element validation {
-                    attribute validation-type { "required-field" },
-                    element error-message { text },
-                    element validator { text }
-                  }*)
+                   required-field-validator*)
               }
 
 # for now duplicating radio-input for dropdown
@@ -95,12 +85,9 @@ dropdown-input = element content {
                   attribute allow-annotations { "true" | "false" }?,
                   (element instruction-text { text }? &
                    element text { text } &
-                   element validation {
-                    attribute validation-type { "required-field" },
-                    element error-message { text },
-                    element validator { text }}* &
+                   required-field-validator* &
                     possible-value+),
-                  content*
+                   content*
               }
 
 tech-check = element content {
@@ -112,11 +99,7 @@ tech-check = element content {
                 attribute allow-annotations { "true" | "false" }?,
                 (element instruction-text { text }? &
                 element text { text }? &
-                element validation {
-                    attribute validation-type { "required-field" },
-                    element error-message { text },
-                    element validator { text }
-                }*),
+                required-field-validator*),
                 content*
             }
 

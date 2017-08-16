@@ -7,9 +7,7 @@ moduleForComponent('rich-text-editor', 'Integration | Component | rich text edit
 });
 
 test('it renders', function(assert) {
-  let saveContents = function() {};
-  this.set('saveContents', saveContents);
-
+  this.set('saveContents', function() {});
   this.render(hbs`{{rich-text-editor ident='foo' onContentsChanged=saveContents}}`);
 
   let editor = findEditor('foo');
@@ -21,17 +19,39 @@ test('it renders', function(assert) {
 });
 
 test('it shows error message', function(assert) {
-  let saveContents = function() {};
   let errorMessage = 'Error Message';
-  this.set('saveContents', saveContents);
   this.set('errorMessages', [errorMessage]);
-
+  this.set('saveContents', function() {});
   this.render(hbs`{{rich-text-editor ident='foo'
                   onContentsChanged=saveContents
                   errorMessages=errorMessages
                   displayText=true}}`);
 
   assert.elementFound('.error-message', errorMessage);
+});
+
+test('it does not wrap content in a <p> tag when editorStyle is inline', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='inline' ident='foo' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('foo');
+  assert.elementFound(editor);
+  assert.equal(getRichText('foo'), '');
+
+  setRichText('foo', 'abc');
+  assert.equal(getRichText('foo'), 'abc');
+});
+
+test('it strips <p> and <br> tags when editorStyle is inline', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='inline' ident='foo' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('foo');
+  assert.elementFound(editor);
+  assert.equal(getRichText('foo'), '');
+
+  setRichText('foo', '<p>a<br>b<br />c</p>');
+  assert.equal(getRichText('foo'), 'abc');
 });
 
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {

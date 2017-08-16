@@ -163,6 +163,25 @@ describe ExportPackager do
       allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:read)
         .and_return('a string')
     end
+
+    it 'adds a figure to a zip' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+
+      expect(zip_filenames(zip_io)).to include('yeti.jpg')
+      contents = read_zip_entry(zip_io, 'yeti.jpg')
+      expect(contents).to eq('a string')
+    end
+
+    describe "add_figures" do
+      it "adds figure files to the manifest" do
+        packager = ExportPackager.new(paper, destination: 'apex')
+        Zip::OutputStream.open(zip_file) do |package|
+          packager.send(:add_figures, package)
+        end
+        file_list = packager.send(:manifest).file_list
+        expect(file_list).to eq ["yeti.jpg"]
+      end
+    end
   end
 
   context 'a paper with supporting information' do
@@ -223,6 +242,46 @@ describe ExportPackager do
         file_list = packager.send(:manifest).file_list
         expect(file_list).to eq [si_filename]
       end
+    end
+  end
+
+  context 'a paper with a striking image' do
+    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
+    let!(:attachment1) do
+      double('attachment_model', filename: 'yeti.jpg',
+                                 read: 'some bytes')
+    end
+    let!(:attachment2) do
+      double('attachment_model', filename: 'yeti2.jpg',
+                                 read: 'some other bytes')
+    end
+    let!(:answer) do
+      FactoryGirl.create(:answer,
+                         card_content: figure_question,
+                         value: 'true',
+                         owner: task,
+                         owner_type: 'Task')
+    end
+
+    let(:figure) do
+      stub_model(Figure,
+                 title: 'a title',
+                 caption: 'a caption',
+                 paper: paper,
+                 filename: 'yeti2.jpg',
+                 file: attachment2)
+    end
+
+    before do
+      allow(paper).to receive(:figures).and_return([figure])
+    end
+
+    it 'separates figures' do
+      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
+
+      filenames = zip_filenames(zip_io)
+      expect(filenames).to_not include('yeti.jpg')
     end
   end
 

@@ -87,6 +87,7 @@ class ExportPackager
   def add_figures(package)
     @paper.figures.each do |figure|
       add_file_to_package package,
+                          figure.file.filename,
                           figure.file.read
     end
   end

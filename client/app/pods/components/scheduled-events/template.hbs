@@ -1,6 +1,6 @@
 <p style="font-size:18px;">Reminders</p>
 {{#each events as |event|}}
-  <div class="scheduled-event {{if event.completed 'event-completed'}}">
+  <div class="scheduled-event event-{{event.state}}">
     <p>
       {{event.name}} on
       {{moment-format event.dispatchAt dispatchDateFormat}} {{dueAtTimezone}}
@@ -8,6 +8,7 @@
     </p>
     <p>
       {{#if event.completed}}<span>{{fa-icon 'fa-check'}}&nbsp;Sent</span>{{/if}}
+      {{#if event.errored}}<span>{{fa-icon 'fa-exclamation-triangle'}}&nbsp;Reminder not sent due to a system error</span>{{/if}}
     </p>
   </div>
 {{/each}}

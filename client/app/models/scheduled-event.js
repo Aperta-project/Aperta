@@ -6,4 +6,5 @@ export default DS.Model.extend({
   state: DS.attr('string'),
   dispatchAt: DS.attr('date'),
   completed: Ember.computed.equal('state', 'complete'),
+  errored: Ember.computed.equal('state', 'error'),
 });

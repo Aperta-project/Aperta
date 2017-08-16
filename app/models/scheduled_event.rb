@@ -23,6 +23,7 @@ class ScheduledEvent < ActiveRecord::Base
     state :active, initial: true
     state :inactive
     state :complete
+    state :error
 
     event(:reactivate) do
       transitions from: [:complete, :inactive], to: :active

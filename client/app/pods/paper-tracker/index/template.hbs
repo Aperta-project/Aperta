@@ -42,6 +42,13 @@
                           activeOrderDir=orderDir
                           sortAction=(action "sort")}}
             </th>
+            <th class="paper-tracker-paper-preprint-id-column">
+              {{sort-link text="Manuscript Preprint ID"
+                          orderBy="preprint_doi_article_number"
+                          activeOrderBy=orderBy
+                          activeOrderDir=orderDir
+                          sortAction=(action "sort")}}
+            </th>
             <th class="paper-tracker-date-column">
               {{sort-link text="Version Date"
                           orderBy="submitted_at"

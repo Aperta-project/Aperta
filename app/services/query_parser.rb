@@ -45,7 +45,16 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DOI IS') do |doi|
-    paper_table[:doi].matches("%#{doi}%")
+    if doi =~ /aarx.\d+$/
+      article_number = Paper.find_preprint_doi_article_number(doi)
+      paper_table[:preprint_doi_article_number].matches("%#{article_number}%")
+    elsif doi =~ /^\d+$/
+      paper_table[:doi].matches("%#{doi}%").or(
+        paper_table[:preprint_doi_article_number].matches("%#{doi}%")
+      )
+    else
+      paper_table[:doi].matches("%#{doi}%")
+    end
   end
 
   add_two_part_expression('USER', 'HAS ROLE') do |user_query, role|
@@ -173,7 +182,9 @@ class QueryParser < QueryLanguageParser
   end
 
   add_statement(/^\d+/.r) do |doi|
-    paper_table[:doi].matches("%#{doi}%")
+    paper_table[:doi].matches("%#{doi}%").or(
+      paper_table[:preprint_doi_article_number].matches("%#{doi}%")
+    )
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|

@@ -35,6 +35,9 @@ export default Ember.Component.extend({
       window.PDFJS.workerSrc = pdfjsroot + 'pdf.worker.js';
       window.PDFJS.imageResourcesPath = pdfjsroot + 'images/';
       window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
+      window.PDFJS.plosErrorCallback = function() {
+        // console.log('error caught');
+      };
 
       this.loadPdf();
     });

@@ -17515,6 +17515,9 @@ function webViewerInitialized() {
     } catch (e) {
       PDFViewerApplication.error(mozL10n.get('loading_error', null,
         'An error occurred while loading the PDF.'), e);
+      if (PDFJS.plosErrorCallback) {
+        PDFJS.plosErrorCallback();
+      }
     }
     return;
   }
@@ -17801,7 +17804,7 @@ window.addEventListener('pagechange', function pagechange(evt) {
 function handleMouseWheel(evt) {
   // Ignore mousewheel event if pdfViewer isn't loaded
   if (!PDFViewerApplication.pdfViewer) return;
-  
+
   var MOUSE_WHEEL_DELTA_FACTOR = 40;
   var ticks = (evt.type === 'DOMMouseScroll') ? -evt.detail :
               evt.wheelDelta / MOUSE_WHEEL_DELTA_FACTOR;
@@ -18085,5 +18088,3 @@ window.addEventListener('afterprint', function afterPrint(evt) {
     window.requestAnimationFrame(resolve);
   });
 })();
-
-

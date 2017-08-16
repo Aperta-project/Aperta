@@ -32,8 +32,8 @@ export default Ember.Component.extend({
   loadPdfJs: function() {
     // uses the current version of pdf.js hosted by mozilla
     // TODO: self-host these resources
-    var pdfjsroot = 'http://mozilla.github.io/pdf.js/build/pdf.js';
-    const workerSrc = 'http://mozilla.github.io/pdf.js/build/pdf.worker.js';
+    var pdfjsroot = '//mozilla.github.io/pdf.js/build/pdf.js';
+    const workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
     LazyLoader.loadScripts([pdfjsroot]).then(() => {
       window.PDFJS.workerSrc = workerSrc;

@@ -613,16 +613,14 @@ class Paper < ActiveRecord::Base
   end
 
   def ensure_preprint_doi!
-
     return preprint_doi_article_number if preprint_doi_article_number.present?
+
     with_lock do
       next_article_number = PreprintDoiIncrementer.next_article_number!
       update preprint_doi_article_number: next_article_number
     end
     preprint_doi_article_number
   end
-
-  PREPRINT_DOI_PREFIX = "10.24196".freeze
 
   def aarx_doi
     return nil unless preprint_doi_suffix

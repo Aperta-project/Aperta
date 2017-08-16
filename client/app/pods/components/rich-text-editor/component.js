@@ -1,10 +1,10 @@
 import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
-const basicElements    = 'p,br,strong/b,em/i,u,sub,sup,pre';
+const basicElements    = 'p,br,strong/b,em/i,u,sub,sup';
 const basicFormats     = {underline: {inline : 'u'}};
 const basicPlugins     = 'code codesample paste autoresize';
-const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo ';
 
 const anchorElement    = ',a[href|rel|target|title]';
 const listElement      = ',ol[reversed|start|type]';

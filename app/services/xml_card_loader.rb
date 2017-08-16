@@ -100,6 +100,7 @@ class XmlCardLoader
         content.tag_text('error-message')
     }
   end
+
   def card_content_attributes(content, card_version)
     {
       card_version: card_version,

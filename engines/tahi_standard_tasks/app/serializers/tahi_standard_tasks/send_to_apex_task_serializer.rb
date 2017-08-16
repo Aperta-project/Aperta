@@ -1,5 +1,5 @@
 module TahiStandardTasks
   class SendToApexTaskSerializer < ::TaskSerializer
-    has_many :apex_deliveries, embed: :id, include: true
+    has_many :export_deliveries, embed: :id, include: true
   end
 end

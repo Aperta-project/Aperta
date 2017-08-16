@@ -11,12 +11,12 @@ module CustomCard
         "Card Configuration Sampler"
       end
 
-      def self.excluded_view_permissions
-        # [Role::REVIEWER_ROLE]
+      def self.view_role_names
+        :all
       end
 
-      def self.excluded_edit_permissions
-        # [Role::ACADEMIC_EDITOR_ROLE]
+      def self.edit_role_names
+        :all
       end
 
       def self.publish

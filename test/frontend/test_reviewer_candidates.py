@@ -12,7 +12,6 @@ import logging
 import os
 import random
 import time
-import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
@@ -288,7 +287,6 @@ class ReviewerCandidatesTaskTest(CommonTest):
     # Get selected data from db
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-    manuscript_title = six.u(manuscript_title)
 
     # Login as Reviewer and accept invitation
     dashboard_page = self.cas_login(email=reviewer_login['email'])

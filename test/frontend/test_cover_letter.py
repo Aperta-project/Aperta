@@ -7,7 +7,7 @@ This test case validates the Cover Letter Task.
 import logging
 import random
 
-import six.moves.urllib.parse as urllib
+import urllib
 
 import time
 
@@ -166,13 +166,13 @@ class CoverLetterTaskTest(CommonTest):
     cover_letter_task.task_ready()
     current_attachment = cover_letter_task.get_last_uploaded_letter_file()
     try:
-      assert current_attachment in urllib.quote_plus(replacement_file), \
+      assert current_attachment in urllib.parse.quote_plus(replacement_file), \
         'The page presented file name: {0} is not what we expected: ' \
-        '{1}'.format(current_attachment, urllib.quote_plus(replacement_file))
+        '{1}'.format(current_attachment, urllib.parse.quote_plus(replacement_file))
     except AssertionError:
-      assert urllib.quote_plus(current_attachment) in urllib.quote_plus(replacement_file), \
+      assert urllib.parse.quote_plus(current_attachment) in urllib.parse.quote_plus(replacement_file), \
         'The page presented file name: {0} is not what we expected: ' \
-        '{1}'.format(urllib.quote_plus(current_attachment), urllib.quote_plus(replacement_file))
+        '{1}'.format(urllib.parse.quote_plus(current_attachment), urllib.parse.quote_plus(replacement_file))
 
   def test_cover_letter_file_delete(self):
     """
@@ -235,6 +235,7 @@ class CoverLetterTaskTest(CommonTest):
     # Test card
     staff_user = random.choice(editorial_users)
     dashboard_page = self.cas_login(email=staff_user['email'])
+    time.sleep(1) # bug fix for slow login 
     logging.info(dashboard_page.get_current_url())
     dashboard_page.page_ready()
     dashboard_page.go_to_manuscript(short_doi)

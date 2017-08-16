@@ -4,7 +4,7 @@ import logging
 import os
 import random
 import time
-import six.moves.urllib.parse as urllib
+import urllib
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
@@ -202,7 +202,7 @@ class FiguresTask(BaseTask):
       self._driver.find_element_by_id('figure_attachment').send_keys(fn)
       add_new_figures_btn = self._get(self._add_new_figures_btn)
       self.scroll_element_into_view_below_toolbar(add_new_figures_btn)
-      add_new_figures_btn.click()
+      #add_new_figures_btn.click() #this just opens a zombie file open dialog
       self._validate_processing(figure)
       self._driver.find_element_by_id('figure_attachment').clear()
       if not figure.startswith('frontend/assets/imgs/'):
@@ -267,7 +267,7 @@ class FiguresTask(BaseTask):
     self._reset_position_to_conformance_question()
     self._wait_for_element(self._gets(self._figure_dl_link)[0])
     page_fig_list = self._gets(self._figure_dl_link)
-    figure = urllib.quote_plus(figure[0])
+    figure = urllib.parse.quote_plus(figure[0])
     for page_fig_item in page_fig_list:
       if figure == page_fig_item.text:
         logging.info('Deleting figure: {0}'.format(figure))
@@ -315,7 +315,7 @@ class FiguresTask(BaseTask):
     page_fig_list = self._gets(self._figure_dl_link)
     for page_fig_item in page_fig_list:
       for fig in figure:
-        fig = urllib.quote_plus(fig)
+        fig = urllib.parse.quote_plus(fig)
         if fig in page_fig_item.text:
           logging.debug('Match!')
           try:
@@ -381,7 +381,7 @@ class FiguresTask(BaseTask):
     if not figure:
       raise(ValueError, 'A figure must be specified')
     logging.info(figure)
-    figure = urllib.quote_plus(figure)
+    figure = urllib.parse.quote_plus(figure)
     self._reset_position_to_conformance_question()
     # Redefining this down here to avoid a stale element reference due to the listing having
     #   been replaced, potentially, since lookup
@@ -456,9 +456,10 @@ class FiguresTask(BaseTask):
         page_fig_name = figure_block.find_element(*self._figure_dl_link)
         count += 1
         if count > 10:
-          raise(StandardError, 'Figure block not populating correctly - not getting a figure name')
+          raise(Exception, 'Figure block not populating correctly - not getting a figure name')
       final_order.append(page_fig_name.text)
     original_order.sort()
+    time.sleep(1)
     assert original_order == final_order, 'Original Order sorted: {0} != ' \
                                           'Final Order{1}'.format(original_order, final_order)
     self._validate_striking_image_set(figure)
@@ -481,8 +482,8 @@ class FiguresTask(BaseTask):
       figure = figure.split('/')[-1]
       logging.info(figure)
       # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
-      assert urllib.quote_plus(figure) in page_fig_name_list, \
-          '{0} not found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
+      assert urllib.parse.quote_plus(figure) in page_fig_name_list, \
+          '{0} not found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
 
   def validate_figure_not_present(self, fig_list):
     """
@@ -499,8 +500,8 @@ class FiguresTask(BaseTask):
         page_fig_name_list.append(page_fig_item.text)
         for figure in fig_list:
           # We shouldn't have to url-encode this, but due to APERTA-6946 we must for now.
-          assert urllib.quote_plus(figure) not in page_fig_name_list, \
-              '{0} found in {1}'.format(urllib.quote_plus(figure), page_fig_name_list)
+          assert urllib.parse.quote_plus(figure) not in page_fig_name_list, \
+              '{0} found in {1}'.format(urllib.parse.quote_plus(figure), page_fig_name_list)
 
   def _validate_striking_image_set(self, figure):
     """

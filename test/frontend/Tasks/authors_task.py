@@ -147,7 +147,7 @@ class AuthorsTask(BaseTask):
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
         "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
-        "Submitted to Biomedical Journals: Authorship and Contributorship'. Individuals whose "
+        "Submitted to Biomedical Journals: Authorship and Contributorship' . Individuals whose "
         "contributions fall short of authorship should instead be mentioned in the "
         "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
         "author names and affiliations should be listed at the end of the article."), \
@@ -159,7 +159,7 @@ class AuthorsTask(BaseTask):
     assert authors_text_link.get_attribute('target') == '_blank', \
         authors_text_link.get_attribute('target')
     authors_note = self._get(self._authors_note)
-    assert authors_note.text == 'Note: Ensure the authors are in the correct publication order.', \
+    assert authors_note.text == 'Note:  Please ensure a unique and active email address is provided for each contributing author (whether individual or group authors), and that authors are listed in the correct publication order.', \
         authors_note.text
     self.validate_application_body_text(authors_text)
     self.validate_application_body_text(authors_note)
@@ -308,7 +308,7 @@ class AuthorsTask(BaseTask):
     assert agree2submit_lbl.text == 'All contributing authors are aware of and agree to the ' \
                                     'submission of this manuscript.', agree2submit_lbl.text
     govt_div = self._get(self._govt_employee_div)
-    self._actions.move_to_element(govt_div).perform()
+    self._scroll_into_view(govt_div)
     add_author_cancel_lnk.click()
 
   def validate_group_author_form_styles(self, add_new_author_btn):
@@ -564,7 +564,8 @@ class AuthorsTask(BaseTask):
     if completed:
       return None
     author_div = self._get(self._author_items)
-    self._actions.move_to_element(author_div).perform()
+    self._scroll_into_view(author_div)
+    #self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     self.click_covered_element(edit_btn)
     time.sleep(1)

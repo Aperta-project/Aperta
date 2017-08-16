@@ -40,6 +40,7 @@ class InitialDecisionCard(BaseCard):
     assert card_title.text == 'Initial Decision'
     self.validate_overlay_card_title_style(card_title)
     self._get(self._invite_radio_button).click()
+    time.sleep(1) # added as a bug fix to give previous step time
     intro_text = self._get(self._intro_text)
     # APERTA-8902
     # self.validate_application_body_text(intro_text)

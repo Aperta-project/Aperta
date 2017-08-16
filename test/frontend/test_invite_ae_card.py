@@ -9,7 +9,6 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
 import logging
 import random
 import time
-import six
 
 from Base.Decorators import MultiBrowserFixture
 from Base.PostgreSQL import PgSQL
@@ -78,8 +77,6 @@ class InviteAECardTest(CommonTest):
     invite_ae_card.validate_card_elements_styles(academic_editor_login, 'ae', short_doi)
     manuscript_title = PgSQL().query('SELECT title '
                                      'FROM papers WHERE short_doi = %s;', (short_doi,))[0][0]
-
-    manuscript_title = six.u(manuscript_title)
 
     # The title we pass in here must be a unicode object if there is utf-8 data present
     invite_ae_card.validate_invite(academic_editor_login,

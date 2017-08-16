@@ -6,7 +6,7 @@ Page object definition for the Cover Letter card
 import hashlib
 import logging
 import os
-import six.moves.urllib.parse as urllib
+import urllib
 
 import time
 from selenium.webdriver.common.by import By
@@ -141,6 +141,7 @@ class CoverLetterCard(BaseCard):
                            'Aenean ac'
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
     self.tmce_set_rich_text(tinymce_editor_instance_iframe, content=textarea_edited_text)
+    time.sleep(1) # added sleep to give tinymce time to process
     self.click_completion_button()
     new_page_text = self._get(self._cover_letter_textarea_noneditable).text
     assert new_page_text == textarea_edited_text, \
@@ -193,7 +194,7 @@ class CoverLetterCard(BaseCard):
     uploaded_file_md5 = hashlib.md5(
       open(os.path.join(
         original_working_dir + '/frontend/assets/coverletters/',
-        urllib.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
+        urllib.parse.unquote_plus(uploaded_file)), 'rb').read()).hexdigest()
     downloaded_file_md5 = hashlib.md5(
       open(os.path.join('/tmp', newest_file), 'rb').read()).hexdigest()
 

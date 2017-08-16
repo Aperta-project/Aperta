@@ -11,10 +11,29 @@ module CustomCard
         "Competing Interests"
       end
 
-      def self.excluded_view_permissions
+      def self.view_role_names
+        ["Academic Editor",
+         "Billing Staff",
+         "Collaborator",
+         "Cover Editor",
+         "Creator",
+         "Handling Editor",
+         "Internal Editor",
+         "Production Staff",
+         "Publishing Services",
+         "Reviewer",
+         "Staff Admin"]
       end
 
-      def self.excluded_edit_permissions
+      def self.edit_role_names
+        ["Collaborator",
+         "Cover Editor",
+         "Creator",
+         "Handling Editor",
+         "Internal Editor",
+         "Production Staff",
+         "Publishing Services",
+         "Staff Admin"]
       end
 
       def self.publish
@@ -39,7 +58,9 @@ module CustomCard
                 <content content-type="display-with-value" visible-with-parent-answer="t">
                   <content content-type="field-set">
                     <content content-type="paragraph-input" value-type="html" ident="competing_interests--statement">
-                      <text>Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript have the following competing interests.</text>
+                      <text>
+                        <![CDATA[Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript have the following competing interests."<br><br>Please note that if your manuscript is accepted, this statement will be published.]]>
+                      </text>
                     </content>
                   </content>
                 </content>

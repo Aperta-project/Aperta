@@ -1,0 +1,35 @@
+{{#if preview}}
+  <div class="if-preview">
+    This switch appears only in the card preview for an <b>IF</b> component;&nbsp;
+    the <b>IF</b> condition is&nbsp;<b>{{conditionName}}.</b><br/>
+    Switch it <i>right</i> to preview the <b>THEN</b> section;
+    {{#if hasElse}}
+      switch it <i>left</i> to preview the <b>ELSE</b> section.
+    {{else}}
+      the <b>ELSE</b> section is blank.
+    {{/if}}
+  </div>
+
+  {{card-content/toggle-switch
+    size="small"
+    content=(hash)
+    answer=(hash value=previewState)
+    valueChanged=(toggle "previewState" this)
+  }}
+{{/if}}
+
+{{#if condition}}
+  {{card-content
+    content=content.children.firstObject
+    owner=owner
+    preview=preview
+    disabled=disabled
+  }}
+{{else if hasElse}}
+  {{card-content
+    content=content.children.lastObject
+    owner=owner
+    preview=preview
+    disabled=disabled
+  }}
+{{/if}}

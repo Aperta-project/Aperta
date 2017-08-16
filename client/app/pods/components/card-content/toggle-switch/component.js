@@ -19,6 +19,8 @@ export default Ember.Component.extend({
     };
   },
 
+  // Note that card-content/toggle switch only consumes the 'ident'
+  // on its content
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident') || Ember.guidFor(this);
 

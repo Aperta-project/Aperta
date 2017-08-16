@@ -18,20 +18,10 @@ describe PaperAttributesExtractor do
         extractor.sync!(paper)
         expect(paper.reload.body).to eq(content)
       end
-    end
 
-    context "tahi scraping is not included with title" do
-      it "updates title with user input" do
-        expect(paper.reload.title).to eq(paper.title)
-      end
-    end
-
-    context "updating abstract" do
-      let(:content) { nil }
-
-      it "updates the paper abstract" do
+      it "updates ONLY the paper body" do
+        expect(paper).to receive(:update!).with(body: content)
         extractor.sync!(paper)
-        expect(paper.reload.abstract).to eq(content)
       end
     end
   end

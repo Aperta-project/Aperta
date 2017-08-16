@@ -70,8 +70,10 @@ class CardContent < ActiveRecord::Base
       'radio': ['boolean', 'text'],
       'tech-check': ['boolean'],
       'date-picker': ['text'],
+      'sendback-reason': ['boolean'],
       'numbered-list': [nil],
       'bulleted-list': [nil],
+      'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -114,17 +116,41 @@ class CardContent < ActiveRecord::Base
   end
 
   def content_attrs
-    {
-      'ident' => ident,
-      'content-type' => content_type,
-      'value-type' => value_type,
-      'editor-style' => editor_style,
-      'visible-with-parent-answer' => visible_with_parent_answer,
-      'default-answer-value' => default_answer_value,
-      'allow-multiple-uploads' => allow_multiple_uploads,
-      'allow-file-captions' => allow_file_captions,
-      'allow-annotations' => allow_annotations
-    }.compact
+    attrs =
+      {
+        'ident' => ident,
+        'content-type' => content_type,
+        'value-type' => value_type,
+        'required-field' => required_field,
+        'visible-with-parent-answer' => visible_with_parent_answer,
+        'default-answer-value' => default_answer_value
+      }.merge(additional_content_attrs).compact
+  end
+
+  def additional_content_attrs
+    case content_type
+    when 'file-uploader'
+      {
+        'allow-multiple-uploads' => allow_multiple_uploads,
+        'allow-file-captions' => allow_file_captions,
+        'allow-annotations' => allow_annotations
+      }
+    when 'if'
+      {
+        'condition' => condition
+      }
+    when 'short-input', 'paragraph-input'
+      {
+        'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations
+      }
+    when 'radio', 'check-box', 'dropdown', 'tech-check'
+      {
+        'allow-annotations' => allow_annotations
+      }
+    else
+      {}
+    end
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -134,13 +160,8 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'instruction-text', instruction_text)
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
-      if card_content_validations.present?
-        card_content_validations.each do |ccv|
-          xml.tag!('validation', 'validation-type': ccv.validation_type) do
-            xml.tag!('error-message', ccv.error_message)
-            xml.tag!('validator', ccv.validator)
-          end
-        end
+      card_content_validations.each do |ccv|
+        create_card_config_validation(ccv, xml)
       end
       if possible_values.present?
         possible_values.each do |item|
@@ -152,4 +173,15 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+end
+
+private
+
+def create_card_config_validation(ccv, xml)
+  validation_attrs = { 'validation-type': ccv.validation_type }
+                       .delete_if { |_k, v| v.nil? }
+  xml.tag!('validation', validation_attrs) do
+    xml.tag!('error-message', ccv.error_message)
+    xml.tag!('validator', ccv.validator)
+  end
 end

@@ -33,7 +33,7 @@ test('it creates an answer for card-content', function(assert) {
   $.mockjax({url: '/api/answers', type: 'POST', status: 201, responseText: '{}'});
 
   assert.elementsFound('input.form-control', 1);
-  this.$('input.form-control').val('a new answer').trigger('input');
+  this.$('input.form-control').val('a new answer').trigger('input').blur();
 
   return wait().then(() => {
     assert.mockjaxRequestMade('/api/answers', 'POST');

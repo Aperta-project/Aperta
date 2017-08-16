@@ -30,17 +30,17 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
     let!(:processing_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :processing, updated_at: 1.month.ago) }
     let!(:processing_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :processing, updated_at: 1.year.ago) }
 
-    let!(:errored_attachment_from_today) { FactoryGirl.create(:attachment, :errored, updated_at: Date.today) }
+    let!(:errored_attachment_from_today) { FactoryGirl.create(:attachment, :errored, updated_at: Time.zone.today, error_message: nil) }
     let!(:errored_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.week.ago, error_message: "Failed because of A") }
     let!(:errored_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.month.ago) }
     let!(:errored_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :errored, updated_at: 1.year.ago, error_message: "Failed because of B") }
 
-    let!(:completed_attachment_from_today) { FactoryGirl.create(:attachment, :completed, updated_at: Date.today) }
+    let!(:completed_attachment_from_today) { FactoryGirl.create(:attachment, :completed, updated_at: Time.zone.today) }
     let!(:completed_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.week.ago) }
     let!(:completed_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.month.ago) }
     let!(:completed_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :completed, updated_at: 1.year.ago) }
 
-    let!(:unknown_state_attachment_from_today) { FactoryGirl.create(:attachment, :unknown_state, updated_at: Date.today) }
+    let!(:unknown_state_attachment_from_today) { FactoryGirl.create(:attachment, :unknown_state, updated_at: Time.zone.today) }
     let!(:unknown_state_attachment_from_a_week_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.week.ago) }
     let!(:unknown_state_attachment_from_a_month_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.month.ago) }
     let!(:unknown_state_attachment_from_a_year_ago) { FactoryGirl.create(:attachment, :unknown_state, updated_at: 1.year.ago) }
@@ -52,7 +52,7 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
 
     it 'prints a summary' do
       run_report
-      expect(report_contents).to include "Below is the results of running the Attachment analysis report run on #{Date.today}."
+      expect(report_contents).to include "Below is the results of running the Attachment analysis report run on #{Time.zone.today}."
       expect(report_contents).to include <<-STRING.strip_heredoc
         Total count of Attachment(s): 16
         -------------------------------------------
@@ -125,11 +125,11 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       run_report
       expect(report_contents).to include <<-STRING.strip_heredoc
         Errors today
-          1 failed with error: Failed for some reason
+          1 failed with error: [no error message]
           ids=[#{errored_attachment_from_today.id}]
 
         Errors since yesterday
-          1 failed with error: Failed for some reason
+          1 failed with error: [no error message]
           ids=[#{errored_attachment_from_today.id}]
 
         Errors in the past week

@@ -3,6 +3,7 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-check-box'],
+
   propTypes: {
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
@@ -11,7 +12,6 @@ export default Ember.Component.extend({
 
   name: Ember.computed('content.ident', function() {
     let ident = this.get('content.ident') || Ember.guidFor(this);
-
     return `check-box-${ident}`;
   }),
 

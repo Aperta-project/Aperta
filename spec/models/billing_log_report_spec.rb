@@ -26,6 +26,7 @@ describe BillingLogReport do
 
   let(:logger_io) { StringIO.new }
   let(:logged_content) { logger_io.tap(&:rewind).read }
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     BillingLogReport.logger = logger

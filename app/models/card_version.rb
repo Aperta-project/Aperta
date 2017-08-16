@@ -46,7 +46,8 @@ class CardVersion < ActiveRecord::Base
   private
 
   def submittable_state
-    # prevent case where the card is hidden from sidebar, but required to
+    # prevent case where the card
+    # hidden from sidebar, but required to
     # be completed in order to submit the paper.
     if workflow_display_only? && required_for_submission?
       msg = "cannot be both workflow only and required for submission"

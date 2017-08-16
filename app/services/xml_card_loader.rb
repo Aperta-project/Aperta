@@ -75,6 +75,7 @@ class XmlCardLoader
       content.child_elements('content').each do |child|
         root.children << build_card_content(child, card_version)
       end
+      raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
     end
   end
 
@@ -103,33 +104,22 @@ class XmlCardLoader
   # rubocop:disable MethodLength
   def card_content_attributes(content, card_version)
     {
-      card_version:
-        card_version,
-      allow_file_captions:
-        content.attr_value('allow-file-captions'),
-      allow_multiple_uploads:
-        content.attr_value('allow-multiple-uploads'),
-      allow_annotations:
-        content.attr_value('allow-annotations'),
-      content_type:
-        content.attr_value('content-type'),
-      default_answer_value:
-        content.attr_value('default-answer-value'),
-      ident:
-        content.attr_value('ident'),
-      label:
-        content.tag_text('label'),
-      instruction_text:
-        content.tag_text('instruction-text'),
-      possible_values:
-        content.fetch_values('possible-value', [:label, :value]),
-      text:
-        content.tag_text('text'),
+      card_version: card_version,
+      allow_file_captions: content.attr_value('allow-file-captions'),
+      allow_multiple_uploads: content.attr_value('allow-multiple-uploads'),
+      allow_annotations: content.attr_value('allow-annotations'),
+      content_type: content.attr_value('content-type'),
+      default_answer_value: content.attr_value('default-answer-value'),
+      ident: content.attr_value('ident'),
+      required_field: content.attr_value('required-field'),
+      label: content.tag_text('label'),
+      instruction_text: content.tag_text('instruction-text'),
+      possible_values: content.fetch_values('possible-value', [:label, :value]),
+      text: content.tag_text('text'),
       editor_style: content.attr_value('editor-style'),
-      value_type:
-        content.attr_value('value-type'),
-      visible_with_parent_answer:
-        content.attr_value('visible-with-parent-answer')
+      condition: content.attr_value('condition'),
+      value_type: content.attr_value('value-type'),
+      visible_with_parent_answer: content.attr_value('visible-with-parent-answer')
     }
   end
   # rubocop:enable MethodLength

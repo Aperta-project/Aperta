@@ -206,3 +206,35 @@ test('That there are the correct nested question answers when there is no draft 
   assert.textPresent(answerSelector, answers[1].get('value'));
 });
 
+test('allows right permissions to view scheduled events', function (assert) {
+  this.can.allowPermission('manage_scheduled_events', this.task);
+  const scheduledEvents = [
+    make('scheduled-event', { }),
+    make('scheduled-event', { })
+  ];
+  const reviewerReport = make('reviewer-report', 'with_questions',
+    { status: 'completed', task: this.task });
+  Ember.run(() => {
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.textPresent('.scheduled-events p', 'Reminders');
+});
+
+test('disallow wrong permissions from viewing scheduled events', function (assert) {
+  const scheduledEvents = [
+    make('scheduled-event', { }),
+    make('scheduled-event', { })
+  ];
+  const reviewerReport = make('reviewer-report', 'with_questions',
+    { status: 'completed', task: this.task });
+  Ember.run(() => {
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.textNotPresent('.scheduled-events p', 'Reminders');
+});

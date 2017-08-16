@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
 
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    store_location_for(:user, request.url) if session["user_return_to"].blank?
+    store_location_for(:user, request.referer)
   end
 
   def cas_logout_url

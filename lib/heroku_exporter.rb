@@ -18,11 +18,9 @@ class HerokuExporter
   end
 
   def copy_to_s3(access_key_id, secret_access_key)
-    connection = Fog::Storage.new({
-      provider: 'AWS',
-      aws_access_key_id: access_key_id,
-      aws_secret_access_key: secret_access_key
-    })
+    connection = Fog::Storage.new(provider: 'AWS',
+                                  aws_access_key_id: access_key_id,
+                                  aws_secret_access_key: secret_access_key)
 
     directory = connection.directories.new(
       key: "tahi-performance",

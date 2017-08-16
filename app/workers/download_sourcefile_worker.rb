@@ -7,11 +7,11 @@ require_dependency 'tahi_epub'
 class DownloadSourcefileWorker
   include Sidekiq::Worker
 
-  sidekiq_options :retry => false
+  sidekiq_options retry: false
 
   def self.download(paper, url, current_user)
     if url.blank?
-      fail(ArgumentError, "Url must be provided (received a blank value)")
+      raise(ArgumentError, "Url must be provided (received a blank value)")
     end
     perform_async(
       paper.id,

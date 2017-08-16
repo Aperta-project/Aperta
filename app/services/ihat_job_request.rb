@@ -31,7 +31,7 @@ class IhatJobRequest
     when [:pdf, :html]
       'pdf_to_html'
     else
-      fail "Unable to find ihat recipe name for converting '#{from_format}' to '#{to_format}'"
+      raise "Unable to find ihat recipe name for converting '#{from_format}' to '#{to_format}'"
     end
   end
 
@@ -45,7 +45,8 @@ class IhatJobRequest
         recipe_name: recipe_name(from_format: from_format, to_format: 'html'),
         callback_url: callback_url,
         content_type: 'application/epub+zip',
-        metadata: metadata)
+        metadata: metadata
+      )
       PaperConverters::PaperConverter.post_ihat_job(request)
     end
   end

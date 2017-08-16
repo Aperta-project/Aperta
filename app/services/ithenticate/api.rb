@@ -4,7 +4,7 @@ require 'xmlrpc/client'
 module Ithenticate
   # Class used for interacting with the Ithenticate API
   class Api
-    ITHENTICATE_CONNECTION_ERROR = 'Error connecting to the iThenticate server.'
+    ITHENTICATE_CONNECTION_ERROR = 'Error connecting to the iThenticate server.'.freeze
     def self.new_from_tahi_env
       uri = URI(TahiEnv.ITHENTICATE_URL)
       new(
@@ -35,9 +35,7 @@ module Ithenticate
         password: @password
       )
       sid = response["sid"]
-      unless sid
-        add_error("Unable to log in")
-      end
+      add_error("Unable to log in") unless sid
       @sid = sid
     end
 
@@ -92,15 +90,13 @@ module Ithenticate
     private
 
     def add_error(error_message)
-      @error =   { documents: [error: error_message] }
+      @error = { documents: [error: error_message] }
     end
 
     def unauthenticated_call(method, **args)
-      begin
-        @server.call(method, **args)
-      rescue
-        add_error(ITHENTICATE_CONNECTION_ERROR)
-      end
+      @server.call(method, **args)
+    rescue
+      add_error(ITHENTICATE_CONNECTION_ERROR)
     end
 
     def sid

@@ -6,7 +6,7 @@ namespace :data do
       journal = Journal.find_by(name: 'PLOS Biology')
       if journal.blank?
         print "Not setting staff_email on the PLOS Biology journal because "
-          "a journal with that name was not found in the database.\n"
+        "a journal with that name was not found in the database.\n"
       elsif journal.staff_email.blank?
         puts "Set PLOS Biology journal's staff email to #{plos_bio_staff_email}"
         journal.update!(staff_email: plos_bio_staff_email)

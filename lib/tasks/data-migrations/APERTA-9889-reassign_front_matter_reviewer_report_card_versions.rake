@@ -22,7 +22,6 @@ namespace :data do
     DESC
     task reassign_front_matter_reviewer_report_card_versions: :environment do
       Card.unscoped do # include soft deleted cards
-
         # --- skip execution if there is nothing to do
         unless Card.where(name: "FrontMatterReviewerReport").exists?
           message = "A Card with name 'FrontMatterReviewerReport' does not"\

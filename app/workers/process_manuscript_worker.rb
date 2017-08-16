@@ -4,7 +4,7 @@ class ProcessManuscriptWorker
 
   # Retrying this could be confusing. If the user has fixed the problem by uploading
   # a new version, this would overwrite that when processed hours or days later.
-  sidekiq_options :retry => false
+  sidekiq_options retry: false
 
   def perform(manuscript_attachment_id)
     manuscript_attachment = ManuscriptAttachment.find(manuscript_attachment_id)
@@ -28,7 +28,9 @@ class ProcessManuscriptWorker
       url: manuscript_attachment.pending_url,
       metadata: {
         paper_id: paper.id,
-        user_id: manuscript_attachment.uploaded_by_id })
+        user_id: manuscript_attachment.uploaded_by_id
+      }
+    )
   end
 
   private
@@ -42,7 +44,8 @@ class ProcessManuscriptWorker
   def get_epub(paper)
     converter = EpubConverter.new(
       paper,
-      paper.creator)
+      paper.creator
+    )
     converter.epub_stream.string
   end
 end

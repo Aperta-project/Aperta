@@ -5,7 +5,7 @@ class TokenInvitationsController < ApplicationController
   before_action :redirect_if_inactive, only: [:show, :accept, :decline]
   before_action :ensure_user!, only: [:accept], unless: :current_user
 
-  # rubocop:disable Style/AndOr, Metrics/LineLength
+  # rubocop:disable Style/AndOr
   def show
     redirect_to root_path and return if invitation.accepted?
 

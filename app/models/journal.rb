@@ -4,7 +4,7 @@ class Journal < ActiveRecord::Base
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
-  SHORT_DOI_FORMAT        = %r{[a-zA-Z0-9]+\.[0-9]+}
+  SHORT_DOI_FORMAT        = /[a-zA-Z0-9]+\.[0-9]+/
 
   class InvalidDoiError < ::StandardError; end
 
@@ -43,8 +43,6 @@ class Journal < ActiveRecord::Base
   before_destroy :confirm_no_papers, prepend: true
 
   mount_uploader :logo, LogoUploader
-
-  # rubocop:disable Metrics/LineLength
   has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
     class_name: 'Role'
   has_one :billing_role, -> { where(name: Role::BILLING_ROLE) },

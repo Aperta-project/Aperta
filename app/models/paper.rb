@@ -82,10 +82,10 @@ class Paper < ActiveRecord::Base
 
   validates :preprint_doi_article_number,
     format: {
-      with: %r{\A\d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}}\z},
+      with: /\A\d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}}\z/,
       message: 'The Preprint DOI article number is not valid. It can only contain a string of integers',
       if: proc { |paper| paper.preprint_doi_article_number.present? }
-  }
+    }
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }

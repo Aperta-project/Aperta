@@ -77,11 +77,11 @@ describe PlosBioTechCheck::ChangesForAuthorTask do
           submit_tech_check
         end.to change { Activity.count }
         expect(Activity.find_by(
-          feed_name: 'manuscript',
-          activity_key: 'paper.tech_fixed',
-          subject: task.paper,
-          user: user,
-          message: 'Author tech fixes were submitted'
+                 feed_name: 'manuscript',
+                 activity_key: 'paper.tech_fixed',
+                 subject: task.paper,
+                 user: user,
+                 message: 'Author tech fixes were submitted'
         )).to be
       end
 

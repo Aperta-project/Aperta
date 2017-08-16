@@ -10,7 +10,6 @@ stream_to_orcid_account_channel = EventStream::StreamToOrcidAccountChannel
 stream_to_admin = EventStream::StreamToAdmin
 
 Subscriptions.configure do
-
   # Journals
 
   add 'journal:created', AdminJournal::NotifyAdmin

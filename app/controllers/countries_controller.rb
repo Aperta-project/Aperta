@@ -1,5 +1,4 @@
 class CountriesController < ApplicationController
-
   include CountriesHelper
 
   def index

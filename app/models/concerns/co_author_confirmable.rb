@@ -37,5 +37,4 @@ module CoAuthorConfirmable
     }
     update!(attrs)
   end
-
 end

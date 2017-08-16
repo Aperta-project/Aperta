@@ -10,7 +10,7 @@ describe PlosBioTechCheck::FinalTechCheckTask do
       journal: journal
     )
   end
-  let(:journal){ FactoryGirl.create(:journal, :with_creator_role) }
+  let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
 
   describe '.restore_defaults' do
     it_behaves_like '<Task class>.restore_defaults update title to the default'

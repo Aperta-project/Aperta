@@ -59,7 +59,7 @@ class SupportingInformationFilesController < ApplicationController
       :publishable,
       :striking_image,
       :attachment,
-      attachment: [])
+      attachment: []
+    )
   end
-
 end

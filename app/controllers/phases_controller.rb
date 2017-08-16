@@ -1,5 +1,5 @@
 class PhasesController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   respond_to :json
 
   def index
@@ -29,7 +29,7 @@ class PhasesController < ApplicationController
     if phase.tasks.empty? && phase.destroy
       render json: true
     else
-      render :nothing => true, :status => 400
+      render nothing: true, status: 400
     end
   end
 

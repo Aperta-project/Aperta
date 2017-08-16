@@ -66,15 +66,13 @@ module Custom
 
 task default: :test
       EOF
-      if engine?
-        template "test/integration/navigation_test.rb"
-      end
+      template "test/integration/navigation_test.rb" if engine?
     end
 
     PASSTHROUGH_OPTIONS = [
       :skip_active_record, :skip_action_mailer, :skip_javascript, :database,
       :javascript, :quiet, :pretend, :force, :skip
-    ]
+    ].freeze
 
     def generate_test_dummy(force = false)
       opts = (options || {}).slice(*PASSTHROUGH_OPTIONS)
@@ -82,7 +80,7 @@ task default: :test
       opts[:skip_bundle] = true
 
       invoke Rails::Generators::AppGenerator,
-        [ File.expand_path(dummy_path, destination_root) ], opts
+        [File.expand_path(dummy_path, destination_root)], opts
     end
 
     def test_dummy_config
@@ -138,7 +136,7 @@ task default: :test
       directory "bin", force: force do |content|
         "#{shebang}\n" + content
       end
-      chmod "bin", 0755, verbose: false
+      chmod "bin", 0o755, verbose: false
     end
 
     def gemfile_entry
@@ -158,7 +156,7 @@ task default: :test
 
       add_shared_options_for "plugin"
 
-      alias_method :plugin_path, :app_path
+      alias plugin_path app_path
 
       class_option :dummy_path,   type: :string, default: "test/dummy",
                                   desc: "Create dummy application at given path"
@@ -173,8 +171,8 @@ task default: :test
                                   desc: "Skip gemspec file"
 
       class_option :skip_gemfile_entry, type: :boolean, default: false,
-                                        desc: "If creating plugin in application's directory " +
-                                                 "skip adding entry to Gemfile"
+                                        desc: "If creating plugin in application's directory " \
+                                          "skip adding entry to Gemfile"
 
       def initialize(*args)
         @dummy_path = nil
@@ -191,7 +189,7 @@ task default: :test
       def create_root_files
         build(:readme)
         build(:rakefile)
-        build(:gemspec)   unless options[:skip_gemspec]
+        build(:gemspec) unless options[:skip_gemspec]
         build(:license)
         build(:gitignore) unless options[:skip_git]
         build(:gemfile)   unless options[:skip_gemfile]
@@ -248,8 +246,8 @@ task default: :test
         @name ||= begin
           # same as ActiveSupport::Inflector#underscore except not replacing '-'
           underscored = original_name.dup
-          underscored.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
-          underscored.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+          underscored.gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+          underscored.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
           underscored.downcase!
 
           underscored
@@ -261,10 +259,10 @@ task default: :test
       end
 
       def namespaced_name
-        @namespaced_name ||= name.gsub('-', '/')
+        @namespaced_name ||= name.tr('-', '/')
       end
 
-    protected
+      protected
 
       def app_templates_dir
         "../../app/templates"
@@ -306,7 +304,7 @@ task default: :test
       end
 
       def self.banner
-        "rails plugin new #{self.arguments.map(&:usage).join(' ')} [options]"
+        "rails plugin new #{arguments.map(&:usage).join(' ')} [options]"
       end
 
       def original_name
@@ -318,7 +316,7 @@ task default: :test
       end
 
       def wrap_in_modules(content)
-        content = "#{content}".strip.gsub(/\W$\n/, '')
+        content = content.to_s.strip.gsub(/\W$\n/, '')
         modules.reverse.inject(content) do |content, mod|
           str = "module #{mod}\n"
           str += content.lines.map { |line| "  #{line}" }.join
@@ -340,20 +338,20 @@ task default: :test
 
       def author
         default = "TODO: Write your name"
-        if skip_git?
-          @author = default
-        else
-          @author = `git config user.name`.chomp rescue default
-        end
+        @author = if skip_git?
+                    default
+                  else
+                    `git config user.name`.chomp rescue default
+                  end
       end
 
       def email
         default = "TODO: Write your email address"
-        if skip_git?
-          @email = default
-        else
-          @email = `git config user.email`.chomp rescue default
-        end
+        @email = if skip_git?
+                   default
+                 else
+                   `git config user.email`.chomp rescue default
+                 end
       end
 
       def valid_const?
@@ -380,7 +378,7 @@ task default: :test
           end
         end
       end
-      alias :store_application_definition! :application_definition
+      alias store_application_definition! application_definition
 
       def get_builder_class
         defined?(::PluginBuilder) ? ::PluginBuilder : Custom::PluginBuilder

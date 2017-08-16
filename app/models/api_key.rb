@@ -1,6 +1,6 @@
 class ApiKey < ActiveRecord::Base
   def self.generate!
-    api_key = self.create!
+    api_key = create!
     api_key.access_token
   end
 

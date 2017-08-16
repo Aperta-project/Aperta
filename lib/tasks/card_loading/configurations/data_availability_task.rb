@@ -27,7 +27,7 @@ module CardConfiguration
         {
           ident: "data_availability--additional_information_doi",
           value_type: "boolean",
-          text: "Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication.",
+          text: "Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication."
         },
         {
           ident: "data_availability--additional_information_other",

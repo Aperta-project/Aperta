@@ -3,7 +3,7 @@ require 'aws-sdk'
 
 # rubocop:disable Rails/Output
 class CreateBucketService
-  PREFIX = 'tahi-user-dev'
+  PREFIX = 'tahi-user-dev'.freeze
 
   def initialize(name: nil)
     @region = 'us-west-1' # northern california

@@ -9,7 +9,7 @@ Tahi::Application.configure do
     {
       params: params,
       time: event.time.to_s(:w3cdtf),
-      ip: event.payload[:ip],
+      ip: event.payload[:ip]
     }
   end
 end

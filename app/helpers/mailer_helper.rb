@@ -1,5 +1,4 @@
 module MailerHelper
-
   def app_name
     TahiEnv.app_name
   end
@@ -15,8 +14,6 @@ module MailerHelper
   end
 
   def prevent_delivery_to_invalid_recipient
-    if mail.to.empty?
-      mail.perform_deliveries = false
-    end
+    mail.perform_deliveries = false if mail.to.empty?
   end
 end

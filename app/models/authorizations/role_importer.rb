@@ -1,8 +1,8 @@
 module Authorizations
   # RoleImporter is used to efficiently import/recreate a role in the database.
   class RoleImporter
-    class Error < ::StandardError ; end
-    class MissingColumn < Error ; end
+    class Error < ::StandardError; end
+    class MissingColumn < Error; end
 
     attr_reader :role
 
@@ -38,7 +38,7 @@ module Authorizations
     def import_permissions
       @permissions_to_import = begin
         @permission_definitions.each_with_object([]) do |definition, arr|
-          key = [ definition.action, definition.applies_to, definition.states ]
+          key = [definition.action, definition.applies_to, definition.states]
 
           # Re-use an existing permission if one exists for the same
           # action/applies_to/states
@@ -47,10 +47,10 @@ module Authorizations
             @pre_existing_permissions.to_a.delete_if do |permission|
               permission.id == existing_permission_id
             end
-            @permission_roles_to_import << [ existing_permission_id, @role.id ]
+            @permission_roles_to_import << [existing_permission_id, @role.id]
           else
             # we need to insert a new permission
-            arr << [ definition.action, definition.applies_to ]
+            arr << [definition.action, definition.applies_to]
           end
         end.uniq
       end
@@ -71,17 +71,16 @@ module Authorizations
 
       @permission_states_permissions_to_import = []
       @permission_definitions.each do |definition|
-        key = [ definition.action, definition.applies_to ]
+        key = [definition.action, definition.applies_to]
         permission_id = permission_id_by_action_and_applies_to[key]
 
         definition.states.each do |state_name|
           # if the permission already existed we'll just re-use, so no
           # need to add it for import
-          unless @pre_existing_permission_ids.include?(permission_id)
-            @permission_states_permissions_to_import << [
-              permission_id, permission_state_id_by_name[state_name]
-            ]
-          end
+          next if @pre_existing_permission_ids.include?(permission_id)
+          @permission_states_permissions_to_import << [
+            permission_id, permission_state_id_by_name[state_name]
+          ]
         end
       end
 
@@ -92,7 +91,7 @@ module Authorizations
       permissions_ids_for_this_role = Permission.where.not(
         id: @pre_existing_permission_ids
       ).pluck(:id)
-      permissions_ids_for_this_role.each do |permission_id, arr|
+      permissions_ids_for_this_role.each do |permission_id, _arr|
         data = [permission_id, @role.id]
         @permission_roles_to_import << data
       end
@@ -101,7 +100,7 @@ module Authorizations
       # exist in the database are filtered out so we don't duplicate two
       # of them, causing a UNIQUE CONSTRAINT violation.
       @permission_roles_to_import.delete_if do |data_to_import|
-        @permissions_role_id_by_key.has_key?(data_to_import)
+        @permissions_role_id_by_key.key?(data_to_import)
       end
 
       PermissionsRole.import [:permission_id, :role_id], @permission_roles_to_import.uniq

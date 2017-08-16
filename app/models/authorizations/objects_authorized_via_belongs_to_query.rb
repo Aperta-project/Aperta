@@ -1,5 +1,4 @@
 module Authorizations
-
   # ObjectsAuthorizedViaBelongsTofQuery represents the query responsible for
   # finding all authorized objects through a belongs_to associations, e.g.:
   #
@@ -25,7 +24,7 @@ module Authorizations
   # dynamic. See the corresponding constructor arguments for more information.
   #
   class ObjectsAuthorizedViaBelongsToQuery
-    attr_reader  :assignments_table, :auth_config, :common_query, :target
+    attr_reader :assignments_table, :auth_config, :common_query, :target
 
     # == Constructor Arguments
     # * assignments_table: the Arel::Table reference representing the \
@@ -53,7 +52,9 @@ module Authorizations
 
       query.outer_join(common_query.join_table).on(
         common_query.join_table.primary_key.eq(assignments_table[:assigned_to_id]).and(
-          assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)))
+          assignments_table[:assigned_to_type].eq(common_query.assigned_to_klass.base_class.name)
+        )
+      )
 
       query.outer_join(common_query.target_table).on(
         common_query.join_table[auth_config.reflection.foreign_key].eq(

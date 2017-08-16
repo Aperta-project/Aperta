@@ -27,7 +27,7 @@ class TaskFactory
 
   def default_options
     HashWithIndifferentAccess.new(
-      title: task_klass::DEFAULT_TITLE,
+      title: task_klass::DEFAULT_TITLE
     )
   end
 end

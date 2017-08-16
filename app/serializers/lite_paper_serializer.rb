@@ -3,7 +3,6 @@ class LitePaperSerializer < ActiveModel::Serializer
              :processing, :publishing_state, :related_at_date, :roles, :short_doi,
              :title, :updated_at, :review_due_at, :review_originally_due_at
 
-
   def related_at_date
     return unless scoped_user.present?
     my_roles.map(&:created_at).sort.last
@@ -37,6 +36,6 @@ class LitePaperSerializer < ActiveModel::Serializer
   end
 
   def reviewer_report
-    @reviewer_report ||= scope.reviewer_reports.joins(:task, :paper).where(papers: {id: id}).first
+    @reviewer_report ||= scope.reviewer_reports.joins(:task, :paper).where(papers: { id: id }).first
   end
 end

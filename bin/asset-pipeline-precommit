@@ -5,9 +5,9 @@
 # echo "bin/asset-pipeline-precommit" >> .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
 
 print "Asset check... "
-status_before = %x[git status --porcelain --untracked-files=no]
-%x[RAILS_ENV=production rake assets:precompile]
-status_after = %x[git status --porcelain --untracked-files=no]
+status_before = `git status --porcelain --untracked-files=no`
+`RAILS_ENV=production rake assets:precompile`
+status_after = `git status --porcelain --untracked-files=no`
 asset_files = (status_after.split("\n") - status_before.split("\n")).map { |f| f.split[1] }
 unless asset_files.empty?
   puts "FAIL"

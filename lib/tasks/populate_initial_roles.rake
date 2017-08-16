@@ -48,7 +48,7 @@ namespace :data do
                     user.assignments.destroy_all
                   elsif role_name == Role::USER_ROLE
                   # Users are assigned later
-                  elsif role_name.match(/^-/) # remove roles
+                  elsif role_name =~ /^-/ # remove roles
                     role_name = role_name[1..-1].strip # remove `-` at beginning and strip whitespace
                     user.resign_from!(assigned_to: journal, role: role_name)
                     STDERR.puts("  removed #{role_name} on #{journal.name}")

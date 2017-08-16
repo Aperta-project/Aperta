@@ -1,7 +1,7 @@
 module OldAuthorizationsControllerHelper
   extend ActiveSupport::Concern
 
-  class AuthorizationError < StandardError; end;
+  class AuthorizationError < StandardError; end
 
   included do
     rescue_from AuthorizationError, with: :render_forbidden
@@ -11,11 +11,9 @@ module OldAuthorizationsControllerHelper
     authorize_action!
   end
 
-  def authorize_action!(args={})
+  def authorize_action!(args = {})
     policy = find_policy(self.class, current_user, args)
-    unless policy.authorized?(action_name)
-      raise AuthorizationError
-    end
+    raise AuthorizationError unless policy.authorized?(action_name)
   end
 
   def render_forbidden
@@ -34,7 +32,7 @@ module OldAuthorizationsControllerHelper
       policy = @policies.detect { |p| p.applies_to?(controller_class, user, args) }
     end
 
-    if !policy
+    unless policy
       policy = ApplicationPolicy.find_policy(controller_class, user, args)
       @policies << policy
     end

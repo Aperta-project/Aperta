@@ -40,7 +40,7 @@ namespace :data do
             end
 
             if attachment.versions.count != expected_versions_count
-              fail "Expected #{expected_versions_count} historical versions on Paper id=#{paper.id} but got #{attachment.versions.count}). Rolling back."
+              raise "Expected #{expected_versions_count} historical versions on Paper id=#{paper.id} but got #{attachment.versions.count}). Rolling back."
             end
           end
         end

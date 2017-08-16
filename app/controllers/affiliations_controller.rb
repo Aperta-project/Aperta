@@ -4,11 +4,11 @@ class AffiliationsController < ApplicationController
 
   def index
     query = params.dig(:query)
-    if not query
-      institutions = []
-    else
-      institutions = Institutions.instance.matching_institutions(query)
-    end
+    institutions = if !query
+                     []
+                   else
+                     Institutions.instance.matching_institutions(query)
+                   end
     render json: institutions, root: :institutions
   end
 

@@ -7,7 +7,7 @@ class ErrorSerializer < ActiveModel::Serializer
   #
   # https://github.com/rails-api/active_model_serializers/blob/master/docs/howto/serialize_poro.md
   class Error
-    alias :read_attribute_for_serialization :send
+    alias read_attribute_for_serialization send
 
     attr_accessor :message
 

@@ -11,7 +11,7 @@ class Comment < ActiveRecord::Base
   has_many :participants, through: :task
 
   validates :task, :body, presence: true
-  validates_presence_of :commenter
+  validates :commenter, presence: true
 
   def created_by?(user)
     commenter_id == user.id
@@ -20,7 +20,7 @@ class Comment < ActiveRecord::Base
   def notify_mentioned_people
     people_mentioned = UserMentions.new(body, commenter).all_users_mentioned
     people_mentioned.each do |mentionee|
-      UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
+      UserMailer.mention_collaborator(id, mentionee.id).deliver_later
     end
   end
 end

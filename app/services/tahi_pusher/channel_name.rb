@@ -12,7 +12,7 @@ module TahiPusher
 
     # <#Paper:1234 @id=4> --> "private-paper@4"
     def self.build(target:, access:)
-      raise ChannelResourceNotFound.new("Channel target cannot be nil") if target.nil?
+      raise ChannelResourceNotFound, "Channel target cannot be nil" if target.nil?
 
       prefix = access unless access == PUBLIC
       suffix = if target.is_a?(ActiveRecord::Base)
@@ -27,7 +27,6 @@ module TahiPusher
     def self.parse(channel_name)
       new(channel_name)
     end
-
 
     attr_reader :name, :prefix, :suffix
 
@@ -53,7 +52,7 @@ module TahiPusher
 
     # "private-paper@4" --> true, "system" --> false
     def active_record_backed?
-      model, _ = suffix.partition(MODEL_SEPARATOR)
+      model, = suffix.partition(MODEL_SEPARATOR)
       return false if model == SYSTEM
       model.classify.constantize.new.is_a?(ActiveRecord::Base)
     rescue NameError

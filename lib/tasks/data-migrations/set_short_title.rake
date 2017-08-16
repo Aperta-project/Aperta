@@ -5,12 +5,15 @@ namespace :data do
       task set_short_title: :environment do
         Paper.all.each do |paper|
           task = paper.tasks_for_type(
-            TahiStandardTasks::PublishingRelatedQuestionsTask).first
+            TahiStandardTasks::PublishingRelatedQuestionsTask
+          ).first
           next unless task
           question = task.nested_questions.find_by(
-            ident: 'publishing_related_questions--short_title')
+            ident: 'publishing_related_questions--short_title'
+          )
           answer = task.find_or_build_answer_for(
-            nested_question: question)
+            nested_question: question
+          )
           answer.value = paper.read_attribute(:short_title) || ''
           answer.save!
         end

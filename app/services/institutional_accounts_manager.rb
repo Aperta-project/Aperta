@@ -1,7 +1,6 @@
 ##
 # A class for managing the list of institutional accounts
 class InstitutionalAccountsManager
-  # rubocop:disable Metrics/LineLength
   ITEMS =
     [
       { id: 'Bielefeld University', text: 'Bielefeld University', nav_customer_number: 'C01013' },
@@ -64,12 +63,13 @@ class InstitutionalAccountsManager
       { id: 'University of York', text: 'University of York', nav_customer_number: 'C01575' },
       { id: 'Victoria University', text: 'Victoria University', nav_customer_number: 'C01702' },
       { id: 'École Polytechnique Fédérale de Lausanne', text: 'École Polytechnique Fédérale de Lausanne', nav_customer_number: 'C01564' }
-    ]
+    ].freeze
   # rubocop:enable Metrics/LineLength
 
   def initialize
     @account_list = ReferenceJson.find_or_create_by(
-      name: "Institutional Account List")
+      name: "Institutional Account List"
+    )
   end
 
   def seed!
@@ -82,7 +82,8 @@ class InstitutionalAccountsManager
     institution = {
       "id" => id,
       "text" => text,
-      "nav_customer_number" => nav_customer_number }
+      "nav_customer_number" => nav_customer_number
+    }
     @account_list.items << institution
     alphabetize
     @account_list.save!

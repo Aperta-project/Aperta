@@ -31,9 +31,9 @@ module Authorizations
     end
 
     def add_permissions_column_to_assignments
-      Arel::SelectManager.new(klass.arel_table.engine).
-        with(assignments_table).
-        project(
+      Arel::SelectManager.new(klass.arel_table.engine)
+        .with(assignments_table)
+        .project(
           table[:results][:id],
           permission_actions_column
         ).from(Arel.sql('(' + objects_query.to_sql + ')')
@@ -43,11 +43,11 @@ module Authorizations
     def add_permissions_through_roles(query)
       query.join(table[:roles]).on(
         table[:roles][:id].eq(table[:results][:role_id])
-      ).
-      join(table[:permissions_roles]).on(
+      )
+      .join(table[:permissions_roles]).on(
         table[:permissions_roles][:role_id].eq(table[:roles][:id])
-      ).
-      join(table[:permissions]).on(
+      )
+      .join(table[:permissions]).on(
         table[:permissions][:id].eq(table[:permissions_roles][:permission_id])
       )
     end
@@ -55,8 +55,8 @@ module Authorizations
     def add_permission_states(query)
       query.join(table[:permission_states_permissions]).on(
         table[:permission_states_permissions][:permission_id].eq(table[:permissions][:id])
-      ).
-      join(table[:permission_states]).on(
+      )
+      .join(table[:permission_states]).on(
         table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
       )
     end
@@ -66,8 +66,8 @@ module Authorizations
         table[:results][:id].not_eq(nil).and(
           table[:permissions][:applies_to].in(applies_to)
         )
-      ).
-      group(table[:results][:id])
+      )
+      .group(table[:results][:id])
     end
   end
 end

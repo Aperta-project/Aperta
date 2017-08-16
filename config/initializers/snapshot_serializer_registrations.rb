@@ -8,7 +8,6 @@
 # `config.cache_classes = false`. For environments where
 # config.cache_classes is set to true this will only fire once.
 #
-# rubocop:disable Metrics/LineLength
 ActionDispatch::Reloader.to_prepare do
   if SnapshotService.registry.empty?
     SnapshotService.configure do

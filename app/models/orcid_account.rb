@@ -81,7 +81,7 @@ class OrcidAccount < ActiveRecord::Base
       identifier: response_body['orcid'],
       expires_at: DateTime.now.utc + response_body['expires_in'].seconds,
       name: response_body['name'],
-      scope: response_body['scope'],
+      scope: response_body['scope']
     )
   end
 

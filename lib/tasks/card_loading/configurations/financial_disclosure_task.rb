@@ -17,7 +17,7 @@ module CardConfiguration
         {
           ident: "financial_disclosures--author_received_funding",
           value_type: "boolean",
-          text: "Did any of the authors receive specific funding for this work?",
+          text: "Did any of the authors receive specific funding for this work?"
         }
       ]
     end

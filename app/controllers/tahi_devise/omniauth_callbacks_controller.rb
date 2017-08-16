@@ -1,6 +1,5 @@
 module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-
     def cas
       ned = auth[:extra]
       downcased_email = ned[:emailAddress].strip.downcase
@@ -53,6 +52,5 @@ module TahiDevise
     def auth
       @auth ||= request.env['omniauth.auth']
     end
-
   end
 end

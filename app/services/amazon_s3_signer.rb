@@ -8,7 +8,7 @@ class AmazonS3Signer
     @expires = 1.day.from_now
   end
 
-  def params # rubocop:disable Metrics/MethodLength
+  def params
     {
       acl: 'public-read',
       awsaccesskeyid: ENV['AWS_ACCESS_KEY_ID'],
@@ -35,7 +35,7 @@ class AmazonS3Signer
     )
   end
 
-  def policy # rubocop:disable Metrics/MethodLength
+  def policy
     Base64.strict_encode64(
       {
         expiration: @expires,

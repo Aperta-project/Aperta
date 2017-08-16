@@ -1,5 +1,4 @@
 module Authorizations
-
   # ObjectsViaAuthorizationsQuery represents the query responsible for finding
   # all objects through a given set of authorization pathways.
   #
@@ -54,7 +53,7 @@ module Authorizations
         ObjectsAuthorizedViaSelfQuery.new(args)
 
       elsif reflection.nil?
-        fail MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
+        raise MissingAssociationForAuthConfiguration, <<-ERROR.strip_heredoc
           Expected to find #{auth_config.via.inspect} association defined on
           #{auth_config.assignment_to}, but did not. This was because the following
           Authorizations::Configuration was configured:
@@ -72,7 +71,7 @@ module Authorizations
         ObjectsAuthorizedViaBelongsToQuery.new(args)
 
       else
-        fail "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
+        raise "I don't know what you're trying to pull. I'm not familiar with this kind of association: #{reflection.inspect}"
       end
     end
   end

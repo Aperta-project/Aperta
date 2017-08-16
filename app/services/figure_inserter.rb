@@ -72,7 +72,7 @@ class FigureInserter
   end
 
   def node_text(node)
-    node.inner_text.rstrip.lstrip.gsub(/[[:space:]]+/, ' ')
+    node.inner_text.strip.gsub(/[[:space:]]+/, ' ')
   end
 
   def remove_figures

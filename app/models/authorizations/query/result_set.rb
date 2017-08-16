@@ -2,7 +2,6 @@ require_dependency 'authorizations/query/serializable_result'
 
 module Authorizations
   class Query
-
     # Authorizations::Query::ResultSet represents the results of running an
     # Authorizations::Query.
     class ResultSet

@@ -11,10 +11,10 @@ namespace :data do
       question = NestedQuestion.find_by!(ident: 'register_decision_questions--selected-template')
 
       TahiStandardTasks::RegisterDecisionTask.all.includes(:paper).find_each do |task|
-        most_recent_decision_with_a_verdict = task.paper.decisions.
-          unscoped.
-          where.not(verdict: nil).
-          order('id asc').last
+        most_recent_decision_with_a_verdict = task.paper.decisions
+          .unscoped
+          .where.not(verdict: nil)
+          .order('id asc').last
 
         # skip if there are no decisions with verdicts which indicates
         # no decision has been registered or is in the process of being
@@ -26,8 +26,6 @@ namespace :data do
           verdict = most_recent_decision_with_a_verdict.verdict
           puts "Setting the register decision letter to #{verdict.inspect} for #{task.inspect} based on decisid id=#{most_recent_decision_with_a_verdict.id}"
           answer.update!(value: verdict)
-        else
-          # skip, do not overwrite existing answers
         end
       end
     end

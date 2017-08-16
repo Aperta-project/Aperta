@@ -15,9 +15,7 @@ class SnapshotsController < ApplicationController
 
   def snapshot
     @snapshot ||= begin
-      if params[:id].present?
-        Snapshot.find(params[:id])
-      end
+      Snapshot.find(params[:id]) if params[:id].present?
     end
   end
 

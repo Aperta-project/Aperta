@@ -1,4 +1,3 @@
-# rubocop:disable all
 namespace :data do
   namespace :migrate do
     desc <<-DESC.gsub(/^\s*\|/, '')

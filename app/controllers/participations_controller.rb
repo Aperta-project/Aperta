@@ -5,11 +5,11 @@ class ParticipationsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    if current_user.can?(:view_participants, task)
-      participations = task.participations
-    else
-      participations = []
-    end
+    participations = if current_user.can?(:view_participants, task)
+                       task.participations
+                     else
+                       []
+                     end
     respond_with participations, root: :participations
   end
 

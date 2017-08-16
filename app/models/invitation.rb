@@ -20,7 +20,7 @@ class Invitation < ActiveRecord::Base
   before_create :assign_to_draft_decision
 
   EMAIL_MATCH = 'lower(email) = lower(?) OR lower(email) like lower(?)'.freeze
-  scope :where_email_matches, lambda {|email|
+  scope :where_email_matches, lambda { |email|
     where(EMAIL_MATCH, email, "%<#{email}>")
   }
 

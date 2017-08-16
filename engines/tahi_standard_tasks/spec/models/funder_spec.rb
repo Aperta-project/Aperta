@@ -38,7 +38,7 @@ describe TahiStandardTasks::Funder do
     end
 
     it "only includes the comment if that's all that's provided" do
-      expected = "#{comment_only_funder.additional_comments}"
+      expected = comment_only_funder.additional_comments.to_s
       expect(comment_only_funder.funding_statement).to eq expected
     end
   end
@@ -51,13 +51,15 @@ describe TahiStandardTasks::Funder do
 
     it "is true when only additional_comments is set" do
       funder = TahiStandardTasks::Funder.new(\
-        additional_comments: 'whatever bro')
+        additional_comments: 'whatever bro'
+      )
       expect(funder.send(:only_has_additional_comments?)).to be true
     end
 
     it "is false when additional_comments and anything else is set" do
       funder = TahiStandardTasks::Funder.new(\
-        additional_comments: 'whatever bro', name: 'Dobis')
+        additional_comments: 'whatever bro', name: 'Dobis'
+      )
       expect(funder.send(:only_has_additional_comments?)).to be false
     end
   end

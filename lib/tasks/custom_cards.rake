@@ -6,15 +6,15 @@ namespace :tahi do
   desc 'Install a tahi engine for a git repo or local path'
   task :install_plugin, [:git_or_file_path] => :environment do |_, args|
     path = args[:git_or_file_path]
-    fail "Please supply a git or file path!" if path.nil?
+    raise "Please supply a git or file path!" if path.nil?
     needle = '# Task Engines'
-    gem_type = if path.match(/^(http|git)/)
+    gem_type = if path =~ /^(http|git)/
                  'git'
                else
                  'path'
                end
     engine_name = path.split(/\//)[-1].gsub(/.git$/, '')
-    engine_path = engine_name.gsub(/-/, '/')
+    engine_path = engine_name.tr('-', '/')
     engine_module = engine_path.classify
     insert_after('Gemfile', needle, "gem '#{engine_name}', #{gem_type}: '#{path}'")
     Bundler.with_clean_env do
@@ -23,8 +23,8 @@ namespace :tahi do
     Bundler.with_clean_env do
       # need to do this in subshell because our ruby process doesn't
       # know about the engine yet
-      migration_task = "#{engine_name.gsub(/-/,'_')}:install:migrations"
-      if `bundle exec rake -T #{migration_task}`.size > 0
+      migration_task = "#{engine_name.tr('-', '_')}:install:migrations"
+      if !`bundle exec rake -T #{migration_task}`.empty?
         sh "bundle exec rake #{migration_task}"
       else
         puts "No migration task found for this card. If you add migrations for #{engine_name} in in the future, you can install migrations with #{migration_task}."

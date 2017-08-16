@@ -101,7 +101,6 @@ class XmlCardLoader
     }
   end
 
-  # rubocop:disable MethodLength
   def card_content_attributes(content, card_version)
     {
       card_version: card_version,

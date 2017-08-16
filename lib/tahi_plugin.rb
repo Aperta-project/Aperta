@@ -1,5 +1,4 @@
 class TahiPlugin
-
   # Return all installed Tahi plugins.
   def self.plugins
     Bundler.load.specs.select { |gem| tahi_plugin?(gem) }

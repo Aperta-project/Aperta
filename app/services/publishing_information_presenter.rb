@@ -32,7 +32,7 @@ class PublishingInformationPresenter
     "<p id='journal-name'><em>#{CGI.escape_html(paper.journal.name)}</em></p>"
   end
 
-  def generated_at(date=nil)
+  def generated_at(date = nil)
     date ||= Date.today.to_s(:long)
     "<p id='generated-at'><em>#{CGI.escape_html(date)}</em></p>"
   end

@@ -11,7 +11,7 @@ namespace :bugsnag do
   task :get_users_for_error, [:error_id, :days_ago] do |_, args|
     raise "Missing BUGSNAG_DATA_API_KEY env var" unless ENV['BUGSNAG_DATA_API_KEY']
     raise ArgumentError, "Missing Bugsnag Error ID" unless args[:error_id]
-    # rubocop:disable Style/RescueModifier,Rails/TimeZone
+    # rubocop:disable Rails/TimeZone
     days_ago = Integer(args[:days_ago]) rescue 1
     time = Time.now - (days_ago * 24 * 3600)
 

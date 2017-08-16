@@ -74,7 +74,7 @@ class TahiEnv
         instance.send(method, *args, &blk)
       else
         method = method.to_s
-        fail MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
+        raise MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
           undefined method #{method.inspect} for #{self}. Is the
           #{method.upcase} env var registered in #{self}?
         ERROR_MSG
@@ -83,7 +83,7 @@ class TahiEnv
 
     # Returns the registered list of environment variables.
     def registered_env_vars
-      @registered_env_vars = @registered_env_vars || {}
+      @registered_env_vars ||= {}
     end
 
     protected
@@ -114,7 +114,7 @@ class TahiEnv
 
       # TahiEnv#app_name
       # TahiEnv#orcid_login_enabled? for boolean
-      reader_method_name = "#{env_var.key.downcase}"
+      reader_method_name = env_var.key.downcase.to_s
       reader_method_name << "?" if env_var.boolean?
       define_method(reader_method_name) do
         env_var.value

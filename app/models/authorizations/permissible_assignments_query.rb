@@ -1,5 +1,4 @@
 module Authorizations
-
   # PermissibleAssignmentsQuery represents the query responsible for finding
   # all Assignment(s) that have a given permission for a collection of
   # types/classes.
@@ -85,8 +84,7 @@ module Authorizations
             assignments.assigned_to_id,
             roles.id AS role_id,
             roles.name AS role_name,
-            permissions.id AS permission_id'
-          )
+            permissions.id AS permission_id')
         .joins(:permissions)
         .where(assignments: { user_id: user.id })
 
@@ -123,11 +121,11 @@ module Authorizations
         association = ac.assignment_to.reflections[ac.via.to_s]
 
         query.outer_join(join_table).on(
-          join_table[ ac.assignment_to.primary_key ]
-            .eq( Assignment.arel_table[:assigned_to_id] )
+          join_table[ac.assignment_to.primary_key]
+            .eq(Assignment.arel_table[:assigned_to_id])
           .and(
-             Assignment.arel_table[:assigned_to_type].
-             eq(ac.assignment_to.base_class.name)
+            Assignment.arel_table[:assigned_to_type]
+            .eq(ac.assignment_to.base_class.name)
           )
         )
       end

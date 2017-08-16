@@ -1,7 +1,6 @@
 # Serializes supporting information tasks and their accompanying
 # files
 class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseSerializer
-
   private
 
   def snapshot_properties

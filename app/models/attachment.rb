@@ -14,7 +14,7 @@ class Attachment < ActiveRecord::Base
   attribute :title, HtmlString.new
   attribute :caption, HtmlString.new
 
-  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif)
+  IMAGE_TYPES = %w(jpg jpeg tiff tif gif png eps tif).freeze
 
   STATUSES = {
     processing: 'processing'.freeze,
@@ -37,7 +37,7 @@ class Attachment < ActiveRecord::Base
     value = self.class.public_resource if @public_resource.nil?
 
     if value.nil?
-      fail NotImplementedError, <<-ERROR.strip_heredoc
+      raise NotImplementedError, <<-ERROR.strip_heredoc
         #{self.class.name} did not declare whether it was a public or private
         resource. Please set this after careful consideration in
         #{self.class.name}. Here's what that might need to look like:
@@ -161,7 +161,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def on_download_failed(exception)
-    fail exception
+    raise exception
   end
 
   def url(*args)

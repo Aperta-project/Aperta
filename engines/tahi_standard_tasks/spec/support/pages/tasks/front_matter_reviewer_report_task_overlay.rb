@@ -21,7 +21,7 @@ class FrontMatterReviewerReportTaskOverlay < ReviewerReportTaskOverlay
     end
   end
 
-  def reload(reviewer_report_task=TahiStandardTasks::FrontMatterReviewerReportTask.last)
+  def reload(reviewer_report_task = TahiStandardTasks::FrontMatterReviewerReportTask.last)
     paper = reviewer_report_task.paper
     visit "/papers/#{paper.id}/tasks/#{reviewer_report_task.id}"
   end

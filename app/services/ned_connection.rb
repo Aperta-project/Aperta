@@ -5,7 +5,7 @@ class NedConnection
   BASE_URL = TahiEnv.ned_api_url
   APP_ID = TahiEnv.ned_cas_app_id
   APP_PASSWORD = TahiEnv.ned_cas_app_password
-  RNF_MESSAGE = "Record not found"
+  RNF_MESSAGE = "Record not found".freeze
 
   def self.enabled?
     BASE_URL.present?
@@ -17,9 +17,9 @@ class NedConnection
     conn.get("#{BASE_URL}/#{url}")
   rescue Faraday::ClientError => e
     error_message = if e.response[:status] == 400
-      RNF_MESSAGE
-    else
-      "Error connecting to #{BASE_URL}/#{url}"
+                      RNF_MESSAGE
+                    else
+                      "Error connecting to #{BASE_URL}/#{url}"
     end
     # copied this over from the original file, im not sure this should be
     # the third arg to raise

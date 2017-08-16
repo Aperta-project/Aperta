@@ -1,5 +1,4 @@
 # Emails people mentioned in a forum reply
-# rubocop:disable ClassAndModuleChildren
 class DiscussionReply::Created::EmailPeopleMentioned
   def self.call(_event_name, event_data)
     reply = event_data[:record]

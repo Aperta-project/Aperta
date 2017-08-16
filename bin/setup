@@ -2,28 +2,28 @@
 require 'pathname'
 require 'securerandom'
 
-def cmd_available? cmd
+def cmd_available?(cmd)
   `which #{cmd}` != ''
 end
 
 $os = `uname`.chomp.downcase.intern
 unless $os == :darwin || ($os == :linux && cmd_available?('apt-get'))
-  fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
+  raise 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
 end
 
 # path to your application root.
-APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
 
 def run_pg(cmd)
   out = case $os
-  when :darwin
-    `#{cmd}`
-  when :linux
-    cmd = cmd.gsub("\"", "\\\"") # escape quotes
-    `sudo su postgres -c "#{cmd}"`
+        when :darwin
+          `#{cmd}`
+        when :linux
+          cmd = cmd.gsub("\"", "\\\"") # escape quotes
+          `sudo su postgres -c "#{cmd}"`
   end
 
-  if $?.to_i != 0
+  if $CHILD_STATUS.to_i.nonzero?
     "postgres command failed: #{out}"
     exit 1
   else
@@ -31,7 +31,7 @@ def run_pg(cmd)
   end
 end
 
-def header message
+def header(message)
   full = "== #{message} =="
   puts
   puts "=" * full.length
@@ -40,7 +40,7 @@ def header message
   puts
 end
 
-def brew_install package, options=nil
+def brew_install(package, options = nil)
   if system("brew ls #{package} &>/dev/null")
     puts "#{package} is already installed"
   else
@@ -48,7 +48,7 @@ def brew_install package, options=nil
   end
 end
 
-def npm_global_install package, options=nil
+def npm_global_install(package, options = nil)
   if system("npm list -g #{package} &>/dev/null")
     puts "#{package} is already installed"
   else
@@ -56,7 +56,7 @@ def npm_global_install package, options=nil
   end
 end
 
-def copy_template source, dest
+def copy_template(source, dest)
   if File.exist?(dest)
     puts "Not copying from #{source} (#{dest} already exists)."
   else
@@ -65,9 +65,8 @@ def copy_template source, dest
   end
 end
 
-
 def create_config_file(path)
-  return if File.exists?(path)
+  return if File.exist?(path)
 
   header "Generating default #{path}"
   File.open(path, 'w+') do |f|
@@ -75,7 +74,6 @@ def create_config_file(path)
   end
   puts "Wrote to #{path}"
 end
-
 
 Dir.chdir APP_ROOT do
   system "rm -f setup.log"
@@ -112,7 +110,7 @@ Dir.chdir APP_ROOT do
   header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo
   # http://stackoverflow.com/questions/8546759/how-to-check-if-a-postgres-user-exists
-  roles = run_pg %q[psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"]
+  roles = run_pg %q(psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'")
   if !roles.empty?
     puts 'PostgreSQL user already exists'
   else

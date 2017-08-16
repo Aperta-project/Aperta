@@ -1,11 +1,10 @@
 namespace :one_off do
-
   desc "migrate existing activity records to hide reviewers from authors"
-  task :migrate_participations_activity_to_workflow => :environment do
+  task migrate_participations_activity_to_workflow: :environment do
     Activity.where(activity_key: ["participation.created", "participation.destroyed"]).update_all(feed_name: "workflow")
   end
 
-  task :remove_intelligible_question_from_reviewer_report => :environment do
+  task remove_intelligible_question_from_reviewer_report: :environment do
     ActiveRecord::Base.transaction do
       task = TahiStandardTasks::ReviewerReportTask
       question = task.nested_questions.where(ident: 'intelligible').first

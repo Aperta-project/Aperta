@@ -1,9 +1,7 @@
 module Subscriptions
-
   # Wraps ActiveSupport::Notifications to subscribe to internal application events.
   #
   class Subscriber
-
     # Performs the event subscription.
     #
     # Use `Subscriptions.configure` instead of using this directly.

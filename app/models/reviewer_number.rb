@@ -25,13 +25,12 @@ class ReviewerNumber < ActiveRecord::Base
     #
     # then try to create a new record
     # catch the ActiveRecord::RecordNotUnique and increment the new_number
-    begin
-      tries ||= 1
-      new_number = max_number_for_paper(paper) + tries
-      record = create!(paper: paper, user: reviewer, number: new_number)
-      new_number
-    rescue ActiveRecord::RecordNotUnique  => e
-      retry if (tries +=1) < MAX_RETRIES
-    end
+
+    tries ||= 1
+    new_number = max_number_for_paper(paper) + tries
+    record = create!(paper: paper, user: reviewer, number: new_number)
+    new_number
+  rescue ActiveRecord::RecordNotUnique => e
+    retry if (tries += 1) < MAX_RETRIES
   end
 end

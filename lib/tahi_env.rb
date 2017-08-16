@@ -15,9 +15,9 @@ class TahiEnv
   extend DslMethods
   include ActiveModel::Validations
 
-  class Error < ::StandardError ; end
-  class InvalidEnvironment < Error ; end
-  class MissingEnvVarRegistration < Error ; end
+  class Error < ::StandardError; end
+  class InvalidEnvironment < Error; end
+  class MissingEnvVarRegistration < Error; end
 
   def self.validate!
     instance.validate!
@@ -184,7 +184,7 @@ class TahiEnv
         error_message << "* #{error}\n"
       end
       error_message << "\n"
-      fail InvalidEnvironment, error_message
+      raise InvalidEnvironment, error_message
     end
   end
 

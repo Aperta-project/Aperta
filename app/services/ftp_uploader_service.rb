@@ -2,8 +2,8 @@
 class FtpUploaderService
   require 'net/ftp'
   require 'uri'
-  class FtpTransferError < StandardError; end;
-  TRANSFER_COMPLETE = '226'
+  class FtpTransferError < StandardError; end
+  TRANSFER_COMPLETE = '226'.freeze
 
   def initialize(
     url:,
@@ -15,11 +15,11 @@ class FtpUploaderService
   )
 
     ftp_url = URI.parse(url)
-    if ftp_url.path.present?
-      @directory = ftp_url.path
-    else
-      @directory = 'packages'
-    end
+    @directory = if ftp_url.path.present?
+                   ftp_url.path
+                 else
+                   'packages'
+                 end
 
     @file_io = file_io
     @final_filename = final_filename
@@ -33,8 +33,8 @@ class FtpUploaderService
   end
 
   def upload
-    fail FtpTransferError, 'file_io is required' if @file_io.blank?
-    fail FtpTransferError, 'final_filename is required' if @final_filename.blank?
+    raise FtpTransferError, 'file_io is required' if @file_io.blank?
+    raise FtpTransferError, 'final_filename is required' if @final_filename.blank?
 
     @ftp = Net::FTP.new
     logger.info "Beginning transfer for #{@final_filename}"

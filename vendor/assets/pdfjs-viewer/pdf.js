@@ -16716,6 +16716,8 @@ var PDFViewerApplication = {
         };
         self.error(loadingErrorMessage, moreInfo);
         self.loading = false;
+
+        window.PDFJS.plosErrorCallback();
       }
     );
 
@@ -17515,9 +17517,7 @@ function webViewerInitialized() {
     } catch (e) {
       PDFViewerApplication.error(mozL10n.get('loading_error', null,
         'An error occurred while loading the PDF.'), e);
-      if (PDFJS.plosErrorCallback) {
-        PDFJS.plosErrorCallback();
-      }
+      window.PDFJS.plosErrorCallback();
     }
     return;
   }

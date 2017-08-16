@@ -28,6 +28,7 @@ export default Ember.Component.extend({
   },
 
   loadPdfJs: function() {
+    let outerThis = this;
     LazyLoader.loadScripts([window.pdfviewerPath]).then(() => {
       this.get('eventBus').subscribe('split-pane-resize', this, webViewerResize);
 
@@ -36,7 +37,7 @@ export default Ember.Component.extend({
       window.PDFJS.imageResourcesPath = pdfjsroot + 'images/';
       window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
       window.PDFJS.plosErrorCallback = function() {
-        // console.log('error caught');
+        outerThis.set('paper.file.status', 'error');
       };
 
       this.loadPdf();

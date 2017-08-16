@@ -163,25 +163,6 @@ describe ExportPackager do
       allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:read)
         .and_return('a string')
     end
-
-    it 'adds a figure to a zip' do
-      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-
-      expect(zip_filenames(zip_io)).to include('yeti.jpg')
-      contents = read_zip_entry(zip_io, 'yeti.jpg')
-      expect(contents).to eq('a string')
-    end
-
-    describe "add_figures" do
-      it "adds figure files to the manifest" do
-        packager = ExportPackager.new(paper, destination: 'apex')
-        Zip::OutputStream.open(zip_file) do |package|
-          packager.send(:add_figures, package)
-        end
-        file_list = packager.send(:manifest).file_list
-        expect(file_list).to eq ["yeti.jpg"]
-      end
-    end
   end
 
   context 'a paper with supporting information' do

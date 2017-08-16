@@ -87,7 +87,6 @@ class ExportPackager
   def add_figures(package)
     @paper.figures.each do |figure|
       add_file_to_package package,
-                          attachment_apex_filename(figure),
                           figure.file.read
     end
   end

@@ -435,7 +435,7 @@ class Paper < ActiveRecord::Base
   # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.pluck(:completed).all?
+    tasks.metadata.select(&:submission_task?).map(&:completed).all?
   end
 
   def required_for_submission_tasks_completed?(*)

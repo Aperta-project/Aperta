@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815084644) do
+ActiveRecord::Schema.define(version: 20170816124715) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -224,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170815084644) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"

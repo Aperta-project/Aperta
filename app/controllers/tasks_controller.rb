@@ -43,7 +43,6 @@ class TasksController < ApplicationController
     # if required fields are incomplete mark the task as incomplete
     # side load answers and ready issues using a custom serializer
     unless required_fields_completed
-      task.completed = false
       render json: task, serializer: TaskAnswerSerializer
       return
     end

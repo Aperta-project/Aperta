@@ -27,10 +27,8 @@ class Paper < ActiveRecord::Base
   has_many :question_attachments, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
-  has_one :file, as: :owner, dependent: :destroy,
-    class_name: 'ManuscriptAttachment'
-  has_one :sourcefile, as: :owner, dependent: :destroy,
-    class_name: 'SourcefileAttachment'
+  has_one :file,       as: :owner, dependent: :destroy, class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy, class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -233,8 +231,8 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason, withdrawn_by_user|
-        withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
-        withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
+        withdrawal_reason || raise(ArgumentError, "withdrawal_reason must be provided")
+        withdrawn_by_user || raise(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
         withdrawals.create!(
           previous_publishing_state: publishing_state,
@@ -249,7 +247,7 @@ class Paper < ActiveRecord::Base
       # AASM doesn't currently allow transitions to dynamic states, so this iterator
       # explicitly defines each transition
       Paper.aasm.states.map(&:name).each do |state|
-        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+        transitions from: :withdrawn, to: state, after: :set_editable!, if: proc { previous_state_is?(state) }
       end
       before do
         update(active: true)
@@ -305,7 +303,8 @@ class Paper < ActiveRecord::Base
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
-      'assignments.assigned_to_type' => 'Paper')
+      'assignments.assigned_to_type' => 'Paper'
+    )
   end
 
   def self.find_by_id_or_short_doi(id)
@@ -345,7 +344,7 @@ class Paper < ActiveRecord::Base
   # Returns the corresponding authors. When there are no authors
   # marked as corresponding then it defaults to the creator.
   def corresponding_authors
-    corresponding_authors = authors.select { |au| au.corresponding? }
+    corresponding_authors = authors.select(&:corresponding?)
     corresponding_authors << creator if corresponding_authors.empty?
     corresponding_authors.compact
   end
@@ -413,16 +412,6 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  # Public: Returns the paper title if it's present, otherwise short title is shown.
-  #
-  # Examples
-  #
-  #   display_title
-  #   # => "Studies on the effect of humans living with other humans"
-  #   # or
-  #   # => "some-short-title"
-  #
-  # Returns a String.
   def display_title(sanitized: true)
     sanitized ? strip_tags(title) : title.html_safe
   end
@@ -463,7 +452,7 @@ class Paper < ActiveRecord::Base
   # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.pluck(:completed).all?
+    tasks.metadata.select(&:submission_task?).map(&:completed).all?
   end
 
   def required_for_submission_tasks_completed?(*)

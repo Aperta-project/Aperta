@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(version: 20170815084644) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
+    t.string   "condition"
     t.boolean  "required_field"
   end
 

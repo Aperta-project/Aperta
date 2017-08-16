@@ -23,6 +23,23 @@ describe XmlCardLoader do
         expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
       end
     end
+
+    context 'when saving versions and CardContent model is invalid' do
+      let(:xml) do
+        <<-XML
+        <card required-for-submission='false' workflow-display-only='true'>
+          <content content-type='display-children'>
+            <content ident='foo' content-type='short-input' value-type='html'>
+            </content>
+          </content>
+        </card>
+      XML
+      end
+
+      it 'delegates errors to XmlCardDocument::XmlValidationError' do
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError)
+      end
+    end
   end
 
   describe '.new_version_from_xml_string' do

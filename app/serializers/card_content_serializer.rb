@@ -11,6 +11,7 @@ class CardContentSerializer < ActiveModel::Serializer
              :text,
              :value_type,
              :editor_style,
+             :condition,
              :allow_annotations,
              :required_field,
              :default_answer_value,

@@ -154,6 +154,15 @@ class Task < ActiveRecord::Base
     card_version.try(:create_default_answers, self)
   end
 
+  # called in the Task factory
+  def create_answers
+    required_fields = card_version.card_contents.where(required_field: true)
+    required_fields.each do |content|
+      answer = find_or_build_answer_for(card_content: content)
+      answer.save
+    end
+  end
+
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end

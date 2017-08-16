@@ -30,7 +30,6 @@ class TasksController < ApplicationController
     requires_user_can :manage_workflow, paper
     if does_not_violate_single_billing_task_condition?
       @task = TaskFactory.create(task_type, new_task_params)
-      create_answers
     else
       return render status: :forbidden, text: 'Unable to add Billing Task because a Billing Task already exists for this paper. Note that you may not have permission to view the Billing Task card.'
     end
@@ -169,14 +168,6 @@ class TasksController < ApplicationController
       whitelisted[:subject] ||= "No subject"
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
-    end
-  end
-
-  def create_answers
-    required_fields = @task.card_version.card_contents.where(required_field: true)
-    required_fields.each do |content|
-      answer = task.find_or_build_answer_for(card_content: content)
-      answer.save
     end
   end
 

@@ -18,21 +18,21 @@
       </label>
     {{/each}}
   {{else }}
-    <label for="{{input-id this '11'}}" class="option">
+    <label for="{{input-id this '3'}}" class="option">
       {{radio-button
         selection=answer.value
         value=true
-        id=(input-id this '11')
+        id=(input-id this '3')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}
       <span class="card-content-radio-label">Yes</span>
     </label>
-    <label  for="{{input-id this '22'}}" class="option">
+    <label  for="{{input-id this '4'}}" class="option">
       {{radio-button
         selection=answer.value
         value=false
-        id=(input-id this '22')
+        id=(input-id this '4')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}

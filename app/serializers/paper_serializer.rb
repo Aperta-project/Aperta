@@ -1,10 +1,8 @@
 class PaperSerializer < LitePaperSerializer
-  attributes :id, :short_title, :title, :doi, :body, :abstract,
-             :publishing_state, :paper_type, :updated_at,
-             :editable, :links, :manuscript_id, :created_at, :editable,
-             :submitted_at, :gradual_engagement,
-             :versions_contain_pdf, :legends_allowed, :current_user_roles,
-             :manually_similarity_checked
+  attributes :abstract, :body, :current_user_roles, :doi, :gradual_engagement,
+             :legends_allowed, :links, :manually_similarity_checked,
+             :paper_type, :short_title, :submitted_at, :versions_contain_pdf
+
 
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true

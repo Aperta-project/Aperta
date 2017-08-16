@@ -283,7 +283,7 @@ class QueryParser < QueryLanguageParser
       # BETWEEN check between the beginning and end of the day
       field.between(beginning_of_day_date..end_of_day_date)
     else
-      fail ArgumentError, <<-ERROR.strip_heredoc.gsub(/\n/, ' ')
+      raise ArgumentError, <<-ERROR.strip_heredoc.tr("\n", ' ')
         Expected :comparison to be '>', '>=', '<', '<=' or '=', but it was
         #{comparison.inspect}
       ERROR

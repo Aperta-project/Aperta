@@ -61,7 +61,7 @@ class TasksController < ApplicationController
     task.after_update
     Activity.task_updated! task, user: current_user
 
-    render json: task
+    render task.update_responder.new(task, view_context).response
   end
 
   def destroy

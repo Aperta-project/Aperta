@@ -1,9 +1,8 @@
 # A soft singleton class for globally tracking the last preprint doi
 class PreprintDoiIncrementer < ActiveRecord::Base
   class DoiIncrementerSingletonError < StandardError; end;
-  DOI_LENGTH = 7
 
-  def self.get_next_doi!
+  def self.next_article_number!
     first_or_create!.send(:succ!).send(:to_doi)
   end
 
@@ -19,9 +18,6 @@ class PreprintDoiIncrementer < ActiveRecord::Base
   end
 
   def to_doi
-    pad_string = ""
-    pad_length = DOI_LENGTH - value.to_s.length
-    pad_length.times { |n| pad_string[n] = "0" }
-    pad_string + value.to_s
+    format("%0#{Paper::PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}i", value)
   end
 end

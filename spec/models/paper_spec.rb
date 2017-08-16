@@ -1716,30 +1716,32 @@ describe Paper do
     end
   end
 
-  describe '.valid_preprint_doi?' do
-    context "with a valid preprint DOI" do
-      it "returns false" do
-        expect(described_class.valid_preprint_doi? "10.24196/aarx.0000001").to eq true
-        expect(described_class.valid_preprint_doi? "10.24196/aarx.0324501").to eq true
-      end
+  describe '#ensure_preprint_doi!' do
+    it 'returns a preprint_doi_article_number if it exists' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(paper.ensure_preprint_doi!).to eq '1234567'
     end
 
-    context "with a blank preprint DOI" do
-      it "returns false" do
-        expect(described_class.valid_preprint_doi? nil).to eq false
-      end
+    it 'creates and returns a preprint_doi_article_number if one does not exist' do
+      paper.preprint_doi_article_number = nil
+      expect(paper.ensure_preprint_doi!).to be_kind_of(String)
     end
+  end
 
-    context "with an invalid preprint DOI" do
-      it "returns false" do
-        expect(described_class.valid_preprint_doi? "10.24196/aarx.1").to eq false
-        expect(described_class.valid_preprint_doi? "10.24196/aarx0000001").to eq false
-        expect(described_class.valid_preprint_doi? "10.24196aarx.0324501").to eq false
-        expect(described_class.valid_preprint_doi? "10.2419/aarx.0324501").to eq false
-        expect(described_class.valid_preprint_doi? "1024196/aarx.0324501").to eq false
-        expect(described_class.valid_preprint_doi? "0.24196/aarx.0324501").to eq false
-        expect(described_class.valid_preprint_doi? "1.24196/aarx.0324501").to eq false
-      end
+  describe '#preprint_doi_article_number' do
+    it 'is validated' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(paper).to be_valid
+      paper.preprint_doi_article_number = '0000007'
+      expect(paper).to be_valid
+      paper.preprint_doi_article_number = '123456'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '12345678'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '1'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '123a567'
+      expect(paper).to_not be_valid
     end
   end
 end

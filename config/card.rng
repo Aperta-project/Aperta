@@ -550,6 +550,18 @@
       </interleave>
     </element>
   </define>
+  <define name="if">
+    <element name="content">
+      <attribute name="content-type">
+        <value>if</value>
+      </attribute>
+      <attribute name="condition"/>
+      <ref name="content"/>
+      <optional>
+        <ref name="content"/>
+      </optional>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -566,6 +578,7 @@
       <ref name="tech-check"/>
       <ref name="list-content"/>
       <ref name="sendback-reason"/>
+      <ref name="if"/>
     </choice>
   </define>
   <start>

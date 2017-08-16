@@ -50,12 +50,15 @@ const createTask = function (opts={}) {
 };
 
 test('rendering a list of tasks', function(assert) {
-  assert.expect(3);
+  assert.expect(6);
 
   const paper =  Ember.Object.create({
     tasks: [
-      createTask({ type: 'bulbasaur', isSubmissionTask: true }),
-      createTask({ type: 'charmander', assignedToMe: true })
+      createTask({ type: 'bulbasaur', position: 5, phase: { position: 5 } }),
+      createTask({ type: 'charmander', position: 13, phase: { position: 1 } }),
+      createTask({ type: 'bulbasaur', position: 3, phase: { position: 4 } }),
+      createTask({ type: 'charmander', position: 2, phase: { position: 1 } }),
+      createTask({ type: 'charmander', position: 1, phase: { position: 1 } })
     ]
   });
   this.set('paper', paper);
@@ -66,8 +69,11 @@ test('rendering a list of tasks', function(assert) {
 
   this.render(hbs`{{paper-sidebar paper=paper}}`);
 
-  assert.equal(this.$('.task-disclosure').length, 2);
+  assert.equal(this.$('.task-disclosure').length, 5);
 
   assert.ok(this.$('.task-disclosure').eq(0).hasClass(`task-type-charmander`));
-  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-bulbasaur`));
+  assert.ok(this.$('.task-disclosure').eq(1).hasClass(`task-type-charmander`));
+  assert.ok(this.$('.task-disclosure').eq(2).hasClass(`task-type-charmander`));
+  assert.ok(this.$('.task-disclosure').eq(3).hasClass(`task-type-bulbasaur`));
+  assert.ok(this.$('.task-disclosure').eq(4).hasClass(`task-type-bulbasaur`));
 });

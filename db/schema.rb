@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
-
+ActiveRecord::Schema.define(version: 20170815084644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -241,10 +240,11 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.boolean  "required_field"
-    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.string   "editor_style"
+    t.string   "condition"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -579,6 +579,8 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.string   "preprint_doi_article_number"
+    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -656,6 +658,10 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   end
 
   add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
+  create_table "preprint_doi_incrementers", force: :cascade do |t|
+    t.integer "value", default: 1, null: false
+  end
 
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"

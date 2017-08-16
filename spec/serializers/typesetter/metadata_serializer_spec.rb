@@ -95,6 +95,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:doi]).to eq('1234')
   end
 
+  it 'has aarx_doi' do
+    paper.preprint_doi_article_number = '1234567'
+    expect(output[:aarx_doi]).to eq("10.24196/aarx.1234567")
+  end
+
   it 'has manuscript_id' do
     allow(paper).to receive(:manuscript_id).and_return '1234'
     expect(output[:manuscript_id]).to eq('1234')

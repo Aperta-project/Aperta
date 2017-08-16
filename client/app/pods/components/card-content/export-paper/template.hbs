@@ -6,10 +6,10 @@
   {{{content.label}}}
 </button>
 
-{{#if task.apexDeliveries}}
+{{#if task.exportDeliveries}}
   <div class="export-history">
     <h3 class="export-history-header">{{capitalize destination}} Export History</h3>
 
-    {{export-group exports=task.apexDeliveries}}
+    {{export-group exports=task.exportDeliveries}}
   </div>
 {{/if}}

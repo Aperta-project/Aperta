@@ -29,6 +29,7 @@ describe Typesetter::BillingLogSerializer do
     FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: paper)
   end
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
   before do
     paper.phases.first.tasks.push(*[billing_task,
                                     financial_disclosure_task,

@@ -1,6 +1,6 @@
 import FactoryGuy from 'ember-data-factory-guy';
 
-FactoryGuy.define('apex-delivery', {
+FactoryGuy.define('export-delivery', {
   default: {
     state: 'pending',
     errorMessage: null,

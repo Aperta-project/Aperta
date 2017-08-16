@@ -1,7 +1,7 @@
 module TahiStandardTasks
-  # Defines the json object sent in response to requests for ApexDelivery
+  # Defines the json object sent in response to requests for ExportDelivery
   # objects.
-  class ApexDeliverySerializer < ::ActiveModel::Serializer
+  class ExportDeliverySerializer < ::ActiveModel::Serializer
     attributes :id, :state, :created_at, :error_message, :destination
 
     has_one :task, embed: :id, polymorphic: true

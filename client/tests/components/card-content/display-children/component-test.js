@@ -25,23 +25,26 @@ let template = hbs`
 
 let fakeTextContent = Ember.Object.extend({
   contentType: 'text',
-  text: 'Child 1' ,
+  text: 'A piece of card content',
   answerForOwner() {
-    return {value: 'foo'};
+    return { value: 'foo' };
   }
 });
 
-test(
-  `when disabled, it marks its children as disabled`,
-  function(assert) {
-    let content = fakeTextContent.create({
-      children: [
-        FactoryGuy.make('card-content', 'short-input', { text: 'Child 1' })
-      ]
-    });
-    this.set('content', content);
-    this.set('disabled', true);
-    this.render(template);
-    assert.elementFound('.card-content-short-input input:disabled', 'found disabled short input');
-  }
-);
+test(`when disabled, it marks its children as disabled`, function(assert) {
+  let content = fakeTextContent.create({
+    children: [
+      FactoryGuy.make('card-content', {
+        contentType: 'short-input',
+        text: 'Child 1'
+      })
+    ]
+  });
+  this.set('content', content);
+  this.set('disabled', true);
+  this.render(template);
+  assert.elementFound(
+    '.card-content-short-input input:disabled',
+    'found disabled short input'
+  );
+});

@@ -4,6 +4,11 @@
     display: inline-block;
     margin: 5px;
 
+    &.preview {
+      width: 30px;
+      height: 18px;
+    }
+
     &.small {
       width: 50px;
       height: 28px;

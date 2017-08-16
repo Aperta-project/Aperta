@@ -106,4 +106,9 @@ Subscriptions.configure do
   add 'card:created', stream_to_admin
   add 'card:updated', stream_to_admin
   add 'card:destroyed', stream_to_admin
+
+  # Similarity Checks:
+
+  add 'similarity_check:updated', stream_to_paper_channel
+  add 'similarity_check:created', stream_to_paper_channel
 end

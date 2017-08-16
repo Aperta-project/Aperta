@@ -3,14 +3,21 @@
 class GroupAuthor < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
-  include NestedQuestionable
   include Tokenable
+  include UniqueEmail
   include CoAuthorConfirmable
 
   CONTRIBUTIONS_QUESTION_IDENT = "group-author--contributions".freeze
   GOVERNMENT_EMPLOYEE_QUESTION_IDENT = "group-author--government-employee".freeze
 
   has_one :author_list_item, as: :author, dependent: :destroy, autosave: true
+
+  include PgSearch
+  pg_search_scope \
+    :fuzzy_search,
+    against: [:contact_first_name, :contact_last_name, :contact_email, :name],
+    ignoring: :accents,
+    using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
 
   # This is to associate specifically with the user that last manually modified
   # a coauthors status.  We have to track this separately from the standard
@@ -30,10 +37,11 @@ class GroupAuthor < ActiveRecord::Base
             :name,
             presence: true,
             if: :task_completed?
+
   validates :contact_email,
-            format: { with: Devise.email_regexp,
-                      message: "needs to be a valid email address" },
+            format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
             if: :task_completed?
+
   validates :contributions,
             presence: { message: "one must be selected" },
             if: :task_completed?

@@ -32,15 +32,6 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
   verdicts: ['reject', 'major_revision', 'minor_revision', 'accept'],
 
-  applyTemplateReplacements(str) {
-    str = str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
-    str = str.replace(/\[AUTHOR EMAIL\]/g, this.get('task.paper.creator.email'));
-    str = str.replace(/\[PAPER TITLE\]/g, this.get('task.paper.displayTitle'));
-    str = str.replace(/\[JOURNAL NAME\]/g, this.get('task.paper.journal.name'));
-    str = str.replace(/\[JOURNAL STAFF EMAIL\]/g, this.get('task.paper.journal.staffEmail'));
-    return str.replace(/\[LAST NAME\]/g, this.get('task.paper.creator.lastName'));
-  },
-
   onDecisionLetterUpdate: Ember.observer('draftDecision.letter', function() {
     let draftDecision = this.get('draftDecision');
     if (draftDecision && draftDecision.get('hasDirtyAttributes')) {
@@ -74,7 +65,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
 
     updateTemplate() {
       const templates = this.get('task.letterTemplates')
-            .filterBy('templateDecision', this.get('draftDecision.verdict'));
+            .filterBy('category', this.get('draftDecision.verdict'));
       let template;
       if (templates.get('length') === 1) {
         template = templates.get('firstObject').toJSON();
@@ -82,18 +73,18 @@ export default TaskComponent.extend(ValidationErrorsMixin, HasBusyStateMixin, {
         const selectedTemplate = this.get('task')
               .findQuestion('register_decision_questions--selected-template')
               .get('answers.firstObject.value');
-        template = templates.findBy('text', selectedTemplate).toJSON();
+        template = templates.findBy('name', selectedTemplate).toJSON();
       }
-      const letter = this.applyTemplateReplacements(template.letter);
-      const to = this.applyTemplateReplacements(template.to);
-      const subject = this.applyTemplateReplacements(template.subject);
+      const body = template.body;
+      const to = template.to;
+      const subject = template.subject;
       const toQuestion = this.get('task').findQuestion('register_decision_questions--to-field');
       const toAnswer = toQuestion.answerForOwner(this.get('task'));
       const subjectQuestion = this.get('task').findQuestion('register_decision_questions--subject-field');
       const subjectAnswer = subjectQuestion.answerForOwner(this.get('task'));
       toAnswer.set('value', to);
       subjectAnswer.set('value', subject);
-      this.get('draftDecision').set('letter', letter); // will trigger save
+      this.get('draftDecision').set('letter', body); // will trigger save
     }
   }
 });

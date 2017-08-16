@@ -1,0 +1,16 @@
+Feedback from: <%= @user.username %>
+
+On the page:
+<%= @feedback[:referrer] %>
+
+Current Rails Environment:
+<%= Rails.env %>
+
+<%= @feedback[:remarks] %>
+
+<% if @feedback[:screenshots] %>
+  Attachments:
+    <% @feedback[:screenshots].each do |screenshot| %>
+      <%= screenshot[:url] %>
+    <% end %>
+<% end %>

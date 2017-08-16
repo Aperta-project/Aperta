@@ -30,6 +30,15 @@ describe ReviewerReportTaskCreator do
     )
   end
 
+  before do
+    CardLoader.load("ReviewerReport")
+    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReport")
+    CardLoader.load("TahiStandardTasks::FrontMatterReviewerReportTask")
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+  end
+
   context "when the paper is configured to use the research reviewer report" do
     before do
       paper.update_column :uses_research_article_reviewer_report, true

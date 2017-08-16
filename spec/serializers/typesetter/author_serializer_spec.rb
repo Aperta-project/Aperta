@@ -86,6 +86,14 @@ describe Typesetter::AuthorSerializer do
     allow(author).to receive(:answer_for).and_call_original
   end
 
+  let!(:creator_flag) do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
+  end
+
+  let!(:apex_html_flag) do
+    FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false
+  end
+
   it 'includes author fields' do
     expect(output.keys).to contain_exactly(
       :first_name,
@@ -100,7 +108,8 @@ describe Typesetter::AuthorSerializer do
       :secondary_affiliation,
       :contributions,
       :government_employee,
-      :type
+      :type,
+      :creator
     )
   end
 
@@ -217,6 +226,33 @@ describe Typesetter::AuthorSerializer do
   describe 'type' do
     it 'has a type of author' do
       expect(output[:type]).to eq 'author'
+    end
+  end
+
+  describe 'creator' do
+    context 'author is the creator of the paper' do
+      it 'is true' do
+        author.user = paper.creator
+        expect(output[:creator]).to eq true
+      end
+    end
+
+    context 'author is not the creator of the paper' do
+      it 'is false' do
+        author.user = FactoryGirl.create(:user)
+        expect(output[:creator]).to eq false
+      end
+    end
+
+    context 'with creator feature flag turned off' do
+      before do
+        FeatureFlag.find(creator_flag.id).update(active: false)
+      end
+
+      it 'is not serialized' do
+        author.user = FactoryGirl.create(:user)
+        expect(output[:creator]).to_not be_present
+      end
     end
   end
 

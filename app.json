@@ -118,6 +118,18 @@
     "IHAT_URL": {
       "required": true
     },
+    "ITHENTICATE_ENABLED": {
+      "required": true
+    },
+    "ITHENTICATE_EMAIL": {
+      "required": true
+    },
+    "ITHENTICATE_PASSWORD": {
+      "required": true
+    },
+    "ITHENTICATE_URL": {
+      "required": true
+    },
     "MAILSAFE_REPLACEMENT_ADDRESS": {
       "required": true
     },
@@ -168,13 +180,13 @@
     },
     "PASSWORD_AUTH_ENABLED": "true",
     "PUMA_WORKERS": "1",
-    "PUSHER_URL": {
-      "required": true
-    },
     "PUSHER_VERBOSE_LOGGING": {
       "required": true
     },
     "RACK_ENV": {
+      "required": true
+    },
+    "RACK_TIMEOUT": {
       "required": true
     },
     "RAILS_ASSET_HOST": {
@@ -203,6 +215,7 @@
     "scheduler:standard",
     "sendgrid:starter",
     "papertrail:choklad",
+    "pusher:sandbox",
     "heroku-postgresql:hobby-dev",
     "rediscloud:30"
   ],

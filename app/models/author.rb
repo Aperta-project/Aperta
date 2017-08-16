@@ -1,8 +1,9 @@
+# Manuscript author model
 class Author < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
-  include NestedQuestionable
   include Tokenable
+  include UniqueEmail
   include CoAuthorConfirmable
 
   CONTRIBUTIONS_QUESTION_IDENT = "author--contributions".freeze
@@ -14,6 +15,13 @@ class Author < ActiveRecord::Base
   has_one :paper,
           through: :author_list_item,
           inverse_of: :authors
+
+  include PgSearch
+  pg_search_scope \
+    :fuzzy_search,
+    against: [:first_name, :last_name, :email],
+    ignoring: :accents,
+    using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
 
   # Not validated as not all authors have corresponding users.
   belongs_to :user
@@ -29,8 +37,7 @@ class Author < ActiveRecord::Base
     :affiliation, :email, presence: true, if: :task_completed?
 
   validates :email,
-    format: { with: Devise.email_regexp,
-      message: "needs to be a valid email address" },
+    format: { with: Devise.email_regexp, message: "needs to be a valid email address" },
       if: :task_completed?
 
   validates :contributions,
@@ -56,6 +63,10 @@ class Author < ActiveRecord::Base
 
   def ensured_author_list_item
     author_list_item || build_author_list_item
+  end
+
+  def creator?
+    user == paper.creator
   end
 
   def self.for_paper(paper)

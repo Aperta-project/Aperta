@@ -1,3 +1,5 @@
+<%= tinymce_assets %>
+
 <%= render layout: 'container' do %>
   <div class='message'>
     <span class='bold'>You've successfully declined the invitation to
@@ -6,12 +8,23 @@
   </div>
   <div>
     <%= form_for @invitation, url: post_feedback_path(@invitation.token), method: 'post'  do |f| %>
-      <%= f.label :decline_reason, "Please give your reasons for declining this invitation."%>
-      <%= f.text_area :decline_reason %>
-      <%= f.label :reviewer_suggestions,
-        "We would value your suggestions of alternative reviewers for this manuscript. "%>
-      <%= f.text_area :reviewer_suggestions,
-        placeholder: "Please provide reviewers' names, institutions, and email addresses if known."%>
+      <%= f.label :decline_reason do %>
+        <div style='margin-bottom: 0.5em;'>
+          Please give your reasons for declining this invitation.
+        </div>
+      <% end %>
+      <%= f.text_area :decline_reason, class: 'tinymce', id: 'invitation_decline_reason' %>
+      <br/>
+
+      <%= f.label :reviewer_suggestions do %>
+        <div style='margin-bottom: 0.5em;'>
+          We would value your suggestions of alternative reviewers for this manuscript.<br/>
+          Please provide reviewers' names, institutions, and email addresses if known.
+        </div>
+      <% end %>
+      <%= f.text_area :reviewer_suggestions, class: 'tinymce', id: 'invitation_reviewer_suggestions' %>
+      <br/>
+
       <div class='flex-bar'>
         <%= link_to "No thank you", invitation_thank_you_path(@invitation.token), class: 'flex-item' %>
         <%= f.submit value: 'Send Feedback', class: 'button-secondary button--green flex-item' %>
@@ -19,3 +32,24 @@
     <% end %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  function initTinyMCE() {
+    var options = {
+      selector: 'textarea.tinymce',
+      branding: false,
+      menubar: false,
+      plugins: 'paste',
+      toolbar: 'bold italic underline | subscript superscript | undo redo',
+      valid_elements: 'p,br,strong/b,em/i,u,sub,sup,pre',
+    };
+
+    if (typeof window.tinyMCE !== 'undefined') {
+      window.tinyMCE.init(options);
+    } else {
+      setTimeout(initTinyMCE, 50);
+    }
+  }
+
+  initTinyMCE();
+</script>

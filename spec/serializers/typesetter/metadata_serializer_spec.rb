@@ -17,7 +17,7 @@ describe Typesetter::MetadataSerializer do
       :with_academic_editor_user,
       :with_short_title,
       journal: journal,
-      short_title: 'my paper short'
+      short_title: '<p>my <pre><span>paper</span></pre> <u><span style="omg: so-much-garbage\">short</span></u></p>'
     )
   end
   let(:early_posting_task) { FactoryGirl.create(:early_posting_task, paper: paper) }
@@ -37,8 +37,10 @@ describe Typesetter::MetadataSerializer do
       our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
+    FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
     CardLoader.load('TahiStandardTasks::EarlyPostingTask')
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -83,6 +85,11 @@ describe Typesetter::MetadataSerializer do
     expect(output[:short_title]).to eq('my paper short')
   end
 
+  it 'strips base stuff from short_titles' do
+    expect(paper.short_title).to match(/<p>/)
+    expect(output[:short_title]).to eq('my paper short')
+  end
+
   it 'has doi' do
     paper.doi = '1234'
     expect(output[:doi]).to eq('1234')
@@ -117,6 +124,11 @@ describe Typesetter::MetadataSerializer do
 
   it 'has title' do
     paper.title = 'here is the title'
+    expect(output[:paper_title]).to eq('here is the title')
+  end
+
+  it 'strips bad stuff from title' do
+    paper.title = '<p><span>here</span> <u>is</u> <pre>the</pre> title</p>'
     expect(output[:paper_title]).to eq('here is the title')
   end
 
@@ -196,7 +208,7 @@ describe Typesetter::MetadataSerializer do
     context "the paper has a related article to be sent to apex" do
       let!(:included_article) do
         FactoryGirl.create(:related_article,
-                           linked_title: "Sendable",
+                           linked_title: "<a><b>Sendable</b></a>",
                            linked_doi: "some.doi",
                            paper: paper,
                            send_link_to_apex: true)
@@ -213,6 +225,41 @@ describe Typesetter::MetadataSerializer do
       it "includes the linked_doi and linked_title where send_link_to_apex=true" do
         expect(related_articles).to eql([serialized_included_article])
       end
+    end
+  end
+
+  describe "add custom card and export the fields" do
+    let(:journal) do
+      FactoryGirl.create(:journal, :with_creator_role, pdf_css: 'body { background-color: red; }')
+    end
+    let(:paper) { FactoryGirl.create(:paper, :with_phases, :version_with_file_type, :with_creator, journal: journal) }
+    let(:card_version) { FactoryGirl.create(:card_version) }
+    let(:another_card_version) { FactoryGirl.create(:card_version) }
+    let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
+    let(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
+    before do
+      parent = card_version.content_root
+      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', default_answer_value: 'true'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
+      card_version.create_default_answers(my_custom_task)
+      parent = another_card_version.content_root
+      parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my other anwser'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', default_answer_value: 'false'),
+                          FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
+      another_card_version.create_default_answers(another_my_custom_task)
+      paper.publishing_state = 'accepted'
+    end
+
+    it "check exported custom card fields" do
+      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper).to_json)
+      expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
+                            "my_custom_task--question_1" => true,
+                            "my_custom_task--question_2" => false,
+                            "another_custom_task--some_text" => 'This is my other anwser',
+                            "another_custom_task--question_1" => false,
+                            "another_custom_task--question_2" => false }
+      expect(parsed_metadata['metadata']['custom_card_fields']).to eq expected_metadata
     end
   end
 
@@ -338,24 +385,5 @@ describe Typesetter::MetadataSerializer do
       serializer: Typesetter::SupportingInformationFileSerializer,
       json_key: :supporting_information_files
     )
-  end
-
-  context 'and the paper is accepted' do
-    before { paper.publishing_state = 'accepted' }
-
-    it 'serializes without error' do
-      expect(output).to_not be_empty
-    end
-  end
-
-  context 'and the paper is not accepted' do
-    before { paper.publishing_state = 'unsubmitted' }
-
-    it 'raise an error' do
-      expect { output }.to raise_error(
-        Typesetter::MetadataError,
-        /Paper has not been accepted/
-      )
-    end
   end
 end

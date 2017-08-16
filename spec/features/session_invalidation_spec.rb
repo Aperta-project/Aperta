@@ -11,7 +11,7 @@ feature "session invalidation", js: true do
       uses_research_article_reviewer_report: false
     )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
   let!(:invitation_no_feedback) do
     FactoryGirl.create(
       :invitation,
@@ -27,6 +27,9 @@ feature "session invalidation", js: true do
   let!(:reviewer) { create :user }
   let!(:inviter) { create :user }
   let!(:reviewer_report_task) do
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
+    CardLoader.load("TahiStandardTasks::ReviewerReportTask")
     paper.draft_decision.invitations << invitation_no_feedback
     ReviewerReportTaskCreator.new(
       originating_task: task,
@@ -44,11 +47,14 @@ feature "session invalidation", js: true do
     scenario "the user is logged out and returned to the login screen" do
       ident = "front_matter_reviewer_report--competing_interests"
       t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
       # Mess up the CSRF token
       execute_script <<-JS
         $("head meta[name='csrf-token']").attr("content", "bad token")
       JS
+
       t.fill_in_fields(ident => "Oops, this is the wrong value")
+
       # Verify that we're looking at the login screen
       find("h1", text: "Welcome to Aperta")
     end

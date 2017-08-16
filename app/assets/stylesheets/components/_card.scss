@@ -21,10 +21,13 @@
   right: 0;
   padding: 5px 5px 0 0;
   font-size: 14px;
-  color: #000;
+  color: $aperta-grey-dark;
   cursor: pointer;
-  @extend .fa, .fa-times-circle-o;
+  @extend .fa, .fa-close;
   opacity: 0;
+}
+.card-remove:hover {
+  color:$aperta-green;
 }
 
 .card {
@@ -67,4 +70,11 @@
 .card--dragging {
   transform: rotate(2deg) scale(1.05);
   box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2), 0 2px 25px rgba(0, 0, 0, 0.1);
+}
+
+.required-field {
+  position: relative;
+  top: 0.75rem;
+  font-size: 21px;
+  color: $aperta-red;
 }

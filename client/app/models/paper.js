@@ -19,31 +19,41 @@ const PAPER_GRADUAL_ENGAGEMENT_STATES = [
   'invited_for_full_submission'
 ];
 
+const PARTIAL_SUBMITTED_STATES = [
+  'accepted',
+  'rejected',
+  'initially_submitted',
+  'submitted',
+  'published',
+  'withdrawn'
+];
+
 export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
-  commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
+  commentLooks: hasMany('comment-look', { inverse: 'paper' }),
   decisions: hasMany('decision'),
-  discussionTopics: hasMany('discussion-topic', { async: true }),
-  figures: hasMany('figure', { inverse: 'paper', async: true }),
+  discussionTopics: hasMany('discussion-topic'),
+  figures: hasMany('figure', { inverse: 'paper' }),
   groupAuthors: hasMany('group-author', { async: false }),
-  journal: belongsTo('journal', { async: true }),
-  manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+  journal: belongsTo('journal'),
+  manuscriptPageTasks: hasMany('task', { polymorphic: true }),
 
   file: attr(),
   sourcefile: attr(),
 
-  paperTaskTypes: hasMany('paper-task-type', { async: true }),
+  paperTaskTypes: hasMany('paper-task-type'),
   availableCards: hasMany('card'),
-
-  phases: hasMany('phase', { async: true }),
-  relatedArticles: hasMany('related-article', { async: true }),
-  snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
+  correspondence: hasMany('correspondence'),
+  phases: hasMany('phase'),
+  relatedArticles: hasMany('related-article'),
+  snapshots: hasMany('snapshot', { inverse: 'paper' }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),
-  tasks: hasMany('task', { async: true, polymorphic: true }),
-  versionedTexts: hasMany('versioned-text', { async: true }),
+  tasks: hasMany('task', { polymorphic: true }),
+  versionedTexts: hasMany('versioned-text'),
+  similarityChecks: hasMany('similarity-check'),
 
   active: attr('boolean'),
   body: attr('string'),
@@ -77,6 +87,12 @@ export default DS.Model.extend({
   withdrawalReason: attr('string'),
   url: attr('string'),
   versionsContainPdf: attr('boolean'),
+  legendsAllowed: attr('boolean'),
+  currentUserRoles: attr(),
+  manuallySimilarityChecked: attr('boolean'),
+
+  reviewDueAt: attr('date'),
+  reviewOriginallyDueAt: attr('date'),
 
   paper_shortDoi: computed.oneWay('shortDoi'),
   allAuthorsUnsorted: computed.union('authors', 'groupAuthors'),
@@ -122,6 +138,11 @@ export default DS.Model.extend({
       .sortBy('registeredAt')
       .reverseObjects();
   }),
+
+  versionAscendingSort: ['isDraft:asc', 'majorVersion:asc', 'minorVersion:asc'],
+  versionedTextsAscending: computed.sort('versionedTexts', 'versionAscendingSort'),
+
+  latestVersionedText: computed.reads('versionedTextsAscending.lastObject'),
 
   textForVersion(versionString) {
     let versionParts = versionString.split('.');
@@ -178,6 +199,13 @@ export default DS.Model.extend({
     }
   ),
 
+  isPartialSubmittedState: computed(
+    'publishingState',
+    function() {
+      return PARTIAL_SUBMITTED_STATES.includes(this.get('publishingState'));
+    }
+  ),
+
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
@@ -192,6 +220,8 @@ export default DS.Model.extend({
   isReadyForDecision: computed('publishingState', function() {
     return DECIDABLE_STATES.includes(this.get('publishingState'));
   }),
+
+  hasAnyError: computed.equal('file.status', 'error'),
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {
@@ -241,6 +271,8 @@ export default DS.Model.extend({
 
       return latestInitial;
     }),
+
+  hasSimilarityChecks: computed.notEmpty('similarityChecks'),
 
   restless: Ember.inject.service(),
 

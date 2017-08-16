@@ -5,6 +5,10 @@ describe TaskFactory do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:klass) { TahiStandardTasks::ReviseTask }
 
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
+  end
+
   it "Creates a task" do
     expect do
       TaskFactory.create(klass, paper: paper, phase: phase)
@@ -51,45 +55,28 @@ describe TaskFactory do
     expect(task.body).to eq('key' => 'value')
   end
 
-  it "Sets the participants from params" do
-    paper.update(journal: FactoryGirl.create(:journal, :with_roles_and_permissions))
-    participants = [FactoryGirl.create(:user)]
-    task = TaskFactory.create(klass, paper: paper, phase: phase, participants: participants)
-    expect(task.participants).to eq(participants)
-  end
-
-  context "roles and permissions exist" do
-    let(:journal) { create :journal }
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-    let(:klass) { PlosBilling::BillingTask }
-    let(:journal_task_type) do
-      journal.journal_task_types.find_by(kind: klass.to_s)
-    end
-    let!(:expected_permissions) do
-      [:view, :edit].map do |action|
-        Permission.ensure_exists(action, applies_to: klass)
+  describe "setting task's card version" do
+    context "the card version is passed in" do
+      let(:card_version) { FactoryGirl.create(:card_version) }
+      it "assigns the card version to the task" do
+        task = TaskFactory.create(klass, paper: paper, phase: phase, card_version: card_version)
+        expect(task.card_version).to eq(card_version)
       end
     end
 
-    it "Sets default permissions from the journal_task_type" do
-      task_type_perms = journal_task_type.required_permissions
-      expect(task_type_perms).to include(*expected_permissions)
-      task = TaskFactory.create(klass, paper: paper, phase: phase)
-      expect(task.required_permissions).to include(*expected_permissions)
-    end
-  end
+    context "the card version is not present in the options" do
+      let(:klass) { TahiStandardTasks::UploadManuscriptTask }
 
-  context "roles and permissions do not exist" do
-    let(:journal) { create :journal }
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-    let(:card_version) { FactoryGirl.create(:card_version) }
-    let(:klass) { CustomCardTask }
+      context "a card with a matching name as the task exists" do
+        let!(:existing_card) do
+          FactoryGirl.create(:card, :versioned, name: klass.name, journal: nil)
+        end
 
-    it "does not set permissions" do
-      task = TaskFactory.create(klass, card_version: card_version, paper: paper, phase: phase)
-      expect(task.required_permissions).to be_empty
+        it "uses the latest version of that card" do
+          task = TaskFactory.create(klass, paper: paper, phase: phase)
+          expect(task.card_version).to eq(existing_card.latest_card_version(:latest))
+        end
+      end
     end
   end
 end

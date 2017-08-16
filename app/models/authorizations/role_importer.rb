@@ -150,9 +150,11 @@ module Authorizations
     end
 
     # Give our role no permissions. They will be re-wired up during the
-    # import process.
+    # import process.  Do not touch any custom Card permissions here.
     def delete_existing_permission_roles
-      PermissionsRole.where(role_id: @role.id).delete_all
+      PermissionsRole.joins(:permission)
+                     .where(role_id: @role.id, permissions: { filter_by_card_id: nil })
+                     .delete_all
     end
 
     def cache_permission_id_by_key

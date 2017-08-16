@@ -7,8 +7,16 @@ describe PaperFactory do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|
       phase = mmt.phase_templates.create!(name: "First Phase")
       mmt.phase_templates.create!(name: "Phase With No Tasks")
-      tasks = [TahiStandardTasks::DataAvailabilityTask]
-      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *tasks)
+
+      # create mmt template from specified task classes
+      task_klasses = [TahiStandardTasks::DataAvailabilityTask]
+
+      # create default cards necessary for a new mmt
+      required_task_klasses = task_klasses + [Author]
+      required_task_klasses.each { |klass| CardLoader.load(klass.to_s) }
+
+      # create mmt template
+      JournalServices::CreateDefaultManuscriptManagerTemplates.make_tasks(phase, journal.journal_task_types, *task_klasses)
 
       # add TaskTemplate using a custom Card
       mmt.phase_templates.first.task_templates.create(card: card, title: card.name)
@@ -75,6 +83,12 @@ describe PaperFactory do
       expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask', 'CustomCardTask'])
     end
 
+    it "associates task templates with tasks" do
+      new_paper = PaperFactory.create(paper_attrs, user)
+      task_template_titles = new_paper.tasks.map { |t| t.task_template.title }
+      expect(task_template_titles).to match_array(['Data Availability', card.name])
+    end
+
     it "adds correct positions to new tasks" do
       new_paper = PaperFactory.create(paper_attrs, user)
       new_paper.phases.each do |phase|
@@ -105,6 +119,12 @@ describe PaperFactory do
 
     it "saves the paper" do
       expect(subject).to be_persisted
+    end
+
+    it "raises an error without a title" do
+      paper = FactoryGirl.build(:paper, title: nil)
+      expect(paper).not_to be_valid
+      expect(paper.errors[:title]).to eq(["can't be blank"])
     end
 
     context "with non-existant template" do

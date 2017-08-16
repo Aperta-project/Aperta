@@ -1,8 +1,8 @@
 # rubocop:disable Metrics/LineLength
-# This class is a stopgap to find the fully qualified name of a NestedQuestionable based on its
-# un-namespaced form.  We don't want to do this in the future but for now it's a simple
-# alternative to having to change the client code.
-# This service class is used in the NestedQuestionAnswersController
+# This class is a stopgap to find the fully qualified name of an Answerable
+# based on its un-namespaced form. We don't want to do this in the future but
+# for now it's a simple alternative to having to change the client code. This
+# service class is used in the NestedQuestionAnswersController
 #
 class LookupClassNamespace
   POSSIBLE_TYPES = {
@@ -15,7 +15,6 @@ class LookupClassNamespace
     "RevisionTechCheckTask"          =>     "PlosBioTechCheck::RevisionTechCheckTask",
     "AssignTeamTask"                 =>     "Tahi::AssignTeam::AssignTeamTask",
     "AuthorsTask"                    =>     "TahiStandardTasks::AuthorsTask",
-    "CompetingInterestsTask"         =>     "TahiStandardTasks::CompetingInterestsTask",
     "CoverLetterTask"                =>     "TahiStandardTasks::CoverLetterTask",
     "DataAvailabilityTask"           =>     "TahiStandardTasks::DataAvailabilityTask",
     "EarlyPostingTask"               =>     "TahiStandardTasks::EarlyPostingTask",

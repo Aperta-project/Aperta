@@ -9,7 +9,7 @@ describe JournalFactory do
   # a direct call to ".descendants" in this file it should likely be wrapped
   # using this helper method.
   def without_anonymous_classes(klasses)
-    klasses.select { |klass| klass.name.present? }
+    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' }
   end
 
   describe '.create' do
@@ -58,6 +58,9 @@ describe JournalFactory do
       [PlosBilling::BillingTask] +
         without_anonymous_classes(PlosBilling::BillingTask.descendants)
     end
+    let(:custom_card_klasses) do
+      [CustomCardTask]
+    end
     let(:restricted_invite_klasses) do
       [TahiStandardTasks::PaperEditorTask]
     end
@@ -80,6 +83,11 @@ describe JournalFactory do
           PlosBioTechCheck::RevisionTechCheckTask.descendants +
           PlosBioTechCheck::FinalTechCheckTask.descendants
         )
+    end
+    let(:non_custom_task_klasses) do
+      without_anonymous_classes(
+        ::Task.descendants - custom_card_klasses
+      )
     end
 
     it 'creates a new journal with the given params' do
@@ -130,7 +138,9 @@ describe JournalFactory do
       end
 
       after(:all) do
-        @journal.destroy!
+        Permission.destroy_all
+        Role.destroy_all
+        Journal.destroy_all
       end
 
       let!(:journal) { @journal }
@@ -178,13 +188,13 @@ describe JournalFactory do
         end
 
         describe 'permissions on tasks' do
-          let(:submission_task_klasses) { ::Task.submission_task_types }
+          let(:submission_task_klasses) { ::Task.submission_task_types - [CustomCardTask] }
           let(:inaccessible_task_klasses) do
             without_anonymous_classes(
               ::Task.descendants -
                 submission_task_klasses -
                 changes_for_author_task_klasses -
-                [AdHocForAuthorsTask]
+                [AdHocForAuthorsTask, CustomCardTask]
             )
           end
 
@@ -258,7 +268,7 @@ describe JournalFactory do
           end
 
           it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
-            submission_task_klasses.each do |klass|
+            without_anonymous_classes(submission_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
@@ -286,7 +296,8 @@ describe JournalFactory do
           let(:paper_actions) do
             [
               'submit',
-              'view'
+              'view',
+              'edit_authors'
             ]
           end
 
@@ -310,7 +321,7 @@ describe JournalFactory do
             )
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask]
+            [PlosBilling::BillingTask, CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
             without_anonymous_classes(
@@ -319,7 +330,7 @@ describe JournalFactory do
           end
 
           it 'can :view and :edit all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
                 permissions_with_editable_paper_states.where(
@@ -341,7 +352,7 @@ describe JournalFactory do
           end
 
           it 'can view/manage participants on all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
@@ -410,7 +421,8 @@ describe JournalFactory do
               ::Task.descendants -
                 billing_task_klasses -
                 changes_for_author_task_klasses -
-                restricted_invite_klasses
+                restricted_invite_klasses -
+                custom_card_klasses
             )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
@@ -431,7 +443,7 @@ describe JournalFactory do
             can :view on all Tasks
             can :view_participants  on all Tasks
           DESC
-            task_klasses.each do |klass|
+            without_anonymous_classes(task_klasses - [CustomCardTask]).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
@@ -447,7 +459,7 @@ describe JournalFactory do
             can :edit all Tasks except ReviewerReportTasks(s) when the
             paper is in an editable state
           DESC
-            editable_task_klasses_based_on_paper_state.each do |klass|
+            without_anonymous_classes(editable_task_klasses_based_on_paper_state - [CustomCardTask]).each do |klass|
               permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
@@ -546,7 +558,8 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
              PlosBioTechCheck::ChangesForAuthorTask,
-             TahiStandardTasks::RegisterDecisionTask]
+             TahiStandardTasks::RegisterDecisionTask,
+             CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
             without_anonymous_classes(
@@ -558,7 +571,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -572,7 +585,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -654,6 +667,7 @@ describe JournalFactory do
               'edit_related_articles',
               'manage_collaborators',
               'manage_workflow',
+              'perform_similarity_check',
               'register_decision',
               'rescind_decision',
               'search_academic_editors',
@@ -663,6 +677,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper'
             ]
           end
@@ -720,7 +735,7 @@ describe JournalFactory do
             can :view on all Tasks
             can :view_participants  on all Tasks
           DESC
-            task_klasses.each do |klass|
+            (task_klasses - [CustomCardTask]).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :add_email_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage, applies_to: klass.name),
@@ -736,7 +751,7 @@ describe JournalFactory do
             can :edit all Tasks except ReviewerReportTasks(s) when the
             paper is in an editable state
           DESC
-            editable_task_klasses_based_on_paper_state.each do |klass|
+            (editable_task_klasses_based_on_paper_state - [CustomCardTask]).each do |klass|
               permission_for_klass = permissions.includes(:states).find_by(
                 action: 'edit',
                 applies_to: klass.name,
@@ -825,6 +840,7 @@ describe JournalFactory do
               'edit_related_articles',
               'manage_collaborators',
               'manage_workflow',
+              'perform_similarity_check',
               'register_decision',
               'rescind_decision',
               'search_academic_editors',
@@ -835,6 +851,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -882,8 +899,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            (non_custom_task_klasses - billing_task_klasses).each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
@@ -953,6 +969,7 @@ describe JournalFactory do
               'edit_related_articles',
               'manage_collaborators',
               'manage_workflow',
+              'perform_similarity_check',
               'register_decision',
               'rescind_decision',
               'search_academic_editors',
@@ -963,6 +980,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -1010,8 +1028,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            (non_custom_task_klasses - billing_task_klasses).each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
@@ -1077,6 +1094,7 @@ describe JournalFactory do
               'edit_related_articles',
               'manage_collaborators',
               'manage_workflow',
+              'perform_similarity_check',
               'register_decision',
               'rescind_decision',
               'search_academic_editors',
@@ -1087,6 +1105,7 @@ describe JournalFactory do
               'submit',
               'view',
               'view_decisions',
+              'view_recent_activity',
               'view_user_role_eligibility_on_paper',
               'withdraw'
             ]
@@ -1134,8 +1153,7 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks
             can :view_participants  on all Tasks
           DESC
-            allowed_tasks = Task.descendants - [PlosBilling::BillingTask]
-            allowed_tasks.each do |task|
+            (non_custom_task_klasses - billing_task_klasses).each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
@@ -1198,7 +1216,8 @@ describe JournalFactory do
             [
               PlosBilling::BillingTask,
               TahiStandardTasks::CoverLetterTask,
-              TahiStandardTasks::ReviewerRecommendationsTask
+              TahiStandardTasks::ReviewerRecommendationsTask,
+              CustomCardTask
             ]
           end
           let(:all_inaccessible_task_klasses) do
@@ -1208,7 +1227,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -1222,7 +1241,7 @@ describe JournalFactory do
           end
 
           it 'can :view_participants on all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
@@ -1408,9 +1427,9 @@ describe JournalFactory do
             can :view on all Tasks except billing tasks except billing tasks
             can :view_participants  on all Tasks except billing tasks
           DESC
-            tasks = Task.descendants
-            tasks -= [PlosBilling::BillingTask]
-            tasks.each do |task|
+            without_anonymous_classes(
+              Task.descendants - [PlosBilling::BillingTask, CustomCardTask]
+            ).each do |task|
               task_actions.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)

@@ -119,12 +119,11 @@ For more information check http://mailcatcher.me/
 To upgrade a node package, e.g., to version 1.0.1, use:
 ```
 cd client
-npm install my-package@1.0.1 --save
-npm shrinkwrap
+yarn add my-package@1.0.1
 ```
 
 This should update both the `client/package.json` and
-`client/npm-shrinkwrap.json` files. Commit changes to both these files.
+`client/yarn.lock` files. Commit changes to both these files.
 
 # Tests
 

@@ -11,8 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329140911) do
-
+ActiveRecord::Schema.define(version: 20170807175908) do
+  
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
+    t.string   "annotation"
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -91,8 +92,8 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
-    t.string   "caption"
+    t.string   "title",                                     comment: "Contains HTML"
+    t.string   "caption",                                   comment: "Contains HTML"
     t.string   "status",             default: "processing"
     t.string   "file_type"
     t.text     "s3_dir"
@@ -149,7 +150,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "authors", ["token"], name: "index_authors_on_token", unique: true, using: :btree
@@ -208,20 +209,42 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
+  create_table "card_content_validations", force: :cascade do |t|
+    t.string   "validator"
+    t.string   "validation_type", null: false
+    t.text     "error_message"
+    t.integer  "card_content_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+  end
+
+  add_index "card_content_validations", ["card_content_id"], name: "index_card_content_validations_on_card_content_id", using: :btree
+  add_index "card_content_validations", ["deleted_at"], name: "index_card_content_validations_on_deleted_at", using: :btree
+
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",             null: false
-    t.integer  "rgt",             null: false
+    t.integer  "lft",                                        null: false
+    t.integer  "rgt",                                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id", null: false
+    t.integer  "card_version_id",                            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
+    t.string   "visible_with_parent_answer"
+    t.string   "label"
+    t.string   "default_answer_value"
+    t.boolean  "allow_multiple_uploads"
+    t.boolean  "allow_file_captions"
+    t.boolean  "allow_annotations"
+    t.string   "instruction_text"
+    t.string   "editor_style"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -230,12 +253,18 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
   create_table "card_versions", force: :cascade do |t|
-    t.integer  "version",    null: false
-    t.integer  "card_id",    null: false
+    t.integer  "version",                                 null: false
+    t.integer  "card_id",                                 null: false
     t.datetime "deleted_at"
+    t.boolean  "required_for_submission", default: false, null: false
+    t.datetime "published_at"
+    t.integer  "published_by_id"
+    t.string   "history_entry"
+    t.boolean  "workflow_display_only",   default: false, null: false
   end
 
   add_index "card_versions", ["card_id"], name: "index_card_versions_on_card_id", using: :btree
+  add_index "card_versions", ["published_by_id"], name: "index_card_versions_on_published_by_id", using: :btree
   add_index "card_versions", ["version"], name: "index_card_versions_on_version", using: :btree
 
   create_table "cards", force: :cascade do |t|
@@ -245,9 +274,12 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version", default: 1, null: false
+    t.datetime "archived_at"
+    t.string   "state",                      null: false
   end
 
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
+  add_index "cards", ["state"], name: "index_cards_on_state", using: :btree
 
   create_table "comment_looks", force: :cascade do |t|
     t.integer  "user_id"
@@ -260,7 +292,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "comment_looks", ["user_id"], name: "index_comment_looks_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.text     "body"
+    t.text     "body",         comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "commenter_id"
@@ -282,7 +314,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
 
   create_table "decisions", force: :cascade do |t|
     t.integer  "paper_id"
-    t.text     "letter"
+    t.text     "letter",                                       comment: "Contains HTML"
     t.string   "verdict"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -308,7 +340,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "discussion_participants", ["user_id"], name: "index_discussion_participants_on_user_id", using: :btree
 
   create_table "discussion_replies", force: :cascade do |t|
-    t.text     "body"
+    t.text     "body",                             comment: "Contains HTML"
     t.integer  "discussion_topic_id"
     t.integer  "replier_id"
     t.datetime "created_at",          null: false
@@ -327,6 +359,17 @@ ActiveRecord::Schema.define(version: 20170329140911) do
 
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
+  create_table "due_datetimes", force: :cascade do |t|
+    t.integer  "due_id"
+    t.string   "due_type"
+    t.datetime "due_at"
+    t.datetime "originally_due_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "due_datetimes", ["due_type", "due_id"], name: "index_due_datetimes_on_due_type_and_due_id", using: :btree
+
   create_table "email_logs", force: :cascade do |t|
     t.string   "sender"
     t.string   "recipients"
@@ -343,6 +386,14 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.integer  "paper_id"
     t.integer  "journal_id"
     t.jsonb    "additional_context"
+    t.text     "body"
+    t.boolean  "external"
+    t.string   "description"
+    t.string   "cc"
+    t.string   "bcc"
+    t.string   "manuscript_status"
+    t.string   "manuscript_version"
+    t.integer  "versioned_text_id"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -368,7 +419,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.string   "co_author_state"
     t.datetime "co_author_state_modified_at"
     t.integer  "co_author_state_modified_by_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                null: false
   end
 
   add_index "group_authors", ["token"], name: "index_group_authors_on_token", unique: true, using: :btree
@@ -390,11 +441,11 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "updated_at",                               null: false
     t.integer  "decision_id"
     t.string   "information"
-    t.text     "body"
+    t.text     "body",                                                  comment: "Contains HTML"
     t.integer  "inviter_id"
     t.string   "invitee_role",                             null: false
-    t.text     "decline_reason"
-    t.text     "reviewer_suggestions"
+    t.text     "decline_reason",                                        comment: "Contains HTML"
+    t.text     "reviewer_suggestions",                                  comment: "Contains HTML"
     t.string   "token",                                    null: false
     t.integer  "primary_id"
     t.datetime "invited_at"
@@ -419,7 +470,6 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.integer "journal_id"
     t.string  "title"
     t.string  "kind"
-    t.json    "required_permissions"
     t.boolean "system_generated"
     t.string  "role_hint"
   end
@@ -446,11 +496,11 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "text"
-    t.string   "template_decision"
+    t.string   "name"
+    t.string   "category"
     t.string   "to"
     t.string   "subject"
-    t.text     "letter"
+    t.text     "body"
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -465,43 +515,6 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
-
-  create_table "nested_question_answers", force: :cascade do |t|
-    t.integer  "nested_question_id"
-    t.integer  "owner_id"
-    t.string   "owner_type"
-    t.text     "value"
-    t.string   "value_type",         null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.json     "additional_data"
-    t.integer  "decision_id"
-    t.integer  "paper_id"
-    t.datetime "deleted_at"
-  end
-
-  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
-  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
-
-  create_table "nested_questions", force: :cascade do |t|
-    t.string   "text"
-    t.string   "value_type", null: false
-    t.string   "ident",      null: false
-    t.integer  "parent_id"
-    t.integer  "lft",        null: false
-    t.integer  "rgt",        null: false
-    t.integer  "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
-    t.datetime "deleted_at"
-  end
-
-  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
-  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
-  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
-  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "paper_id"
@@ -541,8 +554,8 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   end
 
   create_table "papers", force: :cascade do |t|
-    t.text     "abstract",                              default: ""
-    t.text     "title",                                                 null: false
+    t.text     "abstract",                              default: "",                 comment: "Contains HTML"
+    t.text     "title",                                                 null: false, comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -565,6 +578,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
+    t.boolean  "legends_allowed",                       default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -572,16 +586,6 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
   add_index "papers", ["short_doi"], name: "index_papers_on_short_doi", unique: true, using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
-
-  create_table "permission_requirements", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "required_on_id"
-    t.string   "required_on_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "permission_requirements", ["permission_id", "required_on_id", "required_on_type"], name: "permission_requirements_uniq_idx", unique: true, using: :btree
 
   create_table "permission_states", force: :cascade do |t|
     t.string   "name",       null: false
@@ -600,10 +604,11 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "permission_states_permissions", ["permission_state_id", "permission_id"], name: "permission_states_ids_idx", unique: true, using: :btree
 
   create_table "permissions", force: :cascade do |t|
-    t.string   "action",     null: false
-    t.string   "applies_to", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "action",            null: false
+    t.string   "applies_to",        null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "filter_by_card_id"
   end
 
   add_index "permissions", ["action", "applies_to"], name: "index_permissions_on_action_and_applies_to", using: :btree
@@ -640,6 +645,18 @@ ActiveRecord::Schema.define(version: 20170329140911) do
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
+  create_table "possible_setting_values", force: :cascade do |t|
+    t.integer  "setting_template_id"
+    t.string   "value_type",          default: "string", null: false
+    t.string   "string_value"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
     t.jsonb    "items",      default: [],              array: true
@@ -650,7 +667,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   create_table "related_articles", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "linked_doi"
-    t.string   "linked_title"
+    t.string   "linked_title",              comment: "Contains HTML"
     t.string   "additional_info"
     t.boolean  "send_manuscripts_together"
     t.text     "send_link_to_apex"
@@ -693,7 +710,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "created_in_7993", default: false
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                 null: false
     t.string   "state"
     t.datetime "submitted_at"
   end
@@ -730,29 +747,69 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "updated_at"
   end
 
+  create_table "scheduled_events", force: :cascade do |t|
+    t.datetime "dispatch_at"
+    t.string   "state"
+    t.string   "name"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+  end
+
+  add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
+
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "simple_reports", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "initially_submitted",         default: 0, null: false
-    t.integer  "fully_submitted",             default: 0, null: false
-    t.integer  "invited_for_full_submission", default: 0, null: false
-    t.integer  "checking",                    default: 0, null: false
-    t.integer  "in_revision",                 default: 0, null: false
-    t.integer  "accepted",                    default: 0, null: false
-    t.integer  "withdrawn",                   default: 0, null: false
-    t.integer  "rejected",                    default: 0, null: false
-    t.integer  "new_accepted",                default: 0, null: false
-    t.integer  "new_rejected",                default: 0, null: false
-    t.integer  "new_withdrawn",               default: 0, null: false
-    t.integer  "new_initial_submissions",     default: 0, null: false
-    t.integer  "in_process_balance",          default: 0, null: false
-    t.integer  "unsubmitted",                 default: 0, null: false
+  create_table "setting_templates", force: :cascade do |t|
+    t.string  "key"
+    t.string  "setting_klass"
+    t.string  "setting_name"
+    t.boolean "global"
+    t.integer "journal_id"
+    t.string  "value_type",    default: "string", null: false
+    t.string  "string_value"
+    t.boolean "boolean_value"
+    t.integer "integer_value"
+  end
+
+  add_index "setting_templates", ["key"], name: "index_setting_templates_on_key", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.string   "name"
+    t.string   "string_value"
+    t.string   "type"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "value_type",          default: "string", null: false
+    t.integer  "integer_value"
+    t.boolean  "boolean_value"
+    t.integer  "setting_template_id"
+  end
+
+  add_index "settings", ["setting_template_id"], name: "index_settings_on_setting_template_id", using: :btree
+
+  create_table "similarity_checks", force: :cascade do |t|
+    t.integer  "ithenticate_document_id"
+    t.datetime "ithenticate_report_completed_at"
+    t.datetime "timeout_at"
+    t.string   "document_s3_url"
+    t.integer  "ithenticate_report_id"
+    t.integer  "ithenticate_score"
+    t.integer  "versioned_text_id",                               null: false
+    t.string   "state",                                           null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "error_message"
+    t.boolean  "dismissed",                       default: false
+    t.boolean  "automatic",                       default: false, null: false
   end
 
   create_table "snapshots", force: :cascade do |t|
@@ -775,7 +832,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+  create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
     t.integer  "user_id"
@@ -783,6 +840,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "destination", null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
@@ -802,7 +860,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "additional_comments"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",     null: false
   end
 
   add_index "tahi_standard_tasks_funders", ["task_id"], name: "index_tahi_standard_tasks_funders_on_task_id", using: :btree
@@ -821,7 +879,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ringgold_id"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                  null: false
   end
 
   create_table "task_templates", force: :cascade do |t|
@@ -838,22 +896,24 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                            null: false
-    t.string   "type",            default: "Task"
-    t.integer  "phase_id",                         null: false
-    t.boolean  "completed",       default: false,  null: false
+    t.string   "title",                             null: false
+    t.string   "type",             default: "Task"
+    t.integer  "phase_id",                          null: false
+    t.boolean  "completed",        default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.json     "body",            default: [],     null: false
-    t.integer  "position",        default: 0
-    t.integer  "paper_id",                         null: false
+    t.json     "body",             default: [],     null: false
+    t.integer  "position",         default: 0
+    t.integer  "paper_id",                          null: false
     t.datetime "completed_at"
-    t.integer  "card_version_id"
+    t.integer  "card_version_id",                   null: false
+    t.integer  "task_template_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["task_template_id"], name: "index_tasks_on_task_template_id", using: :btree
   add_index "tasks", ["title"], name: "index_tasks_on_title", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -885,10 +945,10 @@ ActiveRecord::Schema.define(version: 20170329140911) do
     t.integer  "paper_id",                         null: false
     t.integer  "major_version"
     t.integer  "minor_version"
-    t.text     "text",                default: ""
+    t.text     "text",                default: "",              comment: "Contains HTML"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "original_text"
+    t.text     "original_text",                                 comment: "Contains HTML"
     t.string   "file_type"
     t.string   "manuscript_s3_path"
     t.string   "manuscript_filename"
@@ -924,6 +984,7 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_foreign_key "answers", "card_contents"
   add_foreign_key "author_list_items", "papers"
   add_foreign_key "authors", "users", column: "co_author_state_modified_by_id"
+  add_foreign_key "card_content_validations", "card_contents"
   add_foreign_key "card_versions", "cards"
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"
@@ -933,5 +994,9 @@ ActiveRecord::Schema.define(version: 20170329140911) do
   add_foreign_key "group_authors", "users", column: "co_author_state_modified_by_id"
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
+  add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_events", "due_datetimes"
+  add_foreign_key "settings", "setting_templates"
+  add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"
 end

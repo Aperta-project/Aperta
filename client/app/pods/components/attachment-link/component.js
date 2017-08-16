@@ -10,6 +10,15 @@ export default Ember.Component.extend({
   }),
 
   actions: {
+    triggerFileSelection() {
+      this.$().find('input.update-attachment').click();
+      return false;
+    },
+
+    uploadFinished(s3Url, file){
+      this.attrs.uploadFinished(s3Url, file, this.get('attachment'));
+    },
+
     deleteFile() {
       if (this.attrs.deleteFile) {
         this.attrs.deleteFile(this.get('attachment'));

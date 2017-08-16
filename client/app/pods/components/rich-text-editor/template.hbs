@@ -1,0 +1,17 @@
+{{#if disabled}}
+  {{{value}}}
+{{else}}
+  <div class="rich-text-editor-container {{ if hasErrors "error" }}">
+    {{#unless hideError}}
+      {{card-content/validation-errors errors=errorMessages}}
+    {{/unless}}
+    {{tinymce-editor
+      class=class
+      name=name
+      errorMessages=errorMessages
+      onValueChanged=(action onContentsChanged)
+      options=editorOptions
+      value=value
+    }}
+  </div>
+{{/if}}

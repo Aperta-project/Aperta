@@ -34,13 +34,13 @@ test('the cancel button', function(assert) {
   assert.expect(2);
 
   setup(this, {
-    cancelText: 'Nope!',
+    cancelText: 'No',
     cancel() { assert.ok(true, 'Cancel was called.'); },
     confirm() {}
   });
   assert.textPresent(
     '.full-overlay-verification-cancel',
-    'Nope!',
+    'No',
     'there is a cancel button');
   this.$('.full-overlay-verification-cancel').click();
 });

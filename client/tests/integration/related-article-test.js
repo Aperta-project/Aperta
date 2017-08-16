@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
-
+import {getRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('related-article',
                    'Integration | Component | related article',
@@ -88,7 +88,7 @@ test('Can be edited', function(assert) {
     this.$('.related-article-edit').click();
 
     assert.elementFound(
-      '.related-article-title-input',
+      '.related-article-title-input.rich-text-editor',
       'Enters the editing state');
   });
 });
@@ -118,11 +118,8 @@ test('Shows inputs, filled in, when editing', function(assert){
   let relatedArticle = newRelatedArticle();
   setup(this, relatedArticle, true);
 
-  assert.inputPresent(
-    '.related-article-title-input',
-    relatedArticle.linkedTitle,
-    'title input is present'
-  );
+  let text = getRichText('related-article-title-input');
+  assert.equal(text, `<p>${relatedArticle.linkedTitle}</p>`);
 
   assert.inputPresent(
     '.related-article-doi-input',
@@ -130,11 +127,8 @@ test('Shows inputs, filled in, when editing', function(assert){
     'DOI input is present'
   );
 
-  assert.inputPresent(
-    '.related-article-additional-info-input',
-    relatedArticle.additionalInfo,
-    'additional info input is present'
-  );
+  let info = getRichText('related-article-additional-info-input');
+  assert.equal(info, `<p>${relatedArticle.additionalInfo}</p>`);
 
   assert.checkboxPresent(
     '.related-article-send-to-apex-input input',
@@ -175,7 +169,7 @@ test('starts in the edit state if the record is new', function(assert) {
   setup(this, relatedArticle, true);
 
   assert.elementFound(
-    '.related-article-title-input',
+    '.related-article-title-input.rich-text-editor',
     'The title is editable'
   );
 });

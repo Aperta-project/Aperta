@@ -1,8 +1,17 @@
-<label class="content-text">{{{content.text}}}</label>
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  {{/if}}</label>
+{{#unless hideError}}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+{{/unless}}
 {{input
   value=(readonly answer.value)
   class="form-control"
-  placeholder=content.placeholder
   change=(action "valueChanged")
   input=(action "valueChanged")
-  disabled=disabled}}
+  focusOut=(action "validate")
+  focusIn=(action "maybeHideError")
+  disabled=disabled
+  required=content.isRequired
+  content=content}}

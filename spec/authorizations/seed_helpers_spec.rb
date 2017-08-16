@@ -47,30 +47,59 @@ describe 'SeedHelpers' do
       expect(role.reload.journal).to eq(journal)
     end
 
-    it 'removes unused permissions from the role' do
-      Role.ensure_exists('role', journal: journal) do |role|
-        role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      end
-      expect(
-        Role.where(name: 'role').first.reload.permissions.map(&:action)
-      ).to contain_exactly('view', 'edit')
+    describe 'removing unused permissions from the role' do
+      context 'without custom card permissions' do
+        it 'removes unused permissions from the role' do
+          Role.ensure_exists('role', journal: journal) do |role|
+            role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+            role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+          end
+          expect(
+            Role.where(name: 'role').first.reload.permissions.map(&:action)
+          ).to contain_exactly('view', 'edit')
 
-      Role.ensure_exists('role', journal: journal) do |role|
-        role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      end
-      expect(
-        Role.where(name: 'role').first.reload.permissions.map(&:action)
-      ).to match(%w(view))
+          Role.ensure_exists('role', journal: journal) do |role|
+            role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+          end
+          expect(
+            Role.where(name: 'role').first.reload.permissions.map(&:action)
+          ).to match(%w(view))
 
-      # The permission should still exist though
-      expect(
-        Permission.joins(:states).where(
-          action: 'edit',
-          applies_to: Task,
-          permission_states: { id: PermissionState.wildcard }
-        )
-      ).to exist
+          # The permission should still exist though
+          expect(
+            Permission.joins(:states).where(
+              action: 'edit',
+              applies_to: Task,
+              permission_states: { id: PermissionState.wildcard }
+            )
+          ).to exist
+        end
+      end
+
+      context 'with custom card permissions' do
+        let!(:card) { FactoryGirl.create(:card) }
+
+        it 'does not remove custom card permissions' do
+          # add two Task roles, one Card role, and ensure all three are there
+          Role.ensure_exists('role', journal: journal) do |role|
+            role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+          end
+          CardPermissions.add_roles(card, :view, [Role.find_by(name: 'role')])
+          expect(
+            Role.where(name: 'role').first.reload.permissions.map(&:action)
+          ).to contain_exactly('view', 'view')
+
+          # make call to ensure that a Task view permission exists on the role
+          Role.ensure_exists('role', journal: journal) do |role|
+            role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+          end
+
+          # ensure that the Card view permission is not destroyed
+          expect(
+            Role.where(name: 'role').first.reload.permissions.map(&:action)
+          ).to contain_exactly('view')
+        end
+      end
     end
   end
 
@@ -91,6 +120,16 @@ describe 'SeedHelpers' do
     it 'sets states to [*] by default' do
       perm = Permission.ensure_exists('view', applies_to: Task)
       expect(perm.reload.states.map(&:name)).to match(['*'])
+    end
+
+    it 'creates a new permission for the set of states' do
+      first = Permission.ensure_exists('view', applies_to: Task,
+                                               states: ['one', 'two'])
+      second = Permission.ensure_exists('view', applies_to: Task,
+                                                states: ['two', 'three'])
+      expect(first.states.reload.map(&:name)).to contain_exactly('one', 'two')
+      expect(second.states.reload.map(&:name)).to contain_exactly('two', 'three')
+      expect(first).not_to eq(second)
     end
 
     it 'sets role' do
@@ -114,6 +153,12 @@ describe 'SeedHelpers' do
         Permission.where(action: :view, applies_to: Task).first,
         Permission.where(action: :edit, applies_to: Task).first
       )
+    end
+
+    it 'does not allow creating a CustomCardPermission with a nil filter_by_card_id' do
+      expect do
+        role.ensure_permission_exists(:view, applies_to: CustomCardTask)
+      end.to raise_exception(ActiveRecord::RecordInvalid, /Filter by card can't be blank/)
     end
 
     it 'does nothing if the permission already exists' do

@@ -67,7 +67,7 @@ module CardConfiguration
           children: [
             {
               ident: "publishing_related_questions--previous_interactions_with_this_manuscript--submission_details",
-              value_type: "text",
+              value_type: "html",
               text: "Please enter manuscript number and editor name, if known"
             }
           ]
@@ -80,7 +80,7 @@ module CardConfiguration
           children: [
             {
               ident: "publishing_related_questions--presubmission_inquiry--submission_details",
-              value_type: "text",
+              value_type: "html",
               text: "Please enter manuscript number and editor name, if known"
             }
           ]
@@ -93,7 +93,7 @@ module CardConfiguration
           children: [
             {
               ident: "publishing_related_questions--other_journal_submission--submission_details",
-              value_type: "text",
+              value_type: "html",
               text: "Please enter manuscript number and editor name, if known"
             }
           ]
@@ -113,7 +113,7 @@ module CardConfiguration
 
         {
           ident: "publishing_related_questions--short_title",
-          value_type: "text",
+          value_type: "html",
           text: "Please give your paper a short title. Short titles are used as the running header on published PDFs."
         }
       ]

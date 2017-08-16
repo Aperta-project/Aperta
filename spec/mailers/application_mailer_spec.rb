@@ -52,8 +52,8 @@ describe ApplicationMailer do
     it 'logs a sent email to the database' do
       expect do
         deliver_email
-      end.to change { EmailLog.count }.by +1
-      email_log = EmailLog.last
+      end.to change { Correspondence.count }.by +1
+      email_log = Correspondence.last
       expect(email_log.message_id).to be
       expect(email_log.subject).to eq 'this is the subject'
       expect(email_log.status).to eq 'sent'
@@ -65,8 +65,8 @@ describe ApplicationMailer do
       it 'logs a errored email to the database' do
         expect do
           deliver_email_raise_exception
-        end.to change { EmailLog.count }.by +1
-        email_log = EmailLog.last
+        end.to change { Correspondence.count }.by +1
+        email_log = Correspondence.last
         expect(email_log.message_id).to be
         expect(email_log.subject).to eq 'this is the subject'
         expect(email_log.status).to eq 'failed'

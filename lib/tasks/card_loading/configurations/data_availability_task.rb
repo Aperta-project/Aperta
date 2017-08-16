@@ -21,7 +21,7 @@ module CardConfiguration
         },
         {
           ident: "data_availability--data_location",
-          value_type: "text",
+          value_type: "html",
           text: "Please describe where your data may be found, writing in full sentences."
         },
         {

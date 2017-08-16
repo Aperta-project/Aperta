@@ -1,22 +1,195 @@
+{{#ember-wormhole to="card-editor-action-buttons"}}
+  {{#if (eq card.state "draft")}}
+    <button class="button button-secondary button--blue editor-delete"
+            disabled={{or xmlDirty deleteCard.isRunning}}
+            {{action "confirmDelete"}}>Delete</button>
+  {{/if}}
+
+  <button class="button button-secondary button--blue editor-archive"
+          disabled={{or (not-eq card.state "published") archiveCard.isRunning}}
+          {{action "confirmArchive"}}>Archive</button>
+{{/ember-wormhole}}
+
 <div class="card-editor-save-buttons">
   <div class="card-editor-save-buttons-container">
-    <button class="button button--blue button-primary editor-save"
-            {{action 'saveCard'}}
-            disabled={{if card.adminContentDirty null true}}>Publish</button>
-  </div>
-</div>
 
-<div class="card-editor-workspace">
-  <div class="card-editor-workspace-container">
-    <div class="card-editor-workspace-title">
-      <div class="card-editor-workspace-component-type-name">
-        Card Title
-      </div>
-      <h1>{{card.name}}</h1>
+    <div class="card-editor-save-buttons-state">
+      {{#unless (eq card.state "published")}}
+        {{fa-icon card.stateIcon}}
+        <span>
+          {{card.stateName}}
+        </span>
+      {{/unless}}
     </div>
-    <hr />
 
-    {{!-- Put the editor component here --}}
+    {{#if card.revertable}}
+      <button class="button button--blue button-primary editor-revert"
+              onclick={{action "confirmRevert"}}
+              disabled={{or
+                         saveCard.isRunning
+                         publishCard.isRunning
+                         revertCard.isRunning
+                         xmlDirty}}>
+        Revert
+      </button>
+    {{/if}}
 
+    <button class="button button--blue button-primary editor-save"
+            onclick={{perform saveCard}}
+            disabled={{or
+                       saveCard.isRunning
+                       publishCard.isRunning
+                       revertCard.isRunning
+                       (not xmlDirty)}}>
+      Save
+    </button>
+
+    <button class="button button--blue button-primary editor-publish"
+            onclick={{action "confirmPublish"}}
+            disabled={{or
+                       saveCard.isRunning
+                       publishCard.isRunning
+                       xmlDirty
+                       revertCard.isRunning
+                       (not card.publishable)}}>
+      {{#if (eq card.state "draft")}}
+        Publish Card
+      {{else}}
+        Publish Changes
+      {{/if}}
+    </button>
   </div>
 </div>
+<div class="card-editor-workspace">
+
+  {{#if errors.length}}
+    <div class="card-editor-xml-errors">
+        <p> {{error-message message="Please fix the following errors:" displayIcon=true}} </p>
+        {{#each errors as |error|}}
+          {{#if error.detail.line}}
+            <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+          {{else}}
+            <div data-test-selector="xml-error"> {{error.detail.message}} </div>
+          {{/if}}
+        {{/each}}
+    </div>
+  {{/if}}
+
+  <div class="card-editor-xml-container {{if errors.length 'error-border'}}">
+    <div class="card-editor-xml-controls {{if errors.length 'error-bar'}}"></div>
+    <div class="card-editor-xml">
+      {{ivy-codemirror value=card.xml valueUpdated=(action "updateXML") options=(hash mode="application/xml" theme="eclipse" lineNumbers=true)}}
+    </div>
+  </div>
+</div>
+
+{{#overlay-fullscreen visible=showPublishOverlay
+   outAnimationComplete=(toggle "showPublishOverlay" this)
+   overlayClass="publish-card-overlay overlay--blue"
+   as |overlay|}}
+  <h1> Publish Card </h1>
+  <p>
+    Publishing will make this card live. The card will be added to the card catalogue
+    and can be added to workflow templates.
+  </p>
+
+  <p>
+    NOTE: The changes you made to this card will only be applied to new manuscripts. Manuscripts
+    that were created before these changes will have the previous version of this card.
+  </p>
+
+  <p>
+    <b>What was the reason for creating or revising this card?</b>
+    <p><em>These notes will be seen on the versions tab of the card. (For admin use only.)</em></p>
+    <div>
+      {{textarea class="form-control publish-history-entry" value=card.historyEntry}}
+    </div>
+  </p>
+
+  <div>
+    <div class="overlay-action-buttons">
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Not yet, keep editing</button>
+      <button class="button-primary button--blue" disabled={{historyEntryBlank}} {{action (perform publishCard)}}>Publish</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showArchiveOverlay
+   outAnimationComplete=(toggle "showArchiveOverlay" this)
+   overlayClass="publish-card-overlay archive overlay--blue"
+   as |overlay|}}
+  <h1> Archive Card </h1>
+  <p>
+    Archiving a card will remove the card from the card catalogue. Therefore, you will not be able
+    to add this card to existing papers or workflow templates.
+  </p>
+
+  <p>
+    This card will remain attached to active manuscripts that were initiated before archiving this card.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to archive this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform archiveCard)}}>Yes, Archive</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showDeleteOverlay
+   outAnimationComplete=(toggle "showDeleteOverlay" this)
+   overlayClass="publish-card-overlay delete overlay--blue"
+   as |overlay|}}
+  <h1> Delete Card </h1>
+  <p>
+    Deleting a card will permanently remove the card from the card catalogue. Therefore, you will not
+    be able to add this card to existing papers or workflow templates.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to delete this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform deleteCard)}}>Yes, Delete</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showRevertOverlay
+   outAnimationComplete=(toggle "showRevertOverlay" this)
+   overlayClass="publish-card-overlay revert overlay--blue"
+   as |overlay|}}
+  <h1> Revert Card </h1>
+  <p>
+    Reverting a card will permanently revert the card to its last published state. Changes will not be recoverable.
+  </p>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <h3>Are you sure you want to revert this card?</h3>
+    <div>
+      <button class="button-link button--blue" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary button--blue" {{action (perform revertCard)}}>Yes, Revert</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   overlayClass="dirty-card-overlay dirty overlay--blue--bg"
+   as |overlay|}}
+  <h3>
+    There are unsaved changes. Are you sure you want to leave this page?
+  </h3>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <div>
+      <button class="button-link" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary" {{action 'cleanCard'}}>EXIT WITHOUT SAVING</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}

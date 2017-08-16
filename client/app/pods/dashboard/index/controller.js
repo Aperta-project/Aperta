@@ -22,6 +22,7 @@ export default Ember.Controller.extend({
   inactivePageNumber: 1,
   activePapersVisible: true,
   inactivePapersVisible: true,
+  invitationsLoading: false,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
   sortedNonDraftPapers: Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
@@ -85,10 +86,15 @@ export default Ember.Controller.extend({
     },
 
     acceptInvitation(invitation) {
+      this.set('invitationsLoading', true);
       return this.get('restless').putUpdate(invitation, '/accept').then(()=> {
-        // Force the user's papers to load
-        this.store.findAll('paper');
-      });
+        this.hideInvitationsOverlay();
+        this.transitionToRoute('paper.index', invitation.get('paperShortDoi')).then(() => {
+          let verb = invitation.get('inviteeRole') === 'Reviewer' ? 'review' : 'edit';
+          let msg = `Thank you for agreeing to ${verb} for ${invitation.get('journalName')}.`;
+          this.flash.displayRouteLevelMessage('success', msg);
+        });
+      }).finally(() => { this.set('invitationsLoading', false); });
     },
 
     showNewManuscriptOverlay() {

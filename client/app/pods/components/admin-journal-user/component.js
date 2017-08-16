@@ -1,30 +1,30 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: 'tr',
-  classNames: ['user-row'],
-  journal: null, //passed in
+  tagName: '',
+  journal: null,
 
-  journalRoles: null, //passed-in
+  journalRoles: null,
 
   actions: {
     addRole(journalRole) {
-      var user = this.get('user');
-      user.setProperties({
-        journalRoleName: journalRole.text,
-        modifyAction: 'add-role',
-        journalId: this.get('journal.id')
-      });
-      user.save();
+      this.setRole(journalRole, 'add');
     },
     removeRole(journalRole) {
-      var user = this.get('user');
-      user.setProperties({
-        journalRoleName: journalRole.text,
-        modifyAction: 'remove-role',
-        journalId: this.get('journal.id')
-      });
-      user.save();
+      this.setRole(journalRole, 'remove');
+    },
+    displayDialog() {
+      this.sendAction('displayDialog');
     }
+  },
+
+  setRole: function (role, verb) {
+    var user = this.get('user');
+    user.setProperties({
+      journalRoleName: role.text,
+      modifyAction: `${verb}-role`,
+      journalId: this.get('journal.id')
+    });
+    user.save();
   }
 });

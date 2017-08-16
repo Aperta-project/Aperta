@@ -1,7 +1,28 @@
-<label class="content-text">{{{content.text}}}</label>
-{{format-input
-  value=(readonly answer.value)
-  class="form-control"
-  placeholder=content.placeholder
-  valueChanged=(action "valueChanged")
-  disabled=disabled}}
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  {{/if}}</label>
+
+{{#if isRichText}}
+  {{rich-text-editor
+    editorStyle=content.editorStyle
+    name=ident
+    data-editor=ident
+    value=answer.value
+    hasErrors=answer.hasErrors
+    errorMessages=answer.readyIssuesArray
+    onContentsChanged=(action "valueChanged")
+    focusOut=(action "validate")
+    class=inputClassNames
+    disabled=disabled
+    hideError=hideError
+  }}
+{{else}}
+  {{format-input
+      value=(readonly answer.value)
+      class="form-control"
+      valueChanged=(action "valueChanged")
+      disabled=disabled
+  }}
+{{/if}}
+{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}

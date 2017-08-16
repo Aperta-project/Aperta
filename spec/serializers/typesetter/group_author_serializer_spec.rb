@@ -54,6 +54,8 @@ describe Typesetter::GroupAuthorSerializer do
 
   let(:output) { serializer.serializable_hash }
 
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
+
   it 'has author interests fields' do
     expect(output.keys).to contain_exactly(
       :contact_first_name,
@@ -104,7 +106,7 @@ describe Typesetter::GroupAuthorSerializer do
     before do
       allow(group_author).to receive(:answer_for)
         .with(::GroupAuthor::GOVERNMENT_EMPLOYEE_QUESTION_IDENT)
-        .and_return instance_double(NestedQuestionAnswer, value: true)
+        .and_return instance_double(Answer, value: true)
     end
 
     it 'includes whether or not the author is a government employee' do

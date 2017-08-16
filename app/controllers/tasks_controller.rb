@@ -14,6 +14,10 @@ class TasksController < ApplicationController
       participations_only: false
     ).objects
 
+    # serialize using the base task serializer which acts as a lightweight
+    # summary of each task rather than each custom task serializer that may
+    # side load an excessive amount of data that is unnecessary for an index
+    # response.
     respond_with tasks, each_serializer: TaskSerializer
   end
 
@@ -65,7 +69,8 @@ class TasksController < ApplicationController
       GenericMailer.delay.send_email(
         subject: task_email_params[:subject],
         body: task_email_params[:body],
-        to: user.email
+        to: user.email,
+        task: task
       )
     end
     head :no_content
@@ -127,21 +132,14 @@ class TasksController < ApplicationController
 
   def new_task_params
     task_params(task_type).dup.tap do |new_params|
-      # for all new tasks, assign necessary paper attributes
       new_params[:paper] = paper
       new_params[:creator] = paper.creator
 
-      # for custom cards, assign the latest card version
-      if params[:task][:type] == 'CustomCardTask'
-        new_params[:card_version] = card_version
+      if task_type.to_s == 'CustomCardTask'
+        # assign a specific card version
+        card = paper.journal.cards.find(params[:task][:card_id])
+        new_params[:card_version] = card.latest_published_card_version
       end
-    end
-  end
-
-  def card_version
-    @card_version ||= begin
-      card = paper.journal.cards.find_by(id: params[:task][:card_id])
-      card.card_version(:latest)
     end
   end
 

@@ -4,6 +4,7 @@ require File.dirname(__FILE__) + '/tahi_env/dsl_methods'
 require File.dirname(__FILE__) + '/tahi_env/env_var'
 require File.dirname(__FILE__) + '/tahi_env/optional_env_var'
 require File.dirname(__FILE__) + '/tahi_env/required_env_var'
+require File.dirname(__FILE__) + '/tahi_env/array_validator'
 require File.dirname(__FILE__) + '/tahi_env/boolean_validator'
 require File.dirname(__FILE__) + '/tahi_env/presence_validator'
 
@@ -34,7 +35,7 @@ class TahiEnv
   #     TahiEnv.APP_NAME # returns the raw env variable
   #     TahiEnv.app_name # returns the coerced env variable value
   #
-  # The second form above makes more sense when accesing booleans:
+  # The second form above makes more sense when accessing booleans:
   #
   #     required :FOO_ENABLED, :boolean
   #
@@ -97,6 +98,9 @@ class TahiEnv
   required :CAS_SERVICE_VALIDATE_URL, if: :cas_enabled?
   required :CAS_SSL, :boolean, if: :cas_enabled?
   optional :CAS_CALLBACK_URL
+  optional :CAS_PHASED_SIGNUP_ENABLED, :boolean, default: false
+  required :CAS_PHASED_SIGNUP_URL, if: :cas_phased_signup_enabled?
+  required :JWT_ID_ECDSA, if: :cas_phased_signup_enabled?
 
   # EM / Editorial Manager
   optional :EM_DATABASE
@@ -113,6 +117,12 @@ class TahiEnv
   required :IHAT_URL
   optional :IHAT_CALLBACK_HOST
   optional :IHAT_CALLBACK_PORT
+
+  # iThenticate
+  optional :ITHENTICATE_ENABLED, :boolean, default: false
+  required :ITHENTICATE_URL, if: :ithenticate_enabled?
+  required :ITHENTICATE_EMAIL, if: :ithenticate_enabled?
+  required :ITHENTICATE_PASSWORD, if: :ithenticate_enabled?
 
   # Mailsafe
   optional :MAILSAFE_REPLACEMENT_ADDRESS
@@ -148,6 +158,13 @@ class TahiEnv
   required :PUSHER_SSL_VERIFY, :boolean
   required :PUSHER_VERBOSE_LOGGING, :boolean
 
+  # Redis
+  optional :REDIS_SENTINEL_ENABLED, :boolean, default: false
+  required :REDIS_SENTINELS, :array, default: [], if: :redis_sentinel_enabled?
+
+  # RouterApi
+  optional :ROUTER_URL
+
   # Salesforce
   optional :SALESFORCE_ENABLED, :boolean, default: true
   required :DATABASEDOTCOM_HOST, if: :salesforce_enabled?
@@ -159,9 +176,6 @@ class TahiEnv
   # Sendgrid
   required :SENDGRID_USERNAME
   required :SENDGRID_PASSWORD
-
-  # Sidekiq
-  optional :SIDEKIQ_CONCURRENCY
 
   def validate!
     unless valid?

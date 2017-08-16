@@ -12,6 +12,10 @@ class Paper < ActiveRecord::Base
   include PgSearch
   include Assignable::Model
   include Snapshottable
+  include CustomCastTypes
+
+  attribute :title, HtmlString.new
+  attribute :abstract, HtmlString.new
 
   self.snapshottable = true
 
@@ -23,19 +27,19 @@ class Paper < ActiveRecord::Base
   has_many :question_attachments, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
-  has_one :file, as: :owner, dependent: :destroy,
-    class_name: 'ManuscriptAttachment'
-  has_one :sourcefile, as: :owner, dependent: :destroy,
-    class_name: 'SourcefileAttachment'
+  has_one :file,       as: :owner, dependent: :destroy, class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy, class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
+  has_many :similarity_checks, through: :versioned_texts
   has_many :billing_logs, dependent: :destroy, foreign_key: 'documentid'
   has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },
            dependent: :destroy,
            inverse_of: :paper
   has_many :tasks, inverse_of: :paper
+  has_many :card_versions, through: :tasks
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
   has_many :journal_roles, through: :journal
@@ -49,6 +53,7 @@ class Paper < ActiveRecord::Base
   has_many :roles, through: :assignments
   has_many :related_articles, dependent: :destroy
   has_many :withdrawals, dependent: :destroy
+  has_many :correspondence
 
   has_many :authors,
            -> { order 'author_list_items.position ASC' },
@@ -73,7 +78,7 @@ class Paper < ActiveRecord::Base
   pg_search_scope :pg_title_search,
                   against: :title,
                   using: {
-                    tsearch: {dictionary: "english"} # stems
+                    tsearch: { dictionary: "english" } # stems
                   }
 
   delegate :major_version, :minor_version,
@@ -116,11 +121,13 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
+                  guards: [:required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
 
     event(:submit) do
@@ -130,21 +137,25 @@ class Paper < ActiveRecord::Base
       # so they do not increment that number.
       transitions from: [:in_revision],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_major_version!]
+                          :new_major_version!,
+                          :after_paper_submitted]
       transitions from: [:unsubmitted,
                          :invited_for_full_submission],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?,
+                  guards: [:metadata_tasks_completed?,
+                           :required_for_submission_tasks_completed?],
                   after: [:assign_submitting_user!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
                           :prevent_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
 
     event(:invite_full_submission) do
@@ -203,8 +214,8 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason, withdrawn_by_user|
-        withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
-        withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
+        withdrawal_reason || raise(ArgumentError, "withdrawal_reason must be provided")
+        withdrawn_by_user || raise(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
         withdrawals.create!(
           previous_publishing_state: publishing_state,
@@ -219,7 +230,7 @@ class Paper < ActiveRecord::Base
       # AASM doesn't currently allow transitions to dynamic states, so this iterator
       # explicitly defines each transition
       Paper.aasm.states.map(&:name).each do |state|
-        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+        transitions from: :withdrawn, to: state, after: :set_editable!, if: proc { previous_state_is?(state) }
       end
       before do
         update(active: true)
@@ -241,7 +252,8 @@ class Paper < ActiveRecord::Base
                   from: [:rejected, :accepted,
                          :in_revision],
                   after: [:new_draft!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :after_paper_submitted]
     end
   end
 
@@ -274,12 +286,13 @@ class Paper < ActiveRecord::Base
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
-      'assignments.assigned_to_type' => 'Paper')
+      'assignments.assigned_to_type' => 'Paper'
+    )
   end
 
   def self.find_by_id_or_short_doi(id)
     return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
-    return find(id)
+    find(id)
   end
 
   def inactive?
@@ -314,9 +327,13 @@ class Paper < ActiveRecord::Base
   # Returns the corresponding authors. When there are no authors
   # marked as corresponding then it defaults to the creator.
   def corresponding_authors
-    corresponding_authors = authors.select { |au| au.corresponding? }
+    corresponding_authors = authors.select(&:corresponding?)
     corresponding_authors << creator if corresponding_authors.empty?
     corresponding_authors.compact
+  end
+
+  def co_authors
+    authors.reject { |author| author.user == creator }
   end
 
   # Returns the corresponding author emails. When there are no authors
@@ -328,7 +345,13 @@ class Paper < ActiveRecord::Base
   # Downloads the manuscript from the given URL.
   def download_manuscript!(url, uploaded_by:)
     attachment = file || create_file
+    old_file_hash = attachment.file_hash
     attachment.download!(url, uploaded_by: uploaded_by)
+    if attachment.file_hash == old_file_hash
+      alert_duplicate_file(attachment, uploaded_by)
+      # No need to process attachment, mark the paper record as "done"
+      update(processing: false)
+    end
   end
 
   # Downloads the sourcefile from the given URL.
@@ -372,16 +395,6 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  # Public: Returns the paper title if it's present, otherwise short title is shown.
-  #
-  # Examples
-  #
-  #   display_title
-  #   # => "Studies on the effect of humans living with other humans"
-  #   # or
-  #   # => "some-short-title"
-  #
-  # Returns a String.
   def display_title(sanitized: true)
     sanitized ? strip_tags(title) : title.html_safe
   end
@@ -419,9 +432,16 @@ class Paper < ActiveRecord::Base
     withdrawals.most_recent
   end
 
+  # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.count == tasks.metadata.completed.count
+    tasks.metadata.select(&:submission_task?).map(&:completed).all?
+  end
+
+  def required_for_submission_tasks_completed?(*)
+    tasks.with_card.joins(:card_version).merge(
+      CardVersion.required_for_submission
+    ).pluck(:completed).all?
   end
 
   # Accepts any args the state transition accepts
@@ -563,6 +583,18 @@ class Paper < ActiveRecord::Base
     tasks.find_by(type: 'TahiStandardTasks::ReviseTask')
   end
 
+  # If we add more hooks like this we may want to make this more foolproof, but
+  # for now this method is an :after callback on the :submit event (check )
+  def after_paper_submitted
+    # Some hooks need `paper.previous_changes` so we call the hook with self
+    # rather than having the task look it up
+    tasks.each { |t| t.after_paper_submitted self }
+  end
+
+  def manually_similarity_checked
+    similarity_checks.exists? automatic: false
+  end
+
   private
 
   def new_major_version!
@@ -643,5 +675,19 @@ class Paper < ActiveRecord::Base
     by_role_hsh.each_with_object({}) do |(role, participation), hsh|
       hsh[role.name] = participation.map(&:user).uniq
     end
+  end
+
+  def alert_duplicate_file(attachment, uploaded_by)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false)
+        .push(channel_name: "private-user@#{uploaded_by.id}",
+              event_name: 'flashMessage',
+              payload: {
+                messageType: 'alert',
+                message: "<b>Duplicate file.</b> Please note: " \
+                  "The specified file <i>#{attachment.file.filename}</i> " \
+                  "has been reprocessed. <br>If you need to make any " \
+                  "changes to your manuscript, you can upload again by " \
+                  "clicking the <i>Replace</i> link."
+              })
   end
 end

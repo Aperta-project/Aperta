@@ -13,6 +13,7 @@ module TahiStandardTasks
       if decision.revision?
         ReviseTask.setup_new_revision(paper, phase)
         UploadManuscriptTask.setup_new_revision(paper, phase)
+        TitleAndAbstractTask.setup_new_revision(paper, phase)
       end
       complete!
     end
@@ -30,17 +31,6 @@ module TahiStandardTasks
         subject_field: subject_field,
         decision_id: paper.decisions.completed.last.id
       )
-    end
-
-    private
-
-    def template_data
-      {
-        author_last_name: paper.creator.last_name,
-        manuscript_title: paper.display_title(sanitized: false),
-        journal_name: paper.journal.name,
-        your_name: '[YOUR NAME]'
-      }
     end
   end
 end

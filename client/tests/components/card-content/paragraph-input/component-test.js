@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import registerCustomAssertions from 'tahi/tests/helpers/custom-assertions';
 import hbs from 'htmlbars-inline-precompile';
@@ -9,7 +10,6 @@ moduleForComponent(
     integration: true,
     beforeEach() {
       registerCustomAssertions();
-      this.set('actionStub', function() {});
     }
   }
 );
@@ -18,7 +18,6 @@ let template = hbs`{{card-content/paragraph-input
 answer=answer
 content=content
 disabled=disabled
-valueChanged=(action actionStub)
 }}`;
 test(`it displays the text from content.text in a <label>`, function(assert) {
   this.set('content', {text: 'Foo'});
@@ -35,23 +34,18 @@ test(`it disables the by marking it read-only if disabled=true`, function(assert
   this.render(template);
   assert.elementFound('.read-only');
 });
-test(`it shows a placeholder from content.placeholder`, function(assert) {
-  this.set('content', {placeholder: 'Foo'});
-  this.render(template);
-  assert.textPresent('.format-input', 'Foo');
-});
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);
   assert.textPresent('.format-input', 'Bar');
 });
-test(`it sends 'valueChanged' on keyup`, function(assert) {
-  assert.expect(1);
-  this.set('answer', {value: 'Old'});
-  this.set('actionStub', function(newVal) {
-    assert.equal(newVal, 'New', 'it calls the action with the new value');
-  });
+test('it displays error messages if present', function(assert){
+  let errorsArr = ['Oh Noes', 'You fool!'];
+  this.set('answer', Ember.Object.create({readyIssuesArray: errorsArr, hasErrors: true}));
   this.render(template);
-  this.$('div[contenteditable]').html('New');
-  this.$('div[contenteditable]').trigger('keyup');
+  assert.equal(this.$('.validation-error').length, 2, 'Two errors are present');
+  assert.equal(this.$('.validation-error').eq(0).text(), errorsArr[0], 'First error text matches');
+  assert.equal(this.$('.validation-error').eq(1).text(), errorsArr[1], 'Second error text matches');
+  let text = 'Error class present on parent element';
+  assert.ok(this.$('.card-content-paragraph-input').hasClass('has-error'), text);
 });

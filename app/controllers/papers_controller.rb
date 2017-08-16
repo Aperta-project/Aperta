@@ -65,7 +65,13 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-  ## SUPPLIMENTAL INFORMATION
+  ## SUPPLEMENTAL INFORMATION
+
+  def correspondence
+    requires_user_can(:view, paper)
+    correspondence = paper.correspondence
+    respond_with correspondence, each_serializer: CorrespondenceSerializer, root: 'correspondence'
+  end
 
   def comment_looks
     requires_user_can(:view, paper)
@@ -91,7 +97,7 @@ class PapersController < ApplicationController
   end
 
   def manuscript_activities
-    requires_user_can(:view, paper)
+    requires_user_can(:view_recent_activity, paper)
     activities = Activity.includes(:user).feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
@@ -155,7 +161,7 @@ class PapersController < ApplicationController
 
   def render_invalid_transition_error(e)
     render status: 422, json:
-    { errors: ["Failure to transition to " + e.event_name] }
+    { errors: ["Failure to transition to #{e.event_name}"] }
   end
 
   def withdrawal_params

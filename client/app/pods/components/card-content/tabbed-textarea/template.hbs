@@ -1,0 +1,37 @@
+<div class="aside">
+  <div class="tabs-right">
+    <ul class="nav nav-tabs">
+      {{#if instructionText}}
+      <li>
+        <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-1'}}">
+          <i class="fa fa-fw fa-info-circle"></i>
+        </a>
+      </li>
+      {{/if}}
+      {{#if showAnnotation}}
+      <li>
+        <a class="nav-link" data-toggle="tab" href="#{{concat 'tab-' elementId '-2'}}">
+          <i class="fa fa-fw fa-edit"></i>
+        </a>
+      </li>
+      {{/if}}
+    </ul>
+    <div class="tab-content ">
+      {{#if instructionText}}
+      <div id="{{concat 'tab-' elementId '-1'}}" class="tab-pane">
+        <div class="panel-body instruction-text">
+            {{textarea-autosize class="tabbed-textarea"  value=instructionText disabled=true}}
+        </div>
+      </div>
+      {{/if}}
+      {{#if showAnnotation}}
+      <div id="{{concat 'tab-' elementId '-2'}}" class="tab-pane">
+        <div class="panel-body annotation-text">
+          {{textarea-autosize class="tabbed-textarea" input=(action attrs.annotationChanged)
+            value=annotation disabled=disabled}}
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

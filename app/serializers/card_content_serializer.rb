@@ -1,12 +1,23 @@
 class CardContentSerializer < ActiveModel::Serializer
   attributes :id,
+             :allow_multiple_uploads,
+             :allow_file_captions,
+             :content_type,
              :ident,
+             :label,
+             :order,
+             :instruction_text,
+             :possible_values,
              :text,
              :value_type,
-             :content_type,
-             :order,
-             :placeholder,
-             :possible_values
+             :editor_style,
+             :allow_annotations,
+             :required_field,
+             :default_answer_value,
+             # when visible_with_parent_answer is set,
+             # if the parent's answer is equal to this value
+             # then render this content's children
+             :visible_with_parent_answer
 
   has_many :children,
            embed: :ids,

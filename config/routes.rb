@@ -1,4 +1,5 @@
 require 'sidekiq/web'
+require 'sidekiq-scheduler/web'
 
 # rubocop:disable Metrics/LineLength
 Tahi::Application.routes.draw do
@@ -41,6 +42,7 @@ Tahi::Application.routes.draw do
     resources :institutional_accounts, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
+
     resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
@@ -60,13 +62,25 @@ Tahi::Application.routes.draw do
       put :cancel, on: :member
     end
     resources :manuscript_attachments, only: [:show]
+    resources :similarity_checks, only: [:create, :show, :update] do
+      member do
+        get 'report_view_only'
+      end
+    end
     resources :sourcefile_attachments, only: [:show]
     resources :at_mentionable_users, only: [:index]
     resources :authors, only: [:show, :create, :update, :destroy]
 
     get "/answers/:owner_type/:owner_id", to: "answers#index", as: "answers_for_owner"
     resources :answers, only: [:create, :destroy, :update]
-    resources :cards, only: [:index, :create, :show, :update]
+    resources :cards do
+      put :publish, on: :member
+      put :archive, on: :member
+      put :revert, on: :member
+    end
+    resources :card_permissions, only: [:create, :show, :update], controller: 'card_permissions'
+
+    resources :card_versions, only: [:show]
 
     resources :authors, only: [:show, :create, :update, :destroy] do
       put :coauthor_confirmation, on: :member
@@ -138,6 +152,10 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
+      resources :correspondence, only: [:index, :create] do
+        resources :attachment, only: :create, controller: :correspondence_attachments
+      end
+      resources :similarity_checks, only: :index
 
       resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create
@@ -187,7 +205,9 @@ Tahi::Application.routes.draw do
         get 'reviewers', to: 'task_eligible_users#reviewers'
       end
     end
-    resources :task_templates
+    resources :task_templates do
+      post :similarity_check_settings, on: :member
+    end
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
       put :update_avatar, on: :collection
@@ -204,6 +224,7 @@ Tahi::Application.routes.draw do
       resources :journals, only: [:index, :show, :update, :create] do
         get :authorization, on: :collection
       end
+      resources :letter_templates, only: [:index, :show, :update]
     end
 
     # ihat endpoints
@@ -240,6 +261,10 @@ Tahi::Application.routes.draw do
     to: 'token_invitations#feedback_form',
     as: 'invitation_feedback_form'
 
+  get '/invitations/:token/inactive',
+    to: 'token_invitations#inactive',
+    as: 'invitation_inactive'
+
   post '/invitations/:token/feedback',
     to: 'token_invitations#feedback',
     as: 'post_feedback'
@@ -247,6 +272,10 @@ Tahi::Application.routes.draw do
   get '/invitations/:token/thank_you',
     to: 'token_invitations#thank_you',
     as: 'invitation_thank_you'
+
+  get '/invitations/:token/accept',
+    to: 'token_invitations#accept',
+    as: 'invitation_accept'
 
   get '/co_authors_token/:token',
     to: 'token_co_authors#show',

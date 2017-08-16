@@ -3,16 +3,12 @@ require 'rails_helper'
 feature 'Authors card', js: true do
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) do
-    FactoryGirl.create(
-      :paper_with_task,
-      :with_integration_journal,
-      task_params: { type: "TahiStandardTasks::AuthorsTask" },
-      creator: author
-    )
+    FactoryGirl.create(:paper, :with_integration_journal, :with_phases, creator: author)
   end
 
   before do
-    paper.tasks.each { |t| t.add_participant(author) }
+    task = FactoryGirl.create(:authors_task, :with_loaded_card, paper: paper, phase: paper.phases.first)
+    task.add_participant(author)
   end
 
   context 'As an author' do
@@ -63,12 +59,14 @@ feature 'Authors card', js: true do
 
       find_button('Add a New Author').click
       find('#add-new-individual-author-link').click
-      find('.author-first').send_keys('First')
+      find('input.author-first').send_keys('First')
+      find('input.author-email').send_keys('email@email.email')
       find_button('done').click
 
       find_button('Add a New Author').click
       find('#add-new-individual-author-link').click
-      find('.author-first').send_keys('Last')
+      find('input.author-first').send_keys('Last')
+      find('input.author-email').send_keys('email2@email.email')
       find_button('done').click
 
       last_author = find(:xpath, '//div[@class="ember-view author-task-item"][2]')

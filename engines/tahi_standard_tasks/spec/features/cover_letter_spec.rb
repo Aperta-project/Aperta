@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Cover Letter Task', js: true do
   let(:creator) { FactoryGirl.create :user }
@@ -6,8 +7,7 @@ feature 'Cover Letter Task', js: true do
     FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
   end
   let!(:task) do
-    FactoryGirl.create(:cover_letter_task,
-                       paper: paper)
+    FactoryGirl.create(:cover_letter_task, :with_loaded_card, paper: paper)
   end
 
   context 'As creator' do
@@ -25,17 +25,18 @@ feature 'Cover Letter Task', js: true do
         file_name: 'about_turtles.docx',
         sentinel: proc { QuestionAttachment.count }
       )
+
       within('.attachment-item') do
         expect(page).to have_css('.file-link', text: 'about_turtles.docx')
       end
     end
 
     scenario 'I can enter freetext' do
-      find("textarea[name='cover_letter--text']")
-        .send_keys('Here is my letter.', :tab)
-      wait_for_ajax
-      expect(find("textarea[name='cover_letter--text']").value)
-        .to eq('Here is my letter.')
+      text = 'Here is my cover letter.'
+      set_rich_text(editor: 'cover_letter--text', text: text)
+      wait_for_editors
+      contents = get_rich_text(editor: 'cover_letter--text')
+      expect(contents).to eq("<p>#{text}</p>")
     end
   end
 end

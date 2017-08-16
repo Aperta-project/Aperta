@@ -1,0 +1,110 @@
+require 'uri'
+require 'xmlrpc/client'
+
+module Ithenticate
+  # Class used for interacting with the Ithenticate API
+  class Api
+    ITHENTICATE_CONNECTION_ERROR = 'Error connecting to the iThenticate server.'
+    def self.new_from_tahi_env
+      uri = URI(TahiEnv.ITHENTICATE_URL)
+      new(
+        username: TahiEnv.ITHENTICATE_EMAIL,
+        password: TahiEnv.ITHENTICATE_PASSWORD,
+        host: uri.host,
+        path: uri.path,
+        use_ssl: uri.scheme == "https"
+      )
+    end
+
+    def initialize(username:, password:, **opts)
+      @username = username
+      @password = password
+      @server = XMLRPC::Client.new_from_hash(**opts)
+    end
+
+    def call(method:, **args)
+      authenticated_args = args.dup
+      authenticated_args[:sid] = sid
+      unauthenticated_call(method, **authenticated_args)
+    end
+
+    def login
+      response = unauthenticated_call(
+        "login",
+        username: @username,
+        password: @password
+      )
+      sid = response["sid"]
+      unless sid
+        add_error("Unable to log in")
+      end
+      @sid = sid
+    end
+
+    # rubocop:disable Metrics/ParameterLists
+    def add_document(content:, filename:, title:, author_last_name:,
+                     author_first_name:, folder_id:)
+      b64_document = XMLRPC::Base64.new(content)
+      args = {
+        folder: folder_id,
+        submit_to: 1, # upload to process, not store,
+        uploads: [
+          {
+            author_last: author_last_name,
+            author_first: author_first_name,
+            filename: filename,
+            title: title.truncate(500),
+            upload: b64_document
+          }
+        ]
+      }
+
+      response = call(method: 'document.add', **args)
+      if response && response['api_status'] != 200
+        add_error("Uploading #{filename} to the iThenticate resulted in an error.")
+      end
+      response
+    end
+    # rubocop:enable Metrics/ParameterLists
+
+    def get_report(id:)
+      response = call(method: 'report.get', id: id)
+      ReportResponse.new(response)
+    end
+
+    def get_document(id:)
+      response = call(method: 'document.get', id: id)
+      DocumentResponse.new(response)
+    end
+
+    def error?
+      error.present?
+    end
+
+    def error
+      @error ||= {}
+    end
+
+    def error_string
+      error[:documents].first[:error]
+    end
+
+    private
+
+    def add_error(error_message)
+      @error =   { documents: [error: error_message] }
+    end
+
+    def unauthenticated_call(method, **args)
+      begin
+        @server.call(method, **args)
+      rescue
+        add_error(ITHENTICATE_CONNECTION_ERROR)
+      end
+    end
+
+    def sid
+      @sid ||= login
+    end
+  end
+end

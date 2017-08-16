@@ -1,4 +1,5 @@
 {{#overlay-fullscreen visible=showNewManuscriptOverlay
+                      wormhole=false
                       outAnimationComplete=(action "hideNewManuscriptOverlay")
                       title="Create a New Submission"
                       as |overlay|}}
@@ -17,6 +18,7 @@
                       as |overlay|}}
     {{flash-messages}}
     {{invitations-x invitations=invitationsNeedsUserUpdate
+                    loading=invitationsLoading
                     accept=(action "acceptInvitation")
                     close=(action overlay.animateOut)
                     decline=(action "declineInvitation")}}
@@ -60,10 +62,10 @@
             <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
               <thead class="manuscript-list-heading {{if activePapersVisible "gray-line"}} active-papers" {{action "toggleActiveContainer"}}>
                 <tr>
-                  <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
+                  <th class="col-xs-7 hug-left">{{activeManuscriptsHeading}}</th>
                   {{#if activePapersVisible}}
-                    <th class="col-xs-1 text-center">Role</th>
-                    <th class="col-xs-2 text-center">Status</th>
+                    <th class="col-xs-3 hug-left">Your Role&nbsp;/&nbsp;Tasks</th>
+                    <th class="col-xs-2 hug-left">Manuscript&nbsp;Status</th>
                   {{/if}}
                 </tr>
               </thead>

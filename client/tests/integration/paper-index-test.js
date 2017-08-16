@@ -55,6 +55,16 @@ module('Integration: PaperIndex', {
         info: "testroles2, collaborator"
       }
     ];
+
+    $.mockjax({
+      type: 'GET',
+      url: '/api/feature_flags.json',
+      status: 200,
+      responseText: {
+        CORRESPONDENCE: false
+      }
+    });
+
     server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
         "Content-Type": "application/json"

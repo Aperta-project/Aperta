@@ -9,6 +9,8 @@ describe Typesetter::AuthorListItemSerializer do
   let(:group_author) { FactoryGirl.build(:group_author) }
 
   let(:output) { serializer.serializable_hash }
+  let!(:feature_flag) { FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true }
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   describe 'author' do
     it 'includes the author' do

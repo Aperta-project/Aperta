@@ -48,7 +48,6 @@ Reviewer tasks:
 - [ ] I ran the code (in the review environment or locally)
 - [ ] I performed a 5 minute walkthrough of the site looking for oddities
 - [ ] I have found the tests to be sufficient
-- [ ] I like the CHANGELOG entry
 - [ ] I agree the code fulfills the Acceptance Criteria
 - [ ] I agree the author has fulfilled their tasks
 

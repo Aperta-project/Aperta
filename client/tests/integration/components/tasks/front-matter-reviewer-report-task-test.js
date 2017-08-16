@@ -3,6 +3,9 @@ import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import { make, manualSetup }  from 'ember-data-factory-guy';
 import { moduleForComponent, test } from 'ember-qunit';
+import {findEditor} from 'tahi/tests/helpers/rich-text-editor-helpers';
+
+/* eslint-disable max-len */
 
 moduleForComponent('task/front-matter-reviewer-report-task', 'Integration | Component | Front Matter Reviewer Report Task', {
   integration: true,
@@ -20,16 +23,16 @@ function assertEditable(assert) {
   assert.elementFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=reject]', 'User can provide a reject recommendation');
   assert.elementFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=major_revision]', 'User can provide a major revision recommendation');
   assert.elementFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=minor_revision]', 'User can provide a minor revision recommendation');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--competing_interests]', 'User can provide their competing interests statement');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--competing_interests]', 'User can provide their competing interests statement');
   assert.elementFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=true]', 'User can respond yes to biology suitability');
   assert.elementFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=false]', 'User can respond no to biology suitability');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--suitable--comment]', 'User can provide their review of biology suitability');
   assert.elementFound('input[name*=front_matter_reviewer_report--includes_unpublished_data][type=radio][value=true]', 'User can provide respond yes to statistical analysis');
   assert.elementFound('input[name*=front_matter_reviewer_report--includes_unpublished_data][type=radio][value=false]', 'User can provide response no to statistical analysis');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--includes_unpublished_data--explanation]', 'User can provide their review of statistical analysis');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--additional_comments]', 'User can provide additional comments');
-  assert.elementFound('textarea[name=front_matter_reviewer_report--identity]', 'User can provide their identity');
+
+  assert.elementFound(findEditor('front_matter_reviewer_report--competing_interests'), 'User can provide their competing interests statement');
+  assert.elementFound(findEditor('front_matter_reviewer_report--suitable--comment'), 'User can provide their review of biology suitability');
+  assert.elementFound(findEditor('front_matter_reviewer_report--includes_unpublished_data--explanation'), 'User can provide their review of statistical analysis');
+  assert.elementFound(findEditor('front_matter_reviewer_report--additional_comments'), 'User can provide additional comments');
+  assert.elementFound(findEditor('front_matter_reviewer_report--identity'), 'User can provide their identity');
 }
 
 function assertNotEditable(assert) {
@@ -37,17 +40,21 @@ function assertNotEditable(assert) {
   assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=reject]', 'User cannot provide a reject recommendation');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=major_revision]', 'User cannot provide a major revision recommendation');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--decision_term][type=radio][value=minor_revision]', 'User cannot provide a minor revision recommendation');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--competing_interests]', 'User cannot provide their competing interests statement');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=true]', 'User cannot provide yes response to biology suitability');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--suitable][type=radio][value=false]', 'User cannot provide no response to biology suitability');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--suitable--comment]', 'User cannot provide their review of biology suitability');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--includes_unpublished_data][type=radio][value=true]', 'User cannot provide respond yes to statistical analysis');
   assert.elementNotFound('input[name*=front_matter_reviewer_report--includes_unpublished_data][type=radio][value=false]', 'User cannot provide response no to statistical analysis');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--includes_unpublished_data--explanation]', 'User cannot provide their review of statistical analysis');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--additional_comments]', 'User cannot provide additional comments');
-  assert.elementNotFound('textarea[name=front_matter_reviewer_report--identity]', 'User cannot provide their identity');
+
+  assert.elementNotFound(findEditor('front_matter_reviewer_report--competing_interests'), 'User cannot provide their competing interests statement');
+  assert.elementNotFound(findEditor('front_matter_reviewer_report--suitable--comment'), 'User cannot provide their review of biology suitability');
+  assert.elementNotFound(findEditor('front_matter_reviewer_report--includes_unpublished_data--explanation'), 'User cannot provide their review of statistical analysis');
+  assert.elementNotFound(findEditor('front_matter_reviewer_report--additional_comments'), 'User cannot provide additional comments');
+  assert.elementNotFound(findEditor('front_matter_reviewer_report--identity'), 'User cannot provide their identity');
+
   assert.elementNotFound('.reviewer-report-submit-button', 'User cannot submit report');
 }
+
+/* eslint-enable max-len */
 
 test('Reviewer invitation not accepted', function(assert) {
   Ember.run(() => {
@@ -114,7 +121,7 @@ test('When the task is not submitted', function(assert) {
   this.can.allowPermission('edit', this.task);
   Ember.run(() => {
     let decision = make('decision', { draft: true });
-    let reviewerReports = make('reviewer-report', 'with_front_matter_questions', 
+    let reviewerReports = make('reviewer-report', 'with_front_matter_questions',
                                { status: 'pending', task: this.task, decision: decision });
     this.task.set('reviewerReports', [reviewerReports]);
     this.task.set('decisions', [decision]);
@@ -147,7 +154,7 @@ test('History when there are completed decisions', function(assert) {
 
   let task = this.task;
   let reviewerReports = decisions.map((decision) => {
-    return make('reviewer-report', 'with_front_matter_questions', 
+    return make('reviewer-report', 'with_front_matter_questions',
                 { status: 'completed', task: task, decision: decision });
   });
 
@@ -199,3 +206,35 @@ test('That there are the correct nested question answers when there is no draft 
   assert.textPresent(answerSelector, answers[1].get('value'));
 });
 
+test('allows right permissions to view scheduled events', function (assert) {
+  this.can.allowPermission('manage_scheduled_events', this.task);
+  const scheduledEvents = [
+    make('scheduled-event', { }),
+    make('scheduled-event', { })
+  ];
+  const reviewerReport = make('reviewer-report', 'with_questions',
+    { status: 'completed', task: this.task });
+  Ember.run(() => {
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.textPresent('.scheduled-events p', 'Reminders');
+});
+
+test('disallow wrong permissions from viewing scheduled events', function (assert) {
+  const scheduledEvents = [
+    make('scheduled-event', { }),
+    make('scheduled-event', { })
+  ];
+  const reviewerReport = make('reviewer-report', 'with_questions',
+    { status: 'completed', task: this.task });
+  Ember.run(() => {
+    this.task.set('reviewerReports', [reviewerReport]);
+    this.task.set('reviewerReports.firstObject.dueAt', new Date('2017-08-19'));
+    this.task.set('reviewerReports.firstObject.scheduledEvents', scheduledEvents);
+  });
+  this.render(hbs`{{reviewer-report-task task=task}}`);
+  assert.textNotPresent('.scheduled-events p', 'Reminders');
+});

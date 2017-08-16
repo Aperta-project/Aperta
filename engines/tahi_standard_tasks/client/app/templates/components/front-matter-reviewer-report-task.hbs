@@ -5,6 +5,12 @@
     {{#if task.isSubmitted}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
+      {{reviewer-report-status report=currentReviewerReport}}
+      {{#if (and (can 'manage_scheduled_events' task)
+                 currentReviewerReport.scheduledEvents)}}
+        {{scheduled-events events=currentReviewerReport.scheduledEvents
+                           dueDate=currentReviewerReport.dueAt}}
+      {{/if}}
       {{front-matter-reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
 
       {{#if currentReviewerReport.needsSubmission }}
@@ -13,7 +19,7 @@
           <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
 
           <button class="button-primary button--green" {{action "submitReport"}}>Yes, I’m sure</button>
-          <button class="button-secondary button--green" {{action "cancelSubmission"}}>Nope</button>
+          <button class="button-secondary button--green" {{action "cancelSubmission"}}>No</button>
         {{else}}
           <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
         {{/if}}
@@ -39,6 +45,7 @@
             </div>
             <div id="collapse-{{unbound report.decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound report.decision.id}}">
               <div class="panel-body">
+                {{reviewer-report-status report=report}}
                 {{front-matter-reviewer-report-questions model=report readOnly=true}}
               </div>
             </div>

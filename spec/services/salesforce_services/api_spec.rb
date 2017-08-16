@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe SalesforceServices::API do
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_co_authors) }
 
   around do |example|
     ClimateControl.modify SALESFORCE_ENABLED: 'true', SALESFORCE_HOST: 'salesforce.local' do
@@ -64,7 +64,7 @@ describe SalesforceServices::API do
 
   describe "#update_manuscript" do
     let(:paper) do
-      FactoryGirl.create(:paper, salesforce_manuscript_id: "sfdc_id_1")
+      FactoryGirl.create(:paper, :with_co_authors, salesforce_manuscript_id: "sfdc_id_1")
     end
     it "finds then updates a Salesforce Manuscript__c object" do
       mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')

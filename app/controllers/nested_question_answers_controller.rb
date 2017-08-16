@@ -9,8 +9,8 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def update
-    answer = fetch_and_update_answer
-    render json: answer, serializer: AnswerAsNestedQuestionAnswerSerializer
+    fetch_and_update_answer
+    head :no_content, serializer: AnswerAsNestedQuestionAnswerSerializer
   end
 
   def destroy

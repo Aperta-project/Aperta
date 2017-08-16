@@ -1,12 +1,12 @@
 class SupportingInfoOverlay < CardOverlay
-  def has_file? file_name
+  def has_file?(file_name)
     have_xpath("//a[contains(@href, \"#{file_name}\"]")
   end
 
-  def attach_supporting_information
+  def attach_supporting_information(file_name = 'yeti.jpg')
     upload_file(
       element_id: 'file_attachment',
-      file_name: 'yeti.jpg',
+      file_name: file_name,
       sentinel: -> { SupportingInformationFile.count }
     )
   end
@@ -25,18 +25,6 @@ class SupportingInfoOverlay < CardOverlay
 
   def save_file_info
     find('.si-file-save-edit-button').click
-  end
-
-  def file_title_input=(new_title)
-    title = find('.si-file-title-input .format-input-field')
-    title.click
-    title.send_keys new_title
-  end
-
-  def file_caption_input=(new_caption)
-    caption = find('.si-file-caption-textbox .format-input-field')
-    caption.click
-    caption.send_keys new_caption
   end
 
   def file_label_input=(new_label)

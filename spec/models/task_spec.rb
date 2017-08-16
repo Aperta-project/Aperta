@@ -4,14 +4,7 @@ describe Task do
   it_behaves_like 'is not snapshottable'
 
   describe ".without" do
-    let!(:tasks) do
-      Array.new(2) do
-        Task.create! title: "Paper Admin",
-                     completed: true,
-                     phase_id: 3,
-                     paper_id: 99
-      end
-    end
+    let!(:tasks) { FactoryGirl.create_list(:custom_card_task, 2, :with_stubbed_associations) }
 
     it "excludes task" do
       expect(Task.count).to eq(2)
@@ -113,19 +106,15 @@ describe Task do
     end
   end
 
-  describe '#permission_requirements' do
-    subject(:task) { FactoryGirl.create :ad_hoc_task, :with_stubbed_associations }
-
-    before do
-      FactoryGirl.create(:permission_requirement, required_on: task)
-    end
-
-    context 'on #destroy' do
-      it 'destroy assignments' do
-        expect do
-          task.destroy!
-        end.to change { task.permission_requirements.count }.by(-1)
-      end
+  describe '#answers_validated?' do
+    subject(:task) { FactoryGirl.create(:task, :with_card, title: 'AwesomeSauce') }
+    let(:answer) { FactoryGirl.create(:answer, owner: subject) }
+    let(:card_content) { subject.card.latest_card_version.card_contents.first }
+    let(:card_content_validation) do
+      FactoryGirl.create(:card_content_validation,
+        :with_string_match_validation,
+        card_content: card_content,
+        validator: 'abby')
     end
   end
 
@@ -171,6 +160,28 @@ describe Task do
 
     it "returns nil if there is no answer for the given ident" do
       expect(task.answer_for("unknown-ident")).to be(nil)
+    end
+  end
+
+  describe "Answerable#set_card_version" do
+    before { CardLoader.load("AdHocTask") }
+    let(:latest_card_version) { task.default_card.latest_published_card_version }
+
+    context "with no card version" do
+      let(:task) { AdHocTask.new }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to change { task.card_version }
+          .from(nil).to(latest_card_version)
+      end
+    end
+
+    context "with card version already set" do
+      let(:task) { AdHocTask.new(card_version: FactoryGirl.build(:card_version)) }
+
+      it "assigns the latest card version if not set" do
+        expect { task.valid? }.to_not change { task.card_version }
+      end
     end
   end
 

@@ -1,50 +1,51 @@
 {{#overlay-fullscreen visible=showActivityOverlay
-                      outAnimationComplete=(action "hideActivityOverlay")
-                      title="Recent Activity"
-                      overlayClass="activity-overlay"
-                      as |overlay|}}
-    {{paper-activity isLoading=activityIsLoading
-                     model=activityFeed
-                     close=(action overlay.animateOut)}}
+   outAnimationComplete=(action "hideActivityOverlay")
+   title="Recent Activity"
+   overlayClass="activity-overlay"
+   as |overlay|}}
+  {{paper-activity isLoading=activityIsLoading
+    model=activityFeed
+    close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 
 {{#overlay-fullscreen visible=showCollaboratorsOverlay
-                      outAnimationComplete=(action "hideCollaboratorsOverlay")
-                      title="Who can collaborate on this manuscript?"
-                      overlayClass="show-collaborators-overlay"
-                      as |overlay|}}
-    {{paper-collaborators paper=model
-                          close=(action overlay.animateOut)}}
+   outAnimationComplete=(action "hideCollaboratorsOverlay")
+   title="Who can collaborate on this manuscript?"
+   overlayClass="show-collaborators-overlay"
+   as |overlay|}}
+  {{paper-collaborators paper=model
+    close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 
 {{#overlay-fullscreen visible=showWithdrawOverlay
-                      outAnimationComplete=(action "hideWithdrawOverlay")
-                      overlayClass="overlay--grey paper-withdraw-overlay"
-                      as |overlay|}}
-    {{paper-withdraw model=model
-                     close=(action overlay.animateOut)}}
+   outAnimationComplete=(action "hideWithdrawOverlay")
+   overlayClass="overlay--grey paper-withdraw-overlay"
+   as |overlay|}}
+  {{paper-withdraw model=model
+    close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 
 {{#overlay-fullscreen visible=showPaperSubmitOverlay
-                      outAnimationComplete=(action "hidePaperSubmitOverlay")
-                      overlayClass="overlay--green paper-submit-overlay"
-                      as |overlay|}}
-    {{paper-submit model=model
-                   close=(action overlay.animateOut)}}
+   outAnimationComplete=(action "hidePaperSubmitOverlay")
+   overlayClass="overlay--green paper-submit-overlay"
+   as |overlay|}}
+  {{paper-submit model=model
+    close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
 {{paper-control-bar paper=model
-                    showActivity="showActivityOverlay"
-                    addContributors="showCollaboratorsOverlay"
-                    showWithdrawOverlay="showWithdrawOverlay"
-                    toggleDownloads=(action "toggleDownloads")
-                    topicsIndexPath=topicsIndexPath
-                    supportedDownloadFormats=supportedDownloadFormats
-                    versioningMode=versioningMode
-                    versionsVisible=versioningMode}}
+  showActivity="showActivityOverlay"
+  addContributors="showCollaboratorsOverlay"
+  showWithdrawOverlay="showWithdrawOverlay"
+  tab="manuscript"
+  toggleDownloads=(action "toggleDownloads")
+  topicsIndexPath=topicsIndexPath
+  supportedDownloadFormats=supportedDownloadFormats
+  versioningMode=versioningMode
+  versionsVisible=versioningMode}}
 
 {{#if (and renderEngagementBanner showSubmissionProcess)}}
   {{partial "paper/index/submission-process"}}
@@ -52,27 +53,50 @@
 
 {{#if downloadsVisible}}
   {{paper-downloads paper=model
-                    toggle=(action "toggleDownloads")}}
+    toggle=(action "toggleDownloads")}}
 {{/if}}
 
 {{withdrawal-banner paper=model}}
-{{flash-messages}}
 
 {{#split-pane id="main-content" class="main-content" role="main" handleClass="manuscript-handle"}}
   {{#if (and showPdfManuscript (not model.processing))}}
     {{pdf-manuscript paper=model class="main-content-section split-pane-element"}}
   {{else}}
-    {{#split-pane-element class="manuscript-pane main-content-section"}}
+    {{#split-pane-element id="preview-pane" class=(concat "manuscript-pane main-content-section ember-view split-pane-element" (if model.hasAnyError ' errored-upload'))}}
       {{#rendered-manuscript paper=model}}
         {{#if model.processing}}
           {{#progress-spinner-message class="paper-index-progress-spinner"
-                                      visible=true
-                                      size="large"
-                                      align="middle"}}
+             visible=true
+             size="large"
+             align="middle"}}
             Loading . . .
           {{/progress-spinner-message}}
         {{else}}
-          {{{model.body}}}
+          {{#if model.hasAnyError}}
+            {{#if model.isSubmitted}}
+              <h3>Preview for this manuscript is unavailable.</h3>
+              <p>This may be due to images, audio, video, or other
+                objects embedded in the original manuscript file.
+                You can <a href="#" {{action "toggleDownloads"}} id="download">download the manuscript</a> to
+                your computer to view it.
+                If you would like to contact us, you can reach us via our
+                <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.
+              </p>              
+            {{else}}
+              <h3>Your file was uploaded successfully, but we were unable to render a preview at this time.</h3>
+              <p><i id="errored-file-icon" class="fa {{checkFileType}}"></i>{{model.file.filename}}</p>
+              <p><b>Next Steps:</b> You may complete your submission as is.  If you prefer to preview
+                your file, please remove any embedded images, audio, video, etc.,
+                and try uploading again. You may also upload your manuscript as a PDF.</p>
+              <p>Refer to our <a href="http://journals.plos.org/plosbiology/s/aperta-user-guide-for-authors#loc-figures"
+                                 target="_blank">submission guide</a> for information about uploading figures in Aperta.
+                If you would like to contact us, you can reach us via our
+                <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.
+              </p>
+            {{/if}}
+          {{else}}
+            {{{model.body}}}
+          {{/if}}
         {{/if}}
       {{/rendered-manuscript}}
     {{/split-pane-element}}
@@ -87,3 +111,10 @@
 {{/split-pane}}
 
 {{outlet}}
+
+{{#overlay-fullscreen visible=showFeedbackOverlay
+                      outAnimationComplete=(action "hideFeedbackOverlay")
+                      overlayClass="feedback-overlay"
+                      as |overlay|}}
+    {{feedback-form close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

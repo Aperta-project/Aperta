@@ -65,14 +65,17 @@ All properties are applied in a media query.
   #nav-workflow {
     justify-content: center;
     margin-right: 1.4rem;
-    padding-right: 2.8rem;
+  }
 
-    .fa { display: none; }
+  .control-bar-button.active {
+    border-bottom: 3px solid green;
+  }
 
+  .control-bar-splitter {
+    padding: 0 1rem;
     &:after {
       position: absolute;
       top: 1.3rem;
-      right: 0;
       content: '';
       width: 1px;
       height: $control-bar-height-large-screen - 2.6rem;

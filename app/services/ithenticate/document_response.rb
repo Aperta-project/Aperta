@@ -1,0 +1,39 @@
+module Ithenticate
+  # Adapter for document response from Ithenticate
+  class DocumentResponse < Response
+    def first_document
+      @response_hash["documents"].try(:first) if @response_hash.present?
+    end
+
+    def first_part
+      return unless first_document
+      first_document["parts"].try(:first)
+    end
+
+    def report_complete?
+      report_id.present? && first_document['is_pending'].zero?
+    end
+
+    def error
+      first_document && first_document["error"]
+    end
+
+    def error?
+      error.present?
+    end
+
+    def error_string
+      error
+    end
+
+    def report_id
+      return unless first_part
+      first_part["id"]
+    end
+
+    def score
+      return unless first_part
+      first_part["score"]
+    end
+  end
+end

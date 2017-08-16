@@ -1,10 +1,14 @@
-.card-editor-preview-overlay {
+.card-editor-preview-overlay, .card-editor-history-overlay {
   background-color: #fff;
   margin: 0 auto;
   min-height: 100px;
   transition: max-width .25s, border-radius .25s;
   max-width: 1120px;
   border-radius: 5px;
+}
+
+.card-editor-history-overlay {
+    margin-top: 44px;
 }
 
 .card-editor-preview-overlay-header {
@@ -64,10 +68,32 @@
   position: relative;
   padding: 4rem 8rem;
 
- .card-editor-preview-overlay-title {
-   margin: 0 0 1em 0;
-   font-size: 4.8rem;
+  .card-editor-preview-overlay-title {
+    margin: 0 0 1em 0;
+    font-size: 4.8rem;
  }
+
+  .answer-container {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+  }
+
+  .answer {
+    flex: 1 0 55%;
+    margin: 15px;
+  }
+
+.additional-text {
+    flex: 1 0 35%;
+    margin: 15px;
+    min-width: 300px;
+  }
+
+}
+
+.single-column .additional-text {
+  display: none;
 }
 
 .card-editor-preview-overlay-footer {

@@ -1,5 +1,8 @@
 class Comment < ActiveRecord::Base
   include EventStream::Notifiable
+  include CustomCastTypes
+
+  attribute :body, HtmlString.new
 
   belongs_to :task, inverse_of: :comments
   has_one :paper, through: :task

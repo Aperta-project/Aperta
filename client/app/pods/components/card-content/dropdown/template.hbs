@@ -1,0 +1,21 @@
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  {{/if}}</label>
+{{#power-select
+    options=content.possibleValues
+    selected=selectedValue
+    onchange=(action "valueChanged")
+    searchEnabled=false
+    disabled=disabled
+    content=content
+    required=content.isRequired
+    as |val|}}
+  {{val.label}}
+{{/power-select}}
+
+{{card-content/display-children
+  content=content
+  owner=owner
+  disabled=disabled
+  preview=preview}}

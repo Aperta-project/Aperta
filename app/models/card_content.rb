@@ -4,16 +4,24 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
-  acts_as_nested_set
+  include XmlSerializable
+
+  # Scope matches deleted_at IS NULL, that is, non-deleted records
+  acts_as_nested_set scope: [:deleted_at]
   acts_as_paranoid
 
-  belongs_to :card_version
+  belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
+  has_many :card_content_validations, dependent: :destroy
 
   validates :card_version, presence: true
+
+  # since we use acts_as_paranoid we need to take into account whether a given
+  # piece of card content has been deleted for uniqueness checks on parent_id
+  # and ident
   validates :parent_id,
             uniqueness: {
-              scope: :card_version,
+              scope: [:card_version, :deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -22,19 +30,50 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
+              scope: [:card_version, :deleted_at],
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }
 
+  # -- Card Content Validations
+  # Note that the checks present here work in concert with the xml validations
+  # in the config/card.rnc file to assure that card content of a given type
+  # is valid.  In the event that xml input stops being the only way to create
+  # new card data, some of the work done by the xml schema will probably need
+  # to be accounted for here.
   validate :content_value_type_combination
+  validate :value_type_for_default_answer_value
+  validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text).freeze
+  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+
+  # Note that value_type really refers to the value_type of answers associated
+  # with this piece of card content. In the old NestedQuestion world, both
+  # NestedQuestionAnswer and NestedQuestion had a value_type column, and the
+  # value_type was duplicated between them. In the hash below, we say that the
+  # 'short-input' answers will have a 'text' value type, while 'radio' answers
+  # can either be boolean or text.  The 'text' content_type is really static
+  # text, which will never have an answer associated with it, hence it has no
+  # possible value types.  The same goes for the other container types
+  # (field-set, etc)
   VALUE_TYPES_FOR_CONTENT =
     { 'display-children': [nil],
+      'display-with-value': [nil],
+      'dropdown': ['text', 'boolean'],
+      'export-paper': [nil],
+      'field-set': [nil],
       'short-input': ['text'],
+      'check-box': ['boolean'],
+      'file-uploader': ['attachment'],
       'text': [nil],
-      'paragraph-input': ['text'],
-      'radio': ['boolean', 'text'] }.freeze.with_indifferent_access
+      'paragraph-input': ['text', 'html'],
+      'radio': ['boolean', 'text'],
+      'tech-check': ['boolean'],
+      'date-picker': ['text'],
+      'sendback-reason': ['boolean'],
+      'numbered-list': [nil],
+      'bulleted-list': [nil],
+      'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
@@ -50,36 +89,94 @@ class CardContent < ActiveRecord::Base
     end
   end
 
-  # Note that we essentially copied this method over from nested question
-  def self.update_all_exactly!(content_hashes)
-    # This method runs on a scope and takes and a list of nested property
-    # hashes. Each hash represents a single piece of card content, and must
-    # have at least an `ident` field.
-    #
-    # ANY CONTENT IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE DESTROYED.
-    #
-    # Any content with hashes but not in scope will be created.
-
-    updated_idents = []
-
-    # Refresh the living, welcome the newly born
-    update_nested!(content_hashes, nil, updated_idents)
-
-    existing_idents = all.map(&:ident)
-    for_deletion = existing_idents - updated_idents
-    raise "You forgot some questions: #{for_deletion}" \
-      unless for_deletion.empty?
+  def value_type_for_default_answer_value
+    if value_type.blank? && default_answer_value.present?
+      errors.add(
+        :default_answer_value,
+        "value type must be present in order to set a default answer value"
+      )
+    end
   end
 
-  def self.update_nested!(content_hashes, parent_id, idents)
-    content_hashes.map do |hash|
-      idents.append(hash[:ident])
-      child_hashes = hash.delete(:children) || []
-      content = CardContent.find_or_initialize_by(ident: hash[:ident])
-      content.parent_id = parent_id
-      content.update!(hash)
-      update_nested!(child_hashes, content.id, idents)
-      content
+  def default_answer_present_in_possible_values
+    return if default_answer_value.blank? || possible_values.blank?
+
+    vals = possible_values.map { |v| v["value"] }
+    unless vals.include? default_answer_value
+      errors.add(
+        :default_answer_value,
+        "must be one of the following values: #{vals}"
+      )
     end
+  end
+
+  def render_tag(xml, attr_name, attr)
+    safe_dump_text(xml, attr_name, attr) if attr.present?
+  end
+
+  def content_attrs
+    attrs =
+      {
+        'ident' => ident,
+        'content-type' => content_type,
+        'value-type' => value_type,
+        'required-field' => required_field,
+        'visible-with-parent-answer' => visible_with_parent_answer,
+        'default-answer-value' => default_answer_value
+      }.merge(additional_content_attrs).compact
+  end
+
+  def additional_content_attrs
+    case content_type
+    when 'file-uploader'
+      {
+        'allow-multiple-uploads' => allow_multiple_uploads,
+        'allow-file-captions' => allow_file_captions,
+        'allow-annotations' => allow_annotations
+      }
+    when 'short-input', 'paragraph-input'
+      {
+        'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations
+      }
+    when 'radio', 'check-box', 'dropdown', 'tech-check'
+      {
+        'allow-annotations' => allow_annotations
+      }
+    else
+      {}
+    end
+  end
+
+  # rubocop:disable Metrics/AbcSize
+
+  def to_xml(options = {})
+    setup_builder(options).tag!('content', content_attrs) do |xml|
+      render_tag(xml, 'instruction-text', instruction_text)
+      render_tag(xml, 'text', text)
+      render_tag(xml, 'label', label)
+      card_content_validations.each do |ccv|
+        create_card_config_validation(ccv, xml)
+      end
+      if possible_values.present?
+        possible_values.each do |item|
+          xml.tag!('possible-value', label: item['label'], value: item['value'])
+        end
+      end
+      children.each { |child| child.to_xml(builder: xml, skip_instruct: true) }
+    end
+  end
+
+  # rubocop:enable Metrics/AbcSize
+end
+
+private
+
+def create_card_config_validation(ccv, xml)
+  validation_attrs = { 'validation-type': ccv.validation_type }
+                       .delete_if { |_k, v| v.nil? }
+  xml.tag!('validation', validation_attrs) do
+    xml.tag!('error-message', ccv.error_message)
+    xml.tag!('validator', ccv.validator)
   end
 end

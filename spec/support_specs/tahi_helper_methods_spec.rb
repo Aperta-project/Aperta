@@ -6,6 +6,12 @@ describe TahiHelperMethods do
     subject(:register) { -> { register_paper_decision(paper, "minor_revision") } }
     let(:decision) { paper.draft_decision }
 
+    before do
+      CardLoader.load("TahiStandardTasks::RegisterDecisionTask")
+      CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
+      CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
+    end
+
     it { is_expected.to change { paper.publishing_state }.from("submitted").to("in_revision") }
   end
 end

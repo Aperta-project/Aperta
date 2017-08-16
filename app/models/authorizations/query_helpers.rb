@@ -14,7 +14,6 @@ module Authorizations
         permissible_assignments: Arel::Table.new(:permissible_assignments),
         permissions_roles: Arel::Table.new(Role.reflections['permissions'].join_table),
         permissions: Permission.arel_table,
-        permission_requirements: PermissionRequirement.arel_table,
         permission_states_permissions: Arel::Table.new(Permission.reflections['states'].join_table),
         permission_states: PermissionState.arel_table,
         results: Arel::Table.new(:results),

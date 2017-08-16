@@ -26,12 +26,11 @@ namespace :plos_billing do
   end
 
   # Usage:
-  #   rake 'plos_billing:generate_billing_log[2020-05-30]''
-  desc "Generate a billing log file with an optional from_date of YYYY-MM-DD"
-  task :generate_billing_log, [:from_date] => :environment do |t, args|
+  #   rake 'plos_billing:generate_billing_log'
+  desc "Generate a billing log file"
+  task :generate_billing_log do |t, args|
     Rails.logger.info "Starting Billing log job"
-    date = Date.parse(args[:from_date]) if args[:from_date].present?
-    report = BillingLogReport.create_report(from_date: date)
+    report = BillingLogReport.create!
 
     if report.papers?
       report.save_and_send_to_s3!
@@ -39,17 +38,5 @@ namespace :plos_billing do
     else
       puts 'There were no accepted papers with billing tasks left to process'
     end
-  end
-
-  # Set to run each day exporting completed billing tasks in the last day
-  desc 'Automated billing export and ftp to designated billing host'
-  task daily_billing_log_export: :environment do
-    Rails.logger.info "Starting Billing log job"
-    date = Time.zone.now.utc.days_ago(1).beginning_of_day
-    report = BillingLogReport.create_report(from_date: date)
-
-    report.print unless Rails.env.test?
-    report.save_and_send_to_s3!
-    BillingFTPUploader.new(report).upload
   end
 end

@@ -6,7 +6,7 @@ module.exports = function(defaults) {
   var args = {
     hinting: false,
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false },
+    emberCliFontAwesome: { includeFontAwesomeAssets: true },
     'ember-cli-qunit': {
       useLintTree: false
     },
@@ -16,13 +16,19 @@ module.exports = function(defaults) {
     },
     babel: {
       includePolyfill: true
+    },
+    codemirror: {
+      modes: ['xml'],
+      themes: ['eclipse']
+    },
+    minifyJS: {
+      enabled: EmberApp.env() === 'production'
     }
   };
 
   var app = new EmberApp(defaults, args);
 
   app.import(app.bowerDirectory + '/underscore/underscore.js');
-  app.import(app.bowerDirectory + '/moment/moment.js');
 
   // Pusher
   app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');
@@ -65,8 +71,13 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/bootstrap/js/collapse.js');
   app.import(app.bowerDirectory + '/bootstrap/js/dropdown.js');
   app.import(app.bowerDirectory + '/bootstrap/js/tooltip.js');
+  app.import(app.bowerDirectory + '/bootstrap/js/tab.js');
   app.import(app.bowerDirectory + '/bootstrap-datepicker/css/datepicker3.css');
   app.import(app.bowerDirectory + '/bootstrap-datepicker/js/bootstrap-datepicker.js');
+
+  // jQuery timepicker
+  app.import(app.bowerDirectory + '/jt.timepicker/jquery.timepicker.min.js');
+  app.import(app.bowerDirectory + '/jt.timepicker/jquery.timepicker.css');
 
   // At.js
   app.import(app.bowerDirectory + '/At.js/dist/css/jquery.atwho.css');

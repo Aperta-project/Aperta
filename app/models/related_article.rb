@@ -5,8 +5,12 @@
 # other. Other times, they are related, but not simultaneously
 # published. Those relationships are one-way.
 class RelatedArticle < ActiveRecord::Base
+  include CustomCastTypes
+
   belongs_to :paper
 
+  attribute :linked_title, HtmlString.new
+  attribute :additional_info, HtmlString.new
   # Columns available:
   #
   # linked_doi: the DOI of the related article

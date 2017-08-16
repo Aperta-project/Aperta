@@ -10,22 +10,10 @@ class PaperAttributesExtractor
   end
 
   def sync!(paper)
-    paper.update!(
-      body: extract_file('body'),
-      abstract: extract_abstract,
-      title: extract_file('title') || paper.title
-    )
+    paper.update!(body: extract_file('body'))
   end
 
   private
-
-  def extract_abstract
-    abstract = extract_file('abstract')
-    return unless abstract
-    return nil if word_count(abstract) > max_abstract_length
-
-    abstract
-  end
 
   def word_count(str)
     str.split.size

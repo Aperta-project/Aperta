@@ -3,6 +3,12 @@
     <div class="question-text {{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
   {{/if}}
 
+  {{#if showUnwrappedHelpText}}
+    {{#if unwrappedHelpText}}
+      {{{unwrappedHelpText}}}
+    {{/if}}
+  {{/if}}
+
   {{#if answer.wasAnswered}}
     {{#if answer.value}}
       <div class="answer-text">{{yesLabel}}</div>

@@ -1,0 +1,19 @@
+.export-delivery {
+  @include clearfix;
+  border-top: 1px solid #ddd;
+  border-radius: 4px;
+  height: 40px;
+  margin-top: 5px;
+
+  .export-delivery-message {
+    font-size: 1em;
+  }
+
+  .export-delivery-date {
+    margin-right: 25px;
+  }
+
+  .fa-exclamation-triangle {
+    color: red;
+  }
+}

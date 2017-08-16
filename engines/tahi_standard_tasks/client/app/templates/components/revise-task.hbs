@@ -1,35 +1,35 @@
+<span id="response"></span> <!-- for the purpose of bookmarking the top of this template -->
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <h3>Current Revision</h3>
-
-  <div class="decision">
-    <p>
-      Revision
-      <span class="revision-number">
-        {{latestRegisteredDecision.revisionNumber}}
-      </span>
-      on
-      <span class="created-at">
-        {{format-date latestRegisteredDecision.createdAt}}
-      </span>
-    </p>
-
-    <p class="preserve-line-breaks letter">
-      {{{latestRegisteredDecision.letter}}}
-    </p>
-  </div>
-
   <div class="response-to-reviewers">
-    <h3>Response to Reviewers:</h3>
+    <div class="row">
+        <div class="col-lg-7 col-md-12 col-sm-12">
+          <h3>Response to reviewers</h3>
+        </div>
+        <div class="col-lg-5 col-md-12 col-sm-12">
+          <a class="link_ref" href="#decision">
+            <i class="fa fa-arrow-down"></i>
+            Most Recent Decision Letter
+          </a>
+        </div>
+      </div>
+
     {{error-message message=validationErrors.response
                     displayIcon=true}}
 
+    <p>
+      You may respond to the reviewer and editor comments point by point here.
+      Alternatively, you may upload your response as a file below.
+    </p>
     {{#if editingAuthorResponse}}
-      {{content-editable value=latestRegisteredDecision.authorResponse
-                         class="revise-overlay-response-field author-response"
-                         placeholder="You may respond to the reviewer and editor comments point by point here. Alternatively, you may upload your response as a text file (e.g. .doc, .pdf, .rtf) below."
-                         editable=isEditable}}
+      {{rich-text-editor
+        value=latestRegisteredDecision.authorResponse
+        ident='revise-overlay-response-field'
+        class="revise-overlay-response-field author-response"
+        onContentsChanged=(action 'saveAuthorContent')
+        disabled=isNotEditable
+      }}
 
       <button id="revise-task-save-button"
              class="revise-save-button button-primary button--green {{if isNotEditable 'button--disabled'}}"
@@ -56,6 +56,35 @@
                          deleteFile=(action "deleteAttachment")
                          uploadFinished=(action "createAttachment")
                          updateAttachment=(action "updateAttachment")}}
+  </div>
+  <br><br>
+
+  <h3 id="decision">Decision Letter</h3>
+
+  <div class="decision">
+    <p>
+      Revision
+      <span class="revision-number">
+        {{latestRegisteredDecision.revisionNumber}}
+      </span>
+      on
+      <span class="created-at">
+        {{format-date latestRegisteredDecision.createdAt}}
+      </span>
+    </p>
+
+    <p class="preserve-line-breaks letter">
+      {{{latestRegisteredDecision.letter}}}
+    </p>
+  </div>
+
+  <div class="clearfix">
+    <p class="pull-right">
+      <a href="#response" class="link_ref">
+        <i class="fa fa-arrow-up"></i>
+        Back to top
+      </a>
+    </p>
   </div>
 
   {{#if previousDecisions}}

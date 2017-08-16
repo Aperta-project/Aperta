@@ -5,23 +5,55 @@ import QUnit from 'qunit';
 /* jshint -W101 */
 
 export default function() {
+  /**
+   * despite its signature mockjaxRequestMade can take two types of
+   * arguments: when called with (url, type, message) it will look
+   * for a completed mockjax request with the given url and type, printing
+   * the message if there isn't a match.
+   *
+   * The second form only takes two arguments: (matcher, message), where the
+   * matcher is an object with keys that match the mockjax request's shape. For instance
+   * assert.mockjaxRequestMade({url: '/foo', type: 'PUT', data: '{"update": true}'})
+   * will find a PUT request to '/foo' with the specified data in the body.
+   */
   QUnit.assert.mockjaxRequestMade = function(url, type, message){
+
     let actualDescription;
-    let expectedDescription = `{ url: "${url}" type: "${type}"`;
+    let expectedDescription;
+
+    let matcher;
+    let actualDescriptionMapper;
+
+    if (_.isObject(url)) {
+      let matchDef = url;
+      expectedDescription = `#{url}`;
+      matcher = _.matches(matchDef);
+      actualDescriptionMapper = (mockjaxCall) => {
+        return _.pick(mockjaxCall, _.keys(matchDef));
+      };
+
+      // if url is an object, there will only be two arguments total and message will
+      // be the second one
+      message = arguments[1];
+    } else {
+      expectedDescription = `{ url: "${url}" type: "${type}"`;
+      matcher = (mockjaxCall) => {
+        return mockjaxCall.url === url && mockjaxCall.type === type;
+      };
+      actualDescriptionMapper = (mockjaxCall) => {
+        return { url: mockjaxCall.url, type: mockjaxCall.type };
+      };
+    }
 
     if(!message){
       message = `Request to server was made thru $.mockjax: ${expectedDescription}`;
     }
 
     let mockjaxCalls = $.mockjax.mockedAjaxCalls();
-    let requestFound = _.find(mockjaxCalls, (mockjaxCall) => {
-      return mockjaxCall.url === url && mockjaxCall.type === type;
-    });
+    let requestFound = _.find(mockjaxCalls, matcher);
 
     if(!requestFound) {
-      actualDescription = _.map(mockjaxCalls, (mockjaxCall) => {
-        return { url: mockjaxCall.url, type: mockjaxCall.type };
-      });
+      actualDescription = _.map(mockjaxCalls, actualDescriptionMapper);
     }
 
     return this.push(
@@ -66,10 +98,10 @@ export default function() {
 
     let result = true;
 
-    if(actualArray.length != expectedArray.length){
+    if(actualArray.length !== expectedArray.length){
       result = false;
     }
-    if(_.intersection(actualArray, expectedArray).length != expectedArray.length){
+    if(_.intersection(actualArray, expectedArray).length !== expectedArray.length){
       result = false;
     }
 
@@ -254,5 +286,32 @@ export default function() {
 
   QUnit.assert.selectorHasClasses = function() {
     return this.selectorAttibuteIncludes('class', ...arguments);
+  };
+
+  QUnit.assert.arrayEqual = function(actual, expected) {
+    const good =  {
+      result: true,
+      actual: actual,
+      expected: expected,
+      message: `equals: ${actual} and ${expected}`
+    };
+    if (actual === expected) { return this.pushResult(good); }
+    if (actual.length !== expected.length) {
+      return this.pushResult({
+        result: false,
+        actual: actual,
+        expected: expected,
+        message: `different lengths: ${actual} v. ${expected}`});
+    }
+    for (var i = 0; i < actual.length; ++i) {
+      if (actual[i] !== expected[i]) {
+        return this.pushResult({
+          result: false,
+          actual: actual,
+          expected: expected,
+          message: `element ${i} of ${actual} did not match ${expected}`});
+      }
+    }
+    return this.pushResult(good);
   };
 }

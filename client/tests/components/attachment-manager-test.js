@@ -16,7 +16,7 @@ test('uploading a single file works', function(assert) {
   });
 
   assert.expect(6);
-  component.send('fileAdded', {name: 'hey'});
+  component.send('fileAdded', {files: [{name: 'hey'}]});
   assert.equal(component.get('fileUploads.firstObject.file.name'), 'hey', 'File is set');
 
   component.send('uploadProgress', {
@@ -27,7 +27,7 @@ test('uploading a single file works', function(assert) {
   assert.equal(component.get('fileUploads.firstObject.dataLoaded'), 1, 'dataLoaded is set on uploadProgress');
   assert.equal(component.get('fileUploads.firstObject.dataTotal'), 50, 'dataTotal is set on uploadProgress');
 
-  component.send('uploadFinished', 'someUrl', {files: [{name: 'hey'}]});
+  component.send('uploadFinished', 'someUrl', 'hey', {files: [{name: 'hey'}]});
 
   assert.equal(0, component.get('fileUploads.length'), 'fileUpload is removed from the array on uploadFinished');
 });
@@ -44,8 +44,8 @@ test('uploading multiple files correctly maintains state', function(assert) {
 
   assert.expect(7);
 
-  component.send('fileAdded', {name: 'hey'});
-  component.send('fileAdded', {name: 'dude'});
+  component.send('fileAdded', {files: [{name: 'hey'}]});
+  component.send('fileAdded', {files: [{name: 'dude'}]});
   assert.equal(component.get('fileUploads.firstObject.file.name'), 'hey', 'File is set');
   assert.equal(component.get('fileUploads.lastObject.file.name'), 'dude', 'File is set');
 
@@ -63,7 +63,7 @@ test('uploading multiple files correctly maintains state', function(assert) {
   assert.equal(component.get('fileUploads.firstObject.dataTotal'), 50, 'uploadProgress for the first file');
   assert.equal(component.get('fileUploads.lastObject.dataTotal'), 20, 'uploadProgress for the second file');
 
-  component.send('uploadFinished', 'someUrl', {files: [{name: 'hey'}]});
+  component.send('uploadFinished', 'someUrl', 'hey', {files: [{name: 'hey'}]});
 
   assert.equal(1, component.get('fileUploads.length'), 'fileUpload is removed from the array on uploadFinished');
   assert.equal('dude', component.get('fileUploads.firstObject.file.name'), 'correct upload is removed');

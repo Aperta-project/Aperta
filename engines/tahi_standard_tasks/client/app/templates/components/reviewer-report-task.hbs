@@ -5,8 +5,14 @@
     {{#if task.isSubmitted}}
       {{reviewer-report-questions model=currentReviewerReport readOnly=true}}
     {{else}}
-      <p><strong>Please refer to our 
-        <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">referee</a>
+      {{reviewer-report-status report=currentReviewerReport}}
+      {{#if (and (can 'manage_scheduled_events' task)
+                 currentReviewerReport.scheduledEvents)}}
+        {{scheduled-events events=currentReviewerReport.scheduledEvents
+                           dueDate=currentReviewerReport.dueAt}}
+      {{/if}}
+      <p><strong>Please refer to our
+        <a href="http://journals.plos.org/plosbiology/s/reviewer-guidelines#loc-criteria-for-publication">reviewer</a>
         guidelines for detailed instructions.</strong>
       </p>
       {{reviewer-report-questions model=currentReviewerReport readOnly=isNotEditable}}
@@ -17,7 +23,7 @@
           <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
 
           <button class="button-primary button--green reviewer-report-confirm-submit-button" {{action "submitReport"}}>Yes, I’m sure</button>
-          <button class="button-secondary button--green reviewer-report-cancel-submit-button" {{action "cancelSubmission"}}>Nope</button>
+          <button class="button-secondary button--green reviewer-report-cancel-submit-button" {{action "cancelSubmission"}}>No</button>
         {{else}}
           <button class="button-primary button--green reviewer-report-submit-button" {{action "confirmSubmission"}}>Submit this Report</button>
         {{/if}}

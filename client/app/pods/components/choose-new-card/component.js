@@ -7,7 +7,7 @@ const { computed, on } = Ember;
 export default Ember.Component.extend(EscapeListenerMixin, {
   propTypes: {
     phase: PropTypes.EmberObject,
-    journalTaskTypes: PropTypes.EmberObject,
+    journalTaskTypes: PropTypes.array,
     cards: PropTypes.EmberObject,
     onSave: PropTypes.func,
     isLoading: PropTypes.bool,
@@ -24,6 +24,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   cardSort: ['name:asc'],
   sortedCards: computed.sort('cards', 'cardSort'),
 
+  addableCards: computed.filterBy('sortedCards', 'addable', true),
+
   // pre-card-config
   taskTypeSort: ['title:asc'],
   sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
@@ -35,7 +37,7 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     this.get('onSave')(
       this.get('phase'),
       this.get('selectedCards')
-    )
+    );
     this.get('close')();
   },
 

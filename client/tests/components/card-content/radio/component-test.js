@@ -10,7 +10,13 @@ moduleForComponent(
       this.set('actionStub', function() {});
       this.defaultContent = {
         text: `<b class='foo'>Foo</b>`,
+        valueType: 'text',
         possibleValues: [{ label: 'Choice 1', value: 1 }, { label: '<b>Choice</b> 2', value: 2}]
+      };
+
+      this.radioBooleanContent = {
+        text: `<b class='foo'>Foo</b>`,
+        valueType: 'boolean'
       };
     }
   }
@@ -48,6 +54,12 @@ test(`it checks the button corresponding to the answer's value`, function(assert
   this.render(template);
   assert.equal(this.$('input:checked').val(), 2);
 });
+test(`it checks the button corresponding to the answer's value with different datatypes`, function(assert) {
+  this.set('answer', { value: '2'});
+  this.set('content', this.defaultContent);
+  this.render(template);
+  assert.equal(this.$('input:checked').val(), 2);
+});
 test(`no buttons are checked if the answer's value is blank/null`, function(assert) {
   this.set('answer', { value: null});
   this.set('content', this.defaultContent);
@@ -63,4 +75,11 @@ test(`it sends 'valueChanged' on change`, function(assert) {
   });
   this.render(template);
   this.$('input:last').val('New').trigger('change');
+});
+
+test(`it renders a radio button for Yes and No when value type is boolean`, function(assert) {
+  this.set('content', this.radioBooleanContent);
+  this.render(template);
+  assert.textPresent('.option', 'Yes');
+  assert.textPresent('.option', 'No');
 });

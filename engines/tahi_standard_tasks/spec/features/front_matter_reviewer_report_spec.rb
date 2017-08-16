@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Reviewer filling out their front matter article reviewer report', js: true do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
@@ -11,8 +12,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
       uses_research_article_reviewer_report: false
     )
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
 
@@ -41,6 +42,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
   before do
     assign_reviewer_role paper, reviewer
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
 
     login_as(reviewer, scope: :user)
     visit "/"
@@ -61,8 +64,12 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     reviewer_report_task = create_reviewer_report_task
 
     ident = 'front_matter_reviewer_report--competing_interests'
+
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    wait_for_editors # Wait for rich-text editors to instantiate
+
     answers = CardContent.find_by(ident: ident).answers
     sentinel_proc = -> { answers.count }
 
@@ -77,12 +84,13 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.wait_for_sentinel(sentinel_proc) do
       t.fill_in_report ident => no_compete
     end
+
     t.submit_report
     t.confirm_submit_report
 
     expect(page).to have_selector(".answer-text", text: no_compete)
     expect(answers.count).to eq(1)
-    expect(answers.reload.first.value).to eq('I have no competing interests with this work.')
+    expect(answers.reload.first.value).to eq('<p>I have no competing interests with this work.</p>')
   end
 
   scenario 'A reviewer can see their previous rounds of review' do
@@ -92,6 +100,9 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     Page.view_paper paper
 
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    wait_for_editors # Wait for rich-text editors to instantiate
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 0'
 
     # no history yet, since we only have the current round of review
@@ -112,6 +123,8 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    wait_for_editors # Wait for rich-text editors to instantiate
 
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 1'
 
@@ -134,11 +147,14 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", FrontMatterReviewerReportTaskOverlay)
+
+    wait_for_editors # Wait for rich-text editors to instantiate
+
     t.fill_in_report 'front_matter_reviewer_report--competing_interests' => 'answer for round 2'
 
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },
-      title: 'v1.0', answers: ['answer for round 1']
+        title: 'v1.0', answers: ['answer for round 1']
     )
 
     # Revision 3 (we won't answer, just look at previous rounds)
@@ -152,7 +168,7 @@ feature 'Reviewer filling out their front matter article reviewer report', js: t
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },
       { title: 'v1.0', answers: ['answer for round 1'] },
-      title: 'v2.0', answers: ['answer for round 2']
+        title: 'v2.0', answers: ['answer for round 2']
     )
   end
 end

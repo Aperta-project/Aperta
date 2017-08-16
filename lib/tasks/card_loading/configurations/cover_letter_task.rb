@@ -16,7 +16,7 @@ module CardConfiguration
       [
         {
           ident: "cover_letter--text",
-          value_type: "text",
+          value_type: "html"
         },
         {
           ident: "cover_letter--attachment",

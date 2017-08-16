@@ -1,0 +1,27 @@
+<h2>Email Templates</h2>
+{{#if journal}}
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Subject</th>
+        <th><!-- --></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each templates as |template|}}
+        <tr class="admin-email-template-row">
+          <td>{{template.name}}</td>
+          <td>{{template.subject}}</td>
+          <td>
+            {{#link-to 'admin.edit_email' template.id}}
+              {{fa-icon "pencil"}} Edit
+            {{/link-to}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <h4>Please select a journal to view email templates.</h4>
+{{/if}}

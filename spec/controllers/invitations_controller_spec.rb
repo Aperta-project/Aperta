@@ -6,7 +6,7 @@ describe InvitationsController do
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:invitee) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create :paper_editor_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_editor_task, :with_loaded_card, paper: paper }
   let!(:queue) { FactoryGirl.create(:invitation_queue, task: task) }
 
   describe 'GET /invitations' do
@@ -127,9 +127,7 @@ describe InvitationsController do
 
       context 'the primary id is not present' do
         subject(:do_request) do
-          put :update_primary,
-            format: :json,
-            id: invitation.id
+          put :update_primary, format: :json, id: invitation.id
         end
 
         before do
@@ -259,9 +257,9 @@ describe InvitationsController do
         expect(invitation.reload.email).to eq("foo@bar.com")
       end
 
-      it "responds with the updated invitation" do
+      it "returns 204" do
         do_request
-        expect(res_body["invitation"]["id"]).to eq(invitation.id)
+        expect(response.status).to eq(204)
       end
 
       it "does not update the invitation's primary" do
@@ -522,6 +520,8 @@ describe InvitationsController do
       it_behaves_like 'an unauthenticated json request'
 
       context 'when the user is authenticated' do
+        let!(:due_at_flag) { FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT" }
+
         before do
           stub_sign_in user
         end

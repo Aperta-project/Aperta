@@ -11,6 +11,12 @@ describe Paper do
   let(:user) { FactoryGirl.create :user }
   let(:frozen_time) { 1.day.ago }
 
+  before do
+    CardLoader.load("TahiStandardTasks::ReviseTask")
+    CardLoader.load("TahiStandardTasks::UploadManuscriptTask")
+    CardLoader.load("TahiStandardTasks::TitleAndAbstractTask")
+  end
+
   shared_examples_for "submission" do
     it 'should be unsubmitted' do
       expect(paper.publishing_state).to eq("unsubmitted")
@@ -72,6 +78,17 @@ describe Paper do
       expect { subject }
         .to change { paper.major_version }.from(nil).to(0)
         .and change { paper.minor_version }.from(nil).to(0)
+    end
+
+    context "with tasks" do
+      it "calls `after_paper_submitted` on each task, and the paper has valid aasm states to work with" do
+        FactoryGirl.create(:ad_hoc_task, paper: paper)
+        expect_any_instance_of(AdHocTask).to receive(:after_paper_submitted) do |_task, p|
+          expect(p.aasm.from_state).to be_present
+          expect([:submitted, :initially_submitted]).to include(p.aasm.to_state)
+        end
+        subject
+      end
     end
   end
 
@@ -255,7 +272,11 @@ describe Paper do
     end
 
     context "with tasks" do
-      let(:paper) { FactoryGirl.create(:paper, :with_tasks, journal: journal) }
+      let(:paper) { FactoryGirl.create(:paper_with_phases, journal: journal) }
+
+      before do
+        FactoryGirl.create(:upload_manuscript_task, paper: paper, phase: paper.phases.first)
+      end
 
       it "delete Phases and Tasks" do
         expect(paper).to have_at_least(1).phase
@@ -305,6 +326,89 @@ describe Paper do
           expect(paper.metadata_tasks_completed?).to eq(false)
         end
       end
+
+      context 'paper with incomplete custom card tasks' do
+        let(:paper) { FactoryGirl.create(:paper) }
+        let(:task) { FactoryGirl.create(:custom_card_task, paper: paper) }
+
+        it 'returns true' do
+          expect(paper.metadata_tasks_completed?).to eq(true)
+        end
+      end
+    end
+
+    describe 'required_for_submission_tasks_completed?' do
+      subject { paper.required_for_submission_tasks_completed? }
+
+      context 'the paper has custom tasks' do
+        let(:card_version_a) do
+          FactoryGirl.create(
+            :card_version,
+            required_for_submission: required_for_submission_a
+          )
+        end
+
+        let(:card_version_b) do
+          FactoryGirl.create(
+            :card_version,
+            required_for_submission: required_for_submission_b
+          )
+        end
+        let!(:task_a) do
+          FactoryGirl.create(
+            :custom_card_task,
+            completed: task_completed_a,
+            paper: paper,
+            card_version: card_version_a # { required_for_submission: required_for_submission_a },
+          )
+        end
+        let!(:task_b) { FactoryGirl.create(:custom_card_task, completed: task_completed_b, paper: paper, card_version: card_version_b) }
+
+        context 'and the card_versions are required_for_submission' do
+          let(:required_for_submission_a) { true }
+          let(:required_for_submission_b) { true }
+
+          context 'and all the tasks are completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(true) }
+          end
+
+          context 'and one task is not completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { false }
+
+            it { is_expected.to be(false) }
+          end
+        end
+
+        context 'and some are required_for_submission' do
+          let(:required_for_submission_a) { true }
+          let(:required_for_submission_b) { false }
+
+          context 'and all the tasks are completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(true) }
+          end
+
+          context 'and the nonrequired task is completed' do
+            let(:task_completed_a) { false }
+            let(:task_completed_b) { true }
+
+            it { is_expected.to be(false) }
+          end
+
+          context 'and the required task is completed' do
+            let(:task_completed_a) { true }
+            let(:task_completed_b) { false }
+
+            it { is_expected.to be(true) }
+          end
+        end
+      end
     end
 
     describe '#short_title' do
@@ -316,7 +420,7 @@ describe Paper do
           short_title: title)
       end
 
-      it 'fetches short title from a NestedQuestionAnswer' do
+      it 'fetches short title from an Answer' do
         expect(paper.short_title).to eq(title)
       end
     end
@@ -572,6 +676,11 @@ describe Paper do
 
       it 'does not transition when metadata tasks are incomplete' do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
+        expect { subject }.to raise_error(AASM::InvalidTransition)
+      end
+
+      it 'does not transition when required for submission cars are incomplete' do
+        expect(paper).to receive(:required_for_submission_tasks_completed?).and_return(false)
         expect { subject }.to raise_error(AASM::InvalidTransition)
       end
 

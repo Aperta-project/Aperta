@@ -24,14 +24,14 @@
 
   <div class="button-secondary button--blue fileinput-button journal-logo-upload-button" disabled={{if saving true null}}>
     Upload New
-    {{s3-file-uploader elementId='upload-journal-logo-button'
+    {{file-uploader elementId='upload-journal-logo-button'
                        accept=allowedFileTypes
                        validateFileTypes=true
-                       filePath='journals'
-                       fileAdded=(action 'fileAdded')
+                       filePrefix='journals'
+                       start=(action 'fileAdded')
                        addingFileFailed=(action 'addingFileFailed')
-                       uploadFinished=(action 'uploadFinished')
-                       uploadFailed=(action 'uploadFailed')}}
+                       done=(action 'uploadFinished')
+                       error=(action 'uploadFailed')}}
   </div>
 </div>
 

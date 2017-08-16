@@ -3,12 +3,16 @@ import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 // Pretend like you're in client/tests
 import FakeCanService from '../helpers/fake-can-service';
+import registerCustomAssertions from '../helpers/custom-assertions';
 
 
 moduleForComponent(
   'related-articles-task',
   'Integration | Components | Tasks | Related Articles', {
-  integration: true
+    integration: true,
+    beforeEach() {
+      registerCustomAssertions();
+    }
 });
 
 
@@ -32,9 +36,8 @@ test('User can add a new related article', function(assert){
   this.$('.related-article-task-add').click();
 
   assert.elementFound('.related-article', 'New related article is visible');
-
   assert.elementFound(
-    '.related-article .related-article-title-input',
+    '.related-article .related-article-title-input.rich-text-editor',
     'New article is opened for editing');
 });
 

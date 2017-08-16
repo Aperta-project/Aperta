@@ -1,3 +1,4 @@
+# coding: utf-8
 module Authorizations
 
   # ObjectsAuthorizedViaThroughAssociationQuery represents the query
@@ -29,11 +30,6 @@ module Authorizations
   # The < and > brackets are used above because the table references are
   # dynamic. See the corresponding constructor arguments for more information.
   #
-  # == Note
-  #
-  # This query does not enforce permission requirements. That must be done
-  # separately (see ObjectsPermissibleByRequiredPermissionsQuery).
-  #
   #
   # == Warning for multiple levels of has_many :through
   # Also, has_many :through currently supports one-level of throughness. Doing
@@ -63,6 +59,7 @@ module Authorizations
       query = common_query.to_arel
       add_joins_and_conditions(query, auth_config.reflection)
       common_query.add_permission_state_check(query)
+      common_query.add_filter_by_check(query)
     end
 
     def to_sql
@@ -96,10 +93,15 @@ module Authorizations
 
       # construct the join from tasks table to the papers table
       query.outer_join(klass.arel_table).on(
-        klass.arel_table[reflection.foreign_key].eq(
-          through_klass.arel_table.primary_key
-        )
-      )
+        if klass.column_names.member?(reflection.foreign_key)
+          # has_one on the through_klass
+          klass.arel_table[reflection.foreign_key]
+            .eq(through_klass.arel_table.primary_key)
+        else
+          # belongs_to on the through_klass
+          klass.arel_table.primary_key
+            .eq(through_klass.arel_table[reflection.foreign_key])
+        end)
 
       common_query.add_column_condition(
         query: query,

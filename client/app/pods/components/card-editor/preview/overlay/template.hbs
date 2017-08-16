@@ -11,7 +11,7 @@
 
   <div class="button-secondary button--green card-editor-preview-overlay-button" tabindex="-1">Close</div>
 </div>
-<div class="card-editor-preview-overlay-body">
+<div class="card-editor-preview-overlay-body {{if renderAsDualColumn 'dual-column' 'single-column'}}">
   <h1 class="card-editor-preview-overlay-title">{{card.name}}</h1>
   {{yield}}
 </div>

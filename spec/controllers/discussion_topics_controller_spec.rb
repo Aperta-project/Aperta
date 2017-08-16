@@ -199,15 +199,8 @@ describe DiscussionTopicsController do
 
   shared_examples_for 'a participant search endpoint' do
     context 'when the user is authorized' do
-      let(:searchable_users) do
-        [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
-      end
-
       before do
         stub_sign_in user
-        allow(User).to receive(:fuzzy_search)
-          .with('Kangaroo')
-          .and_return searchable_users
       end
 
       it 'returns any user who matches the query' do
@@ -218,33 +211,44 @@ describe DiscussionTopicsController do
     end
   end
 
-  describe 'GET users' do
-    subject(:do_request) do
-      xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
-    end
-
+  describe 'requests using fuzzy search' do
     before do
-      allow(user).to receive(:can?)
-        .with(:manage_participant, topic_a)
-        .and_return true
+      # Stub this out because fuzzy_search can return strange results when using
+      # random faked user data.
+      allow(User).to receive(:fuzzy_search)
+        .with('Kangaroo')
+        .and_return [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
     end
 
-    it_behaves_like 'an unauthenticated json request'
-    it_behaves_like 'a participant search endpoint'
-  end
 
-  describe 'GET new_discussion_users' do
-    subject(:do_request) do
-      xhr :get, :new_discussion_users, format: :json, paper_id: paper.to_param, query: 'Kangaroo'
+    describe 'GET users' do
+      subject(:do_request) do
+        xhr :get, :users, format: :json, id: topic_a.id, query: 'Kangaroo'
+      end
+
+      before do
+        allow(user).to receive(:can?)
+                         .with(:manage_participant, topic_a)
+                         .and_return true
+      end
+
+      it_behaves_like 'an unauthenticated json request'
+      it_behaves_like 'a participant search endpoint'
     end
 
-    before do
-      allow(user).to receive(:can?)
-        .with(:start_discussion, paper)
-        .and_return true
-    end
+    describe 'GET new_discussion_users' do
+      subject(:do_request) do
+        xhr :get, :new_discussion_users, format: :json, paper_id: paper.to_param, query: 'Kangaroo'
+      end
 
-    it_behaves_like 'an unauthenticated json request'
-    it_behaves_like 'a participant search endpoint'
+      before do
+        allow(user).to receive(:can?)
+                         .with(:start_discussion, paper)
+                         .and_return true
+      end
+
+      it_behaves_like 'an unauthenticated json request'
+      it_behaves_like 'a participant search endpoint'
+    end
   end
 end

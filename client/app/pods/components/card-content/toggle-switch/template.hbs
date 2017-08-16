@@ -1,0 +1,15 @@
+<label for="{{name}}" class="switch {{size}}" aria-label="{{labelText}}">
+  {{check-box
+    name=name
+    id=name
+    checked=(readonly answer.value)
+    disabled=disabled
+    content=content
+    action="valueChanged"}}
+
+    <div class="slider round {{color}}" />
+
+    {{#if labelText}}
+      <div class="checked-label-text">{{labelText}}</div>
+    {{/if}}
+</label>

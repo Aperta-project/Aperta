@@ -1,18 +1,40 @@
 # This class represents the reviewer reports per decision round
 class ReviewerReport < ActiveRecord::Base
   include Answerable
-  include NestedQuestionable
   include AASM
 
   default_scope { order('decision_id DESC') }
 
+  has_one :due_datetime, as: :due
+  has_many :scheduled_events, -> { order :dispatch_at }, as: :owner
+
   belongs_to :task, foreign_key: :task_id
   belongs_to :user
   belongs_to :decision
+  has_one :paper, through: :task
 
   validates :task,
     uniqueness: { scope: [:task_id, :user_id, :decision_id],
                   message: 'Only one report allowed per reviewer per decision' }
+
+  delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
+
+  SCHEDULED_EVENTS_TEMPLATE = [
+    { name: 'Pre-due Reminder', dispatch_offset: -2 },
+    { name: 'First Late Reminder', dispatch_offset: 2 },
+    { name: 'Second Late Reminder', dispatch_offset: 4 }
+  ].freeze
+
+  def set_due_datetime(length_of_time: 10.days)
+    if FeatureFlag[:REVIEW_DUE_DATE]
+      DueDatetime.set_for(self, length_of_time: length_of_time)
+    end
+    schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+  end
+
+  def schedule_events(owner: self, template: SCHEDULED_EVENTS_TEMPLATE)
+    ScheduledEventFactory.new(owner, template).schedule_events if FeatureFlag[:REVIEW_DUE_AT]
+  end
 
   def self.for_invitation(invitation)
     reports = ReviewerReport.where(user: invitation.invitee,
@@ -29,6 +51,7 @@ class ReviewerReport < ActiveRecord::Base
     state :submitted
 
     event(:accept_invitation,
+          after_commit: [:set_due_datetime],
           guards: [:invitation_accepted?]) do
       transitions from: :invitation_not_accepted, to: :review_pending
     end
@@ -59,26 +82,24 @@ class ReviewerReport < ActiveRecord::Base
     "v#{major_version}.#{minor_version}"
   end
 
-  # TODO: CardConfig
-  # override card from Answerable as a temporary measure.  A ReviewerReport needs to look
-  # up the name of its card based on the type of task it belongs to, as there's no
-  # FrontMatterReviewerReport at the moment
-  def card
-    if card_version_id
-      card_version.card
-    else
-      card_name = {
-        "TahiStandardTasks::ReviewerReportTask" => "ReviewerReport",
-        "TahiStandardTasks::FrontMatterReviewerReportTask" => "FrontMatterReviewerReport"
-      }.fetch(task.class.name)
-      Card.find_by(name: card_name)
-    end
-  end
-
   # this is a convenience method that's called by
   # NestedQuestionAnswersController#fetch_answer and a few other places
   def paper
     task.paper
+  end
+
+  # overrides Answerable to determine the correct Card that should be
+  # assigned when a new ReviewerReport is created
+  def default_card
+    name = if paper.uses_research_article_reviewer_report
+             "ReviewerReport"
+           else
+             # note: this AR model does not yet exist, but
+             # is being done as preparatory / consistency for
+             # card config work
+             "TahiStandardTasks::FrontMatterReviewerReport"
+           end
+    Card.find_by(name: name)
   end
 
   def computed_status
@@ -110,6 +131,14 @@ class ReviewerReport < ActiveRecord::Base
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
+
+  def display_status
+    status = computed_status
+    inactive = ["not_invited", "invitation_declined", "invitation_rescinded"]
+    return :minus if inactive.include? status
+    return :active_check if status == "completed"
+    :check
+  end
 
   private
 

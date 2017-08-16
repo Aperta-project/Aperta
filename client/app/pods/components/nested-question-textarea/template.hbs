@@ -1,18 +1,22 @@
 {{#if displayContent}}
-  {{#if readOnly}}
+  {{#if disabled}}
     {{#if shouldDisplayQuestionText}}
-      <div class="{{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
+      <div class="{{textClassNames}} {{concat ident "-question-text"}}">
+        {{{questionText}}}
+      </div>
     {{/if}}
 
     {{#if answer.value}}
-      <div class="answer-text">{{break-to-tag answer.value}}</div>
+      <div class="answer-text">{{{answer.value}}}</div>
     {{else}}
       <div class="answer-text no-answer">{{noResponseText}}</div>
     {{/if}}
 
   {{else}}
     {{#if shouldDisplayQuestionText}}
-      <div class="{{textClassNames}} {{concat ident "-question-text"}}">{{{questionText}}}</div>
+      <div class="{{textClassNames}} {{concat ident "-question-text"}}">
+        {{{questionText}}}
+      </div>
     {{/if}}
 
     {{#if helpText}}
@@ -23,6 +27,15 @@
       {{{unwrappedHelpText}}}
     {{/if}}
 
-    {{textarea name=ident value=answer.value class=inputClassNames placeholder=placeholderText disabled=disabled}}
+    {{rich-text-editor
+      editorStyle=editorStyle
+      data-editor=data-editor
+      onContentsChanged=(action "updateAnswer")
+      class=inputClassNames
+      placeholder=placeholderText
+      displayText=true
+      name=ident
+      value=answer.value
+    }}
   {{/if}}
 {{/if}}

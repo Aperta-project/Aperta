@@ -21,7 +21,7 @@ class Page < PageFragment
       @_path_regex = ActionDispatch::Routing::RouteWrapper.new(route).json_regexp
     end
 
-    def visit(args = [], sync_on:nil)
+    def visit(args = [], sync_on: nil)
       page.visit Rails.application.routes.url_helpers.send @_path, *args
       page.has_content? sync_on if sync_on
       new
@@ -48,7 +48,7 @@ class Page < PageFragment
     super(element || page, context: context)
   end
 
-  def reload(sync_on:nil)
+  def reload(sync_on: nil)
     visit page.current_path
     page.has_content? sync_on if sync_on
   end

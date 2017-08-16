@@ -1,0 +1,21 @@
+<div class="task-main-content">
+  <p class="content-text">{{{content.text}}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    {{/if}}</p>
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
+  {{card-content/toggle-switch content=content
+                  labelText='Pass'
+                  disabled=disabled
+                  answer=answer
+                  valueChanged=(action 'saveAnswer')}}
+</div>
+
+{{card-content/display-children
+  content=content
+  owner=owner
+  disabled=disabled
+  hasAnswerContainer=false
+  answerChanged=(action 'sendbackChanged')
+  preview=preview
+}}

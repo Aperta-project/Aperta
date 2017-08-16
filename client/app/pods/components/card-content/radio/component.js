@@ -1,20 +1,32 @@
 import Ember from 'ember';
+import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-radio'],
-  content: null,
-  disabled: null,
-  answer: null,
+
+  propTypes: {
+    answer: PropTypes.EmberObject.isRequired,
+    content: PropTypes.EmberObject.isRequired,
+    disabled: PropTypes.bool,
+    owner: PropTypes.EmberObject.isRequired,
+    preview: PropTypes.bool
+  },
 
   init() {
     this._super(...arguments);
 
-    Ember.assert(
-      `the content must define an array of possibleValues
+    if(this.get('isText')) {
+      Ember.assert(
+        `the content must define an array of possibleValues
       that contains at least one object with the shape { label, value } `,
-      Ember.isPresent(this.get('content.possibleValues'))
-    );
+        Ember.isPresent(this.get('content.possibleValues'))
+      );
+    }
   },
+
+  isText: Ember.computed('content.valueType', function() {
+    return (this.get('content.valueType') === 'text');
+  }),
 
   actions: {
     valueChanged(newVal) {

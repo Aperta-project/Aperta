@@ -75,8 +75,9 @@ export default Ember.Component.extend({
       }
     },
 
-    fileAdded(file){
-      this.set('fileUpload', FileUpload.create({ file: file }));
+    fileAdded(upload){
+      this.set('attachment.readyIssues', []);
+      this.set('fileUpload', FileUpload.create({ file: upload.files[0] }));
     },
 
     triggerFileSelection() {
@@ -97,10 +98,6 @@ export default Ember.Component.extend({
                                   this.get('attachment'));
       }
       this.set('fileUpload', null);
-    },
-
-    uploadFailed(reason){
-      throw new Ember.Error(`Upload from browser to s3 failed: ${reason}`);
     }
   }
 });

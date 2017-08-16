@@ -1,0 +1,10 @@
+<table class="export-history">
+  <tr>
+    <th colspan="2" class="status">Status</th>
+    <th class="date">Date</th>
+  </tr>
+
+  {{#each sortedExports as |export|}}
+    {{export-delivery delivery=export}}
+  {{/each}}
+</table>

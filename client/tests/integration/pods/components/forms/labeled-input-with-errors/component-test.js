@@ -67,3 +67,14 @@ test('it shows styled input if errors', function(assert) {
   this.render(hbs`{{forms/labeled-input-with-errors type='text' name='first-name-field' label='Fred' errors=errors}}`);
   assert.elementFound('.labeled-input-with-errors-errored');
 });
+
+test('it adds the dasherized name to the input and label classes', function(assert) {
+  this.render(hbs`{{forms/labeled-input-with-errors name='funTimes' type='text' label='Fred'}}`);
+  assert.elementFound('label.fun-times');
+  assert.elementFound('.fun-times[type="text"]');
+});
+
+test('it adds the required class if the required prop is passed in', function(assert) {
+  this.render(hbs`{{forms/labeled-input-with-errors name='funTimes' type='text' label='Fred' required=true}}`);
+  assert.elementFound('label.required');
+});

@@ -37,6 +37,11 @@ class JournalFactory
     assign_hint Role::JOURNAL_ROLES,          Journal.name
   end
 
+  # All standard tasks that users who see the workflow should see
+  # Billing is special, and CustomCardTask is handled by a custom mechanism.
+  STANDARD_TASKS = (Task.descendants - [PlosBilling::BillingTask, CustomCardTask]).freeze
+  SUBMISSION_TASKS = (Task.submission_task_types - [CustomCardTask]).freeze
+
   # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/LineLength
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
@@ -46,11 +51,11 @@ class JournalFactory
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Creator(s) only get access to the submission task types
-      task_klasses = Task.submission_task_types
-      task_klasses << PlosBioTechCheck::ChangesForAuthorTask
-      task_klasses << AdHocForAuthorsTask
+      task_klasses = SUBMISSION_TASKS
+      task_klasses += [PlosBioTechCheck::ChangesForAuthorTask, AdHocForAuthorsTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
@@ -58,22 +63,26 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:submit, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Collaborators can view and edit any metadata card except billing
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
+      task_klasses += [AdHocForAuthorsTask]
       task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << AdHocForAuthorsTask
       task_klasses.each do |klass|
         role.ensure_permission_exists(:edit, applies_to: klass, states: Paper::EDITABLE_STATES)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::COVER_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -84,6 +93,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
       role.ensure_permission_exists(:search_admins, applies_to: Paper)
@@ -92,14 +102,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
-
-      # Tasks
-      task_klasses = Task.descendants
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Cover editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTask
-      task_klasses -= [
-        PlosBilling::BillingTask,
+      task_klasses = STANDARD_TASKS - [
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::PaperEditorTask
       ]
@@ -108,6 +115,7 @@ class JournalFactory
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
@@ -137,24 +145,26 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
       # Reviewer(s) get access to all submission tasks, except a few
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
       task_klasses -= [
         PlosBilling::BillingTask,
         TahiStandardTasks::CoverLetterTask,
         TahiStandardTasks::ReviewerRecommendationsTask
       ]
-      task_klasses << AdHocForReviewersTask
+      task_klasses += [AdHocForReviewersTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name)
         role.ensure_permission_exists(:view_participants, applies_to: klass.name)
       end
       role.ensure_permission_exists(:edit, applies_to: AdHocForReviewersTask.name, states: Paper::REVIEWABLE_STATES)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     # This role exists to give a reviewer the ability to edit their reviewer
@@ -167,11 +177,13 @@ class JournalFactory
       )
 
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::JOURNAL_SETUP_ROLE, journal: @journal) do |role|
       role.ensure_permission_exists(:create_card, applies_to: Journal)
       role.ensure_permission_exists(:edit, applies_to: Card)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::STAFF_ADMIN_ROLE, journal: @journal) do |role|
@@ -187,6 +199,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
@@ -199,16 +212,16 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -216,6 +229,9 @@ class JournalFactory
       end
 
       role.ensure_permission_exists(:view, applies_to: Card)
+
+      # The TitleAndAbstractTask is always editable, regardless of paper state.
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -227,6 +243,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
@@ -240,6 +257,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
@@ -252,21 +270,24 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
       end
+
+      # The TitleAndAbstractTask is always editable, regardless of paper state.
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::TitleAndAbstractTask)
 
       # Discussions
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
@@ -275,6 +296,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -285,6 +307,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
       role.ensure_permission_exists(:search_academic_editors, applies_to: Paper)
@@ -294,14 +317,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
-
-      # Tasks
-      task_klasses = Task.descendants
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Handling editors cannot view, edit, or otherwise do anything on the
       # BillingTask, the ChangesForAuthorTask, or the PaperEditorTast
-      task_klasses -= [
-        PlosBilling::BillingTask,
+      task_klasses = STANDARD_TASKS - [
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::PaperEditorTask
       ]
@@ -340,6 +360,7 @@ class JournalFactory
       role.ensure_permission_exists(:start_discussion, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
@@ -354,6 +375,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
@@ -366,16 +388,16 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -392,6 +414,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
@@ -406,6 +429,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit_related_articles, applies_to: Paper)
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper)
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper)
+      role.ensure_permission_exists(:perform_similarity_check, applies_to: Paper)
       role.ensure_permission_exists(:reactivate, applies_to: Paper, states: ['withdrawn'])
       role.ensure_permission_exists(:register_decision, applies_to: Paper)
       role.ensure_permission_exists(:rescind_decision, applies_to: Paper)
@@ -418,16 +442,16 @@ class JournalFactory
       role.ensure_permission_exists(:view_decisions, applies_to: Paper)
       role.ensure_permission_exists(:view_user_role_eligibility_on_paper, applies_to: Paper)
       role.ensure_permission_exists(:withdraw, applies_to: Paper)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
 
       # Tasks
-      task_klasses = Task.descendants
-      task_klasses -= [PlosBilling::BillingTask]
-      task_klasses.each do |klass|
+      STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
+        role.ensure_permission_exists(:manage_scheduled_events, applies_to: klass)
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:edit_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
@@ -444,6 +468,7 @@ class JournalFactory
 
       # Users
       role.ensure_permission_exists(:manage_users, applies_to: Journal)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
@@ -453,6 +478,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_participant, applies_to: Task)
       role.ensure_permission_exists(:view, applies_to: Task)
       role.ensure_permission_exists(:view_participants, applies_to: Task)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
     end
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
@@ -460,7 +486,7 @@ class JournalFactory
                        participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
-      task_klasses = Task.submission_task_types
+      task_klasses = SUBMISSION_TASKS
 
       # AEs cannot view Billing task, Register Decision tasks, or
       # Changes For Author tasks. However, AEs can view all
@@ -470,7 +496,7 @@ class JournalFactory
         PlosBioTechCheck::ChangesForAuthorTask,
         TahiStandardTasks::RegisterDecisionTask
       ]
-      task_klasses << TahiStandardTasks::ReviewerReportTask
+      task_klasses += [TahiStandardTasks::ReviewerReportTask]
       task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
@@ -490,8 +516,7 @@ class JournalFactory
     Role.ensure_exists(Role::FREELANCE_EDITOR_ROLE, journal: @journal)
 
     Role.ensure_exists(Role::BILLING_ROLE, journal: @journal, participates_in: [Task]) do |role|
-      task_klasses = Task.descendants
-      task_klasses.each do |klass|
+      (STANDARD_TASKS + [PlosBilling::BillingTask]).each do |klass|
         role.ensure_permission_exists(:view_discussion_footer, applies_to: klass)
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass)
@@ -500,6 +525,8 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask)
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal)
       role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: CardVersion)
+      role.ensure_permission_exists(:view_recent_activity, applies_to: Paper)
     end
   end
 end

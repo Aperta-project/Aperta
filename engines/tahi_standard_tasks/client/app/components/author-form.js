@@ -134,23 +134,32 @@ export default Component.extend({
   saveAuthor() {
     this.get('authorProxy').validateAll();
     if(this.get('authorProxy.errorsPresent')) { return; }
-    this.get('author').save().then(() => {
+    this.get('author').save()
+    .then(() => {
       this.get('saveSuccess')();
+    })
+    .catch(response => {
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
     });
   },
 
   saveNewAuthor() {
     const author = this.get('author');
-    author.save().then(savedAuthor => {
-      author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+    author.save()
+    .then(savedAuthor => {
+      author.get('nestedQuestionAnswers').toArray().forEach(function(answer) {
         const value = answer.get('value');
-        if(value || value === false){
+        if (value || value === false) {
           answer.set('owner', savedAuthor);
           answer.save();
         }
       });
-
       this.get('saveSuccess')();
+    })
+    .catch(response => {
+      let authorProxy = this.get('authorProxy');
+      authorProxy.displayValidationErrorsFromResponse(response);
     });
   },
 
@@ -211,7 +220,7 @@ export default Component.extend({
     currentAddressCountrySelected(data) {
       this.set('author.currentAddressCountry', data.text);
     },
-    
+
     selectAuthorConfirmation(status) {
       this.set('author.coAuthorState', status);
     },

@@ -3,6 +3,7 @@
                         activeInvitation=activeInvitation
                         activeInvitationState=activeInvitationState
                         composedInvitation=composedInvitation
+                        owner=task
                         destroyInvite=(action 'destroyInvite')
                         saveInvite=(action 'saveInvite')
                         setRowState=(action 'toggleActiveInvitation')
@@ -21,16 +22,17 @@
                         queryParameter="query"
                         inputId="invitation-recipient"
                         placeholder=placeholder
-                        errorMessage=pendingInvitation.errors.email.firstObject.message
+                        errorMessage=emailErrorMessage
                         parseResponseFunction=parseUserSearchResponse
                         resultText=autoSuggestSelectedText
                         itemSelected="didSelectUser"
                         inputChanged="inputChanged"
+                        focusOut="focusOut"
                         itemDisplayTextFunction=displayUserSelected
                         as |user|}}
           {{user.full_name}} &lt;{{user.email}}&gt;
         {{/auto-suggest}}
-        <button class="button-secondary button--green invitation-email-entry-button {{unless selectedUser "button--disabled"}}"
+        <button class="button-secondary button--green invitation-email-entry-button {{if disableButton "button--disabled"}}"
                 {{action "createInvitation"}}>
           Add to Queue
         </button>

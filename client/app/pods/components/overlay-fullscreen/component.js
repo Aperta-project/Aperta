@@ -58,6 +58,15 @@ export default Ember.Component.extend({
   **/
   to: 'overlay-drop-zone',
 
+
+  /**
+   * Tells the overlay whether or not to use ember-wormhole
+   *  @property wormhole
+   *  @type Boolean
+   *  @default true
+   **/
+  wormhole: true,
+
   /**
    *  Text that will be displayed as the overlay title.
    *  This property is passed to `overlay-fullscreen-layout`.
@@ -112,6 +121,7 @@ export default Ember.Component.extend({
    *  @required
   **/
   visible: false,
+  enableClose: true,
 
   init() {
     this._super(...arguments);

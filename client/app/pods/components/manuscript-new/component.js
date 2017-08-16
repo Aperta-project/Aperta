@@ -22,6 +22,10 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   hasTitle: computed.notEmpty('paper.title'),
 
   actions: {
+    titleChanged(contents) {
+      this.set('paper.title', contents);
+    },
+
     selectJournal(journal) {
       this.set('paper.journal', journal);
       this.set('paper.paperType', null);
@@ -40,8 +44,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       this.set('paper.paperType', null);
     },
 
-    fileAdded(file){
-      let check = checkType(file.name, this.get('fileTypes'));
+    fileAdded(upload){
+      let check = checkType(upload.files[0].name, this.get('fileTypes'));
       if (!check.error) {
         this.set('paper.fileType', check['acceptedFileType']);
         this.set('isSaving', true);

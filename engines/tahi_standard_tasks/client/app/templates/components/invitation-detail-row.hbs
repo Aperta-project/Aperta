@@ -24,10 +24,15 @@
               <div class="invitation-item-review-completed-icon">
                 {{partial "svg/check"}}
               </div>
-              <span>Completed {{format-date invitation.reviewerReport.statusDateTime format="MMM D, YYYY"}}</span>
+              <span>Completed {{format-date invitation.reviewerReport.statusDatetime format="MMM D, YYYY"}}</span>
             {{else}}
-              <span>Pending</span><br>
-              <span class='not-bold'>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
+              <span>
+                {{#if invitation.reviewerReport.dueAt}}
+                  Review due {{format-date invitation.reviewerReport.dueAt format="MMM D, YYYY"}}
+                {{else}}
+                  Review pending
+                {{/if}}
+              </span>
             {{/if}}
           {{else}}
             <span>Accepted {{format-date invitation.acceptedAt format="MMM D, YYYY"}}</span>
@@ -41,7 +46,7 @@
     </div>
     <div class="invitation-item-body-preview">
       {{#if invitation.declined}}
-        {{strip-html invitation.declineReason}}
+        {{strip-html (space-out-breaks invitation.declineReason)}}
       {{else}}
         {{strip-html invitation.body}}
       {{/if}}
@@ -124,11 +129,11 @@
       <div class="invitation-item-decline-info">
         <p>
           <div class="invitation-item-decline-title">Reasons</div>
-          {{unbound (break-to-tag invitation.declineReason)}}
+          {{{invitation.declineReason}}}
         </p>
         <p>
           <div class="invitation-item-decline-title">Reviewer Suggestions</div>
-          {{unbound (break-to-tag invitation.reviewerSuggestions)}}
+          {{{invitation.reviewerSuggestions}}}
         </p>
       </div>
       <hr>
@@ -150,9 +155,13 @@
 </div>
 {{else if (eq uiState "edit")}}
   <div class="invitation-item-details">
-    {{content-editable value=invitation.body
-                       class="invitation-edit-body"
-                       key-up=(action "saveDuringType" invitation)}}
+    {{rich-text-editor
+      value=invitation.body
+      data-editor='invitation-edit-body'
+      class="invitation-edit-body"
+      onContentsChanged=(action "updateContents")
+      disabled=owner.completed
+    }}
 
     {{link-alternate
       invitation=invitation

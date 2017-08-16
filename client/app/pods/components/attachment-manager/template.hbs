@@ -1,12 +1,19 @@
 {{#if showDescription}}
   <p class="description">
-    {{#unless disabled}}
+    {{#unless (and disabled (not preview))}}
       {{{description}}}
     {{/unless}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    {{/if}}
   </p>
 {{/if}}
 
 {{#each attachments as |attachment|}}
+  {{#if attachment.readyIssuesArray.length}}
+    {{card-content/validation-errors errors=attachment.readyIssuesArray}}
+  {{/if}}
+
   {{attachment-item accept=accept
                     attachment=attachment
                     disabled=disabled
@@ -17,26 +24,32 @@
                     cancelUpload=attrs.cancelUpload
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment}}
+                    uploadFinished=attrs.updateAttachment
+                    content=content}}
 {{/each}}
 
 {{#each fileUploads as |f|}}
   {{upload-preview upload=f}}
 {{/each}}
 
+<div>
+  {{error-message message=uploadErrorMessage displayIcon=true}}
+</div>
+
 {{#if showAddButton}}
-  <div class="button-secondary button--green fileinput-button {{if (or uploadInProgress disabled) "button--disabled"}}">
+  <div class="button-secondary button--green fileinput-button {{if disableAddButton "button--disabled"}}">
     {{buttonText}}
     <div class="{{if uploadInProgress "hidden"}}">
-      {{s3-file-uploader class="add-new-attachment"
+      {{file-uploader class="add-new-attachment"
                          accept=accept
-                         filePath=filePath
+                         filePrefix=filePath
                          multiple=multiple
-                         disabled=disabled
-                         uploadProgress=(action "uploadProgress")
-                         uploadFinished=(action "uploadFinished")
-                         uploadFailed=(action "uploadFailed")
-                         fileAdded=(action "fileAdded")}}
+                         disabled=disableAddButton
+                         content=content
+                         addingFileFailed=(action "uploadError")
+                         progress=(action "uploadProgress")
+                         done=(action "uploadFinished")
+                         start=(action "fileAdded")}}
     </div>
   </div>
 {{/if}}

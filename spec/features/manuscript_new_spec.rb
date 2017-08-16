@@ -10,7 +10,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
 
   let(:dashboard) { DashboardPage.new }
 
-  scenario 'failure' do
+  scenario 'failure', flaky: true do
     with_aws_cassette('manuscript-new') do
       login_as(user, scope: :user)
       visit '/'
@@ -23,7 +23,7 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
   end
 
   def paper_has_uploaded_manuscript
-    paper = Paper.find_by(title: 'Paper Title')
+    paper = Paper.find_by(title: '<p>Paper Title</p>')
     paper.try(:file).try(:url)
   end
 

@@ -1,25 +1,38 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
+  <p>
+    Please ensure that the title and abstract text you enter below exactly
+    matches what is in your manuscript file.
+  </p>
+  <p> 
+    Fields marked with an <i class="asterisk-field">*</i> are required
+  </p>
   <div class="title-and-abstract">
     <div class="form-group qa-paper-title">
-       <h3>Title</h3>
-        {{format-input name=paperTitle
-                       value=task.paperTitle
-                       class="form-textarea"
-                       disabled=isNotEditable
-                       focus-out=(action "focusOut") }}
-
+      <h3 class="title-and-abstract-header">Title </h3>
+        {{rich-text-editor
+          editorStyle='basic'
+          value=task.paperTitle
+          ident='article-title-input'
+          class='article-title-input'
+          onContentsChanged=(action 'titleChanged')
+          disabled=isNotEditable
+          errorMessages=paperTitleError
+        }}
     </div>
+
     <div class="form-group qa-paper-abstract">
-       <h3>Abstract</h3>
-        {{format-input name=paperAbstract
-                       value=task.paperAbstract
-                       class="form-textarea"
-                       disabled=isNotEditable
-                       focus-out=(action "focusOut") }}
-
+       <h3 class="title-and-abstract-header">Abstract </h3>
+        {{rich-text-editor
+          editorStyle='basic'
+          value=task.paperAbstract
+          ident='article-abstract-input'
+          class='article-abstract-input'
+          onContentsChanged=(action 'abstractChanged')
+          disabled=isNotEditable
+          errorMessages=paperAbstractError
+        }}
     </div>
-
   </div>
 </div>

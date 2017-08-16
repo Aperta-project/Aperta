@@ -5,9 +5,9 @@ machine:
 
   ruby:
     version:
-      2.2.4 # when changing ruby versions, also update the cache_directory path below
+      2.2.6 # when changing ruby versions, also update the cache_directory path below
   node:
-    version: 4.7.1
+    version: 6.11.1
 
   environment:
     RAILS_ENV: test
@@ -16,13 +16,13 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "/opt/circleci/.rvm/gems/ruby-2.2.4@tahi"
+    - "/opt/circleci/.rvm/gems/ruby-2.2.6@tahi"
     - "client/node_modules"
     - "client/bower_components"
 
   pre:
     - gem update --system
-    - gem install bundler -v '1.12.5'
+    - gem install bundler -v '1.15.3'
     - bundle config --global jobs 7
     - bundle config --global without staging:production
 
@@ -41,14 +41,15 @@ database:
   override:
     - bundle exec rake db:create db:schema:load
   post:
-    # npm install here so that it is cached by circle for parallel tests
-    - npm install && bundle exec rake ember:install
+    - bundle exec rake ember:install:
+        timeout: 900 # 15 minutes
 
 
 ## Customize test commands
 test:
   override:
-    - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
+    - bundle exec rake circleci:qunit:
+       parallel: true
     - bundle exec rspec -p 30 -t ~js --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec-unit.xml:
         timeout: 1800
         parallel: true

@@ -1,13 +1,45 @@
-<label class="content-text">{{{content.text}}}</label>
+<label class="content-text">{{{content.text}}}
+  {{#if content.isRequired}}
+    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+  {{/if}}
+</label>
 <div>
-  {{#each content.possibleValues as |opt|}}
+  {{#if isText}}
+    {{#each content.possibleValues as |opt|}}
+      <label class="option">
+        {{radio-button
+          selection=answer.value
+          value=opt.value
+          disabled=disabled
+          content=content
+          action=(action "valueChanged")}}
+        <span class="card-content-radio-label">{{{opt.label}}}</span>
+      </label>
+    {{/each}}
+  {{else }}
     <label class="option">
       {{radio-button
         selection=answer.value
-        value=opt.value
+        value=true
         disabled=disabled
+        content=content
         action=(action "valueChanged")}}
-      <span class="card-content-radio-label">{{{opt.label}}}</span>
+      <span class="card-content-radio-label">Yes</span>
     </label>
-  {{/each}}
+    <label class="option">
+      {{radio-button
+        selection=answer.value
+        value=false
+        disabled=disabled
+        content=content
+        action=(action "valueChanged")}}
+      <span class="card-content-radio-label">No</span>
+    </label>
+  {{/if}}
 </div>
+
+{{card-content/display-children
+  content=content
+  owner=owner
+  disabled=disabled
+  preview=preview}}

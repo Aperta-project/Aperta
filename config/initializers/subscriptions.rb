@@ -3,8 +3,6 @@
 #
 # For event stream subscriptions, check out event_stream_subscribers.rb
 #
-
-# rubocop:disable Style/AlignParameters
 Subscriptions.configure do
   add '.*', \
       EventLogger
@@ -17,9 +15,6 @@ Subscriptions.configure do
   add 'paper:initially_submitted', \
       Paper::Submitted::SnapshotPaper,
       Paper::Submitted::EmailCreator
-
-  add 'paper:updated', \
-      Paper::Updated::MarkTitleAndAbstractIncomplete
 
   add 'discussion_reply:created', \
       DiscussionReply::Created::EmailPeopleMentioned,
@@ -38,4 +33,3 @@ Subscriptions.configure do
   add 'manuscript_attachment:updated', \
       ManuscriptAttachment::ProcessManuscript
 end
-# rubocop:enable Style/AlignParameters

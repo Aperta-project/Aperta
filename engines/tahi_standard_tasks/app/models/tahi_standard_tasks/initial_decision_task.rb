@@ -12,6 +12,7 @@ module TahiStandardTasks
     end
 
     def task_added_to_paper(paper)
+      super
       paper.update_column(:gradual_engagement, true)
     end
 

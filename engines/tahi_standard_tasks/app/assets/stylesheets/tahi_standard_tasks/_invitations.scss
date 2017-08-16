@@ -1,5 +1,6 @@
 $invite-padding-vertical: 1.5rem;
 $invite-padding-horizontal: 2rem;
+$invite-padding-bottom: 2.5rem;
 $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 
 .invitees, .assignments {
@@ -49,21 +50,8 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
   font-style: italic;
 }
 
-
-/* Invitation body content-editable
----------------------------------------------------------------------------- */
-
-.invitation-show-body,
-.invitation-edit-body {
-  padding: 0.75rem 1.5rem;
-  white-space: pre-wrap;
-}
-
 .invitation-edit-body {
   overflow: auto;
-  max-height: 300px;
-  border: 1px solid #bababa;
-  border-radius: 5px;
 }
 
 
@@ -203,7 +191,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-full-name {
-  width: 32%;
+  width: 30%;
   cursor: pointer;
   padding-left: 0.5rem;
 }
@@ -213,7 +201,7 @@ $invite-padding: $invite-padding-vertical $invite-padding-horizontal;
 }
 
 .invitation-item-status {
-  width: 18%;
+  width: 20%;
   cursor: pointer;
 
   .not-bold {

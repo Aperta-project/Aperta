@@ -50,7 +50,8 @@ class DecisionAttachmentsController < ApplicationController
   end
 
   def update_attachment
-    attachment = task.attachments.find(params[:id])
+    attachment = task.attachments.find_by_id(params[:id])
+    attachment ||= decision.attachments.find(params[:id])
     requires_user_can :edit, attachment.revise_task
     attachment.update_attribute(:status, 'processing')
     DownloadAttachmentWorker.perform_async(

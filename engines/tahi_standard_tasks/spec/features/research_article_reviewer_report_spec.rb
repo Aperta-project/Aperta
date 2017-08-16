@@ -1,4 +1,5 @@
 require 'rails_helper'
+include RichTextEditorHelpers
 
 feature 'Reviewer filling out their research article reviewer report', js: true do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
@@ -10,7 +11,7 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       journal: journal,
       uses_research_article_reviewer_report: true
   end
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
 
   let(:paper_page) { PaperPage.new }
   let!(:reviewer) { create :user }
@@ -38,6 +39,8 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
 
   before do
     assign_reviewer_role paper, reviewer
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
 
     login_as(reviewer, scope: :user)
     visit "/"
@@ -60,13 +63,13 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
-      'I have no competing interests'
+    wait_for_editors # Wait for rich-text editors to instantiate
+
+    t.fill_in_report 'reviewer_report--competing_interests--detail' => 'I have no competing interests'
     t.submit_report
     t.confirm_submit_report
 
-    expect(page).to have_selector('.answer-text',
-      text: 'I have no competing interests')
+    expect(page).to have_selector('.answer-text', text: 'I have no competing interests')
   end
 
   scenario 'A review can see their previous rounds of review' do
@@ -77,8 +80,10 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
 
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
-    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
-      'answer for round 0'
+
+    wait_for_editors # Wait for rich-text editors to instantiate
+
+    t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 0'
 
     t.submit_report
     t.confirm_submit_report
@@ -97,18 +102,16 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
       .first.accept_invitation!
 
     Page.view_paper paper
-    t = paper_page.view_task("Review by #{reviewer.full_name}",
-      ReviewerReportTaskOverlay)
+    t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
-      'answer for round 1'
+    wait_for_editors # Wait for rich-text editors to instantiate
+
+    t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 1'
 
     t.submit_report
     t.confirm_submit_report
 
-    t.ensure_review_history(
-      title: 'v0.0', answers: ['answer for round 0']
-    )
+    t.ensure_review_history(title: 'v0.0', answers: ['answer for round 0'])
 
     # Revision 2
     register_paper_decision(paper, "major_revision")
@@ -121,8 +124,9 @@ feature 'Reviewer filling out their research article reviewer report', js: true 
     Page.view_paper paper
     t = paper_page.view_task("Review by #{reviewer.full_name}", ReviewerReportTaskOverlay)
 
-    t.fill_in_report 'reviewer_report--competing_interests--detail' =>
-      'answer for round 2'
+    wait_for_editors # Wait for rich-text editors to instantiate
+
+    t.fill_in_report 'reviewer_report--competing_interests--detail' => 'answer for round 2'
 
     t.ensure_review_history(
       { title: 'v0.0', answers: ['answer for round 0'] },

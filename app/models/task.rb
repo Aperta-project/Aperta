@@ -1,9 +1,10 @@
+# Base class for all types of Task
 class Task < ActiveRecord::Base
   include Answerable
   include EventStream::Notifiable
-  include NestedQuestionable
   include Commentable
   include Snapshottable
+  include CustomCastTypes
 
   DEFAULT_TITLE = 'SUBCLASSME'.freeze
   DEFAULT_ROLE_HINT = 'user'.freeze
@@ -19,6 +20,10 @@ class Task < ActiveRecord::Base
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
   scope :of_type, -> (task_type) { where(type: task_type) }
+
+  # TODO: Remove in APERTA-9787
+  # Because all tasks should have a card then
+  scope :with_card, -> { where.not(card_version_id: nil) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -39,17 +44,18 @@ class Task < ActiveRecord::Base
     class_name: 'Assignment',
     as: :assigned_to
 
-  has_many :permission_requirements, as: :required_on, dependent: :destroy
-  has_many \
-    :required_permissions,
-    through: :permission_requirements,
-    source: :permission
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
-  has_many :attachments, as: :owner, class_name: 'AdhocAttachment', dependent: :destroy
+  has_many :attachments,
+           as: :owner,
+           class_name: 'AdhocAttachment',
+           dependent: :destroy
 
   belongs_to :phase, inverse_of: :tasks
+  belongs_to :task_template
+
+  belongs_to :card_version
 
   acts_as_list scope: :phase
 
@@ -141,8 +147,11 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def task_added_to_paper(paper)
-    # no-op to be overriden and used in the paper factory
+  # called in the paper factory both as part of paper creation and when an
+  # individual task is added to the workflow.  Remember to call super when
+  # subclassing
+  def task_added_to_paper(_paper)
+    card_version.try(:create_default_answers, self)
   end
 
   def journal_task_type
@@ -155,8 +164,12 @@ class Task < ActiveRecord::Base
   end
 
   def submission_task?
-    return false if Task.submission_types.blank?
-    Task.submission_types.include?(self.class.name)
+    # TODO: Remove Task.submission_types check in APERTA-9787
+    if self.class.name == 'CustomCardTask'
+      card_version.required_for_submission
+    else
+      Task.submission_types.include?(self.class.name)
+    end
   end
 
   def array_attributes
@@ -175,19 +188,13 @@ class Task < ActiveRecord::Base
     participations.where(
       user: user,
       role: journal.task_participant_role,
-      assigned_to: self,
+      assigned_to: self
     ).first_or_create!
   end
 
   def participants
     participant_ids = participations.map(&:user).uniq.map(&:id)
     User.where(id: participant_ids)
-  end
-
-  def participants=(users)
-    participations.destroy_all
-    save! if new_record?
-    users.each { |user| add_participant user }
   end
 
   def reviewer
@@ -198,6 +205,16 @@ class Task < ActiveRecord::Base
   def update_responder
     UpdateResponders::Task
   end
+
+  ########### Paper Lifecycle Hooks ########
+  # A Task can add specific functionality to a paper via a method on the task
+  # instance itself rather than having to rely on ActiveSupport::Notifications
+  # The paper is passed in directly to maintain any attributes that might be
+  # set on the paper in memory, for instance ``
+  def after_paper_submitted(paper)
+    # no-op for Task
+  end
+  ##########################################
 
   # Implement this method for Cards that inherit from Task
   def after_update
@@ -254,6 +271,11 @@ class Task < ActiveRecord::Base
   # subclass type (ie TahiStandardTasks::ReviewerReportTask)
   def owner_type_for_answer
     'Task'
+  end
+
+  def display_status
+    return :active_check if completed
+    :check
   end
 
   private

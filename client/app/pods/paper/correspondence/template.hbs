@@ -1,0 +1,19 @@
+{{paper-control-bar paper=paper}}
+<main id="main-content" class="main-content correspondence-history-screen" role="main">
+  <div id="correspondence-history" class="main-content-section">
+    <div class="base-layout">
+      <h1>Correspondence History</h1>
+
+        {{#if (can "manage_workflow" paper)}}
+          {{#link-to
+            'paper.correspondence.new'
+            paper
+            id='add-correspondence-button'}}
+            {{fa-icon icon="plus-square-o"}} &nbsp; Add Correspondence
+          {{/link-to}}
+        {{/if}}
+      {{correspondence-list model=sortedSentAt paper=paper}}
+    </div>
+  </div>
+</main>
+{{outlet}}

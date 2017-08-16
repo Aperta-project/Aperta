@@ -36,7 +36,6 @@ module TahiStandardTasks
                 :grant_number,
                 :website,
                 :task_id,
-                :card_version_id,
                 author_ids: [])
     end
   end

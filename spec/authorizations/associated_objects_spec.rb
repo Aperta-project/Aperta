@@ -10,7 +10,8 @@ DESC
   let!(:user) { FactoryGirl.create(:user) }
   let!(:journal){ Authorizations::FakeJournal.create! }
   let!(:paper) { Authorizations::FakePaper.create!(fake_journal: journal) }
-  let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
+  let!(:card_version) { Authorizations::FakeCardVersion.create! }
+  let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper, fake_card_version: card_version) }
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
 
   before(:all) do
@@ -22,6 +23,7 @@ DESC
     permission action: 'view', applies_to: Authorizations::FakePaper.name
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'view', applies_to: Authorizations::FakeTaskThing.name
+    permission action: 'view', applies_to: Authorizations::FakeCardVersion.name
   end
 
   role :for_viewing do
@@ -30,6 +32,7 @@ DESC
     has_permission \
       action: 'view',
       applies_to: Authorizations::FakeTaskThing.name
+    has_permission action: 'view', applies_to: Authorizations::FakeCardVersion.name
   end
 
   after do
@@ -151,6 +154,39 @@ DESC
         expect(
           user.filter_authorized(:view, paper.fake_task_things).objects
         ).to eq([task_thing])
+      end
+    end
+
+    context <<-DESC do
+      and authorizations ARE configured to look up objects through a
+      HAS_MANY :THROUGH association when the :THROUGH model
+      :BELONGS_TO the HAS_MANY model
+    DESC
+      before do
+        Authorizations.configure do |config|
+          config.assignment_to(
+            Authorizations::FakePaper,
+            authorizes: Authorizations::FakeCardVersion,
+            via: :fake_card_versions
+          )
+        end
+        assign_user user, to: paper, with_role: role_for_viewing
+      end
+
+      it 'grants them access' do
+        expect(user.can?(:view, card_version)).to be(true)
+      end
+
+      it 'includes those objects when filtering for authorization' do
+        expect(
+          user.filter_authorized(:view, Authorizations::FakeCardVersion.all).objects
+        ).to eq([card_version])
+      end
+
+      it 'includes those objects when filtering by the association' do
+        expect(
+          user.filter_authorized(:view, paper.fake_card_versions).objects
+        ).to eq([card_version])
       end
     end
 

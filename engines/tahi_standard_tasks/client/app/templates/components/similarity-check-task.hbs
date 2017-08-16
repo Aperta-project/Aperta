@@ -1,15 +1,78 @@
- {{partial "task-completed-section"}}
+{{partial "task-completed-section"}}
 
 <div>
+  {{#each latestVersionPrimaryFailedChecks as |check|}}
+    {{flash-message remove=(action "dismissMessage")
+                    message=(format-report-error check)}}
+  {{/each}}
+
+  {{#unless confirmVisible}}
+    {{#if showAutomatedReportMsg}}
+      <div class="auto-report-off">
+        <p><strong>Automated similarity check is disabled:</strong></p>
+      </div>
+    {{else if (not automatedReportsDisabled)}}
+      <div class="automated-report-status">
+        <div class="messages">
+         <p>
+            <i class="fa fa-gear"></i>
+            <strong>Automated similarity check is active:</strong>
+            This manuscript will be sent to iThenticate on {{versionedTextDescriptor}}.
+          </p>
+          <p>
+            Manually generating a report below will disable the automated
+            similarity check for this manuscript.
+          </p>
+        </div>
+      </div>
+    {{/if}}
+
+    <p>
+      Click below to generate a similarity report via iThenticate.
+      If a report was generated for a previous version it can be found in the version history.
+    </p>
+    <br>
+  {{/unless}}
+
+  {{#if latestVersionHasSuccessfulChecks}}
+    <div class="latest-versioned-text">
+      <h3>Similarity Check Report</h3>
+
+      {{#each sortedChecks as |check|}}
+        {{similarity-check check=check}}
+      {{/each}}
+    </div>
+  {{/if}}
+
   {{#if confirmVisible}}
-  <div class="confirm-container">
-      <h4>Are you sure?</h4>
+    <div class="confirm-container">
+      <h4>
+        {{#if automatedReportsDisabled}}
+          Are you sure?
+        {{else}}
+          Manually generating the report will disable the automated similarity check for this manuscript
+        {{/if}}
+      </h4>
       <br>
       <button class="button-link button--white" {{action "cancel"}}>cancel</button>
-      <button class="button-secondary button--green delete-button" {{action "generateReport"}}>Generate Report</button>
-  </div>
+      <button class="button-secondary button--green generate-report" {{action "generateReport"}}>Generate Report</button>
+    </div>
+
   {{else}}
-  <p>Click below to generate a similarity report via iThenticate. If a report was generated for a previous version it can be found in the version history.</p><br>
-  <button class="button-primary button--green" {{ action "generateReport" }}>Generate Report</button>
+    <button class="button-primary button--green generate-confirm"
+            disabled={{disableReports}}
+            {{ action "confirmGenerateReport" }}>
+      Generate Report
+    </button>
+  {{/if}}
+
+  {{#if task.paper.hasSimilarityChecks }}
+    <hr>
+    <h3>Report History</h3>
+    {{#each task.paper.versionedTexts as |version|}}
+      {{#if (and version.hasSimilarityChecks (not version.isDraft))}}
+        {{similarity-check-bar version=version}}
+      {{/if}}
+    {{/each}}
   {{/if}}
 </div>

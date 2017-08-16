@@ -1,19 +1,20 @@
 require 'rails_helper'
 
-feature "Invite Reviewer", js: true do
+feature "Invite Reviewer", js: true, flaky: true do
   include InvitationFeatureHelpers
 
   let(:inviter) { create :user }
   let(:editor) { create :user }
   let(:paper) { FactoryGirl.create :paper, :submitted_lite }
-  let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
+  let(:task) { FactoryGirl.create :paper_reviewer_task, :with_loaded_card, paper: paper }
   let!(:invitation_no_feedback) do
     FactoryGirl.create(
       :invitation,
       :invited,
       task: task,
       invitee: editor,
-      inviter: inviter)
+      inviter: inviter
+    )
   end
   let!(:invitation) do
     FactoryGirl.create(
@@ -21,7 +22,8 @@ feature "Invite Reviewer", js: true do
       :invited,
       task: task,
       invitee: editor,
-      inviter: inviter)
+      inviter: inviter
+    )
   end
 
   let(:dashboard) { DashboardPage.new }
@@ -50,8 +52,8 @@ feature "Invite Reviewer", js: true do
     ensure_email_got_sent_to(inviter.email)
 
     invitation.reload
-    expect(invitation.decline_reason).to eq('reason for decline')
-    expect(invitation.reviewer_suggestions).to eq('new reviewer suggestions')
+    expect(invitation.decline_reason).to eq('<p>reason for decline</p>')
+    expect(invitation.reviewer_suggestions).to eq('<p>new reviewer suggestions</p>')
 
     invitation_no_feedback.reload
     # Invitation decline_reason and reviewer_suggestions are stored

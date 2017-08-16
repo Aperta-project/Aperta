@@ -11,6 +11,7 @@ class Journal < ActiveRecord::Base
   has_many :papers, inverse_of: :journal
   has_many :tasks, through: :papers, inverse_of: :journal
   has_many :cards, inverse_of: :journal
+  has_many :card_versions, through: :cards, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
   has_many :discussion_topics, through: :papers, inverse_of: :journal
@@ -90,6 +91,11 @@ class Journal < ActiveRecord::Base
 
   def self.valid_doi?(doi)
     !!(doi =~ DOI_FORMAT)
+  end
+
+  # Per https://confluence.plos.org/confluence/display/FUNC/DOI+Guidelines
+  def doi_journal_abbrev
+    doi_journal_prefix.split('.').last
   end
 
   def staff_admins

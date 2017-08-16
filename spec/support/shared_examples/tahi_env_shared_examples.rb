@@ -89,8 +89,63 @@ shared_examples_for 'dependent required env var' do |var:, dependent_key:, depen
   end
 end
 
+shared_examples_for 'dependent required array env var' do |var:, dependent_key:|
+  describe "Dependent required array env var: #{var}" do
+    it_behaves_like 'dependent required env var', var: var, dependent_key: dependent_key
+
+    describe 'dependent_key is true' do
+      around do |example|
+        # Use merge! so valid_env is modified since we want to run all
+        # subsequent examples with the dependent_key set to a value
+        ClimateControl.modify valid_env.merge!("#{dependent_key}": 'true') do
+          example.run
+        end
+      end
+
+      it_behaves_like 'required array env var', var: var
+    end
+  end
+end
+
+shared_examples_for 'required array env var' do |var:|
+  describe "Required array env var: #{var}" do
+    it 'shows up in the list of known about env vars' do
+      expect(TahiEnv.registered_env_vars[var.to_s]).to eq(
+        TahiEnv::RequiredEnvVar.new(var)
+      )
+    end
+
+    query_method_name = "#{var.downcase}?"
+    describe "TahiEnv.#{query_method_name}" do
+      it 'is required to be set' do
+        ClimateControl.modify valid_env.merge("#{var}": nil) do
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a string that contains a space-separated list of items, but was not set.  Allowed values are in the format \"server1 server2 server3\".")
+        end
+      end
+
+      it 'is required to a array value' do
+        ClimateControl.modify valid_env.merge("#{var}": '') do
+          expect(env.errors.full_messages).to include("Environment Variable: #{var} was expected to be set to a string that contains a space-separated list of items, but was not set.  Allowed values are in the format \"server1 server2 server3\".")
+        end
+      end
+
+      it "returns an array when set to 'server1 server2'" do
+        ClimateControl.modify valid_env.merge("#{var}": 'server1 server2') do
+          expect(TahiEnv.send(var.downcase)).to be_a Array
+        end
+      end
+
+      it 'returns splits a space-separated string into an array' do
+        ClimateControl.modify valid_env.merge("#{var}": 'server1 server2 server3') do
+          expect(TahiEnv.send(var.downcase).count).to be 3
+        end
+      end
+    end
+  end
+end
+
 shared_examples_for 'dependent required boolean env var' do |var:, dependent_key:|
-  describe "Dependent required booelan env var: #{var}" do
+  describe "Dependent required boolean env var: #{var}" do
     it_behaves_like 'dependent required env var', var: var, dependent_key: dependent_key
 
     describe 'dependent_key is true' do

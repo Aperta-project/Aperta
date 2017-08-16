@@ -87,15 +87,31 @@ $ov--card-breakpoint: 900px;
     position: relative;
     padding: 4rem $ov--card-side-pad;
 
+    .answer-container {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
 
-    // TODO: These need another home:
-    label {
-      padding-right: 25px;
+   .answer {
+      flex: 1 0 33%;
+      margin: 15px;
+    }
+
+    .additional-text {
+      flex: 1 0 35%;
+      margin: 15px;
+      min-width: 300px;
     }
 
     .model-question {
       margin: 0;
     }
+
+  }
+
+  .single-column .additional-text {
+    display: none;
   }
 }
 

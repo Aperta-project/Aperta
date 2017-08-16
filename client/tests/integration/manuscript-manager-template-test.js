@@ -160,7 +160,7 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
   });
 });
 
-test('User can enable a workflow as preprint eligibie', function(assert){
+test('User can enable a workflow as preprint eligible', function(assert){
   var adminJournal, journalTaskType, mmt;
   journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,
@@ -200,7 +200,7 @@ test('User can enable a workflow as preprint eligibie', function(assert){
   });
 });
 
-test('Preprint eligibie is hidden if feature flag is not set', function(assert){
+test('Preprint eligible is hidden if feature flag is not set', function(assert){
   var adminJournal, journalTaskType, mmt;
   journalTaskType = FactoryGuy.make('journal-task-type', {
     id: 1,

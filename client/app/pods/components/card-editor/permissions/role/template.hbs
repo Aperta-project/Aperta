@@ -17,13 +17,13 @@
 <td class="centered">
   {{check-box
       name=(concat role.name "-discussion-view")
-      checked=(readonly view_discussion_footerAllowed)
-      disabled=(readonly edit_discussion_footerAllowed)
+      checked=(readonly view_discussionAllowed)
+      disabled=(readonly edit_discussionAllowed)
       action=(action "toggleViewDiscussionPermission")}}
 </td>
 <td class="centered">
   {{check-box
       name=(concat role.name "-discussion-edit")
-      checked=(readonly edit_discussion_footerAllowed)
+      checked=(readonly edit_discussionAllowed)
       action=(action "toggleEditDiscussionPermission")}}
 </td>

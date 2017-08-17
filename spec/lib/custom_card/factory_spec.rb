@@ -111,8 +111,8 @@ describe CustomCard::Factory do
         custom_card_factory.first_or_create(card_configuration)
         expect(role.permissions.where(action: "view").count).to eq(2)
         expect(role.permissions.where(action: "edit").count).to eq(1)
-        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(1)
-        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(1)
+        expect(role.permissions.where(action: "view_discussion").count).to eq(2)
+        expect(role.permissions.where(action: "edit_discussion").count).to eq(1)
       end
     end
 
@@ -128,8 +128,8 @@ describe CustomCard::Factory do
         custom_card_factory.first_or_create(card_configuration)
         expect(role.permissions.where(action: "view").count).to eq(2)
         expect(role.permissions.where(action: "edit").count).to eq(0)
-        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(1)
-        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(0)
+        expect(role.permissions.where(action: "view_discussion").count).to eq(2)
+        expect(role.permissions.where(action: "edit_discussion").count).to eq(0)
       end
     end
 
@@ -145,8 +145,8 @@ describe CustomCard::Factory do
         custom_card_factory.first_or_create(card_configuration)
         expect(role.permissions.where(action: "view").count).to eq(0)
         expect(role.permissions.where(action: "edit").count).to eq(1)
-        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(0)
-        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(1)
+        expect(role.permissions.where(action: "view_discussion").count).to eq(0)
+        expect(role.permissions.where(action: "edit_discussion").count).to eq(1)
       end
     end
   end

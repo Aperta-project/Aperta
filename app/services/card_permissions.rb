@@ -7,11 +7,13 @@ class CardPermissions
     rest: [Permission::WILDCARD]
   }.freeze
 
+  STATELESS_ACTIONS = ['view', 'view_discussion'].freeze
+
   # Append to the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.
   def self.add_roles(card, action, roles)
-    if action == 'view'
-      append_roles_and_save(get_view_card_permission(card), roles)
+    if STATELESS_ACTIONS.include?(action)
+      append_roles_and_save(get_view_card_permission(card, action), roles)
       # Return an array, although there is only one permission to return, in
       # order to provide a consistent return value.
       [append_roles_and_save(
@@ -36,8 +38,8 @@ class CardPermissions
   # "reviewable" states, etc. This means that these roles use a different
   # permission.
   def self.set_roles(card, action, roles)
-    if action == 'view'
-      replace_roles_and_save(get_view_card_permission(card), roles)
+    if STATELESS_ACTIONS.include?(action)
+      replace_roles_and_save(get_view_card_permission(card, action), roles)
       # Return an array, although there is only one permission to return, in
       # order to provide a consistent return value.
       [replace_roles_and_save(
@@ -69,9 +71,9 @@ class CardPermissions
 
   # Return the view card permission for a given card, or create one if none
   # exists.
-  def self.get_view_card_permission(card)
+  def self.get_view_card_permission(card, action)
     Permission.ensure_exists(
-      'view',
+      action,
       applies_to: 'CardVersion',
       filter_by_card_id: card.id
     )

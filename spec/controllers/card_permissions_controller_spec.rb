@@ -80,7 +80,7 @@ describe CardPermissionsController do
       let(:action) { 'delete_all_cards' }
       it_behaves_like "an unauthenticated json request"
 
-      it "creates 2 new permissions, one for viewing the card and one for the task" do
+      it "fails" do
         stub_sign_in user
         expect { do_request }.to change { Permission.count }.by(0)
         expect(response.status).to be(422)

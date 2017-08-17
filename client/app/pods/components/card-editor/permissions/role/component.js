@@ -12,10 +12,10 @@ export default Ember.Component.extend({
 
   tagName: 'tr',
 
-  editAllowed: permissionExists('card', 'role', 'edit'),
   viewAllowed: permissionExists('card', 'role', 'view'),
-  edit_discussion_footerAllowed: permissionExists('card', 'role', 'edit_discussion_footer'),
-  view_discussion_footerAllowed: permissionExists('card', 'role', 'view_discussion_footer'),
+  editAllowed: permissionExists('card', 'role', 'edit'),
+  view_discussionAllowed: permissionExists('card', 'role', 'view_discussion'),
+  edit_discussionAllowed: permissionExists('card', 'role', 'edit_discussion'),
 
   togglePermission(permissionAction) {
     if (this.get(`${permissionAction}Allowed`)) {
@@ -28,7 +28,7 @@ export default Ember.Component.extend({
   actions: {
     toggleViewPermission() { this.togglePermission('view'); },
     toggleEditPermission() { this.togglePermission('edit'); },
-    toggleViewDiscussionPermission() { this.togglePermission('view_discussion_footer'); },
-    toggleEditDiscussionPermission() { this.togglePermission('edit_discussion_footer'); }
+    toggleViewDiscussionPermission() { this.togglePermission('view_discussion'); },
+    toggleEditDiscussionPermission() { this.togglePermission('edit_discussion'); }
   }
 });

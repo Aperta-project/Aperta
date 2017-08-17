@@ -38,6 +38,7 @@ export default Ember.Component.extend({
       window.PDFJS.cMapUrl = pdfjsroot + 'cmaps/';
       window.PDFJS.plosErrorCallback = function() {
         outerThis.set('paper.file.status', 'error');
+        outerThis.set('paper.previewFail', true);
       };
 
       this.loadPdf();

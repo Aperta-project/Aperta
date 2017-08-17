@@ -14,7 +14,7 @@ class CurrentUserSerializer < ActiveModel::Serializer
   side_load :permissions
 
   def permissions
-    object.filter_authorized(:view, object).serializable
+    object.filter_authorized(:*, object).serializable
   end
 
   def site_admin

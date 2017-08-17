@@ -15,11 +15,11 @@ describe TaskTemplate do
     end
 
     describe 'setting(name)' do
-      let(:setting_name) { 'foo_setting' }
       let(:result) do
         configurable.setting(setting_name)
       end
       context 'with an existing Setting' do
+        let(:setting_name) { 'foo_setting' }
         let!(:existing_setting) do
           FactoryGirl.create(:setting, name: setting_name, value: 'foo-on', owner: configurable)
         end
@@ -32,6 +32,7 @@ describe TaskTemplate do
       end
 
       context 'with a corresponding SettingTemplate' do
+        let(:setting_name) { 'foo_setting' }
         let!(:setting_template) do
           FactoryGirl.create(:setting_template,
                              setting_name: setting_name,
@@ -49,6 +50,25 @@ describe TaskTemplate do
 
         it 'associates the new setting to the setting template' do
           expect(result.setting_template).to eq(setting_template)
+        end
+      end
+
+      context 'with a corresponding integer settingTemplate' do
+        let(:setting_name) { 'bar_setting' }
+        let!(:setting_template) do
+          FactoryGirl.create(:setting_template,
+                             setting_name: setting_name,
+                             key: configurable.setting_template_key,
+                             value_type: 'integer',
+                             value: 42)
+        end
+
+        it '#all_settings returns all settings' do
+          expect(configurable.all_settings).to eq([{ name: 'bar_setting', value: 42 }])
+        end
+
+        it 'sets the default value for named setting from the template' do
+          expect(result.value).to eq(42)
         end
       end
     end

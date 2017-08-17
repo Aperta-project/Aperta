@@ -83,7 +83,7 @@ DESC
 
   describe '#serializable' do
     it "returns a hash of all the user's permissions for the returned object" do
-      results = user.filter_authorized(:view, Authorizations::FakePaper.all)
+      results = user.filter_authorized(:*, Authorizations::FakePaper.all)
       expect(results.serializable.map(&:as_json)).to eq([
         {
           id: 'fakePaper+1',
@@ -93,9 +93,7 @@ DESC
           },
           permissions: {
             read: { states: %w(*) },
-            write: { states: %w(in_progress) },
-            view: { states: %w(*) },
-            talk: { states: %w(in_progress in_review) }
+            view: { states: %w(*) }
           }
         },
         {
@@ -106,9 +104,7 @@ DESC
           },
           permissions: {
             read: { states: %w(*) },
-            write: { states: %w(in_progress) },
-            view: { states: %w(*) },
-            talk: { states: %w(in_progress in_review) }
+            view: { states: %w(*) }
           }
         }
       ].as_json)
@@ -137,11 +133,11 @@ DESC
         returns the permissions for all permissible assignments including
         combining the states for each role
       DESC
-        results = user.filter_authorized(:view, Authorizations::FakeTask.all)
+        results = user.filter_authorized(:*, Authorizations::FakeTask.all)
         permission_hash = results.serializable[0].as_json["permissions"]
 
         expect(permission_hash["edit"]["states"])
-          .to contain_exactly("unsubmitted", "*")
+          .to contain_exactly("*")
 
         expect(permission_hash["view"]["states"])
           .to contain_exactly("*")

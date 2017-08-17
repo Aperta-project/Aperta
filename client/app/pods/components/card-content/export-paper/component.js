@@ -12,11 +12,11 @@ export default Ember.Component.extend({
       if (this.get('disabled')) {
         return;
       }
-      const apexDelivery = this.get('store').createRecord('apex-delivery', {
+      const exportDelivery = this.get('store').createRecord('export-delivery', {
         task: this.get('task'),
         destination: this.get('destination')
       });
-      apexDelivery.save();
+      exportDelivery.save();
     }
   }
 });

@@ -1,12 +1,12 @@
-module ApexDelivery
+module ExportDelivery
   module DeliverySucceeded
     #
     # Sends an EventStream message, telling the browser to flash a success
-    # message. Triggered when an ApexDelivery has successfully completed.
+    # message. Triggered when an ExportDelivery has successfully completed.
     #
     class FlashSuccessMessage < FlashMessageSubscriber
       def user
-        apex_delivery.user
+        export_delivery.user
       end
 
       def message_type
@@ -19,12 +19,12 @@ module ApexDelivery
 
       private
 
-      def apex_delivery
+      def export_delivery
         @event_data[:record]
       end
 
       def short_title
-        title = apex_delivery.paper.short_title || 'Manuscript'
+        title = export_delivery.paper.short_title || 'Manuscript'
         title.truncate(20)
       end
     end

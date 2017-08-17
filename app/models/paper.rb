@@ -27,10 +27,8 @@ class Paper < ActiveRecord::Base
   has_many :question_attachments, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :adhoc_attachments, dependent: :destroy
-  has_one :file, as: :owner, dependent: :destroy,
-    class_name: 'ManuscriptAttachment'
-  has_one :sourcefile, as: :owner, dependent: :destroy,
-    class_name: 'SourcefileAttachment'
+  has_one :file,       as: :owner, dependent: :destroy, class_name: 'ManuscriptAttachment'
+  has_one :sourcefile, as: :owner, dependent: :destroy, class_name: 'SourcefileAttachment'
 
   # Everything else
   has_many :versioned_texts, dependent: :destroy
@@ -72,6 +70,23 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
   validates :title, presence: true
 
+  class InvalidPreprintDoiError < ::StandardError; end
+  PREPRINT_DOI_ARTICLE_NUMBER_LENGTH = 7
+  PREPRINT_DOI_PREFIX = "10.24196".freeze
+  PREPRINT_DOI_FORMAT = %r{
+    \A
+    #{PREPRINT_DOI_PREFIX}
+    /aarx\.
+    \d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH }}
+  \z}x
+
+  validates :preprint_doi_article_number,
+    format: {
+      with: %r{\A\d{#{PREPRINT_DOI_ARTICLE_NUMBER_LENGTH}}\z},
+      message: 'The Preprint DOI article number is not valid. It can only contain a string of integers',
+      if: proc { |paper| paper.preprint_doi_article_number.present? }
+  }
+
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
@@ -80,13 +95,17 @@ class Paper < ActiveRecord::Base
   pg_search_scope :pg_title_search,
                   against: :title,
                   using: {
-                    tsearch: {dictionary: "english"} # stems
+                    tsearch: { dictionary: "english" } # stems
                   }
 
   delegate :major_version, :minor_version,
            to: :latest_submitted_version, allow_nil: true
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
+
+  def self.find_preprint_doi_article_number(full_preprint_doi)
+    full_preprint_doi.match(/.+\.(\d+)/)[1]
+  end
 
   def file_type
     file.try(:file_type)
@@ -216,8 +235,8 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason, withdrawn_by_user|
-        withdrawal_reason || fail(ArgumentError, "withdrawal_reason must be provided")
-        withdrawn_by_user || fail(ArgumentError, "withdrawn_by_user must be provided")
+        withdrawal_reason || raise(ArgumentError, "withdrawal_reason must be provided")
+        withdrawn_by_user || raise(ArgumentError, "withdrawn_by_user must be provided")
         update(active: false)
         withdrawals.create!(
           previous_publishing_state: publishing_state,
@@ -232,7 +251,7 @@ class Paper < ActiveRecord::Base
       # AASM doesn't currently allow transitions to dynamic states, so this iterator
       # explicitly defines each transition
       Paper.aasm.states.map(&:name).each do |state|
-        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+        transitions from: :withdrawn, to: state, after: :set_editable!, if: proc { previous_state_is?(state) }
       end
       before do
         update(active: true)
@@ -288,12 +307,13 @@ class Paper < ActiveRecord::Base
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,
       'assignments.assigned_to_id' => id,
-      'assignments.assigned_to_type' => 'Paper')
+      'assignments.assigned_to_type' => 'Paper'
+    )
   end
 
   def self.find_by_id_or_short_doi(id)
     return find_by_short_doi(id) if id.to_s =~ Journal::SHORT_DOI_FORMAT
-    return find(id)
+    find(id)
   end
 
   def inactive?
@@ -328,7 +348,7 @@ class Paper < ActiveRecord::Base
   # Returns the corresponding authors. When there are no authors
   # marked as corresponding then it defaults to the creator.
   def corresponding_authors
-    corresponding_authors = authors.select { |au| au.corresponding? }
+    corresponding_authors = authors.select(&:corresponding?)
     corresponding_authors << creator if corresponding_authors.empty?
     corresponding_authors.compact
   end
@@ -396,16 +416,6 @@ class Paper < ActiveRecord::Base
     tasks.where(type: klass_name)
   end
 
-  # Public: Returns the paper title if it's present, otherwise short title is shown.
-  #
-  # Examples
-  #
-  #   display_title
-  #   # => "Studies on the effect of humans living with other humans"
-  #   # or
-  #   # => "some-short-title"
-  #
-  # Returns a String.
   def display_title(sanitized: true)
     sanitized ? strip_tags(title) : title.html_safe
   end
@@ -446,7 +456,7 @@ class Paper < ActiveRecord::Base
   # TODO: Remove in APERTA-9787
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
-    tasks.metadata.pluck(:completed).all?
+    tasks.metadata.select(&:submission_task?).map(&:completed).all?
   end
 
   def required_for_submission_tasks_completed?(*)
@@ -604,6 +614,26 @@ class Paper < ActiveRecord::Base
 
   def manually_similarity_checked
     similarity_checks.exists? automatic: false
+  end
+
+  def ensure_preprint_doi!
+    return preprint_doi_article_number if preprint_doi_article_number.present?
+
+    with_lock do
+      next_article_number = PreprintDoiIncrementer.next_article_number!
+      update preprint_doi_article_number: next_article_number
+    end
+    preprint_doi_article_number
+  end
+
+  def aarx_doi
+    return nil unless preprint_doi_suffix
+    PREPRINT_DOI_PREFIX + "/" + preprint_doi_suffix
+  end
+
+  def preprint_doi_suffix
+    return nil unless preprint_doi_article_number
+    "aarx." + preprint_doi_article_number
   end
 
   private

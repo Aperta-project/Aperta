@@ -73,6 +73,7 @@ class CardContent < ActiveRecord::Base
       'sendback-reason': ['boolean'],
       'numbered-list': [nil],
       'bulleted-list': [nil],
+      'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -133,6 +134,10 @@ class CardContent < ActiveRecord::Base
         'allow-multiple-uploads' => allow_multiple_uploads,
         'allow-file-captions' => allow_file_captions,
         'allow-annotations' => allow_annotations
+      }
+    when 'if'
+      {
+        'condition' => condition
       }
     when 'short-input', 'paragraph-input'
       {

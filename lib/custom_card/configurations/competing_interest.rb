@@ -1,4 +1,6 @@
 # rubocop:disable Metrics/MethodLength
+require_relative "./base"
+
 module CustomCard
   module Configurations
     #
@@ -11,10 +13,29 @@ module CustomCard
         "Competing Interests"
       end
 
-      def self.excluded_view_permissions
+      def self.view_role_names
+        ["Academic Editor",
+         "Billing Staff",
+         "Collaborator",
+         "Cover Editor",
+         "Creator",
+         "Handling Editor",
+         "Internal Editor",
+         "Production Staff",
+         "Publishing Services",
+         "Reviewer",
+         "Staff Admin"]
       end
 
-      def self.excluded_edit_permissions
+      def self.edit_role_names
+        ["Collaborator",
+         "Cover Editor",
+         "Creator",
+         "Handling Editor",
+         "Internal Editor",
+         "Production Staff",
+         "Publishing Services",
+         "Staff Admin"]
       end
 
       def self.publish

@@ -22,6 +22,7 @@ feature 'Send to Apex task', js: true do
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     # Here we are checking that the URLs have similar elements to be the 'same'
@@ -52,8 +53,8 @@ feature 'Send to Apex task', js: true do
 
   scenario 'User can send a paper to Send to Apex' do
     FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
-    apex_delivery = TahiStandardTasks::ApexDelivery.where(paper_id: paper.id)
-    expect(apex_delivery.count).to be 0
+    export_delivery = TahiStandardTasks::ExportDelivery.where(paper_id: paper.id)
+    expect(export_delivery.count).to be 0
 
     overlay = Page.view_task_overlay(paper, task)
     overlay.click_button('Send to Apex')

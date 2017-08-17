@@ -37,6 +37,7 @@ describe Typesetter::MetadataSerializer do
       our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
     end
   end
+  let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
 
   before do
     FactoryGirl.create :feature_flag, name: "CORRESPONDING_AUTHOR", active: true
@@ -92,6 +93,11 @@ describe Typesetter::MetadataSerializer do
   it 'has doi' do
     paper.doi = '1234'
     expect(output[:doi]).to eq('1234')
+  end
+
+  it 'has aarx_doi' do
+    paper.preprint_doi_article_number = '1234567'
+    expect(output[:aarx_doi]).to eq("10.24196/aarx.1234567")
   end
 
   it 'has manuscript_id' do

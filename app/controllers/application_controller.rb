@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   end
 
   def assert(test, message, status_code: 422)
-    fail AssertionError.new(message, status_code) unless test
+    raise AssertionError.new(message, status_code) unless test
   end
 
   def render_assertion_error(e)

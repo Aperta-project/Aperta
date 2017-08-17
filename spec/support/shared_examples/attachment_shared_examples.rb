@@ -1,8 +1,8 @@
 RSpec.shared_examples_for 'attachment#download! raises exception when it fails' do
   describe 'when download! fails' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'it raises the exception that caused it to fail' do
@@ -19,14 +19,14 @@ end
 RSpec.shared_examples_for 'attachment#download! sets the file_hash' do
   describe 'the file_hash' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'is set to a SHA256 hexdigest of the file contents' do
       fixture_file = Rails.root.join('spec/fixtures', File.basename(url))
       unless File.exists?(fixture_file)
-        fail <<-ERROR.strip_heredoc
+        raise <<-ERROR.strip_heredoc
           There is no local fixture file with a name matching the file in the
           provided url:
 
@@ -50,8 +50,8 @@ end
 RSpec.shared_examples_for 'attachment#download! stores the file' do
   describe 'the file' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'is downloaded from the given URL' do
@@ -65,8 +65,8 @@ end
 RSpec.shared_examples_for 'attachment#download! caches the s3 store_dir' do
   describe 'the s3 store_dir' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'is cached' do
@@ -96,8 +96,8 @@ end
 RSpec.shared_examples_for 'attachment#download! sets title to file name' do
   describe 'sets the title' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'is set to the file name' do
@@ -111,8 +111,8 @@ end
 RSpec.shared_examples_for 'attachment#download! sets the status' do
   describe 'setting the status' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
     end
 
     it 'is set to done' do
@@ -205,8 +205,8 @@ end
 RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
   describe 'managing resource tokens' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
 
       # we don't want any resource tokens to exist for these shared examples,
       # but there's no need to bother the including test about this.
@@ -248,8 +248,8 @@ end
 RSpec.shared_examples_for 'attachment#download! does not create resource tokens' do
   describe 'skip creating resource tokens' do
     before do
-      subject || fail('The calling example was expected to set up the subject, but it did not.')
-      url || fail('The calling example was expected to set up a :url, but it did not.')
+      subject || raise('The calling example was expected to set up the subject, but it did not.')
+      url || raise('The calling example was expected to set up a :url, but it did not.')
 
       # we don't want any resource tokens to exist for these shared examples,
       # but there's no need to bother the including test about this.

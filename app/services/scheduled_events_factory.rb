@@ -8,6 +8,7 @@ class ScheduledEventFactory
   end
 
   def schedule_events
+    return unless due_datetime
     return schedule_new_events unless owned_active_events.exists?
     update_scheduled_events
   end

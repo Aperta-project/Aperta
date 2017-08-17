@@ -20,11 +20,11 @@ module CustomCard
       end
 
       def self.discussion_view_role_names
-        # [Role::REVIEWER_ROLE]
+        :all
       end
 
       def self.discussion_edit_role_names
-        # [Role::ACADEMIC_EDITOR_ROLE]
+        :all
       end
 
       def self.publish

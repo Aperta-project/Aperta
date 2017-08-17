@@ -33,11 +33,11 @@ module CustomCard
       end
 
       def self.discussion_view_role_names
-        []
+        view_role_names
       end
 
       def self.discussion_edit_role_names
-        []
+        edit_role_names
       end
 
       def self.publish

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 module CustomCard
   module Configurations
     #
@@ -57,3 +58,4 @@ module CustomCard
     end
   end
 end
+# rubocop:enable Metrics/MethodLength

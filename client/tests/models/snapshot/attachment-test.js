@@ -19,7 +19,6 @@ test('has properties extracted', function(assert) {
         { name: 'label', type: 'text', value: 'a label' },
         { name: 'publishable', type: 'boolean', value: true },
         { name: 'status', type: 'text', value: 'done' },
-        { name: 'striking_image', type: 'boolean', value: true },
         { name: 'title', type: 'text', value: 'proton.jpg' },
         { name: 'url', type: 'url', value: '/resource_proxy/4pj5bv7E5A9RbJfP7hGi5sds' }
       ]
@@ -34,7 +33,6 @@ test('has properties extracted', function(assert) {
   assert.equal(attachment.get('label'), 'a label', 'label was read');
   assert.equal(attachment.get('publishable'), true, 'publishable was read');
   assert.equal(attachment.get('status'), 'done', 'status was read');
-  assert.equal(attachment.get('strikingImage'), true, 'strikingImage was read');
   assert.equal(attachment.get('title'), 'proton.jpg', 'title was read');
   assert.equal(attachment.get('url'), '/resource_proxy/4pj5bv7E5A9RbJfP7hGi5sds', 'url was read');
 });

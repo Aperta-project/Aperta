@@ -163,31 +163,6 @@ describe ExportPackager do
       allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:read)
         .and_return('a string')
     end
-
-    it 'adds a figure to a zip' do
-      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-
-      expect(zip_filenames(zip_io)).to include('yeti.jpg')
-      contents = read_zip_entry(zip_io, 'yeti.jpg')
-      expect(contents).to eq('a string')
-    end
-
-    it 'does not add a striking image when none is present' do
-      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-
-      expect(zip_filenames(zip_io)).to_not include('Strikingimage.jpg')
-    end
-
-    describe "add_figures" do
-      it "adds figure files to the manifest" do
-        packager = ExportPackager.new(paper, destination: 'apex')
-        Zip::OutputStream.open(zip_file) do |package|
-          packager.send(:add_figures, package)
-        end
-        file_list = packager.send(:manifest).file_list
-        expect(file_list).to eq ["yeti.jpg"]
-      end
-    end
   end
 
   context 'a paper with supporting information' do
@@ -251,7 +226,7 @@ describe ExportPackager do
     end
   end
 
-  context 'a paper with a striking image' do
+  context 'a paper with a figure' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:attachment1) do
@@ -270,15 +245,6 @@ describe ExportPackager do
                          owner_type: 'Task')
     end
 
-    let(:striking_image) do
-      stub_model(Figure,
-                 title: 'a figure',
-                 caption: 'a caption',
-                 paper: paper,
-                 filename: 'yeti1.jpg',
-                 file: attachment1)
-    end
-
     let(:figure) do
       stub_model(Figure,
                  title: 'a title',
@@ -289,35 +255,14 @@ describe ExportPackager do
     end
 
     before do
-      paper.striking_image = striking_image
-      allow(paper).to receive(:figures).and_return([figure, striking_image])
+      allow(paper).to receive(:figures).and_return([figure])
     end
 
-    it 'includes the strking image with proper name' do
-      zip_io = ExportPackager.create_zip(paper, destination: 'apex')
-      expect(zip_filenames(zip_io)).to include('Strikingimage.jpg')
-    end
-
-    it 'separates figures and striking images' do
+    it 'separates figures' do
       zip_io = ExportPackager.create_zip(paper, destination: 'apex')
 
       filenames = zip_filenames(zip_io)
-      expect(filenames).to include('Strikingimage.jpg')
-      expect(filenames).to include('yeti2.jpg')
       expect(filenames).to_not include('yeti.jpg')
-    end
-
-    describe "add_stricking_image" do
-      it "adds a stricking image to the manifest" do
-        packager = ExportPackager.new(paper, destination: 'apex')
-        Zip::OutputStream.open(zip_file) do |package|
-          packager.send(:add_striking_image, package)
-        end
-        striking_image_filename =
-          packager.send(:attachment_apex_filename, paper.striking_image)
-        file_list = packager.send(:manifest).file_list
-        expect(file_list).to eq [striking_image_filename]
-      end
     end
   end
 

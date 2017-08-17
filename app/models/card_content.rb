@@ -28,13 +28,6 @@ class CardContent < ActiveRecord::Base
 
   has_many :answers
 
-  validates :ident,
-            uniqueness: {
-              scope: [:card_version, :deleted_at],
-              message: "CardContent idents must be unique"
-            },
-            if: -> { ident.present? }
-
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
   # in the config/card.rnc file to assure that card content of a given type
@@ -116,15 +109,14 @@ class CardContent < ActiveRecord::Base
   end
 
   def content_attrs
-    attrs =
-      {
-        'ident' => ident,
-        'content-type' => content_type,
-        'value-type' => value_type,
-        'required-field' => required_field,
-        'visible-with-parent-answer' => visible_with_parent_answer,
-        'default-answer-value' => default_answer_value
-      }.merge(additional_content_attrs).compact
+    {
+      'ident' => ident,
+      'content-type' => content_type,
+      'value-type' => value_type,
+      'required-field' => required_field,
+      'visible-with-parent-answer' => visible_with_parent_answer,
+      'default-answer-value' => default_answer_value
+    }.merge(additional_content_attrs).compact
   end
 
   def additional_content_attrs
@@ -173,6 +165,12 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+
+  # recursively traverse nested card_contents
+  def traverse(visitor)
+    visitor.visit(self)
+    children.each { |card_content| card_content.traverse(visitor) }
+  end
 end
 
 private

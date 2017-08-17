@@ -20,8 +20,7 @@ class XmlCardLoader
   end
 
   def load(xml_string, replace_latest_version: false)
-    @xml = xml_card_document(xml_string)
-
+    @xml = XmlCardDocument.new(xml_string)
     Card.transaction do
       card.card_versions << latest_card_version(replace: replace_latest_version)
       card.save!
@@ -29,10 +28,6 @@ class XmlCardLoader
   end
 
   private
-
-  def xml_card_document(xml)
-    XmlCardDocument.new(xml)
-  end
 
   def latest_card_version(replace:)
     if replace

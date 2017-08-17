@@ -1,6 +1,7 @@
 # Card is a container for CardContents
 class Card < ActiveRecord::Base
   include EventStream::Notifiable
+  include CustomCardVisitors
   include XmlSerializable
   include AASM
 
@@ -24,6 +25,7 @@ class Card < ActiveRecord::Base
       MSG
     }
 
+  before_save :check_nested_errors, :check_semantics
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
@@ -124,6 +126,26 @@ class Card < ActiveRecord::Base
   def content_for_version_without_root(version_no)
     content_for_version(version_no)
       .where.not(parent_id: nil)
+  end
+
+  # look for errors in nested child objects
+  def check_nested_errors
+    traverse(CardErrorVisitor.new)
+  end
+
+  # evaluate card semantics
+  def check_semantics
+    traverse(CardSemanticValidator.new)
+  end
+
+  # traverse card and its latest children
+  def traverse(visitor)
+    return if card_versions.none?
+    root = card_versions.last.content_root
+    return unless root
+    root.traverse(visitor)
+    visitor.report.each { |error| errors.add(:detail, message: error) }
+    true
   end
 
   # can take a version number or the symbol `:latest`

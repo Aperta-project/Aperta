@@ -9,6 +9,7 @@ class CardVersion < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, inverse_of: :card_version, dependent: :destroy
+  validates_associated :card_contents
 
   validates :card, presence: true
   validates :card_contents, presence: true
@@ -31,6 +32,10 @@ class CardVersion < ActiveRecord::Base
 
   def publish!
     update!(published_at: Time.current)
+  end
+
+  def traverse(visitor)
+    card_contents.each { |card_content| card_content.traverse(visitor) }
   end
 
   def create_default_answers(task)

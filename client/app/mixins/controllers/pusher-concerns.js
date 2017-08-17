@@ -34,7 +34,7 @@ export default Ember.Mixin.create({
   handlePusherConnecting: concurrencyTask(function*() {
     // We observe pusherNotConnected which does not change on 'connecting' => 'unavailable'.
     // However, we know that 'connecting' ends after 10s. Handle the resulting connection state.
-    if (!Ember.isTesting) {
+    if (!this.get('testing')) {
       yield timeout(10000);
     }
 

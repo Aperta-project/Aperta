@@ -24,8 +24,10 @@
                       title=settingsTitle
                       enableClose=false
                       as |overlay|}}
-  {{similarity-check-settings close=(action overlay.animateOut)
-                              taskToConfigure=taskToConfigure}}
+  {{#each taskToConfigure.settingComponents as |settingComponent|}}
+    {{component settingComponent close=(action overlay.animateOut)
+                                taskToConfigure=taskToConfigure}}
+  {{/each}}
 {{/overlay-fullscreen}}
 
 {{#if showAdHocTaskOverlay}}

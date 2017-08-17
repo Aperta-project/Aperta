@@ -192,14 +192,7 @@ describe ManuscriptManagerTemplatesController do
           task_templates: [
             journal_task_type_id: journal_task_type.id,
             title: 'Ad-hoc',
-            template: template_params,
-            settings: [
-              owner_type: 'TaskTemplate',
-              name: 'Setting name',
-              string_value: 'Setting value',
-              value_type: 'string',
-              setting_template_id: setting_template.id
-            ]
+            template: template_params
           ]
         ]
       }
@@ -228,10 +221,6 @@ describe ManuscriptManagerTemplatesController do
         mmt = ManuscriptManagerTemplate.last
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
-        expect(mmt.phase_templates[0].task_templates[0].settings[0]
-          .owner_type).to eq(
-            new_params[:phase_templates][0][:task_templates][0][:settings][0][:owner_type]
-          )
         expect(template.to_json).to eq(template_params.to_json)
       end
 

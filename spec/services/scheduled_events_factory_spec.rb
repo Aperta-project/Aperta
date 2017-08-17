@@ -11,11 +11,10 @@ class ScheduledEventTestTask < Task
 end
 
 shared_examples 'templated scheduled events' do |template|
-  let(:owned_active_events) { ScheduledEvent.owned_by(reviewer_report.class.name, reviewer_report.id) }
   it 'should update times on active events correctly' do
     subject
     template.each do |entry|
-      entry_event = owned_active_events.where(name: entry[:name]).first
+      entry_event = owned_active_events.where(name: entry[:name]).first!
       dispatch_with_offset = (reviewer_report.due_at + entry[:dispatch_offset].days).beginning_of_hour
       expect(entry_event.dispatch_at).to eq(dispatch_with_offset)
     end
@@ -29,7 +28,7 @@ describe ScheduledEventFactory do
       FactoryGirl.create :reviewer_report, due_datetime: due_date
     end
     let(:template) { ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE }
-    let(:owned_active_events) { ScheduledEvent.owned_by(reviewer_report.class.name, reviewer_report.id) }
+    let(:owned_active_events) { reviewer_report.due_datetime.scheduled_events }
 
     subject { described_class.new(reviewer_report, template).schedule_events }
 

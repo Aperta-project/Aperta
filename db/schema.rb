@@ -11,8 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807175908) do
-  
+ActiveRecord::Schema.define(version: 20170817151226) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170807175908) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -754,8 +754,6 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.integer  "due_datetime_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
@@ -832,6 +830,17 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.string   "state"
+    t.string   "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "destination",   default: "apex", null: false
+  end
+
   create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
@@ -840,7 +849,7 @@ ActiveRecord::Schema.define(version: 20170807175908) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination", null: false
+    t.string   "destination",   null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

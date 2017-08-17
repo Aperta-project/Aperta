@@ -1,23 +1,21 @@
 # Manage creating scheduled events
 class ScheduledEventFactory
-  attr_reader :due_datetime, :owner_id, :owner_type, :template
+  attr_reader :due_datetime, :template
 
   def initialize(object, template)
     @due_datetime = object.due_datetime
-    @owner_id = object.id
-    @owner_type = object.class.name
     @template = template
   end
 
   def schedule_events
-    return schedule_new_events unless owned_active_events.present?
+    return schedule_new_events unless owned_active_events.exists?
     update_scheduled_events
   end
 
   private
 
   def owned_active_events
-    ScheduledEvent.owned_by(owner_type, owner_id).active
+    due_datetime.scheduled_events.active
   end
 
   def dispatch_date(event)
@@ -45,15 +43,13 @@ class ScheduledEventFactory
     template.each do |event|
       ScheduledEvent.create name: event[:name],
                             dispatch_at: dispatch_date(event),
-                            due_datetime: due_datetime,
-                            owner_type: owner_type,
-                            owner_id: owner_id
+                            due_datetime: due_datetime
     end
   end
 
   def update_scheduled_events
     template.each do |entry|
-      event = ScheduledEvent.owned_by(owner_type, owner_id).where(name: entry[:name]).first
+      event = due_datetime.scheduled_events.where(name: entry[:name]).first
       reschedule event, entry
     end
   end

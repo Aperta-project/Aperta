@@ -11,7 +11,6 @@ class ScheduledEvent < ActiveRecord::Base
   scope :active, -> { where(state: 'active') }
   scope :inactive, -> { where(state: 'inactive') }
   scope :complete, -> { where(state: 'complete') }
-  scope :owned_by, ->(type, id) { where(owner_type: type, owner_id: id) }
 
   before_save :deactivate, if: :should_deactivate?
 

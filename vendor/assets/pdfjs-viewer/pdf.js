@@ -17517,7 +17517,6 @@ function webViewerInitialized() {
     } catch (e) {
       PDFViewerApplication.error(mozL10n.get('loading_error', null,
         'An error occurred while loading the PDF.'), e);
-      window.PDFJS.plosErrorCallback();
     }
     return;
   }

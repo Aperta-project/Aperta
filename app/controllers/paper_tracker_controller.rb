@@ -5,7 +5,7 @@ class PaperTrackerController < ApplicationController
   respond_to :json
 
   def index
-    fail AuthorizationError unless journal_ids.length > 0
+    raise AuthorizationError unless journal_ids.length > 0
 
     # show all papers that user is connected to across all journals
     papers = order(QueryParser.new(current_user: current_user)

@@ -5,12 +5,12 @@ class InvitationAttachmentsController < ApplicationController
   respond_to :json
 
   def index
-    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
+    raise AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with invitation.attachments, root: 'attachments'
   end
 
   def show
-    fail AuthorizationError unless invitation.can_be_viewed_by?(current_user)
+    raise AuthorizationError unless invitation.can_be_viewed_by?(current_user)
     respond_with attachment, root: 'attachment'
   end
 

@@ -33,8 +33,8 @@ class FtpUploaderService
   end
 
   def upload
-    fail FtpTransferError, 'file_io is required' if @file_io.blank?
-    fail FtpTransferError, 'final_filename is required' if @final_filename.blank?
+    raise FtpTransferError, 'file_io is required' if @file_io.blank?
+    raise FtpTransferError, 'final_filename is required' if @final_filename.blank?
 
     @ftp = Net::FTP.new
     logger.info "Beginning transfer for #{@final_filename}"

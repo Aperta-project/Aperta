@@ -11,7 +11,8 @@ module JournalServices
                                 TahiStandardTasks::EarlyPostingTask,
                                 TahiStandardTasks::SupportingInformationTask,
                                 TahiStandardTasks::AuthorsTask,
-                                TahiStandardTasks::UploadManuscriptTask
+                                TahiStandardTasks::UploadManuscriptTask,
+                                CustomCard::Configurations::CoverLetter
                               ])
 
         create_phase_template(name: "Invite Editor", journal: journal, mmt: mmt,

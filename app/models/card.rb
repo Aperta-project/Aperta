@@ -131,11 +131,13 @@ class Card < ActiveRecord::Base
   # look for errors in nested child objects
   def check_nested_errors
     traverse(CardErrorVisitor.new)
+    true
   end
 
   # evaluate card semantics
   def check_semantics
     traverse(CardSemanticValidator.new)
+    true
   end
 
   # traverse card and its latest children
@@ -145,7 +147,6 @@ class Card < ActiveRecord::Base
     return unless root
     root.traverse(visitor)
     visitor.report.each { |error| errors.add(:detail, message: error) }
-    true
   end
 
   # can take a version number or the symbol `:latest`

@@ -24,8 +24,10 @@
                       title=settingsTitle
                       enableClose=false
                       as |overlay|}}
-  {{similarity-check-settings close=(action overlay.animateOut)
-                              taskToConfigure=taskToConfigure}}
+  {{#each taskToConfigure.settingComponents as |settingComponent|}}
+    {{component settingComponent close=(action overlay.animateOut)
+                                taskToConfigure=taskToConfigure}}
+  {{/each}}
 {{/overlay-fullscreen}}
 
 {{#if showAdHocTaskOverlay}}
@@ -64,15 +66,27 @@
       </div>
     {{/if}}
 
-    <div class="uses-research-article-reviewer-report">
+    <div class="uses-research-article-reviewer-report manuscript-manager-template-option">
       <label>
-      <input type="checkbox"
-             checked={{model.usesResearchArticleReviewerReport}}
-             onclick={{action "toggleResearchArticleReviewerReport" value="target.checked"}}>
+        <input type="checkbox"
+               checked={{model.usesResearchArticleReviewerReport}}
+                 onclick={{action "toggleResearchArticleReviewerReport" value="target.checked"}}>
 
         Uses research article reviewer report
       </label>
     </div>
+
+    {{#if preprintsEnabled}}
+    <div class="preprint-eligible manuscript-manager-template-option">
+      <label>
+        <input type="checkbox"
+               checked={{model.isPreprintEligible}}
+                 onclick={{action "togglePreprint" value="target.checked"}}>
+
+        Preprint
+      </label>
+    </div>
+    {{/if}}
     <div class="spacer"></div>
   </nav>
 {{/control-bar}}

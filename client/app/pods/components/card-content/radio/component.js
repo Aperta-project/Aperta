@@ -3,7 +3,7 @@ import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
   classNames: ['card-content-radio'],
-
+  tagName: 'fieldset',
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,
     content: PropTypes.EmberObject.isRequired,

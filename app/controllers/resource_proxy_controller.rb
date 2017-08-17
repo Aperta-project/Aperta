@@ -6,7 +6,7 @@ class ResourceProxyController < ApplicationController
   def url
     deproxied_url = resource.url(params[:version])
     unless deproxied_url
-      fail(ActiveRecord::RecordNotFound,
+      raise(ActiveRecord::RecordNotFound,
            "Couldn't find url for token #{params[:token]} and version" \
            "#{params[:version] || 'default'}")
     end

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe JournalServices::UpdateDefaultTasks do
   it 'Updates task title to default' do
-    cover_task = FactoryGirl.create(:cover_letter_task, title: 'Old Title')
+    task = FactoryGirl.create(:revise_task, title: 'Old Title')
     JournalServices::UpdateDefaultTasks.call
-    expect(cover_task.reload.title).to eq('Cover Letter')
+    expect(task.reload.title).to eq(task.class::DEFAULT_TITLE)
   end
 
   it 'Does not update Ad-hoc tasks title' do

@@ -141,7 +141,7 @@ class Task < ActiveRecord::Base
     end
 
     def safe_constantize(str)
-      raise StandardError, 'Attempted to constantize disallowed value' \
+      raise StandardError, "Attempted to constantize '#{str}' which is a disallowed value" \
         unless Task.descendants.map(&:to_s).member?(str)
       str.constantize
     end

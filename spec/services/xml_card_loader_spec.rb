@@ -4,7 +4,7 @@ describe XmlCardLoader do
   let(:content1) { '<content ident="foo" content-type="text"><text>foo</text></content>' }
   let(:content2) { '<content ident="bar" content-type="text"><text>bar</text></content>' }
 
-  let(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
+  let!(:card) { FactoryGirl.create(:card, :versioned, name: "original name") }
   let(:xml_card_loader) { XmlCardLoader.new(card) }
 
   describe 'error handling' do

@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
-  # return all answers for a given `owner` (i.e., `CoverLetterTask`)
+  # return all answers for a given `owner` (i.e., `AdHocTask`)
   def index
     requires_user_can(:view, owner)
     respond_with owner.answers

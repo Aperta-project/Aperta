@@ -9,7 +9,6 @@ class CardVersion < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
   has_many :card_contents, inverse_of: :card_version, dependent: :destroy
-  validates_associated :card_contents
 
   validates :card, presence: true
   validates :card_contents, presence: true

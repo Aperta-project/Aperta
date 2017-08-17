@@ -19,11 +19,6 @@ export default Ember.Controller.extend(pusherConcerns, {
     this.get('healthCheck').start();
   },
 
-  pusherConnectionStatusChanged: Ember.on('init', Ember.observer('pusherNotConnected', function() {
-    this.handlePusherConnectionStatusChange();
-  })),
-
-
   setCanViewPaperTracker: function() {
     if (this.journals === null) {
       return false;

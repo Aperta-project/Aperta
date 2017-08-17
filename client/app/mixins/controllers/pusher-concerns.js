@@ -9,6 +9,10 @@ export default Ember.Mixin.create({
   pusherNotConnected: Ember.computed.alias('pusher.isDisconnected'),
   pusherConnectionState: Ember.computed.alias('pusher.connection.connection.state'),
 
+  pusherConnectionStatusChanged: Ember.on('init', Ember.observer('pusherNotConnected', function() {
+    this.handlePusherConnectionStatusChange();
+  })),
+
   handlePusherConnectionStatusChange() {
     if (this.get('pusherConnectionState') === 'connecting') {
       this.get('handlePusherConnecting').perform();

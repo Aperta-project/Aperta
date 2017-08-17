@@ -75,6 +75,17 @@ describe CardPermissionsController do
         expect { do_request }.not_to(change { role.permissions.reload.count })
       end
     end
+
+    context 'when the action is not permitted' do
+      let(:action) { 'delete_all_cards' }
+      it_behaves_like "an unauthenticated json request"
+
+      it "creates 2 new permissions, one for viewing the card and one for the task" do
+        stub_sign_in user
+        expect { do_request }.to change { Permission.count }.by(0)
+        expect(response.status).to be(422)
+      end
+    end
   end
 
   context 'when the permission exists' do

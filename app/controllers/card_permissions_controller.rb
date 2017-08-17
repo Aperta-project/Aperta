@@ -3,14 +3,15 @@ class CardPermissionsController < ApplicationController
   before_action :authenticate_user!
   respond_to :json
 
+  CARD_ACTIONS = ['view', 'edit', 'view_discussion_footer', 'edit_discussion_footer']
+
   def create
     card = Card.find(safe_params[:filter_by_card_id])
     requires_user_can(:edit, card)
 
     action = safe_params[:permission_action].to_s
-
     # Limit the actions that can be managed by this controller
-    assert(action == 'edit' || action == 'view', "Bad action")
+    assert(CARD_ACTIONS.include?(action), "Bad card permission action")
 
     check_roles(card)
 

@@ -6,33 +6,33 @@
 <div>
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
-      <label for="{{input-id this index}}" class="option">
+      <label for="{{guid-id this index}}" class="option">
         {{radio-button
           selection=answer.value
           value=opt.value
           disabled=disabled
-          id=(input-id this index)
+          id=(guid-id this index)
           content=content
           action=(action "valueChanged")}}
         <span class="card-content-radio-label">{{{opt.label}}}</span>
       </label>
     {{/each}}
   {{else }}
-    <label for="{{input-id this '3'}}" class="option">
+    <label for="{{guid-id this '0'}}" class="option">
       {{radio-button
         selection=answer.value
         value=true
-        id=(input-id this '3')
+        id=(guid-id this '0')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}
       <span class="card-content-radio-label">Yes</span>
     </label>
-    <label  for="{{input-id this '4'}}" class="option">
+    <label  for="{{guid-id this '1'}}" class="option">
       {{radio-button
         selection=answer.value
         value=false
-        id=(input-id this '4')
+        id=(guid-id this '1')
         disabled=disabled
         content=content
         action=(action "valueChanged")}}

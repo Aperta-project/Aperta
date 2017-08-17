@@ -72,15 +72,6 @@
           </div>
           --}}
 
-          {{#if figure}}
-          <div class="field striking">
-            <label>
-              {{check-box checked=attachment.strikingImage}}
-              This is the striking image
-            </label>
-          </div>
-          {{/if}}
-
           <div class="actions">
             <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
             <a href="#" class="button-primary button--green attachment-save-button" {{action "saveAttachment"}}>Save</a>
@@ -106,11 +97,6 @@
           </label>
           {{/if}}
 
-          {{#if attachment.strikingImage}}
-            <div class="striking">
-              {{fa-icon icon="check"}} This is the striking image
-            </div>
-          {{/if}}
         </div>
       {{/if}}
     </div>

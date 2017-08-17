@@ -14,7 +14,6 @@ export default Ember.Object.extend({
   label: namedComputedProperty('attachment', 'label'),
   publishable: namedComputedProperty('attachment', 'publishable'),
   status: namedComputedProperty('attachment', 'status'),
-  strikingImage: namedComputedProperty('attachment', 'striking_image'),
   title: namedComputedProperty('attachment', 'title'),
   url: namedComputedProperty('attachment', 'url'),
   ownerType: namedComputedProperty('attachment', 'owner_type'),

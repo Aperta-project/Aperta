@@ -54,7 +54,6 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'title', type: 'text', value: si_file_1.title },
         { name: 'caption', type: 'text', value: si_file_1.caption },
         { name: 'publishable', type: 'boolean', value: si_file_1.publishable },
-        { name: 'striking_image', type: 'boolean', value: si_file_1.striking_image },
         { name: 'url', type: 'url', value: si_file_1.non_expiring_proxy_url }
       )
 
@@ -69,7 +68,6 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'title', type: 'text', value: si_file_2.title },
         { name: 'caption', type: 'text', value: si_file_2.caption },
         { name: 'publishable', type: 'boolean', value: si_file_2.publishable },
-        { name: 'striking_image', type: 'boolean', value: si_file_2.striking_image },
         { name: 'url', type: 'url', value: si_file_2.non_expiring_proxy_url }
       )
     end

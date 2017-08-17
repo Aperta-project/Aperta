@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815084644) do
+ActiveRecord::Schema.define(version: 20170815183418) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -224,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170815084644) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -562,7 +563,6 @@ ActiveRecord::Schema.define(version: 20170815084644) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -572,7 +572,6 @@ ActiveRecord::Schema.define(version: 20170815084644) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false

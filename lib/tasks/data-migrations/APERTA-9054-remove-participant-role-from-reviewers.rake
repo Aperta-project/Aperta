@@ -20,7 +20,7 @@ namespace :data do
           reviewer_count += 1
           reviewer_report_ids = reviewer.tasks.where(type: relevant_tasks).pluck(:id).uniq
           reviewer_report_ids.each do |reviewer_report_id|
-            reviewer.participations.where(assigned_to_id: reviewer_report_id).each do |assignment|
+            reviewer.participations.where(assigned_to_id: reviewer_report_id).each do |_assignment|
               assignment_count += 1
             end
           end

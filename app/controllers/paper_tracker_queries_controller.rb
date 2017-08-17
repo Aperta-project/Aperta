@@ -35,7 +35,7 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def query_params
-    params.require(:paper_tracker_query).permit(:title, :query)
+    params.require(:paper_tracker_query).permit(:title, :query, :order_by, :order_dir)
   end
 
   def journals

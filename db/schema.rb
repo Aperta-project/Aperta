@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 20170815220450) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.boolean  "is_preprint_eligible",                  default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -552,6 +553,8 @@ ActiveRecord::Schema.define(version: 20170815220450) do
     t.boolean  "deleted",    default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "order_dir"
+    t.string   "order_by"
   end
 
   create_table "papers", force: :cascade do |t|

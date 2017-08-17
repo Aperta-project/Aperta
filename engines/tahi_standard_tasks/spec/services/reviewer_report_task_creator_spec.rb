@@ -36,6 +36,7 @@ describe ReviewerReportTaskCreator do
     CardLoader.load("TahiStandardTasks::FrontMatterReviewerReport")
     CardLoader.load("TahiStandardTasks::FrontMatterReviewerReportTask")
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_DATE"
+    FactoryGirl.create :review_duration_period_setting_template
     FactoryGirl.create :feature_flag, name: "REVIEW_DUE_AT"
   end
 

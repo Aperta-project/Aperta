@@ -8,11 +8,19 @@ class ReviewerReportTaskCreator
   end
 
   def process
+    use_mail = existing_reviewer_report_task.blank?
     paper.transaction do
       assign_paper_role!
       find_or_create_related_task
-      @task
     end
+    # this needs to be sent conditionally and outside of the
+    # transaction block or else it fails the first time
+    if use_mail
+      TahiStandardTasks::ReviewerMailer
+        .delay.welcome_reviewer(assignee_id: assignee.id,
+                                paper_id: paper.id)
+    end
+    @task
   end
 
   private
@@ -27,9 +35,6 @@ class ReviewerReportTaskCreator
       assignee.assign_to!(assigned_to: @task, role: paper.journal.reviewer_report_owner_role)
       create_reviewer_report
 
-      TahiStandardTasks::ReviewerMailer
-        .delay.welcome_reviewer(assignee_id: assignee.id,
-                                paper_id: paper.id)
       @task
     else
       assignee.assign_to!(assigned_to: existing_reviewer_report_task,

@@ -1,5 +1,5 @@
 class TaskTemplateSerializer < ActiveModel::Serializer
-  attributes :id, :template, :title, :position, :settings_enabled, :settings
+  attributes :id, :template, :title, :position, :settings_enabled, :all_settings
 
   has_one :phase_template, embed: :id
   has_one :card, embed: :id, include: true

@@ -4,6 +4,7 @@ class RemovePBrFromPaperTitles < ActiveRecord::Migration
     # a corresponding starting tag.
     Paper.where("title ~ '<br\s*/?>' OR title ~ '<p>' OR title ~ '<div>' OR title ~ '\\n'").each do |p|
       title = p.title
+      [/^<p>/, %r{</p>$}].each { |tag| title.gsub!(tag, '') }
       ["\n", '<p>', '</p>', %r{<br\s*/?>}, '<div>', '</div>'].each { |tag| title.gsub!(tag, ' ') }
       p.update_column(:title, title)
     end

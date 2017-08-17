@@ -22,7 +22,8 @@ module('Integration: Manuscript Manager Templates', {
           url: '/api/feature_flags.json',
           status: 200,
           responseText: {
-            CARD_CONFIGURATION: false
+            CARD_CONFIGURATION: false,
+            PREPRINT: true
           }
         });
         $.mockjax({
@@ -156,6 +157,84 @@ test('User cannot edit a non Ad-Hoc card', function(assert) {
   click('.card-title');
   return andThen(function() {
     return assert.elementNotFound('.ad-hoc-template-overlay', 'Clicking any other card has no effect');
+  });
+});
+
+test('User can enable a workflow as preprint eligible', function(assert){
+  var adminJournal, journalTaskType, mmt;
+  journalTaskType = FactoryGuy.make('journal-task-type', {
+    id: 1,
+    kind: 'AdHocTask',
+    title: 'Ad Hoc'
+  });
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1,
+    journalTaskTypes: [journalTaskType]
+  });
+  mmt = FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  FactoryGuy.make('phase-template', {
+    id: 1,
+    manuscriptManagerTemplate: mmt,
+    name: 'Phase 1'
+  });
+  TestHelper.mockFind('admin-journal').returns({
+    model: adminJournal
+  });
+
+  $.mockjax({
+    url: '/api/manuscript_manager_templates/1',
+    status: 200
+  });
+
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  andThen(() => {
+    assert.elementFound('.preprint-eligible');
+  });
+
+  click('.preprint-eligible input');
+  andThen(() => {
+    assert.mockjaxRequestMade('/api/manuscript_manager_templates/1', 'PUT', 'request made after click');
+  });
+});
+
+test('Preprint eligible is hidden if feature flag is not set', function(assert){
+  var adminJournal, journalTaskType, mmt;
+  journalTaskType = FactoryGuy.make('journal-task-type', {
+    id: 1,
+    kind: 'AdHocTask',
+    title: 'Ad Hoc'
+  });
+  adminJournal = FactoryGuy.make('admin-journal', {
+    id: 1,
+    journalTaskTypes: [journalTaskType]
+  });
+  mmt = FactoryGuy.make('manuscript-manager-template', {
+    id: 1,
+    journal: adminJournal
+  });
+  FactoryGuy.make('phase-template', {
+    id: 1,
+    manuscriptManagerTemplate: mmt,
+    name: 'Phase 1'
+  });
+  TestHelper.mockFind('admin-journal').returns({
+    model: adminJournal
+  });
+
+  $.mockjax({
+    url: '/api/manuscript_manager_templates/1',
+    status: 200
+  });
+
+  // flip PREPRINT feature flag off
+  $.mockjax.unfiredHandlers()[2].responseText.PREPRINT = false;
+
+  visit('/admin/mmt/journals/1/manuscript_manager_templates/1/edit');
+  andThen(() => {
+    assert.elementNotFound('.preprint-eligible');
   });
 });
 

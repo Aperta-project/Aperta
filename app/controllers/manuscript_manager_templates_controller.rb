@@ -57,7 +57,8 @@ class ManuscriptManagerTemplatesController < ApplicationController
     params.require(:manuscript_manager_template).permit(
       :paper_type,
       :journal_id,
-      :uses_research_article_reviewer_report
+      :uses_research_article_reviewer_report,
+      :is_preprint_eligible
     )
   end
 
@@ -66,6 +67,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
       :paper_type,
       :journal_id,
       :uses_research_article_reviewer_report,
+      :is_preprint_eligible,
       phase_templates: [
         :name, :position, task_templates: [
           :title, :journal_task_type_id, :position, :card_id

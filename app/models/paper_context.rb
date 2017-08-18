@@ -2,6 +2,20 @@
 class PaperContext < TemplateContext
   include UrlBuilder
 
+  def self.merge_fields
+    [
+      { name: :title },
+      { name: :abstract },
+      { name: :paper_type },
+      { name: :url },
+      { name: :editor, context: UserContext },
+      { name: :academic_editors, context: UserContext, many: true },
+      { name: :handling_editors, context: UserContext, many: true },
+      { name: :authors, context: AuthorContext, many: true },
+      { name: :corresponding_authors, context: UserContext, many: true }
+    ]
+  end
+
   whitelist :title, :abstract, :paper_type
 
   def academic_editors

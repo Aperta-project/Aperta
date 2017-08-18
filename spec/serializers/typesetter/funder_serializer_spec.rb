@@ -46,13 +46,15 @@ describe Typesetter::FunderSerializer do
       :grant_number,
       :website,
       :influence,
-      :influence_description)
+      :influence_description
+    )
   end
 
   describe 'funding_statement' do
     it "returns a full funding statement" do
       expect(output[:funding_statement]).to eq(
-        "#{output[:name]} #{output[:website]} (grant number #{output[:grant_number]}). #{output[:influence_description]}.")
+        "#{output[:name]} #{output[:website]} (grant number #{output[:grant_number]}). #{output[:influence_description]}."
+      )
     end
   end
 

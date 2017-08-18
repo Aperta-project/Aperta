@@ -10,9 +10,7 @@ describe AtMentionableUsersController do
 
   describe '#index' do
     subject(:do_request) do
-      get :index,
-          format: :json,
-          on_paper_id: paper.id
+      get :index, params: { format: :json, on_paper_id: paper.id }
     end
 
     before do

@@ -10,7 +10,7 @@ describe TahiStandardTasks::InitialDecisionMailer do
       paper: paper
     )
   end
-  let(:paper_creator) { FactoryGirl.build_stubbed(:user)}
+  let(:paper_creator) { FactoryGirl.build_stubbed(:user) }
 
   let(:email) do
     described_class.notify(decision_id: decision.id)
@@ -18,9 +18,9 @@ describe TahiStandardTasks::InitialDecisionMailer do
 
   describe "#notify" do
     before do
-      allow(Decision).to receive(:find).
-        with(decision.id).
-        and_return decision
+      allow(Decision).to receive(:find)
+        .with(decision.id)
+        .and_return decision
 
       allow(paper).to receive(:creator).and_return paper_creator
     end

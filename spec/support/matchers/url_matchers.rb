@@ -5,7 +5,7 @@ require 'uri'
 
 RSpec::Matchers.define :be_a_valid_url do
   match do |text|
-    text =~ URI.regexp(%w(http https))
+    text =~ URI.regexp(%w[http https])
   end
 
   failure_message do |text|

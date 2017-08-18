@@ -8,10 +8,12 @@ describe BenchmarkSuite::Results do
     Timecop.freeze(Time.local(1990))
   end
 
-  let(:benchmark_suite) { BenchmarkSuite::Results.new(test_name: 'blah',
-                                                      title: 'blah blah blah',
-                                                      duration: 4.2,
-                                                      unit: :sec) }
+  let(:benchmark_suite) {
+    BenchmarkSuite::Results.new(test_name: 'blah',
+                                title: 'blah blah blah',
+                                duration: 4.2,
+                                unit: :sec)
+  }
 
   describe "#write" do
     it "writes the measurement in a CSV file" do

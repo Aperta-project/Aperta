@@ -230,11 +230,11 @@ FactoryGirl.define do
       end
     end
 
-    %w(
+    %w[
       academic_editor creator collaborator cover_editor discussion_participant
       handling_editor internal_editor reviewer publishing_services staff_admin
       task_participant
-    ).each do |role|
+    ].each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |paper|
           begin
@@ -265,7 +265,7 @@ FactoryGirl.define do
         )
       end
     end
-    
+
     trait(:with_versions) do
       transient do
         first_version_body  'first body'
@@ -358,7 +358,7 @@ FactoryGirl.define do
         unless evaluator.task_params[:card_version]
           task_klass_name = evaluator.task_params[:type]
           CardLoader.load(task_klass_name)
-          card = Card.find_by_class_name(task_klass_name)
+          card = Card.find_by(class_name: task_klass_name)
           evaluator.task_params[:card_version] = card.latest_published_card_version
         end
 

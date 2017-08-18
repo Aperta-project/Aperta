@@ -25,12 +25,12 @@ DESC
     permission(
       action: 'edit',
       applies_to: Authorizations::FakePaper.name,
-      states: %w(unsubmitted in_revision)
+      states: %w[unsubmitted in_revision]
     )
     permission(
       action: 'edit',
       applies_to: Authorizations::FakeTask.name,
-      states: %w(unsubmitted in_revision)
+      states: %w[unsubmitted in_revision]
     )
   end
 
@@ -38,7 +38,7 @@ DESC
     has_permission(
       action: 'edit',
       applies_to: Authorizations::FakePaper.name,
-      states: %w(unsubmitted in_revision)
+      states: %w[unsubmitted in_revision]
     )
   end
 
@@ -46,7 +46,7 @@ DESC
     has_permission(
       action: 'edit',
       applies_to: Authorizations::FakeTask.name,
-      states: %w(unsubmitted in_revision)
+      states: %w[unsubmitted in_revision]
     )
   end
 

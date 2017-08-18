@@ -9,7 +9,7 @@ describe VersionedTextsController do
   let(:versioned_text) { VersionedText.where(paper: paper).first! }
 
   describe "GET 'show'" do
-    subject(:do_request) { get :show, id: versioned_text.id, format: :json }
+    subject(:do_request) { get :show, params: { id: versioned_text.id, format: :json } }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -25,7 +25,7 @@ describe VersionedTextsController do
       it { is_expected.to responds_with(200) }
 
       it 'returns a version' do
-        expected_keys = %w(
+        expected_keys = %w[
           id
           text
           updated_at
@@ -35,7 +35,7 @@ describe VersionedTextsController do
           version_string
           file_type
           source_type
-        )
+        ]
         expect(res_body['versioned_text'].keys).to eq(expected_keys)
       end
     end
@@ -50,6 +50,5 @@ describe VersionedTextsController do
 
       it { is_expected.to responds_with(403) }
     end
-
   end
 end

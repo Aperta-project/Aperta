@@ -10,6 +10,5 @@ FactoryGirl.define do
     name "Jedis"
     initial "F"
     co_author_state_modified_at DateTime.current
-
   end
 end

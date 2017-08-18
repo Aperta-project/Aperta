@@ -19,7 +19,8 @@ class ManuscriptManagerTemplatePage < Page
 
   def find_phase(phase_name)
     PhaseFragment.new(
-      find('.column h2', text: phase_name).find(:xpath, '../../..'))
+      find('.column h2', text: phase_name).find(:xpath, '../../..')
+    )
   end
 
   def add_new_template

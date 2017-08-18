@@ -6,7 +6,7 @@ class CardOverlay < Page
     synchronize_no_content!("CLOSE")
   end
 
-  text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name){ name.upcase }
+  text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name) { name.upcase }
 
   def assignee
     all('.chosen-assignee.chosen-container').first

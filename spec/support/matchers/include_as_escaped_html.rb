@@ -9,7 +9,7 @@ RSpec::Matchers.define :include_as_escaped_html do |expected_raw|
   match do |actual|
     expected = expected_raw.html_safe? ?
       expected_raw
-      : CGI::escapeHTML(expected_raw)
+      : CGI.escapeHTML(expected_raw)
 
     actual.include? expected
   end

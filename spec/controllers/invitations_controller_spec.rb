@@ -51,10 +51,7 @@ describe InvitationsController do
     end
 
     subject(:do_request) do
-      put :update_position,
-        format: :json,
-        id: invitation.id,
-        position: 2
+      put :update_position, params: { format: :json, id: invitation.id, position: 2 }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -92,10 +89,7 @@ describe InvitationsController do
     let!(:invitation) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
     let!(:primary) { FactoryGirl.create(:invitation, task: task, invitation_queue: queue, invitee: invitee) }
     subject(:do_request) do
-      put :update_primary,
-        format: :json,
-        id: invitation.id,
-        primary_id: primary.id
+      put :update_primary, params: { format: :json, id: invitation.id, primary_id: primary.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -127,7 +121,7 @@ describe InvitationsController do
 
       context 'the primary id is not present' do
         subject(:do_request) do
-          put :update_primary, format: :json, id: invitation.id
+          put :update_primary, params: { format: :json, id: invitation.id }
         end
 
         before do
@@ -161,7 +155,7 @@ describe InvitationsController do
   end
 
   describe 'GET /invitation/:id' do
-    subject(:do_request) { get(:show, format: :json, id: invitation.id) }
+    subject(:do_request) { get(:show, params: { format: :json, id: invitation.id }) }
 
     let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, invitation_queue: queue) }
 
@@ -186,7 +180,7 @@ describe InvitationsController do
         allow(user).to receive(:can?).with(:manage_invitations, task)
           .and_return(false)
 
-        get(:show, format: :json, id: invitation.id)
+        get(:show, params: { format: :json, id: invitation.id })
         expect(response.status).to eq(200)
       end
 
@@ -195,7 +189,7 @@ describe InvitationsController do
           .and_return(true)
         new_user = FactoryGirl.create(:user)
 
-        get(:show, format: :json, id: invitation.id, user: new_user)
+        get(:show, params: { format: :json, id: invitation.id, user: new_user })
         expect(response.status).to eq(200)
       end
 
@@ -204,7 +198,7 @@ describe InvitationsController do
         stub_sign_in FactoryGirl.build_stubbed(:user)
         allow(new_user).to receive(:can?).and_return(false)
 
-        get(:show, format: :json, id: invitation.id)
+        get(:show, params: { format: :json, id: invitation.id })
         expect(response.status).to eq(403)
       end
     end
@@ -229,18 +223,13 @@ describe InvitationsController do
     end
 
     subject(:do_request) do
-      post(
-        :update,
-        format: 'json',
-        id: invitation.id,
-        invitation: {
-          email: "foo@bar.com",
-          task_id: task.id,
-          body: "other body",
-          primary_id: other_invitation.id,
-          position: 5
-        }
-      )
+      post(:update, params: { format: 'json', id: invitation.id, invitation: {
+             email: "foo@bar.com",
+             task_id: task.id,
+             body: "other body",
+             primary_id: other_invitation.id,
+             position: 5
+           } })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -287,15 +276,11 @@ describe InvitationsController do
 
   describe 'POST /invitations' do
     subject(:do_request) do
-      post(
-        :create,
-        format: 'json',
-        invitation: {
-          email: email_to_invite,
-          task_id: task.id,
-          body: invitation_body
-        }
-      )
+      post(:create, params: { format: 'json', invitation: {
+             email: email_to_invite,
+             task_id: task.id,
+             body: invitation_body
+           } })
     end
 
     let(:email_to_invite) { invitee.email }
@@ -356,11 +341,7 @@ describe InvitationsController do
     end
 
     subject(:do_request) do
-      delete(
-        :destroy,
-        format: 'json',
-        id: invitation.id
-      )
+      delete(:destroy, params: { format: 'json', id: invitation.id })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -415,11 +396,7 @@ describe InvitationsController do
       )
     end
     subject(:do_request) do
-      post(
-        :send_invite,
-        format: 'json',
-        id: invitation.to_param
-      )
+      post(:send_invite, params: { format: 'json', id: invitation.to_param })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -459,11 +436,7 @@ describe InvitationsController do
 
   describe "PUT /invitations/:id/rescind" do
     subject(:do_request) do
-      put(
-        :rescind,
-        format: "json",
-        id: invitation.to_param
-      )
+      put(:rescind, params: { format: "json", id: invitation.to_param })
     end
 
     let(:invitation) do
@@ -515,7 +488,7 @@ describe InvitationsController do
     end
 
     describe "PUT /invitations/:id/accept" do
-      subject(:do_request) { put(:accept, format: 'json', id: invitation.id) }
+      subject(:do_request) { put(:accept, params: { format: 'json', id: invitation.id }) }
 
       it_behaves_like 'an unauthenticated json request'
 
@@ -560,15 +533,10 @@ describe InvitationsController do
 
     describe "PUT /invitations/:id/decline" do
       subject(:do_request) do
-        put(
-          :decline,
-          id: invitation.to_param,
-          format: :json,
-          invitation: {
-            decline_reason: 'This is my decline reason',
-            reviewer_suggestions: 'Added reviewer suggesions'
-          }
-        )
+        put(:decline, params: { id: invitation.to_param, format: :json, invitation: {
+              decline_reason: 'This is my decline reason',
+              reviewer_suggestions: 'Added reviewer suggesions'
+            } })
       end
 
       it_behaves_like 'an unauthenticated json request'

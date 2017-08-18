@@ -20,7 +20,7 @@ describe OrcidAccount do
       ORCID_API_VERSION: '1.2'
     }
     ClimateControl.modify(envs) do
-      VCR.use_cassette(cassette, match_requests_on: [:uri, :method, :headers]) do
+      VCR.use_cassette(cassette, match_requests_on: %i[uri method headers]) do
         example.run
       end
     end
@@ -30,8 +30,7 @@ describe OrcidAccount do
     context 'with access token' do
       let(:orcid_account) do
         FactoryGirl.build_stubbed(:orcid_account,
-          identifier: 'a', access_token: 'b'
-        )
+          identifier: 'a', access_token: 'b')
       end
       it 'returns truthy' do
         expect(orcid_account.authenticated?).to be_truthy

@@ -120,7 +120,6 @@ describe Answer do
         FactoryGirl.create(:card_content, answers: [related_answer], content_type: 'short-input', value_type: 'text',
                                           card_content_validations: [related_card_content_validation], ident: 'foodent')
       }
-
     end
   end
 end

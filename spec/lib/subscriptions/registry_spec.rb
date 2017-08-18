@@ -117,5 +117,4 @@ describe Subscriptions::Registry do
       }.to_not change { TestSubscribers::LeakyWindow.called.count }
     end
   end
-
 end

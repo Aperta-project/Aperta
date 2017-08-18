@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: :none} do
+feature "Profile Page", js: true, vcr: { cassette_name: "ned_countries", record: :none } do
   include AuthorizationSpecHelper
 
   let(:user_role) { Role.where(name: Role::USER_ROLE).first_or_create! }
@@ -60,7 +60,6 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
   end
 
   context "removing an affiliation" do
-
     let(:admin) { create :user, :with_affiliation, :site_admin }
     let(:affiliation) { admin.affiliations.last }
 

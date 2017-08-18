@@ -6,14 +6,14 @@ describe Invitable do
     context 'when it is not implemented in the task' do
       it 'raises a NotImplementedError' do
         task = create(:ad_hoc_task).extend Invitable
-        expect{ task.invitee_role }.to raise_error NotImplementedError
+        expect { task.invitee_role }.to raise_error NotImplementedError
       end
     end
 
     context 'when it is implemented in the task' do
       it 'does not raise NotImplementedError' do
         allow(invitable_task).to receive(:invitee_role).and_return 'editor'
-        expect{ invitable_task.invitee_role }.not_to raise_error
+        expect { invitable_task.invitee_role }.not_to raise_error
       end
     end
   end

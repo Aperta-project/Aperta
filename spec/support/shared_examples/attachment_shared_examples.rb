@@ -25,7 +25,7 @@ RSpec.shared_examples_for 'attachment#download! sets the file_hash' do
 
     it 'is set to a SHA256 hexdigest of the file contents' do
       fixture_file = Rails.root.join('spec/fixtures', File.basename(url))
-      unless File.exists?(fixture_file)
+      unless File.exist?(fixture_file)
         raise <<-ERROR.strip_heredoc
           There is no local fixture file with a name matching the file in the
           provided url:
@@ -118,7 +118,7 @@ RSpec.shared_examples_for 'attachment#download! sets the status' do
     it 'is set to done' do
       expect do
         subject.download!(url)
-      end.to change { subject.reload.status }.to self.described_class::STATUS_DONE
+      end.to change { subject.reload.status }.to described_class::STATUS_DONE
     end
   end
 end
@@ -211,7 +211,6 @@ RSpec.shared_examples_for 'attachment#download! manages resource tokens' do
       # we don't want any resource tokens to exist for these shared examples,
       # but there's no need to bother the including test about this.
       subject.resource_tokens.delete_all
-
     end
 
     it 'creates a resource token with URLs for each version of the file' do

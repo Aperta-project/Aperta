@@ -1,4 +1,3 @@
-# rubocop:disable LineLength
 require 'rails_helper'
 
 describe SalesforceServices::ObjectTranslations do
@@ -88,7 +87,6 @@ describe SalesforceServices::ObjectTranslations do
             expect(mt.paper_to_manuscript_hash["Editorial_Status_Date__c"])
               .to eq(config[:time])
           end
-
         end
       end
       it "uses the correct Current_Editorial_Status__c" do
@@ -141,7 +139,8 @@ describe SalesforceServices::ObjectTranslations do
         FactoryGirl.create(
           :funder,
           name: "funder001",
-          grant_number: '000-2222-111')
+          grant_number: '000-2222-111'
+        )
       end
 
       before do
@@ -150,9 +149,8 @@ describe SalesforceServices::ObjectTranslations do
 
       it "return a hash" do
         data = billing_translator.paper_to_billing_hash
-        # rubocop:disable Style/SingleSpaceBeforeFirstArg
         expect(data.class).to                          eq Hash
-        expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
+        expect(data['SuppliedEmail']).to               eq('pfa@pfa.com')
         expect(data['Manuscript__c']).to               eq(paper.salesforce_manuscript_id)
         expect(data['Exclude_from_EM__c']).to          eq(true)
         expect(data['Journal_Department__c']).to       eq(paper.journal.name)
@@ -161,22 +159,22 @@ describe SalesforceServices::ObjectTranslations do
         expect(data['Description']).to                 match('lou prima')
         expect(data['Description']).to                 match('has applied')
         expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
-        expect(data['PFA_Question_1__c']).to           eq ('Yes')
-        expect(data['PFA_Question_1a__c']).to          eq ('foo')
-        expect(data['PFA_Question_1b__c']).to          eq (100.00)
-        expect(data['PFA_Question_2__c']).to           eq ('Yes')
-        expect(data['PFA_Question_2a__c']).to          eq ('foo')
-        expect(data['PFA_Question_2b__c']).to          eq (100.00)
-        expect(data['PFA_Question_3__c']).to           eq ('Yes')
-        expect(data['PFA_Question_3a__c']).to          eq (100.00)
-        expect(data['PFA_Question_4__c']).to           eq ('Yes')
-        expect(data['PFA_Question_4a__c']).to          eq (100.00)
-        expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
-        expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
-        expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
-        expect(data['PFA_Funding_Statement__c']).to    eq ('funder001 http://alderaan.gov (grant number 000-2222-111). ' +
-                                                            'The funder had no role in study design, data collection and analysis, ' +
-                                                            'decision to publish, or preparation of the manuscript.')
+        expect(data['PFA_Question_1__c']).to           eq 'Yes'
+        expect(data['PFA_Question_1a__c']).to          eq 'foo'
+        expect(data['PFA_Question_1b__c']).to          eq 100.00
+        expect(data['PFA_Question_2__c']).to           eq 'Yes'
+        expect(data['PFA_Question_2a__c']).to          eq 'foo'
+        expect(data['PFA_Question_2b__c']).to          eq 100.00
+        expect(data['PFA_Question_3__c']).to           eq 'Yes'
+        expect(data['PFA_Question_3a__c']).to          eq 100.00
+        expect(data['PFA_Question_4__c']).to           eq 'Yes'
+        expect(data['PFA_Question_4a__c']).to          eq 100.00
+        expect(data['PFA_Able_to_Pay_R__c']).to        eq 100.00
+        expect(data['PFA_Additional_Comments__c']).to  eq 'my comments'
+        expect(data['PFA_Supporting_Docs__c']).to      eq true # indirectly tests private method boolean_from_yes_no
+        expect(data['PFA_Funding_Statement__c']).to    eq 'funder001 http://alderaan.gov (grant number 000-2222-111). ' \
+                                                            'The funder had no role in study design, data collection and analysis, ' \
+                                                            'decision to publish, or preparation of the manuscript.'
         # rubocop:enable Style/SingleSpaceBeforeFirstArg
       end
     end

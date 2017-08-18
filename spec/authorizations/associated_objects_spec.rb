@@ -8,7 +8,7 @@ DESC
   include AuthorizationSpecHelper
 
   let!(:user) { FactoryGirl.create(:user) }
-  let!(:journal){ Authorizations::FakeJournal.create! }
+  let!(:journal) { Authorizations::FakeJournal.create! }
   let!(:paper) { Authorizations::FakePaper.create!(fake_journal: journal) }
   let!(:card_version) { Authorizations::FakeCardVersion.create! }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper, fake_card_version: card_version) }

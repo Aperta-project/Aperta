@@ -1,15 +1,14 @@
 require 'rails_helper'
 
 describe PhaseTemplate do
-
   let(:mmt) { FactoryGirl.create(:manuscript_manager_template) }
   let(:phase_template) {
     FactoryGirl.create(:phase_template, manuscript_manager_template: mmt)
-}
+  }
   let!(:task_template) {
     FactoryGirl.create(:task_template,
       phase_template: phase_template)
-    }
+  }
 
   describe "#destroy" do
     it "also destroy TaskTemplate" do

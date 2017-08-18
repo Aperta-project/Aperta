@@ -5,27 +5,22 @@ describe GroupAuthorsController do
   let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
   let(:post_request) do
-    post :create,
-         format: :json,
-         group_author: {
-           name: "Freddy Group",
-           contact_first_name: "enrico",
-           contact_last_name: "fermi",
-           paper_id: paper.id,
-           task_id: task.id,
-           position: 1
-         }
+    post :create, params: { format: :json, group_author: {
+      name: "Freddy Group",
+      contact_first_name: "enrico",
+      contact_last_name: "fermi",
+      paper_id: paper.id,
+      task_id: task.id,
+      position: 1
+    } }
   end
   let!(:group_author) { FactoryGirl.create(:group_author, paper: paper) }
-  let(:delete_request) { delete :destroy, format: :json, id: group_author.id }
+  let(:delete_request) { delete :destroy, params: { format: :json, id: group_author.id } }
   let(:put_request) do
-    put :update,
-        format: :json,
-        id: group_author.id,
-        group_author: {
-          contact_last_name: "Blabby",
-          task_id: task.id
-        }
+    put :update, params: { format: :json, id: group_author.id, group_author: {
+      contact_last_name: "Blabby",
+      task_id: task.id
+    } }
   end
 
   before do
@@ -103,10 +98,10 @@ describe GroupAuthorsController do
     end
 
     let(:put_request) do
-      put :update, format: :json, id: group_author.id, group_author: { contact_last_name: "Blabby",
-                                                                       author_task_id: task.id,
-                                                                       co_author_state: "confirmed",
-                                                                       co_author_state_modified_by: staff_admin }
+      put :update, params: { format: :json, id: group_author.id, group_author: { contact_last_name: "Blabby",
+                                                                                 author_task_id: task.id,
+                                                                                 co_author_state: "confirmed",
+                                                                                 co_author_state_modified_by: staff_admin } }
     end
 
     context 'administrator user' do

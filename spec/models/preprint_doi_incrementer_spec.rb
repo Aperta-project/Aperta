@@ -23,11 +23,11 @@ describe PreprintDoiIncrementer do
       expect(incrementer.send(:to_doi)).to eq("0000397")
       incrementer.value = 4890
       expect(incrementer.send(:to_doi)).to eq("0004890")
-      incrementer.value = 34908
+      incrementer.value = 34_908
       expect(incrementer.send(:to_doi)).to eq("0034908")
-      incrementer.value = 129362
+      incrementer.value = 129_362
       expect(incrementer.send(:to_doi)).to eq("0129362")
-      incrementer.value = 2349087
+      incrementer.value = 2_349_087
       expect(incrementer.send(:to_doi)).to eq("2349087")
     end
   end

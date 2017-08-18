@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe Snapshot::FinancialDisclosureTaskSerializer do
   subject(:serializer) { described_class.new(task) }
-  let(:task) {FactoryGirl.create(:financial_disclosure_task)}
+  let(:task) { FactoryGirl.create(:financial_disclosure_task) }
 
   describe "#as_json" do
     it "serializes to JSON" do
@@ -39,7 +39,7 @@ describe Snapshot::FinancialDisclosureTaskSerializer do
       it "serializes each funders(s) associated with the task in order by their respective id" do
         expect(serializer.as_json[:children]).to include(
           { funder: "sally's json here" },
-          { funder: "bob's json here" }
+          funder: "bob's json here"
         )
       end
     end

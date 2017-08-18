@@ -63,7 +63,7 @@ describe 'SeedHelpers' do
           end
           expect(
             Role.where(name: 'role').first.reload.permissions.map(&:action)
-          ).to match(%w(view))
+          ).to match(%w[view])
 
           # The permission should still exist though
           expect(
@@ -163,7 +163,8 @@ describe 'SeedHelpers' do
 
     it 'does nothing if the permission already exists' do
       expect(role.permissions).to contain_exactly(
-        Permission.where(action: :view, applies_to: Task).first)
+        Permission.where(action: :view, applies_to: Task).first
+      )
     end
 
     it 'adds a new permission if the states do not match' do

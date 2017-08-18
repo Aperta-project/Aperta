@@ -10,7 +10,7 @@ describe QuestionAttachmentsController do
 
   describe "#show" do
     subject(:do_request) do
-      get :show, format: :json, id: question_attachment.to_param
+      get :show, params: { format: :json, id: question_attachment.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -48,7 +48,7 @@ describe QuestionAttachmentsController do
 
   describe '#destroy' do
     subject(:do_request) do
-      put :destroy, format: :json, id: question_attachment.id
+      put :destroy, params: { format: :json, id: question_attachment.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -82,11 +82,11 @@ describe QuestionAttachmentsController do
 
   describe '#create' do
     subject(:do_request) do
-      post :create, format: :json, question_attachment: {
+      post :create, params: { format: :json, question_attachment: {
         nested_question_answer_id: answer.id,
         caption: 'This is a great caption!',
         src: 'http://some.cat.image.gif'
-      }
+      } }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -145,9 +145,9 @@ describe QuestionAttachmentsController do
 
   describe '#update' do
     subject(:do_request) do
-      put :update, format: :json, question_attachment: {
+      put :update, params: { format: :json, question_attachment: {
         caption: 'This is a great caption!', src: 'http://some.cat.image.gif'
-      }, id: question_attachment.id
+      }, id: question_attachment.id }
     end
 
     it_behaves_like 'an unauthenticated json request'

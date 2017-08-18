@@ -17,7 +17,7 @@ describe CollaborationsController do
 
   describe '#create' do
     subject(:do_request) do
-      post :create, format: :json, collaboration: collaborator_params
+      post :create, params: { format: :json, collaboration: collaborator_params }
     end
 
     let(:collaborator_params) do
@@ -40,20 +40,20 @@ describe CollaborationsController do
         end.to change(paper.assignments, :count).by(1)
 
         expect(paper.assignments.find_by(
-          role: paper.journal.collaborator_role,
-          user: collaborator
+                 role: paper.journal.collaborator_role,
+                 user: collaborator
         )).to be
       end
 
       it 'adds activities to the feeds' do
         expect do
-          post :create, format: :json, collaboration: collaborator_params
+          post :create, params: { format: :json, collaboration: collaborator_params }
         end.to change(Activity, :count).by(1)
       end
 
       it 'adds an email to the sidekiq queue' do
         expect do
-          post :create, format: :json, collaboration: collaborator_params
+          post :create, params: { format: :json, collaboration: collaborator_params }
         end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
         expect(UserMailer).to receive(:add_collaborator).with(user.id, collaborator.id, paper.id).and_call_original
         Sidekiq::Extensions::DelayedMailer.drain
@@ -74,7 +74,7 @@ describe CollaborationsController do
 
   describe '#destroy' do
     subject(:do_request) do
-      delete :destroy, format: :json, id: collaboration.id
+      delete :destroy, params: { format: :json, id: collaboration.id }
     end
 
     let!(:collaboration) { paper.add_collaboration(collaborator) }
@@ -95,14 +95,14 @@ describe CollaborationsController do
         end.to change(paper.assignments, :count).by(-1)
 
         expect(paper.assignments.find_by(
-          role: paper.journal.collaborator_role,
-          user: collaborator
+                 role: paper.journal.collaborator_role,
+                 user: collaborator
         )).to_not be
       end
 
       it 'adds activities to the feeds' do
         expect do
-          delete :destroy, format: :json, id: collaboration.id
+          delete :destroy, params: { format: :json, id: collaboration.id }
         end.to change(Activity, :count).by(1)
       end
     end

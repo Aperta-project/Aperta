@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe JournalsController do
-
   let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
 
@@ -16,7 +15,7 @@ describe JournalsController do
 
   context "#show" do
     it "will allow access" do
-      get :show, id: journal.id, format: :json
+      get :show, params: { id: journal.id, format: :json }
       expect(response.status).to eq(200)
     end
   end

@@ -20,8 +20,7 @@ describe TasksController, redis: true do
 
   describe "GET #index" do
     subject(:do_request) do
-      get :index, format: 'json',
-                  paper_id: paper.to_param
+      get :index, params: { format: 'json', paper_id: paper.to_param }
     end
     let(:tasks) { [FactoryGirl.build_stubbed(:ad_hoc_task)] }
 
@@ -78,7 +77,7 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      post :create, format: 'json', task: task_params
+      post :create, params: { format: 'json', task: task_params }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -194,7 +193,7 @@ describe TasksController, redis: true do
 
         it "does not incomplete the task when the completed param is not a part of the request" do
           expect do
-            task_params.merge!(title: 'vernors')
+            task_params[:title] = 'vernors'
             do_request
           end.to_not change { task.reload.completed }
         end
@@ -225,12 +224,11 @@ describe TasksController, redis: true do
         expect(task.reload).not_to be_completed
       end
     end
-
   end
 
   describe "GET #show" do
     let(:task) { FactoryGirl.build_stubbed(:ad_hoc_task) }
-    subject(:do_request) { get :show, id: task.id, format: :json }
+    subject(:do_request) { get :show, params: { id: task.id, format: :json } }
     let(:format) { :json }
 
     before do
@@ -276,12 +274,11 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      put :send_message, id: task.id, format: "json",
-                         task: {
-                           subject: "Hello",
-                           body: "Greetings from Vulcan!",
-                           recipients: [user.id]
-                         }
+      put :send_message, params: { id: task.id, format: "json", task: {
+        subject: "Hello",
+        body: "Greetings from Vulcan!",
+        recipients: [user.id]
+      } }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -303,13 +300,11 @@ describe TasksController, redis: true do
         before_queue_size = Sidekiq::Extensions::DelayedMailer.jobs.size
 
         expect do
-          put :send_message,
-            id: task.id, format: "json",
-            task: {
-              subject: "Hello",
-              body: "Greetings from Vulcan!",
-              recipients: [user.id, user2.id]
-            }
+          put :send_message, params: { id: task.id, format: "json", task: {
+            subject: "Hello",
+            body: "Greetings from Vulcan!",
+            recipients: [user.id, user2.id]
+          } }
         end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(2)
       end
     end
@@ -330,7 +325,7 @@ describe TasksController, redis: true do
     let(:task) { FactoryGirl.create(:ad_hoc_task) }
 
     subject(:do_request) do
-      delete :destroy, id: task.id, format: "json"
+      delete :destroy, params: { id: task.id, format: "json" }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -376,7 +371,7 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      get :nested_questions, task_id: task.id, format: "json"
+      get :nested_questions, params: { task_id: task.id, format: "json" }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -434,7 +429,7 @@ describe TasksController, redis: true do
     end
 
     subject(:do_request) do
-      get :nested_question_answers, task_id: task.id, format: "json"
+      get :nested_question_answers, params: { task_id: task.id, format: "json" }
     end
 
     it_behaves_like "an unauthenticated json request"

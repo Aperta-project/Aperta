@@ -11,8 +11,7 @@ describe FiguresController do
     let!(:figure2) { FactoryGirl.create(:figure, owner: paper) }
 
     subject(:do_request) do
-      get :index, format: 'json',
-                  paper_id: paper.to_param
+      get :index, params: { format: 'json', paper_id: paper.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -50,12 +49,7 @@ describe FiguresController do
     let(:paper) { FactoryGirl.create(:paper) }
     let!(:figure1) { FactoryGirl.create(:figure, owner: paper) }
     subject(:do_request) do
-      delete(
-        :destroy,
-        id: figure1.id.to_param,
-        paper_id: paper.id.to_param,
-        format: 'json'
-      )
+      delete(:destroy, params: { id: figure1.id.to_param, paper_id: paper.id.to_param, format: 'json' })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -91,7 +85,7 @@ describe FiguresController do
   describe "POST 'create'" do
     let(:paper) { FactoryGirl.create(:paper) }
     subject(:do_request) do
-      post :create, format: "json", paper_id: paper.to_param, url: url
+      post :create, params: { format: "json", paper_id: paper.to_param, url: url }
     end
     let(:url) { "http://someawesomeurl.com" }
 
@@ -138,7 +132,7 @@ describe FiguresController do
 
   describe "PUT 'update_attachment'" do
     subject(:do_request) do
-      put :update_attachment, format: "json", id: figure.id, url: url
+      put :update_attachment, params: { format: "json", id: figure.id, url: url }
     end
     let(:url) { "http://someawesomeurl.com" }
     before do
@@ -184,7 +178,7 @@ describe FiguresController do
 
   describe "PUT 'cancel'" do
     subject(:do_request) do
-      put :cancel, format: "json", id: figure.id
+      put :cancel, params: { format: "json", id: figure.id }
     end
     before do
       allow(Figure).to receive(:find).with(figure.to_param).and_return(figure)
@@ -222,12 +216,7 @@ describe FiguresController do
 
   describe "PUT 'update'" do
     subject(:do_request) do
-      put(
-        :update,
-        id: figure.to_param,
-        figure: { title: "new title", caption: 'new caption' },
-        format: :json
-      )
+      put(:update, params: { id: figure.to_param, figure: { title: "new title", caption: 'new caption' }, format: :json })
     end
     before do
       allow(Figure).to receive(:find).with(figure.to_param).and_return(figure)

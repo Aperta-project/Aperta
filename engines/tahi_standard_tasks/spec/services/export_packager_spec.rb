@@ -47,7 +47,7 @@ describe ExportPackager do
   end
 
   context 'a well formed paper' do
-    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:task) { paper.tasks.find_by(type: 'TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:answer) do
       FactoryGirl.create(:answer,
@@ -132,14 +132,14 @@ describe ExportPackager do
         packager = ExportPackager.new(paper, archive_filename: archive_filename, destination: 'apex')
         manifest = packager.manifest_file
         json = JSON.parse manifest.read
-        expected_keys = %w(archive_filename metadata_filename files)
+        expected_keys = %w[archive_filename metadata_filename files]
         expect(json).to include *expected_keys
       end
     end
   end
 
   context 'a paper with figures' do
-    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:task) { paper.tasks.find_by(type: 'TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:answer) do
       FactoryGirl.create(:answer,
@@ -192,7 +192,7 @@ describe ExportPackager do
 
   context 'a paper with supporting information' do
     let!(:figure_task) do
-      paper.tasks.find_by_type('TahiStandardTasks::FigureTask')
+      paper.tasks.find_by(type: 'TahiStandardTasks::FigureTask')
     end
     let!(:figure_question) { figure_task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:figure_nested_question_answer) do
@@ -252,7 +252,7 @@ describe ExportPackager do
   end
 
   context 'a paper with a striking image' do
-    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:task) { paper.tasks.find_by(type: 'TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:attachment1) do
       double('attachment_model', filename: 'yeti.jpg',
@@ -322,7 +322,7 @@ describe ExportPackager do
   end
 
   context 'a pdf manuscript' do
-    let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:task) { paper.tasks.find_by(type: 'TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.card.content_for_version(:latest).find_by(ident: 'figures--complies') }
     let!(:answer) do
       FactoryGirl.create(:answer,

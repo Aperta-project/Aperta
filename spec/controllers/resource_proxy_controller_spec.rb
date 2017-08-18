@@ -17,7 +17,7 @@ describe ResourceProxyController do
 
   describe 'GET #url without version' do
     subject do
-      get :url, resource: :supporting_information_files, token: example_token
+      get :url, params: { resource: :supporting_information_files, token: example_token }
     end
 
     it 'redirects to the ResourceToken#url' do
@@ -27,12 +27,7 @@ describe ResourceProxyController do
 
   describe 'GET #url with version' do
     subject do
-      get(
-        :url,
-        resource: :supporting_information_files,
-        token: example_token,
-        version: 'preview'
-      )
+      get(:url, params: { resource: :supporting_information_files, token: example_token, version: 'preview' })
     end
     let(:preview_url) { 'https://example.com/s3/key/preview' }
 
@@ -49,11 +44,7 @@ describe ResourceProxyController do
 
   describe 'GET #url with non-existent token' do
     subject do
-      get(
-        :url,
-        resource: :supporting_information_files,
-        token: example_token
-      )
+      get(:url, params: { resource: :supporting_information_files, token: example_token })
     end
 
     before do
@@ -69,11 +60,7 @@ describe ResourceProxyController do
 
   describe 'GET #url with a good token, but non-existent version' do
     subject do
-      get(:url,
-        resource: :supporting_information_files,
-        token: example_token,
-        version: :bogus_version
-      )
+      get(:url, params: { resource: :supporting_information_files, token: example_token, version: :bogus_version })
     end
 
     before do

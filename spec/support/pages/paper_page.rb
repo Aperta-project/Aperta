@@ -5,7 +5,7 @@ class DeclarationFragment < PageFragment
     find('textarea').value
   end
 
-  def answer= value
+  def answer=(value)
     id = find('textarea')[:id]
     fill_in id, with: value
     find('label').click # blur the textarea
@@ -19,19 +19,19 @@ class PaperPage < Page
   text_assertions :paper_title, '#control-bar-paper-title'
   text_assertions :journal, '.paper-journal'
 
-  def initialize element = nil
+  def initialize(element = nil)
     find '.manuscript'
     super
   end
 
-  def view_task(task, overlay_class=nil)
+  def view_task(task, overlay_class = nil)
     name = ''
     element = nil
 
     if task.class == String
       element = find('.task-disclosure', text: task)
     else
-      name = task.type.gsub(/.+::/,'').underscore.dasherize
+      name = task.type.gsub(/.+::/, '').underscore.dasherize
       element = find(".#{name}")
     end
 
@@ -89,7 +89,7 @@ class PaperPage < Page
     element.send_keys = string
   end
 
-  def abstract=(val)
+  def abstract=(_val)
     # find('#paper-title').set(val)
     raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end
@@ -146,9 +146,9 @@ class PaperPage < Page
   end
 
   def save
-    code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
-editorController.savePaper();
+    code = <<HERE.strip_heredoc
+      var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
+      editorController.savePaper();
 HERE
     page.execute_script code
   end
@@ -157,7 +157,7 @@ HERE
     click_on "Submit"
     SubmitPaperOverlay.new.tap do |overlay|
       if blk
-        blk.call overlay
+        yield overlay
         wait_for_ajax
       end
     end

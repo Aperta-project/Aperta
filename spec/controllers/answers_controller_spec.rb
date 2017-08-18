@@ -17,7 +17,7 @@ describe AnswersController do
           card_content_id: card_content.id
         }
       }
-      post(:create, post_params)
+      post(:create, params: post_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -73,7 +73,7 @@ describe AnswersController do
           annotation: 'updated annotation'
         }
       }
-      put(:update, put_params)
+      put(:update, params: put_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -129,7 +129,7 @@ describe AnswersController do
         format: 'json',
         id: answer.to_param
       }
-      delete(:destroy, delete_params)
+      delete(:destroy, params: delete_params)
     end
 
     it_behaves_like "an unauthenticated json request"

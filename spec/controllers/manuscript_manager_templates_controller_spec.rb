@@ -39,14 +39,14 @@ describe ManuscriptManagerTemplatesController do
 
     context "with filtering" do
       subject(:do_request) do
-        get :index, format: 'json', journal_id: journal.id
+        get :index, params: { format: 'json', journal_id: journal.id }
       end
 
       context "when a user requests a journal they do not have access to" do
         let!(:other_journal) { FactoryGirl.create(:journal) }
 
         subject(:do_request) do
-          get :index, format: 'json', journal_id: other_journal.id
+          get :index, params: { format: 'json', journal_id: other_journal.id }
         end
 
         it "does not return mmts for another journal" do
@@ -68,7 +68,7 @@ describe ManuscriptManagerTemplatesController do
 
   describe 'POST create' do
     subject(:do_request) do
-      post :create, format: 'json', manuscript_manager_template: new_params
+      post :create, params: { format: 'json', manuscript_manager_template: new_params }
     end
     let(:new_params) do
       {
@@ -124,7 +124,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "GET show" do
-    subject(:do_request) { get :show, format: 'json', id: mmt.id }
+    subject(:do_request) { get :show, params: { format: 'json', id: mmt.id } }
     let(:mmt) { journal.manuscript_manager_templates.first }
 
     it_behaves_like "an unauthenticated json request"
@@ -165,11 +165,7 @@ describe ManuscriptManagerTemplatesController do
 
   describe "PUT update" do
     subject(:do_request) do
-      put \
-        :update,
-        format: 'json',
-        id: mmt.id,
-        manuscript_manager_template: new_params
+      put :update, params: { format: 'json', id: mmt.id, manuscript_manager_template: new_params }
     end
     let(:mmt) do
       FactoryGirl.create \
@@ -247,7 +243,7 @@ describe ManuscriptManagerTemplatesController do
 
   describe "DELETE destroy" do
     let(:mmt) { journal.manuscript_manager_templates.first }
-    subject(:do_request) { delete :destroy, format: :json, id: mmt.id }
+    subject(:do_request) { delete :destroy, params: { format: :json, id: mmt.id } }
 
     it_behaves_like "an unauthenticated json request"
 

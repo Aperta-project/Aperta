@@ -20,38 +20,35 @@ describe PaperTrackerQueriesController do
   describe "#create" do
     it "creates a paper tracker query" do
       (expect do
-        post(
-          :create,
-          format: :json,
-          paper_tracker_query: {
-            title: "a title",
-            query: "A QUERY or something"
-          })
+        post(:create, params: { format: :json, paper_tracker_query: {
+               title: "a title",
+               query: "A QUERY or something"
+             } })
       end).to change { PaperTrackerQuery.count }.by(1)
     end
   end
 
   describe "#update" do
     it "updates an existing query record" do
-      put :update, id: query.id, paper_tracker_query: { title: "A better title" }, format: :json
+      put :update, params: { id: query.id, paper_tracker_query: { title: "A better title" }, format: :json }
       expect(query.reload.title).to eq("A better title")
     end
   end
 
   describe "#destroy" do
     it "Deletes a paper tracker query" do
-      delete :destroy, format: :json, id: query.id
+      delete :destroy, params: { format: :json, id: query.id }
       expect(query.reload.deleted).to eq(true)
     end
 
     it "returns a 204 (no content) status" do
-      delete :destroy, format: :json, id: query.id
+      delete :destroy, params: { format: :json, id: query.id }
       expect(response.status).to eq(204)
     end
 
     it "logs the deleted query" do
       expect(Rails.logger).to receive(:info).with("#{user.email} deleted query #{query.title}")
-      delete :destroy, format: :json, id: query.id
+      delete :destroy, params: { format: :json, id: query.id }
     end
   end
 end

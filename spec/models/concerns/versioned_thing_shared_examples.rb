@@ -12,7 +12,8 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       name.to_sym,
       paper: paper,
       major_version: 0,
-      minor_version: 0)
+      minor_version: 0
+    )
   end
 
   let!(:version_0_1) do
@@ -20,7 +21,8 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       name.to_sym,
       paper: paper,
       major_version: 0,
-      minor_version: 1)
+      minor_version: 1
+    )
   end
 
   let!(:version_0_2) do
@@ -28,7 +30,8 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       name.to_sym,
       paper: paper,
       major_version: 0,
-      minor_version: 2)
+      minor_version: 2
+    )
   end
 
   let!(:version_1_0) do
@@ -36,7 +39,8 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       name.to_sym,
       paper: paper,
       major_version: 1,
-      minor_version: 0)
+      minor_version: 0
+    )
   end
 
   let!(:draft) do
@@ -44,7 +48,8 @@ RSpec.shared_examples 'a thing with major and minor versions' do |name|
       name.to_sym,
       paper: paper,
       minor_version: nil,
-      major_version: nil)
+      major_version: nil
+    )
   end
 
   let(:versions) { paper.send(@things) }

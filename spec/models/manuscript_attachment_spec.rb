@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ManuscriptAttachment do
-  subject(:attachment){ FactoryGirl.build(:attachment) }
+  subject(:attachment) { FactoryGirl.build(:attachment) }
 
   describe '#download!', vcr: { cassette_name: 'attachment' } do
     subject(:attachment) { FactoryGirl.create(:manuscript_attachment, :with_resource_token) }

@@ -31,7 +31,7 @@ describe DiscussionParticipantsController do
       {
         discussion_participant: {
           discussion_topic_id: topic_a.id,
-          user_id: another_user.id,
+          user_id: another_user.id
         }
       }
     end
@@ -58,7 +58,7 @@ describe DiscussionParticipantsController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { post :create, creation_params }
+      subject(:do_request) { post :create, params: creation_params }
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
@@ -93,7 +93,7 @@ describe DiscussionParticipantsController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { delete :destroy, id: participation.to_param }
+      subject(:do_request) { delete :destroy, params: { id: participation.to_param } }
 
       before do
         stub_sign_in user

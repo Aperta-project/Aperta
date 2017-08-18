@@ -46,7 +46,7 @@ describe PapersController do
   end
 
   describe 'GET show' do
-    subject(:do_request) { get :show, id: paper.to_param, format: :json }
+    subject(:do_request) { get :show, params: { id: paper.to_param, format: :json } }
     let(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
 
     it_behaves_like "an unauthenticated json request"
@@ -100,11 +100,7 @@ describe PapersController do
 
   describe 'POST create - any authenticated user can create a paper' do
     subject(:do_request) do
-      post(
-        :create,
-        paper: paper_params,
-        format: :json
-      )
+      post(:create, params: { paper: paper_params, format: :json })
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:paper_params) do
@@ -182,12 +178,7 @@ describe PapersController do
 
   describe 'PUT update' do
     subject(:do_request) do
-      put(
-        :update,
-        id: paper.to_param,
-        format: :json,
-        paper: { title: 'My new title' }
-      )
+      put(:update, params: { id: paper.to_param, format: :json, paper: { title: 'My new title' } })
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -249,7 +240,7 @@ describe PapersController do
 
   describe 'GET comment_looks' do
     subject(:do_request) do
-      get :comment_looks, id: paper.to_param, format: :json
+      get :comment_looks, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:task) { FactoryGirl.create(:ad_hoc_task, paper: paper) }
@@ -305,7 +296,7 @@ describe PapersController do
 
   describe 'GET versioned_texts' do
     subject(:do_request) do
-      get :versioned_texts, id: paper.to_param, format: :json
+      get :versioned_texts, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -352,7 +343,7 @@ describe PapersController do
 
   describe 'GET workflow_activities' do
     subject(:do_request) do
-      get :workflow_activities, id: paper.to_param, format: :json
+      get :workflow_activities, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -404,7 +395,7 @@ describe PapersController do
 
   describe 'GET manuscript_activities' do
     subject(:do_request) do
-      get :manuscript_activities, id: paper.to_param, format: :json
+      get :manuscript_activities, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -453,7 +444,7 @@ describe PapersController do
 
   describe 'GET snapshots' do
     subject(:do_request) do
-      get :snapshots, id: paper.to_param, format: :json
+      get :snapshots, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
     let(:snapshot_1) { FactoryGirl.build(:snapshot) }
@@ -483,7 +474,7 @@ describe PapersController do
 
   describe 'GET related_articles' do
     subject(:do_request) do
-      get :related_articles, id: paper.id, format: :json
+      get :related_articles, params: { id: paper.id, format: :json }
     end
     let!(:paper) { FactoryGirl.create(:paper) }
     let!(:related_article) { FactoryGirl.create(:related_article, paper: paper) }
@@ -522,7 +513,7 @@ describe PapersController do
 
   describe 'PUT toggle_editable' do
     subject(:do_request) do
-      put :toggle_editable, id: paper.id, format: :json
+      put :toggle_editable, params: { id: paper.id, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -582,7 +573,7 @@ describe PapersController do
 
   describe 'PUT submit' do
     subject(:do_request) do
-      put :submit, id: paper.id, format: :json
+      put :submit, params: { id: paper.id, format: :json }
     end
     let(:paper) { FactoryGirl.create(:paper) }
 
@@ -615,7 +606,7 @@ describe PapersController do
         context 'when there is a transition error' do
           # for example, due to unprocessed images
 
-          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+          let(:paper_refreshed_from_db) { Paper.find_by(id: paper.id) }
 
           before do
             expect(Paper).to receive(:find).and_return paper
@@ -673,7 +664,7 @@ describe PapersController do
         context 'when there is a transition error' do
           # for example, due to unprocessed images
 
-          let(:paper_refreshed_from_db) { Paper.find_by_id(paper.id) }
+          let(:paper_refreshed_from_db) { Paper.find_by(id: paper.id) }
 
           before do
             expect(Paper).to receive(:find).and_return paper
@@ -735,7 +726,7 @@ describe PapersController do
 
   describe 'PUT reactivate' do
     subject(:do_request) do
-      put :reactivate, id: paper.to_param, format: :json
+      put :reactivate, params: { id: paper.to_param, format: :json }
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
 
@@ -815,7 +806,7 @@ describe PapersController do
 
   describe 'PUT withdraw' do
     subject(:do_request) do
-      put :withdraw, id: paper.to_param, format: :json, reason: withdrawal_reason
+      put :withdraw, params: { id: paper.to_param, format: :json, reason: withdrawal_reason }
     end
     let(:paper) { FactoryGirl.build_stubbed(:paper) }
     let(:withdrawal_reason) { 'It was a whoopsie' }

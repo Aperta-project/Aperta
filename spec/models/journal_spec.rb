@@ -104,7 +104,7 @@ describe Journal do
       it "destroys journal" do
         expect { journal.destroy }.to change { Journal.count }.by(-1)
       end
-   end
+    end
   end
 
   describe '#last_doi_issued' do
@@ -206,34 +206,34 @@ describe Journal do
     let(:doi) { 'any.thing/journal.thing.1' }
 
     it 'validates the given DOI string' do
-      expect(Journal.valid_doi? doi).to eq true
-      expect(Journal.valid_doi? "10.10.1038/journal.nphys1170").to eq true
-      expect(Journal.valid_doi? "10.1002/journal.0470841559.ch1").to eq true
-      expect(Journal.valid_doi? "10.1594/journal.PANGAEA.726855").to eq true
-      expect(Journal.valid_doi? "10.1594/journal.GFZ.GEOFON.gfz2009kciu").to eq true
-      expect(Journal.valid_doi? "10.1594/journal.PANGAEA.667386").to eq true
-      expect(Journal.valid_doi? "10.3207/journal.2959859860").to eq true
-      expect(Journal.valid_doi? "10.3866/journal.PKU.WHXB201112303").to eq true
-      expect(Journal.valid_doi? "10.3972/journal.water973.0145.db").to eq true
-      expect(Journal.valid_doi? "10.7666/journal.d.y351065").to eq true
-      expect(Journal.valid_doi? "10.11467/journal.isss2003.7.1_11").to eq true
-      expect(Journal.valid_doi? "10.7875/journal.leading.author.2.e008").to eq true
-      expect(Journal.valid_doi? "10.1430/journal.8105").to eq true
-      expect(Journal.valid_doi? "10.1392/journal.BC1.0").to eq true
-      expect(Journal.valid_doi? "10.1000/journal.182").to eq true
-      expect(Journal.valid_doi? "10.1234/journal.joe.jou.1516").to eq true
+      expect(Journal.valid_doi?(doi)).to eq true
+      expect(Journal.valid_doi?("10.10.1038/journal.nphys1170")).to eq true
+      expect(Journal.valid_doi?("10.1002/journal.0470841559.ch1")).to eq true
+      expect(Journal.valid_doi?("10.1594/journal.PANGAEA.726855")).to eq true
+      expect(Journal.valid_doi?("10.1594/journal.GFZ.GEOFON.gfz2009kciu")).to eq true
+      expect(Journal.valid_doi?("10.1594/journal.PANGAEA.667386")).to eq true
+      expect(Journal.valid_doi?("10.3207/journal.2959859860")).to eq true
+      expect(Journal.valid_doi?("10.3866/journal.PKU.WHXB201112303")).to eq true
+      expect(Journal.valid_doi?("10.3972/journal.water973.0145.db")).to eq true
+      expect(Journal.valid_doi?("10.7666/journal.d.y351065")).to eq true
+      expect(Journal.valid_doi?("10.11467/journal.isss2003.7.1_11")).to eq true
+      expect(Journal.valid_doi?("10.7875/journal.leading.author.2.e008")).to eq true
+      expect(Journal.valid_doi?("10.1430/journal.8105")).to eq true
+      expect(Journal.valid_doi?("10.1392/journal.BC1.0")).to eq true
+      expect(Journal.valid_doi?("10.1000/journal.182")).to eq true
+      expect(Journal.valid_doi?("10.1234/journal.joe.jou.1516")).to eq true
     end
 
     context "with a blank DOI" do
       it "returns false" do
-        expect(described_class.valid_doi? nil).to eq false
+        expect(described_class.valid_doi?(nil)).to eq false
       end
     end
 
     context "with an invalid DOI" do
       it "returns false" do
-        expect(described_class.valid_doi? "10.1000/182/12").to eq false
-        expect(described_class.valid_doi? "monkey").to eq false
+        expect(described_class.valid_doi?("10.1000/182/12")).to eq false
+        expect(described_class.valid_doi?("monkey")).to eq false
       end
     end
   end

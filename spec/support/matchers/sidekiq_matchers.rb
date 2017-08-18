@@ -12,7 +12,7 @@
 #     [{author_id: paper.creator.id, task_id: task.id}
 RSpec::Matchers.define :have_queued_mailer_job do |*expected|
   match do |actual|
-    actual.jobs.any? { |job| Array(expected) == YAML.load(job["args"].first) }
+    actual.jobs.any? { |job| Array(expected) == YAML.safe_load(job["args"].first) }
   end
 
   failure_message do |actual|
@@ -54,7 +54,7 @@ RSpec::Matchers.define :have_queued_job do |*expected|
   end
 end
 
-RSpec::Matchers.define :have_queued_job_at do |at,*expected|
+RSpec::Matchers.define :have_queued_job_at do |at, *expected|
   match do |actual|
     actual.jobs.any? { |job| job["args"] == Array(expected) && job["at"].to_i == at.to_i }
   end
@@ -81,11 +81,11 @@ RSpec::Matchers.define :have_empty_queue do |_|
     "expected that #{actual} would be empty, but had #{actual.jobs.count} jobs: \n #{actual.jobs.inspect}"
   end
 
-  failure_message_when_negated do |actual|
+  failure_message_when_negated do |_actual|
     "Please use :have_queued_job to test that your job was successfully queued"
   end
 
-  match_when_negated do |actual|
+  match_when_negated do |_actual|
     false
   end
 

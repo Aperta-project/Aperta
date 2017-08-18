@@ -13,6 +13,9 @@ Metrics/AbcSize:
   # default of 15.
   Max: 20
 
+Metrics/BlockLength:
+  Enabled: false
+
 Metrics/ClassLength:
   Enabled: false
 

@@ -3,7 +3,7 @@ FactoryGirl.define do
     user
 
     trait :uploaded_paper do
-      association :subject, factory: [:paper, :accepted]
+      association :subject, factory: %i[paper accepted]
       message BillingLogReport::ACTIVITY_MESSAGE
     end
   end

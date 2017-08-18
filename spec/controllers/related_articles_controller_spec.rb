@@ -5,23 +5,18 @@ describe RelatedArticlesController do
   let!(:related_article) { FactoryGirl.create(:related_article, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
   let(:post_request) do
-    post :create,
-         format: :json,
-         related_article: {
-           additional_info: "This is a paper I picked at random from the internet",
-           linked_doi: "journal.pcbi.1004816",
-           linked_title: "The best linked article in texas",
-           send_link_to_apex: true,
-           send_manuscripts_together: false,
-           paper_id: paper.id
-         }
+    post :create, params: { format: :json, related_article: {
+      additional_info: "This is a paper I picked at random from the internet",
+      linked_doi: "journal.pcbi.1004816",
+      linked_title: "The best linked article in texas",
+      send_link_to_apex: true,
+      send_manuscripts_together: false,
+      paper_id: paper.id
+    } }
   end
-  let(:delete_request) { delete :destroy, format: :json, id: related_article.id }
+  let(:delete_request) { delete :destroy, params: { format: :json, id: related_article.id } }
   let(:put_request) do
-    put :update,
-        format: :json,
-        id: related_article.id,
-        related_article: { additional_info: "Neat!" }
+    put :update, params: { format: :json, id: related_article.id, related_article: { additional_info: "Neat!" } }
   end
 
   before do

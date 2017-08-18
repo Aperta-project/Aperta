@@ -8,13 +8,7 @@ describe PaperRoleEligibleUsersController do
 
   describe '#index' do
     subject(:do_request) do
-      get(
-        :index,
-        format: 'json',
-        paper_id: paper.to_param,
-        role_id: role.to_param,
-        query: 'Kangaroo'
-      )
+      get(:index, params: { format: 'json', paper_id: paper.to_param, role_id: role.to_param, query: 'Kangaroo' })
     end
     let(:eligible_users) do
       [FactoryGirl.build_stubbed(:user, username: 'IamEligible')]

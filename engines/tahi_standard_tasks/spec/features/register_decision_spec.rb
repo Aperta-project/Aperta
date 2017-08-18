@@ -24,7 +24,6 @@ feature "Register Decision", js: true, sidekiq: :inline! do
 
   context "Registering a decision on a paper" do
     context "with a submitted Paper" do
-
       scenario "Disable inputs upon card completion" do
         overlay = Page.view_task_overlay(paper, task)
         overlay.register_decision = "Accept"
@@ -120,7 +119,8 @@ feature "Register Decision", js: true, sidekiq: :inline! do
   context "when rescinding a decision" do
     before do
       paper.draft_decision.update!(
-        letter: Faker::Lorem.paragraph(3))
+        letter: Faker::Lorem.paragraph(3)
+      )
       register_paper_decision(paper, 'accept')
       paper.reload
     end

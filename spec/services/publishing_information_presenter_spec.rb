@@ -6,7 +6,7 @@ describe PublishingInformationPresenter do
   let(:publishing_information_presenter) { PublishingInformationPresenter.new(paper, downloader) }
 
   it "#html returns complete publishing information" do
-    %i(title journal_name generated_at).each do |method|
+    %i[title journal_name generated_at].each do |method|
       expect(publishing_information_presenter).to receive(method)
     end
     publishing_information_presenter.html

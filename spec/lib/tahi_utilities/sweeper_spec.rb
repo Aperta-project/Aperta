@@ -2,30 +2,31 @@ require 'rails_helper'
 require 'tahi_utilities/sweeper'
 
 describe TahiUtilities::Sweeper do
-
   let(:temporary_directory) { './tmp/sweeper' }
 
-  let(:dump_files) {[
-    'aperta-2016-01-01T01:01:01Z.dump',
-    'aperta-2016-02-02T02:02:02Z.dump',
-    'aperta-2016-03-03T03:03:03Z.dump',
-    'aperta-2016-04-04T04:04:04Z.dump',
-    'aperta-2016-05-05T05:05:05Z.dump',
-    'aperta-2016-06-06T06:06:06Z.dump',
-    'aperta-2016-07-07T07:07:07Z.dump',
-    'aperta-2016-08-08T08:08:08Z.dump',
-    'aperta-2016-09-09T09:09:09Z.dump',
-    'aperta-2016-10-10T10:10:10Z.dump',
-  ]}
+  let(:dump_files) {
+    [
+      'aperta-2016-01-01T01:01:01Z.dump',
+      'aperta-2016-02-02T02:02:02Z.dump',
+      'aperta-2016-03-03T03:03:03Z.dump',
+      'aperta-2016-04-04T04:04:04Z.dump',
+      'aperta-2016-05-05T05:05:05Z.dump',
+      'aperta-2016-06-06T06:06:06Z.dump',
+      'aperta-2016-07-07T07:07:07Z.dump',
+      'aperta-2016-08-08T08:08:08Z.dump',
+      'aperta-2016-09-09T09:09:09Z.dump',
+      'aperta-2016-10-10T10:10:10Z.dump'
+    ]
+  }
 
   let(:remaining_files) { `ls -1 #{temporary_directory}`.split("\n") }
 
   def newest_file_in(directory)
-    Dir.chdir(directory) { Dir.glob("*").max_by {|file| File.mtime(file)} }
+    Dir.chdir(directory) { Dir.glob("*").max_by { |file| File.mtime(file) } }
   end
 
   def oldest_file_in(directory)
-    Dir.chdir(directory) { Dir.glob("*").min_by {|file| File.mtime(file)} }
+    Dir.chdir(directory) { Dir.glob("*").min_by { |file| File.mtime(file) } }
   end
 
   before(:each) do
@@ -40,7 +41,7 @@ describe TahiUtilities::Sweeper do
 
     # create fake files
     dump_files.first(number_of_files).each_with_index do |file, index|
-      FileUtils.touch "#{temporary_directory}/#{file}", :mtime => (Time.now - 24.hours) + index.hours
+      FileUtils.touch "#{temporary_directory}/#{file}", mtime: (Time.zone.now - 24.hours) + index.hours
     end
 
     @newest_file  = newest_file_in(temporary_directory)
@@ -54,7 +55,6 @@ describe TahiUtilities::Sweeper do
   end
 
   describe ".remove_old_files" do
-
     context "with a need to keep 2 files" do
       let(:files_to_leave) { 2 }
 

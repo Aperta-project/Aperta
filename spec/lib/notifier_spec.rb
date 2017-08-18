@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Notifier do
-
   describe "notify" do
     let(:event_name) { 'big:explosion' }
     let(:data) { { radius: 100 } }
@@ -13,7 +12,5 @@ describe Notifier do
       expect(ActiveSupport::Notifications).to receive(:instrument).with(prefixed, data)
       Notifier.notify(event: event_name, data: data)
     end
-
   end
-
 end

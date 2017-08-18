@@ -3,7 +3,6 @@ require 'climate_control'
 require File.dirname(__FILE__) + '/../../../lib/tahi_env'
 
 describe TahiEnv::OptionalEnvVar do
-
   describe '#boolean?' do
     it 'returns true when it is a boolean env var' do
       env_var = TahiEnv::EnvVar.new(:FOO, :boolean)

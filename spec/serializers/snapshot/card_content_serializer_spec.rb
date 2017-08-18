@@ -136,7 +136,7 @@ describe Snapshot::CardContentSerializer do
           { name: 'file', type: 'text', value: attachment_1.filename },
           { name: 'title', type: 'text', value: attachment_1.title },
           { name: 'caption', type: 'text', value: attachment_1.caption },
-          { name: 'status', type: 'text', value: attachment_1.status }
+          name: 'status', type: 'text', value: attachment_1.status
         )
 
         expect(attachments_json[1]).to match hash_including(
@@ -148,7 +148,7 @@ describe Snapshot::CardContentSerializer do
           { name: 'file', type: 'text', value: attachment_2.filename },
           { name: 'title', type: 'text', value: attachment_2.title },
           { name: 'caption', type: 'text', value: attachment_2.caption },
-          { name: 'status', type: 'text', value: attachment_2.status }
+          name: 'status', type: 'text', value: attachment_2.status
         )
       end
     end

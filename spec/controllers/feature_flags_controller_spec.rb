@@ -22,9 +22,7 @@ describe FeatureFlagsController do
     subject(:do_request) do
       flags = {}
       flags[feature_flag1.name] = false
-      post :update,
-        feature_flags: flags,
-        format: :json
+      post :update, params: { feature_flags: flags, format: :json }
     end
 
     context 'when the user has no access' do

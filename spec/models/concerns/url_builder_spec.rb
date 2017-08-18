@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe UrlBuilder do
   # mixed in url_builder concern
-  let(:model){ class FakeModel; include UrlBuilder; end; }
+  let(:model) { class FakeModel; include UrlBuilder; end; }
 
   describe "#url_for" do
     it "will generate a url for a valid resource path" do

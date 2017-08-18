@@ -12,7 +12,7 @@ describe ManuscriptManagerTemplateSerializer, serializer_test: true do
   let(:object_for_serializer) { mmt }
   let!(:paper) { FactoryGirl.create(:paper, journal: journal, paper_type: mmt.paper_type) }
 
-  let(:mmt_content){ deserialized_content.fetch(:manuscript_manager_template) }
+  let(:mmt_content) { deserialized_content.fetch(:manuscript_manager_template) }
 
   it 'serializes successfully' do
     expect(deserialized_content).to match \

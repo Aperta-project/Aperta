@@ -35,7 +35,7 @@ describe Admin::LetterTemplatesController, redis: true do
         context "when there's a query in the params" do
           it "finds letter templates for that journal" do
             expect(LetterTemplate).to receive(:where).with(journal_id: journal.id)
-            get :index, format: 'json', journal_id: journal.id
+            get :index, params: { format: 'json', journal_id: journal.id }
           end
         end
 
@@ -46,7 +46,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
   describe '#show' do
     subject :do_request do
-      get :show, format: 'json', id: letter_template.id
+      get :show, params: { format: 'json', id: letter_template.id }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -69,7 +69,7 @@ describe Admin::LetterTemplatesController, redis: true do
         context 'finds the specified template' do
           it 'does things' do
             expect(LetterTemplate).to receive(:find).with(letter_template.id.to_s)
-            get :show, format: 'json', id: letter_template.id
+            get :show, params: { format: 'json', id: letter_template.id }
           end
         end
         it { is_expected.to responds_with(200) }
@@ -79,7 +79,7 @@ describe Admin::LetterTemplatesController, redis: true do
 
   describe '#update' do
     subject :do_request do
-      put :update, format: 'json', id: letter_template.id
+      put :update, params: { format: 'json', id: letter_template.id }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -106,7 +106,7 @@ describe Admin::LetterTemplatesController, redis: true do
               journal_id: 666
             }
             expect_any_instance_of(LetterTemplate).to receive(:update).with(unsanitized_params.except(:journal_id))
-            put :update, id: letter_template.id, letter_template: unsanitized_params, format: 'json'
+            put :update, params: { id: letter_template.id, letter_template: unsanitized_params, format: 'json' }
           end
         end
       end

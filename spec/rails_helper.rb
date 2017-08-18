@@ -92,7 +92,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types cards card_contents card_versions)
+      except: %w[task_types cards card_contents card_versions]
     }
 
     # Fix to make sure this happens only once

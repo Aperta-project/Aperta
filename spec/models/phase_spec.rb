@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe Phase do
   it "defines a DEFAULT_PHASE_NAME" do
-    expect(Phase.const_defined? :DEFAULT_PHASE_NAMES).to be_truthy
+    expect(Phase.const_defined?(:DEFAULT_PHASE_NAMES)).to be_truthy
   end
 
   describe ".default_phases" do
     before do
-      stub_const "Phase::DEFAULT_PHASE_NAMES", %w(Todo Doing Done)
+      stub_const "Phase::DEFAULT_PHASE_NAMES", %w[Todo Doing Done]
     end
 
     subject(:phases) { Phase.default_phases }
@@ -20,8 +20,7 @@ describe Phase do
     end
 
     it "does not persist any of the phases" do
-      expect(phases.all? &:new_record?).to be true
+      expect(phases.all?(&:new_record?)).to be true
     end
   end
-
 end

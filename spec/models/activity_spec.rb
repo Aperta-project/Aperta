@@ -1,6 +1,5 @@
 # Disabling line length for english text, block delimiters for
 # "it { is_expected" blocks
-# rubocop:disable Metrics/LineLength, Style/BlockDelimiters
 require 'rails_helper'
 
 describe Activity do
@@ -63,7 +62,8 @@ describe Activity do
         subject: author.paper,
         user: user,
         message: "Added Author"
-    )}
+      )
+    }
   end
 
   describe "#co_author_confirmed!" do
@@ -71,8 +71,7 @@ describe Activity do
     let(:author) do
       FactoryGirl.build_stubbed(:author,
         first_name: "Arthur",
-        last_name: "Author"
-      )
+        last_name: "Author")
     end
 
     it {
@@ -82,7 +81,8 @@ describe Activity do
         subject: author.paper,
         user: user,
         message: "Arthur Author confirmed authorship"
-    )}
+      )
+    }
   end
 
   describe "#task_sent_to_author!" do
@@ -96,7 +96,8 @@ describe Activity do
         subject: task.paper,
         user: user,
         message: "Assign Team sent to author"
-    )}
+      )
+    }
   end
 
   describe "#tech_check_fixed!" do
@@ -110,12 +111,13 @@ describe Activity do
         subject: paper,
         user: user,
         message: 'Author tech fixes were submitted'
-    )}
+      )
+    }
   end
 
   describe "#comment_created" do
     subject(:activity) { Activity.comment_created!(comment, user: user) }
-    let(:comment){ FactoryGirl.build_stubbed(:comment) }
+    let(:comment) { FactoryGirl.build_stubbed(:comment) }
 
     it {
       is_expected.to have_attributes(
@@ -124,7 +126,8 @@ describe Activity do
         subject: comment.paper,
         user: user,
         message: "A comment was added to #{comment.task.title} card"
-    )}
+      )
+    }
   end
 
   describe "#decision_made!" do
@@ -168,7 +171,8 @@ describe Activity do
         subject: invitation.paper,
         user: user,
         message: "#{invitation.recipient_name} was invited as #{invitation.invitee_role.capitalize}"
-    )}
+      )
+    }
   end
 
   describe "#invitation_accepted!" do
@@ -182,7 +186,8 @@ describe Activity do
         subject: invitation.paper,
         user: user,
         message: "#{invitation.recipient_name} accepted invitation as #{invitation.invitee_role.capitalize}"
-    )}
+      )
+    }
   end
 
   describe "#invitation_declined!" do
@@ -196,7 +201,8 @@ describe Activity do
         subject: invitation.paper,
         user: user,
         message: "#{invitation.recipient_name} declined invitation as #{invitation.invitee_role.capitalize}"
-    )}
+      )
+    }
   end
 
   describe "#invitation_withdrawn!" do
@@ -228,7 +234,8 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was created"
-    )}
+      )
+    }
   end
 
   describe "#paper_edited!" do
@@ -242,7 +249,8 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was edited"
-    )}
+      )
+    }
 
     context "and the paper has been edited within the past 10 minutes" do
       it "updates the existing activity for the user" do
@@ -289,9 +297,9 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was created"
-    )}
+      )
+    }
   end
-
 
   describe "#paper_reactivated!" do
     subject(:activity) { Activity.paper_reactivated!(paper, user: user) }
@@ -304,7 +312,8 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was reactivated"
-    )}
+      )
+    }
   end
 
   describe "#paper_withdrawn!" do
@@ -318,7 +327,8 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was withdrawn"
-    )}
+      )
+    }
   end
 
   describe '#collaborator_added!' do
@@ -327,10 +337,10 @@ describe Activity do
     end
     let!(:paper) { FactoryGirl.build_stubbed(:paper) }
     let!(:collaboration) do
-       FactoryGirl.build_stubbed(
+      FactoryGirl.build_stubbed(
         :assignment,
-        assigned_to: paper,
-        user: FactoryGirl.build_stubbed(:user)
+       assigned_to: paper,
+       user: FactoryGirl.build_stubbed(:user)
       )
     end
 
@@ -351,10 +361,10 @@ describe Activity do
     end
     let!(:paper) { FactoryGirl.build_stubbed(:paper) }
     let!(:collaboration) do
-       FactoryGirl.build_stubbed(
+      FactoryGirl.build_stubbed(
         :assignment,
-        assigned_to: paper,
-        user: FactoryGirl.build_stubbed(:user)
+       assigned_to: paper,
+       user: FactoryGirl.build_stubbed(:user)
       )
     end
 
@@ -380,7 +390,8 @@ describe Activity do
         subject: paper,
         user: user,
         message: "Manuscript was submitted"
-    )}
+      )
+    }
   end
 
   describe "#paper_initially_submitted!" do
@@ -393,7 +404,8 @@ describe Activity do
         activity_key: "paper.initially_submitted",
         subject: paper,
         user: user,
-        message: "Manuscript was initially submitted")
+        message: "Manuscript was initially submitted"
+      )
     end
   end
 
@@ -423,7 +435,8 @@ describe Activity do
         subject: participation.assigned_to.paper,
         user: user,
         message: "Added Contributor: #{participation.user.full_name}"
-    )}
+      )
+    }
   end
 
   describe "#participation_destroyed!" do
@@ -437,7 +450,8 @@ describe Activity do
         subject: participation.assigned_to.paper,
         user: user,
         message: "Removed Contributor: #{participation.user.full_name}"
-    )}
+      )
+    }
   end
 
   describe "#task_updated!" do
@@ -455,7 +469,8 @@ describe Activity do
             subject: task.paper,
             user: user,
             message: "#{task.title} card was marked as complete"
-        )}
+          )
+        }
       end
 
       context "was incompleted" do
@@ -471,7 +486,8 @@ describe Activity do
             subject: task.paper,
             user: user,
             message: "#{task.title} card was marked as incomplete"
-        )}
+          )
+        }
       end
     end
 
@@ -489,7 +505,8 @@ describe Activity do
             subject: task.paper,
             user: user,
             message: "#{task.title} card was marked as complete"
-        )}
+          )
+        }
       end
 
       context "was incompleted" do
@@ -505,7 +522,8 @@ describe Activity do
             subject: task.paper,
             user: user,
             message: "#{task.title} card was marked as incomplete"
-        )}
+          )
+        }
       end
     end
   end

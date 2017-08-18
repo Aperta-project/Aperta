@@ -36,7 +36,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
     end
 
     context 'when the user is eligible for the role on the given paper' do
-      it 'returns true 'do
+      it 'returns true ' do
         expect(
           EligibleUserService.eligible_for?(
             paper: paper,
@@ -48,7 +48,7 @@ describe EligibleUserService, pristine_roles_and_permissions: true do
     end
 
     context 'when the user is not eligible for the on the given paper' do
-      it 'returns true 'do
+      it 'returns true ' do
         expect(
           EligibleUserService.eligible_for?(
             paper: paper,

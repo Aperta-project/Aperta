@@ -6,9 +6,7 @@ describe UsersController do
 
   describe '#update_avatar' do
     subject(:do_request) do
-      put :update_avatar,
-          format: 'json',
-          url: url
+      put :update_avatar, params: { format: 'json', url: url }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -40,7 +38,7 @@ describe UsersController do
 
   describe '#show' do
     subject(:do_request) do
-      get :show, id: user.id, format: :json
+      get :show, params: { id: user.id, format: :json }
     end
 
     it_behaves_like 'an unauthenticated json request'

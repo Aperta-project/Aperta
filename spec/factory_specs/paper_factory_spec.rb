@@ -53,7 +53,8 @@ describe 'PaperFactory' do
             :submitted_lite,
             title: title,
             journal: journal,
-            submitting_user: creator).reload
+            submitting_user: creator
+          ).reload
         end
       end
 
@@ -126,7 +127,8 @@ describe 'PaperFactory' do
             title: title,
             journal: journal,
             reason: reason,
-            withdrawn_by_user: creator).reload
+            withdrawn_by_user: creator
+          ).reload
         end
       end
 

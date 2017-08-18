@@ -5,7 +5,7 @@ describe CardVersionsController do
 
   describe '#show' do
     subject(:do_request) do
-      get :show, format: 'json', id: card_version.id
+      get :show, params: { format: 'json', id: card_version.id }
     end
     let(:card_version) { FactoryGirl.create(:card_version) }
     let(:card) { card_version.card }

@@ -6,7 +6,7 @@ describe AdhocAttachmentSerializer, serializer_test: true do
       :adhoc_attachment,
       :with_task,
       :with_resource_token,
-      status: AdhocAttachment::STATUS_DONE,
+      status: AdhocAttachment::STATUS_DONE
     )
   end
   let(:token) { attachment.token }
@@ -46,7 +46,9 @@ describe AdhocAttachmentSerializer, serializer_test: true do
         .to match(hash_including(
                     adhoc_attachment: hash_including(
                       preview_src: src + "/preview",
-                      detail_src: src + "/detail")))
+                      detail_src: src + "/detail"
+                    )
+        ))
     end
   end
 
@@ -60,7 +62,9 @@ describe AdhocAttachmentSerializer, serializer_test: true do
         .to match(hash_including(
                     adhoc_attachment: hash_including(
                       preview_src: nil,
-                      detail_src: nil)))
+                      detail_src: nil
+                    )
+        ))
     end
   end
 end

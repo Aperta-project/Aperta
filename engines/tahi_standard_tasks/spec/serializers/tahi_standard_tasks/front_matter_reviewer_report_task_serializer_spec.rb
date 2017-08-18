@@ -18,8 +18,8 @@ describe TahiStandardTasks::FrontMatterReviewerReportTaskSerializer, serializer_
     expect(deserialized_content).to be_kind_of Hash
 
     expect(task_content).to match(hash_including(
-      is_submitted: true,
-      decision_ids: [decision.id]
+                                    is_submitted: true,
+                                    decision_ids: [decision.id]
     ))
 
     actual_decision_ids = decisions_content.map { |h| h[:id] }

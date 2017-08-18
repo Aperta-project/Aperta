@@ -20,7 +20,7 @@ describe CommentLooksController do
 
   describe '#show' do
     let!(:comment_look) { FactoryGirl.create :comment_look, user: user, comment: comment }
-    subject(:do_request) { get :show, format: :json, id: comment_look.id }
+    subject(:do_request) { get :show, params: { format: :json, id: comment_look.id } }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -34,7 +34,7 @@ describe CommentLooksController do
 
   describe '#destroy' do
     let!(:comment_look) { FactoryGirl.create :comment_look, user: user, comment: comment }
-    subject(:do_request) { delete :destroy, format: :json, id: comment_look.id }
+    subject(:do_request) { delete :destroy, params: { format: :json, id: comment_look.id } }
 
     it_behaves_like "an unauthenticated json request"
 

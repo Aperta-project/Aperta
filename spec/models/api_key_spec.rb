@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe ApiKey do
   describe "#generate_access_token" do
-
     it "returns a random access token" do
       api_key = ApiKey.create!
       expect(api_key.access_token).to_not be_nil
@@ -20,6 +19,5 @@ describe ApiKey do
         ApiKey.create!
       end
     end
-
   end
 end

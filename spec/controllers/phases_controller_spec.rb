@@ -8,11 +8,11 @@ describe PhasesController do
 
   describe 'POST create' do
     subject(:do_request) do
-      post :create, format: :json, phase: {
+      post :create, params: { format: :json, phase: {
         name: phase_name,
         paper_id: paper.id,
         position: new_position
-      }
+      } }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -32,7 +32,7 @@ describe PhasesController do
     let(:phase) { Phase.create paper_id: paper.id, position: 1 }
 
     subject(:do_request) do
-      delete :destroy, format: :json, id: phase.id
+      delete :destroy, params: { format: :json, id: phase.id }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -69,7 +69,7 @@ describe PhasesController do
   describe 'PATCH update' do
     let(:phase) { paper.phases.first }
     subject(:do_request) do
-      patch :update, format: :json, id: phase.to_param, phase: { name: 'Verify Signatures' }
+      patch :update, params: { format: :json, id: phase.to_param, phase: { name: 'Verify Signatures' } }
     end
 
     it_behaves_like "an unauthenticated json request"

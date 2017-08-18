@@ -24,25 +24,25 @@ describe TaskTemplatesController do
   let(:journal_task_type) { journal.journal_task_types.first }
 
   it "creates a record" do
-    post :create, format: :json, task_template: { phase_template_id: phase_template.id,
-                                                  journal_task_type_id: journal_task_type.id,
-                                                  title: "Valid Title" }
+    post :create, params: { format: :json, task_template: { phase_template_id: phase_template.id,
+                                                            journal_task_type_id: journal_task_type.id,
+                                                            title: "Valid Title" } }
     expect(response.status).to eq(201)
   end
 
   it "updates a record" do
-    put :update, format: :json, id: task_template.id, task_template: { phase_template_id: phase_template.id,
-                                                                       journal_task_type_id: journal_task_type.id }
+    put :update, params: { format: :json, id: task_template.id, task_template: { phase_template_id: phase_template.id,
+                                                                                 journal_task_type_id: journal_task_type.id } }
     expect(response.status).to eq(204)
   end
 
   it "deletes a record" do
-    delete :destroy, format: :json, id: task_template.id
+    delete :destroy, params: { format: :json, id: task_template.id }
     expect(response.status).to eq(204)
   end
 
   it "updates a setting" do
-    put :update_setting, format: :json, id: task_template.id, value: 'off', name: 'ithenticate_automation'
+    put :update_setting, params: { format: :json, id: task_template.id, value: 'off', name: 'ithenticate_automation' }
     expect(response.status).to eq(204)
   end
 end

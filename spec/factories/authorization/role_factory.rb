@@ -3,7 +3,7 @@
 # are typically named like "with_<role_name>_role", e.g. with_creator_role
 FactoryGirl.define do
   factory :role do
-    sequence(:name){ |i| "Role #{i}" }
+    sequence(:name) { |i| "Role #{i}" }
     journal
     participates_in_papers true
     participates_in_tasks true

@@ -17,11 +17,13 @@ DESC
       config.assignment_to(
         Authorizations::FakeJournal,
         authorizes: Authorizations::FakeTask,
-        via: :fake_tasks)
+        via: :fake_tasks
+      )
       config.assignment_to(
         Authorizations::FakeJournal,
         authorizes: Authorizations::FakePaper,
-        via: :fake_papers)
+        via: :fake_papers
+      )
     end
   end
 
@@ -46,34 +48,36 @@ DESC
     permission(
       action: 'write',
       applies_to: Authorizations::FakePaper.name,
-      states: %w(in_progress))
+      states: %w[in_progress]
+    )
     permission(
       action: 'talk',
       applies_to: Authorizations::FakePaper.name,
-      states: %w(in_progress in_review))
+      states: %w[in_progress in_review]
+    )
 
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'edit', applies_to: Authorizations::FakeTask.name
-    permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(unsubmitted)
+    permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w[unsubmitted]
     permission action: 'discuss', applies_to: Authorizations::FakeTask.name
   end
 
   role :editor do
     has_permission action: 'read', applies_to: Authorizations::FakePaper.name
-    has_permission action: 'write', applies_to: Authorizations::FakePaper.name, states: %w(in_progress)
+    has_permission action: 'write', applies_to: Authorizations::FakePaper.name, states: %w[in_progress]
     has_permission action: 'view', applies_to: Authorizations::FakePaper.name
-    has_permission action: 'talk', applies_to: Authorizations::FakePaper.name, states: %w(in_progress in_review)
+    has_permission action: 'talk', applies_to: Authorizations::FakePaper.name, states: %w[in_progress in_review]
   end
 
   role :with_view_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
     has_permission action: 'discuss', applies_to: Authorizations::FakeTask.name
-    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(unsubmitted)
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w[unsubmitted]
   end
 
   role :with_edit_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
-    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(*)
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w[*]
   end
 
   before do
@@ -92,8 +96,8 @@ DESC
             type: Authorizations::FakePaper.name
           },
           permissions: {
-            read: { states: %w(*) },
-            view: { states: %w(*) }
+            read: { states: %w[*] },
+            view: { states: %w[*] }
           }
         },
         {
@@ -103,8 +107,8 @@ DESC
             type: Authorizations::FakePaper.name
           },
           permissions: {
-            read: { states: %w(*) },
-            view: { states: %w(*) }
+            read: { states: %w[*] },
+            view: { states: %w[*] }
           }
         }
       ].as_json)
@@ -122,7 +126,8 @@ DESC
           config.assignment_to(
             Authorizations::FakePaper,
             authorizes: Authorizations::FakeTask,
-            via: :fake_tasks)
+            via: :fake_tasks
+          )
         end
 
         assign_user user, to: paper, with_role: role_with_view_access_to_task

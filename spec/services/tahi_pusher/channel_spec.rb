@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe TahiPusher::Channel do
-
   let(:channel_name) { "private-paper@4" }
   let(:channel) { TahiPusher::Channel.new(channel_name: channel_name) }
 
@@ -68,4 +67,3 @@ describe TahiPusher::Channel do
     end
   end
 end
-

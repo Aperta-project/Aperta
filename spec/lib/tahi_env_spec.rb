@@ -59,7 +59,7 @@ describe TahiEnv do
   it_behaves_like 'required env var', var: 'ADMIN_EMAIL'
   it_behaves_like 'required boolean env var', var: 'PASSWORD_AUTH_ENABLED'
   it_behaves_like 'required env var', var: 'RAILS_ENV'
-  it_behaves_like 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
+  it_behaves_like 'dependent required env var', var: 'RAILS_ASSET_HOST', dependent_key: 'RAILS_ENV', dependent_values: %w[staging production]
   it_behaves_like 'required env var', var: 'RAILS_SECRET_TOKEN'
   it_behaves_like 'required env var', var: 'DEFAULT_MAILER_URL'
   it_behaves_like 'optional boolean env var', var: 'FORCE_SSL', default_value: true
@@ -125,7 +125,7 @@ describe TahiEnv do
   it_behaves_like 'optional env var', var: 'MAILSAFE_REPLACEMENT_ADDRESS'
 
   # NED
-  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w(staging production)
+  it_behaves_like 'dependent required env var', var: 'NED_API_URL', dependent_key: 'RAILS_ENV', dependent_values: %w[staging production]
   it_behaves_like 'required env var', var: 'NED_CAS_APP_ID'
   it_behaves_like 'required env var', var: 'NED_CAS_APP_PASSWORD'
   it_behaves_like 'optional boolean env var', var: 'NED_SSL_VERIFY', default_value: true
@@ -192,7 +192,7 @@ describe TahiEnv do
     end
 
     it 'raises an error when the environment is not valid' do
-      invalid_env = valid_env.merge(:APP_NAME => nil, :ADMIN_EMAIL => nil)
+      invalid_env = valid_env.merge(APP_NAME: nil, ADMIN_EMAIL: nil)
       ClimateControl.modify invalid_env do
         expect do
           env.validate!

@@ -67,5 +67,5 @@ class UploadServer < Sinatra::Base
     "<PostResponse><Location>#{server_url}/fake_s3/#{filename}</Location></PostResponse>"
   end
 
-  run! if app_file == $0
+  run! if app_file == $PROGRAM_NAME
 end

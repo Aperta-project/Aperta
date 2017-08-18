@@ -11,7 +11,7 @@ describe SupportingInformationFilesController, redis: true do
 
   describe '#show' do
     subject(:do_request) do
-      get :show, format: 'json', id: file.id
+      get :show, params: { format: 'json', id: file.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -37,12 +37,11 @@ describe SupportingInformationFilesController, redis: true do
 
       it { is_expected.to responds_with(403) }
     end
-
   end
 
   describe 'DELETE #destroy' do
     subject(:do_request) do
-      delete :destroy, format: "json", id: file.id
+      delete :destroy, params: { format: "json", id: file.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -78,7 +77,7 @@ describe SupportingInformationFilesController, redis: true do
     let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
     let(:url) { "http://someawesomeurl.com" }
     subject(:do_request) do
-      post :create, format: "json", task_id: task.id, url: url
+      post :create, params: { format: "json", task_id: task.id, url: url }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -123,15 +122,12 @@ describe SupportingInformationFilesController, redis: true do
 
       it { is_expected.to responds_with(403) }
     end
-
   end
 
   describe 'PUT #update' do
     subject(:do_request) do
-      put :update, id: file.id,
-                   supporting_information_file: { title: 'new title',
-                                                  caption: 'new caption' },
-                   format: :json
+      put :update, params: { id: file.id, supporting_information_file: { title: 'new title',
+                                                                         caption: 'new caption' }, format: :json }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -167,7 +163,7 @@ describe SupportingInformationFilesController, redis: true do
   describe 'PUT #update_attachment' do
     let(:url) { "http://someawesomeurl.com" }
     subject(:do_request) do
-      put :update_attachment, id: file.id, url: url, format: :json
+      put :update_attachment, params: { id: file.id, url: url, format: :json }
     end
 
     it_behaves_like 'an unauthenticated json request'

@@ -15,8 +15,6 @@ describe TahiStandardTasks::AuthorsList do
     author1.save
     author2.save
   end
-
-  # rubocop:disable LineLength
   it "returns ordered list of authors last and first name, and affiliation" do
     expect(subject.authors_list(paper)).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name} from #{author2.affiliation}"
   end

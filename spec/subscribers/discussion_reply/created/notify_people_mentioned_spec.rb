@@ -11,4 +11,3 @@ describe DiscussionReply::Created::NotifyPeopleMentioned do
     FactoryGirl.create(:discussion_reply, body: "Interesting point @#{user.username}")
   end
 end
-

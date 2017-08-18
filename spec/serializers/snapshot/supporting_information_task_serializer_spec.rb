@@ -11,7 +11,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
       caption: 'supporting info 1 caption',
       owner: task,
       paper: paper,
-      title: 'supporting info 1 title',
+      title: 'supporting info 1 title'
     )
   end
   let!(:si_file_2) do
@@ -21,7 +21,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
       caption: 'supporting info 2 caption',
       owner: task,
       paper: paper,
-      title: 'supporting info 2 title',
+      title: 'supporting info 2 title'
     )
   end
 
@@ -55,7 +55,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'caption', type: 'text', value: si_file_1.caption },
         { name: 'publishable', type: 'boolean', value: si_file_1.publishable },
         { name: 'striking_image', type: 'boolean', value: si_file_1.striking_image },
-        { name: 'url', type: 'url', value: si_file_1.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: si_file_1.non_expiring_proxy_url
       )
 
       expect(si_files_json[1]).to match hash_including(
@@ -70,7 +70,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
         { name: 'caption', type: 'text', value: si_file_2.caption },
         { name: 'publishable', type: 'boolean', value: si_file_2.publishable },
         { name: 'striking_image', type: 'boolean', value: si_file_2.striking_image },
-        { name: 'url', type: 'url', value: si_file_2.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: si_file_2.non_expiring_proxy_url
       )
     end
 

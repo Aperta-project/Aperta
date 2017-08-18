@@ -40,7 +40,7 @@ describe Snapshot::AuthorSerializer do
         { name: "affiliation", type: "text", value: "Hip Hop" },
         { name: "secondary_affiliation", type: "text", value: "Another place" },
         { name: "ringgold_id", type: "text", value: "1234" },
-        { name: "secondary_ringgold_id", type: "text", value: "9876" }
+        name: "secondary_ringgold_id", type: "text", value: "9876"
       )
     end
 

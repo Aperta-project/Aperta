@@ -4,14 +4,14 @@ describe ManuscriptAttachmentsController do
   let(:attachment) do
     FactoryGirl.build_stubbed(:manuscript_attachment, paper: paper)
   end
-  let(:paper){ FactoryGirl.build_stubbed(:paper) }
+  let(:paper) { FactoryGirl.build_stubbed(:paper) }
   let(:user) { FactoryGirl.build_stubbed :user }
 
   describe 'GET #show' do
     let(:attachment) { FactoryGirl.build_stubbed(:manuscript_attachment) }
 
     subject(:do_request) do
-      get :show, format: 'json', id: attachment.to_param
+      get :show, params: { format: 'json', id: attachment.to_param }
     end
 
     before do

@@ -66,11 +66,9 @@ describe Subscriptions do
         end
       }.to raise_error(Subscriptions::DuplicateSubscribersRegistrationError)
     end
-
   end
 
   describe "pretty_print" do
-
     it "includes events followed by the corresponding subscriber names" do
       Subscriptions.configure do
         add "big:explosion", TestSubscribers::FireRescueTeam
@@ -80,7 +78,6 @@ describe Subscriptions do
       Subscriptions.pretty_print(console)
       expect(console.string).to match(/big:explosion.*FireRescue.*PressHelicopter/)
     end
-
   end
 
   describe 'reset' do

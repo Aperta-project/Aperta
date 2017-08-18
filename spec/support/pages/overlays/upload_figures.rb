@@ -1,5 +1,5 @@
 class UploadFiguresOverlay < CardOverlay
-  def has_image? image_name
+  def has_image?(image_name)
     have_xpath("//img[contains(@src, \"#{image_name}\"]")
   end
 

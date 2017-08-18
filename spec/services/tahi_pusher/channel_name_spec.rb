@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe TahiPusher::ChannelName do
-
   describe ".build" do
     context "public channel" do
       context "without model" do
@@ -28,7 +27,6 @@ describe TahiPusher::ChannelName do
         end
       end
     end
-
 
     context "private channel" do
       context "without model" do

@@ -85,7 +85,7 @@ describe Paper do
         FactoryGirl.create(:ad_hoc_task, paper: paper)
         expect_any_instance_of(AdHocTask).to receive(:after_paper_submitted) do |_task, p|
           expect(p.aasm.from_state).to be_present
-          expect([:submitted, :initially_submitted]).to include(p.aasm.to_state)
+          expect(%i[submitted initially_submitted]).to include(p.aasm.to_state)
         end
         subject
       end

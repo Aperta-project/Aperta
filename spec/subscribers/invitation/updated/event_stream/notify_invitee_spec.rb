@@ -9,7 +9,7 @@ describe Invitation::Updated::EventStream::NotifyInvitee do
 
     it "serializes invitation down the user channel on update" do
       expect(pusher_channel).to receive_push(serialize: invitation, down: 'user', on: 'updated')
-      described_class.call("tahi:invitation:updated", { action: "updated", record: invitation })
+      described_class.call("tahi:invitation:updated", action: "updated", record: invitation)
     end
   end
 
@@ -19,7 +19,7 @@ describe Invitation::Updated::EventStream::NotifyInvitee do
 
     it "does not serialize invitation" do
       expect(pusher_channel).to_not receive_push(down: 'user', on: 'update')
-      described_class.call("tahi:invitation:updated", { action: "updated", record: invitation })
+      described_class.call("tahi:invitation:updated", action: "updated", record: invitation)
     end
   end
 end

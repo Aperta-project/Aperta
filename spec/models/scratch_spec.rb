@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Scratch, type: :model do
-
   describe 'writing and reading' do
     let(:scratch) do
       FactoryGirl.create(:scratch, contents: "42")

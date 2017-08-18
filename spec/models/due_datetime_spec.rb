@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe DueDatetime, type: :model do
-  subject(:due_datetime) { FactoryGirl.create(:due_datetime)}
+  subject(:due_datetime) { FactoryGirl.create(:due_datetime) }
 
   let(:length_of_time) { 11.days }
   let(:extended_length_of_time) { 21.days }
@@ -61,15 +61,21 @@ describe DueDatetime, type: :model do
   describe "#set_for" do
     # DueDatetime is not dependent on the implementation of any particular other class
     # so we create a generic class here for testing, and to ensure complete decoupling
-    class MiscellaneousClass < ActiveRecord::Base
+    class MiscellaneousClass < ApplicationRecord
       has_one :due_datetime, as: :due
       delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
       def set_due_datetime(length_of_time: 10.days)
         DueDatetime.set_for(self, length_of_time: length_of_time)
       end
+
       # skip the database:
-      def save(validate = true); true; end
-      def self.columns; @columns ||= []; end
+      def save(_validate = true)
+        true
+      end
+
+      def self.columns
+        @columns ||= []
+      end
     end
 
     let(:something) { MiscellaneousClass.new }

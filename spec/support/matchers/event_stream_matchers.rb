@@ -37,5 +37,4 @@ module EventStreamMatchers
       end
     end
   end
-
 end

@@ -23,6 +23,7 @@ feature "Search Users on Admin Dashboard", js: true do
     expect(search_results).to match_array(
       [{ first_name: "Bob", last_name: "Merlyn", username: 'shadow_missing2010' },
        { first_name: "Jim", last_name: "Bobit", username: 'jim' },
-       { first_name: "Sam", last_name: "Smith", username: 'bobby' }])
+       { first_name: "Sam", last_name: "Smith", username: 'bobby' }]
+    )
   end
 end

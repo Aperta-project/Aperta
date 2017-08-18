@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'routes for resource_proxy' do
   describe 'legacy resource_proxy routes' do
-    let(:resources) { %w(adhoc_attachments question_attachments attachments figures supporting_information_files) }
+    let(:resources) { %w[adhoc_attachments question_attachments attachments figures supporting_information_files] }
 
     context 'without version' do
       it 'routes to the resource proxy for each whitelisted resource' do

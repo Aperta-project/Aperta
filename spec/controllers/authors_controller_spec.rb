@@ -15,21 +15,17 @@ describe AuthorsController do
   end
 
   let(:post_request) do
-    post :create,
-         format: :json,
-         author: enrico
+    post :create, params: { format: :json, author: enrico }
   end
 
   let(:post_request2) do
-    post :create,
-         format: :json,
-         author: enrico
+    post :create, params: { format: :json, author: enrico }
   end
 
   let!(:author) { FactoryGirl.create(:author, paper: paper) }
-  let(:delete_request) { delete :destroy, format: :json, id: author.id }
+  let(:delete_request) { delete :destroy, params: { format: :json, id: author.id } }
   let(:put_request) do
-    put :update, format: :json, id: author.id, author: { last_name: "Blabby", author_task_id: task.id }
+    put :update, params: { format: :json, id: author.id, author: { last_name: "Blabby", author_task_id: task.id } }
   end
 
   before do
@@ -50,7 +46,7 @@ describe AuthorsController do
 
     it 'a POST request associates a new author to an existing card version' do
       post_request
-      default_card = Card.find_by_class_name!(Author)
+      default_card = Card.find_by!(class_name: Author)
       expect(Author.last.card_version).to eq(default_card.latest_published_card_version)
     end
 
@@ -117,9 +113,9 @@ describe AuthorsController do
 
   describe 'coauthor update' do
     let(:put_request) do
-      put :update, format: :json, id: author.id, author: { last_name: "Blabby",
-                                                           author_task_id: task.id,
-                                                           co_author_state: "confirmed" }
+      put :update, params: { format: :json, id: author.id, author: { last_name: "Blabby",
+                                                                     author_task_id: task.id,
+                                                                     co_author_state: "confirmed" } }
     end
     let!(:staff_admin) { FactoryGirl.create(:user, :site_admin) }
     let(:author) do

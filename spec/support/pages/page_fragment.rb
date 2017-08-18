@@ -18,7 +18,7 @@ class PageFragment
   delegate :select, to: :element
 
   class << self
-    def text_assertions(name, selector, block=nil)
+    def text_assertions(name, selector, block = nil)
       define_method "has_#{name}?" do |text|
         has_css?(selector, text: block ? block.call(text) : text)
       end
@@ -90,7 +90,7 @@ class PageFragment
     yield if block_given?
   end
 
-  def view_card(card_name, overlay_class = nil, &block)
+  def view_card(card_name, overlay_class = nil)
     find('.card-title', text: card_name).click
 
     overlay_class ||= begin
@@ -101,7 +101,7 @@ class PageFragment
     overlay = overlay_class.new session.find(".overlay")
     if block_given?
       retry_stale_element do
-        block.call overlay
+        yield overlay
         wait_for_ajax
       end
       expect(session).to have_no_css("#delayedSave", visible: false)

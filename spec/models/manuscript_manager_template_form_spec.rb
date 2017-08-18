@@ -39,17 +39,15 @@ describe "ManuscriptManagerTemplateForm" do
   end
 
   context "Updating a ManuscriptManagerTemplate" do
-
     it "Updates the ManuscriptManagerTemplate" do
-      form = ManuscriptManagerTemplateForm.new({"paper_type"=>"Celeborn"})
+      form = ManuscriptManagerTemplateForm.new("paper_type" => "Celeborn")
       form.update! template
       expect(template.reload.paper_type).to eql("Celeborn")
     end
 
     it "Adds a Phase" do
-
-      params = {"paper_type"=>"Research 2222",
-              "phase_templates"=>[{"name"=>"Phase 1", "position"=>1}]}
+      params = { "paper_type" => "Research 2222",
+                 "phase_templates" => [{ "name" => "Phase 1", "position" => 1 }] }
 
       form = ManuscriptManagerTemplateForm.new(params)
       form.update! template
@@ -62,8 +60,8 @@ describe "ManuscriptManagerTemplateForm" do
       template.phase_templates << FactoryGirl.create(:phase_template)
       template.phase_templates << FactoryGirl.create(:phase_template)
 
-      params = {"paper_type"=>"Research 2222",
-              "phase_templates"=>[{"name"=>"Phase 1", "position"=>1}]}
+      params = { "paper_type" => "Research 2222",
+                 "phase_templates" => [{ "name" => "Phase 1", "position" => 1 }] }
 
       expect {
         form = ManuscriptManagerTemplateForm.new(params)
@@ -73,13 +71,13 @@ describe "ManuscriptManagerTemplateForm" do
   end
 
   def valid_params
-    {"paper_type"=>"Research 2222", "journal_id"=>journal.id,
-      "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
-        "task_templates"=>[
-          {"title"=>"Authors", "journal_task_type_id"=>"86", "position"=>1},
-          {"title"=>"Team", "journal_task_type_id"=>"111", "position"=>2}
-        ]},
-      {"name"=>"Phase 2", "position"=>2},
-      {"name"=>"Phase 3", "position"=>3}]}
+    { "paper_type" => "Research 2222", "journal_id" => journal.id,
+      "phase_templates" => [{ "name" => "Phase 1", "position" => 1,
+                              "task_templates" => [
+                                { "title" => "Authors", "journal_task_type_id" => "86", "position" => 1 },
+                                { "title" => "Team", "journal_task_type_id" => "111", "position" => 2 }
+                              ] },
+                            { "name" => "Phase 2", "position" => 2 },
+                            { "name" => "Phase 3", "position" => 3 }] }
   end
 end

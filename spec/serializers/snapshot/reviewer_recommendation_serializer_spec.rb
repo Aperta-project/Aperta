@@ -11,8 +11,7 @@ describe Snapshot::ReviewerRecommendationSerializer do
                        department: "Department of Department",
                        title: "A Title",
                        affiliation: "yes",
-                       ringgold_id: "no"
-                      )
+                       ringgold_id: "no")
   end
 
   describe "#as_json" do
@@ -32,7 +31,7 @@ describe Snapshot::ReviewerRecommendationSerializer do
         { name: "email", type: "text", value: "email@email.com" },
         { name: "department", type: "text", value: "Department of Department" },
         { name: "title", type: "text", value: "A Title" },
-        { name: "affiliation", type: "text", value: "yes" }
+        name: "affiliation", type: "text", value: "yes"
       )
     end
   end

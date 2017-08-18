@@ -6,7 +6,7 @@ describe OrcidAccountsController do
 
   describe "#show" do
     subject(:do_request) do
-      get :show, id: orcid_account.id, format: :json
+      get :show, params: { id: orcid_account.id, format: :json }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -46,7 +46,7 @@ describe OrcidAccountsController do
 
   describe "#clear" do
     subject(:do_request) do
-      get :clear, id: orcid_account.id, format: :json
+      get :clear, params: { id: orcid_account.id, format: :json }
     end
 
     it_behaves_like 'an unauthenticated json request'

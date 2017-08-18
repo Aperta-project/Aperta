@@ -16,7 +16,7 @@ describe NestedQuestionsController do
     let(:question2) { FactoryGirl.build(:card_content, card_version: card_version).tap { |c| root.children << c } }
 
     def do_request(params = {})
-      get(:index, { type: "My Card" }.merge(params), format: :json)
+      get(:index, params: { type: "My Card" }.merge(params), headers: { format: :json })
     end
 
     it "responds with a list of questions for the given :type" do

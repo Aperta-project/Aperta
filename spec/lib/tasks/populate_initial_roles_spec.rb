@@ -4,7 +4,7 @@ describe 'data:populate_initial_roles:csv', rake_test: true do
   # Populated from the value of `csv`, an array of arrays.
   # e.g. [['JD', 'jd@example.com', Role::USER_ROLE, 'Production', 'PLOS Biology']]
   let(:csv_string) do
-    ([%w(Name Email Role Environment Journals)] + csv)
+    ([%w[Name Email Role Environment Journals]] + csv)
       .map { |fields| CSV.generate_line(fields) }
       .join('')
   end

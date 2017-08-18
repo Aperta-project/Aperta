@@ -19,10 +19,10 @@ describe Snapshot::BaseSerializer do
 
     it "snapshots card_content first, then id, then other properties" do
       expect(serializer.as_json[:children]).to eq([
-        { questions: "here" },
-        { name: "id", type: "integer", value: 1 },
-        { properties: "here" }
-      ])
+                                                    { questions: "here" },
+                                                    { name: "id", type: "integer", value: 1 },
+                                                    { properties: "here" }
+                                                  ])
     end
   end
 end

@@ -30,7 +30,8 @@ describe Typesetter::SupportingInformationFileSerializer do
       :title,
       :caption,
       :label,
-      :file_name)
+      :file_name
+    )
   end
 
   describe 'title' do

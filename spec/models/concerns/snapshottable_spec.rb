@@ -13,7 +13,7 @@ describe Snapshottable do
 
   let(:klass) do
     create_fake_snapshottables_table
-    Class.new(ActiveRecord::Base) do
+    Class.new(ApplicationRecord) do
       include Snapshottable
       self.table_name = 'fake_snapshottables'
     end
@@ -40,7 +40,7 @@ describe Snapshottable do
   end
 
   describe 'an instance' do
-    let(:instance){ klass.new }
+    let(:instance) { klass.new }
 
     it 'is not snapshottable by default' do
       expect(instance.snapshottable).to be(false)

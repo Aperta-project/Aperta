@@ -9,8 +9,8 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
         'error_message' => 'something bad happened'
       }
       expect(PlosBilling::BillingSalesforceMailer).to \
-        receive_message_chain('delay.notify_site_admins_of_syncing_error').
-        with(99, 'Failed FooBar with [99]: something bad happened')
+        receive_message_chain('delay.notify_site_admins_of_syncing_error')
+        .with(99, 'Failed FooBar with [99]: something bad happened')
       described_class.sidekiq_retries_exhausted_block.call(msg)
     end
   end
@@ -30,8 +30,8 @@ describe PlosBilling::SalesforceManuscriptUpdateWorker do
 
     it 'queues up an email to tell site admins there was a problem' do
       expect(PlosBilling::BillingSalesforceMailer).to \
-        receive_message_chain('delay.notify_site_admins_of_syncing_error').
-        with(4, 'Failed SomeClass with [4]: some message')
+        receive_message_chain('delay.notify_site_admins_of_syncing_error')
+        .with(4, 'Failed SomeClass with [4]: some message')
       described_class.email_admin_on_sidekiq_error(msg)
     end
   end

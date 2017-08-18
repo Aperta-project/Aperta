@@ -8,8 +8,7 @@ describe FlashMessageSubscriber do
 
   it 'should fail unless user method defined' do
     klass = Class.new(FlashMessageSubscriber) do
-      def message
-      end
+      def message; end
 
       def message_type
         'foo'
@@ -39,8 +38,7 @@ describe FlashMessageSubscriber do
         FactoryGirl.create(:user)
       end
 
-      def message
-      end
+      def message; end
     end
 
     expect { klass.call('foo', {}) }.to raise_exception(NotImplementedError)

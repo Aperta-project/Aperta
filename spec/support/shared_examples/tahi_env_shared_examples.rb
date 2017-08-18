@@ -19,7 +19,7 @@ shared_examples_for 'required env var' do |var:|
     end
   end
 
-  reader_method_name = "#{var.downcase}"
+  reader_method_name = var.downcase.to_s
   describe "TahiEnv.#{reader_method_name}" do
     it 'returns the value stored in the env var when set' do
       ClimateControl.modify valid_env.merge("#{var}": 'ABC') do
@@ -177,7 +177,7 @@ shared_examples_for 'optional env var' do |var:|
     end
   end
 
-  reader_method_name = "#{var.downcase}"
+  reader_method_name = var.downcase.to_s
   describe "TahiEnv.#{reader_method_name}" do
     it 'returns the value stored in the env var when set' do
       ClimateControl.modify valid_env.merge("#{var}": 'ABC') do

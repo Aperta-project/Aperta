@@ -5,7 +5,6 @@ describe OrcidWorker do
   let(:user) { FactoryGirl.create(:user) }
   let(:authorization_code) { '012345' }
 
-
   context "successful api request" do
     let(:cassette) { 'orcid_worker' }
     let(:orcid_account) { user.orcid_account }

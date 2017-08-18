@@ -52,7 +52,8 @@ describe TahiStandardTasks::InitialDecisionTask do
         verdict: 'invite_full_submission',
         paper: paper,
         major_version: 0,
-        minor_version: 0)
+        minor_version: 0
+      )
     end
 
     it "will email using last completed decision" do

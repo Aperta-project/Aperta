@@ -7,15 +7,15 @@ describe Snapshot::FunderSerializer do
   it "snapshots a funder" do
     expect(serializer.as_json).to include(
       name: "funder",
-      type: "properties",
+      type: "properties"
     )
   end
 
   it "snapshots a funder's properties" do
     expect(serializer.as_json[:children]).to include(
-      {name: "name", type: "text", value: funder.name},
-      {name: "grant_number", type: "text", value: funder.grant_number},
-      {name: "website", type: "text", value: funder.website}
+      { name: "name", type: "text", value: funder.name },
+      { name: "grant_number", type: "text", value: funder.grant_number },
+      name: "website", type: "text", value: funder.website
     )
   end
 

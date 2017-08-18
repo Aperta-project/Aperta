@@ -16,7 +16,7 @@ describe PlosBioTechCheck::ChangesForAuthorController do
 
   describe 'POST #submit_tech_check' do
     subject(:do_request) do
-      post :submit_tech_check, { id: task.to_param, format: 'json' }
+      post :submit_tech_check, id: task.to_param, format: 'json'
     end
 
     before do

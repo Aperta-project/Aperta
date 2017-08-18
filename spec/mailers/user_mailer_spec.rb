@@ -397,5 +397,4 @@ describe UserMailer, redis: true do
       end
     end
   end
-
 end

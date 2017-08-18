@@ -134,10 +134,7 @@ describe DecisionsController do
   describe "#update" do
     let(:decision) { paper.draft_decision }
     subject(:do_request) do
-      put :update,
-          format: :json,
-          id: decision.id,
-          decision: {}
+      put :update, params: { format: :json, id: decision.id, decision: {} }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -149,9 +146,7 @@ describe DecisionsController do
 
       context 'and has no permissions' do
         let(:do_request) do
-          put :update,
-              format: :json,
-              id: decision.id
+          put :update, params: { format: :json, id: decision.id }
         end
 
         it 'returns a 403' do
@@ -163,12 +158,9 @@ describe DecisionsController do
       describe "updating the author response" do
         let(:author_response) { Faker::Lorem.paragraph(2) }
         subject(:do_request) do
-          put :update,
-              format: :json,
-              id: decision.id,
-              decision: {
-                author_response: author_response
-              }
+          put :update, params: { format: :json, id: decision.id, decision: {
+            author_response: author_response
+          } }
         end
 
         context "the decision has been registered" do
@@ -220,13 +212,10 @@ describe DecisionsController do
         let(:new_letter) { Faker::Lorem.paragraph(2) }
         let(:new_verdict) { "accept" }
         subject(:do_request) do
-          put :update,
-              format: :json,
-              id: decision.id,
-              decision: {
-                letter: new_letter,
-                verdict: new_verdict
-              }
+          put :update, params: { format: :json, id: decision.id, decision: {
+            letter: new_letter,
+            verdict: new_verdict
+          } }
         end
 
         context "the user has the permission to register a decision" do
@@ -276,10 +265,7 @@ describe DecisionsController do
 
   describe "#register" do
     subject(:do_request) do
-      put :register,
-          format: :json,
-          id: decision.id,
-          task_id: task.id
+      put :register, params: { format: :json, id: decision.id, task_id: task.id }
     end
 
     let(:decision) { paper.draft_decision }
@@ -383,9 +369,7 @@ describe DecisionsController do
 
   describe "#rescind" do
     subject(:do_request) do
-      put :rescind,
-          format: :json,
-          id: decision.id
+      put :rescind, params: { format: :json, id: decision.id }
     end
     let(:decision) { paper.draft_decision }
     let(:paper) { FactoryGirl.create(:paper, :rejected_lite) }

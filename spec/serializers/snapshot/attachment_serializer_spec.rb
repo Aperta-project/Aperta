@@ -38,7 +38,7 @@ describe Snapshot::AttachmentSerializer do
         { name: 'publishable', type: 'boolean', value: attachment.publishable },
         { name: 'status', type: 'text', value: attachment.status },
         { name: 'title', type: 'text', value: attachment.title },
-        { name: 'url', type: 'url', value: attachment.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: attachment.non_expiring_proxy_url
       )
     end
 
@@ -47,7 +47,7 @@ describe Snapshot::AttachmentSerializer do
 
       it 'includes the striking_image' do
         expect(serializer.as_json[:children]).to match array_including(
-          { name: 'striking_image', type: 'boolean', value: attachment.striking_image }
+          name: 'striking_image', type: 'boolean', value: attachment.striking_image
         )
       end
     end

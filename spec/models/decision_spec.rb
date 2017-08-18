@@ -8,7 +8,8 @@ describe Decision do
       :decision,
       paper: paper,
       major_version: nil,
-      minor_version: nil)
+      minor_version: nil
+    )
   end
 
   it_behaves_like 'a thing with major and minor versions', :decision
@@ -37,7 +38,8 @@ describe Decision do
           initial: false,
           paper: paper,
           major_version: nil,
-          minor_version: nil)
+          minor_version: nil
+        )
       end
 
       it 'flags rescinded as true' do
@@ -58,7 +60,8 @@ describe Decision do
           paper: paper,
           initial: true,
           major_version: nil,
-          minor_version: nil)
+          minor_version: nil
+        )
       end
 
       it 'flags rescinded as true' do

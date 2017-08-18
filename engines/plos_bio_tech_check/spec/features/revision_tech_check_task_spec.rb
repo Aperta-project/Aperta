@@ -7,7 +7,7 @@ feature 'Revision Tech Check', js: true do
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :revision_tech_check_task, :with_loaded_card, paper: paper }
-  let(:words) { %w(Data Availability Financial Competing Figure Ethics) }
+  let(:words) { %w[Data Availability Financial Competing Figure Ethics] }
 
   before do
     assign_journal_role journal, editor, :editor

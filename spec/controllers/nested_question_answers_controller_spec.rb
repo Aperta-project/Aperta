@@ -17,7 +17,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "institution-id" => "123" }
         }
       }
-      post(:create, post_params)
+      post(:create, params: post_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -72,7 +72,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "institution-id" => "123" }
         }
       }
-      post(:create, post_params)
+      post(:create, params: post_params)
     end
 
     context "when the user has access" do
@@ -128,7 +128,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "institution-id" => "234" }
         }
       }
-      put(:update, put_params)
+      put(:update, params: put_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -179,7 +179,7 @@ describe NestedQuestionAnswersController do
         id: answer.to_param,
         nested_question_id: card_content.to_param
       }
-      delete(:destroy, delete_params)
+      delete(:destroy, params: delete_params)
     end
 
     it_behaves_like "an unauthenticated json request"

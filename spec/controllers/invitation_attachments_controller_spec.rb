@@ -8,7 +8,7 @@ describe InvitationAttachmentsController do
   let(:invitation) { FactoryGirl.create(:invitation, task: task) }
 
   describe 'GET #index' do
-    subject(:do_request) { get :index, format: 'json', invitation_id: invitation.to_param }
+    subject(:do_request) { get :index, params: { format: 'json', invitation_id: invitation.to_param } }
 
     it_behaves_like 'an unauthenticated json request'
 
@@ -57,7 +57,7 @@ describe InvitationAttachmentsController do
     let(:attachment) { invitation.attachments.create! }
 
     subject(:do_request) do
-      get :show, format: 'json', invitation_id: invitation.to_param, id: attachment.to_param
+      get :show, params: { format: 'json', invitation_id: invitation.to_param, id: attachment.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -147,7 +147,7 @@ describe InvitationAttachmentsController do
 
   describe 'POST #create' do
     subject(:do_request) do
-      post :create, format: 'json', invitation_id: invitation.to_param, title: 'Cool'
+      post :create, params: { format: 'json', invitation_id: invitation.to_param, title: 'Cool' }
     end
     let(:url) { 'http://someawesomeurl.com' }
 
@@ -187,7 +187,7 @@ describe InvitationAttachmentsController do
 
   describe 'PUT #update_attachment' do
     subject(:do_request) do
-      put :update_attachment, format: 'json', invitation_id: invitation.to_param, id: attachment.id, url: url
+      put :update_attachment, params: { format: 'json', invitation_id: invitation.to_param, id: attachment.id, url: url }
     end
 
     let(:url) { "http://someawesomeurl.com" }
@@ -230,14 +230,10 @@ describe InvitationAttachmentsController do
 
   describe 'PUT #update' do
     subject(:do_request) do
-      patch :update,
-        id: invitation.attachments.last.id,
-        invitation_id: invitation.id,
-        invitation_attachment: {
-          title: "new title",
-          caption: "new caption"
-        },
-        format: :json
+      patch :update, params: { id: invitation.attachments.last.id, invitation_id: invitation.id, invitation_attachment: {
+        title: "new title",
+        caption: "new caption"
+      }, format: :json }
     end
 
     before do

@@ -15,23 +15,16 @@ describe PaperDownloadsController, type: :controller do
     )
   end
   let!(:manuscript_attachment) do
-     create(:manuscript_attachment,
-     owner: paper,
-     file:'name.docx',
-     s3_dir: 'sample/path',
-     )
-   end
+    create(:manuscript_attachment,
+    owner: paper,
+    file: 'name.docx',
+    s3_dir: 'sample/path')
+  end
   let!(:user) { create(:user) }
 
   describe 'GET show' do
     subject(:do_request) do
-      get(
-        :show,
-        id: paper.to_param,
-        versioned_text_id: versioned_text.to_param,
-        export_format: 'docx',
-        format: :json
-      )
+      get(:show, params: { id: paper.to_param, versioned_text_id: versioned_text.to_param, export_format: 'docx', format: :json })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -55,18 +48,12 @@ describe PaperDownloadsController, type: :controller do
           paper.file.update(file_type: 'pdf')
           create(
             :versioned_text,
-            paper: paper,
+            paper: paper
           )
         end
 
         subject(:do_request) do
-          get(
-            :show,
-            id: paper.to_param,
-            versioned_text_id: versioned_text.to_param,
-            export_format: 'pdf_with_attachments',
-            format: :json
-          )
+          get(:show, params: { id: paper.to_param, versioned_text_id: versioned_text.to_param, export_format: 'pdf_with_attachments', format: :json })
         end
 
         it 'sends data to the browser', vcr: { cassette_name: 'pdf_file', match_requests_on: [:method] } do
@@ -79,12 +66,7 @@ describe PaperDownloadsController, type: :controller do
 
       context 'the VersionedText is not specified' do
         subject(:do_request) do
-          get(
-            :show,
-            id: paper.to_param,
-            export_format: 'docx',
-            format: :json
-          )
+          get(:show, params: { id: paper.to_param, export_format: 'docx', format: :json })
         end
         let(:expected_versioned_text) { paper.latest_version }
 

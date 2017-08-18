@@ -6,5 +6,4 @@ class ChooseCardOverlay < CardOverlay
   def create_task
     find('#overlay button.task').click
   end
-
 end

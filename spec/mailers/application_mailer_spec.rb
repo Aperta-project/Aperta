@@ -52,7 +52,7 @@ describe ApplicationMailer do
     it 'logs a sent email to the database' do
       expect do
         deliver_email
-      end.to change { Correspondence.count }.by +1
+      end.to change { Correspondence.count }.by + 1
       email_log = Correspondence.last
       expect(email_log.message_id).to be
       expect(email_log.subject).to eq 'this is the subject'
@@ -65,7 +65,7 @@ describe ApplicationMailer do
       it 'logs a errored email to the database' do
         expect do
           deliver_email_raise_exception
-        end.to change { Correspondence.count }.by +1
+        end.to change { Correspondence.count }.by + 1
         email_log = Correspondence.last
         expect(email_log.message_id).to be
         expect(email_log.subject).to eq 'this is the subject'
@@ -88,18 +88,18 @@ describe ApplicationMailer do
     # A little meta-programming magic in this spec so we can define a set of
     # examples for each mailer file individually.
     #
-    mailer_paths = Dir[Rails.root.to_s + '/**/*_mailer.rb' ]
+    mailer_paths = Dir[Rails.root.to_s + '/**/*_mailer.rb']
     mailer_paths.each do |full_mailer_path|
       mailer_path = Pathname.new(full_mailer_path).relative_path_from(Rails.root)
-      describe "#{mailer_path}" do
+      describe mailer_path.to_s do
         it 'does not allow subclassing of ActionMailer::Base' do
           visitor = ApertaSourceCodeVisitors::ClassDefinitionVisitor.new
           walker = ApertaSourceCode.new(visitor)
           walker.walk_file(mailer_path)
 
           visitor.class_definitions.each_pair do |klass_name, definition|
-            if klass_name != 'ApplicationMailer' && definition[:superclass] == 'ActionMailer::Base'
-              raise RSpec::Expectations::ExpectationNotMetError, <<-ERROR.strip_heredoc
+            next unless klass_name != 'ApplicationMailer' && definition[:superclass] == 'ActionMailer::Base'
+            raise RSpec::Expectations::ExpectationNotMetError, <<-ERROR.strip_heredoc
                 #{klass_name} subclasses ActionMailer::Base and it shouldn't. It should
                 subclass ApplicationMailer. This is to help migrate mailer code to
                 Rails 5 conventions as well as support Aperta-specific modifications
@@ -113,8 +113,7 @@ describe ApplicationMailer do
 
                 For more information please see the latest Rails guide on using
                 ActionMailer: http://guides.rubyonrails.org/action_mailer_basics.html
-              ERROR
-            end
+            ERROR
           end
         end
 
@@ -124,8 +123,8 @@ describe ApplicationMailer do
 
           walker.walk_file(mailer_path)
           visitor.assignments_by_method_name.each_pair do |method_name, method_hash|
-            if method_hash[:local_variables].any?
-              raise RSpec::Expectations::ExpectationNotMetError, <<-ERROR.strip_heredoc
+            next unless method_hash[:local_variables].any?
+            raise RSpec::Expectations::ExpectationNotMetError, <<-ERROR.strip_heredoc
                 The mailer action/method ##{method_name} in #{mailer_path} has local variable
                 assignments when it shouldn't. Mailers should only use instance variable
                 assignments to enable automatic logging of mailer context.
@@ -140,8 +139,7 @@ describe ApplicationMailer do
 
                 For more information on automatic logging check out config/initializers/action_mailer.rb
                 and the app/mail_handlers/ directory.
-              ERROR
-            end
+            ERROR
           end
         end
       end

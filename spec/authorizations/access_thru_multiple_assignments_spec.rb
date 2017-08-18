@@ -28,7 +28,8 @@ DESC
       config.assignment_to(
         Authorizations::FakePaper,
         authorizes: Authorizations::FakeTask,
-        via: :fake_tasks)
+        via: :fake_tasks
+      )
     end
   end
 

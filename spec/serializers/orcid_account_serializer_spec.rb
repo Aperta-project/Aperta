@@ -24,7 +24,7 @@ describe OrcidAccountSerializer do
       user_id: current_user.id
     )
   end
-  let(:current_user){ FactoryGirl.build_stubbed(:user) }
+  let(:current_user) { FactoryGirl.build_stubbed(:user) }
 
   describe '#as_json' do
     let(:json) { serializer.as_json[:orcid_account] }

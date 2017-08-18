@@ -5,7 +5,7 @@ describe TokenCoAuthorsController do
     let(:author) { FactoryGirl.create(:author) }
 
     describe 'GET /co_authors_token/:token' do
-      subject(:do_request) { get :show, token: author.token }
+      subject(:do_request) { get :show, params: { token: author.token } }
       it "renders the show template" do
         do_request
         expect(response).to render_template("token_co_authors/show")
@@ -21,7 +21,7 @@ describe TokenCoAuthorsController do
     end
 
     describe "PUT /co_authors_token/:token/confirm" do
-      subject(:do_request) { put :confirm, token: author.token }
+      subject(:do_request) { put :confirm, params: { token: author.token } }
       it "confirms the author as a co author" do
         expect { do_request }.to change {
           author.reload
@@ -50,7 +50,7 @@ describe TokenCoAuthorsController do
 
     describe "GET /co_authors_token/:token/thank_you" do
       let!(:author) { FactoryGirl.create(:author, co_author_state: 'confirmed') }
-      subject(:do_request) { get :thank_you, token: author.token }
+      subject(:do_request) { get :thank_you, params: { token: author.token } }
       it "renders the thank you template" do
         do_request
         expect(response).to render_template("token_co_authors/thank_you")
@@ -71,7 +71,7 @@ describe TokenCoAuthorsController do
     let(:group_author) { FactoryGirl.create(:group_author) }
 
     describe 'GET /co_authors_token/:token' do
-      subject(:do_request) { get :show, token: group_author.token }
+      subject(:do_request) { get :show, params: { token: group_author.token } }
       it "renders the show template" do
         do_request
         expect(response).to render_template("token_co_authors/show")
@@ -87,7 +87,7 @@ describe TokenCoAuthorsController do
     end
 
     describe "PUT /co_authors_token/:token/confirm" do
-      subject(:do_request) { put :confirm, token: group_author.token }
+      subject(:do_request) { put :confirm, params: { token: group_author.token } }
       it "confirms the group_author as a co author" do
         expect { do_request }.to change {
           group_author.reload
@@ -116,7 +116,7 @@ describe TokenCoAuthorsController do
 
     describe "GET /co_authors_token/:token/thank_you" do
       let!(:group_author) { FactoryGirl.create(:group_author, co_author_state: 'confirmed') }
-      subject(:do_request) { get :thank_you, token: group_author.token }
+      subject(:do_request) { get :thank_you, params: { token: group_author.token } }
       it "renders the thank you template" do
         do_request
         expect(response).to render_template("token_co_authors/thank_you")

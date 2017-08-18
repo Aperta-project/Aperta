@@ -57,7 +57,7 @@ class AdminDashboardPage < Page
     search(query) if query
     session.has_content? 'Username'
     all('.admin-users-list-list .user-row').map do |el|
-      Hash[[:last_name, :first_name, :username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
+      Hash[%i[last_name first_name username].zip(UserRowInSearch.new(el).row_content.map(&:text))]
     end
   end
 

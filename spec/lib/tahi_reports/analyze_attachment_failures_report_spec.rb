@@ -96,7 +96,7 @@ describe TahiReports::AnalyzeAttachmentFailuresReport do
       expect(current_report).to include "Total count of Attachment(s): 16"
       expect(current_report).to include "Count in processing state today: 1"
 
-      FactoryGirl.create(:attachment, :processing, updated_at: (4.minutes).ago)
+      FactoryGirl.create(:attachment, :processing, updated_at: 4.minutes.ago)
       run_report
       current_report = report_contents
 

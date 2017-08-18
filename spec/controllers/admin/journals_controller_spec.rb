@@ -12,15 +12,12 @@ describe Admin::JournalsController, redis: true do
 
   describe '#create' do
     subject(:do_request) do
-      post :create,
-           format: 'json',
-           admin_journal: { name: 'new journal name',
-                            description: 'new journal desc',
-                            doi_journal_prefix: 'journal.SHORTJPREFIX1',
-                            doi_publisher_prefix: 'SHORTJPREFIX1',
-                            last_doi_issued: '100001',
-                            logo_url: logo_url
-                          }
+      post :create, params: { format: 'json', admin_journal: { name: 'new journal name',
+                                                               description: 'new journal desc',
+                                                               doi_journal_prefix: 'journal.SHORTJPREFIX1',
+                                                               doi_publisher_prefix: 'SHORTJPREFIX1',
+                                                               last_doi_issued: '100001',
+                                                               logo_url: logo_url } }
     end
 
     let(:logo_url) { nil } # by default, do not upload logo
@@ -101,10 +98,7 @@ describe Admin::JournalsController, redis: true do
 
   describe '#update' do
     subject(:do_request) do
-      patch :update,
-            format: 'json',
-            id: journal.id,
-            admin_journal: {name: 'new journal name'}
+      patch :update, params: { format: 'json', id: journal.id, admin_journal: { name: 'new journal name' } }
     end
 
     it_behaves_like "an unauthenticated json request"

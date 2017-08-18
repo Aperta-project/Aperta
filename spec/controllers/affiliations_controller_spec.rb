@@ -7,14 +7,14 @@ describe AffiliationsController do
 
   it "returns a list of the institution names" do
     stub_sign_in user
-    get :index, query: "Harvard"
+    get :index, params: { query: "Harvard" }
     institution_names = res_body['institutions'].map { |i| i['name'] }
     expect(institution_names).to include('Harvard University')
   end
 
   describe '#create' do
     subject(:do_request) do
-      post :create, format: 'json', affiliation: { name: "new", email: "email@example.com", user_id: user_id }
+      post :create, params: { format: 'json', affiliation: { name: "new", email: "email@example.com", user_id: user_id } }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -51,7 +51,7 @@ describe AffiliationsController do
   describe '#destroy' do
     let!(:affiliation) { FactoryGirl.create(:affiliation, user: user) }
     subject(:do_request) do
-      delete :destroy, id: affiliation.id
+      delete :destroy, params: { id: affiliation.id }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -67,7 +67,7 @@ describe AffiliationsController do
 
   describe '#for_user' do
     subject(:do_request) do
-      get :for_user, format: 'json', user_id: user_id
+      get :for_user, params: { format: 'json', user_id: user_id }
     end
 
     it_behaves_like 'an unauthenticated json request'

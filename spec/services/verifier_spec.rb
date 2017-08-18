@@ -26,7 +26,7 @@ describe Verifier do
       let(:payload) { "a string" }
 
       it "raises an error" do
-        expect{ Verifier.new(payload).encrypt(expiration_date: 2.days.from_now) }.to raise_error(InvalidPayload)
+        expect { Verifier.new(payload).encrypt(expiration_date: 2.days.from_now) }.to raise_error(InvalidPayload)
       end
     end
   end
@@ -39,7 +39,7 @@ describe Verifier do
 
       it "raises an error" do
         decrypter = Verifier.new(encrypted_data)
-        expect{ decrypter.decrypt }.to raise_error(MessageExpired)
+        expect { decrypter.decrypt }.to raise_error(MessageExpired)
       end
     end
 

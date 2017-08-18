@@ -9,7 +9,7 @@ describe DecisionAttachmentsController do
     let!(:decision_attachment) { FactoryGirl.create(:decision_attachment, owner: decision) }
 
     subject(:do_request) do
-      get :index, format: :json, decision_id: decision.id
+      get :index, params: { format: :json, decision_id: decision.id }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -46,11 +46,7 @@ describe DecisionAttachmentsController do
     let(:url) { Faker::Internet.url('example.com') }
 
     subject(:do_request) do
-      put :update_attachment,
-          format: :json,
-          decision_id: decision.id,
-          id: decision_attachment.id,
-          url: url
+      put :update_attachment, params: { format: :json, decision_id: decision.id, id: decision_attachment.id, url: url }
     end
 
     it_behaves_like 'an unauthenticated json request'

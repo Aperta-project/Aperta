@@ -2,7 +2,7 @@ module AuthorizationSpecHelper
   extend ActiveSupport::Concern
 
   class_methods do
-    def permissions(label=nil, &blk)
+    def permissions(label = nil, &blk)
       let_name = ['permissions', label].compact.join('_')
       let!(let_name) do
         PermissionSpecHelper.create_permissions(label, self, &blk)
@@ -30,7 +30,7 @@ module AuthorizationSpecHelper
 
   def count_queries(message, &blk)
     queries = 0
-    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |key, started, finished, unique_id, data|
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |_key, _started, _finished, _unique_id, _data|
       queries += 1
     end
     yield blk

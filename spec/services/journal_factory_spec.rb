@@ -729,7 +729,7 @@ describe JournalFactory do
                 billing_task_klasses -
                 changes_for_author_task_klasses -
                 restricted_invite_klasses
-              )
+            )
           end
           let(:non_editable_task_klasses) { reviewer_report_klasses }
           let(:editable_task_klasses_based_on_paper_state) do
@@ -1491,7 +1491,7 @@ describe JournalFactory do
           it 'can :view and :edit' do
             # Sometimes there is more than one 'edit' or 'view' permission for BillingTask so this fixes spec flakiness
             permission_strings = permissions.where(applies_to: 'PlosBilling::BillingTask').pluck(:action)
-            expect(permission_strings).to contain_exactly('view', 'edit','view_discussion_footer', 'view_participants')
+            expect(permission_strings).to contain_exactly('view', 'edit', 'view_discussion_footer', 'view_participants')
           end
         end
 

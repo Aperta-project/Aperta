@@ -187,7 +187,6 @@ describe SimilarityCheck, type: :model, redis: true do
 
         it "adds an error_message to similarity check" do
           Timecop.freeze(similarity_check.timeout_at + timeout_offset) do
-
             expect do
               similarity_check.sync_document!
             end.to raise_error('Report timed out after 10 minutes.')

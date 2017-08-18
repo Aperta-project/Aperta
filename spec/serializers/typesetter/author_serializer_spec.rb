@@ -47,7 +47,7 @@ describe Typesetter::AuthorSerializer do
   end
 
   let!(:deceased_question) do
-    CardContent.find_by_ident('author--deceased')
+    CardContent.find_by(ident: 'author--deceased')
   end
 
   let!(:answer1) do
@@ -274,8 +274,7 @@ describe Typesetter::AuthorSerializer do
         let(:orcid_account) do
           FactoryGirl.build_stubbed(:orcid_account,
             identifier: '0000-0001-0002-0003',
-            access_token: 'has_access_token'
-          )
+            access_token: 'has_access_token')
         end
 
         describe 'orcid_profile_url' do

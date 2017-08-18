@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe ClientRouteHelper do
-
   let(:paper) { double('paper', to_param: 1) }
   let(:task) { double('task', to_param: 1) }
 

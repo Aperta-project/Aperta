@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/LineLength, Style/StringLiterals
 # I'm disabling line-length in this file because it consists almost
 # entirely of long strings where extra whitespace is deadly.
 
@@ -209,11 +208,10 @@ describe QueryParser do
       let(:reviewer_report_types) do
         [TahiStandardTasks::ReviewerReportTask,
          TahiStandardTasks::FrontMatterReviewerReportTask,
-         QueryParserSpec::FictionalReport
-        ]
+         QueryParserSpec::FictionalReport]
       end
 
-      let(:reviewer_report_sql) { reviewer_report_types.map{ |r| "'#{r}'" }.join(', ') }
+      let(:reviewer_report_sql) { reviewer_report_types.map { |r| "'#{r}'" }.join(', ') }
 
       it 'includes FictionalReport in the query (NOT) ALL REVIEWS COMPLETE query' do
         all_reviews_parse = QueryParser.new.parse 'ALL REVIEWS COMPLETE'

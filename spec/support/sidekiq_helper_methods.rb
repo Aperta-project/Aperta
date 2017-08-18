@@ -1,5 +1,5 @@
 module SidekiqHelperMethods
-  class NoSidekiqJobError < ::StandardError ; end
+  class NoSidekiqJobError < ::StandardError; end
 
   # process_sidekiq_jobs processes queued up background jobs. It does so in a way
   # that allows for the two threads that run during feature specs to have ample
@@ -15,5 +15,4 @@ module SidekiqHelperMethods
     sleep 0.5
     process_sidekiq_jobs tries - 1
   end
-
 end

@@ -36,7 +36,7 @@ describe "reports:analyze_attachments" do
         :send_email,
         [{
           to: "foo@bar.com",
-          subject: "Attachment Analysis Report for #{Date.today.to_s}",
+          subject: "Attachment Analysis Report for #{Time.zone.today}",
           body: "report body here"
         }]
       )

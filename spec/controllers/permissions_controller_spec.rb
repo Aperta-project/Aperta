@@ -15,7 +15,7 @@ describe PermissionsController do
 
   describe '#show' do
     context 'user is not logged' do
-      subject(:do_request) { get :show, id: "Paper+#{paper.id}", format: :json }
+      subject(:do_request) { get :show, params: { id: "Paper+#{paper.id}", format: :json } }
 
       it_behaves_like "an unauthenticated json request"
     end
@@ -38,7 +38,7 @@ describe PermissionsController do
           end
 
           it 'returns the permission' do
-            get :show, id: "Paper+#{paper.id}"
+            get :show, params: { id: "Paper+#{paper.id}" }
             expect(response.status).to eq(200)
             expect(res_body['permissions'].count).to eq(1)
             first_permission_for = res_body['permissions'][0]['object']
@@ -66,7 +66,7 @@ describe PermissionsController do
           end
 
           it 'returns the permission' do
-            get :show, id: "Paper+#{paper.id}"
+            get :show, params: { id: "Paper+#{paper.id}" }
             expect(response.status).to eq(200)
             expect(res_body['permissions'].count).to eq(1)
             first_permission_for = res_body['permissions'][0]['object']

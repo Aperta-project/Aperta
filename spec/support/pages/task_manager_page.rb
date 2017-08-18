@@ -1,5 +1,4 @@
 class TaskManagerPage < Page
-
   path :root
   text_assertions :task, '.card'
 
@@ -12,7 +11,8 @@ class TaskManagerPage < Page
 
   def phase(phase_name)
     PhaseFragment.new(
-      find('.column h2', text: phase_name).find(:xpath, '../../..'))
+      find('.column h2', text: phase_name).find(:xpath, '../../..')
+    )
   end
 
   def phase_count

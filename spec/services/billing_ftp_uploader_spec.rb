@@ -13,7 +13,8 @@ describe BillingFTPUploader do
     instance_double(
       BillingLogReport,
       csv: '1,2,3',
-      papers_to_process: papers_to_process)
+      papers_to_process: papers_to_process
+    )
   end
   let(:papers_to_process) { [paper_1, paper_2] }
   let(:paper_1) { FactoryGirl.build_stubbed(:paper) }
@@ -27,14 +28,13 @@ describe BillingFTPUploader do
     # override default logger formatter since we don't care what the
     # format for the application is set to, just that we're logging
     # correctly
-    log.formatter = lambda do |severity, datetime, progname, msg|
+    log.formatter = lambda do |severity, _datetime, _progname, msg|
       "#{severity}: #{msg}\n"
     end
     log
   end
   let(:logger_io) { StringIO.new }
   let(:logged_content) { logger_io.tap(&:rewind).read }
-
 
   #
   # Collaborating service object
@@ -46,8 +46,8 @@ describe BillingFTPUploader do
   #
   # Collaborating Journal
   #
-  let(:staff_admins_across_all_journals) { [ staff_admin_1, staff_admin_2 ] }
-  let(:staff_admins_for_paper_journals) { [ staff_admin_1 ] }
+  let(:staff_admins_across_all_journals) { [staff_admin_1, staff_admin_2] }
+  let(:staff_admins_for_paper_journals) { [staff_admin_1] }
   let(:staff_admin_1) { FactoryGirl.build_stubbed(:user) }
   let(:staff_admin_2) { FactoryGirl.build_stubbed(:user) }
 

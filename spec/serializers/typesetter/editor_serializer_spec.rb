@@ -39,7 +39,7 @@ describe Typesetter::EditorSerializer do
     it_behaves_like 'editor fields'
 
     it 'has nil values for fields related to affiliation' do
-      %w(department title organization).each do |field_name|
+      %w[department title organization].each do |field_name|
         expect(output[field_name.to_sym]).to be(nil)
       end
     end

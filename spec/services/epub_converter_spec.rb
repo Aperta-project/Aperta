@@ -15,7 +15,8 @@ describe EpubConverter do
   let(:converter) do
     EpubConverter.new(
       paper,
-      user)
+      user
+    )
   end
 
   def read_epub_stream(stream)
@@ -46,7 +47,8 @@ describe EpubConverter do
         FactoryGirl.create(
           :paper,
           :with_short_title,
-          short_title: '<b>my title</b>')
+          short_title: '<b>my title</b>'
+        )
       end
 
       it 'return empty title' do
@@ -90,8 +92,6 @@ describe EpubConverter do
           expect(entries.map(&:name)).to include('input/source.doc')
         end
       end
-
     end
-
   end
 end

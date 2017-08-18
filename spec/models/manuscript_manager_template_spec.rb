@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe ManuscriptManagerTemplate do
-
   describe "validations" do
-
     it 'must have a paper type' do
       template = ManuscriptManagerTemplate.new paper_type: nil
       expect(template.valid?).to eq false

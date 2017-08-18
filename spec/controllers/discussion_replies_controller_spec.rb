@@ -52,7 +52,7 @@ describe DiscussionRepliesController do
       {
         discussion_reply: {
           discussion_topic_id: topic_a.id,
-          body: body,
+          body: body
         }
       }
     end
@@ -79,7 +79,7 @@ describe DiscussionRepliesController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { post :create, creation_params }
+      subject(:do_request) { post :create, params: creation_params }
 
       before do
         stub_sign_in user
@@ -91,5 +91,4 @@ describe DiscussionRepliesController do
       it { is_expected.to responds_with(403) }
     end
   end
-
 end

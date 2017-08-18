@@ -34,6 +34,5 @@ feature "Paper DOI Generation", selenium: true, js: true do
         end
       end
     end
-
   end
 end

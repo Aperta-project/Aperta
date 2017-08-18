@@ -3,8 +3,9 @@ shared_examples_for "transitions save state_updated_at" do |aasm_event_hash|
     blk = aasm_event_hash.values.first ||
       raise(
         ArgumentError,
-        "Please provide a key/value proc that performs the state transition, " +
-        "e.g.: submit: -> { paper.submit! arg1, arg2 }")
+        "Please provide a key/value proc that performs the state transition, " \
+        "e.g.: submit: -> { paper.submit! arg1, arg2 }"
+      )
 
     Timecop.freeze(Time.current.utc) do
       instance_eval &blk

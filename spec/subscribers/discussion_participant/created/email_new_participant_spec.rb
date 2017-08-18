@@ -9,7 +9,7 @@ describe DiscussionParticipant::Created::EmailNewParticipant do
 
   it 'sends an email to people added to discussions' do
     expect(mailer).to receive(:notify_added_to_topic).with(
-        participant.user_id,
+      participant.user_id,
         current_user.id,
         participant.discussion_topic_id
     )

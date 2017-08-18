@@ -29,7 +29,8 @@ describe Typesetter::FinancialDisclosureSerializer do
     expect(output.keys).to contain_exactly(
       :author_received_funding,
       :funding_statement,
-      :funders)
+      :funders
+    )
   end
 
   it 'works without values' do
@@ -58,7 +59,8 @@ describe Typesetter::FinancialDisclosureSerializer do
       expect(Typesetter::FunderSerializer)
         .to receive(:new).and_return(
           instance_double('TypeSetter::FunderSerialiser',
-                          serializable_hash: fake_serialized_funder))
+                          serializable_hash: fake_serialized_funder)
+        )
     end
 
     it 'serializes the funders using the typesetter serializer' do

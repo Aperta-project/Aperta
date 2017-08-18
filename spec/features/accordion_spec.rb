@@ -9,7 +9,8 @@ feature 'Accordion cards', js: true do
       :paper_with_task,
       :with_integration_journal,
       task_params: { type: 'AdHocTask' },
-      creator: author)
+      creator: author
+    )
   }
 
   before do

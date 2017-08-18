@@ -31,9 +31,7 @@ describe Typesetter::BillingLogSerializer do
 
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
   before do
-    paper.phases.first.tasks.push(*[billing_task,
-                                    financial_disclosure_task,
-                                    final_tech_check_task])
+    paper.phases.first.tasks.push(billing_task, financial_disclosure_task, final_tech_check_task)
   end
 
   describe 'doi' do
@@ -50,7 +48,7 @@ describe Typesetter::BillingLogSerializer do
 
   it 'has a ned_id for a pre-existing billing user' do
     FactoryGirl.create(:user, email: paper.answer_for('plos_billing--email').value, ned_id: '12345')
-    expect(output[:ned_id]).to eq(12345)
+    expect(output[:ned_id]).to eq(12_345)
   end
 
   it 'does not have a ned_id for a billing user that does not exist' do
@@ -110,10 +108,11 @@ describe Typesetter::BillingLogSerializer do
       end
     end
 
+    # rubocop:disable Rails/SkipsModelValidations
     it 'has a direct_bill_response when the payment method is institutional' do
       question = CardContent.find_by(ident: 'plos_billing--payment_method')
       question.answers.first.update_column(:value, 'institutional')
-      billing_task.answer_for('plos_billing--ringgold_institution').update_column(:additional_data, { 'nav_customer_number' => 'C01010' })
+      billing_task.answer_for('plos_billing--ringgold_institution').update_column(:additional_data, 'nav_customer_number' => 'C01010')
       expect(output[:direct_bill_response]).to eq('C01010')
     end
 

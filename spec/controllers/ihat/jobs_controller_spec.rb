@@ -20,12 +20,12 @@ describe Ihat::JobsController, type: :controller do
 
       it "calls the PaperUpdateWorker" do
         expect(PaperUpdateWorker).to receive(:perform_async).with(worker_params)
-        post :create, ihat_job_params
+        post :create, params: ihat_job_params
       end
 
       it "returns success" do
         allow(PaperUpdateWorker).to receive(:perform_async)
-        post :create, ihat_job_params
+        post :create, params: ihat_job_params
         expect(response.status).to eq(200)
       end
     end
@@ -35,12 +35,12 @@ describe Ihat::JobsController, type: :controller do
 
       it "calls the PaperUpdateWorker" do
         expect(PaperUpdateWorker).to receive(:perform_async).with(worker_params)
-        post :create, ihat_job_params
+        post :create, params: ihat_job_params
       end
 
       it "returns success" do
         allow(PaperUpdateWorker).to receive(:perform_async)
-        post :create, ihat_job_params
+        post :create, params: ihat_job_params
         expect(response.status).to eq(200)
       end
     end
@@ -50,7 +50,7 @@ describe Ihat::JobsController, type: :controller do
       let(:invalid_ihat_job_params) { { random_hash_of_things: [1, 2, 3] } }
 
       it "returns 422" do
-        post :create, invalid_ihat_job_params
+        post :create, params: invalid_ihat_job_params
         expect(response.status).to eq(422)
       end
     end

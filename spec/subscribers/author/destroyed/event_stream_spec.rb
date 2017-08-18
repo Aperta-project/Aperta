@@ -9,7 +9,6 @@ describe Author::Destroyed::EventStream do
 
   it "serializes author id down the system channel on destruction" do
     expect(pusher_channel).to receive_push(serialize: author, down: 'system', on: 'destroyed')
-    described_class.call("tahi:author:destroyed", { action: "destroyed", record: author })
+    described_class.call("tahi:author:destroyed", action: "destroyed", record: author)
   end
-
 end

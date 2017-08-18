@@ -20,5 +20,4 @@ class RoleFragment < PageFragment
   def save
     find(".action-buttons .button-primary.button--blue").click
   end
-
 end

@@ -50,7 +50,7 @@ describe Figure, redis: true do
       figure.download!(url)
       figure.reload
       expect(figure.title).to eq('Unlabeled')
-      expect(figure.status).to eq(self.described_class::STATUS_DONE)
+      expect(figure.status).to eq(described_class::STATUS_DONE)
       expect(figure.rank).to eq(0)
     end
 
@@ -61,7 +61,7 @@ describe Figure, redis: true do
       end.to_not change { figure.reload.title }.from('Great picture!')
     end
 
-    context 'when the figure is labeled', vcr: { cassette_name: 'labeled_figures'} do
+    context 'when the figure is labeled', vcr: { cassette_name: 'labeled_figures' } do
       let(:url) { 'http://tahi-test.s3.amazonaws.com/temp/fig-1.jpg' }
       it 'sets the figure title and rank from the label' do
         figure.download!(url)
@@ -109,14 +109,14 @@ describe Figure, redis: true do
 
   describe '.acceptable_content_type?' do
     it 'accepts standard image types' do
-      %w{gif jpg jpeg png tiff}.each do |type|
-        expect(Figure.acceptable_content_type? "image/#{type}").to eq true
+      %w[gif jpg jpeg png tiff].each do |type|
+        expect(Figure.acceptable_content_type?("image/#{type}")).to eq true
       end
     end
 
     it 'rejects non-image types' do
-      %w{doc docx pdf epub raw bmp}.each do |type|
-        expect(Figure.acceptable_content_type? "image/#{type}").to eq false
+      %w[doc docx pdf epub raw bmp].each do |type|
+        expect(Figure.acceptable_content_type?("image/#{type}")).to eq false
       end
     end
   end

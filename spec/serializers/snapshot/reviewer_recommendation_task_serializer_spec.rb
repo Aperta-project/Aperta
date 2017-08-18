@@ -39,10 +39,10 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
 
       it "serializes each reviewer(s) associated with the task in order by their respective id" do
         expect(serializer.as_json[:children]).to eq([
-          { name: "id", type: "integer", value: task.id },
-          { recommendation: "sally's json here" },
-          { recommendation: "bob's json here" }
-        ])
+                                                      { name: "id", type: "integer", value: task.id },
+                                                      { recommendation: "sally's json here" },
+                                                      { recommendation: "bob's json here" }
+                                                    ])
       end
     end
   end

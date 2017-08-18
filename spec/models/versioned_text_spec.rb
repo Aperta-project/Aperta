@@ -1,4 +1,5 @@
 # coding: utf-8
+
 require 'rails_helper'
 require 'models/concerns/versioned_thing_shared_examples'
 

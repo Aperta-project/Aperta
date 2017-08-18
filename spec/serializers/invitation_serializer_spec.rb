@@ -32,5 +32,4 @@ describe InvitationSerializer, serializer_test: true do
       expect(deserialized_content).to match(hash_including(users: []))
     end
   end
-
 end

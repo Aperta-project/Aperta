@@ -7,7 +7,7 @@ describe TokenInvitationsController do
   let(:task) { FactoryGirl.create :invitable_task }
 
   describe 'GET /invitations/:token' do
-    subject(:do_request) { get :show, token: invitation.token }
+    subject(:do_request) { get :show, params: { token: invitation.token } }
     context 'there is no user logged in' do
       context 'when the token points to an "invited" invitation' do
         let(:email) { "test@example.com" }
@@ -21,7 +21,7 @@ describe TokenInvitationsController do
   end
 
   describe 'POST #decline' do
-    subject(:do_request) { post :decline, token: invitation.token }
+    subject(:do_request) { post :decline, params: { token: invitation.token } }
     context 'when the token points to an "invited" invitation' do
       let(:email) { "test@example.com" }
       let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: email) }
@@ -50,7 +50,7 @@ describe TokenInvitationsController do
   end
 
   describe 'GET #feedback_form' do
-    subject(:do_request) { get :feedback_form, token: invitation.token }
+    subject(:do_request) { get :feedback_form, params: { token: invitation.token } }
     context 'there is no user logged in' do
       context 'when the token points to a "declined" invitation' do
         context 'the invite has no feedback or reviewer suggestions' do
@@ -65,7 +65,7 @@ describe TokenInvitationsController do
           invitation = FactoryGirl.create(:invitation,
             :declined,
             decline_reason: "Foo")
-          get :feedback_form, token: invitation.token
+          get :feedback_form, params: { token: invitation.token }
           expect(response).to redirect_to(invitation_thank_you_path(invitation.token))
         end
 
@@ -73,7 +73,7 @@ describe TokenInvitationsController do
           invitation = FactoryGirl.create(:invitation,
             :declined,
             reviewer_suggestions: "dave@example.com")
-          get :feedback_form, token: invitation.token
+          get :feedback_form, params: { token: invitation.token }
           expect(response).to redirect_to(invitation_thank_you_path(invitation.token))
         end
       end
@@ -98,7 +98,7 @@ describe TokenInvitationsController do
   end
 
   describe 'GET #thank_you' do # this is the Thank-You screen
-    subject(:do_request) { get :thank_you, token: invitation.token }
+    subject(:do_request) { get :thank_you, params: { token: invitation.token } }
     context 'the user is signed in' do
       let(:invitation) { FactoryGirl.create(:invitation, :declined) }
       before { stub_sign_in user }
@@ -129,12 +129,10 @@ describe TokenInvitationsController do
 
   describe 'POST #feedback' do
     subject(:do_request) do
-      post :feedback,
-        token: invitation.token,
-        invitation: {
-          reviewer_suggestions: "new reviewer",
-          decline_reason: "I decline"
-        }
+      post :feedback, params: { token: invitation.token, invitation: {
+        reviewer_suggestions: "new reviewer",
+        decline_reason: "I decline"
+      } }
     end
 
     context "the invite is in a state other than 'declined'" do
@@ -329,9 +327,9 @@ describe TokenInvitationsController do
   end
 
   describe 'GET /invitations/:token/accept' do
-    subject(:do_request) { get :accept, token: 'soCrypticMuchMystery' }
+    subject(:do_request) { get :accept, params: { token: 'soCrypticMuchMystery' } }
     subject(:new_user_do_request) do
-      get :accept, token: 'soCrypticMuchMystery', new_user: true
+      get :accept, params: { token: 'soCrypticMuchMystery', new_user: true }
     end
     context 'there is no user logged in' do
       before do

@@ -17,9 +17,9 @@ describe ApplicationController do
       end
     end
 
-    let(:cas_host){ 'cas-aperta-integration.plos.org' }
+    let(:cas_host) { 'cas-aperta-integration.plos.org' }
     let(:cas_logout_url) { 'http://example.com/cas/logout' }
-    let(:cas_ssl){ 'true' }
+    let(:cas_ssl) { 'true' }
     let(:cas_env_vars) do
       {
         CAS_HOST: cas_host,

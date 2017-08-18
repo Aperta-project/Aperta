@@ -27,7 +27,8 @@ describe Typesetter::DataAvailabilitySerializer do
   it 'has data availability fields' do
     expect(output.keys).to contain_exactly(
       :data_fully_available,
-      :data_location_statement)
+      :data_location_statement
+    )
   end
 
   it 'works without values' do

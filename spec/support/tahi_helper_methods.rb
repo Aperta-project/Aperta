@@ -4,7 +4,7 @@ module TahiHelperMethods
   end
 
   def user_select_hash(user)
-    {id: user.id, full_name: user.full_name, avatar: user.image_url}
+    { id: user.id, full_name: user.full_name, avatar: user.image_url }
   end
 
   # NEW ROLES
@@ -59,14 +59,14 @@ module TahiHelperMethods
   end
 
   def with_valid_salesforce_credentials
-    sf_credentials       = Dotenv.load('.env.development').select{|k,v| k.include? 'DATABASEDOTCOM'}
-    old_test_credentials = sf_credentials.inject({}){|hash, el| hash[el[0]] = ENV[el[0]]; hash }
+    sf_credentials       = Dotenv.load('.env.development').select { |k, _v| k.include? 'DATABASEDOTCOM' }
+    old_test_credentials = sf_credentials.each_with_object({}) { |el, hash| hash[el[0]] = ENV[el[0]]; }
 
-    sf_credentials.each {|k,v| ENV[k] = v} #use real creds
+    sf_credentials.each { |k, v| ENV[k] = v } # use real creds
 
     yield
 
-    old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds
+    old_test_credentials.each { |k, v| ENV[k] = v } # reset to dummy creds
   end
 
   def register_paper_decision(paper, verdict)

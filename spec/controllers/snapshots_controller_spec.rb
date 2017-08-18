@@ -12,9 +12,7 @@ describe SnapshotsController do
 
   describe '#index' do
     subject(:do_request) do
-      get :index,
-          format: 'json',
-          task_id: task.to_param
+      get :index, params: { format: 'json', task_id: task.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'

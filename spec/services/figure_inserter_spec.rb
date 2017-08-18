@@ -24,7 +24,6 @@ describe FigureInserter do
       figure
     end
 
-
     let(:figure_inserter) { FigureInserter.new(html, figures) }
 
     subject(:modified_html) { parse_html figure_inserter.call }

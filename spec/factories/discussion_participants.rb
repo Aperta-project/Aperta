@@ -3,5 +3,4 @@ FactoryGirl.define do
     discussion_topic
     user
   end
-
 end

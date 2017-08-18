@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe EventStream::Notifiable do
-
   before do
     RequestStore.store[:requester_pusher_socket_id] = "test_socket"
     RequestStore.store[:requester_current_user_id] = 1

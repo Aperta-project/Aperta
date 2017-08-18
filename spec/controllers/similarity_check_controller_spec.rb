@@ -6,9 +6,9 @@ describe SimilarityChecksController, type: :controller do
   describe "#create" do
     let!(:versioned_text) { create :versioned_text }
     let(:do_request) do
-      get :create, format: :json, similarity_check: {
+      get :create, params: { format: :json, similarity_check: {
         versioned_text_id: versioned_text.to_param
-      }
+      } }
     end
 
     context "the user can perform a similarity check" do
@@ -61,7 +61,7 @@ describe SimilarityChecksController, type: :controller do
     let(:similarity_check) { create :similarity_check, :report_complete }
     let(:paper) { similarity_check.versioned_text.paper }
     let(:do_request) do
-      get :report_view_only, id: similarity_check.to_param
+      get :report_view_only, params: { id: similarity_check.to_param }
     end
     let(:fake_url) { Faker::Internet.url }
     let(:response_double) do

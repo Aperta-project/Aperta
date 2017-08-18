@@ -10,8 +10,7 @@ feature "Displaying task", js: true do
       task_params: {
         type: 'AdHocTask',
         title: "Some Task"
-      }
-    )
+      })
   end
 
   before do

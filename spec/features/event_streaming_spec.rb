@@ -20,7 +20,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         click_link("Workflow")
       end
 
-      let(:submission_phase) { paper.phases.find_by_name("Submission Data") }
+      let(:submission_phase) { paper.phases.find_by(name: "Submission Data") }
 
       scenario "managing tasks" do
         FactoryGirl.create(:ad_hoc_task,

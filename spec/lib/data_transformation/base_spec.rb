@@ -59,7 +59,7 @@ describe DataTransformation::Base do
 
   describe "#log_counters" do
     context "3 counters are registered" do
-      let(:counter_names) { [:counter_1, :counter_2, :counter_3] }
+      let(:counter_names) { %i[counter_1 counter_2 counter_3] }
       before do
         counter_names.each do |counter_name|
           data_transformation.send(:register_counter, counter_name)

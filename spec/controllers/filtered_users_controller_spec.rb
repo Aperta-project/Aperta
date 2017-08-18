@@ -6,12 +6,7 @@ describe FilteredUsersController do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create :paper, journal: journal }
     subject(:do_request) do
-      get(
-        :users,
-        format: 'json',
-        paper_id: paper.to_param,
-        query: 'Kangaroo'
-      )
+      get(:users, params: { format: 'json', paper_id: paper.to_param, query: 'Kangaroo' })
     end
 
     it_behaves_like 'an unauthenticated json request'

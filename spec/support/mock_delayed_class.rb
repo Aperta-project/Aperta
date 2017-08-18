@@ -16,4 +16,3 @@ def mock_delayed_class(delayed_class)
   allow(delayed_class).to receive(:delay).and_return(mocked_delayed_class)
   mocked_delayed_class
 end
-

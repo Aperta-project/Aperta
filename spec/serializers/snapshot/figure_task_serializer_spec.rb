@@ -8,7 +8,7 @@ describe Snapshot::FigureTaskSerializer do
       :figure,
       :with_resource_token,
       title: 'figure 1 title',
-      caption: 'figure 1 caption',
+      caption: 'figure 1 caption'
     )
   end
   let(:figure_2) do
@@ -49,7 +49,7 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'file_hash', type: 'text', value: figure_1.file_hash },
         { name: 'title', type: 'text', value: figure_1.title },
         { name: 'striking_image', type: 'boolean', value: figure_1.striking_image },
-        { name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url
       )
 
       expect(figures_json[1]).to match hash_including(
@@ -62,7 +62,7 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'file_hash', type: 'text', value: figure_2.file_hash },
         { name: 'title', type: 'text', value: figure_2.title },
         { name: 'striking_image', type: 'boolean', value: figure_2.striking_image },
-        { name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url }
+        name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url
       )
     end
 

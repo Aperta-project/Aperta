@@ -5,7 +5,7 @@ require 'generators/data_migration/data_migration_generator'
 
 describe DataMigrationGenerator, type: :generator do
   destination Rails.root.join('spec/tmp')
-  arguments %w(PaintTheSkyBlue)
+  arguments %w[PaintTheSkyBlue]
 
   before(:all) do
     prepare_destination

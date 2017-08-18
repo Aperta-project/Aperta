@@ -47,7 +47,7 @@ feature "Invite Reviewer", js: true do
     expect(overlay.active_invitations_count(1)).to be true
 
     register_paper_decision(paper, 'minor_revision')
-    paper.tasks.find_by_title("Upload Manuscript").complete!
+    paper.tasks.find_by(title: "Upload Manuscript").complete!
     paper.submit! paper.creator
 
     overlay.reload

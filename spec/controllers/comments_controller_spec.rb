@@ -31,8 +31,7 @@ describe CommentsController do
 
   describe "#index" do
     subject(:do_request) do
-      get :index, format: 'json',
-                  task_id: task.to_param
+      get :index, params: { format: 'json', task_id: task.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -40,7 +39,7 @@ describe CommentsController do
     context 'when the user has access' do
       let!(:comment1) { FactoryGirl.create(:comment, task: task) }
       let!(:comment2) { FactoryGirl.create(:comment, task: task) }
-      
+
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
@@ -199,9 +198,7 @@ describe CommentsController do
     let!(:comment) { FactoryGirl.create(:comment, task: task) }
 
     subject(:do_request) do
-      get :show,         format: 'json',
-                         task_id: task.to_param,
-                         id: comment.to_param
+      get :show, params: { format: 'json', task_id: task.to_param, id: comment.to_param }
     end
 
     it_behaves_like 'an unauthenticated json request'

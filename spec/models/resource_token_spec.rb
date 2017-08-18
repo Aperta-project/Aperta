@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ResourceToken do
-
   describe '#url' do
     subject(:resource_token) do
       FactoryGirl.build_stubbed(

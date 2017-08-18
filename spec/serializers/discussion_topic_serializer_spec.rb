@@ -5,7 +5,8 @@ describe DiscussionTopicSerializer, serializer_test: true do
     FactoryGirl.create(
       :discussion_topic,
       participants: [user],
-      discussion_replies: [reply])
+      discussion_replies: [reply]
+    )
   end
   let(:reply) { FactoryGirl.create(:discussion_reply, replier: user) }
   let(:user) { FactoryGirl.create(:user) }
@@ -27,7 +28,8 @@ describe DiscussionTopicSerializer, serializer_test: true do
     subject(:discussion) do
       FactoryGirl.create(
         :discussion_topic,
-        discussion_replies: [reply])
+        discussion_replies: [reply]
+      )
     end
 
     it 'serializes all repliers although they may not be participants' do

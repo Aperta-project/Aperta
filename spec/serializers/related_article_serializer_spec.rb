@@ -1,4 +1,5 @@
 # coding: utf-8
+
 require "rails_helper"
 
 describe RelatedArticleSerializer do
@@ -16,7 +17,8 @@ describe RelatedArticleSerializer do
           linked_title: article.linked_title,
           paper_id: article.paper_id,
           send_link_to_apex: article.send_link_to_apex,
-          send_manuscripts_together: article.send_manuscripts_together)
+          send_manuscripts_together: article.send_manuscripts_together
+        )
     end
   end
 end

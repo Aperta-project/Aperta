@@ -33,7 +33,7 @@ describe AttachmentUploader do
     end
 
     context 'when the model does not respond_to :s3_dir' do
-      let(:model) { double('model', id: 1, paper_id: 11, file_hash: 'def987')}
+      let(:model) { double('model', id: 1, paper_id: 11, file_hash: 'def987') }
 
       it 'returns a computed value' do
         expect(uploader.store_dir).to eq \

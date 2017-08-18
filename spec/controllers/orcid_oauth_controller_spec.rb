@@ -8,7 +8,7 @@ describe OrcidOauthController do
 
   describe '#callback:' do
     subject(:do_request) do
-      get :callback, code: code, format: :html
+      get :callback, params: { code: code, format: :html }
     end
 
     it_behaves_like "when the user is not signed in"
@@ -20,7 +20,7 @@ describe OrcidOauthController do
 
       context 'and there is an error passed in,' do
         subject(:do_request) do
-          get :callback, error: error, format: :html
+          get :callback, params: { error: error, format: :html }
         end
 
         it "does not call the OrcidWorker" do

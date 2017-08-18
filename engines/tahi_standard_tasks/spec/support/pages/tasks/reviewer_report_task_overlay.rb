@@ -1,5 +1,6 @@
 # Helper class for running specs
 # coding: utf-8
+
 class ReviewerReportTaskOverlay < PaperTaskOverlay
   include RichTextEditorHelpers
 

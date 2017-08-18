@@ -1,9 +1,9 @@
 require "rails_helper"
 
 describe SnapshotService::Registry do
-  class ExampleSerializer ; end
-  class Thing ; end
-  class SubclassOfThing < Thing ; end
+  class ExampleSerializer; end
+  class Thing; end
+  class SubclassOfThing < Thing; end
 
   subject(:registry) { described_class.new }
 

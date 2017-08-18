@@ -142,7 +142,7 @@ describe DiscussionTopicsController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { post :create, creation_params }
+      subject(:do_request) { post :create, params: creation_params }
 
       before do
         stub_sign_in user
@@ -185,7 +185,7 @@ describe DiscussionTopicsController do
     end
 
     context "when the user does not have access" do
-      subject(:do_request) { patch :update, update_params }
+      subject(:do_request) { patch :update, params: update_params }
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
@@ -219,7 +219,6 @@ describe DiscussionTopicsController do
         .with('Kangaroo')
         .and_return [FactoryGirl.build_stubbed(:user, email: 'foo@example.com')]
     end
-
 
     describe 'GET users' do
       subject(:do_request) do

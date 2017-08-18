@@ -27,11 +27,11 @@ FactoryGirl.define do
       end
     end
 
-    %w(
+    %w[
       academic_editor creator collaborator cover_editor discussion_participant
       handling_editor internal_editor production_staff publishing_services
       staff_admin task_participant reviewer reviewer_report_owner
-    ).each do |role|
+    ].each do |role|
       role_method = "#{role}_role"
       trait("with_#{role_method}".to_sym) do
         after(:create) do |journal|
@@ -41,14 +41,13 @@ FactoryGirl.define do
       end
     end
 
-    %w(publishing_services staff_admin).each do |role|
+    %w[publishing_services staff_admin].each do |role|
       trait("with_#{role}_user".to_sym) do
         after(:create) do |journal|
           FactoryGirl.create(:assignment,
                              role: journal.send("#{role}_role".to_sym),
                              user: FactoryGirl.build(:user),
-                             assigned_to: journal
-                            )
+                             assigned_to: journal)
         end
       end
     end

@@ -29,7 +29,7 @@ describe "rake clean:temp_files" do
     end
 
     after do
-      FileUtils.rmdir directory if Dir.exists?(directory)
+      FileUtils.rmdir directory if Dir.exist?(directory)
     end
 
     context 'and the CarrierWave directory is older than 24 hours' do
@@ -38,7 +38,7 @@ describe "rake clean:temp_files" do
       it 'removes CarrierWave directories older than 24 hours' do
         expect do
           run_rake_task
-        end.to change { Dir.exists?(directory) }.from(true).to(false)
+        end.to change { Dir.exist?(directory) }.from(true).to(false)
       end
     end
 
@@ -48,7 +48,7 @@ describe "rake clean:temp_files" do
       it 'does not remove CarrierWave directories newer than 24 hours' do
         expect do
           run_rake_task
-        end.to_not change { Dir.exists?(directory) }.from(true)
+        end.to_not change { Dir.exist?(directory) }.from(true)
       end
     end
   end

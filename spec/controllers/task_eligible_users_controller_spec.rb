@@ -10,12 +10,7 @@ describe TaskEligibleUsersController do
       FactoryGirl.create(:journal, :with_academic_editor_role)
     end
     subject(:do_request) do
-      get(
-        :academic_editors,
-        format: 'json',
-        task_id: task.to_param,
-        query: 'Kangaroo'
-      )
+      get(:academic_editors, params: { format: 'json', task_id: task.to_param, query: 'Kangaroo' })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -76,19 +71,13 @@ describe TaskEligibleUsersController do
         end
         it { is_expected.to responds_with(403) }
       end
-
     end
   end
 
   describe "#admins" do
     let(:journal) { FactoryGirl.create(:journal, :with_staff_admin_role) }
     subject(:do_request) do
-      get(
-        :admins,
-        format: 'json',
-        task_id: task.to_param,
-        query: 'Kangaroo'
-      )
+      get(:admins, params: { format: 'json', task_id: task.to_param, query: 'Kangaroo' })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -154,12 +143,7 @@ describe TaskEligibleUsersController do
   describe "#reviewers" do
     let(:journal) { FactoryGirl.create(:journal) }
     subject(:do_request) do
-      get(
-        :reviewers,
-        format: 'json',
-        task_id: task.to_param,
-        query: 'Kangaroo'
-      )
+      get(:reviewers, params: { format: 'json', task_id: task.to_param, query: 'Kangaroo' })
     end
 
     it_behaves_like 'an unauthenticated json request'

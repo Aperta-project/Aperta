@@ -6,7 +6,7 @@ DESC
   include AuthorizationSpecHelper
 
   let!(:user) { FactoryGirl.create(:user) }
-  let!(:journal){ Authorizations::FakeJournal.create!(name: 'The Journal') }
+  let!(:journal) { Authorizations::FakeJournal.create!(name: 'The Journal') }
   let!(:paper) { Authorizations::FakePaper.create!(name: 'Bar Paper', fake_journal: journal) }
   let!(:other_paper) { Authorizations::FakePaper.create!(name: 'Other Paper') }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper, name: 'Foo Task') }
@@ -19,7 +19,8 @@ DESC
       object:
        { id: task.id,
          type: 'Authorizations::FakeTask' },
-      permissions: { view: { states: ['*'] } }].as_json
+      permissions: { view: { states: ['*'] } }
+    ].as_json
   end
 
   let(:paper_json) do
@@ -28,7 +29,8 @@ DESC
       object:
        { id: paper.id,
          type: 'Authorizations::FakePaper' },
-      permissions: { view: { states: ['*'] } }].as_json
+      permissions: { view: { states: ['*'] } }
+    ].as_json
   end
 
   before(:all) do

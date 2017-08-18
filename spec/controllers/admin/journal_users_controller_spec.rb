@@ -34,14 +34,14 @@ describe Admin::JournalUsersController, redis: true do
         context "when there's a query in the params" do
           it "fuzzy searches and for users that match the query" do
             expect(User).to receive(:search_users).with('Alice')
-            get :index, format: 'json', query: 'Alice'
+            get :index, params: { format: 'json', query: 'Alice' }
           end
         end
 
         context "when there's a journal id in the params" do
           it "finds users assigned to that journal" do
             expect(User).to receive(:assigned_to_journal).with(journal.id)
-            get :index, format: 'json', journal_id: journal.id
+            get :index, params: { format: 'json', journal_id: journal.id }
           end
         end
 
@@ -66,14 +66,11 @@ describe Admin::JournalUsersController, redis: true do
 
     context 'no journal_id is present in the user params' do
       subject(:do_request) do
-        patch :update,
-          format: 'json',
-          id: fake_user.id,
-          admin_journal_user: { first_name: 'Alice',
-                                last_name: 'Smith',
-                                username: 'asmith',
-                                journal_role_name: 'Staff Admin',
-                                modify_action: 'add-role' }
+        patch :update, params: { format: 'json', id: fake_user.id, admin_journal_user: { first_name: 'Alice',
+                                                                                         last_name: 'Smith',
+                                                                                         username: 'asmith',
+                                                                                         journal_role_name: 'Staff Admin',
+                                                                                         modify_action: 'add-role' } }
       end
 
       it_behaves_like "an unauthenticated json request"
@@ -107,15 +104,12 @@ describe Admin::JournalUsersController, redis: true do
     describe 'adding or removing roles for a user with a journal_id' do
       let(:modify_action) { 'remove-role' }
       subject(:do_request) do
-        patch :update,
-          format: 'json',
-          id: fake_user.id,
-          admin_journal_user: { first_name: 'Alice',
-                                last_name: 'Smith',
-                                username: 'asmith',
-                                journal_role_name: 'Staff Admin',
-                                journal_id: journal.id,
-                                modify_action: modify_action }
+        patch :update, params: { format: 'json', id: fake_user.id, admin_journal_user: { first_name: 'Alice',
+                                                                                         last_name: 'Smith',
+                                                                                         username: 'asmith',
+                                                                                         journal_role_name: 'Staff Admin',
+                                                                                         journal_id: journal.id,
+                                                                                         modify_action: modify_action } }
       end
 
       it_behaves_like "an unauthenticated json request"

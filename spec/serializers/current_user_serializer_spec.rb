@@ -25,7 +25,9 @@ describe CurrentUserSerializer, serializer_test: true do
                     permissions: contain_exactly(
                       object: { id: user.id, type: 'User' },
                       permissions: { view: { states: ['*'] } },
-                      id: "user+#{user.id}")))
+                      id: "user+#{user.id}"
+                    )
+        ))
     end
   end
 end

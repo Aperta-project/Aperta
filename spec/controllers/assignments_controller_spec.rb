@@ -7,7 +7,7 @@ describe AssignmentsController, type: :controller do
 
   describe '#index' do
     subject(:do_request) do
-      get :index, format: 'json', paper_id: paper.to_param
+      get :index, params: { format: 'json', paper_id: paper.to_param }
     end
 
     let(:paper_assignments) do
@@ -37,7 +37,7 @@ describe AssignmentsController, type: :controller do
         do_request
         expect(res_body['assignments'].count).to eq(paper_assignments.length)
 
-        ids = res_body['assignments'].map{ |hsh| hsh['id'] }
+        ids = res_body['assignments'].map { |hsh| hsh['id'] }
         expect(ids).to include(paper_assignments.first.id)
       end
     end
@@ -57,15 +57,11 @@ describe AssignmentsController, type: :controller do
 
   describe "POST 'create'" do
     subject(:do_request) do
-      post(
-        :create,
-        format: 'json',
-        assignment: {
-          'role_id' => role.id,
-          'user_id' => assignee.id,
-          'paper_id' => paper.id
-        }
-      )
+      post(:create, params: { format: 'json', assignment: {
+             'role_id' => role.id,
+             'user_id' => assignee.id,
+             'paper_id' => paper.id
+           } })
     end
     let(:role) { FactoryGirl.create(:role, journal: journal) }
     let(:assignee) { FactoryGirl.create(:user) }
@@ -163,12 +159,7 @@ describe AssignmentsController, type: :controller do
 
   describe "DELETE 'destroy'" do
     subject(:do_request) do
-      delete(
-        :destroy,
-        format: 'json',
-        paper_id: paper.to_param,
-        id: assignment.to_param
-      )
+      delete(:destroy, params: { format: 'json', paper_id: paper.to_param, id: assignment.to_param })
     end
     let!(:assignment) do
       FactoryGirl.create(

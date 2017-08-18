@@ -28,8 +28,7 @@ describe CorrespondenceController do
 
   describe 'GET index' do
     subject(:do_request) do
-      get :index, format: 'json',
-                  paper_id: paper.id
+      get :index, params: { format: 'json', paper_id: paper.id }
     end
 
     context 'when user has access' do

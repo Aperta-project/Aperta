@@ -8,12 +8,11 @@ describe DiscussionParticipant::Created::EventStream::NotifyAssignee do
 
   it "serializes discussion participtant down the user channel on creation" do
     expect(pusher_channel).to receive_push(
-                                serialize: discussion_participant.discussion_topic,
-                                down: 'user',
-                                on: 'created')
-    described_class.call("tahi:discussion_participtant:created", {
-                           action: "created",
-                           record: discussion_participant })
+      serialize: discussion_participant.discussion_topic,
+      down: 'user',
+      on: 'created'
+    )
+    described_class.call("tahi:discussion_participtant:created", action: "created",
+                                                                 record: discussion_participant)
   end
-
 end

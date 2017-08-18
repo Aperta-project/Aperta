@@ -26,7 +26,8 @@ describe Typesetter::CompetingInterestsSerializer do
   it 'has competing interests fields' do
     expect(output.keys).to contain_exactly(
       :competing_interests,
-      :competing_interests_statement)
+      :competing_interests_statement
+    )
   end
 
   it 'works without values' do
@@ -69,7 +70,8 @@ describe Typesetter::CompetingInterestsSerializer do
 
     it 'has the stock no competing interests statement' do
       output = Typesetter::CompetingInterestsSerializer.new(
-        no_competing_task).serializable_hash
+        no_competing_task
+      ).serializable_hash
 
       expect(output[:competing_interests_statement]).to \
         eq('The authors have declared that no competing interests exist.')

@@ -13,7 +13,7 @@ describe PaperTrackerController do
 
     it 'is available and useful' do
       expect(per_page).to be_truthy
-      expect(per_page.instance_of?(Fixnum)).to eq(true)
+      expect(per_page.instance_of?(Integer)).to eq(true)
     end
   end
 
@@ -71,7 +71,7 @@ describe PaperTrackerController do
 
       it 'meta[page] is eq to param[page]' do
         FactoryGirl.create(:paper, :submitted, journal: journal)
-        get :index, format: :json, page: 7
+        get :index, params: { format: :json, page: 7 }
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(7)
       end
@@ -112,7 +112,7 @@ describe PaperTrackerController do
       it 'properly detects when its meant as a title,
           returns nothing when no match' do
         make_matchable_paper title: 'no can find'
-        get :index, format: :json, query: 'please find'
+        get :index, params: { format: :json, query: 'please find' }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 0
@@ -121,7 +121,7 @@ describe PaperTrackerController do
       it 'properly detects when its meant as a title,
           returns good match' do
         make_matchable_paper title: 'tin roof blues'
-        get :index, format: :json, query: 'tin roof blues' # not fuzzy
+        get :index, params: { format: :json, query: 'tin roof blues' } # not fuzzy
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 1
@@ -130,7 +130,7 @@ describe PaperTrackerController do
 
       it 'allows title text to be fuzzy' do
         make_matchable_paper title: 'making friends'
-        get :index, format: :json, query: 'friend make' # fuzzy
+        get :index, params: { format: :json, query: 'friend make' } # fuzzy
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 1
@@ -140,7 +140,7 @@ describe PaperTrackerController do
       it 'properly detects when its meant as a DOI,
           returns nothing when no match' do
         make_matchable_paper(title: 'title 123', doi: '456')
-        get :index, format: :json, query: '123'
+        get :index, params: { format: :json, query: '123' }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 0
@@ -148,7 +148,7 @@ describe PaperTrackerController do
 
       it 'properly detects when its meant as a DOI, results are good' do
         make_matchable_paper(title: 'title 123', doi: 'PPREFIX1/journal.JPREFIX1.10001')
-        get :index, format: :json, query: '10001'
+        get :index, params: { format: :json, query: '10001' }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq 1
         expect(json['papers'].count).to eq 1
@@ -157,7 +157,7 @@ describe PaperTrackerController do
 
       it 'respects pagination when there are more matches than per_page' do
         (per_page + 1).times { make_matchable_paper(title: 'foo') }
-        get :index, format: :json, query: 'foo'
+        get :index, params: { format: :json, query: 'foo' }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq(per_page + 1)
         expect(json['papers'].count).to eq per_page
@@ -169,7 +169,7 @@ describe PaperTrackerController do
         make_matchable_paper(title: 'aaa foo')
         make_matchable_paper(title: 'bbb foo')
         make_matchable_paper(title: 'aaa foo')
-        get :index, format: :json, query: 'foo', orderBy: :title
+        get :index, params: { format: :json, query: 'foo', orderBy: :title }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq(3)
         expect(json['papers'][0]['title']).to eq('aaa foo')
@@ -181,11 +181,7 @@ describe PaperTrackerController do
         make_matchable_paper(title: 'aaa foo')
         make_matchable_paper(title: 'bbb foo')
         make_matchable_paper(title: 'aaa foo')
-        get :index,
-            format: :json,
-            query: 'foo',
-            orderBy: :title,
-            orderDir: :desc
+        get :index, params: { format: :json, query: 'foo', orderBy: :title, orderDir: :desc }
         json = JSON.parse(response.body)
         expect(Paper.count).to eq(3)
         expect(json['papers'][0]['title']).to eq('bbb foo')

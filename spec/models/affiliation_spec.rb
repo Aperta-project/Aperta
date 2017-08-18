@@ -38,7 +38,6 @@ describe "Affiliation" do
   end
 
   describe "date validations" do
-
     it "will not be valid if end date is not a valid date format" do
       affiliation = build(:affiliation, start_date: 3.days.ago, end_date: "not valid")
       expect(affiliation).to_not be_valid
@@ -68,6 +67,5 @@ describe "Affiliation" do
       affiliation = build(:affiliation, start_date: 3.days.ago, end_date: 4.days.ago)
       expect(affiliation).to_not be_valid
     end
-
   end
 end

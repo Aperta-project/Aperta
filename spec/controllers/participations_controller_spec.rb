@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ParticipationsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:participant) { FactoryGirl.create(:user) }
-  let(:journal){ FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal) }
   let!(:paper) do
     FactoryGirl.create(:paper, journal: journal)
   end
@@ -20,10 +20,7 @@ describe ParticipationsController do
     let!(:participation2) { task.add_participant(FactoryGirl.create(:user)) }
 
     subject(:do_request) do
-      get :index, {
-        format: 'json',
-        task_id: task.to_param
-      }
+      get :index, params: { format: 'json', task_id: task.to_param }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -66,7 +63,7 @@ describe ParticipationsController do
 
   describe "#show" do
     subject(:do_request) do
-      get :show, format: 'json', id: participation.to_param
+      get :show, params: { format: 'json', id: participation.to_param }
     end
 
     let!(:participation) { FactoryGirl.create(:assignment, assigned_to: task) }
@@ -108,8 +105,8 @@ describe ParticipationsController do
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        participation: {user_id: participant.id,
-                        task_id: task.id}
+                          participation: { user_id: participant.id,
+                                           task_id: task.id }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -126,8 +123,8 @@ describe ParticipationsController do
           expect {
             xhr :post, :create,
             format: :json,
-            participation: {user_id: nil,
-                            task_id: task.id}
+            participation: { user_id: nil,
+                             task_id: task.id }
           }.to_not change { task.participations.count }
         end
       end
@@ -169,15 +166,11 @@ describe ParticipationsController do
         let(:new_participant) { FactoryGirl.create(:user) }
 
         subject :do_request do
-          post(
-            :create,
-            format: 'json',
-            participation: {
-              user_id: new_participant.id,
-              task_id: task.id,
-              task_type: 'AdHocTask'
-            }
-          )
+          post(:create, params: { format: 'json', participation: {
+                 user_id: new_participant.id,
+                 task_id: task.id,
+                 task_type: 'AdHocTask'
+               } })
         end
 
         it "calls the task's #notify_new_participant method" do
@@ -203,22 +196,14 @@ describe ParticipationsController do
           it "sends a different email to the editor participants" do
             expect(UserMailer).to \
               receive_message_chain(:delay, :add_editor_to_editors_discussion)
-            post(
-              :create,
-              format: 'json',
-              participation: {
-                user_id: new_participant.id, task_id: editors_discussion_task.id
-              }
-            )
+            post(:create, params: { format: 'json', participation: {
+                   user_id: new_participant.id, task_id: editors_discussion_task.id
+                 } })
           end
 
           it "does not add an email to the sidekiq queue if new participant is the current user" do
             expect do
-              post(
-                :create,
-                format: 'json',
-                participation: { user_id: user.id, task_id: task.id }
-              )
+              post(:create, params: { format: 'json', participation: { user_id: user.id, task_id: task.id } })
             end.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
           end
         end
@@ -239,7 +224,7 @@ describe ParticipationsController do
 
   describe "DELETE #destroy" do
     subject(:do_request) do
-      delete :destroy, format: :json, id: participation.id
+      delete :destroy, params: { format: :json, id: participation.id }
     end
 
     let!(:participation) do
@@ -262,7 +247,7 @@ describe ParticipationsController do
 
       context "with a valid participation id" do
         subject(:do_request) do
-          delete :destroy, format: :json, id: participation.id
+          delete :destroy, params: { format: :json, id: participation.id }
         end
 
         it "destroys the associated participation" do
@@ -272,13 +257,13 @@ describe ParticipationsController do
         end
 
         it "creates an activity" do
-          expect{ do_request }.to change(Activity, :count).by(1)
+          expect { do_request }.to change(Activity, :count).by(1)
         end
       end
 
       context "with an invalid participation id" do
         subject(:do_request) do
-          delete :destroy, format: :json, id: 9999
+          delete :destroy, params: { format: :json, id: 9999 }
         end
 
         it "returns a 404" do
@@ -301,7 +286,7 @@ describe ParticipationsController do
 
   context "participants" do
     subject :do_request do
-      post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
+      post :create, params: { format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' } }
     end
 
     let(:editors_discussion_task) do
@@ -337,13 +322,13 @@ describe ParticipationsController do
 
         it "sends a different email to the editor participants" do
           expect(UserMailer).to receive_message_chain(:delay, :add_editor_to_editors_discussion)
-          post :create, format: 'json', participation: { user_id: new_participant.id, task_id: editors_discussion_task.id }
+          post :create, params: { format: 'json', participation: { user_id: new_participant.id, task_id: editors_discussion_task.id } }
         end
       end
 
       it "does not add an email to the sidekiq queue if new participant is the current user" do
         expect {
-          post :create, format: 'json', participation: { user_id: user.id, task_id: task.id }
+          post :create, params: { format: 'json', participation: { user_id: user.id, task_id: task.id } }
         }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
       end
     end

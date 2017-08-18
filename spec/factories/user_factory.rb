@@ -27,14 +27,14 @@ FactoryGirl.define do
     ned_id
 
     trait :site_admin do
-      after(:create) do |user, evaluator|
+      after(:create) do |user, _evaluator|
         role = Role.site_admin_role || FactoryGirl.create(:role, :site_admin)
         user.assign_to! assigned_to: System.first_or_create!, role: role
       end
     end
 
     trait :with_affiliation do
-      after(:create) do |user, evaluator|
+      after(:create) do |user, _evaluator|
         create(:affiliation, user: user)
       end
     end

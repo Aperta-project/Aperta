@@ -7,7 +7,7 @@ describe FtpUploaderService do
     # override default logger formatter since we don't care what the
     # format for the application is set to, just that we're logging
     # correctly
-    log.formatter = lambda do |severity, datetime, progname, msg|
+    log.formatter = lambda do |severity, _datetime, _progname, msg|
       "#{severity}: #{msg}\n"
     end
     log
@@ -32,10 +32,10 @@ describe FtpUploaderService do
       Timecop.freeze("2016-11-09 17:38:27 -0500") do
         File.open(filepath) do |file_io|
           uploader = FtpUploaderService.new(
-          passive_mode: true,
-          file_io: file_io,
-          final_filename: final_filename,
-          url: 'ftp://user:password@127.0.0.1:21212/my_dir'
+            passive_mode: true,
+            file_io: file_io,
+            final_filename: final_filename,
+            url: 'ftp://user:password@127.0.0.1:21212/my_dir'
           )
           allow(uploader).to receive(:logger).and_return(logger)
           uploader.upload

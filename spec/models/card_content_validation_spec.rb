@@ -27,8 +27,6 @@ describe CardContentValidation do
       end
     end
 
-
-
     context '#validate_by_string_length_minimum' do
       subject(:card_content_validation) do
         FactoryGirl.create(:card_content_validation, :with_string_length_minimum_validation)

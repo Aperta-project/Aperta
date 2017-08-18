@@ -15,4 +15,3 @@ class ChooseCardTypeOverlay < CardOverlay
     self
   end
 end
-

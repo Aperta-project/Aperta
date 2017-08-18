@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Resource Proxy', js: true, vcr: {cassette_name: "attachment", record: :none} do
+feature 'Resource Proxy', js: true, vcr: { cassette_name: "attachment", record: :none } do
   let(:file) do
     FactoryGirl.create(:supporting_information_file).tap do |si_file|
       si_file.download!('http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg')

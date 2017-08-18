@@ -39,12 +39,12 @@ describe CardsController do
 
       context 'for one journal' do
         it 'returns no cards for journals the user has no access to' do
-          get :index, journal_id: not_my_journal.id, format: :json
+          get :index, params: { journal_id: not_my_journal.id, format: :json }
           expect(res_body['cards'].count).to eq(0)
         end
 
         it 'returns all cards for the specified journal' do
-          get :index, journal_id: my_journal.id, format: :json
+          get :index, params: { journal_id: my_journal.id, format: :json }
           card_names = res_body['cards'].map { |h| h['name'] }
           expect(card_names).to contain_exactly('My Journal')
         end
@@ -54,7 +54,7 @@ describe CardsController do
 
   describe "#show" do
     subject(:do_request) do
-      get :show, format: 'json', id: card.id
+      get :show, params: { format: 'json', id: card.id }
     end
     let(:card) { FactoryGirl.create(:card, :versioned) }
 
@@ -91,10 +91,10 @@ describe CardsController do
 
   describe "#create" do
     subject(:do_request) do
-      post(:create, format: 'json', card: {
+      post(:create, params: { format: 'json', card: {
              name: name,
              journal_id: my_journal.id
-           })
+           } })
     end
     let(:name) { "Steve" }
 
@@ -135,7 +135,7 @@ describe CardsController do
   describe "#publish" do
     let(:card) { FactoryGirl.create(:card, :versioned, :draft, name: "Old Name") }
     subject(:do_request) do
-      put(:publish, format: 'json', id: card.id, historyEntry: "Foo")
+      put(:publish, params: { format: 'json', id: card.id, historyEntry: "Foo" })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -183,11 +183,11 @@ describe CardsController do
     let(:unpublished_changes_card) { FactoryGirl.create(:card, :versioned, :published_with_changes, name: "Published with changes") }
 
     subject(:do_no_changes_request) do
-      put(:revert, format: 'json', id: published_card.id)
+      put(:revert, params: { format: 'json', id: published_card.id })
     end
 
     subject(:do_request) do
-      put(:revert, format: 'json', id: unpublished_changes_card.id)
+      put(:revert, params: { format: 'json', id: unpublished_changes_card.id })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -229,7 +229,7 @@ describe CardsController do
   describe "#archive" do
     let(:card) { FactoryGirl.create(:card, :versioned, name: "Old Name") }
     subject(:do_request) do
-      put(:archive, format: 'json', id: card.id)
+      put(:archive, params: { format: 'json', id: card.id })
     end
 
     it_behaves_like 'an unauthenticated json request'
@@ -280,7 +280,7 @@ describe CardsController do
       }
     end
     subject(:do_request) do
-      post(:update, format: 'json', id: card.id, card: card_params)
+      post(:update, params: { format: 'json', id: card.id, card: card_params })
     end
     let(:name) { "Steve" }
 
@@ -357,7 +357,7 @@ describe CardsController do
     end
 
     subject(:do_request) do
-      delete(:destroy, card_params)
+      delete(:destroy, params: card_params)
     end
 
     context "the user has access" do

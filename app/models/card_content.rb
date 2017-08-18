@@ -172,16 +172,14 @@ class CardContent < ActiveRecord::Base
     end
   end
 
-  # rubocop:enable Metrics/AbcSize
-end
+  private
 
-private
-
-def create_card_config_validation(ccv, xml)
-  validation_attrs = { 'validation-type': ccv.validation_type }
-                       .delete_if { |_k, v| v.nil? }
-  xml.tag!('validation', validation_attrs) do
-    xml.tag!('error-message', ccv.error_message)
-    xml.tag!('validator', ccv.validator)
+  def create_card_config_validation(ccv, xml)
+    validation_attrs = { 'validation-type': ccv.validation_type }
+                         .delete_if { |_k, v| v.nil? }
+    xml.tag!('validation', validation_attrs) do
+      xml.tag!('error-message', ccv.error_message)
+      xml.tag!('validator', ccv.validator)
+    end
   end
 end

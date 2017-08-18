@@ -99,7 +99,7 @@ module TahiReports
 
     def print_attachments_stuck(attachments, state)
       attachments_stuck = {}
-      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), i|
+      TIMEFRAMES.each_pair.with_index do |(human_readable_timeframe, timeframe), _i|
         attachments_stuck[human_readable_timeframe] = attachments.where(
           updated_at: (timeframe.ago.beginning_of_day.utc..Time.now.end_of_day.utc)
         ).count

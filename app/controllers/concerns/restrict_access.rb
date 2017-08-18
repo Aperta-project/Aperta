@@ -7,7 +7,7 @@ module RestrictAccess
     private
 
     def restrict_access
-      authenticate_or_request_with_http_token do |token, options|
+      authenticate_or_request_with_http_token do |token, _options|
         ApiKey.exists?(access_token: token)
       end
     end

@@ -123,11 +123,6 @@ describe InvitationQueue do
 
   describe "#assign_primary" do
     context "error cases" do
-      it "blows up if the invitation is an alternate.  primaries need to be unassigned first" do
-        expect { small_queue.assign_primary(invitation: g1_alternate_1, primary: ungrouped_1) }
-          .to raise_error(ActiveRecord::RecordInvalid)
-      end
-
       it "blows up if the invitation and the primary don't belong to the same queue" do
         some_other_primary = FactoryGirl.create :invitation,
           task: task,

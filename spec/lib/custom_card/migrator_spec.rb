@@ -16,20 +16,20 @@ describe CustomCard::Migrator do
   context 'replacement card was not generated' do
     it 'does not migrate task card version' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
       }.to_not change { Task.find(task.id).card_version_id }
     end
 
     it 'does not delete legacy card' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
         Card.find(task.card.id)
       }.to_not raise_error
     end
 
     it 'does not migrate answer card content id' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
       }.to_not change { answer.reload.card_content_id }
     end
   end
@@ -45,19 +45,19 @@ describe CustomCard::Migrator do
 
     it 'migrates task card version' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
       }.to change { Task.find(task.id).card_version_id }
     end
 
     it 'migrates answer card content id' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
       }.to change { answer.reload.card_content_id }
     end
 
     it 'deletes the legacy card' do
       expect {
-        CustomCard::Migrator.new(task.type, task.title).migrate
+        CustomCard::Migrator.new(legacy_task_klass_name: task.type, card_name: task.title).migrate
         Card.find(task.card.id)
       }.to raise_error(ActiveRecord::RecordNotFound)
     end

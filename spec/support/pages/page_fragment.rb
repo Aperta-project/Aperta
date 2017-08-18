@@ -150,7 +150,7 @@ class PageFragment
 
   def synchronize_no_content!(content)
     unless session.has_no_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
-      fail ContentNotSynchronized, "Page expected to not have content \"#{content}\", but it does"
+      raise ContentNotSynchronized, "Page expected to not have content \"#{content}\", but it does"
     end
   end
 end

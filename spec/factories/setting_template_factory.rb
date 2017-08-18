@@ -6,6 +6,13 @@ FactoryGirl.define do
     setting_name "on"
     global true
 
+    factory :review_duration_period_setting_template do
+      key "TaskTemplate:TahiStandardTasks::PaperReviewerTask"
+      value_type "integer"
+      setting_name "review_duration_period"
+      value 10
+    end
+
     trait :with_possible_values do
       transient do
         possible_values []

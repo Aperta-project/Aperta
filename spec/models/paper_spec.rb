@@ -326,6 +326,15 @@ describe Paper do
           expect(paper.metadata_tasks_completed?).to eq(false)
         end
       end
+
+      context 'paper with incomplete custom card tasks' do
+        let(:paper) { FactoryGirl.create(:paper) }
+        let(:task) { FactoryGirl.create(:custom_card_task, paper: paper) }
+
+        it 'returns true' do
+          expect(paper.metadata_tasks_completed?).to eq(true)
+        end
+      end
     end
 
     describe 'required_for_submission_tasks_completed?' do
@@ -608,6 +617,30 @@ describe Paper do
           expect(paper.participants_by_role['Collaborator']).to eq([collaborator])
           expect(paper.participants_by_role['Reviewer']).to contain_exactly(reviewer, collaborator)
         end
+      end
+    end
+  end
+
+  describe '#aarx_doi' do
+    context "paper with preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_doi_article_number: "1234567")
+      end
+
+      it "returns a valid doi" do
+        expect(paper.aarx_doi).to eq("10.24196/aarx.1234567")
+      end
+    end
+
+    context "paper without preprint doi" do
+      let(:paper) do
+        FactoryGirl.create(:paper,
+          preprint_doi_article_number: nil)
+      end
+
+      it "returns nil" do
+        expect(paper.aarx_doi).to eq(nil)
       end
     end
   end
@@ -1689,6 +1722,35 @@ describe Paper do
       allow(paper).to receive(:last_completed_decision).and_return(decision)
 
       expect(paper.latest_decision_rescinded?).to eq(true)
+    end
+  end
+
+  describe '#ensure_preprint_doi!' do
+    it 'returns a preprint_doi_article_number if it exists' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(paper.ensure_preprint_doi!).to eq '1234567'
+    end
+
+    it 'creates and returns a preprint_doi_article_number if one does not exist' do
+      paper.preprint_doi_article_number = nil
+      expect(paper.ensure_preprint_doi!).to be_kind_of(String)
+    end
+  end
+
+  describe '#preprint_doi_article_number' do
+    it 'is validated' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(paper).to be_valid
+      paper.preprint_doi_article_number = '0000007'
+      expect(paper).to be_valid
+      paper.preprint_doi_article_number = '123456'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '12345678'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '1'
+      expect(paper).to_not be_valid
+      paper.preprint_doi_article_number = '123a567'
+      expect(paper).to_not be_valid
     end
   end
 end

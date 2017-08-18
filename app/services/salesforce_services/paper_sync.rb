@@ -17,7 +17,7 @@ module SalesforceServices
       if valid?
         @salesforce_api.find_or_create_manuscript(paper: @paper)
       else
-        fail SyncInvalid, sync_invalid_message
+        raise SyncInvalid, sync_invalid_message
       end
     end
 

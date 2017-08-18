@@ -61,6 +61,7 @@ export default DS.Model.extend({
   createdAt: attr('date'),
   creator: belongsTo('user', { async: false }),
   shortDoi: attr('string'),
+  aarxDoi: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),
   editorMode: attr('string', { defaultValue: 'html' }),

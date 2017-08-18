@@ -25,6 +25,7 @@ export default DS.Model.extend({
   label: DS.attr('string'),
   valueType: DS.attr('string'),
   editorStyle: DS.attr('string'),
+  condition: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),

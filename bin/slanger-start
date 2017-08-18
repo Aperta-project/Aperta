@@ -5,7 +5,7 @@ require 'uri'
 
 def validate_event_stream_config!
   return unless ENV['PUSHER_URL'].nil?
-  fail "PUSHER_URL was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
+  raise "PUSHER_URL was not set in your .env.#{ENV['RAILS_ENV']} and is required to start slanger."
 end
 
 def rails_env

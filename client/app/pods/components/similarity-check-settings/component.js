@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  restless: Ember.inject.service(),
-  store: Ember.inject.service(),
 
   classNames: ['similarity-check-settings'],
   selectableOptions: [
@@ -22,7 +20,7 @@ export default Ember.Component.extend({
 
   initialSetting: Ember.computed('taskToConfigure', function() {
     let setting = this.get('taskToConfigure.settings').findBy('name', 'ithenticate_automation');
-    return setting === undefined ? null : setting.string_value;
+    return setting.get('value');
   }),
 
   submissionOption: Ember.computed('initialSetting', function() {
@@ -89,13 +87,9 @@ export default Ember.Component.extend({
       this.get('close')();
     },
     saveSettings () {
-      this.get('restless').post('/api/task_templates/'
-        + this.get('taskToConfigure.id') + '/similarity_check_settings', {
-          value: this.get('settingValue')
-        }).then((data)=> {
-          this.get('store').pushPayload(data);
-          this.get('close')();
-        });
+      this.get('taskToConfigure').updateSetting('ithenticate_automation', this.get('settingValue')).then(()=> {
+        this.get('close')();
+      });
     }
   }
 });

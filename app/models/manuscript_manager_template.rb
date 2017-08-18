@@ -4,6 +4,8 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
                                 inverse_of: :manuscript_manager_template,
                                 dependent: :destroy
 
+  has_many :task_templates, through: :phase_templates
+
   validates :paper_type, presence: true
   validates :paper_type, uniqueness: { scope: :journal_id,
                                        case_sensitive: false }

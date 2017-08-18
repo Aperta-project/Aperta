@@ -4,14 +4,16 @@ module CustomCard
   #
   # rubocop:disable Metrics/LineLength, Style/RedundantSelf
   class Loader
-    def self.all
+    def self.all(journals: [])
       if card_configuration_klasses.empty?
         raise <<-ERROR.strip_heredoc
           No card configuration classes found. Either lib/custom_card/configurations/
           is empty, or there is a class loading issue.
         ERROR
       end
-      Journal.find_each do |journal|
+
+      scoped_journals = Array(journals.presence || Journal.all)
+      scoped_journals.each do |journal|
         card_configuration_klasses.each do |card_configuration_klass|
           self.load(card_configuration_klass, journal: journal)
         end

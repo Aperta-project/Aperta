@@ -1,5 +1,5 @@
 # rubocop:disable Style/Semicolon
-# rubocop:disable Style/CaseIndentation
+# rubocop:disable Layout/CaseIndentation
 # rubocop:disable Performance/StringReplacement
 
 namespace :titles do

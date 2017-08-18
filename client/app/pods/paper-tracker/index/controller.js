@@ -40,7 +40,6 @@ export default Ember.Controller.extend({
     },
 
     clearSearch() {
-      console.log('clearSearch');
       this.set('orderBy',  null);
       this.set('orderDir', null);
       this.set('page',     null);
@@ -50,7 +49,9 @@ export default Ember.Controller.extend({
     saveQuery() {
       this.store.createRecord('paper-tracker-query', {
         title: this.get('newQueryTitle'),
-        query: this.get('queryInput')
+        query: this.get('queryInput'),
+        orderDir: this.get('orderDir'),
+        orderBy: this.get('orderBy')
       }).save();
       this.set('newQueryState', false);
       this.set('newQueryTitle', '');

@@ -103,6 +103,10 @@ class Paper < ActiveRecord::Base
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
 
+  def self.find_preprint_doi_article_number(full_preprint_doi)
+    full_preprint_doi.match(/.+\.(\d+)/)[1]
+  end
+
   def file_type
     file.try(:file_type)
   end

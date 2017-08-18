@@ -57,7 +57,8 @@ class ManuscriptManagerTemplatesController < ApplicationController
     params.require(:manuscript_manager_template).permit(
       :paper_type,
       :journal_id,
-      :uses_research_article_reviewer_report
+      :uses_research_article_reviewer_report,
+      :is_preprint_eligible
     )
   end
 
@@ -66,9 +67,10 @@ class ManuscriptManagerTemplatesController < ApplicationController
       :paper_type,
       :journal_id,
       :uses_research_article_reviewer_report,
+      :is_preprint_eligible,
       phase_templates: [
         :name, :position, task_templates: [
-          :title, :journal_task_type_id, :position, :card_id
+          :title, :journal_task_type_id, :position, :card_id, :id
         ]
       ]
     ).tap do |whitelisted|
@@ -77,9 +79,6 @@ class ManuscriptManagerTemplatesController < ApplicationController
         pt[:task_templates].try(:each_index) do |j|
           template_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
           whitelisted[:phase_templates][i][:task_templates][j][:template] = template_value || []
-
-          settings_value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:settings]
-          whitelisted[:phase_templates][i][:task_templates][j][:settings] = settings_value || []
         end
       end
     end

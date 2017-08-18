@@ -23,6 +23,16 @@ let payload = {
   }]
 };
 
+let PTSortQuery = {
+  'paper_tracker_queries':[{
+    'title':'sort',
+    'query':'DOI IS 1',
+    'order_by':'first_submitted_at',
+    'order_dir':'asc',
+    'id':2
+  }]
+};
+
 module('Integration: Paper Tracker', {
   afterEach: function() {
     server.restore();
@@ -36,7 +46,7 @@ module('Integration: Paper Tracker', {
     App = startApp();
     server = setupMockServer();
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
-    $.mockjax({url: '/api/paper_tracker_queries', status: 200, responseText: '{"paper_tracker_queries":[]}'});
+    $.mockjax({url: '/api/paper_tracker_queries', status: 200, responseText: PTSortQuery});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});
     $.mockjax({url: '/api/journals', status: 200, responseText: JSON.stringify({ 'journals':[{'id':1}] })});
@@ -89,5 +99,12 @@ test('viewing papers', function(assert) {
         .match(firstSubmittedDate),
       'Submission date is displayed'
     );
+
+    assert.elementNotFound('.paper-tracker-date-column .fa-caret-up', 'No sort is applied before using saved query');
+    click('#paper-tracker-saved-searches a');
+
+    andThen(function() {
+      assert.elementFound('.paper-tracker-date-column .fa-caret-up', 'Sort is applied after using saved query');
+    });
   });
 });

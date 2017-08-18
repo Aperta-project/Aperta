@@ -2,22 +2,19 @@ module Authorizations
   class ObjectsPermissibleByRequiredPermissionsQuery
     include QueryHelpers
 
-    attr_reader :applies_to, :assignments_table, :auth_config, :common_query,
+    attr_reader :assignments_table, :auth_config, :common_query,
       :klass, :objects_query, :target
 
-    def initialize(klass:, assignments_table:, objects_query:, applies_to:)
+    def initialize(klass:, assignments_table:, objects_query:)
       @klass = klass
       @assignments_table = assignments_table
       @objects_query = objects_query
-      @applies_to = applies_to
     end
 
     def to_arel
       query = add_permissions_column_to_assignments
-      add_permissions_through_roles(query)
       add_permission_states(query)
-
-      remove_objects_without_matching_required_permissions(query)
+      query.group(table[:results][:id])
     end
 
     def to_sql
@@ -40,34 +37,14 @@ module Authorizations
                  .as(table[:results].table_name))
     end
 
-    def add_permissions_through_roles(query)
-      query.join(table[:roles]).on(
-        table[:roles][:id].eq(table[:results][:role_id])
-      ).
-      join(table[:permissions_roles]).on(
-        table[:permissions_roles][:role_id].eq(table[:roles][:id])
-      ).
-      join(table[:permissions]).on(
-        table[:permissions][:id].eq(table[:permissions_roles][:permission_id])
-      )
-    end
-
     def add_permission_states(query)
-      query.join(table[:permission_states_permissions]).on(
+      query.join(table[:permissions]).on(
+        table[:permissions][:id].eq(table[:results][:permission_id])
+      ).join(table[:permission_states_permissions]).on(
         table[:permission_states_permissions][:permission_id].eq(table[:permissions][:id])
-      ).
-      join(table[:permission_states]).on(
+      ).join(table[:permission_states]).on(
         table[:permission_states][:id].eq(table[:permission_states_permissions][:permission_state_id])
       )
-    end
-
-    def remove_objects_without_matching_required_permissions(query)
-      query.where(
-        table[:results][:id].not_eq(nil).and(
-          table[:permissions][:applies_to].in(applies_to)
-        )
-      ).
-      group(table[:results][:id])
     end
   end
 end

@@ -121,7 +121,7 @@ class UserMailer < ApplicationMailer
     @authors = @paper.corresponding_authors
 
     if @journal.staff_email.blank?
-      fail DeliveryError, <<-ERROR.strip_heredoc
+      raise DeliveryError, <<-ERROR.strip_heredoc
         Journal (id=#{@journal.id} name=#{@journal.name}) has no staff email configured.
         The notify_staff_of_paper_withdrawal email cannot be sent.
       ERROR

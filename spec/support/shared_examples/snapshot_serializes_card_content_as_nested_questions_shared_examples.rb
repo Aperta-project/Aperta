@@ -22,7 +22,7 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
       resource = instance_eval opts[:resource].to_s
 
       unless serializer
-        fail NotImplementError, <<-EOT.strip_heredoc
+        raise NotImplementError, <<-EOT.strip_heredoc
           Missing :serializer for shared examples. It needs to be provided
           by the calling spec. If you'd like to name this something else
           you will want to update this set of shared examples to allow
@@ -31,14 +31,14 @@ shared_examples_for "snapshot serializes related answers as nested questions" do
       end
 
       unless resource
-        fail NotImplementError, <<-EOT.strip_heredoc
+        raise NotImplementError, <<-EOT.strip_heredoc
           Missing :resource for shared examples. Please pass in
           `resource: :let_var_name_here` when including these examples.
         EOT
       end
 
       unless resource.respond_to?(:card)
-        fail <<-EOT.strip_heredoc
+        raise <<-EOT.strip_heredoc
           The given resource (#{resource.inspect}) doesn't respond to
           #card. It may not be implemented or you may not be passing
           in the right resource.

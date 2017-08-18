@@ -1,0 +1,31 @@
+{{#if preview}}
+  <div>
+    <b style='margin-right: 3px;'>&star;</b>
+    This item repeats:&nbsp;
+    {{#if initial}} <i>initial</i> = <b>{{initial}}</b> {{/if}}
+    {{#if min}} <i>min</i> = <b>{{min}}</b> {{/if}}
+    {{#if max}} <i>max</i> = <b>{{max}}</b> {{/if}}
+  </div>
+
+  {{#unless inRange}}
+    {{partial "repeat-range-error"}}
+  {{/unless}}
+
+  {{card-content
+    content=content.children.firstObject
+    owner=owner
+    preview=preview
+    disabled=disabled
+  }}
+{{else if inRange}}
+  {{#each (range lowerBound upperBound) as |number|}}
+    {{card-content
+      content=content.children.firstObject
+      owner=owner
+      preview=preview
+      disabled=disabled
+    }}
+  {{/each}}
+{{else}}
+  {{partial "repeat-range-error"}}
+{{/if}}

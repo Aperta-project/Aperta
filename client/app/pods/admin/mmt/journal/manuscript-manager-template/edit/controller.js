@@ -26,6 +26,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   }),
 
   featureFlag: Ember.inject.service(),
+  preprintsEnabled: Ember.computed.equal('featureFlag.PREPRINT', true),
 
   showCardDeleteOverlay: false,
   taskToDelete: null,
@@ -89,6 +90,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   actions: {
     toggleResearchArticleReviewerReport(value) {
       this.set('model.usesResearchArticleReviewerReport', value);
+      this.get('model').save();
+    },
+
+    togglePreprint(value) {
+      this.set('model.isPreprintEligible', value);
       this.get('model').save();
     },
 

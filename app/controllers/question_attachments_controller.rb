@@ -63,7 +63,7 @@ class QuestionAttachmentsController < ApplicationController
     end
   end
 
-  # rubocop:disable Style/CyclomaticComplexity,Style/PerceivedComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
   def task_for(question_attachment)
     @task ||= begin
       owner = question_attachment
@@ -81,7 +81,7 @@ class QuestionAttachmentsController < ApplicationController
     end
     owner
   end
-  # rubocop:enable Style/CyclomaticComplexity,Style/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
 
   def process_attachments(question_attachment, url)
     DownloadAttachmentWorker.perform_async(question_attachment.id,

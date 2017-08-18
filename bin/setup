@@ -8,7 +8,7 @@ end
 
 $os = `uname`.chomp.downcase.intern
 unless $os == :darwin || ($os == :linux && cmd_available?('apt-get'))
-  fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
+  raise 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
 end
 
 # path to your application root.

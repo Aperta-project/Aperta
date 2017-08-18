@@ -4,7 +4,7 @@ namespace :data do
   namespace :load do
     task setup: :environment do
       ["db:drop", "db:create", "db:schema:load"].each do |task|
-        fail "This can only be run in the performance environment" unless Rails.env.performance?
+        raise "This can only be run in the performance environment" unless Rails.env.performance?
         Rake::Task[task].invoke
       end
     end

@@ -9,7 +9,7 @@ module SalesforceServices
     end
 
     def sync!(*_)
-      fail NotImplementedError, '#sync! must be implemented in a subclass'
+      raise NotImplementedError, '#sync! must be implemented in a subclass'
     end
   end
 end

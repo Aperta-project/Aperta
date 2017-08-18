@@ -47,6 +47,6 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def authorize
-    raise AuthorizationError unless journals.length > 0
+    raise AuthorizationError if journals.empty?
   end
 end

@@ -33,9 +33,10 @@
 class DueDatetime < ActiveRecord::Base
   belongs_to :due, polymorphic: true
 
+  has_many :scheduled_events
+
   def self.set_for(object, length_of_time:)
-    (object.due_datetime ||= DueDatetime.new)
-      .set(length_of_time: length_of_time)
+    (object.due_datetime ||= DueDatetime.new).set(length_of_time: length_of_time)
   end
 
   def set(length_of_time:)

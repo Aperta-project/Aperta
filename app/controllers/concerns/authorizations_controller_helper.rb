@@ -18,9 +18,9 @@ module AuthorizationsControllerHelper
   def requires_user_can(permission, object, not_found: false)
     return if current_user.can?(permission, object)
     if not_found
-      fail NotFoundError
+      raise NotFoundError
     else
-      fail AuthorizationError
+      raise AuthorizationError
     end
   end
 

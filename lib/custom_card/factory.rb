@@ -1,5 +1,3 @@
-Dir[Rails.root.join("lib/custom_card/**/*.rb")].each { |f| require f }
-
 module CustomCard
   # The purpose of this class is to create a new custom Card using a
   # configuration class that is specified in lib/custom_card/configurations
@@ -53,19 +51,21 @@ module CustomCard
         # set any default VIEW permissions
         set_role_permissions(card: card,
                              action: "view",
-                             excluded_role_names: configuration.excluded_view_permissions)
+                             role_names: configuration.view_role_names)
 
         # set any default EDIT permissions
         set_role_permissions(card: card,
                              action: "edit",
-                             excluded_role_names: configuration.excluded_edit_permissions)
+                             role_names: configuration.edit_role_names)
       end
     end
 
-    def set_role_permissions(card:, action:, excluded_role_names: [])
-      role_names = journal.roles.pluck(:name) - Array(excluded_role_names)
-      CardPermissions.set_roles(card, action, Role.where(name: role_names))
+    # rubocop:disable TernaryParentheses
+    def set_role_permissions(card:, action:, role_names:)
+      roles = (role_names == :all) ? Role.all : Role.where(name: Array(role_names))
+      CardPermissions.set_roles(card, action, roles.uniq(:name))
     end
+    # rubocop:enable TernaryParentheses
   end
   # rubocop:enable Style/IfUnlessModifier, Metrics/LineLength
 end

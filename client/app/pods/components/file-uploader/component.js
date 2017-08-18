@@ -31,6 +31,8 @@ export default Ember.TextField.extend({
   dataType: 'json',
   method: 'POST',
   railsMethod: 'POST',
+  attributeBindings: ['content.isRequired:required', 'aria-required'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
 
   acceptFileTypes: Ember.computed('accept', function(){
     if (!this.get('accept')) { return null; }

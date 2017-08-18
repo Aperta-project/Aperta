@@ -100,6 +100,20 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
+    context 'default system cards' do
+      let(:factory_params) do
+        { name: 'Journal of the Stars',
+          doi_journal_prefix: 'journal.SHORTJPREFIX1',
+          doi_publisher_prefix: 'SHORTJPREFIX1',
+          last_doi_issued: '1000001' }
+      end
+
+      it 'loads default system cards' do
+        expect(CustomCard::Loader).to receive(:all).with(journals: instance_of(Journal))
+        JournalFactory.create(factory_params)
+      end
+    end
+
     context 'role hints' do
       let!(:journal) do
         JournalFactory.create(name: 'Journal of the Stars',
@@ -188,13 +202,13 @@ describe JournalFactory do
         end
 
         describe 'permissions on tasks' do
-          let(:submission_task_klasses) { ::Task.submission_task_types }
+          let(:submission_task_klasses) { ::Task.submission_task_types - [CustomCardTask] }
           let(:inaccessible_task_klasses) do
             without_anonymous_classes(
               ::Task.descendants -
                 submission_task_klasses -
                 changes_for_author_task_klasses -
-                [AdHocForAuthorsTask]
+                [AdHocForAuthorsTask, CustomCardTask]
             )
           end
 
@@ -268,7 +282,7 @@ describe JournalFactory do
           end
 
           it 'can view/add/remove participants on all submission tasks except ProductionMetadataTask' do
-            submission_task_klasses.each do |klass|
+            without_anonymous_classes(submission_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
@@ -321,7 +335,7 @@ describe JournalFactory do
             )
           end
           let(:inaccessible_task_klasses) do
-            [PlosBilling::BillingTask]
+            [PlosBilling::BillingTask, CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
             without_anonymous_classes(
@@ -330,7 +344,7 @@ describe JournalFactory do
           end
 
           it 'can :view and :edit all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name),
                 permissions_with_editable_paper_states.where(
@@ -352,7 +366,7 @@ describe JournalFactory do
           end
 
           it 'can view/manage participants on all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
                 Permission.find_by(action: :manage_participant, applies_to: klass.name)
@@ -558,7 +572,8 @@ describe JournalFactory do
           let(:inaccessible_task_klasses) do
             [PlosBilling::BillingTask,
              PlosBioTechCheck::ChangesForAuthorTask,
-             TahiStandardTasks::RegisterDecisionTask]
+             TahiStandardTasks::RegisterDecisionTask,
+             CustomCardTask]
           end
           let(:all_inaccessible_task_klasses) do
             without_anonymous_classes(
@@ -570,7 +585,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -584,7 +599,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -649,7 +664,7 @@ describe JournalFactory do
       end
 
       context 'Freelance Editor' do
-        let(:permissions) { journal.freelance_editor_role.permissions }
+        let(:permissions) { journal.freelance_editor_role.permissions.non_custom_card }
 
         it 'has no permissions' do
           expect(permissions).to be_empty
@@ -1215,7 +1230,8 @@ describe JournalFactory do
             [
               PlosBilling::BillingTask,
               TahiStandardTasks::CoverLetterTask,
-              TahiStandardTasks::ReviewerRecommendationsTask
+              TahiStandardTasks::ReviewerRecommendationsTask,
+              CustomCardTask
             ]
           end
           let(:all_inaccessible_task_klasses) do
@@ -1225,7 +1241,7 @@ describe JournalFactory do
           end
 
           it 'can :view all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view, applies_to: klass.name)
               )
@@ -1239,7 +1255,7 @@ describe JournalFactory do
           end
 
           it 'can :view_participants on all accessible_task_klasses' do
-            accessible_task_klasses.each do |klass|
+            without_anonymous_classes(accessible_task_klasses).each do |klass|
               expect(permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name)
               )
@@ -1498,7 +1514,7 @@ describe JournalFactory do
           it 'only site admins and participants on tasks get Task class permissions' do
             not_allowed_roles = Role.where.not(name: [Role::TASK_PARTICIPANT_ROLE.to_s, Role::SITE_ADMIN_ROLE.to_s])
             not_allowed_roles.each do |role|
-              expect(role.permissions.where(applies_to: 'Task')).to be_empty
+              expect(role.permissions.non_custom_card.where(applies_to: 'Task')).to be_empty
             end
           end
 

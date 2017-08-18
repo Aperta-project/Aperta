@@ -206,7 +206,7 @@ Tahi::Application.routes.draw do
       end
     end
     resources :task_templates do
-      post :similarity_check_settings, on: :member
+      put :update_setting, on: :member
     end
     resources :users, only: [:show, :index] do
       get :reset, on: :collection
@@ -260,6 +260,10 @@ Tahi::Application.routes.draw do
   get '/invitations/:token/feedback',
     to: 'token_invitations#feedback_form',
     as: 'invitation_feedback_form'
+
+  get '/invitations/:token/inactive',
+    to: 'token_invitations#inactive',
+    as: 'invitation_inactive'
 
   post '/invitations/:token/feedback',
     to: 'token_invitations#feedback',

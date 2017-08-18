@@ -31,19 +31,19 @@ Style/BlockDelimiters:
   # should be your clue that more is going to happen at the end of it.
   Enabled: false
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 Style/RescueModifier:
   Enabled: false
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   # Both styles of method call indentation are acceptable, and depending on
   # folks' editor configurations the default might be to indent a single level
   # or to align subsequent lines with the first call
   Enabled: false
 
-Style/AlignParameters:
+Layout/AlignParameters:
   # Both styles of method call indentation are acceptable, and depending on
   # folks' editor configurations the default might be to indent a single level
   # or to align subsequent lines with the first parameter
@@ -59,15 +59,7 @@ Style/StringLiteralsInInterpolation:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 120
-  Exclude:
-    # Nested questions contain, mostly, long strings of english text,
-    # which need consistent spacing.
-    - 'lib/tasks/**/*'
-
-    # The it 'some string' line of specs should be allowed to be as
-    # long as neccessary to describe the test.
-    - '**/spec/**/*'
+  Enabled: false
 
 Style/PredicateName:
   Exclude:
@@ -90,19 +82,10 @@ Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/Documentation:
-  # Class-level comments on migrations and serializers often end up being
-  # tautological
-  Exclude:
-    - '**/db/migrate/*'
-    - '**/app/serializers/*'
-    - '**/spec/**/*'
+  Enabled: false
 
 Style/WordArray:
   # If an array is *accidentally* made of single-word strings, being
   # forced to use %w means being forced to rewrite the whole array as
   # soon as one entry becomes two words
   Enabled: false
-
-Style/PredicateName:
-  Exclude:
-    - '**/spec/**/*'

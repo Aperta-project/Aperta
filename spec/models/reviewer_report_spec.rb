@@ -140,4 +140,16 @@ describe ReviewerReport do
       expect(subject.revision).to eq('v1.2')
     end
   end
+
+  describe '#set_due_datetime' do
+    before do
+      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
+      FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
+      FactoryGirl.create :review_duration_period_setting_template
+    end
+
+    it 'schedues events afterwards' do
+      expect { subject.set_due_datetime }.to change { subject.scheduled_events.count }.by(3)
+    end
+  end
 end

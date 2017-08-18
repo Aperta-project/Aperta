@@ -8,7 +8,7 @@ end
 
 $os = `uname`.chomp.downcase.intern
 unless $os == :darwin || ($os == :linux && cmd_available?('apt-get'))
-  fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
+  raise 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
 end
 
 # path to your application root.
@@ -48,6 +48,14 @@ def brew_install package, options=nil
   end
 end
 
+def npm_global_install package, options=nil
+  if system("npm list -g #{package} &>/dev/null")
+    puts "#{package} is already installed"
+  else
+    system "npm install -g #{package} #{options}"
+  end
+end
+
 def copy_template source, dest
   if File.exist?(dest)
     puts "Not copying from #{source} (#{dest} already exists)."
@@ -84,6 +92,7 @@ Dir.chdir APP_ROOT do
     system "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
     system "sudo apt-get install -y imagemagick nodejs wget redis-server postgresql qpdf"
   end
+  npm_global_install 'yarn'
   header 'Installing gems'
   system 'gem install bundler --conservative'
   system 'bundle install'
@@ -95,6 +104,10 @@ Dir.chdir APP_ROOT do
   create_config_file('.env.development') do |f|
     f.puts "RAILS_SECRET_TOKEN=#{SecureRandom.hex(64)}"
   end
+
+  header 'Installing mailcatcher'
+  system 'gem install mailcatcher'
+  puts 'Run in the console `mailcatcher` to start the daemon. For more information check http://mailcatcher.me/'
 
   header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo

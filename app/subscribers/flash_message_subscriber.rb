@@ -21,14 +21,14 @@ class FlashMessageSubscriber
   end
 
   def user
-    fail NotImplementedError, 'You must define the user that receives the flash message'
+    raise NotImplementedError, 'You must define the user that receives the flash message'
   end
 
   def message
-    fail NotImplementedError, 'You must define the flash message that the user receives'
+    raise NotImplementedError, 'You must define the flash message that the user receives'
   end
 
   def message_type
-    fail NotImplementedError, 'You must define the type of the flash message that the user receives'
+    raise NotImplementedError, 'You must define the type of the flash message that the user receives'
   end
 end

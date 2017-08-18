@@ -43,6 +43,21 @@ module Authorizations
       paper.draft_decision.invitations.where(state: 'invited', invitee_id: id).exists?
     end
 
+    # Returns a Authorizations::Query::ResultSet containing a subset of the
+    # objects in target, and, for each object, a permission map containing a set
+    # of actions and states describing the users access to that object.
+    #
+    # If permission is :*, the results will include any object for which the
+    # user has any permission.
+    #
+    # If the permission is an action, e.g. :view, the results will include any
+    # member of target for which the user has the :view permission.
+    #
+    # The object permission hash will be incomplete if the permission is not :*,
+    # and will only contain the permission you passed in.
+    #
+    # TODO: This method is confusing and does too many things. We should improve
+    # it.
     def filter_authorized(permission, target, participations_only: :default)
       Authorizations::Query.new(
         permission: permission,

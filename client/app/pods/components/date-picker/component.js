@@ -4,6 +4,8 @@ import moment from 'moment';
 export default Ember.TextField.extend({
   tagName: 'input',
   classNames: ['datepicker', 'form-control', 'datepicker-field'],
+  attributeBindings: ['content.isRequired:required', 'aria-required'],
+  'aria-required': Ember.computed.reads('content.isRequiredString'),
   ready: false,
   date: null,
 

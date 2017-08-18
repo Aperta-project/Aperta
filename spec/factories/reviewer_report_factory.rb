@@ -5,5 +5,6 @@ FactoryGirl.define do
     user
     card_version
     association :task, factory: :reviewer_report_task
+    association :due_datetime, :in_5_days
   end
 end

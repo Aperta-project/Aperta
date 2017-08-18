@@ -10,7 +10,8 @@
     follow the instructions there. Run trang (or the trang.jar file)as follows to
     translate the compact rnc format to the rng that gets used in the XmlCardLoader
       `trang -I rnc -O rng card.rnc card.rng`
-    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier
+    
+    card.rng: If this file is card.rng, please edit card.rnc instead. You will be happier.
   -->
   <define name="possible-value">
     <element name="possible-value">
@@ -34,6 +35,14 @@
         <value>radio</value>
       </attribute>
       <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
         <attribute name="default-answer-value"/>
       </optional>
       <optional>
@@ -44,14 +53,16 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
+      <interleave>
+        <optional>
+          <element name="instruction-text">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
           <text/>
         </element>
-      </optional>
-      <element name="text">
-        <text/>
-      </element>
+      </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
       </zeroOrMore>
@@ -68,6 +79,14 @@
       <attribute name="content-type">
         <value>check-box</value>
       </attribute>
+      <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <optional>
         <attribute name="default-answer-value">
           <choice>
@@ -87,22 +106,24 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
         <optional>
-          <element name="label">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
+        <interleave>
+          <optional>
+            <element name="label">
+              <text/>
+            </element>
+          </optional>
+          <optional>
+            <element name="text">
+              <text/>
+            </element>
+          </optional>
+        </interleave>
       </interleave>
       <zeroOrMore>
         <ref name="content"/>
@@ -120,6 +141,14 @@
       <attribute name="value-type">
         <value>attachment</value>
       </attribute>
+      <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <optional>
         <attribute name="allow-multiple-uploads">
           <choice>
@@ -144,35 +173,37 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
-        <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <value>file-name</value>
-            </attribute>
-            <element name="error-message">
-              <text/>
-            </element>
-            <element name="validator">
-              <text/>
-            </element>
-          </element>
-        </zeroOrMore>
         <optional>
-          <element name="label">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
+        <interleave>
+          <zeroOrMore>
+            <element name="validation">
+              <attribute name="validation-type">
+                <value>file-name</value>
+              </attribute>
+              <element name="error-message">
+                <text/>
+              </element>
+              <element name="validator">
+                <text/>
+              </element>
+            </element>
+          </zeroOrMore>
+          <optional>
+            <element name="label">
+              <text/>
+            </element>
+          </optional>
+          <optional>
+            <element name="text">
+              <text/>
+            </element>
+          </optional>
+        </interleave>
       </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
@@ -190,6 +221,14 @@
       <attribute name="content-type">
         <value>date-picker</value>
       </attribute>
+      <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <element name="text">
         <text/>
       </element>
@@ -211,6 +250,14 @@
         <value>dropdown</value>
       </attribute>
       <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
         <attribute name="default-answer-value"/>
       </optional>
       <optional>
@@ -221,14 +268,16 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
+      <interleave>
+        <optional>
+          <element name="instruction-text">
+            <text/>
+          </element>
+        </optional>
+        <element name="text">
           <text/>
         </element>
-      </optional>
-      <element name="text">
-        <text/>
-      </element>
+      </interleave>
       <oneOrMore>
         <ref name="possible-value"/>
       </oneOrMore>
@@ -245,6 +294,14 @@
       <attribute name="content-type">
         <value>tech-check</value>
       </attribute>
+      <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <optional>
         <attribute name="default-answer-value">
           <choice>
@@ -265,15 +322,45 @@
         </attribute>
       </optional>
       <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
+        <interleave>
+          <optional>
+            <element name="instruction-text">
+              <text/>
+            </element>
+          </optional>
+          <element name="text">
+            <text/>
+          </element>
+        </interleave>
       </optional>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="sendback-reason">
+    <element name="content">
       <optional>
-        <element name="text">
-          <text/>
-        </element>
+        <attribute name="ident"/>
       </optional>
+      <attribute name="content-type">
+        <value>sendback-reason</value>
+      </attribute>
+      <attribute name="value-type">
+        <value>boolean</value>
+      </attribute>
+      <interleave>
+        <optional>
+          <element name="label">
+            <text/>
+          </element>
+        </optional>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
+      </interleave>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -300,6 +387,14 @@
         </choice>
       </attribute>
       <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
         <attribute name="default-answer-value"/>
       </optional>
       <optional>
@@ -310,34 +405,36 @@
           </choice>
         </attribute>
       </optional>
-      <optional>
-        <element name="instruction-text">
-          <text/>
-        </element>
-      </optional>
       <interleave>
         <optional>
-          <element name="text">
+          <element name="instruction-text">
             <text/>
           </element>
         </optional>
-        <zeroOrMore>
-          <element name="validation">
-            <attribute name="validation-type">
-              <choice>
-                <value>string-match</value>
-                <value>string-length-minimum</value>
-                <value>string-length-maximum</value>
-              </choice>
-            </attribute>
-            <element name="error-message">
+        <interleave>
+          <optional>
+            <element name="text">
               <text/>
             </element>
-            <element name="validator">
-              <text/>
+          </optional>
+          <zeroOrMore>
+            <element name="validation">
+              <attribute name="validation-type">
+                <choice>
+                  <value>string-match</value>
+                  <value>string-length-minimum</value>
+                  <value>string-length-maximum</value>
+                </choice>
+              </attribute>
+              <element name="error-message">
+                <text/>
+              </element>
+              <element name="validator">
+                <text/>
+              </element>
             </element>
-          </element>
-        </zeroOrMore>
+          </zeroOrMore>
+        </interleave>
       </interleave>
     </element>
   </define>
@@ -432,6 +529,18 @@
       </interleave>
     </element>
   </define>
+  <define name="if">
+    <element name="content">
+      <attribute name="content-type">
+        <value>if</value>
+      </attribute>
+      <attribute name="condition"/>
+      <ref name="content"/>
+      <optional>
+        <ref name="content"/>
+      </optional>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -447,6 +556,8 @@
       <ref name="date-picker"/>
       <ref name="tech-check"/>
       <ref name="list-content"/>
+      <ref name="sendback-reason"/>
+      <ref name="if"/>
     </choice>
   </define>
   <start>

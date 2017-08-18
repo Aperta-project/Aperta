@@ -22,7 +22,7 @@
 class DataMigration < ActiveRecord::Migration
   def up
     unless rake_task_up_defined?
-      fail NameError, <<-ERROR.strip_heredoc
+      raise NameError, <<-ERROR.strip_heredoc
         #{self.class}::RAKE_TASK_UP is not defined (or not defined properly). It
         should be a string name of the rake task to be run, e.g.
 
@@ -33,7 +33,7 @@ class DataMigration < ActiveRecord::Migration
     rake_task = self.class::RAKE_TASK_UP
     if Rake::Task.task_defined?(rake_task)
       puts green("  Running rake task: #{rake_task}")
-      Rake::Task[rake_task].invoke
+      Rake::Task[rake_task].invoke(*self.class.task_args)
     else
       Rails.logger.warn <<-EOS.strip_heredoc
         #{rake_task} is not a rake task: migration not run
@@ -47,12 +47,20 @@ class DataMigration < ActiveRecord::Migration
     rake_task = self.class::RAKE_TASK_DOWN
     if Rake::Task.task_defined?(rake_task)
       puts green("  Running rake task: #{rake_task}")
-      Rake::Task[rake_task].invoke
+      Rake::Task[rake_task].invoke(*self.class.task_args)
     else
       Rails.logger.warn <<-EOS.strip_heredoc
         #{rake_task} is not a rake task: migration not run
       EOS
     end
+  end
+
+  def self.with_args(*args)
+    @task_args = task_args + args
+  end
+
+  def self.task_args
+    @task_args || []
   end
 
   private

@@ -54,7 +54,7 @@ namespace :db do
     cmd = nil
     with_config do |app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
-      fail('Backup file already exists') if File.exist?(File.expand_path(location))
+      raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
     end
     system(cmd) || STDERR.puts("Dump failed for \n #{cmd}") && exit(1)
@@ -88,7 +88,7 @@ namespace :db do
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
   task :import_heroku, [:source_db_name] => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+    raise "This can only be run in a development environment" unless Rails.env.development?
     source_db = args[:source_db_name]
     unless source_db
       raise <<-MSG.strip_heredoc
@@ -109,7 +109,7 @@ namespace :db do
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
   task :reset_passwords => [:environment] do |t, args|
-    fail "This can only be run in a development environment" unless Rails.env.development?
+    raise "This can only be run in a development environment" unless Rails.env.development?
     Journal.update_all(logo: nil)
     encrypted_password = User.new(password: DEFAULT_USER_PASSWORD).encrypted_password
     User.update_all(encrypted_password: encrypted_password, avatar: nil)

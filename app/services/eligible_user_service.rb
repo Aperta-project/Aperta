@@ -39,7 +39,7 @@ class EligibleUserService
   # the given matching string.
   def eligible_users(matching: nil)
     block = @eligible_user_blocks.fetch(role) do
-      fail NotImplementedError, <<-MESSAGE.strip_heredoc
+      raise NotImplementedError, <<-MESSAGE.strip_heredoc
         Don't know how to find eligible users for the role:
           #{role.inspect}
         This role lookup may have been accidental. If it wasn't then finding

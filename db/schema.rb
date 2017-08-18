@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721165848) do
+ActiveRecord::Schema.define(version: 20170815220450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,9 +241,11 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.string   "default_answer_value"
     t.boolean  "allow_multiple_uploads"
     t.boolean  "allow_file_captions"
-    t.string   "editor_style"
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
+    t.string   "editor_style"
+    t.string   "condition"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -390,6 +392,9 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.string   "description"
     t.string   "cc"
     t.string   "bcc"
+    t.string   "manuscript_status"
+    t.string   "manuscript_version"
+    t.integer  "versioned_text_id"
   end
 
   add_index "email_logs", ["journal_id"], name: "index_email_logs_on_journal_id", using: :btree
@@ -492,11 +497,11 @@ ActiveRecord::Schema.define(version: 20170721165848) do
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
 
   create_table "letter_templates", force: :cascade do |t|
-    t.string   "text"
-    t.string   "template_decision"
+    t.string   "name"
+    t.string   "category"
     t.string   "to"
     t.string   "subject"
-    t.text     "letter"
+    t.text     "body"
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -508,6 +513,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.boolean  "is_preprint_eligible",                  default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -547,6 +553,8 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.boolean  "deleted",    default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "order_dir"
+    t.string   "order_by"
   end
 
   create_table "papers", force: :cascade do |t|
@@ -575,6 +583,8 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.string   "preprint_doi_article_number"
+    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -652,6 +662,10 @@ ActiveRecord::Schema.define(version: 20170721165848) do
   end
 
   add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
+  create_table "preprint_doi_incrementers", force: :cascade do |t|
+    t.integer "value", default: 1, null: false
+  end
 
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"
@@ -743,6 +757,19 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.datetime "updated_at"
   end
 
+  create_table "scheduled_events", force: :cascade do |t|
+    t.datetime "dispatch_at"
+    t.string   "state"
+    t.string   "name"
+    t.integer  "due_datetime_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+  end
+
+  add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
+
   create_table "scratches", force: :cascade do |t|
     t.string   "contents"
     t.datetime "created_at", null: false
@@ -815,7 +842,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+  create_table "tahi_standard_tasks_export_deliveries", force: :cascade do |t|
     t.integer  "paper_id"
     t.integer  "task_id"
     t.integer  "user_id"
@@ -978,6 +1005,7 @@ ActiveRecord::Schema.define(version: 20170721165848) do
   add_foreign_key "notifications", "papers"
   add_foreign_key "notifications", "users"
   add_foreign_key "permissions", "cards", column: "filter_by_card_id"
+  add_foreign_key "scheduled_events", "due_datetimes"
   add_foreign_key "settings", "setting_templates"
   add_foreign_key "similarity_checks", "versioned_texts"
   add_foreign_key "task_templates", "cards"

@@ -85,42 +85,54 @@ describe CustomCard::Factory do
       FactoryGirl.create(:role, journal: journal, name: role_name)
     end
 
-    context "with no excluded permissions defined by configuration" do
+    context "with no permissions defined by configuration" do
       before do
-        allow(card_configuration).to receive(:excluded_view_permissions).and_return(nil)
-        allow(card_configuration).to receive(:excluded_edit_permissions).and_return(nil)
+        allow(card_configuration).to receive(:view_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_role_names).and_return(nil)
       end
 
       it "has all journal permissions" do
-        expect {
-          custom_card_factory.first_or_create(card_configuration)
-        }.to change { role.permissions.count }.from(0).to(3)
+        custom_card_factory.first_or_create(card_configuration)
+        expect(role.permissions.count).to eq(0)
       end
     end
 
-    context "with excluded VIEW permissions defined by configuration" do
+    context "with :ALL permissions defined by configuration" do
       before do
-        allow(card_configuration).to receive(:excluded_view_permissions).and_return(role_name)
-        allow(card_configuration).to receive(:excluded_edit_permissions).and_return(nil)
+        allow(card_configuration).to receive(:view_role_names).and_return(:all)
+        allow(card_configuration).to receive(:edit_role_names).and_return(:all)
       end
 
-      it "has no view permissions for excluded role" do
+      it "has view and edit permissions defined" do
         custom_card_factory.first_or_create(card_configuration)
-        expect(role.permissions.where(action: "view").count).to eq(0)
+        expect(role.permissions.where(action: "view").count).to eq(2)
         expect(role.permissions.where(action: "edit").count).to eq(1)
       end
     end
 
-    context "with excluded EDIT permissions defined by configuration" do
+    context "with VIEW permissions defined by configuration" do
       before do
-        allow(card_configuration).to receive(:excluded_view_permissions).and_return(nil)
-        allow(card_configuration).to receive(:excluded_edit_permissions).and_return(role_name)
+        allow(card_configuration).to receive(:view_role_names).and_return(role_name)
+        allow(card_configuration).to receive(:edit_role_names).and_return(nil)
       end
 
-      it "has no edit permissions for excluded role" do
+      it "has only view permissions defined (one for Card, one for CardVersion)" do
         custom_card_factory.first_or_create(card_configuration)
-        expect(role.permissions.where(action: "edit").count).to eq(0)
         expect(role.permissions.where(action: "view").count).to eq(2)
+        expect(role.permissions.where(action: "edit").count).to eq(0)
+      end
+    end
+
+    context "with EDIT permissions defined by configuration" do
+      before do
+        allow(card_configuration).to receive(:view_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_role_names).and_return(role_name)
+      end
+
+      it "has only edit permissions defined" do
+        custom_card_factory.first_or_create(card_configuration)
+        expect(role.permissions.where(action: "edit").count).to eq(1)
+        expect(role.permissions.where(action: "view").count).to eq(0)
       end
     end
   end

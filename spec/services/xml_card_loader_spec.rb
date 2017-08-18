@@ -23,6 +23,23 @@ describe XmlCardLoader do
         expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError) { |ex| ex.errors.first[":message"] == 'element "content" not allowed here; expected the element end-tag' }
       end
     end
+
+    context 'when saving versions and CardContent model is invalid' do
+      let(:xml) do
+        <<-XML
+        <card required-for-submission='false' workflow-display-only='true'>
+          <content content-type='display-children'>
+            <content ident='foo' content-type='short-input' value-type='html'>
+            </content>
+          </content>
+        </card>
+      XML
+      end
+
+      it 'delegates errors to XmlCardDocument::XmlValidationError' do
+        expect { xml_card_loader.load(xml) }.to raise_exception(XmlCardDocument::XmlValidationError)
+      end
+    end
   end
 
   describe '.new_version_from_xml_string' do
@@ -103,7 +120,7 @@ describe XmlCardLoader do
       <<-XML
         <card required-for-submission='false' workflow-display-only='true'>
           <content content-type='display-children'>
-            <content ident='foo' content-type='short-input' value-type='text'>
+            <content ident='foo' content-type='short-input' value-type='text' required-field='false'>
               <text>foo</text>
               <validation validation-type='string-match'>
                 <error-message>First Validation</error-message>
@@ -161,10 +178,45 @@ describe XmlCardLoader do
     end
 
     describe 'setting specific card_content types' do
+      context 'tech-check' do
+        let(:root_content) { card.reload.latest_card_version.card_contents.root }
+        let(:child_content) { root_content.children.first }
+        let(:card) { FactoryGirl.create(:card, :versioned, name: 'original name') }
+        let(:content1) do
+          <<-XML
+          <content content-type='display-children'>
+            <content ident='doesntmatter' value-type='boolean' content-type='tech-check'>
+              <text>You shall not PASS!</text>
+              <content content-type="sendback-reason" value-type="boolean">
+                <content content-type="display-children">
+                  <content ident="first-tech-check-box" value-type="boolean" content-type="check-box" default-answer-value="false">
+                    <text>Because REASONS!</text>
+                    <content ident='potato' value-type='text' content-type="paragraph-input" default-answer-value="I told you, Mr. Balrog!  You shall not PASS!">
+                    </content>
+                  </content>
+                  <content ident='second-tech-check-box' value-type='boolean' content-type="check-box" default-answer-value="false">
+                    <text>Because more REASONS!</text>
+                    <content ident='potatoe' value-type='text' content-type="paragraph-input" default-answer-value="I really mean it!  You shall not PASS!">
+                    </content>
+                  </content>
+                </content>
+              </content>
+            </content>
+          </content>
+          XML
+        end
+
+        it 'card content was successfully created' do
+          xml_card_loader.load(xml)
+          expect(root_content).to be_present
+          expect(root_content.children).to be_present
+        end
+      end
+
       context 'radio' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1">
+            <content ident='foo' value-type='text' content-type='radio' default-answer-value="1" required-field="false">
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>
@@ -187,7 +239,7 @@ describe XmlCardLoader do
         let(:label) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='check-box' value-type='boolean'>
+            <content content-type='check-box' value-type='boolean' required-field='false'>
               <text>#{text}</text>
               <label>#{label}</label>
             </content>
@@ -237,7 +289,7 @@ describe XmlCardLoader do
         let(:text) { Faker::Lorem.sentence }
         let(:content1) do
           <<-XML
-            <content content-type='short-input' value-type='text' default-answer-value="foo">
+            <content content-type='short-input' value-type='text' default-answer-value="foo" required-field="false">
               <text>#{text}</text>
             </content>
           XML
@@ -257,7 +309,7 @@ describe XmlCardLoader do
       context 'dropdown' do
         let(:content1) do
           <<-XML
-            <content ident='foo' value-type='text' content-type='dropdown'>
+            <content ident='foo' value-type='text' content-type='dropdown' required-field="false">
               <text>Question!</text>
               <possible-value label="one" value="1"/>
             </content>

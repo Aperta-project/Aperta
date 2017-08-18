@@ -184,7 +184,7 @@ class TahiEnv
         error_message << "* #{error}\n"
       end
       error_message << "\n"
-      fail InvalidEnvironment, error_message
+      raise InvalidEnvironment, error_message
     end
   end
 

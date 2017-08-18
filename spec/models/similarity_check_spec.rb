@@ -31,7 +31,8 @@ describe SimilarityCheck, type: :model, redis: true do
     let(:similarity_check) { create :similarity_check }
     let(:paper) { create :paper, :version_with_file_type, :with_creator }
     let!(:similarity_check) { create :similarity_check, versioned_text: paper.latest_version }
-    let(:stubbed_url) { paper.file.url }
+    let(:file) { double }
+    let(:stubbed_url) { Faker::Internet.url }
     let(:fake_doc_id) { Faker::Number.number(8).to_i }
     let(:fake_ithenticate_response) do
       {
@@ -47,6 +48,10 @@ describe SimilarityCheck, type: :model, redis: true do
     subject(:start_report!) { similarity_check.start_report! }
 
     before do
+      allow(similarity_check).to receive(:file).and_return(file)
+      allow(file).to receive(:[]).with(:file)
+                       .and_return("#{Faker::Lorem.word.downcase}.docx")
+      allow(file).to receive(:url).and_return(stubbed_url)
       stub_request(:get, stubbed_url).to_return(body: "turtles")
       allow(Ithenticate::Api).to receive_message_chain(:new_from_tahi_env, :error?)
                                              .and_return(false)

@@ -7,7 +7,7 @@ module TahiStandardTasks
       @body = body
     end
 
-    def as_json(options = nil)
+    def as_json(_options = nil)
       { salutation: salutation, body: body }
     end
 

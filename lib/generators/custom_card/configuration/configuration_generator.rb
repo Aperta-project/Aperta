@@ -5,29 +5,25 @@ module CustomCard
     argument :name, type: :string, required: true
     argument :legacy_task_klass_name, type: :string, required: false
 
-    # rubocop:disable Style/GuardClause
     def warn_if_no_task_klass
-      if legacy_task_klass_name.blank?
-        warn <<-MESSAGE.strip_heredoc
-        Since you did not provide a task class name as an argument to the
-        custom card generator, no data migration will be generated and
-        permissions will need to be set manually within the generated
-        configuration file.
-        MESSAGE
-      end
+      return if legacy_task_klass_name.present?
+
+      warn <<-MESSAGE.strip_heredoc
+      Since you did not provide a task class name as an argument to the
+      custom card generator, no data migration will be generated and
+      permissions will need to be set manually within the generated
+      configuration file.
+      MESSAGE
     end
-    # rubocop:enable Style/GuardClause
 
     def warn_if_missing_production_data
-      if legacy_task_klass_name.present? && !production_data_loaded?
-        die if no?("You do not curently have production data loaded.  Existing permissions will not be derived.  Want to continue?")
-      end
+      return if legacy_task_klass_name.blank? && production_data_loaded?
+      die if no?("You do not curently have production data loaded.  Existing permissions will not be derived.  Want to continue?")
     end
 
     def exit_if_non_existent_legacy_task_klass
-      if legacy_task_klass_name.present? && !legacy_task_exists?
-        die("Could not find a Task with type '#{legacy_task_klass_name}'.  Ensure correct spelling and namespace.")
-      end
+      return if legacy_task_klass_name.blank? && legacy_task_exists?
+      die("Could not find a Task with type '#{legacy_task_klass_name}'.  Ensure correct spelling and namespace.")
     end
 
     def generate_custom_card_configuration
@@ -35,9 +31,8 @@ module CustomCard
     end
 
     def generate_custom_card_migration
-      if legacy_task_klass_name.present?
-        generate "custom_card:migration", "\"#{name}\" \"#{legacy_task_klass_name}\""
-      end
+      return if legacy_task_klass_name.blank?
+      generate "custom_card:migration", "\"#{name}\" \"#{legacy_task_klass_name}\""
     end
 
     private

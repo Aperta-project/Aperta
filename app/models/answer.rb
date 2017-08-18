@@ -62,6 +62,19 @@ class Answer < ActiveRecord::Base
     end
   end
 
+  def answer_blank?
+    if card_content.value_type == 'attachment'
+      attachments.empty?
+    elsif value.nil?
+      true
+    elsif value.kind_of?(String)
+      value.blank?
+    else
+      # It's not nil, so I guess it's not blank.
+      false
+    end
+  end
+
   private
 
   def html_value_type?

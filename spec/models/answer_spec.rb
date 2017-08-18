@@ -2,11 +2,23 @@ require 'rails_helper'
 
 describe Answer do
   let(:card_content) { FactoryGirl.build(:card_content) }
+  let(:value) { nil }
   subject(:answer) do
     FactoryGirl.build(
       :answer,
-      card_content: card_content
+      card_content: card_content,
+      value: value
     )
+  end
+
+  shared_examples_for :a_blank_answer do
+    it { is_expected.to be_blank }
+    it { is_expected.not_to be_present }
+  end
+
+  shared_examples_for :a_present_answer do
+    it { is_expected.not_to be_blank }
+    it { is_expected.to be_present }
   end
 
   context 'ReadyValidator - data-driven validations' do
@@ -18,12 +30,7 @@ describe Answer do
           validator: 'abby')
       end
 
-      subject!(:answer) do
-        FactoryGirl.create(
-          :answer,
-          value: 'tabby'
-        )
-      end
+      let(:value) { 'tabby' }
 
       it 'is valid when answer value matches the card content validator string' do
         subject.card_content.card_content_validations << card_content_validation
@@ -46,12 +53,13 @@ describe Answer do
 
   context 'html sanitization' do
     let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
-    subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
+
     it 'scrubs value if value_type is html' do
       answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")
       answer.reload
       expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
     end
+
     it 'leaves certain style attributes that we want to keep' do
       answer.update!(value: "<span>something</span><foo>foo</foo><script>evilThing();</script>")
       answer.reload
@@ -83,14 +91,42 @@ describe Answer do
         check_coercion('', false)
         check_coercion('0', false)
       end
+
+      describe '#blank? works' do
+        context 'when the answer is nil' do
+          let!(:value) { nil }
+          it_behaves_like :a_blank_answer
+        end
+
+        context 'when the answer is "t"' do
+          let!(:value) { "t" }
+          it_behaves_like :a_present_answer
+        end
+      end
     end
 
     context 'the answer type is any other valid type' do
-      let(:value_type) { 'text' }
       it 'returns the value as a string with no coercion' do
         check_coercion('foo', 'foo')
         check_coercion(5, '5')
         check_coercion('true', 'true')
+      end
+
+      describe '#blank? works' do
+        context 'when the answer is nil' do
+          let!(:value) { nil }
+          it_behaves_like :a_blank_answer
+        end
+
+        context 'when the answer is a blank string' do
+          let!(:value) { "" }
+          it_behaves_like :a_blank_answer
+        end
+
+        context 'when the answer is "foo"' do
+          let!(:value) { "t" }
+          it_behaves_like :a_present_answer
+        end
       end
     end
 

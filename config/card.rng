@@ -19,21 +19,6 @@
       <attribute name="value"/>
     </element>
   </define>
-  <define name="required-field-validator">
-    <element name="validation">
-      <attribute name="validation-type">
-        <value>required-field</value>
-      </attribute>
-      <interleave>
-        <element name="error-message">
-          <text/>
-        </element>
-        <element name="validator">
-          <text/>
-        </element>
-      </interleave>
-    </element>
-  </define>
   <!-- Inputs -->
   <define name="radio-input">
     <element name="content">
@@ -77,13 +62,10 @@
         <element name="text">
           <text/>
         </element>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
-        <zeroOrMore>
-          <ref name="possible-value"/>
-        </zeroOrMore>
       </interleave>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -142,9 +124,6 @@
             </element>
           </optional>
         </interleave>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
       </interleave>
       <zeroOrMore>
         <ref name="content"/>
@@ -200,23 +179,35 @@
             <text/>
           </element>
         </optional>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
-        <optional>
-          <element name="label">
-            <text/>
-          </element>
-        </optional>
-        <optional>
-          <element name="text">
-            <text/>
-          </element>
-        </optional>
-        <zeroOrMore>
-          <ref name="possible-value"/>
-        </zeroOrMore>
+        <interleave>
+          <zeroOrMore>
+            <element name="validation">
+              <attribute name="validation-type">
+                <value>file-name</value>
+              </attribute>
+              <element name="error-message">
+                <text/>
+              </element>
+              <element name="validator">
+                <text/>
+              </element>
+            </element>
+          </zeroOrMore>
+          <optional>
+            <element name="label">
+              <text/>
+            </element>
+          </optional>
+          <optional>
+            <element name="text">
+              <text/>
+            </element>
+          </optional>
+        </interleave>
       </interleave>
+      <zeroOrMore>
+        <ref name="possible-value"/>
+      </zeroOrMore>
     </element>
   </define>
   <define name="date-picker">
@@ -238,14 +229,9 @@
           </choice>
         </attribute>
       </optional>
-      <interleave>
-        <element name="text">
-          <text/>
-        </element>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
-      </interleave>
+      <element name="text">
+        <text/>
+      </element>
     </element>
   </define>
   <!-- for now duplicating radio-input for dropdown -->
@@ -291,13 +277,10 @@
         <element name="text">
           <text/>
         </element>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
-        <oneOrMore>
-          <ref name="possible-value"/>
-        </oneOrMore>
       </interleave>
+      <oneOrMore>
+        <ref name="possible-value"/>
+      </oneOrMore>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -338,21 +321,18 @@
           </choice>
         </attribute>
       </optional>
-      <interleave>
-        <optional>
-          <element name="instruction-text">
-            <text/>
-          </element>
-        </optional>
-        <optional>
+      <optional>
+        <interleave>
+          <optional>
+            <element name="instruction-text">
+              <text/>
+            </element>
+          </optional>
           <element name="text">
             <text/>
           </element>
-        </optional>
-        <zeroOrMore>
-          <ref name="required-field-validator"/>
-        </zeroOrMore>
-      </interleave>
+        </interleave>
+      </optional>
       <zeroOrMore>
         <ref name="content"/>
       </zeroOrMore>
@@ -444,7 +424,6 @@
                   <value>string-match</value>
                   <value>string-length-minimum</value>
                   <value>string-length-maximum</value>
-                  <value>required-field</value>
                 </choice>
               </attribute>
               <element name="error-message">

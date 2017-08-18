@@ -161,6 +161,9 @@ class CardContent < ActiveRecord::Base
       render_tag(xml, 'text', text)
       render_tag(xml, 'label', label)
       card_content_validations.each do |ccv|
+        # Do not serialize the required-field validation, it is handled via the
+        # "required-field" attribute.
+        next if ccv.validation_type == 'required-field'
         create_card_config_validation(ccv, xml)
       end
       if possible_values.present?

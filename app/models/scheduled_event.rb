@@ -13,9 +13,14 @@ class ScheduledEvent < ActiveRecord::Base
   scope :complete, -> { where(state: 'complete') }
 
   before_save :deactivate, if: :should_deactivate?
+  before_save :reactivate, if: :should_reactivate?
 
   def should_deactivate?
     dispatch_at && dispatch_at < DateTime.now.in_time_zone && active?
+  end
+
+  def should_reactivate?
+    dispatch_at && dispatch_at > DateTime.now.in_time_zone && inactive?
   end
 
   aasm column: :state do

@@ -55,4 +55,33 @@ describe ScheduledEvent do
       end
     end
   end
+
+  describe '#should_reactivate?' do
+    context 'when dispatch_at is in the past' do
+      before do
+        subject.dispatch_at = DateTime.now.in_time_zone.beginning_of_minute - 3.days
+      end
+
+      it 'should be false' do
+        expect(subject.should_reactivate?).to be false
+      end
+    end
+
+    context 'when dispatch_at is in the future' do
+      before do
+        subject.dispatch_at = DateTime.now.in_time_zone.beginning_of_minute + 3.days
+      end
+
+      it 'should be true for only active events' do
+        expect(subject.should_reactivate?).to be false
+
+        subject.deactivate!
+        expect(subject.should_reactivate?).to be true
+
+        subject.reactivate!
+        subject.trigger!
+        expect(subject.should_reactivate?).to be false
+      end
+    end
+  end
 end

@@ -8,6 +8,11 @@ module CustomCard
     #
     # All Configuration classes will descend from this base class.
     #
+    # WARNING:  If this base class is modified, please update the
+    # rails generator template here:
+    #
+    # lib/generators/custom_card/configuration/templates/configuration.template
+    #
     class Base
       def self.name
         raise NotImplementedError

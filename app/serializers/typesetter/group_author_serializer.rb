@@ -24,7 +24,7 @@ module Typesetter
         elsif contribution.value_type == 'text'
           contribution.value
         else
-          fail TypeSetter::MetadataError,
+          raise TypeSetter::MetadataError,
                "Unknown contribution type #{contribution.value_type}"
         end
       end.compact

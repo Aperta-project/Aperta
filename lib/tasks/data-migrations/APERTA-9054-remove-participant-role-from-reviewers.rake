@@ -92,7 +92,7 @@ namespace :data do
                                                     STDOUT.puts("Already have participation #{participation.id} for Reviewer Report Owner #{reviewer_report_owner.id}")
                                                   else
                                                     STDERR.puts("Failed to create participation for Reviewer Report Owner #{reviewer_report_owner.id}")
-                                                    fail "Error with creating participation for Reviewer Report Owner #{reviewer_report_owner.id}"
+                                                    raise "Error with creating participation for Reviewer Report Owner #{reviewer_report_owner.id}"
                                                   end
                                                 end
                                              end

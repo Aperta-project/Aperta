@@ -114,7 +114,10 @@ class XmlCardLoader
       editor_style: content.attr_value('editor-style'),
       condition: content.attr_value('condition'),
       value_type: content.attr_value('value-type'),
-      visible_with_parent_answer: content.attr_value('visible-with-parent-answer')
+      visible_with_parent_answer: content.attr_value('visible-with-parent-answer'),
+      initial: content.attr_value('initial'),
+      max: content.attr_value('max'),
+      min: content.attr_value('min')
     }
   end
   # rubocop:enable MethodLength

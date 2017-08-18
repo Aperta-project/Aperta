@@ -67,6 +67,7 @@ class CardContent < ActiveRecord::Base
       'numbered-list': [nil],
       'bulleted-list': [nil],
       'if': [nil],
+      'repeat': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -130,6 +131,12 @@ class CardContent < ActiveRecord::Base
     when 'if'
       {
         'condition' => condition
+      }
+    when 'repeat'
+      {
+        'initial' => initial,
+        'min' => min,
+        'max' => max
       }
     when 'short-input', 'paragraph-input'
       {

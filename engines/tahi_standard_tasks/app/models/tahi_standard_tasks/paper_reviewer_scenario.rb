@@ -1,6 +1,12 @@
 module TahiStandardTasks
   # Provides a template context for PaperReviewerTask
   class PaperReviewerScenario < TemplateContext
+    def self.merge_fields
+      [{ name: :invitation, context: InvitationContext },
+       { name: :journal, context: JournalContext },
+       { name: :manuscript, context: PaperContext }]
+    end
+
     def invitation
       @invitation ||= InvitationContext.new(@object)
     end

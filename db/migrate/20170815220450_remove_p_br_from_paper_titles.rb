@@ -6,6 +6,7 @@ class RemovePBrFromPaperTitles < ActiveRecord::Migration
       title = p.title
       [/^<p>/, %r{</p>$}].each { |tag| title.gsub!(tag, '') }
       ["\n", '<p>', '</p>', %r{<br\s*/?>}, '<div>', '</div>'].each { |tag| title.gsub!(tag, ' ') }
+      # rubocop:disable Rails/SkipsModelValidations:
       p.update_column(:title, title)
     end
   end

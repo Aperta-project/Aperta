@@ -17,7 +17,7 @@ describe BillingLogReport do
 
   let(:logger) do
     log = Logger.new(logger_io)
-    log.formatter = lambda do |severity, datetime, progname, msg|
+    log.formatter = lambda do |severity, _datetime, _progname, msg|
       "#{severity}: #{msg}\n"
     end
     log.level = 1

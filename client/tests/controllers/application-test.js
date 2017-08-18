@@ -1,121 +1,214 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import sinon from 'sinon';
 
-let pusherStub, flashStub, pusherFailureMessageSpy, displayFlashMessageSpy, healthCheckStub;
+let healthCheckStub, pusherStub, pusherFailureMessagesStub, flashStub;
 
 moduleFor('controller:application', 'Unit | Controller | application', {
-  needs: ['model:journal'],
   beforeEach: function() {
     healthCheckStub = { start: ()=>{} };
-    pusherStub = {connection: { connection: { state: 'connecting' } }};
-    pusherFailureMessageSpy = sinon.stub().returns('oh noes -.-');
-    displayFlashMessageSpy = sinon.spy();
+    pusherStub = Ember.Object.create({connection: { connection: { state: 'connecting' } }});
+    pusherFailureMessagesStub = { failed: 'f', unavailable: 'u', connecting: 'c', disconnected: 'd' };
     flashStub = Ember.Object.create({
-      displaySystemLevelMessage: displayFlashMessageSpy,
       systemLevelMessages: Ember.A(),
-      removeSystemLevelMessage: sinon.spy()
+      displaySystemLevelMessage(type, text) {
+        this.get('systemLevelMessages').pushObject({ text: text, type: type });
+      },
+      removeSystemLevelMessage(message) {
+        this.get('systemLevelMessages').removeObject(message);
+      }
     });
   }
 });
 
+function updatePusher(connectionState) {
+  pusherStub.set('connection.connection.state', connectionState);
+  pusherStub.set('isDisconnected', connectionState !== 'connected');
+}
+function simulateConnectingCompleted(connectionState, controller){
+  // faking it because I can't get the handlePusherConnecting task to perform
+  updatePusher(connectionState);
+  controller.handlePusherConnectingCompleted();
+}
+
 test('Slanger notifications - happy path', function(assert) {
-
   assert.expect(3);
-
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'connected';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(false);
-
+  pusherStub.set('connection.connection.state', 'connecting');
+  let controller = null;
   Ember.run(() => {
-    let controller = this.subject({
+    controller = this.subject({ 
       pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+      flash: flashStub,
       healthCheck: healthCheckStub,
-      flash: flashStub
+      pusherFailureMessages: pusherFailureMessagesStub
     });
 
     assert.ok(controller);
-
-    assert.ok(pusherFailureMessageSpy.calledWith('connecting'),
-      '_pusherFailureMessage was called with connecting');
-
-    assert.ok(displayFlashMessageSpy.notCalled, 'displaySystemLevelMessage was NOT called');
-    complete();
-
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes no connection messages');
   });
-
+  Ember.run(() => {
+    pusherStub.set('connection.connection.state', 'connected');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes no connection messages');
+    complete();
+  });
 });
 
-test('Slanger notifications - unable to connect', function(assert) {
+test('Slanger notifications - failed to connect', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(4);
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'unavailable';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
-
+  updatePusher('connecting');
+  let controller = null;
   Ember.run(() => {
-    let controller = this.subject({
+    controller = this.subject({
       pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+      flash: flashStub,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('unavailable'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
-    complete();
-
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+      'flashes connecting message');
   });
+  Ember.run(() => {
+    simulateConnectingCompleted('unavailable', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes unavailable message');
+  });
+  Ember.run(() => {
+    pusherStub.set('connection.connection.state', 'failed');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes unavailable because we can\'t see a change between two disconnected states');
+    complete();
+  });
+});
 
+test('Slanger notifications - spotty but ultimately able to connect', function(assert) {
+
+  assert.expect(11);
+  let complete = assert.async();
+
+  updatePusher('connecting');
+  let controller = null;
+  Ember.run(() => {
+    controller = this.subject({
+      pusher: pusherStub,
+      flash: flashStub,
+      healthCheck: healthCheckStub,
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
+
+    assert.ok(controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+      'flashes connecting message');
+  });
+  Ember.run(() => {
+    simulateConnectingCompleted('connected', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes no connection messages');
+  });
+  Ember.run(() => {
+    updatePusher('connecting');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+      'flashes connecting message');
+  });
+  Ember.run(() => {
+    simulateConnectingCompleted('unavailable', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes unavailable message');
+  });
+  Ember.run(() => {
+    updatePusher('connecting');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'no connecting message because we can\'t see a change between two disconnected states');
+  });
+  Ember.run(() => {
+    simulateConnectingCompleted('connected', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes keeps unavailable message even after connecting to encourage user to reload');
+  });
+  Ember.run(() => {
+    updatePusher('connecting');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), 
+      [{type: 'error', text: 'u'}, {type: 'error', text: 'c'}],
+      'flashes connecting and unavailable messages');
+  });
+  Ember.run(() => {
+    simulateConnectingCompleted('unavailable', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes removes the connecting message');
+  });
+  Ember.run(() => {
+    updatePusher('connecting');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'no connecting message because we can\'t see a change between two disconnected states');
+  });
+  Ember.run(() => {
+    simulateConnectingCompleted('connected', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'u'}],
+      'flashes only one unavailable message after reconnecting twice');
+    complete();
+  });
 });
 
 test('Slanger notifications - browser doesnt support web sockets', function(assert) {
 
   assert.expect(3);
-
   let complete = assert.async();
 
-  pusherStub.connection.connection.state = 'failed';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
-
+  updatePusher('connecting');
+  let controller = null;
   Ember.run(() => {
-    let controller = this.subject({ pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+    controller = this.subject({ 
+      pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('failed'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystemLevelMessage was called');
-    complete();
-
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+      'flashes connecting message');
   });
-
+  Ember.run(() => {
+    simulateConnectingCompleted('failed', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'f'}],
+      'flashes disconnected message');
+    complete();
+  });
 });
 
-test('Slanger notifications - user was disconnected by the application', function(assert) {
+test('Slanger notifications - intentional disconnect', function(assert) {
 
-  assert.expect(3);
-
+  assert.expect(4);
   let complete = assert.async();
-
-  pusherStub.connection.connection.state = 'disconnected';
-  pusherStub.get = sinon.stub().withArgs('isDisconnected').returns(true);
-
+  
+  updatePusher('connecting');
+  let controller = null;
   Ember.run(() => {
-    let controller = this.subject({ pusher: pusherStub,
-      _pusherFailureMessage: pusherFailureMessageSpy,
+    controller = this.subject({
+      pusher: pusherStub,
+      flash: flashStub,
       healthCheck: healthCheckStub,
-      flash: flashStub });
+      pusherFailureMessages: pusherFailureMessagesStub
+    });
 
     assert.ok(controller);
-    assert.ok(pusherFailureMessageSpy.calledWith('disconnected'), '_pusherFailureMessage was called');
-    assert.ok(displayFlashMessageSpy.called, 'displaySystem LevelMessage was called');
-    complete();
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'c'}], 
+      'flashes connecting message');
+  });
+  
+  Ember.run(() => {
+    updatePusher('connected');
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [], 'flashes connection messages are empty');
+  });
 
+  Ember.run(() => {
+    simulateConnectingCompleted('disconnected', controller);
+    assert.deepEqual(controller.get('flash').get('systemLevelMessages'), [{type: 'error', text: 'd'}],
+      'flashes disconnected message');
+    complete();
   });
 });

@@ -1,0 +1,11 @@
+Description:
+    Generate a database migration file with correct steps to migrate a legacy card Task to a custom Card.
+
+Syntax:
+  rails generate custom_card:migration "Title of Card" "TaskClassName"
+
+Example:
+    rails generate custom_card:migration "My New Cover Letter" TahiStandardTasks::CoverLetterTask
+
+    This will create:
+      db/migrate/20170816203014_migrate_cover_letter_task_to_custom_card.rb

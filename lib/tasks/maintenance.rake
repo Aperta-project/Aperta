@@ -38,7 +38,7 @@ namespace :maintenance do
       puts "\t#{unused_component}"
     end
     puts "\n### Usage frequency"
-    histogram.sort_by { |k,v| -histogram[k][:usage_count] }.each do |k,v|
+    histogram.sort_by { |k,_v| -histogram[k][:usage_count] }.each do |k,v|
       if core_components.include?(k)
         puts "\t(#{v[:usage_count]}) #{k}"
         v[:usage_files].each do |f|
@@ -49,7 +49,7 @@ namespace :maintenance do
   end
 
   desc "Capture screenshots of all pages in Tahi"
-  task :screenshot => :environment do |task, args|
+  task :screenshot => :environment do |_task, args|
     return unless Rails.env.development?
     require 'auto_screenshot'
 

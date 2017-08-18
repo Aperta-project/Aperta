@@ -14,7 +14,7 @@ namespace :db do
     while 'rake db:import_remote[dev]' would pull in a 'dev' environment if
     'dev_dump.tar.gz' exists in bighector.
   DESC
-  task :import_remote, [:env] => :environment do |t, args|
+  task :import_remote, [:env] => :environment do |_t, args|
     return unless Rails.env.development?
     args[:env] = nil if args[:env] == 'prod'
     env = args[:env]
@@ -23,7 +23,7 @@ namespace :db do
     # Then uncomment this:
     # location = "http://localhost:8080/prod_dump.tar.gz"
 
-    with_config do |app, host, db, user, password|
+    with_config do |_app, host, db, user, password|
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
@@ -52,7 +52,7 @@ namespace :db do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
     cmd = nil
-    with_config do |app, host, db, user, password|
+    with_config do |_app, host, db, user, password|
       ENV['PGPASSWORD'] = password.to_s
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
@@ -69,11 +69,11 @@ namespace :db do
   end
 
   desc "Restores the database dump at LOCATION"
-  task :restore, [:location] => :environment do |t, args|
+  task :restore, [:location] => :environment do |_t, args|
     location = args[:location]
     if location
       cmd = nil
-      with_config do |app, host, db, user, password|
+      with_config do |_app, host, db, user, password|
         ENV['PGPASSWORD'] = password.to_s
         cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{location}"
       end
@@ -87,7 +87,7 @@ namespace :db do
   # In zsh, this is run as `rake 'db:import_heroku[SOURCEDB]'` where SOURCEDB is the heroku address
   # (ie. 'tahi-lean-workflow')
   desc "Import data from the heroku staging environment"
-  task :import_heroku, [:source_db_name] => [:environment] do |t, args|
+  task :import_heroku, [:source_db_name] => [:environment] do |_t, args|
     raise "This can only be run in a development environment" unless Rails.env.development?
     source_db = args[:source_db_name]
     unless source_db
@@ -108,7 +108,7 @@ namespace :db do
 
     This is used in several `rake db:` tasks that restore or dump the database to reset users passwords to "password" for fast troubleshooting in development.
   DESC
-  task :reset_passwords => [:environment] do |t, args|
+  task :reset_passwords => [:environment] do |_t, _args|
     raise "This can only be run in a development environment" unless Rails.env.development?
     Journal.update_all(logo: nil)
     encrypted_password = User.new(password: DEFAULT_USER_PASSWORD).encrypted_password

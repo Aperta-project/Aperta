@@ -9,8 +9,8 @@ module CustomCard
   class Migrator
     attr_reader :legacy_class_name, :card_name, :safe_to_destroy
 
-    def initialize(legacy_class_name, card_name)
-      @legacy_class_name = legacy_class_name
+    def initialize(legacy_task_klass_name:, card_name:)
+      @legacy_class_name = legacy_task_klass_name
       @card_name = card_name
       @safe_to_destroy = true
     end

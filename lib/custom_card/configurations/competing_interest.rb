@@ -1,6 +1,4 @@
 # rubocop:disable Metrics/MethodLength
-require_relative "./base"
-
 module CustomCard
   module Configurations
     #

@@ -61,7 +61,7 @@ describe DueDatetime, type: :model do
   describe "#set_for" do
     # DueDatetime is not dependent on the implementation of any particular other class
     # so we create a generic class here for testing, and to ensure complete decoupling
-    class MiscellaneousClass < ApplicationRecord
+    class MiscellaneousClass < ActiveRecord::Base
       has_one :due_datetime, as: :due
       delegate :due_at, :originally_due_at, to: :due_datetime, allow_nil: true
       def set_due_datetime(length_of_time: 10.days)

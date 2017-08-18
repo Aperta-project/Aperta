@@ -13,7 +13,7 @@ describe Readyable do
 
   let(:klass) do
     create_fake_readyables_table
-    Class.new(ApplicationRecord) do
+    Class.new(ActiveRecord::Base) do
       include Readyable
       self.table_name = 'fake_readyables'
     end

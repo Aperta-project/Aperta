@@ -3,7 +3,8 @@ AllCops:
     - 'db/schema.rb'
     - 'lib/generators/tahi/task/templates/*'
   TargetRubyVersion: 2.2
-
+  TargetRailsVersion: 4.0
+  
 Rails:
   Enabled: true
 

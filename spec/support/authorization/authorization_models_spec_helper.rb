@@ -37,18 +37,18 @@ module AuthorizationModelsSpecHelper
 end
 
 module Authorizations
-  class FakeJournal < ApplicationRecord
+  class FakeJournal < ActiveRecord::Base
     has_many :fake_papers
   end
 
-  class FakePaper < ApplicationRecord
+  class FakePaper < ActiveRecord::Base
     belongs_to :fake_journal
     has_many :fake_tasks
     has_many :fake_task_things, through: :fake_tasks, inverse_of: :fake_paper
     has_many :fake_card_versions, through: :fake_tasks
   end
 
-  class FakeTask < ApplicationRecord
+  class FakeTask < ActiveRecord::Base
     belongs_to :fake_paper, inverse_of: :fake_tasks
     has_one :fake_journal, through: :fake_paper
     has_one :fake_task_thing
@@ -65,11 +65,11 @@ module Authorizations
   class EvenMoreSpecializedFakeTask < SpecializedFakeTask
   end
 
-  class FakeTaskThing < ApplicationRecord
+  class FakeTaskThing < ActiveRecord::Base
     belongs_to :fake_task
     has_one :fake_paper, through: :fake_task
   end
 
-  class FakeCardVersion < ApplicationRecord
+  class FakeCardVersion < ActiveRecord::Base
   end
 end

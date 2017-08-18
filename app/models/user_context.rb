@@ -1,5 +1,9 @@
 # Provides a template context for Users
 class UserContext < TemplateContext
+  def self.merge_fields
+    [{ name: :first_name }, { name: :last_name }, { name: :email }]
+  end
+
   whitelist :first_name, :last_name, :email
 
   def title

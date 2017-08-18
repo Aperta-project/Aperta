@@ -1,0 +1,23 @@
+Description:
+    Generate a valid CustomCard::Configuration class.
+
+    The resulting file is used when migrating an existing legacy Task to a new custom Card.
+
+Syntax:
+  rails generate custom_card:configuration "TITLE OF NEW CARD" [legacy task class name]
+
+Example:
+    rails generate custom_card "My New Cover Letter" TahiStandardTasks::CoverLetterTask
+
+    This will create:
+        lib/custom_card/configurations/my_new_cover_letter.rb
+
+    Configuration file will contain the proper permissions from the legacy task.
+
+Example (simple):
+    rails generate custom_card:configuration "My First Cover Letter"
+
+    This will create:
+        lib/custom_card/configurations/my_first_cover_letter.rb
+
+    Configuration file will assume that developer will manually set permissions.

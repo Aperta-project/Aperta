@@ -272,20 +272,19 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[2].text == u'Ad-hoc for Reviewers', staff_cards[2].text
     assert staff_cards[3].text == u'Ad-hoc for Staff Only', staff_cards[3].text
     assert staff_cards[4].text == u'Assign Team', staff_cards[4].text
-    # APERTA-10980 When this gets addressed need to adjust the index numbers below
-    assert staff_cards[6].text == u'Editor Discussion', staff_cards[6].text
-    assert staff_cards[7].text == u'Final Tech Check', staff_cards[7].text
-    assert staff_cards[8].text == u'Initial Decision', staff_cards[8].text
-    assert staff_cards[9].text == u'Initial Tech Check', staff_cards[9].text
-    assert staff_cards[10].text == u'Invite Academic Editor', staff_cards[10].text
-    assert staff_cards[11].text == u'Invite Reviewers', staff_cards[11].text
-    assert staff_cards[12].text == u'Production Metadata', staff_cards[12].text
-    assert staff_cards[13].text == u'Register Decision', staff_cards[13].text
-    assert staff_cards[14].text == u'Related Articles', staff_cards[14].text
-    assert staff_cards[15].text == u'Revision Tech Check', staff_cards[15].text
-    assert staff_cards[16].text == u'Send to Apex', staff_cards[16].text
-    assert staff_cards[17].text == u'Similarity Check', staff_cards[17].text
-    assert staff_cards[18].text == u'Title And Abstract', staff_cards[18].text
+    assert staff_cards[5].text == u'Editor Discussion', staff_cards[5].text
+    assert staff_cards[6].text == u'Final Tech Check', staff_cards[6].text
+    assert staff_cards[7].text == u'Initial Decision', staff_cards[7].text
+    assert staff_cards[8].text == u'Initial Tech Check', staff_cards[8].text
+    assert staff_cards[9].text == u'Invite Academic Editor', staff_cards[9].text
+    assert staff_cards[10].text == u'Invite Reviewers', staff_cards[10].text
+    assert staff_cards[11].text == u'Production Metadata', staff_cards[11].text
+    assert staff_cards[12].text == u'Register Decision', staff_cards[12].text
+    assert staff_cards[13].text == u'Related Articles', staff_cards[13].text
+    assert staff_cards[14].text == u'Revision Tech Check', staff_cards[14].text
+    assert staff_cards[15].text == u'Send to Apex', staff_cards[15].text
+    assert staff_cards[16].text == u'Similarity Check', staff_cards[16].text
+    assert staff_cards[17].text == u'Title And Abstract', staff_cards[17].text
     custom_cards = custom_col.find_elements_by_tag_name('label')
     assert custom_cards[0].text == u'Competing Interests', custom_cards[0].text
     assert custom_cards[1].text == u'Preprint Posting', custom_cards[1].text

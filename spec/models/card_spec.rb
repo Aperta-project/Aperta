@@ -103,13 +103,13 @@ describe Card do
       end
 
       it 'finds the card' do
-        expect(Card.find_by(class_name: card_class_name)).to eq(card)
+        expect(Card.find_by_class_name(card_class_name)).to eq(card)
       end
     end
 
     context 'without successful namespace lookup' do
       it 'returns nil' do
-        expect(Card.find_by(class_name: card_class_name)).to be_nil
+        expect(Card.find_by_class_name(card_class_name)).to be_nil
       end
     end
   end
@@ -126,14 +126,14 @@ describe Card do
       end
 
       it 'finds the card' do
-        expect(Card.find_by!(class_name: card_class_name)).to eq(card)
+        expect(Card.find_by_class_name!(card_class_name)).to eq(card)
       end
     end
 
     context 'without successful namespace lookup' do
       it 'raises an error' do
         expect do
-          Card.find_by!(class_name: card_class_name)
+          Card.find_by_class_name!(card_class_name)
         end.to raise_error(ActiveRecord::RecordNotFound, /#{card_class_name}/)
       end
     end

@@ -33,7 +33,7 @@ FactoryGirl.define do
     trait :with_loaded_card do
       after(:build) do |task|
         CardLoader.load(task.class.name)
-        card = Card.find_by(class_name: task.class)
+        card = Card.find_by_class_name(task.class)
         task.update(card_version: card.latest_published_card_version)
       end
     end

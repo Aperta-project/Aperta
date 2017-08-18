@@ -46,7 +46,7 @@ describe AuthorsController do
 
     it 'a POST request associates a new author to an existing card version' do
       post_request
-      default_card = Card.find_by!(class_name: Author)
+      default_card = Card.find_by_class_name!(Author)
       expect(Author.last.card_version).to eq(default_card.latest_published_card_version)
     end
 

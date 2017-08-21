@@ -29,7 +29,6 @@ class LookupClassNamespace
     "PublishingRelatedQuestionsTask" =>     "TahiStandardTasks::PublishingRelatedQuestionsTask",
     "RegisterDecisionTask"           =>     "TahiStandardTasks::RegisterDecisionTask",
     "RelatedArticlesTask"            =>     "TahiStandardTasks::RelatedArticlesTask",
-    "ReportingGuidelinesTask"        =>     "TahiStandardTasks::ReportingGuidelinesTask",
     "ReviewerRecommendationsTask"    =>     "TahiStandardTasks::ReviewerRecommendationsTask",
     "ReviewerReportTask"             =>     "TahiStandardTasks::ReviewerReportTask",
     "ReviseTask"                     =>     "TahiStandardTasks::ReviseTask",

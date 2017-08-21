@@ -17,12 +17,12 @@ module CustomCard
     end
 
     def warn_if_missing_production_data
-      return if legacy_task_klass_name.blank? && production_data_loaded?
+      return if legacy_task_klass_name.present? && production_data_loaded?
       die if no?("You do not curently have production data loaded.  Existing permissions will not be derived.  Want to continue?")
     end
 
     def exit_if_non_existent_legacy_task_klass
-      return if legacy_task_klass_name.blank? && legacy_task_exists?
+      return if legacy_task_klass_name.present? && legacy_task_exists?
       die("Could not find a Task with type '#{legacy_task_klass_name}'.  Ensure correct spelling and namespace.")
     end
 

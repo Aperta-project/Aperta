@@ -1,10 +1,12 @@
 {{#if preview}}
-  <div>
-    <b style='margin-right: 3px;'>&star;</b>
-    This item repeats:&nbsp;
-    {{#if initial}} <i>initial</i> = <b>{{initial}}</b> {{/if}}
-    {{#if min}} <i>min</i> = <b>{{min}}</b> {{/if}}
-    {{#if max}} <i>max</i> = <b>{{max}}</b> {{/if}}
+  <div class="card-preview repeat-preview">
+    <span class='decoration'>&star;</span>
+    <span class='help-text'>
+      This item repeats:
+      {{#if initial}} <i>initial</i> = <b>{{initial}}</b> {{/if}}
+      {{#if min}} <i>min</i> = <b>{{min}}</b> {{/if}}
+      {{#if max}} <i>max</i> = <b>{{max}}</b> {{/if}}
+    </span>
   </div>
 
   {{#unless inRange}}

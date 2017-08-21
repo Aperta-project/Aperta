@@ -90,7 +90,14 @@ class ManuscriptViewerTest(CommonTest):
       dashboard_page = self.cas_login(user['email'])
       dashboard_page.page_ready()
       if dashboard_page.get_dashboard_ms(user):
-        self.select_preexisting_article(first=True)
+        try:   # Logged in user may not have any manuscripts
+          self.select_preexisting_article(first=True)
+        except ElementDoesNotExistAssertionError:
+          dashboard_page.click_create_new_submission_button()
+          self.create_article(title='manuscript_viewer::test_role_aware_menus', journal='PLOS Wombat', type_='NoCards')
+          manuscript_page = ManuscriptViewerPage(self.getDriver())
+          manuscript_page.page_ready_post_create()
+
         manuscript_page = ManuscriptViewerPage(self.getDriver())
         manuscript_page.page_ready()
         journal_id = manuscript_page.get_journal_id()

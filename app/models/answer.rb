@@ -4,6 +4,7 @@
 #
 class Answer < ActiveRecord::Base
   acts_as_paranoid
+  acts_as_list scope: :card_content
 
   include Readyable
 

@@ -16,8 +16,8 @@
       content=child
       disabled=disabled
       owner=owner
-      answerChanged=answerChanged
-      preview=preview}}
+      preview=preview
+    }}
   {{/each}}
 {{else if inRange}}
   {{#each (range lowerBound upperBound) as |number|}}
@@ -25,9 +25,11 @@
       {{card-content
         content=child
         disabled=disabled
+        position=number
         owner=owner
         answerChanged=answerChanged
-        preview=preview}}
+        preview=preview
+      }}
     {{/each}}
   {{/each}}
 {{else}}

@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   init() {
     this._super(...arguments);
-    let value = this.get('answer.value');
+    let value = this.get('answers.firstObject.value');
     this.set('workingValue', value);
   },
   actions: {

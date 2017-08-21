@@ -8,7 +8,7 @@ namespace :s3 do
           generated for you. It will take the form,
              `tahi-user-dev-\#{uuid}`
        DESC
-  task :create_bucket, [:bucket_name] => :environment do |t, args|
+  task :create_bucket, [:bucket_name] => :environment do |_t, args|
     require 'create_bucket_service'
 
     CreateBucketService.new(name: args[:bucket_name]).call

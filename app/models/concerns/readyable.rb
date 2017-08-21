@@ -36,7 +36,7 @@ module Readyable
       obj.card_content.card_content_validations.each do |validation|
         obj.add_errors(validation, _attr) unless validation.validate_answer(obj)
       end
-      obj.errors.each { |error, message| obj.ready_issues << message }
+      obj.errors.each { |_error, message| obj.ready_issues << message }
     end
 
     private

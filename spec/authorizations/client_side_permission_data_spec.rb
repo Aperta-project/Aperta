@@ -73,7 +73,7 @@ DESC
 
   role :with_edit_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
-    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w(*)
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name, states: %w[*]
   end
 
   before do
@@ -92,8 +92,8 @@ DESC
             type: Authorizations::FakePaper.name
           },
           permissions: {
-            read: { states: %w(*) },
-            view: { states: %w(*) }
+            read: { states: %w[*] },
+            view: { states: %w[*] }
           }
         },
         {
@@ -103,8 +103,8 @@ DESC
             type: Authorizations::FakePaper.name
           },
           permissions: {
-            read: { states: %w(*) },
-            view: { states: %w(*) }
+            read: { states: %w[*] },
+            view: { states: %w[*] }
           }
         }
       ].as_json)

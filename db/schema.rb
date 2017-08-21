@@ -768,8 +768,6 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.integer  "due_datetime_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree

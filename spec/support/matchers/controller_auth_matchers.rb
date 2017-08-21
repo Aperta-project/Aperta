@@ -3,11 +3,11 @@ RSpec::Matchers.define :responds_with do |status_code|
     response.status == status_code
   end
 
-  failure_message do |str|
+  failure_message do |_str|
     "Expected response to be #{status_code} but it was  #{response.status}"
   end
 
-  failure_message_when_negated do |str|
+  failure_message_when_negated do |_str|
     "Expected response to NOT be #{status_code} but it was #{response.status}"
   end
 end

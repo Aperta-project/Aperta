@@ -1,1 +1,11 @@
-<p>{{{content.text}}}</p>
+{{#unless isQuestionHelpListText}}
+  <p>{{{content.text}}}</p>
+{{else}}
+  {{{content.text}}}
+{{/unless}}
+
+{{card-content/display-children
+content=content
+owner=owner
+disabled=disabled
+preview=preview}}

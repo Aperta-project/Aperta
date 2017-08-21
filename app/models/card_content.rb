@@ -74,6 +74,7 @@ class CardContent < ActiveRecord::Base
       'numbered-list': [nil],
       'bulleted-list': [nil],
       'question-list': [nil],
+      'question-help-list': [nil],
       'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 

@@ -25,7 +25,9 @@ export default Ember.Component.extend({
   },
 
   keepAnswerContainer: Ember.computed('content', function(){
-    return !this.get('content.overrideAnswerContainer') && this.get('hasAnswerContainer');
+    return !this.get('content.overrideAnswerContainer') &&
+      this.get('hasAnswerContainer') &&
+      (this.get('allowAnnotations') || this.get('instructionText'));
   }),
 
   getDefaultProps() {

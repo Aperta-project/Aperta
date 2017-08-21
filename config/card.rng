@@ -59,9 +59,11 @@
             <text/>
           </element>
         </optional>
-        <element name="text">
-          <text/>
-        </element>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
       </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
@@ -449,6 +451,7 @@
           <value>numbered-list</value>
           <value>plain-list</value>
           <value>question-list</value>
+          <value>question-help-list</value>
         </choice>
       </attribute>
       <zeroOrMore>
@@ -468,6 +471,9 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
     </element>
   </define>
   <define name="display-children-content">

@@ -44,7 +44,6 @@ class CardContentValidation < ActiveRecord::Base
   end
 
   def validate_by_required_field(answer)
-    return true unless answer.card_content.required_field
     !answer.answer_blank?
   end
 end

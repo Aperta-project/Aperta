@@ -31,7 +31,7 @@ class IhatJobRequest
     when [:pdf, :html]
       'pdf_to_html'
     else
-      fail "Unable to find ihat recipe name for converting '#{from_format}' to '#{to_format}'"
+      raise "Unable to find ihat recipe name for converting '#{from_format}' to '#{to_format}'"
     end
   end
 

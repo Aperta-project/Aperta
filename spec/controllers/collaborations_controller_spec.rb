@@ -1,5 +1,3 @@
-# rubocop:disable Style/FirstParameterIndentation
-
 require 'rails_helper'
 require 'sidekiq/testing'
 

@@ -163,6 +163,8 @@ RSpec.configure do |config|
     Subscriptions.reload
     Rake::Task['roles-and-permissions:seed'].reenable
     Rake::Task['roles-and-permissions:seed'].invoke
+    Rake::Task['settings:seed_setting_templates'].reenable
+    Rake::Task['settings:seed_setting_templates'].invoke
   end
 
   config.before(:each, type: :controller) do

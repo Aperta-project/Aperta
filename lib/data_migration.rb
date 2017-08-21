@@ -22,7 +22,7 @@
 class DataMigration < ActiveRecord::Migration
   def up
     unless rake_task_up_defined?
-      fail NameError, <<-ERROR.strip_heredoc
+      raise NameError, <<-ERROR.strip_heredoc
         #{self.class}::RAKE_TASK_UP is not defined (or not defined properly). It
         should be a string name of the rake task to be run, e.g.
 

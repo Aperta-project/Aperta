@@ -24,7 +24,7 @@ module SalesforceServices
       if valid?
         @salesforce_api.ensure_pfa_case(paper: @paper)
       else
-        fail SyncInvalid, sync_invalid_message
+        raise SyncInvalid, sync_invalid_message
       end
     end
 

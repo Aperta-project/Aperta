@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   end
 
   def assert(test, message, status_code: 422)
-    fail AssertionError.new(message, status_code) unless test
+    raise AssertionError.new(message, status_code) unless test
   end
 
   def render_assertion_error(e)
@@ -73,13 +73,13 @@ class ApplicationController < ActionController::Base
   end
 
   # customize devise signout path
-  def after_sign_out_path_for(resource_or_scope)
+  def after_sign_out_path_for(_resource_or_scope)
     cas_logout_url || new_user_session_path
   end
 
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    store_location_for(:user, request.url) if session["user_return_to"].blank?
+    store_location_for(:user, request.referer)
   end
 
   def cas_logout_url

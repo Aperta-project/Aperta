@@ -92,7 +92,7 @@ module Authorizations
       permissions_ids_for_this_role = Permission.where.not(
         id: @pre_existing_permission_ids
       ).pluck(:id)
-      permissions_ids_for_this_role.each do |permission_id, arr|
+      permissions_ids_for_this_role.each do |permission_id, _arr|
         data = [permission_id, @role.id]
         @permission_roles_to_import << data
       end

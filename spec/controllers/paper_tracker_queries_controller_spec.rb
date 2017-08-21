@@ -13,7 +13,7 @@ describe PaperTrackerQueriesController do
       expect(response.status).to eq(200)
       expect(res_body['paper_tracker_queries'].length).to eq(1)
       expect(res_body['paper_tracker_queries'][0].keys)
-        .to contain_exactly("id", "title", "query")
+        .to contain_exactly("id", "title", "query", "order_by", "order_dir")
     end
   end
 

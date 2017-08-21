@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170817151226) do
+ActiveRecord::Schema.define(version: 20170815220450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
+    t.string   "condition"
     t.boolean  "required_field"
   end
 
@@ -512,6 +513,7 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.boolean  "is_preprint_eligible",                  default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -551,6 +553,8 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.boolean  "deleted",    default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "order_dir"
+    t.string   "order_by"
   end
 
   create_table "papers", force: :cascade do |t|
@@ -579,6 +583,8 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.string   "short_doi"
     t.boolean  "number_reviewer_reports",               default: false, null: false
     t.boolean  "legends_allowed",                       default: false, null: false
+    t.string   "preprint_doi_article_number"
+    t.boolean  "preprint_opt_out",                      default: false, null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -656,6 +662,10 @@ ActiveRecord::Schema.define(version: 20170817151226) do
   end
 
   add_index "possible_setting_values", ["setting_template_id"], name: "index_possible_setting_values_on_setting_template_id", using: :btree
+
+  create_table "preprint_doi_incrementers", force: :cascade do |t|
+    t.integer "value", default: 1, null: false
+  end
 
   create_table "reference_jsons", force: :cascade do |t|
     t.text     "name"

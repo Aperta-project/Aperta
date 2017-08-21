@@ -66,7 +66,11 @@
     <div class="card-editor-xml-errors">
         <p> {{error-message message="Please fix the following errors:" displayIcon=true}} </p>
         {{#each errors as |error|}}
-          <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+          {{#if error.detail.line}}
+            <div data-test-selector="xml-error"> <b>line {{error.detail.line}} at column {{error.detail.col}} : </b> {{error.detail.message}} </div>
+          {{else}}
+            <div data-test-selector="xml-error"> {{error.detail.message}} </div>
+          {{/if}}
         {{/each}}
     </div>
   {{/if}}
@@ -98,7 +102,7 @@
     <b>What was the reason for creating or revising this card?</b>
     <p><em>These notes will be seen on the versions tab of the card. (For admin use only.)</em></p>
     <div>
-      {{textarea class="form-control publish-history-entry" value=card.historyEntry}}
+      {{textarea class="form-control publish-history-entry" autofocus="true" value=card.historyEntry}}
     </div>
   </p>
 

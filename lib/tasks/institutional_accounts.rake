@@ -18,7 +18,7 @@ namespace :institutional_accounts do
           Example in zsh:
           rake 'institutional_accounts:add_accounts[Victoria University2, C01282]'
        DESC
-  task :add_account, [:text, :nav_customer_number] => :environment do |t, args|
+  task :add_account, [:text, :nav_customer_number] => :environment do |_t, args|
     if args[:text].present? && args[:nav_customer_number].present?
       new_hash = { "id" => args[:text], "text" => args[:text], "nav_customer_number" => args[:nav_customer_number] }
       puts "Adding #{new_hash}.."
@@ -34,7 +34,7 @@ namespace :institutional_accounts do
   end
 
   desc "Removes an old Institutional Account from the database"
-  task :remove_account, [:nav_customer_number] => :environment do |t, args|
+  task :remove_account, [:nav_customer_number] => :environment do |_t, args|
     if args[:nav_customer_number].present?
       deleted = InstitutionalAccountsManager.new.remove!(args[:nav_customer_number])
       puts "Deletion of \"#{deleted}\" complete."

@@ -6,6 +6,10 @@ export default Ember.Component.extend({
   placeholderText: 'Need to find a user? Search for them here.',
   searchQuery: '',
   showUserDetailsOverlay: false,
+  adminJournalUsers: null,
+  journal: null,
+  roles: null,
+
 
   resetSearch() {
     this.set('adminJournalUsers', null);
@@ -19,7 +23,9 @@ export default Ember.Component.extend({
   actions: {
     searchUsers() {
       this.resetSearch();
-      this.get('store').query('admin-journal-user', {query: this.get('searchQuery')}).then((users) => {
+      this.get('store').query('admin-journal-user', {
+        query: this.get('searchQuery'),
+        journal_id: this.get('journal.id')}).then((users) => {
         this.set('adminJournalUsers', users);
         if(Ember.isEmpty(users)) { this.displayMatchNotFoundMessage(); }
       });

@@ -32,7 +32,6 @@ export default Ember.Component.extend({
   funder: Ember.computed.equal('primarySnapshot.name', 'funder'),
   id: Ember.computed.equal('primarySnapshot.name', 'id'),
   integer: Ember.computed.equal('primarySnapshot.type', 'integer'),
-  // question: Ember.computed.equal('primarySnapshot.type', 'question'),
 
   question: Ember.computed('primarySnapshot.type', 'primarySnapshot.value.answer_type', function() {
     return this.get('primarySnapshot.type') === 'question'

@@ -23,7 +23,7 @@ namespace :data do
 
         migrated_site_admin_count = Role.site_admin_role.users.count
         if expected_site_admin_count != migrated_site_admin_count
-          fail <<-ERROR.strip_heredoc
+          raise <<-ERROR.strip_heredoc
             There were #{expected_site_admin_count} site admins assigned
             by the User#site_admin column, but after migrating there were
             only #{migrated_site_admin_count} assigned thru the Site Admin
@@ -54,14 +54,14 @@ namespace :data do
 
         migrated_site_admin_count = User.where(site_admin: true).count
         if expected_site_admin_count != migrated_site_admin_count
-          fail <<-ERROR.strip_heredoc
+          raise <<-ERROR.strip_heredoc
             There were #{expected_site_admin_count} site admins assigned
             thru the Site Admin role, but after migrating them to the
             User#site_admin column there were only #{migrated_site_admin_count}.
           ERROR
         end
       else
-        fail <<-ERROR.strip_heredoc
+        raise <<-ERROR.strip_heredoc
           The users table did not have a site_admin column. This is necessary
           in order this down migration to run.
         ERROR

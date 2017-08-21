@@ -25,7 +25,7 @@ module Tahi
 
     def plugin_path
       @plugin_path ||= (path || Rails.root.join('engines', name.underscore))
-      fail Exception, 'Cannot find plugin path!' if @plugin_path.blank?
+      raise Exception, 'Cannot find plugin path!' if @plugin_path.blank?
       @plugin_path
     end
 

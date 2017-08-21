@@ -100,6 +100,20 @@ describe JournalFactory do
       end.to change(Journal, :count).by(1)
     end
 
+    context 'default system cards' do
+      let(:factory_params) do
+        { name: 'Journal of the Stars',
+          doi_journal_prefix: 'journal.SHORTJPREFIX1',
+          doi_publisher_prefix: 'SHORTJPREFIX1',
+          last_doi_issued: '1000001' }
+      end
+
+      it 'loads default system cards' do
+        expect(CustomCard::Loader).to receive(:all).with(journals: instance_of(Journal))
+        JournalFactory.create(factory_params)
+      end
+    end
+
     context 'role hints' do
       let!(:journal) do
         JournalFactory.create(name: 'Journal of the Stars',
@@ -650,7 +664,7 @@ describe JournalFactory do
       end
 
       context 'Freelance Editor' do
-        let(:permissions) { journal.freelance_editor_role.permissions }
+        let(:permissions) { journal.freelance_editor_role.permissions.non_custom_card }
 
         it 'has no permissions' do
           expect(permissions).to be_empty
@@ -1500,7 +1514,7 @@ describe JournalFactory do
           it 'only site admins and participants on tasks get Task class permissions' do
             not_allowed_roles = Role.where.not(name: [Role::TASK_PARTICIPANT_ROLE.to_s, Role::SITE_ADMIN_ROLE.to_s])
             not_allowed_roles.each do |role|
-              expect(role.permissions.where(applies_to: 'Task')).to be_empty
+              expect(role.permissions.non_custom_card.where(applies_to: 'Task')).to be_empty
             end
           end
 

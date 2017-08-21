@@ -26,7 +26,13 @@ describe LitePaperSerializer do
     let(:journal) { FactoryGirl.create(:journal, :with_creator_role) }
 
     let(:paper) do
-      FactoryGirl.create(:paper, journal: journal, creator: user)
+      FactoryGirl.create(:paper, journal: journal, creator: user, preprint_doi_article_number: "1234567")
+    end
+
+    describe 'aarx_doi' do
+      it "should be present" do
+        expect(json[:aarx_doi].to_s).to be_present
+      end
     end
 
     describe 'related_at_date' do

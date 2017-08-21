@@ -48,10 +48,19 @@ describe CustomCard::Loader do
     let!(:journals) { FactoryGirl.create_list(:journal, 2) }
     let(:configurations) { [card_configuration, card_configuration] }
 
-    it "calls the Factory for each configuration, for each Journal in system" do
-      expect(custom_card_loader).to receive(:load).with(card_configuration, journal: journals.first).twice
-      expect(custom_card_loader).to receive(:load).with(card_configuration, journal: journals.second).twice
-      custom_card_loader.all
+    context "without a journal scope" do
+      it "calls the Factory for each configuration, for each Journal in system" do
+        expect(custom_card_loader).to receive(:load).with(card_configuration, journal: journals.first).twice
+        expect(custom_card_loader).to receive(:load).with(card_configuration, journal: journals.second).twice
+        custom_card_loader.all
+      end
+    end
+
+    context "with a journal scope" do
+      it "calls the Factory for each configuration, for each Journal in system" do
+        expect(custom_card_loader).to receive(:load).with(card_configuration, journal: journals.first).twice
+        custom_card_loader.all(journals: journals.first)
+      end
     end
   end
 end

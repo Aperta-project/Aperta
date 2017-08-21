@@ -16,7 +16,7 @@ class DownloadManuscriptWorker
   # ihat will post to the given callback url when the job is finished
   def self.download_manuscript(paper, url, current_user)
     if url.blank?
-      fail(ArgumentError, "Url must be provided (received a blank value)")
+      raise(ArgumentError, "Url must be provided (received a blank value)")
     end
     paper.update_attribute(:processing, true)
     perform_async(

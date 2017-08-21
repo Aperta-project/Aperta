@@ -12,5 +12,6 @@ export default DS.Model.extend(DependentRelationships, {
   }),
   paperType: DS.attr('string'),
   usesResearchArticleReviewerReport: DS.attr('boolean'),
+  isPreprintEligible: DS.attr('boolean'),
   updatedAt: DS.attr('date')
 });

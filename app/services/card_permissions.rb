@@ -7,7 +7,7 @@ class CardPermissions
     rest: [Permission::WILDCARD]
   }.freeze
 
-  STATELESS_ACTIONS = ['view', 'view_discussion'].freeze
+  STATELESS_ACTIONS = ['view', 'view_discussion_footer'].freeze
 
   # Append to the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.

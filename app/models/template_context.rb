@@ -1,6 +1,6 @@
 # Provides a base template context
 class TemplateContext < Liquid::Drop
-  def self.merge_fields
+  def self.merge_field_definitions
     []
   end
 
@@ -12,12 +12,5 @@ class TemplateContext < Liquid::Drop
 
   def initialize(object)
     @object = object
-  end
-
-  def self.build_merge_fields
-    merge_fields.map do |hash|
-      hash[:children] = hash[:context].build_merge_fields if hash[:context]
-      hash
-    end
   end
 end

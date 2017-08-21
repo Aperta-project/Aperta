@@ -2,7 +2,7 @@
 class PaperContext < TemplateContext
   include UrlBuilder
 
-  def self.merge_fields
+  def self.merge_field_definitions
     [{ name: :title },
      { name: :abstract },
      { name: :paper_type },

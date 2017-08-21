@@ -1,6 +1,6 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
-  def self.merge_fields
+  def self.merge_field_definitions
     [{ name: :state },
      { name: :revision },
      { name: :status },

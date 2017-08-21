@@ -35,7 +35,7 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def query_params
-    params.require(:paper_tracker_query).permit(:title, :query)
+    params.require(:paper_tracker_query).permit(:title, :query, :order_by, :order_dir)
   end
 
   def journals
@@ -47,6 +47,6 @@ class PaperTrackerQueriesController < ApplicationController
   end
 
   def authorize
-    fail AuthorizationError unless journals.length > 0
+    raise AuthorizationError if journals.empty?
   end
 end

@@ -5,13 +5,15 @@ import Ember from 'ember';
 // new templates.
 
 export default Ember.Component.extend({
-  store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
   disabled: Ember.computed('template.subject', 'template.body', function() {
     return !this.get('template.subject') || !this.get('template.body');
   }),
   unsaved: true,
   actions: {
+    onInputCallback: function(body){
+      this.set('template.body', body);
+    },
     save: function() {
       if (this.get('disabled') || this.get('template.isSaving')) {
         this.set('unsaved', false);

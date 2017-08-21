@@ -13,7 +13,7 @@ module Authorizations
       if target.is_a?(ActiveRecord::Base)
         @klass = target.class
       else
-        fail NotImplementedError
+        raise NotImplementedError
       end
     end
 

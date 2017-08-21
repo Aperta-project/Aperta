@@ -1,5 +1,5 @@
-# rubocop:disable Style/IndentationWidth
-# rubocop:disable Style/ElseAlignment
+# rubocop:disable Layout/IndentationWidth
+# rubocop:disable Layout/ElseAlignment
 # rubocop:disable Lint/EndAlignment
 # rubocop:disable Style/EmptyElse
 

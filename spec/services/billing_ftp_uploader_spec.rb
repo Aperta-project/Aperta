@@ -27,7 +27,7 @@ describe BillingFTPUploader do
     # override default logger formatter since we don't care what the
     # format for the application is set to, just that we're logging
     # correctly
-    log.formatter = lambda do |severity, datetime, progname, msg|
+    log.formatter = lambda do |severity, _datetime, _progname, msg|
       "#{severity}: #{msg}\n"
     end
     log

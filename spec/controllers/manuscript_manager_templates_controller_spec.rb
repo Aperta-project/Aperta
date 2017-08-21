@@ -74,7 +74,8 @@ describe ManuscriptManagerTemplatesController do
       {
         paper_type: 'new type',
         journal_id: journal.id,
-        uses_research_article_reviewer_report: true
+        uses_research_article_reviewer_report: true,
+        is_preprint_eligible: false
       }
     end
 
@@ -123,7 +124,7 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "GET show" do
-    subject(:do_request) { get :show, {format: 'json', id: mmt.id } }
+    subject(:do_request) { get :show, format: 'json', id: mmt.id }
     let(:mmt) { journal.manuscript_manager_templates.first }
 
     it_behaves_like "an unauthenticated json request"
@@ -174,6 +175,7 @@ describe ManuscriptManagerTemplatesController do
       FactoryGirl.create \
         :manuscript_manager_template,
         uses_research_article_reviewer_report: false,
+        is_preprint_eligible: false,
         journal: journal
     end
     let(:new_params) do
@@ -182,6 +184,7 @@ describe ManuscriptManagerTemplatesController do
         paper_type: 'new type',
         journal_id: journal.id,
         uses_research_article_reviewer_report: true,
+        is_preprint_eligible: false,
         phase_templates: [
           manuscript_manager_template_id: mmt.id,
           name: 'Phase title',
@@ -189,20 +192,13 @@ describe ManuscriptManagerTemplatesController do
           task_templates: [
             journal_task_type_id: journal_task_type.id,
             title: 'Ad-hoc',
-            template: template_params,
-            settings: [
-              owner_type: 'TaskTemplate',
-              name: 'Setting name',
-              string_value: 'Setting value',
-              value_type: 'string',
-              setting_template_id: setting_template.id
-            ]
+            template: template_params
           ]
         ]
       }
     end
     let(:template_params) do
-      [ [{type: 'text', value: 'text here'}] ]
+      [[{ type: 'text', value: 'text here' }]]
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -225,15 +221,11 @@ describe ManuscriptManagerTemplatesController do
         mmt = ManuscriptManagerTemplate.last
         template = mmt.phase_templates.last.task_templates.last.template
         expect(mmt.paper_type).to eq(new_params[:paper_type])
-        expect(mmt.phase_templates[0].task_templates[0].settings[0]
-          .owner_type).to eq(
-            new_params[:phase_templates][0][:task_templates][0][:settings][0][:owner_type]
-          )
         expect(template.to_json).to eq(template_params.to_json)
       end
 
       context "with invalid params" do
-        let(:new_params) { {paper_type: nil, template: {}} }
+        let(:new_params) { { paper_type: nil, template: {} } }
         it_behaves_like "a controller rendering an invalid model"
       end
     end
@@ -255,7 +247,7 @@ describe ManuscriptManagerTemplatesController do
 
   describe "DELETE destroy" do
     let(:mmt) { journal.manuscript_manager_templates.first }
-    subject(:do_request) { delete :destroy, { format: :json, id: mmt.id } }
+    subject(:do_request) { delete :destroy, format: :json, id: mmt.id }
 
     it_behaves_like "an unauthenticated json request"
 

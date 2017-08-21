@@ -81,11 +81,11 @@ RSpec::Matchers.define :have_empty_queue do |_|
     "expected that #{actual} would be empty, but had #{actual.jobs.count} jobs: \n #{actual.jobs.inspect}"
   end
 
-  failure_message_when_negated do |actual|
+  failure_message_when_negated do |_actual|
     "Please use :have_queued_job to test that your job was successfully queued"
   end
 
-  match_when_negated do |actual|
+  match_when_negated do |_actual|
     false
   end
 

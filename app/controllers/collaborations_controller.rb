@@ -2,7 +2,7 @@
 class CollaborationsController < ApplicationController
   before_action :authenticate_user!
   before_action do
-    fail AuthorizationError unless
+    raise AuthorizationError unless
       current_user.can?(:manage_collaborators, paper)
   end
   respond_to :json

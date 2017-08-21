@@ -35,7 +35,7 @@ class CardPermissions
   # can only edit in the "editable" states, reviewers can only edit in the
   # "reviewable" states, etc. This means that these roles use a different
   # permission.
-  def self.set_roles(card, action, roles)
+  def self.set_roles(card, action, roles, permission = nil)
     if action == 'view'
       replace_roles_and_save(get_view_card_permission(card), roles)
       # Return an array, although there is only one permission to return, in
@@ -49,9 +49,10 @@ class CardPermissions
       # "reviewable" states, etc. This means that these roles use a different
       # permission.
       grouped_roles = group_roles(card, roles)
+
       STATES.keys.map do |key|
-        replace_roles_and_save(get_task_permission(card, action, STATES[key]),
-                               grouped_roles[key])
+        permission ||= get_task_permission(card, action, STATES[key])
+        replace_roles_and_save(permission, grouped_roles[key])
       end
     end
   end

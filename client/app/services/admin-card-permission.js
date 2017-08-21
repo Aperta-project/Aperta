@@ -86,8 +86,8 @@ export default Ember.Service.extend({
    * @param {string} permissionAction the action for the permission, e.g. view
    * @return {CardPermission} The permission that was found, or undefined if nothing found
    */
-  findPermission(filterByCardId, permissionAction, role) {
+  findPermission(filterByCardId, permissionAction, role, forAdd) {
     const perms = this.get('store').peekAll('card-permission');
-    return findPermissionFromList(perms, filterByCardId, permissionAction, role);
+    return findPermissionFromList(perms, filterByCardId, permissionAction, role, forAdd);
   }
 });

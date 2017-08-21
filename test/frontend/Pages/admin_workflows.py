@@ -216,13 +216,16 @@ class AdminWorkflowsPage(BaseAdminPage):
     # Time to clear the overlay
     time.sleep(2)
 
-  def add_new_mmt_template(self, commit=False, mmt_name='', user_tasks=('upload_manuscript'),
+  def add_new_mmt_template(self, commit=False, mmt_name='',
+                           user_tasks=('upload_manuscript'),
                            staff_tasks=('assign_team', 'editor_discussion', 'final_tech_check',
                                         'initial_tech_check', 'invite_academic_editor',
                                         'invite_reviewers', 'production_metadata',
                                         'register_decision', 'related_articles',
                                         'revision_tech_check', 'send_to_apex',
-                                        'title_and_abstract'), uses_resrev_report=True):
+                                        'title_and_abstract'),
+                           custom_cards=(),
+                           uses_resrev_report=True):
     """
     A function to add a new mmt (paper type) template to a journal
     :param commit: boolean, whether to commit the named mmt to the journal, defaults to False.
@@ -230,6 +233,7 @@ class AdminWorkflowsPage(BaseAdminPage):
     :param mmt_name: optional name for the new mmt
     :param user_tasks: list of user facing tasks to add to the mmt
     :param staff_tasks: list of staff facing tasks to add to the mmt
+    :param custom_cards: list of custom cards to add to the mmt
     :param uses_resrev_report: boolean, default true, specifies mmt type as research for
       the purposes of reviewer report selection
     :return: void function
@@ -269,10 +273,12 @@ class AdminWorkflowsPage(BaseAdminPage):
       cancel.click()
       time.sleep(1)
     else:
-      logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2} and that uses the '
-                   'research reviewer report: {3}'.format(mmt_name,
+      logging.info('Adding {0} MMT with user tasks: {1}, staff tasks {2}, and custom tasks {3}'
+                   ' and that uses the '
+                   'research reviewer report: {4}'.format(mmt_name,
                                                           user_tasks,
                                                           staff_tasks,
+                                                          custom_cards,
                                                           uses_resrev_report))
       add_mmt_btn = self._get(self._admin_workflow_add_mmt_btn)
       add_mmt_btn.click()
@@ -294,6 +300,13 @@ class AdminWorkflowsPage(BaseAdminPage):
       div_buttons = self._get(self._div_buttons)
       div_buttons.find_element_by_class_name('button-primary').click()
       time.sleep(1)
+      phase2 = phases[1]
+      phase2.click()
+      for card_name in custom_cards:
+        self.add_card_to_mmt(card_name)
+      div_buttons = self._get(self._div_buttons)
+      div_buttons.find_element_by_class_name('button-primary').click()
+      time.sleep(1)
       phase3 = phases[2]
       phase3.click()
       for card_name in staff_tasks:
@@ -306,8 +319,7 @@ class AdminWorkflowsPage(BaseAdminPage):
       time.sleep(1)
       back_btn = self._get(self._mmt_template_back_link)
       back_btn.click()
-      time.sleep(3)
-      self._wait_for_not_element(self._mmt_template_back_link, 1)
+      self._wait_for_not_element(self._mmt_template_back_link, .15)
 
   def delete_new_mmt_template(self):
     """

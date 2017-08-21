@@ -34,11 +34,11 @@ class TitleAbstractCard(BaseCard):
     self.validate_overlay_card_title_style(card_title)
     title_label = self._get(self._title_label)
     assert title_label.text == 'Title', title_label.text
-    self.validate_application_h3_style(title_label)
+    # self.validate_application_h3_style(title_label)
     self.get_rich_text_editor_instance('article-title-input')
     abstract_label = self._get(self._abstract_label)
     assert abstract_label.text == 'Abstract', abstract_label.text
-    self.validate_application_h3_style(abstract_label)
+    # self.validate_application_h3_style(abstract_label)
     self.get_rich_text_editor_instance('article-abstract-input')
 
   def check_title_abstract_card_population(self, short_doi):

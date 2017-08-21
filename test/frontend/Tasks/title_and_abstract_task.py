@@ -3,6 +3,8 @@
 """
 Page Object Model for Title and Abstract Task
 """
+import logging
+import time
 
 from selenium.webdriver.common.by import By
 
@@ -84,12 +86,13 @@ class TitleAbstractTask(BaseTask):
     assert db_title == title, 'Title from page: {0} doesn\'t match title ' \
                               'from db: {1}'.format(title, db_title)
 
-  def set_abstract(self, short_doi, abstract=''):
+  def set_abstract(self, short_doi, abstract='', prod=False):
     """
     Set the abstract and then check value in db
     :param short_doi: The paper.short_doi of the relevant manuscript
     :param abstract: string, optional, abstract to set. Default abstract is 'Abstract inserted by
       Task' if not provided.
+    :param prod: boolean, default False, if set to True, don't attempt db validation
     :return: void function
     """
     if not abstract:
@@ -97,12 +100,13 @@ class TitleAbstractTask(BaseTask):
     tinymce_editor_instance_id, tinymce_editor_instance_iframe = \
         self.get_rich_text_editor_instance('article-abstract-input')
     self.tmce_clear_rich_text(tinymce_editor_instance_iframe)
-    abstract = self.tmce_set_rich_text(tinymce_editor_instance_iframe, abstract)
-    db_abstract = PgSQL().query('SELECT abstract '
-                                'FROM papers '
-                                'WHERE short_doi=%s;', (short_doi,))[0][0]
-    if db_abstract:
-      db_abstract = self.strip_tinymce_ptags(db_abstract)
-    # APERTA-10711 - until this is merged down to master this will not work
-    # assert db_abstract == abstract, 'Abstract from page: {0} doesn\'t match abstract ' \
-#                                 'from db: {1}'.format(abstract, db_abstract)
+    self.tmce_set_rich_text(tinymce_editor_instance_iframe, abstract)
+    # the following ensures there is a blur event without resorting to JavaScript
+    self._get(self._abstract_label).click()
+    if not prod:
+      db_abstract = PgSQL().query('SELECT abstract '
+                                  'FROM papers '
+                                  'WHERE short_doi=%s;', (short_doi,))[0][0]
+
+      assert abstract in db_abstract, 'Abstract from page: {0} doesn\'t match abstract ' \
+                                      'from db: {1}'.format(abstract, db_abstract)

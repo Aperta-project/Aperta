@@ -9,22 +9,28 @@ less static, variable definitions.
 from os import getenv
 
 # General resources
-# set friendly_testhostname to 'prod' to run suite against production
-# Two fields need to be changed to support running tests in your local development
-# environment, first, set friendly_testhostname to localhost, then correct the
-# base_url value if you are using a port or key different than 8081 and plosmatch.
-'''
-friendly_testhostname = 'tahitest'
-friendly_testhostname = 'heroku'
-if friendly_testhostname == 'prod':
-  base_url = ''
-elif friendly_testhostname == 'localhost':
-  base_url = 'http://localhost:8081/'
-else:
-  base_url = 'localhost:5000/'
-'''
+# update the friendly test host name and psql_hname env vars to run in the appropriate target
 
-friendly_testhostname = 'http://ci.aperta.tech/'
+friendly_testhostname = 'https://ci.aperta.tech/'
+
+# Define FTP connection Information for APEX
+APEX_FTP_USER, APEX_FTP_PASS = getenv('APEX_FTP_CREDENTIALS', 'user:password').split(':')
+APEX_FTP_DOMAIN = getenv('APEX_FTP_DOMAIN', 'delivery-test.plos.org')
+APEX_FTP_DIR = getenv('APEX_FTP_DIR', 'aperta2apextest')
+
+# Define connector information for Aperta's Tahi component postgres instance
+# NOTA BENE: Production data should NEVER be included in this file.
+# DEV/CI
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.soma.plos.org')
+# QA/RC
+psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.soma.plos.org')
+# Stage
+# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-stage.soma.plos.org')
+# Global
+psql_port = getenv('APERTA_PSQL_PORT', '5432')
+psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
+psql_pw = getenv('APERTA_PSQL_PW', '')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
 
 local_tz = 'US/Pacific'
 test_journal = 'PLOS Wombat'
@@ -949,25 +955,6 @@ country_list = [u'Andorra',
                 u'Zimbabwe',
                 ]
 
-#Define FTP connection Information for APEX
-APEX_FTP_USER, APEX_FTP_PASS = getenv('APEX_FTP_CREDENTIALS', 'user:password').split(':')
-APEX_FTP_DOMAIN = getenv('APEX_FTP_DOMAIN', 'delivery-test.plos.org')
-APEX_FTP_DIR = getenv('APEX_FTP_DIR', 'aperta2apextest')
-
-# Define connector information for Aperta's Tahi component postgres instance
-# NOTA BENE: Production data should NEVER be included in this file.
-# DEV/CI
-psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-201.soma.plos.org')
-# QA/RC
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-301.soma.plos.org')
-# Stage
-# psql_hname = getenv('APERTA_PSQL_HOST', 'db-aperta-stage.soma.plos.org')
-# Global
-psql_port = getenv('APERTA_PSQL_PORT', '5432')
-psql_uname = getenv('APERTA_PSQL_USER', 'tahi')
-psql_pw = getenv('APERTA_PSQL_PW', '')
-psql_db = getenv('APERTA_PSQL_DBNAME', 'tahi')
-
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
 editor_name_1 = 'Anthony George'
@@ -1808,6 +1795,7 @@ only_init_dec_mmt = {'name'              : 'OnlyInitialDecisionCard',
                                             'Related Articles',
                                             'Revision Tech Check', 'Similarity Check',
                                             'Send to Apex', 'Title And Abstract'],
+                     'custom_cards'      : [],
                      'uses_resrev_report': True
                      }
 only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
@@ -1818,6 +1806,7 @@ only_rev_cands_mmt = {'name'              : 'OnlyReviewerCandidates',
                                              'Register Decision', 'Related Articles',
                                              'Revision Tech Check', 'Send to Apex',
                                               'Similarity Check', 'Title And Abstract'],
+                      'custom_cards'      : [],
                       'uses_resrev_report': True
                       }
 front_matter_mmt = {'name'              : 'Front-Matter-type',
@@ -1826,6 +1815,7 @@ front_matter_mmt = {'name'              : 'Front-Matter-type',
                     'staff_tasks'       : ['Invite Reviewers', 'Production Metadata',
                                            'Register Decision', 'Related Articles', 'Send to Apex',
                                            'Similarity Check', 'Title And Abstract'],
+                    'custom_cards'      : [],
                     'uses_resrev_report': False
                     }
 research_mmt = {'name'              : 'Research',
@@ -1835,6 +1825,7 @@ research_mmt = {'name'              : 'Research',
                 'staff_tasks'       : ['Assign Team', 'Invite Academic Editor',
                                        'Invite Reviewers', 'Register Decision',
                                        'Similarity Check', 'Title And Abstract'],
+                'custom_cards'      : [],
                 'uses_resrev_report': True
                 }
 resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
@@ -1845,6 +1836,7 @@ resrch_w_init_dec = {'name'              : 'Research w/Initial Decision Card',
                                             'Invite Academic Editor', 'Invite Reviewers',
                                             'Register Decision', 'Title And Abstract',
                                             'Similarity Check'],
+                     'custom_cards'      : [],
                      'uses_resrev_report': True
                      }
 imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
@@ -1855,22 +1847,23 @@ imgs_init_dec_mmt = {'name'              : 'Images+InitialDecision',
                                             'Related Articles', 'Revision Tech Check',
                                             'Send to Apex', 'Similarity Check',
                                             'Title And Abstract'],
+                     'custom_cards'      : [],
                      'uses_resrev_report': True
                      }
 gen_cmplt_apexdata = {'name'              : 'generateCompleteApexData',
                       'user_tasks'        : ['Additional Information', 'Authors', 'Billing',
-                                             'Competing Interests', 'Cover Letter',
-                                             'Data Availability', 'Early Article Posting',
-                                             'Ethics Statement', 'Figures', 'Financial Disclosure',
-                                             'New Taxon', 'Reporting Guidelines',
-                                             'Reviewer Candidates', 'Supporting Info',
-                                             'Upload Manuscript'],
+                                             'Cover Letter', 'Data Availability',
+                                             'Early Article Posting', 'Ethics Statement', 'Figures',
+                                             'Financial Disclosure', 'New Taxon',
+                                             'Reporting Guidelines', 'Reviewer Candidates',
+                                             'Supporting Info', 'Upload Manuscript'],
                       'staff_tasks'       : ['Assign Team', 'Editor Discussion', 'Final Tech Check',
                                              'Invite Academic Editor', 'Invite Reviewers',
                                              'Production Metadata', 'Register Decision',
                                              'Related Articles', 'Revision Tech Check',
                                              'Send to Apex', 'Similarity Check',
                                              'Title And Abstract'],
+                      'custom_cards':        ['Competing Interests', ],
                       'uses_resrev_report': True
                       }
 no_cards_mmt = {'name'              : 'NoCards',
@@ -1880,19 +1873,20 @@ no_cards_mmt = {'name'              : 'NoCards',
                                        'Production Metadata', 'Register Decision',
                                        'Related Articles', 'Revision Tech Check', 'Send to Apex',
                                        'Similarity Check', 'Title And Abstract'],
+                'custom_cards'      : [],
                 'uses_resrev_report': True
                 }
 # The following MMT definitions are seed data for our lean environment
 bio_essay = {'name':               'Essay',
              'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
                                     'Ethics Statement', 'Figures', 'Reviewer Candidates',
-                                    'Supporting Info', 'Competing Interests',
-                                    'Financial Disclosure', 'Additional Information',
-                                    'Early Article Posting'],
+                                    'Supporting Info', 'Financial Disclosure',
+                                    'Additional Information', 'Early Article Posting'],
              'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check', 'Final Tech Check',
                                     'Assign Team', 'Invite Academic Editor', 'Invite Reviewers',
                                     'Register Decision', 'Send to Apex', 'Production Metadata',
                                     'Similarity Check', 'Title And Abstract'],
+             'custom_cards':        ['Competing Interests', ],
              'uses_resrev_report': True
              }
 bio_resart = {'name':               'Research Article',
@@ -1904,11 +1898,12 @@ bio_resart = {'name':               'Research Article',
                                      'Revision Tech Check', 'Final Tech Check', 'Invite Reviewers',
                                      'Register Decision', 'Production Metadata',
                                      'Similarity Check', 'Send to Apex'],
+              'custom_cards'      : [],
               'uses_resrev_report': True
               }
 bio_genres = {'name':               'Genetics Research',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
-                                     'Competing Interests', 'Cover Letter', 'Data Availability',
+                                     'Cover Letter', 'Data Availability',
                                      'Ethics Statement', 'Figures', 'Financial Disclosure',
                                      'Reporting Guidelines', 'Reviewer Candidates',
                                      'Supporting Info', 'Upload Manuscript',
@@ -1918,63 +1913,64 @@ bio_genres = {'name':               'Genetics Research',
                                      'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                      'Related Articles', 'Production Metadata', 'Similarity Check',
                                      'Title And Abstract'],
+              'custom_cards':        ['Competing Interests', ],
               'uses_resrev_report': True
               }
 bio_mystery = {'name':               'Unsolved Mystery',
                'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
                                       'Ethics Statement', 'Figures', 'Reviewer Candidates',
-                                      'Supporting Info', 'Competing Interests',
-                                      'Financial Disclosure', 'Additional Information',
-                                      'Early Article Posting'],
+                                      'Supporting Info', 'Financial Disclosure',
+                                      'Additional Information', 'Early Article Posting'],
                'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check',
                                       'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                       'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                       'Production Metadata', 'Similarity Check',
                                       'Title And Abstract'],
+               'custom_cards':        ['Competing Interests', ],
                'uses_resrev_report': True
                }
 bio_commpage = {'name':               'Community Page',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
                                        'Ethics Statement', 'Figures', 'Reviewer Candidates',
-                                       'Supporting Info', 'Competing Interests',
-                                       'Financial Disclosure', 'Additional Information',
-                                       'Early Article Posting'],
+                                       'Supporting Info', 'Financial Disclosure',
+                                       'Additional Information', 'Early Article Posting'],
                 'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check',
                                        'Final Tech Check', 'Invite Academic Editor',
                                        'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                        'Production Metadata', 'Similarity Check',
                                        'Title And Abstract'],
+                'custom_cards':        ['Competing Interests', ],
                 'uses_resrev_report': True
                 }
 bio_formcomm = {'name':               'Formal Comment',
                 'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors',
                                        'Ethics Statement', 'Figures', 'Reviewer Candidates',
-                                       'Supporting Info', 'Competing Interests',
-                                       'Financial Disclosure', 'Additional Information',
-                                       'Early Article Posting'],
+                                       'Supporting Info', 'Financial Disclosure',
+                                       'Additional Information', 'Early Article Posting'],
                 'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check',
                                        'Final Tech Check', 'Assign Team', 'Invite Academic Editor',
                                        'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                        'Production Metadata', 'Similarity Check',
                                        'Title And Abstract'],
+                'custom_cards':        ['Competing Interests', ],
                 'uses_resrev_report': True
                 }
 bio_nwc = {'name':               'New Workflow Concept',
            'user_tasks':         ['Upload Manuscript', 'Supporting Info', 'Cover Letter',
                                   'Additional Information', 'Reviewer Candidates', 'Figures',
                                   'Authors', 'Ethics Statement', 'Data Availability',
-                                  'Competing Interests', 'Financial Disclosure',
-                                  'Early Article Posting'],
+                                  'Financial Disclosure', 'Early Article Posting'],
            'staff_tasks':        ['Assign Team', 'Initial Decision', 'Title And Abstract',
                                   'Initial Tech Check', 'Invite Reviewers', 'Register Decision',
                                   'Revision Tech Check', 'Final Tech Check',
                                   'Production Metadata', 'Send to Apex', 'Related Articles',
                                   'Similarity Check'],
+           'custom_cards':        ['Competing Interests', ],
            'uses_resrev_report': True
            }
 gen_resart = {'name':               'Research Article',
               'user_tasks':         ['Additional Information', 'Authors', 'Billing',
-                                     'Competing Interests', 'Cover Letter', 'Data Availability',
+                                     'Cover Letter', 'Data Availability',
                                      'Ethics Statement', 'Figures', 'Financial Disclosure',
                                      'Reporting Guidelines', 'Reviewer Candidates',
                                      'Supporting Info', 'Upload Manuscript',
@@ -1984,16 +1980,17 @@ gen_resart = {'name':               'Research Article',
                                      'Invite Reviewers', 'Register Decision', 'Send to Apex',
                                      'Related Articles', 'Production Metadata', 'Similarity Check',
                                      'Title And Abstract'],
+              'custom_cards':        ['Competing Interests', ],
               'uses_resrev_report': True
               }
 gen_persp = {'name':               'Perspective',
              'user_tasks':         ['Cover Letter', 'Upload Manuscript', 'Authors', 'Figures',
-                                    'Supporting Info', 'Competing Interests',
-                                    'Financial Disclosure', 'Additional Information',
-                                    'Early Article Posting'],
+                                    'Supporting Info', 'Financial Disclosure',
+                                    'Additional Information', 'Early Article Posting'],
              'staff_tasks':        ['Initial Tech Check', 'Revision Tech Check', 'Final Tech Check',
                                     'Assign Team', 'Invite Academic Editor', 'Register Decision',
                                     'Production Metadata', 'Send to Apex', 'Similarity Check',
                                     'Title And Abstract'],
+             'custom_cards':        ['Competing Interests', ],
              'uses_resrev_report': False
              }

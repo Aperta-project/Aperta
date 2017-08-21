@@ -950,19 +950,19 @@ class AuthenticatedPage(StyledPage):
 
   def tmce_set_rich_text(self, iframe, content=''):
     """
-    Set the text of the rich text editor refered to by editory id with frame iframe
+    Set the text of the rich text editor referred to by editor id with frame iframe
     :param iframe: the iframe webelement returned from get_rich_text_editor_instance()
     :param content: The text to set into the rich text editor
     :return: void function
     """
     self.traverse_to_frame(iframe)
     try:
-      self._iframe_body = (By.TAG_NAME, 'body')
-      text_entry_field = self._get(self._iframe_body)
-      text_entry_field.send_keys(content)
+        self._iframe_body = (By.TAG_NAME, 'body')
+        text_entry_field = self._get(self._iframe_body)
+        text_entry_field.send_keys(content)
     finally:
-      self.traverse_from_frame()
-      time.sleep(1) # added sleep because tinymce takes more time than the previous control
+        self.traverse_from_frame()
+        time.sleep(1) # added sleep because tinymce takes more time than the previous control
     return
 
   def tmce_clear_rich_text(self, iframe):

@@ -12,7 +12,7 @@ export default Ember.Component.extend({
     inRange: PropTypes.bool
   },
 
-  previewState: true,
+  preview: false,
 
   initial: Ember.computed.reads('content.initial'),
   min: Ember.computed.reads('content.min'),

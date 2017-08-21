@@ -555,7 +555,9 @@
       <optional>
         <attribute name="max"/>
       </optional>
-      <ref name="content"/>
+      <oneOrMore>
+        <ref name="content"/>
+      </oneOrMore>
     </element>
   </define>
   <define name="content">

@@ -174,7 +174,7 @@ repeat = element content {
                 attribute initial { text }?,
                 attribute min { text }?,
                 attribute max { text }?,
-                content
+                content+
 }
 
 content = (

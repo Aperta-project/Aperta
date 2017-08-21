@@ -11,20 +11,24 @@
     {{partial "repeat-range-error"}}
   {{/unless}}
 
-  {{card-content
-    content=content.children.firstObject
-    owner=owner
-    preview=preview
-    disabled=disabled
-  }}
+  {{#each content.children as |child|}}
+    {{card-content
+      content=child
+      disabled=disabled
+      owner=owner
+      answerChanged=answerChanged
+      preview=preview}}
+  {{/each}}
 {{else if inRange}}
   {{#each (range lowerBound upperBound) as |number|}}
-    {{card-content
-      content=content.children.firstObject
-      owner=owner
-      preview=preview
-      disabled=disabled
-    }}
+    {{#each content.children as |child|}}
+      {{card-content
+        content=child
+        disabled=disabled
+        owner=owner
+        answerChanged=answerChanged
+        preview=preview}}
+    {{/each}}
   {{/each}}
 {{else}}
   {{partial "repeat-range-error"}}

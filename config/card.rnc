@@ -125,7 +125,7 @@ text-input = element content {
 
 list-content = element content {
                  attribute ident { text }?,
-                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" },
+                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" | "question-list" },
                  content*
                }
 

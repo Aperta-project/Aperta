@@ -448,6 +448,7 @@
           <value>bulleted-list</value>
           <value>numbered-list</value>
           <value>plain-list</value>
+          <value>question-list</value>
         </choice>
       </attribute>
       <zeroOrMore>

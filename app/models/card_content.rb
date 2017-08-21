@@ -73,6 +73,7 @@ class CardContent < ActiveRecord::Base
       'sendback-reason': ['boolean'],
       'numbered-list': [nil],
       'bulleted-list': [nil],
+      'question-list': [nil],
       'if': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 

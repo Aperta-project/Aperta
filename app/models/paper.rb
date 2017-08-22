@@ -20,7 +20,6 @@ class Paper < ActiveRecord::Base
   self.snapshottable = true
 
   belongs_to :journal, inverse_of: :papers
-  belongs_to :striking_image, polymorphic: true
 
   # Attachment-related things
   has_many :figures, as: :owner, dependent: :destroy

@@ -566,7 +566,6 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -576,7 +575,6 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false

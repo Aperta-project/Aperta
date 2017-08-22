@@ -32,14 +32,14 @@ module CustomCard
         []
       end
 
-      def self.discussion_view_role_names
+      def self.view_discussion_footer_role_names
         # an array of `Role.name` that should have discussion view permissions on the Card
         # default: same as non-discussion view permissions
         # options: this method can also return `:all` to allow all Roles in system
         view_role_names
       end
 
-      def self.discussion_edit_role_names
+      def self.edit_discussion_footer_role_names
         # an array of `Role.name` that should have discussion edit permissions on the Card
         # default: same as non-discussion edit permissions
         # options: this method can also return `:all` to allow all Roles in system

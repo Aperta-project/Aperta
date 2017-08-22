@@ -19,11 +19,11 @@ module CustomCard
         :all
       end
 
-      def self.discussion_view_role_names
+      def self.view_discussion_footer_role_names
         :all
       end
 
-      def self.discussion_edit_role_names
+      def self.edit_discussion_footer_role_names
         :all
       end
 

@@ -19,6 +19,14 @@ module CustomCard
         <%= edit_permissions %>
       end
 
+      def self.view_discussion_footer_role_names
+        <%= view_discussion_footer_permissions %>
+      end
+
+      def self.edit_discussion_footer_role_names
+        <%= edit_discussion_footer_permissions %>
+      end
+
       def self.publish
         true
       end

@@ -89,8 +89,8 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(nil)
         allow(card_configuration).to receive(:edit_role_names).and_return(nil)
-        allow(card_configuration).to receive(:discussion_view_role_names).and_return(nil)
-        allow(card_configuration).to receive(:discussion_edit_role_names).and_return(nil)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(nil)
       end
 
       it "has all journal permissions" do
@@ -103,8 +103,8 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(:all)
         allow(card_configuration).to receive(:edit_role_names).and_return(:all)
-        allow(card_configuration).to receive(:discussion_view_role_names).and_return(:all)
-        allow(card_configuration).to receive(:discussion_edit_role_names).and_return(:all)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(:all)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(:all)
       end
 
       it "has view and edit permissions defined" do
@@ -120,8 +120,8 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(role_name)
         allow(card_configuration).to receive(:edit_role_names).and_return(nil)
-        allow(card_configuration).to receive(:discussion_view_role_names).and_return(role_name)
-        allow(card_configuration).to receive(:discussion_edit_role_names).and_return(nil)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(role_name)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(nil)
       end
 
       it "has only view permissions defined (one for Card, one for CardVersion)" do
@@ -137,8 +137,8 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(nil)
         allow(card_configuration).to receive(:edit_role_names).and_return(role_name)
-        allow(card_configuration).to receive(:discussion_view_role_names).and_return(nil)
-        allow(card_configuration).to receive(:discussion_edit_role_names).and_return(role_name)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(role_name)
       end
 
       it "has only edit permissions defined" do

@@ -61,6 +61,14 @@ module CustomCard
       permissions[:edit]
     end
 
+    def view_discussion_footer_permissions
+      view_permissions
+    end
+
+    def edit_discussion_footer_permissions
+      edit_permissions
+    end
+
     def permissions
       @permissions ||= CustomCard::PermissionInquiry.new(legacy_class_name: legacy_task_klass_name).legacy_permissions
     end

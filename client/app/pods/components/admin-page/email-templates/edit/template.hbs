@@ -1,36 +1,137 @@
-<div class="col-xs-12">
-  {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
-  <h1>
-    {{template.name}}
-  </h1>
-  {{#tab-bar}}
-    <a class="active">Edit Email</a>
-  {{/tab-bar}}
-</div>
-<div class="col-xs-12 edit-email-backsplash">
-  <div class="well well-lg edit-email-well">
-    <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
-      <label for="subject" class="text-bold">Subject:</label>
-      {{input class="form-control" id="subject" value=template.subject}}
-      {{#unless (or unsaved template.subject)}}
-        <span>{{fa-icon 'warning'}} Please enter a subject line</span>
-      {{/unless}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
+      <h1>
+        {{template.name}}
+      </h1>
+      {{#tab-bar}}
+        <a class="active">Edit Email</a>
+      {{/tab-bar}}
     </div>
-    <div class="form-group {{unless (or unsaved template.body) 'error'}}">
-      <label for="body" class="text-bold">Body:</label>
-      {{rich-text-editor
-        ident="body"
-        editorStyle='expanded'
-        value=template.body
-        onContentsChanged=(action "onInputCallback")}}
-      {{#unless (or unsaved template.body)}}
-        <span>{{fa-icon 'warning'}} Please enter body text</span>
-      {{/unless}}
-    </div>
-    <div class="text-right">
-      <button class="button-primary button--blue" {{action "save"}}>
-        Save
-      </button>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 edit-email-backsplash">
+      <div class="text-right">
+        <button class="button-primary button--blue" {{action "save"}}>
+          Save
+        </button>
+      </div>
+
+      <div class="well well-lg edit-email-well">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-9">
+              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
+                <label for="subject" class="text-bold">Subject:</label>
+                {{input class="form-control" id="subject" value=template.subject}}
+                {{#unless (or unsaved template.subject)}}
+                  <span>{{fa-icon 'warning'}} Please enter a subject line</span>
+                {{/unless}}
+              </div>
+              
+              <div class="form-group {{unless (or unsaved template.body) 'error'}}">
+                <label for="body" class="text-bold">Body:</label>
+                {{rich-text-editor
+                  ident="body"
+                  editorStyle='expanded'
+                  value=template.body
+                  onContentsChanged=(action "onInputCallback")}}
+                {{#unless (or unsaved template.body)}}
+                  <span>{{fa-icon 'warning'}} Please enter body text</span>
+                {{/unless}}
+              </div>
+            </div>
+
+            <div class="col-xs-3 sample-merge-fields-col">
+              <div class="sample-merge-fields-header">Available Merge Fields</div>
+              <div class="sample-merge-fields">
+                <div class="sample-merge-field">\{{ manuscript.title }}</div>
+                <div class="sample-merge-field">\{{ manuscript.abstract }}</div>
+                <div class="sample-merge-field">\{{ manuscript.paper_type }}</div>
+                <div class="sample-merge-field">\{{ manuscript.url }}</div>
+
+                <div class="sample-merge-field">\{{ manuscript.editor.first_name }}</div>
+                <div class="sample-merge-field">\{{ manuscript.editor.last_name }}</div>
+                <div class="sample-merge-field">\{{ manuscript.editor.email }}</div>
+                <div class="sample-merge-field">\{{ manuscript.editor.title }}</div>
+
+                <div class="sample-merge-field">\{{ journal.name }}</div>
+                <div class="sample-merge-field">\{{ journal.logo_url }}</div>
+                <div class="sample-merge-field">\{{ journal.staff_email }}</div>
+
+              <div class="sample-merge-field-group">
+                <div>{% for academic_editor in manuscript.academic_editors %}</div>
+                  <div class="sample-merge-field">\{{ academic_editor.first_name }}</div>
+                  <div class="sample-merge-field">\{{ academic_editor.last_name }}</div>
+                  <div class="sample-merge-field">\{{ academic_editor.email }}</div>
+                  <div class="sample-merge-field">\{{ academic_editor.title }}</div>
+                <div>{% endfor %}</div>
+              </div>
+
+              <div class="sample-merge-field-group">
+                <div>{% for handling_editor in manuscript.handling_editors %}</div>
+                  <div class="sample-merge-field">\{{ handling_editor.first_name }}</div>
+                  <div class="sample-merge-field">\{{ handling_editor.last_name }}</div>
+                  <div class="sample-merge-field">\{{ handling_editor.email }}</div>
+                  <div class="sample-merge-field">\{{ handling_editor.title }}</div>
+                <div>{% endfor %}</div>
+              </div>
+
+              <div class="sample-merge-field-group">
+                <div>{% for author in manuscript.authors %}</div>
+                  <div class="sample-merge-field">\{{ author.first_name }}</div>
+                  <div class="sample-merge-field">\{{ author.last_name }}</div>
+                  <div class="sample-merge-field">\{{ author.email }}</div>
+                  <div class="sample-merge-field">\{{ author.title }}</div>
+                  <div class="sample-merge-field">\{{ author.author_initial }}</div>
+                  <div class="sample-merge-field">\{{ author.affiliation }}</div>
+                <div>{% endfor %}</div>
+              </div>
+
+              <div class="sample-merge-field-group">
+                <div>{% for corresponding_author in manuscript.corresponding_authors %}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.first_name }}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.last_name }}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.email }}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.title }}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.author_initial }}</div>
+                  <div class="sample-merge-field">\{{ corresponding_author.affiliation }}</div>
+                <div>{% endfor %}</div>
+              </div>
+
+              <div class="sample-merge-field-group">
+                <div>{% for review in reviews %}</div>
+                  <div class="sample-merge-field">\{{ review.state }}</div>
+                  <div class="sample-merge-field">\{{ review.revision }}</div>
+                  <div class="sample-merge-field">\{{ review.invitation_accepted? }}</div>
+                  <div class="sample-merge-field">\{{ review.status }}</div>
+                  <div class="sample-merge-field">\{{ review.datetime }}</div>
+                  <div class="sample-merge-field">\{{ review.reviewer_number }}</div>
+                  
+                  <div class="sample-merge-field">\{{ review.reviewer.first_name }}</div>
+                  <div class="sample-merge-field">\{{ review.reviewer.last_name }}</div>
+                  <div class="sample-merge-field">\{{ review.reviewer.email }}</div>
+                  <div class="sample-merge-field">\{{ review.reviewer.title }}</div>
+
+                <div class="sample-merge-field-group">
+                  <div>{% for answer in review.answers %}</div>
+                    <div class="sample-merge-field">\{{ answer.value_type }}</div>
+                    <div class="sample-merge-field">\{{ answer.string_value }}</div>
+                    <div class="sample-merge-field">\{{ answer.value }}</div>
+                    <div class="sample-merge-field">\{{ answer.question }}</div>
+                    <div class="sample-merge-field">\{{ answer.ident }}</div>
+                  <div>{% endfor %}</div>
+                </div>
+                <div>{% endfor %}</div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+      </div>
     </div>
   </div>
 </div>

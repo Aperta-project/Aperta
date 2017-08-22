@@ -20,3 +20,23 @@
     color: $aperta-blue;
   };
 }
+
+.sample-merge-fields-header {
+  margin: 24px 0px 12px;
+  font-size: 18px;
+}
+
+.sample-merge-fields {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 614px;
+  color: $aperta-grey;
+  white-space: nowrap;
+}
+
+.sample-merge-field-group {
+  margin-top: 8px;
+  .sample-merge-field, .sample-merge-field-group {
+    margin-left: 10px;
+  }
+}

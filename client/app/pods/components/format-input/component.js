@@ -73,60 +73,6 @@ export default Ember.Component.extend({
   autofocus: false,
 
   /**
-   *  Show/hide bold button
-   *
-   *  @property displayBold
-   *  @type Boolean
-   *  @default true
-   *  @optional
-  **/
-  displayBold: true,
-  _boldActive: false,
-
-  /**
-   *  Show/hide italic button
-   *
-   *  @property displayItalic
-   *  @type Boolean
-   *  @default true
-   *  @optional
-  **/
-  displayItalic: true,
-  _italicActive: false,
-
-  /**
-   *  Show/hide superscript button
-   *
-   *  @property displaySuperscript
-   *  @type Boolean
-   *  @default true
-   *  @optional
-  **/
-  displaySuperscript: true,
-  _superscriptActive: false,
-
-  /**
-   *  Show/hide subscript button
-   *
-   *  @property displaySubscript
-   *  @type Boolean
-   *  @default true
-   *  @optional
-  **/
-  displaySubscript: true,
-  _subscriptActive: false,
-
-  /**
-   *  Disable the input
-   *
-   *  @property disabled
-   *  @type Boolean
-   *  @default false
-   *  @optional
-  **/
-  disabled: false,
-
-  /**
    * If the value changes optionally send an action.
    * This observer is a stopgap for backwards compatibility:
    * consumers can invoke format-input with a readonly value
@@ -142,8 +88,17 @@ export default Ember.Component.extend({
     });
   }),
 
-  valueChanged: null, //expected action
+  /**
+   * Set answer.value to the value received in order to pass it in
+   * to the card-content/paragraph-input component which requires
+   * answer as a property.
+   **/
+  answer: {},
+  didReceiveAttrs() {
+    this.set('answer.value', this.get('value'));
+  },
 
+  valueChanged: null, //expected action
   /**
    *  This will pass the formatted content
    *  down to the content-editable component
@@ -194,31 +149,5 @@ export default Ember.Component.extend({
     _.each(ELEMENT_NAME_MAP, (type)=> {
       this.set(`_${type}Active`, false);
     });
-  },
-
-  actions: {
-    format(type) {
-      document.execCommand(type,false, null);
-      this.syncMarkupAndValue();
-    },
-
-    'focus-in': function() {
-      this.set('active', true);
-    },
-
-    'focus-out': function() {
-      this.set('active', false);
-
-      const action = this.attrs['focus-out'];
-      if(action) { action(); }
-    },
-
-    'selection-in': function() {
-      this._markActiveFormatTypes();
-    },
-
-    'selection-out': function() {
-      this._clearActiveFormatTypes();
-    }
   }
 });

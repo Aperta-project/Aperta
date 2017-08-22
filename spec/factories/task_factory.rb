@@ -156,7 +156,7 @@ FactoryGirl.define do
       title "Production Metadata"
     end
 
-    factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
+    factory :publishing_related_questions_task, class: 'CustomCardTask' do
       title 'Additional Information'
     end
 

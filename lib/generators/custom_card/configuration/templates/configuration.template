@@ -20,11 +20,11 @@ module CustomCard
       end
 
       def self.view_discussion_footer_role_names
-        <%= view_discussion_footer_permissions %>
+        view_role_names
       end
 
       def self.edit_discussion_footer_role_names
-        <%= edit_discussion_footer_permissions %>
+        edit_role_names
       end
 
       def self.publish

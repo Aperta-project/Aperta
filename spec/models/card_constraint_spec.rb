@@ -87,7 +87,7 @@ describe Card do
 
     it 'requires idents to be unique per card' do
       loader = XmlCardLoader.new(card)
-      loader.load(dup_xml)
+      expect { loader.load(dup_xml) }.to raise_error(ActiveRecord::RecordInvalid)
       expect(card.errors).to_not be_empty
       expect(card.errors[:detail]).to be_present
       expect(card.errors[:detail].first[:message]).to match(/unique.*SomeStuff/)
@@ -95,7 +95,7 @@ describe Card do
 
     it 'idents cannot duplicate IF idents' do
       loader = XmlCardLoader.new(card)
-      loader.load(dup_if_xml)
+      expect { loader.load(dup_xml) }.to raise_error(ActiveRecord::RecordInvalid)
       expect(card.errors).to_not be_empty
       expect(card.errors[:detail]).to be_present
       expect(card.errors[:detail].first[:message]).to match(/unique.*SomeStuff/)

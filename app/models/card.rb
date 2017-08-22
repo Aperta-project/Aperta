@@ -25,7 +25,7 @@ class Card < ActiveRecord::Base
       MSG
     }
 
-  before_save :check_nested_errors, :check_semantics
+  validate :check_nested_errors, :check_semantics
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }

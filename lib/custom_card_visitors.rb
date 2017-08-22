@@ -3,6 +3,8 @@ module CustomCardVisitors
     def visit(card_content); end
   end
 
+  # This class flattens and de-dupes Rails errors in a content hierarchy
+
   class CardErrorVisitor < CustomCardVisitor
     def initialize
       @errors = []
@@ -18,6 +20,8 @@ module CustomCardVisitors
     end
   end
 
+  # This class is useful for debugging idents in a content hierarchy
+
   class CardIdentVisitor < CustomCardVisitor
     def initialize
       @idents = []
@@ -32,6 +36,9 @@ module CustomCardVisitors
       @idents
     end
   end
+
+  # This class does semantic validation on a content hierarchy
+  # - permit an IF component to have the same ident on both legs, but validate those against other components
 
   class CardSemanticValidator < CustomCardVisitor
     IGNORED = Set.new(%w[if]).freeze

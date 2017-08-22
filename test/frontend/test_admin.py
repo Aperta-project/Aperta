@@ -70,7 +70,7 @@ class ApertaAdminTest(CommonTest):
     adm_users_page.page_ready()
     user = random.choice(user_search)
     logging.info('Searching user: {0}'.format(user))
-    adm_users_page.validate_search_edit_user(user)
+    adm_users_page.validate_search_edit_user(user, user_type)
 
   def test_validate_add_new_journal(self):
     """

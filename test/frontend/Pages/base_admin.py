@@ -198,9 +198,12 @@ class BaseAdminPage(AuthenticatedPage):
     :return:  Name of Selected Journal
     """
     journal_names = []
+    logging.debug('Initial list of Journals is: {0}'.format(journal_names))
     journal_links = self._gets(self._base_admin_journal_links)
     for journal in journal_links:
-      if regular and journal.text not in ('All My Journals', 'All'):
+      if regular:
+        if journal.text not in ('All My Journals', 'All'):
+          logging.debug('journal name is ->{0}<-'.format(journal.text))
           journal_names.append(journal.text)
       else:
         journal_names.append(journal.text)
@@ -209,6 +212,8 @@ class BaseAdminPage(AuthenticatedPage):
     for journal in journal_links:
       if journal.text == rand_selection:
         journal.click()
+        logging.info('Selecting regular journal: {0}'.format(rand_selection))
+        time.sleep(2)
         break
     time.sleep(2)
     return rand_selection

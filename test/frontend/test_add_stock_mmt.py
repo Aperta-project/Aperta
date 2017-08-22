@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case that populates all mmt needed for python test suite runs.
+This test case that populates all mmt needed for python test suite runs. Note that normally, the population of
+biology and genetics demo journals is disabled via changing the test method name from test_* to rest_*. These only
+need to be run in demo, so it is appropriate to leave them in place and disabled.
 """
 
 import logging
@@ -242,7 +244,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
         #   as each new mmt add updates the DOM
         adm_wf_page = AdminWorkflowsPage(self.getDriver())
 
-  def test_populate_biology_demo_mmts(self):
+  def rest_populate_biology_demo_mmts(self):
     """
     test_add_stock_mmt: adds the stock biology MMT from the journal_admin page.
     Add new Templates if they don't exist
@@ -282,7 +284,7 @@ class ApertaSeedJournalMMTTest(CommonTest):
         #   as each new mmt add updates the DOM
         adm_wf_page = AdminWorkflowsPage(self.getDriver())
 
-  def test_populate_genetics_demo_mmts(self):
+  def rest_populate_genetics_demo_mmts(self):
     """
     test_add_stock_mmt: adds the stock genetics MMT from the journal_admin page.
     Add new Templates if they don't exist

@@ -148,16 +148,19 @@ class AdminUsersPage(BaseAdminPage):
     delete_role = self._get(self._admin_users_row_role_delete)
     delete_role.click()
 
-  def validate_search_edit_user(self, username):
+  def validate_search_edit_user(self, username, searcher):
     """
     Validates the styling and output of the base admin user search
     :param username: A username against which to search
+    :param searcher: The username conducting the search
     :return: void function
     """
-    self._search_user('')
     time.sleep(1)  # sadly one needs to allow time for the result set to update from the server
-    no_result_search_text = self._get(self._admin_users_default_state_text).text
-    assert no_result_search_text == 'No matching users found'
+    # This search result only shows for the all my journals selection which is only the default selection for a site
+    #   admin
+    if searcher == 'asuperadm':
+      no_result_search_text = self._get(self._admin_users_default_state_text).text
+      assert no_result_search_text == 'No matching users found'
     self._search_user(username)
     self._get(self._admin_users_search_results_table)
     self._get(self._admin_users_search_results_table_fname_header)
@@ -169,8 +172,9 @@ class AdminUsersPage(BaseAdminPage):
     for result in result_set:
       if username in result.text:
         success_count += 1
-        result.click()
-        # TODO: Validate Styles for these elements
+        result_username = result.find_element(*self._admin_users_row_username)
+        logging.info('Clicking result set row for user {0}'.format(result_username.text))
+        result_username.click()
         time.sleep(2)
         self._get(self._ud_overlay_title)
         user_details_closer = self._get(self._overlay_header_close)

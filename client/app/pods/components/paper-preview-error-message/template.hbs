@@ -1,0 +1,27 @@
+{{#if paper.isSubmitted}}
+  <h3>Preview for this manuscript is unavailable.</h3>
+  <p>This may be due to images, audio, video, or other
+    objects embedded in the original manuscript file.
+    You can <a href="#" {{action "toggleDownloads"}} id="download">download the manuscript</a> to
+    your computer to view it.
+    If you would like to contact us, you can reach us via our
+    <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.
+  </p>
+{{else}}
+  {{#if paper.previewFail}}
+    <h3>Preview for this manuscript is unavailable.</h3>
+    <p>If you are using an unsupported browser, <a href="https://browsehappy.com/" target="_blank">please try a different web browser</a>, or you can download the manuscript to your computer to view it. </p>
+    <p>If you would like to contact us, you can reach us via our Feedback form.</p>
+  {{else}}
+    <h3>Your file was uploaded successfully, but we were unable to render a preview at this time.</h3>
+    <p><i id="errored-file-icon" class="fa {{checkFileType}}"></i>{{paper.file.filename}}</p>
+    <p><b>Next Steps:</b> You may complete your submission as is.  If you prefer to preview
+      your file, please remove any embedded images, audio, video, etc.,
+      and try uploading again. You may also upload your manuscript as a PDF.</p>
+      <p>Refer to our <a href="http://journals.plos.org/plosbiology/s/aperta-user-guide-for-authors#loc-figures"
+                     target="_blank">submission guide</a> for information about uploading figures in Aperta.
+                     If you would like to contact us, you can reach us via our
+                     <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.
+      </p>
+  {{/if}}
+{{/if}}

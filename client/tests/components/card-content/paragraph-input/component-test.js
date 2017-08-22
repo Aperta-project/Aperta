@@ -37,7 +37,7 @@ test(`it disables the by marking it read-only if disabled=true`, function(assert
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);
-  assert.textPresent('.format-input', 'Bar');
+  assert.ok(this.$('.ember-text-area').val(), 'Bar', 'Text is present in textarea');
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];

@@ -3,6 +3,7 @@ import Ember from 'ember';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
+  attachments: DS.hasMany('correspondence-attachment', { async: false }),
   date: DS.attr('string'),
   subject: DS.attr('string'),
   recipients: DS.attr('string'),
@@ -24,5 +25,9 @@ export default DS.Model.extend({
     else {
       return this.get('manuscriptVersion') + ' ' + this.get('manuscriptStatus');
     }
+  }),
+
+  hasAnyAttachment: Ember.computed('attachments', function() {
+    return Ember.isEmpty(this.get('attachments'));
   })
 });

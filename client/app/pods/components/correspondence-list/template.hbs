@@ -16,9 +16,12 @@
             <td>{{format-date message.sentAt}}</td>
             <td>
               <div class="correspondence{{message.id}}">
-              {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
-                {{if message.external message.description message.subject}}
-              {{/link-to}}
+                {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
+                  {{if message.external message.description message.subject}}
+                {{/link-to}}
+                {{#unless message.hasAnyAttachment}}
+                  <span class="fa fa-paperclip"></span>
+                {{/unless}}
               </div>
             </td>
             <td>{{message.recipient}}</td>

@@ -46,7 +46,7 @@ module CustomCard
             <content content-type="display-children">
               <content content-type="radio" value-type="text" default-answer-value="1">
                 <text>
-                  <![CDATA[Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online. If you do <b>NOT</b> consent to having an early version of your paper posted online, uncheck the box below.]]>
+                  <![CDATA[Establish priority: take credit for your research and discoveries, by posting a copy of your uncorrected proof online. If you do <b>NOT</b> consent to having an early version of your paper posted online, indicate your choice below.]]>
                 </text>
                 <possible-value label="Yes, I want to accelerate research by publishing a preprint ahead of peer review" value="1"/>
                 <possible-value label="No, I do not want my article to appear online ahead of the reviewed article" value="2"/>

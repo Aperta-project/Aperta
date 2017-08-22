@@ -113,14 +113,6 @@ export default Ember.Component.extend({
       }
     },
 
-    toggleStrikingImageFromCheckbox(checkbox) {
-      let newValue = null;
-      if (checkbox.get('checked')) {
-          newValue = checkbox.get('attachment.id');
-      }
-      this.sendAction('strikingImageAction', newValue);
-    },
-
     togglePublishable(checkbox) {
       var newValue = checkbox.get('attachment.publishable');
       this.set('publishable', newValue);

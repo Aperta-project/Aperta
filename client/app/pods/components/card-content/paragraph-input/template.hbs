@@ -18,10 +18,10 @@
     hideError=hideError
   }}
 {{else}}
-  {{format-input
+  {{textarea
       value=(readonly answer.value)
       class="form-control"
-      valueChanged=(action "valueChanged")
+      key-up=(action "valueChanged")
       disabled=disabled
   }}
 {{/if}}

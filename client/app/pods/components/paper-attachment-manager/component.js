@@ -29,7 +29,10 @@ export default Ember.Component.extend({
 
   propTypes: {
     attachmentType: PropTypes.oneOf(['manuscript', 'sourcefile']).isRequired,
-    errorMessage: PropTypes.string // overrides attachment manager errors
+    errorMessage: PropTypes.oneOfType([
+      PropTypes.null,
+      PropTypes.string // overrides attachment manager errors
+    ])
   },
 
   // Do not propagate to parent component as this component is in charge of

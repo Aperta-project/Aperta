@@ -104,17 +104,4 @@ feature "Paper workflow", js: true, selenium: true do
 
     expect(task_manager_page).to have_css('.card-title', text: card.name, visible: false)
   end
-
-  # Preventing a regression
-  scenario 'Opening an Invite Reviewers task' do
-    task_manager_page = TaskManagerPage.new
-
-    within 'body' do
-      find('.card-title', text: 'Invite Reviewer').click
-
-      expect(task_manager_page).to have_css('.overlay-body', text: 'Invite Reviewers')
-      expect(task_manager_page).to have_css('.overlay-body', text: 'Discussion')
-      expect(task_manager_page).to have_no_application_error
-    end
-  end
 end

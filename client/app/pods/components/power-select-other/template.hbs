@@ -1,19 +1,9 @@
 {{#if _otherOptionSelected}}
-
-  {{#if allowOtherFormatting}}
-    {{format-input placeholder=inputPlaceholder
-                   value=value
-                   class="power-select-other-input"
-                   focus-out=(action "validate")
-                   autofocus=true}}
-  {{else}}
-    {{input placeholder=inputPlaceholder
-            value=value
-            class="power-select-other-input"
-            focus-out=(action "validate")
-            autofocus=true}}
-  {{/if}}
-
+  {{input placeholder=inputPlaceholder
+    value=value
+    class="power-select-other-input"
+    focus-out=(action "validate")
+    autofocus=true}}
   <span class="ember-power-select-status-icon" {{action "otherTrigger"}}></span>
 {{/if}}
 

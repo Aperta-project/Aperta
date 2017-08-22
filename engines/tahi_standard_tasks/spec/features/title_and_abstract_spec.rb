@@ -23,5 +23,16 @@ feature 'Title And Abstract Task', js: true do
         expect(el).to have_content('abc')
       end
     end
+
+    scenario 'abstract allows entering line breaks' do
+      editor_name = 'article-abstract-input'
+      set_rich_text(editor: editor_name, text: "ab")
+
+      within_editor_iframe(editor_name) do
+        el = page.find('body')
+        el.send_keys("\nc")
+        expect(el).to have_content("ab\nc")
+      end
+    end
   end
 end

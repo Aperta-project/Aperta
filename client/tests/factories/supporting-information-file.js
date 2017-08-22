@@ -10,7 +10,6 @@ FactoryGuy.define('supporting-information-file', {
     category: 'Table',
     label: 'S1',
     caption: 'SI caption',
-    publishable: true,
-    strikingImage: false
+    publishable: true
   }
 });

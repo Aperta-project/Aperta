@@ -6,7 +6,7 @@ class ReviewerReport < ActiveRecord::Base
   default_scope { order('decision_id DESC') }
 
   has_one :due_datetime, as: :due
-  has_many :scheduled_events, -> { order :dispatch_at }, as: :owner
+  has_many :scheduled_events, -> { order :dispatch_at }, through: :due_datetime
 
   belongs_to :task, foreign_key: :task_id
   belongs_to :user
@@ -161,7 +161,7 @@ class ReviewerReport < ActiveRecord::Base
     # where it is originating_task.task_template.setting('review_duration_period').value
     # until we shore up our data modeling, le sigh.
     period = 10 # use the original default in case anything is missing
-    if mmt = paper.journal.manuscript_manager_templates.find_by_paper_type(paper.paper_type)
+    if mmt = paper.journal.manuscript_manager_templates.find_by(paper_type: paper.paper_type)
       clause = { journal_task_types: { kind: "TahiStandardTasks::PaperReviewerTask" } }
       if task_template = mmt.task_templates.joins(:journal_task_type).find_by(clause)
         period = task_template.setting('review_duration_period').value

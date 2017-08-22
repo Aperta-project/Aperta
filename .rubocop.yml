@@ -3,6 +3,7 @@ AllCops:
     - 'db/schema.rb'
     - 'lib/generators/tahi/task/templates/*'
   TargetRubyVersion: 2.2
+  TargetRailsVersion: 4.0
 
 Rails:
   Enabled: true
@@ -88,4 +89,7 @@ Style/WordArray:
   # If an array is *accidentally* made of single-word strings, being
   # forced to use %w means being forced to rewrite the whole array as
   # soon as one entry becomes two words
+  Enabled: false
+
+Style/SymbolArray:
   Enabled: false

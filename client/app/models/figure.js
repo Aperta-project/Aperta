@@ -16,7 +16,6 @@ export default DS.Model.extend(Snapshottable, {
   src: DS.attr('string'),
   status: DS.attr('string'),
   title: DS.attr('string'),
-  strikingImage: DS.attr('boolean'),
   rank: DS.attr('number'),
 
   saveDebounced() {

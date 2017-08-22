@@ -74,9 +74,6 @@
     {{/if}}
 
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
-    {{#if (eq file.category "Figure")}}
-      <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
-    {{/if}}
 
     <div class="si-file-actions">
       {{error-message message=model.validationErrors.save}}

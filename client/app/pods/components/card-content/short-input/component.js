@@ -7,6 +7,7 @@ export default Ember.Component.extend(ValidateTextInput, {
   attributeBindings: ['isRequired:required', 'aria-required'],
   'aria-required': Ember.computed.reads('isRequiredString'),
   hasErrors: Ember.computed.notEmpty('answer.readyIssuesArray.[]'),
+  classNameBindings: ['hasErrors:has-error'],
 
   propTypes: {
     answer: PropTypes.EmberObject.isRequired,

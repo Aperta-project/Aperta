@@ -6659,6 +6659,7 @@ card_contents:
   - editor_style
   - condition
   - required_field
+  - error_message
   records: 
   - - '1'
     - 
@@ -6684,6 +6685,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '2'
     - publishing_related_questions--published_elsewhere
     - '1'
@@ -6709,6 +6711,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '3'
     - publishing_related_questions--published_elsewhere--taken_from_manuscripts
     - '2'
@@ -6735,6 +6738,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '4'
     - publishing_related_questions--published_elsewhere--upload_related_work
     - '2'
@@ -6761,6 +6765,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '5'
     - publishing_related_questions--submitted_in_conjunction
     - '1'
@@ -6785,6 +6790,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '6'
     - publishing_related_questions--submitted_in_conjunction--corresponding_title
     - '5'
@@ -6809,6 +6815,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '7'
     - publishing_related_questions--submitted_in_conjunction--corresponding_author
     - '5'
@@ -6833,6 +6840,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '8'
     - publishing_related_questions--submitted_in_conjunction--corresponding_journal
     - '5'
@@ -6857,6 +6865,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '9'
     - publishing_related_questions--submitted_in_conjunction--handled_together
     - '5'
@@ -6881,6 +6890,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '10'
     - publishing_related_questions--previous_interactions_with_this_manuscript
     - '1'
@@ -6906,6 +6916,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '11'
     - publishing_related_questions--previous_interactions_with_this_manuscript--submission_details
     - '10'
@@ -6930,6 +6941,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '12'
     - publishing_related_questions--presubmission_inquiry
     - '1'
@@ -6954,6 +6966,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '13'
     - publishing_related_questions--presubmission_inquiry--submission_details
     - '12'
@@ -6978,6 +6991,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '14'
     - publishing_related_questions--other_journal_submission
     - '1'
@@ -7003,6 +7017,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '15'
     - publishing_related_questions--other_journal_submission--submission_details
     - '14'
@@ -7027,6 +7042,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '16'
     - publishing_related_questions--author_was_previous_journal_editor
     - '1'
@@ -7052,6 +7068,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '17'
     - publishing_related_questions--intended_collection
     - '1'
@@ -7078,6 +7095,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '18'
     - publishing_related_questions--short_title
     - '1'
@@ -7103,6 +7121,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '19'
     - 
     - 
@@ -7127,6 +7146,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '20'
     - figures--complies
     - '19'
@@ -7151,6 +7171,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '21'
     - 
     - 
@@ -7175,6 +7196,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '22'
     - register_decision_questions--selected-template
     - '21'
@@ -7199,6 +7221,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '23'
     - register_decision_questions--to-field
     - '21'
@@ -7223,6 +7246,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '24'
     - register_decision_questions--subject-field
     - '21'
@@ -7247,6 +7271,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '25'
     - 
     - 
@@ -7271,6 +7296,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '26'
     - reviewer_recommendations--recommend_or_oppose
     - '25'
@@ -7295,6 +7321,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '27'
     - reviewer_recommendations--reason
     - '25'
@@ -7319,6 +7346,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '28'
     - 
     - 
@@ -7343,6 +7371,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '29'
     - authors--persons_agreed_to_be_named
     - '28'
@@ -7368,6 +7397,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '30'
     - authors--authors_confirm_icmje_criteria
     - '28'
@@ -7393,6 +7423,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '31'
     - authors--authors_agree_to_submission
     - '28'
@@ -7417,6 +7448,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '32'
     - 
     - 
@@ -7441,6 +7473,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '33'
     - funder--had_influence
     - '32'
@@ -7466,6 +7499,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '34'
     - funder--had_influence--role_description
     - '33'
@@ -7491,6 +7525,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '35'
     - 
     - 
@@ -7515,6 +7550,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '36'
     - early-posting--consent
     - '35'
@@ -7539,6 +7575,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '37'
     - 
     - 
@@ -7563,6 +7600,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '38'
     - taxon--zoological
     - '37'
@@ -7587,6 +7625,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '39'
     - taxon--zoological--complies
     - '38'
@@ -7611,6 +7650,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '40'
     - taxon--botanical
     - '37'
@@ -7635,6 +7675,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '41'
     - taxon--botanical--complies
     - '40'
@@ -7659,6 +7700,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '42'
     - 
     - 
@@ -7683,6 +7725,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '43'
     - reviewer_report--decision_term
     - '42'
@@ -7707,6 +7750,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '44'
     - reviewer_report--competing_interests
     - '42'
@@ -7732,6 +7776,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '45'
     - reviewer_report--competing_interests--detail
     - '44'
@@ -7756,6 +7801,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '46'
     - reviewer_report--identity
     - '42'
@@ -7781,6 +7827,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '47'
     - reviewer_report--comments_for_author
     - '42'
@@ -7805,6 +7852,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '48'
     - reviewer_report--additional_comments
     - '42'
@@ -7830,6 +7878,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '49'
     - reviewer_report--suitable_for_another_journal
     - '42'
@@ -7856,6 +7905,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '50'
     - reviewer_report--suitable_for_another_journal--journal
     - '49'
@@ -7880,6 +7930,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '51'
     - 
     - 
@@ -7904,6 +7955,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '52'
     - plos_billing--first_name
     - '51'
@@ -7928,6 +7980,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '53'
     - plos_billing--last_name
     - '51'
@@ -7952,6 +8005,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '54'
     - plos_billing--title
     - '51'
@@ -7976,6 +8030,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '55'
     - plos_billing--department
     - '51'
@@ -8000,6 +8055,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '56'
     - plos_billing--phone_number
     - '51'
@@ -8024,6 +8080,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '57'
     - plos_billing--email
     - '51'
@@ -8048,6 +8105,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '58'
     - plos_billing--address1
     - '51'
@@ -8072,6 +8130,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '59'
     - plos_billing--address2
     - '51'
@@ -8096,6 +8155,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '60'
     - plos_billing--city
     - '51'
@@ -8120,6 +8180,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '61'
     - plos_billing--state
     - '51'
@@ -8144,6 +8205,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '62'
     - plos_billing--postal_code
     - '51'
@@ -8168,6 +8230,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '63'
     - plos_billing--country
     - '51'
@@ -8192,6 +8255,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '64'
     - plos_billing--affiliation1
     - '51'
@@ -8216,6 +8280,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '65'
     - plos_billing--affiliation2
     - '51'
@@ -8240,6 +8305,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '66'
     - plos_billing--payment_method
     - '51'
@@ -8264,6 +8330,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '67'
     - plos_billing--pfa_question_1
     - '51'
@@ -8289,6 +8356,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '68'
     - plos_billing--pfa_question_1a
     - '51'
@@ -8314,6 +8382,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '69'
     - plos_billing--pfa_question_1b
     - '51'
@@ -8340,6 +8409,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '70'
     - plos_billing--pfa_question_2
     - '51'
@@ -8365,6 +8435,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '71'
     - plos_billing--pfa_question_2a
     - '51'
@@ -8390,6 +8461,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '72'
     - plos_billing--pfa_question_2b
     - '51'
@@ -8415,6 +8487,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '73'
     - plos_billing--pfa_question_3
     - '51'
@@ -8440,6 +8513,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '74'
     - plos_billing--pfa_question_3a
     - '51'
@@ -8464,6 +8538,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '75'
     - plos_billing--pfa_question_4
     - '51'
@@ -8489,6 +8564,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '76'
     - plos_billing--pfa_question_4a
     - '51'
@@ -8513,6 +8589,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '77'
     - plos_billing--pfa_amount_to_pay
     - '51'
@@ -8539,6 +8616,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '78'
     - plos_billing--pfa_supporting_docs
     - '51'
@@ -8566,6 +8644,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '79'
     - plos_billing--pfa_additional_comments
     - '51'
@@ -8591,6 +8670,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '80'
     - plos_billing--affirm_true_and_complete
     - '51'
@@ -8616,6 +8696,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '81'
     - plos_billing--agree_to_collections
     - '51'
@@ -8640,6 +8721,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '82'
     - plos_billing--gpi_country
     - '51'
@@ -8664,6 +8746,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '83'
     - plos_billing--ringgold_institution
     - '51'
@@ -8688,6 +8771,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '84'
     - 
     - 
@@ -8712,6 +8796,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '85'
     - production_metadata--publication_date
     - '84'
@@ -8736,6 +8821,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '86'
     - production_metadata--volume_number
     - '84'
@@ -8760,6 +8846,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '87'
     - production_metadata--issue_number
     - '84'
@@ -8784,6 +8871,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '88'
     - production_metadata--provenance
     - '84'
@@ -8808,6 +8896,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '89'
     - production_metadata--production_notes
     - '84'
@@ -8832,6 +8921,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '90'
     - production_metadata--special_handling_instructions
     - '84'
@@ -8856,6 +8946,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '91'
     - 
     - 
@@ -8880,6 +8971,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '92'
     - author--published_as_corresponding_author
     - '91'
@@ -8904,6 +8996,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '93'
     - author--deceased
     - '91'
@@ -8928,6 +9021,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '94'
     - author--contributions
     - '91'
@@ -8952,6 +9046,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '95'
     - author--contributions--conceptualization
     - '94'
@@ -8976,6 +9071,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '96'
     - author--contributions--investigation
     - '94'
@@ -9000,6 +9096,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '97'
     - author--contributions--visualization
     - '94'
@@ -9024,6 +9121,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '98'
     - author--contributions--methodology
     - '94'
@@ -9048,6 +9146,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '99'
     - author--contributions--resources
     - '94'
@@ -9072,6 +9171,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '100'
     - author--contributions--supervision
     - '94'
@@ -9096,6 +9196,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '101'
     - author--contributions--software
     - '94'
@@ -9120,6 +9221,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '102'
     - author--contributions--data-curation
     - '94'
@@ -9144,6 +9246,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '103'
     - author--contributions--project-administration
     - '94'
@@ -9168,6 +9271,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '104'
     - author--contributions--validation
     - '94'
@@ -9192,6 +9296,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '105'
     - author--contributions--writing-original-draft
     - '94'
@@ -9216,6 +9321,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '106'
     - author--contributions--writing-review-and-editing
     - '94'
@@ -9240,6 +9346,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '107'
     - author--contributions--funding-acquisition
     - '94'
@@ -9264,6 +9371,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '108'
     - author--contributions--formal-analysis
     - '94'
@@ -9288,6 +9396,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '109'
     - author--government-employee
     - '91'
@@ -9312,6 +9421,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '110'
     - 
     - 
@@ -9336,6 +9446,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '111'
     - front_matter_reviewer_report--decision_term
     - '110'
@@ -9360,6 +9471,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '112'
     - front_matter_reviewer_report--competing_interests
     - '110'
@@ -9385,6 +9497,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '113'
     - front_matter_reviewer_report--suitable
     - '110'
@@ -9410,6 +9523,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '114'
     - front_matter_reviewer_report--suitable--comment
     - '113'
@@ -9434,6 +9548,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '115'
     - front_matter_reviewer_report--includes_unpublished_data
     - '110'
@@ -9459,6 +9574,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '116'
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '115'
@@ -9483,6 +9599,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '117'
     - front_matter_reviewer_report--additional_comments
     - '110'
@@ -9507,6 +9624,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '118'
     - front_matter_reviewer_report--identity
     - '110'
@@ -9532,6 +9650,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '119'
     - 
     - 
@@ -9556,6 +9675,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '120'
     - cover_letter--text
     - '119'
@@ -9580,6 +9700,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '121'
     - cover_letter--attachment
     - '119'
@@ -9604,6 +9725,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '122'
     - 
     - 
@@ -9628,6 +9750,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '123'
     - financial_disclosures--author_received_funding
     - '122'
@@ -9652,6 +9775,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '124'
     - 
     - 
@@ -9676,6 +9800,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '125'
     - ethics--human_subjects
     - '124'
@@ -9700,6 +9825,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '126'
     - ethics--human_subjects--participants
     - '125'
@@ -9726,6 +9852,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '127'
     - ethics--animal_subjects
     - '124'
@@ -9750,6 +9877,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '128'
     - ethics--animal_subjects--field_permit
     - '127'
@@ -9774,6 +9902,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '129'
     - ethics--animal_subjects--field_arrive
     - '127'
@@ -9798,6 +9927,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '130'
     - ethics--field_study
     - '124'
@@ -9823,6 +9953,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '131'
     - ethics--field_study--field_permit_number
     - '130'
@@ -9848,6 +9979,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '135'
     - 
     - 
@@ -9872,6 +10004,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '136'
     - reporting_guidelines--clinical_trial
     - '135'
@@ -9896,6 +10029,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '137'
     - reporting_guidelines--systematic_reviews
     - '135'
@@ -9920,6 +10054,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '138'
     - reporting_guidelines--systematic_reviews--checklist
     - '137'
@@ -9945,6 +10080,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '139'
     - reporting_guidelines--meta_analyses
     - '135'
@@ -9969,6 +10105,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '140'
     - reporting_guidelines--meta_analyses--checklist
     - '139'
@@ -9994,6 +10131,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '141'
     - reporting_guidelines--diagnostic_studies
     - '135'
@@ -10018,6 +10156,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '142'
     - reporting_guidelines--epidemiological_studies
     - '135'
@@ -10042,6 +10181,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '143'
     - reporting_guidelines--microarray_studies
     - '135'
@@ -10066,6 +10206,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '144'
     - 
     - 
@@ -10090,6 +10231,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '145'
     - plos_bio_initial_tech_check--ethics_statement
     - '144'
@@ -10116,6 +10258,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '146'
     - plos_bio_initial_tech_check--data_availability_confidential
     - '144'
@@ -10144,6 +10287,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '147'
     - plos_bio_initial_tech_check--data_availability_blank
     - '144'
@@ -10170,6 +10314,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '148'
     - plos_bio_initial_tech_check--data_availability_dryad
     - '144'
@@ -10196,6 +10341,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '149'
     - plos_bio_initial_tech_check--authors_match
     - '144'
@@ -10222,6 +10368,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '150'
     - plos_bio_initial_tech_check--author_emails
     - '144'
@@ -10246,6 +10393,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '151'
     - plos_bio_initial_tech_check--author_removed
     - '144'
@@ -10272,6 +10420,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '152'
     - plos_bio_initial_tech_check--competing_interests
     - '144'
@@ -10297,6 +10446,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '153'
     - plos_bio_initial_tech_check--financial_disclosure
     - '144'
@@ -10323,6 +10473,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '154'
     - plos_bio_initial_tech_check--tobacco
     - '144'
@@ -10350,6 +10501,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '155'
     - plos_bio_initial_tech_check--collection
     - '144'
@@ -10376,6 +10528,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '156'
     - plos_bio_initial_tech_check--figures_viewable
     - '144'
@@ -10402,6 +10555,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '157'
     - plos_bio_initial_tech_check--embedded_captions
     - '144'
@@ -10428,6 +10582,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '158'
     - plos_bio_initial_tech_check--captions_missing
     - '144'
@@ -10453,6 +10608,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '159'
     - plos_bio_initial_tech_check--figures_missing
     - '144'
@@ -10480,6 +10636,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '160'
     - plos_bio_initial_tech_check--open_reject
     - '144'
@@ -10508,6 +10665,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '161'
     - 
     - 
@@ -10532,6 +10690,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '162'
     - group-author--contributions
     - '161'
@@ -10556,6 +10715,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '163'
     - group-author--contributions--conceptualization
     - '162'
@@ -10580,6 +10740,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '164'
     - group-author--contributions--investigation
     - '162'
@@ -10604,6 +10765,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '165'
     - group-author--contributions--visualization
     - '162'
@@ -10628,6 +10790,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '166'
     - group-author--contributions--methodology
     - '162'
@@ -10652,6 +10815,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '167'
     - group-author--contributions--resources
     - '162'
@@ -10676,6 +10840,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '168'
     - group-author--contributions--supervision
     - '162'
@@ -10700,6 +10865,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '169'
     - group-author--contributions--software
     - '162'
@@ -10724,6 +10890,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '170'
     - group-author--contributions--data-curation
     - '162'
@@ -10748,6 +10915,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '171'
     - group-author--contributions--project-administration
     - '162'
@@ -10772,6 +10940,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '172'
     - group-author--contributions--validation
     - '162'
@@ -10796,6 +10965,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '173'
     - group-author--contributions--writing-original-draft
     - '162'
@@ -10820,6 +10990,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '174'
     - group-author--contributions--writing-review-and-editing
     - '162'
@@ -10844,6 +11015,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '175'
     - group-author--contributions--funding-acquisition
     - '162'
@@ -10868,6 +11040,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '176'
     - group-author--contributions--formal-analysis
     - '162'
@@ -10892,6 +11065,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '177'
     - group-author--government-employee
     - '161'
@@ -10916,6 +11090,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '178'
     - 
     - 
@@ -10940,6 +11115,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '179'
     - plos_bio_final_tech_check--open_rejects
     - '178'
@@ -10967,6 +11143,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '180'
     - plos_bio_final_tech_check--human_subjects
     - '178'
@@ -10992,6 +11169,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '181'
     - plos_bio_final_tech_check--ethics_needed
     - '178'
@@ -11018,6 +11196,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '182'
     - plos_bio_final_tech_check--data_available
     - '178'
@@ -11043,6 +11222,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '183'
     - plos_bio_final_tech_check--supporting_information
     - '178'
@@ -11069,6 +11249,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '184'
     - plos_bio_final_tech_check--dryad_url
     - '178'
@@ -11094,6 +11275,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '185'
     - plos_bio_final_tech_check--financial_disclosure
     - '178'
@@ -11119,6 +11301,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '186'
     - plos_bio_final_tech_check--tobacco
     - '178'
@@ -11144,6 +11327,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '187'
     - plos_bio_final_tech_check--figures_legible
     - '178'
@@ -11168,6 +11352,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '188'
     - plos_bio_final_tech_check--cited
     - '178'
@@ -11193,6 +11378,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '189'
     - plos_bio_final_tech_check--cover_letter
     - '178'
@@ -11218,6 +11404,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '190'
     - plos_bio_final_tech_check--billing_inquiries
     - '178'
@@ -11243,6 +11430,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '191'
     - plos_bio_final_tech_check--ethics_statement
     - '178'
@@ -11267,6 +11455,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '192'
     - 
     - 
@@ -11291,6 +11480,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '193'
     - plos_bio_revision_tech_check--open_rejects
     - '192'
@@ -11318,6 +11508,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '194'
     - plos_bio_revision_tech_check--data_availability_confidential
     - '192'
@@ -11346,6 +11537,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '195'
     - plos_bio_revision_tech_check--data_availability_blank
     - '192'
@@ -11372,6 +11564,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '196'
     - plos_bio_revision_tech_check--data_availability_dryad
     - '192'
@@ -11398,6 +11591,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '197'
     - plos_bio_revision_tech_check--authors_match
     - '192'
@@ -11424,6 +11618,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '198'
     - plos_bio_revision_tech_check--author_removed
     - '192'
@@ -11449,6 +11644,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '199'
     - plos_bio_revision_tech_check--competing_interests
     - '192'
@@ -11474,6 +11670,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '200'
     - plos_bio_revision_tech_check--collection
     - '192'
@@ -11500,6 +11697,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '201'
     - plos_bio_revision_tech_check--human_subjects
     - '192'
@@ -11525,6 +11723,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '202'
     - plos_bio_revision_tech_check--ethics_needed
     - '192'
@@ -11551,6 +11750,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '203'
     - plos_bio_revision_tech_check--data_available
     - '192'
@@ -11576,6 +11776,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '204'
     - plos_bio_revision_tech_check--supporting_information
     - '192'
@@ -11602,6 +11803,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '205'
     - plos_bio_revision_tech_check--dryad_url
     - '192'
@@ -11627,6 +11829,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '206'
     - plos_bio_revision_tech_check--financial_disclosure
     - '192'
@@ -11653,6 +11856,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '207'
     - plos_bio_revision_tech_check--tobacco
     - '192'
@@ -11680,6 +11884,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '208'
     - plos_bio_revision_tech_check--figures_legible
     - '192'
@@ -11704,6 +11909,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '209'
     - plos_bio_revision_tech_check--cited
     - '192'
@@ -11729,6 +11935,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '210'
     - plos_bio_revision_tech_check--cover_letter
     - '192'
@@ -11754,6 +11961,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '211'
     - plos_bio_revision_tech_check--billing_inquiries
     - '192'
@@ -11779,6 +11987,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '212'
     - plos_bio_revision_tech_check--ethics_statement
     - '192'
@@ -11805,6 +12014,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '213'
     - plos_bio_revision_tech_check--figures_viewable
     - '192'
@@ -11831,6 +12041,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '214'
     - plos_bio_revision_tech_check--embedded_captions
     - '192'
@@ -11857,6 +12068,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '215'
     - plos_bio_revision_tech_check--captions_missing
     - '192'
@@ -11882,6 +12094,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '216'
     - plos_bio_revision_tech_check--figures_missing
     - '192'
@@ -11909,6 +12122,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '217'
     - plos_bio_revision_tech_check--response_to_reviewers
     - '192'
@@ -11935,6 +12149,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '218'
     - 
     - 
@@ -11959,6 +12174,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '219'
     - data_availability--data_fully_available
     - '218'
@@ -11984,6 +12200,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '220'
     - data_availability--data_location
     - '218'
@@ -12008,6 +12225,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '221'
     - data_availability--additional_information_doi
     - '218'
@@ -12034,6 +12252,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '222'
     - data_availability--additional_information_other
     - '218'
@@ -12059,6 +12278,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '223'
     - 
     - 
@@ -12083,6 +12303,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '224'
     - 
     - 
@@ -12107,6 +12328,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '225'
     - 
     - 
@@ -12131,6 +12353,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '226'
     - 
     - 
@@ -12155,6 +12378,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '227'
     - 
     - 
@@ -12179,6 +12403,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '228'
     - 
     - 
@@ -12203,6 +12428,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '229'
     - 
     - 
@@ -12227,6 +12453,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '230'
     - 
     - 
@@ -12251,6 +12478,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '231'
     - front_matter_reviewer_report--decision_term
     - '230'
@@ -12275,6 +12503,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '232'
     - front_matter_reviewer_report--competing_interests
     - '230'
@@ -12300,6 +12529,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '233'
     - front_matter_reviewer_report--suitable
     - '230'
@@ -12324,6 +12554,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '234'
     - front_matter_reviewer_report--suitable--comment
     - '233'
@@ -12348,6 +12579,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '235'
     - front_matter_reviewer_report--includes_unpublished_data
     - '230'
@@ -12373,6 +12605,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '236'
     - front_matter_reviewer_report--includes_unpublished_data--explanation
     - '235'
@@ -12397,6 +12630,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '237'
     - front_matter_reviewer_report--additional_comments
     - '230'
@@ -12421,6 +12655,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '238'
     - front_matter_reviewer_report--identity
     - '230'
@@ -12446,6 +12681,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '239'
     - 
     - 
@@ -12470,6 +12706,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '240'
     - 
     - 
@@ -12494,6 +12731,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '241'
     - 
     - 
@@ -12518,6 +12756,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '242'
     - 
     - 
@@ -12542,6 +12781,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '243'
     - 
     - 
@@ -12566,6 +12806,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '244'
     - 
     - 
@@ -12590,6 +12831,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '245'
     - 
     - 
@@ -12614,6 +12856,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '246'
     - 
     - 
@@ -12638,6 +12881,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '247'
     - 
     - 
@@ -12662,6 +12906,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '248'
     - 
     - 
@@ -12686,6 +12931,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '249'
     - 
     - 
@@ -12710,6 +12956,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '250'
     - 
     - 
@@ -12734,6 +12981,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '251'
     - 
     - 
@@ -12758,6 +13006,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '252'
     - 
     - 
@@ -12782,6 +13031,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '253'
     - 
     - 
@@ -12806,6 +13056,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '255'
     - 
     - 
@@ -12830,6 +13081,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '256'
     - competing_interests--has_competing_interests
     - '255'
@@ -12860,6 +13112,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '257'
     - 
     - '256'
@@ -12884,6 +13137,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '258'
     - 
     - '257'
@@ -12908,6 +13162,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '259'
     - competing_interests--statement
     - '258'
@@ -12934,6 +13189,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '260'
     - 
     - '256'
@@ -12958,6 +13214,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '261'
     - 
     - '260'
@@ -12982,6 +13239,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '262'
     - 
     - '261'
@@ -13008,6 +13266,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '264'
     - 
     - 
@@ -13032,6 +13291,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '265'
     - 
     - '264'
@@ -13057,6 +13317,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '266'
     - 
     - '264'
@@ -13081,6 +13342,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '267'
     - 
     - '264'
@@ -13105,6 +13367,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '268'
     - 
     - '264'
@@ -13129,6 +13392,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '269'
     - 
     - '264'
@@ -13153,6 +13417,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '270'
     - 
     - '264'
@@ -13177,6 +13442,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '271'
     - 
     - '264'
@@ -13201,6 +13467,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '272'
     - 
     - '271'
@@ -13225,6 +13492,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '273'
     - 
     - '272'
@@ -13249,6 +13517,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '274'
     - 
     - '273'
@@ -13273,6 +13542,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '275'
     - 
     - '273'
@@ -13297,6 +13567,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '276'
     - 
     - '271'
@@ -13321,6 +13592,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '277'
     - 
     - '276'
@@ -13345,6 +13617,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '278'
     - 
     - '277'
@@ -13369,6 +13642,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '279'
     - 
     - '277'
@@ -13393,6 +13667,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '280'
     - 
     - '264'
@@ -13417,6 +13692,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '281'
     - 
     - '264'
@@ -13441,6 +13717,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '282'
     - 
     - '264'
@@ -13465,6 +13742,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '284'
     - 
     - 
@@ -13489,6 +13767,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '285'
     - 
     - '284'
@@ -13517,6 +13796,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '287'
     - 
     - 
@@ -13541,6 +13821,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '288'
     - 
     - '287'
@@ -13569,6 +13850,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '289'
     - 
     - 
@@ -13593,6 +13875,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '290'
     - competing_interests--has_competing_interests
     - '289'
@@ -13623,6 +13906,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '291'
     - 
     - '290'
@@ -13647,6 +13931,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '292'
     - 
     - '291'
@@ -13671,6 +13956,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '293'
     - competing_interests--statement
     - '292'
@@ -13698,6 +13984,7 @@ card_contents:
     - basic
     - 
     - false
+    - 
   - - '294'
     - 
     - '290'
@@ -13722,6 +14009,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '295'
     - 
     - '294'
@@ -13746,6 +14034,7 @@ card_contents:
     - 
     - 
     - false
+    - 
   - - '296'
     - 
     - '295'
@@ -13772,6 +14061,7 @@ card_contents:
     - 
     - 
     - false
+    - 
 
 ---
 card_versions:

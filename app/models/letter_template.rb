@@ -6,6 +6,7 @@ class LetterTemplate < ActiveRecord::Base
 
   validates :body, presence: true
   validates :subject, presence: true
+  validate :template_scenario?
 
   def render(context)
     tap do |my|
@@ -31,5 +32,16 @@ class LetterTemplate < ActiveRecord::Base
     else
       raw
     end
+  end
+
+  def template_scenario?
+    scenario_class = begin
+                      scenario.constantize
+                    rescue NameError
+                      false
+                    end
+    return if scenario_class && scenario_class < TemplateScenario
+
+    errors.add(:scenario, 'must name a subclass of TemplateScenario')
   end
 end

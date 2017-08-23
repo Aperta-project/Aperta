@@ -21,9 +21,21 @@ describe ScheduledEvent do
       expect(subject.active?).to be true
     end
 
-    it 'can move from active to complete' do
+    it 'can move from active to processing' do
       subject.trigger
-      expect(subject.complete?).to be true
+      expect(subject.processing?).to be true
+    end
+
+    it 'can move from processing to completed' do
+      subject.trigger
+      subject.complete
+      expect(subject.completed?).to be true
+    end
+
+    it 'can move from processing to errored' do
+      subject.trigger
+      subject.error
+      expect(subject.errored?).to be true
     end
   end
 

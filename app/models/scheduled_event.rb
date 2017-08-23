@@ -26,8 +26,9 @@ class ScheduledEvent < ActiveRecord::Base
   aasm column: :state do
     state :active, initial: true
     state :inactive
-    state :complete
-    state :error
+    state :completed
+    state :processing
+    state :errored
 
     event(:reactivate) do
       transitions from: [:complete, :inactive], to: :active
@@ -37,8 +38,28 @@ class ScheduledEvent < ActiveRecord::Base
       transitions from: :active, to: :inactive
     end
 
-    event(:trigger) do
-      transitions from: :active, to: :complete
+    event(:trigger, after_commit: [:send_email]) do
+      transitions from: :active, to: :processing
+    end
+
+    event(:complete) do
+      transitions from: :processing, to: :completed
+    end
+
+    event(:error) do
+      transitions from: :processing, to: :errored
+    end
+  end
+
+  def send_email
+    task_mailer = TahiStandardTasks::ReviewerMailer
+    case name
+    when 'Pre-due Reminder'
+      task_mailer.remind_before_due(reviewer_report_id: due_datetime.due_id).deliver_now
+    when 'First Late Reminder'
+      task_mailer.first_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
+    when 'Second Late Reminder'
+      task_mailer.second_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
     end
   end
 end

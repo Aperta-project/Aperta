@@ -24,7 +24,7 @@ export default Ember.Component.extend({
       format: 'pdf',
       versionedTextId: this.get('version.id')
     });
-    window.PDFJS.webViewerLoad(url);
+    window.PDFJS.webViewerLoad('url');
   },
 
   loadPdfJs: function() {

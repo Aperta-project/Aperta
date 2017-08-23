@@ -139,6 +139,10 @@ text-content = element content {
 
 display-children-content = element content {
                                attribute ident { text }?,
+                               attribute child-tag { 'li' }?,
+                               attribute custom-class { text }?,
+                               attribute custom-child-class { text }?,
+                               attribute wrapper-tag { text }?,
                                attribute content-type { "display-children" },
                                content*
                            }

@@ -3,7 +3,7 @@
 # questions (radio buttons, text input, selects), static informational
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
-class CardContent < ActiveRecord::Base
+class CardContent < ApplicationRecord
   include XmlSerializable
 
   # Scope matches deleted_at IS NULL, that is, non-deleted records
@@ -21,7 +21,7 @@ class CardContent < ActiveRecord::Base
   # and ident
   validates :parent_id,
             uniqueness: {
-              scope: [:card_version, :deleted_at],
+              scope: %i[card_version deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
@@ -30,7 +30,7 @@ class CardContent < ActiveRecord::Base
 
   validates :ident,
             uniqueness: {
-              scope: [:card_version, :deleted_at],
+              scope: %i[card_version deleted_at],
               message: "CardContent idents must be unique"
             },
             if: -> { ident.present? }
@@ -45,7 +45,7 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -123,6 +123,10 @@ class CardContent < ActiveRecord::Base
         'ident' => ident,
         'content-type' => content_type,
         'value-type' => value_type,
+        'child-tag' => child_tag,
+        'custom-class' => custom_class,
+        'custom-child-class' => custom_child_class,
+        'wrapper-tag' => wrapper_tag,
         'required-field' => required_field,
         'visible-with-parent-answer' => visible_with_parent_answer,
         'default-answer-value' => default_answer_value

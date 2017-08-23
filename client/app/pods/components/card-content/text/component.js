@@ -4,11 +4,11 @@ import { PropTypes } from 'ember-prop-types';
 export default Ember.Component.extend({
   classNames: ['card-content-view-text'],
 
-  isQuestionHelpListText: Ember.computed.equal('content.parent.contentType', 'question-help-list'),
+  hasListParent: Ember.computed.equal('content.parent.childTag', 'li'),
 
   init() {
     // we don't need the div if it's in a list
-    if (this.get('isQuestionHelpListText')) {
+    if (this.get('hasListParent')) {
       this.set('tagName', 'span');
     }
     this._super(...arguments);

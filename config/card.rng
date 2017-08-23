@@ -481,6 +481,20 @@
       <optional>
         <attribute name="ident"/>
       </optional>
+      <optional>
+        <attribute name="child-tag">
+          <value>li</value>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="custom-class"/>
+      </optional>
+      <optional>
+        <attribute name="custom-child-class"/>
+      </optional>
+      <optional>
+        <attribute name="wrapper-tag"/>
+      </optional>
       <attribute name="content-type">
         <value>display-children</value>
       </attribute>

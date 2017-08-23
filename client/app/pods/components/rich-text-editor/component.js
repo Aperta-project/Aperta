@@ -1,12 +1,12 @@
 import ENV from 'tahi/config/environment';
 import Ember from 'ember';
 
-const inlineElements   = 'strong/b,em/i,u,sub,sup,pre';
+const inlineElements   = 'strong/b,em/i,u,sub,sup';
 
 const basicElements    = 'p,br,' + inlineElements;
 const basicFormats     = {underline: {inline : 'u'}};
 const basicPlugins     = 'code codesample paste autoresize';
-const basicToolbar     = 'bold italic underline | subscript superscript | undo redo | codesample ';
+const basicToolbar     = 'bold italic underline | subscript superscript | undo redo ';
 
 const anchorElement    = ',a[href|rel|target|title]';
 const listElement      = ',ol[reversed|start|type]';
@@ -16,6 +16,12 @@ const expandedPlugins  = ' link table';
 const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
+
+const rejectNewlines = function(editor) {
+  editor.on('keydown', function(e) {
+    if (e.keyCode === 13) return false;
+  });
+};
 
 export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
@@ -43,7 +49,8 @@ export default Ember.Component.extend({
       plugins: basicPlugins,
       toolbar: basicToolbar,
       valid_elements: inlineElements,
-      forced_root_block: false
+      forced_root_block: false,
+      setup: rejectNewlines
     },
 
     basic: {

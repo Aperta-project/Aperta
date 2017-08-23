@@ -39,7 +39,6 @@ let attachment = function(attrs){
     id: 'foo',
     title: 'squid',
     file: 'theFile.jpg',
-    striking_image: true,
     file_hash: 'a9876a98c987b96h',
     url: '/path/to/theFile.jpg'
   }, attrs);
@@ -49,7 +48,6 @@ let attachment = function(attrs){
         {name: 'id', value: properties.id},
         {name: 'title', value: properties.title},
         {name: 'file', value: properties.file},
-        {name: 'striking_image', value: properties.striking_image},
         {name: 'file_hash', value: properties.file_hash},
         {name: 'url', value: properties.url}
       ]

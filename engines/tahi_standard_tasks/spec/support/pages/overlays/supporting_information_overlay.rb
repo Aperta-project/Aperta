@@ -36,11 +36,6 @@ class SupportingInfoOverlay < CardOverlay
     power_select('.si-file-category-input', new_category)
   end
 
-  def toggle_file_striking_image
-    checkbox = find('.si-file-striking-image-checkbox')
-    checkbox.click
-  end
-
   def toggle_for_publication
     checkbox = find('.si-file-publishable-checkbox')
     checkbox.click

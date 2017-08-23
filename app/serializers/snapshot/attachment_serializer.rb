@@ -25,9 +25,6 @@ class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
       snapshot_property('owner_type', 'text', model.owner_type),
       snapshot_property('owner_id', 'integer', model.owner_id)
     ]
-    if model.respond_to?(:striking_image)
-      properties << snapshot_property('striking_image', 'boolean', model.striking_image)
-    end
     properties
   end
 end

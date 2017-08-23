@@ -68,7 +68,7 @@ describe DueDatetime, type: :model do
         DueDatetime.set_for(self, length_of_time: length_of_time)
       end
       # skip the database:
-      def save(validate = true); true; end
+      def save(_validate = true); true; end
       def self.columns; @columns ||= []; end
     end
 

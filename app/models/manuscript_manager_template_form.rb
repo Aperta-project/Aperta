@@ -48,7 +48,7 @@ class ManuscriptManagerTemplateForm
   def set_task_templates(task_template_params)
     return if task_template_params.nil?
     task_template_params.map do |param|
-      original_settings = TaskTemplate.find_by_id(param.delete('id')).try(:all_settings) || []
+      original_settings = TaskTemplate.find_by(id: param.delete('id')).try(:all_settings) || []
       new_task_template = TaskTemplate.create(param)
       original_settings.each do |setting|
         new_task_template.setting(setting[:name]).update!(value: setting[:value])

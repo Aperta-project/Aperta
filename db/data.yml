@@ -13569,6 +13569,209 @@ card_contents:
     - 
     - 
     - false
+  - - '289'
+    - 
+    - 
+    - '563'
+    - '578'
+    - 
+    - 
+    - '2017-08-22 15:11:43.511384'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - display-children
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '290'
+    - competing_interests--has_competing_interests
+    - '289'
+    - '564'
+    - '577'
+    - <ol class="question-list"><li class="question"><div class="question-text"><p>You
+      are responsible for recognizing and disclosing on behalf of all authors any
+      competing interest that could be perceived to bias their work, acknowledging
+      all financial support and any other relevant financial or non-financial competing
+      interests.</p>Do any authors of this manuscript have competing interests (as
+      described in the <a target="_blank" href="http://journals.plos.org/plosbiology/s/competing-interests">PLOS
+      Policy on Declaration and Evaluation of Competing Interests</a>)?</div></li>
+    - boolean
+    - '2017-08-22 15:11:43.525895'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - radio
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '291'
+    - 
+    - '290'
+    - '565'
+    - '570'
+    - 
+    - 
+    - '2017-08-22 15:11:43.533568'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - display-with-value
+    - 
+    - "[]"
+    - 'true'
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '292'
+    - 
+    - '291'
+    - '566'
+    - '569'
+    - 
+    - 
+    - '2017-08-22 15:11:43.540643'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - field-set
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '293'
+    - competing_interests--statement
+    - '292'
+    - '567'
+    - '568'
+    - 'Please provide details about any and all competing interests in the box below.
+      Your response should begin with this statement: "I have read the journal''s
+      policy and the authors of this manuscript have the following competing interests."<br><br>Please
+      note that if your manuscript is accepted, this statement will be published.'
+    - html
+    - '2017-08-22 15:11:43.54619'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - paragraph-input
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - basic
+    - 
+    - false
+  - - '294'
+    - 
+    - '290'
+    - '571'
+    - '576'
+    - 
+    - 
+    - '2017-08-22 15:11:43.582311'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - display-with-value
+    - 
+    - "[]"
+    - 'false'
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '295'
+    - 
+    - '294'
+    - '572'
+    - '575'
+    - 
+    - 
+    - '2017-08-22 15:11:43.587955'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - field-set
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
+  - - '296'
+    - 
+    - '295'
+    - '573'
+    - '574'
+    - |-
+      Your competing interests statement will appear as: "The authors have declared that no competing interests exist."
+                Please note that if your manuscript is accepted, this statement will be published.
+    - 
+    - '2017-08-22 15:11:43.592598'
+    - '2017-08-22 15:11:43.626536'
+    - 
+    - '55'
+    - text
+    - 
+    - "[]"
+    - 
+    - 
+    - 
+    - false
+    - false
+    - false
+    - 
+    - 
+    - 
+    - false
 
 ---
 card_versions:
@@ -14024,6 +14227,16 @@ card_versions:
     - 
     - Initial version
     - false
+  - - '55'
+    - '2'
+    - '72'
+    - 
+    - true
+    - '2017-08-22 15:16:52.468039'
+    - '2'
+    - This is the new version of competing interests that matches production.  It
+      uses the boolean switch rather than text switch.
+    - false
 
 ---
 cards:
@@ -14445,11 +14658,11 @@ cards:
     - locked
   - - '72'
     - '2017-07-28 17:30:16.20619'
-    - '2017-07-28 17:30:16.915018'
+    - '2017-08-22 15:16:52.473556'
     - 
     - Competing Interests
     - '1'
-    - '1'
+    - '2'
     - 
     - published
   - - '73'
@@ -16612,7 +16825,7 @@ feature_flags:
   - active
   records: 
   - - CARD_CONFIGURATION
-    - false
+    - true
   - - CAS_PHASED_SIGNUP
     - false
   - - CORRESPONDENCE
@@ -19008,7 +19221,6 @@ papers:
   - paper_type
   - journal_id
   - published_at
-  - striking_image_id
   - editable
   - doi
   - publishing_state
@@ -19018,7 +19230,6 @@ papers:
   - gradual_engagement
   - first_submitted_at
   - accepted_at
-  - striking_image_type
   - state_updated_at
   - processing
   - uses_research_article_reviewer_report
@@ -19037,7 +19248,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - true
     - 10.1371/journal.devs.100001
     - unsubmitted
@@ -19045,7 +19255,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -19065,7 +19274,6 @@ papers:
     - Research
     - '1'
     - 
-    - '2'
     - true
     - 10.1371/journal.devs.100002
     - unsubmitted
@@ -19075,7 +19283,6 @@ papers:
     - false
     - 
     - 
-    - Figure
     - 
     - false
     - true
@@ -19093,7 +19300,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - true
     - 10.1371/journal.devs.100003
     - unsubmitted
@@ -19101,7 +19307,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -19121,7 +19326,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - false
     - 10.1371/journal.devs.100004
     - submitted
@@ -19130,7 +19334,6 @@ papers:
     - true
     - false
     - '2015-08-02 15:14:05.576249'
-    - 
     - 
     - '2017-01-30 22:51:16.425219'
     - false
@@ -19149,7 +19352,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - true
     - 10.1371/journal.devs.100008
     - unsubmitted
@@ -19157,7 +19359,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -19177,7 +19378,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - true
     - 10.1371/journal.devs.100009
     - unsubmitted
@@ -19185,7 +19385,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -19205,7 +19404,6 @@ papers:
     - Research
     - '1'
     - 
-    - 
     - true
     - 10.1371/journal.devs.100010
     - unsubmitted
@@ -19213,7 +19411,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -19233,7 +19430,6 @@ papers:
     - Research
     - '1'
     - 
-    - '5'
     - false
     - yetipub/journal.yetijour.1000002
     - submitted
@@ -19243,7 +19439,6 @@ papers:
     - false
     - '2016-04-12 18:55:56.960225'
     - 
-    - SupportingInformationFile
     - '2016-10-26 19:41:03.585529'
     - false
     - true
@@ -19261,7 +19456,6 @@ papers:
     - Non-Research
     - '1'
     - 
-    - 
     - true
     - yetipub/yetijour.1000003
     - unsubmitted
@@ -19269,7 +19463,6 @@ papers:
     - 
     - true
     - false
-    - 
     - 
     - 
     - 
@@ -41761,6 +41954,71 @@ setting_templates:
     - '10'
 
 ---
+settings:
+  columns:
+  - id
+  - owner_id
+  - owner_type
+  - name
+  - string_value
+  - type
+  - created_at
+  - updated_at
+  - value_type
+  - integer_value
+  - boolean_value
+  - setting_template_id
+  records: 
+  - - '1'
+    - '199'
+    - TaskTemplate
+    - review_duration_period
+    - 
+    - Setting
+    - '2017-08-22 15:10:37.827022'
+    - '2017-08-22 15:10:37.827022'
+    - integer
+    - '10'
+    - false
+    - '2'
+  - - '2'
+    - '217'
+    - TaskTemplate
+    - review_duration_period
+    - 
+    - Setting
+    - '2017-08-22 15:10:37.961405'
+    - '2017-08-22 15:10:37.961405'
+    - integer
+    - '10'
+    - false
+    - '2'
+  - - '3'
+    - '240'
+    - TaskTemplate
+    - review_duration_period
+    - 
+    - Setting
+    - '2017-08-22 15:10:38.030655'
+    - '2017-08-22 15:10:38.030655'
+    - integer
+    - '10'
+    - false
+    - '2'
+  - - '4'
+    - '247'
+    - TaskTemplate
+    - review_duration_period
+    - 
+    - Setting
+    - '2017-08-22 15:10:38.100765'
+    - '2017-08-22 15:10:38.100765'
+    - integer
+    - '10'
+    - false
+    - '2'
+
+---
 snapshots:
   columns:
   - id
@@ -43833,7 +44091,7 @@ tasks:
     - '10'
     - 
   - - '5'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '1'
     - false
@@ -43843,7 +44101,7 @@ tasks:
     - '5'
     - '1'
     - 
-    - '48'
+    - '55'
     - 
   - - '6'
     - Cover Letter
@@ -44106,7 +44364,7 @@ tasks:
     - '10'
     - 
   - - '26'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '6'
     - false
@@ -44116,7 +44374,7 @@ tasks:
     - '5'
     - '2'
     - 
-    - '48'
+    - '55'
     - 
   - - '27'
     - Cover Letter
@@ -44392,7 +44650,7 @@ tasks:
     - '10'
     - 
   - - '47'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '11'
     - true
@@ -44402,7 +44660,7 @@ tasks:
     - '5'
     - '3'
     - '2016-02-02 19:33:00'
-    - '48'
+    - '55'
     - 
   - - '48'
     - Cover Letter
@@ -44672,7 +44930,7 @@ tasks:
     - '10'
     - 
   - - '68'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '16'
     - true
@@ -44682,7 +44940,7 @@ tasks:
     - '5'
     - '4'
     - '2016-02-02 19:33:00'
-    - '48'
+    - '55'
     - 
   - - '69'
     - Cover Letter
@@ -44955,7 +45213,7 @@ tasks:
     - '10'
     - 
   - - '89'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '21'
     - false
@@ -44965,7 +45223,7 @@ tasks:
     - '5'
     - '8'
     - 
-    - '48'
+    - '55'
     - 
   - - '90'
     - Cover Letter
@@ -45228,7 +45486,7 @@ tasks:
     - '10'
     - 
   - - '110'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '26'
     - false
@@ -45238,7 +45496,7 @@ tasks:
     - '5'
     - '9'
     - 
-    - '48'
+    - '55'
     - 
   - - '111'
     - Cover Letter
@@ -45501,7 +45759,7 @@ tasks:
     - '10'
     - 
   - - '131'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '31'
     - false
@@ -45511,7 +45769,7 @@ tasks:
     - '5'
     - '10'
     - 
-    - '48'
+    - '55'
     - 
   - - '132'
     - Cover Letter
@@ -45774,7 +46032,7 @@ tasks:
     - '10'
     - 
   - - '174'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '41'
     - true
@@ -45784,7 +46042,7 @@ tasks:
     - '5'
     - '12'
     - '2016-04-12 19:02:01.049585'
-    - '48'
+    - '55'
     - 
   - - '175'
     - Cover Letter
@@ -46059,7 +46317,7 @@ tasks:
     - '10'
     - 
   - - '195'
-    - Custom Card
+    - Competing Interests
     - CustomCardTask
     - '46'
     - false
@@ -46069,7 +46327,7 @@ tasks:
     - '4'
     - '13'
     - 
-    - '48'
+    - '55'
     - 
   - - '196'
     - Data Availability

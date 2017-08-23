@@ -80,7 +80,6 @@ export default DS.Model.extend({
   relatedUsers: attr(),
   shortTitle: attr('string'),
   status: attr('string'),
-  strikingImageId: attr('string'),
   submittedAt: attr('date'),
   title: attr('string'),
   abstract: attr('string'),

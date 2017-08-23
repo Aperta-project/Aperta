@@ -7,7 +7,6 @@ var FigureSnapshot = Ember.Object.extend({
   snapshot: null,
   file: namedComputedProperty('snapshot', 'file'),
   title: namedComputedProperty('snapshot', 'title'),
-  strikingImage: namedComputedProperty('snapshot', 'striking_image'),
   fileHash: namedComputedProperty('snapshot', 'file_hash'),
   url: namedComputedProperty('snapshot', 'url')
 });

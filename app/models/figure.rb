@@ -2,10 +2,8 @@
 # manuscript, to elucidate upon the point they are trying to make. Figures are
 # typically graphs, charts, or other scientific extrapolations of data.
 class Figure < Attachment
-  include CanBeStrikingImage
-
   self.public_resource = true
-  
+
   default_scope { order(:id) }
 
   after_save :insert_figures!, if: :should_insert_figures?

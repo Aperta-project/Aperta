@@ -10,7 +10,7 @@
 {{else}}
   {{#if paper.previewFail}}
     <h3>Preview for this manuscript is unavailable.</h3>
-    <p>If you are using an unsupported browser, <a href="https://browsehappy.com/" target="_blank">please try a different web browser</a>, or you can download the manuscript to your computer to view it. </p>
+    <p>If you are using an unsupported browser, <a href="https://browsehappy.com/" target="_blank">please try a different web browser</a>, or you can <a href="#" {{action "toggleDownloads"}} id="download">download the manuscript</a> to your computer to view it. </p>
     <p>If you would like to contact us, you can reach us via our <a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Feedback form</a>.</p>
   {{else}}
     <h3>Your file was uploaded successfully, but we were unable to render a preview at this time.</h3>

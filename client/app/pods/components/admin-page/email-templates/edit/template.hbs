@@ -42,95 +42,16 @@
                 {{/unless}}
               </div>
             </div>
-
-            <div class="col-xs-3 sample-merge-fields-col">
-              <div class="sample-merge-fields-header">Available Merge Fields</div>
-              <div class="sample-merge-fields">
-                <div class="sample-merge-field">\{{ manuscript.title }}</div>
-                <div class="sample-merge-field">\{{ manuscript.abstract }}</div>
-                <div class="sample-merge-field">\{{ manuscript.paper_type }}</div>
-                <div class="sample-merge-field">\{{ manuscript.url }}</div>
-
-                <div class="sample-merge-field">\{{ manuscript.editor.first_name }}</div>
-                <div class="sample-merge-field">\{{ manuscript.editor.last_name }}</div>
-                <div class="sample-merge-field">\{{ manuscript.editor.email }}</div>
-                <div class="sample-merge-field">\{{ manuscript.editor.title }}</div>
-
-                <div class="sample-merge-field">\{{ journal.name }}</div>
-                <div class="sample-merge-field">\{{ journal.logo_url }}</div>
-                <div class="sample-merge-field">\{{ journal.staff_email }}</div>
-
-              <div class="sample-merge-field-group">
-                <div>{% for academic_editor in manuscript.academic_editors %}</div>
-                  <div class="sample-merge-field">\{{ academic_editor.first_name }}</div>
-                  <div class="sample-merge-field">\{{ academic_editor.last_name }}</div>
-                  <div class="sample-merge-field">\{{ academic_editor.email }}</div>
-                  <div class="sample-merge-field">\{{ academic_editor.title }}</div>
-                <div>{% endfor %}</div>
-              </div>
-
-              <div class="sample-merge-field-group">
-                <div>{% for handling_editor in manuscript.handling_editors %}</div>
-                  <div class="sample-merge-field">\{{ handling_editor.first_name }}</div>
-                  <div class="sample-merge-field">\{{ handling_editor.last_name }}</div>
-                  <div class="sample-merge-field">\{{ handling_editor.email }}</div>
-                  <div class="sample-merge-field">\{{ handling_editor.title }}</div>
-                <div>{% endfor %}</div>
-              </div>
-
-              <div class="sample-merge-field-group">
-                <div>{% for author in manuscript.authors %}</div>
-                  <div class="sample-merge-field">\{{ author.first_name }}</div>
-                  <div class="sample-merge-field">\{{ author.last_name }}</div>
-                  <div class="sample-merge-field">\{{ author.email }}</div>
-                  <div class="sample-merge-field">\{{ author.title }}</div>
-                  <div class="sample-merge-field">\{{ author.author_initial }}</div>
-                  <div class="sample-merge-field">\{{ author.affiliation }}</div>
-                <div>{% endfor %}</div>
-              </div>
-
-              <div class="sample-merge-field-group">
-                <div>{% for corresponding_author in manuscript.corresponding_authors %}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.first_name }}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.last_name }}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.email }}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.title }}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.author_initial }}</div>
-                  <div class="sample-merge-field">\{{ corresponding_author.affiliation }}</div>
-                <div>{% endfor %}</div>
-              </div>
-
-              <div class="sample-merge-field-group">
-                <div>{% for review in reviews %}</div>
-                  <div class="sample-merge-field">\{{ review.state }}</div>
-                  <div class="sample-merge-field">\{{ review.revision }}</div>
-                  <div class="sample-merge-field">\{{ review.invitation_accepted? }}</div>
-                  <div class="sample-merge-field">\{{ review.status }}</div>
-                  <div class="sample-merge-field">\{{ review.datetime }}</div>
-                  <div class="sample-merge-field">\{{ review.reviewer_number }}</div>
-                  
-                  <div class="sample-merge-field">\{{ review.reviewer.first_name }}</div>
-                  <div class="sample-merge-field">\{{ review.reviewer.last_name }}</div>
-                  <div class="sample-merge-field">\{{ review.reviewer.email }}</div>
-                  <div class="sample-merge-field">\{{ review.reviewer.title }}</div>
-
-                <div class="sample-merge-field-group">
-                  <div>{% for answer in review.answers %}</div>
-                    <div class="sample-merge-field">\{{ answer.value_type }}</div>
-                    <div class="sample-merge-field">\{{ answer.string_value }}</div>
-                    <div class="sample-merge-field">\{{ answer.value }}</div>
-                    <div class="sample-merge-field">\{{ answer.question }}</div>
-                    <div class="sample-merge-field">\{{ answer.ident }}</div>
-                  <div>{% endfor %}</div>
-                </div>
-                <div>{% endfor %}</div>
-              </div>
+            <div class="col-xs-3 available-merge-fields-col">
+              <div class="available-merge-fields-header">Available Merge Fields</div>
+              <div class="available-merge-fields">
+                {{#each template.mergeFields as |mergeField|}}
+                  {{admin-page/email-templates/edit/merge-field mergeField=mergeField}}
+                {{/each}}
               </div>
             </div>
           </div>
         </div>
-        
-
       </div>
     </div>
   </div>

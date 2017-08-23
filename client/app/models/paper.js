@@ -222,6 +222,7 @@ export default DS.Model.extend({
   }),
 
   hasAnyError: computed.equal('file.status', 'error'),
+  previewFail: false,
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {

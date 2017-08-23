@@ -1,10 +1,4 @@
 class Capybara::Session
-  old_visit = instance_method(:visit)
-
-  define_method(:visit_without_waiting) do |url|
-    old_visit.bind(self).call(url)
-  end
-
   def wait_for_ajax(timeout: Capybara.default_max_wait_time)
     return unless jquery_and_ember_present?
 

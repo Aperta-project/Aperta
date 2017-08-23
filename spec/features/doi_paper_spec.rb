@@ -29,11 +29,11 @@ feature "Paper DOI Generation", selenium: true, js: true do
       scenario "shows the manuscript id (derived from doi) on the page" do
         visit "/papers/#{paper.id}"
 
+        wait_for_ajax
         within ".task-list-doi" do
           expect(page).to have_content "Manuscript ID: robots.8888"
         end
       end
     end
-
   end
 end

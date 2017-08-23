@@ -32,7 +32,7 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card.update(card_params)
+    card.update!(card_params)
     respond_with card
   end
 

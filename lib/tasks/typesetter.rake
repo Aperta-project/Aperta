@@ -6,9 +6,10 @@ namespace :typesetter do
       Usage: rake typesetter:json[<paper_id>]
       Example: rake typesetter:json[5] (for paper with id 5)
   USAGE
-  task :json, [:paper_id] => :environment do |_, args|
+  task :json, [:paper_id, :destination] => :environment do |_, args|
+    destination = args[:destination] || 'apex'
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
-    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id])).as_json
+    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id])).as_json(destination: destination)
   end
 
   desc <<-USAGE.strip_heredoc

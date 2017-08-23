@@ -21,12 +21,12 @@
   };
 }
 
-.sample-merge-fields-header {
+.available-merge-fields-header {
   margin: 24px 0px 12px;
   font-size: 18px;
 }
 
-.sample-merge-fields {
+.available-merge-fields {
   overflow-x: hidden;
   overflow-y: scroll;
   height: 614px;
@@ -34,9 +34,9 @@
   white-space: nowrap;
 }
 
-.sample-merge-field-group {
-  margin-top: 8px;
-  .sample-merge-field, .sample-merge-field-group {
+.available-merge-field-group {
+  margin: 8px 0;
+  .available-merge-field, .available-merge-field-group {
     margin-left: 10px;
   }
 }

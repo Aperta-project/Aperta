@@ -1,0 +1,16 @@
+{{#if isGroup}}
+  <div class="available-merge-field-group">
+    <div>{% for {{ itemName }} in {{ fullName }} %}</div>
+      {{#each children as |child|}}
+        {{ admin-page/email-templates/edit/merge-field mergeField=child prefix=itemName }}
+      {{/each}}
+    <div>{% endfor %}</div>
+  </div>
+{{else}}
+  {{#if isLeafNode}}
+    <div class="available-merge-field">\{{ {{ fullName }} }}</div>
+  {{/if}}
+  {{#each children as |child|}}
+    {{ admin-page/email-templates/edit/merge-field mergeField=child prefix=fullName }}
+  {{/each}}
+{{/if}}

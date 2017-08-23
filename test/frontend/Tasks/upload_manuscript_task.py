@@ -150,9 +150,10 @@ class UploadManuscriptTask(BaseTask):
       fn = os.path.join(os.getcwd(), doc2upload)
     else:
       doc2upload = 'frontend/assets/docs/{0}'.format(file_name)
+      doc2upload_wihout_ext = os.path.splitext(doc2upload)[0]
       current_path = os.getcwd()
-      fn = '{0}/{1}.doc'.format(current_path, doc2upload)
-      fn_docx = '{0}/{1}.docx'.format(current_path, doc2upload)
+      fn = '{0}/{1}.doc'.format(current_path, doc2upload_wihout_ext)
+      fn_docx = '{0}/{1}.docx'.format(current_path, doc2upload_wihout_ext)
     try:
       with open(fn, 'rb') as fh:
         hash_file = hashlib.sha256(fh.read()).hexdigest()

@@ -40,11 +40,11 @@ describe CommentsController do
     context 'when the user has access' do
       let!(:comment1) { FactoryGirl.create(:comment, task: task) }
       let!(:comment2) { FactoryGirl.create(:comment, task: task) }
-      
+
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, task)
+          .with(:view_discussion_footer, task)
           .and_return true
       end
 
@@ -59,7 +59,7 @@ describe CommentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, task)
+          .with(:view_discussion_footer, task)
           .and_return false
       end
 
@@ -81,7 +81,7 @@ describe CommentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, task)
+          .with(:edit_discussion_footer, task)
           .and_return true
         allow(user).to receive(:can?)
           .with(:administer, journal)
@@ -161,7 +161,7 @@ describe CommentsController do
             .with(:administer, journal)
             .and_return true
           allow(journal_admin).to receive(:can?)
-            .with(:view, task)
+            .with(:edit_discussion_footer, task)
             .and_return true
         end
 
@@ -187,7 +187,7 @@ describe CommentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, task)
+          .with(:edit_discussion_footer, task)
           .and_return false
       end
 
@@ -210,7 +210,7 @@ describe CommentsController do
       before do
         stub_sign_in user
         allow(user).to \
-          receive(:can?).with(:view, task).and_return true
+          receive(:can?).with(:view_discussion_footer, task).and_return true
       end
 
       it "returns the tasks comments" do
@@ -223,7 +223,7 @@ describe CommentsController do
       before do
         stub_sign_in user
         allow(user).to receive(:can?)
-          .with(:view, task)
+          .with(:view_discussion_footer, task)
           .and_return false
       end
 

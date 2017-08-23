@@ -32,10 +32,7 @@ class CardsController < ApplicationController
   # generated from config/card.rnc)
   def update
     requires_user_can(:edit, card)
-    card_attrs = card_params(xml: true)
-    xml = card_attrs.delete(:xml)
-    card.update!(card_attrs)
-    card.update_from_xml(xml) unless xml.blank?
+    card.update(card_params)
     respond_with card
   end
 
@@ -89,9 +86,8 @@ class CardsController < ApplicationController
     @card ||= Card.find(params[:id])
   end
 
-  def card_params(xml: false)
-    keys = %i(name journal_id)
-    keys << :xml if xml
+  def card_params
+    keys = %i[name journal_id xml]
     params.require(:card).permit(*keys)
   end
 end

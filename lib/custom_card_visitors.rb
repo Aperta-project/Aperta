@@ -1,6 +1,10 @@
 module CustomCardVisitors
   class CustomCardVisitor
     def visit(card_content); end
+
+    def to_s
+      Rails.logger.info "#{self.class.name} #{report}"
+    end
   end
 
   # This class flattens and de-dupes Rails errors in a content hierarchy

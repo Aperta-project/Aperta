@@ -212,6 +212,10 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def xml=(xml_string)
+    update_from_xml(xml_string) if xml_string.present?
+  end
+
   def update_from_xml(xml)
     if published?
       XmlCardLoader.new_version_from_xml_string(xml, self)

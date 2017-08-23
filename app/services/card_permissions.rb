@@ -52,9 +52,15 @@ class CardPermissions
       # permission.
       grouped_roles = group_roles(card, roles)
 
-      STATES.keys.map do |key|
-        permission ||= get_task_permission(card, action, STATES[key])
-        replace_roles_and_save(permission, grouped_roles[key])
+      # If we already know the exact permission just use it
+      # otherwise update the permission for each of the state.
+      if permission
+        replace_roles_and_save(permission, roles)
+      else
+        STATES.keys.map do |key|
+          permission = get_task_permission(card, action, STATES[key])
+          replace_roles_and_save(permission, grouped_roles[key])
+        end
       end
     end
   end

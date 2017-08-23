@@ -12,13 +12,13 @@ import Ember from 'ember';
 */
 export function findPermissionFromList(permissions, filterByCardId, permissionAction, role = undefined, forAdd = false) {
   return permissions.find((perm)=>{
-    var rightPermission = (
+    var isMatch = (
       (perm.get('permissionAction') === permissionAction) &&
       (perm.get('filterByCardId') === filterByCardId)
     );
 
-    if (!rightPermission || forAdd || !role) {
-      return rightPermission;
+    if (!isMatch || forAdd || !role) {
+      return isMatch;
     } else {
       return perm.get('roles').filterBy('id', role.id).length > 0;
     }

@@ -57,10 +57,11 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.integer  "paper_id"
     t.string   "value"
     t.jsonb    "additional_data"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.datetime "deleted_at"
     t.string   "annotation"
+    t.integer  "position",        default: 0
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -225,14 +226,14 @@ ActiveRecord::Schema.define(version: 20170818171409) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                                        null: false
-    t.integer  "rgt",                                        null: false
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",                            null: false
+    t.integer  "card_version_id",            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -245,7 +246,7 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.string   "instruction_text"
     t.string   "editor_style"
     t.string   "condition"
-    t.boolean  "required_field",             default: false
+    t.boolean  "required_field"
     t.string   "initial"
     t.string   "min"
     t.string   "max"

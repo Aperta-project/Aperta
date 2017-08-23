@@ -9,7 +9,7 @@ namespace :typesetter do
   task :json, [:paper_id, :destination] => :environment do |_, args|
     destination = args[:destination] || 'apex'
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
-    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id]), destination: destination)
+    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id]), destination: destination).as_json
   end
 
   desc <<-USAGE.strip_heredoc

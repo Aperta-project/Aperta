@@ -18,6 +18,10 @@ class LetterTemplate < ActiveRecord::Base
     end
   end
 
+  def merge_fields
+    scenario.constantize.merge_fields
+  end
+
   private
 
   def render_attr(template, context, sanitize: false)

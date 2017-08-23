@@ -20,7 +20,6 @@ class Paper < ActiveRecord::Base
   self.snapshottable = true
 
   belongs_to :journal, inverse_of: :papers
-  belongs_to :striking_image, polymorphic: true
 
   # Attachment-related things
   has_many :figures, as: :owner, dependent: :destroy
@@ -102,6 +101,10 @@ class Paper < ActiveRecord::Base
            to: :latest_submitted_version, allow_nil: true
   delegate :figureful_text,
            to: :latest_version, allow_nil: true
+
+  def self.find_preprint_doi_article_number(full_preprint_doi)
+    full_preprint_doi.match(/.+\.(\d+)/)[1]
+  end
 
   def file_type
     file.try(:file_type)

@@ -3,7 +3,6 @@ class PaperSerializer < LitePaperSerializer
              :legends_allowed, :links, :manually_similarity_checked,
              :paper_type, :short_title, :submitted_at, :versions_contain_pdf
 
-
   %i(supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
@@ -25,7 +24,6 @@ class PaperSerializer < LitePaperSerializer
   serializer: CorrespondenceSerializer
 
   has_one :journal, embed: :id
-  has_one :striking_image, embed: :id
   has_one :file, embed: :object, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :object, serializer: AttachmentSerializer
 

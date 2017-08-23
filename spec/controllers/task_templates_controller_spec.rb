@@ -41,8 +41,8 @@ describe TaskTemplatesController do
     expect(response.status).to eq(204)
   end
 
-  it "updates similarity check settings" do
-    post :similarity_check_settings, format: :json, id: task_template.id, value: 'off'
-    expect(response.status).to eq(201)
+  it "updates a setting" do
+    put :update_setting, format: :json, id: task_template.id, value: 'off', name: 'ithenticate_automation'
+    expect(response.status).to eq(204)
   end
 end

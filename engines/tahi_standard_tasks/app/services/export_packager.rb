@@ -22,7 +22,6 @@ class ExportPackager
     @zip_file ||= Tempfile.new('zip').tap do |f|
       Zip::OutputStream.open(f) do |package|
         add_figures(package)
-        add_striking_image(package)
         add_supporting_information(package)
         add_metadata(package)
         add_manuscript(package)
@@ -90,27 +89,12 @@ class ExportPackager
     "#{@paper.manuscript_id}.#{extension}"
   end
 
-  def add_striking_image(package)
-    return unless @paper.striking_image
-    add_file_to_package package,
-                        attachment_apex_filename(@paper.striking_image),
-                        @paper.striking_image.file.read
-  end
-
   def add_figures(package)
     @paper.figures.each do |figure|
-      next if @paper.striking_image == figure
       add_file_to_package package,
-                          attachment_apex_filename(figure),
+                          figure.filename,
                           figure.file.read
     end
-  end
-
-  def attachment_apex_filename(attachment)
-    return attachment.filename unless attachment == @paper.striking_image
-
-    extension = attachment.filename.split('.').last
-    "Strikingimage.#{extension}"
   end
 
   def add_supporting_information(package)

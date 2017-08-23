@@ -74,7 +74,7 @@ class TahiEnv
         instance.send(method, *args, &blk)
       else
         method = method.to_s
-        fail MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
+        raise MissingEnvVarRegistration, <<-ERROR_MSG.strip_heredoc
           undefined method #{method.inspect} for #{self}. Is the
           #{method.upcase} env var registered in #{self}?
         ERROR_MSG

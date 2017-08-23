@@ -10,7 +10,6 @@ FactoryGuy.define('figure', {
     src: 'figure.jpg',
     status: 'done',
     title: 'Figure Title',
-    strikingImage: false,
     rank: 0
   }
 });

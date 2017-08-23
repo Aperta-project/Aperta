@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816124715) do
+ActiveRecord::Schema.define(version: 20170817151226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 20170816124715) do
     t.boolean  "uses_research_article_reviewer_report", default: false
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.boolean  "is_preprint_eligible",                  default: false
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
@@ -552,6 +553,8 @@ ActiveRecord::Schema.define(version: 20170816124715) do
     t.boolean  "deleted",    default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "order_dir"
+    t.string   "order_by"
   end
 
   create_table "papers", force: :cascade do |t|
@@ -563,7 +566,6 @@ ActiveRecord::Schema.define(version: 20170816124715) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -573,7 +575,6 @@ ActiveRecord::Schema.define(version: 20170816124715) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
@@ -761,8 +762,6 @@ ActiveRecord::Schema.define(version: 20170816124715) do
     t.integer  "due_datetime_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree

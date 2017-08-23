@@ -145,6 +145,7 @@ describe ReviewerReport do
     before do
       FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_AT')
       FactoryGirl.create(:feature_flag, name: 'REVIEW_DUE_DATE')
+      FactoryGirl.create :review_duration_period_setting_template
     end
 
     it 'schedues events afterwards' do

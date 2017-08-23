@@ -9,7 +9,7 @@
     Completed {{statusDate}}
   {{else}}
   <strong>{{reviewerStatus}}:</strong> {{statusMessage}}
-  {{#if (and (can 'manage_workflow' report.task.paper)
+  {{#if (and canEditDueDate
              (eq reviewerStatus 'Pending')
              report.dueAt)}}
     {{date-picker-link

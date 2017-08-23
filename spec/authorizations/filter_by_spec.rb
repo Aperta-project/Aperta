@@ -76,6 +76,28 @@ DESC
     end
 
     it { is_expected.to be_able_to(:view, task_a, task_b, task_c) }
+
+    describe 'filter_authorized' do
+      it 'return the right stuff for :edit' do
+        map = subject.filter_authorized(:edit, Authorizations::FakeTask.all).map
+        expect(map).to contain_exactly([task_a, { 'edit' => { states: ['*'] } }])
+      end
+
+      it 'return the right stuff for :view' do
+        map = subject.filter_authorized(:view, Authorizations::FakeTask.all).map
+        expect(map).to contain_exactly([task_a, { 'view' => { states: ['*'] } }],
+                                       [task_b, { 'view' => { states: ['*'] } }],
+                                       [task_c, { 'view' => { states: ['*'] } }])
+      end
+
+      it 'return the right stuff for :*' do
+        map = subject.filter_authorized(:*, Authorizations::FakeTask.all).map
+        expect(map).to contain_exactly([task_a, { 'edit' => { states: ['*'] },
+                                                  'view' => { states: ['*'] } }],
+                                       [task_b, { 'view' => { states: ['*'] } }],
+                                       [task_c, { 'view' => { states: ['*'] } }])
+      end
+    end
   end
 
   shared_examples_for :expected do

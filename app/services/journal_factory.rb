@@ -22,6 +22,7 @@ class JournalFactory
     @journal.save!
     ensure_default_roles_and_permissions_exist
     assign_hints
+    assign_default_system_custom_cards
     @journal
   end
 
@@ -35,6 +36,10 @@ class JournalFactory
     assign_hint Role::TASK_ROLES,             Task.name
     assign_hint Role::PAPER_ROLES,            Paper.name
     assign_hint Role::JOURNAL_ROLES,          Journal.name
+  end
+
+  def assign_default_system_custom_cards
+    CustomCard::Loader.all(journals: @journal)
   end
 
   # All standard tasks that users who see the workflow should see
@@ -218,6 +223,7 @@ class JournalFactory
       STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:edit_due_date, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -276,6 +282,7 @@ class JournalFactory
       STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:edit_due_date, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)
@@ -448,6 +455,7 @@ class JournalFactory
       STANDARD_TASKS.each do |klass|
         role.ensure_permission_exists(:add_email_participants, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:edit_due_date, applies_to: klass)
         role.ensure_permission_exists(:manage, applies_to: klass)
         role.ensure_permission_exists(:manage_invitations, applies_to: klass)
         role.ensure_permission_exists(:manage_participant, applies_to: klass)

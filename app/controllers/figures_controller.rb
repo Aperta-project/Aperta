@@ -59,7 +59,6 @@ class FiguresController < ApplicationController
     params.require(:figure).permit(
       :title,
       :caption,
-      :striking_image,
       :attachment,
       attachment: [])
   end

@@ -1,10 +1,10 @@
 class TaskTemplatesController < ApplicationController
   before_action :authenticate_user!
+  before_action :verify_user, except: :create
 
   respond_to :json
 
   def show
-    requires_user_can(:administer, journal)
     respond_with task_template
   end
 
@@ -16,21 +16,17 @@ class TaskTemplatesController < ApplicationController
   end
 
   def update
-    requires_user_can(:administer, journal)
     task_template.update_attributes(task_template_params)
     respond_with task_template
   end
 
   def destroy
-    requires_user_can(:administer, journal)
     task_template.destroy
     respond_with task_template
   end
 
-  def similarity_check_settings
-    requires_user_can(:administer, journal)
-    task_template.setting('ithenticate_automation').update!(value:
-      params[:value])
+  def update_setting
+    task_template.setting(params[:name]).update!(value: params[:value])
     respond_with task_template
   end
 
@@ -52,5 +48,9 @@ class TaskTemplatesController < ApplicationController
                        else
                          TaskTemplate.new(task_template_params)
                        end
+  end
+
+  def verify_user
+    requires_user_can(:administer, journal)
   end
 end

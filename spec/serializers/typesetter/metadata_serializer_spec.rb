@@ -269,9 +269,9 @@ describe Typesetter::MetadataSerializer do
   end
 
   shared_examples_for 'serializes :has_one paper task' do |opts|
-    opts[:factory] || fail(ArgumentError, 'Must pass in a :factory')
-    opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')
-    opts[:json_key] || fail(ArgumentError, 'Must pass in a :json_key')
+    opts[:factory] || raise(ArgumentError, 'Must pass in a :factory')
+    opts[:serializer] || raise(ArgumentError, 'Must pass in a :serializer')
+    opts[:json_key] || raise(ArgumentError, 'Must pass in a :json_key')
 
     context 'with the task' do
       let(:task) do
@@ -305,10 +305,10 @@ describe Typesetter::MetadataSerializer do
   end
 
   shared_examples_for 'serializes :has_many property' do |opts|
-    opts[:property] || fail(ArgumentError, 'Must pass in a :property')
-    opts[:factory] || fail(ArgumentError, 'Must pass in a :factory')
-    opts[:serializer] || fail(ArgumentError, 'Must pass in a :serializer')
-    opts[:json_key] || fail(ArgumentError, 'Must pass in a :json_key')
+    opts[:property] || raise(ArgumentError, 'Must pass in a :property')
+    opts[:factory] || raise(ArgumentError, 'Must pass in a :factory')
+    opts[:serializer] || raise(ArgumentError, 'Must pass in a :serializer')
+    opts[:json_key] || raise(ArgumentError, 'Must pass in a :json_key')
 
     let(:has_many_property_value) do
       [FactoryGirl.build(opts[:factory])]

@@ -20,8 +20,6 @@ module TahiDevise
       user.ned_id = ned[:nedId]
       user.auto_generate_password
       user.save!
-      # now supports redirect urls with q params
-      store_location_for(:user, params[:url])
 
       sign_in_and_redirect(user, event: :authentication)
     end

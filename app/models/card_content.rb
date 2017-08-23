@@ -3,7 +3,7 @@
 # questions (radio buttons, text input, selects), static informational
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
-class CardContent < ApplicationRecord
+class CardContent < ActiveRecord::Base
   include XmlSerializable
 
   # Scope matches deleted_at IS NULL, that is, non-deleted records

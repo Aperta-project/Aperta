@@ -36,7 +36,7 @@ end
 feature "Devise redirect", js: true, flaky: true do
   let!(:user) { FactoryGirl.create :user }
   scenario "User is redirected after login" do
-    page.visit_without_waiting '/profile'
+    visit '/profile'
     fill_in('Login', with: user.username)
     fill_in('Password', with: 'password')
     click_on "Sign in"

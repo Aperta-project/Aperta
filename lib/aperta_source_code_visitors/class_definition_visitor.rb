@@ -19,7 +19,7 @@ module ApertaSourceCodeVisitors
       @class_definitions = {}
     end
 
-    def visit_class(node, tail)
+    def visit_class(_node, tail)
       class_reference = tail[0]
       superclass_reference = tail[1] || nil
 

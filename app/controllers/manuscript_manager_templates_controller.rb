@@ -84,10 +84,6 @@ class ManuscriptManagerTemplatesController < ApplicationController
     end
   end
 
-  def enforce_policy
-    authorize_action! manuscript_manager_template: manuscript_manager_template
-  end
-
   def manuscript_manager_template
     @mmt ||= if params[:id]
       ManuscriptManagerTemplate.find(params[:id])

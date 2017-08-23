@@ -89,7 +89,7 @@ class PaperPage < Page
     element.send_keys = string
   end
 
-  def abstract=(val)
+  def abstract=(_val)
     # find('#paper-title').set(val)
     raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end

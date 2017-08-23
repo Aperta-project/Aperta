@@ -23,7 +23,7 @@ class AnswerableFactory
       end
     end
 
-    def create_question(question_hash, parent, owner, card)
+    def create_question(question_hash, parent, _owner, card)
       card_content = CardContent.find_by(ident: question_hash[:ident]) ||
         FactoryGirl.build(:card_content)
 

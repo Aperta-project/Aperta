@@ -93,6 +93,7 @@ describe Answer do
       end
 
       describe '#blank? works' do
+        subject { value }
         context 'when the answer is nil' do
           let!(:value) { nil }
           it_behaves_like :a_blank_answer
@@ -113,6 +114,7 @@ describe Answer do
       end
 
       describe '#blank? works' do
+        subject { value }
         context 'when the answer is nil' do
           let!(:value) { nil }
           it_behaves_like :a_blank_answer

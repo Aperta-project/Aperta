@@ -40,21 +40,21 @@ class TasksController < ApplicationController
   def update
     requires_user_can :edit, task
 
-    # if required fields are incomplete mark the task as incomplete
-    # side load answers and ready issues using a custom serializer
-    unless required_fields_completed
-      render json: task, serializer: TaskAnswerSerializer
-      return
-    end
-
-    # if the task is marked as completed and required fields are complete
-    # mark the task as complete
-    # else update the task with provided attributes
     if task.completed?
+      # If the task is already completed, all the user can do is uncomplete it.
       attrs = params.require(:task).permit(:completed)
       task.update!(completed: attrs[:completed]) if attrs.key?(:completed)
     else
+      # At this point, the user could be doing one of two things.
+      # 1. They are toggling the completed flag.
+      # 2. They are updating the body or something else.
       task.assign_attributes(task_params(task.class))
+      if task.completed_changed? && !task.ready?
+        # They are marking the task completed, but the fields are not ready.
+        # Roll back the change.
+        render json: task.reload, serializer: TaskAnswerSerializer
+        return
+      end
       task.save!
     end
 
@@ -168,9 +168,5 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
-  end
-
-  def required_fields_completed
-    task.answers.includes(:card_content).all?(&:ready?)
   end
 end

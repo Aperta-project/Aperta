@@ -287,6 +287,10 @@ class Task < ActiveRecord::Base
     :check
   end
 
+  def ready?
+    answers.includes(:card_content).all?(&:ready?)
+  end
+
   private
 
   def update_completed_at

@@ -510,9 +510,7 @@ class FiguresTask(BaseTask):
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
       if figure == page_fig_name.text:
         matched = True
-        page_strike_status = figure_block.find_element(*self._figure_striking_status)
-        figure_block.find_element(*self._figure_striking_chkmrk)
-        assert 'This is the striking image' in page_strike_status.text, page_strike_status.text
+
     if not matched:
       raise(ValueError, 'Figure list: {0} not found on page'.format(figure))
 

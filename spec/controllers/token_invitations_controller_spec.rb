@@ -385,8 +385,11 @@ describe TokenInvitationsController do
           expect_any_instance_of(TahiEnv).to receive(:cas_phased_signup_url).and_return(dummy_cas_url)
           expect(OpenSSL::PKey::EC).to receive(:new).and_return(dummy_key)
         end
-        it 'redirects user to akita host with only a token param' do
+        it 'sets the redirect session value and redirects user to akita host with only a token param' do
           do_request
+          stored_uri = URI(controller.send(:akita_invitation_accept_url, new_user: true))
+          # stored_location_for retrieves path and query params
+          expect(controller.send(:stored_location_for, :user)).to eq("#{stored_uri.path}?#{stored_uri.query}")
           redirect_uri = URI.parse(response['Location'])
           expect(redirect_uri.host).to eq(URI.parse(dummy_cas_url).host)
           expect(redirect_uri.query.starts_with?('token=')).to be true

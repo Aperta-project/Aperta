@@ -40,6 +40,6 @@ class ExportManifest
   private
 
   def delivery_id_key
-    @destination == 'apex' ? :delivery_id : :export_delivery_id
+    @destination == 'apex' ? :apex_delivery_id : :export_delivery_id
   end
 end

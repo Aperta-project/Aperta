@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'models/concerns/striking_image_shared_examples'
 
 describe Figure, redis: true do
   let(:figure) do
@@ -12,8 +11,6 @@ describe Figure, redis: true do
       )
     end
   end
-
-  it_behaves_like 'a striking image'
 
   describe '#access_details' do
     it 'returns a hash with file src, filename, alt' do

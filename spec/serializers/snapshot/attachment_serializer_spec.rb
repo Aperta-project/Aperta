@@ -41,15 +41,5 @@ describe Snapshot::AttachmentSerializer do
         { name: 'url', type: 'url', value: attachment.non_expiring_proxy_url }
       )
     end
-
-    context 'when the attachment CanBeStrikingImage' do
-      before { attachment.extend CanBeStrikingImage }
-
-      it 'includes the striking_image' do
-        expect(serializer.as_json[:children]).to match array_including(
-          { name: 'striking_image', type: 'boolean', value: attachment.striking_image }
-        )
-      end
-    end
   end
 end

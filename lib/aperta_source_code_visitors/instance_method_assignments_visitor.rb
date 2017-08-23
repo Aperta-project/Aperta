@@ -33,7 +33,7 @@ module ApertaSourceCodeVisitors
     end
 
     # instance-method
-    def visit_def(node, tail)
+    def visit_def(_node, tail)
       method_name = tail.first[1]
       @assignments_by_method_name[method_name] = {
         instance_variables: [],
@@ -42,11 +42,11 @@ module ApertaSourceCodeVisitors
       @current_instance_method = @assignments_by_method_name[method_name]
     end
 
-    def leaving_def(node, tail)
+    def leaving_def(_node, _tail)
       @current_instance_method = nil
     end
 
-    def visit_assign(node, tail)
+    def visit_assign(_node, tail)
       if @current_instance_method
         method_definition = tail.first[1]
         case method_definition.first

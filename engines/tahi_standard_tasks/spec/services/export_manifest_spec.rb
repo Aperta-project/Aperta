@@ -36,7 +36,7 @@ describe ExportManifest do
           archive_filename: archive_filename,
           metadata_filename: metadata_filename,
           files: [file_1, file_2],
-          delivery_id: delivery_id
+          apex_delivery_id: delivery_id
         }
         expect(manifest_hash).to match expected_hash
       end

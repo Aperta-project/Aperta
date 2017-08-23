@@ -225,14 +225,14 @@ ActiveRecord::Schema.define(version: 20170818171409) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                        null: false
-    t.integer  "rgt",                        null: false
+    t.integer  "lft",                                        null: false
+    t.integer  "rgt",                                        null: false
     t.string   "text"
     t.string   "value_type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",            null: false
+    t.integer  "card_version_id",                            null: false
     t.string   "content_type"
     t.string   "placeholder"
     t.jsonb    "possible_values"
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.string   "instruction_text"
     t.string   "editor_style"
     t.string   "condition"
-    t.boolean  "required_field"
+    t.boolean  "required_field",             default: false
     t.string   "initial"
     t.string   "min"
     t.string   "max"
@@ -570,7 +570,6 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -580,7 +579,6 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false
@@ -768,8 +766,6 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.integer  "due_datetime_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "owner_type"
-    t.integer  "owner_id"
   end
 
   add_index "scheduled_events", ["due_datetime_id"], name: "index_scheduled_events_on_due_datetime_id", using: :btree
@@ -854,7 +850,7 @@ ActiveRecord::Schema.define(version: 20170818171409) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   default: "apex", null: false
+    t.string   "destination", null: false
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

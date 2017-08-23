@@ -22,7 +22,6 @@ var snapshot = function(attrs){
     label: 'jars, not people',
     publishable: true,
     status: 'processing',
-    striking_image: true,
     title: 'squid',
     url: '/path/to/theFile.jpg'
   }, attrs);
@@ -38,7 +37,6 @@ var snapshot = function(attrs){
         { name: 'label', type: 'text', value: properties.label },
         { name: 'publishable', type: 'boolean', value: properties.publishable },
         { name: 'status', type: 'text', value: properties.status },
-        { name: 'striking_image', type: 'boolean', value: properties.striking_image },
         { name: 'title', type: 'text', value: properties.title },
         { name: 'url', type: 'url', value: properties.url }
       ]
@@ -67,7 +65,6 @@ testProperty('caption');
 testProperty('category');
 testProperty('label');
 testProperty('publishable', { diffType: 'boolean' });
-testProperty('striking_image', { cssClass: 'striking-image', diffType: 'boolean' });
 testProperty('title');
 
 

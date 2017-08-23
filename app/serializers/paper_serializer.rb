@@ -24,7 +24,6 @@ class PaperSerializer < LitePaperSerializer
   serializer: CorrespondenceSerializer
 
   has_one :journal, embed: :id
-  has_one :striking_image, embed: :id
   has_one :file, embed: :object, serializer: AttachmentSerializer
   has_one :sourcefile, embed: :object, serializer: AttachmentSerializer
 

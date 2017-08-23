@@ -25,7 +25,7 @@ class Card < ActiveRecord::Base
       MSG
     }
 
-  before_save :check_nested_errors, :check_semantics
+  validate :check_nested_errors, :check_semantics
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
@@ -131,19 +131,19 @@ class Card < ActiveRecord::Base
   # look for errors in nested child objects
   def check_nested_errors
     traverse(CardErrorVisitor.new)
-    true
   end
 
   # evaluate card semantics
   def check_semantics
     traverse(CardSemanticValidator.new)
-    true
   end
 
   # traverse card and its latest children
   def traverse(visitor)
     return if card_versions.none?
-    root = card_versions.last.content_root
+    version = most_recent_version
+    return unless version
+    root = version.content_root
     return unless root
     root.traverse(visitor)
     visitor.report.each { |error| errors.add(:detail, message: error) }
@@ -157,6 +157,10 @@ class Card < ActiveRecord::Base
   # can take a version number or the symbol `:latest`
   def content_root_for_version(version_no)
     card_version(version_no).content_root
+  end
+
+  def most_recent_version
+    card_versions.detect { |card_version| card_version.version == latest_version }
   end
 
   # all the methods dealing with card content go through

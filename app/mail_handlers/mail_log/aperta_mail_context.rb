@@ -6,7 +6,7 @@ module MailLog
 
     def initialize(context_hash)
       @context_hash = context_hash
-      @model_hash = @context_hash.select do |key, value|
+      @model_hash = @context_hash.select do |_key, value|
         value.is_a?(ActiveRecord::Base)
       end
       @task = @model_hash.values.detect { |value| value.is_a?(Task) }

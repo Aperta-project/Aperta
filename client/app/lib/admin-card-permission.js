@@ -10,18 +10,10 @@ import Ember from 'ember';
  * @param {string} permissionAction the action for the permission, e.g. view
  * @return {Object} Found permission or undefined
 */
-export function findPermissionFromList(permissions, filterByCardId, permissionAction, role = undefined, forAdd = false) {
+export function findPermissionFromList(permissions, filterByCardId, permissionAction) {
   return permissions.find((perm)=>{
-    var rightPermission = (
-      (perm.get('permissionAction') === permissionAction) &&
-      (perm.get('filterByCardId') === filterByCardId)
-    );
-
-    if (!rightPermission || forAdd || !role) {
-      return rightPermission;
-    } else {
-      return perm.get('roles').filterBy('id', role.id).length > 0;
-    }
+    return ((perm.get('permissionAction') === permissionAction) &&
+            (perm.get('filterByCardId') === filterByCardId));
   });
 }
 

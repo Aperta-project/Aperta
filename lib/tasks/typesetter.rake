@@ -3,18 +3,18 @@ namespace :typesetter do
 
   desc <<-USAGE.strip_heredoc
     Displays typesetter metadata for manual inspection. Pass in paper id.
-      Usage: rake typesetter:json[<paper_id>]
-      Example: rake typesetter:json[5] (for paper with id 5)
+      Usage: rake typesetter:json[<paper_id>, <destination>]
+      Example: rake typesetter:json[5, em] (for paper with id 5 and destination em)
   USAGE
   task :json, [:paper_id, :destination] => :environment do |_, args|
     destination = args[:destination] || 'apex'
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
-    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id])).as_json(destination: destination)
+    pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id]), destination: destination)
   end
 
   desc <<-USAGE.strip_heredoc
     Creates a typesetter ZIP file for manual inspection.
-      Usage: rake typesetter:zip[<paper_id>,<output_filename>]
+      Usage: rake typesetter:zip[<paper_id>,<output_filename>, <destination>]
   USAGE
   task :zip, [:paper_id, :output_filename, :destination] => :environment do |_, args|
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)

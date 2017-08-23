@@ -38,6 +38,22 @@ var paperStub = {
   manuallySimilarityChecked: false
 };
 
+var paperWithIncompleteCheck = {
+  title: 'Paper title',
+  abstract: 'Paper abstract',
+  editable: true,
+  manuallySimilarityChecked: false,
+  latestVersionedText: {
+    id: 1,
+    similarityChecks: [{
+      id: 1,
+      versioned_text_id: 1,
+      state: 'needs_upload',
+      incomplete: true
+    }]
+  }
+};
+
 moduleForComponent(
   'similarity-check-task',
   'Integration | Components | Tasks | Similarity Check Task',
@@ -103,4 +119,10 @@ test('proper state for auto check off via admin', function(assert) {
     '.auto-report-off',
     'report status disapears on confirm'
   );
+});
+
+test('Incomplete Similarity Check renders', function(assert) {
+  let task = newTask(false, paperWithIncompleteCheck);
+  setupEditableTask(this, task);
+  assert.elementFound('.similarity-check');
 });

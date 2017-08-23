@@ -22,7 +22,7 @@ class Answer < ActiveRecord::Base
 
   delegate :value_type, to: :card_content
 
-  before_save :sanitize_html, if: :html_value_type?
+  before_save :sanitize_html
   # The 'value: true' option means it's validating value using
   # the value validator.
   # See http://api.rubyonrails.org/classes/ActiveModel/Validator.html
@@ -69,6 +69,10 @@ class Answer < ActiveRecord::Base
   end
 
   def sanitize_html
-    self[:value] = HtmlScrubber.standalone_scrub!(string_value)
+    self[:value] = if value_type == 'html'
+                     HtmlScrubber.standalone_scrub!(string_value)
+                   else
+                     Rails::Html::FullSanitizer.new.sanitize(string_value)
+                   end
   end
 end

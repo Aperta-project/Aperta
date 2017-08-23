@@ -45,17 +45,28 @@ describe Answer do
   end
 
   context 'html sanitization' do
-    let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
-    subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
-    it 'scrubs value if value_type is html' do
-      answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")
-      answer.reload
-      expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
+    context 'with value_type html' do
+      let(:card_content) { FactoryGirl.create(:card_content, value_type: 'html') }
+      subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
+      it 'scrubs value if value_type is html' do
+        answer.update!(value: "<div>something</div><foo>foo</foo><script>evilThing();</script>")
+        answer.reload
+        expect(answer.string_value).to eq "<div>something</div>fooevilThing();"
+      end
+      it 'leaves certain style attributes that we want to keep' do
+        answer.update!(value: "<span>something</span><foo>foo</foo><script>evilThing();</script>")
+        answer.reload
+        expect(answer.string_value).to eq "<span>something</span>fooevilThing();"
+      end
     end
-    it 'leaves certain style attributes that we want to keep' do
-      answer.update!(value: "<span>something</span><foo>foo</foo><script>evilThing();</script>")
-      answer.reload
-      expect(answer.string_value).to eq "<span>something</span>fooevilThing();"
+    context 'with value_type text' do
+      let(:card_content) { FactoryGirl.create(:card_content, value_type: 'text') }
+      subject(:answer) { FactoryGirl.create(:answer, card_content: card_content) }
+      it 'sanitizes all html tags' do
+        answer.update!(value: "<div>something</div> <a href='a.com'>A</a> <b>Bold</b>")
+        answer.reload
+        expect(answer.string_value).to eq "something A Bold"
+      end
     end
   end
 

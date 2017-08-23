@@ -73,7 +73,7 @@
           {{/progress-spinner-message}}
         {{else}}
           {{#if model.hasAnyError}}
-            {{paper-preview-error-message paper=model toggleDownloads=(action "toggleDownloads") showFeedbackOverlay=(action "showFeedbackOverlay")}}
+            {{paper-preview-error-message paper=model toggle=(action "toggleDownloads") feedback=(action "showFeedbackOverlay")}}
           {{else}}
             {{{model.body}}}
           {{/if}}

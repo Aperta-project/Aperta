@@ -244,8 +244,8 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.boolean  "allow_annotations"
     t.string   "instruction_text"
     t.string   "editor_style"
-    t.boolean  "required_field"
     t.string   "condition"
+    t.boolean  "required_field"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -485,14 +485,13 @@ ActiveRecord::Schema.define(version: 20170817151226) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",                     null: false
-    t.string   "doi_journal_prefix",                       null: false
-    t.string   "last_doi_issued",          default: "0",   null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
-    t.boolean  "pdf_allowed",              default: false
-    t.string   "last_preprint_doi_issued", default: "0",   null: false
+    t.boolean  "pdf_allowed",          default: false
   end
 
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree

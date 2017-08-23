@@ -10,7 +10,9 @@ describe do
                        content_type: "radio",
                        editor_style: "basic",
                        condition: "isEditable",
-                       ident: "ident",
+                       initial: "1",
+                       min: "0",
+                       max: "7",
                        instruction_text: "instruction",
                        label: "label",
                        possible_values: ["possible"],
@@ -32,6 +34,9 @@ describe do
         expect(card_content_json).to include(content_type: card_content.content_type)
         expect(card_content_json).to include(editor_style: card_content.editor_style)
         expect(card_content_json).to include(condition: card_content.condition)
+        expect(card_content_json).to include(initial: card_content.initial)
+        expect(card_content_json).to include(min: card_content.min)
+        expect(card_content_json).to include(max: card_content.max)
         expect(card_content_json).to include(ident: card_content.ident)
         expect(card_content_json).to include(instruction_text: card_content.instruction_text)
         expect(card_content_json).to include(label: card_content.label)

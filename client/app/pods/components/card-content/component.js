@@ -35,6 +35,7 @@ export default Ember.Component.extend({
     };
   },
 
+  preview: false,
   tagName: '',
   debouncePeriod: 200, // in ms
 
@@ -50,8 +51,8 @@ export default Ember.Component.extend({
     );
   },
 
-  answer: Ember.computed('content', 'owner', function() {
-    return this.get('content').answerForOwner(this.get('owner'));
+  answer: Ember.computed('content', 'owner', 'position', function() {
+    return this.get('content').answerForOwner(this.get('owner'), this.get('position'));
   }),
 
   _debouncedSave: concurrencyTask(function*() {
@@ -61,10 +62,10 @@ export default Ember.Component.extend({
   }).restartable(),
 
   actions: {
-    updateAnswer(newVal) {
-      this.set('answer.value', newVal);
+    updateAnswer(answer, newVal) {
+      answer.set('value', newVal);
       if (this.get('answerChanged')) {
-        this.get('answerChanged')(this.get('answer'));
+        this.get('answerChanged')(answer);
       }
       if (this.get('preview')) {
         return;

@@ -5,8 +5,9 @@
   owner=owner
   answer=answer
   preview=preview
+  position=position
   answerChanged=answerChanged
-  valueChanged=(action 'updateAnswer'))}}
+  valueChanged=(action 'updateAnswer' answer))}}
 {{else}}
   {{component
   templateName
@@ -15,6 +16,7 @@
   owner=owner
   answer=answer
   preview=preview
+  position=position
   answerChanged=answerChanged
-  valueChanged=(action 'updateAnswer')}}
+  valueChanged=(action 'updateAnswer' answer)}}
 {{/if}}

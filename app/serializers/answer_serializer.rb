@@ -3,6 +3,7 @@ class AnswerSerializer < ActiveModel::Serializer
   attributes :id,
     :value,
     :annotation,
+    :position,
     :additional_data,
     :paper_id,
     :owner

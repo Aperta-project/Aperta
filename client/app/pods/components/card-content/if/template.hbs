@@ -1,13 +1,16 @@
 {{#if preview}}
-  <div class="if-preview">
-    This switch appears only in the card preview for an <b>IF</b> component;&nbsp;
-    the <b>IF</b> condition is&nbsp;<b>{{conditionName}}.</b><br/>
-    Switch it <i>right</i> to preview the <b>THEN</b> section;
-    {{#if hasElse}}
-      switch it <i>left</i> to preview the <b>ELSE</b> section.
-    {{else}}
-      the <b>ELSE</b> section is blank.
-    {{/if}}
+  <div class="card-preview if-preview">
+    <span class='decoration'>&check;</span>
+    <span class='help-text'>
+      This switch appears only in the card preview for an <b>IF</b> component;&nbsp;
+      the <b>IF</b> condition is&nbsp;<b>{{conditionName}}.</b><br/>
+      Switch it <i>right</i> to preview the <b>THEN</b> section;
+      {{#if hasElse}}
+        switch it <i>left</i> to preview the <b>ELSE</b> section.
+      {{else}}
+        the <b>ELSE</b> section is blank.
+      {{/if}}
+    </span>
   </div>
 
   {{card-content/toggle-switch
@@ -22,6 +25,8 @@
   {{card-content
     content=content.children.firstObject
     owner=owner
+    position=position
+    answerChanged=answerChanged
     preview=preview
     disabled=disabled
   }}
@@ -29,6 +34,8 @@
   {{card-content
     content=content.children.lastObject
     owner=owner
+    position=position
+    answerChanged=answerChanged
     preview=preview
     disabled=disabled
   }}

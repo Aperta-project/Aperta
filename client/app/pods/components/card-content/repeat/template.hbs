@@ -1,0 +1,39 @@
+{{#if preview}}
+  <div class="card-preview repeat-preview">
+    <span class='decoration'>&star;</span>
+    <span class='help-text'>
+      This item repeats:
+      {{#if initial}} <i>initial</i> = <b>{{initial}}</b> {{/if}}
+      {{#if min}} <i>min</i> = <b>{{min}}</b> {{/if}}
+      {{#if max}} <i>max</i> = <b>{{max}}</b> {{/if}}
+    </span>
+  </div>
+
+  {{#unless inRange}}
+    {{partial "repeat-range-error"}}
+  {{/unless}}
+
+  {{#each content.children as |child|}}
+    {{card-content
+      content=child
+      disabled=disabled
+      owner=owner
+      preview=preview
+    }}
+  {{/each}}
+{{else if inRange}}
+  {{#each (range lowerBound upperBound) as |number|}}
+    {{#each content.children as |child|}}
+      {{card-content
+        content=child
+        disabled=disabled
+        position=number
+        owner=owner
+        answerChanged=answerChanged
+        preview=preview
+      }}
+    {{/each}}
+  {{/each}}
+{{else}}
+  {{partial "repeat-range-error"}}
+{{/if}}

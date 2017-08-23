@@ -169,6 +169,14 @@ if = element content {
                 content?
 }
 
+repeat = element content {
+                attribute content-type { "repeat" },
+                attribute initial { text }?,
+                attribute min { text }?,
+                attribute max { text }?,
+                content+
+}
+
 content = (
            radio-input |
            text-input |
@@ -184,7 +192,8 @@ content = (
            tech-check |
            list-content |
            sendback-reason |
-           if
+           if |
+           repeat
 )
 
 start = element card {

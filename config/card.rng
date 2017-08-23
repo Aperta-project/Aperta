@@ -541,6 +541,25 @@
       </optional>
     </element>
   </define>
+  <define name="repeat">
+    <element name="content">
+      <attribute name="content-type">
+        <value>repeat</value>
+      </attribute>
+      <optional>
+        <attribute name="initial"/>
+      </optional>
+      <optional>
+        <attribute name="min"/>
+      </optional>
+      <optional>
+        <attribute name="max"/>
+      </optional>
+      <oneOrMore>
+        <ref name="content"/>
+      </oneOrMore>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -558,6 +577,7 @@
       <ref name="list-content"/>
       <ref name="sendback-reason"/>
       <ref name="if"/>
+      <ref name="repeat"/>
     </choice>
   </define>
   <start>

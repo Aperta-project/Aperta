@@ -10,11 +10,12 @@
       <div class="additional-text">
         {{#if content.hasAdditionalText}}
           {{card-content/tabbed-textarea
-          annotationChanged=(action 'updateAnnotation')
-          showAnnotation=content.allowAnnotations
-          annotation=answer.annotation
-          instructionText=content.instructionText
-          disabled=disabled}}
+            annotationChanged=(action 'updateAnnotation')
+            showAnnotation=content.allowAnnotations
+            annotation=answer.annotation
+            instructionText=content.instructionText
+            disabled=disabled
+          }}
         {{/if}}
       </div>
     </div>

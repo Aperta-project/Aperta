@@ -21,7 +21,9 @@
   {{textarea
       value=(readonly answer.value)
       class="form-control"
-      key-up=(action "valueChanged")
+      change=(action "valueChanged")
+      input=(action "valueChanged")
+      focusOut=(action "validate")
       disabled=disabled
   }}
 {{/if}}

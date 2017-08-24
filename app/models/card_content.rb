@@ -71,12 +71,7 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'date-picker': ['text'],
       'sendback-reason': ['boolean'],
-      'numbered-list': [nil],
-      'bulleted-list': [nil],
-      'question-list': [nil],
-      'question-help-list': [nil],
-      'if': [nil],
-      'plain-list': [nil] }.freeze.with_indifferent_access
+      'if': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created

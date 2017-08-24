@@ -7,9 +7,11 @@ export default Ember.Component.extend({
   init() {
     let customClass = this.get('customClass');
     if (customClass) {
-      this.set('classNames', [customClass]);
+      let classNames = this.get('classNames');
+      classNames.push(customClass);
+      this.set('classNames', classNames);
     }
-    this.set('tagName', this.get('wrapperTag'));
+    this.set('tagName', this.getWithDefault('wrapperTag', ''));
     this._super(...arguments);
   },
 
@@ -19,6 +21,7 @@ export default Ember.Component.extend({
   wrapperTag: Ember.computed.readOnly('content.wrapperTag'),
 
   propTypes: {
+    childTag: PropTypes.oneOf(['li', null]),
     content: PropTypes.EmberObject.isRequired,
     disabled: PropTypes.bool,
     owner: PropTypes.EmberObject.isRequired,

@@ -123,12 +123,6 @@ text-input = element content {
                 }*))
              }
 
-list-content = element content {
-                 attribute ident { text }?,
-                 attribute content-type { "bulleted-list" | "numbered-list" | "plain-list" | "question-list" | "question-help-list" },
-                 content*
-               }
-
 # Contents
 text-content = element content {
                    attribute ident { text }?,
@@ -187,7 +181,6 @@ content = (
            dropdown-input |
            date-picker |
            tech-check |
-           list-content |
            sendback-reason |
            if
 )

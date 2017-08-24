@@ -23,6 +23,7 @@ export default Component.extend({
   isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
   legendsAllowed: alias('file.paper.legendsAllowed'),
+  content: {},
 
   categories: [
     'Table',
@@ -30,6 +31,13 @@ export default Component.extend({
     'Text',
     'Figure'
   ],
+
+  didReceiveAttrs() {
+    if (this.get('legendsAllowed')) {
+      this.set('content.editorStyle', 'basic');
+      this.set('content.valueType', 'html');
+    }
+  },
 
   uiStateClass: computed('uiState', function() {
     return `si-file-${this.get('uiState')}`;

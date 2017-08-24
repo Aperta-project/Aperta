@@ -12,57 +12,14 @@ class CardPermissions
   # Append to the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.
   def self.add_roles(card, action, roles)
-    if STATELESS_ACTIONS.include?(action)
-      append_roles_and_save(get_view_card_permission(card, action), roles)
-      # Return an array, although there is only one permission to return, in
-      # order to provide a consistent return value.
-      [append_roles_and_save(
-        get_task_permission(card, action, [Permission::WILDCARD]), roles
-      )]
-    else
-      # Non-view roles are state-limited, that is, creators and collaborators
-      # can only edit in the "editable" states, reviewers can only edit in the
-      # "reviewable" states, etc. This means that these roles use a different
-      # permission.
-      grouped_roles = group_roles(card, roles)
-      STATES.keys.map do |key|
-        append_roles_and_save(
-          get_task_permission(card, action, STATES[key]), grouped_roles[key]
-        )
-      end
-    end
+    # Append to the roles that can perform action on a card. Also, add the "view"
+    # permission for the card (form) itself if the action is 'view'.
+    set_or_add_roles(card, action, roles, permission, 'append')
   end
 
-  # Non-view roles are state-limited, that is, creators and collaborators
-  # can only edit in the "editable" states, reviewers can only edit in the
-  # "reviewable" states, etc. This means that these roles use a different
-  # permission.
   def self.set_roles(card, action, roles, permission = nil)
-    if STATELESS_ACTIONS.include?(action)
-      replace_roles_and_save(get_view_card_permission(card, action), roles)
-      # Return an array, although there is only one permission to return, in
-      # order to provide a consistent return value.
-      [replace_roles_and_save(
-        get_task_permission(card, action, [Permission::WILDCARD]), roles
-      )]
-    else
-      # Non-view roles are state-limited, that is, creators and collaborators
-      # can only edit in the "editable" states, reviewers can only edit in the
-      # "reviewable" states, etc. This means that these roles use a different
-      # permission.
-      grouped_roles = group_roles(card, roles)
-
-      # If we already know the exact permission just use it
-      # otherwise update the permission for each of the state.
-      if permission
-        replace_roles_and_save(permission, roles)
-      else
-        STATES.keys.map do |key|
-          permission = get_task_permission(card, action, STATES[key])
-          replace_roles_and_save(permission, grouped_roles[key])
-        end
-      end
-    end
+    # wipeout and replace the roles that can perform action on a card
+    set_or_add_roles(card, action, roles, permission, 'replace')
   end
 
   # Return a task-level permission for an action on a given card in the given
@@ -117,5 +74,49 @@ class CardPermissions
         :rest
       end
     end
+  end
+
+  private
+
+  def self.set_or_add_roles(card, action, roles, permission = nil, actor_string)
+    # actor string determines to call replace_roles_and_save or append_roles_and_save above
+    if STATELESS_ACTIONS.include?(action)
+      update_stateless_permissions(card, action, roles, actor_string)
+    else
+      update_stateful_permissions(card, action, roles, permission, actor_string)
+    end
+  end
+
+  def self.update_stateful_permissions(card, action, roles, permission = nil, actor_string)
+    actor = compose_actor(actor_string)
+    # if a permission is explictly passed, no need to look through states to find
+    # correct permission. just update that one and return
+    return send(actor, permission, roles) if permission
+
+    grouped_roles = group_roles(card, roles)
+
+    STATES.keys.map do |key|
+      permission = get_task_permission(card, action, STATES[key])
+      send(actor, permission, grouped_roles[key])
+    end
+  end
+
+  def self.update_stateless_permissions(card, action, roles, actor_string)
+    actor = compose_actor(actor_string)
+    # Non-view roles are state-limited, that is, creators and collaborators
+    # can only edit in the "editable" states, reviewers can only edit in the
+    # "reviewable" states, etc. This means that these roles use a different
+    # permission.
+    view_permission = get_view_card_permission(card, action)
+    send(actor, view_permission, roles)
+
+    # Return an array, although there is only one permission to return, in
+    # order to provide a consistent return value.
+    task_permission = get_task_permission(card, action, [Permission::WILDCARD])
+    [send(actor, task_permission, roles)]
+  end
+
+  def self.compose_actor(actor_string)
+    (actor_string + '_roles_and_save').to_sym
   end
 end

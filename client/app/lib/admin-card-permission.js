@@ -8,6 +8,8 @@ import Ember from 'ember';
  * @param {Ember.Array.<CardPermission>} permissions to
  * @param {string} filterByCardId to check for
  * @param {string} permissionAction the action for the permission, e.g. view
+ * @param {Ember.Object.<Role>} role optional the role of the permission
+ * @param {boolean} optional forAdd is handling a permission addition
  * @return {Object} Found permission or undefined
 */
 export function findPermissionFromList(permissions, filterByCardId, permissionAction, role = undefined, forAdd = false) {

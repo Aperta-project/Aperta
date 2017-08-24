@@ -6,14 +6,6 @@ export default Ember.Component.extend({
 
   hasListParent: Ember.computed.equal('content.parent.childTag', 'li'),
 
-  init() {
-    // we don't need the div if it's in a list
-    if (this.get('hasListParent')) {
-      this.set('tagName', 'span');
-    }
-    this._super(...arguments);
-  },
-
   propTypes: {
     content: PropTypes.EmberObject.isRequired
   }

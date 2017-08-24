@@ -122,7 +122,6 @@ class CardContent < ActiveRecord::Base
         'custom-class' => custom_class,
         'custom-child-class' => custom_child_class,
         'wrapper-tag' => wrapper_tag,
-        'required-field' => required_field,
         'visible-with-parent-answer' => visible_with_parent_answer,
         'default-answer-value' => default_answer_value
       }.merge(additional_content_attrs).compact

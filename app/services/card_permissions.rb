@@ -11,7 +11,7 @@ class CardPermissions
 
   # Append to the roles that can perform action on a card. Also, add the "view"
   # permission for the card (form) itself if the action is 'view'.
-  def self.add_roles(card, action, roles)
+  def self.add_roles(card, action, roles, permission = nil)
     # Append to the roles that can perform action on a card. Also, add the "view"
     # permission for the card (form) itself if the action is 'view'.
     set_or_add_roles(card, action, roles, permission, 'append')

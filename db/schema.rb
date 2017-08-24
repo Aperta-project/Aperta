@@ -246,11 +246,11 @@ ActiveRecord::Schema.define(version: 20170832210046) do
     t.string   "editor_style"
     t.string   "condition"
     t.boolean  "required_field"
+    t.string   "error_message"
     t.string   "child_tag"
     t.string   "custom_class"
     t.string   "custom_child_class"
     t.string   "wrapper_tag"
-    t.string   "error_message"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

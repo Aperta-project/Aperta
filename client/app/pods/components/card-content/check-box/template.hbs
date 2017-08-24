@@ -5,17 +5,22 @@
     {{/if}}</p>
 {{/if}}
 {{card-content/validation-errors errors=answer.readyIssuesArray}}
-{{check-box
-  name=name
-  id=name
-  checked=answer.value
-  disabled=disabled
-  content=content
-  answer=answer
-  action="valueChanged"}}
-{{#if content.label}}
-  <label for={{name}}>{{{content.label}}}</label>
-{{/if}}
+<div class="card-content-flex-box">
+  <div>{{check-box
+    name=name
+    id=name
+    checked=answer.value
+    disabled=disabled
+    content=content
+    answer=answer
+    action="valueChanged"}}
+  </div>
+  <div class="flex-label">
+    {{#if content.label}}
+      <label for={{name}}>{{{content.label}}}</label>
+    {{/if}}
+  </div>
+</div>
 
 {{card-content/display-children
 content=content

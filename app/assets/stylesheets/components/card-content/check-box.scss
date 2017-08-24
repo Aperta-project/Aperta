@@ -3,3 +3,11 @@
         margin-top: 15px;
     }
 }
+
+div.card-content-flex-box {
+  display: inline-flex;
+
+  div.flex-label {
+    padding: 0em 1em;
+  }
+}

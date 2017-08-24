@@ -40,8 +40,6 @@ class FiguresTask(BaseTask):
     self._figure_listing = (By.CSS_SELECTOR, 'div.liquid-child > div.ember-view')
     self._figure_preview = (By.CSS_SELECTOR, 'img.image-thumbnail')
     self._figure_label = (By.CSS_SELECTOR, 'h2.title')
-    self._figure_striking_chkmrk = (By.CSS_SELECTOR, 'div.striking > i.fa-check')
-    self._figure_striking_status = (By.CSS_SELECTOR, 'div.striking')
     self._figure_error_msg_a = (By.CSS_SELECTOR, 'div.info > h2 + div.error-message')
     self._figure_error_icon = (By.CSS_SELECTOR, 'i.fa-exclamation-triangle')
     self._figure_dl_link = (By.CSS_SELECTOR, 'div.download-link > a')
@@ -52,8 +50,6 @@ class FiguresTask(BaseTask):
     self._figure_edit_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-pencil')
     self._figure_edit_label_prefix = (By.CSS_SELECTOR, 'div.title > h2')
     self._figure_edit_label_field = (By.CSS_SELECTOR, 'div.title > h2 > input')
-    self._figure_edit_striking_img_checkbox_lbl = (By.CSS_SELECTOR, 'div.striking > label')
-    self._figure_edit_striking_img_checkbox = (By.CSS_SELECTOR, 'div.striking > label > input')
     self._figure_edit_cancel_link = (By.CSS_SELECTOR, 'div.actions > a.button-link')
     self._figure_edit_save_btn = (By.CSS_SELECTOR, 'div.actions > a.button-primary')
     self._figure_delete_icon = (By.CSS_SELECTOR, 'div.edit-icons > span.fa-trash')
@@ -411,16 +407,10 @@ class FiguresTask(BaseTask):
         assert 'Fig' in label_prefix.text, label_prefix.text
         label_field = figure_block.find_element(*self._figure_edit_label_field)
         assert label_field.get_attribute('value') == '1', label_field.get_attribute('value')
-        striking_label = figure_block.find_element(*self._figure_edit_striking_img_checkbox_lbl)
-        assert 'This is the striking image' in striking_label.text, striking_label.text
-        striking_chkbx = figure_block.find_element(*self._figure_edit_striking_img_checkbox)
-        assert striking_chkbx.is_selected() == False, striking_chkbx.is_selected()
         cancel_link = figure_block.find_element(*self._figure_edit_cancel_link)
         assert 'cancel' in cancel_link.text, cancel_link.text
         save_link = figure_block.find_element(*self._figure_edit_save_btn)
         assert 'SAVE' in save_link.text, save_link.text
-        striking_chkbx.click()
-        assert striking_chkbx.is_selected() == True, striking_chkbx.is_selected()
         self._reset_position_to_conformance_question()
         try:
           label_field.click()
@@ -520,9 +510,7 @@ class FiguresTask(BaseTask):
       page_fig_name = figure_block.find_element(*self._figure_dl_link)
       if figure == page_fig_name.text:
         matched = True
-        page_strike_status = figure_block.find_element(*self._figure_striking_status)
-        figure_block.find_element(*self._figure_striking_chkmrk)
-        assert 'This is the striking image' in page_strike_status.text, page_strike_status.text
+
     if not matched:
       raise(ValueError, 'Figure list: {0} not found on page'.format(figure))
 

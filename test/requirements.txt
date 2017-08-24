@@ -8,6 +8,7 @@ psycopg2==2.7.1
 PyPDF2==1.26.0
 requests==2.18.1
 selenium==3.4.3
+smart_getenv==1.1.0
 teamcity-messages==1.18
 pytest==3.2.1
 python-dateutil==2.6.1

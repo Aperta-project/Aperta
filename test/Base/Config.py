@@ -1,11 +1,10 @@
 #!/usr/bin/env python2
 
-import os
-from os import getenv
+from smart_getenv import getenv
 from selenium.webdriver import DesiredCapabilities
 
 # Set API_BASE_URL environment variable to desired URL in order to run suite against it
-API_BASE_URL = os.getenv('API_BASE_URL', 'http://one-dpro2.plosjournals.org:8016')
+API_BASE_URL = getenv('API_BASE_URL', default='http://one-dpro2.plosjournals.org:8016', type=str)
 PRINT_DEBUG = False
 TIMEOUT = 30         # API call timeout, in seconds
 
@@ -38,8 +37,8 @@ Set **WEBDRIVER_TARGET_URL** env variable/default value to desired URL to run su
 when **WEBDRIVER_ENVIRONMENT** is `dev`
 """
 
-environment = getenv('WEBDRIVER_ENVIRONMENT', 'dev')
-base_url = getenv('WEBDRIVER_TARGET_URL', 'http://ci.aperta.tech')
+environment = getenv('WEBDRIVER_ENVIRONMENT', default='dev', type=str)
+base_url = getenv('WEBDRIVER_TARGET_URL', default='http://ci.aperta.tech', type=str)
 
 
 """
@@ -71,9 +70,9 @@ But in case it is not possible, you can still point to an Appium node for Androi
 one for IOS, separately.
 """
 
-run_against_appium = getenv('USE_APPIUM_SERVER', False)
-appium_android_node_url = getenv('APPIUM_NODE_URL', 'http://10.136.100.186:4723/wd/hub')
-appium_ios_node_url = getenv('APPIUM_NODE_URL', 'http://10.136.100.186:4723/wd/hub')
+run_against_appium = getenv('USE_APPIUM_SERVER', default=False, type=bool)
+appium_android_node_url = getenv('APPIUM_NODE_URL', default='http://10.136.100.186:4723/wd/hub', type=str)
+appium_ios_node_url = getenv('APPIUM_NODE_URL', default='http://10.136.100.186:4723/wd/hub', type=str)
 
 # **Android** capabilities definition
 ANDROID = {'browserName': 'Browser',
@@ -115,8 +114,8 @@ You can *still* include IOS and ANDROID capabilities as *enabled browsers* in th
 
 """
 
-run_against_grid = getenv('USE_SELENIUM_GRID', False)
-selenium_grid_url = getenv('SELENIUM_GRID_URL', 'http://10.136.104.99:4444/wd/hub')
+run_against_grid = getenv('USE_SELENIUM_GRID', default=False, type=bool)
+selenium_grid_url = getenv('SELENIUM_GRID_URL', default='http://10.5.4.99:4444/wd/hub', type=str)
 
 """
 
@@ -125,7 +124,8 @@ Ignored when **run_against_grid** is set to **False**.
 
 """
 
-grid_enabled_browsers = [DesiredCapabilities.FIREFOX,
+grid_enabled_browsers = [DesiredCapabilities.EDGE,
+                         DesiredCapabilities.FIREFOX,
                          DesiredCapabilities.INTERNETEXPLORER,
                          DesiredCapabilities.CHROME,
 #                         DesiredCapabilities.SAFARI,
@@ -146,5 +146,5 @@ Set **browsermob_proxy_path** variable to the path of the **BrowserMob Proxy** *
 machine.
 
 """
-browsermob_proxy_enabled = getenv('USE_BROWSERMOB_PROXY', False)
+browsermob_proxy_enabled = getenv('USE_BROWSERMOB_PROXY', default=False, type=bool)
 browsermob_proxy_path = '/opt/browsermob/bin/browsermob-proxy'

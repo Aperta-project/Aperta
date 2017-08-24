@@ -72,6 +72,7 @@ export default Ember.Service.extend({
    * @method findPermissionOrCreate
    * @param {string} filterByCardId
    * @param {string} permissionAction the action for the permission, e.g. view
+   * @param {Ember.Object.<Role>} role optional the role of the permission
    * @return {CardPermission} The permission that was found or created
    */
   findPermissionOrCreate(filterByCardId, permissionAction, role) {
@@ -93,6 +94,8 @@ export default Ember.Service.extend({
    * @method findPermission
    * @param {string} filterByCardId
    * @param {string} permissionAction the action for the permission, e.g. view
+   * @param {Ember.Object.<Role>} role optional the role of the permission
+   * @param {boolean} optional forAdd is handling a permission addition
    * @return {CardPermission} The permission that was found, or undefined if nothing found
    */
   findPermission(filterByCardId, permissionAction, role, forAdd) {

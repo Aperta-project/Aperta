@@ -5,6 +5,7 @@ class ReviewerReportContext < TemplateContext
      { name: :revision },
      { name: :status },
      { name: :datetime },
+     { name: :invitation_accepted? },
      { name: :reviewer, context: UserContext },
      { name: :reviewer_number },
      { name: :answers, context: AnswerContext, many: true }]

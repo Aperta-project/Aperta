@@ -45,6 +45,7 @@ check-box-input = element content {
 
 file-uploader = element content {
                     attribute ident { text }?,
+                    attribute error-message { text }?,
                     attribute content-type { "file-uploader" },
                     attribute value-type { "attachment" },
                     attribute required-field { "true" | "false" }?,

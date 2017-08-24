@@ -13,12 +13,19 @@ module TahiStandardTasks
     def upload_manuscript
       requires_user_can :edit, task
 
+      paper = task.paper
+      return_status = if paper.sourcefile
+                        200 # updated
+                      else
+                        204 # created
+                      end
+      attachment = paper.file || paper.create_file
       DownloadManuscriptWorker.download_manuscript(
-        task.paper,
-        params[:url],
+        paper,
+        params[:manuscript_attachment][:s3_url],
         current_user
       )
-      head 204
+      render json: attachment, status: return_status, root: 'attachment', serializer: AttachmentSerializer
     end
 
     private

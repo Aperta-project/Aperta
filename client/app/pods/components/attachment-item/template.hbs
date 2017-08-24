@@ -34,10 +34,12 @@
         Replace
       </span>
 
-      <span {{action "deleteFile"}} class="file-action delete-attachment">
-        {{fa-icon icon="trash"}}
-        Delete
-      </span>
+      {{#if allowDelete}}
+        <span {{action "deleteFile"}} class="file-action delete-attachment">
+          {{fa-icon icon="trash"}}
+          Delete
+        </span>
+      {{/if}}
     {{/unless}}
 
     {{#if disabled}}
@@ -56,6 +58,7 @@
                          class="s3-file-uploader"
                          progress=(action "uploadProgress")
                          done=(action "uploadFinished")
+                         addingFileFailed=attrs.uploadError
                          start=(action "fileAdded")}}
     {{/if}}
   {{/if}}

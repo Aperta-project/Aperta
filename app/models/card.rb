@@ -140,7 +140,6 @@ class Card < ActiveRecord::Base
 
   # traverse card and its latest children
   def traverse(visitor)
-    return if card_versions.none?
     root = most_recent_version.try(:content_root)
     return unless root
     root.traverse(visitor)

@@ -141,9 +141,7 @@ class Card < ActiveRecord::Base
   # traverse card and its latest children
   def traverse(visitor)
     return if card_versions.none?
-    version = most_recent_version
-    return unless version
-    root = version.content_root
+    root = most_recent_version.try(:content_root)
     return unless root
     root.traverse(visitor)
     visitor.report.each { |error| errors.add(:detail, message: error) }
@@ -159,6 +157,7 @@ class Card < ActiveRecord::Base
     card_version(version_no).content_root
   end
 
+  # This method searches the in-memory versions, so it works for both create (new records) and update (persisted)
   def most_recent_version
     card_versions.detect { |card_version| card_version.version == latest_version }
   end

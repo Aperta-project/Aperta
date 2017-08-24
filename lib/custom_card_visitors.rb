@@ -3,7 +3,7 @@ module CustomCardVisitors
     def visit(card_content); end
 
     def to_s
-      Rails.logger.info "#{self.class.name} #{report}"
+      "#{self.class.name} #{report}"
     end
   end
 

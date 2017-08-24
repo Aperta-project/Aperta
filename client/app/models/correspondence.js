@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-// import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
+import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -28,13 +28,11 @@ export default DS.Model.extend({
     }
   }),
 
-  checkFileType: Ember.computed('attachments.@each', function() {
-    // console.log(this.get('attachments.@each.filename'));
-    // return fontAwesomeFiletypeClass(this.get('attachments.filename'));
-  }),
-
-  allAttachments: Ember.computed('attachment', function(){
-    return this.get('attachments');
+  checkFileType: Ember.computed('attachments', function() {
+    this.get('attachments').forEach(function(element){
+      // console.log("this is" + element.get('filename'));      
+      return fontAwesomeFiletypeClass(element.get('filename'));
+    });
   }),
 
   hasAnyAttachment: Ember.computed('attachments', function() {

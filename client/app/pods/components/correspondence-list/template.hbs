@@ -17,7 +17,7 @@
             <td>
               <div class="correspondence{{message.id}}">
                 {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
-                  {{if message.external message.description message.subject}}
+                  {{if message.external message.description message.subject}} &nbsp;
                 {{/link-to}}
                 {{#unless message.hasAnyAttachment}}
                   <span class="fa fa-paperclip"></span>

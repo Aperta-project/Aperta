@@ -59,13 +59,15 @@ moduleForAcceptance('Integration: Correspondence', {
 });
 
 test('User can view a correspondence record', function(assert) {
-  visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');  
   return andThen(function() {
     assert.ok(find('.correspondence-overlay'), 'Correspondence Overlay');
     assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('date'), {}));
     assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
+    assert.equal(find('span.fa-paperclip').length, 1); 
+    assert.equal(find('.col-sm-10 .correspondence-attachment-link').length, 2);
   });
 });
 

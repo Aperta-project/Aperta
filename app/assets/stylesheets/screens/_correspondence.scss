@@ -44,6 +44,10 @@
   .correspondence-sender-column {
     min-width: 160px;
   }
+
+  a.correspondence-attachment-link:after {
+    content: ",";
+  }
 }
 
 #main-content #correspondence-history {

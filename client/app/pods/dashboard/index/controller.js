@@ -117,16 +117,31 @@ export default Ember.Controller.extend({
       this.set('showNewManuscriptOverlay', true);
     },
 
-    hideNewManuscriptOverlay() {
-      this.set('showNewManuscriptOverlay', false);
+    // Set the "visible=" flag linked to an overlay to false. E.g., "showNewManuscriptOverlay"
+    hideOverlay(name) {
+      let flagName = 'show' + name + 'Overlay';
+      this.set(flagName, false);
     },
 
-    newManuscriptCreated(manuscript) {
+    newManuscriptCreated(manuscript, template) {
       this.setProperties({
         showNewManuscriptOverlay: false,
         isUploading: false
       });
 
+      if (template.is_preprint_eligible) {
+        this.set('showPreprintOverlay', true);
+      } else {
+        this.transitionToRoute('paper.index', manuscript, {
+          queryParams: { firstView: 'true' }
+        });
+      }
+    },
+
+    offerPreprintComplete() {
+      this.hideOverlay('Preprint');
+      let manuscript = this.get('newPaper');
+      manuscript.reload();
       this.transitionToRoute('paper.index', manuscript, {
         queryParams: { firstView: 'true' }
       });

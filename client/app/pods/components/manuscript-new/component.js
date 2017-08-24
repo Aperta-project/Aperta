@@ -36,8 +36,9 @@ export default Ember.Component.extend(EscapeListenerMixin, {
       this.set('paper.paperType', null);
     },
 
-    selectPaperType(paperType) {
-      this.set('paper.paperType', paperType);
+    selectPaperType(template) {
+      this.set('paper.paperType', template.paper_type);
+      this.set('template', template);
     },
 
     clearPaperType() {
@@ -61,10 +62,11 @@ export default Ember.Component.extend(EscapeListenerMixin, {
     },
 
     uploadFinished(s3Url){
-      let paper = this.get('paper')
+      let paper = this.get('paper'),
+        template = this.get('template');
       paper.set('url', s3Url);
       paper.save().then((paper) => {
-        this.attrs.complete(paper);
+        this.attrs.complete(paper, template);
       } , (response) => {
         this.get('flash').displayErrorMessagesFromResponse(response);
       }).finally(() => {

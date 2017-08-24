@@ -1,0 +1,18 @@
+{{flash-messages}}
+
+<div class="split-pane preprint-pane">
+  <div class="split-pane-element preprint-background-image">
+  </div>
+  <div class="split-pane-element">
+    {{#if task}}
+      {{#task-load task=task}}
+        {{custom-card-task hideCompletedSection=true task=task isOverlay=true}}
+        <div style="position: absolute; right: 0; bottom: 0;">
+          <button class="button-primary button--green" {{action "nextStep"}}>Continue</button>
+        </div>
+      {{else}}
+        {{partial "task-loading-section"}}
+      {{/task-load}}
+    {{/if}}
+  </div>
+</div>

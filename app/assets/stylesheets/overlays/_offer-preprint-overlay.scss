@@ -1,0 +1,21 @@
+.preprint-background-image {
+  background: image-url('preprint-sample.png') no-repeat center top;
+  background-size: 100%;
+}
+
+.split-pane.preprint-pane {
+  background: transparent;
+  height: 875px;
+
+  li {
+    line-height: 1.1rem;
+    padding-left: 10px;
+  }
+
+  .split-pane-element {
+    padding: 15px;
+  }
+}
+.preprint-overlay .overlay--fullscreen .overlay-container {
+  width: 100%;
+}

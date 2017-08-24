@@ -5,13 +5,13 @@ class ReviewerReportContext < TemplateContext
      { name: :revision },
      { name: :status },
      { name: :datetime },
+     { name: :invitation_accepted? },
      { name: :reviewer, context: UserContext },
      { name: :reviewer_number },
      { name: :answers, context: AnswerContext, many: true }]
   end
 
-  whitelist :state, :revision, :computed_status, :computed_datetime,
-            :invitation_accepted?
+  whitelist :state, :revision, :computed_status, :computed_datetime, :invitation_accepted?
 
   alias status computed_status
   alias datetime computed_datetime

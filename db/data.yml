@@ -20503,6 +20503,7 @@ letter_templates:
   - journal_id
   - created_at
   - updated_at
+  - scenario
   records: 
   - - '1'
     - Editor Decision - Reject After Review
@@ -20550,7 +20551,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.390577'
-    - '2017-07-14 17:41:40.75235'
+    - '2017-08-24 16:24:40.570566'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '2'
     - Editor Decision - Reject After Review CJs
     - reject
@@ -20601,7 +20603,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.395609'
-    - '2017-07-14 17:41:40.755486'
+    - '2017-08-24 16:24:40.57673'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '3'
     - Editor Decision - Reject After Review ONE
     - reject
@@ -20652,7 +20655,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.399636'
-    - '2017-07-14 17:41:40.75812'
+    - '2017-08-24 16:24:40.580767'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '4'
     - Reject After Review ONE
     - reject
@@ -20704,7 +20708,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.403331'
-    - '2017-07-14 17:41:40.7601'
+    - '2017-08-24 16:24:40.589884'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '5'
     - Reject After Revision and Re-review ONE
     - reject
@@ -20756,7 +20761,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.407003'
-    - '2017-07-14 17:41:40.761889'
+    - '2017-08-24 16:24:40.593862'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '6'
     - RA Major Revision
     - major_revision
@@ -20816,7 +20822,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.410529'
-    - '2017-07-14 17:41:40.763721'
+    - '2017-08-24 16:24:40.598585'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '7'
     - RA Minor Revision
     - minor_revision
@@ -20878,7 +20885,8 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.413472'
-    - '2017-07-14 17:41:40.765722'
+    - '2017-08-24 16:24:40.602424'
+    - TahiStandardTasks::RegisterDecisionScenario
   - - '8'
     - RA Accept
     - accept

@@ -31,7 +31,7 @@ class ScheduledEvent < ActiveRecord::Base
     state :errored
 
     event(:reactivate) do
-      transitions from: [:complete, :inactive], to: :active
+      transitions from: [:completed, :inactive], to: :active
     end
 
     event(:deactivate) do

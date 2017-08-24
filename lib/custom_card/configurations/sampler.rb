@@ -19,6 +19,14 @@ module CustomCard
         :all
       end
 
+      def self.view_discussion_footer_role_names
+        :all
+      end
+
+      def self.edit_discussion_footer_role_names
+        :all
+      end
+
       def self.publish
         true
       end

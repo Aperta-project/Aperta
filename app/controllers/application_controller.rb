@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  include OldAuthorizationsControllerHelper
   include AuthorizationsControllerHelper
   include TahiPusher::SocketTracker
   include TahiPusher::CurrentUserTracker
@@ -73,13 +72,13 @@ class ApplicationController < ActionController::Base
   end
 
   # customize devise signout path
-  def after_sign_out_path_for(resource_or_scope)
+  def after_sign_out_path_for(_resource_or_scope)
     cas_logout_url || new_user_session_path
   end
 
   # to redirect a user to the requested page after login
   def store_location_for_login_redirect
-    store_location_for(:user, request.referer)
+    store_location_for(:user, request.url) if session["user_return_to"].blank?
   end
 
   def cas_logout_url

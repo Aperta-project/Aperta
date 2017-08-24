@@ -48,7 +48,6 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'file', type: 'text', value: figure_1.filename },
         { name: 'file_hash', type: 'text', value: figure_1.file_hash },
         { name: 'title', type: 'text', value: figure_1.title },
-        { name: 'striking_image', type: 'boolean', value: figure_1.striking_image },
         { name: 'url', type: 'url', value: figure_1.non_expiring_proxy_url }
       )
 
@@ -61,7 +60,6 @@ describe Snapshot::FigureTaskSerializer do
         { name: 'file', type: 'text', value: figure_2.filename },
         { name: 'file_hash', type: 'text', value: figure_2.file_hash },
         { name: 'title', type: 'text', value: figure_2.title },
-        { name: 'striking_image', type: 'boolean', value: figure_2.striking_image },
         { name: 'url', type: 'url', value: figure_2.non_expiring_proxy_url }
       )
     end

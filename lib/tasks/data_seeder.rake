@@ -9,7 +9,7 @@ load 'lib/ext/yaml_db.rb' # Only load the patch when running a data:dump or data
 namespace :data do
   namespace :dump do
     desc "Dump the current environment into a particular yaml file"
-    task :scenario, [:scenario_name] => [:environment] do |t, args|
+    task :scenario, [:scenario_name] => [:environment] do |_t, args|
       if args[:scenario_name].present?
         scenario_path = Rails.root.join('db', 'seeds', args[:scenario_name])
         FileUtils.rmtree(scenario_path)
@@ -23,7 +23,7 @@ namespace :data do
 
   namespace :load do
     desc "Load a specific environment scenario from the name of the yaml file (without the extension)"
-    task :scenario, [:scenario_name] => [:environment] do |t, args|
+    task :scenario, [:scenario_name] => [:environment] do |_t, args|
       if args[:scenario_name].present?
         scenario_path = Rails.root.join('db', 'seeds', args[:scenario_name])
         if File.directory?(scenario_path)

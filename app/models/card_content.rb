@@ -139,7 +139,8 @@ class CardContent < ActiveRecord::Base
       {
         'allow-multiple-uploads' => allow_multiple_uploads,
         'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
       }
     when 'if'
       {
@@ -148,11 +149,17 @@ class CardContent < ActiveRecord::Base
     when 'short-input', 'paragraph-input'
       {
         'editor-style' => editor_style,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
       }
     when 'radio', 'check-box', 'dropdown', 'tech-check'
       {
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'date-picker'
+      {
+        'required-field' => required_field
       }
     else
       {}

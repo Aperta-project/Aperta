@@ -40,13 +40,6 @@
             {{error-message message=rankErrorMessage
                             displayIcon=true
                             displayText=true}}
-
-            <div class="field striking">
-              <label>
-                {{check-box checked=figure.strikingImage}}
-                This is the striking image
-              </label>
-            </div>
           {{else}}
             <h2 class="title"
               {{action "toggleEditState" on="doubleClick"}}>
@@ -56,12 +49,6 @@
             {{error-message message=rankErrorMessage
                             displayIcon=true
                             displayText=true}}
-
-            {{#if figure.strikingImage}}
-              <div class="striking">
-                {{fa-icon icon="check"}} This is the striking image
-              </div>
-            {{/if}}
           {{/if}}
 
 

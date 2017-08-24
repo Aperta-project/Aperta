@@ -12,7 +12,7 @@ describe TahiEpub::Tempfile do
     end
 
     it "returns the value from the block" do
-      return_value = TahiEpub::Tempfile.create("Hello World") do |file|
+      return_value = TahiEpub::Tempfile.create("Hello World") do |_file|
         1234
       end
 

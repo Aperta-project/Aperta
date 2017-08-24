@@ -5,12 +5,12 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    requires_user_can :view, task
+    requires_user_can :view_discussion_footer, task
     respond_with task.comments, root: :comments
   end
 
   def create
-    requires_user_can :view, task
+    requires_user_can :edit_discussion_footer, task
     unless current_user.can?(:administer, task.paper.journal)
       ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
     end
@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
   end
 
   def show
-    requires_user_can :view, task
+    requires_user_can :view_discussion_footer, task
     respond_with comment
   end
 

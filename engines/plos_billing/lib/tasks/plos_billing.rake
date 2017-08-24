@@ -1,5 +1,5 @@
 namespace :plos_billing do
-  task :retry_salesforce_case_for_paper, [:paper_id] => :environment do |task, args|
+  task :retry_salesforce_case_for_paper, [:paper_id] => :environment do |_task, args|
     paper = Paper.find(args[:paper_id])
     SalesforceServices::API.delay.ensure_pfa_case(paper_id: paper.id) if paper.billing_card
   end
@@ -9,7 +9,7 @@ namespace :plos_billing do
   #   where:
   #     args[:paper_id] => "33"
   desc "Uploads a CSV billing log file to S3"
-  task :upload_log_file_to_s3, [:paper_id] => :environment do |t, args|
+  task :upload_log_file_to_s3, [:paper_id] => :environment do |_t, args|
     if args[:paper_id]
       Rails.logger.info "Starting Billing csv upload to S3 job"
       paper = Paper.find args[:paper_id]
@@ -28,7 +28,7 @@ namespace :plos_billing do
   # Usage:
   #   rake 'plos_billing:generate_billing_log'
   desc "Generate a billing log file"
-  task :generate_billing_log do |t, args|
+  task :generate_billing_log do |_t, _args|
     Rails.logger.info "Starting Billing log job"
     report = BillingLogReport.create!
 

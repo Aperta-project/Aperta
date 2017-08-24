@@ -142,14 +142,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     uploadFinished(data, filename) {
       this.set('isUploading', false);
       this.get('uploadFinished')(data, filename);
-    },
-
-    toggleStrikingImageFromCheckbox(checkbox) {
-      let newValue = null;
-      if (checkbox.get('checked')) {
-        newValue = checkbox.get('figure.id');
-      }
-      this.get('strikingImageAction')(newValue);
     }
   }
 });

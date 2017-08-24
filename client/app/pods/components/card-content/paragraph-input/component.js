@@ -18,7 +18,9 @@ export default Ember.Component.extend(ValidateTextInput, {
       // this._super will be the valueChanged action from the ValidateTextInput mixin.
       // Since textarea will pass valueChanged an event, we're going to be nice
       // and pass the mixin the string value it's expecting.
-      this._super(e.target.value);
+      // If the Rich Text Editor was the one calling the action we just pass in the html as e.
+      let value = (e.target && e.target.value) || e;
+      this._super(value);
     }
   }
 });

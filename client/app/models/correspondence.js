@@ -28,10 +28,10 @@ export default DS.Model.extend({
     }
   }),
 
-  // checkFileType: Ember.computed('attachments.@each', function() {
-  //   // console.log(this.get('attachments.@each.filename'));
-  //   // return fontAwesomeFiletypeClass(this.get('attachments.filename'));
-  // }),
+  checkFileType: Ember.computed('attachments.@each', function() {
+    // console.log(this.get('attachments.@each.filename'));
+    // return fontAwesomeFiletypeClass(this.get('attachments.filename'));
+  }),
 
   allAttachments: Ember.computed('attachment', function(){
     return this.get('attachments');

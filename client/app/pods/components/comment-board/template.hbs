@@ -1,4 +1,6 @@
-{{comment-board-form save=(action "postComment")}}
+{{#if canEdit}}
+  {{comment-board-form save=(action "postComment")}}
+{{/if}}
 
 <ul class="message-comments">
   {{#if showingAllComments}}

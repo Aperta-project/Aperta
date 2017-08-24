@@ -33,6 +33,8 @@ describe ExportPackager do
     expected_contents == read_zip_entry(zip_io, file_in_zip)
   end
 
+  let(:metadata_serializer) { instance_double('Typesetter::MetadataSerializer') }
+
   before do
     allow(paper).to receive(:file).and_return(manuscript_file)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
@@ -40,7 +42,6 @@ describe ExportPackager do
       Rails.root.join('spec/fixtures/about_turtles.docx')
     )
 
-    metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')
     allow(Typesetter::MetadataSerializer).to \
       receive(:new).and_return(metadata_serializer)
@@ -85,6 +86,13 @@ describe ExportPackager do
         "files" => ["metadata.json", "test.0001.docx"]
       }
       expect(manifest).to eq expected_manifest
+    end
+
+    it 'passed the destination to MetadataTypeseter' do
+      expect(Typesetter::MetadataSerializer).to \
+        receive(:new).with(paper, destination: 'foo').and_return(metadata_serializer)
+      packager = ExportPackager.new(paper, destination: 'foo')
+      packager.zip_file
     end
 
     # NOTE: commented out until the pdf generator is implemented for ApexPackager

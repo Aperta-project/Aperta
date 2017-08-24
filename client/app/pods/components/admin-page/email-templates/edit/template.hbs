@@ -32,11 +32,7 @@
               
               <div class="form-group {{unless (or unsaved template.body) 'error'}}">
                 <label for="body" class="text-bold">Body:</label>
-                {{rich-text-editor
-                  ident="body"
-                  editorStyle='expanded'
-                  value=template.body
-                  onContentsChanged=(action "onInputCallback")}}
+                {{textarea id="body" class="form-control" value=template.body autoresize=true}}
                 {{#unless (or unsaved template.body)}}
                   <span>{{fa-icon 'warning'}} Please enter body text</span>
                 {{/unless}}

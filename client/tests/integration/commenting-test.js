@@ -129,7 +129,7 @@ test('A card without comment view permissions can not see the discussion section
 
 test('A card with discussion view permissions but not discussion edit permissions can not edit the discussion section', function(assert) {
   var comments, paper, task;
-  assert.expect(5);
+  assert.expect(6);
   paper = FactoryGuy.make('paper');
   comments = makeList('comment', 3);
   task = FactoryGuy.make('ad-hoc-task', {
@@ -144,11 +144,13 @@ test('A card with discussion view permissions but not discussion edit permission
   TestHelper.mockFind('task').returns({
     model: task
   });
+
   visit('/papers/' + (paper.get('shortDoi')) + '/tasks/' + (task.get('id')));
   return andThen(function() {
     assert.ok(find('.participant-selector').length === 0);
     assert.ok(find('.load-all-comments').length === 0);
     assert.ok(find('.overlay-discussion-board').length === 1);
+    assert.ok(find('.overlay-discussion-board .comment-board-form').length === 0);
     assert.equal(find('.message-comment').length, 3, 'All messages displayed');
     return assert.equal(find('.message-comment.unread').length, 0);
   });
@@ -156,7 +158,7 @@ test('A card with discussion view permissions but not discussion edit permission
 
 test('A card with discussion view permissions and discussion edit permissions can view and edit the discussion section', function(assert) {
   var comments, paper, task;
-  assert.expect(5);
+  assert.expect(6);
   paper = FactoryGuy.make('paper');
   comments = makeList('comment', 3);
   task = FactoryGuy.make('ad-hoc-task', {
@@ -175,6 +177,7 @@ test('A card with discussion view permissions and discussion edit permissions ca
   return andThen(function() {
     assert.ok(find('.participant-selector').length === 1);
     assert.ok(find('.overlay-discussion-board').length === 1);
+    assert.ok(find('.overlay-discussion-board .comment-board-form').length === 1);
     assert.ok(find('.load-all-comments').length === 0);
     assert.equal(find('.message-comment').length, 3, 'All messages displayed');
     return assert.equal(find('.message-comment.unread').length, 0);

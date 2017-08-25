@@ -23,7 +23,9 @@ export default Component.extend({
   isFileError: equal('file.status', 'error'),
   isEditing: equal('uiState', 'edit'),
   legendsAllowed: alias('file.paper.legendsAllowed'),
-  content: {},
+  content: Ember.Object.create(),
+  answerWithTitle: Ember.Object.create(),
+  answerWithCaption: Ember.Object.create(),
 
   categories: [
     'Table',
@@ -34,6 +36,8 @@ export default Component.extend({
 
   didReceiveAttrs() {
     if (this.get('legendsAllowed')) {
+      this.set('answerWithTitle.value', this.get('file.title'));
+      this.set('answerWithCaption.value', this.get('file.caption'));
       this.set('content.editorStyle', 'basic');
       this.set('content.valueType', 'html');
     }

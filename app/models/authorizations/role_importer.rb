@@ -63,11 +63,13 @@ module Authorizations
         hsh[name] = id
       end
 
-      permission_id_by_action_and_applies_to = Permission.where.not(
-        id: @pre_existing_permissions.map(&:id)
-      ).pluck(:id, :action, :applies_to).each_with_object({}) do |(id, action, applies_to), hsh|
-        hsh[[action, applies_to]] = id
-      end
+      permission_id_by_action_and_applies_to = \
+        Permission.where(filter_by_card_id: nil)
+        .where.not(id: @pre_existing_permissions.map(&:id))
+        .pluck(:id, :action, :applies_to)
+        .each_with_object({}) do |(id, action, applies_to), hsh|
+          hsh[[action, applies_to]] = id
+        end
 
       @permission_states_permissions_to_import = []
       @permission_definitions.each do |definition|
@@ -84,7 +86,6 @@ module Authorizations
           end
         end
       end
-
       PermissionStatesPermission.import [:permission_id, :permission_state_id], @permission_states_permissions_to_import
     end
 
@@ -108,7 +109,7 @@ module Authorizations
     end
 
     def cache_data
-      @pre_existing_permissions = Permission.includes(:states)
+      @pre_existing_permissions = Permission.includes(:states).where(filter_by_card_id: nil)
       @pre_existing_permission_ids = @pre_existing_permissions.map(&:id)
       @pre_existing_states = PermissionState.all
       @pre_existing_permission_roles = PermissionsRole.all

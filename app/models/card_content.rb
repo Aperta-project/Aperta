@@ -108,6 +108,7 @@ class CardContent < ActiveRecord::Base
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
 
+  # content_attrs rendered into the <card-content> tag itself
   def content_attrs
     {
       'ident' => ident,
@@ -119,13 +120,16 @@ class CardContent < ActiveRecord::Base
     }.merge(additional_content_attrs).compact
   end
 
+  # rubocop:disable Metrics/MethodLength
   def additional_content_attrs
     case content_type
     when 'file-uploader'
       {
         'allow-multiple-uploads' => allow_multiple_uploads,
         'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'error-message' => error_message,
+        'required-field' => required_field
       }
     when 'if'
       {
@@ -134,19 +138,25 @@ class CardContent < ActiveRecord::Base
     when 'short-input', 'paragraph-input'
       {
         'editor-style' => editor_style,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
       }
     when 'radio', 'check-box', 'dropdown', 'tech-check'
       {
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'date-picker'
+      {
+        'required-field' => required_field
       }
     else
       {}
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/AbcSize
-
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)

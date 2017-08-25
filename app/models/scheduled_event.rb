@@ -53,13 +53,18 @@ class ScheduledEvent < ActiveRecord::Base
 
   def send_email
     task_mailer = TahiStandardTasks::ReviewerMailer
-    case name
-    when 'Pre-due Reminder'
-      task_mailer.remind_before_due(reviewer_report_id: due_datetime.due_id).deliver_now
-    when 'First Late Reminder'
-      task_mailer.first_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
-    when 'Second Late Reminder'
-      task_mailer.second_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
+    begin
+      case name
+      when 'Pre-due Reminder'
+        task_mailer.remind_before_due(reviewer_report_id: due_datetime.due_id).deliver_now
+      when 'First Late Reminder'
+        task_mailer.first_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
+      when 'Second Late Reminder'
+        task_mailer.second_late_notice(reviewer_report_id: due_datetime.due_id).deliver_now
+      end
+      complete!
+    rescue
+      error!
     end
   end
 end

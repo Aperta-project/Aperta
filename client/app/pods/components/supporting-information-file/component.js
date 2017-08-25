@@ -24,8 +24,7 @@ export default Component.extend({
   isEditing: equal('uiState', 'edit'),
   legendsAllowed: alias('file.paper.legendsAllowed'),
   content: Ember.Object.create(),
-  answerWithTitle: Ember.Object.create(),
-  answerWithCaption: Ember.Object.create(),
+  answer: Ember.Object.create(),
 
   categories: [
     'Table',
@@ -61,10 +60,8 @@ export default Component.extend({
     or contact Aperta staff.`;
   }),
 
-  setAnswer() {
+  configEditor() {
     if (this.get('legendsAllowed')) {
-      this.set('answerWithTitle.value', this.get('file.title'));
-      this.set('answerWithCaption.value', this.get('file.caption'));
       this.set('content.editorStyle', 'basic');
       this.set('content.valueType', 'html');
     }
@@ -90,7 +87,7 @@ export default Component.extend({
     enterEditStateIfEditable() {
       if(this.get('isEditable')) {
         this.set('uiState', 'edit');
-        this.setAnswer();
+        this.configEditor();
       }
     },
 

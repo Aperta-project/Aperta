@@ -56,7 +56,8 @@
           {{card-content/paragraph-input
             class="form-control si-file-title-input"
             content=content
-            answer=answerWithTitle
+            answer=answer
+            workingValue=file.title
           }}
         </div>
       </div>
@@ -66,8 +67,9 @@
           {{card-content/paragraph-input
             class="form-control si-file-caption-textbox"
             content=content
-            answer=answerWithCaption
-           }}
+            answer=answer
+            workingValue=file.caption
+            }}
         </div>
       </div>
     {{/if}}

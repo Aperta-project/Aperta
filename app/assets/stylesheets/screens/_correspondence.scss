@@ -44,9 +44,15 @@
   .correspondence-sender-column {
     min-width: 160px;
   }
+}
 
-  a.correspondence-attachment-link:after {
+.correspondence-attachment-link {
+  &:after {
     content: ",";
+    color: #333;
+  }
+  &:last-of-type:after {
+     content: none;
   }
 }
 

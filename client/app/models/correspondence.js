@@ -28,14 +28,7 @@ export default DS.Model.extend({
     }
   }),
 
-  checkFileType: Ember.computed('attachments', function() {
-    this.get('attachments').forEach(function(element){
-      // console.log("this is" + element.get('filename'));      
-      return fontAwesomeFiletypeClass(element.get('filename'));
-    });
-  }),
-
-  hasAnyAttachment: Ember.computed('attachments', function() {
-    return Ember.isEmpty(this.get('attachments'));
+  hasAnAttachment: Ember.computed('attachments', function() {
+    return (this.get('attachments').length !== 0);
   })
 });

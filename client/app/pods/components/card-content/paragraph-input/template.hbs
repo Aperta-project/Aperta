@@ -8,7 +8,7 @@
     editorStyle=content.editorStyle
     name=ident
     data-editor=ident
-    value=answer.value
+    value=answerValue
     hasErrors=answer.hasErrors
     errorMessages=answer.readyIssuesArray
     onContentsChanged=(action "valueChanged")
@@ -19,7 +19,7 @@
   }}
 {{else}}
   {{textarea
-      value=(readonly answer.value)
+      value=(readonly answerValue)
       class="form-control"
       change=(action "valueChanged")
       input=(action "valueChanged")

@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   upperBound: Ember.computed('content.max', function () {return 1 + this.get('content.max');}),
   lowerBound: Ember.computed('content.initial', 'content.min', function () {
     let initial = this.get('content.initial'), min = this.get('content.min');
-    return (initial && min) ? Math.min(initial, min, 0) : (initial || min || 0);
+    return (initial && min) ? Math.max(Math.min(initial, min), 0) : (initial || min || 0);
   }),
 
   init() {

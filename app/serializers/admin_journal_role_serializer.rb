@@ -9,6 +9,10 @@ class AdminJournalRoleSerializer < ActiveModel::Serializer
            root: :card_permissions
 
   def card_permissions
-    object.permissions.where.not(filter_by_card_id: nil).where(applies_to: 'Task')
+    custom_card_ids = Journal.find(journal_id).cards.map(&:id)
+    Permission.where(
+      filter_by_card_id: [custom_card_ids],
+      applies_to: "Task"
+    )
   end
 end

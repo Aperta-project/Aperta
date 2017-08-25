@@ -18,7 +18,17 @@ export default Ember.Component.extend({
   min: Ember.computed.reads('content.min'),
   max: Ember.computed.reads('content.max'),
 
-  lowerBound: Ember.computed.reads('content.min'),
-  upperBound: Ember.computed('content.max', function () {return this.get('content.max') + 1;}),
-  inRange: Ember.computed('content.min', 'content.max', function () {return this.get('content.min') < this.get('content.max');})
+  // lowerBound: Ember.computed.reads('content.min'),
+  inRange: Ember.computed('content.min', 'content.max', function () {return this.get('lowerBound') < this.get('upperBound');}),
+  upperBound: Ember.computed('content.max', function () {return 1 + this.get('content.max');}),
+  lowerBound: Ember.computed('content.initial', 'content.min', function () {
+    let initial = this.get('content.initial'), min = this.get('content.min');
+    return (initial && min) ? Math.min(initial, min, 0) : (initial || min || 0);
+  }),
+
+  init() {
+    this._super(...arguments);
+    // debugger;
+  }
+
 });

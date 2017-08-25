@@ -14,12 +14,12 @@ class CardPermissions
   def self.add_roles(card, action, roles, permission = nil)
     # Append to the roles that can perform action on a card. Also, add the "view"
     # permission for the card (form) itself if the action is 'view'.
-    set_or_add_roles(card, action, roles, permission, 'append')
+    set_or_add_roles(card, action, roles, :append_roles_and_save, permission)
   end
 
   def self.set_roles(card, action, roles, permission = nil)
     # wipeout and replace the roles that can perform action on a card
-    set_or_add_roles(card, action, roles, permission, 'replace')
+    set_or_add_roles(card, action, roles, :replace_roles_and_save, permission)
   end
 
   # Return a task-level permission for an action on a given card in the given
@@ -76,19 +76,16 @@ class CardPermissions
     end
   end
 
-  private
-
-  def self.set_or_add_roles(card, action, roles, permission = nil, actor_string)
+  def self.set_or_add_roles(card, action, roles, actor_string, permission = nil)
     # actor string determines to call replace_roles_and_save or append_roles_and_save above
     if STATELESS_ACTIONS.include?(action)
       update_stateless_permissions(card, action, roles, actor_string)
     else
-      update_stateful_permissions(card, action, roles, permission, actor_string)
+      update_stateful_permissions(card, action, roles, actor_string, permission)
     end
   end
 
-  def self.update_stateful_permissions(card, action, roles, permission = nil, actor_string)
-    actor = compose_actor(actor_string)
+  def self.update_stateful_permissions(card, action, roles, actor, permission = nil)
     # if a permission is explictly passed, no need to look through states to find
     # correct permission. just update that one and return
     return send(actor, permission, roles) if permission
@@ -101,8 +98,7 @@ class CardPermissions
     end
   end
 
-  def self.update_stateless_permissions(card, action, roles, actor_string)
-    actor = compose_actor(actor_string)
+  def self.update_stateless_permissions(card, action, roles, actor)
     # Non-view roles are state-limited, that is, creators and collaborators
     # can only edit in the "editable" states, reviewers can only edit in the
     # "reviewable" states, etc. This means that these roles use a different
@@ -114,9 +110,5 @@ class CardPermissions
     # order to provide a consistent return value.
     task_permission = get_task_permission(card, action, [Permission::WILDCARD])
     [send(actor, task_permission, roles)]
-  end
-
-  def self.compose_actor(actor_string)
-    (actor_string + '_roles_and_save').to_sym
   end
 end

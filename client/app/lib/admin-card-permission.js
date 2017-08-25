@@ -9,20 +9,22 @@ import Ember from 'ember';
  * @param {string} filterByCardId to check for
  * @param {string} permissionAction the action for the permission, e.g. view
  * @param {Ember.Object.<Role>} role optional the role of the permission
- * @param {boolean} optional forAdd is handling a permission addition
  * @return {Object} Found permission or undefined
 */
-export function findPermissionFromList(permissions, filterByCardId, permissionAction, role = undefined, forAdd = false) {
+export function findPermissionFromList(permissions, filterByCardId, permissionAction, role) {
   return permissions.find((perm)=>{
     var isMatch = (
       (perm.get('permissionAction') === permissionAction) &&
       (perm.get('filterByCardId') === filterByCardId)
     );
 
-    if (!isMatch || forAdd || !role) {
-      return isMatch;
-    } else {
+    if (!isMatch) { return false; }
+
+    //any permission removal should pass in a role
+    if (role) {
       return perm.get('roles').filterBy('id', role.id).length > 0;
+    } else {
+      return true;
     }
   });
 }

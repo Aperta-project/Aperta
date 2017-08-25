@@ -45,7 +45,7 @@ export default Ember.Service.extend({
    * @return {CardPermission} The permission that was modified
    */
   addRoleToPermission(role, filterByCardId, permissionAction) {
-    const perm = this.findPermissionOrCreate(filterByCardId, permissionAction, role);
+    const perm = this.findPermissionOrCreate(filterByCardId, permissionAction);
     perm.get('roles').addObject(role);
     return perm;
   },
@@ -76,7 +76,7 @@ export default Ember.Service.extend({
    * @return {CardPermission} The permission that was found or created
    */
   findPermissionOrCreate(filterByCardId, permissionAction, role) {
-    const perm = this.findPermission(filterByCardId, permissionAction, role, true);
+    const perm = this.findPermission(filterByCardId, permissionAction);
     if (perm) {
       return perm;
     } else {
@@ -95,11 +95,10 @@ export default Ember.Service.extend({
    * @param {string} filterByCardId
    * @param {string} permissionAction the action for the permission, e.g. view
    * @param {Ember.Object.<Role>} role optional the role of the permission
-   * @param {boolean} optional forAdd is handling a permission addition
    * @return {CardPermission} The permission that was found, or undefined if nothing found
    */
-  findPermission(filterByCardId, permissionAction, role, forAdd) {
+  findPermission(filterByCardId, permissionAction, role) {
     const perms = this.get('store').peekAll('card-permission');
-    return findPermissionFromList(perms, filterByCardId, permissionAction, role, forAdd);
+    return findPermissionFromList(perms, filterByCardId, permissionAction, role);
   }
 });

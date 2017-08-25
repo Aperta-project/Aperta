@@ -34,14 +34,6 @@ export default Component.extend({
     'Figure'
   ],
 
-  didReceiveAttrs() {
-    if (this.get('legendsAllowed')) {
-      this.set('answerWithTitle.value', this.get('file.title'));
-      this.set('answerWithCaption.value', this.get('file.caption'));
-      this.set('content.editorStyle', 'basic');
-      this.set('content.valueType', 'html');
-    }
-  },
 
   uiStateClass: computed('uiState', function() {
     return `si-file-${this.get('uiState')}`;
@@ -69,6 +61,15 @@ export default Component.extend({
     or contact Aperta staff.`;
   }),
 
+  setAnswer() {
+    if (this.get('legendsAllowed')) {
+      this.set('answerWithTitle.value', this.get('file.title'));
+      this.set('answerWithCaption.value', this.get('file.caption'));
+      this.set('content.editorStyle', 'basic');
+      this.set('content.valueType', 'html');
+    }
+  },
+
   actions: {
     enterDeleteState() {
       this.set('uiState', 'delete');
@@ -89,6 +90,7 @@ export default Component.extend({
     enterEditStateIfEditable() {
       if(this.get('isEditable')) {
         this.set('uiState', 'edit');
+        this.setAnswer();
       }
     },
 

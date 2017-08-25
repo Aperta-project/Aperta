@@ -130,7 +130,12 @@ class Card < ActiveRecord::Base
 
   # look for errors in nested child objects
   def check_nested_errors
-    traverse(CardErrorVisitor.new)
+    visitor = CardErrorVisitor.new
+    traverse(visitor)
+    most_recent_version.try do |version|
+      visitor.visit(version)
+      collect_errors_from(visitor)
+    end
   end
 
   # evaluate card semantics
@@ -143,6 +148,10 @@ class Card < ActiveRecord::Base
     root = most_recent_version.try(:content_root)
     return unless root
     root.traverse(visitor)
+    collect_errors_from(visitor)
+  end
+
+  def collect_errors_from(visitor)
     visitor.report.each { |error| errors.add(:detail, message: error) }
   end
 

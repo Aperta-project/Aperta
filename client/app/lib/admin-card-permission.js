@@ -18,7 +18,13 @@ export function findPermissionFromList(permissions, filterByCardId, permissionAc
       (perm.get('filterByCardId') === filterByCardId)
     );
 
-    if (!isMatch) { return false; }
+    if (!isMatch) {
+      return false;
+    } else {
+      if (perm.id === "596" || perm.id === "597" || perm.id === "598" ) {
+        // debugger
+      }
+    }
 
     //any permission removal should pass in a role
     if (role) {

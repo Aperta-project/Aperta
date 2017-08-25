@@ -11,7 +11,7 @@
 div.card-content-flex-box {
   display: inline-flex;
 
-  div.flex-label {
-    padding: 0em .5em;
-  }
+    label input[type="checkbox"] {
+      margin-right: .5em;
+    }
 }

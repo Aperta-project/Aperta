@@ -4,8 +4,6 @@ import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import Ember from 'ember';
-import {getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
-import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('admin-page/email-templates/edit',
   'Integration | Component | Admin Page | Email Templates | Edit', {
@@ -19,7 +17,7 @@ moduleForComponent('admin-page/email-templates/edit',
 test('it populates input fields with model data', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: '<p>bar</p>'});
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
 
   this.set('template', template);
 
@@ -27,7 +25,7 @@ test('it populates input fields with model data', function(assert) {
     {{admin-page/email-templates/edit template=template}}
   `);
   assert.equal(this.$('#subject').val(), template.get('subject'));
-  assert.equal(getRichText('body'), template.get('body'));
+  assert.equal(this.$('#body').val(), template.get('body'));
 });
 
 test('it prevents the model from saving if a field is blank and displays validation errors', function(assert){
@@ -63,14 +61,11 @@ test('model receives save call when valid', function(assert){
     {{admin-page/email-templates/edit template=template}}
   `);
 
-  setRichText('body', 'text');
-
-  let done = assert.async();
-  wait().then(() => {
+  Ember.run(() => {
+    this.$('#body').val('baz').trigger('input');
     this.$('.button-primary').click();
-    assert.ok(template.save.called);
-    done();
   });
+  assert.equal(template.save.called, true);
 });
 
 test('after attempted save it dynamically warns user if input field has invalid content', function(assert) {

@@ -26,7 +26,7 @@
       {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
         {{#if formatted}}
           {{card-content/paragraph-input
-                         value=answer.value
+                         workingValue=answer.value
                          class=inputClassNames
                          focus-out=(action "save")
                          disabled=disabled}}

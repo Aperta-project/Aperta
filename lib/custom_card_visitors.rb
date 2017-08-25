@@ -69,7 +69,7 @@ module CustomCardVisitors
     end
 
     def remember(list)
-      list.each { |item| @processed.add(item) }
+      @processed += list
     end
 
     def report

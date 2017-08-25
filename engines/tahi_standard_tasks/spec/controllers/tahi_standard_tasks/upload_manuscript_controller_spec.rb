@@ -8,9 +8,9 @@ describe TahiStandardTasks::UploadManuscriptController do
 
   describe 'PUT upload_manuscript' do
     subject(:do_request) do
-      put :upload_manuscript, id: task.id, url: url, format: :json
+      put :upload_manuscript, id: task.id, format: :json, manuscript_attachment: { s3_url: s3_url }
     end
-    let(:url) { "http://theurl.com" }
+    let(:s3_url) { "http://theurl.com" }
 
     it_behaves_like "an unauthenticated json request"
 
@@ -25,7 +25,7 @@ describe TahiStandardTasks::UploadManuscriptController do
 
       it "initiates manuscript download" do
         expect(DownloadManuscriptWorker).to receive(:download_manuscript)
-          .with(paper, url, user)
+          .with(paper, s3_url, user)
         do_request
       end
 

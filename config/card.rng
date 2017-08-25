@@ -135,6 +135,9 @@
       <optional>
         <attribute name="ident"/>
       </optional>
+      <optional>
+        <attribute name="error-message"/>
+      </optional>
       <attribute name="content-type">
         <value>file-uploader</value>
       </attribute>

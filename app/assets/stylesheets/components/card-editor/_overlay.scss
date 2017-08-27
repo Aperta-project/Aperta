@@ -73,21 +73,30 @@
     font-size: 4.8rem;
  }
 
+  .card-content-view-text {
+    margin-left: 1em;
+  }
+
+  .card-content-dropdown, .card-content-radio,
+  .card-content-short-input, .card-content-check-box {
+    min-width: 450px;
+  }
+
   .answer-container {
-      display: flex;
+      display: inline-flex;
       flex-flow: row wrap;
       justify-content: space-between;
   }
 
   .answer {
-    flex: 1 0 55%;
+    flex: 1 0 33%;
     margin: 15px;
   }
 
-.additional-text {
+  .additional-text {
     flex: 1 0 35%;
     margin: 15px;
-    min-width: 300px;
+    min-width: 400px;
   }
 
 }

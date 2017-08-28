@@ -22,6 +22,7 @@ class XmlCardLoader
   def load(xml_string, replace_latest_version: false)
     @xml = XmlCardDocument.new(xml_string)
     card.card_versions << latest_card_version(replace: replace_latest_version)
+    card
   end
 
   private

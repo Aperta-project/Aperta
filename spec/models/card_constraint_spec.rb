@@ -78,10 +78,56 @@ describe Card do
     XML
   end
 
-  context 'validation' do
+  let(:valid_repeat_xml) do
+    <<-XML.strip_heredoc
+      <?xml version="1.0" encoding="UTF-8"?>
+      <card required-for-submission="false" workflow-display-only="false">
+        <content content-type="display-children">
+          <content content-type="repeat">
+            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+              <text>This is the first INPUT element.</text>
+            </content>
+          </content>
+          <content content-type="repeat">
+            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+              <text>This is the second INPUT element.</text>
+            </content>
+          </content>
+        </content>
+      </card>
+    XML
+  end
+
+  let(:invalid_repeat_xml) do
+    <<-XML.strip_heredoc
+      <?xml version="1.0" encoding="UTF-8"?>
+      <card required-for-submission="false" workflow-display-only="false">
+        <content content-type="display-children">
+          <content content-type="repeat">
+            <content content-type="paragraph-input" value-type="html">
+              <text>This is the THEN branch of an inner IF condition.</text>
+            </content>
+            <content content-type="repeat">
+              <content content-type="paragraph-input" value-type="html">
+                <text>This is a nested repeat component.</text>
+              </content>
+            </content>
+          </content>
+        </content>
+      </card>
+    XML
+  end
+
+  context 'if validation' do
     it 'will validate card with unique idents' do
       loader = XmlCardLoader.new(card)
       loader.load(valid_xml)
+      expect(card.errors).to be_empty
+    end
+
+    it 'immediate children of an IF component may have the same ident' do
+      loader = XmlCardLoader.new(card)
+      loader.load(if_xml)
       expect(card.errors).to be_empty
     end
 
@@ -102,11 +148,22 @@ describe Card do
       expect(card.errors[:detail]).to be_present
       expect(card.errors[:detail].first[:message]).to match(/unique.*SomeStuff/)
     end
+  end
 
-    it 'immediate children of an IF component may have the same ident' do
+  context 'repeat validation' do
+    it 'will validate card with non-nested repeats' do
       loader = XmlCardLoader.new(card)
-      loader.load(if_xml)
+      loader.load(valid_repeat_xml)
       expect(card.errors).to be_empty
+    end
+
+    it 'repeats cannot be nested' do
+      loader = XmlCardLoader.new(card)
+      loader.load(invalid_repeat_xml)
+      expect(card).to_not be_valid
+      expect(card.errors).to_not be_empty
+      expect(card.errors[:detail]).to be_present
+      expect(card.errors[:detail].first[:message]).to match(/.*Repeat.*nested.*/)
     end
   end
 end

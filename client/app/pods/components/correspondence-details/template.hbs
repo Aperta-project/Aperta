@@ -68,10 +68,14 @@
     </div>
     <div class="col-sm-10">
       {{#each message.attachments as |attachment|}}
-        <a href="{{attachment.src}}" class="correspondence-attachment-link" target="_blank">
-          <i class="fa {{file-type attachment.filename}}"></i> 
-          &nbsp;{{attachment.filename}}
-        </a>
+        {{#if (can "manage_workflow" message.paper)}} 
+          <a href="{{attachment.src}}" class="correspondence-attachment-link" target="_blank">
+            <i class="fa {{file-type attachment.filename}}"></i> 
+            &nbsp;{{attachment.filename}}
+          </a>
+        {{else}}  
+          <span class="correspondence-attachment-link">{{attachment.filename}}</span>
+        {{/if}}   
       {{/each}}
     </div>
   </div>

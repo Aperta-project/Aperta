@@ -64,31 +64,6 @@
 }
 
 
-// -- Text Input
-
-.paper-new-overlay {
-  .format-input {
-    border-radius: 5px;
-  }
-
-  .format-input-field {
-    min-height: 20px;
-    border-radius: 5px;
-    padding: 15px 0 15px 15px;
-  }
-
-  .format-input-button {
-    padding: 15px 0;
-    width: 50px;
-
-    &:last-of-type {
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-  }
-}
-
-
 // -- Select Fields
 
 .paper-new-select {

@@ -13,7 +13,7 @@ export default Ember.Component.extend(ValidateTextInput, {
   },
   isRichText: Ember.computed.equal('content.valueType', 'html'),
 
-  answerValue: Ember.computed(function () {
+  answerValue: Ember.computed('answer.value', 'workingValue', function () {
     // Since some parent components don't have an answer object as a property
     // then passing the parent's component 'value' as the workingValue
     // will help keeping actions working as usual.

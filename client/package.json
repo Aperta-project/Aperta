@@ -43,7 +43,6 @@
     "ember-cli-qunit": "^2.1.0",
     "ember-cli-rails-addon": "0.7.1",
     "ember-cli-release": "^0.2.9",
-    "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^1.1.0",
     "ember-cli-textarea-autosize": "1.0.1",
     "ember-cli-tinymce": "0.1.6",
@@ -77,7 +76,8 @@
     "liquid-fire": "0.25.0",
     "loader.js": "^4.0.1",
     "npm-install-retry": "^1.0.2",
-    "yuidocjs": "^0.10.2"
+    "yuidocjs": "^0.10.2",
+    "ember-cli-sri": "^2.1.0"
   },
   "ember-addon": {
     "paths": [

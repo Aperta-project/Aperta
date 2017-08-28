@@ -35,7 +35,22 @@ module MailLog
           manuscript_status: paper.publishing_state,
           versioned_text_id: paper.versioned_texts.last.id
         ) if paper
-        Correspondence.create!(correspondence_hash)
+        email_log = Correspondence.create!(correspondence_hash)
+        message.attachments.each do |attachment|
+          ext_name = File.extname(attachment.filename)
+          tf_args = if ext_name
+                      [File.basename(attachment.filename, ext_name), ext_name]
+                    else
+                      attachment.filename
+                    end
+          temp_file = Tempfile.new(tf_args)
+          begin
+            temp_file.write(attachment.body.raw_source.force_encoding('UTF-8'))
+            email_log.attachments.create!(title: attachment.filename, file: temp_file)
+          ensure
+            temp_file.close!
+          end
+        end
       end
 
       def self.get_message(message)

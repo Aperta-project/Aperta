@@ -73,6 +73,16 @@ test('addRoleToPermissionSensible adds a role to a view permission', function(as
   });
 });
 
+test('addRoleToPermissionSensible adds a role to a view_discussion_footer permission', function(assert) {
+  const cardId = '1';
+  const role = make('admin-journal-role');
+  Ember.run(() => {
+    const [perm] = this.subject().addRoleToPermissionSensible(role, cardId, 'view_discussion_footer');
+    assert.arrayEqual(perm.get('roles').toArray(), Ember.A([role]));
+    assert.arrayEqual(role.get('cardPermissions').toArray(), Ember.A([perm]));
+  });
+});
+
 test(
   'when addRoleToPermissionSensible adds a role to a edit permission, it also adds a view permission',
   function(assert) {
@@ -81,6 +91,21 @@ test(
     Ember.run(() => {
       const perms = this.subject().addRoleToPermissionSensible(role, cardId, 'edit');
       assert.arrayEqual(perms.map((p)=>p.get('permissionAction')).sort(), ['edit', 'view']);
+      perms.forEach((perm)=> {
+        assert.arrayEqual(perm.get('roles').toArray(), Ember.A([role]));
+      });
+      assert.arrayEqual(role.get('cardPermissions').toArray().sort(), perms.toArray().sort());
+    });
+  });
+
+test(
+  'when addRoleToPermissionSensible adds a role to a edit_discussion_footer permission, it also adds a view_discussion_footer permission',
+  function(assert) {
+    const cardId = '1';
+    const role = make('admin-journal-role');
+    Ember.run(() => {
+      const perms = this.subject().addRoleToPermissionSensible(role, cardId, 'edit_discussion_footer');
+      assert.arrayEqual(perms.map((p)=>p.get('permissionAction')).sort(), ['edit_discussion_footer', 'view_discussion_footer']);
       perms.forEach((perm)=> {
         assert.arrayEqual(perm.get('roles').toArray(), Ember.A([role]));
       });

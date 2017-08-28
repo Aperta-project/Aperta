@@ -20,9 +20,6 @@ module.exports = function(defaults) {
     codemirror: {
       modes: ['xml'],
       themes: ['eclipse']
-    },
-    minifyJS: {
-      enabled: EmberApp.env() === 'production'
     }
   };
 

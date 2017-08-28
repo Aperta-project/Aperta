@@ -11,12 +11,7 @@ export default Ember.Route.extend({
   },
 
   afterModel(model) {
-    //
-    // for users with only one journal, transition to a route that
-    // specifies a specific journal rather than behaving like
-    // 'all journals'.
-    //
-
+    // For users with one journal, transition to that journal rather than 'all journals'.
     if (!model.journal && model.journals.get('length') === 1) {
       this.transitionTo('admin.journals.workflows', model.journals.get('firstObject.id'));
     }

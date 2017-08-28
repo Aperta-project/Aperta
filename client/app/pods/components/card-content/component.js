@@ -51,7 +51,11 @@ export default Ember.Component.extend({
   },
 
   answer: Ember.computed('content', 'owner', function() {
-    return this.get('content').answerForOwner(this.get('owner'));
+    if (this.get('preview')) {
+      return this.get('content').defaultAnswerForOwner(this.get('owner'));
+    } else {
+      return this.get('content').answerForOwner(this.get('owner'));
+    }
   }),
 
   _debouncedSave: concurrencyTask(function*() {

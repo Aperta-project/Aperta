@@ -77,7 +77,7 @@ class AuthorsTask(BaseTask):
     self._author_other_lbl = (
         By.CSS_SELECTOR,
         'div.author-contributions div.flex-group + div.flex-group div.flex-element label')
-    self._designed_chkbx = (By.CSS_SELECTOR, 'input[name=author--contributions--conceptualization]')
+    self._designed_chkbx = (By.CSS_SELECTOR, "input[name='author--contributions--conceptualization']")
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'fieldset.author-contributions legend.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons button')
@@ -140,6 +140,9 @@ class AuthorsTask(BaseTask):
     # Form Action Buttons
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'a.author-cancel')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'div.author-form-buttons > button')
+    self._no_thanks = (By.CSS_SELECTOR, '.did-you-mean .did-you-mean-no-thanks')
+    #self._cb = (By.CSS_SELECTOR, 'button.task-completed')
+    #self._task_completed_section = (By.CLASS_NAME, 'task-completed-section')
 
   # POM Actions
   def validate_author_task_styles(self):
@@ -565,7 +568,6 @@ class AuthorsTask(BaseTask):
       return None
     author_div = self._get(self._author_items)
     self._scroll_into_view(author_div)
-    #self._actions.move_to_element(author_div).perform()
     edit_btn = self._get(self._edit_author)
     self.click_covered_element(edit_btn)
     time.sleep(1)
@@ -587,7 +589,11 @@ class AuthorsTask(BaseTask):
         author_data['affiliation-name'] = 'Placeholder'
       institution.send_keys(author_data['affiliation-name'] + Keys.ENTER)
       # Time to look for institutions to fill the drop down options
-      time.sleep(5)
+      time.sleep(2)
+      # 'did-you-mean-what-you-meant' - confirm institution name if needed
+      if 'expanded' in institution_div.get_attribute('class'):
+        institution_confirm = self._get(self._no_thanks)
+        institution_confirm.click()
     title_input.clear()
     title_input.send_keys(author_data['affiliation-title'] + Keys.ENTER)
     department_input.clear()
@@ -606,7 +612,9 @@ class AuthorsTask(BaseTask):
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
       self.click_covered_element(corresponding_chck)
+    self._wait_for_element(self._get(self._designed_chkbx))
     author_contribution_chck = self._get(self._designed_chkbx)
+    author_contribution_chck.click()
     if not author_contribution_chck.is_selected():
       self.click_covered_element(author_contribution_chck)
     # Need to complete the remaining required elements to successfully complete this card.
@@ -614,6 +622,13 @@ class AuthorsTask(BaseTask):
     author_inits_input.send_keys(author_data['initials'])
     add_author_add_btn = self._get(self._add_author_add_btn)
     self.click_covered_element(add_author_add_btn)
+    time.sleep(1)
+    # Scroll to top be sure complete button is accessible
+    manuscript_id_text = self._get(self._paper_sidebar_manuscript_id)
+    self._scroll_into_view(manuscript_id_text)
+    time.sleep(.5)
+    self.click_completion_button()
+    time.sleep(1)
     completed = self.completed_state()
     logging.info('Completed State of the Author task is: {0}'.format(completed))
     if not completed:

@@ -110,6 +110,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_sidebar_info = (By.CLASS_NAME, 'paper-sidebar-info')
     self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
     self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
+    self._paper_sidebar_diff_icons = (By.CLASS_NAME, 'card-diff-icon')
     # Sidebar Info Items
     self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
     self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
@@ -620,7 +621,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if base_task.completed_state():
         base_task.click_completion_button()
       if data:
-        ai_task.complete_ai()
+        ai_task.complete_ai(data)
       # complete_addl info task
       if not base_task.completed_state():
         base_task.click_completion_button()

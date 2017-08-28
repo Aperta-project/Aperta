@@ -303,7 +303,7 @@ class DashboardPage(AuthenticatedPage):
           # TODO: Add style validation for this label.
           page_abstract_text = page_listing.find_element(*self._invitation_abstract_text)
           logging.info(page_abstract_text.text)
-          assert db_abstract in page_abstract_text.text, \
+          assert page_abstract_text.text in db_abstract, \
               u'db abstract: {0}\nnot equal to invitation ' \
               u'abstract:\n{1}.'.format(db_abstract, page_abstract_text.text)
 

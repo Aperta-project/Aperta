@@ -46,7 +46,7 @@ class BillingTask(BaseTask):
       data = {}
       # Complete with mock-up data
       data['fist_name'] = bd['first']
-      data['last_name'] = bd['first']
+      data['last_name'] = bd['last']
       data['department'] = bd['department']
       data['affiliation'] = bd['affiliation']
       data['phone'] = bd['phone']

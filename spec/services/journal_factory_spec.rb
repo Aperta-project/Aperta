@@ -166,6 +166,8 @@ describe JournalFactory do
         Permission.destroy_all
         Role.destroy_all
         Journal.destroy_all
+        Card.destroy_all
+        CardContent.destroy_all
       end
 
       let!(:journal) { @journal }

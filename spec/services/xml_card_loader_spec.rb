@@ -89,7 +89,8 @@ describe XmlCardLoader do
 
     it 'sets #required_for_submission' do
       expect {
-        xml_card_loader.load(xml)
+        card = xml_card_loader.load(xml)
+        card.save
       }.to change {
         card.reload.latest_card_version.required_for_submission
       }.from(true).to(false)
@@ -97,7 +98,8 @@ describe XmlCardLoader do
 
     it 'increments #version' do
       expect {
-        xml_card_loader.load(xml)
+        card = xml_card_loader.load(xml)
+        card.save
       }.to change {
         card.reload.latest_card_version.version
       }.from(1).to(2)
@@ -105,7 +107,8 @@ describe XmlCardLoader do
 
     it 'sets #workflow_display_only' do
       expect {
-        xml_card_loader.load(xml)
+        card = xml_card_loader.load(xml)
+        card.save
       }.to change {
         card.reload.latest_card_version.workflow_display_only
       }.from(false).to(true)
@@ -137,7 +140,8 @@ describe XmlCardLoader do
     end
 
     it 'creates string match card content validations' do
-      xml_card_loader.load(xml)
+      card = xml_card_loader.load(xml)
+      card.save
       expect(validations.count).to eq(2)
 
       expect(validations.first.validation_type).to eq 'string-match'
@@ -169,7 +173,8 @@ describe XmlCardLoader do
       let(:second) { root_content.children[1] }
 
       it 'creates the children' do
-        xml_card_loader.load(xml)
+        card = xml_card_loader.load(xml)
+        card.save
         expect(first.ident).to eq('foo')
         expect(first.content_type).to eq('text')
         expect(second.ident).to eq('bar')
@@ -207,7 +212,8 @@ describe XmlCardLoader do
         end
 
         it 'card content was successfully created' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content).to be_present
           expect(root_content.children).to be_present
         end
@@ -224,12 +230,14 @@ describe XmlCardLoader do
         end
 
         it 'parses possible values' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
         end
 
         it 'sets the #default_answer_value' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.default_answer_value).to eq("1")
         end
       end
@@ -247,12 +255,14 @@ describe XmlCardLoader do
         end
 
         it 'sets the #text' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.text).to eq(text)
         end
 
         it 'sets the #label' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.label).to eq(label)
         end
       end
@@ -262,7 +272,8 @@ describe XmlCardLoader do
         let(:content1) { "<content ident='foo' content-type='text'><text>#{text}</text></content>" }
 
         it 'sets the text to the value of the element text' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.text).to eq(text)
         end
 
@@ -270,7 +281,8 @@ describe XmlCardLoader do
           let(:content1) { "<content ident='foo' content-type='text'><text> #{text}  \n</text></content>" }
 
           it 'is removed' do
-            xml_card_loader.load(xml)
+            card = xml_card_loader.load(xml)
+            card.save
             expect(root_content.text).to eq(text)
           end
         end
@@ -279,7 +291,8 @@ describe XmlCardLoader do
           let(:text) { '<![CDATA[<a>link</a>]]>' }
 
           it 'includes the embedded HTML' do
-            xml_card_loader.load(xml)
+            card = xml_card_loader.load(xml)
+            card.save
             expect(root_content.text).to eq('<a>link</a>')
           end
         end
@@ -296,12 +309,14 @@ describe XmlCardLoader do
         end
 
         it 'sets the text to the value of the element text' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.text).to eq(text)
         end
 
         it 'sets the default answer value if given' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.default_answer_value).to eq("foo")
         end
       end
@@ -317,7 +332,8 @@ describe XmlCardLoader do
         end
 
         it 'parses possible values' do
-          xml_card_loader.load(xml)
+          card = xml_card_loader.load(xml)
+          card.save
           expect(root_content.possible_values).to eq([{ 'label' => 'one', 'value' => '1' }])
         end
       end

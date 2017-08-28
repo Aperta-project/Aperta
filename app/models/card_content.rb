@@ -183,6 +183,12 @@ class CardContent < ActiveRecord::Base
 
   # rubocop:enable Metrics/AbcSize
 
+  def of_type(type)
+    return self if content_type == type
+    return nil unless parent
+    parent.of_type(type)
+  end
+
   # recursively traverse nested card_contents
   def traverse(visitor)
     visitor.visit(self)

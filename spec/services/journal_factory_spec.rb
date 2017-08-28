@@ -20,7 +20,7 @@ describe JournalFactory do
                   'edit_discussion_footer'].freeze
 
   def without_anonymous_classes(klasses)
-    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' }
+    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' && klass.name != 'ScheduledEventTestTask' }
   end
 
   describe '.create' do

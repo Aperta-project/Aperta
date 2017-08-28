@@ -20,7 +20,7 @@ describe JournalFactory do
                   'edit_discussion_footer'].freeze
 
   def without_anonymous_classes(klasses)
-    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' }
+    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' && klass.name != 'ScheduledEventTestTask' }
   end
 
   describe '.create' do
@@ -163,9 +163,15 @@ describe JournalFactory do
       end
 
       after(:all) do
-        Permission.destroy_all
-        Role.destroy_all
-        Journal.destroy_all
+        Permission.all.delete_all
+        Role.all.delete_all
+        Journal.all.delete_all
+        CardContent.all.delete_all
+        CardContent.all.with_deleted.delete_all! # Really delete
+        CardVersion.all.delete_all
+        CardVersion.all.with_deleted.delete_all! # Really delete
+        Card.all.delete_all
+        Card.all.with_deleted.delete_all! # Really delete
       end
 
       let!(:journal) { @journal }

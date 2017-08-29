@@ -67,7 +67,7 @@ test('User can view a correspondence record', function(assert) {
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
     assert.equal(find('#correspondence-attachment-paperclip').length, 1); 
-    assert.equal(find('.col-sm-10 .correspondence-attachment-link').length, 2);
+    assert.equal(find('.correspondence-attachment-link .file-link').length, 2);
   });
 });
 

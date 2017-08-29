@@ -9,9 +9,9 @@ module PaperConverters
       klass = if [nil, current_format, 'source'].include?(export_format)
                 direct_converter(export_format)
               elsif ['pdf', 'doc', 'docx'].include?(current_format)\
-                || ['pdf', 'pdf_with_attachments'].include?(export_format)
+                      || ['pdf', 'pdf_with_attachments', 'generated-pdf'].include?(export_format)
                 dynamic_converter(current_format, export_format)
-              end
+                  end
       klass.new(versioned_text, export_format, current_user)
     end
 

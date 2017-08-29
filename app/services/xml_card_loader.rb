@@ -20,19 +20,12 @@ class XmlCardLoader
   end
 
   def load(xml_string, replace_latest_version: false)
-    @xml = xml_card_document(xml_string)
-
-    Card.transaction do
-      card.card_versions << latest_card_version(replace: replace_latest_version)
-      card.save!
-    end
+    @xml = XmlCardDocument.new(xml_string)
+    card.card_versions << latest_card_version(replace: replace_latest_version)
+    card
   end
 
   private
-
-  def xml_card_document(xml)
-    XmlCardDocument.new(xml)
-  end
 
   def latest_card_version(replace:)
     if replace
@@ -58,13 +51,6 @@ class XmlCardLoader
     end
   end
 
-  def build_card_content_validations(content)
-    content.child_elements('validation').map do |validation|
-      attributes = card_content_validation_attributes(validation)
-      CardContentValidation.new(attributes)
-    end
-  end
-
   def build_card_content(content, card_version)
     attributes = card_content_attributes(content, card_version)
     CardContent.new(attributes).tap do |root|
@@ -76,6 +62,13 @@ class XmlCardLoader
         root.children << build_card_content(child, card_version)
       end
       raise XmlCardDocument::XmlValidationError, root.errors if root.invalid?
+    end
+  end
+
+  def build_card_content_validations(content)
+    content.child_elements('validation').map do |validation|
+      attributes = card_content_validation_attributes(validation)
+      CardContentValidation.new(attributes)
     end
   end
 

@@ -35,7 +35,7 @@ class CardVersion < ActiveRecord::Base
   end
 
   def create_default_answers(task)
-    card_contents.where.not(default_answer_value: nil).find_each do |content|
+    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
       task.answers.create!(
         card_content: content,
         paper: task.paper,

@@ -104,13 +104,10 @@ class CardContent < ActiveRecord::Base
   def default_answer_present_in_possible_values
     return if default_answer_value.blank? || possible_values.blank?
 
-    vals = possible_values.map { |v| v["value"] }
-    unless vals.include? default_answer_value
-      errors.add(
-        :default_answer_value,
-        "must be one of the following values: #{vals}"
-      )
-    end
+    values = possible_values.map { |v| v['value'] }
+    return if values.include? default_answer_value
+
+    errors.add(:base, "default answer must be one of the following values: #{values}")
   end
 
   def render_tag(xml, attr_name, attr)

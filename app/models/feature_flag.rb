@@ -4,9 +4,7 @@
 # disable these features in the database than in environment
 # variables.
 #
-# Here in ruby-world, FeatureFlag[:YOUR_FEATURE] returns a boolean. In
-# client-world, you can use the (feature-flag 'YOUR_FEATURE')
-# handlebars helper, or the featureFlags service.
+# FeatureFlag[:YOUR_FEATURE] returns a boolean
 #
 # NOTE: To create a NEW feature flag, modify the create_feature_flags
 # rake task! Ditto to remove an unneeded flag once all conditionals
@@ -19,7 +17,6 @@ class FeatureFlag < ActiveRecord::Base
   # Fields:
   # name: string (acts as ID)
   # active: boolean (true if the incomplete feature should be visible)
-  self.primary_key = 'name'
 
   def self.contain_exactly!(flags)
     transaction do
@@ -37,13 +34,5 @@ class FeatureFlag < ActiveRecord::Base
   # these are in the database instead of the environment.
   def self.[](flag)
     find(flag.to_s).active
-  end
-
-  def self.to_hash
-    ret = {}
-    all.find_each do |feature|
-      ret[feature.name] = feature.active
-    end
-    ret
   end
 end

@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   restless: Ember.inject.service(),
+  featureFlag: Ember.inject.service(),
 
   model() {
     if (!this.get('currentUser.siteAdmin')) {
@@ -13,8 +14,6 @@ export default Ember.Route.extend({
       });
     }
 
-    return this.get('restless').get('/api/feature_flags').then(
-      it => new Ember.Object(it)
-    );
+    return this.store.peekAll('featureFlag').sortBy('name');
   }
 });

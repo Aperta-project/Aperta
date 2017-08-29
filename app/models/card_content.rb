@@ -28,13 +28,6 @@ class CardContent < ActiveRecord::Base
 
   has_many :answers
 
-  validates :ident,
-            uniqueness: {
-              scope: %i[card_version deleted_at],
-              message: "CardContent idents must be unique"
-            },
-            if: -> { ident.present? }
-
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
   # in the config/card.rnc file to assure that card content of a given type
@@ -71,7 +64,10 @@ class CardContent < ActiveRecord::Base
       'tech-check': ['boolean'],
       'date-picker': ['text'],
       'sendback-reason': ['boolean'],
-      'if': [nil] }.freeze.with_indifferent_access
+      'numbered-list': [nil],
+      'bulleted-list': [nil],
+      'if': [nil],
+      'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
   # and value types, many of the CardContent records that have been created
@@ -183,6 +179,12 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+
+  # recursively traverse nested card_contents
+  def traverse(visitor)
+    visitor.visit(self)
+    children.each { |card_content| card_content.traverse(visitor) }
+  end
 end
 
 private

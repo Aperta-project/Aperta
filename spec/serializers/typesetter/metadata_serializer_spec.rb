@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe Typesetter::MetadataSerializer do
-  subject(:serializer) { described_class.new(paper) }
-  let(:output) { serializer.serializable_hash }
+  subject(:serializer) { described_class.new(paper, options) }
+  let(:options) { {} }
+  let(:output) { serializer.as_json[:metadata] }
   let(:journal) do
     FactoryGirl.create(
       :journal,
@@ -74,7 +75,7 @@ describe Typesetter::MetadataSerializer do
       author_type: "Author",
       paper_id: paper.id)
     third_author.save!
-    output = Typesetter::MetadataSerializer.new(paper).serializable_hash
+    output = Typesetter::MetadataSerializer.new(paper, options).serializable_hash
 
     expect(output[:authors][0][:author][:name]).to eq(group_author.name)
     expect(output[:authors][1][:author][:first_name]).to eq(author.first_name)
@@ -95,9 +96,20 @@ describe Typesetter::MetadataSerializer do
     expect(output[:doi]).to eq('1234')
   end
 
-  it 'has aarx_doi' do
-    paper.preprint_doi_article_number = '1234567'
-    expect(output[:aarx_doi]).to eq("10.24196/aarx.1234567")
+  context 'when the destination is "preprint"' do
+    let(:options) { { destination: 'preprint' } }
+
+    it 'has aarx_doi' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(output[:aarx_doi]).to eq("10.24196/aarx.1234567")
+    end
+  end
+
+  context 'when the destination is not "preprint"' do
+    it 'has no aarx_doi' do
+      paper.preprint_doi_article_number = '1234567'
+      expect(output).not_to have_key(:aarx_doi)
+    end
   end
 
   it 'has manuscript_id' do
@@ -257,7 +269,7 @@ describe Typesetter::MetadataSerializer do
     end
 
     it "check exported custom card fields" do
-      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper).to_json)
+      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
       expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
                             "my_custom_task--question_1" => true,
                             "my_custom_task--question_2" => false,

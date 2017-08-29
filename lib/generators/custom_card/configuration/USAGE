@@ -7,7 +7,7 @@ Syntax:
   rails generate custom_card:configuration "TITLE OF NEW CARD" [legacy task class name]
 
 Example:
-    rails generate custom_card "My New Cover Letter" TahiStandardTasks::CoverLetterTask
+    rails generate custom_card:configuration "My New Cover Letter" TahiStandardTasks::CoverLetterTask
 
     This will create:
         lib/custom_card/configurations/my_new_cover_letter.rb

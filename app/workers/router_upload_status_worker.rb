@@ -4,7 +4,7 @@ class RouterUploadStatusWorker
   # retry 12 times every 10 seconds, and don't add failed jobs to the dead job queue
   sidekiq_options retry: 12, dead: false
   sidekiq_retry_in do |count|
-    10 * (count + 1)
+    10
   end
 
   sidekiq_retries_exhausted do |msg|
@@ -24,8 +24,14 @@ class RouterUploadStatusWorker
                   job_status_description: "No service ID stored" }
     end
 
-    raise RouterUploaderService::StatusError, result[:job_status_description] if result[:job_status] != "SUCCESS"
-    export_delivery.delivery_succeeded!
+    case result[:job_status]
+    when "PENDING"
+      raise RouterUploaderService::StatusError, "Time out waiting for export service"
+    when "SUCCESS"
+      export_delivery.delivery_succeeded!
+    else
+      export_delivery.delivery_failed!(result['job_status_description'])
+    end
   end
 end
 

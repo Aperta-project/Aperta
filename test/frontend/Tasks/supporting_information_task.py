@@ -124,7 +124,7 @@ class SITask(BaseTask):
     """
     logging.info('Attach file called with {0}'.format(file_name))
     self.set_timeout(5)
-    sif = (By.CLASS_NAME, 'si-file-view')
+    sif = (By.CLASS_NAME, 'si-file-editor')
     try:
       sif_before = len(self._gets(sif))
     except ElementDoesNotExistAssertionError:

@@ -78,15 +78,11 @@ export default DS.Model.extend({
     }
   },
 
-  defaultAnswerForOwner(owner){
-    // this creates default answers used during preview mode
-    // for answerable components.
-    if(this.get('answerable')) {
-      let answer = this.get('store').createRecord('answer', {
-        owner: owner,
-        cardContent: this
-      });
-      // boolean values have to be translated to boolean types
+  createPreviewAnswerForOwner(owner){
+    // this creates default answers on the client side and is used
+    // when the component is being previewed.
+    let answer = this.createAnswerForOwner(owner);
+    if(answer) {
       switch(this.get('valueType')) {
       case 'boolean':
         answer.set('value', this.get('defaultAnswerValue') === 'true' ? true: false);
@@ -94,10 +90,8 @@ export default DS.Model.extend({
       default:
         answer.set('value', this.get('defaultAnswerValue'));
       }
-      return answer;
-    } else {
-      return null;
     }
+    return answer;
   },
 
   answerForOwner(owner) {

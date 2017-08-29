@@ -54,7 +54,7 @@ export default Ember.Component.extend({
 
   answer: Ember.computed('content', 'owner', function() {
     if (this.get('preview')) {
-      return this.get('content').defaultAnswerForOwner(this.get('owner'));
+      return this.get('content').createPreviewAnswerForOwner(this.get('owner'));
     } else {
       return this.get('content').answerForOwner(this.get('owner'));
     }

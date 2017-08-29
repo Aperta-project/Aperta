@@ -78,26 +78,6 @@ export default DS.Model.extend({
     }
   },
 
-  // this creates default answers on the client side and is used
-  // when the component is being previewed.
-  createPreviewAnswerForOwner(owner){
-    // create an answer load the type and default value
-    let answer = this.createAnswerForOwner(owner);
-    let defaultAnswer = this.get('defaultAnswerValue');
-    let valueType = this.get('valueType');
-    // boolean types need to be mapped to a boolean value
-    if(answer) {
-      switch(valueType) {
-      case 'boolean':
-        answer.set('value', defaultAnswer === 'true' ? true: false);
-        break;
-      default:
-        answer.set('value', defaultAnswer);
-      }
-    }
-    return answer;
-  },
-
   answerForOwner(owner) {
     return this.get('answers').findBy('owner', owner) ||
            this.createAnswerForOwner(owner);

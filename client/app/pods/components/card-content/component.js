@@ -54,9 +54,10 @@ export default Ember.Component.extend({
 
   answer: Ember.computed('content', 'owner', function() {
     let answer = this.get('content').answerForOwner(this.get('owner'));
-    // if in preview mode set default values on the answer
+    // if in preview mode set default values on components
+    // that are answerable
     if(this.get('preview') && answer) {
-      this.prepareAnswerForPreview(answer);
+      answer.set('value', this.get('content.defaultAnswerValue'));
     }
     return answer;
   }),
@@ -85,22 +86,5 @@ export default Ember.Component.extend({
         this.get('_debouncedSave').perform();
       }
     }
-  },
-
-  // This sets default values on the client side and is used
-  // when the component is being previewed. debounce doesnt
-  // persist answers while in preview mode.
-  prepareAnswerForPreview(answer){
-    let defaultAnswer = this.get('content.defaultAnswerValue');
-    let valueType = this.get('content.valueType');
-    // some value types need to be mapped
-    switch(valueType) {
-    case 'boolean':
-      answer.set('value', defaultAnswer === 'true' ? true: false);
-      break;
-    default:
-      answer.set('value', defaultAnswer);
-    }
-    return answer;
   }
 });

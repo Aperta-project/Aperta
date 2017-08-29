@@ -53,7 +53,13 @@ export default Ember.Component.extend({
   },
 
   answer: Ember.computed('content', 'owner', function() {
-    return this.get('content').answerForOwner(this.get('owner'));
+    let answer = this.get('content').answerForOwner(this.get('owner'));
+    // if in preview mode and answer isnt null
+    // prepare it for preview mode
+    if(this.get('preview') && answer) {
+      this.prepareAnswerForPreview(answer);
+    }
+    return answer;
   }),
 
   _debouncedSave: concurrencyTask(function*() {
@@ -80,5 +86,22 @@ export default Ember.Component.extend({
         this.get('_debouncedSave').perform();
       }
     }
+  },
+
+  // This sets default values on the client side and is used
+  // when the component is being previewed. debounce doesnt
+  // persist answers while in preview mode.
+  prepareAnswerForPreview(answer){
+    let defaultAnswer = this.get('content.defaultAnswerValue');
+    let valueType = this.get('content.valueType');
+    // some value types need to be mapped
+    switch(valueType) {
+    case 'boolean':
+      answer.set('value', defaultAnswer === 'true' ? true: false);
+      break;
+    default:
+      answer.set('value', defaultAnswer);
+    }
+    return answer;
   }
 });

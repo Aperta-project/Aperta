@@ -11,6 +11,7 @@ class ScheduledEvent < ActiveRecord::Base
   scope :active, -> { where(state: 'active') }
   scope :inactive, -> { where(state: 'inactive') }
   scope :complete, -> { where(state: 'complete') }
+  scope :due_to_trigger, -> { active.where('dispatch_at < ?', DateTime.now.in_time_zone) }
 
   before_save :deactivate, if: :should_deactivate?
   before_save :reactivate, if: :should_reactivate?

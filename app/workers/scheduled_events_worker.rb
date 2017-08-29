@@ -3,9 +3,9 @@ class ScheduledEventsWorker
   include Sidekiq::Worker
 
   def perform
-    due_events = ScheduledEvent.active.where('dispatch_at < ?', DateTime.now.in_time_zone)
-    return unless due_events.exists?
-    due_events.each do |event|
+    events_to_trigger = ScheduledEvent.due_to_trigger
+    return unless events_to_trigger.exists?
+    events_to_trigger.each do |event|
       event.trigger!
       Activity.reminder_sent!(event)
     end

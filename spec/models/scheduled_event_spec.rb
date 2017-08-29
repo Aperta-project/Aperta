@@ -96,4 +96,49 @@ describe ScheduledEvent do
       end
     end
   end
+
+  describe '#trigger[!]' do
+    it 'can not be called from an inactive state' do
+      subject.state = 'inactive'
+      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+    end
+
+    it 'can not be called from a completed state' do
+      subject.state = 'completed'
+      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+    end
+
+    it 'can not be called from an errored state' do
+      subject.state = 'errored'
+      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+    end
+
+    it 'can not be called from a processing state' do
+      subject.state = 'processing'
+      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+    end
+  end
+
+  describe '#send_email' do
+    before do
+      subject.name = 'Pre-due Reminder'
+      subject.state = 'processing'
+      allow_any_instance_of(TahiStandardTasks::ReviewerMailer).to receive(:remind_before_due)
+    end
+
+    it 'should error if the email cannot be sent' do
+      subject.send_email
+      expect(subject.state).to eq('errored')
+    end
+
+    it 'should complete if the email is sent' do
+      subject.due_datetime = DueDatetime.create! due_at: DateTime.now.utc - 1.day
+      subject.send_email
+      expect(subject.state).to eq('completed')
+    end
+  end
 end

@@ -853,6 +853,7 @@ ActiveRecord::Schema.define(version: 20170832210046) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "destination",   null: false
+    t.string   "service_id"
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

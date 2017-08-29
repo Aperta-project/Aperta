@@ -78,7 +78,27 @@ describe Card do
     XML
   end
 
-  let(:valid_repeat_xml) do
+  let(:valid_single_repeat_xml) do
+    <<-XML.strip_heredoc
+      <?xml version="1.0" encoding="UTF-8"?>
+      <card required-for-submission="false" workflow-display-only="false">
+        <content content-type="display-children">
+          <content content-type="repeat">
+            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+              <text>This is the first INPUT element.</text>
+            </content>
+          </content>
+          <content content-type="repeat">
+            <content ident="SomeStuff" content-type="paragraph-input" value-type="html">
+              <text>This is the second INPUT element.</text>
+            </content>
+          </content>
+        </content>
+      </card>
+    XML
+  end
+
+  let(:valid_multiple_repeat_xml) do
     <<-XML.strip_heredoc
       <?xml version="1.0" encoding="UTF-8"?>
       <card required-for-submission="false" workflow-display-only="false">
@@ -151,9 +171,15 @@ describe Card do
   end
 
   context 'repeat validation' do
+    it 'will validate card with a single repeat' do
+      loader = XmlCardLoader.new(card)
+      loader.load(valid_single_repeat_xml)
+      expect(card.errors).to be_empty
+    end
+
     it 'will validate card with non-nested repeats' do
       loader = XmlCardLoader.new(card)
-      loader.load(valid_repeat_xml)
+      loader.load(valid_multiple_repeat_xml)
       expect(card.errors).to be_empty
     end
 

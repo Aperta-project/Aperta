@@ -93,9 +93,9 @@ module CustomCardVisitors
     end
 
     def visit(card_content)
-      repeat = card_content.of_type(REPEAT_CONTENT)
-      return if repeat.blank?
-      return if repeat.object_id == card_content.object_id
+      return unless card_content.content_type == REPEAT_CONTENT
+      parent = card_content.parent
+      return unless parent && parent.of_type(REPEAT_CONTENT)
       @errors << "'Repeat' components may not be nested."
     end
 

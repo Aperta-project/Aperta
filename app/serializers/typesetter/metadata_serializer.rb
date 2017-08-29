@@ -77,7 +77,7 @@ module Typesetter
     end
 
     def data_availability
-      task('TahiStandardTasks::DataAvailabilityTask')
+      custom_task('Data Availability')
     end
 
     def early_article_posting

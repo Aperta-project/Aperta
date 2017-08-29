@@ -12,13 +12,13 @@ class RouterUploaderService
                  url:,
                  export_delivery_id:)
     @destination = destination,
-                   @email_on_failure = email_on_failure,
-                   @file_io          = file_io,
-                   @filenames        = filenames,
-                   @final_filename   = final_filename,
-                   @paper            = paper,
-                   @url              = url,
-                   @export_delivery = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
+    @email_on_failure = email_on_failure,
+    @file_io          = file_io,
+    @filenames        = filenames,
+    @final_filename   = final_filename,
+    @paper            = paper,
+    @url              = url,
+    @export_delivery = TahiStandardTasks::ExportDelivery.find(export_delivery_id)
   end
 
   def upload

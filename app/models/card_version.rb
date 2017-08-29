@@ -18,6 +18,7 @@ class CardVersion < ActiveRecord::Base
   has_one :content_root, -> { roots }, class_name: 'CardContent'
   scope :required_for_submission, -> { where(required_for_submission: true) }
   scope :published, -> { where.not(published_at: nil) }
+  scope :unpublished, -> { where(published_at: nil) }
 
   validates_uniqueness_of_without_deleted :version,
     scope: :card_id,

@@ -80,24 +80,29 @@ describe 'SeedHelpers' do
         let!(:card) { FactoryGirl.create(:card) }
 
         it 'does not remove custom card permissions' do
-          # add two Task roles, one Card role, and ensure all three are there
+          # add one Task role and one Card role, and ensure both are there
           Role.ensure_exists('role', journal: journal) do |role|
             role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
           end
           CardPermissions.add_roles(card, :view, [Role.find_by(name: 'role')])
-          expect(
-            Role.where(name: 'role').first.reload.permissions.map(&:action)
-          ).to contain_exactly('view', 'view')
+          aggregate_failures do
+            applied_permissions = Permission.joins(:roles).where(roles: { name: 'role' })
+            expect(applied_permissions.count).to eq(2)
+            expect(applied_permissions.custom_card.count).to eq(1)
+            expect(applied_permissions.non_custom_card.count).to eq(1)
+          end
 
-          # make call to ensure that a Task view permission exists on the role
+          # assign new permissions for the Task
           Role.ensure_exists('role', journal: journal) do |role|
             role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
           end
-
-          # ensure that the Card view permission is not destroyed
-          expect(
-            Role.where(name: 'role').first.reload.permissions.map(&:action)
-          ).to contain_exactly('view')
+          # and ensure that permissions for the Card are NOT destroyed
+          aggregate_failures do
+            applied_permissions = Permission.joins(:roles).where(roles: { name: 'role' })
+            expect(applied_permissions.count).to eq(2)
+            expect(applied_permissions.custom_card.count).to eq(1)
+            expect(applied_permissions.non_custom_card.count).to eq(1)
+          end
         end
       end
     end

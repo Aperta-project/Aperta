@@ -20,7 +20,6 @@ let template = hbs`
   class="display-test"
   owner="this can be anything"
   disabled=disabled
-  tagName="div"
   content=content}}`;
 
 let fakeTextContent = Ember.Object.extend({

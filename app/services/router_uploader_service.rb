@@ -29,7 +29,7 @@ class RouterUploaderService
 
     # save job id and poll downstream article ingestion job asynchronously
     @export_delivery.service_id = response.body["job_id"]
-    @export_delivery.save
+    @export_delivery.save!
     RouterUploadStatusWorker.perform_in(10.seconds, @export_delivery.id)
   end
 

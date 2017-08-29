@@ -16,6 +16,7 @@ describe do
                        possible_values: ["possible"],
                        text: "text",
                        value_type: "boolean",
+                       error_message: "error",
                        visible_with_parent_answer: true)
   end
 
@@ -39,6 +40,7 @@ describe do
         expect(card_content_json).to include(text: card_content.text)
         expect(card_content_json).to include(value_type: card_content.value_type)
         expect(card_content_json).to include(visible_with_parent_answer: card_content.visible_with_parent_answer)
+        expect(card_content_json).to include(error_message: card_content.error_message)
       end
     end
   end

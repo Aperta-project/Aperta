@@ -123,13 +123,20 @@ describe CardPermissions do
           action,
           applies_to: 'Task',
           role: role,
-          states: [Permission::WILDCARD]
+          states: [Permission::WILDCARD],
+          filter_by_card_id: card.id
         )
       end
       let(:new_role) { FactoryGirl.create(:role, journal: journal, name: Faker::Name.title) }
 
       it 'adds the new role and removes the old' do
         CardPermissions.set_roles(card, action, [new_role])
+        expect(role.permissions.where(query).count).to be(0)
+        expect(new_role.permissions.where(query).count).to be(1)
+      end
+
+      it 'adds the new role and removes the old if the permission is passed explicitly' do
+        CardPermissions.set_roles(card, action, [new_role], permission)
         expect(role.permissions.where(query).count).to be(0)
         expect(new_role.permissions.where(query).count).to be(1)
       end

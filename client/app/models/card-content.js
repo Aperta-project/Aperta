@@ -23,12 +23,17 @@ export default DS.Model.extend({
   text: DS.attr('string'),
   instructionText: DS.attr('string'),
   label: DS.attr('string'),
+  customChildClass: DS.attr('string'),
+  customClass: DS.attr('string'),
+  childTag: DS.attr('string'),
+  wrapperTag: DS.attr('string'),
   valueType: DS.attr('string'),
   editorStyle: DS.attr('string'),
   condition: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
+  errorMessage: DS.attr('string'),
 
 
   // The unusual nature of the sendback component (being reliant on other card-content within the context

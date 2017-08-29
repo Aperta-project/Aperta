@@ -9,7 +9,7 @@ describe PaperFactory do
       mmt.phase_templates.create!(name: "Phase With No Tasks")
 
       # create mmt template from specified task classes
-      task_klasses = [TahiStandardTasks::DataAvailabilityTask]
+      task_klasses = [TahiStandardTasks::PaperReviewerTask]
 
       # create default cards necessary for a new mmt
       required_task_klasses = task_klasses + [Author]
@@ -80,13 +80,13 @@ describe PaperFactory do
     it "reifies the tasks for the given paper from the correct MMT" do
       new_paper = PaperFactory.create(paper_attrs, user)
       expect(new_paper.tasks.size).to eq(2)
-      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::DataAvailabilityTask', 'CustomCardTask'])
+      expect(new_paper.tasks.pluck(:type)).to match_array(['TahiStandardTasks::PaperReviewerTask', 'CustomCardTask'])
     end
 
     it "associates task templates with tasks" do
       new_paper = PaperFactory.create(paper_attrs, user)
       task_template_titles = new_paper.tasks.map { |t| t.task_template.title }
-      expect(task_template_titles).to match_array(['Data Availability', card.name])
+      expect(task_template_titles).to match_array(['Invite Reviewers', card.name])
     end
 
     it "adds correct positions to new tasks" do
@@ -97,7 +97,7 @@ describe PaperFactory do
     end
 
     it "calls the task_added_to_paper hook for each task" do
-      expect_any_instance_of(TahiStandardTasks::DataAvailabilityTask).to receive(:task_added_to_paper)
+      expect_any_instance_of(TahiStandardTasks::PaperReviewerTask).to receive(:task_added_to_paper)
       subject
     end
 

@@ -57,6 +57,16 @@ module CustomCard
         set_role_permissions(card: card,
                              action: "edit",
                              role_names: configuration.edit_role_names)
+
+        # set any default DISCUSSION VIEW permissions
+        set_role_permissions(card: card,
+                             action: "view_discussion_footer",
+                             role_names: configuration.view_discussion_footer_role_names)
+
+        # set any default DISCUSSION EDIT permissions
+        set_role_permissions(card: card,
+                             action: "edit_discussion_footer",
+                             role_names: configuration.edit_discussion_footer_role_names)
       end
     end
 

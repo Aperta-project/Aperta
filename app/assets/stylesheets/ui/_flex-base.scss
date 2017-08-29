@@ -3,6 +3,10 @@
   flex-wrap: wrap;
   overflow-y: scroll;
 
+  &.flex-group--center {
+      align-items: center;
+  }
+
   &.flex-group--divider {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid $aperta-grey;

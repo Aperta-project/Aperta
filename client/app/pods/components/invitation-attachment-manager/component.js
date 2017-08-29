@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { task as concurrencyTask, timeout } from 'ember-concurrency';
 
 export default Ember.Component.extend({
   multiple: false,
@@ -26,18 +25,7 @@ export default Ember.Component.extend({
     });
   },
 
-  cancelUpload: concurrencyTask(function * (attachment) {
-    yield attachment.cancelUpload();
-    yield timeout(5000);
-    attachment.unloadRecord();
-  }),
-
   actions: {
-
-    cancelUpload(attachment) {
-      this.get('cancelUpload').perform(attachment);
-    },
-
     updateAttachmentCaption(caption, attachment) {
       attachment.set('caption', caption);
       attachment.save();
@@ -50,10 +38,6 @@ export default Ember.Component.extend({
 
     createAttachment(s3Url, file) {
       this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
-    },
-
-    deleteAttachment(attachment) {
-      attachment.destroyRecord();
     }
   }
 });

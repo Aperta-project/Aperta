@@ -56,7 +56,7 @@ class CardVersion < ActiveRecord::Base
     # be completed in order to submit the paper.
     if workflow_display_only? && required_for_submission?
       msg = "cannot be both workflow only and required for submission"
-      errors.add(:workflow_display_only, msg)
+      errors.add(:card, msg)
     end
   end
 end

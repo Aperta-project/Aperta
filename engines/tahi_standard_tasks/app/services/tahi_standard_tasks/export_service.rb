@@ -1,8 +1,11 @@
 module TahiStandardTasks
   #
   # This service defines the sequence of getting the manuscript's metadata
-  # together, collecting and naming the associated files, and FTPing the
-  # resulting zip file to Apex for typesetting.
+  # together, collecting and naming the associated files, and, depending on
+  # the destination, either FTPing the resulting zip file to Apex for typesetting,
+  # or exporting the package to the article admin router service
+  #
+  # TODO: move this out of the engines dir
   #
   class ExportService
     def self.make_delivery(export_delivery_id:)
@@ -60,7 +63,10 @@ module TahiStandardTasks
     def while_notifying_delivery
       export_delivery.delivery_in_progress!
       yield
-      export_delivery.delivery_succeeded!
+      # for apex exports, this marks the successful completion of the task
+      # for router exports, there is an async status polling of the router service
+      # that needs to complete first (see RouterUploadStatusWorker)
+      export_delivery.delivery_succeeded! if destination == 'apex'
     rescue StandardError => e
       export_delivery.delivery_failed!(e.message)
       raise

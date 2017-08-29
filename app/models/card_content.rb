@@ -4,6 +4,7 @@
 # text, or widgets (developer-created chunks of functionality with
 # user-configured behavior)
 class CardContent < ActiveRecord::Base
+  include Attributable
   include XmlSerializable
 
   # Scope matches deleted_at IS NULL, that is, non-deleted records
@@ -13,6 +14,7 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
+  has_many :content_attributes, dependent: :destroy
 
   validates :card_version, presence: true
 

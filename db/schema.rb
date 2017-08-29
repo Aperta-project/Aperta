@@ -240,28 +240,13 @@ ActiveRecord::Schema.define(version: 20170828215513) do
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
     t.integer  "parent_id"
-    t.integer  "lft",                        null: false
-    t.integer  "rgt",                        null: false
-    t.string   "text"
-    t.string   "value_type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "lft",             null: false
+    t.integer  "rgt",             null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.datetime "deleted_at"
-    t.integer  "card_version_id",            null: false
+    t.integer  "card_version_id", null: false
     t.string   "content_type"
-    t.string   "placeholder"
-    t.jsonb    "possible_values"
-    t.string   "visible_with_parent_answer"
-    t.string   "label"
-    t.string   "default_answer_value"
-    t.boolean  "allow_multiple_uploads"
-    t.boolean  "allow_file_captions"
-    t.boolean  "allow_annotations"
-    t.string   "instruction_text"
-    t.string   "editor_style"
-    t.string   "condition"
-    t.boolean  "required_field"
-    t.string   "error_message"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -320,6 +305,21 @@ ActiveRecord::Schema.define(version: 20170828215513) do
   add_index "comments", ["commenter_id", "task_id"], name: "index_comments_on_commenter_id_and_task_id", using: :btree
   add_index "comments", ["commenter_id"], name: "index_comments_on_commenter_id", using: :btree
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
+
+  create_table "content_attributes", force: :cascade do |t|
+    t.integer  "card_content_id"
+    t.string   "name"
+    t.string   "value_type"
+    t.boolean  "boolean_value"
+    t.integer  "integer_value"
+    t.string   "string_value"
+    t.jsonb    "json_value"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "content_attributes", ["name"], name: "index_content_attributes_on_name", using: :btree
+  add_index "content_attributes", ["value_type"], name: "index_content_attributes_on_value_type", using: :btree
 
   create_table "credentials", force: :cascade do |t|
     t.string  "provider"

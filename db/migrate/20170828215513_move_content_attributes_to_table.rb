@@ -1,4 +1,4 @@
-class MoveCardAttributesToTable < ActiveRecord::Migration
+class MoveContentAttributesToTable < ActiveRecord::Migration
   def copy_sql(type, name)
     <<-SQL
       insert into
@@ -21,14 +21,14 @@ class MoveCardAttributesToTable < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    [
-      ['boolean', %w[allow_annotations allow_file_captions allow_multiple_uploads required_field]],
-      ['string',  %w[condition content_type default_answer_value editor_style error_message
-                     instruction_text label text value_type visible_with_parent_answer]],
-      ['json',    %w[possible_values]]
-    ].each do |type, columns|
-      columns.each { |column| execute copy_sql(type, column) }
+    Attributable::CONTENT_ATTRIBUTES.each do |type, columns|
+      columns.each do |column|
+        execute copy_sql(type, column)
+        execute "alter table card_contents drop column #{column}"
+      end
     end
+
+    execute "alter table card_contents drop column placeholder"
   end
 
   def down

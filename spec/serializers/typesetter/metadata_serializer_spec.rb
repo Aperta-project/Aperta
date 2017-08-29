@@ -25,7 +25,6 @@ describe Typesetter::MetadataSerializer do
   let(:metadata_tasks) do
     [
       FactoryGirl.create(:competing_interests_task, paper: paper),
-      FactoryGirl.create(:data_availability_task, paper: paper),
       FactoryGirl.create(:financial_disclosure_task, paper: paper),
       FactoryGirl.create(:production_metadata_task, paper: paper),
       FactoryGirl.create(:publishing_related_questions_task, paper: paper),
@@ -362,15 +361,6 @@ describe Typesetter::MetadataSerializer do
       factory: :competing_interests_task,
       serializer: Typesetter::CompetingInterestsSerializer,
       json_key: :competing_interests
-    )
-  end
-
-  context 'data_availability' do
-    it_behaves_like(
-      'serializes :has_one paper task',
-      factory: :data_availability_task,
-      serializer: Typesetter::DataAvailabilitySerializer,
-      json_key: :data_availability
     )
   end
 

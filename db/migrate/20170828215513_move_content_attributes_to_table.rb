@@ -2,7 +2,7 @@ class MoveCardAttributesToTable < ActiveRecord::Migration
   def copy_sql(type, name)
     <<-SQL
       insert into
-        card_attributes (card_content_id, name, value_type, #{type}_value, created_at, updated_at)
+        content_attributes (card_content_id, name, value_type, #{type}_value, created_at, updated_at)
         select card_contents.id, '#{name}', '#{type}', card_contents.#{name}, card_contents.created_at, card_contents.updated_at
         from card_contents
         where card_contents.#{name} is not null
@@ -10,7 +10,7 @@ class MoveCardAttributesToTable < ActiveRecord::Migration
   end
 
   def up
-    create_table :card_attributes, force: true do |t|
+    create_table :content_attributes, force: true do |t|
       t.belongs_to :card_content
       t.string     :name, index: true
       t.string     :value_type, index: true
@@ -32,6 +32,6 @@ class MoveCardAttributesToTable < ActiveRecord::Migration
   end
 
   def down
-    drop_table :card_attributes
+    drop_table :content_attributes
   end
 end

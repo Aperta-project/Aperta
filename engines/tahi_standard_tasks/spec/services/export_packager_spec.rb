@@ -36,6 +36,11 @@ describe ExportPackager do
   let(:metadata_serializer) { instance_double('Typesetter::MetadataSerializer') }
 
   before do
+    # create a version (last_version.file_type value used by dynamic paper converter)
+    paper.versioned_texts = []
+    paper.save!
+    FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
+
     allow(paper).to receive(:file).and_return(manuscript_file)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
     allow(manuscript_file).to receive(:url).and_return(
@@ -90,24 +95,22 @@ describe ExportPackager do
 
     it 'passed the destination to MetadataTypeseter' do
       expect(Typesetter::MetadataSerializer).to \
-        receive(:new).with(paper, destination: 'foo').and_return(metadata_serializer)
-      packager = ExportPackager.new(paper, destination: 'foo')
+        receive(:new).with(paper, destination: 'apex').and_return(metadata_serializer)
+      packager = ExportPackager.new(paper, destination: 'apex')
       packager.zip_file
     end
 
-    # NOTE: commented out until the pdf generator is implemented for ApexPackager
-    #          as part of APERTA10394
-    # it 'can create a manifest with a pdf file' do
-    #   packager = ApexPackager.new(paper, archive_filename: archive_filename)
-    #   packager.zip_file(include_pdf: true)
-    #   manifest = JSON.parse(packager.send(:manifest).to_json)
-    #   expected_manifest = {
-    #     "archive_filename" => archive_filename,
-    #     "metadata_filename" => "metadata.json",
-    #     "files" => ["metadata.json", "test.0001.docx", "apertageneratedPDF.pdf"]
-    #   }
-    #   expect(manifest).to eq expected_manifest
-    # end
+    it 'can create a manifest with a pdf file' do
+      packager = ExportPackager.new(paper, destination: 'preprint', archive_filename: archive_filename)
+      packager.zip_file
+      manifest = JSON.parse(packager.send(:manifest).to_json)
+      expected_manifest = {
+        "archive_filename" => archive_filename,
+        "metadata_filename" => "metadata.json",
+        "files" => ["metadata.json", "test.0001.docx", "aperta-generated-PDF.pdf"]
+      }
+      expect(manifest).to eq expected_manifest
+    end
 
     describe "add_metadata" do
       it "adds a manuscript file to the manifest" do

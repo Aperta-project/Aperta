@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(version: 20170823103915) do
     t.string   "editor_style"
     t.string   "condition"
     t.boolean  "required_field"
+    t.string   "error_message"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

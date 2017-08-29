@@ -16716,6 +16716,8 @@ var PDFViewerApplication = {
         };
         self.error(loadingErrorMessage, moreInfo);
         self.loading = false;
+
+        window.PDFJS.plosErrorCallback();
       }
     );
 
@@ -17801,7 +17803,7 @@ window.addEventListener('pagechange', function pagechange(evt) {
 function handleMouseWheel(evt) {
   // Ignore mousewheel event if pdfViewer isn't loaded
   if (!PDFViewerApplication.pdfViewer) return;
-  
+
   var MOUSE_WHEEL_DELTA_FACTOR = 40;
   var ticks = (evt.type === 'DOMMouseScroll') ? -evt.detail :
               evt.wheelDelta / MOUSE_WHEEL_DELTA_FACTOR;
@@ -18085,5 +18087,3 @@ window.addEventListener('afterprint', function afterPrint(evt) {
     window.requestAnimationFrame(resolve);
   });
 })();
-
-

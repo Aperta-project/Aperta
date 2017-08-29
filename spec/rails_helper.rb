@@ -72,7 +72,6 @@ RSpec.configure do |config|
   config.include AuthorizationControllerSpecHelper, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
-  config.extend TahiHelperClassMethods
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
   config.include HTMLHelpers

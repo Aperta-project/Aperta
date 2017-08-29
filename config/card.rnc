@@ -133,6 +133,7 @@ list-content = element content {
 # Contents
 text-content = element content {
                    attribute ident { text }?,
+                   attribute required-field { "true" | "false" }?,
                    attribute content-type { "text" },
                    element text { text }
                }

@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   tagName: '',
 
   init() {
+    this._super(...arguments);
     let customClass = this.get('customClass');
     if (customClass) {
       let classNames = this.get('classNames');
@@ -12,7 +13,6 @@ export default Ember.Component.extend({
       this.set('classNames', classNames);
     }
     this.set('tagName', this.getWithDefault('wrapperTag', ''));
-    this._super(...arguments);
   },
 
   customChildClass: Ember.computed.readOnly('content.customChildClass'),

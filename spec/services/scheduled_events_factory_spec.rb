@@ -14,7 +14,7 @@ shared_examples 'templated scheduled events' do |template|
   it 'should update times on active events correctly' do
     subject
     template.each do |entry|
-      entry_event = owned_active_events.where(name: entry[:name]).first!
+      entry_event = own_events.where(name: entry[:name]).first!
       dispatch_with_offset = (reviewer_report.due_at + entry[:dispatch_offset].days).beginning_of_hour
       expect(entry_event.dispatch_at).to eq(dispatch_with_offset)
     end
@@ -28,7 +28,7 @@ describe ScheduledEventFactory do
       FactoryGirl.create :reviewer_report, due_datetime: due_date
     end
     let(:template) { ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE }
-    let(:owned_active_events) { reviewer_report.due_datetime.scheduled_events }
+    let(:own_events) { reviewer_report.due_datetime.scheduled_events }
 
     subject { described_class.new(reviewer_report, template).schedule_events }
 
@@ -50,7 +50,7 @@ describe ScheduledEventFactory do
 
       context 'with one complete event and review due date moved forward' do
         before do
-          owned_active_events.first.tap do |e|
+          own_events.first.tap do |e|
             e.state = 'completed'
             e.save
           end
@@ -66,8 +66,8 @@ describe ScheduledEventFactory do
 
         it 'should keep already fired events in list' do
           subject
-          expect(owned_active_events.active.count).to be 3
-          expect(owned_active_events.completed.count).to be 1
+          expect(own_events.active.count).to be 3
+          expect(own_events.completed.count).to be 1
         end
 
         it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE
@@ -75,7 +75,7 @@ describe ScheduledEventFactory do
 
       context 'with one completed event and review due date moved backward' do
         before do
-          owned_active_events.first.tap do |e|
+          own_events.first.tap do |e|
             e.state = 'completed'
             e.save
           end
@@ -87,8 +87,8 @@ describe ScheduledEventFactory do
 
         it 'should deactivate events sent to the past' do
           subject
-          expect(owned_active_events.completed.count).to be 1
-          expect(owned_active_events.active.count).to be 2
+          expect(own_events.completed.count).to be 1
+          expect(own_events.active.count).to be 2
         end
 
         it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE
@@ -103,8 +103,8 @@ describe ScheduledEventFactory do
         end
         it 'should deactivate an event' do
           subject
-          expect(owned_active_events.inactive.count).to be 1
-          expect(owned_active_events.active.count).to be 2
+          expect(own_events.inactive.count).to be 1
+          expect(own_events.active.count).to be 2
         end
 
         it_behaves_like 'templated scheduled events', ScheduledEventTestTask::SCHEDULED_EVENTS_TEMPLATE

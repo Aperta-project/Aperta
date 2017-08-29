@@ -98,28 +98,12 @@ describe ScheduledEvent do
   end
 
   describe '#trigger[!]' do
-    it 'can not be called from an inactive state' do
-      subject.state = 'inactive'
-      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
-      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
-    end
-
-    it 'can not be called from a completed state' do
-      subject.state = 'completed'
-      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
-      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
-    end
-
-    it 'can not be called from an errored state' do
-      subject.state = 'errored'
-      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
-      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
-    end
-
-    it 'can not be called from a processing state' do
-      subject.state = 'processing'
-      expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
-      expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+    it 'can only be called from an active state' do
+      %w[inactive completed errored processing].each do |non_triggerable_state|
+        subject.state = non_triggerable_state
+        expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+        expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+      end
     end
   end
 

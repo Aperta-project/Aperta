@@ -57,7 +57,6 @@ class SupportingInformationFilesController < ApplicationController
       :label,
       :category,
       :publishable,
-      :striking_image,
       :attachment,
       attachment: [])
   end

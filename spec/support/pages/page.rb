@@ -76,11 +76,7 @@ class Page < PageFragment
   end
 
   def view_task_overlay(paper, task, opts = {})
-    if opts[:without_waiting] == true
-      visit_without_waiting "/papers/#{paper.to_param}/tasks/#{task.id}"
-    else
-      visit "/papers/#{paper.to_param}/tasks/#{task.id}"
-    end
+    visit "/papers/#{paper.to_param}/tasks/#{task.id}"
     class_name =
       (task.title.split(' ')
       .map(&:capitalize)

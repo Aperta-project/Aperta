@@ -9,6 +9,10 @@ class CardContentSerializer < ActiveModel::Serializer
              :instruction_text,
              :possible_values,
              :text,
+             :custom_child_class,
+             :child_tag,
+             :custom_class,
+             :wrapper_tag,
              :value_type,
              :editor_style,
              :condition,
@@ -18,7 +22,8 @@ class CardContentSerializer < ActiveModel::Serializer
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value
              # then render this content's children
-             :visible_with_parent_answer
+             :visible_with_parent_answer,
+             :error_message
 
   has_many :children,
            embed: :ids,

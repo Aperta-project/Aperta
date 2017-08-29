@@ -2,11 +2,7 @@
 # understanding the manuscript, but are not central to the scientific argument.
 # They are often linked to, but not typically embedded in the document.
 class SupportingInformationFile < Attachment
-  include CanBeStrikingImage
-
   self.public_resource = true
-
-  before_save :ensure_striking_image_category_is_figure
 
   default_scope { order(:id) }
 
@@ -32,11 +28,6 @@ class SupportingInformationFile < Attachment
   # Default to true if unset
   def set_publishable
     self.publishable = true if publishable.nil?
-  end
-
-  def ensure_striking_image_category_is_figure
-    self.striking_image = false unless category == 'Figure'
-    true
   end
 
   def task_completed?

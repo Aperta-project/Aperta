@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   //paper: passed to component
 
   sidebarTasks: filterBy('paper.tasks', 'isSidebarTask', true),
-  taskSorting: ['phase.position', 'position'],
+  taskSorting: ['isSubmissionTask', 'assignedToMe:desc', 'phase.position', 'position'],
   sortedTasks: sort('sidebarTasks', 'taskSorting'),
 
   actions: {

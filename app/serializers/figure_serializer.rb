@@ -9,7 +9,6 @@ class FigureSerializer < ActiveModel::Serializer
              :detail_src,
              :preview_src,
              :created_at,
-             :striking_image,
              :rank
 
   has_one :paper, embed: :id

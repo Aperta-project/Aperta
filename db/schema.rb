@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821211339) do
+ActiveRecord::Schema.define(version: 20170823210046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,6 +246,11 @@ ActiveRecord::Schema.define(version: 20170821211339) do
     t.string   "editor_style"
     t.string   "condition"
     t.boolean  "required_field"
+    t.string   "error_message"
+    t.string   "child_tag"
+    t.string   "custom_class"
+    t.string   "custom_child_class"
+    t.string   "wrapper_tag"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -566,7 +571,6 @@ ActiveRecord::Schema.define(version: 20170821211339) do
     t.string   "paper_type"
     t.integer  "journal_id",                                            null: false
     t.datetime "published_at"
-    t.integer  "striking_image_id"
     t.boolean  "editable",                              default: true
     t.text     "doi"
     t.string   "publishing_state"
@@ -576,7 +580,6 @@ ActiveRecord::Schema.define(version: 20170821211339) do
     t.boolean  "gradual_engagement",                    default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
-    t.string   "striking_image_type"
     t.datetime "state_updated_at"
     t.boolean  "processing",                            default: false
     t.boolean  "uses_research_article_reviewer_report", default: false

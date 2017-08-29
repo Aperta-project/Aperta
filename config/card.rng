@@ -468,6 +468,14 @@
       <optional>
         <attribute name="ident"/>
       </optional>
+      <optional>
+        <attribute name="required-field">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
+        </attribute>
+      </optional>
       <attribute name="content-type">
         <value>text</value>
       </attribute>

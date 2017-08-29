@@ -150,7 +150,7 @@ class CardContent < ActiveRecord::Base
         'allow-annotations' => allow_annotations,
         'required-field' => required_field
       }
-    when 'date-picker'
+    when 'date-picker', 'text'
       {
         'required-field' => required_field
       }

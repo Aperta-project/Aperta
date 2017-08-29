@@ -6,19 +6,16 @@ const { computed } = Ember;
 
 export default ControlBar.extend({
   featureFlag: Ember.inject.service(),
-  init() {
-    this._super(...arguments);
-    this.get('featureFlag').value('CORRESPONDENCE').then(enabled => {
-      this.set('correspondenceEnabled', enabled);
-    });
-  },
+
+  correspondenceEnabled: Ember.computed(function() {
+    return this.get('featureFlag').value('CORRESPONDENCE');
+  }),
 
   propTypes: {
     contributorsVisible: PropTypes.bool,
     versionsVisible: PropTypes.bool,
     versioningMode: PropTypes.bool,
     submenuVisible: PropTypes.bool,
-    // action:
     toggleDownloads: PropTypes.func
   },
 

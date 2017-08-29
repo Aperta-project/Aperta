@@ -11,17 +11,17 @@ export default Ember.Service.extend({
 
 
   flash: Ember.inject.service('flash'),
-  featureFlag: Ember.inject.service('feature-flag'),
+  featureFlag: Ember.inject.service(),
+
 
   start() {
     if (Ember.testing || window.RailsEnv.testing) { return; }
-    this.get('featureFlag').value('HEALTH_CHECK').then((healthCheck) => {
-      if (!healthCheck) {
-        return;
-      } else {
-        this.get('poll').perform();
-      }
-    });
+    const healthCheckEnabled = this.get('featureFlag').value('HEALTH_CHECK');
+    if (!healthCheckEnabled) {
+      return;
+    } else {
+      this.get('poll').perform();
+    }
   },
 
   poll: task(function* () {

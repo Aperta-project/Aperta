@@ -77,15 +77,15 @@
     </div>
 
     {{#if preprintsEnabled}}
-    <div class="preprint-eligible manuscript-manager-template-option">
-      <label>
-        <input type="checkbox"
-               checked={{model.isPreprintEligible}}
+      <div class="preprint-eligible manuscript-manager-template-option">
+        <label>
+          <input type="checkbox"
+                 checked={{model.isPreprintEligible}}
                  onclick={{action "togglePreprint" value="target.checked"}}>
 
-        Preprint
-      </label>
-    </div>
+          Preprint
+        </label>
+      </div>
     {{/if}}
     <div class="spacer"></div>
   </nav>

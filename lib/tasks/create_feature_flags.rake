@@ -18,6 +18,7 @@ task 'create_feature_flags': :environment do
     "CAS_PHASED_SIGNUP",
     "CORRESPONDING_AUTHOR",
     "KEEP_APEX_HTML",
-    "PREPRINT"
+    "PREPRINT",
+    "JIRA_INTEGRATION"
   ]
 end

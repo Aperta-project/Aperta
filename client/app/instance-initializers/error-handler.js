@@ -16,11 +16,7 @@ export default {
     if (!Ember.testing) {
       Ember.onerror = function(error) {
         if (ENV.environment !== 'development') {
-          bugsnag.notifyException(
-            error,
-            'Uncaught Ember Error',
-            {'Error Info': {'error.errors': error.errors}}
-          );
+          bugsnag.notifyException(error);
         } else {
           flash.displayRouteLevelMessage('error', error);
           logError(error);

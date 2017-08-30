@@ -1,13 +1,7 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
-  def self.merge_field_definitions
-    [{ name: :state },
-     { name: :revision },
-     { name: :status },
-     { name: :datetime },
-     { name: :invitation_accepted? },
-     { name: :reviewer, context: UserContext },
-     { name: :reviewer_number },
+  def self.complex_merge_fields
+    [{ name: :reviewer, context: UserContext },
      { name: :answers, context: AnswerContext, many: true }]
   end
 

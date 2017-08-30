@@ -1,10 +1,16 @@
 .edit-email-backsplash {
-  padding-top: 20px;
   background-color: $aperta-grey-light;
+}
+
+.edit-email-button.button-primary {
+  margin: 8px 0;
+  padding: 5px 30px;
 }
 
 .edit-email-well {
   background-color: white;
+  padding: 24px;
+  border-radius: 6px;
 }
 
 .admin-email-template-row {

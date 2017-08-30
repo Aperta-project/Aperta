@@ -5,12 +5,6 @@ import { PropTypes } from 'ember-prop-types';
 const { computed } = Ember;
 
 export default ControlBar.extend({
-  featureFlag: Ember.inject.service(),
-
-  correspondenceEnabled: Ember.computed(function() {
-    return this.get('featureFlag').value('CORRESPONDENCE');
-  }),
-
   propTypes: {
     contributorsVisible: PropTypes.bool,
     versionsVisible: PropTypes.bool,

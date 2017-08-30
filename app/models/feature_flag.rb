@@ -33,6 +33,6 @@ class FeatureFlag < ActiveRecord::Base
   # to accidentally *set* flags, AND it abstracts away the fact that
   # these are in the database instead of the environment.
   def self.[](flag)
-    find(flag.to_s).active
+    find_by(name: flag.to_s).active
   end
 end

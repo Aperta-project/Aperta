@@ -9,10 +9,8 @@ export default Ember.Service.extend({
     "Please reload the page or check back later. We will fix the problem as soon as possible. " +
     "We apologize for the interruption.",
 
-
   flash: Ember.inject.service('flash'),
   featureFlag: Ember.inject.service(),
-
 
   start() {
     if (Ember.testing || window.RailsEnv.testing) { return; }

@@ -18,7 +18,7 @@
       Workflow
     {{/link-to}}
 
-    {{#if correspondenceEnabled}}
+    {{#if (feature-flag "CORRESPONDENCE")}}
       {{#link-to "paper.correspondence" paper class="control-bar-button" id="nav-correspondence"}}
         {{fa-icon icon="envelope-open-o"}}
         Correspondence

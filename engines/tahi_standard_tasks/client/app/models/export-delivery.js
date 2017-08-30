@@ -20,6 +20,11 @@ export default DS.Model.extend({
     return state !== 'delivered' && state !== 'failed';
   }),
 
+  exportDoi: Ember.computed('state', function() {
+    let destination = this.get('destination');
+    return destination === 'apex' ? this.get('paper.doi') : this.get('paper.aarxDoi');
+  }),
+
   humanReadableState: Ember.computed('state', function() {
     return {
       pending: 'is pending',

@@ -102,6 +102,14 @@ module CustomCard
                 <possible-value label="tif" value=".tif"/>
                 <possible-value label="png" value=".png"/>
               </content>
+              <content content-type="if" condition="isEditable">
+                <content content-type="paragraph-input" value-type="html">
+                  <text>This is the THEN branch of an IF condition.</text>
+                </content>
+                <content content-type="short-input" value-type="text">
+                  <text>This is the ELSE branch of an IF condition.</text>
+                </content>
+              </content>
             </content>
           </card>
         XML

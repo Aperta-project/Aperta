@@ -20,6 +20,7 @@ class ReviewerReportsController < ApplicationController
       reviewer_report.schedule_events if FeatureFlag[:REVIEW_DUE_AT]
     end
     reviewer_report.submit! if reviewer_report_params[:submitted].present?
+    TahiStandardTasks::ReviewerMailer.thank_reviewer(reviewer_report: @reviewer_report).deliver_now! if @reviewer_report.state == 'submitted'
 
     # return the updated report if the due date changed
     if reviewer_report_params.slice(:due_at).empty?

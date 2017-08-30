@@ -94,10 +94,7 @@ class CardContent < ActiveRecord::Base
 
   def value_type_for_default_answer_value
     if value_type.blank? && default_answer_value.present?
-      errors.add(
-        :default_answer_value,
-        "value type must be present in order to set a default answer value"
-      )
+      errors.add(:base, "value type must be present in order to set a default answer value")
     end
   end
 

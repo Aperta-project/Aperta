@@ -8,15 +8,23 @@ module Attributable
 		json:    %w[possible_values]
 	}.freeze
 
+	ATTRIBUTE_CONTENTS = {}
+
 	included do
-		CONTENT_ATTRIBUTES.each do |_type, names|
+		CONTENT_ATTRIBUTES.each do |type, names|
 			names.each do |name|
+				ATTRIBUTE_CONTENTS[name] = type
+
 				define_method(name) do
-					content_attributes.named(name).try(&:value)
+					result = content_attributes.named(name).try(&:value)
+					puts "Calling synthetic method #{name}, returning #{result.class} #{result}"
+					result
 				end
 
 				define_method("#{name}=") do |contents|
-					content_attributes.named(name).try { |attr| attr.value = contents }
+					attr = content_attributes.named(name)
+					attr ||= content_attributes.new(name: name, value_type: ATTRIBUTE_CONTENTS[name])
+					attr.value = contents
 				end
 			end
 		end

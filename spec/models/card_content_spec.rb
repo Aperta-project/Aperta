@@ -13,7 +13,7 @@ describe CardContent do
         card_content.value_type = nil
         card_content.default_answer_value = "foo"
         expect(card_content).to_not be_valid
-        expect(card_content.error_on(:default_answer_value)).to include(/value type must be present/i)
+        expect(card_content.error_on(:base)).to include(/value type must be present/i)
       end
 
       context "with possible values" do
@@ -29,7 +29,7 @@ describe CardContent do
         it "must be one of the possible_values if they are present" do
           card_content.default_answer_value = "foo"
           expect(card_content).to_not be_valid
-          expect(card_content.error_on(:default_answer_value)).to include(/must be one of the following values/i)
+          expect(card_content.error_on(:base)).to include(/must be one of the following values/i)
         end
         it "is valid if it matches one of the possible_values' value" do
           card_content.default_answer_value = "baz"

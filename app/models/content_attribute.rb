@@ -21,6 +21,7 @@ class ContentAttribute < ActiveRecord::Base
 			when 'json'    then self.json_value    = content
 		end
 		save
+		content
 	end
 
 	def self.named(name)

@@ -1,6 +1,5 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
 export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
@@ -28,7 +27,7 @@ export default DS.Model.extend({
     }
   }),
 
-  hasAnAttachment: Ember.computed('attachments', function() {
+  hasAnyAttachment: Ember.computed('attachments', function() {
     return (this.get('attachments').length !== 0);
   })
 });

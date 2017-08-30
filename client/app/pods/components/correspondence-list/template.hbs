@@ -19,7 +19,7 @@
                 {{#link-to 'paper.correspondence.viewcorrespondence' paper message }}
                   {{if message.external message.description message.subject}} &nbsp;
                 {{/link-to}}
-                {{#if message.hasAnAttachment}}
+                {{#if message.hasAnyAttachment}}
                   <span class="fa fa-paperclip"></span>
                 {{/if}}
               </div>

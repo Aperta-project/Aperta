@@ -59,9 +59,11 @@
             <text/>
           </element>
         </optional>
-        <element name="text">
-          <text/>
-        </element>
+        <optional>
+          <element name="text">
+            <text/>
+          </element>
+        </optional>
       </interleave>
       <zeroOrMore>
         <ref name="possible-value"/>
@@ -451,6 +453,8 @@
           <value>bulleted-list</value>
           <value>numbered-list</value>
           <value>plain-list</value>
+          <value>question-list</value>
+          <value>question-help-list</value>
         </choice>
       </attribute>
       <zeroOrMore>
@@ -470,12 +474,29 @@
       <element name="text">
         <text/>
       </element>
+      <zeroOrMore>
+        <ref name="content"/>
+      </zeroOrMore>
     </element>
   </define>
   <define name="display-children-content">
     <element name="content">
       <optional>
         <attribute name="ident"/>
+      </optional>
+      <optional>
+        <attribute name="child-tag">
+          <value>li</value>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="custom-class"/>
+      </optional>
+      <optional>
+        <attribute name="custom-child-class"/>
+      </optional>
+      <optional>
+        <attribute name="wrapper-tag"/>
       </optional>
       <attribute name="content-type">
         <value>display-children</value>

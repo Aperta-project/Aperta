@@ -34,6 +34,10 @@ class CardVersion < ActiveRecord::Base
     update!(published_at: Time.current)
   end
 
+  def traverse(visitor)
+    card_contents.each { |card_content| card_content.traverse(visitor) }
+  end
+
   def create_default_answers(task)
     card_contents.where.not(default_answer_value: nil).find_each do |content|
       task.answers.create!(

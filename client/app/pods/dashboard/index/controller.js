@@ -139,7 +139,7 @@ export default Ember.Controller.extend({
     },
 
     offerPreprintComplete() {
-      this.hideOverlay('Preprint');
+      this.send('hideOverlay', 'Preprint');
       let manuscript = this.get('newPaper');
       manuscript.reload();
       this.transitionToRoute('paper.index', manuscript, {

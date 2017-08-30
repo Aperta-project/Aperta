@@ -55,6 +55,48 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
     end
   end
 
+  scenario 'MMTs not pre-print eligible do not show preprint offer overlay' do
+    journal.manuscript_manager_templates.each { |mmt| mmt.update(is_preprint_eligible: false) }
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
+
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+
+      dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
+      expect(page).to have_css('.paper-new-valid-icon', count: 3)
+
+      dashboard.upload_file(
+        element_id: 'upload-files',
+        file_name: 'about_equations.docx',
+        sentinel: proc { paper_has_uploaded_manuscript }
+      )
+
+      expect(page).to_not have_css('.preprint-overlay')
+    end
+  end
+
+  scenario 'MMTs that are preprint-eligible show preprint offer overlay' do
+    journal.manuscript_manager_templates.each { |mmt| mmt.update(is_preprint_eligible: true) }
+    with_aws_cassette('manuscript-new') do
+      login_as(user, scope: :user)
+      visit '/'
+
+      find('.button-primary', text: 'CREATE NEW SUBMISSION').click
+
+      dashboard.fill_in_new_manuscript_fields('Paper Title', journal.name, journal.paper_types[0])
+      expect(page).to have_css('.paper-new-valid-icon', count: 3)
+
+      dashboard.upload_file(
+        element_id: 'upload-files',
+        file_name: 'about_equations.docx',
+        sentinel: proc { paper_has_uploaded_manuscript }
+      )
+
+      expect(page).to have_css('.preprint-overlay')
+    end
+  end
+
   scenario 'pdf allowed instructions' do
     login_as(user, scope: :user)
     visit '/'

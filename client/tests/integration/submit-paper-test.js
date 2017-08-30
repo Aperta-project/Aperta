@@ -51,14 +51,6 @@ module('Integration: Submitting Paper', {
       status: 200,
       responseText: {papers: []}
     });
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: false
-      }
-    });
   }
 });
 

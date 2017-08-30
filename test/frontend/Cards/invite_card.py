@@ -185,7 +185,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
 
     # Used to have a long sleep here that would still occasionally fail resulting in a index error below
-    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 2)
+    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 2, max_wait=60)
 
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])

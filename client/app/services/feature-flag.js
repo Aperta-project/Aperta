@@ -13,3 +13,4 @@ export default Ember.Service.extend({
     return records.filterBy('name', name)[0].get('active');
   }
 });
+

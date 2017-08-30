@@ -1,83 +1,24 @@
 import { moduleFor, test } from 'ember-qunit';
+import FactoryGuy from 'ember-data-factory-guy';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import startApp from '../helpers/start-app';
+let App;
 
 moduleFor('service:feature-flag', 'Unit | Service | Feature flag', {
-  needs: ['service:restless'],
+  needs: ['model:feature-flag', 'service:store'],
   beforeEach() {
-    const mockRestless = {
-      get() {
-        return {
-          then(callback) {
-            callback({
-              activeFlag: true,
-              inactiveFlag: false
-            });
-          }
-        };
-      }
-    };
-
-    this.service = new this.subject({
-      restless: mockRestless
-    });
+    App = startApp();
+    TestHelper.setup(App);
   }
 });
 
-test('enabled returns a promise which resolves when a flag is enabled', function(assert) {
-  const done = assert.async();
-  this.service.enabled('activeFlag').then(() => {
-    assert.ok(true, 'the then runs');
-    done();
-  }).catch(() => {
-    assert.ok(false, 'the catch does not run');
-    done();
-  });
-});
+test('value returns the value of the flag', function(assert) {
+  FactoryGuy.make('feature-flag');
+  FactoryGuy.make('feature-flag', 'inactive');
 
-test('enabled returns a promise that rejects when a flag is disabled', function(assert) {
-  const done = assert.async();
-  this.service.enabled('inactiveFlag').then(() => {
-    assert.ok(false, 'the then does not run');
-    done();
-  }).catch(() => {
-    assert.ok(true, 'the catch runs');
-    done();
-  });
-});
+  const value1 = this.subject().value('ACTIVE_FLAG');
+  const value2 = this.subject().value('INACTIVE_FLAG');
 
-test('disabled returns a promise which resolves when a flag is disabled', function(assert) {
-  const done = assert.async();
-  this.service.disabled('inactiveFlag').then(() => {
-    assert.ok(true, 'the then runs');
-    done();
-  }).catch(() => {
-    assert.ok(false, 'the catch does not run');
-    done();
-  });
-});
-
-
-test('disabled returns a promise which rejects when a flag is enabled', function(assert) {
-  const done = assert.async();
-  this.service.disabled('activeFlag').then(() => {
-    assert.ok(false, 'the then does not run');
-    done();
-  }).catch(() => {
-    assert.ok(true, 'the catch runs');
-    done();
-  });
-});
-
-
-test('value returns a promise which yeilds a boolean', function(assert) {
-  const done = assert.async();
-  this.service.value('activeFlag').then((value) => {
-    assert.ok(value, 'the flag is active');
-    done();
-  });
-
-  const done2 = assert.async();
-  this.service.value('inactiveFlag').then((value) => {
-    assert.notOk(value, 'the flag is inactive');
-    done2();
-  });
+  assert.ok(value1, 'the flag is active');
+  assert.notOk(value2, 'the flag is inactive');
 });

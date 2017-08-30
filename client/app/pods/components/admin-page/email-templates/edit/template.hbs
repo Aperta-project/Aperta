@@ -32,7 +32,7 @@
               
               <div class="form-group {{unless (or unsaved template.body) 'error'}}">
                 <label for="body" class="text-bold">Body:</label>
-                {{textarea id="body" class="form-control" value=template.body autoresize=true}}
+                {{textarea id="body" class="form-control" value=template.body}}
                 {{#unless (or unsaved template.body)}}
                   <span>{{fa-icon 'warning'}} Please enter body text</span>
                 {{/unless}}

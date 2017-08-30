@@ -412,6 +412,8 @@ ActiveRecord::Schema.define(version: 20170829182148) do
     t.boolean "active", null: false
   end
 
+  add_index "feature_flags", ["name"], name: "index_feature_flags_on_name", unique: true, using: :btree
+
   create_table "group_authors", force: :cascade do |t|
     t.string   "contact_first_name"
     t.string   "contact_middle_name"

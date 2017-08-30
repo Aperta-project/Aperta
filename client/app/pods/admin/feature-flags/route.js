@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   restless: Ember.inject.service(),
-  featureFlag: Ember.inject.service(),
 
   model() {
     if (!this.get('currentUser.siteAdmin')) {

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170829210204) do
+ActiveRecord::Schema.define(version: 20170830170028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,11 +246,11 @@ ActiveRecord::Schema.define(version: 20170829210204) do
     t.string   "editor_style"
     t.boolean  "required_field",             default: false
     t.string   "condition"
-    t.string   "error_message"
     t.string   "child_tag"
     t.string   "custom_class"
     t.string   "custom_child_class"
     t.string   "wrapper_tag"
+    t.string   "error_message"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree

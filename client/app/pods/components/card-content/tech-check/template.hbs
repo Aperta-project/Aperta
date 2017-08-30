@@ -1,7 +1,7 @@
 <div class="task-main-content">
   <p class="content-text">{{{content.text}}}
     {{#if content.isRequired}}
-      <span class="required-field">{{#unless answer.wasAnswered}}*{{else}}&nbsp;{{/unless}}</span>
+      <span class="required-field">*</span>
     {{/if}}</p>
 
   {{card-content/toggle-switch content=content

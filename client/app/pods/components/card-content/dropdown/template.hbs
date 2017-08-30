@@ -1,6 +1,6 @@
 <label class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
-    <span class="required-field">{{#unless answer.wasAnswered}}*{{else}}&nbsp;{{/unless}}</span>
+    <span class="required-field">*</span>
   {{/if}}</label>
 {{#power-select
     options=content.possibleValues

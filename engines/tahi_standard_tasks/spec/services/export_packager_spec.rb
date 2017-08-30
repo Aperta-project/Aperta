@@ -81,7 +81,7 @@ describe ExportPackager do
       expect(contents).to eq('json')
     end
 
-    it 'creates a valid manifest' do
+    it 'creates a valid manifest without a pdf when exporting to apex' do
       packager = ExportPackager.new(paper, archive_filename: archive_filename, destination: 'apex')
       packager.zip_file
       manifest = JSON.parse(packager.send(:manifest).to_json)
@@ -93,14 +93,7 @@ describe ExportPackager do
       expect(manifest).to eq expected_manifest
     end
 
-    it 'passed the destination to MetadataTypeseter' do
-      expect(Typesetter::MetadataSerializer).to \
-        receive(:new).with(paper, destination: 'apex').and_return(metadata_serializer)
-      packager = ExportPackager.new(paper, destination: 'apex')
-      packager.zip_file
-    end
-
-    it 'can create a manifest with a pdf file' do
+    it 'creates a valid manifest with a pdf when exporting to the preprint server' do
       packager = ExportPackager.new(paper, destination: 'preprint', archive_filename: archive_filename)
       packager.zip_file
       manifest = JSON.parse(packager.send(:manifest).to_json)
@@ -112,8 +105,27 @@ describe ExportPackager do
       expect(manifest).to eq expected_manifest
     end
 
+    it 'creates a valid manifest with a pdf when exporting to the EM server' do
+      packager = ExportPackager.new(paper, destination: 'em', archive_filename: archive_filename)
+      packager.zip_file
+      manifest = JSON.parse(packager.send(:manifest).to_json)
+      expected_manifest = {
+        "archive_filename" => archive_filename,
+        "metadata_filename" => "metadata.json",
+        "files" => ["metadata.json", "test.0001.docx", "aperta-generated-PDF.pdf"]
+      }
+      expect(manifest).to eq expected_manifest
+    end
+
+    it 'passed the destination to MetadataTypeseter' do
+      expect(Typesetter::MetadataSerializer).to \
+        receive(:new).with(paper, destination: 'apex').and_return(metadata_serializer)
+      packager = ExportPackager.new(paper, destination: 'apex')
+      packager.zip_file
+    end
+
     describe "add_metadata" do
-      it "adds a manuscript file to the manifest" do
+      it "adds a metadata file to the manifest" do
         packager = ExportPackager.new(paper, destination: 'apex')
         Zip::OutputStream.open(zip_file) do |package|
           packager.send(:add_metadata, package)

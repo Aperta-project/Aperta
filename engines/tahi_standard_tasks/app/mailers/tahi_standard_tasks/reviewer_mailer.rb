@@ -73,5 +73,12 @@ module TahiStandardTasks
         to: @assignee.try(:email),
         subject: "Thank you for agreeing to review for #{@journal.name}")
     end
+
+    def thank_reviewer(reviewer_report:)
+      @paper = reviewer_report.paper
+      @journal = @paper.journal
+      @user = @reviewer_report.user
+      mail(to: @user.email, subject: "Thank you for reviewing for #{@journal.name}")
+    end
   end
 end

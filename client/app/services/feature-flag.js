@@ -9,8 +9,8 @@ export default Ember.Service.extend({
 
   value(name) {
     const records = this.get('store').peekAll('feature-flag');
-    if(!records || records.get('length') === 0) { return false; }
-    return records.filterBy('name', name)[0].get('active');
+    if(Ember.isEmpty(records)) { return false; }
+    return records.findBy('name', name).get('active');
   }
 });
 

@@ -1,7 +1,7 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
   whitelist :state, :revision, :computed_status, :computed_datetime,
-            :invitation_accepted?
+            :invitation_accepted?, :due_at
 
   alias status computed_status
   alias datetime computed_datetime

@@ -39,7 +39,10 @@ module TahiStandardTasks
       @reviewer = @invitation.invitee
       @reviewer_name = @reviewer.try(:full_name) || @invitation.email
 
-      mail(to: @assigner.email, subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\"")
+      mail(
+        to: @assigner.email,
+        subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\""
+      )
     end
 
     def reviewer_declined(invitation_id:)
@@ -56,7 +59,10 @@ module TahiStandardTasks
       @reviewer = @invitation.invitee
       @reviewer_name = @reviewer.try(:full_name) || @invitation.email
 
-      mail(to: @assigner.email, subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\"")
+      mail(
+        to: @assigner.email,
+        subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\""
+      )
     end
 
     def welcome_reviewer(assignee_id:, paper_id:)
@@ -71,7 +77,35 @@ module TahiStandardTasks
 
       mail(
         to: @assignee.try(:email),
-        subject: "Thank you for agreeing to review for #{@journal.name}")
+        subject: "Thank you for agreeing to review for #{@journal.name}"
+      )
+    end
+
+    def remind_before_due(reviewer_report_id:)
+      reminder_notice(template_name: 'Review Reminder - Before Due', reviewer_report_id: reviewer_report_id)
+    end
+
+    def first_late_notice(reviewer_report_id:)
+      reminder_notice(template_name: 'Review Reminder - First Late', reviewer_report_id: reviewer_report_id)
+    end
+
+    def second_late_notice(reviewer_report_id:)
+      reminder_notice(template_name: 'Review Reminder - Second Late', reviewer_report_id: reviewer_report_id)
+    end
+
+    private
+
+    def reminder_notice(template_name:, reviewer_report_id:)
+      @reviewer_report = ReviewerReport.find(reviewer_report_id)
+      @paper = @reviewer_report.paper
+      @journal = @paper.journal
+      @letter_template = @journal.letter_templates.find_by(name: template_name)
+      @scenario = ReviewerReportScenario.new(@reviewer_report)
+      @to = @reviewer_report.user.email
+      @subject = Liquid::Template.parse(@letter_template.subject).render(@scenario)
+      @body = Liquid::Template.parse(@letter_template.body).render(@scenario)
+
+      mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
     end
 
     def thank_reviewer(reviewer_report:)

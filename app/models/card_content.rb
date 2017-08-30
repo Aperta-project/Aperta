@@ -14,7 +14,6 @@ class CardContent < ActiveRecord::Base
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
   has_many :card_content_validations, dependent: :destroy
-  has_many :content_attributes, dependent: :destroy
 
   validates :card_version, presence: true
 
@@ -85,10 +84,7 @@ class CardContent < ActiveRecord::Base
   def content_value_type_combination
     return if content_type.blank?
     unless VALUE_TYPES_FOR_CONTENT.fetch(content_type, []).member?(value_type)
-      errors.add(
-        :content_type,
-        "'#{content_type}' not valid with value_type '#{value_type}'"
-      )
+      errors.add(:content_type, "'#{content_type}' not valid with value_type '#{value_type}'")
     end
   end
 
@@ -137,9 +133,14 @@ class CardContent < ActiveRecord::Base
       {
         'condition' => condition
       }
-    when 'short-input', 'paragraph-input'
+    when 'paragraph-input'
       {
         'editor-style' => editor_style,
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'short-input'
+      {
         'allow-annotations' => allow_annotations,
         'required-field' => required_field
       }

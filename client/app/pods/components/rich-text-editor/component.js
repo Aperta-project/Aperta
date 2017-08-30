@@ -27,6 +27,7 @@ export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
+  editor: null,
 
   bodyCSS: `
     .mce-content-body {
@@ -68,8 +69,16 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
+  pastePostprocess() {
+    let editor = this.get('editor');
+    var text = editor.getContent();
+    text = text.replace(/<p> *(&nbsp;)* *<\/p>/ig, '');
+    editor.setContent(text);
+  },
+
   postRender() {
     let editor = this.childViews.find(child => child.editor).editor;
+    this.set('editor', editor);      
     let iframeSelector = 'iframe#' + editor.id + '_ifr';
     document.querySelector(iframeSelector).removeAttribute('title');
     let callback = this.get('focusOut');
@@ -84,12 +93,8 @@ export default Ember.Component.extend({
     options['autoresize_max_height'] = 500;
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
-    options['cleanup_callback'] = (type, value) => {
-      if (type === 'get_from_editor') {
-        value = value.replace(/<p><\/p>/ig, '');
-      }   
-      return value;
-    };
+    this.pastePostprocess = this.pastePostprocess.bind(this);
+    options['paste_postprocess'] = this.pastePostprocess;
     
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';

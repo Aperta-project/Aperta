@@ -335,6 +335,7 @@ namespace :seed do
             TEXT
 
             lt.save!
+          end
         end
       end
     end

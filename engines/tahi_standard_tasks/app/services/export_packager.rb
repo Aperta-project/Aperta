@@ -59,7 +59,7 @@ class ExportPackager
   end
 
   def converter
-    @converter ||= PaperConverters::PaperConverter.make(@paper.latest_version, 'generated-pdf', nil)
+    @converter ||= PaperConverters::PaperConverter.make(@paper.latest_version, 'pdf_for_router', nil)
   end
 
   def add_sourcefile_if_needed(package)

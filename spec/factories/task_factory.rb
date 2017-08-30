@@ -104,7 +104,7 @@ FactoryGirl.define do
       title "Editor Discussion"
     end
 
-    factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do
+    factory :ethics_task, class: 'CustomCardTask' do
       title "Ethics"
     end
 

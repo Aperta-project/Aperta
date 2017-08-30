@@ -17,7 +17,6 @@ class LookupClassNamespace
     "AuthorsTask"                    =>     "TahiStandardTasks::AuthorsTask",
     "CoverLetterTask"                =>     "TahiStandardTasks::CoverLetterTask",
     "EarlyPostingTask"               =>     "TahiStandardTasks::EarlyPostingTask",
-    "EthicsTask"                     =>     "TahiStandardTasks::EthicsTask",
     "FigureTask"                     =>     "TahiStandardTasks::FigureTask",
     "FinancialDisclosureTask"        =>     "TahiStandardTasks::FinancialDisclosureTask",
     "FrontMatterReviewerReportTask"  =>     "TahiStandardTasks::FrontMatterReviewerReportTask",

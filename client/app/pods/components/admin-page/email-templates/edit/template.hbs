@@ -1,32 +1,54 @@
-<div class="col-xs-12">
-  {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
-  <h1>
-    {{template.name}}
-  </h1>
-  {{#tab-bar}}
-    <a class="active">Edit Email</a>
-  {{/tab-bar}}
-</div>
-<div class="col-xs-12 edit-email-backsplash">
-  <div class="well well-lg edit-email-well">
-    <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
-      <label for="subject" class="text-bold">Subject:</label>
-      {{input class="form-control" id="subject" value=template.subject}}
-      {{#unless (or unsaved template.subject)}}
-        <span>{{fa-icon 'warning'}} Please enter a subject line</span>
-      {{/unless}}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
+      <h1>
+        {{template.name}}
+      </h1>
+      {{#tab-bar}}
+        <a class="active">Edit Email</a>
+      {{/tab-bar}}
     </div>
-    <div class="form-group {{unless (or unsaved template.body) 'error'}}">
-      <label for="body" class="text-bold">Body:</label>
-      {{textarea id="body" class="form-control" value=template.body autoresize=true}}
-      {{#unless (or unsaved template.body)}}
-        <span>{{fa-icon 'warning'}} Please enter body text</span>
-      {{/unless}}
-    </div>
-    <div class="text-right">
-      <button class="button-primary button--blue" {{action "save"}}>
-        Save
-      </button>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 edit-email-backsplash">
+      <div class="text-right">
+        <button class="button-primary button--blue edit-email-button" {{action "save"}}>
+          Save
+        </button>
+      </div>
+
+      <div class="edit-email-well">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-9">
+              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
+                <label for="subject" class="text-bold">Subject:</label>
+                {{input class="form-control" id="subject" value=template.subject}}
+                {{#unless (or unsaved template.subject)}}
+                  <span>{{fa-icon 'warning'}} Please enter a subject line</span>
+                {{/unless}}
+              </div>
+              
+              <div class="form-group {{unless (or unsaved template.body) 'error'}}">
+                <label for="body" class="text-bold">Body:</label>
+                {{textarea id="body" class="form-control" value=template.body}}
+                {{#unless (or unsaved template.body)}}
+                  <span>{{fa-icon 'warning'}} Please enter body text</span>
+                {{/unless}}
+              </div>
+            </div>
+            <div class="col-xs-3 available-merge-fields-col">
+              <div class="available-merge-fields-header">Available Merge Fields</div>
+              <div class="available-merge-fields">
+                {{#each template.mergeFields as |mergeField|}}
+                  {{admin-page/email-templates/edit/merge-field mergeField=mergeField}}
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

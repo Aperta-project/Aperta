@@ -510,6 +510,7 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "scenario"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|

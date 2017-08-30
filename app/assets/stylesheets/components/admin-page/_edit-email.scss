@@ -28,7 +28,7 @@
 }
 
 .available-merge-fields-header {
-  margin: 24px 0px 12px;
+  margin: 24px 0px 4px;
   font-size: 18px;
 }
 
@@ -37,7 +37,10 @@
   overflow-y: scroll;
   height: 614px;
   color: $aperta-grey;
+  background-color: $aperta-grey-lighter;
   white-space: nowrap;
+  box-sizing: border-box;
+  padding: 8px;
 }
 
 .available-merge-field-group {

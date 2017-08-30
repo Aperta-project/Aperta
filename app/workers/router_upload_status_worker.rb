@@ -9,7 +9,7 @@ class RouterUploadStatusWorker
 
   sidekiq_retries_exhausted do |msg|
     export_delivery = TahiStandardTasks::ExportDelivery.find(msg['args'].first)
-    export_delivery.delivery_failed!(msg['error_message'])
+    export_delivery.delivery_failed!('Time out waiting for export service')
   end
 
   def perform(export_delivery_id)
@@ -26,7 +26,7 @@ class RouterUploadStatusWorker
 
     case result[:job_status]
     when "PENDING"
-      raise RouterUploaderService::StatusError, "Time out waiting for export service"
+      raise RouterUploaderService::StatusError, "Job pending"
     when "SUCCESS"
       export_delivery.delivery_succeeded!
     else
@@ -38,7 +38,7 @@ end
 def router_connection
   Faraday.new(url: TahiEnv.router_url) do |faraday|
     faraday.response :json
-    faraday.request  :url_encoded
+    faraday.request :url_encoded
     faraday.use Faraday::Response::RaiseError
     faraday.adapter :net_http
   end

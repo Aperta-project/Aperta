@@ -244,9 +244,7 @@ Tahi::Application.routes.draw do
       get :sign, to: 'forms#sign'
     end
 
-    resources :feature_flags, param: :name, only: [:index] do
-      put :update, on: :collection
-    end
+    resources :feature_flags, only: [:index, :update]
   end
 
   get '/invitations/:token',

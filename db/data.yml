@@ -21199,7 +21199,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.390577'
-    - '2017-08-24 16:24:40.570566'
+    - '2017-07-14 17:41:40.75235'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '2'
     - Editor Decision - Reject After Review CJs
@@ -21251,7 +21251,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.395609'
-    - '2017-08-24 16:24:40.57673'
+    - '2017-07-14 17:41:40.755486'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '3'
     - Editor Decision - Reject After Review ONE
@@ -21303,7 +21303,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.399636'
-    - '2017-08-24 16:24:40.580767'
+    - '2017-07-14 17:41:40.75812'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '4'
     - Reject After Review ONE
@@ -21356,7 +21356,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.403331'
-    - '2017-08-24 16:24:40.589884'
+    - '2017-07-14 17:41:40.7601'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '5'
     - Reject After Revision and Re-review ONE
@@ -21409,7 +21409,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.407003'
-    - '2017-08-24 16:24:40.593862'
+    - '2017-07-14 17:41:40.761889'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '6'
     - RA Major Revision
@@ -21470,7 +21470,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.410529'
-    - '2017-08-24 16:24:40.598585'
+    - '2017-07-14 17:41:40.763721'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '7'
     - RA Minor Revision
@@ -21533,7 +21533,7 @@ letter_templates:
 
     - '1'
     - '2016-07-28 18:22:30.413472'
-    - '2017-08-24 16:24:40.602424'
+    - '2017-07-14 17:41:40.765722'
     - TahiStandardTasks::RegisterDecisionScenario
   - - '8'
     - RA Accept

@@ -5,8 +5,12 @@ import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 
 let FakeFeatureFlagService = Ember.Object.extend({
-  value() {
+  setup() {
     return Ember.RSVP.resolve(true);
+  },
+
+  value() {
+    return true;
   }
 });
 

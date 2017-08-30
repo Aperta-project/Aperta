@@ -76,7 +76,7 @@
       </label>
     </div>
 
-    {{#if preprintsEnabled}}
+    {{#if (feature-flag "PREPRINT")}}
       <div class="preprint-eligible manuscript-manager-template-option">
         <label>
           <input type="checkbox"

@@ -42,11 +42,9 @@ test('can manage workflow, correspondence enabled, all icons show', function(ass
 
   $.mockjax({
     type: 'GET',
-    url: '/api/feature_flags.json',
+    url: '/api/feature_flags',
     status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
+    responseText: { feature_flags: [{ id: 1, name: 'CORRESPONDENCE', active: 'true'}]}
   });
 
   this.set('paper', paper);
@@ -65,11 +63,9 @@ test('can manage workflow, correspondence disabled, no correspondence icon', fun
 
   $.mockjax({
     type: 'GET',
-    url: '/api/feature_flags.json',
+    url: '/api/feature_flags',
     status: 200,
-    responseText: {
-      CORRESPONDENCE: false
-    }
+    responseText: { feature_flags: [{ id: 1, name: 'CORRESPONDENCE', active: 'true'}]}
   });
 
   this.set('paper', paper);
@@ -88,11 +84,9 @@ test('can not manage workflow, correspondence enabled, no nav icons', function(a
 
   $.mockjax({
     type: 'GET',
-    url: '/api/feature_flags.json',
+    url: '/api/feature_flags',
     status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
+    responseText: { feature_flags: [{ id: 1, name: 'CORRESPONDENCE', active: 'true'}]}
   });
 
   this.set('paper', paper);
@@ -111,11 +105,9 @@ test('can view recent activity, sees recent activity nav icon', function(assert)
 
   $.mockjax({
     type: 'GET',
-    url: '/api/feature_flags.json',
+    url: '/api/feature_flags',
     status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
+    responseText: { feature_flags: [{ id: 1, name: 'CORRESPONDENCE', active: 'true'}]}
   });
 
   this.set('paper', paper);
@@ -132,11 +124,9 @@ test('can not view recent activity, no recent activity nav icon', function(asser
 
   $.mockjax({
     type: 'GET',
-    url: '/api/feature_flags.json',
+    url: '/api/feature_flags',
     status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
+    responseText: { feature_flags: [{ id: 1, name: 'CORRESPONDENCE', active: 'true'}]}
   });
 
   this.set('paper', paper);

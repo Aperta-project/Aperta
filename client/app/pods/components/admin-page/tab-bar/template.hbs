@@ -4,14 +4,14 @@
     Workflows
   {{/link-to}}
 
-  {{#if cardConfigEnabled}}
+  {{#if (feature-flag "CARD_CONFIGURATION")}}
     {{#link-to 'admin.journals.cards' class='admin-nav-cards'}}
       {{fa-icon "clone"}}
       Cards
     {{/link-to}}
   {{/if}}
 
-  {{#if emailTemplateEnabled}}
+  {{#if (feature-flag "EMAIL_TEMPLATE")}}
     {{#link-to 'admin.journals.emailtemplates' class='admin-nav-emails'}}
       {{fa-icon "envelope"}}
       Emails
@@ -28,4 +28,3 @@
     Settings
   {{/link-to}}
 {{/tab-bar}}
-

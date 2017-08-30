@@ -795,6 +795,7 @@ class DashboardPage(AuthenticatedPage):
     # for item in self._gets((By.CLASS_NAME, 'select-box-item')):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
+        self._scroll_into_view(item)
         item.click()
         time.sleep(1)
         break

@@ -74,17 +74,6 @@
 
     .si-file-title-input {
       position: relative;
-      .format-input-field {
-        padding-left: 15px;
-        &::before {
-          position: absolute;
-          content: "*";
-          top: 3px;
-          left: 4px;
-          color: $aperta-green;
-          font-size: 24px;
-        }
-      }
       height: auto;
     }
 

@@ -89,6 +89,8 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(nil)
         allow(card_configuration).to receive(:edit_role_names).and_return(nil)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(nil)
       end
 
       it "has all journal permissions" do
@@ -101,12 +103,16 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(:all)
         allow(card_configuration).to receive(:edit_role_names).and_return(:all)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(:all)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(:all)
       end
 
       it "has view and edit permissions defined" do
         custom_card_factory.first_or_create(card_configuration)
         expect(role.permissions.where(action: "view").count).to eq(2)
         expect(role.permissions.where(action: "edit").count).to eq(1)
+        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(2)
+        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(1)
       end
     end
 
@@ -114,12 +120,16 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(role_name)
         allow(card_configuration).to receive(:edit_role_names).and_return(nil)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(role_name)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(nil)
       end
 
       it "has only view permissions defined (one for Card, one for CardVersion)" do
         custom_card_factory.first_or_create(card_configuration)
         expect(role.permissions.where(action: "view").count).to eq(2)
         expect(role.permissions.where(action: "edit").count).to eq(0)
+        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(2)
+        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(0)
       end
     end
 
@@ -127,12 +137,16 @@ describe CustomCard::Factory do
       before do
         allow(card_configuration).to receive(:view_role_names).and_return(nil)
         allow(card_configuration).to receive(:edit_role_names).and_return(role_name)
+        allow(card_configuration).to receive(:view_discussion_footer_role_names).and_return(nil)
+        allow(card_configuration).to receive(:edit_discussion_footer_role_names).and_return(role_name)
       end
 
       it "has only edit permissions defined" do
         custom_card_factory.first_or_create(card_configuration)
-        expect(role.permissions.where(action: "edit").count).to eq(1)
         expect(role.permissions.where(action: "view").count).to eq(0)
+        expect(role.permissions.where(action: "edit").count).to eq(1)
+        expect(role.permissions.where(action: "view_discussion_footer").count).to eq(0)
+        expect(role.permissions.where(action: "edit_discussion_footer").count).to eq(1)
       end
     end
   end

@@ -14,7 +14,7 @@ module ExportDelivery
       end
 
       def message
-        "#{short_title} has been successfully uploaded to Apex"
+        "#{short_title} has been successfully exported"
       end
 
       private

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<card required-for-submission="false" workflow-display-only="false">
+  <content content-type="display-children">
+    <content content-type="export-paper">
+      <text>em</text>
+      <label>Export to EM Server</label>
+    </content>
+  </content>
+</card>

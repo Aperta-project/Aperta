@@ -17,13 +17,21 @@ module RichTextEditorHelpers
     end
   end
 
-  private
-
   def editor_instance(name)
+    "tinymce.editors.#{editor_id(name)}"
+  end
+
+  def within_editor_iframe(name)
+    page.within_frame("#{editor_id(name)}_ifr") do
+      yield
+    end
+  end
+
+  def editor_id(name)
     selector = ".rich-text-editor[data-editor='#{name}']"
     find_editor_id = "$(\"#{selector}\").find('iframe').contents().find('body').data('id')"
     id = page.evaluate_script(find_editor_id)
     throw "missing editor id: #{name}" if id.blank?
-    "tinymce.editors.#{id}"
+    id
   end
 end

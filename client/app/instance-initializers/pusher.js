@@ -25,8 +25,8 @@ export function initialize(instance) {
   // Pusher is not supported by the browser. This implies that WebSockets are
   // not natively available and an HTTP-based transport could not be found.
   // This is not fired as an event, but set as the connection's state.
-  if(Ember.isEqual(pusher.connection.state, "failed")){
-    bugsnagService.notifyException(
+  if(Ember.isEqual(pusher.connection.state, 'failed')){
+    bugsnagService.notify(
       'PusherNotSupported',
       'Pusher.js is not supported by the browser'
     );
@@ -36,8 +36,8 @@ export function initialize(instance) {
   // on application load the pusher.connection starts out in the unavailable
   // state rather than transitioning to the unavailable state, so we must
   // check it first.
-  if(Ember.isEqual(pusher.connection.state, "unavailable")){
-    bugsnagService.notifyException(
+  if(Ember.isEqual(pusher.connection.state, 'unavailable')){
+    bugsnagService.notify(
       'PusherUnavailable',
       'Pusher.js service unavailable on app load'
     );
@@ -46,7 +46,7 @@ export function initialize(instance) {
   // The Pusher connection was previously connected and has now intentionally
   // been closed.
   pusher.connection.bind('disconnected', function(){
-    bugsnagService.notifyException(
+    bugsnagService.notify(
       'PusherDisconnected',
       'Pusher.js has disconnected'
     );
@@ -56,7 +56,7 @@ export function initialize(instance) {
   // pusher.connection was in another state first. If the pusherjs server
   // is unavailable when the application loads then this will not be triggered.
   pusher.connection.bind('unavailable', function(){
-    bugsnagService.notifyException(
+    bugsnagService.notify(
       'PusherUnavailable',
       'Pusher.js service became unavailable during app use'
     );

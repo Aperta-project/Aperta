@@ -21,19 +21,12 @@ class CardContent < ActiveRecord::Base
   # and ident
   validates :parent_id,
             uniqueness: {
-              scope: [:card_version, :deleted_at],
+              scope: %i[card_version deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
 
   has_many :answers
-
-  validates :ident,
-            uniqueness: {
-              scope: [:card_version, :deleted_at],
-              message: "CardContent idents must be unique"
-            },
-            if: -> { ident.present? }
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
@@ -45,7 +38,7 @@ class CardContent < ActiveRecord::Base
   validate :value_type_for_default_answer_value
   validate :default_answer_present_in_possible_values
 
-  SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text html).freeze
+  SUPPORTED_VALUE_TYPES = %w[attachment boolean question-set text html].freeze
 
   # Note that value_type really refers to the value_type of answers associated
   # with this piece of card content. In the old NestedQuestion world, both
@@ -115,25 +108,32 @@ class CardContent < ActiveRecord::Base
     safe_dump_text(xml, attr_name, attr) if attr.present?
   end
 
+  # content_attrs rendered into the <card-content> tag itself
   def content_attrs
     attrs =
       {
         'ident' => ident,
         'content-type' => content_type,
         'value-type' => value_type,
-        'required-field' => required_field,
+        'child-tag' => child_tag,
+        'custom-class' => custom_class,
+        'custom-child-class' => custom_child_class,
+        'wrapper-tag' => wrapper_tag,
         'visible-with-parent-answer' => visible_with_parent_answer,
         'default-answer-value' => default_answer_value
       }.merge(additional_content_attrs).compact
   end
 
+  # rubocop:disable Metrics/MethodLength
   def additional_content_attrs
     case content_type
     when 'file-uploader'
       {
         'allow-multiple-uploads' => allow_multiple_uploads,
         'allow-file-captions' => allow_file_captions,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'error-message' => error_message,
+        'required-field' => required_field
       }
     when 'if'
       {
@@ -142,19 +142,25 @@ class CardContent < ActiveRecord::Base
     when 'short-input', 'paragraph-input'
       {
         'editor-style' => editor_style,
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
       }
     when 'radio', 'check-box', 'dropdown', 'tech-check'
       {
-        'allow-annotations' => allow_annotations
+        'allow-annotations' => allow_annotations,
+        'required-field' => required_field
+      }
+    when 'date-picker'
+      {
+        'required-field' => required_field
       }
     else
       {}
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/AbcSize
-
   def to_xml(options = {})
     setup_builder(options).tag!('content', content_attrs) do |xml|
       render_tag(xml, 'instruction-text', instruction_text)
@@ -173,6 +179,12 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+
+  # recursively traverse nested card_contents
+  def traverse(visitor)
+    visitor.visit(self)
+    children.each { |card_content| card_content.traverse(visitor) }
+  end
 end
 
 private

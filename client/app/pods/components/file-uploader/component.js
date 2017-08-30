@@ -23,6 +23,7 @@ import checkType, { filetypeRegex } from 'tahi/lib/file-upload/check-filetypes';
 export default Ember.TextField.extend({
   type: 'file',
   name: 'file',
+  uploaderId: null, // allows for optionally adding a specific id to the uploader
   multiple: false,
   accept: null,
   filePrefix: null,
@@ -58,6 +59,13 @@ export default Ember.TextField.extend({
   _cleanupFileUpload() {
     if ($.data(this.$()[0])['blueimp-fileupload']) {
       this.$().fileupload('destroy');
+    }
+  },
+
+  init() {
+    this._super(...arguments);
+    if (this.get('uploaderId')) {
+      this.set('elementId', this.get('uploaderId'));
     }
   },
 
@@ -156,7 +164,8 @@ export default Ember.TextField.extend({
       return this.sendAction('processingDone', data.files[0]);
     });
     uploader.on('fileuploadfail', (e, data) => {
-      Ember.getOwner(this).lookup('service:bugsnag').notifyUploadError(e);
+      Ember.getOwner(this).lookup('service:bugsnag')
+        .notifyException(e, {'File Detail': {'file': data.files[0]}});
       return this.sendAction('error', data);
     });
   }).on('didInsertElement')

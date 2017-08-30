@@ -84,6 +84,13 @@ export default Ember.Component.extend({
     options['autoresize_max_height'] = 500;
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
+    options['cleanup_callback'] = (type, value) => {
+      if (type === 'get_from_editor') {
+        value = value.replace(/<p><\/p>/ig, '');
+      }   
+      return value;
+    };
+    
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }

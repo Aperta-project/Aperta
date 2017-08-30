@@ -17,6 +17,12 @@ const expandedToolbar  = ' | bullist numlist | table link | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
+const rejectNewlines = function(editor) {
+  editor.on('keydown', function(e) {
+    if (e.keyCode === 13) return false;
+  });
+};
+
 export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],
@@ -43,7 +49,8 @@ export default Ember.Component.extend({
       plugins: basicPlugins,
       toolbar: basicToolbar,
       valid_elements: inlineElements,
-      forced_root_block: false
+      forced_root_block: false,
+      setup: rejectNewlines
     },
 
     basic: {

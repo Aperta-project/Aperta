@@ -102,7 +102,7 @@ class ExportPackager
   end
 
   def add_metadata(package)
-    metadata = Typesetter::MetadataSerializer.new(@paper).to_json
+    metadata = Typesetter::MetadataSerializer.new(@paper, destination: @destination).to_json
     temp_file = Tempfile.new('metadata')
     temp_file.write(metadata)
     temp_file.rewind

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { task as concurrencyTask, timeout } from 'ember-concurrency';
 import { PropTypes } from 'ember-prop-types';
 
 export default Ember.Component.extend({
@@ -21,12 +20,6 @@ export default Ember.Component.extend({
     return false;
   },
 
-  cancelUpload: concurrencyTask(function*(attachment) {
-    yield attachment.cancelUpload();
-    yield timeout(5000);
-    attachment.unloadRecord();
-  }),
-
   acceptedFileTypes: Ember.computed('content.possibleValues', function() {
     let vals = this.get('content.possibleValues');
     if (Ember.isEmpty(vals)) {
@@ -42,10 +35,6 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    cancelUpload(attachment) {
-      this.get('cancelUpload').perform(attachment);
-    },
-
     updateAttachment(s3Url, file, attachment) {
       Ember.assert(s3Url, 'Must provide an s3Url');
       Ember.assert(file, 'Must provide a file');
@@ -71,13 +60,6 @@ export default Ember.Component.extend({
     updateAttachmentCaption(caption, attachment) {
       attachment.set('caption', caption);
       attachment.save();
-    },
-
-    deleteAttachment(attachment) {
-      attachment.destroyRecord().then(() => {
-        const answer = this.get('answer');
-        answer.reload();
-      });
     }
   }
 });

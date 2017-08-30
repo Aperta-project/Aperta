@@ -1,5 +1,12 @@
 import AttachmentAdapter from 'tahi/adapters/attachment';
 
 export default AttachmentAdapter.extend({
-  pathForType() { return 'manuscript_attachments'; }
+  pathForType() { return 'manuscript_attachments'; },
+  urlForCreateRecord(modelName, snapshot) {
+    return `/api/tasks/${snapshot.record.get('task.id')}/upload_manuscript`;
+  },
+
+  urlForUpdateRecord(id, modelName, snapshot) {
+    return `/api/tasks/${snapshot.record.get('task.id')}/upload_manuscript`;
+  }
 });

@@ -39,8 +39,8 @@ export default DS.Model.extend({
   journal: belongsTo('journal'),
   manuscriptPageTasks: hasMany('task', { polymorphic: true }),
 
-  file: attr(),
-  sourcefile: attr(),
+  file: belongsTo('manuscript-attachment', { async: false}),
+  sourcefile: belongsTo('sourcefile-attachment', { async: false}),
 
   paperTaskTypes: hasMany('paper-task-type'),
   availableCards: hasMany('card'),
@@ -222,6 +222,7 @@ export default DS.Model.extend({
   }),
 
   hasAnyError: computed.equal('file.status', 'error'),
+  previewFail: false,
 
   engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
     if (this.get('isInitialSubmission')) {

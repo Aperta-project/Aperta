@@ -134,6 +134,7 @@ class TokenInvitationsController < ApplicationController
       cas_uri = URI.parse(TahiEnv.cas_phased_signup_url)
 
       cas_uri.query = { token: jwt_encoded_payload }.to_query
+      store_location_for(:user, akita_invitation_accept_url(new_user: true))
       redirect_to cas_uri.to_s
     end
   end

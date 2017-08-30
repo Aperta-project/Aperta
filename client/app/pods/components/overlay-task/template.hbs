@@ -17,6 +17,7 @@
                 <h2>Discussion</h2>
                 {{comment-board comments=task.comments
                                 currentUser=currentUser
+                                canEdit=(can 'edit_discussion_footer' task)
                                 postComment=(action "postComment")}}
               </div>
               {{/if}}

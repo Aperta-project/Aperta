@@ -31,3 +31,17 @@
     }
   }
 }
+
+.card-preview {
+  display: flex;
+  align-items: flex-start;
+
+  .decoration {
+    min-width: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .help-text {
+  }
+}

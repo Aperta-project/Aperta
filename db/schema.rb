@@ -57,10 +57,11 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.integer  "paper_id"
     t.string   "value"
     t.jsonb    "additional_data"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.datetime "deleted_at"
     t.string   "annotation"
+    t.integer  "position",        default: 0
   end
 
   add_index "answers", ["card_content_id"], name: "index_answers_on_card_content_id", using: :btree
@@ -246,6 +247,9 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.string   "editor_style"
     t.string   "condition"
     t.boolean  "required_field"
+    t.string   "initial"
+    t.string   "min"
+    t.string   "max"
     t.string   "error_message"
     t.string   "child_tag"
     t.string   "custom_class"
@@ -490,13 +494,14 @@ ActiveRecord::Schema.define(version: 20170829103915) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",                 null: false
-    t.string   "doi_journal_prefix",                   null: false
-    t.string   "last_doi_issued",      default: "0",   null: false
+    t.string   "doi_publisher_prefix",                     null: false
+    t.string   "doi_journal_prefix",                       null: false
+    t.string   "last_doi_issued",          default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
-    t.boolean  "pdf_allowed",          default: false
+    t.boolean  "pdf_allowed",              default: false
+    t.string   "last_preprint_doi_issued", default: "0",   null: false
   end
 
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree

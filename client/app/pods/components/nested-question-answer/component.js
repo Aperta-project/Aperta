@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: "span",
+  tagName: 'span',
   owner: null,
   ident: null,
 
@@ -9,11 +9,11 @@ export default Ember.Component.extend({
   noLabel: null,
 
   answer: Ember.computed(function(){
-    let owner = this.get("owner");
-    Ember.assert("Must provide owner", owner);
+    let owner = this.get('owner');
+    Ember.assert('Must provide owner', owner);
 
-    let ident = this.get("ident");
-    Ember.assert("Must provide ident", ident);
+    let ident = this.get('ident');
+    Ember.assert('Must provide ident', ident);
 
     let answer = owner.answerForQuestion(ident);
     if(answer){
@@ -23,13 +23,13 @@ export default Ember.Component.extend({
     }
   }),
 
-  answerText: Ember.computed("answer", function(){
-    let answer = this.get("answer");
-    let yesLabel = this.get("yesLabel");
-    let noLabel = this.get("noLabel");
+  answerText: Ember.computed('answer', function(){
+    let answer = this.get('answer');
+    let yesLabel = this.get('yesLabel');
+    let noLabel = this.get('noLabel');
 
     if(answer){
-      let value = answer.get("value");
+      let value = answer.get('value');
       if(yesLabel && value){
         return yesLabel;
       } else if(noLabel && !value){
@@ -38,7 +38,7 @@ export default Ember.Component.extend({
         return value;
       }
     } else {
-      return "";
+      return '';
     }
   })
 });

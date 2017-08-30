@@ -124,8 +124,7 @@ class Card < ActiveRecord::Base
   # as the client is simply going to look up records by their ident
   # instead of traversing them.
   def content_for_version_without_root(version_no)
-    content_for_version(version_no)
-      .where.not(parent_id: nil)
+    content_for_version(version_no).where.not(parent_id: nil)
   end
 
   # look for errors in nested child objects
@@ -140,7 +139,8 @@ class Card < ActiveRecord::Base
 
   # evaluate card semantics
   def check_semantics
-    traverse(CardSemanticValidator.new)
+    traverse(IfComponentValidator.new)
+    traverse(RepeatComponentValidator.new)
   end
 
   # traverse card and its latest children

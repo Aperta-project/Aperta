@@ -19,6 +19,9 @@ class CardContentSerializer < ActiveModel::Serializer
              :allow_annotations,
              :required_field,
              :default_answer_value,
+             :initial,
+             :min,
+             :max,
              # when visible_with_parent_answer is set,
              # if the parent's answer is equal to this value
              # then render this content's children

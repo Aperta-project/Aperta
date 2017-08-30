@@ -13,7 +13,7 @@ module Answerable
   included do
     belongs_to :card_version
     has_one :card, through: :card_version
-    has_many :answers, as: :owner, dependent: :destroy
+    has_many :answers, -> { order(:position) }, as: :owner, dependent: :destroy
 
     delegate :latest_published_card_version, to: :card, allow_nil: true
 

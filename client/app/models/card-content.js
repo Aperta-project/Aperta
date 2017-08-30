@@ -31,6 +31,9 @@ export default DS.Model.extend({
   editorStyle: DS.attr('string'),
   condition: DS.attr('string'),
   visibleWithParentAnswer: DS.attr('string'),
+  initial: DS.attr('number'),
+  min: DS.attr('number'),
+  max: DS.attr('number'),
   allowAnnotations: DS.attr('boolean'),
   answerable: Ember.computed.notEmpty('valueType'),
   errorMessage: DS.attr('string'),
@@ -64,13 +67,14 @@ export default DS.Model.extend({
     return this.get('isRequired') === true ? 'true' : 'false';
   }),
 
-  createAnswerForOwner(owner){
+  createAnswerForOwner(owner, position) {
     // only create answers for things that are actually
     // answerable (i.e., textboxes, radio buttons) and
     // not things like static text or paragraphs
     if(this.get('answerable')) {
       return this.get('store').createRecord('answer', {
         owner: owner,
+        position: position,
         cardContent: this
       });
     } else {
@@ -78,8 +82,13 @@ export default DS.Model.extend({
     }
   },
 
-  answerForOwner(owner) {
-    return this.get('answers').findBy('owner', owner) ||
-           this.createAnswerForOwner(owner);
+  answerForOwner(owner, position = 0) {
+    let answers = this.get('answers');
+    if (answers) {
+      let finder = each => owner === each.get('owner') && position === each.get('position');
+      let answer = answers.find(finder);
+      if (answer) return answer;
+    }
+    return this.createAnswerForOwner(owner, position);
   }
 });

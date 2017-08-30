@@ -67,6 +67,7 @@ class CardContent < ActiveRecord::Base
       'numbered-list': [nil],
       'bulleted-list': [nil],
       'if': [nil],
+      'repeat': [nil],
       'plain-list': [nil] }.freeze.with_indifferent_access
 
   # Although we want to validate the various combinations of content types
@@ -139,6 +140,12 @@ class CardContent < ActiveRecord::Base
       {
         'condition' => condition
       }
+    when 'repeat'
+      {
+        'initial' => initial,
+        'min' => min,
+        'max' => max
+      }
     when 'short-input', 'paragraph-input'
       {
         'editor-style' => editor_style,
@@ -179,6 +186,12 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+
+  def of_type(type)
+    return self if content_type == type
+    return nil unless parent
+    parent.of_type(type)
+  end
 
   # recursively traverse nested card_contents
   def traverse(visitor)

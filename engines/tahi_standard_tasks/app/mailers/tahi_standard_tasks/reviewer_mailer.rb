@@ -118,16 +118,5 @@ module TahiStandardTasks
 
       mail(to: @to, subject: @subject, template_name: 'review_due_reminder')
     end
-
-    def thank_reviewer(reviewer_report:)
-      @paper = reviewer_report.paper
-      @journal = @paper.journal
-      @user = @reviewer_report.user
-      @letter_template = @journal.letter_templates.find_by(name: 'template_name')
-      @scenario = ReviewerReportScenario.new(@reviewer_report)
-      @subject = Liquid::Template.parse(@letter_template.subject).render(@scenario)
-      @body = Liquid::Template.parse(@letter_template.body).render(@scenario)
-      mail(to: @user.email, subject: @subject)
-    end
   end
 end

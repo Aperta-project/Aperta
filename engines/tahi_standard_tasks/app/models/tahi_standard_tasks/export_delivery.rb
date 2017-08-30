@@ -1,11 +1,14 @@
 module TahiStandardTasks
   #
   # The very last thing Aperta does with an accepted manuscript is packacge up
-  # the manuscript and its metadata and send it to Apex, an external vendor that
-  # typesets the paper. An ExportDelivery represents the progress of gathering,
-  # zipping, and sending the appropriate data to Apex.
+  # the manuscript and its metadata and send it to either Apex, an external vendor that
+  # typesets the paper, or the article admin server (a.k.a. router). An ExportDelivery
+  # represents the progress of gathering, zipping, and sending the appropriate data to
+  # Apex or the router service (the latter endpoint defined by the ROUTER_URL env var).
   #
-  # Works hand-in-hand with SendToApexTask.
+  # Works hand-in-hand with SendToApexTask and the new card config Preprint/EM export.
+  #
+  # TODO: move this out of the engines dir
   #
   class ExportDelivery < ::ActiveRecord::Base
     include EventStream::Notifiable
@@ -60,8 +63,8 @@ module TahiStandardTasks
     end
 
     def paper_acceptance_state
-      return unless paper.present? && !paper.accepted?
-      errors.add(:paper, "must be accepted in order to send to APEX") if destination == 'apex'
+      return unless destination == 'apex' && paper.present? && !paper.accepted?
+      errors.add(:paper, "must be accepted in order to send to APEX")
     end
   end
 end

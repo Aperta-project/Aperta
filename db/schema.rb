@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823210046) do
+ActiveRecord::Schema.define(version: 20170829103915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -853,6 +853,7 @@ ActiveRecord::Schema.define(version: 20170823210046) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "destination",   null: false
+    t.string   "service_id"
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

@@ -20,9 +20,15 @@ export default DS.Model.extend({
     return state !== 'delivered' && state !== 'failed';
   }),
 
-  exportDoi: Ember.computed('state', function() {
+  preprintDoiAssigned: Ember.computed('destination', 'paper.aarxDoi', function(){
     let destination = this.get('destination');
-    return destination === 'apex' ? this.get('paper.doi') : this.get('paper.aarxDoi');
+    let preprintDoi = this.get('paper.aarxDoi');
+    return destination === 'preprint' && preprintDoi;
+  }),
+
+  exportDoi: Ember.computed('paper.aarxDoi', 'paper.doi', 'destination', function() {
+    let destination = this.get('destination');
+    return destination === 'preprint' ? this.get('paper.aarxDoi') : this.get('paper.doi');
   }),
 
   humanReadableState: Ember.computed('state', function() {

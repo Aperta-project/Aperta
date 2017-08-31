@@ -71,9 +71,10 @@ export default Ember.Component.extend({
 
   pastePostprocess() {
     let editor = this.get('editor');
-    var text = editor.getContent();
+    let text = editor.getContent();
     text = text.replace(/<p> *(&nbsp;)* *<\/p>/ig, '');
-    editor.setContent(text);
+    Ember.run.next((function() {editor.setContent(text);
+    }));
   },
 
   postRender() {
@@ -93,8 +94,7 @@ export default Ember.Component.extend({
     options['autoresize_max_height'] = 500;
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
-    this.pastePostprocess = this.pastePostprocess.bind(this);
-    options['paste_postprocess'] = this.pastePostprocess;
+    options['paste_postprocess'] = this.pastePostprocess.bind(this);
     
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';

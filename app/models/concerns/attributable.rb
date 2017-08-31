@@ -29,21 +29,24 @@ module Attributable
         has_one getter, -> { where(name: name) }, class_name: 'ContentAttribute'
 
         define_method(name) do
-          result = send(getter).try(&:value)
-          # puts "Synthetic getter #{name} returning #{result.class} #{result}"
-          result
+          send(getter).try(&:value)
         end
 
         define_method("#{name}=") do |contents|
-          return contents if contents.blank?
           attr = send(getter)
+          if contents.blank?
+            attr.destroy if attr
+            self.reload
+            return contents
+          end
+
           unless attr
             attr = content_attributes.new(name: name, value_type: ATTRIBUTE_CONTENTS[name])
             send(setter, attr)
           end
+
           attr.value = contents
           attr.save! unless new_record?
-          # puts "Synthetic setter #{name} with #{contents.class} #{attr.value}"
           attr.value
         end
       end

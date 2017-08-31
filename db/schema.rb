@@ -209,21 +209,6 @@ ActiveRecord::Schema.define(version: 20170829103915) do
   add_index "billing_logs", ["journal"], name: "index_billing_logs_on_journal", using: :btree
   add_index "billing_logs", ["ned_id"], name: "index_billing_logs_on_ned_id", using: :btree
 
-  create_table "card_attributes", force: :cascade do |t|
-    t.integer  "card_content_id"
-    t.string   "name"
-    t.string   "value_type"
-    t.boolean  "boolean_value"
-    t.integer  "integer_value"
-    t.string   "string_value"
-    t.jsonb    "json_value"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
-  add_index "card_attributes", ["name"], name: "index_card_attributes_on_name", using: :btree
-  add_index "card_attributes", ["value_type"], name: "index_card_attributes_on_value_type", using: :btree
-
   create_table "card_content_validations", force: :cascade do |t|
     t.string   "validator"
     t.string   "validation_type", null: false

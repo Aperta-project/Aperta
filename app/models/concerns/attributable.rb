@@ -35,6 +35,7 @@ module Attributable
         end
 
         define_method("#{name}=") do |contents|
+          return contents if contents.blank?
           attr = send(getter)
           unless attr
             attr = content_attributes.new(name: name, value_type: ATTRIBUTE_CONTENTS[name])

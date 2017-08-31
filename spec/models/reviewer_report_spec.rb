@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe ReviewerReport do
   subject(:paper) { FactoryGirl.create(:paper, :submitted_lite) }
   subject(:task) { FactoryGirl.create(:reviewer_report_task, paper: paper) }
@@ -67,36 +68,36 @@ describe ReviewerReport do
     end
   end
 
-  describe "#computed_status" do
+  describe "#status" do
     it "has status 'not_invited' without an invitation" do
-      expect(subject.computed_datetime).to be_nil
-      expect(subject.computed_status).to eq("not_invited")
+      expect(subject.datetime).to be_nil
+      expect(subject.status).to eq("not_invited")
     end
 
     it "has status 'invitation_invited' if invited" do
       add_invitation(:invited)
-      expect(subject.computed_datetime).to eq(subject.invitation.invited_at)
-      expect(subject.computed_status).to eq("invitation_invited")
+      expect(subject.datetime).to eq(subject.invitation.invited_at)
+      expect(subject.status).to eq("invitation_invited")
     end
 
     it "has status 'invitation_declined' if declined" do
       add_invitation(:declined)
-      expect(subject.computed_datetime).to eq(subject.invitation.declined_at)
-      expect(subject.computed_status).to eq("invitation_declined")
+      expect(subject.datetime).to eq(subject.invitation.declined_at)
+      expect(subject.status).to eq("invitation_declined")
     end
 
     it "has status 'invitation_rescinded' if rescinded" do
       add_invitation(:rescinded)
-      expect(subject.computed_datetime).to eq(subject.invitation.rescinded_at)
-      expect(subject.computed_status).to eq("invitation_rescinded")
+      expect(subject.datetime).to eq(subject.invitation.rescinded_at)
+      expect(subject.status).to eq("invitation_rescinded")
     end
 
     it "has status 'pending' if invite accepted" do
       add_invitation(:accepted)
       subject.accept_invitation
 
-      expect(subject.computed_datetime).to eq(subject.invitation.accepted_at)
-      expect(subject.computed_status).to eq("pending")
+      expect(subject.datetime).to eq(subject.invitation.accepted_at)
+      expect(subject.status).to eq("pending")
     end
 
     it "has status 'complete' if invite accepted and report submitted" do
@@ -104,7 +105,7 @@ describe ReviewerReport do
       subject.accept_invitation
       subject.submit
 
-      expect(subject.computed_status).to eq("completed")
+      expect(subject.status).to eq("completed")
     end
   end
 

@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :letter_template do
+    scenario 'TahiStandardTasks::RegisterDecisionScenario'
     to 'author@example.com'
     subject 'Your [JOURNAL_NAME] submission'
 

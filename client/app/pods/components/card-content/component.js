@@ -25,7 +25,9 @@ export default Ember.Component.extend({
   },
 
   keepAnswerContainer: Ember.computed('content', function(){
-    return !this.get('content.overrideAnswerContainer') && this.get('hasAnswerContainer');
+    return !this.get('content.overrideAnswerContainer') &&
+      this.get('hasAnswerContainer') &&
+      (this.get('allowAnnotations') || this.get('instructionText'));
   }),
 
   getDefaultProps() {
@@ -51,7 +53,13 @@ export default Ember.Component.extend({
   },
 
   answer: Ember.computed('content', 'owner', function() {
-    return this.get('content').answerForOwner(this.get('owner'));
+    let answer = this.get('content').answerForOwner(this.get('owner'));
+    // if in preview mode set default values on components
+    // that are answerable
+    if(this.get('preview') && answer) {
+      answer.set('value', this.get('content.defaultAnswerValue'));
+    }
+    return answer;
   }),
 
   _debouncedSave: concurrencyTask(function*() {

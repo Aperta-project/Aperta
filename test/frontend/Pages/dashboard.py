@@ -832,6 +832,7 @@ class DashboardPage(AuthenticatedPage):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
         logging.info('Found {0} in list item: {1}'.format(journal, item.text))
+        self._scroll_into_view(item)
         item.click()
         time.sleep(1)
         break

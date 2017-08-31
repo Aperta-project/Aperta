@@ -39,18 +39,12 @@ class CardVersion < ActiveRecord::Base
   end
 
   def create_default_answers(task)
-    puts "Card contents: #{card_contents.size} / #{card_contents.count}"
-    default_answers = card_contents.select { |content| content.default_answer_value.present? }
-    puts "Default answers: #{default_answers.size}"
-    default_answers.each do |content|
-      answer = task.answers.create(
+    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
+      task.answers.create!(
         card_content: content,
         paper: task.paper,
         value: content.default_answer_value
       )
-      puts "Answer #{answer}"
-      puts "Answer errors: #{answer.errors.full_messages}" if answer.errors.any?
-      answer
     end
   end
 

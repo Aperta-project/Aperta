@@ -344,4 +344,28 @@ describe TahiStandardTasks::ReviewerMailer do
       end
     end
   end
+
+  describe '.thank_reviewer' do
+    subject(:email) { described_class.thank_reviewer(reviewer_report: report) }
+    let(:appreciation_email) { FactoryGirl.create(:letter_template, :thank_reviewer) }
+
+    before { report.paper.journal.letter_templates << appreciation_email }
+
+    it 'is addressed to the reviewer' do
+      expect(email.to).to eq([report.user.email])
+    end
+
+    it 'renders the subject' do
+      expect(email.subject).to eq("Thank you for reviewing #{report.paper.journal.name}")
+    end
+
+    it 'renders the email template' do
+      expect(email.body).to match("Dear #{report.user.first_name} #{report.user.last_name}")
+    end
+
+    it 'renders the signature' do
+      expect(email.body).to match('Kind regards')
+      expect(email.body).to match(report.paper.journal.name)
+    end
+  end
 end

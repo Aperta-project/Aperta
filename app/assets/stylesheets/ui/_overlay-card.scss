@@ -88,12 +88,12 @@ $ov--card-breakpoint: 900px;
     padding: 4rem $ov--card-side-pad;
 
     .card-content-view-text {
-      margin-left: 1em;
+
     }
 
     .card-content-dropdown, .card-content-radio,
     .card-content-short-input, .card-content-check-box {
-      min-width: 425px;
+      min-width: 435px;
     }
 
     .answer-container {
@@ -104,13 +104,13 @@ $ov--card-breakpoint: 900px;
 
    .answer {
       flex: 1 0 33%;
-      margin: 15px;
+      margin: -15px 15px 15px 0px;
     }
 
     .additional-text {
       flex: 1 0 35%;
-      margin: 15px;
-      min-width: 400px;
+      margin: 0px 15px 15px 15px;
+      min-width: 350px;
     }
 
     .model-question {

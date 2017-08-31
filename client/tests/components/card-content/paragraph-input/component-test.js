@@ -18,6 +18,7 @@ let template = hbs`{{card-content/paragraph-input
 answer=answer
 content=content
 disabled=disabled
+workingValue=workingValue
 }}`;
 test(`it displays the text from content.text in a <label>`, function(assert) {
   this.set('content', {text: 'Foo'});
@@ -37,7 +38,12 @@ test(`it disables the by marking it read-only if disabled=true`, function(assert
 test(`it displays the value from answer.value`, function(assert) {
   this.set('answer', {value: 'Bar'});
   this.render(template);
-  assert.textPresent('.format-input', 'Bar');
+  assert.equal(this.$('.ember-text-area').val(), 'Bar', 'Text is present in textarea');
+});
+test(`it displays workingValue when answer.value is not present`, function(assert) {
+  this.set('workingValue', 'Baz');
+  this.render(template);
+  assert.equal(this.$('.ember-text-area').val(), 'Baz', 'Text is present in textarea');
 });
 test('it displays error messages if present', function(assert){
   let errorsArr = ['Oh Noes', 'You fool!'];

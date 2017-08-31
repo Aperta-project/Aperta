@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# rubocop:disable Metrics/BlockLength
 describe ReviewerReportScenario do
   subject(:context) { ReviewerReportScenario.new(reviewer_report) }
 

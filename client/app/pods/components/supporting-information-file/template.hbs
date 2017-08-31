@@ -53,22 +53,21 @@
     {{#if legendsAllowed}}
       <div class="flex-group">
         <div class="flex-element">
-          {{format-input class="form-control si-file-title-input"
-                         placeholder="Enter a title"
-                         required=true
-                         name="title"
-                         value=file.title
-                         displayBold=false}}
+          {{card-content/paragraph-input
+            class="form-control si-file-title-input"
+            content=content
+            answer=answer
+            workingValue=file.title}}
         </div>
       </div>
 
       <div class="flex-group">
         <div class="flex-element">
-          {{format-input placeholder="Enter a legend (optional)"
-                         name="caption"
-                         class="form-control si-file-caption-textbox"
-                         value=file.caption
-                         displayBold=false}}
+          {{card-content/paragraph-input
+            class="form-control si-file-caption-textbox"
+            content=content
+            answer=answer
+            workingValue=file.caption}}
         </div>
       </div>
     {{/if}}

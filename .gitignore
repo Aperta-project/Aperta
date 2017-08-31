@@ -55,3 +55,4 @@ engines/*/Gemfile.lock
 *.dat
 
 diffs.txt
+dev_utils.rb

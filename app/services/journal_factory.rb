@@ -515,7 +515,7 @@ class JournalFactory
       end
     end
 
-    Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
+    Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:be_at_mentioned, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic)
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic)

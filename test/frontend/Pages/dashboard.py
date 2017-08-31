@@ -621,7 +621,8 @@ class DashboardPage(AuthenticatedPage):
         number = 'Manuscripts'
       inactive_section_title = self._get(self._dash_inactive_section_title)
       assert inactive_section_title.text == 'Inactive {0} ({1})'.format(number,
-                                                                        str(inactive_manuscripts))
+                                                                        str(inactive_manuscripts)), \
+        'Inactive {0} ({1}) not equal to {2}'.format(number, str(inactive_manuscripts), inactive_section_title.text)
       assert self._get(self._dash_inactive_role_th).text == 'Role'
       assert self._get(self._dash_inactive_status_th).text == 'Status'
       # TODO: Correct this call for the new R&P

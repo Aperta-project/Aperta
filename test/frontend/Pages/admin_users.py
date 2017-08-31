@@ -175,7 +175,7 @@ class AdminUsersPage(BaseAdminPage):
         result_username = result.find_element(*self._admin_users_row_username)
         logging.info('Clicking result set row for user {0}'.format(result_username.text))
         result_username.click()
-        time.sleep(2)
+        time.sleep(4) #bumping sleep per failure here: https://teamcity.plos.org/teamcity/viewLog.html?buildId=138228&tab=buildResultsDiv&buildTypeId=Aperta_NoNoseIntegrationTestOnSfoRc
         self._get(self._ud_overlay_title)
         user_details_closer = self._get(self._overlay_header_close)
         self._get(self._ud_overlay_fname_label)

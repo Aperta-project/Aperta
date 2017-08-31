@@ -15,9 +15,8 @@ export default Ember.Service.extend({
   start() {
     if (Ember.testing || window.RailsEnv.testing) { return; }
     const healthCheckEnabled = this.get('featureFlag').value('HEALTH_CHECK');
-    if (!healthCheckEnabled) {
-      return;
-    } else {
+
+    if (healthCheckEnabled) {
       this.get('poll').perform();
     }
   },

@@ -6,11 +6,11 @@ feature 'Task states permissions', js: true do
   let(:unsubmitted_paper) { FactoryGirl.create(:paper, :unsubmitted, :with_creator, journal: Journal.first) }
   let(:unsubmitted_paper_author) { unsubmitted_paper.creator }
   let(:staff_admin) { FactoryGirl.create(:user) }
-  let(:task) do
+  let!(:task) do
     FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: submitted_paper)
   end
-  let(:unsubmitted_paper_task) do
-    FactoryGirl.create(:data_availability_task, :with_loaded_card, paper: unsubmitted_paper)
+  let!(:unsubmitted_paper_task) do
+    FactoryGirl.create(:ethics_task, :with_loaded_card, paper: unsubmitted_paper)
   end
 
   before do
@@ -32,7 +32,7 @@ feature 'Task states permissions', js: true do
       scenario 'cannot see other tasks he/she does not own' do
         login_as(submitted_paper_author, scope: :user)
         visit "/papers/#{unsubmitted_paper.id}"
-        expect(page).not_to have_content('Data Availability')
+        expect(page).not_to have_content('Ethics')
       end
     end
     context 'for unsubmitted papers' do

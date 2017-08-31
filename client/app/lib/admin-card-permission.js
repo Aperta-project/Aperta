@@ -8,12 +8,24 @@ import Ember from 'ember';
  * @param {Ember.Array.<CardPermission>} permissions to
  * @param {string} filterByCardId to check for
  * @param {string} permissionAction the action for the permission, e.g. view
+ * @param {Ember.Object.<Role>} role optional the role of the permission
  * @return {Object} Found permission or undefined
 */
-export function findPermissionFromList(permissions, filterByCardId, permissionAction) {
+export function findPermissionFromList(permissions, filterByCardId, permissionAction, role) {
   return permissions.find((perm)=>{
-    return ((perm.get('permissionAction') === permissionAction) &&
-            (perm.get('filterByCardId') === filterByCardId));
+    var isMatch = (
+      (perm.get('permissionAction') === permissionAction) &&
+      (perm.get('filterByCardId') === filterByCardId)
+    );
+
+    if (!isMatch) { return false; }
+
+    //any permission removal should pass in a role
+    if (role) {
+      return perm.get('roles').filterBy('id', role.id).length > 0;
+    } else {
+      return true;
+    }
   });
 }
 

@@ -41,13 +41,15 @@
                           activeOrderDir=orderDir
                           sortAction=(action "sort")}}
             </th>
-            <th class="paper-tracker-paper-preprint-id-column">
-              {{sort-link text="Manuscript Preprint ID"
-                          orderBy="preprint_doi_article_number"
-                          activeOrderBy=orderBy
-                          activeOrderDir=orderDir
-                          sortAction=(action "sort")}}
-            </th>
+            {{#if preprintsEnabled}}
+              <th class="paper-tracker-paper-preprint-id-column">
+                {{sort-link text="Pre-print DOI"
+                            orderBy="preprint_doi_article_number"
+                            activeOrderBy=orderBy
+                            activeOrderDir=orderDir
+                            sortAction=(action "sort")}}
+              </th>
+            {{/if}}
             <th class="paper-tracker-date-column">
               {{sort-link text="Version Date"
                           orderBy="submitted_at"
@@ -116,7 +118,7 @@
     <h3>Saved Searches</h3>
     <ul>
     {{#each paperTrackerQueries as |query|}}
-      <li>{{paper-tracker-query query=query}}</li>
+      <li>{{paper-tracker-query query=query preprintsEnabled=preprintsEnabled}}</li>
     {{/each}}
 
     {{#if newQueryState}}

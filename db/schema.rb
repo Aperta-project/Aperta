@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823210046) do
+ActiveRecord::Schema.define(version: 20170829103915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,10 @@ ActiveRecord::Schema.define(version: 20170823210046) do
     t.string   "condition"
     t.boolean  "required_field"
     t.string   "error_message"
+    t.string   "child_tag"
+    t.string   "custom_class"
+    t.string   "custom_child_class"
+    t.string   "wrapper_tag"
   end
 
   add_index "card_contents", ["ident"], name: "index_card_contents_on_ident", using: :btree
@@ -506,6 +510,7 @@ ActiveRecord::Schema.define(version: 20170823210046) do
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "scenario"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
@@ -848,6 +853,7 @@ ActiveRecord::Schema.define(version: 20170823210046) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "destination",   null: false
+    t.string   "service_id"
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

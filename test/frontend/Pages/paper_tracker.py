@@ -335,11 +335,8 @@ class PaperTrackerPage(AuthenticatedPage):
     if total_count > 0:
       papers = self._get_paper_list(journal_ids)
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
+      logging.info(len(table_rows))
       for count, row in enumerate(table_rows):
-        if not db_papers[count][3]:
-          logging.warning('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
-          logging.warning('Aborting validation of paper content ordering.')
-          break
         logging.info('Validating Row: {0}'.format(count + 1))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (
@@ -366,6 +363,10 @@ class PaperTrackerPage(AuthenticatedPage):
             By.XPATH,
             '//tbody/tr[{0}]/td[@class="paper-tracker-cover-editor-column"]'.format(count + 1))
         title = self._get(self._paper_tracker_table_tbody_title)
+        if not db_papers[count][3]:
+          logging.warning('Paper without Date Submitted: id {0}'.format(db_papers[count][0]))
+          logging.warning('Aborting validation of paper content ordering.')
+          break
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, '
                            'Norman Coordinate: Invalid document')
@@ -466,6 +467,8 @@ class PaperTrackerPage(AuthenticatedPage):
             # ASK: Can we have an empty here?
             pass
         count += 1
+
+
       self._wait_for_element(self._get(self._paper_tracker_table_tbody_he), multiplier=2)
       handedits = self._get(self._paper_tracker_table_tbody_he)
       page_hes_by_role = handedits.text.split('\n')

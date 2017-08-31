@@ -63,11 +63,13 @@ module Authorizations
         hsh[name] = id
       end
 
-      permission_id_by_action_and_applies_to = Permission.where.not(
-        id: @pre_existing_permissions.map(&:id)
-      ).pluck(:id, :action, :applies_to).each_with_object({}) do |(id, action, applies_to), hsh|
-        hsh[[action, applies_to]] = id
-      end
+      permission_id_by_action_and_applies_to = \
+        Permission.non_custom_card
+        .where.not(id: @pre_existing_permissions.map(&:id))
+        .pluck(:id, :action, :applies_to)
+        .each_with_object({}) do |(id, action, applies_to), hsh|
+          hsh[[action, applies_to]] = id
+        end
 
       @permission_states_permissions_to_import = []
       @permission_definitions.each do |definition|
@@ -84,14 +86,14 @@ module Authorizations
           end
         end
       end
-
       PermissionStatesPermission.import [:permission_id, :permission_state_id], @permission_states_permissions_to_import
     end
 
     def import_permission_roles
-      permissions_ids_for_this_role = Permission.where.not(
-        id: @pre_existing_permission_ids
-      ).pluck(:id)
+      permissions_ids_for_this_role = \
+        Permission.where.not(id: @pre_existing_permission_ids)
+          .non_custom_card
+          .pluck(:id)
       permissions_ids_for_this_role.each do |permission_id, _arr|
         data = [permission_id, @role.id]
         @permission_roles_to_import << data
@@ -108,7 +110,7 @@ module Authorizations
     end
 
     def cache_data
-      @pre_existing_permissions = Permission.includes(:states)
+      @pre_existing_permissions = Permission.includes(:states).non_custom_card
       @pre_existing_permission_ids = @pre_existing_permissions.map(&:id)
       @pre_existing_states = PermissionState.all
       @pre_existing_permission_roles = PermissionsRole.all

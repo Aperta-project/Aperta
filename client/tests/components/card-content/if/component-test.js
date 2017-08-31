@@ -27,7 +27,7 @@ let parent = Ember.Object.extend({
   condition: 'isEditable',
   text: 'If Parent',
   answerForOwner() {
-    return { isEditable: true };
+    return { isEditable: true, set: function() {} };
   }
 });
 

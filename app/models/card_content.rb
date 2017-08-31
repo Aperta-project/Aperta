@@ -22,19 +22,12 @@ class CardContent < ActiveRecord::Base
   # and ident
   validates :parent_id,
             uniqueness: {
-              scope: [:card_version, :deleted_at],
+              scope: %i[card_version deleted_at],
               message: "Card versions can only have one root node."
             },
             if: -> { root? }
 
   has_many :answers
-
-  validates :ident,
-            uniqueness: {
-              scope: [:card_version, :deleted_at],
-              message: "CardContent idents must be unique"
-            },
-            if: -> { ident.present? }
 
   # -- Card Content Validations
   # Note that the checks present here work in concert with the xml validations
@@ -112,6 +105,10 @@ class CardContent < ActiveRecord::Base
       'ident' => ident,
       'content-type' => content_type,
       'value-type' => value_type,
+      'child-tag' => child_tag,
+      'custom-class' => custom_class,
+      'custom-child-class' => custom_child_class,
+      'wrapper-tag' => wrapper_tag,
       'visible-with-parent-answer' => visible_with_parent_answer,
       'default-answer-value' => default_answer_value
     }.merge(additional_content_attrs).compact
@@ -177,6 +174,12 @@ class CardContent < ActiveRecord::Base
   end
 
   # rubocop:enable Metrics/AbcSize
+
+  # recursively traverse nested card_contents
+  def traverse(visitor)
+    visitor.visit(self)
+    children.each { |card_content| card_content.traverse(visitor) }
+  end
 end
 
 private

@@ -3,9 +3,22 @@ require 'rails_helper'
 describe LetterTemplate do
   describe 'validations' do
     [:body, :subject].each do |attr_key|
-      it "should require a #{attr_key.to_s}" do
-        letter_template = FactoryGirl.build(:letter_template, attr_key => '')
-        expect(letter_template).not_to be_valid
+      it "requires a #{attr_key}" do
+        letter_template = LetterTemplate.new(attr_key => '')
+        expect(letter_template).to_not be_valid
+        expect(letter_template.errors[attr_key]).to include("can't be blank")
+      end
+    end
+
+    it 'requires #scenario to name a subclass of TemplateScenario' do
+      letter_template = LetterTemplate.new(scenario: "TahiStandardTasks::RegisterDecisionScenario")
+      letter_template.valid?
+      expect(letter_template.errors[:scenario]).to be_empty
+
+      [nil, 'Blah', 'TemplateScenario'].each do |value|
+        letter_template = LetterTemplate.new(scenario: value)
+        expect(letter_template).to_not be_valid
+        expect(letter_template.errors[:scenario]).to include('must name a subclass of TemplateScenario')
       end
     end
   end

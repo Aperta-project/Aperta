@@ -96,7 +96,6 @@ class CardContent < ActiveRecord::Base
 
   def default_answer_present_in_possible_values
     return if default_answer_value.blank? || possible_values.blank?
-
     values = possible_values.map { |v| v['value'] }
     return if values.include? default_answer_value
 

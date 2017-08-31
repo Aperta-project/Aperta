@@ -24,19 +24,30 @@ module Attributable
         ATTRIBUTE_CONTENTS[name] = type
 
         define_method(name) do
-          result = content_attributes.named(name).try(&:value)
+          attr = find_attribute_named(name)
+          result = attr.try(&:value)
           # puts "Synthetic getter #{name}, returning #{result.class} #{result}"
           result
         end
 
         define_method("#{name}=") do |contents|
-          attr = content_attributes.named(name)
+          attr = find_attribute_named(name)
           attr ||= content_attributes.new(name: name, value_type: ATTRIBUTE_CONTENTS[name])
           attr.value = contents
           attr.save! unless new_record?
           # puts "Synthetic setter #{name}, with #{contents.class} #{attr.value}"
           attr.value
         end
+      end
+    end
+
+private
+
+    def find_attribute_named(name)
+      if new_record?
+        content_attributes.detect { |each| each.name == name }
+      else
+        content_attributes.named(name)
       end
     end
   end

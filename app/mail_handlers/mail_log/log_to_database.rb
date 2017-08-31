@@ -41,7 +41,8 @@ module MailLog
             file = File.new("#{dir}/#{attachment.filename}", 'w+')
             begin
               file.write(attachment.body.raw_source.force_encoding('UTF-8'))
-              email_log.attachments.create!(file: file)
+              attachment = email_log.attachments.create!(file: file)
+              attachment.download!(attachment.file.url)
             ensure
               file.close
             end

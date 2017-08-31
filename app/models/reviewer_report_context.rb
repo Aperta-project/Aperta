@@ -5,14 +5,7 @@ class ReviewerReportContext < TemplateContext
      { name: :answers, context: AnswerContext, many: true }]
   end
 
-  def self.blacklisted_merge_fields
-    [:computed_status, :computed_datetime]
-  end
-
-  whitelist :state, :revision, :computed_status, :computed_datetime, :invitation_accepted?, :due_at
-
-  alias status computed_status
-  alias datetime computed_datetime
+  whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 
   def reviewer
     UserContext.new(@object.user)

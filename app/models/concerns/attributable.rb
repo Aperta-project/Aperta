@@ -36,7 +36,7 @@ module Attributable
           attr = send(getter)
           if contents.blank?
             attr.destroy if attr
-            self.reload
+            reload unless new_record?
             return contents
           end
 

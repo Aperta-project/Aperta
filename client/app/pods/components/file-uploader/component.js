@@ -164,7 +164,8 @@ export default Ember.TextField.extend({
       return this.sendAction('processingDone', data.files[0]);
     });
     uploader.on('fileuploadfail', (e, data) => {
-      Ember.getOwner(this).lookup('service:bugsnag').notifyUploadError(e);
+      Ember.getOwner(this).lookup('service:bugsnag')
+        .notifyException(e, {'File Detail': {'file': data.files[0]}});
       return this.sendAction('error', data);
     });
   }).on('didInsertElement')

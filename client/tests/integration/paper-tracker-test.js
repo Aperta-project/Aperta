@@ -45,6 +45,7 @@ module('Integration: Paper Tracker', {
     Factory.resetFactoryIds();
     App = startApp();
     server = setupMockServer();
+    $.mockjax({url: '/api/feature_flags.json', status: 200, responseText: {PREPRINT: true}});
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
     $.mockjax({url: '/api/paper_tracker_queries', status: 200, responseText: PTSortQuery});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
@@ -101,6 +102,9 @@ test('viewing papers', function(assert) {
     );
 
     assert.elementNotFound('.paper-tracker-date-column .fa-caret-up', 'No sort is applied before using saved query');
+    assert.elementNotFound('th .paper-tracker-paper-preprint-id-column', 'Preprint doi column header is hidden without flag present');
+    assert.elementNotFound('td .paper-tracker-paper-preprint-id-column', 'Preprint doi column is hidden without flag present');
+
     click('#paper-tracker-saved-searches a');
 
     andThen(function() {

@@ -1,6 +1,7 @@
 # Card is a container for CardContents
 class Card < ActiveRecord::Base
   include EventStream::Notifiable
+  include CustomCardVisitors
   include XmlSerializable
   include AASM
 
@@ -24,6 +25,7 @@ class Card < ActiveRecord::Base
       MSG
     }
 
+  validate :check_nested_errors, :check_semantics
   before_destroy :ensure_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
@@ -126,6 +128,33 @@ class Card < ActiveRecord::Base
       .where.not(parent_id: nil)
   end
 
+  # look for errors in nested child objects
+  def check_nested_errors
+    visitor = CardErrorVisitor.new
+    traverse(visitor)
+    most_recent_version.try do |version|
+      visitor.visit(version)
+      collect_errors_from(visitor)
+    end
+  end
+
+  # evaluate card semantics
+  def check_semantics
+    traverse(CardSemanticValidator.new)
+  end
+
+  # traverse card and its latest children
+  def traverse(visitor)
+    root = most_recent_version.try(:content_root)
+    return unless root
+    root.traverse(visitor)
+    collect_errors_from(visitor)
+  end
+
+  def collect_errors_from(visitor)
+    visitor.report.each { |error| errors.add(:detail, message: error) }
+  end
+
   # can take a version number or the symbol `:latest`
   def content_for_version(version_no)
     content_root_for_version(version_no).self_and_descendants
@@ -134,6 +163,11 @@ class Card < ActiveRecord::Base
   # can take a version number or the symbol `:latest`
   def content_root_for_version(version_no)
     card_version(version_no).content_root
+  end
+
+  # This method searches the in-memory versions, so it works for both create (new records) and update (persisted)
+  def most_recent_version
+    card_versions.detect { |card_version| card_version.version == latest_version }
   end
 
   # all the methods dealing with card content go through
@@ -183,6 +217,10 @@ class Card < ActiveRecord::Base
         skip_instruct: true
       )
     end
+  end
+
+  def xml=(xml_string)
+    update_from_xml(xml_string) if xml_string.present?
   end
 
   def update_from_xml(xml)

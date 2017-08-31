@@ -32,6 +32,10 @@ class PaperContext < TemplateContext
     @object.corresponding_authors.map { |ca| AuthorContext.new(ca) }
   end
 
+  def corresponding_author_emails
+    corresponding_authors.map(&:email).join(',')
+  end
+
   def editor
     return if @object.handling_editors.empty?
     UserContext.new(@object.handling_editors.first)

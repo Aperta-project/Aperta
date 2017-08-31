@@ -41,7 +41,8 @@ class InviteReviewersCard(InviteCard):
         report_state = invite.find_element(*self._invitee_report_state)
 
         if expected_report_state == 'pending':
-          assert 'Review due' in report_state.text, 'Review due not found in {0}'.format(report_state.text)
+          # due vs. pending is a feature flag difference... pending should be removeable later
+          assert ('Review due' in report_state.text or 'Review pending' in report_state.text), 'Review due/pending not found in {0}'.format(report_state.text)
           invite.find_element_by_css_selector('div.invitation-item-status span')
         elif expected_report_state == 'completed':
           assert 'Completed' in report_state.text, 'The report state: {0} is not the expected: Completed'.format(report_state.text)

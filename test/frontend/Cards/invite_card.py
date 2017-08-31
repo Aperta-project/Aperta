@@ -248,7 +248,10 @@ class InviteCard(BaseCard):
         status = invite.find_element(*self._invitee_state)
         assert response in ['Accept', 'Decline'], response
         if response == 'Accept':
-          assert 'Review due' in status.text or 'Accepted' in status.text, status.text
+          # Review due vs. Review pending is a feature flag.  Eventually we can remove Review pending
+          assert 'Review due' in status.text \
+                 or 'Review pending' in status.text \
+                 or 'Accepted' in status.text, status.text
         elif response == 'Decline':
           # Need to extend box to display text
           assert 'Decline' in status.text, status.text

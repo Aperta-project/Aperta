@@ -315,7 +315,7 @@ class InviteReviewersCardTest(CommonTest):
                                     (reviewer_user_id, paper_id))[0][0]
     except IndexError:
       test_for_role = False
-    if invite_response == 'Accept':
+    if invite_response == 'Accept' and test_for_role:
       assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
                                                                          reviewer_role_for_env)

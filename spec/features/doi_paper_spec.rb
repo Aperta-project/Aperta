@@ -22,14 +22,13 @@ feature "Paper DOI Generation", selenium: true, js: true do
         journal.manuscript_manager_templates.pluck(:paper_type).first
       }
 
-      let(:paper) {
+      let!(:paper) {
         FactoryGirl.create(:paper, journal: journal, paper_type: paper_type)
       }
 
       scenario "shows the manuscript id (derived from doi) on the page" do
         visit "/papers/#{paper.id}"
 
-        wait_for_ajax
         within ".task-list-doi" do
           expect(page).to have_content "Manuscript ID: robots.8888"
         end

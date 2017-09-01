@@ -14,7 +14,7 @@ module Attributable
   # rubocop:enable Style/MutableConstant
 
   included do
-    has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
+    has_many :content_attributes, -> { includes(:content_attributes) }, dependent: :destroy, inverse_of: :card_content
 
     def content_attributes_hash
       content_attributes.inject({}) {|hash, each| hash[each.name] = each.value; hash}.compact
@@ -36,6 +36,7 @@ module Attributable
           attr = send(getter)
           if contents.blank?
             if attr
+              attr.value = contents
               attr.destroy
               reload unless new_record?
             end

@@ -1,14 +1,18 @@
 {{#tab-bar}}
-  {{#link-to 'admin.journals.workflows' class='admin-nav-workflows'}}
-    {{fa-icon "columns"}}
-    Workflows
-  {{/link-to}}
+  {{#if (can "administer" journal)}}
+    {{#link-to 'admin.journals.workflows' class='admin-nav-workflows'}}
+      {{fa-icon "columns"}}
+      Workflows
+    {{/link-to}}
+  {{/if}}
 
   {{#if (feature-flag "CARD_CONFIGURATION")}}
-    {{#link-to 'admin.journals.cards' class='admin-nav-cards'}}
-      {{fa-icon "clone"}}
-      Cards
-    {{/link-to}}
+    {{#if (can "administer" journal)}}
+      {{#link-to 'admin.journals.cards' class='admin-nav-cards'}}
+        {{fa-icon "clone"}}
+        Cards
+      {{/link-to}}
+    {{/if}}
   {{/if}}
 
   {{#if (feature-flag "EMAIL_TEMPLATE")}}
@@ -23,8 +27,10 @@
     Users
   {{/link-to}}
 
-  {{#link-to 'admin.journals.settings' class='admin-nav-settings'}}
-    {{fa-icon "cog"}}
-    Settings
-  {{/link-to}}
+  {{#if (can "administer" journal)}}
+    {{#link-to 'admin.journals.settings' class='admin-nav-settings'}}
+      {{fa-icon "cog"}}
+      Settings
+    {{/link-to}}
+  {{/if}}
 {{/tab-bar}}

@@ -24,7 +24,7 @@ feature 'Publishing Related Questions Card', js: true do
       set_rich_text(editor: selector, text: title)
       wait_for_ajax
       text = get_rich_text(editor: selector)
-      expect(text).to eq("<p>#{title}</p>")
+      expect(text).to eq(title)
     end
 
     scenario 'upload attachment', flaky: true do

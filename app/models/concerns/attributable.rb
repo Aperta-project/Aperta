@@ -38,7 +38,7 @@ module Attributable
             if attr
               attr.value = contents
               attr.destroy
-              reload unless new_record?
+              reset unless new_record?
             end
             return contents
           end

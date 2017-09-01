@@ -194,7 +194,7 @@ class InviteReviewersCardTest(CommonTest):
       assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
                                                                          reviewer_role_for_env)
-    elif invite_response == 'Reject':
+    elif invite_response == 'Decline':
       assert not test_for_role
       # search for reply
       reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
@@ -205,8 +205,8 @@ class InviteReviewersCardTest(CommonTest):
                                            'AND decline_reason LIKE %s '
                                            'AND reviewer_suggestions LIKE %s;',
                                            (reviewer_user_id,
-                                            response_data[0]+'%',
-                                            response_data[1]+'%'))[0]
+                                            '<p>'+response_data[0]+'%',
+                                            '<p>'+response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
     dashboard_page.logout()
@@ -319,7 +319,7 @@ class InviteReviewersCardTest(CommonTest):
       assert test_for_role == reviewer_role_for_env, 'assigned role, {0}, is not the expected ' \
                                                      'value: {1}'.format(test_for_role,
                                                                          reviewer_role_for_env)
-    elif invite_response == 'Reject':
+    elif invite_response == 'Decline':
       assert not test_for_role
       # search for reply
       reasons, suggestions = PgSQL().query('SELECT decline_reason, reviewer_suggestions '
@@ -330,8 +330,8 @@ class InviteReviewersCardTest(CommonTest):
                                            'AND decline_reason LIKE %s '
                                            'AND reviewer_suggestions LIKE %s;',
                                            (reviewer_user_id,
-                                            response_data[0]+'%',
-                                            response_data[1]+'%'))[0]
+                                            '<p>'+response_data[0]+'%',
+                                            '<p>'+response_data[1]+'%'))[0]
       assert response_data[0] in reasons
       assert response_data[1] in suggestions
     dashboard_page.logout()

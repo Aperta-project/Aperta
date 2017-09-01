@@ -21,10 +21,9 @@ export default DS.Model.extend({
   }),
 
   preprintDoiAssigned: Ember.computed('destination', 'paper.aarxDoi', function(){
-    let destination = this.get('destination');
-    let preprintDoi = this.get('paper.aarxDoi');
-    let preprintDoiExists = preprintDoi !== undefined && preprintDoi !== null && preprintDoi.length > 0;
-    return destination === 'preprint' && preprintDoiExists;
+    let ppDoi = this.get('paper.aarxDoi');
+    let preprintDoiExists = ppDoi !== undefined && ppDoi !== null && ppDoi.length > 0;
+    return this.get('destination') === 'preprint' && preprintDoiExists;
   }),
 
   exportDoi: Ember.computed('paper.aarxDoi', 'paper.doi', 'destination', function() {

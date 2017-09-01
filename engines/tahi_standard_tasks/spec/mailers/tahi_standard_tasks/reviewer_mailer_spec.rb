@@ -262,6 +262,7 @@ describe TahiStandardTasks::ReviewerMailer do
     before do
       report.paper.journal.letter_templates.create!(
         name: template_name,
+        scenario: 'ReviewerReportScenario',
         subject: 'review {{ journal.name }}',
         body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} on {{ review.due_at }} </p>'
       )

@@ -83,18 +83,21 @@
   }
 
   .answer-container {
-      display: inline-flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
+    display: inline-flex;
+    display: -webkit-inline-flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    -webkit-flex-flow: row wrap;
+    -webkit-justify-content: space-between;
   }
 
   .answer {
     flex: 1 0 33%;
     margin: -15px 15px 15px 0px;
+    width: 455px;
   }
 
   .additional-text {
-    flex: 1 0 35%;
     margin: 0px 15px 15px 15px;
     min-width: 350px;
   }

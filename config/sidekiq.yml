@@ -11,3 +11,6 @@
     # https://github.com/moove-it/sidekiq-scheduler#schedule-types
     cron: '0 1 0 * * * America/Los_Angeles'
     class: PlosBillingLogExportWorker
+  scheduled_events:
+    every: 1m
+    class: ScheduledEventsWorker

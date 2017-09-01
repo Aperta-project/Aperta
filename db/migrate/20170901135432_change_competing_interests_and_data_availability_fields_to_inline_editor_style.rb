@@ -1,0 +1,3 @@
+class ChangeCompetingInterestsAndDataAvailabilityFieldsToInlineEditorStyle < DataMigration
+  RAKE_TASK_UP = 'data:migrate:aperta_11101_change_competing_interests_and_data_availability_fields_to_inline_editor_style'.freeze
+end

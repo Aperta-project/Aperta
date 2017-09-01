@@ -55,7 +55,7 @@ module CustomCard
                 </text>
                 <content content-type="display-with-value" visible-with-parent-answer="true">
                   <content content-type="field-set">
-                    <content content-type="paragraph-input" value-type="html" editor-style="basic" ident="competing_interests--statement">
+                    <content content-type="paragraph-input" value-type="html" editor-style="inline" ident="competing_interests--statement">
                       <text>
                         <![CDATA[Please provide details about any and all competing interests in the box below. Your response should begin with this statement: "I have read the journal's policy and the authors of this manuscript have the following competing interests."<br><br>Please note that if your manuscript is accepted, this statement will be published.]]>
                       </text>

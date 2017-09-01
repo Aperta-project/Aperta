@@ -1043,5 +1043,6 @@ class DashboardPage(AuthenticatedPage):
       try:
         self._wait_for_element(self._get(self._dash_active_section_title))
       except ElementDoesNotExistAssertionError:
-        self._wait_for_element(self._get(self._dashboard_info_text))
+        #self._wait_for_element(self._get(self._dashboard_info_text))
+        self._wait_on_lambda(lambda: self._get(self._dashboard_info_text))
     self.restore_timeout()

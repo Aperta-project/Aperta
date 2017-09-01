@@ -245,7 +245,12 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     upms._wait_for_element(upms._get(upms._completion_button))
     upms.click_completion_button()
     # look for errors here
-    warning = upms._get(upms._upload_source_warning)
+    warnings = upms._gets(upms._upload_source_warning)
+    warning = None
+    for w in warnings:
+      if w.get_attribute('title') != '':
+        warning = w
+        break
     assert warning.get_attribute('title') == 'Please upload your source file', \
         '{0} not Please upload your source file'.format(warning.get_attribute('title'))
     manuscript_page.complete_task('Upload Manuscript', data={'source': ''})

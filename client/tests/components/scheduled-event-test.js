@@ -45,7 +45,7 @@ test('renders past scheduled differences properly', function (assert) {
 test('completed events should be shown as "Sent"', function (assert) {
   let scheduledEvents = [
     FactoryGuy.make('scheduled-event', {
-      name: 'Pre Event', state: 'complete',
+      name: 'Pre Event', state: 'completed',
       dispatchAt: moment(this.get('dueDate')).subtract(2, 'days')
     }),
   ];
@@ -58,7 +58,7 @@ test('errored events should be shown as warnings', function (assert) {
   let scheduledEvents = [
     FactoryGuy.make('scheduled-event', {
       name: 'Pre Event',
-      state: 'error',
+      state: 'errored',
       dispatchAt: moment(this.get('dueDate')).subtract(2, 'days')
     }),
   ];

@@ -21,9 +21,21 @@ describe ScheduledEvent do
       expect(subject.active?).to be true
     end
 
-    it 'can move from active to complete' do
+    it 'can move from active to processing' do
       subject.trigger
-      expect(subject.complete?).to be true
+      expect(subject.processing?).to be true
+    end
+
+    it 'can move from processing to completed' do
+      subject.trigger
+      subject.complete
+      expect(subject.completed?).to be true
+    end
+
+    it 'can move from processing to errored' do
+      subject.trigger
+      subject.error
+      expect(subject.errored?).to be true
     end
   end
 
@@ -82,6 +94,35 @@ describe ScheduledEvent do
         subject.trigger!
         expect(subject.should_reactivate?).to be false
       end
+    end
+  end
+
+  describe '#trigger[!]' do
+    it 'can only be called from an active state' do
+      %w[inactive completed errored processing].each do |non_triggerable_state|
+        subject.state = non_triggerable_state
+        expect { subject.trigger }.to raise_exception(AASM::InvalidTransition)
+        expect { subject.trigger! }.to raise_exception(AASM::InvalidTransition)
+      end
+    end
+  end
+
+  describe '#send_email' do
+    before do
+      subject.name = 'Pre-due Reminder'
+      subject.state = 'processing'
+      allow_any_instance_of(TahiStandardTasks::ReviewerMailer).to receive(:remind_before_due)
+    end
+
+    it 'should error if the email cannot be sent' do
+      subject.send_email
+      expect(subject.state).to eq('errored')
+    end
+
+    it 'should complete if the email is sent' do
+      subject.due_datetime = DueDatetime.create! due_at: DateTime.now.utc - 1.day
+      subject.send_email
+      expect(subject.state).to eq('completed')
     end
   end
 end

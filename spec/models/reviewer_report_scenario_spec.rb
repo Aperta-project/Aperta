@@ -4,9 +4,7 @@ describe ReviewerReportScenario do
   subject(:context) { ReviewerReportScenario.new(reviewer_report) }
 
   describe 'rendering' do
-    let(:reviewer_report) do
-      FactoryGirl.create(:reviewer_report)
-    end
+    let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
 
     it 'renders the due date' do
       due_at = 2.weeks.from_now

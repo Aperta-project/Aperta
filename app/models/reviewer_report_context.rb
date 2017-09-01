@@ -12,10 +12,20 @@ class ReviewerReportContext < TemplateContext
   end
 
   def reviewer_number
-    @object.task.reviewer_number
+    reviewer_report.task.reviewer_number
   end
 
   def answers
-    @object.answers.map { |a| AnswerContext.new(a) }
+    reviewer_report.answers.map { |a| AnswerContext.new(a) }
+  end
+
+  def due_at
+    reviewer_report.due_at.strftime("%B %e, %l%P %Z")
+  end
+
+  private
+
+  def reviewer_report
+    @object
   end
 end

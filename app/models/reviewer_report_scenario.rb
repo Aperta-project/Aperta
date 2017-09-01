@@ -4,7 +4,7 @@ class ReviewerReportScenario < TemplateScenario
     [{ name: :review, context: ReviewerReportContext },
      { name: :reviewer, context: UserContext },
      { name: :journal, context: JournalContext },
-     { name: :paper, context: PaperContext }]
+     { name: :manuscript, context: PaperContext }]
   end
 
   def review
@@ -19,7 +19,7 @@ class ReviewerReportScenario < TemplateScenario
     JournalContext.new(reviewer_report.paper.journal)
   end
 
-  def paper
+  def manuscript
     PaperContext.new(reviewer_report.paper)
   end
 

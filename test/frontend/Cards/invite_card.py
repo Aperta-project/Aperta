@@ -259,7 +259,7 @@ class InviteCard(BaseCard):
           reason_suggestions = self._get(self._reason_suggestions).text
           reason_suggestions = self.normalize_spaces(reason_suggestions)
           assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
-          assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
+          assert suggestions in reason_suggestions, u'{0} not in {1}'.format(suggestions,
                                                                              reason_suggestions)
 
   def validate_card_elements_styles(self, user, card_type, short_doi):

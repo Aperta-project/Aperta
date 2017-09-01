@@ -80,6 +80,17 @@
     font-weight: 700;
     margin-right: 0.1em;
   }
+
+  li {
+    div {
+      display: inline;
+      p {
+        display: inline;
+      }
+    }
+
+  }
+
 }
 
 .yes-no-with-comments {

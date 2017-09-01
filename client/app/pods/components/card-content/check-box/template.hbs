@@ -4,21 +4,18 @@
       <span class="required-field">*</span>
     {{/if}}</p>
 {{/if}}
-
-{{check-box
+{{card-content/validation-errors errors=answer.readyIssuesArray}}
+<label for={{name}}>{{check-box
   name=name
   id=name
   checked=answer.value
   disabled=disabled
   content=content
   answer=answer
-  action="valueChanged"}}
-{{#if content.label}}
-  <label for={{name}}>{{{content.label}}}</label>
-{{/if}}
-<p>{{card-content/validation-errors errors=answer.readyIssuesArray}}</p>
+  action="valueChanged"}}{{{content.label}}}
+</label>
 {{card-content/display-children
-content=content
-owner=owner
-disabled=disabled
-preview=preview}}
+  content=content
+  owner=owner
+  disabled=disabled
+  preview=preview}}

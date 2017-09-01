@@ -1,0 +1,12 @@
+<%= @body.html_safe %>
+
+<%= render partial: 'email/button', locals: {
+  href: client_paper_url(@paper),
+  text: 'View Manuscript'
+} %>
+
+<p>Kind regards,<br />
+  Bethany Coates<br />
+  Publications Manager<br />
+  PLOS Biology
+</p>

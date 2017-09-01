@@ -36,7 +36,7 @@
     }
   }
 
-  @media #{$media-type} #{$expr} {
+  @media #{$media-type} and #{$expr} {
     @content;
   }
 }

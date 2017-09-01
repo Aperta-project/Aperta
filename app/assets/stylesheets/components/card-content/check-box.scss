@@ -1,5 +1,9 @@
 .card-content-check-box {
-    .content-text {
-        margin-top: 15px;
-    }
+  .content-text {
+    margin-top: 15px;
+  }
+
+  label input[type="checkbox"] {
+    margin-right: .5em;
+  }
 }

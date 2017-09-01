@@ -9,6 +9,10 @@ class CardContentSerializer < ActiveModel::Serializer
              :instruction_text,
              :possible_values,
              :text,
+             :custom_child_class,
+             :child_tag,
+             :custom_class,
+             :wrapper_tag,
              :value_type,
              :editor_style,
              :condition,
@@ -29,5 +33,10 @@ class CardContentSerializer < ActiveModel::Serializer
 
   def order
     object.lft
+  end
+
+  def default_answer_value
+    return object.default_answer_value == 'true' ? true : false if object.value_type == 'boolean'
+    object.default_answer_value
   end
 end

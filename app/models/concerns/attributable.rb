@@ -35,8 +35,10 @@ module Attributable
         define_method("#{name}=") do |contents|
           attr = send(getter)
           if contents.blank?
-            attr.destroy if attr
-            reload unless new_record?
+            if attr
+              attr.destroy
+              reload unless new_record?
+            end
             return contents
           end
 

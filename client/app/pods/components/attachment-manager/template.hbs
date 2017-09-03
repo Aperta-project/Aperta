@@ -3,9 +3,6 @@
     {{#if (or preview (not disabled))}}
       {{{description}}}
     {{/if}}
-    {{#if content.isRequired}}
-    <span class="required-field">*</span>
-    {{/if}}
   </p>
 {{/if}}
 
@@ -57,6 +54,8 @@
                          start=(action "fileAdded")}}
     </div>
   </div>
+  {{#if content.isRequired}}
+    <span class="required-field">*</span>
+  {{/if}}
 {{/if}}
-
 <div>{{card-content/validation-errors errors=answer.readyIssuesArray}}</div>

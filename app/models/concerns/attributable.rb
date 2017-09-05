@@ -9,11 +9,15 @@ module Attributable
     json:    %w[possible_values]
   }.freeze
 
+  ATTRIBUTE_TYPES = CONTENT_ATTRIBUTES.each_with_object({}) do |(type, names), hash|
+    names.each { |name| hash[name] = type }
+  end.freeze
+
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
 
     def content_attributes_hash
-      content_attributes.each_with_object({}) { |hash, each| hash[each.name] = each.value }.compact
+      content_attributes.each_with_object({}) { |each, hash| hash[each.name] = each.value }.compact
     end
 
     CONTENT_ATTRIBUTES.each do |type, names|
@@ -28,7 +32,7 @@ module Attributable
         end
 
         define_method("#{name}=") do |new_value|
-          content_attribute = content_attributes.where(name: name, value_type: type).first_or_initialize
+          content_attribute = content_attributes.where(name: name, value_type: ATTRIBUTE_TYPES[name]).first_or_initialize
           content_attribute.value = new_value
           send(setter, content_attribute)
         end

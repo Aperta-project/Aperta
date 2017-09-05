@@ -8,9 +8,10 @@ describe JIRAIntegrationService do
   end
 
   describe '#authenticate!' do
+    let(:session_token) { "{\"session\":{\"name\":\"JSESSIONID\",\"value\":\"559C7096593C2750DE94950F437DBABE\"}}" }
     context 'successfully' do
       before do
-        allow_any_instance_of(RestClient).to receive(:post).and_return "{\"session\":{\"name\":\"JSESSIONID\",\"value\":\"559C7096593C2750DE94950F437DBABE\"}}"
+        allow_any_instance_of(RestClient::Request).to receive(:execute).and_return session_token
         subject.authenticate!
       end
       it 'should populate the session' do
@@ -19,16 +20,13 @@ describe JIRAIntegrationService do
     end
     context 'unsuccessful' do
       before do
-        allow_any_instance_of(RestClient).to receive(:post).and_return "{}"
-        subject.authenticate!
+        allow_any_instance_of(RestClient::Request).to receive(:execute).and_return "{}"
       end
       it 'should indicate the error in the session' do
+        subject.clear_session
+        subject.authenticate!
         expect(subject.jira_session).to be nil
       end
     end
-  end
-
-  describe '#create_issue' do
-    it 'should have well-formed arguments'
   end
 end

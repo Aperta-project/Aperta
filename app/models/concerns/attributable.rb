@@ -35,7 +35,10 @@ module Attributable
         define_method("#{name}=") do |contents|
           attr = send(getter)
           if contents.blank?
-            attr.destroy if attr
+            if attr
+              attr.destroy
+              send(setter, nil)
+            end
             return contents
           end
 

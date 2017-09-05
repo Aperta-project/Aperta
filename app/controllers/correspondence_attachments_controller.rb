@@ -15,8 +15,6 @@ class CorrespondenceAttachmentsController < ApplicationController
   end
 
   def show
-    ensure_correspondence
-    # @correspondence = Correspondence.find params[:correspondence_id]
     render json: @correspondence.attachments, status: :ok
   end
 

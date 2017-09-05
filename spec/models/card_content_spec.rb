@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe CardContent do
-  subject(:card_content) { FactoryGirl.create(:card_content) }
+  subject(:card_content) { FactoryGirl.build(:card_content) }
 
   context 'validation' do
     it 'is valid' do
@@ -18,7 +18,7 @@ describe CardContent do
 
       context "with possible values" do
         subject(:card_content) do
-          FactoryGirl.create(
+          FactoryGirl.build(
             :card_content,
             content_type: "radio",
             value_type: "text",
@@ -39,7 +39,7 @@ describe CardContent do
     end
 
     context '#to_xml' do
-      let!(:card_content) { FactoryGirl.create(:card_content, :with_string_match_validation, ident: 'thing') }
+      let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation, ident: 'thing') }
       let(:expected_xml) do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>

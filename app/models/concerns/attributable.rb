@@ -13,11 +13,13 @@ module Attributable
   ATTRIBUTE_CONTENTS = {}
   # rubocop:enable Style/MutableConstant
 
+  # rubocop:disable Metrics/BlockLength
+
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
 
     def content_attributes_hash
-      content_attributes.inject({}) {|hash, each| hash[each.name] = each.value; hash}.compact
+      content_attributes.each_with_object({}) { |hash, each| hash[each.name] = each.value }.compact
     end
 
     CONTENT_ATTRIBUTES.each do |type, names|

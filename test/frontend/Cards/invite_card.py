@@ -185,7 +185,7 @@ class InviteCard(BaseCard):
     self.attach_file(fn)
 
     # Used to have a long sleep here that would still occasionally fail resulting in a index error below
-    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 2)
+    self._wait_on_lambda(lambda: len(self._gets(self._replace_attachment)) >= 2, max_wait=60)
 
     # look for file name and replace attachment link
     self._wait_for_element(self._gets(self._replace_attachment)[1])
@@ -248,7 +248,10 @@ class InviteCard(BaseCard):
         status = invite.find_element(*self._invitee_state)
         assert response in ['Accept', 'Decline'], response
         if response == 'Accept':
-          assert 'Review due' in status.text or 'Accepted' in status.text, status.text
+          # Review due vs. Review pending is a feature flag.  Eventually we can remove Review pending
+          assert 'Review due' in status.text \
+                 or 'Review pending' in status.text \
+                 or 'Accepted' in status.text, status.text
         elif response == 'Decline':
           # Need to extend box to display text
           assert 'Decline' in status.text, status.text
@@ -256,7 +259,7 @@ class InviteCard(BaseCard):
           reason_suggestions = self._get(self._reason_suggestions).text
           reason_suggestions = self.normalize_spaces(reason_suggestions)
           assert reason in reason_suggestions, u'{0} not in {1}'.format(reason, reason_suggestions)
-          assert suggestions in reason_suggestions, u'{0} not in {1}'.format(reason,
+          assert suggestions in reason_suggestions, u'{0} not in {1}'.format(suggestions,
                                                                              reason_suggestions)
 
   def validate_card_elements_styles(self, user, card_type, short_doi):

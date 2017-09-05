@@ -12,6 +12,7 @@ This test case validates the Aperta profile page
 
 import logging
 import os
+import time
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.common_test import CommonTest
@@ -94,6 +95,7 @@ class ApertaProfileTest(CommonTest):
     profile_page.add_affiliation_cancel()
     profile_page.click_add_affiliation_button()
     new_affiliation = profile_page.add_affiliation(profile_user)
+    time.sleep(2) #immediate validation of new or modified affiliations fail intermittently
     profile_page.validate_affiliation(new_affiliation)
     # Clean up after ourselves so we don't get too many pre-existing affiliations
     profile_page.clear_transients()
@@ -120,12 +122,14 @@ class ApertaProfileTest(CommonTest):
       # If not, add affiliation to edit
       profile_page.click_add_affiliation_button()
       new_affiliation = profile_page.add_affiliation(profile_user)
+      time.sleep(2)  # immediate validation of new or modified affiliations fail intermittently
       profile_page.validate_affiliation(new_affiliation)
     else:
       new_affiliation = aff_list
     logging.debug(new_affiliation)
     edited_affiliation = profile_page.edit_affiliation(new_affiliation)
     logging.info(edited_affiliation)
+    time.sleep(2)  # immediate validation of new or modified affiliations fail intermittently
     profile_page.validate_affiliation(edited_affiliation)
     # clean up after
     profile_page.clear_transients()
@@ -151,6 +155,7 @@ class ApertaProfileTest(CommonTest):
       # If not, add affiliation to edit
       profile_page.click_add_affiliation_button()
       affiliation_to_delete = profile_page.add_affiliation(profile_user)
+      time.sleep(2)  # immediate validation of new or modified affiliations fail intermittently
       profile_page.validate_affiliation(affiliation_to_delete)
     else:
       affiliation_to_delete = aff_list

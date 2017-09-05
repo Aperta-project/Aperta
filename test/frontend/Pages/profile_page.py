@@ -666,16 +666,14 @@ class ProfilePage(AuthenticatedPage):
       department = aff.find_element(*self._profile_affiliation_dept)
       title = aff.find_element(*self._profile_affiliation_title)
       country = aff.find_element(*self._profile_affiliation_country)
-      date_range = aff.find_element(*self._profile_affiliation_dates)
-      # APERTA-8381
-      # start_date, end_date = date_range.text.split(' - ')
       aff_email = aff.find_element(*self._profile_affiliation_email)
       if institution.text == expected_inst and department.text == expected_dept and title.text == \
           expected_title and country.text == expected_country and aff_email.text == expected_email:
         logging.info('Affiliation Validates')
         return
-      logging.debug(u'{0}, {1}, {2}, {3}, {4}'.format(institution.text, department.text,
+      logging.info(u'{0}, {1}, {2}, {3}, {4}'.format(institution.text, department.text,
                                                       title.text, country.text, aff_email.text))
+    logging.info(affiliation_definition_list)
     assert False, 'The expected affiliation was not found at all...'
 
   def validate_no_affiliation(self, affiliation_definition_list):

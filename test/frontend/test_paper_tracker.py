@@ -61,7 +61,6 @@ class ApertaPaperTrackerTest(CommonTest):
     user_type = random.choice(users)
     dashboard_page = self.cas_login(email=user_type['email'])
     dashboard_page.click_paper_tracker_link()
-
     pt_page = PaperTrackerPage(self.getDriver())
     (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type['user'])
     logging.info('Total count is {0} for {1}'.format(total_count, journals_list))

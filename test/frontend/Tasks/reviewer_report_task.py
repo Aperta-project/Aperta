@@ -410,9 +410,6 @@ class ReviewerReportTask(BaseTask):
       q6_page_ans = qb6.find_element(*self._fm_q6_answer)
       self.validate_application_body_text(q6_page_ans)
       assert q6_page_ans.text == q6_data, '{0} != {1}'.format(q6_page_ans.text, q6_data)
-    report_submit_status = self._get(self._submitted_status)
-    assert 'Completed' in report_submit_status.text, report_submit_status.text
-    self.validate_application_list_style(report_submit_status)
 
   def complete_reviewer_report(self, recommendation=''):
     """
@@ -528,11 +525,6 @@ class ReviewerReportTask(BaseTask):
     confirm_yes = self._get(self._submit_confirm_yes_btn)
     confirm_yes.click()
     time.sleep(1)
-    # Once again, have to re-define this due to dynamic attachment to the DOM - otherwise Stale
-    #  Reference Exception
-    # self._submitted_status = (By.CLASS_NAME, 'long-status')
-    # Note: Wait for 'Completed' to make sure confirm is acknowledged
-    self._wait_for_text_be_present_in_element(self._submitted_status, 'Completed')
     if research_type:
       outdata = [recommendation,
                  q2radval,

@@ -529,7 +529,8 @@ class FiguresTask(BaseTask):
     :return: void function
     """
     try:
-      self._wait_for_element(self._get(self._figure_processing_div), multiplier=1)
+      self._wait_for_element(self._get(self._figure_processing_div), multiplier=6)
+      # increased above to 6 due to observed intermittent runtime test failure
     except ElementDoesNotExistAssertionError:
       logging.info('The spinner either cleared too fast, or never appeared.')
 

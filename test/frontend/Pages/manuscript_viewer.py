@@ -655,6 +655,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
       if data and 'file_name' in data:
         supporting_info.add_file(data['file_name'])
         time.sleep(5)
+
+        file_label = (By.CLASS_NAME, 'si-file-label-field')
+        self._get(file_label).send_keys("1")
+        time.sleep(.3)
+        self._get((By.CSS_SELECTOR, 'span.ember-power-select-placeholder')).click()
+        time.sleep(.3)
+        self._gets((By.CLASS_NAME, 'ember-power-select-option'))[1].click()
+        time.sleep(.3)
+        self._get((By.CLASS_NAME, 'si-file-save-edit-button')).click()
+
         assert self._get(supporting_info._si_trash_icon)
         edit_btn = self._get(supporting_info._si_pencil_icon)
         edit_btn.click()

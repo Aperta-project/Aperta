@@ -11,6 +11,7 @@ import tempfile
 from time import sleep
 import os
 import time
+import inspect
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -106,13 +107,21 @@ class PlosPage(object):
      :param max_wait: maximum amount of time to wait for it to be true
     """
     for x in range(0, max_wait):
+      saved_exception = None
       try:
         if wait_lambda():
           return
         else:
           time.sleep(1)
-      except ElementDoesNotExistAssertionError:
+      except ElementDoesNotExistAssertionError as edneae:
         time.sleep(1)
+        saved_exception = edneae
+
+    if None is saved_exception:
+      lambda_src = inspect.getsource(wait_lambda)
+      raise TimeoutException('{0} not satisfied before {1} seconds passed'.format(lambda_src, max_wait))
+    else:
+      raise saved_exception
 
   def _iget(self, locator):
     """

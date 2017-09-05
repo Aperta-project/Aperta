@@ -621,7 +621,8 @@ class DashboardPage(AuthenticatedPage):
         number = 'Manuscripts'
       inactive_section_title = self._get(self._dash_inactive_section_title)
       assert inactive_section_title.text == 'Inactive {0} ({1})'.format(number,
-                                                                        str(inactive_manuscripts))
+                                                                        str(inactive_manuscripts)), \
+        'Inactive {0} ({1}) not equal to {2}'.format(number, str(inactive_manuscripts), inactive_section_title.text)
       assert self._get(self._dash_inactive_role_th).text == 'Role'
       assert self._get(self._dash_inactive_status_th).text == 'Status'
       # TODO: Correct this call for the new R&P
@@ -832,6 +833,7 @@ class DashboardPage(AuthenticatedPage):
     for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
         logging.info('Found {0} in list item: {1}'.format(journal, item.text))
+        self._scroll_into_view(item)
         item.click()
         time.sleep(1)
         break
@@ -1041,5 +1043,6 @@ class DashboardPage(AuthenticatedPage):
       try:
         self._wait_for_element(self._get(self._dash_active_section_title))
       except ElementDoesNotExistAssertionError:
-        self._wait_for_element(self._get(self._dashboard_info_text))
+        #self._wait_for_element(self._get(self._dashboard_info_text))
+        self._wait_on_lambda(lambda: self._get(self._dashboard_info_text))
     self.restore_timeout()

@@ -125,7 +125,3 @@ class ReviewerReportCard(BaseCard):
       assert q6ans.text == q6entry, '{0} != {1}'.format(q6ans.text, q6entry)
     # This out of place re-definition is necessary to avoid a stale reference exception because the
     #  element has been redefined since initial load of the card.
-    self._submitted_status = (By.CLASS_NAME, 'long-status')
-    report_submit_status = self._get(self._submitted_status)
-    assert 'Completed' in report_submit_status.text, report_submit_status.text
-    self.validate_application_list_style(report_submit_status)

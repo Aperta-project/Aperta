@@ -69,22 +69,9 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
-  // pastePostprocess() {
-  //   let editor = this.get('editor');
-  //   let text = editor.getContent();
-  //   text = text.replace(/<p> *(&nbsp;)* *<\/p>/ig, '');
-  //   Ember.run.next((function() {editor.setContent(text);
-  //   }));
-  // },
-
-  // pastePostprocess(editor, fragment) {
-  //  debugger;
-  //  fragment.node.innerHTML = fragment.node.innerHTML.replace(/<p>&nbsp;<\/p>|<p><span data-ccp-props[^>]+>&nbsp;<\/span><\/p>/g, '')
-  // },
-
   pastePostprocess(editor, fragment) {
     function deleteEmptyParagraph(elem) {
-      if (elem.nodeName === 'DIV' && /^<p> *(&nbsp;)* *<\/p>/.test(elem.innerText)) {
+      if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
         elem.remove();
       } else {
         Array.from(elem.children).forEach(deleteEmptyParagraph);

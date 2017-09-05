@@ -129,7 +129,7 @@ export default Ember.Controller.extend({
         isUploading: false
       });
 
-      if (template.is_preprint_eligible) {
+      if (template.is_preprint_eligible && template.task_names.includes('Preprint Posting')) {
         this.set('showPreprintOverlay', true);
       } else {
         this.transitionToRoute('paper.index', manuscript, {

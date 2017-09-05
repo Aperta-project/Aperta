@@ -13,6 +13,8 @@ class TaskTemplate < ActiveRecord::Base
   validates :title, presence: true
   validate :only_one_mold
 
+  delegate :required_for_submission, to: :latest, allow_nil: true
+
   acts_as_list scope: :phase_template
 
   # setting_template_key is defined in Configurable
@@ -22,6 +24,10 @@ class TaskTemplate < ActiveRecord::Base
     else
       "TaskTemplate:#{card.name}"
     end
+  end
+
+  def latest
+    card.latest_published_card_version if card
   end
 
   private

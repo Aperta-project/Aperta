@@ -32,7 +32,7 @@ feature 'Task states permissions', js: true do
       scenario 'cannot see other tasks he/she does not own' do
         login_as(submitted_paper_author, scope: :user)
         visit "/papers/#{unsubmitted_paper.id}"
-        expect(page).not_to have_content('Ethics')
+        expect(page).not_to have_content('Figures')
       end
     end
     context 'for unsubmitted papers' do

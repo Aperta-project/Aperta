@@ -9,8 +9,6 @@ module Attributable
     json:    %w[possible_values]
   }.freeze
 
-  # rubocop:disable Metrics/BlockLength
-
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
 

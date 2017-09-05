@@ -20,7 +20,7 @@ module Attributable
       content_attributes.each_with_object({}) { |each, hash| hash[each.name] = each.value }.compact
     end
 
-    CONTENT_ATTRIBUTES.each do |type, names|
+    CONTENT_ATTRIBUTES.each do |_type, names|
       names.each do |name|
         getter = "#{name}_attribute".to_sym
         setter = "#{name}_attribute=".to_sym

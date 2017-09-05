@@ -22,8 +22,4 @@ class ContentAttribute < ActiveRecord::Base
     end
     content
   end
-
-  def self.named(name)
-    where(name: name).first
-  end
 end

@@ -9,10 +9,6 @@ module Attributable
     json:    %w[possible_values]
   }.freeze
 
-  # rubocop:disable Style/MutableConstant
-  ATTRIBUTE_CONTENTS = {}
-  # rubocop:enable Style/MutableConstant
-
   # rubocop:disable Metrics/BlockLength
 
   included do
@@ -24,34 +20,19 @@ module Attributable
 
     CONTENT_ATTRIBUTES.each do |type, names|
       names.each do |name|
-        ATTRIBUTE_CONTENTS[name] = type
-
         getter = "#{name}_attribute".to_sym
         setter = "#{name}_attribute=".to_sym
+
         has_one getter, -> { where(name: name) }, class_name: 'ContentAttribute'
 
         define_method(name) do
           send(getter).try(&:value)
         end
 
-        define_method("#{name}=") do |contents|
-          attr = send(getter)
-          if contents.blank?
-            if attr
-              attr.destroy
-              send(setter, nil)
-            end
-            return contents
-          end
-
-          unless attr
-            attr = content_attributes.new(name: name, value_type: ATTRIBUTE_CONTENTS[name])
-            send(setter, attr)
-          end
-
-          attr.value = contents
-          attr.save! unless new_record?
-          attr.value
+        define_method("#{name}=") do |new_value|
+          content_attribute = content_attributes.where(name: name, value_type: type).first_or_initialize
+          content_attribute.value = new_value
+          send(setter, content_attribute)
         end
       end
     end

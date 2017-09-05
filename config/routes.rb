@@ -152,8 +152,8 @@ Tahi::Application.routes.draw do
       end
       resources :task_types, only: :index, controller: 'paper_task_types'
       resources :available_cards, only: :index
-      resources :correspondence, only: [:index, :create] do
-        resources :attachment, only: :create, controller: :correspondence_attachments
+      resources :correspondence, only: [:index, :create, :show] do
+        resources :attachment, only: [:create, :show], controller: :correspondence_attachments
       end
       resources :similarity_checks, only: :index
 

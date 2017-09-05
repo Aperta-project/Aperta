@@ -7,7 +7,6 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   doneUploading: false,
   isUploading: false,
   restless: Ember.inject.service(),
-  store: Ember.inject.service(),
 
   prepareModelDate() {
     let date = this.get('dateSent');
@@ -98,8 +97,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
       // be added to the correspondence list as it is being created.
       model.set('paper', this.get('paper'));
 
-      model.save().then((data) => {
-        const store = this.get('store');      
+      model.save().then(() => {
         this.clearAllValidationErrors();
 
         if (this.get('attachment')) {
@@ -108,9 +106,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
           let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
           this.get('restless').post(postUrl, {
             url: this.get('attachment.data')
+          }).then(function () {
+            model.reload();
           });
         }
-        store.pushPayload(data);      
+
         this.sendAction('close');
       }, (failure) => {
         // Break the association to remove this from the index.

@@ -17,8 +17,13 @@ module CustomCard
 
     # rubocop:disable Metrics/AbcSize
     def migrate
-      old_card_version = Card.find_by!(name: legacy_class_name)
-        .latest_published_card_version
+      old_card_version = Card.find_by(name: legacy_class_name)
+        .try(:latest_published_card_version)
+
+      unless old_card_version
+        Rails.logger.info "card: #{legacy_class_name} could not be found: migration skipped"
+        return
+      end
 
       Card.transaction do
         Journal.pluck(:id).each do |journal_id|

@@ -8,5 +8,9 @@ module PaperConverters
     def supporting_information_files
       []
     end
+
+    def output_data
+      user_pdf = parsed_uploaded_pdf
+    end
   end
 end

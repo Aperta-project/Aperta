@@ -61,7 +61,7 @@ module CustomCard
                     </content>
                   </content>
                 </content>
-                <content ident="ethics--animal_subject" content-type="radio" value-type="boolean">
+                <content ident="ethics--animal_subjects" content-type="radio" value-type="boolean">
                   <text>
                     <![CDATA[<div class="question-text"> Does your study involve animal research (vertebrate animals, embryos or tissues)?</div>]]>
                   </text>

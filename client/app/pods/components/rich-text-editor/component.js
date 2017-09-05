@@ -69,17 +69,33 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
-  pastePostprocess() {
-    let editor = this.get('editor');
-    let text = editor.getContent();
-    text = text.replace(/<p> *(&nbsp;)* *<\/p>/ig, '');
-    Ember.run.next((function() {editor.setContent(text);
-    }));
+  // pastePostprocess() {
+  //   let editor = this.get('editor');
+  //   let text = editor.getContent();
+  //   text = text.replace(/<p> *(&nbsp;)* *<\/p>/ig, '');
+  //   Ember.run.next((function() {editor.setContent(text);
+  //   }));
+  // },
+
+  // pastePostprocess(editor, fragment) {
+  //  debugger;
+  //  fragment.node.innerHTML = fragment.node.innerHTML.replace(/<p>&nbsp;<\/p>|<p><span data-ccp-props[^>]+>&nbsp;<\/span><\/p>/g, '')
+  // },
+
+  pastePostprocess(editor, fragment) {
+    function deleteEmptyParagraph(elem) {
+      if (elem.nodeName === 'DIV' && /^<p> *(&nbsp;)* *<\/p>/.test(elem.innerText)) {
+        elem.remove();
+      } else {
+        Array.from(elem.children).forEach(deleteEmptyParagraph);
+      }
+    }
+    deleteEmptyParagraph(fragment.node);
   },
 
   postRender() {
     let editor = this.childViews.find(child => child.editor).editor;
-    this.set('editor', editor);      
+    this.set('editor', editor);
     let iframeSelector = 'iframe#' + editor.id + '_ifr';
     document.querySelector(iframeSelector).removeAttribute('title');
     let callback = this.get('focusOut');
@@ -95,7 +111,7 @@ export default Ember.Component.extend({
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
     options['paste_postprocess'] = this.pastePostprocess.bind(this);
-    
+
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }

@@ -10,7 +10,7 @@ feature 'Task states permissions', js: true do
     FactoryGirl.create(:final_tech_check_task, :with_loaded_card, paper: submitted_paper)
   end
   let!(:unsubmitted_paper_task) do
-    FactoryGirl.create(:ethics_task, :with_loaded_card, paper: unsubmitted_paper)
+    FactoryGirl.create(:figure_task, :with_loaded_card, paper: unsubmitted_paper)
   end
 
   before do

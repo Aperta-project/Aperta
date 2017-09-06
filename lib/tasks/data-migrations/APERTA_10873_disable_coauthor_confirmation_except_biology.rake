@@ -9,7 +9,8 @@ namespace :data do
 
     task APERTA_10873_disable_coauthor_confirmation_except_biology: :environment do
       Journal.all.each do |journal|
-        value = journal.name == "PLOS biology" ? true : false
+        journal_name = journal.name.downcase.delete(" ")
+        value = journal_name == "plosbiology" ? true : false
 
         journal.settings.create(name: "coauthor_confirmation_enabled",
                                 value_type: 'boolean',

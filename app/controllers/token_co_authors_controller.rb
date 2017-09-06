@@ -3,6 +3,7 @@
 class TokenCoAuthorsController < ApplicationController
   before_action :assign_template_vars
 
+  # not sure if anything here needs to be disabled
   def show
     if @author.co_author_confirmed?
       redirect_to thank_you_token_co_author_path(token)

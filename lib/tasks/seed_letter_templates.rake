@@ -330,7 +330,7 @@ namespace :seed do
           lt.subject = 'Thank you for reviewing for {{ journal.name }}'
           lt.body = <<-TEXT.strip_heredoc
           <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }}</p>
-          <p>Thank you for taking the time to review the manuscript “{{ paper.title }}”, for {{ journal.name }}.
+          <p>Thank you for taking the time to review the manuscript “{{ manuscript.title }}”, for {{ journal.name }}.
           We greatly appreciate your assistance with the review process, especially given the many competing demands on your time.</p>
           <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future. 
           If you have any questions or feedback, please do not hesitate to contact us at {{ journal.staff_email }}.</p>

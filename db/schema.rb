@@ -853,7 +853,7 @@ ActiveRecord::Schema.define(version: 20170830170028) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   null: false
+    t.string   "destination",   default: "apex", null: false
     t.string   "service_id"
   end
 

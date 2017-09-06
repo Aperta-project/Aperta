@@ -61,9 +61,9 @@ test('it strips empty <p></p> tags from a pasted word text', function(assert) {
   let editor = findEditor('bar');
   assert.elementFound(editor);
   assert.equal(getRichText('bar'), '');
-
   pasteText('bar', '<p></p>this is <p></p>a pasted text<p></p>');
-  assert.equal(getRichText('bar'), 'this is a pasted text');
+  assert.equal(findEditor('bar').getContent({format: 'raw'}),
+    '<br data-mce-bogus=\"1\"><div>this is a pasted text</div>');
 });
 
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {

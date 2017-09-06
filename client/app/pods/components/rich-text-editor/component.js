@@ -27,6 +27,7 @@ export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
+  editor: null,
 
   bodyCSS: `
     .mce-content-body {
@@ -69,7 +70,10 @@ export default Ember.Component.extend({
   },
 
   pastePostprocess(editor, fragment) {
+    // console.log(`Name: ${elem.nodeName} contents: *${elem.innerText}*`)
+    // debugger;
     function deleteEmptyParagraph(elem) {
+      // debugger;
       if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
         elem.remove();
       } else {

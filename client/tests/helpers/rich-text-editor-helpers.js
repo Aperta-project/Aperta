@@ -17,6 +17,8 @@ export function setRichText(name, text) {
 
 export function pasteText(name, text) {
   let editor = findEditor(name);
-  editor.execCommand('insertHTML', false, text);
+  let dom = editor.dom;
+  let tempBody = dom.add(editor.getBody(), 'div', { }, text);
+  editor.fire('PastePostProcess', {node: tempBody, internal: false});
   editor.target.triggerSave();
 }

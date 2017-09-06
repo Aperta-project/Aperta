@@ -1,10 +1,11 @@
 # Provides a template context for ReviewerReports
 class ReviewerReportContext < TemplateContext
-  whitelist :state, :revision, :computed_status, :computed_datetime,
-            :invitation_accepted?
+  def self.complex_merge_fields
+    [{ name: :reviewer, context: UserContext },
+     { name: :answers, context: AnswerContext, many: true }]
+  end
 
-  alias status computed_status
-  alias datetime computed_datetime
+  whitelist :state, :revision, :status, :datetime, :invitation_accepted?, :due_at
 
   def reviewer
     UserContext.new(@object.user)

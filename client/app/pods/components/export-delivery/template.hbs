@@ -1,5 +1,8 @@
 <td colspan="2" class="export-delivery-message">
   Export <strong>{{ delivery.humanReadableState }}</strong>. {{ delivery.errorMessage }}
+  {{#if delivery.preprintDoiAssigned}}
+    <br/>Assigned preprint DOI: {{delivery.exportDoi}}
+  {{/if}}
 </td>
 
 <td class="export-delivery-date">

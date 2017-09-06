@@ -24,13 +24,10 @@
 
     <div>
       {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
-
         {{#if formatted}}
-          {{format-input name=ident
-                         value=answer.value
+          {{card-content/paragraph-input
+                         workingValue=answer.value
                          class=inputClassNames
-                         placeholder=placeholderText
-                         displayBold=false
                          focus-out=(action "save")
                          disabled=disabled}}
         {{else}}

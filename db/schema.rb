@@ -511,6 +511,7 @@ ActiveRecord::Schema.define(version: 20170830170028) do
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "scenario"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
@@ -852,7 +853,8 @@ ActiveRecord::Schema.define(version: 20170830170028) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   default: "apex", null: false
+    t.string   "destination",   null: false
+    t.string   "service_id"
   end
 
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|

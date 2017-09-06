@@ -1,8 +1,10 @@
 <% if ENV['BUGSNAG_JAVASCRIPT_API_KEY'] %>
-  <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js", data-apikey="<%= ENV['BUGSNAG_JAVASCRIPT_API_KEY'] %>"></script>
+  <script src="//d2wy8f7a9ursnm.cloudfront.net/bugsnag-2.min.js"
+          data-apikey="<%= ENV['BUGSNAG_JAVASCRIPT_API_KEY'] %>"
+          data-appversion="<%= Rails.configuration.x.git_commit_id %>"
+          data-releasestage="<%= Rails.env %>">
+  </script>
   <script type="text/javascript">
-    Bugsnag.releaseStage = "<%= Rails.env %>";
-    Bugsnag.notifyReleaseStages = ["staging", "production"];
     window.ErrorNotifier = {};
     window.ErrorNotifier['notify'] = function(error, label) {
       Bugsnag.notifyException(error, label);

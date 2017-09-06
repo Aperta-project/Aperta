@@ -62,7 +62,7 @@ module CustomCard
                 <content ident="reporting_guidelines--meta_analyses" content-type="check-box" value-type="boolean">
                   <label>Meta Analyses</label>
                   <content content-type="display-with-value" visible-with-parent-answer="true">
-                    <content content-type="field-set">
+                    <content content-type="display-children" custom-class="card-content-field-set">
                       <content ident="reporting_guidelines--meta_analyses--checklist" content-type="file-uploader" value-type="attachment">
                         <text>
                           <![CDATA[<div class="question-text">Provide a completed PRISMA checklist as supporting information. You can <a target="_blank" href="http://www.prisma-statement.org">download it here.</a></div>]]>

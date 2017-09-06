@@ -70,10 +70,7 @@ export default Ember.Component.extend({
   },
 
   pastePostprocess(editor, fragment) {
-    // console.log(`Name: ${elem.nodeName} contents: *${elem.innerText}*`)
-    // debugger;
     function deleteEmptyParagraph(elem) {
-      // debugger;
       if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
         elem.remove();
       } else {

@@ -61,9 +61,11 @@ test('it strips empty <p></p> tags from a pasted word text', function(assert) {
   let editor = findEditor('bar');
   assert.elementFound(editor);
   assert.equal(getRichText('bar'), '');
-  pasteText('bar', '<p></p>this is <p></p>a pasted text<p></p>');
-  assert.equal(findEditor('bar').getContent({format: 'raw'}),
-    '<br data-mce-bogus=\"1\"><div>this is a pasted text</div>');
+  pasteText('bar', '<p>foo</p><p>&nbsp;</p><p>bar</p>');
+  // after striping off empty paragraphs, TinymCE returns a div class with
+  // the rest of the text(the text sits in between this div) , this occur
+  // when we use the {format: raw} which we can get rid off for this test
+  assert.ok(findEditor('bar').getContent({format: 'raw'}).indexOf('<p>foo</p><p>bar</p>') !== -1);
 });
 
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {

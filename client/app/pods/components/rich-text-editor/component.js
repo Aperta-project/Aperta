@@ -27,7 +27,6 @@ export default Ember.Component.extend({
   classNames: ['rich-text-editor'],
   attributeBindings: ['data-editor'],
   'data-editor': Ember.computed.alias('ident'),
-  editor: null,
 
   bodyCSS: `
     .mce-content-body {

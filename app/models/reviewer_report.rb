@@ -2,6 +2,7 @@
 class ReviewerReport < ActiveRecord::Base
   include Answerable
   include AASM
+  include TahiStandardTasks
 
   default_scope { order('decision_id DESC') }
 
@@ -64,6 +65,7 @@ class ReviewerReport < ActiveRecord::Base
     end
 
     event(:submit,
+          after_commit: [:thank_reviewer],
           guards: [:invitation_accepted?], after: [:set_submitted_at]) do
       transitions from: :review_pending, to: :submitted
     end
@@ -167,5 +169,9 @@ class ReviewerReport < ActiveRecord::Base
       end
     end
     period
+  end
+
+  def thank_reviewer
+    ReviewerMailer.thank_reviewer(reviewer_report: self).deliver_later
   end
 end

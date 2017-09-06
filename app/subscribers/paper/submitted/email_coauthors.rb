@@ -3,7 +3,7 @@ class Paper::Submitted::EmailCoauthors
     paper = event_data[:record]
     previous_state = paper.previous_changes[:publishing_state][0]
 
-    return nil unless paper.journal.setting("coauthor_confirmation_enabled").value
+    return unless paper.journal.setting("coauthor_confirmation_enabled").value
 
     if previous_state == 'unsubmitted' || previous_state == 'invited_for_full_submission'
       coauthors = paper.all_authors.reject { |author| author.try(:email) == paper.creator.email }

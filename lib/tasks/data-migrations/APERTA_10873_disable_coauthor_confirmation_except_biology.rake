@@ -1,10 +1,10 @@
 namespace :data do
   namespace :migrate do
     desc <<-DESC
-      APERTA-11027: Adisable_coauthor_confirmation_except_biology
+      APERTA-11027: disable_coauthor_confirmation_except_biology
 
-      Create a boolean setting on all existing journals that enables or disables coauthor confirmation.
-      It should be set to false for all journals besides biology
+      There is a setting template which sets the default value of "coauthor_confirmation_enabled"
+      to false for all journals. We want to set it true only for PLOS Biology
     DESC
 
     task APERTA_10873_disable_coauthor_confirmation_except_biology: [:environment, "settings:seed_setting_templates"] do

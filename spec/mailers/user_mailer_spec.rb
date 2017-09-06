@@ -193,12 +193,6 @@ describe UserMailer, redis: true do
       paper.all_authors.map(&:full_name)
     end
 
-    FactoryGirl.create(:setting_template,
-                       key: "Journal",
-                       setting_name: "coauthor_confirmation_enabled",
-                       value_type: 'boolean',
-                       boolean_value: true)
-
     it "sends the email to a group coauthor and list all authors" do
       expect(email_1.to).to contain_exactly(author_2.email)
       expect(email_1.subject).to eq("Authorship Confirmation of Manuscript Submitted to #{paper.journal.name}")

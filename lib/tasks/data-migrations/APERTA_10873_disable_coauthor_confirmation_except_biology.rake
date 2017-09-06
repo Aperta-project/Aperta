@@ -7,15 +7,10 @@ namespace :data do
       It should be set to false for all journals besides biology
     DESC
 
-    task APERTA_10873_disable_coauthor_confirmation_except_biology: :environment do
-      Journal.all.each do |journal|
-        journal_name = journal.name.downcase.delete(" ")
-        value = journal_name == "plosbiology" ? true : false
+    task APERTA_10873_disable_coauthor_confirmation_except_biology: [:environment, "settings:seed_setting_templates"] do
 
-        journal.settings.create(name: "coauthor_confirmation_enabled",
-                                value_type: 'boolean',
-                                boolean_value: value)
-      end
+      Journal.find_by!(name: "PLOS Biology").setting("coauthor_confirmation_enabled")
+        .update(value: true)
     end
   end
 end

@@ -95,7 +95,7 @@ class UserMailer < ApplicationMailer
     @paper = Paper.find(paper_id)
     @journal = @paper.journal
 
-    return unless @journal.setting(:coauthor_confirmation_enabled).value
+    return unless @journal.setting("coauthor_confirmation_enabled").value
 
     @authors = @paper.all_authors
     @coauthor = coauthor_type.constantize.find(coauthor_id)

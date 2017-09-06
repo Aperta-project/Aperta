@@ -80,6 +80,10 @@ class Journal < ActiveRecord::Base
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
 
+  def setting_template_key
+    'Journal'
+  end
+
   def self.staff_admins_for_papers(papers)
     journals = joins(:papers)
                .where(papers: { id: papers })

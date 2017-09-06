@@ -12,8 +12,9 @@ module Configurable
   # setting templates for a given key will be global ones (where journal id is
   # nil) or ones where journal is this Configurable's journal
   def setting_templates
+    journals = respond_to?(:journal) ? [nil, journal] : [nil]
     SettingTemplate.where(key: setting_template_key,
-                          journal: [nil, journal])
+                          journal: journals)
   end
 
   def setting_template_key

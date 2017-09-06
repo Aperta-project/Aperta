@@ -66,6 +66,12 @@ describe ReviewerReport do
       add_invitation(:rescinded)
       expect(subject.invitation_accepted?).to be false
     end
+
+    it 'is true for an accepted invitation with a previous declined invitation' do
+      add_invitation(:declined)
+      add_invitation(:accepted)
+      expect(subject.invitation_accepted?).to be true
+    end
   end
 
   describe "#status" do

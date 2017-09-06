@@ -23,6 +23,9 @@ class JournalFactory
     ensure_default_roles_and_permissions_exist
     assign_hints
     assign_default_system_custom_cards
+    @journal.settings.create(name: "coauthor_confirmation_enabled",
+                             value_type: 'boolean',
+                             boolean_value: false)
     @journal
   end
 

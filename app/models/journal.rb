@@ -1,5 +1,6 @@
 class Journal < ActiveRecord::Base
   include EventStream::Notifiable
+  include Configurable
 
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}

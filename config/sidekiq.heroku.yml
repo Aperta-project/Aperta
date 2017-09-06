@@ -4,3 +4,7 @@
   - mailers
   - eventstream
 :dynamic: true
+:schedule:
+  scheduled_events:
+    every: 1m
+    class: ScheduledEventsWorker

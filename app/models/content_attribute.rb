@@ -20,6 +20,5 @@ class ContentAttribute < ActiveRecord::Base
     when 'integer' then self.integer_value = content
     when 'json'    then self.json_value    = content
     end
-    content
   end
 end

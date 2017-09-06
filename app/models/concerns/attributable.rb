@@ -12,10 +12,6 @@ module Attributable
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
 
-    def content_attributes_hash
-      content_attributes.each_with_object({}) { |each, hash| hash[each.name] = each.value }.compact
-    end
-
     CONTENT_ATTRIBUTES.each do |type, names|
       names.each do |name|
         getter = "#{name}_attribute".to_sym
@@ -24,7 +20,7 @@ module Attributable
         has_one getter, -> { where(name: name) }, class_name: 'ContentAttribute'
 
         define_method(name) do
-          send(getter).try(&:value)
+          send(getter).try(:value)
         end
 
         define_method("#{name}=") do |new_value|

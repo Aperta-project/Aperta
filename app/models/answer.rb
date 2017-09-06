@@ -65,6 +65,8 @@ class Answer < ActiveRecord::Base
   def answer_blank?
     if card_content.value_type == 'attachment'
       attachments.empty?
+    elsif card_content.content_type == 'check-box'
+      value != true
     elsif value.nil?
       true
     elsif value.kind_of?(String)

@@ -12,7 +12,7 @@
       </button>
     {{/if}}
     {{#if task.taskNotReady}}
-      <span class="error-message">Please correct errors where indicated</span>
+      <span class="error-message">{{completedErrorText}}</span>
     {{/if}}
     {{#if validationErrors.completed}}
       {{error-message message=validationErrors.completed}}

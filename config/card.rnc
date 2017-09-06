@@ -149,12 +149,6 @@ display-with-value-content = element content {
                                  content*
                              }
 
-field-set = element content {
-                attribute ident { text }?,
-                attribute content-type { "field-set" },
-                content*
-            }
-
 export-paper = element content {
                 attribute ident { text }?,
                 attribute content-type { "export-paper" },
@@ -176,7 +170,6 @@ content = (
            display-children-content |
            display-with-value-content |
            export-paper |
-           field-set |
            check-box-input |
            file-uploader |
            dropdown-input |

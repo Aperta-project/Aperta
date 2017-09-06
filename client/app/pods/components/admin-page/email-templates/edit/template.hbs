@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
-      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Emails{{/link-to}}
+      {{#link-to "admin.journals.emailtemplates" template.journalId class="email-editor-header-back"}}&lt; Email Templates{{/link-to}}
       <h1>
         {{template.name}}
       </h1>
@@ -22,20 +22,22 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-9">
-              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
-                <label for="subject" class="text-bold">Subject:</label>
-                {{input class="form-control" id="subject" value=template.subject}}
+              <div class="form-group">
+                <label for="subject" class="text-bold">Subject <span class="error">*</span></label>
+                {{input class="form-control {{unless (or unsaved template.subject) 'error'}}" id="subject" value=template.subject}}
                 {{#unless (or unsaved template.subject)}}
-                  <span>{{fa-icon 'warning'}} Please enter a subject line</span>
+                  <span class="{{unless (or unsaved template.subject) 'error'}}">{{fa-icon 'warning'}} Please enter a subject line</span>
                 {{/unless}}
+                {{#if subjectError}}<span class="error">{{subjectError}}</span>{{/if}}
               </div>
-              
+
               <div class="form-group {{unless (or unsaved template.body) 'error'}}">
-                <label for="body" class="text-bold">Body:</label>
+                <label for="body" class="text-bold">Body <span class="error">*</span></label>
                 {{textarea id="body" class="form-control" value=template.body}}
                 {{#unless (or unsaved template.body)}}
                   <span>{{fa-icon 'warning'}} Please enter body text</span>
                 {{/unless}}
+                {{#if bodyError}}<span>{{bodyError}}</span>{{/if}}
               </div>
             </div>
             <div class="col-xs-3 available-merge-fields-col">

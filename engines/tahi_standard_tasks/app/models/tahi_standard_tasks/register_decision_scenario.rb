@@ -14,6 +14,7 @@ module TahiStandardTasks
         @reviews ||= paper.draft_decision.reviewer_reports.map do |rr|
           ReviewerReportContext.new(rr)
         end
+        @reviews.sort_by(&:reviewer_number)
       end
     end
 

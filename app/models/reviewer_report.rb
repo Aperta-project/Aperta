@@ -70,7 +70,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def invitation
-    @invitation ||= decision.invitations.find_by(invitee_id: user.id)
+    @invitation ||= decision.latest_invitation(invitee_id: user.id)
   end
 
   def invitation_accepted?

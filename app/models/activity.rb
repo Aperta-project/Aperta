@@ -296,4 +296,15 @@ class Activity < ActiveRecord::Base
       message: "Paper state changed to #{to}"
     )
   end
+
+  def self.reminder_sent!(reminder)
+    task_klass = reminder.due_datetime.due.class.name
+    task_id = reminder.due_datetime.due.id
+    create(
+      feed_name: 'workflow',
+      activity_key: 'reminder.sent',
+      subject: reminder.due_datetime.due.paper,
+      message: "#{reminder.name} was sent for #{task_klass}[#{task_id}]"
+    )
+  end
 end

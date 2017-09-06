@@ -1,8 +1,19 @@
 {{#each content.children as |child|}}
-  {{card-content
+  {{#if (and (eq childTag 'li') (not-eq child.contentType 'display-children'))}}
+    <li class={{customChildClass}}>
+    {{card-content
+      content=child
+      disabled=disabled
+      owner=owner
+      answerChanged=answerChanged
+      preview=preview}}
+    </li>
+  {{else}}
+    {{card-content
     content=child
     disabled=disabled
     owner=owner
     answerChanged=answerChanged
     preview=preview}}
+  {{/if}}
 {{/each}}

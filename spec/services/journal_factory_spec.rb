@@ -8,8 +8,19 @@ describe JournalFactory do
   # run we use this helper method to strip them all away. If you see
   # a direct call to ".descendants" in this file it should likely be wrapped
   # using this helper method.
+
+  TASK_ACTIONS = ['add_email_participants',
+                  'edit',
+                  'manage',
+                  'manage_invitations',
+                  'manage_participant',
+                  'view',
+                  'view_participants',
+                  'view_discussion_footer',
+                  'edit_discussion_footer'].freeze
+
   def without_anonymous_classes(klasses)
-    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' }
+    klasses.select { |klass| klass.name.present? && klass.name != 'MetadataTestTask' && klass.name != 'InvitableTestTask' && klass.name != 'QueryParserSpec::FictionalReport' && klass.name != 'ScheduledEventTestTask' }
   end
 
   describe '.create' do
@@ -152,9 +163,15 @@ describe JournalFactory do
       end
 
       after(:all) do
-        Permission.destroy_all
-        Role.destroy_all
-        Journal.destroy_all
+        Permission.all.delete_all
+        Role.all.delete_all
+        Journal.all.delete_all
+        CardContent.all.delete_all
+        CardContent.all.with_deleted.delete_all! # Really delete
+        CardVersion.all.delete_all
+        CardVersion.all.with_deleted.delete_all! # Really delete
+        Card.all.delete_all
+        Card.all.with_deleted.delete_all! # Really delete
       end
 
       let!(:journal) { @journal }
@@ -892,17 +909,6 @@ describe JournalFactory do
         end
 
         context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'edit',
-              'manage',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
-          end
 
           it <<-DESC do
             can :add_email_participants on all Tasks
@@ -914,7 +920,7 @@ describe JournalFactory do
             can :view_participants  on all Tasks
           DESC
             (non_custom_task_klasses - billing_task_klasses).each do |task|
-              task_actions.each do |action|
+              TASK_ACTIONS.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
                 )
@@ -923,7 +929,7 @@ describe JournalFactory do
           end
 
           it 'has no additional Task permissions' do
-            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+            expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
           it 'cannot :view or :edit the PlosBilling::BillingTask' do
@@ -1021,17 +1027,6 @@ describe JournalFactory do
         end
 
         context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'manage',
-              'edit',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
-          end
 
           it <<-DESC do
             can :add_email_participants on all Tasks
@@ -1043,7 +1038,7 @@ describe JournalFactory do
             can :view_participants  on all Tasks
           DESC
             (non_custom_task_klasses - billing_task_klasses).each do |task|
-              task_actions.each do |action|
+              TASK_ACTIONS.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
                 )
@@ -1052,7 +1047,7 @@ describe JournalFactory do
           end
 
           it 'has no additional Task permissions' do
-            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+            expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
           it 'cannot :view or :edit the PlosBilling::BillingTask' do
@@ -1146,17 +1141,6 @@ describe JournalFactory do
         end
 
         context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'edit',
-              'manage',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
-          end
 
           it <<-DESC do
             can :add_email_participants on all Tasks
@@ -1168,7 +1152,7 @@ describe JournalFactory do
             can :view_participants  on all Tasks
           DESC
             (non_custom_task_klasses - billing_task_klasses).each do |task|
-              task_actions.each do |action|
+              TASK_ACTIONS.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
                 )
@@ -1177,7 +1161,7 @@ describe JournalFactory do
           end
 
           it 'has no additional Task permissions' do
-            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+            expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
           it 'cannot :view or :edit the PlosBilling::BillingTask' do
@@ -1420,17 +1404,6 @@ describe JournalFactory do
         end
 
         context 'has Task permission to' do
-          let(:task_actions) do
-            [
-              'add_email_participants',
-              'edit',
-              'manage',
-              'manage_invitations',
-              'manage_participant',
-              'view',
-              'view_participants'
-            ]
-          end
 
           it <<-DESC do
             can :add_email_participants on all Tasks except billing tasks
@@ -1444,7 +1417,7 @@ describe JournalFactory do
             without_anonymous_classes(
               Task.descendants - [PlosBilling::BillingTask, CustomCardTask]
             ).each do |task|
-              task_actions.each do |action|
+              TASK_ACTIONS.each do |action|
                 expect(permissions).to include(
                   Permission.find_by(action: action.to_s, applies_to: task.to_s)
                 )
@@ -1453,7 +1426,7 @@ describe JournalFactory do
           end
 
           it 'has no additional Task permissions' do
-            expect(permissions_on_task.map(&:action) - task_actions).to eq([])
+            expect(permissions_on_task.map(&:action) - TASK_ACTIONS).to eq([])
           end
 
           it 'cannot :view or :edit the PlosBilling::BillingTask' do

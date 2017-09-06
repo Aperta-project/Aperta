@@ -77,7 +77,7 @@
   {{/if}}
   <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
     {{fa-icon icon="upload"}} Upload Document
-    {{file-uploader elementId="upload-files"
+    {{file-uploader uploaderId="upload-files"
                        accept=fileTypes
                        validateFileTypes=true
                        filePrefix="paper/manuscript"

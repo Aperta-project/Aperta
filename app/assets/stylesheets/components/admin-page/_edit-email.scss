@@ -1,10 +1,19 @@
 .edit-email-backsplash {
-  padding-top: 20px;
   background-color: $aperta-grey-light;
+}
+
+.edit-email-button.button-primary {
+  margin: 8px 0;
+  padding: 5px 30px;
 }
 
 .edit-email-well {
   background-color: white;
+  padding: 24px;
+  border-radius: 6px;
+}
+.edit-email-well #body {
+  height: 574px;
 }
 
 .admin-email-template-row {
@@ -19,4 +28,27 @@
   &:hover {
     color: $aperta-blue;
   };
+}
+
+.available-merge-fields-header {
+  margin: 24px 0px 4px;
+  font-size: 18px;
+}
+
+.available-merge-fields {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 614px;
+  color: $aperta-grey;
+  background-color: $aperta-grey-lighter;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+.available-merge-field-group {
+  margin: 8px 0;
+  .available-merge-field, .available-merge-field-group {
+    margin-left: 10px;
+  }
 }

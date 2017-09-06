@@ -78,6 +78,15 @@ feature 'Create a new Manuscript', js: true, sidekiq: :inline! do
 
   scenario 'MMTs that are preprint-eligible show preprint offer overlay' do
     journal.manuscript_manager_templates.each { |mmt| mmt.update(is_preprint_eligible: true) }
+    c = FactoryGirl.create :card, journal: journal
+    FactoryGirl.create :card_version,
+      card: c,
+      required_for_submission: true,
+      published_at: DateTime.current,
+      version: 2,
+      history_entry: 'test'
+    FactoryGirl.create :task_template, title: "Preprint Posting", phase_template_id: 1, card: c, journal_task_type: nil
+
     with_aws_cassette('manuscript-new') do
       login_as(user, scope: :user)
       visit '/'

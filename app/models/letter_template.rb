@@ -7,6 +7,8 @@ class LetterTemplate < ActiveRecord::Base
   validates :body, presence: true
   validates :subject, presence: true
   validate :template_scenario?
+  validate :body_ok? # check if arguments can be passed to body_ok? here
+  validate :subject_ok?
 
   def render(context)
     tap do |my|
@@ -36,12 +38,24 @@ class LetterTemplate < ActiveRecord::Base
 
   def template_scenario?
     scenario_class = begin
-                      scenario.constantize
-                    rescue NameError
-                      false
-                    end
+      scenario.constantize
+    rescue NameError
+      false
+    end
     return if scenario_class && scenario_class < TemplateScenario
 
     errors.add(:scenario, 'must name a subclass of TemplateScenario')
+  end
+
+  def body_ok?
+    Liquid::Template.parse(body, error_mode: :warn)
+  rescue Liquid::SyntaxError => e
+    errors.add(:body, e.message.slice(21..-1))
+  end
+
+  def subject_ok?
+    Liquid::Template.parse(subject, error_mode: :warn)
+  rescue Liquid::SyntaxError => e
+    errors.add(:subject, e.message.slice(21..-1))
   end
 end

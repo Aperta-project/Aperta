@@ -36,7 +36,7 @@ module Configurable
   # setting, a configurable has a setting_template_key that needs to be
   # defined first. Check `TaskTemplate` for an example. The defaults and
   # validations for a given type of setting are handled by the Setting class
-  # itself. The RegisteredSetting is just a simple mapping between a string key
+  # itself. The SettingTemplate is just a simple mapping between a string key
   # and the Setting class name.
   def setting(name)
     settings.find_by(name: name) || begin

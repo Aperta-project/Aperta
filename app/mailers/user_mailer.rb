@@ -94,9 +94,6 @@ class UserMailer < ApplicationMailer
   def notify_coauthor_of_paper_submission(paper_id, coauthor_id, coauthor_type)
     @paper = Paper.find(paper_id)
     @journal = @paper.journal
-
-    return unless @journal.setting("coauthor_confirmation_enabled").value
-
     @authors = @paper.all_authors
     @coauthor = coauthor_type.constantize.find(coauthor_id)
 

@@ -28,7 +28,7 @@ module Attributable
         end
 
         define_method("#{name}=") do |new_value|
-          content_attribute = content_attributes.where(name: name, value_type: type).first_or_initialize
+          content_attribute = send(getter) || content_attributes.new(name: name, value_type: type)
           content_attribute.value = new_value.presence
           send(setter, content_attribute)
         end

@@ -8,6 +8,24 @@ describe CardContent do
       expect(card_content).to be_valid
     end
 
+    it "sets and retrieves boolean attributes" do
+      value = false
+      card_content.required_field = value
+      expect(card_content.required_field).to eq(value)
+    end
+
+    it "sets and retrieves string attributes" do
+      value = "test string"
+      card_content.text = value
+      expect(card_content.text).to eq(value)
+    end
+
+    it "sets and retrieves json attributes" do
+      value = { 'a' => 1, 'b' => 2 }
+      card_content.possible_values = value
+      expect(card_content.possible_values).to eq(value)
+    end
+
     context "default_answer_value" do
       it "cannot be present when value_type is blank" do
         card_content.value_type = nil

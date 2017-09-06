@@ -7,7 +7,7 @@ class ContentAttribute < ActiveRecord::Base
   def value
     case value_type
     when 'string'  then string_value
-    when 'boolean' then boolean_value
+    when 'boolean' then boolean_value?
     when 'integer' then integer_value
     when 'json'    then json_value
     end

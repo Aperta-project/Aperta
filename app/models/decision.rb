@@ -92,6 +92,10 @@ class Decision < ActiveRecord::Base
       !rescinded
   end
 
+  def latest_invitation(invitee_id:)
+    invitations.where(invitee_id: invitee_id).order(:created_at).last
+  end
+
   private
 
   def paper_in_expected_state_given_verdict?

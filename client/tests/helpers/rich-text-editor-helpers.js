@@ -14,3 +14,9 @@ export function setRichText(name, text) {
   editor.setContent(text);
   editor.target.triggerSave();
 }
+
+export function pasteText(name, text) {
+  let editor = findEditor(name);
+  editor.execCommand('insertHTML', false, text);
+  editor.target.triggerSave();
+}

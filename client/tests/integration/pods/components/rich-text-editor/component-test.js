@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {findEditor, getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import {findEditor, getRichText, setRichText, pasteText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
@@ -52,6 +52,18 @@ test('it strips <p> and <br> tags when editorStyle is inline', function(assert) 
 
   setRichText('foo', '<p>a<br>b<br />c</p>');
   assert.equal(getRichText('foo'), 'abc');
+});
+
+test('it strips empty <p></p> tags from a pasted word text', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='inline' ident='bar' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('bar');
+  assert.elementFound(editor);
+  assert.equal(getRichText('bar'), '');
+
+  pasteText('bar', '<p></p>this is <p></p>a pasted text<p></p>');
+  assert.equal(getRichText('bar'), 'this is a pasted text');
 });
 
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {

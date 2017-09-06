@@ -16,7 +16,7 @@
 
 <p>
   In the interest of returning timely decisions to the authors,
-  please return your review by <%= @review_due_at %>.
+  please return your review by <%= @review_due_at.strftime("%B %-d, %Y %H:%M %Z") %>.
   Please do let us know if you wish to request additional
   time to review this manuscript, so that we may plan accordingly.
 </p>

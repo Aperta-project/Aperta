@@ -108,7 +108,7 @@ describe TahiStandardTasks::ReviewerMailer do
       it "contains the due date" do
         report.set_due_datetime
         expect(report.due_at).to_not be_nil
-        expect(email.body).to match(report.due_at.strftime("%B %-d, %Y %H:%M %Z"))
+        expect(email.body).to match(report.due_at.to_s(:due_with_minutes))
       end
     end
   end
@@ -269,7 +269,7 @@ describe TahiStandardTasks::ReviewerMailer do
       report.set_due_datetime
       report.save!
     end
-    let(:report_due_at) { report.due_at.strftime("%B %-d, %-l%P %Z") }
+    let(:report_due_at) { report.due_at.to_s(:due_with_hours) }
 
     describe '.remind_before_due' do
       subject(:email) { described_class.remind_before_due(reviewer_report_id: report.id) }

@@ -7,7 +7,7 @@ describe ReviewerReportScenario do
     let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
 
     it 'renders the due date' do
-      due_at = 2.weeks.from_now.strftime("%B %-d, %-l%P %Z")
+      due_at = 2.weeks.from_now.to_s(:due_with_hours)
       reviewer_report.due_datetime = DueDatetime.new(due_at: due_at)
       template_source = '{{ review.due_at }}'
       expect(Liquid::Template.parse(template_source).render(context)).to eq(due_at)

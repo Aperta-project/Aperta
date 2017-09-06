@@ -20,7 +20,7 @@ class ReviewerReportContext < TemplateContext
   end
 
   def due_at
-    reviewer_report.due_at.strftime("%B %-d, %-l%P %Z")
+    reviewer_report.due_at.to_s(:due_with_hours)
   end
 
   private

@@ -4,7 +4,6 @@
       <span class="required-field">*</span>
     {{/if}}</p>
   <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
-
     {{date-picker
         name=name
         type="text"
@@ -14,6 +13,6 @@
         answer=answer
         disabled=disabled
         content=content}}
+    <div>{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}</div>
   </div>
-  {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
 </div>

@@ -8,13 +8,13 @@ class DownloadManuscriptWorker
   include Sidekiq::Worker
 
   # Retries here are would be confusing.  A paper could revert to an older
-  # state hours or days after it was fixed.  
-  sidekiq_options :retry => false
+  # state hours or days after it was fixed.
+  sidekiq_options retry: false
 
-  # +download_manuscript+ schedules a background job to download the paper's
+  # +download+ schedules a background job to download the paper's
   # manuscript at the provided url, on behalf of the given user.
   # ihat will post to the given callback url when the job is finished
-  def self.download_manuscript(paper, url, current_user)
+  def self.download(paper, url, current_user)
     if url.blank?
       raise(ArgumentError, "Url must be provided (received a blank value)")
     end
@@ -27,7 +27,7 @@ class DownloadManuscriptWorker
   end
 
   # +perform+ should not be called directly, but by the background job
-  # processor. Use the DownloadManuscriptWorker.download_manuscript
+  # processor. Use the DownloadManuscriptWorker.download
   # instead when calling from application code.
   def perform(paper_id, download_url, current_user_id)
     paper = Paper.find(paper_id)

@@ -56,6 +56,9 @@ export default Ember.Component.extend({
         attachment = this.get('paper.sourcefile');
       }
 
+      if (attachment) {
+        attachment.set('task', this.get('task'));
+      }
       return [attachment].compact();
     }
   ),

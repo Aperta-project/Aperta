@@ -19,3 +19,11 @@
 .preprint-overlay .overlay--fullscreen .overlay-container {
   width: 100%;
 }
+
+@media screen and (max-height: 875px) {
+  .split-pane.preprint-pane { height: 50vh; }
+}
+
+@media screen and (max-height: 544px) {
+  .split-pane.preprint-pane { height: 40vh; }
+}

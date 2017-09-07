@@ -1,4 +1,11 @@
 # Configurable models have related Settings stored in the database
+# New settings can be initialized by adding a setting template
+# at lib/tasks/settings/seed_setting_templates.rake and then running:
+# `$ rake settings:seed_setting_templates`
+# that setting value can then be accessed with:
+# `owner.setting(<setting_name>).value` and updated by updating the
+# object that `owner.setting(<setting_name>)` returns
+
 module Configurable
   extend ActiveSupport::Concern
 

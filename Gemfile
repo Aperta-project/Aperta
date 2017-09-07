@@ -109,9 +109,7 @@ group :development, :test do
   gem 'quiet_assets'
   # This needs to be in the development group to make rake tasks work
   gem 'rspec-rails'
-  gem 'test_after_commit'
   gem 'awesome_print'
-  gem 'equivalent-xml'
 end
 
 group :development do
@@ -134,6 +132,7 @@ group :test do
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'email_spec'
+  gem 'equivalent-xml'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'fakeredis'
@@ -147,6 +146,7 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'
   gem 'simplecov'
+  gem 'test_after_commit'
   gem 'thin'
   gem 'timecop'
   gem 'vcr'

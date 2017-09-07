@@ -13,6 +13,6 @@ class CorrespondenceSerializer < ActiveModel::Serializer
   end
 
   def body
-    LinkSanitizer.sanitize(object.body)
+    LinkSanitizer.sanitize(object.body.presence || object.raw_source)
   end
 end

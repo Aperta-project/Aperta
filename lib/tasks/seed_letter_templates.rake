@@ -5,7 +5,7 @@ namespace :seed do
   namespace :letter_templates do
 
     def author_emails
-      '{% assign emails = manuscript.corresponding_authors | map: "email" %}{{ emails | join "," }}'
+      '{{ manuscript.corresponding_authors | map: "email" | join: "," }}'
     end
 
     def greeting

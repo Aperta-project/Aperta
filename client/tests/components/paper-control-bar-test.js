@@ -36,18 +36,10 @@ let template = hbs`
 `;
 
 test('can manage workflow, correspondence enabled, all icons show', function(assert) {
+  FactoryGuy.make('feature-flag', {id: 1, name: 'CORRESPONDENCE', active: true});
   let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
-
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
 
   this.set('paper', paper);
   this.render(template);
@@ -63,15 +55,6 @@ test('can manage workflow, correspondence disabled, no correspondence icon', fun
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: false
-    }
-  });
-
   this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
@@ -85,15 +68,6 @@ test('can not manage workflow, correspondence enabled, no nav icons', function(a
   let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create();
   this.register('service:can', can.asService());
-
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
 
   this.set('paper', paper);
   this.render(template);
@@ -109,15 +83,6 @@ test('can view recent activity, sees recent activity nav icon', function(assert)
   const can = FakeCanService.create().allowPermission('view_recent_activity', paper);
   this.register('service:can', can.asService());
 
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
-
   this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
@@ -129,15 +94,6 @@ test('can not view recent activity, no recent activity nav icon', function(asser
   let paper = FactoryGuy.make('paper');
   const can = FakeCanService.create();
   this.register('service:can', can.asService());
-
-  $.mockjax({
-    type: 'GET',
-    url: '/api/feature_flags.json',
-    status: 200,
-    responseText: {
-      CORRESPONDENCE: true
-    }
-  });
 
   this.set('paper', paper);
   this.render(template);

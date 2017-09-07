@@ -25,9 +25,6 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     return this.get('taskToConfigure.title') + ': Settings';
   }),
 
-  featureFlag: Ember.inject.service(),
-  preprintsEnabled: Ember.computed.equal('featureFlag.PREPRINT', true),
-
   showCardDeleteOverlay: false,
   taskToDelete: null,
 

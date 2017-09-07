@@ -13,8 +13,17 @@
   <div class="row">
     <div class="col-xs-12 edit-email-backsplash">
       <div class="text-right">
-        <button class="button-primary button--blue edit-email-button" {{action "save"}}>
-          Save
+        {{#if (or subjectErrorPresent bodyErrorPresent)}}
+          <span class="text-danger">{{message}}</span>&nbsp;&nbsp;&nbsp;
+        {{else}}
+          <span class="text-success">{{message}}</span>&nbsp;&nbsp;&nbsp;
+        {{/if}}
+        <button class="button-primary button--blue edit-email-button" {{action "save"}} disabled={{not template.hasDirtyAttributes}}>
+          {{#if template.isSaving}}
+            Saving
+          {{else}}
+            Save
+          {{/if}}
         </button>
       </div>
 

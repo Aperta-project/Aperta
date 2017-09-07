@@ -17,11 +17,14 @@ export default Ember.Component.extend({
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
   actions: {
     save: function() {
+      this.set('subjectErrors', []);
+      this.set('bodyErrors', []);
       if (this.get('disabled') || this.get('template.isSaving')) {
         this.set('unsaved', false);
       } else {
         this.get('template').save()
           .then(() => {
+            this.set('message', 'Your changes have been saved.');
             this.get('routing').transitionTo('admin.journals.emailtemplates', this.get('template.journal.id'));
           })
           .catch(error => {
@@ -31,8 +34,9 @@ export default Ember.Component.extend({
               this.set('subjectErrors', subjectError.map(s => s.detail));
             }
             if (bodyError.length) {
-              this.set('bodyErrors', bodyError.map(s => s.detail));
+              this.set('bodyErrors', bodyError.map(b => b.detail));
             }
+            this.set('message', 'Please correct errors where indicated');
           });
       }
     }

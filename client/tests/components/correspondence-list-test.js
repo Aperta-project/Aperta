@@ -10,6 +10,7 @@ import formatDate from 'tahi/lib/format-date';
 
 moduleForComponent('correspondence', 'Integration | Component | Correspondence', {
   integration: true,
+
   beforeEach() {
     manualSetup(this.container);
     $.mockjax({
@@ -18,17 +19,8 @@ moduleForComponent('correspondence', 'Integration | Component | Correspondence',
       status: 200,
       responseText: {}
     });
-
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: true
-      }
-    });
-
   },
+
   afterEach() {
     $.mockjax.clear();
   }
@@ -45,7 +37,7 @@ test('can manage workflow, list appears', function(assert) {
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
-  this.set('correspondence', [correspondence]);  
+  this.set('correspondence', [correspondence]);
   this.set('paper', paper);
   this.render(template);
   return wait().then(() => {
@@ -65,7 +57,7 @@ test('can manage workflow, list appears for manually created correspondence', fu
   const can = FakeCanService.create().allowPermission('manage_workflow', paper);
   this.register('service:can', can.asService());
 
-  this.set('correspondence', [correspondence]);  
+  this.set('correspondence', [correspondence]);
   this.set('paper', paper);
   this.render(template);
   return wait().then(() => {

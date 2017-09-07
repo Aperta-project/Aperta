@@ -13,8 +13,6 @@ export default Ember.Route.extend({
       });
     }
 
-    return this.get('restless').get('/api/feature_flags').then(
-      it => new Ember.Object(it)
-    );
+    return this.store.peekAll('featureFlag').sortBy('name');
   }
 });

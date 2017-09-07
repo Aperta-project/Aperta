@@ -33,7 +33,7 @@ describe ReviewerReportScenario do
 
     it 'renders the paper title' do
       paper = reviewer_report.paper
-      template_source = '{{ paper.title }}'
+      template_source = '{{ manuscript.title }}'
       expect(Liquid::Template.parse(template_source).render(context)).to eq(paper.title)
     end
   end

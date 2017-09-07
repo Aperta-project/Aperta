@@ -264,7 +264,7 @@ describe TahiStandardTasks::ReviewerMailer do
         name: template_name,
         scenario: 'ReviewerReportScenario',
         subject: 'review {{ journal.name }}',
-        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ paper.title }} on {{ review.due_at }} </p>'
+        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>'
       )
       report.set_due_datetime
       report.save!

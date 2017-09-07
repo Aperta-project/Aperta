@@ -46,15 +46,6 @@ moduleForAcceptance('Integration: Correspondence', {
       type: 'put',
       status: 204
     });
-
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: true
-      }
-    });
   }
 });
 

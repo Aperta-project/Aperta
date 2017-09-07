@@ -14,7 +14,7 @@ export default ApplicationAdapter.extend({
       namespace = '';
     }
 
-    let url = `${namespace}/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
+    let url = `${namespace}/papers/${paperId}/correspondence/${correspondenceId}/attachments`;
 
     if (id) {
       url = `${url}/${id}`;

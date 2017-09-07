@@ -103,7 +103,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
         if (this.get('attachment')) {
           let paperId = this.get('model.paper.id');
           let correspondenceId = this.get('model.id');
-          let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachment`;
+          let postUrl = `/api/papers/${paperId}/correspondence/${correspondenceId}/attachments`;
           this.get('restless').post(postUrl, {
             url: this.get('attachment.data')
           }).then(function () {

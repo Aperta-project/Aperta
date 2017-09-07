@@ -68,18 +68,18 @@
     </div>
     <div class="col-sm-10 correspondence-attachment-link">
       {{#each message.attachments as |attachment|}}
-        {{#if (can "manage_workflow" message.paper)}} 
+        {{#if (can "manage_workflow" message.paper)}}
            {{attachment-item accept=accept
                     attachment=attachment
                     disabled=true
                     filePath=attachment.src}}
-        {{else}}  
+        {{else}}
           <span class="attachment-item">{{attachment.filename}}</span>
-        {{/if}}   
+        {{/if}}
       {{/each}}
     </div>
   </div>
-{{/if}}  
+{{/if}}
 <hr>
 <div class="row">
   <div class="col-sm-12">

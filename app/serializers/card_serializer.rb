@@ -10,6 +10,17 @@ class CardSerializer < ActiveModel::Serializer
     object.content_root_for_version(:latest)
   end
 
+  # include_*? is a method that we can define for a given attribute that will
+  # cause the serializer to omit the attribute if the method returns true. See
+  # https://github.com/rails-api/active_model_serializers/tree/0-8-stable#attributes
+  def include_content?
+    @options[:include_content] != false
+  end
+
+  def include_xml?
+    @options[:include_content] != false
+  end
+
   def state
     object.state.camelize(:lower)
   end

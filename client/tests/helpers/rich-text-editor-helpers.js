@@ -14,3 +14,11 @@ export function setRichText(name, text) {
   editor.setContent(text);
   editor.target.triggerSave();
 }
+
+export function pasteText(name, text) {
+  let editor = findEditor(name);
+  let dom = editor.dom;
+  let tempBody = dom.add(editor.getBody(), 'div', { }, text);
+  editor.fire('PastePostProcess', {node: tempBody, internal: false});
+  editor.target.triggerSave();
+}

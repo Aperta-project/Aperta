@@ -283,7 +283,7 @@ namespace :seed do
           lt.subject = 'Your review for {{ journal.name }} is due soon'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
-            <p>Thank you again for agreeing to review “{{ paper.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at | date: "%B %e, %l%P %Z" }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
+            <p>Thank you again for agreeing to review “{{ manuscript.title }}” for {{ journal.name }}. This is a brief reminder that we hope to receive your review comments on the manuscript by {{ review.due_at | date: "%B %e, %l%P %Z" }}. Please let us know as soon as possible, by return email, if your review will be delayed.</p>
             <p>To view the manuscript and submit your review, please log in to Aperta via the green button below.</p>
             <p>For further instructions, please see the Aperta Reviewer Guide here: <a href="http://plos.io/Aperta-Reviewers">http://plos.io/Aperta-Reviewers</a></p>
             <p>We are grateful for your continued support of {{ journal.name }}. Please do not hesitate to contact the journal office if you have questions or require assistance.</p>
@@ -298,7 +298,7 @@ namespace :seed do
           lt.subject = 'Late Review for {{ journal.name }}'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
-            <p>This is a reminder that your review of the PLOS Biology manuscript “{{ paper.title }}” was due to be received by  {{ review.due_at | date: "%B %e, %l%P %Z" }}.</p>
+            <p>This is a reminder that your review of the PLOS Biology manuscript “{{ manuscript.title }}” was due to be received by  {{ review.due_at | date: "%B %e, %l%P %Z" }}.</p>
             <p>As your review was due two days ago, we would be grateful if you could provide us with your comments as soon as possible. If you are busy and unable to complete your review in this timeframe, please let us know by return email so that we may plan accordingly.</p>
             <p>To view the manuscript and submit your review, please log in to Aperta via the green button below.</p>
             <p>For further instructions, please see the Aperta Reviewer Guide here: <a href="http://plos.io/Aperta-Reviewers">http://plos.io/Aperta-Reviewers</a></p>
@@ -314,7 +314,7 @@ namespace :seed do
           lt.subject = 'Reminder of Late Review for {{ journal.name }}'
           lt.body = <<-TEXT.strip_heredoc
             <p>Dear Dr. {{ reviewer.last_name }}</p>
-            <p>This is a reminder that your review of the PLOS Biology manuscript “{{ paper.title }}” was expected by the agreed due date, {{ review.due_at | date: "%B %e, %l%P %Z" }}. At this stage we urgently need the review in order to proceed with the editorial process.</p>
+            <p>This is a reminder that your review of the PLOS Biology manuscript “{{ manuscript.title }}” was expected by the agreed due date, {{ review.due_at | date: "%B %e, %l%P %Z" }}. At this stage we urgently need the review in order to proceed with the editorial process.</p>
             <p>We would appreciate it if you can submit your review as soon as possible so that we can move this manuscript to a decision for the authors. If you need assistance or are experiencing delays, please let us know by return email.</p>
             <p>To view the manuscript and submit your review, please log in to Aperta via the green button below.</p>
             <p>For further instructions, please see the Aperta Reviewer Guide here: <a href="http://plos.io/Aperta-Reviewers">http://plos.io/Aperta-Reviewers</a></p>

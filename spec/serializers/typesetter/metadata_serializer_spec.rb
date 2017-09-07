@@ -258,17 +258,18 @@ describe Typesetter::MetadataSerializer do
       parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_1", value_type: 'boolean', default_answer_value: 'true'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      card_version.create_default_answers(my_custom_task)
+      card_version.reload.create_default_answers(my_custom_task)
       parent = another_card_version.content_root
       parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my other anwser'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_1", value_type: 'boolean', default_answer_value: 'false'),
                           FactoryGirl.create(:card_content, parent: parent, card_version: another_card_version, ident: "another_custom_task--question_2", value_type: 'boolean', default_answer_value: 'false')]
-      another_card_version.create_default_answers(another_my_custom_task)
+      another_card_version.reload.create_default_answers(another_my_custom_task)
       paper.publishing_state = 'accepted'
     end
 
     it "check exported custom card fields" do
-      parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
+      hash = Typesetter::MetadataSerializer.new(paper, options)
+      parsed_metadata = JSON.parse(hash.to_json)
       expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
                             "my_custom_task--question_1" => true,
                             "my_custom_task--question_2" => false,

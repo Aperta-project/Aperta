@@ -8,7 +8,7 @@ class CardVersion < ActiveRecord::Base
 
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
-  has_many :card_contents, inverse_of: :card_version, dependent: :destroy
+  has_many :card_contents, -> {includes(:content_attributes)}, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true
@@ -39,7 +39,7 @@ class CardVersion < ActiveRecord::Base
   end
 
   def create_default_answers(task)
-    card_contents.where.not(default_answer_value: nil).find_each do |content|
+    card_contents.select { |content| content.default_answer_value.present? }.each do |content|
       task.answers.create!(
         card_content: content,
         paper: task.paper,

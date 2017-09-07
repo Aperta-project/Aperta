@@ -70,7 +70,7 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   def invitation
-    @invitation ||= decision.invitations.find_by(invitee_id: user.id)
+    @invitation ||= decision.latest_invitation(invitee_id: user.id)
   end
 
   def invitation_accepted?
@@ -104,7 +104,7 @@ class ReviewerReport < ActiveRecord::Base
     Card.find_by(name: name)
   end
 
-  def computed_status
+  def status
     case aasm.current_state
     when STATE_INVITATION_NOT_ACCEPTED
       compute_invitation_state
@@ -116,8 +116,8 @@ class ReviewerReport < ActiveRecord::Base
   end
 
   # rubocop:disable Metrics/CyclomaticComplexity
-  def computed_datetime
-    case computed_status
+  def datetime
+    case status
     when "pending"
       invitation.accepted_at
     when "invitation_invited"
@@ -135,7 +135,6 @@ class ReviewerReport < ActiveRecord::Base
   # rubocop:enable Metrics/CyclomaticComplexity
 
   def display_status
-    status = computed_status
     inactive = ["not_invited", "invitation_declined", "invitation_rescinded"]
     return :minus if inactive.include? status
     return :active_check if status == "completed"

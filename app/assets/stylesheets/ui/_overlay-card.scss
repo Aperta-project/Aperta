@@ -87,21 +87,33 @@ $ov--card-breakpoint: 900px;
     position: relative;
     padding: 4rem $ov--card-side-pad;
 
+    .card-content-view-text {
+
+    }
+
+    .card-content-dropdown, .card-content-radio,
+    .card-content-short-input, .card-content-check-box {
+      min-width: 435px;
+    }
+
     .answer-container {
-      display: flex;
+      display: inline-flex;
+      display: -webkit-inline-flex;
       flex-flow: row wrap;
+      -webkit-flex-flow: row wrap;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     }
 
    .answer {
       flex: 1 0 33%;
-      margin: 15px;
+      margin: -15px 15px 15px 0px;
+      width: 455px;
     }
 
     .additional-text {
-      flex: 1 0 35%;
-      margin: 15px;
-      min-width: 300px;
+      margin: 0px 15px 15px 15px;
+      min-width: 350px;
     }
 
     .model-question {

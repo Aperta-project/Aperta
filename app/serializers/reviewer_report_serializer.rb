@@ -20,10 +20,10 @@ class ReviewerReportSerializer < ActiveModel::Serializer
   end
 
   def status
-    object.computed_status
+    object.status
   end
 
   def status_datetime
-    object.computed_datetime
+    object.datetime
   end
 end

@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {findEditor, getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import {findEditor, getRichText, setRichText, pasteText} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
@@ -52,6 +52,20 @@ test('it strips <p> and <br> tags when editorStyle is inline', function(assert) 
 
   setRichText('foo', '<p>a<br>b<br />c</p>');
   assert.equal(getRichText('foo'), 'abc');
+});
+
+test('it strips empty <p></p> tags from a pasted word text', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='inline' ident='bar' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('bar');
+  assert.elementFound(editor);
+  assert.equal(getRichText('bar'), '');
+  pasteText('bar', '<p>foo</p><p>&nbsp;</p><p>bar</p>');
+  // after striping off empty paragraphs, TinymCE returns a div class with
+  // the rest of the text(the text sits in between this div) , this occur
+  // when we use the {format: raw} which we can get rid off for this test
+  assert.ok(findEditor('bar').getContent({format: 'raw'}).indexOf('<p>foo</p><p>bar</p>') !== -1);
 });
 
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {

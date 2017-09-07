@@ -17,7 +17,7 @@ describe TahiStandardTasks::RegisterDecisionScenario do
       number_reviewer_reports: true
     )
   end
-  let(:decision) { paper.draft_decision }
+  let(:decision) { FactoryGirl.create(:decision, :pending) }
   let(:reviewer1) { FactoryGirl.create(:user) }
   let(:reviewer2) { FactoryGirl.create(:user) }
   let(:reviewer3) { FactoryGirl.create(:user) }
@@ -26,16 +26,15 @@ describe TahiStandardTasks::RegisterDecisionScenario do
   let(:reviewer_report2) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task2, user: reviewer2) }
   let(:reviewer_report3) { FactoryGirl.build(:reviewer_report, task: reviewer_report_task3, user: reviewer3) }
 
-  let(:reviewer_number1) { 1 }
-  let(:reviewer_number2) { 2 }
-  let(:reviewer_number3) { 3 }
   let(:answer_1) { FactoryGirl.create(:answer) }
   let(:answer_2) { FactoryGirl.create(:answer) }
 
   before do
-    allow(reviewer_report_task).to receive(:reviewer_number).and_return reviewer_number1
-    allow(reviewer_report_task2).to receive(:reviewer_number).and_return reviewer_number2
-    allow(reviewer_report_task3).to receive(:reviewer_number).and_return reviewer_number3
+    allow(reviewer_report_task).to receive(:reviewer_number).and_return 1
+    allow(reviewer_report_task2).to receive(:reviewer_number).and_return 2
+    allow(reviewer_report_task3).to receive(:reviewer_number).and_return 3
+
+    allow(paper).to receive(:draft_decision).and_return decision
   end
 
   describe "rendering a RegisterDecisionScenario" do
@@ -57,11 +56,11 @@ describe TahiStandardTasks::RegisterDecisionScenario do
         .to eq(paper.title)
     end
 
-    it "renders the reviews" do
-      decision.reviewer_reports << reviewer_report1
-      template = "{%- for review in reviews -%}Review by {{review.reviewer.first_name}}{%- endfor -%}"
+    it "renders the reviews sorted by reviewer number" do
+      paper.draft_decision.reviewer_reports = [reviewer_report1, reviewer_report3, reviewer_report2]
+      template = "{%- for review in reviews -%} Review by {{review.reviewer.first_name}} Number: {{review.reviewer_number}}--{%- endfor -%}"
       expect(Liquid::Template.parse(template).render(context))
-        .to eq("Review by #{reviewer1.first_name}")
+        .to eq("Review by #{reviewer1.first_name} Number: 1--Review by #{reviewer2.first_name} Number: 2--Review by #{reviewer3.first_name} Number: 3--")
     end
   end
 end

@@ -22,13 +22,22 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-9">
-              <div class="form-group">
+              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
                 <label for="subject" class="text-bold">Subject <span class="error">*</span></label>
-                {{input class="form-control {{unless (or unsaved template.subject) 'error'}}" id="subject" value=template.subject}}
+                {{input class="form-control" id="subject" value=template.subject}}
                 {{#unless (or unsaved template.subject)}}
                   <span class="{{unless (or unsaved template.subject) 'error'}}">{{fa-icon 'warning'}} Please enter a subject line</span>
                 {{/unless}}
-                {{#if subjectError}}<span class="error">{{subjectError}}</span>{{/if}}
+                {{#if subjectErrorPresent}}
+                  <div class="error">
+                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors</span>
+                    <ul>
+                      {{#each subjectErrors as |error|}}
+                        <li>{{error}}</li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                {{/if}}
               </div>
 
               <div class="form-group {{unless (or unsaved template.body) 'error'}}">
@@ -37,7 +46,16 @@
                 {{#unless (or unsaved template.body)}}
                   <span>{{fa-icon 'warning'}} Please enter body text</span>
                 {{/unless}}
-                {{#if bodyError}}<span>{{bodyError}}</span>{{/if}}
+                {{#if bodyErrorPresent}}
+                  <div class="error">
+                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors</span>
+                    <ul>
+                      {{#each bodyErrors as |error|}}
+                        <li>{{error}}</li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                {{/if}}
               </div>
             </div>
             <div class="col-xs-3 available-merge-fields-col">

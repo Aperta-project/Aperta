@@ -11,8 +11,10 @@ export default Ember.Component.extend({
     return !this.get('template.subject') || !this.get('template.body');
   }),
   unsaved: true,
-  subjectError: '',
-  bodyError: '',
+  subjectErrors: [],
+  bodyErrors: [],
+  subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
+  bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
   actions: {
     save: function() {
       if (this.get('disabled') || this.get('template.isSaving')) {
@@ -25,11 +27,11 @@ export default Ember.Component.extend({
           .catch(error => {
             let subjectError = error.errors.filter((e) => e.source.pointer.includes('subject'));
             let bodyError = error.errors.filter((e) => e.source.pointer.includes('body'));
-            if (subjectError) {
-              this.set('subjectError', subjectError[0].detail);
+            if (subjectError.length) {
+              this.set('subjectErrors', subjectError.map(s => s.detail));
             }
-            if (!bodyError.length === 0) {
-              this.set('bodyError', bodyError[0].detail);
+            if (bodyError.length) {
+              this.set('bodyErrors', bodyError.map(s => s.detail));
             }
           });
       }

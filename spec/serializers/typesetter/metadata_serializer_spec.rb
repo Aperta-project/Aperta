@@ -34,7 +34,7 @@ describe Typesetter::MetadataSerializer do
   let(:our_question) do
     # expects `our_task` to be defined within a `describe` block
     lambda do |question_ident|
-      our_task.card.content_for_version_without_root(:latest).find_by_ident(question_ident)
+      our_task.card.content_for_version_without_root(:latest).find_by(ident: question_ident)
     end
   end
   let!(:apex_html_flag) { FactoryGirl.create :feature_flag, name: "KEEP_APEX_HTML", active: false }
@@ -60,19 +60,22 @@ describe Typesetter::MetadataSerializer do
       position: 1,
       author_id: group_author.id,
       author_type: "GroupAuthor",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     first_author.save!
     second_author = AuthorListItem.new(
       position: 2,
       author_id: author.id,
       author_type: "Author",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     second_author.save!
     third_author = AuthorListItem.new(
       position: 3,
       author_id: author2.id,
       author_type: "Author",
-      paper_id: paper.id)
+      paper_id: paper.id
+    )
     third_author.save!
     output = Typesetter::MetadataSerializer.new(paper, options).serializable_hash
 
@@ -316,7 +319,7 @@ describe Typesetter::MetadataSerializer do
       let(:fake_serialized_data) { 'Fake serialized data' }
       let(:fake_instance_double) do
         instance_double(
-          "#{opts[:serializer]}",
+          (opts[:serializer]).to_s,
           serializable_hash: fake_serialized_data
         )
       end
@@ -352,7 +355,7 @@ describe Typesetter::MetadataSerializer do
     let(:fake_serialized_data) { 'Fake serialized data' }
     let(:fake_instance_double) do
       instance_double(
-        "#{opts[:serializer]}",
+        (opts[:serializer]).to_s,
         serializable_hash: fake_serialized_data
       )
     end

@@ -33696,7 +33696,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -33747,7 +33747,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -33798,7 +33798,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -33850,7 +33850,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -33902,7 +33902,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -33962,7 +33962,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -34024,7 +34024,7 @@ letter_templates:
         {% for review in reviews %}
           {%- if review.status == 'completed' -%}
             ----------<br/>
-            <p>Reviewer Report {{ review.reviewer_number | default '' }}</p>
+            <p>Reviewer {{ review.reviewer_number | default '' }}</p>
             {%- for answer in review.answers -%}
               {%- if answer.ident == 'reviewer_report--comments_for_author' -%}
               <p>
@@ -57524,32 +57524,32 @@ possible_setting_values:
     - 'off'
     - false
     - 
-    - '2017-08-30 18:45:45.044284'
-    - '2017-08-30 18:45:45.044284'
+    - '2017-09-07 21:57:35.049897'
+    - '2017-09-07 21:57:35.049897'
   - - '92'
     - '1'
     - string
     - at_first_full_submission
     - false
     - 
-    - '2017-08-30 18:45:45.046759'
-    - '2017-08-30 18:45:45.046759'
+    - '2017-09-07 21:57:35.052144'
+    - '2017-09-07 21:57:35.052144'
   - - '93'
     - '1'
     - string
     - after_any_first_revise_decision
     - false
     - 
-    - '2017-08-30 18:45:45.048094'
-    - '2017-08-30 18:45:45.048094'
+    - '2017-09-07 21:57:35.053486'
+    - '2017-09-07 21:57:35.053486'
   - - '94'
     - '1'
     - string
     - after_minor_revise_decision
     - false
     - 
-    - '2017-08-30 18:45:45.049322'
-    - '2017-08-30 18:45:45.049322'
+    - '2017-09-07 21:57:35.055454'
+    - '2017-09-07 21:57:35.055454'
   - - '95'
     - '1'
     - string
@@ -58381,7 +58381,7 @@ roles:
     - true
     - false
     - '2016-02-18 15:48:30.934346'
-    - '2017-09-06 18:25:41.873868'
+    - '2017-09-07 21:57:21.745757'
     - DiscussionTopic
   - - '19'
     - Publishing Services

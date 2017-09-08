@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {findEditor, getRichText, setRichText, pasteText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import {findEditor, getRichText, setRichText, pasteText, editorFireEvent} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
@@ -80,4 +80,33 @@ test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
   let editor = window.tinymce.activeEditor;
   editor.setContent('New');
   editor.target.triggerSave();
+});
+
+
+test('checking the focusOut action triggers after editor is disabled', function(assert) {
+  this.set('focusOutStub', function() {
+    this.set('value', 'new value');
+  });
+  this.set('saveContents', function() {});
+
+  let template = hbs`{{rich-text-editor
+                  value=value
+                  ident='test-editor'
+                  disabled=disabled
+                  onContentsChanged=saveContents
+                  focusOut=(action focusOutStub)}}`;
+  this.render(template);
+
+  // The focusOut passed action to the component is not attached to the editor
+  // until the postRender method is called. This call only happens when the editor
+  // is enabled, in other words when the disabled attribute is set to false.
+  editorFireEvent('test-editor', 'blur');
+  assert.equal(this.get('value'), undefined, 'Value is not set on focusOut action call');
+
+  this.set('disabled', true);
+  this.set('disabled', false);
+  // The focusOut passed in handler function is now attached to the rich text editor blur event.
+  editorFireEvent('test-editor', 'blur');
+
+  assert.equal(this.get('value'), 'new value', 'Value was set on blur');
 });

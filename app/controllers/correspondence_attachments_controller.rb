@@ -14,10 +14,6 @@ class CorrespondenceAttachmentsController < ApplicationController
     render json: @attachment, status: :ok
   end
 
-  def show
-    render json: @correspondence.attachments, status: :ok
-  end
-
   private
 
   def ensure_correspondence

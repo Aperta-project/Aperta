@@ -282,6 +282,7 @@ describe Typesetter::MetadataSerializer do
                               "another_custom_task--question_2" => false }
         expect(subject['metadata']['custom_card_fields']).to eq expected_metadata
       end
+    end
 
     context 'when the destination is "preprint"' do
       let(:options) { { destination: 'preprint' } }

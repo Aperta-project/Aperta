@@ -28,7 +28,7 @@ describe Admin::LetterTemplatesController, redis: true do
       context 'the user can administer any journal' do
         before do
           allow(user).to receive(:can?)
-            .with(:administer, Journal)
+            .with(:manage_users, Journal)
             .and_return true
         end
 
@@ -62,7 +62,7 @@ describe Admin::LetterTemplatesController, redis: true do
       context 'the user can administer any journal' do
         before do
           allow(user).to receive(:can?)
-            .with(:administer, Journal)
+            .with(:manage_users, Journal)
             .and_return true
         end
 
@@ -95,7 +95,7 @@ describe Admin::LetterTemplatesController, redis: true do
       context 'the user can administer any journal' do
         before do
           allow(user).to receive(:can?)
-            .with(:administer, Journal)
+            .with(:manage_users, Journal)
             .and_return true
         end
 

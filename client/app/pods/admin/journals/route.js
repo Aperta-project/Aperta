@@ -21,7 +21,6 @@ export default Ember.Route.extend({
         const route = 'admin.journals.' + (value ? 'workflows' : 'users');
         return this.transitionTo(route, firstJournal.id);
       });
-
     }
   }
 });

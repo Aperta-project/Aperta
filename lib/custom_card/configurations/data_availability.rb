@@ -50,7 +50,8 @@ module CustomCard
                     </text>
                   </content>
                 </content>
-                <content ident="data_availability--data_fully_available" content-type="radio" value-type="boolean">
+                <content ident="data_availability--data_fully_available" content-type="radio" value-type="boolean" allow-annotations="false" required-field="false">
+                  <text>Is the data available as specified?</text>
                 </content>
               </content>
               <content content-type="text">
@@ -76,18 +77,19 @@ module CustomCard
                     </content>
                   </content>
                 </content>
-                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html">
+                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html" allow-annotations="false" required-field="false">
+                  <text>Please describe where your data may be found, writing in full sentences.</text>
                 </content>
               </content>
               <content content-type="text">
                 <text>
                   <![CDATA[<div class="question-text">Additional Data Availability information</div>]]>
                 </text>
-                <content ident="data_availability--additional_information_doi" content-type="check-box" value-type="boolean">
-                  <label>Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication.</label>
+                <content ident="data_availability--additional_information_doi" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
+                  <text>Tick here if the URLs/accession numbers/DOIs will be available only after acceptance of the manuscript for publication so that we can ensure their inclusion before publication.</text>
                 </content>
-                <content ident="data_availability--additional_information_other" content-type="check-box" value-type="boolean">
-                  <label>Tick here if your circumstances are not covered by the content above and you need the journal’s help to make your data available.</label>
+                <content ident="data_availability--additional_information_other" content-type="check-box" value-type="boolean" allow-annotations="false" required-field="false">
+                  <text>Tick here if your circumstances are not covered by the content above and you need the journal’s help to make your data available.</text>
                 </content>
               </content>
             </content>

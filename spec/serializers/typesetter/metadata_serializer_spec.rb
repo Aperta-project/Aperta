@@ -256,6 +256,8 @@ describe Typesetter::MetadataSerializer do
     let(:another_card_version) { FactoryGirl.create(:card_version) }
     let(:my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: card_version, paper: paper) }
     let(:another_my_custom_task) { FactoryGirl.create(:custom_card_task, card_version: another_card_version, paper: paper) }
+    subject(:parsed_metadata) { JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json) }
+
     before do
       parent = card_version.content_root
       parent.children << [FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "my_custom_task--some_text", value_type: 'text', default_answer_value: 'This is my anwser'),
@@ -270,39 +272,31 @@ describe Typesetter::MetadataSerializer do
       paper.publishing_state = 'accepted'
     end
 
-    context 'when the destination is "preprint"' do
-      let(:options) { { destination: 'preprint' } }
+    shared_examples_for :includes_custom_metadata do
       it "ensure exported metadata includes custom card fields" do
-        parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
         expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
                               "my_custom_task--question_1" => true,
                               "my_custom_task--question_2" => false,
                               "another_custom_task--some_text" => 'This is my other anwser',
                               "another_custom_task--question_1" => false,
                               "another_custom_task--question_2" => false }
-        expect(parsed_metadata['metadata']['custom_card_fields']).to eq expected_metadata
+        expect(subject['metadata']['custom_card_fields']).to eq expected_metadata
       end
+
+    context 'when the destination is "preprint"' do
+      let(:options) { { destination: 'preprint' } }
+      it_behaves_like :includes_custom_metadata
     end
 
     context 'when the destination is "em"' do
       let(:options) { { destination: 'em' } }
-      it "ensure exported metadata includes custom card fields" do
-        parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
-        expected_metadata = { "my_custom_task--some_text" => 'This is my anwser',
-                              "my_custom_task--question_1" => true,
-                              "my_custom_task--question_2" => false,
-                              "another_custom_task--some_text" => 'This is my other anwser',
-                              "another_custom_task--question_1" => false,
-                              "another_custom_task--question_2" => false }
-        expect(parsed_metadata['metadata']['custom_card_fields']).to eq expected_metadata
-      end
+      it_behaves_like :includes_custom_metadata
     end
 
     context 'when the destination is "apex"' do
       let(:options) { { destination: 'apex' } }
       it "ensure exported metadata does not include custom card fields" do
-        parsed_metadata = JSON.parse(Typesetter::MetadataSerializer.new(paper, options).to_json)
-        expect(parsed_metadata['metadata']).not_to have_key(:custom_card_fields)
+        expect(subject['metadata']).not_to have_key(:custom_card_fields)
       end
     end
   end

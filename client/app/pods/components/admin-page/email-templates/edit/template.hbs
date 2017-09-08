@@ -20,10 +20,9 @@
         {{/if}}
         <button class="button-primary button--blue edit-email-button" {{action "save"}} disabled={{not template.hasDirtyAttributes}}>
           {{#if template.isSaving}}
-            Saving
-          {{else}}
-            Save
+            SAVING...
           {{/if}}
+          {{unless template.isSaving 'SAVE'}}
         </button>
       </div>
 

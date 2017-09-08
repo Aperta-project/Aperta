@@ -25,7 +25,6 @@ export default Ember.Component.extend({
         this.get('template').save()
           .then(() => {
             this.set('message', 'Your changes have been saved.');
-            this.get('routing').transitionTo('admin.journals.emailtemplates', this.get('template.journal.id'));
           })
           .catch(error => {
             let subjectError = error.errors.filter((e) => e.source.pointer.includes('subject'));

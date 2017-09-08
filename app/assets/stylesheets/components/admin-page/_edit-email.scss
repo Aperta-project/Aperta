@@ -7,6 +7,10 @@
   padding: 5px 30px;
 }
 
+.edit-email-button.button-primary[disabled], .edit-email-button:hover.button-primary[disabled]{
+  background-color: $aperta-grey-dark;
+}
+
 .edit-email-well {
   background-color: white;
   padding: 24px;

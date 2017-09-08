@@ -149,6 +149,22 @@ module MailLog::LogToDatabase
         expect(Correspondence.last.recipients).to eq("#{mail.to.first}, #{user.full_name} <#{mail.to.last}>")
       end
     end
+
+    describe '.get_message' do
+      let(:message) { double('Message', body: 'wat', html_part: html_part) }
+      context 'message has an html_part' do
+        let(:html_part) { double('MessagePart', body: 'html wat') }
+        it 'returns the message html_part body' do
+          expect(interceptor.get_message(message)).to be(html_part.body)
+        end
+      end
+      context 'message has no html_part' do
+        let(:html_part) { nil }
+        it 'returns the message body' do
+          expect(interceptor.get_message(message)).to be(message.body)
+        end
+      end
+    end
   end
 
   describe DeliveredEmailObserver do

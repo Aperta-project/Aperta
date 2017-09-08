@@ -119,7 +119,7 @@ test('Shows inputs, filled in, when editing', function(assert){
   setup(this, relatedArticle, true);
 
   let text = getRichText('related-article-title-input');
-  assert.equal(text, `<p>${relatedArticle.linkedTitle}</p>`);
+  assert.equal(text, relatedArticle.linkedTitle);
 
   assert.inputPresent(
     '.related-article-doi-input',

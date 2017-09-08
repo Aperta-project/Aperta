@@ -18,8 +18,6 @@ gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'activerecord-import'
 gem 'activerecord-sqlserver-adapter'
 gem 'acts_as_list', '~> 0.9.0'
-gem 'acts_as_paranoid', git: 'https://github.com/ActsAsParanoid/acts_as_paranoid',
-                        ref: 'c2db19554ddaedcac0a2b8d6a0563dea83c972c5'
 gem 'american_date'
 gem 'awesome_nested_set'
 gem 'bootstrap-sass'

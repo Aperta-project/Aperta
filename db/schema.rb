@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906153431) do
+ActiveRecord::Schema.define(version: 20170908170615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(version: 20170906153431) do
     t.jsonb    "additional_data"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.datetime "deleted_at"
     t.string   "annotation"
   end
 
@@ -216,11 +215,9 @@ ActiveRecord::Schema.define(version: 20170906153431) do
     t.integer  "card_content_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
   end
 
   add_index "card_content_validations", ["card_content_id"], name: "index_card_content_validations_on_card_content_id", using: :btree
-  add_index "card_content_validations", ["deleted_at"], name: "index_card_content_validations_on_deleted_at", using: :btree
 
   create_table "card_contents", force: :cascade do |t|
     t.string   "ident"
@@ -229,7 +226,6 @@ ActiveRecord::Schema.define(version: 20170906153431) do
     t.integer  "rgt",             null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.datetime "deleted_at"
     t.integer  "card_version_id", null: false
     t.string   "content_type"
   end
@@ -242,7 +238,6 @@ ActiveRecord::Schema.define(version: 20170906153431) do
   create_table "card_versions", force: :cascade do |t|
     t.integer  "version",                                 null: false
     t.integer  "card_id",                                 null: false
-    t.datetime "deleted_at"
     t.boolean  "required_for_submission", default: false, null: false
     t.datetime "published_at"
     t.integer  "published_by_id"
@@ -257,7 +252,6 @@ ActiveRecord::Schema.define(version: 20170906153431) do
   create_table "cards", force: :cascade do |t|
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.datetime "deleted_at"
     t.string   "name"
     t.integer  "journal_id"
     t.integer  "latest_version", default: 1, null: false

@@ -3,8 +3,6 @@
 # CardContent.
 #
 class Answer < ActiveRecord::Base
-  acts_as_paranoid
-
   include Readyable
 
   belongs_to :card_content

@@ -91,11 +91,11 @@ test(`Authorized User can see the 'Add Correspondence' button`, (assert) => {
 
 test(`Unauthorized User cannot see the 'Add Correspondence' button`, (assert) => {
   Factory.createPermission('Paper', paper.id, ['submit']);
-  // $.mockjax({
-  //   url: `/api/papers/${paper.get('shortDoi')}`,
-  //   type: 'put',
-  //   status: 204
-  // });
+  $.mockjax({
+    url: `/api/papers/${paper.get('shortDoi')}`,
+    type: 'put',
+    status: 204
+  });
 
   visit('/papers/' + paper.get('shortDoi') + '/correspondence');
   return andThen(() => {

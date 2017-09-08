@@ -25,6 +25,7 @@ export default Ember.Component.extend({
         this.get('template').save()
           .then(() => {
             this.set('message', 'Your changes have been saved.');
+            this.set('messageType', 'success');
           })
           .catch(error => {
             let subjectError = error.errors.filter((e) => e.source.pointer.includes('subject'));
@@ -36,6 +37,7 @@ export default Ember.Component.extend({
               this.set('bodyErrors', bodyError.map(b => b.detail));
             }
             this.set('message', 'Please correct errors where indicated');
+            this.set('messageType', 'danger');
           });
       }
     }

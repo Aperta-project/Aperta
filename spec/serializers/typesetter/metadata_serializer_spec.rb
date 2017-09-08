@@ -297,7 +297,7 @@ describe Typesetter::MetadataSerializer do
     context 'when the destination is "apex"' do
       let(:options) { { destination: 'apex' } }
       it "ensure exported metadata does not include custom card fields" do
-        expect(subject['metadata']).not_to have_key(:custom_card_fields)
+        expect(subject['metadata']).not_to have_key('custom_card_fields')
       end
     end
   end

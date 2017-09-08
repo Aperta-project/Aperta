@@ -46,11 +46,9 @@ module CustomCard
 
     def migrate_answers(old_card_version, new_card_version, journal_id)
       # Update card content IDs of legacy answers
-      Answer.unscoped do # include soft deleted answers
-        idents = new_card_version.card_contents.pluck(:ident).compact
-        idents.each do |ident|
-          update_content_id(ident, old_card_version, new_card_version, journal_id)
-        end
+      idents = new_card_version.card_contents.pluck(:ident).compact
+      idents.each do |ident|
+        update_content_id(ident, old_card_version, new_card_version, journal_id)
       end
     end
 

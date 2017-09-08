@@ -1,11 +1,12 @@
 .preprint-background-image {
   background: image-url('preprint-sample.png') no-repeat center top;
-  background-size: 100%;
+  background-size: contain;
 }
 
 .split-pane.preprint-pane {
   background: transparent;
-  height: 70vh;
+  height: 50vh;
+  min-height: 500px;
 
   li {
     line-height: 1.1rem;
@@ -13,17 +14,36 @@
   }
 
   .split-pane-element {
-    padding: 15px;
+    padding: 15px 0 25px 0;
+  }
+
+  button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 }
 .preprint-overlay .overlay--fullscreen .overlay-container {
-  width: 100%;
+  min-width: 1000px;
+  padding: 25px 60px;
 }
 
-@media screen and (max-height: 875px) {
-  .split-pane.preprint-pane { height: 50vh; }
+.preprint-overlay .card-content-radio .option {
+  .card-content-radio-label {
+    margin: -3px 0 0 25px;
+  }
+
+  input {
+    position: absolute;
+    margin: 0;
+  }
 }
 
-@media screen and (max-height: 544px) {
-  .split-pane.preprint-pane { height: 40vh; }
+@media screen and (max-height: 680px) {
+  .split-pane.preprint-pane button {
+    bottom: 10px;
+    position: fixed;
+    right: inherit;
+    left: calc(50% + 350px);
+  }
 }

@@ -53,12 +53,6 @@ class Role < ActiveRecord::Base
     JOURNAL_SETUP_ROLE
   ].freeze
 
-  ADMIN_ROLES = [
-    SITE_ADMIN_ROLE,
-    STAFF_ADMIN_ROLE,
-    JOURNAL_SETUP_ROLE
-  ].freeze
-
   def self.user_role
     find_by(name: Role::USER_ROLE, journal: nil)
   end

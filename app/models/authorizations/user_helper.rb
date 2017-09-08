@@ -67,6 +67,20 @@ module Authorizations
       ).all
     end
 
+    def filter_authorized_set(permissions, target, participations_only: :default)
+      journal_array = []
+      permissions.each do |permission|
+        journals = filter_authorized(
+          permission,
+          target,
+          participations_only: :participations_only
+        )
+        journal_array += journals.objects
+      end
+
+      journal_array.uniq
+    end
+
     def assigned_to?(assigned_to:, role:)
       role = get_role_for_thing(assigned_to, role)
       Assignment.where(

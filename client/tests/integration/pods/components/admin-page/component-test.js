@@ -18,8 +18,8 @@ const featureFlagServiceStub = Ember.Service.extend ({
 moduleForComponent('admin-page', 'Integration | Component | Admin Page', {
   integration: true,
   beforeEach: function() {
-    // this avoids a weird error with the feature flag service: Uncaught[Object object]
     manualSetup(this.container);
+    // this avoids a weird error with the feature flag service: Uncaught[Object object]
     this.register('service:feature-flag', featureFlagServiceStub);
     this.register('service:can', FakeCanService);
   }

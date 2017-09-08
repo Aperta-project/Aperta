@@ -1,12 +1,21 @@
 import { moduleFor, test } from 'ember-qunit';
+import { manualSetup } from 'ember-data-factory-guy';
+import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 
 moduleFor('route:admin.journals', 'Unit | Route | Journal', {
+  needs: ['service:can'],
+
+  beforeEach() {
+    manualSetup(this.container);
+    this.registry.register('service:can', FakeCanService);
+  }
 });
 
 test('with one journal, redirects to specific journal route', function(assert) {
   assert.expect(1);
-
   const transitionTo = function() { assert.ok(true, 'transitionTo was called'); };
+  let fake = this.container.lookup('service:can');
+  fake.allowPermission('administer', {id: 3});
 
   let route = this.subject({ transitionTo: transitionTo });
   const model = { journals: [ { id: 3 } ], journal: null };
@@ -23,3 +32,4 @@ test('with multiple journals, redirects to all journals route', function(assert)
   route.afterModel(model);
 
   assert.ok(true);
+});

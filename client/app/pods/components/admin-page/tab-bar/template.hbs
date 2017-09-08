@@ -1,6 +1,6 @@
 {{#tab-bar}}
 
-  {{#if (can 'administer' journal)}}
+  {{#if canAdminJournal}}
 
     {{#link-to 'admin.journals.workflows' class='admin-nav-workflows'}}
       {{fa-icon "columns"}}

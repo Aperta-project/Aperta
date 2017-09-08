@@ -28,11 +28,13 @@ class LetterTemplate < ActiveRecord::Base
   private
 
   def render_attr(template, context, sanitize: false)
-    raw = Liquid::Template.parse(template).render(context)
+    raw = Liquid::Template.parse(template)
+    raise BlankRenderFieldsError unless blank_render_fields?(raw, context)
+    raw_render = raw.render(context)
     if sanitize
-      ActionView::Base.full_sanitizer.sanitize(raw)
+      ActionView::Base.full_sanitizer.sanitize(raw_render)
     else
-      raw
+      raw_render
     end
   end
 
@@ -59,3 +61,5 @@ class LetterTemplate < ActiveRecord::Base
     errors.add(:subject, e.message.gsub(/^Liquid syntax error:/, '').strip)
   end
 end
+
+class BlankRenderFieldsError; end

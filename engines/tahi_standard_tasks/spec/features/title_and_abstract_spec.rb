@@ -11,6 +11,7 @@ feature 'Title And Abstract Task', js: true do
       login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
       Page.view_task_overlay(paper, task)
+      wait_for_ajax
     end
 
     scenario 'title prevents entering line breaks' do

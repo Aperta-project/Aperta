@@ -27,7 +27,7 @@ describe Admin::JournalUsersController, redis: true do
       context 'the user can administer any journal' do
         before do
           allow(user).to receive(:can?)
-            .with(:administer, Journal)
+            .with(:manage_users, Journal)
             .and_return true
         end
 
@@ -90,7 +90,7 @@ describe Admin::JournalUsersController, redis: true do
         context "when the user can administer any Journal" do
           before do
             allow(user).to receive(:can?)
-              .with(:administer, Journal)
+              .with(:manage_users, Journal)
               .and_return true
           end
 
@@ -132,7 +132,7 @@ describe Admin::JournalUsersController, redis: true do
         context "when the user can administer the specific journal" do
           before do
             allow(user).to receive(:can?)
-              .with(:administer, journal)
+              .with(:manage_users, journal)
               .and_return true
           end
 

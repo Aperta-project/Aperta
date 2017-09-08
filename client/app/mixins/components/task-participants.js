@@ -6,6 +6,7 @@ export default Ember.Mixin.create({
   participants: Ember.computed('participations.@each.user', function() {
     return this.get('participations').mapBy('user');
   }),
+  users: [], // TO DO
 
   findParticipation(participantId) {
     return this.get('participations').findBy('user.id', '' + participantId);

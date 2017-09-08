@@ -6,7 +6,7 @@ export default Ember.Component.extend(Participants, {
   to: 'overlay-drop-zone',
 
   searchingParticipant: false,
-
+  searchingAssignable: false,
   /**
    *  Method called after out animation is complete.
    *  This should be set to an action.
@@ -49,9 +49,17 @@ export default Ember.Component.extend(Participants, {
       this.set('searchingParticipant', true);
     },
 
+    searchStartedAssignable() {
+      this.set('searchingAssignable', true);
+    },
+
     searchFinished() {
       this.set('searchingParticipant', false);
+    },
+
+    searchFinishedAssignable() {
+      this.set('searchingAssignable', false);
     }
+
   }
 });
-

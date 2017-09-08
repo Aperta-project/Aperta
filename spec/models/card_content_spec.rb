@@ -8,12 +8,30 @@ describe CardContent do
       expect(card_content).to be_valid
     end
 
+    it "sets and retrieves boolean attributes" do
+      value = false
+      card_content.required_field = value
+      expect(card_content.required_field).to eq(value)
+    end
+
+    it "sets and retrieves string attributes" do
+      value = "test string"
+      card_content.text = value
+      expect(card_content.text).to eq(value)
+    end
+
+    it "sets and retrieves json attributes" do
+      value = { 'a' => 1, 'b' => 2 }
+      card_content.possible_values = value
+      expect(card_content.possible_values).to eq(value)
+    end
+
     context "default_answer_value" do
       it "cannot be present when value_type is blank" do
         card_content.value_type = nil
         card_content.default_answer_value = "foo"
         expect(card_content).to_not be_valid
-        expect(card_content.error_on(:default_answer_value)).to include(/value type must be present/i)
+        expect(card_content.error_on(:base)).to include(/value type must be present/i)
       end
 
       context "with possible values" do
@@ -29,7 +47,7 @@ describe CardContent do
         it "must be one of the possible_values if they are present" do
           card_content.default_answer_value = "foo"
           expect(card_content).to_not be_valid
-          expect(card_content.error_on(:default_answer_value)).to include(/must be one of the following values/i)
+          expect(card_content.error_on(:base)).to include(/must be one of the following values/i)
         end
         it "is valid if it matches one of the possible_values' value" do
           card_content.default_answer_value = "baz"
@@ -40,7 +58,6 @@ describe CardContent do
 
     context '#to_xml' do
       let!(:card_content) { FactoryGirl.build(:card_content, :with_string_match_validation, ident: 'thing') }
-      let(:card) { FactoryGirl.build(:card) }
       let(:expected_xml) do
         <<-XML.strip_heredoc
         <?xml version="1.0" encoding="UTF-8"?>

@@ -7,17 +7,15 @@ class FeatureFlagsController < ApplicationController
   respond_to :json
 
   def index
-    render json: FeatureFlag.to_hash
+    respond_with FeatureFlag.all
   end
 
   def update
     # must have site admin permission
     raise AuthorizationError unless current_user.site_admin?
-    flags = params['feature_flags']
-    flags.keys.each do |name|
-      FeatureFlag.find(name).update(active: flags[name])
-    end
+    flag = FeatureFlag.find(params[:id])
+    flag.update active: params[:feature_flag][:active]
 
-    render json: FeatureFlag.to_hash
+    respond_with flag
   end
 end

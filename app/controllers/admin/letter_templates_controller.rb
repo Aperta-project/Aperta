@@ -24,7 +24,7 @@ class Admin::LetterTemplatesController < ApplicationController
   private
 
   def authorized_user
-    requires_user_can(:administer, Journal)
+    requires_user_can(:manage_users, Journal)
   end
 
   def letter_template_params

@@ -118,11 +118,6 @@ class User < ActiveRecord::Base
     administered_journals.include? journal
   end
 
-  def admin?
-    admin_roles = roles.map(&:name) & Role::ADMIN_ROLES
-    admin_roles.present?
-  end
-
   # Returns the journals that this user administers. If you pass a block
   # this will yield an ActiveRecord::Relation query object that you can
   # use to put further conditions on.
@@ -132,7 +127,8 @@ class User < ActiveRecord::Base
     if site_admin?
       journal_query
     else
-      filter_authorized(:administer, journal_query).objects
+      roles = [:manage_users, :administer]
+      filter_authorized_set(roles, journal_query)
     end
   end
 

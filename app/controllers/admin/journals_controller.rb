@@ -28,7 +28,7 @@ class Admin::JournalsController < ApplicationController
   end
 
   def authorization
-    raise AuthorizationError unless current_user.admin?
+    raise AuthorizationError unless current_user.administered_journals.any?
     head 204
   end
 

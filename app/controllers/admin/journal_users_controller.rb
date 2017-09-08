@@ -3,7 +3,7 @@ class Admin::JournalUsersController < ApplicationController
   respond_to :json
 
   def index
-    requires_user_can(:administer, Journal)
+    requires_user_can(:manage_users, Journal)
     if params[:query].present?
       users = User.search_users(params[:query])
     elsif params[:journal_id].present?

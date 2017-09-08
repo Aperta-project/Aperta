@@ -23,4 +23,3 @@ test('with multiple journals, redirects to all journals route', function(assert)
   route.afterModel(model);
 
   assert.ok(true);
-});

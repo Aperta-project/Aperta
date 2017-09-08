@@ -118,6 +118,11 @@ class User < ActiveRecord::Base
     administered_journals.include? journal
   end
 
+  def admin?
+    admin_roles = roles.map(&:name) & Role::ADMIN_ROLES
+    admin_roles.present?
+  end
+
   # Returns the journals that this user administers. If you pass a block
   # this will yield an ActiveRecord::Relation query object that you can
   # use to put further conditions on.

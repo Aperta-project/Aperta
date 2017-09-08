@@ -223,7 +223,46 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def combined_contents
+    version = most_recent_version
+    return [] unless version
+    self.class.connection.select_all(combined_sql(version))
+  end
+
   private
+
+  def combined_sql(card_version)
+    <<-SQL
+    with recursive all_contents as (
+      select
+        base.id, base.parent_id, array[base.id] AS path,
+        base.content_type, base.ident,
+        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        vals.validator, vals.validation_type, vals.error_message
+      from
+        card_contents base
+        left outer join content_attributes attr on attr.card_content_id = base.id
+        left outer join card_content_validations vals on vals.card_content_id = base.id
+      where
+        parent_id is NULL and card_version_id = #{card_version.id}
+
+      UNION
+
+      select
+        cc.id, cc.parent_id, (base.path || cc.id) as path,
+        cc.content_type, cc.ident,
+        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        vals.validator, vals.validation_type, vals.error_message
+      from
+        card_contents cc
+        inner join all_contents base on base.id = cc.parent_id
+        left outer join content_attributes attr on attr.card_content_id = cc.id
+        left outer join card_content_validations vals on vals.card_content_id = base.id
+    )
+
+    select * from all_contents order by path;
+    SQL
+  end
 
   def publish_latest_version!
     latest_card_version.publish!

@@ -42,9 +42,12 @@ moduleForAcceptance('Integration: Correspondence', {
 
     Factory.createPermission('Paper', paper.id, ['submit', 'manage_workflow']);
     $.mockjax({
-      url: `/api/papers/${paper.get('shortDoi')}`,
-      type: 'put',
-      status: 204
+      url: `/api/papers/${paper.get('id')}/correspondence/${correspondence.get('id')}`,
+      type: 'GET',
+      status: 200,
+      responseText: {
+        correspondence: correspondence.toJSON({includeId: true})
+      }
     });
 
     $.mockjax({
@@ -59,14 +62,14 @@ moduleForAcceptance('Integration: Correspondence', {
 });
 
 test('User can view a correspondence record', function(assert) {
-  visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');  
+  visit('/papers/' + paper.get('shortDoi') + '/correspondence/viewcorrespondence/1');
   return andThen(function() {
     assert.ok(find('.correspondence-overlay'), 'Correspondence Overlay');
     assert.equal(find('.correspondence-date').text().trim(), formatDate(correspondence.get('date'), {}));
     assert.equal(find('.correspondence-sender').text().trim(), correspondence.get('sender'));
     assert.equal(find('.correspondence-recipient').text().trim(), correspondence.get('recipient'));
     assert.equal(find('.correspondence-subject').text().trim(), correspondence.get('subject'));
-    assert.equal(find('#correspondence-attachment-paperclip').length, 1); 
+    assert.equal(find('#correspondence-attachment-paperclip').length, 1);
     assert.equal(find('.correspondence-attachment-link .file-link').length, 2);
   });
 });
@@ -88,11 +91,11 @@ test(`Authorized User can see the 'Add Correspondence' button`, (assert) => {
 
 test(`Unauthorized User cannot see the 'Add Correspondence' button`, (assert) => {
   Factory.createPermission('Paper', paper.id, ['submit']);
-  $.mockjax({
-    url: `/api/papers/${paper.get('shortDoi')}`,
-    type: 'put',
-    status: 204
-  });
+  // $.mockjax({
+  //   url: `/api/papers/${paper.get('shortDoi')}`,
+  //   type: 'put',
+  //   status: 204
+  // });
 
   visit('/papers/' + paper.get('shortDoi') + '/correspondence');
   return andThen(() => {

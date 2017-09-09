@@ -11,6 +11,11 @@ export default Ember.Component.extend({
     return !this.get('template.subject') || !this.get('template.body');
   }),
   unsaved: true,
+  displayMessage: Ember.computed('template', 'subjectErrorPresent', 'bodyErrorPresent', function() {
+    return !this.get('template.hasDirtyAttributes') && 
+      (this.get('subjectErrorPresent') ||
+      this.get('bodyErrorPresent'));
+  }),
   subjectErrors: [],
   bodyErrors: [],
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),

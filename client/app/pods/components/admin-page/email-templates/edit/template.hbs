@@ -13,8 +13,10 @@
   <div class="row">
     <div class="col-xs-12 edit-email-backsplash">
       <div class="text-right">
-        <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
-        <button class="button-primary button--blue edit-email-button" {{action "save"}} disabled={{not template.hasDirtyAttributes}}>
+        {{#unless displayMessage}}
+          <span class="text-{{messageType}}">{{message}}</span>&nbsp;&nbsp;&nbsp;
+        {{/unless}}
+        <button class="button-primary button--blue edit-email-button" {{action "save"}} disabled={{or (not template.hasDirtyAttributes) template.isSaving}}>
           {{progress-spinner visible=template.isSaving color="blue" size="mini" align="center"}}
           {{unless template.isSaving 'SAVE'}}
         </button>

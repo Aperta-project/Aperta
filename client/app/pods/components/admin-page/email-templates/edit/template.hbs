@@ -26,15 +26,15 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-9">
-              <div class="form-group {{unless (or unsaved template.subject) 'error'}}">
+              <div class="form-group {{unless (and (not subjectErrorPresent) (or unsaved template.subject)) 'error'}}">
                 <label for="subject" class="text-bold">Subject <span class="error">*</span></label>
                 {{input class="form-control" id="subject" value=template.subject}}
                 {{#unless (or unsaved template.subject)}}
-                  <span class="{{unless (or unsaved template.subject) 'error'}}">{{fa-icon 'warning'}} Please enter a subject line</span>
+                  <span>{{fa-icon 'warning'}} This field is required.</span>
                 {{/unless}}
                 {{#if subjectErrorPresent}}
                   <div class="error">
-                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors</span>
+                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                     <ul>
                       {{#each subjectErrors as |error|}}
                         <li>{{error}}</li>
@@ -44,15 +44,15 @@
                 {{/if}}
               </div>
 
-              <div class="form-group {{unless (or unsaved template.body) 'error'}}">
+              <div class="form-group {{unless (and (not bodyErrorPresent) (or unsaved template.body)) 'error'}}">
                 <label for="body" class="text-bold">Body <span class="error">*</span></label>
                 {{textarea id="body" class="form-control" value=template.body}}
                 {{#unless (or unsaved template.body)}}
-                  <span>{{fa-icon 'warning'}} Please enter body text</span>
+                  <span>{{fa-icon 'warning'}} This field is required.</span>
                 {{/unless}}
                 {{#if bodyErrorPresent}}
                   <div class="error">
-                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors</span>
+                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
                     <ul>
                       {{#each bodyErrors as |error|}}
                         <li>{{error}}</li>

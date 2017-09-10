@@ -7,41 +7,37 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
-  disabled: Ember.computed('template.subject', 'template.body', function() {
-    return !this.get('template.subject') || !this.get('template.body');
-  }),
-  unsaved: true,
-  displayMessage: Ember.computed('template', 'subjectErrorPresent', 'bodyErrorPresent', function() {
-    return !this.get('template.hasDirtyAttributes') && 
-      (this.get('subjectErrorPresent') ||
-      this.get('bodyErrorPresent'));
-  }),
+  saved: true,
   subjectErrors: [],
   bodyErrors: [],
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
   actions: {
+    handleInputChange() {
+      this.set('saved', false);
+      this.set('message', '');
+    },
+
     save: function() {
       this.set('subjectErrors', []);
       this.set('bodyErrors', []);
-      if (this.get('disabled') || this.get('template.isSaving')) {
-        this.set('unsaved', false);
-      } else {
+      if (this.get('template.subject') && this.get('template.body')) {
         this.get('template').save()
           .then(() => {
+            this.set('saved', true);
             this.set('message', 'Your changes have been saved.');
             this.set('messageType', 'success');
           })
           .catch(error => {
-            let subjectError = error.errors.filter((e) => e.source.pointer.includes('subject'));
-            let bodyError = error.errors.filter((e) => e.source.pointer.includes('body'));
-            if (subjectError.length) {
-              this.set('subjectErrors', subjectError.map(s => s.detail));
+            let subjectErrors = error.errors.filter((e) => e.source.pointer.includes('subject'));
+            let bodyErrors = error.errors.filter((e) => e.source.pointer.includes('body'));
+            if (subjectErrors.length) {
+              this.set('subjectErrors', subjectErrors.map(s => s.detail));
             }
-            if (bodyError.length) {
-              this.set('bodyErrors', bodyError.map(b => b.detail));
+            if (bodyErrors.length) {
+              this.set('bodyErrors', bodyErrors.map(b => b.detail));
             }
-            this.set('message', 'Please correct errors where indicated');
+            this.set('message', 'Please correct errors where indicated.');
             this.set('messageType', 'danger');
           });
       }

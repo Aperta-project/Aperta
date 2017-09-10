@@ -46,47 +46,63 @@ test('it prevents the model from saving if a field is blank and displays validat
   assert.equal(template.save.called, false);
 });
 
-test('model receives save call when valid', function(assert){
-  assert.expect(1);
-
-  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: ''});
-  var saveStub = sinon.stub(template, 'save');
-
-  // Reject the promise because routing isnt working here, this is easier.
-  saveStub.returns(Ember.RSVP.Promise.reject());
-
-  this.set('template', template);
-
-  this.render(hbs`
-    {{admin-page/email-templates/edit template=template}}
-  `);
-
-  Ember.run(() => {
-    this.$('#body').val('baz').trigger('input');
-    this.$('.button-primary').click();
-  });
-  assert.equal(template.save.called, true);
-});
-
-test('after attempted save it dynamically warns user if input field has invalid content', function(assert) {
+test('it displays a success message if save succeeds and disables save button', function(assert) {
   assert.expect(2);
 
-  let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
+  this.set('saved', true);
+  this.set('message', 'Your changes have been saved.');
+  this.set('messageType', 'success');
+
+  this.set('template', template);
+
+  this.render(hbs`
+    {{admin-page/email-templates/edit template=template saved=saved message=message messageType=messageType}}
+  `);
+
+  assert.elementFound('.button-primary[disabled]');
+  assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
+});
+
+test('it displays an error message if save fails', function(assert) {
+  assert.expect(2);
+
+  let template = FactoryGuy.make('letter-template', { subject: 'foo', body: 'bar'});
+  this.set('saved', false);
+  this.set('message', 'Please correct errors where indicated.');
+  this.set('messageType', 'danger');
+
+  this.set('templalte', template);
+
+  this.render(hbs`
+    {{admin-page/email-templates/edit template=template saved=saved message=message messageType=messageType}}
+  `);
+
+  assert.elementNotFound('.button-primary[disabled]');
+  assert.equal(this.$('span.text-danger').text(), 'Please correct errors where indicated.');
+});
+
+
+test('it warns user if input field has invalid content', function(assert) {
+  assert.expect(2);
+
+  let template = FactoryGuy.make('letter-template', {subject: 'foo', body: 'bar'});
   this.set('template', template);
 
   this.render(hbs`
     {{admin-page/email-templates/edit template=template}}
   `);
-
-  Ember.run(() => {
-    this.$('.button-primary').click();
-    this.$('#subject').val('wat').trigger('input');
-  });
-
-  assert.elementNotFound('.error');
-
+  
   Ember.run(() => {
     this.$('#subject').val('').trigger('input');
   });
-  assert.elementFound('.error');
+
+  assert.elementFound('.form-group.error');
+
+  Ember.run(() => {
+    this.$('#subject').val('foo').trigger('input');
+    this.$('#body').val('').trigger('input');
+  });
+
+  assert.elementFound('.form-group.error');
 });

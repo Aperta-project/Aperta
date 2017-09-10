@@ -7,7 +7,7 @@ class LetterTemplate < ActiveRecord::Base
   validates :body, presence: true
   validates :subject, presence: true
   validate :template_scenario?
-  validate :body_ok? # check if arguments can be passed to body_ok? here
+  validate :body_ok?
   validate :subject_ok?
 
   def render(context)

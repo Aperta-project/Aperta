@@ -25,8 +25,8 @@ class JIRAIntegrationService
 
   def authenticate!
     credentials = {
-      username: 'oogbuluijah',
-      password: ''
+      username: ENV['JIRA_USER'],
+      password: ENV['JIRA_PASS']
     }
     auth_response = RestClient.post JIRA_BASE_PATH + AUTHENTICATE_PATH, credentials.to_json, content_type: :json, accept: :json
     auth_response = JSON.parse auth_response, symbolize_names: true
@@ -34,11 +34,11 @@ class JIRAIntegrationService
     @jira_session = auth_response[:session]
   end
 
-  def create_issue(user, options)
+  def create_issue(user_full_name, options)
     authenticate!
     payload = CREATE_ISSUE_FIELDS.deep_merge(fields:
     {
-      "summary": "Aperta Feedback from #{user.full_name}.",
+      "summary": "Aperta Feedback from #{user_full_name}.",
       "description": options[:remarks]
     })
     request_options = {

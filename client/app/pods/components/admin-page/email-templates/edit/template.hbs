@@ -52,3 +52,19 @@
     </div>
   </div>
 </div>
+{{#overlay-fullscreen visible=showDirtyOverlay
+   outAnimationComplete=(toggle "showDirtyOverlay" this)
+   overlayClass="dirty-card-overlay dirty overlay--blue--bg"
+   as |overlay|}}
+  <h3>
+    There are unsaved changes. Are you sure you want to leave this page?
+  </h3>
+
+  <br/>
+  <div class="overlay-message-footer">
+    <div>
+      <button class="button-link" {{action overlay.animateOut}}>Cancel</button>
+      <button class="button-primary" {{action 'cleanEmailTemplate'}}>EXIT WITHOUT SAVING</button>
+    </div>
+  </div>
+{{/overlay-fullscreen}}

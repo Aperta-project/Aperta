@@ -26,40 +26,44 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-9">
-              <div class="form-group {{if (or subjectErrorPresent  (not template.subject)) 'error'}}">
+              <div class="form-group">
                 <label for="subject" class="text-bold">Subject <span class="error">*</span></label>
-                {{input class="form-control" id="subject" value=template.subject key-down="handleInputChange"}}
-                {{#unless template.subject}}
-                  <span>{{fa-icon 'warning'}} This field is required.</span>
-                {{/unless}}
-                {{#if subjectErrorPresent}}
-                  <div class="error">
-                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
-                    <ul>
-                      {{#each subjectErrors as |error|}}
-                        <li>{{error}}</li>
-                      {{/each}}
-                    </ul>
-                  </div>
-                {{/if}}
+                <div class="{{if (or subjectErrorPresent  subjectEmpty) 'error'}}">
+                  {{input class="form-control" id="subject" value=template.subject key-down="handleInputChange" focus-out="checkSubject"}}
+                  {{#if subjectEmpty}}
+                    <span>{{fa-icon 'warning'}} This field is required.</span>
+                  {{/if}}
+                  {{#if subjectErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each subjectErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
               </div>
 
-              <div class="form-group {{if (or bodyErrorPresent (not template.body)) 'error'}}">
+              <div class="form-group">
                 <label for="body" class="text-bold">Body <span class="error">*</span></label>
-                {{textarea id="body" class="form-control" value=template.body key-down="handleInputChange"}}
-                {{#unless template.body}}
-                  <span>{{fa-icon 'warning'}} This field is required.</span>
-                {{/unless}}
-                {{#if bodyErrorPresent}}
-                  <div class="error">
-                    <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
-                    <ul>
-                      {{#each bodyErrors as |error|}}
-                        <li>{{error}}</li>
-                      {{/each}}
-                    </ul>
-                  </div>
-                {{/if}}
+                <div class="{{if (or bodyErrorPresent bodyEmpty) 'error'}}">
+                  {{textarea id="body" class="form-control" value=template.body key-down="handleInputChange" focus-out="checkBody"}}
+                  {{#if bodyEmpty}}
+                    <span>{{fa-icon 'warning'}} This field is required.</span>
+                  {{/if}}
+                  {{#if bodyErrorPresent}}
+                    <div class="error">
+                      <span>{{fa-icon 'warning'}} Please correct the following syntax errors.</span>
+                      <ul>
+                        {{#each bodyErrors as |error|}}
+                          <li>{{error}}</li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  {{/if}}
+                </div>
               </div>
             </div>
             <div class="col-xs-3 available-merge-fields-col">

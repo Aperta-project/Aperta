@@ -8,14 +8,33 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
   saved: true,
+  subjectEmpty: false,
+  bodyEmpty: false,
   subjectErrors: [],
   bodyErrors: [],
   subjectErrorPresent: Ember.computed.notEmpty('subjectErrors'),
   bodyErrorPresent: Ember.computed.notEmpty('bodyErrors'),
+
   actions: {
     handleInputChange() {
       this.set('saved', false);
       this.set('message', '');
+    },
+
+    checkSubject() {
+      if (!this.get('template.subject')) {
+        this.set('subjectEmpty', true);
+      } else {
+        this.set('subjectEmpty', false);
+      }
+    },
+
+    checkBody() {
+      if(!this.get('template.body')) {
+        this.set('bodyEmpty', true);
+      } else {
+        this.set('bodyEmpty', false);
+      }
     },
 
     save: function() {
@@ -40,6 +59,9 @@ export default Ember.Component.extend({
             this.set('message', 'Please correct errors where indicated.');
             this.set('messageType', 'danger');
           });
+      } else {
+        this.set('message', 'Please correct errors where indicated.');
+        this.set('messageType', 'danger');
       }
     }
   }

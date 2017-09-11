@@ -42,8 +42,46 @@ class CardVersion < ActiveRecord::Base
     end
   end
 
+  def combined_contents
+    self.class.connection.select_all(combined_sql)
+  end
+
   private
 
+  def combined_sql
+    <<-SQL
+    with recursive all_contents as (
+      select
+        base.id, base.parent_id, array[base.id] AS path,
+        base.content_type, base.ident,
+        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        vals.validator, vals.validation_type, vals.error_message
+      from
+        card_contents base
+        left outer join content_attributes attr on attr.card_content_id = base.id
+        left outer join card_content_validations vals on vals.card_content_id = base.id
+      where
+        parent_id is NULL and card_version_id = #{id}
+
+      UNION
+
+      select
+        cc.id, cc.parent_id, (base.path || cc.id) as path,
+        cc.content_type, cc.ident,
+        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        vals.validator, vals.validation_type, vals.error_message
+      from
+        card_contents cc
+        inner join all_contents base on base.id = cc.parent_id
+        left outer join content_attributes attr on attr.card_content_id = cc.id
+        left outer join card_content_validations vals on vals.card_content_id = base.id
+      where
+        card_version_id = #{id}
+    )
+
+    select * from all_contents order by path;
+    SQL
+  end
   def submittable_state
     # prevent case where the card
     # hidden from sidebar, but required to

@@ -6,6 +6,89 @@ describe TahiStandardTasks::UploadManuscriptTask do
   end
 end
 
+describe "sourcefile validation for a completed task" do
+  let(:paper) { FactoryGirl.build(:paper) }
+  let(:task) do
+    FactoryGirl.build(
+      :upload_manuscript_task,
+      completed: true,
+      paper: paper
+    )
+  end
+
+  let(:sourcefile_errors) do
+    task.valid?
+    task.errors[:sourcefile]
+  end
+
+  describe "needs source file" do
+    context "the paper's file type is not pdf" do
+      before do
+        allow(paper).to receive(:file_type).and_return('docx')
+      end
+      it "has no ready issues even with a blank sourcefile" do
+        allow(paper).to receive(:sourcefile?).and_return(false)
+        expect(sourcefile_errors).to be_empty
+      end
+    end
+
+    context "the paper's file type is pdf" do
+      before do
+        allow(paper).to receive(:file_type).and_return('pdf')
+      end
+
+      context "the paper is in revision" do
+        before do
+          allow(paper).to receive(:in_revision?).and_return(true)
+        end
+
+        it "is not ready if the sourcefile is blank" do
+          allow(paper).to receive(:sourcefile?).and_return(false)
+          expect(sourcefile_errors).to contain_exactly 'Please upload your source file'
+        end
+
+        it "is ready if the sourcefile is present" do
+          allow(paper).to receive(:sourcefile?).and_return(true)
+          expect(sourcefile_errors).to be_empty
+        end
+      end
+
+      context "the paper has a major version" do
+        before do
+          allow(paper).to receive(:in_revision?).and_return(false)
+          allow(paper).to receive(:major_version).and_return(1)
+        end
+
+        it "is not ready if the sourcefile is blank" do
+          allow(paper).to receive(:sourcefile?).and_return(false)
+          expect(sourcefile_errors).to contain_exactly 'Please upload your source file'
+        end
+
+        it "is ready if the sourcefile is present" do
+          allow(paper).to receive(:sourcefile?).and_return(true)
+          expect(sourcefile_errors).to be_empty
+        end
+      end
+
+      context "does not require a source file if the paper is not in revision or has no major version" do
+        it "has no ready issues even with a blank sourcefile" do
+          allow(paper).to receive(:in_revision?).and_return(false)
+          allow(paper).to receive(:major_version).and_return(0)
+          allow(paper).to receive(:sourcefile?).and_return(false)
+          expect(sourcefile_errors).to be_empty
+        end
+
+        it "will not blow up if the paper's major_version is nil" do
+          allow(paper).to receive(:in_revision?).and_return(false)
+          allow(paper).to receive(:major_version).and_return(nil)
+          allow(paper).to receive(:sourcefile?).and_return(false)
+          expect(sourcefile_errors).to be_empty
+        end
+      end
+    end
+  end
+end
+
 describe "#setup_new_revision" do
   let!(:paper) do
     FactoryGirl.create(

@@ -1,31 +1,34 @@
-{{#if content.text}}
-  <legend class="control-label">{{{content.text}}}
-    {{#if content.isRequired}}
-      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-    {{/if}}</legend>
-{{/if}}
-{{#if isRichText}}
-  {{rich-text-editor
-    editorStyle=content.editorStyle
-    name=ident
-    data-editor=ident
-    value=answerValue
-    hasErrors=answer.hasErrors
-    errorMessages=answer.readyIssuesArray
-    onContentsChanged=(action "valueChanged")
-    focusOut=(action "validate")
-    class=inputClassNames
-    disabled=disabled
-    hideError=hideError
-  }}
-{{else}}
-  {{textarea
+<fieldset>
+  {{#if content.text}}
+    <legend>{{{content.text}}}
+      {{#if content.isRequired}}
+        {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+      {{/if}}</legend>
+  {{/if}}
+  {{#if isRichText}}
+    {{rich-text-editor
+      editorStyle=content.editorStyle
+      name=ident
+      data-editor=ident
+      value=answerValue
+      hasErrors=answer.hasErrors
+      errorMessages=answer.readyIssuesArray
+      onContentsChanged=(action "valueChanged")
+      focusOut=(action "validate")
+      class=inputClassNames
+      disabled=disabled
+      hideError=hideError
+    }}
+  {{else}}
+    {{textarea
       value=(readonly answerValue)
       class="form-control"
       change=(action "valueChanged")
       input=(action "valueChanged")
       focusOut=(action "validate")
       disabled=disabled
-  }}
-{{/if}}
-{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+    }}
+  {{/if}}
+  {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+</fieldset>
+

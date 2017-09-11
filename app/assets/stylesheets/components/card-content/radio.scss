@@ -1,15 +1,8 @@
 .card-content-radio {
-  //margin-top: 15px;
-  //.option {
-  //  //display: block;
-  //  //margin-left: 2.7rem;
-  //  //input {
-  //  //  margin: 0px 5px;
-  //  //  vertical-align: -1px;
-  //  //}
-  //  //.card-content-radio-label {
-  //  //  display: inline-block;
-  //  //  vertical-align: middle;
-  //  //}
-  //}
+
+  legend {
+    border: 0;
+    font-size: inherit;
+    margin-bottom: 10px;
+  }
 }

@@ -1,10 +1,17 @@
 .card-content-paragraph-input {
-    margin-top: 15px;
-    .form-control {
-        min-height: 100px;
-    }
+  margin-top: 15px;
 
-    textarea {
-      resize: vertical;
-    }
+  .form-control {
+    min-height: 100px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  legend {
+    border: 0;
+    font-size: inherit;
+    margin-bottom: 10px;
+  }
 }

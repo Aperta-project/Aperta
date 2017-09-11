@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/MethodLength
 module CustomCard
   module Configurations
     #
@@ -41,16 +40,16 @@ module CustomCard
 
       def self.view_discussion_footer_role_names
         # an array of `Role.name` that should have discussion view permissions on the Card
-        # default: same as non-discussion view permissions
+        # default: The discussion footer is mainly for PLOS staff members.
         # options: this method can also return `:all` to allow all Roles in system
-        view_role_names
+        ["Cover Editor", "Handling Editor", "Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
       end
 
       def self.edit_discussion_footer_role_names
         # an array of `Role.name` that should have discussion edit permissions on the Card
-        # default: same as non-discussion edit permissions
+        # default: The discussion footer is mainly for PLOS staff members.
         # options: this method can also return `:all` to allow all Roles in system
-        edit_role_names
+        ["Internal Editor", "Production Staff", "Publishing Services", "Staff Admin"]
       end
 
       def self.publish
@@ -65,7 +64,16 @@ module CustomCard
         false
       end
 
+      def self.xml_content_name
+        # an string of the xml file name
+        to_s.demodulize.underscore + ".xml"
+      end
+
       def self.xml_content
+        # loads the XML file from the xml_content folder using the xml_content_name
+        file_path = Rails.root.join("lib/custom_card/configurations/xml_content/#{xml_content_name}")
+
+        return File.read(file_path) if File.exist?(file_path)
         raise NotImplementedError
       end
     end

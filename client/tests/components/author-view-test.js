@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup }  from 'ember-data-factory-guy';
@@ -19,8 +20,16 @@ moduleForComponent(
         institutional_accounts: [],
       }});
 
+      let journal = FactoryGuy.make('journal', {
+        coauthorConfirmationEnabled: true
+      });
+
+      let paper = FactoryGuy.make('paper', {
+        journal: journal
+      });
+
       let authorsTask = FactoryGuy.make('authors-task');
-      let author = FactoryGuy.make('author');
+      let author = FactoryGuy.make('author', {paper: paper});
       let user = FactoryGuy.make('user');
 
       author.set('displayName', 'Bob Smith');
@@ -67,15 +76,21 @@ test("component shows author is unconfirmed", function(assert){
   assert.textPresent('[data-test-selector="author-task-item-view-text"]', 'Bob Smith');
 });
 
-test("component shows author is confirmed", function(assert){
+test('component shows author is confirmed if co author conf is on', function(assert){
   Ember.run( () => {
     this.get('author').set('coAuthorState', 'confirmed');
   });
   this.render(template);
   assert.textPresent('[data-test-selector="author-confirmed"]', 'Confirmed');
+
+  Ember.run( () => {
+    this.get('author.paper.journal').set('coauthorConfirmationEnabled', false);
+  });
+
+  assert.elementNotFound('[data-test-selector="author-confirmed"]');
 });
 
-test("component shows author is refuted", function(assert){
+test('component shows author is refuted', function(assert){
   Ember.run( () => {
     this.get('author').set('coAuthorState', 'refuted');
   });

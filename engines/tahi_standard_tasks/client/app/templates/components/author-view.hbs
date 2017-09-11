@@ -6,31 +6,31 @@
 
     <div class="author-task-item-position flex-element">.</div>
 
-      <div data-test-selector="author-task-item-view-text" class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
-        <div class="flex-element">
-          <div class="author-name">
-            {{displayName}}
-          </div>
+    <div data-test-selector="author-task-item-view-text" class="author-task-item-view-text flex-element flex-group" {{action "toggleEditForm"}}>
+      <div class="flex-element">
+        <div class="author-name">
+          {{displayName}}
+        </div>
 
-          {{#if coauthorConfirmationEnabled}}
-            {{#if author.confirmedAsCoAuthor}}
-              <div data-test-selector="author-confirmed" class="author-confirmed">
-                <i class="fa fa-check author-confirmed-check author-confirmed"></i>
-                Confirmed
-              </div>
-            {{else if author.refutedAsCoAuthor}}
-              <div data-test-selector="author-refuted" class="author-refuted">
-                <i class="fa fa-minus-circle author-refuted-circle author-refuted"></i>
-                Refuted
-              </div>
-            {{/if}}
+        {{#if coauthorConfirmationEnabled}}
+          {{#if author.confirmedAsCoAuthor}}
+            <div data-test-selector="author-confirmed" class="author-confirmed">
+              <i class="fa fa-check author-confirmed-check author-confirmed"></i>
+              Confirmed
+            </div>
+          {{else if author.refutedAsCoAuthor}}
+            <div data-test-selector="author-refuted" class="author-refuted">
+              <i class="fa fa-minus-circle author-refuted-circle author-refuted"></i>
+              Refuted
+            </div>
           {{/if}}
+        {{/if}}
 
-        </div>
-        <div class="author-email flex-element">
-          {{or author.email author.contactEmail}}
-        </div>
       </div>
+      <div class="author-email flex-element">
+        {{or author.email author.contactEmail}}
+      </div>
+    </div>
 
     {{#unless isNotEditable}}
       <div class="author-task-item-view-actions flex-element">

@@ -163,6 +163,12 @@ if = element content {
                 content?
 }
 
+error-message = element content {
+                    attribute content-type { "error-message" },
+                    attribute key { text },
+                    element text { text }?
+                }
+
 content = (
            radio-input |
            text-input |
@@ -176,7 +182,8 @@ content = (
            date-picker |
            tech-check |
            sendback-reason |
-           if
+           if |
+           error-message
 )
 
 start = element card {

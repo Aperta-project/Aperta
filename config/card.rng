@@ -537,6 +537,19 @@
       </optional>
     </element>
   </define>
+  <define name="error-message">
+    <element name="content">
+      <attribute name="content-type">
+        <value>error-message</value>
+      </attribute>
+      <attribute name="key"/>
+      <optional>
+        <element name="text">
+          <text/>
+        </element>
+      </optional>
+    </element>
+  </define>
   <define name="content">
     <choice>
       <ref name="radio-input"/>
@@ -552,6 +565,7 @@
       <ref name="tech-check"/>
       <ref name="sendback-reason"/>
       <ref name="if"/>
+      <ref name="error-message"/>
     </choice>
   </define>
   <start>

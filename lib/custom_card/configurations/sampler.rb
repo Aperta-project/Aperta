@@ -102,6 +102,9 @@ module CustomCard
                 <possible-value label="tif" value=".tif"/>
                 <possible-value label="png" value=".png"/>
               </content>
+              <content content-type="error-message" key="validationErrors.sourcefile">
+                <text>Please upload your source file</text>
+              </content>
               <content content-type="if" condition="isEditable">
                 <content content-type="paragraph-input" value-type="html">
                   <text>This is the THEN branch of an IF condition.</text>

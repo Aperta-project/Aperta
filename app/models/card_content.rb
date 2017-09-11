@@ -135,6 +135,11 @@ class CardContent < ActiveRecord::Base
       {
         'required-field' => required_field
       }
+
+    when 'error-message'
+      {
+        'key' => key
+      }
     else
       {}
     end

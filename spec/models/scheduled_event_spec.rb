@@ -125,4 +125,25 @@ describe ScheduledEvent do
       expect(subject.state).to eq('completed')
     end
   end
+
+  describe '#finished?' do
+    it 'should be true if state is completed, inactive or errored' do
+      subject.state = 'completed'
+      expect(subject.finished?).to eq(true)
+
+      subject.state = 'inactive'
+      expect(subject.finished?).to eq(true)
+
+      subject.state = 'errored'
+      expect(subject.finished?).to eq(true)
+    end
+
+    it 'should be false if state is not completed, not inactive or not errored' do
+      subject.state = 'processing'
+      expect(subject.finished?).to eq(false)
+
+      subject.state = 'active'
+      expect(subject.finished?).to eq(false)
+    end
+  end
 end

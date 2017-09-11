@@ -24,6 +24,10 @@ class ScheduledEvent < ActiveRecord::Base
     dispatch_at && dispatch_at > DateTime.now.in_time_zone && inactive?
   end
 
+  def finished?
+    state == 'completed' || state == 'inactive' || state == 'errored'
+  end
+
   aasm column: :state do
     state :active, initial: true
     state :inactive

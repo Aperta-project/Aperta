@@ -20,8 +20,6 @@ export default Ember.Controller.extend({
   // true when naming a new saved query
   newQueryState: false,
   newQueryTitle: '',
-  featureFlag: Ember.inject.service(),
-  preprintsEnabled: Ember.computed.equal('featureFlag.PREPRINT', true),
 
   actions: {
     setPage(page) {

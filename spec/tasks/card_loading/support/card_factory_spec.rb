@@ -181,7 +181,6 @@ describe CardFactory do
             )
 
           expect(version.card_contents.find_by(ident: "foo").text).to eq("new foo text")
-          expect(version.card_contents.find_by(text: "keep me")).to be_present
           expect(version.card_contents.count).to eq(3)
         end
       end

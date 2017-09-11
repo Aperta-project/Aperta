@@ -35,21 +35,12 @@ module('Integration: Discussions', {
       }
     });
 
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: false
-      }
-    });
-
     var paperResponse = paper.toJSON();
     paperResponse.id = 1;
 
     $.mockjax({
       url: '/api/papers/' + paperResponse.shortDoi,
-      status: 200, 
+      status: 200,
       responseText: {
         paper: paperResponse
       }
@@ -335,9 +326,9 @@ test('cannot persist empty title for /discussions', function(assert) {
 test('pops out discussions', function(assert){
   Ember.run(function() {
     mockFind('discussion-topic').returns({ model: topic });
-    
+
     visit('/papers/' + paper.id + '/workflow/discussions/');
-    
+
     andThen(function() {
       const firstTopic = find('.discussions-index-topic:first');
       assert.ok(firstTopic.length, 'Topic is found: ' + firstTopic.text());

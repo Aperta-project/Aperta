@@ -245,10 +245,15 @@ class Card < ActiveRecord::Base
     CardArchiver.archive(self)
   end
 
+  def destroyable?
+    return false unless draft?
+    return false if notifications_enabled?
+    true
+  end
+
   def check_destroyable
-    unless draft?
-      errors.add(:base, "only draft cards can be destroyed")
-      false # halt callback
-    end
+    return true if destroyable?
+    errors.add(:base, "only draft cards can be destroyed")
+    false # halt callback
   end
 end

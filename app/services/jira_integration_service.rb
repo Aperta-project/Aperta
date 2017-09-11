@@ -39,7 +39,7 @@ class JIRAIntegrationService
     payload = CREATE_ISSUE_FIELDS.deep_merge(fields:
     {
       "summary": "Aperta Feedback from #{user_full_name}.",
-      "description": options[:remarks]
+      "description": options['remarks']
     })
     request_options = {
       content_type: :json,

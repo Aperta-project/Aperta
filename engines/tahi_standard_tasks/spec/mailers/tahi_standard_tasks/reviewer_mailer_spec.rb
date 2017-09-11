@@ -108,7 +108,7 @@ describe TahiStandardTasks::ReviewerMailer do
       it "contains the due date" do
         report.set_due_datetime
         expect(report.due_at).to_not be_nil
-        expect(email.body).to match(report.due_at.strftime("%B %-d, %Y %H:%M %Z"))
+        expect(email.body).to match(report.due_at.to_s(:due_with_minutes))
       end
     end
   end
@@ -254,6 +254,95 @@ describe TahiStandardTasks::ReviewerMailer do
 
       it "includes the reviewer's email that was invited in the body" do
         expect(email.body).to match("#{invitation.email} has declined")
+      end
+    end
+  end
+
+  describe 'reminder emails' do
+    before do
+      report.paper.journal.letter_templates.create!(
+        name: template_name,
+        scenario: 'ReviewerReportScenario',
+        subject: 'review {{ journal.name }}',
+        body: '<p>Dear Dr. {{ reviewer.last_name }}, review {{ manuscript.title }} on {{ review.due_at }} </p>'
+      )
+      report.set_due_datetime
+      report.save!
+    end
+    let(:report_due_at) { report.due_at.to_s(:due_with_hours) }
+
+    describe '.remind_before_due' do
+      subject(:email) { described_class.remind_before_due(reviewer_report_id: report.id) }
+      let(:template_name) { 'Review Reminder - Before Due' }
+
+      it 'is to the reviewer' do
+        expect(email.to).to eq([report.user.email])
+      end
+
+      it 'renders the subject' do
+        expect(email.subject).to eq("review #{report.paper.journal.name}")
+      end
+
+      it 'renders the email template' do
+        expect(email.body).to match("<p>Dear Dr. #{report.user.last_name}, review #{report.paper.title} on #{report_due_at} </p>")
+      end
+
+      it 'renders the View Manuscript button' do
+        expect(email.body).to match("View Manuscript")
+      end
+
+      it 'renders the signature' do
+        expect(email.body).to match('Kind regards,')
+      end
+    end
+
+    describe '.first_late_notice' do
+      subject(:email) { described_class.first_late_notice(reviewer_report_id: report.id) }
+      let(:template_name) { 'Review Reminder - First Late' }
+
+      it 'is to the reviewer' do
+        expect(email.to).to eq([report.user.email])
+      end
+
+      it 'renders the subject' do
+        expect(email.subject).to eq("review #{report.paper.journal.name}")
+      end
+
+      it 'renders the email template' do
+        expect(email.body).to match("<p>Dear Dr. #{report.user.last_name}, review #{report.paper.title} on #{report_due_at} </p>")
+      end
+
+      it 'renders the View Manuscript button' do
+        expect(email.body).to match("View Manuscript")
+      end
+
+      it 'renders the signature' do
+        expect(email.body).to match('Kind regards,')
+      end
+    end
+
+    describe '.second_late_notice' do
+      subject(:email) { described_class.second_late_notice(reviewer_report_id: report.id) }
+      let(:template_name) { 'Review Reminder - Second Late' }
+
+      it 'is to the reviewer' do
+        expect(email.to).to eq([report.user.email])
+      end
+
+      it 'renders the subject' do
+        expect(email.subject).to eq("review #{report.paper.journal.name}")
+      end
+
+      it 'renders the email template' do
+        expect(email.body).to match("<p>Dear Dr. #{report.user.last_name}, review #{report.paper.title} on #{report_due_at} </p>")
+      end
+
+      it 'renders the View Manuscript button' do
+        expect(email.body).to match("View Manuscript")
+      end
+
+      it 'renders the signature' do
+        expect(email.body).to match('Kind regards,')
       end
     end
   end

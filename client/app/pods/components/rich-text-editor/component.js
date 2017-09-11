@@ -68,6 +68,23 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
+  editorIsEnabled: Ember.observer('disabled', function() {
+    if (!this.get('disabled')) {
+      Ember.run.scheduleOnce('afterRender', this, this.postRender);
+    }
+  }),
+
+  pastePostprocess(editor, fragment) {
+    function deleteEmptyParagraph(elem) {
+      if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
+        elem.remove();
+      } else {
+        Array.from(elem.children).forEach(deleteEmptyParagraph);
+      }
+    }
+    deleteEmptyParagraph(fragment.node);
+  },
+
   postRender() {
     let editor = this.childViews.find(child => child.editor).editor;
     let iframeSelector = 'iframe#' + editor.id + '_ifr';
@@ -84,10 +101,11 @@ export default Ember.Component.extend({
     options['autoresize_max_height'] = 500;
     options['autoresize_bottom_margin'] = 1;
     options['autoresize_on_init'] = true;
+    options['paste_postprocess'] = this.pastePostprocess;
+
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }
-    Ember.run.schedule('afterRender', this, this.postRender);
     return options;
   },
 
@@ -96,5 +114,5 @@ export default Ember.Component.extend({
     let style = this.get('editorStyle') || 'expanded';
     let options = Object.assign({}, configs[style]);
     return this.configureCommon(options);
-  }),
+  })
 });

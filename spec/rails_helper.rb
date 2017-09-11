@@ -6,8 +6,8 @@ require 'spec_helper'
 require 'rspec/matchers'
 require 'equivalent-xml'
 require File.expand_path("../../config/environment", __FILE__)
-require 'capybara-screenshot/rspec'
 require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
 require 'email_spec'
 require 'pusher-fake/support/rspec'
 require 'rspec/rails'
@@ -91,7 +91,7 @@ RSpec.configure do |config|
     # around.
     # Ensure this comes after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types cards card_contents card_versions)
+      except: %w[task_types cards card_contents card_versions content_attributes]
     }
 
     # Fix to make sure this happens only once
@@ -129,7 +129,7 @@ RSpec.configure do |config|
 
     # Store screenshots in artifacts dir on circle
     if ENV['CIRCLE_TEST_REPORTS']
-      Capybara.save_and_open_page_path =
+      Capybara.save_path =
         "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
     end
 

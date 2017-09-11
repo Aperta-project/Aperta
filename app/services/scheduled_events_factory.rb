@@ -27,7 +27,7 @@ class ScheduledEventFactory
   def reschedule(event, template)
     new_date = dispatch_date(template)
 
-    if event.complete?
+    if event.completed?
       if event.dispatch_at < new_date
         new_event = event.dup
         event.reactivate

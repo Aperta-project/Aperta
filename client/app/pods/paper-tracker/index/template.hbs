@@ -41,7 +41,7 @@
                           activeOrderDir=orderDir
                           sortAction=(action "sort")}}
             </th>
-            {{#if preprintsEnabled}}
+            {{#if (feature-flag "PREPRINT")}}
               <th class="paper-tracker-paper-preprint-id-column">
                 {{sort-link text="Pre-print DOI"
                             orderBy="preprint_doi_article_number"
@@ -118,7 +118,7 @@
     <h3>Saved Searches</h3>
     <ul>
     {{#each paperTrackerQueries as |query|}}
-      <li>{{paper-tracker-query query=query preprintsEnabled=preprintsEnabled}}</li>
+      <li>{{paper-tracker-query query=query}}</li>
     {{/each}}
 
     {{#if newQueryState}}

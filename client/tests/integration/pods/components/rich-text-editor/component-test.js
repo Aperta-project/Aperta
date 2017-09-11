@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import {findEditor, getRichText, setRichText} from 'tahi/tests/helpers/rich-text-editor-helpers';
+import {findEditor, getRichText, setRichText, pasteText, editorFireEvent} from 'tahi/tests/helpers/rich-text-editor-helpers';
 
 moduleForComponent('rich-text-editor', 'Integration | Component | rich text editor', {
   integration: true
@@ -54,6 +54,20 @@ test('it strips <p> and <br> tags when editorStyle is inline', function(assert) 
   assert.equal(getRichText('foo'), 'abc');
 });
 
+test('it strips empty <p></p> tags from a pasted word text', function(assert) {
+  this.set('saveContents', function() {});
+  this.render(hbs`{{rich-text-editor editorStyle='inline' ident='bar' onContentsChanged=saveContents}}`);
+
+  let editor = findEditor('bar');
+  assert.elementFound(editor);
+  assert.equal(getRichText('bar'), '');
+  pasteText('bar', '<p>foo</p><p>&nbsp;</p><p>bar</p>');
+  // after striping off empty paragraphs, TinymCE returns a div class with
+  // the rest of the text(the text sits in between this div) , this occur
+  // when we use the {format: raw} which we can get rid off for this test
+  assert.ok(findEditor('bar').getContent({format: 'raw'}).indexOf('<p>foo</p><p>bar</p>') !== -1);
+});
+
 test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
   assert.expect(1);
   this.set('value', '<p>Old</p>');
@@ -66,4 +80,33 @@ test(`it sends 'onContentsChanged' after keyed input`, function(assert) {
   let editor = window.tinymce.activeEditor;
   editor.setContent('New');
   editor.target.triggerSave();
+});
+
+
+test('checking the focusOut action triggers after editor is disabled', function(assert) {
+  this.set('focusOutStub', function() {
+    this.set('value', 'new value');
+  });
+  this.set('saveContents', function() {});
+
+  let template = hbs`{{rich-text-editor
+                  value=value
+                  ident='test-editor'
+                  disabled=disabled
+                  onContentsChanged=saveContents
+                  focusOut=(action focusOutStub)}}`;
+  this.render(template);
+
+  // The focusOut passed action to the component is not attached to the editor
+  // until the postRender method is called. This call only happens when the editor
+  // is enabled, in other words when the disabled attribute is set to false.
+  editorFireEvent('test-editor', 'blur');
+  assert.equal(this.get('value'), undefined, 'Value is not set on focusOut action call');
+
+  this.set('disabled', true);
+  this.set('disabled', false);
+  // The focusOut passed in handler function is now attached to the rich text editor blur event.
+  editorFireEvent('test-editor', 'blur');
+
+  assert.equal(this.get('value'), 'new value', 'Value was set on blur');
 });

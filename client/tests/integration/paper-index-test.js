@@ -50,56 +50,46 @@ module('Integration: PaperIndex', {
     figureTaskResponse = taskPayload.toJSON();
     collaborators = [
       {
-        id: "35",
-        full_name: "Aaron Baker",
+        id: '35',
+        full_name: 'Aaron Baker',
         info: "testroles2, collaborator"
       }
     ];
-
-    $.mockjax({
-      type: 'GET',
-      url: '/api/feature_flags.json',
-      status: 200,
-      responseText: {
-        CORRESPONDENCE: false
-      }
-    });
-
     server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi, [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify(paperResponse)
     ]);
     server.respondWith('GET', "/api/papers/" + currentPaper.shortDoi + "/tasks", [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify(tasksPayload.toJSON())
     ]);
     server.respondWith('GET', "/api/tasks/" + figureTaskId, [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify(figureTaskResponse)
     ]);
     server.respondWith('PUT', /\/api\/tasks\/\d+/, [
       204, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({})
     ]);
     server.respondWith('GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify([])
     ]);
     server.respondWith('GET', "/api/tasks/" + figureTaskId + "/nested_questions", [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({
         nested_questions: [nestedQuestion]
       })
     ]);
     server.respondWith('GET', "/api/tasks/" + figureTaskId + "/nested_question_answers", [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({
         nested_question_answers: []
       })

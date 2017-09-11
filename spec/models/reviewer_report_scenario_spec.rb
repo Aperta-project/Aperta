@@ -4,15 +4,13 @@ describe ReviewerReportScenario do
   subject(:context) { ReviewerReportScenario.new(reviewer_report) }
 
   describe 'rendering' do
-    let(:reviewer_report) do
-      FactoryGirl.create(:reviewer_report)
-    end
+    let(:reviewer_report) { FactoryGirl.create(:reviewer_report) }
 
     it 'renders the due date' do
-      due_at = 2.weeks.from_now
+      due_at = 2.weeks.from_now.to_s(:due_with_hours)
       reviewer_report.due_datetime = DueDatetime.new(due_at: due_at)
       template_source = '{{ review.due_at }}'
-      expect(Liquid::Template.parse(template_source).render(context)).to eq(due_at.to_s)
+      expect(Liquid::Template.parse(template_source).render(context)).to eq(due_at)
     end
 
     it 'renders the journal name' do
@@ -35,7 +33,7 @@ describe ReviewerReportScenario do
 
     it 'renders the paper title' do
       paper = reviewer_report.paper
-      template_source = '{{ paper.title }}'
+      template_source = '{{ manuscript.title }}'
       expect(Liquid::Template.parse(template_source).render(context)).to eq(paper.title)
     end
   end

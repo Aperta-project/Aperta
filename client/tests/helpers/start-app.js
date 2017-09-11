@@ -78,6 +78,13 @@ export default function startApp(attrs) {
     }
   });
 
+  $.mockjax({
+    url: '/api/feature_flags',
+    method: 'GET',
+    status: 200,
+    responseText: {'feature_flags':[]}
+  });
+
   Ember.run(() => {
     application = Application.create(attributes);
     application.setupForTesting();

@@ -13,6 +13,21 @@ export default Ember.Component.extend({
   }),
   unsaved: true,
   allowStoppedTransition: 'allowStoppedTransition',
+
+  emailTemplateDirty: Ember.computed('template.body', 'template.subject', 'template.hasDirtyAttributes', function() {
+    let emailTemplate = this.get('template');
+    let dirtyAndRelevant = emailTemplate.changedAttributes()['subject'] || emailTemplate.changedAttributes()['body'];
+    return !!(emailTemplate.get('hasDirtyAttributes') && dirtyAndRelevant);
+  }),
+
+  didInsertElement() {
+    $(window).on('beforeunload.dirtyApertaEmailTemplateEditor', () => { if (this.get('emailTemplateDirty')) { return true; } });
+  },
+
+  willDestroyElement() {
+    $(window).off('beforeunload.dirtyApertaEmailTemplateEditor');
+  },
+
   actions: {
     save: function() {
       if (this.get('disabled') || this.get('template.isSaving')) {
@@ -24,9 +39,9 @@ export default Ember.Component.extend({
       }
     },
     cleanEmailTemplate: function() {
-      let model = this.get('template');
-      if (model.get('hasDirtyAttributes')) {
-        model.rollbackAttributes();
+      let emailTemplate = this.get('template');
+      if (emailTemplate.get('hasDirtyAttributes')) {
+        emailTemplate.rollbackAttributes();
       }
       this.sendAction('allowStoppedTransition');
     }

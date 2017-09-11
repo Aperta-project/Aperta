@@ -18,6 +18,13 @@ module CustomCard
         raise NotImplementedError
       end
 
+      # This string will be used to look up a CardTaskType with the corresponding task_class.
+      # Most custom cards will default to CustomCardTask but some custom cards needing to use
+      # existing functionality in our Task hierarchy will deviate.
+      def self.task_class
+        'CustomCardTask'
+      end
+
       def self.view_role_names
         # an array of `Role.name` that should have view access to Card
         # default: no access

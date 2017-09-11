@@ -25,8 +25,14 @@ class TaskSerializer < ActiveModel::Serializer
 
   self.root = :task
 
+  has_one :card_version, embed: :id, include: true
+
   def viewable
     scope.can?(:view, object)
+  end
+
+  def include_card_version?
+    @options[:include_card_version] && object.custom
   end
 
   def is_metadata_task

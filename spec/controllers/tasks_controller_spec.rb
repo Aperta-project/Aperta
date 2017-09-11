@@ -105,11 +105,11 @@ describe TasksController, redis: true do
         do_request
       end
 
-      context "custom cards" do
+      context "a card_id is included in the params" do
         let(:card) { FactoryGirl.create(:card, :versioned, journal: journal) }
         let(:task_params) do
           {
-            type: 'CustomCardTask',
+            type: 'TahiStandardTasks::UploadManuscriptTask',
             paper_id: paper.to_param,
             phase_id: paper.phases.last.id,
             title: card.name,
@@ -117,8 +117,12 @@ describe TasksController, redis: true do
           }
         end
 
-        it "creates a new task from a card template" do
-          expect { do_request }.to change(CustomCardTask, :count).by(1)
+        it "creates a new task from a card template, using the latest published version" do
+          expect(TaskFactory).to(receive(:create)
+                                   .with(TahiStandardTasks::UploadManuscriptTask, hash_including(card_version: anything))
+                                   .and_call_original)
+          expect { do_request }.to change(TahiStandardTasks::UploadManuscriptTask, :count).by(1)
+          expect(TahiStandardTasks::UploadManuscriptTask.last.card_version).to eq(card.latest_published_card_version)
         end
       end
     end

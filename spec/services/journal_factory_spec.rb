@@ -179,7 +179,9 @@ describe JournalFactory do
         ContentAttribute.delete_all
         CardContent.delete_all
         CardVersion.delete_all
+        TaskTemplate.delete_all
         Card.delete_all
+        CardTaskType.delete_all
       end
 
       let!(:journal) { @journal }

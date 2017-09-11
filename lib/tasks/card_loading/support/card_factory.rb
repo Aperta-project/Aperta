@@ -79,6 +79,8 @@ class CardFactory
 
     # the line below should hypothetically only happen once per environment, but it's more straightforward
     # to include it here than to make a separate data migration
-    existing_card || Card.create_published!(name: name, journal: journal)
+    existing_card || Card.create_published!(name: name,
+                                            journal: journal,
+                                            card_task_type: CardTaskType.find_by(task_class: 'CustomCardTask'))
   end
 end

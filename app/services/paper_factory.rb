@@ -72,7 +72,7 @@ class PaperFactory
 
   def create_task_from_card(task_template, phase)
     task = TaskFactory.create(
-      CustomCardTask,
+      Task.safe_constantize(task_template.card.card_task_type.task_class),
       phase: phase,
       paper: phase.paper,
       creator: creator,

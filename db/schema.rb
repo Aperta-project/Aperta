@@ -236,6 +236,11 @@ ActiveRecord::Schema.define(version: 20170926204952) do
   add_index "card_contents", ["parent_id"], name: "index_card_contents_on_parent_id", using: :btree
   add_index "card_contents", ["rgt"], name: "index_card_contents_on_rgt", using: :btree
 
+  create_table "card_task_types", force: :cascade do |t|
+    t.string "display_name"
+    t.string "task_class"
+  end
+
   create_table "card_versions", force: :cascade do |t|
     t.integer  "version",                                 null: false
     t.integer  "card_id",                                 null: false
@@ -255,11 +260,13 @@ ActiveRecord::Schema.define(version: 20170926204952) do
     t.datetime "updated_at",                 null: false
     t.string   "name"
     t.integer  "journal_id"
-    t.integer  "latest_version", default: 1, null: false
+    t.integer  "latest_version",    default: 1, null: false
     t.datetime "archived_at"
-    t.string   "state",                      null: false
+    t.string   "state",                         null: false
+    t.integer  "card_task_type_id"
   end
 
+  add_index "cards", ["card_task_type_id"], name: "index_cards_on_card_task_type_id", using: :btree
   add_index "cards", ["journal_id"], name: "index_cards_on_journal_id", using: :btree
   add_index "cards", ["state"], name: "index_cards_on_state", using: :btree
 

@@ -9,7 +9,7 @@ module CustomCard
   # - auto-publishing
   # - allowing cards to be loaded only in non-production environments
 
-  # rubocop:disable Style/IfUnlessModifier, Metrics/LineLength
+  # rubocop:disable Style/IfUnlessModifier
   class Factory
     attr_accessor :journal
 
@@ -39,7 +39,8 @@ module CustomCard
     private
 
     def create_from_configuration_klass(configuration)
-      Card.create_initial_draft!(name: configuration.name, journal: journal).tap do |card|
+      card_task_type = CardTaskType.find_by!(task_class: configuration.task_class)
+      Card.create_initial_draft!(name: configuration.name, journal: journal, card_task_type: card_task_type).tap do |card|
         # build card content using xml
         card.update_from_xml(configuration.xml_content)
 
@@ -77,5 +78,5 @@ module CustomCard
     end
     # rubocop:enable TernaryParentheses
   end
-  # rubocop:enable Style/IfUnlessModifier, Metrics/LineLength
+  # rubocop:enable Style/IfUnlessModifier
 end

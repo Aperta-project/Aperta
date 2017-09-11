@@ -33,7 +33,6 @@ export default TaskComponent.extend({
       this.set('validationErrors.completed', 'Please correct the errors below');
     }
   },
-  pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
   needsSourcefile: Ember.computed(
     'pdfAllowed',
     'task.paper.file.computedFileType',

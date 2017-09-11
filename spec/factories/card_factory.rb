@@ -3,6 +3,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Test Card #{n}" }
     journal
     latest_version 1
+    card_task_type
 
     trait :versioned do
       after(:build) do |card|

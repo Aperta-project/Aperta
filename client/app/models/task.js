@@ -17,6 +17,7 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     inverse: 'task',
     async: false
   }),
+  cardVersion: DS.belongsTo('card-version'),
   commentLooks: DS.hasMany('comment-look', {
     inverse: 'task',
     async: false

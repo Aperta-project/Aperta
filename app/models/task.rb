@@ -132,6 +132,12 @@ class Task < ActiveRecord::Base
       :paper
     end
 
+    # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
+    # given task
+    def custom
+      false
+    end
+
     def metadata_task_types
       descendants.select { |klass| klass <=> MetadataTask }
     end

@@ -39,6 +39,9 @@ export default Component.extend(ValidationErrorsMixin, {
   isNotEditable: not('isEditable'),
 
   taskStateToggleable: alias('isEditableDueToPermissions'),
+  pdfAllowed: Ember.computed.reads('task.paper.journal.pdfAllowed'),
+  contentRoot: Ember.computed.reads('task.cardVersion.contentRoot'),
+  renderAsDualColumn: Ember.computed.alias('task.cardVersion.contentRoot.renderAsDualColumn'),
 
   saveTask: concurrencyTask(function * () {
     try {
@@ -59,7 +62,7 @@ export default Component.extend(ValidationErrorsMixin, {
       if(this.validationErrorsPresent()) {
         this.set('task.completed', false);
         this.set('validationErrors.completed', this.get('completedErrorText'));
-        return new Ember.RSVP.Promise((resolve) => { resolve() });
+        return new Ember.RSVP.Promise((resolve) => resolve() );
       }
     }
 

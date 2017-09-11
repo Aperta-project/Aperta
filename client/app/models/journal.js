@@ -7,8 +7,8 @@ export default DS.Model.extend({
   manuscriptCss: DS.attr('string'),
   name: DS.attr('string'),
   staffEmail: DS.attr('string'),
-  paperTypes: DS.attr(),
   pdfAllowed: DS.attr('boolean'),
+  manuscriptManagerTemplates: DS.attr(),
 
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');

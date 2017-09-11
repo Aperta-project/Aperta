@@ -4,7 +4,7 @@ import DragNDrop from 'tahi/services/drag-n-drop';
 const {
   Component,
   computed,
-  computed: { alias }
+  computed: { alias, readOnly }
 } = Ember;
 
 export default Component.extend(DragNDrop.DraggableMixin, {
@@ -13,7 +13,11 @@ export default Component.extend(DragNDrop.DraggableMixin, {
     'isAuthorCurrentUser:author-task-item-current-user'
   ],
   deleteState: false,
+
   author: alias('model.object'),
+  journal: alias('author.paper.journal'),
+  coauthorConfirmationEnabled: readOnly('journal.coauthorConfirmationEnabled'),
+
   componentName: computed('model', function() {
     return this.get('author').constructor
                .toString()

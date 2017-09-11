@@ -17,7 +17,7 @@ class Card < ActiveRecord::Base
     }
 
   validate :check_nested_errors, :check_semantics
-  before_destroy :ensure_destroyable
+  before_destroy :check_destroyable
 
   scope :archived, -> { where.not(archived_at: nil) }
 
@@ -223,6 +223,12 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def forcibly_destroy!
+    self.state = "draft"
+    self.notifications_enabled = false
+    destroy!
+  end
+
   private
 
   def publish_latest_version!
@@ -239,7 +245,7 @@ class Card < ActiveRecord::Base
     CardArchiver.archive(self)
   end
 
-  def ensure_destroyable
+  def check_destroyable
     unless draft?
       errors.add(:base, "only draft cards can be destroyed")
       false # halt callback

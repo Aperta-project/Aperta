@@ -10,7 +10,7 @@ class Card < ActiveRecord::Base
   has_one :latest_card_version, ->(card) { where(version: card.latest_version) }, class_name: 'CardVersion'
 
   validates :name,
-    presence: {message: "Please give your card a name." },
+    presence: { message: "Please give your card a name." },
     uniqueness: {
       scope: :journal,
       message: "That card name is taken for this journal; please give your card a new name."

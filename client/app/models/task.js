@@ -11,7 +11,6 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
     inverse: 'task'
   }),
   attachments: DS.hasMany('adhoc-attachment', {
-    async: true,
     inverse: 'task'
   }),
   cardThumbnail: DS.belongsTo('card-thumbnail', {
@@ -29,12 +28,10 @@ export default NestedQuestionOwner.extend(Answerable, CardThumbnailObserver, Sna
   }),
   participations: DS.hasMany('participation', { async: true }),
   phase: DS.belongsTo('phase', {
-    inverse: 'tasks',
-    async: true
+    inverse: 'tasks'
   }),
   snapshots: DS.hasMany('snapshot', {
-    inverse: 'source',
-    async: true
+    inverse: 'source'
   }),
   invitations: DS.hasMany('invitation', {
     async: false

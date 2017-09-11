@@ -1,48 +1,56 @@
-<p class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+<div class="form-group">
+  {{#if content.text}}
+    <legend class="control-label">{{{content.text}}}
+      {{#if content.isRequired}}
+        {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+      {{/if}}
+    </legend>
   {{/if}}
-</p>
-<div>
   {{#if isText}}
     {{#each content.possibleValues as |opt index|}}
-      <label for="{{guid-id this index}}" class="option">
-        {{radio-button
-          selection=answer.value
-          value=opt.value
-          disabled=disabled
-          id=(guid-id this index)
-          content=content
-          action=(action "valueChanged")}}
-        <span class="card-content-radio-label">{{{opt.label}}}</span>
-      </label>
+      <div class="radio">
+        <label for="{{guid-id this index}}" class="radio">
+          {{radio-button
+            selection=answer.value
+            value=opt.value
+            disabled=disabled
+            id=(guid-id this index)
+            content=content
+            action=(action "valueChanged")}}
+          <span class="card-content-radio-label">{{{opt.label}}}</span>
+        </label>
+      </div>
     {{/each}}
   {{else }}
-    <label for="{{guid-id this '0'}}" class="option">
-      {{radio-button
-        selection=answer.value
-        value=true
-        id=(guid-id this '0')
-        disabled=disabled
-        content=content
-        action=(action "valueChanged")}}
-      <span class="card-content-radio-label">Yes</span>
-    </label>
-    <label  for="{{guid-id this '1'}}" class="option">
-      {{radio-button
-        selection=answer.value
-        value=false
-        id=(guid-id this '1')
-        disabled=disabled
-        content=content
-        action=(action "valueChanged")}}
-      <span class="card-content-radio-label">No</span>
-    </label>
+    <div class="radio">
+      <label for="{{guid-id this '0'}}" class="radio">
+        {{radio-button
+          selection=answer.value
+          value=true
+          id=(guid-id this '0')
+          disabled=disabled
+          content=content
+          action=(action "valueChanged")}}
+        <span class="card-content-radio-label">Yes</span>
+      </label>
+    </div>
+    <div class="radio">
+      <label for="{{guid-id this '1'}}" class="radio">
+        {{radio-button
+          selection=answer.value
+          value=false
+          id=(guid-id this '1')
+          disabled=disabled
+          content=content
+          action=(action "valueChanged")}}
+        <span class="card-content-radio-label">No</span>
+      </label>
+    </div>
   {{/if}}
-</div>
 
-{{card-content/display-children
-  content=content
-  owner=owner
-  disabled=disabled
-  preview=preview}}
+  {{card-content/display-children
+    content=content
+    owner=owner
+    disabled=disabled
+    preview=preview}}
+</div>

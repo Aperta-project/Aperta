@@ -1,8 +1,9 @@
-<label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-  {{/if}}</label>
-
+{{#if content.text}}
+  <legend class="control-label">{{{content.text}}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    {{/if}}</legend>
+{{/if}}
 {{#if isRichText}}
   {{rich-text-editor
     editorStyle=content.editorStyle

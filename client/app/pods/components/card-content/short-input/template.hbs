@@ -1,7 +1,9 @@
-<label class="content-text">{{{content.text}}}
-  {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-  {{/if}}</label>
+{{#if content.text}}
+  <label class="control-label">{{{content.text}}}
+    {{#if content.isRequired}}
+      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    {{/if}}</label>
+{{/if}}
 {{#unless hideError}}
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{/unless}}

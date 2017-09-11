@@ -6,4 +6,10 @@
   label input[type="checkbox"] {
     margin-right: .5em;
   }
+
+  legend {
+    border: 0;
+    font-size: inherit;
+    margin-bottom: 10px;
+  }
 }

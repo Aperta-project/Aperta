@@ -101,7 +101,7 @@ describe "#setup_new_revision" do
   let(:phase) { paper.phases[1] }
   subject(:subject) { TahiStandardTasks::UploadManuscriptTask }
 
-  context "with an existing revise task" do
+  context "with an existing upload manuscript task" do
     let!(:task) do
       FactoryGirl.create(
         :upload_manuscript_task,
@@ -121,16 +121,25 @@ describe "#setup_new_revision" do
     end
   end
 
-  context "with no existing revise task" do
-    it "creates a new revise task" do
-      expect(TaskFactory)
-        .to receive(:create).with(
-          subject,
-          paper: paper,
-          phase: phase
-        )
+  context "with no existing upload manuscript task" do
+    context "a Card corresponding to the TahiStandardTasks::UploadManuscriptTask CardTaskType exists with a published version" do
+      let(:card_task_type) { FactoryGirl.create(:card_task_type, task_class: 'TahiStandardTasks::UploadManuscriptTask') }
+      let(:existing_card) { FactoryGirl.create(:card, :versioned, card_task_type: card_task_type) }
+      let(:published_version) { existing_card.latest_published_card_version }
+      it "creates a new upload manuscript task with that CardVersion" do
+        expect(TaskFactory)
+          .to receive(:create).with(subject, paper: paper, phase: phase, card_version: published_version)
 
-      subject.setup_new_revision paper, phase
+        subject.setup_new_revision paper, phase
+      end
+    end
+
+    context "the card does not exist or a published version does not exit" do
+      it "does not create a new task" do
+        expect(TaskFactory).to_not receive(:create)
+
+        subject.setup_new_revision paper, phase
+      end
     end
   end
 end

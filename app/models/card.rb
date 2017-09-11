@@ -18,6 +18,7 @@ class Card < ActiveRecord::Base
 
   validate :check_nested_errors, :check_semantics
   before_destroy :check_destroyable
+  after_destroy :clean_permissions
 
   scope :archived, -> { where.not(archived_at: nil) }
 
@@ -225,11 +226,21 @@ class Card < ActiveRecord::Base
 
   def forcibly_destroy!
     self.state = "draft"
-    self.notifications_enabled = false
+    self.notifications_enabled = false # silence notifications
     destroy!
   end
 
   private
+
+  def clean_permissions
+    Permission.where(filter_by_card_id: id).delete_all
+  end
+
+  def check_destroyable
+    return true if draft?
+    errors.add(:base, "only draft cards can be destroyed")
+    false # halt callback
+  end
 
   def publish_latest_version!
     latest_card_version.publish!
@@ -243,17 +254,5 @@ class Card < ActiveRecord::Base
 
   def archive_card!
     CardArchiver.archive(self)
-  end
-
-  def destroyable?
-    return false unless draft?
-    return false if notifications_enabled?
-    true
-  end
-
-  def check_destroyable
-    return true if destroyable?
-    errors.add(:base, "only draft cards can be destroyed")
-    false # halt callback
   end
 end

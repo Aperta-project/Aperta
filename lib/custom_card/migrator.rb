@@ -82,13 +82,10 @@ module CustomCard
     end
 
     def destroy_legacy_card
-      # -- destroy the old card, since everything has moved to the new one
-      # -- work around validations by setting the appropriate fields.
+      # -- forcibly destroy the old card, since everything has moved to the new one
       old_card = Card.find_by!(name: legacy_class_name)
-      old_card.state = "draft"
-      old_card.notifications_enabled = false
       Rails.logger.info "Destroying legacy #{card_name} card"
-      old_card.destroy
+      old_card.forcibly_destroy!
     end
   end
 end

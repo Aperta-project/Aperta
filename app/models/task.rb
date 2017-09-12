@@ -116,6 +116,13 @@ class Task < ActiveRecord::Base
       [:completed, :title, :phase_id, :position, :assigned_user_id]
     end
 
+    # Used in JournalServices::CreateDefaultTaskTypes
+    # Task classes that display card content will need to
+    # subclass this method and return false
+    def create_journal_task_type?
+      true
+    end
+
     def assigned_to(*users)
       if users.empty?
         Task.none
@@ -132,12 +139,6 @@ class Task < ActiveRecord::Base
       :paper
     end
 
-    # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
-    # given task
-    def custom
-      false
-    end
-
     def metadata_task_types
       descendants.select { |klass| klass <=> MetadataTask }
     end
@@ -152,6 +153,7 @@ class Task < ActiveRecord::Base
       str.constantize
     end
   end
+  # ******** End class methods ***********
 
   # called in the paper factory both as part of paper creation and when an
   # individual task is added to the workflow.  Remember to call super when
@@ -175,6 +177,12 @@ class Task < ActiveRecord::Base
 
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
+  end
+
+  # Used in the TaskSerializer to determine whether to serialize the CardVersion for a
+  # given task
+  def custom
+    false
   end
 
   def metadata_task?

@@ -30,6 +30,11 @@ module TahiStandardTasks
       end
     end
 
+    # Overrides Task
+    def self.create_journal_task_type?
+      false
+    end
+
     # UploadManuscriptTask renders card content.
     # This method is used in the TaskSerializer.
     def custom

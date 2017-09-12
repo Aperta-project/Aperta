@@ -4,7 +4,7 @@ class MigrateUploadManuscriptTaskToCustomCard < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::UploadManuscriptTask", card_name: "Upload Manuscript")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::UploadManuscriptTask", configuration_class: CustomCard::Configurations::UploadManuscript)
     migrator.migrate
   end
 end

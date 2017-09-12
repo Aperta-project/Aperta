@@ -81,6 +81,6 @@ class CardFactory
     # to include it here than to make a separate data migration
     existing_card || Card.create_published!(name: name,
                                             journal: journal,
-                                            card_task_type: CardTaskType.find_by(task_class: 'CustomCardTask'))
+                                            card_task_type: CardTaskType.find_or_create_default)
   end
 end

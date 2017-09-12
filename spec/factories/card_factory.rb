@@ -8,12 +8,13 @@ FactoryGirl.define do
     trait :versioned do
       after(:build) do |card|
         card.state = "published"
-        card.card_versions << build(
+        card.card_versions << FactoryGirl.build(
           :card_version,
+          card: card,
           version: card.latest_version,
           published_at: Time.current,
           history_entry: "test version"
-        ) if card.card_versions.count.zero?
+        ) if card.card_versions.size.zero?
       end
     end
 

@@ -4,7 +4,7 @@ class MigrateReportingGuidelinesTaskToCustomCard < ActiveRecord::Migration
     CustomCard::Loader.all
 
     # migrate legacy task to custom card
-    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::ReportingGuidelinesTask", card_name: "Reporting Guidelines")
+    migrator = CustomCard::Migrator.new(legacy_task_klass_name: "TahiStandardTasks::ReportingGuidelinesTask", configuration_class: CustomCard::Configurations::ReportingGuidelines)
     migrator.migrate
   end
 end

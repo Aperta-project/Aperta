@@ -39,7 +39,7 @@ module CustomCard
     private
 
     def create_from_configuration_klass(configuration)
-      card_task_type = CardTaskType.find_by!(task_class: configuration.task_class)
+      card_task_type = CardTaskType.find_or_create_default(configuration.task_class)
       Card.create_initial_draft!(name: configuration.name, journal: journal, card_task_type: card_task_type).tap do |card|
         # build card content using xml
         card.update_from_xml(configuration.xml_content)

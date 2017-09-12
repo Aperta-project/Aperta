@@ -8,4 +8,5 @@ export default Ember.Component.extend({
     let tz = moment.tz.guess();
     return moment(this.get('dueDate')).tz(tz).format('z');
   }),
+  defaultState: {value: true}
 });

@@ -1,6 +1,6 @@
-<div class="form-group">
+<fieldset class="card-content-fieldset">
   {{#if content.text}}
-    <legend>{{{content.text}}}
+    <legend class="card-content-legend">{{{content.text}}}
       {{#if content.isRequired}}
         {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
       {{/if}}
@@ -53,4 +53,4 @@
     owner=owner
     disabled=disabled
     preview=preview}}
-</div>
+</fieldset>

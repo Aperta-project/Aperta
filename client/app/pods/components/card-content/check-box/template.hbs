@@ -1,11 +1,7 @@
-<fieldset>
-  {{#if content.text}}
-    <legend>{{{content.text}}}
-      {{#if content.isRequired}}
-        {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-      {{/if}}
-    </legend>
-  {{/if}}
+{{#if content.text}}
+  <span class="help-block">{{{content.text}}}</span>
+{{/if}}
+<div class="form-group">
   {{card-content/validation-errors errors=answer.readyIssuesArray}}
   <label for={{name}}>{{check-box
     name=name
@@ -15,10 +11,13 @@
     content=content
     answer=answer
     action="valueChanged"}}{{{content.label}}}
+    {{#if content.isRequired}}
+      <span class="required-field">*</span>
+    {{/if}}
   </label>
   {{card-content/display-children
   content=content
   owner=owner
   disabled=disabled
   preview=preview}}
-</fieldset>
+</div>

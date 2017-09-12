@@ -1,9 +1,9 @@
-<fieldset>
-  {{#if content.text}}
-    <legend>{{{content.text}}}
+<div class="form-group">
+ {{#if content.text}}
+    <label class="control-label">{{{content.text}}}
       {{#if content.isRequired}}
         {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-      {{/if}}</legend>
+      {{/if}}</label>
   {{/if}}
   {{#if isRichText}}
     {{rich-text-editor
@@ -30,5 +30,5 @@
     }}
   {{/if}}
   {{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
-</fieldset>
+</div>
 

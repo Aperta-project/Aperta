@@ -82,3 +82,19 @@
 .custom-card-task .dual-column {
   padding-right: 1em;
 }
+
+.card-content-fieldset {
+  margin-bottom: 10px;
+}
+
+.card-content-legend {
+  border: 0;
+  font-size: inherit;
+  margin-bottom: 5px;
+}
+
+.custom-card-task {
+  .help-block {
+    color: $aperta-black;
+  }
+}

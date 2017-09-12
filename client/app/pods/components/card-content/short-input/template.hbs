@@ -1,9 +1,9 @@
-<fieldset>
+<div class="form-group">
   {{#if content.text}}
-    <legend>{{{content.text}}}
+    <label class="control-label">{{{content.text}}}
       {{#if content.isRequired}}
         {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
-      {{/if}}</legend>
+      {{/if}}</label>
   {{/if}}
   {{#unless hideError}}
     {{card-content/validation-errors errors=answer.readyIssuesArray}}
@@ -18,4 +18,5 @@
     disabled=disabled
     required=content.isRequired
     content=content}}
-</fieldset>
+</div>
+

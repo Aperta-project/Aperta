@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import { task } from 'ember-concurrency';
-import dirtyEditor from 'tahi/mixins/components/dirty-editor';
+import BrowserDirtyEditor from 'tahi/mixins/components/browser-dirty-editor';
+import EmberDirtyEditor from 'tahi/mixins/components/ember-dirty-editor';
 
-export default Ember.Component.extend(dirtyEditor, {
+export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   routing: Ember.inject.service('-routing'),
   propTypes: {
     card: PropTypes.EmberObject
@@ -16,7 +17,6 @@ export default Ember.Component.extend(dirtyEditor, {
   showPublishOverlay: false,
   showArchiveOverlay: false,
   showDeleteOverlay: false,
-  showDirtyOverlay: false,
 
   historyEntryBlank: Ember.computed.empty('card.historyEntry'),
 
@@ -82,14 +82,7 @@ export default Ember.Component.extend(dirtyEditor, {
     }
   }),
 
-  allowStoppedTransition: 'allowStoppedTransition',
-
   actions: {
-    cleanCard() {
-      this.get('card').rollbackAttributes('xml');
-      this.sendAction('allowStoppedTransition');
-    },
-
     updateXML(code) {
       this.set('card.xml', code);
     },

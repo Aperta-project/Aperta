@@ -5,5 +5,5 @@ export default Ember.Route.extend(EmberDirtyEditor, {
   dirtyEditorConfig: {
     model: 'card',
     properties: ['xml']
-  },
+  }
 });

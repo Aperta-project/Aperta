@@ -37,7 +37,9 @@ namespace :heroku do
         'cards:load',
         'roles-and-permissions:seed',
         'data:update_journal_task_types',
-        'create_feature_flags'
+        'create_feature_flags',
+        'settings:seed_setting_templates',
+        'seed:letter_templates:populate'
       ].each do |task|
         Rake::Task[task].invoke
       end

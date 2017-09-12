@@ -323,6 +323,21 @@ namespace :seed do
 
           lt.save!
         end
+
+        # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        LetterTemplate.where(name: 'Reviewer Appreciation', journal: journal).first_or_initialize.tap do |lt|
+          lt.scenario = 'ReviewerReportScenario'
+          lt.subject = 'Thank you for reviewing for {{ journal.name }}'
+          lt.body = <<-TEXT.strip_heredoc
+          <p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }},</p>
+          <p>Thank you for taking the time to review the manuscript “{{ manuscript.title }}”, for {{ journal.name }}.
+          We greatly appreciate your assistance with the review process, especially given the many competing demands on your time.</p>
+          <p>Thank you for your continued support of {{ journal.name }}, we look forward to working with you again in the future. 
+          If you have any questions or feedback, please do not hesitate to contact us at {{ journal.staff_email }}.</p>
+          TEXT
+
+          lt.save!
+        end
       end
     end
   end

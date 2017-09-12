@@ -8,5 +8,9 @@ export default AttachmentAdapter.extend({
 
   urlForUpdateRecord(id, modelName, snapshot) {
     return `/api/tasks/${snapshot.record.get('task.id')}/upload_manuscript`;
+  },
+
+  urlForDeleteRecord(id, modelName, snapshot) {
+    return `/api/tasks/${snapshot.record.get('task.id')}/delete_manuscript`;
   }
 });

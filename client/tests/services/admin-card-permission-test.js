@@ -128,3 +128,29 @@ test(
       assert.arrayEqual(role.get('cardPermissions').toArray().sort(), perms.toArray().sort());
     });
   });
+
+test('when addRoleToPermissionSensible adds a role to a be_assigned permission, it also adds view and edit permissions', function(assert) {
+  const cardId = '1';
+  const role = make('admin-journal-role');
+  Ember.run(() => {
+    const perms = this.subject().addRoleToPermissionSensible(role, cardId, 'be_assigned');
+    assert.arrayEqual(perms.map((p) => p.get('permissionAction')).sort(), ['be_assigned', 'edit', 'view']);
+    perms.forEach((perm) => {
+      assert.arrayEqual(perm.get('roles').toArray(), Ember.A([role]));
+    });
+    assert.arrayEqual(role.get('cardPermissions').toArray().sort(), perms.toArray().sort());
+  });
+});
+
+test('when addRoleToPermissionSensible adds a role to a assign_others permission, it also adds view and edit permissions', function(assert) {
+  const cardId = '1';
+  const role = make('admin-journal-role');
+  Ember.run(() => {
+    const perms = this.subject().addRoleToPermissionSensible(role, cardId, 'assign_others');
+    assert.arrayEqual(perms.map((p) => p.get('permissionAction')).sort(), ['assign_others', 'edit', 'view']);
+    perms.forEach((perm) => {
+      assert.arrayEqual(perm.get('roles').toArray(), Ember.A([role]));
+    });
+    assert.arrayEqual(role.get('cardPermissions').toArray().sort(), perms.toArray().sort());
+  });
+});

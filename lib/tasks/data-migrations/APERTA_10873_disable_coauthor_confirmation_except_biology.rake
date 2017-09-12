@@ -8,9 +8,12 @@ namespace :data do
     DESC
 
     task APERTA_10873_disable_coauthor_confirmation_except_biology: [:environment, "settings:seed_setting_templates"] do
-
-      Journal.find_by!(name: "PLOS Biology").setting("coauthor_confirmation_enabled")
-        .update(value: true)
+      journal = Journal.find_by(name: "PLOS Biology")
+      if journal
+        journal.setting("coauthor_confirmation_enabled").update(value: true)
+      else
+        puts "No Journal was found with the name 'PLOS Biology'. No coauthor confirmation setting created"
+      end
     end
   end
 end

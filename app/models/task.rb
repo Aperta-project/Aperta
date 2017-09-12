@@ -156,7 +156,11 @@ class Task < ActiveRecord::Base
 
   # called in the Task factory
   def create_answers
-    required_fields = card_version.card_contents.where(required_field: true)
+    required_fields = card_version.card_contents
+                                  .joins(:content_attributes)
+                                  .where('content_attributes.name' => 'required_field',
+                                         'content_attributes.value_type' => 'boolean',
+                                         'content_attributes.boolean_value' => true)
     required_fields.each do |content|
       answer = find_or_build_answer_for(card_content: content)
       answer.save

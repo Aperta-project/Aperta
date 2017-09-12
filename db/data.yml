@@ -7903,7 +7903,7 @@ card_contents:
     - '250'
     - '2017-03-14 21:17:08.288781'
     - '2017-06-20 23:35:13.837211'
-    - 
+    -
     - '16'
     - 
   - - '127'
@@ -8363,7 +8363,7 @@ card_contents:
     - '342'
     - '2017-03-14 21:17:08.707862'
     - '2017-03-14 21:17:08.711121'
-    - 
+    -
     - '20'
     - 
   - - '176'
@@ -8373,7 +8373,7 @@ card_contents:
     - '344'
     - '2017-03-14 21:17:08.716'
     - '2017-03-14 21:17:08.719114'
-    - 
+    -
     - '20'
     - 
   - - '177'
@@ -8583,7 +8583,7 @@ card_contents:
     - '387'
     - '2017-03-14 21:17:08.901979'
     - '2017-03-14 21:17:08.90547'
-    - 
+    -
     - '22'
     - 
   - - '198'
@@ -9057,18 +9057,18 @@ card_contents:
     - '42'
     - display-children
   - - '250'
-    - 
-    - 
+    -
+    -
     - '483'
     - '484'
     - '2017-05-08 20:54:49.033605'
     - '2017-05-08 20:54:49.033605'
-    - 
+    -
     - '43'
     - display-children
   - - '251'
-    - 
-    - 
+    -
+    -
     - '485'
     - '486'
     - '2017-05-08 20:54:49.053972'
@@ -9317,7 +9317,7 @@ card_contents:
     - '50'
     - field-set
   - - '278'
-    - 
+    -
     - '277'
     - '531'
     - '532'
@@ -9563,11 +9563,11 @@ card_contents:
     - '581'
     - '2017-08-24 21:26:41.041517'
     - '2017-08-24 21:26:41.236743'
-    - 
+    -
     - '57'
     - radio
   - - '306'
-    - 
+    -
     - '301'
     - '583'
     - '600'
@@ -9807,13 +9807,13 @@ card_contents:
     - '58'
     - short-input
   - - '330'
-    - 
+    -
     - '325'
     - '631'
     - '638'
     - '2017-08-30 14:09:31.722039'
     - '2017-08-30 14:09:31.780725'
-    - 
+    -
     - '58'
     - display-with-value
   - - '331'
@@ -34760,6 +34760,22 @@ letter_templates:
     - '1'
     - '2017-08-30 22:47:43.142907'
     - '2017-09-07 21:17:50.64414'
+    - ReviewerReportScenario
+  - - '12'
+    - Reviewer Appreciation
+    - 
+    - 
+    - Thank you for reviewing for {{ journal.name }}
+    - "<p>Dear {{ reviewer.first_name }} {{ reviewer.last_name }}</p>\n<p>Thank you
+      for taking the time to review the manuscript “{{ manuscript.title }}”, for {{
+      journal.name }}.\nWe greatly appreciate your assistance with the review process,
+      especially given the many competing demands on your time.</p>\n<p>Thank you
+      for your continued support of {{ journal.name }}, we look forward to working
+      with you again in the future. \nIf you have any questions or feedback, please
+      do not hesitate to contact us at {{ journal.staff_email }}.</p>\n"
+    - '1'
+    - '2017-09-06 23:41:48.828413'
+    - '2017-09-06 23:41:48.828413'
     - ReviewerReportScenario
 
 ---

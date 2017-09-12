@@ -75,6 +75,8 @@ class Journal < ActiveRecord::Base
     class_name: 'Role'
   has_one :task_participant_role, -> { where(name: Role::TASK_PARTICIPANT_ROLE) },
     class_name: 'Role'
+  has_one :journal_setup_role, -> { where(name: Role::JOURNAL_SETUP_ROLE) },
+    class_name: 'Role'
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength

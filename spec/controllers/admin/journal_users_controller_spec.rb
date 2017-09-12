@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Admin::JournalUsersController, redis: true do
-  let(:journal) { create(:journal, :with_staff_admin_role) }
+  let(:journal) { create(:journal, :with_admin_roles) }
   let(:user) do
     ja = create(:user, first_name: 'Steve')
     assign_journal_role(journal, ja, :admin)

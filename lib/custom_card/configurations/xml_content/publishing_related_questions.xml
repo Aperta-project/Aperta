@@ -10,7 +10,7 @@
           <content content-type="description">
             <text>Please identify which results, data, or figures have been taken from other published or pending manuscripts and explain why inclusion in this submission does not constitute dual publication.</text>
           </content>
-          <content ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts" content-type="short-input" value-type="text">
+          <content ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts" content-type="paragraph-input" value-type="html" editor-style="inline">
             <text>Results, data or figures</text>
           </content>
           <content ident="publishing_related_questions--published_elsewhere--upload_related_work" content-type="file-uploader" value-type="attachment">
@@ -28,7 +28,7 @@
           <content content-type="description">
             <text>Please provide the title of that submission and the corresponding author</text>
           </content>
-          <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_title" content-type="short-input" value-type="text">
+          <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_title" content-type="paragraph-input" value-type="html" editor-style="inline">
             <text>Title</text>
           </content>
           <content ident="publishing_related_questions--submitted_in_conjunction--corresponding_author" content-type="short-input" value-type="text">
@@ -91,7 +91,7 @@
         </html>
       </text>
     </content>
-    <content ident="publishing_related_questions--short_title" content-type="paragraph-input" value-type="html">
+    <content ident="publishing_related_questions--short_title" content-type="paragraph-input" value-type="html" editor-style="inline">
       <text>
         Please give your paper a short title. Short titles are used as the running header on published PDFs.
       </text>

@@ -27,19 +27,16 @@ namespace :db do
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
+      ENV['PGPASSWORD'] = password.to_s
 
-      drop_cmd = system("dropdb #{db} && createdb #{db}")
+      args = "-U #{user} -h #{host}"
+      drop_cmd = system("dropdb #{args} #{db} && createdb #{args} #{db}")
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 
-      ENV['PGPASSWORD'] = password.to_s
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --verbose --clean --no-acl --no-owner -h #{host} -U #{user} -d #{db})"
-      result = system(cmd)
-      if result
-        STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
-      else
-        STDERR.puts("Restored #{env || 'prod'} with errors or warnings")
-      end
+      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db})"
+      raise "Error restoring #{env || 'prod'} " unless system(cmd)
 
+      STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
       # run any post import tasks
       ActiveRecord::Base.establish_connection
       Rake::Task['db:reset_passwords'].invoke

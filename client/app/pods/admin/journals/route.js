@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  can: Ember.inject.service('can'),
+
   model(params) {
     return this.store.findAll('admin-journal').then((journals) => {
       return {
@@ -13,7 +15,12 @@ export default Ember.Route.extend({
   afterModel(model) {
     // For users with one journal, transition to that journal rather than 'all journals'.
     if (!model.journal && model.journals.get('length') === 1) {
-      this.transitionTo('admin.journals.workflows', model.journals.get('firstObject.id'));
+      const firstJournal = model.journals.get('firstObject');
+
+      return this.get('can').can('administer', firstJournal).then( (value)=> {
+        const route = 'admin.journals.' + (value ? 'workflows' : 'users');
+        return this.transitionTo(route, firstJournal.id);
+      });
     }
   }
 });

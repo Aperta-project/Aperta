@@ -30,10 +30,7 @@ export default Ember.Component.extend(dirtyEditor, {
       }
     },
     cleanEmailTemplate: function() {
-      let emailTemplate = this.get('template');
-      if (emailTemplate.get('hasDirtyAttributes')) {
-        emailTemplate.rollbackAttributes();
-      }
+      this.get('template').rollbackAttributes();
       this.sendAction('allowStoppedTransition');
     }
   }

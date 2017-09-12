@@ -1,7 +1,7 @@
 {{#ember-wormhole to="card-editor-action-buttons"}}
   {{#if (eq card.state "draft")}}
     <button class="button button-secondary button--blue editor-delete"
-            disabled={{or xmlDirty deleteCard.isRunning}}
+            disabled={{or editorIsDirty deleteCard.isRunning}}
             {{action "confirmDelete"}}>Delete</button>
   {{/if}}
 
@@ -29,7 +29,7 @@
                          saveCard.isRunning
                          publishCard.isRunning
                          revertCard.isRunning
-                         xmlDirty}}>
+                         editorIsDirty}}>
         Revert
       </button>
     {{/if}}
@@ -40,7 +40,7 @@
                        saveCard.isRunning
                        publishCard.isRunning
                        revertCard.isRunning
-                       (not xmlDirty)}}>
+                       (not editorIsDirty)}}>
       Save
     </button>
 
@@ -49,7 +49,7 @@
             disabled={{or
                        saveCard.isRunning
                        publishCard.isRunning
-                       xmlDirty
+                       editorIsDirty
                        revertCard.isRunning
                        (not card.publishable)}}>
       {{#if (eq card.state "draft")}}

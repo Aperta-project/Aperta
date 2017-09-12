@@ -1,10 +1,15 @@
 import Ember from 'ember';
+import dirtyEditor from 'tahi/mixins/components/dirty-editor';
 
 // This validation works for our pre-populated letter templates
 // but we might want to change this up when users are allowed to create
 // new templates.
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(dirtyEditor, {
+  dirtyEditorConfig: {
+    model: 'template',
+    properties: ['body', 'subject']
+  },
   showDirtyOverlay: false,
   store: Ember.inject.service(),
   routing: Ember.inject.service('-routing'),
@@ -13,20 +18,6 @@ export default Ember.Component.extend({
   }),
   unsaved: true,
   allowStoppedTransition: 'allowStoppedTransition',
-
-  emailTemplateDirty: Ember.computed('template.body', 'template.subject', 'template.hasDirtyAttributes', function() {
-    let emailTemplate = this.get('template');
-    let dirtyAndRelevant = emailTemplate.changedAttributes()['subject'] || emailTemplate.changedAttributes()['body'];
-    return !!(emailTemplate.get('hasDirtyAttributes') && dirtyAndRelevant);
-  }),
-
-  didInsertElement() {
-    $(window).on('beforeunload.dirtyApertaEmailTemplateEditor', () => { if (this.get('emailTemplateDirty')) { return true; } });
-  },
-
-  willDestroyElement() {
-    $(window).off('beforeunload.dirtyApertaEmailTemplateEditor');
-  },
 
   actions: {
     save: function() {

@@ -6,4 +6,6 @@ class JournalSerializer < ActiveModel::Serializer
     :manuscript_css,
     :staff_email,
     :pdf_allowed
+  has_many :manuscript_manager_templates,
+           serializer: PaperTypeSerializer
 end

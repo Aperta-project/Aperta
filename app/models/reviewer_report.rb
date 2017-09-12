@@ -64,13 +64,13 @@ class ReviewerReport < ActiveRecord::Base
     end
 
     event(:submit,
-          guards: [:invitation_accepted?], after: [:set_submitted_at]) do
+          guards: [:invitation_accepted?], after: [:set_submitted_at, :thank_reviewer]) do
       transitions from: :review_pending, to: :submitted
     end
   end
 
   def invitation
-    @invitation ||= decision.invitations.find_by(invitee_id: user.id)
+    @invitation ||= decision.latest_invitation(invitee_id: user.id)
   end
 
   def invitation_accepted?
@@ -167,5 +167,9 @@ class ReviewerReport < ActiveRecord::Base
       end
     end
     period
+  end
+
+  def thank_reviewer
+    TahiStandardTasks::ReviewerMailer.thank_reviewer(reviewer_report: self).deliver_later
   end
 end

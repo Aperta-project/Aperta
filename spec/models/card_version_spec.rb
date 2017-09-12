@@ -32,7 +32,7 @@ describe CardVersion do
         FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "bar", value_type: 'boolean', default_answer_value: 'true'),
         FactoryGirl.create(:card_content, parent: parent, card_version: card_version, ident: "baz", value_type: 'boolean')
       ]
-      card_version.create_default_answers(task)
+      card_version.reload.create_default_answers(task)
     end
 
     it "creates an answer for each card content with a default_answer_value specified" do

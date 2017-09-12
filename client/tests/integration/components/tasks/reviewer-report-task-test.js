@@ -4,12 +4,6 @@ import hbs from 'htmlbars-inline-precompile';
 import FakeCanService from 'tahi/tests/helpers/fake-can-service';
 import Ember from 'ember';
 
-let FakeFeatureFlagService = Ember.Object.extend({
-  value() {
-    return Ember.RSVP.resolve(true);
-  }
-});
-
 moduleForComponent('reviewer-report-task', 'Integration | Component | Reviewer Report Task', {
   integration: true,
 
@@ -18,7 +12,6 @@ moduleForComponent('reviewer-report-task', 'Integration | Component | Reviewer R
     this.task = make('reviewer-report-task', 'with_paper_and_journal');
     this.can = FakeCanService.create();
     this.register('service:can', this.can.asService());
-    this.register('service:feature-flag', FakeFeatureFlagService);
   }
 });
 

@@ -4,6 +4,12 @@ describe JournalServices::CreateDefaultTaskTypes do
   include_context 'clean Task.descendants'
 
   let(:journal) { FactoryGirl.create(:journal) }
+  before do
+    # Right now a journal instance will create a set of default journal task types and
+    # seed a default ManuscriptManagerTempalte in an after_create hook.  This CardTaskType is referenced
+    # indirectly in JournalServices::CreateDefaultManuscriptManagerTemplates and needs to exist before it runs
+    CardTaskType.seed_defaults
+  end
 
   it 'Creates missing task types for an existing journal' do
     JournalServices::CreateDefaultTaskTypes.call(journal)

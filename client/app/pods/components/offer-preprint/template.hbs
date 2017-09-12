@@ -1,0 +1,14 @@
+<div class="split-pane preprint-pane">
+  <div class="split-pane-element preprint-background-image">
+  </div>
+  <div class="split-pane-element">
+    {{#if task}}
+      {{#task-load task=task}}
+        {{custom-card-task hideCompletedSection=true task=task isOverlay=true}}
+          <button class="button-primary button--green" {{action "nextStep"}}>Continue</button>
+      {{else}}
+        {{partial "task-loading-section"}}
+      {{/task-load}}
+    {{/if}}
+  </div>
+</div>

@@ -4,4 +4,12 @@
   background: $aperta-grey-xlight;
 
   p { margin: 0 0 1rem 0; }
+
+  &.large-description-text-container {
+    p.description {
+      margin-bottom: 10px;
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
 }

@@ -44,6 +44,15 @@ namespace :db do
     end
   end
 
+  desc "Test migrations against all known environments"
+  task test_migrations: :environment do
+    %w[prod stage rc].each do |env|
+      # Run these
+      Rake::Task["db:import_remote"].invoke(env)
+      Rake::Task['db:migrate'].invoke
+    end
+  end
+
   desc "Dumps the database to ~/aperta-TIMESTAMP.dump"
   task dump: :environment do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"

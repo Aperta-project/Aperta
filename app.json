@@ -130,6 +130,21 @@
     "ITHENTICATE_URL": {
       "required": true
     },
+    "JIRA_INTEGRATION_ENABLED": {
+      "required": true
+    },
+    "JIRA_USERNAME": {
+      "required": true
+    },
+    "JIRA_PASSWORD": {
+      "required": true
+    },
+    "JIRA_AUTHENTICATE_URL": {
+      "required": true
+    },
+    "JIRA_CREATE_ISSUE_URL": {
+      "required": true
+    },
     "MAILSAFE_REPLACEMENT_ADDRESS": {
       "required": true
     },

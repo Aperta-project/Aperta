@@ -30,7 +30,7 @@ test('it populates input fields with model data', function(assert) {
 
 test('it prevents the model from saving if a field is blank and displays validation errors', function(assert){
   assert.expect(2);
-
+  
   let template = FactoryGuy.make('letter-template', {subject: '', body: 'bar'});
   sinon.spy(template, 'save');
   this.set('template', template);
@@ -40,9 +40,11 @@ test('it prevents the model from saving if a field is blank and displays validat
   `);
 
   Ember.run(() => {
-    this.$('.button-primary').click();
+    this.$('#subject').blur();
+    this.$('.edit-email-button').click();
   });
-  assert.elementFound('.form-group.error');
+  
+  assert.elementFound('.error');
   assert.equal(template.save.called, false);
 });
 
@@ -94,15 +96,15 @@ test('it warns user if input field has invalid content', function(assert) {
   `);
   
   Ember.run(() => {
-    this.$('#subject').val('').trigger('input');
+    this.$('#subject').val('').blur();
   });
 
-  assert.elementFound('.form-group.error');
+  assert.elementFound('.error');
 
   Ember.run(() => {
-    this.$('#subject').val('foo').trigger('input');
-    this.$('#body').val('').trigger('input');
+    this.$('#subject').val('foo').blur();
+    this.$('#body').val('').blur();
   });
 
-  assert.elementFound('.form-group.error');
+  assert.elementFound('.error');
 });

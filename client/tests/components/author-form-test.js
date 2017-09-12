@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
@@ -74,6 +75,7 @@ template = hbs`
       isNotEditable=isNotEditable
       saveSuccess=(action toggleEditForm)
       canRemoveOrcid=true
+      coauthorConfirmationEnabled=true
       authorIsPaperCreator=true
   }}`;
 
@@ -108,6 +110,7 @@ test("component shows coauthor controls when user is considered an admin user", 
       isNotEditable=isNotEditable
       saveSuccess=(action toggleEditForm)
       canRemoveOrcid=true
+      coauthorConfirmationEnabled=true
       authorIsPaperCreator=false
   }}`;
 
@@ -130,10 +133,34 @@ test("component hides coauthor controls when user is considered an non-admin use
       isNotEditable=isNotEditable
       saveSuccess=(action toggleEditForm)
       canRemoveOrcid=true
+      coauthorConfirmationEnabled=true
       authorIsPaperCreator=false
   }}`;
   Ember.run(() => {
     const can = FakeCanService.create().rejectPermission('administer', journal);
+    this.register('service:can', can.asService());
+  });
+
+  this.render(template);
+  assert.elementNotFound('[data-test-selector="coauthor-radio-controls"]');
+});
+
+test('component hides coauthor controls if the setting is disabled', function(assert){
+  template = hbs`
+  {{author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleEditForm"
+      isNotEditable=isNotEditable
+      saveSuccess=(action toggleEditForm)
+      canRemoveOrcid=true
+      coauthorConfirmationEnabled=false
+      authorIsPaperCreator=false
+  }}`;
+
+  Ember.run(() => {
+    const can = FakeCanService.create().allowPermission('administer', journal);
     this.register('service:can', can.asService());
   });
 

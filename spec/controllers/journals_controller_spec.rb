@@ -5,6 +5,14 @@ describe JournalsController do
   let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
 
+  let! (:setting_template) do
+    FactoryGirl.create(:setting_template,
+     key: "Journal",
+     setting_name: "coauthor_confirmation_enabled",
+     value_type: 'boolean',
+     boolean_value: true)
+  end
+
   before { sign_in user }
 
   context "#index" do

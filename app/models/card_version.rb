@@ -42,8 +42,21 @@ class CardVersion < ActiveRecord::Base
     end
   end
 
+  VALUE_TYPES = %w[string boolean integer json].freeze
+  def self.reformat_attributes(hash)
+    key = "#{hash['value_type']}_value"
+    value = hash[key]
+    hash.delete('value_type')
+    VALUE_TYPES.each {|type| hash.delete("#{type}_value")}
+    hash['value'] = value
+  end
+
   def combined_contents
-    self.class.connection.select_all(combined_sql)
+    result = self.class.connection.select_all(combined_sql)
+    rows = result.map do |row|
+      row.each { |key, value| row[key] = result.column_types[key].type_cast_from_database(value) }
+    end
+    rows = rows.group_by {|row| row['id']}
   end
 
   private
@@ -54,7 +67,7 @@ class CardVersion < ActiveRecord::Base
       select
         base.id, base.parent_id, array[base.id] AS path,
         base.content_type, base.ident,
-        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        attr.name as attribute, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value, attr.json_value,
         vals.validator, vals.validation_type, vals.error_message
       from
         card_contents base
@@ -68,7 +81,7 @@ class CardVersion < ActiveRecord::Base
       select
         cc.id, cc.parent_id, (base.path || cc.id) as path,
         cc.content_type, cc.ident,
-        attr.name, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value,
+        attr.name as attribute, attr.value_type, attr.string_value, attr.integer_value, attr.boolean_value, attr.json_value,
         vals.validator, vals.validation_type, vals.error_message
       from
         card_contents cc
@@ -82,6 +95,7 @@ class CardVersion < ActiveRecord::Base
     select * from all_contents order by path;
     SQL
   end
+
   def submittable_state
     # prevent case where the card
     # hidden from sidebar, but required to

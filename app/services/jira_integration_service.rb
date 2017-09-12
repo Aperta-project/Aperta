@@ -4,15 +4,11 @@ class JIRAIntegrationService
 
   attr_reader :jira_session
 
-  JIRA_BASE_PATH = 'https://jira.plos.org/jira'.freeze
-  AUTHENTICATE_PATH = '/rest/auth/1/session'.freeze
-  CREATE_ISSUE_PATH = '/rest/api/2/issue'.freeze
-
   CREATE_ISSUE_FIELDS = {
     "fields": {
       "project":
       {
-        "key": "RT"
+        "key": TahiEnv.jira_project || "RT"
       },
       "components": [{
         "name": "Aperta"
@@ -25,31 +21,35 @@ class JIRAIntegrationService
 
   def authenticate!
     credentials = {
-      username: ENV['JIRA_USER'],
-      password: ENV['JIRA_PASS']
+      username: TahiEnv.jira_username,
+      password: TahiEnv.jira_password
     }
-    auth_response = RestClient.post JIRA_BASE_PATH + AUTHENTICATE_PATH, credentials.to_json, content_type: :json, accept: :json
+    auth_response = RestClient.post TahiEnv.jira_authenticate_url, credentials.to_json, content_type: :json, accept: :json
     auth_response = JSON.parse auth_response, symbolize_names: true
-    return if auth_response[:session].blank?
-    @jira_session = auth_response[:session]
+    raise if auth_response[:session].blank?
+    auth_response[:session]
   end
 
   def create_issue(user_full_name, options)
-    authenticate!
-    payload = CREATE_ISSUE_FIELDS.deep_merge(fields:
-    {
-      "summary": "Aperta Feedback from #{user_full_name}.",
-      "description": options['remarks']
-    })
-    request_options = {
-      content_type: :json,
-      accept: :json,
-      cookies: { "JSESSIONID": @jira_session[:value] }
-    }
-    RestClient.post JIRA_BASE_PATH + CREATE_ISSUE_PATH, payload.to_json, request_options
+    session_token = authenticate!
+    payload = build_payload(user_full_name, options['remarks'])
+    request_options = build_request_options(session_token)
+    RestClient.post TahiEnv.jira_create_issue_url, payload.to_json, request_options
   end
 
-  def clear_session
-    @jira_session = nil
+  def build_payload(user_full_name, remarks)
+    CREATE_ISSUE_FIELDS.deep_merge(fields:
+    {
+      "summary": "Aperta Feedback from #{user_full_name}.",
+      "description": remarks
+    })
+  end
+
+  def build_request_options(session_token)
+    {
+      content_type: :json,
+      accept: :json,
+      cookies: { "JSESSIONID": session_token[:value] }
+    }
   end
 end

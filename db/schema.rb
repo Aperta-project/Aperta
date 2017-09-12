@@ -488,14 +488,13 @@ ActiveRecord::Schema.define(version: 20170907205857) do
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix",                     null: false
-    t.string   "doi_journal_prefix",                       null: false
-    t.string   "last_doi_issued",          default: "0",   null: false
+    t.string   "doi_publisher_prefix",                 null: false
+    t.string   "doi_journal_prefix",                   null: false
+    t.string   "last_doi_issued",      default: "0",   null: false
     t.string   "staff_email"
     t.string   "reviewer_email_bcc"
     t.string   "editor_email_bcc"
-    t.boolean  "pdf_allowed",              default: false
-    t.string   "last_preprint_doi_issued", default: "0",   null: false
+    t.boolean  "pdf_allowed",          default: false
   end
 
   add_index "journals", ["doi_publisher_prefix", "doi_journal_prefix"], name: "unique_doi", unique: true, using: :btree
@@ -851,7 +850,7 @@ ActiveRecord::Schema.define(version: 20170907205857) do
     t.string   "error_message"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "destination",   default: "apex", null: false
+    t.string   "destination",   null: false
     t.string   "service_id"
   end
 

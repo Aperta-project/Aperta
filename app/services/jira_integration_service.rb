@@ -19,8 +19,13 @@ class JIRAIntegrationService
     def create_issue(user_full_name, options)
       session_token = authenticate!
       payload = build_payload(user_full_name, options['remarks'])
-      request_options = build_request_options(session_token)
-      RestClient.post TahiEnv.jira_create_issue_url, payload.to_json, request_options
+      faraday_connection.post do |req|
+        req.url TahiEnv.jira_create_issue_url
+        req.body = payload.to_json
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Accept'] = 'application/json'
+        req.headers['Cookie'] = "JSESSIONID=#{session_token[:value]}"
+      end
     end
 
     def authenticate!
@@ -28,10 +33,15 @@ class JIRAIntegrationService
         username: TahiEnv.jira_username,
         password: TahiEnv.jira_password
       }
-      auth_response = RestClient.post TahiEnv.jira_authenticate_url, credentials.to_json, content_type: :json, accept: :json
-      auth_response = JSON.parse auth_response, symbolize_names: true
-      raise if auth_response[:session].blank?
-      auth_response[:session]
+      auth_response = faraday_connection.post do |req|
+        req.url TahiEnv.jira_authenticate_url
+        req.body = credentials.to_json
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Accept'] = 'application/json'
+      end
+      auth_response_body = JSON.parse auth_response.body, symbolize_names: true
+      raise if auth_response_body[:session].blank?
+      auth_response_body[:session]
     end
 
     def build_payload(user_full_name, remarks)
@@ -42,12 +52,12 @@ class JIRAIntegrationService
       })
     end
 
-    def build_request_options(session_token)
-      {
-        content_type: :json,
-        accept: :json,
-        cookies: { "JSESSIONID": session_token[:value] }
-      }
+    def faraday_connection
+      @faraday_connection ||= Faraday.new do |faraday|
+        faraday.request  :url_encoded
+        faraday.response :logger
+        faraday.adapter  Faraday.default_adapter
+      end
     end
   end
 end

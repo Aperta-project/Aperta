@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe JIRAIntegrationService do
-  subject { described_class.instance }
+  subject { described_class }
 
   before do
     allow_any_instance_of(TahiEnv).to receive(:jira_authenticate_url).and_return 'https://example.com'
@@ -16,14 +16,6 @@ describe JIRAIntegrationService do
       end
       it 'should populate the session' do
         expect(subject.authenticate!).not_to be blank?
-      end
-    end
-    context 'unsuccessful' do
-      before do
-        allow_any_instance_of(RestClient::Request).to receive(:execute).and_return "{}"
-      end
-      it 'should indicate the error in the session' do
-        expect(subject.authenticate!).to be nil
       end
     end
   end

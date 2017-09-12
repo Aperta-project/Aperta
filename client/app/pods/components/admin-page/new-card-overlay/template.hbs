@@ -30,9 +30,12 @@
       cancel
     </button>
 
-    <button class="button-primary button--blue admin-new-card-overlay-save" disabled={{if saving true null}} {{action "complete"}}>
-      {{progress-spinner visible=saving color="blue" center=true}}
-      {{#unless saving}}Create new card{{/unless}}
-    </button>
+    {{save-button
+        text="Create new card"
+        click=(action 'complete')
+        class="button-primary button--blue admin-new-card-overlay-save"
+        disabled=(if saving true null)
+        spinnerSize="mini"
+        displayProgressBar=saving}}
   </div>
 </div>

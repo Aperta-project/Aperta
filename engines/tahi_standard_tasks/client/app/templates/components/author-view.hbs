@@ -11,20 +11,25 @@
         <div class="author-name">
           {{displayName}}
         </div>
-        {{#if author.confirmedAsCoAuthor}}
-          <div data-test-selector="author-confirmed" class="author-confirmed">
-            <i class="fa fa-check author-confirmed-check author-confirmed"></i>
-            Confirmed
-          </div>
-        {{else if author.refutedAsCoAuthor}}
-          <div data-test-selector="author-refuted" class="author-refuted">
-            <i class="fa fa-minus-circle author-refuted-circle author-refuted"></i>
-            Refuted
-          </div>
-        {{/if}}
-      </div>
-      <div class="author-email flex-element">{{or author.email author.contactEmail}}</div>
 
+        {{#if coauthorConfirmationEnabled}}
+          {{#if author.confirmedAsCoAuthor}}
+            <div data-test-selector="author-confirmed" class="author-confirmed">
+              <i class="fa fa-check author-confirmed-check author-confirmed"></i>
+              Confirmed
+            </div>
+          {{else if author.refutedAsCoAuthor}}
+            <div data-test-selector="author-refuted" class="author-refuted">
+              <i class="fa fa-minus-circle author-refuted-circle author-refuted"></i>
+              Refuted
+            </div>
+          {{/if}}
+        {{/if}}
+
+      </div>
+      <div class="author-email flex-element">
+        {{or author.email author.contactEmail}}
+      </div>
     </div>
 
     {{#unless isNotEditable}}
@@ -40,6 +45,7 @@
   {{component componentName
               author=model.object
               authorProxy=model
+              coauthorConfirmationEnabled=coauthorConfirmationEnabled
               validateField=(action "validateField")
               hideAuthorForm="toggleEditForm"
               isNotEditable=isNotEditable

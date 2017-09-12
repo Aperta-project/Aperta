@@ -19,7 +19,7 @@ export default Ember.Route.extend({
     allowStoppedTransition() {
       this.set('controller.showDirtyOverlay', false);
       let transition = this.get('previousTransition');
-      this.transitionTo(transition.targetName);
+      transition.retry();
     }
   }
 });

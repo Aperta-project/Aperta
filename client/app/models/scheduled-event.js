@@ -8,5 +8,6 @@ export default DS.Model.extend({
   completed: Ember.computed.equal('state', 'completed'),
   errored: Ember.computed.equal('state', 'errored'),
   inactive: Ember.computed.equal('state', 'inactive'),
+  active: Ember.computed.equal('state', 'active'),
   finished: DS.attr('boolean')
 });

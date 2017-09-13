@@ -17,29 +17,19 @@ namespace :db do
     return unless Rails.env.development?
     env = args[:env] || 'prod'
     location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
+    path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
 
-    with_config do |_app, host, db, user|
-      # ensure that there is no connection to the database since we're
-      # about to drop and recreate it.
-      ActiveRecord::Base.connection.disconnect!
+    # Download if newer than cached version
+    system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
 
-      args = "-U #{user} -h #{host}"
-      system_or_abort(
-        "dropdb #{args} #{db} && createdb #{args} #{db}",
-        "Error dropping and creating blank database. Is #{db} in use?"
-      )
+    # Restore database
+    Rake::Task['db:restore'].invoke(path)
 
-      path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
-      # Download if newer than cached version
-      system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
-      # Restore database
-      Rake::Task['db:restore'].invoke(path)
-      puts("Successfully restored #{env} database\n")
-      # run any post import tasks
-      ActiveRecord::Base.establish_connection
-      Rake::Task['db:reset_passwords'].invoke
-      Rake::Task['db:setup_role_accounts'].invoke
-    end
+    # run post import tasks
+    ActiveRecord::Base.establish_connection
+    Rake::Task['db:reset_passwords'].invoke
+    Rake::Task['db:setup_role_accounts'].invoke
+    puts("Successfully restored #{env} database\n")
   end
 
   desc "Test migrations against all known environments"
@@ -73,6 +63,22 @@ namespace :db do
 
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |_t, args|
+    # Monkey patch db:drop and db:create not to catch exceptions so that if a
+    # failure happens, this whole chain is aborted. See
+    # https://github.com/rails/rails/pull/19924
+    module ActiveRecord::Tasks::DatabaseTasks
+      def drop(*arguments)
+        configuration = arguments.first
+        class_for_adapter(configuration['adapter']).new(*arguments).drop
+      end
+
+      def create(*arguments)
+        configuration = arguments.first
+        class_for_adapter(configuration['adapter']).new(*arguments).create
+      end
+    end
+    Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].invoke
     location = args[:location]
     if location.blank?
       abort('Location argument is required.')

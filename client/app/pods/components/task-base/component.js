@@ -52,6 +52,7 @@ export default Component.extend(ValidationErrorsMixin, {
   }),
 
   save() {
+    this.set('task.notReady', false);
     this.set('validationErrors.completed', '');
     if(!this.get('skipValidations')) {
       if(this.validateData) { this.validateData(); }

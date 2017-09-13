@@ -12,8 +12,8 @@ const anchorElement    = ',a[href|rel|target|title]';
 const listElement      = ',ol[reversed|start|type]';
 
 const expandedElements = ',div,span,code,ul,li,h1,h2,h3,h4,table,thead,tbody,tfoot,tr,th,td';
-const expandedPlugins  = ' link table';
-const expandedToolbar  = ' | bullist numlist | table link | formatselect';
+const expandedPlugins  = ' link table advlist ';
+const expandedToolbar  = ' | bullist numlist upper-alpha | table link | formatselect';
 
 const blockFormats     = 'Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4';
 
@@ -56,14 +56,16 @@ export default Ember.Component.extend({
     basic: {
       plugins: basicPlugins,
       toolbar: basicToolbar,
-      valid_elements: basicElements
+      valid_elements: basicElements,
     },
 
     expanded: {
       plugins: basicPlugins + expandedPlugins,
       block_formats: blockFormats,
       toolbar: basicToolbar + expandedToolbar,
-      valid_elements: basicElements + anchorElement + listElement + expandedElements
+      valid_elements: basicElements + anchorElement + listElement + expandedElements,
+      advlist_bullet_styles: 'square'
+      // advlist_number_styles: 'upper-alpha'
     }
     /* eslint-enable camelcase */
   },

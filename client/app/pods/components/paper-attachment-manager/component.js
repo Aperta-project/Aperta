@@ -56,6 +56,11 @@ export default Ember.Component.extend({
         attachment = this.get('paper.sourcefile');
       }
 
+      if (attachment) {
+        // technically paper attachments don't belong to a task but this is
+        // needed for the attachment adapter to find the correct url
+        attachment.set('task', this.get('task'));
+      }
       return [attachment].compact();
     }
   ),
@@ -70,7 +75,8 @@ export default Ember.Component.extend({
       store
         .createRecord(attachmentClass, {
           task: this.get('task'),
-          s3Url: s3Url
+          s3Url: s3Url,
+          paper: this.get('task.paper')
         })
         .save();
     },

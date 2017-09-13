@@ -23,11 +23,14 @@ namespace :db do
     system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
 
     # Restore database
+    Rake::Task['db:restore'].reenable
     Rake::Task['db:restore'].invoke(path)
 
     # run post import tasks
     ActiveRecord::Base.establish_connection
+    Rake::Task['db:reset_passwords'].reenable
     Rake::Task['db:reset_passwords'].invoke
+    Rake::Task['db:setup_role_accounts'].reenable
     Rake::Task['db:setup_role_accounts'].invoke
     puts("Successfully restored #{env} database\n")
   end
@@ -35,8 +38,9 @@ namespace :db do
   desc "Test migrations against all known environments"
   task test_migrations: :environment do
     %w[prod stage rc].each do |env|
-      # Run these
+      Rake::Task['db:import_remote'].reenable
       Rake::Task["db:import_remote"].invoke(env)
+      Rake::Task['db:migrate'].reenable
       Rake::Task['db:migrate'].invoke
     end
   end
@@ -77,7 +81,9 @@ namespace :db do
         class_for_adapter(configuration['adapter']).new(*arguments).create
       end
     end
+    Rake::Task['db:drop'].reenable
     Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].reenable
     Rake::Task['db:create'].invoke
     location = args[:location]
     if location.blank?

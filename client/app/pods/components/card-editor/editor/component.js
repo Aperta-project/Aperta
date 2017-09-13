@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import { PropTypes } from 'ember-prop-types';
 import { task } from 'ember-concurrency';
-import BrowserDirtyEditor from 'tahi/mixins/components/browser-dirty-editor';
-import EmberDirtyEditor from 'tahi/mixins/components/ember-dirty-editor';
+import BrowserDirtyEditor from 'tahi/mixins/components/dirty-editor-browser';
+import EmberDirtyEditor from 'tahi/mixins/components/dirty-editor-ember';
 
 export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   routing: Ember.inject.service('-routing'),

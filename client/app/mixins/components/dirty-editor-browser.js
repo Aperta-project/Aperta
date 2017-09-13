@@ -1,4 +1,6 @@
 import Ember from 'ember';
+// When the user naviagtes away outside of the ember app,
+// the browser will pop up a warning if there are unsaved changes.
 
 export default Ember.Mixin.create({
   init() {

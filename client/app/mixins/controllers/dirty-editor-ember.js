@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
+// Inside the ember app, when the user naviagtes away from a form
+// an overlay will pop up a warning if there are unsaved changes.
+// Used in conjuction with client/app/mixins/components/dirty-editor-ember.js
 export default Ember.Mixin.create({
   showDirtyOverlay: false,
   actions: {

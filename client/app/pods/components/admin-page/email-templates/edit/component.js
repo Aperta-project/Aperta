@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import BrowserDirtyEditor from 'tahi/mixins/components/browser-dirty-editor';
-import EmberDirtyEditor from 'tahi/mixins/components/ember-dirty-editor';
+import BrowserDirtyEditor from 'tahi/mixins/components/dirty-editor-browser';
+import EmberDirtyEditor from 'tahi/mixins/components/dirty-editor-ember';
 
 // This validation works for our pre-populated letter templates
 // but we might want to change this up when users are allowed to create

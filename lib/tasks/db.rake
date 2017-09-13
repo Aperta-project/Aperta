@@ -20,7 +20,7 @@ namespace :db do
     path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
 
     # Download if newer than cached version
-    system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
+    rake_system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
 
     # Restore database
     Rake::Task['db:restore'].reenable
@@ -63,11 +63,11 @@ namespace :db do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
     cmd = nil
-    with_config do |_app, host, db, user|
+    rake_with_db_config do |host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
     end
-    system_or_abort(cmd, "Dump failed for \n #{cmd}")
+    rake_system_or_abort(cmd, "Dump failed for \n #{cmd}")
   end
 
   desc "Cleans up the database dump files in ~, leaving the 2 newest"
@@ -102,13 +102,13 @@ namespace :db do
     if location.blank?
       abort('Location argument is required.')
     else
-      with_config do |_app, host, db, user|
+      rake_with_db_config do |host, db, user|
         cat_bit = if location.to_s.ends_with?(".gz")
                     "gunzip -dc #{location}"
                   else
                     "cat #{location}"
                   end
-        system_or_abort(
+        rake_system_or_abort(
           "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
         )
       end
@@ -129,7 +129,7 @@ namespace :db do
       MSG
     end
     Rake::Task['db:drop'].invoke
-    system_or_abort("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
+    rake_system_or_abort("heroku pg:pull DATABASE_URL tahi_development --app #{source_db}")
     Rake::Task['db:reset_passwords'].invoke
     Rake::Task['db:setup_role_accounts'].invoke
   end
@@ -195,18 +195,17 @@ namespace :db do
     end
   end
 
-  private
+  # These pollute the global namespace. Sorry.
 
-  def with_config
+  def rake_with_db_config
     ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password]
-    yield Rails.application.class.parent_name.underscore,
-      ActiveRecord::Base.connection_config[:host],
-      ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username]
+    yield ActiveRecord::Base.connection_config[:host],
+          ActiveRecord::Base.connection_config[:database],
+          ActiveRecord::Base.connection_config[:username]
     ENV.delete('PGPASSWORD')
   end
 
-  def system_or_abort(cmd, abort_message = nil)
+  def rake_system_or_abort(cmd, abort_message = nil)
     abort_message ||= "Error running #{cmd}"
     system(cmd) || abort("\e[31m#{abort_message}\e[0m")
   end

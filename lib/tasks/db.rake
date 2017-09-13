@@ -23,25 +23,20 @@ namespace :db do
     rake_system_or_abort("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
 
     # Restore database
-    Rake::Task['db:restore'].reenable
-    Rake::Task['db:restore'].invoke(path)
+    rake_reenable_and_invoke('db:restore', path)
 
     # run post import tasks
     ActiveRecord::Base.establish_connection
-    Rake::Task['db:reset_passwords'].reenable
-    Rake::Task['db:reset_passwords'].invoke
-    Rake::Task['db:setup_role_accounts'].reenable
-    Rake::Task['db:setup_role_accounts'].invoke
+    rake_reenable_and_invoke('db:reset_passwords')
+    rake_reenable_and_invoke('db:setup_role_accounts')
     puts("Successfully restored #{env} database\n")
   end
 
   desc "Test migrations against all known environments"
   task test_migrations: :environment do
     %w[prod stage rc].each do |env|
-      Rake::Task['db:import_remote'].reenable
-      Rake::Task["db:import_remote"].invoke(env)
-      Rake::Task['db:migrate'].reenable
-      Rake::Task['db:migrate'].invoke
+      rake_reenable_and_invoke('db:import_remote', env)
+      rake_reenable_and_invoke('db:migrate')
     end
   end
 
@@ -80,6 +75,9 @@ namespace :db do
 
   desc "Restores the database dump at LOCATION"
   task :restore, [:location] => :environment do |_t, args|
+    location = args[:location]
+    abort('Location argument is required.') if location.blank?
+
     # Monkey patch db:drop and db:create not to catch exceptions so that if a
     # failure happens, this whole chain is aborted. See
     # https://github.com/rails/rails/pull/19924
@@ -94,24 +92,18 @@ namespace :db do
         class_for_adapter(configuration['adapter']).new(*arguments).create
       end
     end
-    Rake::Task['db:drop'].reenable
-    Rake::Task['db:drop'].invoke
-    Rake::Task['db:create'].reenable
-    Rake::Task['db:create'].invoke
-    location = args[:location]
-    if location.blank?
-      abort('Location argument is required.')
-    else
-      rake_with_db_config do |host, db, user|
-        cat_bit = if location.to_s.ends_with?(".gz")
-                    "gunzip -dc #{location}"
-                  else
-                    "cat #{location}"
-                  end
-        rake_system_or_abort(
-          "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
-        )
-      end
+
+    rake_reenable_and_invoke('db:drop')
+    rake_reenable_and_invoke('db:create')
+    rake_with_db_config do |host, db, user|
+      cat_bit = if location.to_s.ends_with?(".gz")
+                  "gunzip -dc #{location}"
+                else
+                  "cat #{location}"
+                end
+      rake_system_or_abort(
+        "#{cat_bit} | pg_restore --clean --if-exists --no-acl --no-owner --username #{user} --host #{host} --dbname #{db}"
+      )
     end
   end
 
@@ -208,5 +200,10 @@ namespace :db do
   def rake_system_or_abort(cmd, abort_message = nil)
     abort_message ||= "Error running #{cmd}"
     system(cmd) || abort("\e[31m#{abort_message}\e[0m")
+  end
+
+  def rake_reenable_and_invoke(task_name, *args)
+    Rake::Task[task_name].reenable
+    Rake::Task[task_name].invoke(*args)
   end
 end

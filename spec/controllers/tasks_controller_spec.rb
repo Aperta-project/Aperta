@@ -180,6 +180,16 @@ describe TasksController, redis: true do
         expect(response.body).not_to include "This paper cannot be edited at this time."
       end
 
+      context 'when the request is marking the task complete' do
+        context 'and the task is ready?' do
+          it 'marks the task complete' do
+            allow(controller).to receive(:task).and_return(task)
+            expect(task).to receive(:ready?).and_return(true)
+            expect { do_request }.to change { task.reload.completed }.from(false).to(true)
+          end
+        end
+      end
+
       context "and the task is marked as complete" do
         before do
           task.update_column :completed, true
@@ -369,7 +379,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_questions" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_loaded_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_loaded_card) }
     let!(:card_content) do
       root = task.card.content_root_for_version(:latest)
       root.children.first
@@ -419,7 +429,7 @@ describe TasksController, redis: true do
   end
 
   describe "GET #nested_question_answers" do
-    let(:task) { FactoryGirl.create(:cover_letter_task, :with_card) }
+    let(:task) { FactoryGirl.create(:early_posting_task, :with_card) }
     let(:card_content) do
       root = Card.find_by(name: task.class.name).content_root_for_version(:latest)
       FactoryGirl.create(:card_content, parent: root)

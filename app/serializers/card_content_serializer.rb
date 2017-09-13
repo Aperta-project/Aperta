@@ -36,7 +36,7 @@ class CardContentSerializer < ActiveModel::Serializer
   end
 
   def default_answer_value
-    return object.default_answer_value == 'true' ? true : false if object.value_type == 'boolean'
+    return object.default_answer_value == 'true' ? true : false if object.default_answer_value.present? && object.value_type == 'boolean'
     object.default_answer_value
   end
 end

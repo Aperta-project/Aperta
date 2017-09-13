@@ -20,7 +20,7 @@ class Card < ActiveRecord::Base
     uniqueness: {
       scope: [:journal, :deleted_at],
       message:  <<-MSG.strip_heredoc
-        That card name is taken for this journal.
+        The card name of "%{value}" is already taken for this journal.
         Please give your card a new name.
       MSG
     }

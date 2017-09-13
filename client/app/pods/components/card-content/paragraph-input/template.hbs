@@ -1,6 +1,6 @@
 <label class="content-text">{{{content.text}}}
   {{#if content.isRequired}}
-    {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+    <span class="required-field">*</span>
   {{/if}}</label>
 
 {{#if isRichText}}
@@ -26,5 +26,6 @@
       focusOut=(action "validate")
       disabled=disabled
   }}
+  {{card-content/validation-errors errors=answer.readyIssuesArray}}
 {{/if}}
-{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}
+

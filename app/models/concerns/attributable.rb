@@ -9,6 +9,8 @@ module Attributable
                 visible_with_parent_answer wrapper_tag]
   }.freeze
 
+  CONTENT_TYPES = CONTENT_ATTRIBUTES.keys.freeze
+
   included do
     has_many :content_attributes, dependent: :destroy, inverse_of: :card_content
 

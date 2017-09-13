@@ -5,7 +5,7 @@
 class CardVersion < ActiveRecord::Base
   belongs_to :card, inverse_of: :card_versions
   belongs_to :published_by, class_name: 'User'
-  has_many :card_contents, -> {includes(:content_attributes, :card_content_validations)}, inverse_of: :card_version, dependent: :destroy
+  has_many :card_contents, -> { includes(:content_attributes, :card_content_validations) }, inverse_of: :card_version, dependent: :destroy
 
   validates :card, presence: true
   validates :card_contents, presence: true
@@ -42,24 +42,41 @@ class CardVersion < ActiveRecord::Base
     end
   end
 
-  VALUE_TYPES = %w[string boolean integer json].freeze
-  def self.reformat_attributes(hash)
-    key = "#{hash['value_type']}_value"
-    value = hash[key]
-    hash.delete('value_type')
-    VALUE_TYPES.each {|type| hash.delete("#{type}_value")}
-    hash['value'] = value
-  end
-
   def combined_contents
     result = self.class.connection.select_all(combined_sql)
-    rows = result.map do |row|
+    contents = result.map do |row|
       row.each { |key, value| row[key] = result.column_types[key].type_cast_from_database(value) }
     end
-    rows = rows.group_by {|row| row['id']}
+
+    contents = contents.group_by { |row| row['id'] }
+    attrs = contents.each_with_object({}) { |(id, rows), hash| hash[id] = extract_attributes(rows) }
+
+    merge_attributes(contents, attrs)
   end
 
   private
+
+  def merge_attributes(contents, attrs)
+    contents.each_with_object({}) do |(id, rows), hash|
+      rows.first.try do |row|
+        clean_attributes(row)
+        id = row['id']
+        hash[id] = row.merge('attributes' => attrs[id])
+      end
+    end
+  end
+
+  def extract_attributes(rows)
+    rows.each_with_object({}) do |row, hash|
+      key = "#{row['value_type']}_value"
+      hash[row['attribute']] = row[key]
+    end
+  end
+
+  def clean_attributes(row)
+    %w[attribute value_type].each { |key| row.delete(key) }
+    Attributable::CONTENT_TYPES.each { |type| row.delete("#{type}_value") }
+  end
 
   def combined_sql
     <<-SQL

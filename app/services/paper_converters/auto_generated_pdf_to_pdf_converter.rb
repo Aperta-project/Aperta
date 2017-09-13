@@ -4,5 +4,13 @@ module PaperConverters
     def output_filename
       "aperta-generated-PDF.pdf"
     end
+
+    def supporting_information_files
+      []
+    end
+
+    def output_data
+      parsed_uploaded_pdf
+    end
   end
 end

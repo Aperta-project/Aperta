@@ -59,16 +59,8 @@ test('it displays a success message if save succeeds and disables save button', 
   `);
 
   // This is necessary because the save button doesn't enable until there is a keypress event on any of the fields
-  Ember.run(() => {
-    const e = Ember.$.Event('keydown');
-    e.which = 20;
-    e.keyCode = 20;
-    this.$('#subject').trigger(e);
-  });
-
-  Ember.run(() => {
-    this.$('.button-primary').click();
-  });
+  Ember.run(() => generateKeyEvent.bind(this)(20));
+  Ember.run(() => this.$('.button-primary').click());
 
   assert.elementFound('.button-primary[disabled]');
   assert.equal(this.$('span.text-success').text(), 'Your changes have been saved.');
@@ -88,16 +80,8 @@ test('it displays an error message if save fails', function(assert) {
     {{admin-page/email-templates/edit template=template}}
   `);
 
-  Ember.run(() => {
-    const e = Ember.$.Event('keydown');
-    e.which = 32;
-    e.keyCode = 32;
-    this.$('#subject').trigger(e);
-  });
-  
-  Ember.run(() => {
-    this.$('.button-primary').click();
-  });
+  Ember.run(() => generateKeyEvent.bind(this)(32));
+  Ember.run(() => this.$('.button-primary').click());
 
   assert.elementNotFound('.button-primary[disabled]');
   assert.equal(this.$('span.text-danger').text(), 'Please correct errors where indicated.');
@@ -120,20 +104,16 @@ test('it warns user if input field has invalid content', function(assert) {
     {{admin-page/email-templates/edit template=template}}
   `);
   
-  Ember.run(() => {
-    const e = Ember.$.Event('keydown');
-    e.which = 32;
-    e.keyCode = 32;
-    this.$('#subject').trigger(e);
-  });
-
-  Ember.run(() => {
-    this.$('#subject').val('{{ name }').blur();
-  });
-
-  Ember.run(() => {
-    this.$('.button-primary').click();
-  });
+  Ember.run(() => generateKeyEvent.bind(this)(32));
+  Ember.run(() => this.$('#subject').val('{{ name }').blur());
+  Ember.run(() => this.$('.button-primary').click());
 
   assert.equal(this.$('.error>ul>li').text().trim(), 'Syntax Error');
 });
+
+let generateKeyEvent = function(keyCode) {
+  const e = Ember.$.Event('keydown');
+  e.which = keyCode;
+  e.keyCode = keyCode;
+  this.$('#subject').trigger(e);
+};

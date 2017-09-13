@@ -3,6 +3,7 @@ module Attributable
 
   CONTENT_ATTRIBUTES = {
     boolean: %w[allow_annotations allow_file_captions allow_multiple_uploads required_field],
+    integer: %w[],
     json:    %w[possible_values],
     string:  %w[child_tag condition custom_class custom_child_class default_answer_value
                 editor_style error_message instruction_text label text value_type

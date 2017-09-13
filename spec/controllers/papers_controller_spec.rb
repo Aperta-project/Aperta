@@ -145,7 +145,7 @@ describe PapersController do
       end
 
       it 'does not call the DownloadManuscriptWorker' do
-        expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+        expect(DownloadManuscriptWorker).to_not receive(:download)
         do_request
       end
 
@@ -155,7 +155,7 @@ describe PapersController do
         end
 
         it 'calls DownloadManuscriptWorker' do
-          expect(DownloadManuscriptWorker).to receive(:download_manuscript)
+          expect(DownloadManuscriptWorker).to receive(:download)
             .with(paper, "someURL", user)
           do_request
         end
@@ -168,7 +168,7 @@ describe PapersController do
         end
 
         it "doesn't call DownloadManuscriptWorker" do
-          expect(DownloadManuscriptWorker).to_not receive(:download_manuscript)
+          expect(DownloadManuscriptWorker).to_not receive(:download)
           do_request
         end
 

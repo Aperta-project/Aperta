@@ -13,7 +13,10 @@ class Card < ActiveRecord::Base
     presence: { message: "Please give your card a name." },
     uniqueness: {
       scope: :journal,
-      message: "That card name is taken for this journal; please give your card a new name."
+      message:  <<-MSG.strip_heredoc
+        The card name of "%{value}" is already taken for this journal.
+        Please give your card a new name.
+      MSG
     }
 
   validate :check_nested_errors, :check_semantics

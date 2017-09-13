@@ -15,12 +15,8 @@ namespace :db do
   DESC
   task :import_remote, [:env] => :environment do |_t, args|
     return unless Rails.env.development?
-    args[:env] = nil if args[:env] == 'prod'
     env = args[:env] || 'prod'
     location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
-    # Minimal footprint local import. Run "hs" node module in a directory containing a production dump file,
-    # Then uncomment this:
-    # location = "http://localhost:8080/prod_dump.tar.gz"
 
     with_config do |_app, host, db, user|
       # ensure that there is no connection to the database since we're

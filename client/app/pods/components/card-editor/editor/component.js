@@ -9,10 +9,6 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
   propTypes: {
     card: PropTypes.EmberObject
   },
-  dirtyEditorConfig: {
-    model: 'card',
-    properties: ['xml']
-  },
   errors: null,
   showPublishOverlay: false,
   showArchiveOverlay: false,

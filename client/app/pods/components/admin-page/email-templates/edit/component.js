@@ -13,10 +13,6 @@ export default Ember.Component.extend(BrowserDirtyEditor, EmberDirtyEditor, {
     return !this.get('template.subject') || !this.get('template.body');
   }),
   unsaved: true,
-  dirtyEditorConfig: {
-    model: 'template',
-    properties: ['body', 'subject']
-  },
   actions: {
     save: function() {
       if (this.get('disabled') || this.get('template.isSaving')) {

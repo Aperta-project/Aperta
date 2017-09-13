@@ -93,6 +93,7 @@ namespace :db do
       end
     end
 
+    puts "Restoring database from #{location}"
     rake_reenable_and_invoke('db:drop')
     rake_reenable_and_invoke('db:create')
     rake_with_db_config do |host, db, user|

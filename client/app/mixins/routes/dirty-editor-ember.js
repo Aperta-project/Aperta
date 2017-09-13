@@ -4,13 +4,11 @@ import Ember from 'ember';
 // an overlay will pop up a warning if there are unsaved changes.
 // Used in conjuction with client/app/mixins/components/dirty-editor-ember.js
 export default Ember.Mixin.create({
-  showDirtyOverlay: false,
-
   setupController(controller, model) {
     this._super(controller, model);
     controller.set('dirtyEditorConfig', this.get('dirtyEditorConfig'));
   },
-  
+
   actions: {
     willTransition(transition) {
       let model = this.currentModel;

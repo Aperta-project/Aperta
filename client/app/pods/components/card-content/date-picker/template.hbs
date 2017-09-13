@@ -1,10 +1,9 @@
 <div class="form-group">
   <p class="picker-title">{{{content.text}}}
     {{#if content.isRequired}}
-      {{#unless answer.wasAnswered}}<span class="required-field">*</span>{{/unless}}
+      <span class="required-field">*</span>
     {{/if}}</p>
   <div class="inset-form-control {{if validationErrors.publicationDate "error"}}">
-
     {{date-picker
         name=name
         type="text"
@@ -12,6 +11,8 @@
         date=answer.value
         dateChanged="valueChanged"
         answer=answer
+        disabled=disabled
         content=content}}
+    <div>{{card-content/validation-errors content=content errors=answer.readyIssuesArray}}</div>
   </div>
 </div>

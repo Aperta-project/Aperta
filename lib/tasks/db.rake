@@ -22,11 +22,10 @@ namespace :db do
     # Then uncomment this:
     # location = "http://localhost:8080/prod_dump.tar.gz"
 
-    with_config do |_app, host, db, user, password|
+    with_config do |_app, host, db, user|
       # ensure that there is no connection to the database since we're
       # about to drop and recreate it.
       ActiveRecord::Base.connection.disconnect!
-      ENV['PGPASSWORD'] = password.to_s
 
       args = "-U #{user} -h #{host}"
       system_or_abort(
@@ -61,8 +60,7 @@ namespace :db do
     location = "~/aperta-#{Time.now.utc.strftime('%FT%H:%M:%SZ')}.dump"
 
     cmd = nil
-    with_config do |_app, host, db, user, password|
-      ENV['PGPASSWORD'] = password.to_s
+    with_config do |_app, host, db, user|
       raise('Backup file already exists') if File.exist?(File.expand_path(location))
       cmd = "pg_dump --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{location}"
     end
@@ -83,8 +81,7 @@ namespace :db do
     if location.blank?
       abort('Location argument is required.')
     else
-      with_config do |_app, host, db, user, password|
-        ENV['PGPASSWORD'] = password.to_s
+      with_config do |_app, host, db, user|
         cat_bit = if location.to_s.ends_with?(".gz")
                     "gunzip -dc #{location}"
                   else
@@ -180,11 +177,12 @@ namespace :db do
   private
 
   def with_config
+    ENV['PGPASSWORD'] = ActiveRecord::Base.connection_config[:password]
     yield Rails.application.class.parent_name.underscore,
       ActiveRecord::Base.connection_config[:host],
       ActiveRecord::Base.connection_config[:database],
-      ActiveRecord::Base.connection_config[:username],
-      ActiveRecord::Base.connection_config[:password]
+      ActiveRecord::Base.connection_config[:username]
+    ENV.delete('PGPASSWORD')
   end
 
   def system_or_abort(cmd, abort_message = nil)

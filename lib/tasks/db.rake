@@ -17,8 +17,8 @@ namespace :db do
   task :import_remote, [:env] => :environment do |_t, args|
     return unless Rails.env.development?
     args[:env] = nil if args[:env] == 'prod'
-    env = args[:env]
-    location = "http://bighector.plos.org/aperta/#{env || 'prod'}_dump.tar.gz"
+    env = args[:env] || 'prod'
+    location = "http://bighector.plos.org/aperta/#{env}_dump.tar.gz"
     # Minimal footprint local import. Run "hs" node module in a directory containing a production dump file,
     # Then uncomment this:
     # location = "http://localhost:8080/prod_dump.tar.gz"
@@ -33,10 +33,13 @@ namespace :db do
       drop_cmd = system("dropdb #{args} #{db} && createdb #{args} #{db}")
       raise "\e[31m Error dropping and creating blank database. Is #{db} in use?\e[0m" unless drop_cmd
 
-      cmd = "(curl -sH 'Accept-encoding: gzip' #{location} | gunzip - | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db})"
-      raise "Error restoring #{env || 'prod'} " unless system(cmd)
+      path = Rails.root.join("tmp", "#{env}_dump.tar.gz")
+      # Download if newer than cached version
+      raise "Error downloading #{env} dump " unless system("curl -sH 'Accept-encoding: gzip' -o #{path} -z #{path} #{location}")
+      # Restore database
+      raise "Error restoring from #{path}" unless system("gunzip -dc #{path} | pg_restore --format=tar --clean --if-exists --no-acl --no-owner #{args} -d #{db}")
 
-      STDERR.puts("Successfully restored #{env || 'prod'} database by running \n #{cmd}")
+      puts("Successfully restored #{env} database\n")
       # run any post import tasks
       ActiveRecord::Base.establish_connection
       Rake::Task['db:reset_passwords'].invoke

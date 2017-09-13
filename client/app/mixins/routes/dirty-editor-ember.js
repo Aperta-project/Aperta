@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
-// Inside the ember app, when the user naviagtes away from a form
-// an overlay will pop up a warning if there are unsaved changes.
+// Facilitates display of a warning overlay when navigating away from a dirty editor.
 // Used in conjuction with client/app/mixins/components/dirty-editor-ember.js
 export default Ember.Mixin.create({
   setupController(controller, model) {
@@ -25,10 +24,9 @@ export default Ember.Mixin.create({
       this.set('controller.showDirtyOverlay', true);
     },
 
-    allowStoppedTransition() {
+    retryStoppedTransition() {
       this.set('controller.showDirtyOverlay', false);
-      let transition = this.get('previousTransition');
-      transition.retry();
+      this.get('previousTransition').retry();
     }
   }
 });

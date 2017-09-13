@@ -27,6 +27,15 @@ namespace :settings do
        setting_klass: "Setting",
        setting_name: "review_duration_period",
        value: 10
+     },
+     {
+       journal: nil,
+       key: "Journal",
+       value_type: "boolean",
+       global: true,
+       setting_klass: "Setting",
+       setting_name: "coauthor_confirmation_enabled",
+       value: false
      }].each do |hash|
       SettingTemplate.transaction do
         possible_values = hash.delete(:possible_setting_values) { |_el| [] }

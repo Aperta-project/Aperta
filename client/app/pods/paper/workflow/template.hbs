@@ -36,7 +36,7 @@
 {{/overlay-fullscreen}}
 
 {{paper-control-bar paper=model
-                    showActivity="showActivityOverlay"
+                    showActivity=(action "showActivityOverlay" "workflow")
                     topicsIndexPath=topicsIndexPath
                     tab="workflow"}}
 

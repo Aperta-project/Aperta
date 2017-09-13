@@ -1,5 +1,6 @@
 class Journal < ActiveRecord::Base
   include EventStream::Notifiable
+  include Configurable
 
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{journal[^\/]+}
@@ -78,6 +79,10 @@ class Journal < ActiveRecord::Base
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
     class_name: 'Role'
   # rubocop:enable Metrics/LineLength
+
+  def setting_template_key
+    'Journal'
+  end
 
   def self.staff_admins_for_papers(papers)
     journals = joins(:papers)

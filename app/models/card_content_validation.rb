@@ -41,4 +41,8 @@ class CardContentValidation < ActiveRecord::Base
       answer.value
     end
   end
+
+  def validate_by_required_field(answer)
+    !answer.answer_blank?
+  end
 end

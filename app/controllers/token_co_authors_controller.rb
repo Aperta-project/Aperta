@@ -2,6 +2,7 @@
 # co-authorship without signing in.
 class TokenCoAuthorsController < ApplicationController
   before_action :assign_template_vars
+  before_action :verify_coauthor_enabled
 
   def show
     if @author.co_author_confirmed?
@@ -41,6 +42,13 @@ class TokenCoAuthorsController < ApplicationController
   end
 
   private
+
+  def verify_coauthor_enabled
+    unless @paper.journal.setting("coauthor_confirmation_enabled").value
+      Rails.logger.warn("User attempted to access disabled coauthor functionality")
+      render status: 404
+    end
+  end
 
   def assign_template_vars
     @author ||= find_author_by_token

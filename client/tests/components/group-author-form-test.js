@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import {moduleForComponent, test} from 'ember-qunit';
 import FactoryGuy from 'ember-data-factory-guy';
 import { manualSetup } from 'ember-data-factory-guy';
@@ -72,6 +73,7 @@ var template = hbs`
       validateField=(action validateField)
       hideAuthorForm="toggleGroupAuthorForm"
       isNotEditable=isNotEditable
+      coauthorConfirmationEnabled=true
       authorIsPaperCreator=true
   }}`;
 
@@ -92,6 +94,27 @@ test("component hides coauthor controls when user is considered an non-admin use
     const can = FakeCanService.create().rejectPermission('administer', journal);
     this.register('service:can', can.asService());
   });
+
+  this.render(template);
+  assert.elementNotFound('[data-test-selector="coauthor-radio-controls"]');
+});
+
+test('component hides coauthor controls if the setting is disabled', function(assert){
+  // Administrator
+  Ember.run(() => {
+    const can = FakeCanService.create().allowPermission('administer', journal);
+    this.register('service:can', can.asService());
+  });
+  template = hbs`
+  {{group-author-form
+      author=model.object
+      authorProxy=model
+      validateField=(action validateField)
+      hideAuthorForm="toggleGroupAuthorForm"
+      isNotEditable=isNotEditable
+      coauthorConfirmationEnabled=false
+      authorIsPaperCreator=true
+  }}`;
 
   this.render(template);
   assert.elementNotFound('[data-test-selector="coauthor-radio-controls"]');

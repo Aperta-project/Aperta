@@ -5,15 +5,16 @@ import Discussions from 'tahi/mixins/discussions/route-paths';
 export default Ember.Controller.extend(PaperBase, Discussions,  {
   queryParams: ['selectedVersion1', 'selectedVersion2'],
   routing: Ember.inject.service('-routing'),
+  paper: Ember.computed.alias('model'),
 
   taskToDisplay: null,
   showTaskOverlay: false,
   previousURL: null,
-  showPdfManuscript: Ember.computed('model.fileType', 'viewingVersion.fileType',
+  showPdfManuscript: Ember.computed('paper.fileType', 'viewingVersion.fileType',
     function(){
       return this.get('viewingVersion.fileType') ?
         this.get('viewingVersion.fileType') === 'pdf' :
-        this.get('model.fileType') === 'pdf';
+        this.get('paper.fileType') === 'pdf';
     }
   ),
   comparisonIsPdf: Ember.computed.equal('comparisonVersion.fileType', 'pdf'),

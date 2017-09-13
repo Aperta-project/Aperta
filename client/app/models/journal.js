@@ -9,6 +9,7 @@ export default DS.Model.extend({
   staffEmail: DS.attr('string'),
   pdfAllowed: DS.attr('boolean'),
   manuscriptManagerTemplates: DS.attr(),
+  coauthorConfirmationEnabled: DS.attr('boolean'),
 
   initials: Ember.computed('name', function() {
     return this.get('name').split(' ').map(s => s[0]).join('');

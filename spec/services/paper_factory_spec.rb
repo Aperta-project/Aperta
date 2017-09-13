@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PaperFactory do
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions, :with_default_task_types) }
   let(:card) { FactoryGirl.create(:card, :versioned) }
   let(:mmt) do
     FactoryGirl.create(:manuscript_manager_template, paper_type: "Science!").tap do |mmt|

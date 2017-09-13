@@ -3,7 +3,8 @@ include RichTextEditorHelpers
 
 feature "User adding reviewer candidates", js: true do
   let(:admin) { create :user, :site_admin, first_name: 'Admin' }
-  let!(:paper) { create :paper, :with_integration_journal, :with_tasks, creator: admin }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions, :with_default_mmt) }
+  let!(:paper) { create :paper, :with_tasks, journal: journal, creator: admin }
   let(:reason) { 'Because they do good work' }
 
   let!(:reviewer_recommendations_task) do

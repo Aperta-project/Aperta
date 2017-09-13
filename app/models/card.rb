@@ -5,20 +5,14 @@ class Card < ActiveRecord::Base
   include XmlSerializable
   include AASM
 
-  acts_as_paranoid
-
   belongs_to :journal, inverse_of: :cards
   has_many :card_versions, inverse_of: :card, dependent: :destroy
-  has_one :latest_card_version,
-          ->(card) { where(version: card.latest_version) },
-          class_name: 'CardVersion'
+  has_one :latest_card_version, ->(card) { where(version: card.latest_version) }, class_name: 'CardVersion'
 
   validates :name,
-    presence: {
-      message: "Please give your card a name."
-    },
+    presence: { message: "Please give your card a name." },
     uniqueness: {
-      scope: [:journal, :deleted_at],
+      scope: :journal,
       message:  <<-MSG.strip_heredoc
         The card name of "%{value}" is already taken for this journal.
         Please give your card a new name.
@@ -26,7 +20,8 @@ class Card < ActiveRecord::Base
     }
 
   validate :check_nested_errors, :check_semantics
-  before_destroy :ensure_destroyable
+  before_destroy :check_destroyable
+  after_destroy :clean_permissions
 
   scope :archived, -> { where.not(archived_at: nil) }
 
@@ -232,7 +227,23 @@ class Card < ActiveRecord::Base
     end
   end
 
+  def forcibly_destroy!
+    self.state = "draft"
+    self.notifications_enabled = false # silence notifications
+    destroy!
+  end
+
   private
+
+  def clean_permissions
+    Permission.where(filter_by_card_id: id).delete_all
+  end
+
+  def check_destroyable
+    return true if draft?
+    errors.add(:base, "only draft cards can be destroyed")
+    false # halt callback
+  end
 
   def publish_latest_version!
     latest_card_version.publish!
@@ -246,12 +257,5 @@ class Card < ActiveRecord::Base
 
   def archive_card!
     CardArchiver.archive(self)
-  end
-
-  def ensure_destroyable
-    unless draft?
-      errors.add(:base, "only draft cards can be destroyed")
-      false # halt callback
-    end
   end
 end

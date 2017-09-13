@@ -7,9 +7,7 @@ class CardContent < ActiveRecord::Base
   include Attributable
   include XmlSerializable
 
-  # Scope matches deleted_at IS NULL, that is, non-deleted records
-  acts_as_nested_set scope: [:deleted_at]
-  acts_as_paranoid
+  acts_as_nested_set
 
   belongs_to :card_version, inverse_of: :card_contents
   has_one :card, through: :card_version
@@ -17,12 +15,9 @@ class CardContent < ActiveRecord::Base
 
   validates :card_version, presence: true
 
-  # since we use acts_as_paranoid we need to take into account whether a given
-  # piece of card content has been deleted for uniqueness checks on parent_id
-  # and ident
   validates :parent_id,
             uniqueness: {
-              scope: %i[card_version deleted_at],
+              scope: :card_version,
               message: "Card versions can only have one root node."
             },
             if: -> { root? }

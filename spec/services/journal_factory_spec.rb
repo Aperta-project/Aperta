@@ -163,15 +163,14 @@ describe JournalFactory do
       end
 
       after(:all) do
-        Permission.all.delete_all
-        Role.all.delete_all
-        Journal.all.delete_all
-        CardContent.all.delete_all
-        CardContent.all.with_deleted.delete_all! # Really delete
-        CardVersion.all.delete_all
-        CardVersion.all.with_deleted.delete_all! # Really delete
-        Card.all.delete_all
-        Card.all.with_deleted.delete_all! # Really delete
+        Permission.delete_all
+        Role.delete_all
+        Journal.delete_all
+        CardContentValidation.delete_all
+        ContentAttribute.delete_all
+        CardContent.delete_all
+        CardVersion.delete_all
+        Card.delete_all
       end
 
       let!(:journal) { @journal }

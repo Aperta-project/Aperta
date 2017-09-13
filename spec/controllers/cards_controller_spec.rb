@@ -374,12 +374,6 @@ describe CardsController do
         end.to change(Card, :count).by(-1)
       end
 
-      it "sets deleted_at" do
-        do_request
-        card.reload
-        expect(card.deleted_at).to_not be_nil
-      end
-
       it "responds with 204" do
         do_request
         expect(response.status).to eq(204)

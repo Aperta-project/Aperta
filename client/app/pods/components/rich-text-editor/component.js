@@ -68,6 +68,12 @@ export default Ember.Component.extend({
     /* eslint-enable camelcase */
   },
 
+  editorIsEnabled: Ember.observer('disabled', function() {
+    if (!this.get('disabled')) {
+      Ember.run.scheduleOnce('afterRender', this, this.postRender);
+    }
+  }),
+
   pastePostprocess(editor, fragment) {
     function deleteEmptyParagraph(elem) {
       if (elem.nodeName === 'P' && /^\s*$/.test(elem.innerText)) {
@@ -100,7 +106,6 @@ export default Ember.Component.extend({
     if (ENV.environment === 'development') {
       options['toolbar'] += ' code';
     }
-    Ember.run.schedule('afterRender', this, this.postRender);
     return options;
   },
 
@@ -109,5 +114,5 @@ export default Ember.Component.extend({
     let style = this.get('editorStyle') || 'expanded';
     let options = Object.assign({}, configs[style]);
     return this.configureCommon(options);
-  }),
+  })
 });

@@ -22,3 +22,8 @@ export function pasteText(name, text) {
   editor.fire('PastePostProcess', {node: tempBody, internal: false});
   editor.target.triggerSave();
 }
+
+export function editorFireEvent(editorName, eventName) {
+  let editor = findEditor(editorName);
+  editor.fire(eventName);
+}

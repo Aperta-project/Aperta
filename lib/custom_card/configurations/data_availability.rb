@@ -77,7 +77,7 @@ module CustomCard
                     </content>
                   </content>
                 </content>
-                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html" allow-annotations="false" required-field="false">
+                <content ident="data_availability--data_location" content-type="paragraph-input" value-type="html" allow-annotations="false" required-field="false" editor-style="inline">
                   <text>Please describe where your data may be found, writing in full sentences.</text>
                 </content>
               </content>
